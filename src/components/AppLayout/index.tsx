@@ -6,27 +6,23 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
 import {
+  AglintRecruiterLogo,
   AppLogo,
-  ArrowRight,
+  NavMenuBottom,
   NotificationAndProfile,
   SettingsAndLogout,
-  SidemenuLeft,
+  SideNavMenu,
 } from '@/devlink';
-import { ArrowLeft } from '@/devlink/ArrowLeft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
 import MenuLottie from './MenuLottie';
 import {
-  CoachSubLinks,
-  InterviewSubLinks,
-  JobSubLinks,
   MobileCoachNavBar,
   MobileDashboardNavBar,
   MobileInterviewNavBar,
   MobileJobNavBar,
   MobileResumeNavBar,
-  ResumeSubLinks,
 } from './utils';
 
 export default function AppLayout({ children }) {
@@ -77,7 +73,7 @@ export default function AppLayout({ children }) {
   // console.log(router, pageRoutes.JOBS);
   return (
     <Stack zIndex={2000} direction={'row'}>
-      <Stack
+      {/* <Stack
         zIndex={2}
         sx={{
           transition: 'all 0.4s',
@@ -105,13 +101,13 @@ export default function AppLayout({ children }) {
             },
           }}
         />
-      </Stack>
+      </Stack> */}
 
       <Stack
         display={windowSize?.innerWidth < 991 ? 'none' : 'flex'}
         direction={'row'}
       >
-        <Stack position={'relative'}>
+        {/* <Stack position={'relative'}>
           <Stack
             sx={{
               transition: 'all 0.4s',
@@ -189,43 +185,42 @@ export default function AppLayout({ children }) {
               }}
             />
           </Stack>
-        </Stack>
+        </Stack> */}
         <Stack
           sx={{
             transition: 'width 0.4s, border 0.6s',
           }}
           borderRight={'1px solid'}
-          borderColor={expand ? 'grey.200' : 'transparent'}
-          width={expand ? '230px' : '0px'}
+          borderColor={'grey.200'}
           position={'relative'}
+          p={'14px'}
+          bgcolor={'#f8f9f950'}
         >
-          <Stack
-            sx={{
-              transition: `transform 0.4s, opacity  ${
-                expand ? '0.6s' : '0.3s'
-              }`,
-              opacity: expand ? 1 : 0,
-              transform: !expand
-                ? 'translate3d(-80px, 0px, 0px)'
-                : 'translate3d(0px, 0px, 0px)',
-              width: '224px',
-              pointerEvents: !expand && 'none',
-            }}
-          >
-            <Stack pt={'28px'} pb={'32px'}>
-              <AppLogo />
+          <Stack height={'calc(100vh - 28px)'}>
+            <Stack pt={'21px'} pb={'24px'}>
+              <AglintRecruiterLogo />
             </Stack>
-            {router.pathname.includes(pageRoutes.JOBS) && <JobSubLinks />}
-            {(router.pathname.includes(pageRoutes.RESUME) ||
-              router.pathname === pageRoutes.COVER_LETTER) && (
-              <ResumeSubLinks />
-            )}
-            {router.pathname.includes(pageRoutes.INTERVIEW) && (
-              <InterviewSubLinks />
-            )}
-            {router.pathname.includes(pageRoutes.Career_COACH) && (
-              <CoachSubLinks />
-            )}
+            <Stack height={'100%'} justifyContent={'space-between'}>
+              <SideNavMenu
+                isMyCandidateDatabase={router.pathname.includes(
+                  pageRoutes.CANDIDATES,
+                )}
+                isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
+                isMyJobs={router.pathname.includes(pageRoutes.DASHBOARD)}
+              />
+              <NavMenuBottom
+                isMyNotification={router.pathname.includes(
+                  pageRoutes.NOTIFICATIONS,
+                )}
+                slotProfileImage={
+                  <Avatar
+                    // src={employeeDtails[0]?.image}
+                    variant='rounded'
+                    sx={{ width: '100%', height: '100%' }}
+                  />
+                }
+              />
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
