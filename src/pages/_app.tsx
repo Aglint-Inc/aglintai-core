@@ -11,13 +11,12 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
 
 const MyApp = ({ Component, pageProps }) => {
+  const getProvider = Component.getProvider ?? ((page) => page);
   if (Component.getLayout) {
     return Component.getLayout(
       <>
         <DevlinkMainProvider>
-          <Theme>
-            <Component {...pageProps} />
-          </Theme>
+          <Theme>{getProvider(<Component {...pageProps} />)}</Theme>
         </DevlinkMainProvider>
       </>,
     );
@@ -32,7 +31,7 @@ const MyApp = ({ Component, pageProps }) => {
               <ScreenSizeProvider>
                 <AuthProvider>
                   <AppLayout>
-                    <Component {...pageProps} />
+                    {getProvider(<Component {...pageProps} />)}
                   </AppLayout>
                 </AuthProvider>
               </ScreenSizeProvider>
