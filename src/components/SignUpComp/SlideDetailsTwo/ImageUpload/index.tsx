@@ -77,7 +77,7 @@ function ImageUpload({ setImage, image }) {
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
             )}
           </Stack>
-          {!loading && (
+          {loading && (
             <Stack
               height={'135px'}
               width={'135px'}
