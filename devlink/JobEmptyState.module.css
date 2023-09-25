@@ -1,0 +1,54 @@
+.no-jobs-to-show {
+  display: flex;
+  height: 40vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-job-wrappers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  text-align: center;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.max-width-500 {
+  max-width: 500px;
+}
+
+.text-grey-600.width-90 {
+  width: 90%;
+}
+
+.max-width-600 {
+  max-width: 600px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}

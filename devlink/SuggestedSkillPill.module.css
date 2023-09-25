@@ -1,0 +1,42 @@
+.cj-suggested-skill-block {
+  display: flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 4px;
+
+  background-color: rgba(237, 247, 255, 1);
+}
+
+.small-default-4 {
+  color: rgba(47, 57, 65, 1);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: -0.00042765619582496583px;
+}
+
+.frame-1091 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.vectors-wrapper-37 {
+  display: flex;
+  width: 10px;
+  height: 10px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  object-fit: cover;
+}

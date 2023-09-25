@@ -1,0 +1,11 @@
+import React from 'react';
+
+const LoginPage = () => {
+  return <div>LoginPage</div>;
+};
+
+export default LoginPage;
+
+LoginPage.getLayout = (page) => {
+  return <>{page}</>;
+};

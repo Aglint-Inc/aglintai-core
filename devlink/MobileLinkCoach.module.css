@@ -1,0 +1,109 @@
+.nav_mainlink_mobile_with-text {
+  position: relative;
+
+  display: flex;
+  overflow: visible;
+  width: 100%;
+  padding: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 8px;
+
+  background-color: transparent;
+
+  transition: all 300ms ease;
+
+  font-weight: 600;
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.nav_mainlink_mobile_with-text:hover {
+  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+}
+
+.nav_mainlink_mobile_with-text:global(.w--current) {
+  background-color: white;
+  box-shadow: 0 2px 7px 0 rgba(0,0,0,0.2);
+  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+}
+
+.nav_mainlink_mobile_with-text.thin {
+  font-weight: 500;
+}
+
+.nav_mainlink_mobile_with-text.is_logout {
+  color: var(--red500-2e806c7d);
+  font-weight: 500;
+}
+
+.coach_icon {
+  position: relative;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  color: var(--grey800-e42b2e06);
+  text-decoration: none;
+}
+
+.embed_flex.rotate {
+  transform: rotate(180deg);
+}
+
+.pro_badge {
+  position: absolute;
+  left: auto;
+  top: -2px;
+  right: -2px;
+  bottom: auto;
+  z-index: 2;
+
+  overflow: hidden;
+  padding: 2px 4px;
+
+  border-radius: 4px;
+
+  background-color: #ffd424;
+
+  color: #2f3941;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.pro_badge.in_mobile {
+  top: -8px;
+  right: -9px;
+}
+
+.mobilelink_active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 8px;
+
+  background-color: white;
+}

@@ -1,0 +1,9 @@
+.button-text-grey-600 {
+  transition: all 250ms ease;
+  color: var(--grey600-d5bebe21);
+  cursor: pointer;
+}
+
+.button-text-grey-600:hover {
+  color: var(--grey700-7fbe857b);
+}

@@ -1,0 +1,42 @@
+.button-with-icon {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  padding: 12px;
+  align-items: center;
+  grid-column-gap: 4px;
+
+  border-radius: 4px;
+
+  background-color: var(--kale300-8828b122);
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.button-with-icon:hover {
+  background-color: var(--kale400-aeb7229d);
+}
+
+.cover-glitter-icon {
+  width: 17px;
+  filter: invert(100%) grayscale(100%);
+  object-fit: contain;
+}
+
+.text-kale-800 {
+  color: var(--kale800-682c1482);
+}
+
+.div-block-239 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  background-color: hsla(199.9999999999999, 8.33%, 85.88%, 0.58);
+}

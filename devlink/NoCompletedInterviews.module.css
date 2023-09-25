@@ -1,0 +1,45 @@
+.history-empty-state {
+  display: flex;
+  width: 100%;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+@media screen and (max-width: 991px) {
+  .history-empty-state {
+    padding-top: 40px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .history-empty-state {
+    max-width: 233px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+}
+
+.width-img {
+  width: 100px;
+  height: 100.00000762939453px;
+}
+
+.history-empty-image {
+  width: 100px;
+}
+
+.start-interview {
+  transition: all 300ms ease;
+  color: var(--blue500-72579298);
+  cursor: pointer;
+}
+
+.start-interview:hover {
+  border-bottom: 1px solid var(--blue700-c1b26211);
+  color: var(--blue700-c1b26211);
+}
