@@ -51,7 +51,7 @@ function ImageUpload({ setImage, image }) {
         <Stack
           position={'relative'}
           sx={{
-            borderRadius: '4px',
+            borderRadius: '10px',
             borderColor: palette.grey[400],
           }}
           onMouseEnter={() => setIsStackHovered(true)}
@@ -61,9 +61,9 @@ function ImageUpload({ setImage, image }) {
             <Avatar
               src={image}
               sx={{
-                width: 136,
-                height: 136,
-                borderRadius: '4px',
+                width: 135,
+                height: 135,
+                borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',
                 },
@@ -71,16 +71,16 @@ function ImageUpload({ setImage, image }) {
               }}
               variant='square'
             >
-              <Icon variant='CompanyOutlined' height='24' width='24' />
+              <Icon variant='CompanyOutlinedBig' height='32' width='32' />
             </Avatar>
             {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
             )}
           </Stack>
-          {loading && (
+          {!loading && (
             <Stack
-              height={'136px'}
-              width={'136px'}
+              height={'135px'}
+              width={'135px'}
               sx={{
                 zIndex: 10,
                 position: 'absolute',
@@ -116,11 +116,11 @@ function ImageUpload({ setImage, image }) {
                     cursor: 'pointer',
                     transition: 'all 0.5s ease', // Adjust the duration and easing as needed
                     opacity: isStackHovered ? 100 : 0,
-                    borderRadius: '4px',
+                    borderRadius: '10px',
                     mt: '4px',
                   }}
-                  height={'136px'}
-                  width={'136px'}
+                  height={'135px'}
+                  width={'135px'}
                   direction={'row'}
                   justifyContent={'center'}
                   alignItems={'center'}
@@ -133,8 +133,8 @@ function ImageUpload({ setImage, image }) {
               </FileUploader>
             ) : (
               <Stack
-                height={'136px'}
-                width={'136px'}
+                height={'135px'}
+                width={'135px'}
                 direction={'row'}
                 justifyContent={'center'}
                 alignItems={'center'}
@@ -142,7 +142,7 @@ function ImageUpload({ setImage, image }) {
                   transition: 'all 0.5s ease', // Adjust the duration and easing as needed
                   opacity: isStackHovered ? 100 : 0,
                   background: isStackHovered ? '#2F3941B2' : 'transparent',
-                  borderRadius: '4px',
+                  borderRadius: '10px',
                 }}
               >
                 {image && (

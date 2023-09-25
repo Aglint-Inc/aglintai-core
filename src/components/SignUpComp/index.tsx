@@ -5,6 +5,7 @@ import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
 import { WelcomeSlider6 } from '@/devlink/WelcomeSlider6';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { companyType } from '@/src/utils/userRoles';
 
 import SlideDetailsOne from './SlideDetailsOne';
@@ -66,7 +67,7 @@ const SignUpComp = () => {
               <WelcomeSlider6
                 onClickDashboard={{
                   onClick: () => {
-                    router.push('/dashboard');
+                    router.push(pageRoutes.JOBS);
                   },
                 }}
               />
