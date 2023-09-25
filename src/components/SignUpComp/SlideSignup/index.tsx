@@ -103,6 +103,8 @@ const SlideTwoSignUp = () => {
         data: {
           name: details.name,
           role: 'Recruiter',
+          role_type: flow,
+          sub_role: 'Admin',
         },
       },
     });
