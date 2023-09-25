@@ -40,25 +40,25 @@ const SlideDetailsTwo = () => {
   });
 
   useEffect(() => {
-    // Function to fetch the user's location information based on IP address
-    const fetchUserLocation = async () => {
-      try {
-        const response = await fetch('https://ipinfo.io/json', {
-          headers: {
-            Authorization: `Bearer e82b96e5cb0802`,
-          },
-        });
-        const data = await response.json();
-
-        const country = data.country; // Extract the country code from the response
-        setDefaultCountry(country?.toLowerCase() || 'in'); // Set the default country based on the user's location
-      } catch (error) {
-        // Handle any errors that occur during the API call
-      }
-    };
-
     fetchUserLocation(); // Call the function to fetch user's location when the component mounts
   }, []);
+
+  // Function to fetch the user's location information based on IP address
+  const fetchUserLocation = async () => {
+    try {
+      const response = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
+      const data = await response.json();
+
+      const country = data.country; // Extract the country code from the response
+      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
+    } catch (error) {
+      // Handle any errors that occur during the API call
+    }
+  };
 
   const phoneValidation = (format) => {
     if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {

@@ -169,7 +169,7 @@ const SlideTwoSignUp = () => {
   };
 
   return (
-    <div>
+    <>
       <WelcomeSlider3
         isSignUpButtonVisible={
           !details.name || !details.email || !details.password
@@ -206,7 +206,7 @@ const SlideTwoSignUp = () => {
           },
         }}
         slotSignUpForm={
-          <Stack spacing={'20px'}>
+          <Stack spacing={'20px'} p={'4px'}>
             <TextField
               margin='none'
               required
@@ -301,7 +301,7 @@ const SlideTwoSignUp = () => {
           </Stack>
         }
       />
-    </div>
+    </>
   );
 };
 

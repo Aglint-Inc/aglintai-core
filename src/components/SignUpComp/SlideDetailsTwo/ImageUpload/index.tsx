@@ -1,5 +1,5 @@
 import { palette } from '@context/Theme/Theme';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { supabase } from '@utils/supabaseClient';
 import { useState } from 'react';
@@ -61,17 +61,23 @@ function ImageUpload({ setImage, image }) {
             <Avatar
               src={image}
               sx={{
-                width: 135,
-                height: 135,
+                width: 120,
+                height: 120,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',
                 },
                 textTransform: 'capitalize',
+                bgcolor: 'transparent',
               }}
               variant='square'
             >
-              <Icon variant='CompanyOutlinedBig' height='32' width='32' />
+              <Icon
+                variant='CompanyOutlinedBig'
+                height='32'
+                width='32'
+                color='#87929D'
+              />
             </Avatar>
             {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
@@ -79,15 +85,14 @@ function ImageUpload({ setImage, image }) {
           </Stack>
           {loading && (
             <Stack
-              height={'135px'}
-              width={'135px'}
+              height={'120px'}
+              width={'120px'}
               sx={{
                 zIndex: 10,
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                bgcolor: '#fff',
               }}
               alignItems={'center'}
               justifyContent={'center'}
@@ -119,15 +124,20 @@ function ImageUpload({ setImage, image }) {
                     borderRadius: '10px',
                     mt: '4px',
                   }}
-                  height={'135px'}
-                  width={'135px'}
+                  height={'120px'}
+                  width={'120px'}
                   direction={'row'}
                   justifyContent={'center'}
                   alignItems={'center'}
                 >
-                  <CameraAltIcon
-                    fontSize='large'
-                    sx={{ position: 'absolute', color: palette.grey[600] }}
+                  <UploadIcon
+                    fontSize='medium'
+                    sx={{
+                      position: 'absolute',
+                      color: palette.grey[500],
+                      top: 0,
+                      right: 0,
+                    }}
                   />
                 </Stack>
               </FileUploader>
