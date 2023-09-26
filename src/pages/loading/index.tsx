@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
+import Seo from '@/src/components/Common/Seo';
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
 import {
   AuthProvider,
@@ -80,6 +81,10 @@ export default function Loading() {
         justifyContent: 'center',
       }}
     >
+      <Seo
+        title='Aglint | Loading'
+        description='AI Powered Talent Development Platform.'
+      />
       <LoaderSvg />
     </Box>
   );
