@@ -1,3 +1,5 @@
+import JobApplicationProvider /*, {useJobApplications, useJobApplicationsForJob} */ from '@context/JobApplicationsContext';
+import JobsProvider /*, { useJobs } */ from '@context/JobsContext';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -11,7 +13,11 @@ const JobPage = () => {
 };
 
 JobPage.getProvider = function getProvider(page) {
-  return <>{page}</>;
+  return (
+    <JobsProvider>
+      <JobApplicationProvider>{page}</JobApplicationProvider>
+    </JobsProvider>
+  );
 };
 
 export default JobPage;

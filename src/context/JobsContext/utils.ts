@@ -1,6 +1,6 @@
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { Job, JobContext } from './types';
+import { InputData, JobContext } from './types';
 
 export const initialJobContext: JobContext = {
   jobsData: undefined,
@@ -12,26 +12,26 @@ export const initialJobContext: JobContext = {
   initialLoad: false,
 };
 
-export const createJobsDbAction = async (inputData: Partial<Job>) => {
+export const createJobDbAction = async (
+  recruiter_id: string,
+  inputData: InputData,
+) => {
   const { data, error } = await supabase
     .from('public_jobs')
-    .insert(inputData)
+    .insert({ ...inputData, recruiter_id })
     .select();
   return { data, error };
 };
 
-export const readJobsDbAction = async (id: string) => {
+export const readJobDbAction = async (recruiter_id: string) => {
   const { data, error } = await supabase
     .from('public_jobs')
     .select('*')
-    .eq('recruiter_id', id);
+    .eq('recruiter_id', recruiter_id);
   return { data, error };
 };
 
-export const updateJobDbAction = async (
-  id: string,
-  inputData: Partial<Omit<Job, 'id' | 'recruiter_id'>>,
-) => {
+export const updateJobDbAction = async (id: string, inputData: InputData) => {
   const { data, error } = await supabase
     .from('public_jobs')
     .update(inputData)

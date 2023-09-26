@@ -2,15 +2,16 @@ import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import toast from '@utils/toast';
 import { useEffect, useReducer } from 'react';
 
-import { Job, JobsData } from './types';
+import { InputData, Job, JobsData } from './types';
 import {
+  createJobDbAction,
   deleteJobDbAction,
-  readJobsDbAction,
+  readJobDbAction,
   updateJobDbAction,
 } from './utils';
 
 // eslint-disable-next-line no-unused-vars
-enum actionType {
+enum ActionType {
   // eslint-disable-next-line no-unused-vars
   CREATE,
   // eslint-disable-next-line no-unused-vars
@@ -21,58 +22,92 @@ enum actionType {
   DELETE,
 }
 
-type action =
+type Action =
   | {
-      type: actionType.CREATE;
-      payload: { id: string };
-    }
-  | {
-      type: actionType.READ;
-      payload: Job[];
-    }
-  | {
-      type: actionType.UPDATE;
+      type: ActionType.CREATE;
       payload: {
-        id: string;
-        inputData: Partial<Omit<Job, 'id' | 'recruiter_id'>>;
+        inputData: Job;
       };
     }
   | {
-      type: actionType.DELETE;
+      type: ActionType.READ;
+      payload: {
+        inputData: Job[];
+      };
+    }
+  | {
+      type: ActionType.UPDATE;
+      payload: {
+        id: string;
+        inputData: Job;
+      };
+    }
+  | {
+      type: ActionType.DELETE;
       payload: { id: string };
     };
 
-const reducer = (state: JobsData, action: action) => {
+const reducer = (state: JobsData, action: Action) => {
   switch (action.type) {
-    case actionType.CREATE: {
-      return state;
-    }
-    case actionType.READ: {
+    case ActionType.CREATE: {
       const newState: JobsData = {
         ...state,
-        jobs: action.payload,
+        jobs: [...state.jobs, action.payload.inputData],
       };
       return newState;
     }
+
+    case ActionType.READ: {
+      const newState: JobsData = {
+        ...state,
+        jobs: [...action.payload.inputData],
+      };
+      return newState;
+    }
+
+    case ActionType.UPDATE: {
+      const newJobs: Job[] = state.jobs.reduce((jobs, job) => {
+        if (job.id === action.payload.id) jobs.push(action.payload.inputData);
+        else jobs.push(job);
+        return jobs;
+      }, []);
+      const newState: JobsData = {
+        ...state,
+        jobs: newJobs,
+      };
+      return newState;
+    }
+
+    case ActionType.DELETE: {
+      const newJobs: Job[] = state.jobs.filter(
+        (job) => job.id !== action.payload.id,
+      );
+      const newState: JobsData = {
+        ...state,
+        jobs: newJobs,
+      };
+      return newState;
+    }
+
     default: {
       return state;
     }
   }
 };
 
-export const useJobActions = () => {
+const useJobActions = () => {
   const { recruiter } = useAuthDetails();
 
   const [jobsData, dispatch] = useReducer(reducer, undefined);
   const initialLoad = recruiter?.id && jobsData ? true : false;
 
-  const handleJobCreate = async () => {
+  const handleJobCreate = async (inputData: InputData) => {
     if (recruiter) {
-      const { data, error } = await readJobsDbAction(recruiter.id);
+      const { data, error } = await createJobDbAction(recruiter.id, inputData);
       if (data) {
-        const action: action = {
-          type: actionType.READ,
-          payload: data,
+        const action: Action = {
+          type: ActionType.CREATE,
+          payload: { inputData: data[0] },
         };
         dispatch(action);
         return true;
@@ -84,11 +119,11 @@ export const useJobActions = () => {
 
   const handleJobRead = async () => {
     if (recruiter) {
-      const { data, error } = await readJobsDbAction(recruiter.id);
+      const { data, error } = await readJobDbAction(recruiter.id);
       if (data) {
-        const action: action = {
-          type: actionType.READ,
-          payload: data,
+        const action: Action = {
+          type: ActionType.READ,
+          payload: { inputData: data },
         };
         dispatch(action);
         return true;
@@ -98,18 +133,15 @@ export const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (
-    jobId: string,
-    inputData: Partial<Omit<Job, 'id' | 'recruiter_id'>>,
-  ) => {
+  const handleJobUpdate = async (jobId: string, inputData: InputData) => {
     if (recruiter) {
       const { data, error } = await updateJobDbAction(jobId, inputData);
       if (data) {
-        const action: action = {
-          type: actionType.UPDATE,
+        const action: Action = {
+          type: ActionType.UPDATE,
           payload: {
             id: jobId,
-            inputData,
+            inputData: data[0],
           },
         };
         dispatch(action);
@@ -124,8 +156,8 @@ export const useJobActions = () => {
     if (recruiter) {
       const { data, error } = await deleteJobDbAction(jobId);
       if (data) {
-        const action: action = {
-          type: actionType.DELETE,
+        const action: Action = {
+          type: ActionType.DELETE,
           payload: {
             id: jobId,
           },
@@ -158,3 +190,5 @@ export const useJobActions = () => {
 
   return value;
 };
+
+export default useJobActions;

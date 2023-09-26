@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 
-import { useJobActions } from './hooks';
+import useJobActions from './hooks';
 import { initialJobContext } from './utils';
 
 const JobsContext = createContext(initialJobContext);

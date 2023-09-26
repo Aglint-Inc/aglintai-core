@@ -1,6 +1,5 @@
 import DashboardComp from '@components/Dashboard';
-import JobsProvider from '@context/JobsContext';
-import React from 'react';
+import JobsProvider /*,{useJobs}*/ from '@context/JobsContext';
 
 const Dashboard = () => {
   return (
