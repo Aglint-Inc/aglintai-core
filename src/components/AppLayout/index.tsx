@@ -17,13 +17,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
 import MenuLottie from './MenuLottie';
-import {
-  MobileCoachNavBar,
-  MobileDashboardNavBar,
-  MobileInterviewNavBar,
-  MobileJobNavBar,
-  MobileResumeNavBar,
-} from './utils';
+import { MobileJobNavBar } from './utils';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
@@ -372,48 +366,7 @@ export default function AppLayout({ children }) {
                       setLoadingProgress(true);
                     }}
                   >
-                    <MobileDashboardNavBar
-                      collapse={collapse}
-                      setCollapse={setCollapse}
-                    />
-                  </Stack>
-                  <Stack
-                    onClick={() => {
-                      setLoadingProgress(true);
-                    }}
-                  >
                     <MobileJobNavBar
-                      collapse={collapse}
-                      setCollapse={setCollapse}
-                    />
-                  </Stack>
-                  <Stack
-                    onClick={() => {
-                      setLoadingProgress(true);
-                    }}
-                  >
-                    <MobileResumeNavBar
-                      collapse={collapse}
-                      setCollapse={setCollapse}
-                    />
-                  </Stack>
-                  <Stack
-                    onClick={() => {
-                      setLoadingProgress(true);
-                    }}
-                  >
-                    <MobileInterviewNavBar
-                      collapse={collapse}
-                      setCollapse={setCollapse}
-                    />
-                  </Stack>
-                  <Stack
-                    onClick={() => {
-                      setLoadingProgress(true);
-                    }}
-                  >
-                    <MobileCoachNavBar
-                      activePlan={true}
                       collapse={collapse}
                       setCollapse={setCollapse}
                     />
