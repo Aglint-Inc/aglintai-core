@@ -136,7 +136,7 @@ export { AuthContext, AuthProvider };
 
 const AuthLoader = () => {
   return (
-    <Stack height={'100vh'}>
+    <Stack height={'100vh'} justifyContent={'center'} alignItems={'center'}>
       <LoaderSvg />
     </Stack>
   );

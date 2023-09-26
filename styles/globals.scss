@@ -11,3 +11,10 @@ a {
   line-height: 1.43;
   text-decoration: none;
 }
+
+[class*='one-line-clamp'] {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -3217,6 +3217,14 @@ export interface Database {
         }
         Returns: undefined
       }
+      get_job_application_count: {
+        Args: {
+          table_name: string
+          filter_column: string
+          filter_value: string
+        }
+        Returns: number
+      }
       getquerieswithmessagesbyassignmentid: {
         Args: {
           assignmentid: string
