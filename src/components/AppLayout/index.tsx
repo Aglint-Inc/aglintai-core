@@ -38,9 +38,11 @@ export default function AppLayout({ children }) {
     if (windowSize.innerWidth > 991) {
       if (
         router.pathname === pageRoutes.JOBS ||
-        router.pathname === pageRoutes.INTERVIEW ||
-        router.pathname === pageRoutes.RESUME ||
-        router.pathname === pageRoutes.COVER_LETTER
+        router.pathname === pageRoutes.COMPANY ||
+        router.pathname === pageRoutes.CANDIDATE_DATABSE ||
+        router.pathname === pageRoutes.NOTIFICATIONS ||
+        router.pathname === pageRoutes.SETTINGS ||
+        router.pathname === pageRoutes.PROFILE
       ) {
         setExpand(true);
       } else {
@@ -54,11 +56,11 @@ export default function AppLayout({ children }) {
   useEffect(() => {
     if (windowSize.innerWidth > 991) {
       if (
-        router.pathname === pageRoutes.DASHBOARD ||
-        router.pathname === pageRoutes.SETTINGS ||
-        router.pathname === pageRoutes.Career_COACH ||
+        router.pathname === pageRoutes.JOBS ||
+        router.pathname === pageRoutes.COMPANY ||
+        router.pathname === pageRoutes.CANDIDATE_DATABSE ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.REFERRAL ||
+        router.pathname === pageRoutes.SETTINGS ||
         router.pathname === pageRoutes.PROFILE
       ) {
         setExpand(false);
@@ -203,10 +205,10 @@ export default function AppLayout({ children }) {
             <Stack height={'100%'} justifyContent={'space-between'}>
               <SideNavMenu
                 isMyCandidateDatabase={router.pathname.includes(
-                  pageRoutes.CANDIDATES,
+                  pageRoutes.CANDIDATE_DATABSE,
                 )}
                 isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
-                isMyJobs={router.pathname.includes(pageRoutes.DASHBOARD)}
+                isMyJobs={router.pathname.includes(pageRoutes.JOBS)}
               />
               <NavMenuBottom
                 isMyNotification={router.pathname.includes(

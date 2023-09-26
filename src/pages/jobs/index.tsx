@@ -1,6 +1,6 @@
+import DashboardComp from '@components/Dashboard';
+import JobsProvider from '@context/JobsContext';
 import React from 'react';
-
-import DashboardComp from '@/src/components/Dashboard';
 
 const Dashboard = () => {
   return (
@@ -8,6 +8,10 @@ const Dashboard = () => {
       <DashboardComp />
     </>
   );
+};
+
+Dashboard.getProvider = function getProvider(page) {
+  return <JobsProvider>{page}</JobsProvider>;
 };
 
 export default Dashboard;
