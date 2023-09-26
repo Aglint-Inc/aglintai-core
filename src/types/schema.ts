@@ -1101,6 +1101,49 @@ export interface Database {
           }
         ]
       }
+      jd_match: {
+        Row: {
+          created_at: string | null
+          id: string
+          job_id: string | null
+          job_json: Json | null
+          result_json: Json | null
+          resume_id: string | null
+          resume_json: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          job_id?: string | null
+          job_json?: Json | null
+          result_json?: Json | null
+          resume_id?: string | null
+          resume_json?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          job_id?: string | null
+          job_json?: Json | null
+          result_json?: Json | null
+          resume_id?: string | null
+          resume_json?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jd_match_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       job_applications: {
         Row: {
           application_id: string
@@ -1127,6 +1170,7 @@ export interface Database {
           phone: string | null
           resume: string | null
           score: number
+          status: string | null
           used_token: Json[]
           usn: string | null
           utm_campaign: string | null
@@ -1160,6 +1204,7 @@ export interface Database {
           phone?: string | null
           resume?: string | null
           score?: number
+          status?: string | null
           used_token?: Json[]
           usn?: string | null
           utm_campaign?: string | null
@@ -1193,6 +1238,7 @@ export interface Database {
           phone?: string | null
           resume?: string | null
           score?: number
+          status?: string | null
           used_token?: Json[]
           usn?: string | null
           utm_campaign?: string | null
@@ -2258,15 +2304,22 @@ export interface Database {
           description: string | null
           id: string
           is_campus: boolean
+          job_criteria: Json | null
           job_title: string | null
+          job_type: string | null
           location: string | null
           logo: string | null
           overview: string | null
           qualifications: string[] | null
+          recruiter_id: string
           requirements: string[] | null
           responsibilities: string[] | null
+          screening_questions: Json[] | null
+          screening_setting: Json | null
           skills: string[] | null
           slug: string
+          status: string | null
+          workplace_type: string | null
         }
         Insert: {
           benefits?: string[] | null
@@ -2276,15 +2329,22 @@ export interface Database {
           description?: string | null
           id?: string
           is_campus?: boolean
+          job_criteria?: Json | null
           job_title?: string | null
+          job_type?: string | null
           location?: string | null
           logo?: string | null
           overview?: string | null
           qualifications?: string[] | null
+          recruiter_id?: string
           requirements?: string[] | null
           responsibilities?: string[] | null
+          screening_questions?: Json[] | null
+          screening_setting?: Json | null
           skills?: string[] | null
           slug?: string
+          status?: string | null
+          workplace_type?: string | null
         }
         Update: {
           benefits?: string[] | null
@@ -2294,17 +2354,31 @@ export interface Database {
           description?: string | null
           id?: string
           is_campus?: boolean
+          job_criteria?: Json | null
           job_title?: string | null
+          job_type?: string | null
           location?: string | null
           logo?: string | null
           overview?: string | null
           qualifications?: string[] | null
+          recruiter_id?: string
           requirements?: string[] | null
           responsibilities?: string[] | null
+          screening_questions?: Json[] | null
+          screening_setting?: Json | null
           skills?: string[] | null
           slug?: string
+          status?: string | null
+          workplace_type?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_jobs_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       queries: {
         Row: {
