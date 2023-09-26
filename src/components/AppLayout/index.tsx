@@ -22,6 +22,7 @@ import { MobileJobNavBar } from './utils';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
@@ -210,11 +211,13 @@ export default function AppLayout({ children }) {
                 )}
                 slotProfileImage={
                   <Avatar
-                    // src={employeeDtails[0]?.image}
+                    src={recruiter?.logo}
                     variant='rounded'
                     sx={{ width: '100%', height: '100%' }}
                   />
                 }
+                textEmail={recruiter?.email}
+                textName={recruiter?.name}
               />
             </Stack>
           </Stack>

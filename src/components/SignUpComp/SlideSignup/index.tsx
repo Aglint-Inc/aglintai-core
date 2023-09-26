@@ -44,15 +44,21 @@ const SlideTwoSignUp = () => {
     let isValid = true;
     if (!details.name) {
       isValid = false;
-      signUpError.name = {
-        error: true,
-        msg: errorMessages.nameRequired,
-      };
+      setSignUpError((prevError) => ({
+        ...prevError,
+        name: {
+          error: true,
+          msg: errorMessages.nameRequired,
+        },
+      }));
     } else {
-      signUpError.name = {
-        error: false,
-        msg: errorMessages.nameRequired,
-      };
+      setSignUpError((prevError) => ({
+        ...prevError,
+        name: {
+          error: false,
+          msg: '',
+        },
+      }));
     }
     const email = handleEmail(details.email);
 

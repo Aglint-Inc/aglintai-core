@@ -265,6 +265,10 @@
   color: var(--yellow800-b1e3bc9b);
 }
 
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .text-sm.color-grey-400 {
   color: var(--grey400-863ed4b5);
 }

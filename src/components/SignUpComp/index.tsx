@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
 import { WelcomeSlider6 } from '@/devlink/WelcomeSlider6';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -16,6 +17,7 @@ import { stepObj } from './SlideSignup/utils';
 
 const SignUpComp = () => {
   const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const { step, setStep, setFlow } = useSignupDetails();
 
   return (
@@ -27,6 +29,7 @@ const SignUpComp = () => {
               onClickAgency={{
                 onClick: () => {
                   setFlow(companyType.AGENCY);
+                  localStorage.setItem('flow', companyType.AGENCY);
                   setStep(stepObj.signup);
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
@@ -34,6 +37,7 @@ const SignUpComp = () => {
               onClickCompany={{
                 onClick: () => {
                   setFlow(companyType.COMPANY);
+                  localStorage.setItem('flow', companyType.COMPANY);
                   setStep(stepObj.signup);
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
@@ -41,6 +45,7 @@ const SignUpComp = () => {
               onClickConsultant={{
                 onClick: () => {
                   setFlow(companyType.CONSULTANT);
+                  localStorage.setItem('flow', companyType.CONSULTANT);
                   setStep(stepObj.signup);
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
@@ -65,7 +70,13 @@ const SignUpComp = () => {
           ) : (
             <YTransform uniqueKey={step}>
               <WelcomeSlider6
+                textName={recruiter?.name}
                 onClickDashboard={{
+                  onClick: () => {
+                    router.push(pageRoutes.JOBS);
+                  },
+                }}
+                onClickPostJob={{
                   onClick: () => {
                     router.push(pageRoutes.JOBS);
                   },

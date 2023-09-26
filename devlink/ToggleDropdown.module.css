@@ -177,6 +177,15 @@
 }
 
 .tog-dropdown-list-wrapper.screening {
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.slot-custom-skill-question {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }

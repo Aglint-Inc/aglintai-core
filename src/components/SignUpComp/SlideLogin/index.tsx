@@ -6,6 +6,7 @@ import { WelcomeSlider2 } from '@/devlink';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from '../SlideSignup/types';
 import { handleEmail, handlePassword, stepObj } from '../SlideSignup/utils';
@@ -93,6 +94,23 @@ const SlideLogin = () => {
     }
   };
 
+  const oauthHandler = async (provider) => {
+    if (typeof window !== 'undefined')
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: provider,
+          options: {
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
+          },
+        });
+        if (error) {
+          toast.error(error.message);
+        }
+      } catch (err) {
+        toast.error(err.message);
+      }
+  };
+
   return (
     <>
       <WelcomeSlider2
@@ -102,6 +120,16 @@ const SlideLogin = () => {
               shallow: true,
             });
             setStep(stepObj.signup);
+          },
+        }}
+        onClickLogInGoogle={{
+          onClick: () => {
+            oauthHandler('google');
+          },
+        }}
+        onClickLogInLinkedIn={{
+          onClick: () => {
+            oauthHandler('linkedin');
           },
         }}
         isChecked={checked}

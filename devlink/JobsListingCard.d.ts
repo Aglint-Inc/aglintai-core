@@ -15,4 +15,5 @@ declare function JobsListingCard(props: {
   bgColorProps?: Types.Devlink.RuntimeProps;
   textJobsStatus?: React.ReactNode;
   textColorProps?: Types.Devlink.RuntimeProps;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

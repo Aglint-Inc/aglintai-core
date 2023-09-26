@@ -13,22 +13,17 @@
   text-decoration: none;
 }
 
-.vectors-wrapper-38 {
+.add-icon {
   display: flex;
-  width: 16px;
-  height: 16px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-
-  object-fit: cover;
 }
 
 .label-6 {
   color: rgba(31, 115, 183, 1);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 12px;
+  line-height: 16px;
   font-weight: 400;
   text-align: center;
   letter-spacing: -0.15399999916553497px;

@@ -242,6 +242,10 @@
   margin-top: 13px;
 }
 
+.text-grey-600-3.personalized {
+  padding-left: 20px;
+}
+
 .support-wrapper {
   display: flex;
   grid-column-gap: 4px;

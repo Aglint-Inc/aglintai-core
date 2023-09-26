@@ -1,9 +1,11 @@
 import { Avatar, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { JobEmptyState, JobsListingCard } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobDB } from '@/src/types/data.types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { JobType } from '../types';
 import {
@@ -19,6 +21,7 @@ interface JobsListProps {
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
+  const router = useRouter();
   if (jobs.length == 0) {
     return <JobEmptyState />;
   }
@@ -107,6 +110,11 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                 </Stack>
               </Avatar>
             }
+            onClickCard={{
+              onClick: () => {
+                router.push(`${pageRoutes.JOBS}/${job.id}`);
+              },
+            }}
           />
         );
       })}

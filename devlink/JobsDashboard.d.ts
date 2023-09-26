@@ -14,4 +14,9 @@ declare function JobsDashboard(props: {
   slotInterviewingJobs?: Types.Devlink.Slot;
   slotClosedJobs?: Types.Devlink.Slot;
   slotSearchJobs?: Types.Devlink.Slot;
+  onClickAll?: Types.Devlink.RuntimeProps;
+  onClickDraft?: Types.Devlink.RuntimeProps;
+  onClickSourcing?: Types.Devlink.RuntimeProps;
+  onClickInterviewing?: Types.Devlink.RuntimeProps;
+  onClickClosed?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

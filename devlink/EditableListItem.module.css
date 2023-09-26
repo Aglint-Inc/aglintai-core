@@ -18,6 +18,11 @@
   background-color: var(--grey200-9ba653f1);
 }
 
+.text-wrappers-question-skill {
+  position: relative;
+  width: 93%;
+}
+
 .color-black {
   color: var(--black-0fdbd865);
 }
@@ -34,6 +39,18 @@
   .color-black.fw-semibold.mobile-grow {
     flex: 0 0 auto;
   }
+}
+
+.slot-input-skill-question {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: 0%;
+
+  width: 0%;
+
+  background-color: var(--white-80449ce7);
 }
 
 .tog-dropdown-block {
@@ -86,4 +103,11 @@
   border-radius: 4px;
 
   object-fit: contain;
+}
+
+.tog-dropdown-after-edit-wrapper {
+  display: none;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }

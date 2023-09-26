@@ -1,4 +1,4 @@
-import DashboardComp from '@components/Dashboard';
+import DashboardComp from '@/src/components/JobsDashboard';
 import JobsProvider /*,{useJobs}*/ from '@context/JobsContext';
 
 const Dashboard = () => {

@@ -25,7 +25,7 @@
 }
 
 .subnav-link:hover {
-  background-color: var(--grey200-9ba653f1);
+  background-color: #f8f9f9;
   color: var(--grey800-e42b2e06);
 }
 
@@ -43,6 +43,21 @@
 
 .subnav-link.current {
   background-color: var(--grey200-9ba653f1);
+}
+
+.subnav-link.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .menu-item-icon-block {
