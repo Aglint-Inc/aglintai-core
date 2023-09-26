@@ -1,7 +1,10 @@
+import { Job } from '@context/JobsContext/types';
+
 import { Database } from '@/src/types/schema';
 
 export type JobApplicationsData = {
   applications: JobApplication[] | undefined;
+  job: Job;
 };
 
 export type JobApplication =

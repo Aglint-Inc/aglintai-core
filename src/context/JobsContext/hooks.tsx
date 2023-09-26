@@ -26,25 +26,25 @@ type Action =
   | {
       type: ActionType.CREATE;
       payload: {
-        inputData: Job;
+        jobData: Job;
       };
     }
   | {
       type: ActionType.READ;
       payload: {
-        inputData: Job[];
+        jobsData: Job[];
       };
     }
   | {
       type: ActionType.UPDATE;
       payload: {
-        id: string;
-        inputData: Job;
+        jobId: string;
+        jobData: Job;
       };
     }
   | {
       type: ActionType.DELETE;
-      payload: { id: string };
+      payload: { jobId: string };
     };
 
 const reducer = (state: JobsData, action: Action) => {
@@ -52,7 +52,7 @@ const reducer = (state: JobsData, action: Action) => {
     case ActionType.CREATE: {
       const newState: JobsData = {
         ...state,
-        jobs: [...state.jobs, action.payload.inputData],
+        jobs: [...state.jobs, action.payload.jobData],
       };
       return newState;
     }
@@ -60,14 +60,14 @@ const reducer = (state: JobsData, action: Action) => {
     case ActionType.READ: {
       const newState: JobsData = {
         ...state,
-        jobs: [...action.payload.inputData],
+        jobs: [...action.payload.jobsData],
       };
       return newState;
     }
 
     case ActionType.UPDATE: {
       const newJobs: Job[] = state.jobs.reduce((jobs, job) => {
-        if (job.id === action.payload.id) jobs.push(action.payload.inputData);
+        if (job.id === action.payload.jobId) jobs.push(action.payload.jobData);
         else jobs.push(job);
         return jobs;
       }, []);
@@ -80,7 +80,7 @@ const reducer = (state: JobsData, action: Action) => {
 
     case ActionType.DELETE: {
       const newJobs: Job[] = state.jobs.filter(
-        (job) => job.id !== action.payload.id,
+        (job) => job.id !== action.payload.jobId,
       );
       const newState: JobsData = {
         ...state,
@@ -107,7 +107,7 @@ const useJobActions = () => {
       if (data) {
         const action: Action = {
           type: ActionType.CREATE,
-          payload: { inputData: data[0] },
+          payload: { jobData: data[0] },
         };
         dispatch(action);
         return true;
@@ -123,7 +123,7 @@ const useJobActions = () => {
       if (data) {
         const action: Action = {
           type: ActionType.READ,
-          payload: { inputData: data },
+          payload: { jobsData: data },
         };
         dispatch(action);
         return true;
@@ -140,8 +140,8 @@ const useJobActions = () => {
         const action: Action = {
           type: ActionType.UPDATE,
           payload: {
-            id: jobId,
-            inputData: data[0],
+            jobId,
+            jobData: data[0],
           },
         };
         dispatch(action);
@@ -159,7 +159,7 @@ const useJobActions = () => {
         const action: Action = {
           type: ActionType.DELETE,
           payload: {
-            id: jobId,
+            jobId,
           },
         };
         dispatch(action);

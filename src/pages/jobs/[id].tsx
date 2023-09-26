@@ -1,13 +1,17 @@
-import JobApplicationProvider /*, {useJobApplications, useJobApplicationsForJob} */ from '@context/JobApplicationsContext';
+import Seo from '@components/Common/Seo';
+import JobApplicationProvider from '@context/JobApplicationsContext';
 import JobsProvider /*, { useJobs } */ from '@context/JobsContext';
-import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
+
+import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
 
 const JobPage = () => {
-  const router = useRouter();
   return (
     <>
-      <Stack>{router.query.id}</Stack>
+      <Seo
+        title='Aglint | Jobs'
+        description='AI Powered Talent Development Platform.'
+      />
+      <JobApplicationsDashboard />
     </>
   );
 };

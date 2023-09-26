@@ -9,7 +9,6 @@ export default function NotFoundPage() {
         title='Page not found'
         description='AI Powered Talent Development Platform.'
       />
-      404
       <Page404 />
     </>
   );

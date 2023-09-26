@@ -10,6 +10,8 @@ import {
   readJobApplicationDbAction,
   updateJobApplicationDbAction,
 } from './utils';
+import { useJobs } from '../JobsContext';
+import { Job } from '../JobsContext/types';
 
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
@@ -27,23 +29,23 @@ type Action =
   | {
       type: ActionType.CREATE;
       payload: {
-        inputData: JobApplication;
+        applicationData: JobApplication;
       };
     }
   | {
       type: ActionType.READ;
-      payload: { inputData: JobApplication[] };
+      payload: { applicationData: JobApplication[]; jobData: Job };
     }
   | {
       type: ActionType.UPDATE;
       payload: {
-        id: string;
-        inputData: JobApplication;
+        applicationId: string;
+        applicationData: JobApplication;
       };
     }
   | {
       type: ActionType.DELETE;
-      payload: { id: string };
+      payload: { applicationId: string };
     };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
@@ -51,7 +53,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.CREATE: {
       const newState: JobApplicationsData = {
         ...state,
-        applications: [...state.applications, action.payload.inputData],
+        applications: [...state.applications, action.payload.applicationData],
       };
       return newState;
     }
@@ -59,7 +61,8 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.READ: {
       const newState: JobApplicationsData = {
         ...state,
-        applications: [...action.payload.inputData],
+        applications: [...action.payload.applicationData],
+        job: action.payload.jobData,
       };
       return newState;
     }
@@ -67,8 +70,8 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.UPDATE: {
       const newApplications: JobApplication[] = state.applications.reduce(
         (applications, application) => {
-          if (application.application_id === action.payload.id)
-            applications.push(action.payload.inputData);
+          if (application.application_id === action.payload.applicationId)
+            applications.push(action.payload.applicationData);
           else applications.push(application);
           return applications;
         },
@@ -83,7 +86,8 @@ const reducer = (state: JobApplicationsData, action: Action) => {
 
     case ActionType.DELETE: {
       const newApplications: JobApplication[] = state.applications.filter(
-        (application) => application.application_id !== action.payload.id,
+        (application) =>
+          application.application_id !== action.payload.applicationId,
       );
       const newState: JobApplicationsData = {
         ...state,
@@ -102,10 +106,13 @@ const useJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
+  const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applicationsData, dispatch] = useReducer(reducer, undefined);
-  const initialLoad = recruiter?.id && applicationsData ? true : false;
+
+  const initialJobLoad = recruiter?.id && jobLoad ? true : false;
+  const initialLoad = initialJobLoad && applicationsData ? true : false;
 
   const handleJobApplicationCreate = async (
     inputData: Pick<
@@ -122,7 +129,7 @@ const useJobApplicationActions = (job_id: string = undefined) => {
       if (data) {
         const action: Action = {
           type: ActionType.CREATE,
-          payload: { inputData: data[0] },
+          payload: { applicationData: data[0] },
         };
         dispatch(action);
         return true;
@@ -136,9 +143,10 @@ const useJobApplicationActions = (job_id: string = undefined) => {
     if (recruiter) {
       const { data, error } = await readJobApplicationDbAction(jobId);
       if (data) {
+        const selectedJob = jobsData.jobs.find((job) => job.id === jobId);
         const action: Action = {
           type: ActionType.READ,
-          payload: { inputData: data },
+          payload: { applicationData: data, jobData: selectedJob ?? null },
         };
         dispatch(action);
         return true;
@@ -161,8 +169,8 @@ const useJobApplicationActions = (job_id: string = undefined) => {
         const action: Action = {
           type: ActionType.UPDATE,
           payload: {
-            id: applicationId,
-            inputData: data[0],
+            applicationId,
+            applicationData: data[0],
           },
         };
         dispatch(action);
@@ -179,7 +187,7 @@ const useJobApplicationActions = (job_id: string = undefined) => {
       if (data) {
         const action: Action = {
           type: ActionType.DELETE,
-          payload: { id: applicationId },
+          payload: { applicationId },
         };
         dispatch(action);
         return true;
@@ -194,8 +202,8 @@ const useJobApplicationActions = (job_id: string = undefined) => {
   };
 
   useEffect(() => {
-    handleJobApplicationRead();
-  }, [recruiter?.id]);
+    if (initialJobLoad) handleJobApplicationRead();
+  }, [initialJobLoad]);
 
   const value = {
     applicationsData,
