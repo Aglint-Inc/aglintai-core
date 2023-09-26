@@ -139,9 +139,7 @@ export const useJobActions = () => {
   };
 
   const handleJobError = (error) => {
-    toast.error('Oops! Something went wrong.');
-    // eslint-disable-next-line no-console
-    console.log('❌', error, '❌');
+    toast.error(`Oops! Something went wrong.\n ${error?.message}`);
   };
 
   useEffect(() => {
