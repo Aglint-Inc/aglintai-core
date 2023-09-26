@@ -124,7 +124,7 @@ const SlideDetailsOne = () => {
           },
         }}
         slotProfileForm1={
-          <Stack spacing={'20px'}>
+          <Stack spacing={'20px'} p={'4px'}>
             <TextField
               margin='none'
               required

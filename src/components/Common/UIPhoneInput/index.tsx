@@ -16,7 +16,7 @@ type Props = {
     value: string,
     data: CountryData | {},
     event: React.ChangeEvent<HTMLInputElement>,
-    formattedValue: string
+    formattedValue: string,
   ): void;
   error?: boolean;
   label?: string;
@@ -28,7 +28,7 @@ type Props = {
   onFocus?: () => void;
   onBlur?: (
     event: React.FocusEvent<HTMLInputElement>,
-    data: CountryData | {}
+    data: CountryData | {},
   ) => void;
   defaultCountry?: string;
   setDefaultCountry?: () => void;
@@ -56,7 +56,7 @@ const UIPhoneInput = ({
   }
 
   return (
-    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle}>
+    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'4px'}>
       {label && (
         <UITypography type={labelSize} color={labelColor} fontBold='normal'>
           {label}
@@ -82,7 +82,7 @@ const UIPhoneInput = ({
               data,
               event,
               // @ts-ignore
-              formattedValue.substring(0, data.format.length)
+              formattedValue.substring(0, data.format.length),
             );
           }
         }}
@@ -93,7 +93,7 @@ const UIPhoneInput = ({
           if (onFocus) onFocus();
         }}
         onBlur={(value, country) => {
-          onBlur(value, country);
+          if (required) onBlur(value, country);
         }}
         inputProps={{
           sx: {
@@ -156,7 +156,7 @@ export const customPhoneStyle = {
     borderColor: palette.grey[300],
   },
   '& input': {
-    padding: '9px 14px',
+    padding: '16px 16px',
   },
 };
 

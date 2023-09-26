@@ -81,7 +81,7 @@ const SlideLogin = () => {
       password: details.password,
     });
     if (!authdata.error) {
-      router.push(pageRoutes.DASHBOARD);
+      router.push(pageRoutes.JOBS);
     } else {
       signUpError.password = {
         error: true,
@@ -117,7 +117,7 @@ const SlideLogin = () => {
         }}
         isLoginButtonDisable={!details.email || !details.password}
         slotSignInForm={
-          <Stack spacing={'20px'}>
+          <Stack spacing={'20px'} p={'4px'}>
             <TextField
               margin='none'
               required
