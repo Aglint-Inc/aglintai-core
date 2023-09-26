@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
+import { NotificationsContextProvider } from '../context/Notifications';
 
 const MyApp = ({ Component, pageProps }) => {
   const getProvider = Component.getProvider ?? ((page) => page);
@@ -30,9 +31,11 @@ const MyApp = ({ Component, pageProps }) => {
             <Theme>
               <ScreenSizeProvider>
                 <AuthProvider>
-                  <AppLayout>
-                    {getProvider(<Component {...pageProps} />)}
-                  </AppLayout>
+                  <NotificationsContextProvider>
+                    <AppLayout>
+                      {getProvider(<Component {...pageProps} />)}
+                    </AppLayout>
+                  </NotificationsContextProvider>
                 </AuthProvider>
               </ScreenSizeProvider>
             </Theme>
