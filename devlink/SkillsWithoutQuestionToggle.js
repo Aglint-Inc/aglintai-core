@@ -12,6 +12,7 @@ export function SkillsWithoutQuestionToggle({
   as: _Component = _Builtin.Block,
   slotToggle,
   textSkills = "Skill based assessment",
+  onClickToggle = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -31,6 +32,7 @@ export function SkillsWithoutQuestionToggle({
           className={_utils.cx(_styles, "toggle-btn-block-2")}
           data-w-id="9797771a-2c98-c750-fa23-c5d924bbba19"
           tag="div"
+          {...onClickToggle}
         >
           {slotToggle}
         </_Builtin.Block>

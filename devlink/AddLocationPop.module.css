@@ -185,6 +185,18 @@
   top: 25px;
   right: 23px;
   bottom: auto;
+
+  padding: 4px;
+
+  border-radius: 100px;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.close-pop:hover {
+  background-color: var(--gray100-3a86b552);
 }
 
 .icons {

@@ -7,14 +7,7 @@ export const config = {
 };
 
 // const whiteListedEndPoints =['/api/payment/']
-const whiteListedEndPoints = [
-  '/api/postSlackJobPost',
-  '/api/sendgrid',
-  '/api/sitemap.xml',
-  '/api/getCaq',
-  '/api/getJobs',
-  '/api/getJob',
-];
+const whiteListedEndPoints = [];
 
 export async function middleware(request) {
   if (isUrlWhiteListed(request.url)) {

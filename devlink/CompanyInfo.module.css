@@ -247,6 +247,8 @@
 .slot-location-saved-wrappers {
   display: flex;
   flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .cj-add-skill-btn-new {
@@ -272,6 +274,14 @@
   opacity: 0.7;
 }
 
+.cj-add-skill-btn-new.disable {
+  cursor: auto;
+}
+
+.cj-add-skill-btn-new.disable:hover {
+  opacity: 1;
+}
+
 .add-icon-2 {
   display: flex;
   flex-direction: column;
@@ -293,4 +303,6 @@
   width: 556px;
   flex-direction: row;
   flex-wrap: wrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }

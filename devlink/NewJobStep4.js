@@ -21,7 +21,7 @@ export function NewJobStep4({ as: _Component = _Builtin.Block, slotShareVia }) {
           )}
           tag="div"
         >
-          {"Step 3: Get the Word Out"}
+          {"Step 5: Get the Word Out"}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Publish and share your job post to attract more candidates."}

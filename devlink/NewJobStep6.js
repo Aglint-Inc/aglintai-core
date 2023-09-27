@@ -44,7 +44,7 @@ export function NewJobStep6({
           )}
           tag="div"
         >
-          {"Step 5: Screening Settings"}
+          {"Step 4: Screening Settings"}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Optimize your candidate screening process."}

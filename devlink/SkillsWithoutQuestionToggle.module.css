@@ -9,6 +9,10 @@
   border-radius: 8px;
 }
 
+.relative {
+  position: relative;
+}
+
 .toggle-dropdown-toggle-3 {
   display: flex;
   padding: 10px 16px;

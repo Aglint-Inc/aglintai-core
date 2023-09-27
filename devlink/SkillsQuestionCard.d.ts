@@ -8,4 +8,5 @@ declare function SkillsQuestionCard(props: {
   onClickLike?: Types.Devlink.RuntimeProps;
   onClickEdit?: Types.Devlink.RuntimeProps;
   onClickDelete?: Types.Devlink.RuntimeProps;
+  slotInput?: Types.Devlink.Slot;
 }): React.JSX.Element;

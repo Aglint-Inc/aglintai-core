@@ -8,4 +8,5 @@ declare function NavMenuBottom(props: {
   textEmail?: React.ReactNode;
   isMyNotification?: Types.Visibility.VisibilityConditions;
   isMyCompany?: Types.Visibility.VisibilityConditions;
+  onClickLogout?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

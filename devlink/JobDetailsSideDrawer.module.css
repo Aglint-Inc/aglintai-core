@@ -32,8 +32,9 @@
 }
 
 .sidebar-wrapper.detailed {
-  display: none;
-  opacity: 0;
+  display: flex;
+  max-width: none;
+  opacity: 1;
 }
 
 .sidebar-wrapper.detailed.yy {
@@ -366,6 +367,7 @@
 
 .job-sidebar-wrapper {
   display: flex;
+  overflow: scroll;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;

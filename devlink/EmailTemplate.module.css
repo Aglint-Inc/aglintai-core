@@ -588,8 +588,9 @@
 }
 
 .sidebar-wrapper.detailed {
-  display: none;
-  opacity: 0;
+  display: flex;
+  max-width: none;
+  opacity: 1;
 }
 
 .sidebar-wrapper.detailed.yy {

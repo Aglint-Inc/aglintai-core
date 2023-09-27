@@ -1,8 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { SkillsWithoutQuestionToggle } from "./SkillsWithoutQuestionToggle";
-import { SkillsWithQuestionToggle } from "./SkillsWithQuestionToggle";
 import * as _utils from "./utils";
 import _styles from "./NewJobStep5.module.css";
 
@@ -42,7 +40,7 @@ export function NewJobStep5({
           )}
           tag="div"
         >
-          {"Step 4: Set Up Screening Questions"}
+          {"Step 3: Set Up Screening Questions"}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Pre-screen candidates based on essential criteria."}
@@ -186,12 +184,7 @@ export function NewJobStep5({
           className={_utils.cx(_styles, "skills-without-question")}
           tag="div"
         >
-          {slotSkillsQuestion ?? (
-            <>
-              <SkillsWithoutQuestionToggle />
-              <SkillsWithQuestionToggle />
-            </>
-          )}
+          {slotSkillsQuestion}
         </_Builtin.Block>
         {isHowItWorksVisible ? (
           <_Builtin.Link

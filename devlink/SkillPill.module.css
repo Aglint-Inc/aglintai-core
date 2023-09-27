@@ -30,6 +30,10 @@
   grid-row-gap: 10px;
 }
 
+.plus---12px-icon:hover {
+  border-radius: 70px;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
