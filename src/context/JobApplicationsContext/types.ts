@@ -16,8 +16,22 @@ export type InputData = Partial<
 
 export type JobApplicationContext = {
   applicationsData: JobApplicationsData;
-  // eslint-disable-next-line no-unused-vars
-  handleJobApplicationCreate: (inputData: InputData) => Promise<boolean>;
+  handleJobApplicationCreate: (
+    // eslint-disable-next-line no-unused-vars
+    inputData: Pick<
+      JobApplication,
+      'first_name' | 'last_name' | 'email' | 'score'
+    > &
+      InputData,
+  ) => Promise<boolean>;
+  handleJobApplicationBulkCreate: (
+    // eslint-disable-next-line no-unused-vars
+    inputData: (Pick<
+      JobApplication,
+      'first_name' | 'last_name' | 'email' | 'score'
+    > &
+      InputData)[],
+  ) => Promise<boolean>;
   handleJobApplicationRead: () => Promise<boolean>;
   handleJobApplicationUpdate: (
     // eslint-disable-next-line no-unused-vars

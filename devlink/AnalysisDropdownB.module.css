@@ -197,6 +197,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
 .low-arrow-icon {
   display: flex;
   width: 12px;

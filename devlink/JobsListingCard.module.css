@@ -304,6 +304,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
 .applicants-number-wrapper {
   display: flex;
   justify-content: center;
@@ -388,10 +392,6 @@
 
 .text-xsm.color-grey-600.inline-text {
   display: inline-block;
-}
-
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
 }
 
 .text-blue-800 {

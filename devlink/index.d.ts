@@ -48,6 +48,7 @@ export * from "./DropdownEntry";
 export * from "./EditableListItem";
 export * from "./ForgotPassword";
 export * from "./ForgotPasswordComp";
+export * from "./GenerateJobDescAi";
 export * from "./GenerateQuestionAi";
 export * from "./GlobalStyles";
 export * from "./IconCheck";

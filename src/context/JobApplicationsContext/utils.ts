@@ -5,6 +5,7 @@ import { InputData, JobApplication, JobApplicationContext } from './types';
 export const initialJobApplicationsContext: JobApplicationContext = {
   applicationsData: undefined,
   handleJobApplicationCreate: undefined,
+  handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationDelete: undefined,
@@ -23,6 +24,24 @@ export const createJobApplicationDbAction = async (
   const { data, error } = await supabase
     .from('job_applications')
     .insert({ ...inputData, job_id })
+    .select();
+  return { data, error };
+};
+
+export const bulkCreateJobApplicationDbAction = async (
+  job_id: string,
+  inputData: (Pick<
+    JobApplication,
+    'first_name' | 'last_name' | 'email' | 'score'
+  > &
+    InputData)[],
+) => {
+  const applications = inputData.map((data) => {
+    return { ...data, job_id };
+  });
+  const { data, error } = await supabase
+    .from('job_applications')
+    .insert(applications)
     .select();
   return { data, error };
 };
