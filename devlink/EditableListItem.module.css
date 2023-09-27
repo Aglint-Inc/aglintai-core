@@ -110,7 +110,13 @@
 
   border-radius: 4px;
 
+  transition: all 250ms ease;
+
   object-fit: contain;
+}
+
+.icon:hover {
+  opacity: 0.8;
 }
 
 .tog-dropdown-after-edit-wrapper {

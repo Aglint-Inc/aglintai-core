@@ -1,12 +1,8 @@
 .new-location-pop-wrappers {
   position: relative;
-
   width: 466px;
-  min-height: 327px;
   padding: 30px 24px 20px;
-
   border-radius: 20px;
-
   background-color: var(--white-80449ce7);
 }
 

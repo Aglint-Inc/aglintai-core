@@ -563,6 +563,7 @@
 
 .sidebar-wrapper.overview {
   display: flex;
+  max-width: none;
 }
 
 .sidebar-wrapper.overview.yy {
@@ -599,6 +600,7 @@
   position: relative;
 
   display: flex;
+  width: 100%;
   height: 100%;
   flex-direction: column;
   grid-column-gap: 32px;
@@ -796,7 +798,13 @@
 
   border-radius: 4px;
 
+  transition: all 250ms ease;
+
   object-fit: contain;
+}
+
+.icon:hover {
+  opacity: 0.8;
 }
 
 .vectors-wrapper-33 {

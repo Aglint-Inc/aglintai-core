@@ -62,7 +62,7 @@
 }
 
 .job-sidebar-main-block.success {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.screening {
