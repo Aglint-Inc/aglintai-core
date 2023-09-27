@@ -1,13 +1,16 @@
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack } from '@mui/material';
+import { useState } from 'react';
 
-import { JobScreening } from '@/devlink';
+import { JobScreening } from '@/devlink2';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ApplicationCard from './ApplicationCard';
 import CompanyLogo from './Common/CompanyLogo';
 import ImportCandidates from './ImportCandidates';
+import SearchField from './SearchField';
 import { getApplicantCount } from './utils';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
@@ -26,12 +29,7 @@ const JobApplicationsDashboard = () => {
     )
   ) : (
     <YTransformWrapper>
-      <Stack
-        width={'100%'}
-        height={'100vh'}
-        justifyContent={'center'}
-        direction={'row'}
-      >
+      <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
         <Loader />
       </Stack>
     </YTransformWrapper>
@@ -50,6 +48,8 @@ const JobApplicationComponent = () => {
 
   const applicantCounts = getApplicantCount(applications);
 
+  const [filteredApplications, setFilteredApplications] =
+    useState(applications);
   return (
     <>
       <MuiPopup
@@ -69,23 +69,39 @@ const JobApplicationComponent = () => {
         textRole={job.job_title}
         textCompanyLocation={job.company}
         slotCandidateJobCard={
-          <>
-            {applications.map((application, i) => {
-              return (
-                <ApplicationCard
-                  key={application.application_id}
-                  application={application}
-                  index={i}
-                />
-              );
-            })}
-          </>
+          <ApplicantsList applications={filteredApplications} />
         }
         countAllApplicant={`${applicantCounts.all} applicants`}
         countScreening={`${applicantCounts.screening} applicants`}
         countShortlisted={`${applicantCounts.shortlisted} applicants`}
         countSelected={`${applicantCounts.selected} applicants`}
+        slotSearchInput={
+          <SearchField
+            applications={applications}
+            setFilteredApplications={setFilteredApplications}
+          />
+        }
       />
+    </>
+  );
+};
+
+const ApplicantsList = ({
+  applications,
+}: {
+  applications: JobApplication[];
+}) => {
+  return (
+    <>
+      {applications.map((application, i) => {
+        return (
+          <ApplicationCard
+            key={application.application_id}
+            application={application}
+            index={i}
+          />
+        );
+      })}
     </>
   );
 };

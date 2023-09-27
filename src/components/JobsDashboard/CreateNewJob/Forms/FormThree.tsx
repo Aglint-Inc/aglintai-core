@@ -4,7 +4,7 @@ import { NewJobStep3, SkillPill, SuggestedSkillPill } from '@/devlink';
 
 import { useJobList } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
-import UITextField from '../../../Common/UITextField';
+// import UITextField from '../../../Common/UITextField';
 
 type Skill = {
   skill: string;
@@ -77,11 +77,11 @@ const FormThree = () => {
             })}
         </>
       }
-      slotInputForm={
-        <>
-          <UITextField />
-        </>
-      }
+      // slotInputForm={
+      //   <>
+      //     <UITextField />
+      //   </>
+      // }
       slotSuggestedSkill={
         <>
           {skills

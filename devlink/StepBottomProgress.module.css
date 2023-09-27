@@ -240,6 +240,14 @@
   background-color: var(--white-80449ce7);
 }
 
+.skip-text {
+  cursor: pointer;
+}
+
+.skip-text:hover {
+  opacity: 0.8;
+}
+
 .cj-continue-btn.indeed-btn {
   display: none;
 }

@@ -11,7 +11,8 @@ export function StepBottomProgress({
   slotProgressBar,
   textStepCount = "Step 1 of 5",
   isDraftSaved = false,
-  isSavetoDraftVisible = false,
+  isSavetoDraftVisible = true,
+  onClickSkip = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cj-bottom-wrapper")} tag="div">
@@ -91,6 +92,13 @@ export function StepBottomProgress({
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "skip-text")}
+              tag="div"
+              {...onClickSkip}
+            >
+              {"Skip"}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "cj-continue-btn")}
               tag="div"

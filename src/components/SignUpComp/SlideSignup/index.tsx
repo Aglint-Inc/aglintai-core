@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
+import { RecruiterType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -127,7 +128,7 @@ const SlideTwoSignUp = () => {
         .select();
 
       if (!error) {
-        setRecruiter(data[0]);
+        setRecruiter(data[0] as RecruiterType);
         router.push(`?step=${stepObj.detailsOne}`, undefined, {
           shallow: true,
         });

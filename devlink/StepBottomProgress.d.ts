@@ -9,4 +9,5 @@ declare function StepBottomProgress(props: {
   textStepCount?: React.ReactNode;
   isDraftSaved?: Types.Visibility.VisibilityConditions;
   isSavetoDraftVisible?: Types.Visibility.VisibilityConditions;
+  onClickSkip?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
