@@ -1,7 +1,7 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import toast from '@utils/toast';
 import { useRouter } from 'next/router';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 import {
   InputData,
@@ -141,6 +141,8 @@ const useJobApplicationActions = (
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const initialLoad = initialJobLoad && applicationsData ? true : false;
 
+  const [openImportCandidates, setOpenImportCandidates] = useState(false);
+
   const handleJobApplicationCreate = async (
     inputData: Pick<
       JobApplication,
@@ -266,6 +268,9 @@ const useJobApplicationActions = (
     handleJobApplicationDelete,
     handleJobApplicationError,
     initialLoad,
+
+    openImportCandidates,
+    setOpenImportCandidates,
   };
 
   return value;

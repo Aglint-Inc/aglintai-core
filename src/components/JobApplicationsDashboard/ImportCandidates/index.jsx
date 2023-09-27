@@ -6,55 +6,58 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidate, LoaderSvg, UploadCsv } from '@/devlink';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';
 
+import CandidatesListTable from './CandidatesListTable';
+// import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
+
 function ImportCandidates() {
+  const { setOpenImportCandidates, handleJobApplicationBulkCreate } =
+    useJobApplications();
+
   const [bulkImportdata, setbulkImportdata] = useState([]);
   const [headers, setHeaders] = useState([]);
   useEffect(() => {
     setHeaders([
-      'Name',
-      'Email',
-      'Phone',
-      'JobTitle',
-      'ResumeScore',
-      'InterviewScore',
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'job_title',
+      'score',
+      'company',
     ]);
   }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const csvData = [
-    ['Name', 'Email', 'Phone', 'JobTitle', 'ResumeScore', 'InterviewScore'],
-    ['xyz1', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz2', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz3', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz4', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz5', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
+    [
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'job_title',
+      'score',
+      'company',
+      'status',
+    ],
+    [
+      'xyz1',
+      'l_xyz',
+      'xyz@gmail.com',
+      '123456789',
+      'Full Stack Developer',
+      '80',
+      'xyz.com',
+      'applied',
+    ],
   ];
 
-  function UplopadPeople(emp) {
+  async function createCandidates(candidates) {
+    const data = await handleJobApplicationBulkCreate(candidates);
     // eslint-disable-next-line no-console
-    console.log(emp);
-    // let imageURL = props.avatarFile != null ? `https://jwkqolhzkayulhxafvsb.supabase.co/storage/v1/object/public/employee-image/public/${props.avatarFile.name}` : 'No-Image';
-    // console.log(Object.values(data))
-    // Object.values(emp).map(async (ele) => {
-    // eslint-disable-next-line no-console
-    //   const { error } = await supabase.from('employee').insert({
-    //     name: ele.Name,
-    //     email: ele.Email,
-    //     designation: ele.Designation,
-    //     phone: ele.Phone,
-    //     department: ele.Department,
-    //     salary: ele.Salary,
-    //     status: 'Created',
-    //     image: ele.Image_url,
-    //     company_id: companyID,
-    //     out_place: stage === 'notoutPlace' ? false : true,
-    //   });
-    //   if (!error) {
-    //     getListOfPeople(companyID);
-    //   }
-    // });
+    console.log(candidates, data);
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -87,7 +90,7 @@ function ImportCandidates() {
           if (headers?.length) {
             const validityOfHeaders =
               headers?.length === Object.keys(data[0])?.length &&
-              headers?.reduce((_, item) => Object.keys(data[0]).has(item.key));
+              headers?.reduce((_, item) => Object.keys(data[0]).has(item));
 
             if (validityOfHeaders) {
               toast.success('Headers Are Valid.');
@@ -99,7 +102,7 @@ function ImportCandidates() {
           }
           setbulkImportdata(data);
           setIsLoading(false);
-          UplopadPeople(data);
+          createCandidates(data);
         }
       };
       if (rABS) reader.readAsBinaryString(file);
@@ -144,6 +147,7 @@ function ImportCandidates() {
             : text}
         </HeadingTypography> */}
           <ImportCandidate
+            onClickClose={{ onClick: () => setOpenImportCandidates(false) }}
             slotDownload={
               <CSVLink filename={'candidates-sample.csv'} data={csvData}>
                 <Stack direction={'row'}>
@@ -167,7 +171,7 @@ function ImportCandidates() {
                     <LoaderSvg />
                   </Stack>
                 ) : bulkImportdata?.length > 0 ? (
-                  <Stack>Completed</Stack>
+                  <CandidatesListTable importedCandidate={bulkImportdata} />
                 ) : (
                   <UploadCsv />
                 )}

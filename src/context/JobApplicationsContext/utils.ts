@@ -11,6 +11,8 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   handleJobApplicationDelete: undefined,
   handleJobApplicationError: undefined,
   initialLoad: false,
+  openImportCandidates:false, 
+  setOpenImportCandidates:undefined
 };
 
 export const createJobApplicationDbAction = async (
