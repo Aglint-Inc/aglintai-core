@@ -7,7 +7,11 @@ import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { LoaderSvg } from '@/devlink';
-import { RecruiterType } from '@/src/types/data.types';
+import {
+  AddressType,
+  RecruiterType,
+  SocialsType,
+} from '@/src/types/data.types';
 
 import { Session } from './types';
 
@@ -59,7 +63,6 @@ export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
   const router = useRouter();
-
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -72,9 +75,14 @@ const AuthProvider = ({ children }) => {
         .eq('user_id', userDetails.user.id)
         .then(({ data, error }) => {
           if (!error) {
-            setRecruiter(data[0]);
+            setRecruiter({
+              ...data[0],
+              address: data[0].address as unknown as AddressType,
+              socials: data[0].socials as unknown as SocialsType,
+            });
           }
         });
+      setLoading(false);
     }
   }, [userDetails]);
 
@@ -89,7 +97,6 @@ const AuthProvider = ({ children }) => {
       Cookie.remove('access_token');
       Cookie.set('access_token', data.session.access_token);
       setUserDetails(data.session);
-      setLoading(false);
     }
   }
 

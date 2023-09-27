@@ -62,6 +62,8 @@
 
 .add-icon {
   display: flex;
+  width: 16px;
+  height: 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -195,6 +197,14 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
 .frame-1023 {
   display: flex;
   width: 100%;
@@ -300,6 +310,10 @@
 
 .fw-semibold.workday-text {
   display: none;
+}
+
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
 }
 
 .frame-1018 {
@@ -421,10 +435,6 @@
   .text-lg.fw-semibold.is-profile {
     align-self: flex-end;
   }
-}
-
-.text-grey-500 {
-  color: var(--grey500-0d508ad8);
 }
 
 .text-blue-800 {

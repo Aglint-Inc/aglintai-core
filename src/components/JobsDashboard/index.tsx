@@ -14,6 +14,7 @@ import {
   filterJobsByStatus,
   searchJobs,
 } from './utils';
+import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 
@@ -87,19 +88,22 @@ const DashboardComp = () => {
               />
             }
             slotSearchJobs={
-              <UITextField
-                placeholder='Search'
-                onChange={(e) => {
-                  setFilteredJobs(searchJobs(jobs, e.target.value));
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      {/* <Icon /> */}
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <Stack maxWidth={'260px'} width={'100%'}>
+                <UITextField
+                  fullWidth
+                  placeholder='Search'
+                  onChange={(e) => {
+                    setFilteredJobs(searchJobs(jobs, e.target.value));
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Icon variant='Search' width='14' height='14' />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Stack>
             }
             onClickCreateNewJob={{
               onClick: () => {

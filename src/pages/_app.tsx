@@ -4,6 +4,7 @@ import AppLayout from '@components/AppLayout';
 import ErrorBoundary from '@components/Common/ErrorBoundary';
 import { DevlinkMainProvider } from '@context/DevlinkContext';
 import '@styles/globals.scss';
+import '@styles/toast.scss';
 import PropTypes from 'prop-types';
 import { Suspense } from 'react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';

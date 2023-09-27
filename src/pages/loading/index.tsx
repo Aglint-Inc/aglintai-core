@@ -42,10 +42,11 @@ export default function Loading() {
                     .insert({
                       email: userDetails.user.email,
                       user_id: userDetails.user.id,
-                      name: userDetails.user.user_metadata.custom_claims.hd.replace(
-                        '.com',
-                        '',
-                      ),
+                      name:
+                        userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                          '.com',
+                          '',
+                        ) || '',
                       recruiter_type: storedValue,
                     })
                     .select();

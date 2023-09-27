@@ -153,14 +153,6 @@
   object-fit: contain;
 }
 
-.text-grey-800 {
-  color: var(--grey800-e42b2e06);
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
 .rd-menu-profile-block {
   display: flex;
   padding: 5px 8px;
@@ -197,6 +189,10 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .text-white {
@@ -307,4 +303,8 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
 }

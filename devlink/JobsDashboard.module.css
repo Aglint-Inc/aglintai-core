@@ -31,6 +31,11 @@
   height: 100vh;
 }
 
+.rd-main-wrapper.height-scroll {
+  overflow: auto;
+  height: 100vh;
+}
+
 .div-block-271 {
   display: flex;
   width: 100%;
@@ -319,6 +324,14 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
+.text-red-600 {
+  color: var(--red600-953350ec);
 }
 
 .rd-jobs-wrapper {

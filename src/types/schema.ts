@@ -2451,42 +2451,78 @@ export interface Database {
       recruiter: {
         Row: {
           address: Json | null
+          application_process: string | null
+          available_roles: string[] | null
+          company_overview: string | null
           company_website: string | null
+          departments: string[] | null
+          e_o_statement: string | null
           email: string | null
+          employment_type: Json | null
+          hr_contact: Json | null
           id: string
           industry: string | null
           logo: string | null
+          m_v_statement: string | null
           name: string | null
+          office_locations: string[] | null
           phone_number: string | null
+          primary_contact: Json | null
           recruiter_type: string | null
           socials: Json | null
+          technology_score: string[] | null
           user_id: string
+          workplace_type: Json | null
         }
         Insert: {
           address?: Json | null
+          application_process?: string | null
+          available_roles?: string[] | null
+          company_overview?: string | null
           company_website?: string | null
+          departments?: string[] | null
+          e_o_statement?: string | null
           email?: string | null
+          employment_type?: Json | null
+          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
+          m_v_statement?: string | null
           name?: string | null
+          office_locations?: string[] | null
           phone_number?: string | null
+          primary_contact?: Json | null
           recruiter_type?: string | null
           socials?: Json | null
+          technology_score?: string[] | null
           user_id: string
+          workplace_type?: Json | null
         }
         Update: {
           address?: Json | null
+          application_process?: string | null
+          available_roles?: string[] | null
+          company_overview?: string | null
           company_website?: string | null
+          departments?: string[] | null
+          e_o_statement?: string | null
           email?: string | null
+          employment_type?: Json | null
+          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
+          m_v_statement?: string | null
           name?: string | null
+          office_locations?: string[] | null
           phone_number?: string | null
+          primary_contact?: Json | null
           recruiter_type?: string | null
           socials?: Json | null
+          technology_score?: string[] | null
           user_id?: string
+          workplace_type?: Json | null
         }
         Relationships: [
           {

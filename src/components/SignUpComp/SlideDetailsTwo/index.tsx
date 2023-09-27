@@ -6,8 +6,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import ImageUpload from './ImageUpload';
 import { stepObj } from '../SlideSignup/utils';
+import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 
 interface Error {
@@ -101,7 +101,9 @@ const SlideDetailsTwo = () => {
   return (
     <>
       <WelcomeSlider5
-        slotCompanyLogo={<ImageUpload image={logo} setImage={setLogo} />}
+        slotCompanyLogo={
+          <ImageUpload image={logo} setImage={setLogo} size={'120px'} />
+        }
         onClickBack={{
           onClick: () => {
             router.push(`?step=${stepObj.detailsOne}`, undefined, {

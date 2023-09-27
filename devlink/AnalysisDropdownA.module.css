@@ -187,6 +187,14 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
 .ratings-details-dropdown-arrow {
   display: flex;
   width: 12.800000190734863px;

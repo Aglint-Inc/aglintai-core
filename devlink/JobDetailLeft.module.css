@@ -203,6 +203,10 @@
   display: none;
 }
 
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
 .frame-977 {
   position: relative;
   z-index: 2;

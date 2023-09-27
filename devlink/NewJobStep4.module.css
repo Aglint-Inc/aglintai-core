@@ -58,7 +58,7 @@
 }
 
 .job-sidebar-main-block.cj-step-5 {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.success {
