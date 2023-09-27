@@ -101,7 +101,6 @@ export * from "./SignInPage";
 export * from "./SignUpPage";
 export * from "./SignupSlider";
 export * from "./SkillPill";
-export * from "./SkillsQuestion";
 export * from "./StepBottomProgress";
 export * from "./SublinksCoach";
 export * from "./SublinksInterview";
