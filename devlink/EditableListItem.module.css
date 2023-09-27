@@ -41,6 +41,14 @@
   }
 }
 
+.color-black.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
 .slot-input-skill-question {
   position: absolute;
   left: 0%;

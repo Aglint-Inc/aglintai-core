@@ -1,7 +1,13 @@
 import React from 'react';
 
+import CompanyDetailComp from '@/src/components/CompanyDetailComp';
+
 function CompanyPage() {
-  return <div>CompanyPage</div>;
+  return (
+    <>
+      <CompanyDetailComp />
+    </>
+  );
 }
 
 export default CompanyPage;

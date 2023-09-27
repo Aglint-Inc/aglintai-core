@@ -25,7 +25,9 @@ const Icon = ({
     >
       {svgData.paths.map((path, i) => {
         const others = svgData?.others || {};
-        return <path key={i} d={path} fill={color} {...others} />;
+        return (
+          <path key={i} d={path} fill={color} {...others} fill-rule='evenodd' />
+        );
       })}
     </svg>
   );

@@ -58,7 +58,7 @@
 }
 
 .job-sidebar-main-block.cj-step-5 {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.success {
@@ -404,6 +404,14 @@
   }
 }
 
+.color-black.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -418,6 +426,10 @@
 
 .text-grey-600.mt-5 {
   margin-top: 5px;
+}
+
+.text-grey-600.mt-17 {
+  margin-top: 17px;
 }
 
 .cj-screening-questions-block {
@@ -464,9 +476,6 @@
 }
 
 .toggle-btn-block {
-  display: flex;
-  width: 30px;
-  min-width: 30px;
   align-items: center;
 }
 

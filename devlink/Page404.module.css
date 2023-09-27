@@ -246,6 +246,10 @@
   padding-left: 20px;
 }
 
+.text-grey-600-3.mt-5 {
+  margin-top: 5px;
+}
+
 .support-wrapper {
   display: flex;
   grid-column-gap: 4px;

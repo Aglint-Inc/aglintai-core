@@ -348,7 +348,7 @@
 .cj-form-overlay {
   z-index: 5;
   width: 100%;
-  height: 100px;
+  height: 40px;
   background-image: linear-gradient(to bottom, hsla(0, 0.00%, 100.00%, 0.00), white);
 }
 
@@ -530,6 +530,10 @@
   color: var(--kale600-c60cbc05);
 }
 
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
 .green-house-step-2 {
   display: none;
   width: 100%;
@@ -671,7 +675,6 @@
 }
 
 .cj-richtext-editor-wrapper {
-  position: relative;
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);
   border-radius: 4px;
@@ -867,6 +870,10 @@
   font-weight: 400;
   text-align: center;
   letter-spacing: -0.00042765619582496583px;
+}
+
+.label-5.disable {
+  color: var(--grey500-0d508ad8);
 }
 
 .cj-skills {
@@ -1153,7 +1160,7 @@
 }
 
 .job-sidebar-main-block.cj-step-5 {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.success {
@@ -1225,9 +1232,6 @@
 }
 
 .toggle-btn-block {
-  display: flex;
-  width: 30px;
-  min-width: 30px;
   align-items: center;
 }
 

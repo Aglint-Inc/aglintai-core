@@ -12,6 +12,7 @@ export function SkillPill({
     <_Component
       className={_utils.cx(_styles, "", "cj-suggested-skill-block")}
       tag="div"
+      {...onClickRemove}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "", "small-default-4")}
@@ -22,7 +23,6 @@ export function SkillPill({
       <_Builtin.Block
         className={_utils.cx(_styles, "plus---12px-icon")}
         tag="div"
-        {...onClickRemove}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

@@ -3,10 +3,19 @@
 }
 
 .save-draft-wrappers {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
   display: flex;
   align-items: center;
   grid-column-gap: 7px;
   grid-row-gap: 7px;
+
+  background-color: var(--white-80449ce7);
 }
 
 .add-icon {
@@ -141,8 +150,12 @@
   color: var(--kale600-c60cbc05);
 }
 
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
 .save-draft-load {
-  position: absolute;
+  position: relative;
   left: 0%;
   top: 0%;
   right: 0%;

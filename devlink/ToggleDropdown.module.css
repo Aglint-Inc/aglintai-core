@@ -142,10 +142,11 @@
   display: none;
 }
 
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
 .toggle-btn-block {
-  display: flex;
-  width: 30px;
-  min-width: 30px;
   align-items: center;
 }
 

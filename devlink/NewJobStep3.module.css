@@ -58,7 +58,7 @@
 }
 
 .job-sidebar-main-block.cj-step-5 {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.success {
@@ -325,7 +325,6 @@
 }
 
 .cj-richtext-editor-wrapper {
-  position: relative;
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);
   border-radius: 4px;

@@ -10,7 +10,7 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-function ImageUpload({ setImage, image }) {
+function ImageUpload({ setImage, image, size }) {
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
   const [fileSizeError, setFileSizeError] = useState('');
   const [loading, setLoading] = useState<boolean>();
@@ -61,8 +61,8 @@ function ImageUpload({ setImage, image }) {
             <Avatar
               src={image}
               sx={{
-                width: 120,
-                height: 120,
+                width: 80,
+                height: 80,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',
@@ -85,8 +85,8 @@ function ImageUpload({ setImage, image }) {
           </Stack>
           {loading && (
             <Stack
-              height={'120px'}
-              width={'120px'}
+              height={`${size}px`}
+              width={`${size}px`}
               sx={{
                 zIndex: 10,
                 position: 'absolute',
@@ -116,6 +116,7 @@ function ImageUpload({ setImage, image }) {
                 types={['PNG', 'JPEG', 'JPG']}
               >
                 <Stack
+                  id={'image-upload'}
                   sx={{
                     position: 'relative',
                     cursor: 'pointer',
@@ -124,8 +125,8 @@ function ImageUpload({ setImage, image }) {
                     borderRadius: '10px',
                     mt: '4px',
                   }}
-                  height={'120px'}
-                  width={'120px'}
+                  height={`${size}px`}
+                  width={`${size}px`}
                   direction={'row'}
                   justifyContent={'center'}
                   alignItems={'center'}
@@ -143,8 +144,8 @@ function ImageUpload({ setImage, image }) {
               </FileUploader>
             ) : (
               <Stack
-                height={'135px'}
-                width={'135px'}
+                height={`${size}px`}
+                width={`${size}px`}
                 direction={'row'}
                 justifyContent={'center'}
                 alignItems={'center'}
@@ -171,6 +172,7 @@ function ImageUpload({ setImage, image }) {
                       types={['PNG', 'JPEG', 'JPG']}
                     >
                       <Stack
+                        id={'image-upload'}
                         sx={{
                           cursor: 'pointer',
                           color: '#fff',

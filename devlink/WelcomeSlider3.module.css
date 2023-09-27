@@ -641,6 +641,10 @@
   color: var(--kale600-c60cbc05);
 }
 
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
 .login-form-btn-wrapper {
   display: flex;
   justify-content: space-between;

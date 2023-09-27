@@ -7,4 +7,5 @@ declare function NavMenuBottom(props: {
   textName?: React.ReactNode;
   textEmail?: React.ReactNode;
   isMyNotification?: Types.Visibility.VisibilityConditions;
+  isMyCompany?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

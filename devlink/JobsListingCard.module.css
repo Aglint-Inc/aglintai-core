@@ -201,6 +201,10 @@
   display: none;
 }
 
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;
@@ -306,6 +310,10 @@
 
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
+}
+
+.text-red-600 {
+  color: var(--red600-953350ec);
 }
 
 .applicants-number-wrapper {

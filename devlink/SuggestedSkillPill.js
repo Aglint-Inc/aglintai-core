@@ -12,6 +12,7 @@ export function SuggestedSkillPill({
     <_Component
       className={_utils.cx(_styles, "cj-suggested-skill-block")}
       tag="div"
+      {...onClickAdd}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "small-default-4")}
@@ -26,7 +27,6 @@ export function SuggestedSkillPill({
           width={10}
           height={10}
           src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504162c0e20c3617cb43447_Vectors-Wrapper.svg"
-          {...onClickAdd}
         />
       </_Builtin.Block>
     </_Component>
