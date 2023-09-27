@@ -1,12 +1,13 @@
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { CompanyInfo, CompanySetting } from '@/devlink';
+import { AddSocialLink, CompanyInfo, CompanySetting } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import { palette } from '@/src/context/Theme/Theme';
 
 import ImageUpload from '../Common/ImageUpload';
 import UITextField from '../Common/UITextField';
+import UITypography from '../Common/UITypography';
 
 const CompanyDetailComp = () => {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -28,8 +29,7 @@ const CompanyDetailComp = () => {
             }
             onClickChangeLogo={{
               onClick: () => {
-                toast.success('adas');
-                // document.getElementById('image-upload').click();
+                document.getElementById('image-upload').click();
               },
             }}
             slotBasicForm={
@@ -95,13 +95,22 @@ const CompanyDetailComp = () => {
                       });
                     }}
                   />
+
                   <Stack>
+                    <UITypography
+                      type={'medium'}
+                      color={palette.grey[800]}
+                      fontBold='normal'
+                    >
+                      Social Links
+                    </UITypography>
                     {recruiter?.socials &&
                       Object.keys(recruiter.socials).map((socialName) => (
                         <li key={socialName}>
                           <strong>{socialName}:</strong>
                         </li>
                       ))}
+                    <AddSocialLink />
                   </Stack>
                 </Stack>
               </Stack>

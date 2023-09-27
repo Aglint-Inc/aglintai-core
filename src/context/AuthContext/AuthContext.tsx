@@ -67,36 +67,35 @@ const AuthProvider = ({ children }) => {
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (userDetails?.user?.id) {
-      supabase
-        .from('recruiter')
-        .select('*')
-        .eq('user_id', userDetails.user.id)
-        .then(({ data, error }) => {
-          if (!error) {
-            setRecruiter({
-              ...data[0],
-              address: data[0].address as unknown as AddressType,
-              socials: data[0].socials as unknown as SocialsType,
-            });
-          }
-        });
-      setLoading(false);
-    }
-  }, [userDetails]);
-
   async function getSupabaseSession() {
-    const { data, error } = await supabase.auth.getSession();
+    try {
+      const { data, error } = await supabase.auth.getSession();
 
-    if (!data?.session) {
-      loading && setLoading(false);
-      return;
-    }
-    if (!error) {
-      Cookie.remove('access_token');
-      Cookie.set('access_token', data.session.access_token);
-      setUserDetails(data.session);
+      if (!data?.session) {
+        loading && setLoading(false);
+        return;
+      }
+      if (!error) {
+        Cookie.remove('access_token');
+        Cookie.set('access_token', data.session.access_token);
+        setUserDetails(data.session);
+
+        const { data: recruiter, error } = await supabase
+          .from('recruiter')
+          .select('*')
+          .eq('user_id', data.session.user.id);
+        if (!error) {
+          setRecruiter({
+            ...recruiter[0],
+            address: recruiter[0]?.address as unknown as AddressType,
+            socials: recruiter[0]?.socials as unknown as SocialsType,
+          });
+        }
+      }
+    } catch (err) {
+      //
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -118,7 +117,7 @@ const AuthProvider = ({ children }) => {
       const redirect = window.location.href;
       if (isRoutePublic(router.route)) return;
       else if (!loading && !userDetails)
-        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+        router.push(`/signup?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
 

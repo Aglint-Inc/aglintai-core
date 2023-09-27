@@ -144,7 +144,6 @@ function ImageUpload({ setImage, image, size }) {
               </FileUploader>
             ) : (
               <Stack
-                id={'image-upload'}
                 height={`${size}px`}
                 width={`${size}px`}
                 direction={'row'}
@@ -173,6 +172,7 @@ function ImageUpload({ setImage, image, size }) {
                       types={['PNG', 'JPEG', 'JPG']}
                     >
                       <Stack
+                        id={'image-upload'}
                         sx={{
                           cursor: 'pointer',
                           color: '#fff',

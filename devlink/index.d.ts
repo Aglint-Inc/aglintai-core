@@ -5,6 +5,7 @@ export * from "./devlinkContext";
 export * from "./interactions";
 export * from "./utils";
 export * from "./devlink";
+export * from "./AddSocialLink";
 export * from "./AglintRecruiterLogo";
 export * from "./AnalysisDropdownA";
 export * from "./AnalysisDropdownB";
