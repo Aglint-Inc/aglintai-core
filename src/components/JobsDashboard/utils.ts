@@ -80,7 +80,7 @@ export function searchJobs(jobs, searchString) {
   const search = searchString.toLowerCase();
 
   // Use the filter method to search for matching job titles or statuses
-  const filteredData = jobs.filter((item) => {
+  const filteredData = jobs.filter(ele=>ele.job_title).filter((item) => {
     const jobTitle = item.job_title.toLowerCase();
     const status = item.status.toLowerCase();
 

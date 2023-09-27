@@ -1,7 +1,13 @@
 import { Stack } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 
-const CircularScore = ({ finalScore }: { finalScore: number }) => {
+const CircularScore = ({
+  finalScore,
+  fontSize,
+}: {
+  finalScore: number;
+  fontSize: string;
+}) => {
   const [score, setScore] = useState(0);
   const green = {
     score: '#0B3B29',
@@ -64,7 +70,7 @@ const CircularScore = ({ finalScore }: { finalScore: number }) => {
       >
         <Stack
           color={color.border}
-          fontSize={'6px'}
+          fontSize={fontSize ? fontSize : '6px'}
           sx={{ transform: 'translateY(2px)' }}
         >
           <Stack fontSize={'20px'} sx={{ color: color.score, fontWeight: 600 }}>

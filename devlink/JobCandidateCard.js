@@ -25,6 +25,7 @@ export function JobCandidateCard({
   statusBgColor = {},
   textAppliedOn = "Applied on 17 Aug 2023 11:30PM",
   onClickCard = {},
+  onClickCheck = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -42,6 +43,7 @@ export function JobCandidateCard({
           <_Builtin.Block
             className={_utils.cx(_styles, "checkbox-wrappers-job")}
             tag="div"
+            {...onClickCheck}
           >
             {isChecked ? (
               <_Builtin.HtmlEmbed
