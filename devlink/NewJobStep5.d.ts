@@ -7,5 +7,7 @@ declare function NewJobStep5(props: {
   onClickStandardScreening?: Types.Devlink.RuntimeProps;
   isAiPoweredScreeningChecked?: Types.Visibility.VisibilityConditions;
   isStandardScreeningChecked?: Types.Visibility.VisibilityConditions;
-  slotSkillQuestion?: Types.Devlink.Slot;
+  slotSkillsQuestion?: Types.Devlink.Slot;
+  howItWorksLink?: Types.Basic.Link;
+  isHowItWorksVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

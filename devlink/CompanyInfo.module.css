@@ -244,6 +244,11 @@
   grid-row-gap: 10px;
 }
 
+.slot-location-saved-wrappers {
+  display: flex;
+  flex-direction: column;
+}
+
 .cj-add-skill-btn-new {
   display: flex;
   height: 40px;
@@ -256,7 +261,15 @@
 
   border-radius: 4px;
 
+  transition: all 250ms ease;
+
   text-decoration: none;
+
+  cursor: pointer;
+}
+
+.cj-add-skill-btn-new:hover {
+  opacity: 0.7;
 }
 
 .add-icon-2 {
@@ -273,4 +286,11 @@
   font-weight: 400;
   text-align: center;
   letter-spacing: -0.15399999916553497px;
+}
+
+.slot-department-saved-wrappers {
+  display: flex;
+  width: 556px;
+  flex-direction: row;
+  flex-wrap: wrap;
 }

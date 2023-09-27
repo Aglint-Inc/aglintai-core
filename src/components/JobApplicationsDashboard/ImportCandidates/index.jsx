@@ -1,60 +1,64 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidate, LoaderSvg, UploadCsv } from '@/devlink';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';
 
+import CandidatesListTable from './CandidatesListTable';
+import AUIButton from '../../Common/AUIButton';
+// import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
+
 function ImportCandidates() {
+  const { setOpenImportCandidates, handleJobApplicationBulkCreate } =
+    useJobApplications();
+
   const [bulkImportdata, setbulkImportdata] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  useEffect(() => {
-    setHeaders([
-      'Name',
-      'Email',
-      'Phone',
-      'JobTitle',
-      'ResumeScore',
-      'InterviewScore',
-    ]);
-  }, []);
+  const headers = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone',
+    'job_title',
+    'score',
+    'company',
+    'status',
+  ];
   const [isLoading, setIsLoading] = useState(false);
 
   const csvData = [
-    ['Name', 'Email', 'Phone', 'JobTitle', 'ResumeScore', 'InterviewScore'],
-    ['xyz1', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz2', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz3', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz4', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
-    ['xyz5', 'xyz@gmail.com', '123456789', 'Full Stack Developer', '80', '90'],
+    [
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'job_title',
+      'score',
+      'company',
+      'status',
+    ],
+    [
+      'abc',
+      'efg',
+      'xyz@gmail.com',
+      '1234567890',
+      'sales manager',
+      80,
+      'xyz',
+      'applied',
+    ],
   ];
 
-  function UplopadPeople(emp) {
-    // eslint-disable-next-line no-console
-    console.log(emp);
-    // let imageURL = props.avatarFile != null ? `https://jwkqolhzkayulhxafvsb.supabase.co/storage/v1/object/public/employee-image/public/${props.avatarFile.name}` : 'No-Image';
-    // console.log(Object.values(data))
-    // Object.values(emp).map(async (ele) => {
-    // eslint-disable-next-line no-console
-    //   const { error } = await supabase.from('employee').insert({
-    //     name: ele.Name,
-    //     email: ele.Email,
-    //     designation: ele.Designation,
-    //     phone: ele.Phone,
-    //     department: ele.Department,
-    //     salary: ele.Salary,
-    //     status: 'Created',
-    //     image: ele.Image_url,
-    //     company_id: companyID,
-    //     out_place: stage === 'notoutPlace' ? false : true,
-    //   });
-    //   if (!error) {
-    //     getListOfPeople(companyID);
-    //   }
-    // });
+  async function createCandidates(candidates) {
+    setOpenImportCandidates(false);
+    setbulkImportdata([]);
+    setIsLoading(true);
+    const data = await handleJobApplicationBulkCreate(candidates);
+    setIsLoading(data);
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -85,21 +89,24 @@ function ImportCandidates() {
           const data = XLSX.utils.sheet_to_json(ws);
           /* Update state */
           if (headers?.length) {
+            if (data.length === 0) {
+              toast.error('Candidates are not in CSV file😑');
+              setIsLoading(false);
+              return;
+            }
             const validityOfHeaders =
               headers?.length === Object.keys(data[0])?.length &&
-              headers?.reduce((_, item) => Object.keys(data[0]).has(item.key));
-
+              headers?.every((item) => Object.keys(data[0]).includes(item));
             if (validityOfHeaders) {
-              toast.success('Headers Are Valid.');
+              // toast.success('Headers Are Valid.');
+              // console.log('valid header');
               setbulkImportdata(data);
-            } else toast.error('Invalid headers, Please use the template.');
-          } else {
-            toast.success('CSV Uploaded Successfully');
-            setbulkImportdata(data);
+            } else {
+              toast.error('Invalid header😑');
+              // console.log('invalid header');
+            }
           }
-          setbulkImportdata(data);
           setIsLoading(false);
-          UplopadPeople(data);
         }
       };
       if (rABS) reader.readAsBinaryString(file);
@@ -143,7 +150,19 @@ function ImportCandidates() {
             ? 'Completeeed'
             : text}
         </HeadingTypography> */}
+
           <ImportCandidate
+            slotReuploadBtn={
+              <>
+                {bulkImportdata.length ? (
+                  <Stack {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <AUIButton variant='text'>Browse again</AUIButton>
+                  </Stack>
+                ) : null}
+              </>
+            }
+            onClickClose={{ onClick: () => setOpenImportCandidates(false) }}
             slotDownload={
               <CSVLink filename={'candidates-sample.csv'} data={csvData}>
                 <Stack direction={'row'}>
@@ -160,19 +179,35 @@ function ImportCandidates() {
               </CSVLink>
             }
             slotUpload={
-              <Stack {...getRootProps()}>
-                <input {...getInputProps()} />
+              <>
                 {isLoading ? (
-                  <Stack width={'100%'} height={'300px'}>
+                  <Stack
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    direction={'row'}
+                    width={'100%'}
+                    height={'200px'}
+                  >
                     <LoaderSvg />
                   </Stack>
                 ) : bulkImportdata?.length > 0 ? (
-                  <Stack>Completed</Stack>
+                  <CandidatesListTable importedCandidate={bulkImportdata} />
                 ) : (
-                  <UploadCsv />
+                  <>
+                    <Stack {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <UploadCsv />
+                    </Stack>
+                  </>
                 )}
-              </Stack>
+              </>
             }
+            onClickImport={{
+              onClick: () => {
+                createCandidates(bulkImportdata);
+              },
+            }}
+            isImportDisable={!bulkImportdata.length}
           />
         </Fragment>
       </Stack>

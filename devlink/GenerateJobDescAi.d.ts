@@ -11,4 +11,8 @@ declare function GenerateJobDescAi(props: {
   isBenefitsChecked?: Types.Visibility.VisibilityConditions;
   isValuesChecked?: Types.Visibility.VisibilityConditions;
   isGenerateDisable?: Types.Visibility.VisibilityConditions;
+  textGenerateHeader?: React.ReactNode;
+  isLoading?: Types.Visibility.VisibilityConditions;
+  isBenefitsNotSpecified?: Types.Visibility.VisibilityConditions;
+  isValuesNotSpecified?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

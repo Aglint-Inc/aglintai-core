@@ -7,4 +7,13 @@ declare function CompanyInfo(props: {
   slotAdditionalInfoForm?: Types.Devlink.Slot;
   slotCompanyLogo?: Types.Devlink.Slot;
   onClickChangeLogo?: Types.Devlink.RuntimeProps;
+  textLogoUpdate?: React.ReactNode;
+  onClickAddLocation?: Types.Devlink.RuntimeProps;
+  onClickAddAvailableRoles?: Types.Devlink.RuntimeProps;
+  onClickAddDepartments?: Types.Devlink.RuntimeProps;
+  onClickAddTechStacks?: Types.Devlink.RuntimeProps;
+  slotLocation?: Types.Devlink.Slot;
+  slotDepartmentPills?: Types.Devlink.Slot;
+  slotTechStackPills?: Types.Devlink.Slot;
+  slotRolesPills?: Types.Devlink.Slot;
 }): React.JSX.Element;

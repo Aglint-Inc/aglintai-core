@@ -6,7 +6,6 @@ import _styles from "./SideNavMenu.module.css";
 export function SideNavMenu({
   as: _Component = _Builtin.Block,
   isMyJobs = true,
-  isMyCompany = true,
   isMyCandidateDatabase = true,
 }) {
   return (

@@ -5,9 +5,12 @@ import { JobScreening } from '@/devlink';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import CandidateCard from './CandidateCard';
-import { CompanyLogo } from './Common';
+import ApplicationCard from './ApplicationCard';
+import CompanyLogo from './Common/CompanyLogo';
+import ImportCandidates from './ImportCandidates';
+import { getApplicantCount } from './utils';
 import Loader from '../Common/Loader';
+import MuiPopup from '../Common/MuiPopup';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, applicationsData } = useJobApplications();
@@ -40,24 +43,50 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData } = useJobApplications();
+  const { applicationsData, openImportCandidates, setOpenImportCandidates } =
+    useJobApplications();
 
   const { job, applications } = applicationsData;
+
+  const applicantCounts = getApplicantCount(applications);
+
   return (
-    <JobScreening
-      slotProfileImage={
-        <CompanyLogo companyName={job.company} companyLogo={job.logo} />
-      }
-      textRole={job.job_title}
-      textCompanyLocation={job.company}
-      slotCandidateJobCard={
-        <>
-          {applications.map((candidate, i) => {
-            return <CandidateCard key={i} candidateDetails={candidate} />;
-          })}
-        </>
-      }
-    />
+    <>
+      <MuiPopup
+        props={{
+          open: openImportCandidates,
+        }}
+      >
+        <ImportCandidates />
+      </MuiPopup>
+      <JobScreening
+        onClickImportCandidate={{
+          onClick: () => setOpenImportCandidates(true),
+        }}
+        slotProfileImage={
+          <CompanyLogo companyName={job.company} companyLogo={job.logo} />
+        }
+        textRole={job.job_title}
+        textCompanyLocation={job.company}
+        slotCandidateJobCard={
+          <>
+            {applications.map((application, i) => {
+              return (
+                <ApplicationCard
+                  key={application.application_id}
+                  application={application}
+                  index={i}
+                />
+              );
+            })}
+          </>
+        }
+        countAllApplicant={`${applicantCounts.all} applicants`}
+        countScreening={`${applicantCounts.screening} applicants`}
+        countShortlisted={`${applicantCounts.shortlisted} applicants`}
+        countSelected={`${applicantCounts.selected} applicants`}
+      />
+    </>
   );
 };
 

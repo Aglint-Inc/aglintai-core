@@ -1,0 +1,41 @@
+.cj-suggested-roles-block {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 8px;
+
+  background-color: rgba(237, 247, 255, 1);
+}
+
+.small-default-4 {
+  color: rgba(47, 57, 65, 1);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: -0.00042765619582496583px;
+}
+
+.plus---12px-icon {
+  display: flex;
+  padding: 1px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}

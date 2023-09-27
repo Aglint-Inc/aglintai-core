@@ -29,4 +29,5 @@ declare function JobScreening(props: {
   onClickStopSubmission?: Types.Devlink.RuntimeProps;
   onClickExportCsv?: Types.Devlink.RuntimeProps;
   slotViewJobPost?: Types.Devlink.Slot;
+  slotScreening?: Types.Devlink.Slot;
 }): React.JSX.Element;

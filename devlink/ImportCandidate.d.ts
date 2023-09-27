@@ -8,4 +8,5 @@ declare function ImportCandidate(props: {
   onClickImport?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
   slotDownload?: Types.Devlink.Slot;
+  slotReuploadBtn?: Types.Devlink.Slot;
 }): React.JSX.Element;

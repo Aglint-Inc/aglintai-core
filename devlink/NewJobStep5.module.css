@@ -62,7 +62,7 @@
 }
 
 .job-sidebar-main-block.success {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.screening {
@@ -404,6 +404,14 @@
   }
 }
 
+.color-black.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -418,6 +426,10 @@
 
 .text-grey-600.mt-5 {
   margin-top: 5px;
+}
+
+.text-grey-600.mt-17 {
+  margin-top: 17px;
 }
 
 .cj-screening-questions-block {
@@ -464,14 +476,42 @@
 }
 
 .toggle-btn-block {
-  display: flex;
-  width: 30px;
-  min-width: 30px;
   align-items: center;
 }
 
 .toggle-btn-lottie {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skills-without-question {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.div-block-358 {
+  display: flex;
+  margin-top: 10px;
+  padding: 4px 10px;
+  align-items: center;
+  align-self: flex-end;
+  grid-column-gap: 13px;
+  grid-row-gap: 13px;
+
+  border-radius: 8px;
+
+  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
+
+  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+  text-decoration: none;
+}
+
+.arrow-right-icon {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

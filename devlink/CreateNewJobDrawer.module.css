@@ -2,6 +2,7 @@
   position: relative;
 
   display: flex;
+  width: 100%;
   height: 100%;
   flex-direction: column;
   grid-column-gap: 32px;
@@ -152,7 +153,6 @@
 
 .job-sidebar-wrapper {
   display: flex;
-  overflow: auto;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
@@ -393,7 +393,13 @@
 
   border-radius: 4px;
 
+  transition: all 250ms ease;
+
   object-fit: contain;
+}
+
+.icon:hover {
+  opacity: 0.8;
 }
 
 .cj-continue-btn.indeed-btn {
@@ -1164,7 +1170,7 @@
 }
 
 .job-sidebar-main-block.success {
-  display: none;
+  display: flex;
 }
 
 .job-sidebar-main-block.screening {
@@ -1232,9 +1238,6 @@
 }
 
 .toggle-btn-block {
-  display: flex;
-  width: 30px;
-  min-width: 30px;
   align-items: center;
 }
 

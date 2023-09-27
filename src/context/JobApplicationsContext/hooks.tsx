@@ -1,10 +1,16 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import toast from '@utils/toast';
 import { useRouter } from 'next/router';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-import { InputData, JobApplication, JobApplicationsData } from './types';
 import {
+  InputData,
+  JobApplication,
+  JobApplicationContext,
+  JobApplicationsData,
+} from './types';
+import {
+  bulkCreateJobApplicationDbAction,
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
   readJobApplicationDbAction,
@@ -18,6 +24,8 @@ enum ActionType {
   // eslint-disable-next-line no-unused-vars
   CREATE,
   // eslint-disable-next-line no-unused-vars
+  BULK_CREATE,
+  // eslint-disable-next-line no-unused-vars
   READ,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
@@ -30,6 +38,12 @@ type Action =
       type: ActionType.CREATE;
       payload: {
         applicationData: JobApplication;
+      };
+    }
+  | {
+      type: ActionType.BULK_CREATE;
+      payload: {
+        applicationsData: JobApplication[];
       };
     }
   | {
@@ -54,6 +68,17 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const newState: JobApplicationsData = {
         ...state,
         applications: [...state.applications, action.payload.applicationData],
+      };
+      return newState;
+    }
+
+    case ActionType.BULK_CREATE: {
+      const newState: JobApplicationsData = {
+        ...state,
+        applications: [
+          ...state.applications,
+          ...action.payload.applicationsData,
+        ],
       };
       return newState;
     }
@@ -102,7 +127,9 @@ const reducer = (state: JobApplicationsData, action: Action) => {
   }
 };
 
-const useJobApplicationActions = (job_id: string = undefined) => {
+const useJobApplicationActions = (
+  job_id: string = undefined,
+): JobApplicationContext => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
@@ -113,6 +140,8 @@ const useJobApplicationActions = (job_id: string = undefined) => {
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const initialLoad = initialJobLoad && applicationsData ? true : false;
+
+  const [openImportCandidates, setOpenImportCandidates] = useState(false);
 
   const handleJobApplicationCreate = async (
     inputData: Pick<
@@ -130,6 +159,31 @@ const useJobApplicationActions = (job_id: string = undefined) => {
         const action: Action = {
           type: ActionType.CREATE,
           payload: { applicationData: data[0] },
+        };
+        dispatch(action);
+        return true;
+      }
+      handleJobApplicationError(error);
+      return false;
+    }
+  };
+
+  const handleJobApplicationBulkCreate = async (
+    inputData: (Pick<
+      JobApplication,
+      'first_name' | 'last_name' | 'email' | 'score'
+    > &
+      InputData)[],
+  ) => {
+    if (recruiter) {
+      const { data, error } = await bulkCreateJobApplicationDbAction(
+        jobId,
+        inputData,
+      );
+      if (data) {
+        const action: Action = {
+          type: ActionType.BULK_CREATE,
+          payload: { applicationsData: data },
         };
         dispatch(action);
         return true;
@@ -208,11 +262,15 @@ const useJobApplicationActions = (job_id: string = undefined) => {
   const value = {
     applicationsData,
     handleJobApplicationCreate,
+    handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,
     initialLoad,
+
+    openImportCandidates,
+    setOpenImportCandidates,
   };
 
   return value;

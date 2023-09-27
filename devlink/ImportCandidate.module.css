@@ -283,3 +283,11 @@
   text-align: center;
   letter-spacing: -0.15399999916553497px;
 }
+
+.slot-reupload-btn {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: 0%;
+}
