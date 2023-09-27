@@ -35,11 +35,14 @@
     "prettier": "^3.0.3",
     "prop-types": "15.8.1",
     "react": "^18.2.0",
+    "react-csv": "^2.2.2",
     "react-drag-drop-files": "^2.3.10",
+    "react-dropzone": "^14.2.3",
     "react-phone-input-2": "^2.15.1",
     "sass": "1.55.0",
     "supabase": "^1.99.5",
-    "vercel-toast": "^1.8.0"
+    "vercel-toast": "^1.8.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react-lottie": "^1.2.6",

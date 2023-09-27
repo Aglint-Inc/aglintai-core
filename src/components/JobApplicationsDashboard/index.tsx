@@ -1,7 +1,7 @@
 import { useJobApplications } from '@context/JobApplicationsContext';
-import { JobApplication } from '@context/JobApplicationsContext/types';
-import { Stack, Typography } from '@mui/material';
+import { Avatar, Stack, Typography } from '@mui/material';
 
+import { JobCandidateCard, JobScreening } from '@/devlink';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -22,79 +22,66 @@ const JobApplicationsDashboard = () => {
     )
   ) : (
     <YTransformWrapper>
-      <Loader />
+      <Stack
+        width={'100%'}
+        height={'100vh'}
+        justifyContent={'center'}
+        direction={'row'}
+      >
+        <Loader />
+      </Stack>
     </YTransformWrapper>
   );
 };
-
 const YTransformWrapper = ({ children }) => {
   const { initialLoad } = useJobApplications();
-  return (
-    <YTransform uniqueKey={initialLoad}>
-      <Stack
-        width={'89.5vw'}
-        height={'100vh'}
-        alignItems={'center'}
-        justifyContent={'space-evenly'}
-      >
-        {children}
-      </Stack>
-    </YTransform>
-  );
+  return <YTransform uniqueKey={initialLoad}>{children}</YTransform>;
 };
 
 const JobApplicationComponent = () => {
-  return (
-    <Stack
-      width={'89.5vw'}
-      height={'100vh'}
-      alignItems={'center'}
-      justifyContent={'space-evenly'}
-    >
-      <CompanyCard />
-      <ApplicantList />
-    </Stack>
-  );
-};
-
-const CompanyCard = () => {
   const { applicationsData } = useJobApplications();
-  const job = applicationsData.job;
-  return (
-    <Stack flexDirection={'row'}>
-      <CompanyLogo companyName={job.company} companyLogo={job.logo} />
-      <Stack>
-        <Typography>{job.job_title}</Typography>
-        <Typography>{`${job.company}, ${job.location}`}</Typography>
-      </Stack>
-    </Stack>
-  );
-};
 
-const ApplicantList = () => {
-  const { applicationsData } = useJobApplications();
+  const { job, applications } = applicationsData;
   return (
-    <Stack>
-      {applicationsData.applications.map((application) => (
-        <ApplicantListItem
-          key={application.application_id}
-          application={application}
-        />
-      ))}
-    </Stack>
-  );
-};
-
-const ApplicantListItem = ({
-  application,
-}: {
-  application: JobApplication;
-}) => {
-  return (
-    <Stack flexDirection={'row'} gap={2}>
-      <Stack> {application.first_name}</Stack>
-      <Stack>{application.email}</Stack>
-    </Stack>
+    <JobScreening
+      slotProfileImage={
+        <CompanyLogo companyName={job.company} companyLogo={job.logo} />
+      }
+      textRole={job.job_title}
+      textCompanyLocation={job.company}
+      slotCandidateJobCard={
+        <>
+          {applications.map((candidate, i) => {
+            return (
+              <JobCandidateCard
+                slotProfilePic={
+                  <Avatar
+                    sx={{
+                      width: '84px',
+                      height: '84px',
+                      backgroundColor: `rgba(${Math.random() * 150},${
+                        Math.random() * 150
+                      },${Math.random() * 150},0.6)`,
+                    }}
+                    variant='rounded'
+                  >
+                    <Typography
+                      color={'white.700'}
+                      fontSize={'20px'}
+                      variant='body1'
+                    >
+                      {candidate.first_name.charAt(0)}
+                    </Typography>
+                  </Avatar>
+                }
+                textName={candidate.first_name}
+                key={i}
+              />
+            );
+          })}
+        </>
+      }
+    />
   );
 };
 

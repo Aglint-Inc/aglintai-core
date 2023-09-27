@@ -8,7 +8,7 @@
   align-items: flex-start;
 
   border-radius: 10px;
-
+opacity: 1 !important;
   background-color: rgba(255, 255, 255, 1);
 
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);

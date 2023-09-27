@@ -250,7 +250,7 @@ export function JobScreening({
         >
           <_Builtin.TabsWrapper
             className={_utils.cx(_styles, "cdd-job-list-tab")}
-            current="Tab 3"
+            current="Tab 1"
             easing="ease"
             fadeIn={300}
             fadeOut={100}
