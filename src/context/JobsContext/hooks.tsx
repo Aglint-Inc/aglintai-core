@@ -119,7 +119,8 @@ const useJobActions = () => {
 
   const handleJobRead = async () => {
     if (recruiter) {
-      const { data, error } = await readJobDbAction(recruiter.id);
+      // const { data, error } = await readJobDbAction(recruiter.id);
+      const { data, error } = await readJobDbAction();
       if (data) {
         const action: Action = {
           type: ActionType.READ,

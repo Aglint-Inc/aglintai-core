@@ -23,11 +23,16 @@ export const createJobDbAction = async (
   return { data, error };
 };
 
-export const readJobDbAction = async (recruiter_id: string) => {
-  const { data, error } = await supabase
-    .from('public_jobs')
-    .select('*')
-    .eq('recruiter_id', recruiter_id);
+// export const readJobDbAction = async (recruiter_id: string) => {
+//   const { data, error } = await supabase
+//     .from('public_jobs')
+//     .select('*')
+//     .eq('recruiter_id', recruiter_id);
+//   return { data, error };
+// };
+
+export const readJobDbAction = async () => {
+  const { data, error } = await supabase.from('public_jobs').select('*');
   return { data, error };
 };
 
