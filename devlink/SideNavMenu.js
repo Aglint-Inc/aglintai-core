@@ -16,7 +16,7 @@ export function SideNavMenu({
         button={false}
         id="my-resume"
         options={{
-          href: "/jobs-dashboard",
+          href: "/jobs",
         }}
       >
         <_Builtin.HtmlEmbed
