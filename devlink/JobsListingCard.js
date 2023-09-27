@@ -44,7 +44,7 @@ export function JobsListingCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
               dyn={{
                 bind: {},
               }}
@@ -244,7 +244,8 @@ export function JobsListingCard({
             _styles,
             "text-sm",
             "fw-semibold",
-            "text-kale-800"
+            "text-kale-800",
+            "text-first-capital"
           )}
           dyn={{
             bind: {},

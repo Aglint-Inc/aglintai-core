@@ -380,6 +380,8 @@
 .cj-bottom-wrapper {
   position: absolute;
   bottom: 0px;
+  z-index: 10;
+
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -526,6 +528,14 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.fw-semibold.text-kale-800.text-first-capital {
+  text-transform: capitalize;
 }
 
 .text-yellow-600 {

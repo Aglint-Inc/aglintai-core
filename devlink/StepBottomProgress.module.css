@@ -1,6 +1,8 @@
 .cj-bottom-wrapper {
   position: absolute;
   bottom: 0px;
+  z-index: 10;
+
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -158,6 +160,14 @@
   color: var(--kale800-682c1482);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.fw-semibold.text-kale-800.text-first-capital {
+  text-transform: capitalize;
+}
+
 .color-black {
   color: var(--black-0fdbd865);
 }
@@ -241,6 +251,7 @@
 }
 
 .skip-text {
+  transition: all 250ms ease;
   cursor: pointer;
 }
 

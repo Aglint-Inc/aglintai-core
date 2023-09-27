@@ -10,4 +10,6 @@ declare function StepBottomProgress(props: {
   isDraftSaved?: Types.Visibility.VisibilityConditions;
   isSavetoDraftVisible?: Types.Visibility.VisibilityConditions;
   onClickSkip?: Types.Devlink.RuntimeProps;
+  isSkipButtonVisible?: Types.Visibility.VisibilityConditions;
+  slotSavingDraftLottie?: Types.Devlink.Slot;
 }): React.JSX.Element;

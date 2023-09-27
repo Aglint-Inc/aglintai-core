@@ -111,8 +111,12 @@ const DashboardComp = () => {
               },
             }}
           />
-          <JobPostFormProvider>
-            <CreateNewJob open={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          <JobPostFormProvider setJobs={setJobs}>
+            <CreateNewJob
+              open={drawerOpen}
+              setDrawerOpen={setDrawerOpen}
+              setJobs={setJobs}
+            />
           </JobPostFormProvider>
         </>
       )}

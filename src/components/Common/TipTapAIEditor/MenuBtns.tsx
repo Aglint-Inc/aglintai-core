@@ -18,10 +18,14 @@ const MenuBtn = styled(IconButton)({
     backgroundColor: palette.grey['200'],
   },
 });
+// import axios from 'axios';
+
+import { GenerateJobDescAi } from '@/devlink';
 
 import { useTipTap } from './context';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
+// import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
 
 function MenuBtns() {
   return (
@@ -265,3 +269,63 @@ const TipTapUndoRedo = () => {
     </Stack>
   );
 };
+
+export const GenerateDescription = () => {
+  const [checks, setChecks] = useState({
+    benifits: true,
+    company: true,
+    values: true,
+  });
+  // const { jobForm } = useJobForm();
+
+  const enableGenerate =
+    Boolean(checks.benifits) ||
+    Boolean(checks.company) ||
+    Boolean(checks.values);
+
+  const handlegenerate = () => {
+    if (!enableGenerate) return;
+    // console.log(job);
+    // const {
+    //   formFields: { company, jobTitle, jobLocation, jobType, workPlaceType },
+    // } = jobForm;
+    // generateDesc();
+  };
+  return (
+    <>
+      <GenerateJobDescAi
+        isBenefitsChecked={checks.benifits}
+        isCompanyDetailsChecked={checks.company}
+        isValuesChecked={checks.values}
+        onClickBenefitsCheck={{
+          onClick: () => {
+            setChecks((p) => ({ ...p, benifits: !p.benifits }));
+          },
+        }}
+        onClickCompanyDdetailsCheck={{
+          onClick: () => {
+            setChecks((p) => ({ ...p, company: !p.company }));
+          },
+        }}
+        onClickValuesCheck={{
+          onClick: () => {
+            setChecks((p) => ({ ...p, values: !p.values }));
+          },
+        }}
+        onClickGenerate={{
+          onClick: handlegenerate,
+        }}
+        isGenerateDisable={!enableGenerate}
+      />
+    </>
+  );
+};
+
+// const generateDesc = async () => {
+//   try {
+//     const { data } = await axios.post('/');
+//     console.log(data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

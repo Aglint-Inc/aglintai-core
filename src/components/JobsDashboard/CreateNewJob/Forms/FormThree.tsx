@@ -1,108 +1,145 @@
+import Stack from '@mui/material/Stack';
 import { useEffect, useState } from 'react';
 
-import { NewJobStep3, SkillPill, SuggestedSkillPill } from '@/devlink';
+import {
+  NewJobStep3,
+  SkillPill,
+  SkillsInput,
+  SuggestedSkillPill,
+} from '@/devlink';
+import UITextField from '@/src/components/Common/UITextField';
+import { generateSkills } from '@/src/utils/prompts/addNewJob/generateSkills';
+import toast from '@/src/utils/toast';
 
-import { useJobList } from '../JobPostFormProvider';
+import { useJobForm } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
 // import UITextField from '../../../Common/UITextField';
 
-type Skill = {
-  skill: string;
-  added: boolean;
-};
-
 const FormThree = () => {
-  const { dispatch } = useJobList();
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const {
+    handleUpdateFormFields,
+    jobForm: { formFields },
+  } = useJobForm();
+  const [suggSkills, setSuggSkills] = useState<string[]>([]);
+  const [openSkillForm, setSkillForm] = useState(false);
 
   useEffect(() => {
-    setSkills(() => {
-      return ['HTML', 'CSS', 'Typescript', 'Python'].map((p) => ({
-        skill: p,
-        added: false,
-      }));
-    });
+    (async () => {
+      try {
+        let aiGenSkills = [];
+        if (sessionStorage.getItem(`ai-gen-skills-${formFields.jobTitle}`)) {
+          aiGenSkills = JSON.parse(
+            sessionStorage.getItem(`ai-gen-skills-${formFields.jobTitle}`),
+          );
+        }
+        if (aiGenSkills.length === 0) {
+          const generatedSkills = await generateSkills(formFields.jobTitle);
+          sessionStorage.setItem(
+            `ai-gen-skills-${formFields.jobTitle}`,
+            JSON.stringify(generatedSkills),
+          );
+          aiGenSkills = [...generatedSkills];
+        }
+        setSuggSkills(() => {
+          return aiGenSkills.map((s) => s);
+        });
+      } catch (err) {
+        toast.error('Some thing went wrong While generating skills');
+      }
+    })();
   }, []);
 
   useEffect(() => {
-    dispatch({
-      type: 'setJobdetails',
-      payload: {
-        path: '',
-        value: skills.filter((s) => s.added).map((s) => s.skill),
-      },
+    sessionStorage.setItem(
+      `ai-gen-skills-${formFields.jobTitle}`,
+      JSON.stringify(suggSkills),
+    );
+  }, [suggSkills]);
+
+  const handleAddSkill = (newSkill: string) => {
+    if (!newSkill) return;
+    const isSkillAlreadyExist = formFields.skills.find(
+      (s) => s.toLowerCase() === newSkill.toLowerCase(),
+    );
+    if (isSkillAlreadyExist) return;
+    handleUpdateFormFields({
+      path: 'skills',
+      value: [...formFields.skills, newSkill],
     });
-  }, [skills]);
+    const updatedSuggSkills = suggSkills.filter((s) => s !== newSkill);
+    setSuggSkills(() => updatedSuggSkills);
+  };
+
+  const handleRemoveSkill = (skillToRem: string) => {
+    const updatedSkills = formFields.skills.filter((s) => s !== skillToRem);
+    handleUpdateFormFields({
+      path: 'skills',
+      value: [...updatedSkills],
+    });
+  };
 
   return (
     <NewJobStep3
       onClickAddSkill={{
         onClick: () => {
-          //
+          setSkillForm(true);
         },
       }}
+      isAddSkillVisible={true}
       slotJobDescription={
         <>
           <TipTapAIEditor
             placeholder='Job Description'
             handleChange={(s) => {
-              dispatch({
-                type: 'setJobdetails',
-                payload: { path: 'jobDescription', value: s },
+              handleUpdateFormFields({
+                path: 'jobDescription',
+                value: s,
               });
             }}
-            initialValue=''
+            initialValue={formFields.jobDescription}
           />
         </>
       }
       slotAddedSkill={
         <>
-          {skills
-            .filter((p) => p.added)
-            .map((p) => {
-              return (
-                <SkillPill
-                  key={p.skill}
-                  textSkill={p.skill}
-                  onClickRemove={{
-                    onClick: () => {
-                      const newSkills = skills.filter(
-                        (s) => s.skill !== p.skill,
-                      );
-                      setSkills(() => newSkills);
-                    },
-                  }}
-                />
-              );
-            })}
+          {formFields.skills.map((p) => {
+            return (
+              <SkillPill
+                key={p}
+                textSkill={p}
+                onClickRemove={{
+                  onClick: () => {
+                    handleRemoveSkill(p);
+                  },
+                }}
+              />
+            );
+          })}
         </>
       }
-      // slotInputForm={
-      //   <>
-      //     <UITextField />
-      //   </>
-      // }
+      slotRequiredSKill={
+        openSkillForm ? (
+          <SkillInput
+            addSkill={handleAddSkill}
+            closeForm={() => {
+              setSkillForm(false);
+            }}
+          />
+        ) : null
+      }
       slotSuggestedSkill={
         <>
-          {skills
-            .filter((p) => !p.added)
-            .map((p) => {
-              return (
-                <SuggestedSkillPill
-                  key={p.skill}
-                  textSkill={p.skill}
-                  onClickAdd={{
-                    onClick: () => {
-                      const newSkills = skills.map((s) => {
-                        if (p.skill === s.skill) return { ...s, added: true };
-                        return s;
-                      });
-                      setSkills(() => newSkills);
-                    },
-                  }}
-                />
-              );
-            })}
+          {suggSkills.map((p) => {
+            return (
+              <SuggestedSkillPill
+                key={p}
+                textSkill={p}
+                onClickAdd={{
+                  onClick: () => handleAddSkill(p),
+                }}
+              />
+            );
+          })}
         </>
       }
     />
@@ -110,3 +147,37 @@ const FormThree = () => {
 };
 
 export default FormThree;
+
+const SkillInput = ({ addSkill, closeForm }) => {
+  const [skill, setSkill] = useState('');
+
+  return (
+    <>
+      <Stack p={1}>
+        <SkillsInput
+          onClickCancel={{
+            onClick: () => {
+              setSkill('');
+              closeForm();
+            },
+          }}
+          onClickSave={{
+            onClick: () => {
+              addSkill(skill);
+              setSkill('');
+              closeForm();
+            },
+          }}
+          slotInput={
+            <UITextField
+              onChange={(e) => {
+                setSkill(e.target.value);
+              }}
+              value={skill}
+            />
+          }
+        />
+      </Stack>
+    </>
+  );
+};

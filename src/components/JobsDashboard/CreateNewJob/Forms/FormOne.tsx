@@ -1,18 +1,20 @@
 import { NewJobStep1 } from '@/devlink';
 
-import { useJobList } from '../JobPostFormProvider';
+import { useJobForm } from '../JobPostFormProvider';
 
 const FormOne = ({ nextSlide }) => {
-  const { dispatch } = useJobList();
+  const { dispatch } = useJobForm();
   const handleInitiliseForm = () => {
     dispatch({
       type: 'initForm',
       payload: {
+        createAt: null,
         formType: 'new',
-        payload: {
+        jobPostId: undefined,
+        updatedAt: null,
+        formFields: {
           applicantsCount: 0,
           company: 'Google',
-          id: '',
           interviewingCount: 0,
           jobLocation: 'bangalore',
           jobTitle: 'Engineer',
@@ -23,7 +25,9 @@ const FormOne = ({ nextSlide }) => {
           skills: [],
           jobDescription: '',
           interviewType: 'ai-powered',
+          interviewConfig: [],
         },
+        slideNo: 0,
       },
     });
     nextSlide();

@@ -3406,7 +3406,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Comapny Info"}
+                {"Company Info"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink
