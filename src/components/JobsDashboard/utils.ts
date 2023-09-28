@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { JobDB } from '@/src/types/data.types';
+import { JobApplcationDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobType, Status } from './types';
@@ -43,9 +43,9 @@ export const fetchApplications = (jobIds) => {
 
 export function filterApplicationsByStatus(
   jobId: string,
-  applications: JobDB[],
+  applications: JobApplcationDB[],
   statusToFilter?: string,
-): JobDB[] {
+): JobApplcationDB[] {
   if (statusToFilter) {
     return applications.filter(
       (app) => app.status === statusToFilter && app.job_id === jobId,

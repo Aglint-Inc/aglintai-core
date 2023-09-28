@@ -69,6 +69,10 @@
   align-items: center;
 }
 
+.add-icon.pointer {
+  cursor: pointer;
+}
+
 .cdd-list-number {
   display: flex;
   justify-content: center;
@@ -332,6 +336,10 @@
   display: none;
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;
@@ -451,10 +459,6 @@
   .text-lg.fw-semibold.is-profile {
     align-self: flex-end;
   }
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {

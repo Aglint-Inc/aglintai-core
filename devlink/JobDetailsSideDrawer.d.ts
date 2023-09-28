@@ -7,7 +7,6 @@ declare function JobDetailsSideDrawer(props: {
   textMail?: React.ReactNode;
   textPhone?: React.ReactNode;
   textSites?: React.ReactNode;
-  onClickClose?: Types.Devlink.Slot;
   slotKeySkills?: Types.Devlink.Slot;
   isKeySkillsVisible?: Types.Visibility.VisibilityConditions;
   textInterviewHeader?: React.ReactNode;
@@ -24,4 +23,5 @@ declare function JobDetailsSideDrawer(props: {
   textStatusColorProps?: Types.Devlink.RuntimeProps;
   statusBgColorProps?: Types.Devlink.RuntimeProps;
   isResumeVisible?: Types.Visibility.VisibilityConditions;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

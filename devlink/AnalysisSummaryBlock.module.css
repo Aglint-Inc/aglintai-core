@@ -151,6 +151,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;

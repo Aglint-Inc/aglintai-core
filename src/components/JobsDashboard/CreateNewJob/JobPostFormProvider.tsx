@@ -1,6 +1,7 @@
 import { cloneDeep, debounce, get, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
+import { useJobs } from '@/src/context/JobsContext';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobType } from '../types';
@@ -145,14 +146,11 @@ const SYNC_TIME = 1000;
 
 type JobPostFormProviderParams = {
   children: React.ReactNode;
-  setJobs: React.Dispatch<React.SetStateAction<JobType[]>>;
 };
 
-const JobPostFormProvider = ({
-  children,
-  setJobs,
-}: JobPostFormProviderParams) => {
+const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
+  const { handleJobUpdate, jobsData } = useJobs();
 
   const updateFormTodb = async (currState, saveField) => {
     const d = await saveJobPostToDb(currState, saveField);
@@ -166,10 +164,12 @@ const JobPostFormProvider = ({
           jobPostId: d.id,
         },
       });
-      setJobs((p) => {
-        const updatedJobs = p.filter((j) => j.id !== d.id);
-        return [d, ...updatedJobs];
-      });
+      const updatedJobs = jobsData.jobs.filter((j) => j.id !== d.id);
+      handleJobUpdate([d, ...updatedJobs]);
+      // setJobs((p) => {
+      //   const updatedJobs = p.filter((j) => j.id !== d.id);
+      //   return [d, ...updatedJobs];
+      // });
     }
   };
 

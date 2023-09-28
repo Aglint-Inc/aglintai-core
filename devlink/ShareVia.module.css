@@ -161,6 +161,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;

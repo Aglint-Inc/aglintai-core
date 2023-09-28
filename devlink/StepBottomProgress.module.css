@@ -101,6 +101,10 @@
   align-items: center;
 }
 
+.add-icon.pointer {
+  cursor: pointer;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;

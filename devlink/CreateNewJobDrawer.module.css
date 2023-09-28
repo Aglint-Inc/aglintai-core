@@ -1177,7 +1177,7 @@
 }
 
 .all-job-sidebar {
-  display: none;
+  display: block;
 }
 
 .job-sidebar-main-block {

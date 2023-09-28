@@ -133,6 +133,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;
@@ -221,10 +225,6 @@
 
 .text-yellow-700 {
   color: var(--yellow700-b1438949);
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .text-green-700 {

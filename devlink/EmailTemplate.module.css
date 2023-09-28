@@ -143,6 +143,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -243,10 +247,6 @@
   .text-lg.fw-semibold.is-profile {
     align-self: flex-end;
   }
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {

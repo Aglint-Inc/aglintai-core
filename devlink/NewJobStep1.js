@@ -85,7 +85,7 @@ export function NewJobStep1({
             {"Or Import existing job"}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cj-imports-options")}
+            className={_utils.cx(_styles, "cj-imports-options-drawer")}
             tag="div"
           >
             {slotImportJobCard ?? <ImportJobCard />}

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { JobEmptyState, JobsListingCard } from '@/devlink';
-import { JobDB } from '@/src/types/data.types';
+import { JobApplcationDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { JobType } from '../types';
@@ -16,12 +16,12 @@ import {
 
 interface JobsListProps {
   jobs: JobType[];
-  applications: JobDB[];
+  applications: JobApplcationDB[];
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
   const router = useRouter();
-  if (jobs.length == 0) {
+  if (jobs?.length == 0) {
     return (
       <JobEmptyState
         onClickHere={{
