@@ -25,7 +25,7 @@ import {
   useJobForm,
 } from '../JobPostFormProvider';
 
-const FormFive = () => {
+const StepThree = () => {
   const {
     jobForm: { formFields },
     handleUpdateFormFields,
@@ -74,7 +74,7 @@ const FormFive = () => {
   );
 };
 
-export default FormFive;
+export default StepThree;
 // ;
 const StandardScreeningParams = () => {
   const { jobForm } = useJobForm();

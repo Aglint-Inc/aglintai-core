@@ -17,7 +17,7 @@ import StepOne from './Forms/StepOne';
 import Stepthree from './Forms/Stepthree';
 import StepTwo from './Forms/StepTwo';
 import SuccessPage from './Forms/SuccessPage';
-import { useJobForm } from './JobPostFormProvider';
+import { FormJobType, useJobForm } from './JobPostFormProvider';
 
 type CreateNewJobParams = {
   open: boolean;
@@ -80,7 +80,6 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
         setFormError((p) => ({ ...p, location: 'Please Enter Location' }));
       }
     }
-
     if (slideNo == 2) {
       if (isEmpty(get(jobForm, 'formFields.jobDescription', ''))) {
         toast.error('Please provide job description to move to next Step');
@@ -90,6 +89,32 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
       if (isEmpty(get(jobForm, 'formFields.skills', []))) {
         toast.error('Please provide required skills to move to next Step');
         return false;
+      }
+    }
+    if (slideNo === 3) {
+      const interviewConfig = get(
+        jobForm,
+        'formFields.interviewConfig',
+        {},
+      ) as FormJobType['interviewConfig'];
+
+      let totalQns = 0;
+
+      if (get(interviewConfig, 'cultural.value', false)) {
+        totalQns += get(interviewConfig, 'cultural.questions', []).length;
+      }
+      if (get(interviewConfig, 'skill.value', false)) {
+        totalQns += get(interviewConfig, 'skill.questions', []).length;
+      }
+      if (get(interviewConfig, 'personality.value', false)) {
+        totalQns += get(interviewConfig, 'personality.questions', []).length;
+      }
+      if (get(interviewConfig, 'softSkills.value', false)) {
+        totalQns += get(interviewConfig, 'softSkills.questions', []).length;
+      }
+      if (totalQns < 10 || totalQns > 15) {
+        flag = false;
+        toast.error('Please set atleast 10 and at max 15 Questions');
       }
     }
     return flag;
