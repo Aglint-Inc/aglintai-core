@@ -1,5 +1,6 @@
 import { Collapse, Switch } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import { htmlToText } from 'html-to-text';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
@@ -193,16 +194,18 @@ const StandardScreenSingle = ({
     try {
       setAiGenerating(true);
       const qns = await generateInterviewQns(
-        get(jobForm, 'formFields.jobDescription', param.copy),
+        param.questions.map((p) => p.question).slice(0, 5),
+        htmlToText(get(jobForm, 'formFields.jobDescription', '')),
         param.copy,
       );
+      const newQns = qns.map((q) => ({
+        id: nanoid(),
+        question: q,
+      })) as InterviewConfigType['questions'];
       handleUpdateFormFields({
         saveField: 'screening',
         path: `interviewConfig.${paramKey}.questions`,
-        value: qns.map((q) => ({
-          id: nanoid(),
-          question: q,
-        })) as InterviewConfigType['questions'],
+        value: [...param.questions, ...newQns],
       });
     } catch (err) {
       // console.log(err);
@@ -217,6 +220,7 @@ const StandardScreenSingle = ({
     [],
   ) as InterviewConfigType['questions'];
 
+  const enableAddQuestion = param.questions.length <= 10;
   return (
     <>
       <Stack border={1} borderColor={palette.grey[200]} borderRadius={'5px'}>
@@ -272,21 +276,25 @@ const StandardScreenSingle = ({
               />
             )}
             <Stack direction={'row'}>
-              <AddSocialLink
-                textLabel='Add Custom Question'
-                onClickAddSocialLink={{
-                  onClick: () => {
-                    setShowForm(true);
-                  },
+              {
+                <AddSocialLink
+                  textLabel='Add Custom Question'
+                  onClickAddSocialLink={{
+                    onClick: () => {
+                      setShowForm(true);
+                    },
+                  }}
+                />
+              }
+            </Stack>
+            {enableAddQuestion && (
+              <GenerateQuestion
+                isGenerateButtonDisable={isAiGenerating}
+                onClickGenerate={{
+                  onClick: handleGenerateInterviewQns,
                 }}
               />
-            </Stack>
-            <GenerateQuestion
-              isGenerateButtonDisable={isAiGenerating}
-              onClickGenerate={{
-                onClick: handleGenerateInterviewQns,
-              }}
-            />
+            )}
           </Stack>
         </Collapse>
       </Stack>

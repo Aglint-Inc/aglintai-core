@@ -92,6 +92,9 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
       }
     }
     if (slideNo === 3) {
+      if (jobForm.formFields.interviewType === 'ai-powered') {
+        return true;
+      }
       const interviewConfig = get(
         jobForm,
         'formFields.interviewConfig',
