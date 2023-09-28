@@ -202,6 +202,7 @@ export default function AppLayout({ children }) {
                 isMyCandidateDatabase={router.pathname.includes(
                   pageRoutes.CANDIDATE_DATABSE,
                 )}
+                // isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
                 isMyJobs={router.pathname.includes(pageRoutes.JOBS)}
               />
               <NavMenuBottom

@@ -1,24 +1,18 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import UITextField from '../../Common/UITextField';
 
 const SearchField = ({
-  applications,
   setFilteredApplications,
 }: {
-  applications: JobApplication[];
   setFilteredApplications: Dispatch<SetStateAction<JobApplication[]>>;
 }) => {
+  const { applicationsData } = useJobApplications();
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -26,16 +20,19 @@ const SearchField = ({
       handleSearch(value);
     }, 400);
     return () => clearTimeout(timer);
-  }, [value]);
+  }, [value, applicationsData.applications.length]);
 
-  const handleSearch = useCallback((val: string) => {
+  const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();
-    const newApplications = applications.reduce((acc, curr) => {
-      if (curr.first_name.toLowerCase().includes(value)) acc.push(curr);
-      return acc;
-    }, []);
+    const newApplications = applicationsData.applications.reduce(
+      (acc, curr) => {
+        if (curr.first_name.toLowerCase().includes(value)) acc.push(curr);
+        return acc;
+      },
+      [],
+    );
     setFilteredApplications(newApplications);
-  }, []);
+  };
 
   return (
     <UITextField

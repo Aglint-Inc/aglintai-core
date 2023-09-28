@@ -44,12 +44,13 @@ const JobApplicationComponent = () => {
   const { applicationsData, openImportCandidates, setOpenImportCandidates } =
     useJobApplications();
 
-  const { job, applications } = applicationsData;
+  const { job } = applicationsData;
 
-  const applicantCounts = getApplicantCount(applications);
+  const applicantCounts = getApplicantCount(applicationsData.applications);
 
-  const [filteredApplications, setFilteredApplications] =
-    useState(applications);
+  const [filteredApplications, setFilteredApplications] = useState(
+    applicationsData.applications,
+  );
   return (
     <>
       <MuiPopup
@@ -76,10 +77,7 @@ const JobApplicationComponent = () => {
         countShortlisted={`${applicantCounts.shortlisted} applicants`}
         countSelected={`${applicantCounts.selected} applicants`}
         slotSearchInput={
-          <SearchField
-            applications={applications}
-            setFilteredApplications={setFilteredApplications}
-          />
+          <SearchField setFilteredApplications={setFilteredApplications} />
         }
       />
     </>
