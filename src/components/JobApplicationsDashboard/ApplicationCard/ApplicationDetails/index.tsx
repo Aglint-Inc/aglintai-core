@@ -1,12 +1,24 @@
-import { Stack } from '@mui/material';
-import React from 'react';
+import { Collapse, Stack } from '@mui/material';
+import React, { useState } from 'react';
 
-import { JobDetailsSideDrawer } from '@/devlink';
+import {
+  DetailedFeedback,
+  DetailedFeedbackCard,
+  InterviewTranscriptCard,
+  JobDetailsSideDrawer,
+} from '@/devlink';
+import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
+import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
-import CircularScore from '../../Common/CircularScore';
-
-function ApplicationDetails({ applicationDetails }) {
+function ApplicationDetails({
+  openSidePanel,
+  setOpenSidePanel,
+  applicationDetails,
+}) {
+  const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
   const overAllScore =
     applicationDetails.feedback &&
     Math.floor(
@@ -22,57 +34,262 @@ function ApplicationDetails({ applicationDetails }) {
       ) / applicationDetails.feedback.length,
     );
   return (
-    <div>
-      <JobDetailsSideDrawer
-        slotProfileImage={
-          <MuiAvatar
-            level={applicationDetails.first_name}
-            src={'/'}
-            variant={'rounded'}
-            width={'78px'}
-            height={'78px'}
-            fontSize={'28px'}
+    <SidePanelDrawer
+      openSidePanelDrawer={openSidePanel}
+      setOpenPanelDrawer={setOpenSidePanel}
+    >
+      <Stack direction={'row'}>
+        <Stack width={'35vw'}>
+          <JobDetailsSideDrawer
+            onClickClose={{
+              onClick: () => {
+                setOpenSidePanel(false);
+              },
+            }}
+            slotProfileImage={
+              <MuiAvatar
+                level={applicationDetails.first_name}
+                src={'/'}
+                variant={'rounded'}
+                width={'78px'}
+                height={'78px'}
+                fontSize={'28px'}
+              />
+            }
+            textInterviewHeader={
+              overAllScore > 90
+                ? `Absolutely incredible! 🌟😍`
+                : overAllScore > 70
+                ? `Truly outstanding! 🤩`
+                : overAllScore > 50
+                ? `Excellent job! 👏`
+                : `Not up to mark! 😑`
+            }
+            onClickCopyFeedbackLink={{
+              onClick: () => {
+                navigator.clipboard
+                  .writeText(
+                    `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
+                  )
+                  .then(() => {
+                    toast.success('Link Copied');
+                  });
+              },
+            }}
+            slotScore={
+              <Stack height={'100%'} overflow={'hidden'}>
+                <CustomProgress
+                  progress={overAllScore}
+                  rotation={270}
+                  fillColor={
+                    overAllScore >= 90
+                      ? '#228F67'
+                      : overAllScore >= 70
+                      ? '#f79a3e'
+                      : overAllScore >= 50
+                      ? '#de701d'
+                      : '#d93f4c'
+                  }
+                  bgFill={
+                    overAllScore >= 90
+                      ? '#edf8f4'
+                      : overAllScore >= 70
+                      ? '#fff7ed'
+                      : overAllScore >= 50
+                      ? '#ffeedb'
+                      : '#fff0f1'
+                  }
+                  size={25}
+                  strokeWidth={2}
+                  label={
+                    <Stack justifyContent={'center'} alignItems={'center'}>
+                      {overAllScore}%
+                    </Stack>
+                  }
+                  fontSize={15}
+                />
+              </Stack>
+            }
+            onClickDetailedFeedback={{
+              onClick: () => {
+                setOpenDetailedFeedback((pre) => !pre);
+              },
+            }}
+            isInterviewVisible={
+              applicationDetails.feedback &&
+              Math.floor(
+                applicationDetails.feedback.reduce(
+                  (sum, entry) =>
+                    sum +
+                    Number(
+                      String(entry.rating).includes('/')
+                        ? entry.rating.split('/')[0]
+                        : entry.rating,
+                    ),
+                  0,
+                ) / applicationDetails.feedback.length,
+              ) !== 0
+            }
+            isKeySkillsVisible={false}
+            slotResumeScore={
+              <CustomProgress
+                progress={overAllScore}
+                rotation={270}
+                fillColor={
+                  overAllScore >= 90
+                    ? '#228F67'
+                    : overAllScore >= 70
+                    ? '#f79a3e'
+                    : overAllScore >= 50
+                    ? '#de701d'
+                    : '#d93f4c'
+                }
+                bgFill={
+                  overAllScore >= 90
+                    ? '#edf8f4'
+                    : overAllScore >= 70
+                    ? '#fff7ed'
+                    : overAllScore >= 50
+                    ? '#ffeedb'
+                    : '#fff0f1'
+                }
+                size={35}
+                // strokeWidth={5}
+                // text={'Resume Score'}
+                // label={overAllScore}
+                // fontSize={'25px'}
+              />
+            }
+            // isResumeVisible={applicationDetails.score}
+            isResumeVisible={false}
+            textPhone={
+              applicationDetails.phone ? applicationDetails.phone : '--'
+            }
+            textMail={
+              applicationDetails.email ? applicationDetails.email : '--'
+            }
+            textSites={applicationDetails.company}
           />
-        }
-        textInterviewHeader={
-          overAllScore > 90
-            ? `You're absolutely incredible! 🌟😍`
-            : overAllScore > 70
-            ? `You're truly outstanding! 🤩`
-            : overAllScore > 50
-            ? `You did an excellent job! 👏`
-            : `Thank you so much! 😊`
-        }
-        isInterviewVisible={
-          applicationDetails.feedback &&
-          Math.floor(
-            applicationDetails.feedback.reduce(
-              (sum, entry) =>
-                sum +
-                Number(
-                  String(entry.rating).includes('/')
-                    ? entry.rating.split('/')[0]
-                    : entry.rating,
-                ),
-              0,
-            ) / applicationDetails.feedback.length,
-          ) !== 0
-        }
-        isKeySkillsVisible={false}
-        slotResumeScore={
-          <Stack width={'100px'}>
-            <CircularScore
-              fontSize='10px'
-              finalScore={applicationDetails.score}
+        </Stack>
+        <Collapse orientation='horizontal' in={openDetailedFeedback}>
+          <Stack width={'30vw'}>
+            <DetailedFeedback
+              onClickShare={{
+                onClick: () => {
+                  navigator.clipboard
+                    .writeText(
+                      `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
+                    )
+                    .then(() => {
+                      toast.success('Link Copied');
+                    });
+                },
+              }}
+              slotTranscript={
+                <>
+                  {applicationDetails.conversation?.map((ele, i) => {
+                    return (
+                      <InterviewTranscriptCard
+                        slotUserImage={
+                          <MuiAvatar
+                            src={'/'}
+                            level={applicationDetails?.first_name}
+                            height={'24px'}
+                            width={'24px'}
+                            fontSize={'15px'}
+                            variant={'circular'}
+                          />
+                        }
+                        slotAiImage={
+                          <svg
+                            width='24'
+                            height='24'
+                            viewBox='0 0 36 36'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M27.4875 16.8075C24.255 15.9975 22.635 15.6 21.5175 14.4825C20.4 13.3575 20.0025 11.745 19.1925 8.5125L18 3.75L16.8075 8.5125C15.9975 11.745 15.6 13.365 14.4825 14.4825C13.3575 15.6 11.745 15.9975 8.5125 16.8075L3.75 18L8.5125 19.1925C11.745 20.0025 13.365 20.4 14.4825 21.5175C15.6 22.6425 15.9975 24.255 16.8075 27.4875L18 32.25L19.1925 27.4875C20.0025 24.255 20.4 22.635 21.5175 21.5175C22.6425 20.4 24.255 20.0025 27.4875 19.1925L32.25 18L27.4875 16.8075Z'
+                              fill='#FF6224'
+                            ></path>
+                          </svg>
+                        }
+                        textQuestion={ele?.content}
+                        textAnswer={ele.userContent}
+                        textAiName={'Aglint Ai'}
+                        userTextName={applicationDetails?.first_name}
+                        key={i}
+                      />
+                    );
+                  })}
+                </>
+              }
+              slotDetailedFeedback={
+                <>
+                  {applicationDetails?.feedback?.map((ele, i) => {
+                    let rating = Number(
+                      String(ele.rating).includes('/')
+                        ? ele.rating.split('/')[0]
+                        : ele.rating,
+                    );
+                    return (
+                      <DetailedFeedbackCard
+                        textColorScore={{
+                          style: {
+                            color:
+                              rating >= 90
+                                ? '#228F67'
+                                : rating >= 70
+                                ? '#f79a3e'
+                                : rating >= 50
+                                ? '#de701d'
+                                : '#d93f4c',
+                          },
+                        }}
+                        textHeader={ele?.topic}
+                        textDescription={ele.feedback}
+                        textScorePercentage={rating + '%'}
+                        slotScore={
+                          <CustomProgress
+                            rotation={270}
+                            fillColor={
+                              rating >= 90
+                                ? '#228F67'
+                                : rating >= 70
+                                ? '#f79a3e'
+                                : rating >= 50
+                                ? '#de701d'
+                                : '#d93f4c'
+                            }
+                            bgFill={
+                              rating >= 90
+                                ? '#edf8f4'
+                                : rating >= 70
+                                ? '#fff7ed'
+                                : rating >= 50
+                                ? '#ffeedb'
+                                : '#fff0f1'
+                            }
+                            size={5}
+                            progress={rating}
+                          />
+                        }
+                        key={i}
+                      />
+                    );
+                  })}
+                </>
+              }
+              onClickBack={{
+                onClick: () => {
+                  setOpenDetailedFeedback(false);
+                },
+              }}
             />
           </Stack>
-        }
-        isResumeVisible={applicationDetails.score}
-        textPhone={applicationDetails.phone ? applicationDetails.phone : '--'}
-        textMail={applicationDetails.email ? applicationDetails.email : '--'}
-        textSites={applicationDetails.company}
-      />
-    </div>
+        </Collapse>
+      </Stack>
+    </SidePanelDrawer>
   );
 }
 

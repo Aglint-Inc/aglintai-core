@@ -79,6 +79,7 @@ export * from "./ImportCandidate";
 export * from "./ImportJobCard";
 export * from "./InputText";
 export * from "./InterviewNav";
+export * from "./InterviewScreenFeedback";
 export * from "./InterviewStart";
 export * from "./InterviewStartScreen";
 export * from "./InterviewTimer";

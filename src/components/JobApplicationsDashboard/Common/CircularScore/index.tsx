@@ -5,10 +5,12 @@ const CircularScore = ({
   finalScore,
   fontSize,
   triggerAnimation = false,
+  level = 'Resume match',
 }: {
   finalScore: number;
   triggerAnimation?: boolean;
   fontSize: string;
+  level: string;
 }) => {
   const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
   const green = {
@@ -78,7 +80,7 @@ const CircularScore = ({
           <Stack fontSize={'20px'} sx={{ color: color.score, fontWeight: 600 }}>
             {score}
           </Stack>
-          Resume Match
+          {level}
         </Stack>
       </Stack>
     </Stack>

@@ -10,4 +10,5 @@ export const pageRoutes = Object.freeze({
   NOTIFICATIONS: '/notifications',
   SETTINGS: '/settings',
   PROFILE: '/profile',
+  InterviewFeedbackLink:'interview-feedback-link'
 });

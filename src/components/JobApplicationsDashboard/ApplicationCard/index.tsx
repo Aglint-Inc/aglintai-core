@@ -1,5 +1,4 @@
 import { JobApplication } from '@context/JobApplicationsContext/types';
-import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink';
@@ -9,7 +8,6 @@ import ApplicationDetails from './ApplicationDetails';
 import CircularScore from '../Common/CircularScore';
 import { capitalize, formatTimeStamp } from '../utils';
 import MuiAvatar from '../../Common/MuiAvatar';
-import SidePanelDrawer from '../../Common/SidePanelDrawer';
 
 const ApplicationCard = ({
   application,
@@ -51,14 +49,12 @@ const ApplicationCard = ({
 
   return (
     <>
-      <SidePanelDrawer
-        openSidePanelDrawer={openSidePanel}
-        setOpenPanelDrawer={setOpenSidePanel}
-      >
-        <Stack width={500}>
-          <ApplicationDetails applicationDetails={applicationDetails} />
-        </Stack>
-      </SidePanelDrawer>
+      <ApplicationDetails
+        openSidePanel={openSidePanel}
+        setOpenSidePanel={setOpenSidePanel}
+        applicationDetails={applicationDetails}
+      />
+
       <JobCandidateCard
         textOrder={index + 1}
         isChecked={checked}
@@ -78,6 +74,7 @@ const ApplicationCard = ({
         textPhone={application.phone}
         slotScore={
           <CircularScore
+            level='Resume match'
             fontSize='6px'
             finalScore={application.score}
             triggerAnimation={triggerCircularAnimation}
@@ -91,8 +88,8 @@ const ApplicationCard = ({
           },
         }}
         textStatus={capitalize(application.status)}
-        statusTextColor={{ style: { color: statusColors.color } }}
-        statusBgColor={{ style: { color: statusColors.backgroundColor } }}
+        statusTextColor={{ style: { color: statusColors?.color } }}
+        statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
         textAppliedOn={appliedOn}
       />
     </>
@@ -130,7 +127,7 @@ const getStatusColor = (status: string) => {
 };
 
 const getInterviewScore = (feedback) => {
-  return Math.ceil(
+  return Math.floor(
     feedback.reduce((acc, curr) => {
       return (acc += Number(curr.rating));
     }, 0) / feedback.length,

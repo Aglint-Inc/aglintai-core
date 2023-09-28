@@ -10,4 +10,5 @@ declare function InterviewTranscriptCard(props: {
   textAnswer?: React.ReactNode;
   slotUserPlayButton?: Types.Devlink.Slot;
   slotUserImage?: Types.Devlink.Slot;
+  userTextName?: React.ReactNode;
 }): React.JSX.Element;
