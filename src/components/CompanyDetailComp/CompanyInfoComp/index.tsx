@@ -12,7 +12,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 
-import AddDepartmentsDialog from './AddDepartmentsDialog ';
+import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddTechnologyDialog from './AddTechnologyDialog';
