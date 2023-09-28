@@ -1,11 +1,18 @@
 .rd-main-wrapper {
   display: flex;
-  padding-bottom: 80px;
+  padding-bottom: 40px;
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+@media screen and (max-width: 991px) {
+  .rd-main-wrapper {
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+  }
 }
 
 .rd-main-wrapper.cdd-database {
@@ -46,14 +53,18 @@
 
 .rd-jobs-header-wrapper {
   display: flex;
-  max-width: 1400px;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 16px 20px;
+  padding: 12px 20px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
   flex: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .rd-jobs-header-wrapper {
+    width: 100%;
+    flex: 0 auto;
+  }
 }
 
 .text-lg {
@@ -265,6 +276,10 @@
   }
 }
 
+.text-sm.fw-semibold.text-white.text-first-capitialize {
+  text-transform: capitalize;
+}
+
 .text-sm.fw-semibold.margin-top-2 {
   margin-top: 2px;
 }
@@ -303,6 +318,10 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.text-green-700 {
+  color: var(--green700-a1b0a24f);
 }
 
 .text-sm.color-grey-400 {

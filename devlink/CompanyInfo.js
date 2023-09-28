@@ -35,10 +35,7 @@ export function CompanyInfo({
         >
           {"Basic Info"}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "color-black")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Company logo"}
         </_Builtin.Block>
         <_Builtin.Block

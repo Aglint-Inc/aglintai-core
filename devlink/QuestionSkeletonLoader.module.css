@@ -10,12 +10,17 @@
   background-color: rgba(248, 249, 249, 0.5);
 }
 
-.skeletion-line {
+.skeleton-width-100 {
+  width: 100%;
   height: 16px;
-  border-radius: 6px;
-  background-color: var(--grey200-9ba653f1);
 }
 
-.skeletion-line.width-60 {
+.skeleton-item {
+  width: 100%;
+  height: 100%;
+}
+
+.skeleton-width-60 {
   width: 60%;
+  height: 16px;
 }

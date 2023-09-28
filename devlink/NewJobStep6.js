@@ -227,7 +227,8 @@ export function NewJobStep6({
                       _styles,
                       "label-text",
                       "text-yellow-700",
-                      "yellow-300"
+                      "yellow-300",
+                      "small-text"
                     )}
                     tag="div"
                   >

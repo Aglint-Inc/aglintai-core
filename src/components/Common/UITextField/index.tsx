@@ -31,7 +31,7 @@ type Props = {
   children?: any;
   height?: string;
   noBorder?: boolean;
-  width: string;
+  width?: string;
 };
 
 // eslint-disable-next-line react/display-name

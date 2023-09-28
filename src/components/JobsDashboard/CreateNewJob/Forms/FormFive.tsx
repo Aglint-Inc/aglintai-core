@@ -8,6 +8,7 @@ import {
   AddSocialLink,
   GenerateQuestion,
   NewJobStep5,
+  QuestionSkeletonLoader,
   SkillsQuestionCard,
   SkillsQuestionInput,
   SkillsWithoutQuestionToggle,
@@ -15,6 +16,7 @@ import {
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { palette } from '@/src/context/Theme/Theme';
+import { generateInterviewQns } from '@/src/utils/prompts/addNewJob/generateInterviewQns';
 
 import {
   FormJobType,
@@ -159,7 +161,7 @@ const StandardScreenSingle = ({
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [questionInput, setQuestionInput] = useState('');
-
+  const [isAiGenerating, setAiGenerating] = useState(false);
   const { jobForm, handleUpdateFormFields } = useJobForm();
 
   const handleCloseForm = () => {
@@ -185,6 +187,28 @@ const StandardScreenSingle = ({
     });
 
     handleCloseForm();
+  };
+
+  const handleGenerateInterviewQns = async () => {
+    try {
+      setAiGenerating(true);
+      const qns = await generateInterviewQns(
+        get(jobForm, 'formFields.jobDescription', param.copy),
+        param.copy,
+      );
+      handleUpdateFormFields({
+        saveField: 'screening',
+        path: `interviewConfig.${paramKey}.questions`,
+        value: qns.map((q) => ({
+          id: nanoid(),
+          question: q,
+        })) as InterviewConfigType['questions'],
+      });
+    } catch (err) {
+      // console.log(err);
+    } finally {
+      setAiGenerating(false);
+    }
   };
 
   const qns = get(
@@ -225,6 +249,9 @@ const StandardScreenSingle = ({
                 />
               );
             })}
+            {isAiGenerating && <QuestionSkeletonLoader />}
+            {isAiGenerating && <QuestionSkeletonLoader />}
+            {isAiGenerating && <QuestionSkeletonLoader />}
             {showForm && (
               <SkillsQuestionInput
                 slotInput={
@@ -255,11 +282,9 @@ const StandardScreenSingle = ({
               />
             </Stack>
             <GenerateQuestion
-              isGenerateButtonDisable={true}
+              isGenerateButtonDisable={isAiGenerating}
               onClickGenerate={{
-                onClick: () => {
-                  //
-                },
+                onClick: handleGenerateInterviewQns,
               }}
             />
           </Stack>

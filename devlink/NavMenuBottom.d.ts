@@ -9,4 +9,6 @@ declare function NavMenuBottom(props: {
   isMyNotification?: Types.Visibility.VisibilityConditions;
   isMyCompany?: Types.Visibility.VisibilityConditions;
   onClickLogout?: Types.Devlink.RuntimeProps;
+  isNotificationVisible?: Types.Visibility.VisibilityConditions;
+  isProfileVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

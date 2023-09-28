@@ -10,13 +10,23 @@ export function QuestionSkeletonLoader({ as: _Component = _Builtin.Block }) {
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "skeletion-line")}
+        className={_utils.cx(_styles, "skeleton-width-100")}
         tag="div"
-      />
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "skeleton-item")}
+          tag="div"
+        />
+      </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "skeletion-line", "width-60")}
+        className={_utils.cx(_styles, "skeleton-width-60")}
         tag="div"
-      />
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "skeleton-item")}
+          tag="div"
+        />
+      </_Builtin.Block>
     </_Component>
   );
 }

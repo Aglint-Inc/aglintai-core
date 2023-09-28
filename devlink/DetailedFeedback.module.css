@@ -494,7 +494,6 @@
 
 .job-sidebar-wrapper {
   display: flex;
-  overflow: scroll;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
