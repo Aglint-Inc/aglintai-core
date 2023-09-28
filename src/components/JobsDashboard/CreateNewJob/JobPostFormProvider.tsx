@@ -3,6 +3,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 import { supabase } from '@/src/utils/supabaseClient';
 
+import { getSeedJobFormData } from './seedFormData';
 import { JobType, Status } from '../types';
 
 type Question = {
@@ -75,7 +76,6 @@ const initialState: JobFormState = {
 type JobsAction =
   | {
       type: 'initForm';
-      payload: JobFormState;
     }
   | {
       type: 'editJobField';
@@ -113,7 +113,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
-      const newState = cloneDeep(action.payload);
+      const newState = getSeedJobFormData();
       return newState;
     }
     case 'closeForm': {
