@@ -26,9 +26,9 @@ export type InterviewConfigType = {
 export type FormJobType = {
   jobTitle: string;
   company: string;
-  workPlaceType: string;
+  workPlaceType: 'onSite' | 'hybrid' | 'remote';
   jobLocation: string;
-  jobType: string;
+  jobType: 'internship' | 'partTime' | 'fullTime';
   applicantsCount: number;
   interviewingCount: number;
   shortListedCount: number;
@@ -186,9 +186,12 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const { handleJobUpdate, jobsData } = useJobs();
 
   const updateFormTodb = async (currState, saveField) => {
-    if (currState.slideNo > 1) {
+    // if job is already there update in db sync
+    if (get(currState, 'jobPostId', false)) {
+      await saveJobPostToDb(currState, saveField);
+    } else if (currState.slideNo > 1) {
+      //fresh job being created
       const d = await saveJobPostToDb(currState, saveField);
-      if (get(currState, 'jobPostId', false)) return;
       dispatch({
         type: 'setPostMeta',
         payload: {
@@ -225,7 +228,9 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           value,
         },
       });
-      formSyncTODB(state, saveField);
+      const updatedState = cloneDeep(state);
+      set(updatedState.formFields, path, value);
+      formSyncTODB(updatedState, saveField);
     } catch (err) {
       //
     }
@@ -265,6 +270,7 @@ async function saveJobPostToDb(
           jobForm.formFields.jobLocation,
         ),
         recruiter_id: jobForm.formFields.recruiterId,
+        location: jobForm.formFields.jobLocation,
       })
       .select();
     if (error) throw new Error(error.message);

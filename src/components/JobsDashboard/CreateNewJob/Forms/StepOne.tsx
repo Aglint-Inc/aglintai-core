@@ -32,11 +32,11 @@ const jobTypeOptions = [
   },
   {
     name: 'Part-time',
-    value: 'part-time',
+    value: 'partTime',
   },
   {
     name: 'Full-time',
-    value: 'full-time',
+    value: 'fullTime',
   },
 ];
 
