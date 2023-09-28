@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { CompanySetting } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import CompanyJdComp from './CompanyJdComp';
@@ -32,13 +33,15 @@ const CompanyDetailComp = () => {
 
   return (
     <>
-      <CompanySetting
-        slotSavingLottie={<LoaderGrey />}
-        isSaving={isSaving}
-        isSaved={!isSaving}
-        slotCompanyInfo={<CompanyInfoComp setIsSaving={setIsSaving} />}
-        slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
-      />
+      <YTransform uniqueKey={1}>
+        <CompanySetting
+          slotSavingLottie={<LoaderGrey />}
+          isSaving={isSaving}
+          isSaved={!isSaving}
+          slotCompanyInfo={<CompanyInfoComp setIsSaving={setIsSaving} />}
+          slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
+        />
+      </YTransform>
     </>
   );
 };

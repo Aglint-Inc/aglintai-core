@@ -259,78 +259,8 @@ function Theme({ children }) {
           },
         },
       },
-
-      MUIDataTable: {
-        styleOverrides: {
-          root: {
-            '& .MuiTableCell-footer': {
-              borderBottom: 'none',
-            },
-            '& .MuiPaper-root': {
-              backgroundColor: '#ffffff',
-              border: 'none',
-              paddingBottom: '22px',
-            },
-            '& .Mui-selected': {
-              backgroundColor: '#f8f9f9',
-            },
-            '& .MuiTableCell-paddingCheckbox': {
-              backgroundColor: '#fff',
-            },
-            border: 'none',
-            width: '60vw',
-          },
-        },
-      },
       MuiButton: {
         variants: [
-          {
-            props: { variant: 'save' },
-            style: {
-              fontSize: '14px',
-              fontWeight: 400,
-              color: palette.grey[100],
-              background: palette.green[600],
-              textTransform: 'none',
-              borderRadius: '',
-              '&:hover': {
-                background: palette.green[500],
-                color: palette.grey[300],
-                transition: '0.9s',
-              },
-            },
-          },
-          {
-            props: { variant: 'start' },
-            style: {
-              fontSize: '14px',
-              fontWeight: 400,
-              color: palette.grey[100],
-              background: palette.kale[600],
-              textTransform: 'none',
-              borderRadius: 100,
-              '&:hover': {
-                background: palette.kale[600],
-                color: palette.grey[300],
-                transition: '0.5s',
-              },
-            },
-          },
-          {
-            props: { variant: 'create' },
-            style: {
-              fontSize: '14px',
-              fontWeight: 400,
-              color: palette.grey[100],
-              background: palette.blue[600],
-              textTransform: 'none',
-              '&:hover': {
-                background: palette.blue[500],
-                color: palette.grey[300],
-                transition: '0.5s',
-              },
-            },
-          },
           {
             props: { variant: 'contained' },
             style: {
@@ -361,92 +291,11 @@ function Theme({ children }) {
               },
             },
           },
-          {
-            props: { variant: 'text' },
-            style: {
-              py: 2,
-              color: palette.grey[800],
-              fontSize: '14px',
-              fontWeight: 400,
-              background: 'trasnparent',
-              textTransform: 'none',
-              borderColor: palette.grey[300],
-              '&:hover': {
-                color: palette.grey[700],
-                background: 'grey.800',
-              },
-            },
-          },
-          {
-            props: { variant: 'delete' },
-            style: {
-              color: palette.grey[100],
-              fontSize: '14px',
-              fontWeight: 400,
-              background: palette.red[500],
-              textTransform: 'none',
-              borderColor: palette.grey[300],
-              '&:hover': {
-                color: palette.grey[100],
-                background: palette.red[500],
-              },
-            },
-          },
-          {
-            props: { variant: 'cancel' },
-            style: {
-              py: 2,
-              color: palette.blue[600],
-              fontSize: '14px',
-              fontWeight: 400,
-              background: 'transparent',
-              textTransform: 'none',
-              '&:hover': {
-                color: palette.blue[600],
-                background: 'transparent',
-              },
-            },
-          },
         ],
         defaultProps: {
           size: 'small',
         },
       },
-
-      // MuiTab: {
-      //   defaultProps: {
-      //     disableRipple: true,
-      //     textColor: 'primary',
-      //     variant: 'text',
-      //   },
-      //   styleOverrides: {
-      //     root: {
-      //       '&.MuiTab-root': {
-      //         fontFamily:
-      //           'SF Pro, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif',
-      //         textTransform: 'none',
-      //         fontSize: '0.875rem',
-      //         lineHeight: '1.25rem',
-      //         minHeight: 0,
-      //         fontWeight: 600,
-      //         border: '1px solid',
-      //         borderColor: palette.grey[300],
-      //         borderRadius: 100,
-      //         padding: '0.5rem 1.5rem',
-      //         marginRight: '0.75rem',
-      //         color: palette.black[700],
-      //       },
-      //       '&.Mui-selected': {
-      //         background: palette.black[700],
-      //         color: palette.white[700],
-      //       },
-      //       '&:hover': {
-      //         borderColor: palette.grey[500],
-      //       },
-      //     },
-      //   },
-      // },
-
       MuiBox: {
         styleOverrides: {
           root: {},
@@ -516,6 +365,15 @@ function Theme({ children }) {
           },
         },
       },
+      MuiDialog: {
+        defaultProps: {
+          PaperProps: {
+            sx: {
+              borderRadius: '20px', // Adjust the value to your desired radius
+            },
+          },
+        },
+      },
       MuiOutlinedInput: {
         defaultProps: {
           margin: 'dense',
@@ -530,34 +388,6 @@ function Theme({ children }) {
         },
       },
 
-      // MUIDataTable: {
-      //   styleOverrides: {
-      //     root: {
-      //       '&  .MUIDataTable-responsiveBase': {
-      //         padding: '10px',
-      //       },
-      //       '& .MuiTableCell-root': {
-      //         border: 'none',
-      //       },
-      //       th: {
-      //         borderRadius: '0px 0px 0px 0px',
-      //         background: palette.grey[100],
-      //       },
-      //       tfoot: {
-      //         background: palette.grey[100],
-      //       },
-      //       tr: {
-      //         border: 'solid',
-      //         borderWidth: '0px 1px 0px 1px',
-      //         borderColor: palette.grey[100],
-      //       },
-      //     },
-      //     paper: {
-      //       boxShadow: 'none',
-      //       border: 'none',
-      //     },
-      //   },
-      // },
       MuiTextField: {
         defaultProps: {
           margin: 'dense',
@@ -649,13 +479,6 @@ function Theme({ children }) {
             },
           },
         ],
-      },
-      MuiDialog: {
-        styleOverrides: {
-          paper: {
-            borderRadius: '0.25rem',
-          },
-        },
       },
 
       MuiFormControlLabel: {
