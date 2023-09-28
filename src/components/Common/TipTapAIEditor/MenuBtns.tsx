@@ -276,7 +276,10 @@ export const GenerateDescription = () => {
     company: true,
     values: true,
   });
-  // const { jobForm } = useJobForm();
+
+  const { editor } = useTipTap();
+
+  if (!editor) return <></>;
 
   const enableGenerate =
     Boolean(checks.benifits) ||

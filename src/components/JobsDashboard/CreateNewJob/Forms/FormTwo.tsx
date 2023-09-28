@@ -69,6 +69,18 @@ const FormTwo = ({ formError, setFormError }) => {
                 placeholder='Ex : Software developer'
               />
               <UITextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Image
+                        alt='building'
+                        src={'/images/svg/Building.svg'}
+                        width={26}
+                        height={26}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
                 error={Boolean(formError.company)}
                 helperText={formError.company}
                 label={'Company'}
@@ -84,16 +96,6 @@ const FormTwo = ({ formError, setFormError }) => {
                 placeholder='Ex: Google'
               />
               <UISelect
-                startIcon={
-                  <InputAdornment position='start'>
-                    <Image
-                      alt='building'
-                      src={'/images/svg/Building.svg'}
-                      width={26}
-                      height={26}
-                    />
-                  </InputAdornment>
-                }
                 label='Workplace Type'
                 menuOptions={workPlaceOptions}
                 onChange={(e) => {
