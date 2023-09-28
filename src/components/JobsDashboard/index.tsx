@@ -1,7 +1,9 @@
 import { InputAdornment, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { JobsDashboard } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobDB } from '@/src/types/data.types';
 
 import CreateNewJob from './CreateNewJob';
@@ -19,6 +21,8 @@ import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 
 const DashboardComp = () => {
+  const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const [jobs, setJobs] = useState<JobType[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<JobType[]>([]);
   const [applications, setApplications] = useState<JobDB[]>([]);
@@ -27,7 +31,7 @@ const DashboardComp = () => {
 
   useEffect(() => {
     (async () => {
-      const fetchedJobs = await fetchJobs();
+      const fetchedJobs = await fetchJobs(recruiter.id);
       setJobs(
         fetchedJobs.map((job) => {
           return { ...job, status: job.status as unknown as Status };
@@ -46,6 +50,12 @@ const DashboardComp = () => {
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    if (router.isReady && router.query.flow == 'create') {
+      setDrawerOpen(true);
+    }
+  }, [router]);
 
   return (
     <Stack height={'100%'} width={'100%'}>
