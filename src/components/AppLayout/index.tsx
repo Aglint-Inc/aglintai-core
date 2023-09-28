@@ -7,17 +7,14 @@ import { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   AglintRecruiterLogo,
-  AppLogo,
   NavMenuBottom,
   NotificationAndProfile,
-  SettingsAndLogout,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
-import { MobileJobNavBar } from './utils';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
@@ -26,7 +23,6 @@ export default function AppLayout({ children }) {
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
-  const [collapse, setCollapse] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
 
   useEffect(() => {
@@ -49,23 +45,22 @@ export default function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    if (windowSize.innerWidth > 991) {
+    if (windowSize.innerWidth < 991) {
+      const status = router.query.status;
+      if (status) {
+        setExpand(false);
+      }
       if (
-        router.pathname === pageRoutes.JOBS ||
-        router.pathname === pageRoutes.COMPANY ||
         router.pathname === pageRoutes.CANDIDATES ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.SETTINGS ||
-        router.pathname === pageRoutes.PROFILE
+        router.pathname === pageRoutes.COMPANY
       ) {
         setExpand(false);
       }
-    } else {
-      setExpand(false);
+      setTimeout(() => {
+        setLoadingProgress(false);
+      }, 1000);
     }
-    setTimeout(() => {
-      setLoadingProgress(false);
-    }, 1000);
   }, [router]);
   // console.log(router, pageRoutes.JOBS);
   return (
@@ -194,7 +189,7 @@ export default function AppLayout({ children }) {
           bgcolor={'#25282a'}
         >
           <Stack height={'calc(100vh - 28px)'}>
-            <Stack pt={'21px'} pb={'24px'}>
+            <Stack pb={'24px'}>
               <AglintRecruiterLogo />
             </Stack>
             <Stack height={'100%'} justifyContent={'space-between'}>
@@ -242,9 +237,9 @@ export default function AppLayout({ children }) {
           >
             <LinearProgress
               sx={{
-                height: '2px',
+                height: '1px',
                 borderRadius: '5px',
-                backgroundColor: '#FDD3C3',
+                backgroundColor: '#3d1100',
                 '& span': {
                   backgroundColor: 'orange.500',
                 },
@@ -261,9 +256,9 @@ export default function AppLayout({ children }) {
             maxHeight={'66px'}
             width={'100%'}
             direction={'row'}
-            bgcolor={'grey.100'}
+            bgcolor={'#25282a'}
             justifyContent={'right'}
-            boxShadow={'0px 3px 5px #04444D26'}
+            // boxShadow={'0px 3px 5px #04444D26'}
           ></Stack>
 
           <Stack
@@ -273,14 +268,14 @@ export default function AppLayout({ children }) {
             zIndex={9}
             minHeight={'66px'}
             maxHeight={'66px'}
-            width={'50%'}
+            width={'60%'}
             direction={'row'}
             justifyContent={'left'}
           >
             <Stack width={'100%'} alignItems={'center'} direction={'row'}>
               <Stack
                 position={'relative'}
-                height={'50px'}
+                height={'53px'}
                 left={'4px'}
                 width={'40px'}
                 overflow={'hidden'}
@@ -300,7 +295,7 @@ export default function AppLayout({ children }) {
                 </Stack>
               </Stack>
               <Stack zIndex={2000}>
-                <AppLogo />
+                <AglintRecruiterLogo />
               </Stack>
             </Stack>
           </Stack>
@@ -311,16 +306,17 @@ export default function AppLayout({ children }) {
             zIndex={7}
             minHeight={'66px'}
             maxHeight={'66px'}
-            width={'50%'}
+            width={'40%'}
             direction={'row'}
             justifyContent={'right'}
+            color={'white.700'}
           >
             <NotificationAndProfile
-              isNotificationCountVisible={false}
+              isNotificationCountVisible={true}
               textNotificationCOunt={0}
               slotProfileImage={
                 <Avatar
-                  // src={employeeDtails[0]?.image}
+                  src={recruiter?.logo}
                   variant='rounded'
                   sx={{ width: '100%', height: '100%' }}
                 />
@@ -331,7 +327,8 @@ export default function AppLayout({ children }) {
             <Drawer
               sx={{
                 '& .MuiDrawer-paper': {
-                  bgcolor: 'grey.100',
+                  border: 'none !important',
+                  bgcolor: '#25282a !important',
                 },
                 zIndex: 8,
               }}
@@ -343,7 +340,7 @@ export default function AppLayout({ children }) {
             >
               <Stack
                 justifyContent={'space-between'}
-                bgcolor={'grey.100'}
+                bgcolor={'#25282a !important'}
                 height={'100dvh'}
                 width={300}
                 sx={{
@@ -352,12 +349,7 @@ export default function AppLayout({ children }) {
                   transform: expand ? 'none' : 'translate3d(-200px, 0px, 0px)',
                 }}
               >
-                <Stack
-                  borderBottom={'1px solid'}
-                  borderColor={'grey.200'}
-                  width={'100%'}
-                  minHeight={'66px'}
-                ></Stack>
+                <Stack width={'100%'} minHeight={'66px'}></Stack>
 
                 <Stack
                   pt={'30px'}
@@ -371,35 +363,35 @@ export default function AppLayout({ children }) {
                       setLoadingProgress(true);
                     }}
                   >
-                    <MobileJobNavBar
-                      collapse={collapse}
-                      setCollapse={setCollapse}
-                    />
+                    <Stack spacing={'10px'}>
+                      <SideNavbar />
+                    </Stack>
                   </Stack>
                 </Stack>
 
-                <Stack
-                  py={'10px'}
-                  borderTop={'1px solid'}
-                  borderColor={'grey.200'}
-                >
+                <Stack py={'10px'}>
                   <Stack px={'15px'}>
-                    <SettingsAndLogout
-                      // onClickReferral={{
-                      //   onClick: () => {
-                      //     setLoadingProgress(true);
-                      //     setCollapse(false);
-                      //     router.push(pageRoutes.REFERRAL);
-                      //   },
-                      // }}
-                      onClickSettings={{
-                        onClick: () => {
-                          setLoadingProgress(true);
-                          setCollapse(false);
-                          router.push(pageRoutes.SETTINGS);
+                    <NavMenuBottom
+                      // isNotificationVisible={false}
+                      // isProfileVisible={false}
+                      isMyNotification={router.pathname.includes(
+                        pageRoutes.NOTIFICATIONS,
+                      )}
+                      slotProfileImage={
+                        <Avatar
+                          src={recruiter?.logo}
+                          variant='rounded'
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      }
+                      isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
+                      textEmail={recruiter?.email}
+                      textName={recruiter?.name}
+                      onClickLogout={{
+                        onClick: (e) => {
+                          handleLogout(e);
                         },
                       }}
-                      onClickLogout={{ onClick: handleLogout }}
                     />
                   </Stack>
                 </Stack>

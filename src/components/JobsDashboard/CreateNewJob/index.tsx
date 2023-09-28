@@ -19,12 +19,10 @@ import FormThree from './Forms/FormThree';
 import FormTwo from './Forms/FormTwo';
 import FormSeven from './Forms/SuccessPage';
 import { useJobForm } from './JobPostFormProvider';
-import { JobType } from '../types';
 
 type CreateNewJobParams = {
   open: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setJobs: React.Dispatch<React.SetStateAction<JobType[]>>;
 };
 
 function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {

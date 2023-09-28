@@ -43,7 +43,12 @@ const AddTechnologyDialog: React.FC<StacksProps> = ({
       setStacks(recruiter?.technology_score);
   }, [recruiter?.technology_score, open]);
 
-  const initialStacks = [];
+  let initialStacks = [];
+  if (localStorage?.getItem('technologies')) {
+    if (Array.isArray(JSON.parse(localStorage?.getItem('technologies')))) {
+      initialStacks = JSON.parse(localStorage?.getItem('technologies'));
+    }
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {

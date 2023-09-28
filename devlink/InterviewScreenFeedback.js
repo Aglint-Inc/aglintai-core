@@ -81,36 +81,6 @@ export function InterviewScreenFeedback({
                   <_Builtin.Block tag="div">{"Copy Link"}</_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "aui-button-wrap")}
-                tag="div"
-                tabIndex=""
-                {...onClickDownloadFeedback}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "aui-button",
-                    "is-small",
-                    "is-button-bg-blue"
-                  )}
-                  tag="div"
-                  tabIndex=""
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "button-icon", "is-large")}
-                    tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icon")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%207.69289L9.04645%205.14645C9.24171%204.95118%209.55829%204.95118%209.75355%205.14645C9.94882%205.34171%209.94882%205.65829%209.75355%205.85355L6.65355%208.95355C6.25829%209.34882%205.64171%209.34882%205.24645%208.95355L2.14645%205.85355C1.95118%205.65829%201.95118%205.34171%202.14645%205.14645C2.34171%204.95118%202.65829%204.95118%202.85355%205.14645L5.5%207.79289V0.5C5.5%200.223858%205.72386%200%206%200C6.27614%200%206.5%200.223858%206.5%200.5V7.69289ZM1.5%2012C1.22386%2012%201%2011.7761%201%2011.5C1%2011.2239%201.22386%2011%201.5%2011H10.5C10.7761%2011%2011%2011.2239%2011%2011.5C11%2011.7761%2010.7761%2012%2010.5%2012H1.5Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    {"Download Feedback"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
