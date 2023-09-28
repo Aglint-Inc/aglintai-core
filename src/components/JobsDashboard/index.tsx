@@ -92,7 +92,7 @@ const DashboardComp = () => {
               slotAllJobs={
                 <JobsList
                   jobs={filteredJobs}
-                  applications={jobsData.applications}
+                  applications={jobsData?.applications}
                 />
               }
               slotSearchInputJob={
@@ -113,8 +113,8 @@ const DashboardComp = () => {
                   />
                 </Stack>
               }
-              isJobCountTagVisible={filteredJobs.length > 0}
-              jobCount={filteredJobs.length}
+              isJobCountTagVisible={filteredJobs?.length > 0}
+              jobCount={filteredJobs?.length}
               textJobsHeader={
                 router.query.status == 'close'
                   ? 'Closed Jobs'
