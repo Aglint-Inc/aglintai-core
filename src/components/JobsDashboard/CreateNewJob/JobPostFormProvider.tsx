@@ -118,7 +118,9 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
+      const { recruiterId } = action.payload;
       const newState = getSeedJobFormData();
+      newState.formFields.recruiterId = recruiterId;
       newState.slideNo = 1;
       return newState;
     }
@@ -184,8 +186,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const { handleJobUpdate, jobsData } = useJobs();
 
   const updateFormTodb = async (currState, saveField) => {
-    const d = await saveJobPostToDb(currState, saveField);
     if (currState.slideNo > 1) {
+      const d = await saveJobPostToDb(currState, saveField);
       if (get(currState, 'jobPostId', false)) return;
       dispatch({
         type: 'setPostMeta',
@@ -199,10 +201,6 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         (j) => j.id !== d.id,
       );
       handleJobUpdate([d, ...updatedJobs]);
-      // setJobs((p) => {
-      //   const updatedJobs = p.filter((j) => j.id !== d.id);
-      //   return [d, ...updatedJobs];
-      // });
     }
   };
 
@@ -266,6 +264,7 @@ async function saveJobPostToDb(
           jobForm.formFields.company,
           jobForm.formFields.jobLocation,
         ),
+        recruiter_id: jobForm.formFields.recruiterId,
       })
       .select();
     if (error) throw new Error(error.message);

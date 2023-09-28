@@ -1,16 +1,19 @@
-import { NewJobSelect, NewJobStep1 } from '@/devlink';
+import { NewJobSelect } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { useJobForm } from '../JobPostFormProvider';
 
 const FormOne = ({ nextSlide }) => {
   const { dispatch } = useJobForm();
+  const { recruiter } = useAuthDetails();
   const handleInitiliseForm = () => {
-    dispatch({
-      type: 'initForm',
-      payload: {
-        recruiterId: '',
-      },
-    });
+    recruiter &&
+      dispatch({
+        type: 'initForm',
+        payload: {
+          recruiterId: recruiter.id,
+        },
+      });
     nextSlide();
   };
 

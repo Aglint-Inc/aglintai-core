@@ -11,16 +11,16 @@ export const getSeedJobFormData = () => {
     slideNo: 0,
     formFields: {
       applicantsCount: 0,
-      company: 'Google',
+      company: '',
       interviewingCount: 0,
-      jobLocation: 'bangalore',
-      jobTitle: 'Engineer',
+      jobLocation: '',
+      jobTitle: '',
       jobType: '',
       shortListedCount: 0,
       status: 'inactive',
       workPlaceType: '',
-      skills: ['HTML'],
-      jobDescription: 's',
+      skills: [],
+      jobDescription: '',
       interviewType: 'ai-powered',
       interviewConfig: {
         skill: {
