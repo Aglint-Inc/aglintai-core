@@ -1,15 +1,21 @@
+import { useJobApplications } from '@context/JobApplicationsContext';
+import {
+  JobApplication,
+  JobApplicationSections,
+} from '@context/JobApplicationsContext/types';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-
 import UITextField from '../../Common/UITextField';
 
 const SearchField = ({
+  applications,
+  section,
   setFilteredApplications,
 }: {
+  applications: JobApplication[];
+  section: JobApplicationSections;
   setFilteredApplications: Dispatch<SetStateAction<JobApplication[]>>;
 }) => {
   const { applicationsData } = useJobApplications();
@@ -20,17 +26,18 @@ const SearchField = ({
       handleSearch(value);
     }, 400);
     return () => clearTimeout(timer);
-  }, [value, applicationsData.applications.length]);
+  }, [value]);
+
+  useEffect(() => {
+    handleSearch(value);
+  }, [applicationsData.count, section]);
 
   const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();
-    const newApplications = applicationsData.applications.reduce(
-      (acc, curr) => {
-        if (curr.first_name.toLowerCase().includes(value)) acc.push(curr);
-        return acc;
-      },
-      [],
-    );
+    const newApplications = applications.reduce((acc, curr) => {
+      if (curr.first_name.toLowerCase().includes(value)) acc.push(curr);
+      return acc;
+    }, []);
     setFilteredApplications(newApplications);
   };
 

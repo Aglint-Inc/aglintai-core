@@ -9,6 +9,8 @@ import {
   JobApplication,
   JobApplicationContext,
   JobApplicationsData,
+  JobApplicationSectionData,
+  JobApplicationSections,
 } from './types';
 import {
   bulkCreateJobApplicationDbAction,
@@ -49,18 +51,23 @@ type Action =
     }
   | {
       type: ActionType.READ;
-      payload: { applicationData: JobApplication[]; jobData: Job };
+      payload: {
+        applicationData: JobApplication[];
+        jobData: Job;
+      };
     }
   | {
       type: ActionType.UPDATE;
       payload: {
-        applicationId: string;
         applicationData: JobApplication;
       };
     }
   | {
       type: ActionType.DELETE;
-      payload: { applicationId: string };
+      payload: {
+        applicationId: string;
+        applicationStatus: JobApplicationSections;
+      };
     };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
@@ -68,7 +75,16 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.CREATE: {
       const newState: JobApplicationsData = {
         ...state,
-        applications: [...state.applications, action.payload.applicationData],
+        applications: {
+          ...state.applications,
+          applied: {
+            list: [
+              ...state.applications.applied.list,
+              action.payload.applicationData,
+            ],
+            count: state.applications.applied.count + 1,
+          },
+        },
       };
       return newState;
     }
@@ -76,33 +92,75 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.BULK_CREATE: {
       const newState: JobApplicationsData = {
         ...state,
-        applications: [
+        applications: {
           ...state.applications,
-          ...action.payload.applicationsData,
-        ],
+          applied: {
+            list: [
+              ...state.applications.applied.list,
+              ...action.payload.applicationsData,
+            ],
+            count:
+              state.applications.applied.count +
+              action.payload.applicationsData.length,
+          },
+        },
+        count: state.count + action.payload.applicationsData.length,
       };
       return newState;
     }
 
     case ActionType.READ: {
+      let count = 0;
+      const segregatedApplications: JobApplicationSectionData =
+        action.payload.applicationData.reduce(
+          (acc, curr) => {
+            let objRef = acc[curr.status as JobApplicationSections];
+            objRef.list.push(curr);
+            objRef.count += 1;
+            count += 1;
+            return acc;
+          },
+          Object.assign(
+            {},
+            ...Object.values(JobApplicationSections).map((val) => {
+              return {
+                [val]: {
+                  list: [],
+                  count: 0,
+                },
+              };
+            }),
+          ),
+        );
       const newState: JobApplicationsData = {
         ...state,
-        applications: [...action.payload.applicationData],
+        applications: segregatedApplications,
+        count,
         job: action.payload.jobData,
       };
       return newState;
     }
 
     case ActionType.UPDATE: {
-      const newApplications: JobApplication[] = state.applications.reduce(
-        (applications, application) => {
-          if (application.application_id === action.payload.applicationId)
-            applications.push(action.payload.applicationData);
-          else applications.push(application);
-          return applications;
+      const newApplications: JobApplicationSectionData = {
+        ...state.applications,
+        [action.payload.applicationData.status as JobApplicationSections]: {
+          ...state.applications[
+            action.payload.applicationData.status as JobApplicationSections
+          ],
+          list: state.applications[
+            action.payload.applicationData.status as JobApplicationSections
+          ].list.reduce((acc, curr) => {
+            if (
+              curr.application_id ===
+              action.payload.applicationData.application_id
+            )
+              acc.push(action.payload.applicationData);
+            else acc.push(curr);
+            return acc;
+          }, []),
         },
-        [],
-      );
+      };
       const newState: JobApplicationsData = {
         ...state,
         applications: newApplications,
@@ -111,13 +169,22 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     }
 
     case ActionType.DELETE: {
-      const newApplications: JobApplication[] = state.applications.filter(
-        (application) =>
-          application.application_id !== action.payload.applicationId,
-      );
+      const newApplications: JobApplicationSectionData = {
+        ...state.applications,
+        [action.payload.applicationStatus]: {
+          list: state.applications[
+            action.payload.applicationStatus
+          ].list.filter(
+            (application) =>
+              application.application_id !== action.payload.applicationId,
+          ),
+          count: state.applications[action.payload.applicationStatus].count - 1,
+        },
+      };
       const newState: JobApplicationsData = {
         ...state,
         applications: newApplications,
+        count: state.count - 1,
       };
       return newState;
     }
@@ -235,7 +302,6 @@ const useJobApplicationActions = (
         const action: Action = {
           type: ActionType.UPDATE,
           payload: {
-            applicationId,
             applicationData: data[0],
           },
         };
@@ -247,13 +313,16 @@ const useJobApplicationActions = (
     }
   };
 
-  const handleJobApplicationDelete = async (applicationId: string) => {
+  const handleJobApplicationDelete = async (
+    applicationId: string,
+    applicationStatus: JobApplicationSections,
+  ) => {
     if (recruiter) {
       const { data, error } = await deleteJobApplicationDbAction(applicationId);
       if (data) {
         const action: Action = {
           type: ActionType.DELETE,
-          payload: { applicationId },
+          payload: { applicationId, applicationStatus },
         };
         dispatch(action);
         return true;

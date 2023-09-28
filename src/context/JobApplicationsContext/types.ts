@@ -1,10 +1,28 @@
+/* eslint-disable no-unused-vars */
 import { Job } from '@context/JobsContext/types';
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
 import { Database } from '@/src/types/schema';
 
+export enum JobApplicationSections {
+  APPLIED = 'applied',
+  INTERVIEWING = 'interviewing',
+  SELECTED = 'selected',
+  REJECTED = 'rejected',
+}
+
+export type JobApplicationSectionData = {
+  [key in JobApplicationSections]:
+    | {
+        list: JobApplication[];
+        count: number;
+      }
+    | undefined;
+};
+
 export type JobApplicationsData = {
-  applications: JobApplication[] | undefined;
+  applications: JobApplicationSectionData;
+  count: number;
   job: Job;
 };
 
@@ -18,7 +36,6 @@ export type InputData = Partial<
 export type JobApplicationContext = {
   applicationsData: JobApplicationsData;
   handleJobApplicationCreate: (
-    // eslint-disable-next-line no-unused-vars
     inputData: Pick<
       JobApplication,
       'first_name' | 'last_name' | 'email' | 'score'
@@ -26,7 +43,6 @@ export type JobApplicationContext = {
       InputData,
   ) => Promise<boolean>;
   handleJobApplicationBulkCreate: (
-    // eslint-disable-next-line no-unused-vars
     inputData: (Pick<
       JobApplication,
       'first_name' | 'last_name' | 'email' | 'score'
@@ -35,14 +51,15 @@ export type JobApplicationContext = {
   ) => Promise<boolean>;
   handleJobApplicationRead: () => Promise<boolean>;
   handleJobApplicationUpdate: (
-    // eslint-disable-next-line no-unused-vars
     applicationId: string,
-    // eslint-disable-next-line no-unused-vars
+
     inputData: InputData,
   ) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
-  handleJobApplicationDelete: (applicationId: string) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
+
+  handleJobApplicationDelete: (
+    applicationId: string,
+    applicationStatus: JobApplicationSections,
+  ) => Promise<boolean>;
   handleJobApplicationError: (error: any) => void;
   initialLoad: boolean;
   circularScoreAnimation: MutableRefObject<boolean>;

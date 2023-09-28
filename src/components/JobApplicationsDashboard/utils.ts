@@ -26,17 +26,66 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-export const getApplicantCount = (applications: JobApplication[]) => {
-  return applications.reduce(
-    (acc, curr) => {
-      return { ...acc, [curr.status]: acc[curr.status] + 1, all: acc.all + 1 };
-    },
-    {
-      all: 0,
-      applied: 0,
-      screening: 0,
-      shortlisted: 0,
-      selected: 0,
-    },
-  );
+export const getInterviewScore = (feedback) => {
+  return feedback
+    ? Math.ceil(
+        feedback.reduce((acc, curr) => {
+          return (acc += Number(curr.rating));
+        }, 0) / feedback.length,
+      )
+    : 0;
+};
+
+export type FilterParameter = {
+  parameter: 'resume_score' | 'interview_score';
+  condition: 'eq' | 'neq' | 'lt' | 'le' | 'gt' | 'ge';
+  count: number;
+};
+
+export const getFilteredApplications = (
+  applications: JobApplication[],
+  filterParameters: FilterParameter[],
+) => {
+  return applications.reduce((acc, curr) => {
+    filterParameters.map((filter) => {
+      if (handleFilterParameter(filter, curr)) acc.push(curr);
+    });
+    return acc;
+  }, []);
+};
+
+const handleFilterParameter = (
+  filterParameter: FilterParameter,
+  application: JobApplication,
+) => {
+  switch (filterParameter.parameter) {
+    case 'resume_score':
+      return handleFilterCondition(filterParameter, application.score);
+
+    case 'interview_score':
+      return handleFilterCondition(
+        filterParameter,
+        getInterviewScore(application.feedback),
+      );
+  }
+};
+
+const handleFilterCondition = (
+  filterParameter: FilterParameter,
+  score: number,
+) => {
+  switch (filterParameter.condition) {
+    case 'eq':
+      return score === filterParameter.count;
+    case 'ge':
+      return score >= filterParameter.count;
+    case 'gt':
+      return score > filterParameter.count;
+    case 'le':
+      return score <= filterParameter.count;
+    case 'lt':
+      return score < filterParameter.count;
+    case 'neq':
+      return score !== filterParameter.count;
+  }
 };
