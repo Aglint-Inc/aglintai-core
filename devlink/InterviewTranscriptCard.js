@@ -13,6 +13,7 @@ export function InterviewTranscriptCard({
   textAnswer = "Interviewer : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
   slotUserPlayButton,
   slotUserImage,
+  userTextName = "You",
 }) {
   return (
     <_Component
@@ -109,7 +110,7 @@ export function InterviewTranscriptCard({
                   className={_utils.cx(_styles, "color-grey-700")}
                   tag="div"
                 >
-                  {"You"}
+                  {userTextName}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block

@@ -1498,6 +1498,7 @@
 .sidebar-wrapper.detailed {
   display: flex;
   max-width: none;
+  padding-top: 18px;
   opacity: 1;
 }
 

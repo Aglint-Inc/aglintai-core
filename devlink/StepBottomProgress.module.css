@@ -44,7 +44,7 @@
 }
 
 .cj-back-btn:hover {
-  color: var(--blue600-aad8d97e);
+  opacity: 0.7;
 }
 
 .icon {

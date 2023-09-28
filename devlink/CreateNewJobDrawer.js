@@ -49,12 +49,8 @@ export function CreateNewJobDrawer({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22CreateNewJobDrawer_job-sidebar-wrapper__%22%5D%3A%3A-webkit-scrollbar%7B%0A%20display%3A%20none%3B%0A%7D%0A%0A%3C%2Fstyle%3E"
-      />
       <_Builtin.Block
-        className={_utils.cx(_styles, "job-sidebar-wrapper")}
+        className={_utils.cx(_styles, "job-sidebar-wrapper-scroll")}
         tag="div"
       >
         {slotNewJobStep ?? (
@@ -2036,6 +2032,7 @@ export function CreateNewJobDrawer({
       >
         {slotBottomButtonProgress ?? <StepBottomProgress />}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22CreateNewJobDrawer_job-sidebar-wrapper-scroll__%22%5D%3A%3A-webkit-scrollbar%7B%0A%20display%3A%20none%3B%0A%7D%0A%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

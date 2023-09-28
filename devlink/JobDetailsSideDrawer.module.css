@@ -34,6 +34,7 @@
 .sidebar-wrapper.detailed {
   display: flex;
   max-width: none;
+  padding-top: 18px;
   opacity: 1;
 }
 
@@ -363,22 +364,6 @@
 
 .icon:hover {
   opacity: 0.8;
-}
-
-.sidebar-close-btn {
-  position: absolute;
-  left: auto;
-  top: 0%;
-  right: 0%;
-  bottom: auto;
-
-  transition: opacity 300ms ease;
-
-  cursor: pointer;
-}
-
-.sidebar-close-btn:hover {
-  color: var(--grey600-d5bebe21);
 }
 
 .job-sidebar-wrapper {

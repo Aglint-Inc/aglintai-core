@@ -324,6 +324,12 @@
 }
 
 @media screen and (max-width: 479px) {
+  .slot-input-search-job {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 479px) {
   .mobile-hide {
     display: none;
   }
