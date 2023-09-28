@@ -53,6 +53,22 @@ const FormOne = ({ nextSlide }) => {
               value: false,
             },
           },
+          screeningConfig: {
+            feedbackVisible: false,
+            screening: {
+              minScore: true,
+              minApplicants: true,
+              minNoApplicants: 40,
+              minNoResumeScore: 50,
+            },
+            useAglintMatchingAlgo: true,
+            shortlist: {
+              algoScore: true,
+              interviewScore: true,
+              minAlgoScore: 8,
+              minInterviewScore: 80,
+            },
+          },
         },
         slideNo: 0,
       },

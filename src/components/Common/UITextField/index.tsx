@@ -31,6 +31,7 @@ type Props = {
   children?: any;
   height?: string;
   noBorder?: boolean;
+  width: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -60,6 +61,7 @@ const UITextField = React.forwardRef(
       children,
       defaultValue,
       noBorder,
+      width,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -150,6 +152,7 @@ const UITextField = React.forwardRef(
                 outline: `3px solid ${focus ? borderColor : 'transparent'}`,
               },
             },
+            width: width,
           }}
           {...rest}
         >

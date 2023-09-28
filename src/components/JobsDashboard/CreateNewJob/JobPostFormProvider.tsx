@@ -3,7 +3,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { JobType } from '../types';
+import { JobType, Status } from '../types';
 
 type Question = {
   id: string;
@@ -32,9 +32,25 @@ export type FormJobType = {
   shortListedCount: number;
   jobDescription: string;
   skills: string[];
-  status: 'sourcing' | 'interviewing' | 'closed' | 'draft';
+  status: Status;
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
+  screeningConfig: {
+    screening: {
+      minApplicants: boolean;
+      minScore: boolean;
+      minNoApplicants: number;
+      minNoResumeScore: number;
+    };
+    useAglintMatchingAlgo: boolean;
+    shortlist: {
+      algoScore: boolean;
+      interviewScore: boolean;
+      minAlgoScore: number;
+      minInterviewScore: number;
+    };
+    feedbackVisible: boolean;
+  };
 };
 
 export type JobFormState = {
@@ -253,8 +269,9 @@ async function saveJobPostToDb(
       .update({
         screening_setting: {
           interviewType: jobForm.formFields.interviewType,
-          interviewConfig: jobForm.formFields.interviewConfig,
+          ...jobForm.formFields.screeningConfig,
         },
+        screening_questions: [jobForm.formFields.interviewConfig],
       })
       .eq('id', jobForm.jobPostId);
     if (error) throw new Error(error.message);

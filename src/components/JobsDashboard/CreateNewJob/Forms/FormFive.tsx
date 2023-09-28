@@ -213,12 +213,7 @@ const StandardScreenSingle = ({
             }}
           />
         </Stack>
-        <Collapse
-          in={param.value}
-          translate='yes'
-          unmountOnExit={false}
-          mountOnEnter={false}
-        >
+        <Collapse in={param.value} translate='yes' unmountOnExit mountOnEnter>
           <Stack p={1} gap={1}>
             {qns.map((q) => {
               return (
