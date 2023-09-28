@@ -372,8 +372,8 @@ export default function AppLayout({ children }) {
                 <Stack py={'10px'}>
                   <Stack px={'15px'}>
                     <NavMenuBottom
-                      // isNotificationVisible={false}
-                      // isProfileVisible={false}
+                      isNotificationVisible={false}
+                      isProfileVisible={false}
                       isMyNotification={router.pathname.includes(
                         pageRoutes.NOTIFICATIONS,
                       )}

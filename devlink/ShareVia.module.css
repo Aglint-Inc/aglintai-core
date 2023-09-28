@@ -165,6 +165,14 @@
   color: var(--blue800-09c1dfbf);
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -283,10 +291,6 @@
 
 .color-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .text-sm.color-emial {

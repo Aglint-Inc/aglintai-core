@@ -17,4 +17,6 @@ declare function JobCandidateCard(props: {
   statusTextColor?: Types.Devlink.RuntimeProps;
   textStatus?: React.ReactNode;
   textAppliedOn?: React.ReactNode;
+  onClickCard?: Types.Devlink.RuntimeProps;
+  onClickCheckbox?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

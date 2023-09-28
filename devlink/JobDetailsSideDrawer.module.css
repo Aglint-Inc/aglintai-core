@@ -638,6 +638,10 @@
   display: none;
 }
 
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .div-block-299 {
   display: flex;
   align-items: center;
@@ -677,6 +681,10 @@
   outline-offset: 0px;
   outline-style: none;
   outline-width: 3px;
+}
+
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
 }
 
 .aui-button {

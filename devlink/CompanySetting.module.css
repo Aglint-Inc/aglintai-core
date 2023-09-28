@@ -449,6 +449,10 @@
   display: none;
 }
 
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .rd-email-temp-wrapper {
   display: grid;
   grid-auto-columns: 1fr;
@@ -563,6 +567,10 @@
   outline-offset: 0px;
   outline-style: none;
   outline-width: 3px;
+}
+
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
 }
 
 .aui-button {

@@ -5,7 +5,6 @@ declare function InterviewScreenFeedback(props: {
   as?: React.ElementType;
   slotCompanyLogo?: Types.Devlink.Slot;
   onClickShare?: Types.Devlink.RuntimeProps;
-  onClickDownloadFeedback?: Types.Devlink.RuntimeProps;
   slotFeedbackCard?: Types.Devlink.Slot;
   slotProfileImage?: Types.Devlink.Slot;
   textName?: React.ReactNode;

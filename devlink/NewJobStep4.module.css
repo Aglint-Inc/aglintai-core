@@ -294,6 +294,14 @@
   display: none;
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .cj-main-wrapper {
   position: relative;
 
@@ -464,10 +472,6 @@
   padding: 1px 6px;
   border-radius: 4px;
   font-weight: 600;
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .yellow-300 {

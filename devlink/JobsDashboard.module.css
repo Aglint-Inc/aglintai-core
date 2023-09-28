@@ -313,6 +313,14 @@
   display: none;
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .div-block-371 {
   display: flex;
   align-items: center;
