@@ -136,6 +136,7 @@ export type JobsContextType = {
   }: {
     path: string;
     value: any;
+    saveField?: 'job-details' | 'screening';
   }) => Promise<void> | null;
 };
 const initialContextValue: JobsContextType = {
@@ -246,6 +247,17 @@ async function saveJobPostToDb(
       .select();
     if (error) throw new Error(error.message);
     return data[0] as JobType;
+  } else {
+    const { error } = await supabase
+      .from('public_jobs')
+      .update({
+        screening_setting: {
+          interviewType: jobForm.formFields.interviewType,
+          interviewConfig: jobForm.formFields.interviewConfig,
+        },
+      })
+      .eq('id', jobForm.jobPostId);
+    if (error) throw new Error(error.message);
   }
 }
 

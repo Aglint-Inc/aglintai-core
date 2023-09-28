@@ -26,7 +26,7 @@ import {
 const FormFive = () => {
   const {
     jobForm: { formFields },
-    dispatch,
+    handleUpdateFormFields,
   } = useJobForm();
 
   // const [] = useState();
@@ -38,23 +38,19 @@ const FormFive = () => {
       isAiPoweredScreeningChecked={isInterviewAiPowered}
       onClickAiPoweredScreening={{
         onClick: () => {
-          dispatch({
-            type: 'editJobField',
-            payload: {
-              path: 'interviewType',
-              value: 'ai-powered',
-            },
+          handleUpdateFormFields({
+            path: 'interviewType',
+            value: 'ai-powered',
+            saveField: 'screening',
           });
         },
       }}
       onClickStandardScreening={{
         onClick: () => {
-          dispatch({
-            type: 'editJobField',
-            payload: {
-              path: 'interviewType',
-              value: 'questions-preset',
-            },
+          handleUpdateFormFields({
+            path: 'interviewType',
+            value: 'standard',
+            saveField: 'screening',
           });
         },
       }}
@@ -139,6 +135,7 @@ const AiScreeningConfigParams = () => {
                 checked={paramVal}
                 onChange={() => {
                   handleUpdateFormFields({
+                    saveField: 'screening',
                     path: `interviewConfig.[${p}].value`,
                     value: !paramVal,
                   });
@@ -182,6 +179,7 @@ const StandardScreenSingle = ({
       { question: questionInput, id: nanoid() },
     ];
     handleUpdateFormFields({
+      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });
@@ -208,6 +206,7 @@ const StandardScreenSingle = ({
             checked={param.value}
             onChange={() => {
               handleUpdateFormFields({
+                saveField: 'screening',
                 path: `interviewConfig.[${paramKey}].value`,
                 value: !param.value,
               });
@@ -236,6 +235,7 @@ const StandardScreenSingle = ({
                 slotInput={
                   <Stack p={0.4}>
                     <UITextField
+                      noBorder
                       onChange={(e) => setQuestionInput(e.target.value)}
                       value={questionInput}
                     />
@@ -294,6 +294,7 @@ const InterviewQn = ({
     ) as InterviewConfigType['questions'];
     const updatedQns = existingQns.filter((q) => q.id !== qnId);
     handleUpdateFormFields({
+      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });
@@ -317,6 +318,7 @@ const InterviewQn = ({
       },
     );
     handleUpdateFormFields({
+      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });
@@ -334,6 +336,7 @@ const InterviewQn = ({
         slotInput={
           <Stack p={0.4}>
             <UITextField
+              noBorder
               onChange={(e) => setEditingQn(e.target.value)}
               value={editingQn}
             />
