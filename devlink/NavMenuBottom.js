@@ -11,38 +11,42 @@ export function NavMenuBottom({
   isMyNotification = true,
   isMyCompany = true,
   onClickLogout = {},
+  isNotificationVisible = true,
+  isProfileVisible = true,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "rd-menu-items-wrapper")}
       tag="div"
     >
-      <_Builtin.Link
-        className={_utils.cx(_styles, "nav_sublink")}
-        button={false}
-        id="cover-letter"
-        options={{
-          href: "/notifications",
-        }}
-      >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "embed_flex")}
-          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3DcurrentColor%3E%0A%20%20%3Cpath%20d%3D%22M13.3333%2011.334H14.6666V12.6673H1.33325V11.334H2.66659V6.66732C2.66659%203.7218%205.0544%201.33398%207.99992%201.33398C10.9455%201.33398%2013.3333%203.7218%2013.3333%206.66732V11.334ZM11.9999%2011.334V6.66732C11.9999%204.45818%2010.2091%202.66732%207.99992%202.66732C5.79078%202.66732%203.99992%204.45818%203.99992%206.66732V11.334H11.9999ZM5.99992%2014.0007H9.99992V15.334H5.99992V14.0007Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
-        />
-        <_Builtin.Block tag="div">{"Notifications"}</_Builtin.Block>
-        {isMyNotification ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "aui_nav_sublink_active")}
-            tag="div"
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "embed_flex")}
-              value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3DcurrentColor%3E%0A%20%20%3Cpath%20d%3D%22M13.3333%2011.334H14.6666V12.6673H1.33325V11.334H2.66659V6.66732C2.66659%203.7218%205.0544%201.33398%207.99992%201.33398C10.9455%201.33398%2013.3333%203.7218%2013.3333%206.66732V11.334ZM11.9999%2011.334V6.66732C11.9999%204.45818%2010.2091%202.66732%207.99992%202.66732C5.79078%202.66732%203.99992%204.45818%203.99992%206.66732V11.334H11.9999ZM5.99992%2014.0007H9.99992V15.334H5.99992V14.0007Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
-            />
-            <_Builtin.Block tag="div">{"Notifications"}</_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
-      </_Builtin.Link>
+      {isNotificationVisible ? (
+        <_Builtin.Link
+          className={_utils.cx(_styles, "nav_sublink")}
+          button={false}
+          id="cover-letter"
+          options={{
+            href: "/notifications",
+          }}
+        >
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "embed_flex")}
+            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3DcurrentColor%3E%0A%20%20%3Cpath%20d%3D%22M13.3333%2011.334H14.6666V12.6673H1.33325V11.334H2.66659V6.66732C2.66659%203.7218%205.0544%201.33398%207.99992%201.33398C10.9455%201.33398%2013.3333%203.7218%2013.3333%206.66732V11.334ZM11.9999%2011.334V6.66732C11.9999%204.45818%2010.2091%202.66732%207.99992%202.66732C5.79078%202.66732%203.99992%204.45818%203.99992%206.66732V11.334H11.9999ZM5.99992%2014.0007H9.99992V15.334H5.99992V14.0007Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
+          />
+          <_Builtin.Block tag="div">{"Notifications"}</_Builtin.Block>
+          {isMyNotification ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "aui_nav_sublink_active")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex")}
+                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3DcurrentColor%3E%0A%20%20%3Cpath%20d%3D%22M13.3333%2011.334H14.6666V12.6673H1.33325V11.334H2.66659V6.66732C2.66659%203.7218%205.0544%201.33398%207.99992%201.33398C10.9455%201.33398%2013.3333%203.7218%2013.3333%206.66732V11.334ZM11.9999%2011.334V6.66732C11.9999%204.45818%2010.2091%202.66732%207.99992%202.66732C5.79078%202.66732%203.99992%204.45818%203.99992%206.66732V11.334H11.9999ZM5.99992%2014.0007H9.99992V15.334H5.99992V14.0007Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block tag="div">{"Notifications"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Link>
+      ) : null}
       <_Builtin.Link
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
@@ -85,34 +89,36 @@ export function NavMenuBottom({
         </_Builtin.Block>
         <_Builtin.Block tag="div">{"Logout"}</_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Link
-        className={_utils.cx(_styles, "rd-menu-profile-block")}
-        button={false}
-        options={{
-          href: "/profile",
-        }}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "rd-menu-profile-image")}
-          tag="div"
+      {isProfileVisible ? (
+        <_Builtin.Link
+          className={_utils.cx(_styles, "rd-menu-profile-block")}
+          button={false}
+          options={{
+            href: "/profile",
+          }}
         >
-          {slotProfileImage}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "rd-menu-profile-info")}
-          tag="div"
-        >
-          <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
-            {textName}
-          </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-400")}
+            className={_utils.cx(_styles, "rd-menu-profile-image")}
             tag="div"
           >
-            {textEmail}
+            {slotProfileImage}
           </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Link>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "rd-menu-profile-info")}
+            tag="div"
+          >
+            <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
+              {textName}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-sm", "color-grey-400")}
+              tag="div"
+            >
+              {textEmail}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Link>
+      ) : null}
     </_Component>
   );
 }

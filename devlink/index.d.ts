@@ -84,6 +84,7 @@ export * from "./InterviewStartScreen";
 export * from "./InterviewTimer";
 export * from "./InterviewTranscriptCard";
 export * from "./JobCandidateCard";
+export * from "./JobDashboardEmpty";
 export * from "./JobDetail";
 export * from "./JobDetailLeft";
 export * from "./JobDetailsSideDrawer";

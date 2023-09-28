@@ -143,6 +143,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -243,10 +247,6 @@
   .text-lg.fw-semibold.is-profile {
     align-self: flex-end;
   }
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -634,6 +634,10 @@
   }
 }
 
+.text-sm.fw-semibold.text-white.text-first-capitialize {
+  text-transform: capitalize;
+}
+
 .text-sm.fw-semibold.margin-top-2 {
   margin-top: 2px;
 }
@@ -672,6 +676,10 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.text-green-700 {
+  color: var(--green700-a1b0a24f);
 }
 
 .text-sm.color-grey-400 {
