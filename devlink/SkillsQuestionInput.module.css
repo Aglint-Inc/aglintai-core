@@ -39,6 +39,8 @@
   background-color: var(--white-80449ce7);
 
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+
+  cursor: pointer;
 }
 
 .icons {

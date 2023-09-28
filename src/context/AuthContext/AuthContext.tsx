@@ -42,6 +42,8 @@ const defaultProvider = {
 supabase.auth.onAuthStateChange((event, session) => {
   if (session) {
     try {
+      Cookie.remove('access_token');
+      Cookie.set('access_token', session.access_token);
       mixpanel.identify(session.user.id);
       if (session?.user?.user_metadata?.role)
         mixpanel.people.set({
@@ -49,8 +51,6 @@ supabase.auth.onAuthStateChange((event, session) => {
           Role: 'Recruiter',
           'User ID': session?.user?.id,
         });
-      Cookie.remove('access_token');
-      Cookie.set('access_token', session.access_token);
     } catch (error) {
       //
     }

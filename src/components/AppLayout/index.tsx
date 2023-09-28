@@ -216,8 +216,14 @@ export default function AppLayout({ children }) {
                     sx={{ width: '100%', height: '100%' }}
                   />
                 }
+                isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
                 textEmail={recruiter?.email}
                 textName={recruiter?.name}
+                onClickLogout={{
+                  onClick: (e) => {
+                    handleLogout(e);
+                  },
+                }}
               />
             </Stack>
           </Stack>

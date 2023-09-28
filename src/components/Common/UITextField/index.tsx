@@ -29,6 +29,8 @@ type Props = {
   InputProps?: any;
   defaultValue?: string | number;
   children?: any;
+  height?: string;
+  noBorder?: boolean;
 };
 
 // eslint-disable-next-line react/display-name
@@ -57,8 +59,9 @@ const UITextField = React.forwardRef(
       InputProps,
       children,
       defaultValue,
+      noBorder,
     }: Props,
-    ref?: React.Ref<HTMLInputElement>
+    ref?: React.Ref<HTMLInputElement>,
   ) => {
     const [focus, setfocus] = useState(false);
     const [contentExceeded, setContentExceeded] = useState(false);
@@ -134,10 +137,14 @@ const UITextField = React.forwardRef(
               bgcolor: disabled ? 'transparent' : 'white.700',
               fontSize: '14px',
               fieldset: {
-                border: `1px solid ${outlineColor}!important`,
+                border: noBorder
+                  ? 'transparent'
+                  : `1px solid ${outlineColor}!important`,
               },
               '&:hover fieldset': {
-                border: `1px solid ${outlineColor}!important`,
+                border: noBorder
+                  ? 'transparent'
+                  : `1px solid ${outlineColor}!important`,
               },
               '&': {
                 outline: `3px solid ${focus ? borderColor : 'transparent'}`,
@@ -166,7 +173,7 @@ const UITextField = React.forwardRef(
         )}
       </Stack>
     );
-  }
+  },
 );
 
 export default UITextField;

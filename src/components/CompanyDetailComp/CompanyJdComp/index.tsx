@@ -1,0 +1,215 @@
+import { Stack, Typography } from '@mui/material';
+import React from 'react';
+
+import { Checkbox } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
+import { RecruiterType } from '@/src/types/data.types';
+
+import { debouncedSave } from '../utils';
+import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
+
+const CompanyJdComp = ({ setIsSaving }) => {
+  const { recruiter, setRecruiter } = useAuthDetails();
+
+  const handleChange = async (recruit: RecruiterType) => {
+    setIsSaving(true);
+    debouncedSave(recruit, recruiter.id);
+    setRecruiter(recruit);
+    setIsSaving(false);
+  };
+
+  return (
+    <Stack p={'4px'} spacing={'20px'}>
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Company Overview'
+        value={recruiter?.company_overview}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            company_overview: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Equal Opportunity Statement'
+        value={recruiter?.e_o_statement}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            e_o_statement: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Application Process'
+        placeholder='Instructions on how to apply, deadlines, and any required documentation'
+        value={recruiter?.application_process}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            application_process: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Mission & Vision Statement'
+        value={recruiter?.m_v_statement}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            m_v_statement: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
+      <Stack>
+        <UITypography
+          type={'medium'}
+          color={palette.grey[800]}
+          fontBold='normal'
+        >
+          Employment Type
+        </UITypography>
+        <Stack
+          pt={'10px'}
+          direction='row'
+          flexWrap='wrap'
+          justifyContent='flex-start'
+          alignItems='flex-start'
+          gap={'10px'}
+        >
+          {Object.entries(recruiter?.employment_type).map((type, ind) => {
+            return (
+              <Stack
+                key={ind}
+                direction={'row'}
+                p={'4px'}
+                alignItems={'center'}
+                spacing={'8px'}
+              >
+                <Checkbox
+                  isChecked={type[1]}
+                  onClickCheck={{
+                    onClick: () => {
+                      recruiter.employment_type[type[0]] = !type[1];
+                      handleChange({ ...recruiter });
+                    },
+                  }}
+                />
+                <Typography
+                  variant='body2'
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    recruiter.employment_type[type[0]] = !type[1];
+                    handleChange({ ...recruiter });
+                  }}
+                >
+                  {employmentType[type[0]]}
+                </Typography>
+              </Stack>
+            );
+          })}
+        </Stack>
+      </Stack>
+      <Stack>
+        <UITypography
+          type={'medium'}
+          color={palette.grey[800]}
+          fontBold='normal'
+        >
+          Workplace Type
+        </UITypography>
+        <Stack
+          pt={'10px'}
+          direction='row'
+          flexWrap='wrap'
+          justifyContent='flex-start'
+          alignItems='flex-start'
+          gap={'10px'}
+        >
+          {Object.entries(recruiter?.workplace_type).map((type, ind) => {
+            return (
+              <Stack
+                key={ind}
+                direction={'row'}
+                p={'4px'}
+                alignItems={'center'}
+                spacing={'8px'}
+              >
+                <Checkbox
+                  isChecked={type[1]}
+                  onClickCheck={{
+                    onClick: () => {
+                      recruiter.workplace_type[type[0]] = !type[1];
+                      handleChange({ ...recruiter });
+                    },
+                  }}
+                />
+                <Stack direction={'row'} spacing={'4px'}>
+                  <Typography
+                    variant='body2'
+                    sx={{ cursor: 'pointer', color: palette.grey[800] }}
+                    onClick={() => {
+                      recruiter.workplace_type[type[0]] = !type[1];
+                      handleChange({ ...recruiter });
+                    }}
+                  >
+                    {workplaceType[type[0]][0]}
+                  </Typography>
+                  <Typography
+                    variant='body2'
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      recruiter.workplace_type[type[0]] = !type[1];
+                      handleChange({ ...recruiter });
+                    }}
+                  >
+                    {workplaceType[type[0]][1]}
+                  </Typography>
+                </Stack>
+              </Stack>
+            );
+          })}
+        </Stack>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default CompanyJdComp;
+
+const employmentType = {
+  fulltime: 'Full Time',
+  parttime: 'Part Time',
+  contract: 'Contract',
+  temporary: 'Temporary',
+  volunteer: 'Volunteer',
+  internship: 'Internship',
+};
+
+const workplaceType = {
+  onsite: ['On Site', '(Employees come to work in person)'],
+  hybrid: ['Hybrid', '(Employees work on-site and off-site)'],
+  offsite: ['On Site', '(Employees work off-site)'],
+};

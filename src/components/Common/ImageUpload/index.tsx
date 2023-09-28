@@ -61,8 +61,8 @@ function ImageUpload({ setImage, image, size }) {
             <Avatar
               src={image}
               sx={{
-                width: 80,
-                height: 80,
+                width: size,
+                height: size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'cover',

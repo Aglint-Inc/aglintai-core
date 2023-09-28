@@ -10,4 +10,6 @@ declare function CompanySetting(props: {
   slotCompanyJdSetting?: Types.Devlink.Slot;
   slotEmailTemplate?: Types.Devlink.Slot;
   isSaved?: Types.Visibility.VisibilityConditions;
+  isSaving?: Types.Visibility.VisibilityConditions;
+  slotSavingLottie?: Types.Devlink.Slot;
 }): React.JSX.Element;

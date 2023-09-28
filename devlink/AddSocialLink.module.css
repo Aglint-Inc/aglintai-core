@@ -21,6 +21,14 @@
   opacity: 0.7;
 }
 
+.cj-add-skill-btn-new.disable {
+  cursor: auto;
+}
+
+.cj-add-skill-btn-new.disable:hover {
+  opacity: 1;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -103,6 +111,14 @@
 
 .text-kale-800 {
   color: var(--kale800-682c1482);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.fw-semibold.text-kale-800.text-first-capital {
+  text-transform: capitalize;
 }
 
 .color-black {

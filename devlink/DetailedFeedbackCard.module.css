@@ -23,9 +23,17 @@
 .div-block-304 {
   display: flex;
   overflow: hidden;
+  width: 14px;
+  height: 14px;
   justify-content: center;
   align-items: center;
+
   border-radius: 100px;
+}
+
+.div-block-304.yellow-200 {
+  width: 12px;
+  height: 12px;
 }
 
 .yellow-200 {
@@ -38,10 +46,6 @@
 
 .green-200 {
   background-color: var(--green200-3c062f81);
-}
-
-.group-778 {
-  object-fit: cover;
 }
 
 .text-sm {
@@ -101,6 +105,14 @@
 
 .text-kale-800 {
   color: var(--kale800-682c1482);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.fw-semibold.text-kale-800.text-first-capital {
+  text-transform: capitalize;
 }
 
 .color-black {

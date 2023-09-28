@@ -7,6 +7,9 @@ export function DetailedFeedbackCard({
   as: _Component = _Builtin.Block,
   textHeader = "Language quality",
   textDescription = "Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.",
+  slotScore,
+  textScorePercentage = "50%",
+  textColorScore = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "lan-analysis-block")} tag="div">
@@ -20,16 +23,10 @@ export function DetailedFeedbackCard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-304", "yellow-200")}
+            className={_utils.cx(_styles, "div-block-304")}
             tag="div"
           >
-            <_Builtin.Image
-              className={_utils.cx(_styles, "group-778")}
-              loading="lazy"
-              width={10}
-              height={10}
-              src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6505a3b9dd11d76c95408993_Group-778.svg"
-            />
+            {slotScore}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(
@@ -39,8 +36,9 @@ export function DetailedFeedbackCard({
               "text-yellow-500"
             )}
             tag="div"
+            {...textColorScore}
           >
-            {"50%"}
+            {textScorePercentage}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -10,12 +10,12 @@
 
 .vectors-wrapper-24 {
   display: flex;
-  width: 172.91229248046875px;
-  height: 27.200000762939453px;
+  width: 192px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 
-  object-fit: cover;
+  object-fit: none;
 }

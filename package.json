@@ -25,6 +25,7 @@
     "@tiptap/extension-underline": "^2.1.11",
     "@tiptap/react": "^2.1.11",
     "@tiptap/starter-kit": "^2.1.11",
+    "@types/lodash": "^4.14.199",
     "@webflow/webflow-cli": "^1.6.3",
     "axios": "^1.5.0",
     "dayjs": "1.11.6",
@@ -51,6 +52,7 @@
     "sass": "1.55.0",
     "supabase": "^1.99.5",
     "tiptap": "^1.32.2",
+    "uuid": "^9.0.1",
     "vercel-toast": "^1.8.0",
     "xlsx": "^0.18.5"
   },

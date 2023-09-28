@@ -6,7 +6,7 @@ import React from 'react';
 
 import { NewJobStep2 } from '@/devlink';
 
-import { useJobList } from '../JobPostFormProvider';
+import { useJobForm } from '../JobPostFormProvider';
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';
 
@@ -42,13 +42,11 @@ const jobTypeOptions = [
 
 const FormTwo = ({ formError, setFormError }) => {
   const {
-    jobs: { editingJob },
-    dispatch,
-  } = useJobList();
+    jobForm: { formFields },
+    handleUpdateFormFields,
+  } = useJobForm();
 
-  const {
-    job: { company, jobTitle, jobLocation, jobType, workPlaceType },
-  } = editingJob;
+  const { company, jobTitle, jobLocation, jobType, workPlaceType } = formFields;
   return (
     <>
       <NewJobStep2
@@ -61,12 +59,9 @@ const FormTwo = ({ formError, setFormError }) => {
                 value={jobTitle}
                 onChange={(e) => {
                   setFormError((p) => ({ ...p, jobTitle: '' }));
-                  dispatch({
-                    type: 'setJobdetails',
-                    payload: {
-                      path: 'jobTitle',
-                      value: String(e.target.value),
-                    },
+                  handleUpdateFormFields({
+                    path: 'jobTitle',
+                    value: String(e.target.value),
                   });
                 }}
                 error={Boolean(formError.jobTitle)}
@@ -81,12 +76,9 @@ const FormTwo = ({ formError, setFormError }) => {
                 value={company}
                 onChange={(e) => {
                   setFormError((p) => ({ ...p, company: '' }));
-                  dispatch({
-                    type: 'setJobdetails',
-                    payload: {
-                      path: 'company',
-                      value: String(e.target.value),
-                    },
+                  handleUpdateFormFields({
+                    path: 'company',
+                    value: String(e.target.value),
                   });
                 }}
                 placeholder='Ex: Google'
@@ -105,12 +97,9 @@ const FormTwo = ({ formError, setFormError }) => {
                 label='Workplace Type'
                 menuOptions={workPlaceOptions}
                 onChange={(e) => {
-                  dispatch({
-                    type: 'setJobdetails',
-                    payload: {
-                      path: 'workPlaceType',
-                      value: String(e.target.value),
-                    },
+                  handleUpdateFormFields({
+                    path: 'workPlaceType',
+                    value: String(e.target.value),
                   });
                 }}
                 value={
@@ -131,12 +120,9 @@ const FormTwo = ({ formError, setFormError }) => {
                 value={jobLocation}
                 onChange={(e) => {
                   setFormError((p) => ({ ...p, location: '' }));
-                  dispatch({
-                    type: 'setJobdetails',
-                    payload: {
-                      path: 'jobLocation',
-                      value: String(e.target.value),
-                    },
+                  handleUpdateFormFields({
+                    path: 'jobLocation',
+                    value: String(e.target.value),
                   });
                 }}
                 placeholder='Ex : San Fransisco, United States'
@@ -147,12 +133,9 @@ const FormTwo = ({ formError, setFormError }) => {
                 label='Job Type'
                 menuOptions={jobTypeOptions}
                 onChange={(e) => {
-                  dispatch({
-                    type: 'setJobdetails',
-                    payload: {
-                      path: 'jobType',
-                      value: String(e.target.value),
-                    },
+                  handleUpdateFormFields({
+                    path: 'jobType',
+                    value: String(e.target.value),
                   });
                 }}
                 value={isEmpty(jobType) ? jobTypeOptions[0].value : jobType}

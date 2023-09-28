@@ -7,4 +7,5 @@ declare function DetailedFeedback(props: {
   onClickDownloadFeedback?: Types.Devlink.RuntimeProps;
   onClickBack?: Types.Devlink.RuntimeProps;
   slotDetailedFeedback?: Types.Devlink.Slot;
+  slotTranscript?: Types.Devlink.Slot;
 }): React.JSX.Element;

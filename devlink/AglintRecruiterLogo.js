@@ -11,7 +11,7 @@ export function AglintRecruiterLogo({ as: _Component = _Builtin.Block }) {
         loading="lazy"
         width={172.91229248046875}
         height={27.200000762939453}
-        src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65031d8735487b0b57bae946_Vectors-Wrapper.svg"
+        src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65151dd17132709cabb2f037_App%20Logo%20(1).svg"
       />
     </_Component>
   );

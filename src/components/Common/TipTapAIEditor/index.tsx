@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import styles from './TipTapAIEditor.module.scss';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
-import MenuBtns from './MenuBtns';
+import MenuBtns, { GenerateDescription } from './MenuBtns';
 
 export type TipTapAIEditorParams = {
   placeholder: string;
@@ -123,6 +123,7 @@ const TipTapAIEditor = ({
         >
           <EditorContent editor={editor} />
         </Stack>
+        <GenerateDescription />
       </div>
     </TipTapCtx.Provider>
   );

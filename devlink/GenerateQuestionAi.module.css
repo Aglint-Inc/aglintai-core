@@ -23,4 +23,22 @@
   border-radius: 4px;
 
   color: hsla(186.38297872340425, 95.92%, 9.61%, 1.00);
+
+  cursor: pointer;
+}
+
+.div-questio-2.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-color: var(--grey400-863ed4b5);
+
+  background-color: var(--grey300-03a46dba);
+
+  color: var(--grey400-863ed4b5);
+
+  cursor: auto;
 }

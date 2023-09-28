@@ -9,6 +9,7 @@ export const fetchJobs = () => {
   return supabase
     .from('public_jobs')
     .select()
+    .order('created_at', { ascending: false })
     .then(({ data, error }) => {
       if (!error) {
         return data;

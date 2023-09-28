@@ -1,23 +1,32 @@
 import Drawer from '@mui/material/Drawer';
 import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
+import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useState } from 'react';
+import React from 'react';
 
 import { CreateNewJobDrawer, StepBottomProgress } from '@/devlink';
+import toast from '@/src/utils/toast';
 
 import FormFive from './Forms/FormFive';
 import FormFour from './Forms/FormFour';
 import FormOne from './Forms/FormOne';
+import FormSix from './Forms/FormSix';
 import FormThree from './Forms/FormThree';
 import FormTwo from './Forms/FormTwo';
-import { useJobList } from './JobPostFormProvider';
+import FormSeven from './Forms/SuccessPage';
+import { useJobForm } from './JobPostFormProvider';
+import { JobType } from '../types';
 
-function CreateNewJob({ open, setDrawerOpen }) {
-  const {
-    jobs: { editingJob },
-  } = useJobList();
-  const [slideNo, setSlideNo] = useState(0);
+type CreateNewJobParams = {
+  open: boolean;
+  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setJobs: React.Dispatch<React.SetStateAction<JobType[]>>;
+};
+
+function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
+  const { jobForm, dispatch } = useJobForm();
   const [formError, setFormError] = useState({
     jobTitle: '',
     company: '',
@@ -25,11 +34,7 @@ function CreateNewJob({ open, setDrawerOpen }) {
   });
 
   let formSlide = null;
-
-  const changeSlide = (newSlideNo: number) => {
-    setSlideNo(newSlideNo);
-  };
-
+  const { slideNo } = jobForm;
   if (slideNo === 0) {
     formSlide = <FormOne nextSlide={() => changeSlide(1)} />;
   } else if (slideNo === 1) {
@@ -40,14 +45,28 @@ function CreateNewJob({ open, setDrawerOpen }) {
     formSlide = <FormFour />;
   } else if (slideNo === 4) {
     formSlide = <FormFive />;
+  } else if (slideNo == 5) {
+    formSlide = <FormSix />;
+  } else if (slideNo == 6) {
+    formSlide = <FormSeven />;
   }
+  const changeSlide = async (newSlideNo: number) => {
+    try {
+      dispatch({
+        type: 'moveToSlide',
+        payload: {
+          slideNo: newSlideNo,
+        },
+      });
+    } catch (err) {
+      // console.log(err);
+    }
+  };
 
   const isformValid = () => {
     let flag = true;
 
-    const {
-      job: { company, jobTitle, jobLocation },
-    } = editingJob;
+    const { company, jobTitle, jobLocation } = jobForm.formFields;
     if (slideNo === 2) {
       if (isEmpty(jobTitle)) {
         flag = false;
@@ -65,33 +84,43 @@ function CreateNewJob({ open, setDrawerOpen }) {
       }
     }
 
+    if (slideNo == 2) {
+      if (isEmpty(get(jobForm, 'formFields.jobDescription', ''))) {
+        toast.error('Please provide job description to move to next Step');
+        return false;
+      }
+
+      if (isEmpty(get(jobForm, 'formFields.skills', []))) {
+        toast.error('Please provide required skills to move to next Step');
+        return false;
+      }
+    }
     return flag;
   };
 
   const handleClickBack = () => {
-    setSlideNo((p) => (p !== 0 ? p - 1 : p));
+    changeSlide(slideNo !== 0 ? slideNo - 1 : slideNo);
   };
 
   const handleClickContinue = () => {
     if (slideNo === 2) {
       if (!isformValid()) return;
     }
-    setSlideNo((p) => p + 1);
+    changeSlide(slideNo + 1);
   };
 
+  const handleDrawerClose = () => {
+    setDrawerOpen(() => false);
+    //remove generated ai skills
+    changeSlide(0);
+    dispatch({ type: 'closeForm' });
+  };
   return (
     <>
-      <Drawer
-        anchor='right'
-        open={open}
-        onClose={() => {
-          setDrawerOpen(() => false);
-          changeSlide(0);
-        }}
-      >
+      <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
         <Stack p={2} width={'500px'} position={'relative'} minHeight={'100vh'}>
           <CreateNewJobDrawer
-            onClickClose={{ onClick: () => setDrawerOpen(() => false) }}
+            onClickClose={{ onClick: handleDrawerClose }}
             slotNewJobStep={formSlide}
             slotBottomButtonProgress={
               slideNo !== 0 && (
@@ -107,10 +136,14 @@ function CreateNewJob({ open, setDrawerOpen }) {
                     <>
                       <LinearProgress
                         variant='determinate'
-                        value={(slideNo / 5) * 100}
+                        color='primary'
+                        value={(slideNo / 6) * 100}
                       />
                     </>
                   }
+                  isDraftSaved={false}
+                  isSavetoDraftVisible={true}
+                  isSkipButtonVisible={true}
                 />
               )
             }

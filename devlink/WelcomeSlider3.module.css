@@ -581,6 +581,14 @@
   color: var(--kale800-682c1482);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.fw-semibold.text-kale-800.text-first-capital {
+  text-transform: capitalize;
+}
+
 .color-black {
   color: var(--black-0fdbd865);
 }

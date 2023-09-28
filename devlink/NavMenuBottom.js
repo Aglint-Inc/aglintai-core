@@ -10,6 +10,7 @@ export function NavMenuBottom({
   textEmail = "robert@aglinthq.com",
   isMyNotification = true,
   isMyCompany = true,
+  onClickLogout = {},
 }) {
   return (
     <_Component
@@ -68,12 +69,10 @@ export function NavMenuBottom({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Link>
-      <_Builtin.Link
-        className={_utils.cx(_styles, "", "subnav-link", "text-red-600")}
-        button={false}
-        options={{
-          href: "/login",
-        }}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "", "subnav-link")}
+        tag="div"
+        {...onClickLogout}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "menu-item-icon-block")}
@@ -85,7 +84,7 @@ export function NavMenuBottom({
           />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{"Logout"}</_Builtin.Block>
-      </_Builtin.Link>
+      </_Builtin.Block>
       <_Builtin.Link
         className={_utils.cx(_styles, "rd-menu-profile-block")}
         button={false}
@@ -107,7 +106,7 @@ export function NavMenuBottom({
             {textName}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+            className={_utils.cx(_styles, "text-sm", "color-grey-400")}
             tag="div"
           >
             {textEmail}

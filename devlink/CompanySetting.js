@@ -19,6 +19,8 @@ export function CompanySetting({
   slotCompanyJdSetting,
   slotEmailTemplate,
   isSaved = false,
+  isSaving = false,
+  slotSavingLottie,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -52,6 +54,30 @@ export function CompanySetting({
                 tag="div"
               >
                 {"Saved"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+          {isSaving ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "loading-saved")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-361")}
+                tag="div"
+              >
+                {slotSavingLottie}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "text-sm",
+                  "fw-semibold",
+                  "text-grey-400"
+                )}
+                tag="div"
+              >
+                {"Saving"}
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
@@ -3380,7 +3406,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Comapny Info"}
+                {"Company Info"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink

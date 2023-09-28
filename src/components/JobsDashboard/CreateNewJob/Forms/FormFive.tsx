@@ -1,24 +1,32 @@
-import { NewJobStep5 } from '@/devlink';
+import React from 'react';
 
-import { useJobList } from '../JobPostFormProvider';
+import {
+  NewJobStep5,
+  // SkillsQuestion,
+  SkillsQuestionCard,
+  SkillsWithoutQuestionToggle,
+  SkillsWithQuestionToggle,
+} from '@/devlink';
+
+import { useJobForm } from '../JobPostFormProvider';
 
 const FormFive = () => {
   const {
-    jobs: {
-      editingJob: {
-        job: { interviewType },
-      },
+    jobForm: {
+      formFields: { interviewType },
     },
     dispatch,
-  } = useJobList();
+  } = useJobForm();
+
+  const isInterviewAiPowered = interviewType === 'ai-powered';
 
   return (
     <NewJobStep5
-      isAiPoweredScreeningChecked={interviewType === 'ai-powered'}
+      isAiPoweredScreeningChecked={isInterviewAiPowered}
       onClickAiPoweredScreening={{
         onClick: () => {
           dispatch({
-            type: 'setJobdetails',
+            type: 'editJobField',
             payload: {
               path: 'interviewType',
               value: 'ai-powered',
@@ -29,7 +37,7 @@ const FormFive = () => {
       onClickStandardScreening={{
         onClick: () => {
           dispatch({
-            type: 'setJobdetails',
+            type: 'editJobField',
             payload: {
               path: 'interviewType',
               value: 'questions-preset',
@@ -37,8 +45,26 @@ const FormFive = () => {
           });
         },
       }}
-      isStandardScreeningChecked={interviewType === 'questions-preset'}
-      // slotSkillQuestion={<></>}
+      isStandardScreeningChecked={!isInterviewAiPowered}
+      howItWorksLink={{
+        href: 'https://www.google.com',
+      }}
+      isHowItWorksVisible
+      slotSkillsQuestion={
+        <>
+          {isInterviewAiPowered ? (
+            <SkillsWithoutQuestionToggle />
+          ) : (
+            <SkillsWithQuestionToggle
+              slotQuestions={
+                <>
+                  <SkillsQuestionCard textQuestion={'qn'} />
+                </>
+              }
+            />
+          )}
+        </>
+      }
     />
   );
 };

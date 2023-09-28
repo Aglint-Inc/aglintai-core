@@ -2452,77 +2452,77 @@ export interface Database {
         Row: {
           address: Json | null
           application_process: string | null
-          available_roles: string[] | null
+          available_roles: string[]
           company_overview: string | null
           company_website: string | null
-          departments: string[] | null
+          departments: string[]
           e_o_statement: string | null
           email: string | null
-          employment_type: Json | null
+          employment_type: Json
           hr_contact: Json | null
           id: string
           industry: string | null
           logo: string | null
           m_v_statement: string | null
           name: string | null
-          office_locations: string[] | null
+          office_locations: string[]
           phone_number: string | null
           primary_contact: Json | null
           recruiter_type: string | null
           socials: Json | null
-          technology_score: string[] | null
+          technology_score: string[]
           user_id: string
-          workplace_type: Json | null
+          workplace_type: Json
         }
         Insert: {
           address?: Json | null
           application_process?: string | null
-          available_roles?: string[] | null
+          available_roles?: string[]
           company_overview?: string | null
           company_website?: string | null
-          departments?: string[] | null
+          departments?: string[]
           e_o_statement?: string | null
           email?: string | null
-          employment_type?: Json | null
+          employment_type?: Json
           hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: string[] | null
+          office_locations?: string[]
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
           socials?: Json | null
-          technology_score?: string[] | null
+          technology_score?: string[]
           user_id: string
-          workplace_type?: Json | null
+          workplace_type?: Json
         }
         Update: {
           address?: Json | null
           application_process?: string | null
-          available_roles?: string[] | null
+          available_roles?: string[]
           company_overview?: string | null
           company_website?: string | null
-          departments?: string[] | null
+          departments?: string[]
           e_o_statement?: string | null
           email?: string | null
-          employment_type?: Json | null
+          employment_type?: Json
           hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: string[] | null
+          office_locations?: string[]
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
           socials?: Json | null
-          technology_score?: string[] | null
+          technology_score?: string[]
           user_id?: string
-          workplace_type?: Json | null
+          workplace_type?: Json
         }
         Relationships: [
           {
