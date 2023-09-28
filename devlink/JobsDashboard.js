@@ -7,21 +7,11 @@ import _styles from "./JobsDashboard.module.css";
 export function JobsDashboard({
   as: _Component = _Builtin.Block,
   onClickCreateNewJob = {},
-  draftCount = "0",
-  sourcingCount = "0",
-  interviewingCount = "0",
-  closedCount = "0",
   slotAllJobs,
-  slotDraftJobs,
-  slotSourcingJobs,
-  slotInterviewingJobs,
-  slotClosedJobs,
-  slotSearchJobs,
-  onClickAll = {},
-  onClickDraft = {},
-  onClickSourcing = {},
-  onClickInterviewing = {},
-  onClickClosed = {},
+  slotSearchInputJob,
+  jobCount = "0",
+  textJobsHeader = "All Jobs",
+  isJobCountTagVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
@@ -31,25 +21,49 @@ export function JobsDashboard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "div-block-372")}
             tag="div"
           >
-            {"Jobs"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+              tag="div"
+            >
+              {textJobsHeader}
+            </_Builtin.Block>
+            {isJobCountTagVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-373")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {jobCount}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "rd-job-create-btn")}
+            className={_utils.cx(_styles, "div-block-371")}
             tag="div"
-            {...onClickCreateNewJob}
           >
-            <_Builtin.Image
-              className={_utils.cx(_styles, "vectors-wrapper-23")}
-              loading="lazy"
-              width={12}
-              height={12}
-              src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650318de9c321e2d4561e9ea_Vectors-Wrapper.svg"
-            />
-            <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-              {"Create New Job"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot-input-search-job")}
+              tag="div"
+            >
+              {slotSearchInputJob}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "rd-job-create-btn")}
+              tag="div"
+              {...onClickCreateNewJob}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M4.08317%202.91732V1.16732C4.08317%200.845154%204.34434%200.583984%204.6665%200.583984H9.33317C9.65534%200.583984%209.9165%200.845154%209.9165%201.16732V2.91732H12.2498C12.572%202.91732%2012.8332%203.17849%2012.8332%203.50065V11.6673C12.8332%2011.9895%2012.572%2012.2507%2012.2498%2012.2507H1.74984C1.42767%2012.2507%201.1665%2011.9895%201.1665%2011.6673V3.50065C1.1665%203.17849%201.42767%202.91732%201.74984%202.91732H4.08317ZM2.33317%209.33398V11.084H11.6665V9.33398H2.33317ZM2.33317%208.16732H11.6665V4.08398H2.33317V8.16732ZM5.24984%201.75065V2.91732H8.74984V1.75065H5.24984ZM6.4165%206.41732H7.58317V7.58398H6.4165V6.41732Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block tag="div">{"Add Job"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -59,249 +73,12 @@ export function JobsDashboard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "rd-job-stats-wrapper")}
+          className={_utils.cx(_styles, "all-job-list")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rd-jobs-stat-block", "yellow-100")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-count-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "rd-stat-number", "zero")}
-                tag="div"
-              >
-                {draftCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-yellow-800")}
-              tag="div"
-            >
-              {"Jobs in Draft"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rd-jobs-stat-block", "blue-100")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-count-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "rd-stat-number", "zero")}
-                tag="div"
-              >
-                {sourcingCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "color-blue-800")}
-              tag="div"
-            >
-              {"Sourcing"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rd-jobs-stat-block", "kale-100")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-count-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "rd-stat-number", "zero")}
-                tag="div"
-              >
-                {interviewingCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-kale-800")}
-              tag="div"
-            >
-              {"Interviewing"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rd-jobs-stat-block", "red-100")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-count-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "rd-stat-number", "zero")}
-                tag="div"
-              >
-                {closedCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-red-800")}
-              tag="div"
-            >
-              {"Closed"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "rd-job-list-wrapper")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rd-search-filter")}
-            tag="div"
-          >
-            {slotSearchJobs}
-          </_Builtin.Block>
-          <_Builtin.TabsWrapper
-            className={_utils.cx(_styles, "rd-job-list-tab")}
-            current="Tab 1"
-            easing="ease"
-            fadeIn={300}
-            fadeOut={100}
-          >
-            <_Builtin.TabsMenu
-              className={_utils.cx(_styles, "rd-job-list-tab-menu")}
-              tag="div"
-            >
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "rd-job-list-tab-link")}
-                data-w-tab="Tab 1"
-                {...onClickAll}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"All"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "rd-job-list-tab-link")}
-                data-w-tab="Tab 2"
-                {...onClickDraft}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Draft"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "rd-job-list-tab-link")}
-                data-w-tab="Tab 3"
-                {...onClickSourcing}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Sourcing"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "rd-job-list-tab-link")}
-                data-w-tab="Tab 4"
-                {...onClickInterviewing}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Interviewing"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "rd-job-list-tab-link")}
-                data-w-tab="Tab 5"
-                {...onClickClosed}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Closed"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-            </_Builtin.TabsMenu>
-            <_Builtin.TabsContent
-              className={_utils.cx(_styles, "rd-job-list-tab-content")}
-              tag="div"
-            >
-              <_Builtin.TabsPane
-                className={_utils.cx(_styles, "rd-job-list-tab-pane")}
-                tag="div"
-                data-w-tab="Tab 1"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "all-job-list")}
-                  tag="div"
-                >
-                  {slotAllJobs ?? <JobsListingCard />}
-                </_Builtin.Block>
-              </_Builtin.TabsPane>
-              <_Builtin.TabsPane
-                className={_utils.cx(_styles, "rd-job-list-tab-pane")}
-                tag="div"
-                data-w-tab="Tab 2"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "all-job-list")}
-                  tag="div"
-                >
-                  {slotDraftJobs}
-                </_Builtin.Block>
-              </_Builtin.TabsPane>
-              <_Builtin.TabsPane
-                className={_utils.cx(_styles, "rd-job-list-tab-pane")}
-                tag="div"
-                data-w-tab="Tab 3"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "all-job-list")}
-                  tag="div"
-                >
-                  {slotSourcingJobs}
-                </_Builtin.Block>
-              </_Builtin.TabsPane>
-              <_Builtin.TabsPane
-                className={_utils.cx(_styles, "rd-job-list-tab-pane")}
-                tag="div"
-                data-w-tab="Tab 4"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "all-job-list")}
-                  tag="div"
-                >
-                  {slotInterviewingJobs}
-                </_Builtin.Block>
-              </_Builtin.TabsPane>
-              <_Builtin.TabsPane
-                className={_utils.cx(_styles, "rd-job-list-tab-pane")}
-                tag="div"
-                data-w-tab="Tab 5"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "all-job-list")}
-                  tag="div"
-                >
-                  {slotClosedJobs}
-                </_Builtin.Block>
-              </_Builtin.TabsPane>
-            </_Builtin.TabsContent>
-          </_Builtin.TabsWrapper>
+          {slotAllJobs ?? <JobsListingCard />}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.all-job-list%7B%0Aheight%3A%20calc(100vh%20-%20350px)%3B%0A%20%20%20%20overflow%3A%20scroll%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

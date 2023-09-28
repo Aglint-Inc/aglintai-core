@@ -1,4 +1,5 @@
 import { Autocomplete, Stack, TextField } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -41,7 +42,7 @@ const SlideDetailsOne = () => {
     },
   });
 
-  const formValidation = (): boolean => {
+  const formValidation = async (): Promise<boolean> => {
     let isValid = true;
     if (!details?.website) {
       isValid = false;
@@ -53,24 +54,30 @@ const SlideDetailsOne = () => {
         ...error,
       });
     } else {
-      if (validateURL(details?.website)) {
-        error.website = {
-          error: false,
-          msg: '',
-        };
-        setError({
-          ...error,
+      await axios
+        .post('/api/dns/lookup', {
+          url: details?.website,
+        })
+        .then((res) => {
+          if (res.status == 200 && res.data) {
+            error.website = {
+              error: false,
+              msg: '',
+            };
+            setError({
+              ...error,
+            });
+          } else {
+            isValid = false;
+            error.website = {
+              error: true,
+              msg: 'Website is not valid url',
+            };
+            setError({
+              ...error,
+            });
+          }
         });
-      } else {
-        isValid = false;
-        error.website = {
-          error: true,
-          msg: 'Website is not valid url',
-        };
-        setError({
-          ...error,
-        });
-      }
     }
 
     if (!details?.industry) {
@@ -95,7 +102,7 @@ const SlideDetailsOne = () => {
   };
 
   const submitHandler = async () => {
-    if (formValidation() && recruiter?.id) {
+    if ((await formValidation()) && recruiter?.id) {
       const { error } = await supabase
         .from('recruiter')
         .update({
@@ -147,6 +154,7 @@ const SlideDetailsOne = () => {
             />
             <Autocomplete
               disableClearable
+              freeSolo
               fullWidth
               options={industries}
               onChange={(event, value) => {
@@ -181,10 +189,18 @@ const SlideDetailsOne = () => {
 export default SlideDetailsOne;
 
 export function validateURL(url) {
+  // Check if the URL starts with 'http://' or 'https://'
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    // If not, prepend 'https://' to the URL
+    url = 'https://' + url;
+  }
+
   try {
+    // Try creating a new URL object; this will throw an exception if the URL is invalid
     new URL(url);
     return true;
   } catch (error) {
+    // The URL is invalid
     return false;
   }
 }

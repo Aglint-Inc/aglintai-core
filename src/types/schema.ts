@@ -2310,6 +2310,7 @@ export interface Database {
           location: string | null
           logo: string | null
           overview: string | null
+          posted_by: string
           qualifications: string[] | null
           recruiter_id: string
           requirements: string[] | null
@@ -2335,6 +2336,7 @@ export interface Database {
           location?: string | null
           logo?: string | null
           overview?: string | null
+          posted_by?: string
           qualifications?: string[] | null
           recruiter_id?: string
           requirements?: string[] | null
@@ -2360,6 +2362,7 @@ export interface Database {
           location?: string | null
           logo?: string | null
           overview?: string | null
+          posted_by?: string
           qualifications?: string[] | null
           recruiter_id?: string
           requirements?: string[] | null
@@ -2469,7 +2472,7 @@ export interface Database {
           phone_number: string | null
           primary_contact: Json | null
           recruiter_type: string | null
-          socials: Json | null
+          socials: Json
           technology_score: string[]
           user_id: string
           workplace_type: Json
@@ -2494,7 +2497,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
-          socials?: Json | null
+          socials?: Json
           technology_score?: string[]
           user_id: string
           workplace_type?: Json
@@ -2519,7 +2522,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
-          socials?: Json | null
+          socials?: Json
           technology_score?: string[]
           user_id?: string
           workplace_type?: Json
@@ -3146,6 +3149,79 @@ export interface Database {
           type?: string
         }
         Relationships: []
+      }
+      support_ticket: {
+        Row: {
+          action_pending: Json
+          assign_to: string | null
+          attachments: string[] | null
+          company_id: string | null
+          content: Json[]
+          created_at: string | null
+          id: string
+          job_id: string | null
+          level: string
+          state: string
+          title: string
+          type: string[]
+          updated_at: string | null
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          action_pending?: Json
+          assign_to?: string | null
+          attachments?: string[] | null
+          company_id?: string | null
+          content?: Json[]
+          created_at?: string | null
+          id?: string
+          job_id?: string | null
+          level?: string
+          state?: string
+          title: string
+          type: string[]
+          updated_at?: string | null
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          action_pending?: Json
+          assign_to?: string | null
+          attachments?: string[] | null
+          company_id?: string | null
+          content?: Json[]
+          created_at?: string | null
+          id?: string
+          job_id?: string | null
+          level?: string
+          state?: string
+          title?: string
+          type?: string[]
+          updated_at?: string | null
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_ticket_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_ticket_job_id_fkey"
+            columns: ["job_id"]
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_ticket_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       url_auth: {
         Row: {

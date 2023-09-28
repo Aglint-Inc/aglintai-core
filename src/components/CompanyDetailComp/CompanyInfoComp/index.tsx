@@ -192,7 +192,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         }
         slotLocation={
           <Stack p={'4px'}>
-            {recruiter.office_locations.map((loc, ind) => {
+            {recruiter?.office_locations.map((loc, ind) => {
               return (
                 <>
                   {edit.location == ind ? (

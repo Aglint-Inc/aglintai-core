@@ -184,6 +184,11 @@ const SlideLogin = () => {
               helperText={
                 signUpError.password.error ? signUpError.password.msg : ''
               }
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleLogin();
+                }
+              }}
               InputProps={{
                 disableUnderline: true,
                 endAdornment: (

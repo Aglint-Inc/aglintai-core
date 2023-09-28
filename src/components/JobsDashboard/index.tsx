@@ -2,7 +2,7 @@ import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { JobsDashboard } from '@/devlink';
+import { JobDashboardEmpty, JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobDB } from '@/src/types/data.types';
 
@@ -10,12 +10,7 @@ import CreateNewJob from './CreateNewJob';
 import JobPostFormProvider from './CreateNewJob/JobPostFormProvider';
 import JobsList from './JobsList';
 import { JobType, Status } from './types';
-import {
-  fetchApplications,
-  fetchJobs,
-  filterJobsByStatus,
-  searchJobs,
-} from './utils';
+import { fetchApplications, fetchJobs, searchJobs, sendEmail } from './utils';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
@@ -57,70 +52,77 @@ const DashboardComp = () => {
     }
   }, [router]);
 
+ 
+
   return (
     <Stack height={'100%'} width={'100%'}>
       {loading ? (
         <Loader />
       ) : (
         <>
-          <JobsDashboard
-            draftCount={filterJobsByStatus(jobs, 'draft').length}
-            closedCount={filterJobsByStatus(jobs, 'closed').length}
-            interviewingCount={filterJobsByStatus(jobs, 'interviewing').length}
-            sourcingCount={filterJobsByStatus(jobs, 'sourcing').length}
-            slotAllJobs={
-              <JobsList jobs={filteredJobs} applications={applications} />
-            }
-            slotDraftJobs={
-              <JobsList
-                jobs={filteredJobs.filter((job) => job.status === 'draft')}
-                applications={applications}
-              />
-            }
-            slotClosedJobs={
-              <JobsList
-                jobs={filteredJobs.filter((job) => job.status === 'closed')}
-                applications={applications}
-              />
-            }
-            slotInterviewingJobs={
-              <JobsList
-                jobs={filteredJobs.filter(
-                  (job) => job.status === 'interviewing',
-                )}
-                applications={applications}
-              />
-            }
-            slotSourcingJobs={
-              <JobsList
-                jobs={filteredJobs.filter((job) => job.status === 'sourcing')}
-                applications={applications}
-              />
-            }
-            slotSearchJobs={
-              <Stack maxWidth={'260px'} width={'100%'}>
-                <UITextField
-                  fullWidth
-                  placeholder='Search'
-                  onChange={(e) => {
-                    setFilteredJobs(searchJobs(jobs, e.target.value));
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Icon variant='Search' width='14' height='14' />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Stack>
-            }
-            onClickCreateNewJob={{
-              onClick: () => {
-                setDrawerOpen(true);
-              },
-            }}
-          />
+          {jobs.length == 0 ? (
+            <JobDashboardEmpty
+              onClickAddJob={{
+                onClick: () => {
+                  setDrawerOpen(true);
+                },
+              }}
+              onClickRequestIntegration={{ onClick: sendEmail }}
+            />
+          ) : (
+            <JobsDashboard
+              slotAllJobs={
+                <JobsList jobs={filteredJobs} applications={applications} />
+              }
+              // slotDraftJobs={
+              //   <JobsList
+              //     jobs={filteredJobs.filter((job) => job.status === 'draft')}
+              //     applications={applications}
+              //   />
+              // }
+              // slotClosedJobs={
+              //   <JobsList
+              //     jobs={filteredJobs.filter((job) => job.status === 'closed')}
+              //     applications={applications}
+              //   />
+              // }
+              // slotInterviewingJobs={
+              //   <JobsList
+              //     jobs={filteredJobs.filter(
+              //       (job) => job.status === 'interviewing',
+              //     )}
+              //     applications={applications}
+              //   />
+              // }
+              slotSearchInputJob={
+                <Stack maxWidth={'260px'} width={'100%'}>
+                  <UITextField
+                    fullWidth
+                    placeholder='Search'
+                    onChange={(e) => {
+                      setFilteredJobs(searchJobs(jobs, e.target.value));
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Icon variant='Search' width='14' height='14' />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Stack>
+              }
+              isJobCountTagVisible={filteredJobs.length > 0}
+              jobCount={filteredJobs.length}
+              textJobsHeader={''}
+              onClickCreateNewJob={{
+                onClick: () => {
+                  setDrawerOpen(true);
+                },
+              }}
+            />
+          )}
+
           <JobPostFormProvider setJobs={setJobs}>
             <CreateNewJob
               open={drawerOpen}
