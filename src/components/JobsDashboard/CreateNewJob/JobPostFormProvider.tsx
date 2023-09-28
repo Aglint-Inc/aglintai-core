@@ -4,13 +4,23 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { useJobs } from '@/src/context/JobsContext';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { JobType } from '../types';
+import { getSeedJobFormData } from './seedFormData';
+import { JobType, Status } from '../types';
 
+type Question = {
+  id: string;
+  question: string;
+};
+export type InterviewParam =
+  | 'skill'
+  | 'cultural'
+  | 'personality'
+  | 'softSkills';
 export type InterviewConfigType = {
+  id: string;
   copy: string;
-  label: string;
   value: boolean;
-  questions: string[];
+  questions: Question[];
 };
 
 export type FormJobType = {
@@ -24,9 +34,26 @@ export type FormJobType = {
   shortListedCount: number;
   jobDescription: string;
   skills: string[];
-  status: 'sourcing' | 'interviewing' | 'closed' | 'draft';
+  status: Status;
   interviewType: 'ai-powered' | 'questions-preset';
-  interviewConfig: InterviewConfigType[];
+  interviewConfig: Record<InterviewParam, InterviewConfigType>;
+  screeningConfig: {
+    screening: {
+      minApplicants: boolean;
+      minScore: boolean;
+      minNoApplicants: number;
+      minNoResumeScore: number;
+    };
+    useAglintMatchingAlgo: boolean;
+    shortlist: {
+      algoScore: boolean;
+      interviewScore: boolean;
+      minAlgoScore: number;
+      minInterviewScore: number;
+    };
+    feedbackVisible: boolean;
+  };
+  recruiterId: string;
 };
 
 export type JobFormState = {
@@ -51,7 +78,9 @@ const initialState: JobFormState = {
 type JobsAction =
   | {
       type: 'initForm';
-      payload: JobFormState;
+      payload: {
+        recruiterId: string;
+      };
     }
   | {
       type: 'editJobField';
@@ -89,7 +118,10 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
-      const newState = cloneDeep(action.payload);
+      const { recruiterId } = action.payload;
+      const newState = getSeedJobFormData();
+      newState.formFields.recruiterId = recruiterId;
+      newState.slideNo = 1;
       return newState;
     }
     case 'closeForm': {
@@ -128,6 +160,7 @@ export type JobsContextType = {
   }: {
     path: string;
     value: any;
+    saveField?: 'job-details' | 'screening';
   }) => Promise<void> | null;
 };
 const initialContextValue: JobsContextType = {
@@ -153,8 +186,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const { handleJobUpdate, jobsData } = useJobs();
 
   const updateFormTodb = async (currState, saveField) => {
-    const d = await saveJobPostToDb(currState, saveField);
     if (currState.slideNo > 1) {
+      const d = await saveJobPostToDb(currState, saveField);
       if (get(currState, 'jobPostId', false)) return;
       dispatch({
         type: 'setPostMeta',
@@ -164,12 +197,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           jobPostId: d.id,
         },
       });
-      const updatedJobs = jobsData.jobs.filter((j) => j.id !== d.id);
+      const updatedJobs = get(jobsData, 'jobs', []).filter(
+        (j) => j.id !== d.id,
+      );
       handleJobUpdate([d, ...updatedJobs]);
-      // setJobs((p) => {
-      //   const updatedJobs = p.filter((j) => j.id !== d.id);
-      //   return [d, ...updatedJobs];
-      // });
     }
   };
 
@@ -233,10 +264,23 @@ async function saveJobPostToDb(
           jobForm.formFields.company,
           jobForm.formFields.jobLocation,
         ),
+        recruiter_id: jobForm.formFields.recruiterId,
       })
       .select();
     if (error) throw new Error(error.message);
     return data[0] as JobType;
+  } else {
+    const { error } = await supabase
+      .from('public_jobs')
+      .update({
+        screening_setting: {
+          interviewType: jobForm.formFields.interviewType,
+          ...jobForm.formFields.screeningConfig,
+        },
+        screening_questions: [jobForm.formFields.interviewConfig],
+      })
+      .eq('id', jobForm.jobPostId);
+    if (error) throw new Error(error.message);
   }
 }
 

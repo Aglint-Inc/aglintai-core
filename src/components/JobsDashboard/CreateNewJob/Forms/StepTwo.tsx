@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import { useEffect, useState } from 'react';
 
 import {
-  NewJobStep3,
+  NewJobStep2,
   SkillPill,
   SkillsInput,
   SuggestedSkillPill,
@@ -79,7 +79,7 @@ const FormThree = () => {
   };
 
   return (
-    <NewJobStep3
+    <NewJobStep2
       onClickAddSkill={{
         onClick: () => {
           setSkillForm(true);
