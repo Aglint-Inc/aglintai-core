@@ -3,7 +3,10 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { JobScreening } from '@/devlink2';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  JobApplication,
+  JobApplicationSections,
+} from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -11,7 +14,6 @@ import ApplicationCard from './ApplicationCard';
 import CompanyLogo from './Common/CompanyLogo';
 import ImportCandidates from './ImportCandidates';
 import SearchField from './SearchField';
-import { getApplicantCount } from './utils';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 
@@ -44,13 +46,24 @@ const JobApplicationComponent = () => {
   const { applicationsData, openImportCandidates, setOpenImportCandidates } =
     useJobApplications();
 
-  const { job } = applicationsData;
+  const { job, applications } = applicationsData;
 
-  const applicantCounts = getApplicantCount(applicationsData.applications);
+  const [section, setSection] = useState(JobApplicationSections.APPLIED);
 
-  const [filteredApplications, setFilteredApplications] = useState(
-    applicationsData.applications,
-  );
+  // eslint-disable-next-line security/detect-object-injection
+  const sectionApplications = applications[section].list;
+
+  const [filteredApplications, setFilteredApplications] =
+    useState(sectionApplications);
+
+  const handleSetSection = () => {
+    setSection((prev) =>
+      prev === JobApplicationSections.APPLIED
+        ? JobApplicationSections.INTERVIEWING
+        : JobApplicationSections.APPLIED,
+    );
+  };
+
   return (
     <>
       <MuiPopup
@@ -65,19 +78,29 @@ const JobApplicationComponent = () => {
           onClick: () => setOpenImportCandidates(true),
         }}
         slotProfileImage={
-          <CompanyLogo companyName={job.company} companyLogo={job.logo} />
+          <Stack
+            onClick={() => {
+              handleSetSection();
+            }}
+          >
+            <CompanyLogo companyName={job.company} companyLogo={job.logo} />
+          </Stack>
         }
         textRole={job.job_title}
         textCompanyLocation={job.company}
         slotCandidateJobCard={
           <ApplicantsList applications={filteredApplications} />
         }
-        countAllApplicant={`${applicantCounts.all} applicants`}
-        countScreening={`${applicantCounts.screening} applicants`}
-        countShortlisted={`${applicantCounts.shortlisted} applicants`}
-        countSelected={`${applicantCounts.selected} applicants`}
+        countAllApplicant={`${applications.applied.count} applicants`}
+        countScreening={`${applications.interviewing.count} applicants`}
+        countShortlisted={`${applications.rejected.count} applicants`}
+        countSelected={`${applications.selected.count} applicants`}
         slotSearchInput={
-          <SearchField setFilteredApplications={setFilteredApplications} />
+          <SearchField
+            applications={sectionApplications}
+            section={section}
+            setFilteredApplications={setFilteredApplications}
+          />
         }
       />
     </>

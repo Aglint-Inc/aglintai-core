@@ -6,7 +6,7 @@ export const pageRoutes = Object.freeze({
   HOMEPAGE: '/',
   JOBS: '/jobs',
   COMPANY: '/company',
-  CANDIDATE_DATABSE: '/candidate_database',
+  CANDIDATES: '/candidates',
   NOTIFICATIONS: '/notifications',
   SETTINGS: '/settings',
   PROFILE: '/profile',
