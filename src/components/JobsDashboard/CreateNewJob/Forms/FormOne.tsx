@@ -7,6 +7,9 @@ const FormOne = ({ nextSlide }) => {
   const handleInitiliseForm = () => {
     dispatch({
       type: 'initForm',
+      payload: {
+        recruiterId: '',
+      },
     });
     nextSlide();
   };

@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { JobDashboardEmpty, JobsDashboard } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 
 import CreateNewJob from './CreateNewJob';
-import JobPostFormProvider from './CreateNewJob/JobPostFormProvider';
+import { useJobForm } from './CreateNewJob/JobPostFormProvider';
 import JobsList from './JobsList';
 import { searchJobs, sendEmail } from './utils';
 import Icon from '../Common/Icons/Icon';
@@ -18,7 +19,8 @@ const DashboardComp = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { jobsData, initialLoad } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState(jobsData.jobs);
-
+  const { recruiter } = useAuthDetails();
+  const { dispatch: jobFormDispatch } = useJobForm();
   useEffect(() => {
     if (router.isReady) {
       if (router.query.flow == 'create') {
@@ -74,6 +76,12 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
+                  jobFormDispatch({
+                    type: 'initForm',
+                    payload: {
+                      recruiterId: recruiter.id,
+                    },
+                  });
                   setDrawerOpen(true);
                 },
               }}
@@ -105,8 +113,6 @@ const DashboardComp = () => {
                   />
                 </Stack>
               }
-              // isJobCountTagVisible={filteredJobs.length > 0}
-              // jobCount={filteredJobs.length}
               textJobsHeader={''}
               onClickCreateNewJob={{
                 onClick: () => {
@@ -116,13 +122,11 @@ const DashboardComp = () => {
             />
           )}
 
-          <JobPostFormProvider>
-            <CreateNewJob
-              open={drawerOpen}
-              setDrawerOpen={setDrawerOpen}
-              // setJobs={setJobs}
-            />
-          </JobPostFormProvider>
+          <CreateNewJob
+            open={drawerOpen}
+            setDrawerOpen={setDrawerOpen}
+            // setJobs={setJobs}
+          />
         </>
       )}
     </Stack>

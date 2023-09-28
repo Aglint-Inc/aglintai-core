@@ -53,6 +53,7 @@ export type FormJobType = {
     };
     feedbackVisible: boolean;
   };
+  recruiterId: string;
 };
 
 export type JobFormState = {
@@ -77,6 +78,9 @@ const initialState: JobFormState = {
 type JobsAction =
   | {
       type: 'initForm';
+      payload: {
+        recruiterId: string;
+      };
     }
   | {
       type: 'editJobField';
@@ -115,6 +119,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
     }
     case 'initForm': {
       const newState = getSeedJobFormData();
+      newState.slideNo = 1;
       return newState;
     }
     case 'closeForm': {
