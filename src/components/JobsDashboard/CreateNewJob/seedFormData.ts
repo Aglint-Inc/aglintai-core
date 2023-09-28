@@ -17,7 +17,7 @@ export const getSeedJobFormData = () => {
       jobTitle: 'Engineer',
       jobType: '',
       shortListedCount: 0,
-      status: 'draft',
+      status: 'inactive',
       workPlaceType: '',
       skills: ['HTML'],
       jobDescription: 's',
@@ -64,6 +64,7 @@ export const getSeedJobFormData = () => {
           minInterviewScore: 80,
         },
       },
+      recruiterId: '',
     },
   };
   return seedFormState;

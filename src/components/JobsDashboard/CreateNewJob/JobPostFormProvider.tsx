@@ -195,8 +195,9 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           jobPostId: d.id,
         },
       });
-      const updatedJobs =
-        jobsData && jobsData.jobs.filter((j) => j.id !== d.id);
+      const updatedJobs = get(jobsData, 'jobs', []).filter(
+        (j) => j.id !== d.id,
+      );
       handleJobUpdate([d, ...updatedJobs]);
       // setJobs((p) => {
       //   const updatedJobs = p.filter((j) => j.id !== d.id);

@@ -63,9 +63,8 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
 
   const isformValid = () => {
     let flag = true;
-
     const { company, jobTitle, jobLocation } = jobForm.formFields;
-    if (slideNo === 2) {
+    if (slideNo === 1) {
       if (isEmpty(jobTitle)) {
         flag = false;
         setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
@@ -101,9 +100,8 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
   };
 
   const handleClickContinue = () => {
-    if (slideNo === 2) {
-      if (!isformValid()) return;
-    }
+    if (!isformValid()) return;
+
     changeSlide(slideNo + 1);
   };
 
