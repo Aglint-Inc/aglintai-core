@@ -46,7 +46,7 @@ const JobApplicationComponent = () => {
   const { applicationsData, openImportCandidates, setOpenImportCandidates } =
     useJobApplications();
 
-  const { job,applications } = applicationsData;
+  const { job, applications } = applicationsData;
 
   const [section, setSection] = useState(JobApplicationSections.APPLIED);
 
