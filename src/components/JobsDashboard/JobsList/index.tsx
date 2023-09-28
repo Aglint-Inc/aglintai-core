@@ -23,7 +23,17 @@ interface JobsListProps {
 const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
   const router = useRouter();
   if (jobs.length == 0) {
-    return <JobEmptyState />;
+    return (
+      <JobEmptyState
+        onClickHere={{
+          onClick: () => {
+            router.push(pageRoutes.JOBS + '?flow=create', undefined, {
+              shallow: true,
+            });
+          },
+        }}
+      />
+    );
   }
   return (
     <Stack>
@@ -73,6 +83,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                     textAlign: 'center',
                     background: palette.grey[200],
                     justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Icon variant='CompanyOutlined' />
@@ -98,12 +109,14 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                 alt={job.job_title}
               >
                 <Stack
+                  direction={'row'}
                   sx={{
                     width: '100%',
                     height: '100%',
                     textAlign: 'center',
                     background: palette.grey[200],
                     justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Icon variant='CompanyOutlined' />

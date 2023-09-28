@@ -5,11 +5,12 @@ import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobType, Status } from './types';
 
-export const fetchJobs = () => {
+export const fetchJobs = (recruiter_id) => {
   return supabase
     .from('public_jobs')
     .select()
     .order('created_at', { ascending: false })
+    .eq('recruiter_id', recruiter_id)
     .then(({ data, error }) => {
       if (!error) {
         return data;
@@ -81,13 +82,15 @@ export function searchJobs(jobs, searchString) {
   const search = searchString.toLowerCase();
 
   // Use the filter method to search for matching job titles or statuses
-  const filteredData = jobs.filter(ele=>ele.job_title).filter((item) => {
-    const jobTitle = item.job_title.toLowerCase();
-    const status = item.status.toLowerCase();
+  const filteredData = jobs
+    .filter((ele) => ele.job_title)
+    .filter((item) => {
+      const jobTitle = item.job_title.toLowerCase();
+      const status = item.status.toLowerCase();
 
-    // Check if the job title or status contains the search string
-    return jobTitle.includes(search) || status.includes(search);
-  });
+      // Check if the job title or status contains the search string
+      return jobTitle.includes(search) || status.includes(search);
+    });
 
   return filteredData;
 }
