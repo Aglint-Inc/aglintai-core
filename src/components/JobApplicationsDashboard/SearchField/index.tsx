@@ -12,10 +12,12 @@ import UITextField from '../../Common/UITextField';
 const SearchField = ({
   applications,
   section,
+  jobUpdate,
   setFilteredApplications,
 }: {
   applications: JobApplication[];
   section: JobApplicationSections;
+  jobUpdate: boolean;
   setFilteredApplications: Dispatch<SetStateAction<JobApplication[]>>;
 }) => {
   const { applicationsData } = useJobApplications();
@@ -30,7 +32,7 @@ const SearchField = ({
 
   useEffect(() => {
     handleSearch(value);
-  }, [applicationsData.count, section]);
+  }, [applicationsData.count, section, jobUpdate]);
 
   const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();
