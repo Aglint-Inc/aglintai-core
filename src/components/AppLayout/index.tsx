@@ -11,12 +11,12 @@ import {
   NavMenuBottom,
   NotificationAndProfile,
   SettingsAndLogout,
-  SideNavMenu,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
 import MenuLottie from './MenuLottie';
+import SideNavbar from './SideNavbar';
 import { MobileJobNavBar } from './utils';
 
 export default function AppLayout({ children }) {
@@ -34,7 +34,7 @@ export default function AppLayout({ children }) {
       if (
         router.pathname === pageRoutes.JOBS ||
         router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATE_DATABSE ||
+        router.pathname === pageRoutes.CANDIDATES ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
         router.pathname === pageRoutes.SETTINGS ||
         router.pathname === pageRoutes.PROFILE
@@ -53,7 +53,7 @@ export default function AppLayout({ children }) {
       if (
         router.pathname === pageRoutes.JOBS ||
         router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATE_DATABSE ||
+        router.pathname === pageRoutes.CANDIDATES ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
         router.pathname === pageRoutes.SETTINGS ||
         router.pathname === pageRoutes.PROFILE
@@ -191,19 +191,16 @@ export default function AppLayout({ children }) {
           borderColor={'grey.200'}
           position={'relative'}
           p={'14px'}
-          bgcolor={'#f8f9f950'}
+          bgcolor={'#25282a'}
         >
           <Stack height={'calc(100vh - 28px)'}>
             <Stack pt={'21px'} pb={'24px'}>
               <AglintRecruiterLogo />
             </Stack>
             <Stack height={'100%'} justifyContent={'space-between'}>
-              <SideNavMenu
-                isMyCandidateDatabase={router.pathname.includes(
-                  pageRoutes.CANDIDATE_DATABSE,
-                )}
-                isMyJobs={router.pathname.includes(pageRoutes.JOBS)}
-              />
+              <Stack spacing={'10px'}>
+                <SideNavbar />
+              </Stack>
               <NavMenuBottom
                 isMyNotification={router.pathname.includes(
                   pageRoutes.NOTIFICATIONS,

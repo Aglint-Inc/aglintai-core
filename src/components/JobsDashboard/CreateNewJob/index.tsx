@@ -3,10 +3,12 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import React from 'react';
 
 import { CreateNewJobDrawer, StepBottomProgress } from '@/devlink';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import FormFive from './Forms/FormFive';
@@ -26,6 +28,7 @@ type CreateNewJobParams = {
 };
 
 function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
+  const router = useRouter();
   const { jobForm, dispatch } = useJobForm();
   const [formError, setFormError] = useState({
     jobTitle: '',
@@ -110,6 +113,9 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
   };
 
   const handleDrawerClose = () => {
+    router.push(pageRoutes.JOBS, undefined, {
+      shallow: true,
+    });
     setDrawerOpen(() => false);
     //remove generated ai skills
     changeSlide(0);

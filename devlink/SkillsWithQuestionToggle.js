@@ -3,6 +3,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { SkillsQuestionCard } from "./SkillsQuestionCard";
 import { AddSocialLink } from "./AddSocialLink";
+import { GenerateQuestion } from "./GenerateQuestion";
 import * as _utils from "./utils";
 import _styles from "./SkillsWithQuestionToggle.module.css";
 
@@ -99,49 +100,7 @@ export function SkillsWithQuestionToggle({
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "generate-question-4")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">
-              {"Generate more questions."}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "button-relative")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-questio-2")}
-                tag="div"
-                {...onClickGenerate}
-              >
-                <_Builtin.Image
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                  alt="__wf_reserved_inherit"
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
-                />
-                <_Builtin.Block tag="div">{"Generate"}</_Builtin.Block>
-              </_Builtin.Block>
-              {isGenerateButtonDisable ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-questio-2", "disable")}
-                  tag="div"
-                >
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "image-37")}
-                    loading="lazy"
-                    width="auto"
-                    height="auto"
-                    alt="__wf_reserved_inherit"
-                    src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
-                  />
-                  <_Builtin.Block tag="div">{"Generate"}</_Builtin.Block>
-                </_Builtin.Block>
-              ) : null}
-            </_Builtin.Block>
-          </_Builtin.Block>
+          <GenerateQuestion />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

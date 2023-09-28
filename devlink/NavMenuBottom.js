@@ -70,7 +70,7 @@ export function NavMenuBottom({
         ) : null}
       </_Builtin.Link>
       <_Builtin.Block
-        className={_utils.cx(_styles, "", "subnav-link", "text-red-600")}
+        className={_utils.cx(_styles, "", "subnav-link")}
         tag="div"
         {...onClickLogout}
       >
@@ -106,7 +106,7 @@ export function NavMenuBottom({
             {textName}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+            className={_utils.cx(_styles, "text-sm", "color-grey-400")}
             tag="div"
           >
             {textEmail}

@@ -16,7 +16,7 @@
 
   transition: all 300ms ease;
 
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  color: var(--white-80449ce7);
   text-decoration: none;
   white-space: nowrap;
   word-break: normal;
@@ -25,7 +25,8 @@
 }
 
 .nav_sublink:hover {
-  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+  opacity: 0.8;
+  color: var(--white-80449ce7);
 }
 
 .nav_sublink.hide {
@@ -77,14 +78,15 @@
 
   border-radius: 6px;
 
-  background-color: rgba(233, 235, 237, 0.5);
+  background-color: rgba(255, 255, 255, 0.06);
 
-  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+  color: var(--white-80449ce7);
   text-decoration: none;
 }
 
 .aui_nav_sublink_active:hover {
-  color: hsla(206.66666666666666, 16.07%, 21.96%, 1.00);
+  opacity: 0.8;
+  color: var(--white-80449ce7);
 }
 
 .subnav-link {
@@ -100,15 +102,15 @@
 
   transition: all 300ms ease;
 
-  color: var(--grey600-d5bebe21);
+  color: var(--red400-dd53ad27);
   text-decoration: none;
 
   cursor: pointer;
 }
 
 .subnav-link:hover {
-  background-color: #f8f9f9;
-  color: var(--grey800-e42b2e06);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--red400-dd53ad27);
 }
 
 .subnav-link:global(.w--current) {
@@ -169,9 +171,9 @@
 
   border-radius: 6px;
 
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.04);
 
-  color: var(--grey800-e42b2e06);
+  color: var(--white-80449ce7);
   text-decoration: none;
 
   cursor: pointer;
