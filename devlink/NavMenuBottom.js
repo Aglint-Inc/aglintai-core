@@ -108,7 +108,7 @@ export function NavMenuBottom({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "max-width-200")}
+              className={_utils.cx(_styles, "", "max-width-130")}
               tag="div"
             >
               {textName}

@@ -212,8 +212,10 @@
   align-items: flex-start;
 }
 
-.max-width-200 {
-  max-width: 200px;
+.max-width-130 {
+  max-width: 130px;
+  flex-wrap: wrap;
+  overflow-wrap: break-word;
 }
 
 .text-sm {
