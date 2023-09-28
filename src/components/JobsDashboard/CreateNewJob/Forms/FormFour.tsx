@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import Image from 'next/image';
 
-import { JobPublished, NewJobStep4, ShareableJobLink } from '@/devlink';
+import { JobPublished, NewJobStep5, ShareableJobLink } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
 import { Status } from '../../types';
@@ -25,7 +25,7 @@ const FormFour = () => {
   const isJobPublished = status === 'sourcing' || status == 'interviewing';
 
   return (
-    <NewJobStep4
+    <NewJobStep5
       slotShareVia={
         <>
           <JobPublished
