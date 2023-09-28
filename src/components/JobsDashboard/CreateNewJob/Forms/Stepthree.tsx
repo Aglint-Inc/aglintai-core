@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import {
   AddSocialLink,
   GenerateQuestion,
-  NewJobStep5,
+  NewJobStep3,
   QuestionSkeletonLoader,
   SkillsQuestionCard,
   SkillsQuestionInput,
@@ -36,7 +36,7 @@ const FormFive = () => {
     get(formFields, 'interviewType', '') === 'ai-powered';
 
   return (
-    <NewJobStep5
+    <NewJobStep3
       isAiPoweredScreeningChecked={isInterviewAiPowered}
       onClickAiPoweredScreening={{
         onClick: () => {

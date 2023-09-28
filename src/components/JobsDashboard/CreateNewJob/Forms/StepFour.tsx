@@ -1,13 +1,12 @@
-/* eslint-disable no-console */
 import { Switch } from '@mui/material';
 import { get } from 'lodash';
 
-import { NewJobStep6 } from '@/devlink';
+import { NewJobStep4 } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
 
 import { FormJobType, useJobForm } from '../JobPostFormProvider';
 
-function FormSix() {
+function StepFour() {
   const { jobForm, handleUpdateFormFields } = useJobForm();
   const screeningConfig = get(jobForm, 'formFields.screeningConfig', {
     feedbackVisible: false,
@@ -33,9 +32,9 @@ function FormSix() {
   const autoShortList =
     screeningConfig.shortlist.algoScore ||
     screeningConfig.shortlist.interviewScore;
-  console.log(screeningConfig.shortlist, autoShortList);
+
   return (
-    <NewJobStep6
+    <NewJobStep4
       isAutomatedScreeningChecked1={screeningConfig.screening.minApplicants}
       isAutomatedScreeningChecked2={screeningConfig.screening.minScore}
       isShortlistCandidateChecked1={screeningConfig.shortlist.interviewScore}
@@ -223,4 +222,4 @@ function FormSix() {
   );
 }
 
-export default FormSix;
+export default StepFour;

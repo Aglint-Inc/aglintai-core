@@ -1,4 +1,4 @@
-import { NewJobStep1 } from '@/devlink';
+import { NewJobSelect, NewJobStep1 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
 
@@ -16,7 +16,7 @@ const FormOne = ({ nextSlide }) => {
 
   return (
     <>
-      <NewJobStep1
+      <NewJobSelect
         onClickCreateJobAglint={{
           onClick: handleInitiliseForm,
         }}

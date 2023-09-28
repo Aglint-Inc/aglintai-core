@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import Image from 'next/image';
 import React from 'react';
 
-import { NewJobStep2 } from '@/devlink';
+import { NewJobStep1 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
 import UISelect from '../../../Common/Uiselect';
@@ -40,7 +40,7 @@ const jobTypeOptions = [
   },
 ];
 
-const FormTwo = ({ formError, setFormError }) => {
+const StepOne = ({ formError, setFormError }) => {
   const {
     jobForm: { formFields },
     handleUpdateFormFields,
@@ -49,7 +49,7 @@ const FormTwo = ({ formError, setFormError }) => {
   const { company, jobTitle, jobLocation, jobType, workPlaceType } = formFields;
   return (
     <>
-      <NewJobStep2
+      <NewJobStep1
         slotForm={
           <>
             <Stack p={1} rowGap={2} component={'form'}>
@@ -154,4 +154,4 @@ const FormTwo = ({ formError, setFormError }) => {
   );
 };
 
-export default FormTwo;
+export default StepOne;

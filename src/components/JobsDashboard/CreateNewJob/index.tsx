@@ -11,13 +11,12 @@ import { CreateNewJobDrawer, StepBottomProgress } from '@/devlink';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import FormFive from './Forms/FormFive';
-import FormFour from './Forms/FormFour';
-import FormOne from './Forms/FormOne';
-import FormSix from './Forms/FormSix';
-import FormThree from './Forms/FormThree';
-import FormTwo from './Forms/FormTwo';
-import FormSeven from './Forms/SuccessPage';
+import SelectImportMethod from './Forms/SelectImportMethod';
+import StepFour from './Forms/StepFour';
+import StepOne from './Forms/StepOne';
+import Stepthree from './Forms/Stepthree';
+import StepTwo from './Forms/StepTwo';
+import SuccessPage from './Forms/SuccessPage';
 import { useJobForm } from './JobPostFormProvider';
 
 type CreateNewJobParams = {
@@ -37,19 +36,17 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
   let formSlide = null;
   const { slideNo } = jobForm;
   if (slideNo === 0) {
-    formSlide = <FormOne nextSlide={() => changeSlide(1)} />;
+    formSlide = <SelectImportMethod nextSlide={() => changeSlide(1)} />;
   } else if (slideNo === 1) {
-    formSlide = <FormTwo formError={formError} setFormError={setFormError} />;
+    formSlide = <StepOne formError={formError} setFormError={setFormError} />;
   } else if (slideNo === 2) {
-    formSlide = <FormThree />;
+    formSlide = <StepTwo />;
   } else if (slideNo === 3) {
-    formSlide = <FormFour />;
-  } else if (slideNo === 4) {
-    formSlide = <FormFive />;
+    formSlide = <Stepthree />;
+  } else if (slideNo == 4) {
+    formSlide = <StepFour />;
   } else if (slideNo == 5) {
-    formSlide = <FormSix />;
-  } else if (slideNo == 6) {
-    formSlide = <FormSeven />;
+    formSlide = <SuccessPage />;
   }
   const changeSlide = async (newSlideNo: number) => {
     try {
@@ -115,8 +112,6 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
       shallow: true,
     });
     setDrawerOpen(() => false);
-    //remove generated ai skills
-    changeSlide(0);
     dispatch({ type: 'closeForm' });
   };
   return (
@@ -127,9 +122,10 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
             onClickClose={{ onClick: handleDrawerClose }}
             slotNewJobStep={formSlide}
             slotBottomButtonProgress={
-              slideNo !== 0 && (
+              slideNo >= 1 &&
+              slideNo < 5 && (
                 <StepBottomProgress
-                  textStepCount={`Step ${slideNo} of 5`}
+                  textStepCount={`Step ${slideNo} of 4`}
                   onClickBack={{
                     onClick: handleClickBack,
                   }}
@@ -141,13 +137,13 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
                       <LinearProgress
                         variant='determinate'
                         color='primary'
-                        value={(slideNo / 6) * 100}
+                        value={(slideNo / 4) * 100}
                       />
                     </>
                   }
                   // isDraftSaved={false}
                   // isSavetoDraftVisible={true}
-                  isSkipButtonVisible={slideNo > 3}
+                  isSkipButtonVisible={slideNo == 3 || slideNo == 4}
                   onClickSkip={{
                     onClick: handleDrawerClose,
                   }}
