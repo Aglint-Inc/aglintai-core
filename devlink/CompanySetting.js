@@ -3,6 +3,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { CompanyInfo } from "./CompanyInfo";
 import { EmailTemplateCard } from "./EmailTemplateCard";
+import { EmailCreateNew } from "./EmailCreateNew";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -3453,7 +3454,12 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "email-temp-wrappers")}
                 tag="div"
               >
-                {slotEmailTemplate ?? <EmailTemplateCard />}
+                {slotEmailTemplate ?? (
+                  <>
+                    <EmailTemplateCard />
+                    <EmailCreateNew />
+                  </>
+                )}
               </_Builtin.Block>
             </_Builtin.TabsPane>
           </_Builtin.TabsContent>

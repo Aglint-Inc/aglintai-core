@@ -245,6 +245,13 @@ const SlideTwoSignUp = () => {
               onChange={(e) => {
                 setDetails({ ...details, email: e.target.value });
               }}
+              onBlur={() => {
+                const email = handleEmail(details.email);
+                setSignUpError((prevError) => ({
+                  ...prevError,
+                  email: email,
+                }));
+              }}
               error={signUpError.email.error}
               helperText={signUpError.email.error ? signUpError.email.msg : ''}
               inputProps={{
@@ -293,6 +300,18 @@ const SlideTwoSignUp = () => {
                     </IconButton>
                   </InputAdornment>
                 ),
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handelSignUp();
+                }
+              }}
+              onBlur={() => {
+                const password = handlePassword(details.password);
+                setSignUpError((prevError) => ({
+                  ...prevError,
+                  password: password,
+                }));
               }}
               value={details.password}
               onChange={(e) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { NewJobStep1 } from "./NewJobStep1";
+import { NewJobSelect } from "./NewJobSelect";
 import { ButtonPrimaryLarge } from "./ButtonPrimaryLarge";
 import { CreateBtn } from "./CreateBtn";
 import { ShareVia } from "./ShareVia";
@@ -49,17 +49,13 @@ export function CreateNewJobDrawer({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22CreateNewJobDrawer_job-sidebar-wrapper__%22%5D%3A%3A-webkit-scrollbar%7B%0A%20display%3A%20none%3B%0A%7D%0A%0A%3C%2Fstyle%3E"
-      />
       <_Builtin.Block
-        className={_utils.cx(_styles, "job-sidebar-wrapper")}
+        className={_utils.cx(_styles, "job-sidebar-wrapper-scroll")}
         tag="div"
       >
         {slotNewJobStep ?? (
           <>
-            <NewJobStep1 />
+            <NewJobSelect />
             <_Builtin.Block
               className={_utils.cx(_styles, "green-house-step-1")}
               tag="div"
@@ -2036,6 +2032,7 @@ export function CreateNewJobDrawer({
       >
         {slotBottomButtonProgress ?? <StepBottomProgress />}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22CreateNewJobDrawer_job-sidebar-wrapper-scroll__%22%5D%3A%3A-webkit-scrollbar%7B%0A%20display%3A%20none%3B%0A%7D%0A%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

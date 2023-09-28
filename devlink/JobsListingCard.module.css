@@ -30,6 +30,21 @@
   background-color: var(--gray100-3a86b552);
 }
 
+@media screen and (max-width: 991px) {
+  .rd-job-list-item {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+    grid-column-gap: 22px;
+    grid-row-gap: 22px;
+    grid-template-columns: 1fr;
+
+    border-radius: 10px;
+
+    background-color: var(--gray100-3a86b552);
+  }
+}
+
 .rd-job-info-wrapper {
   display: flex;
   width: 100%;
@@ -196,6 +211,14 @@
   color: var(--blue800-09c1dfbf);
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;
@@ -303,10 +326,6 @@
   color: var(--grey700-7fbe857b);
 }
 
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
-}
-
 .text-sm.color-emial {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 0.36);
 }
@@ -330,6 +349,12 @@
   flex: 1;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+@media screen and (max-width: 991px) {
+  .applicants-number-wrapper {
+    display: none;
+  }
 }
 
 .applicants-number {
@@ -366,6 +391,12 @@
   align-items: flex-end;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+@media screen and (max-width: 991px) {
+  .div-block-370 {
+    align-items: flex-start;
+  }
 }
 
 .rd-status-badge {
@@ -419,4 +450,9 @@
   grid-row-start: span 1;
   grid-row-end: span 1;
   justify-self: end;
+}
+@media screen and (max-width: 991px) {
+  #w-node-ca45e366-fcfe-0176-2cef-1032591f3083-e4f6dd07 {
+    justify-self: start;
+  }
 }

@@ -46,7 +46,12 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
       setDepartmentState(recruiter?.departments);
   }, [recruiter?.departments]);
 
-  const initialDepartments = [];
+  let initialDepartments = [];
+  if (localStorage?.getItem('departments')) {
+    if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
+      initialDepartments = JSON.parse(localStorage?.getItem('departments'));
+    }
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {

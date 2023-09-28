@@ -69,6 +69,10 @@
   align-items: center;
 }
 
+.add-icon.pointer {
+  cursor: pointer;
+}
+
 .cdd-list-number {
   display: flex;
   justify-content: center;
@@ -334,6 +338,10 @@
 
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
 }
 
 .frame-1018 {

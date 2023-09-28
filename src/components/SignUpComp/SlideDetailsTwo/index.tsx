@@ -90,9 +90,6 @@ const SlideDetailsTwo = () => {
         .eq('id', recruiter.id)
         .select();
       if (!error) {
-        router.push(`?step=${stepObj.allSet}`, undefined, {
-          shallow: true,
-        });
         setStep(stepObj.allSet);
       }
     }

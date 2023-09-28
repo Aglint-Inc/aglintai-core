@@ -131,3 +131,11 @@
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
+
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}

@@ -40,7 +40,7 @@ export function NavJobSubLink({
             className={_utils.cx(_styles, "job-link-tag", "blue-500")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"94"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{allCount}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         {isJobAll ? (
@@ -73,7 +73,7 @@ export function NavJobSubLink({
             className={_utils.cx(_styles, "job-link-tag", "green-500")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"94"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{activeCount}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         {isJobActive ? (
@@ -101,12 +101,12 @@ export function NavJobSubLink({
           className={_utils.cx(_styles, "div-block-365")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Inctive"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Inactive"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "job-link-tag", "yellow-600")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"94"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{inActiveCount}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         {isJobInactive ? (
@@ -114,7 +114,7 @@ export function NavJobSubLink({
             className={_utils.cx(_styles, "aui_nav_sublink_active-drop")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Inctive"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Inactive"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "job-link-tag", "yellow-600")}
               tag="div"
@@ -139,7 +139,7 @@ export function NavJobSubLink({
             className={_utils.cx(_styles, "job-link-tag", "red-500")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"94"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{closedCount}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         {isJobClosed ? (

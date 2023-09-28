@@ -49,7 +49,11 @@ export function JobsDashboard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-input-search-job")}
+              className={_utils.cx(
+                _styles,
+                "slot-input-search-job",
+                "mobile-hide"
+              )}
               tag="div"
             >
               {slotSearchInputJob}
@@ -66,6 +70,12 @@ export function JobsDashboard({
               <_Builtin.Block tag="div">{"Add Job"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-input-search-job", "mobile-show")}
+          tag="div"
+        >
+          {slotSearchInputJob}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -25,6 +25,12 @@
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
+@media screen and (max-width: 479px) {
+  .cj-option-block {
+    max-width: none;
+  }
+}
+
 .cj-option-block.grey {
   background-color: hsla(173.68421052631572, 76.00%, 95.10%, 1.00);
 }
@@ -192,6 +198,14 @@
   color: var(--blue800-09c1dfbf);
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -277,10 +291,6 @@
 
 .color-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .text-sm.color-emial {

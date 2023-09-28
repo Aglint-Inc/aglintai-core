@@ -255,6 +255,10 @@
   outline-width: 3px;
 }
 
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
+}
+
 .aui-button {
   position: relative;
 
@@ -661,6 +665,14 @@
 
 .fw-semibold.workday-text {
   display: none;
+}
+
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
 }
 
 .div-block-108 {

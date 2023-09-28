@@ -10,6 +10,10 @@
   outline-width: 3px;
 }
 
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
+}
+
 .aui-button {
   position: relative;
 

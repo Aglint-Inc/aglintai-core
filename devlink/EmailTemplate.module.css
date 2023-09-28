@@ -147,6 +147,14 @@
   color: var(--blue800-09c1dfbf);
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -307,6 +315,10 @@
   outline-offset: 0px;
   outline-style: none;
   outline-width: 3px;
+}
+
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
 }
 
 .aui-button {
@@ -590,6 +602,7 @@
 .sidebar-wrapper.detailed {
   display: flex;
   max-width: none;
+  padding-top: 18px;
   opacity: 1;
 }
 
@@ -700,10 +713,6 @@
 
 .color-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .text-sm.color-emial {

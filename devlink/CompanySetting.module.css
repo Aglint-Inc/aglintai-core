@@ -8,6 +8,13 @@
   grid-row-gap: 10px;
 }
 
+@media screen and (max-width: 991px) {
+  .rd-main-wrapper {
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+  }
+}
+
 .rd-main-wrapper.cdd-database {
   width: 100vw;
   flex: 0 auto;
@@ -46,11 +53,19 @@
 
 .rd-jobs-header-wrapper {
   display: flex;
+  min-height: 66px;
   padding: 12px 20px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
   flex: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .rd-jobs-header-wrapper {
+    width: 100%;
+    flex: 0 auto;
+  }
 }
 
 .text-lg {
@@ -434,6 +449,10 @@
   display: none;
 }
 
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .rd-email-temp-wrapper {
   display: grid;
   grid-auto-columns: 1fr;
@@ -548,6 +567,10 @@
   outline-offset: 0px;
   outline-style: none;
   outline-width: 3px;
+}
+
+.aui-button-wrap.mt-16 {
+  margin-top: 16px;
 }
 
 .aui-button {

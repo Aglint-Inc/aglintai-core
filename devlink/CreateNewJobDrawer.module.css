@@ -199,8 +199,9 @@
   opacity: 0.8;
 }
 
-.job-sidebar-wrapper {
+.job-sidebar-wrapper-scroll {
   display: flex;
+  overflow: scroll;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
@@ -277,6 +278,14 @@
 
 .fw-semibold.workday-text {
   display: none;
+}
+
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
 }
 
 .cj-main-wrapper {
@@ -422,7 +431,7 @@
 }
 
 .cj-back-btn:hover {
-  color: var(--blue600-aad8d97e);
+  opacity: 0.7;
 }
 
 .icon {
@@ -575,10 +584,6 @@
 
 .color-grey-700 {
   color: var(--grey700-7fbe857b);
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .text-sm.color-emial {
@@ -735,6 +740,10 @@
 
 .cj-input-wrapper.pb-200 {
   padding-bottom: 200px;
+}
+
+.cj-input-wrapper.pb-80 {
+  padding-bottom: 80px;
 }
 
 .cj-richtext-editor-wrapper {
@@ -999,6 +1008,8 @@
   border-radius: 4px;
 
   background-color: rgba(237, 247, 255, 1);
+
+  cursor: pointer;
 }
 
 .small-default-4 {
@@ -1359,6 +1370,13 @@
 
 .yellow-300 {
   background-color: var(--yellow300-a4b464fd);
+}
+
+.label-text.text-yellow-700.yellow-300.small-text {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 6px;
+  line-height: 10px;
 }
 
 .auth-header-block {

@@ -137,6 +137,14 @@
   color: var(--blue800-09c1dfbf);
 }
 
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;
@@ -221,10 +229,6 @@
 
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
-}
-
-.text-yellow-700 {
-  color: var(--yellow700-b1438949);
 }
 
 .text-green-700 {

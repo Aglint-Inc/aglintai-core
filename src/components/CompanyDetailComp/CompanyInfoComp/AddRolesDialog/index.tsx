@@ -43,7 +43,12 @@ const AddRolesDialog: React.FC<RolesProps> = ({
       setRoles(recruiter?.available_roles);
   }, [recruiter?.available_roles]);
 
-  const initialRoles = [];
+  let initialRoles = [];
+  if (localStorage?.getItem('roles')) {
+    if (Array.isArray(JSON.parse(localStorage?.getItem('roles')))) {
+      initialRoles = JSON.parse(localStorage?.getItem('roles'));
+    }
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {

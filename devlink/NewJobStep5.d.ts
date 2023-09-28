@@ -3,11 +3,5 @@ import * as Types from "./types";
 
 declare function NewJobStep5(props: {
   as?: React.ElementType;
-  onClickAiPoweredScreening?: Types.Devlink.RuntimeProps;
-  onClickStandardScreening?: Types.Devlink.RuntimeProps;
-  isAiPoweredScreeningChecked?: Types.Visibility.VisibilityConditions;
-  isStandardScreeningChecked?: Types.Visibility.VisibilityConditions;
-  slotSkillsQuestion?: Types.Devlink.Slot;
-  howItWorksLink?: Types.Basic.Link;
-  isHowItWorksVisible?: Types.Visibility.VisibilityConditions;
+  slotShareVia?: Types.Devlink.Slot;
 }): React.JSX.Element;

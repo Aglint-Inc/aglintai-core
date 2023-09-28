@@ -48,7 +48,7 @@ export const handleEmail = (email): FieldError => {
   } else if (!personalEmailPattern.test(enteredDomain)) {
     return { error: false, msg: '' };
   } else {
-    return { error: true, msg: errorMessages.emailRequired };
+    return { error: true, msg: 'Please enter a valid company email address' };
   }
 };
 

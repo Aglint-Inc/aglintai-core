@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { JobDB } from '@/src/types/data.types';
+import { JobApplcationDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobType, Status } from './types';
@@ -43,9 +43,9 @@ export const fetchApplications = (jobIds) => {
 
 export function filterApplicationsByStatus(
   jobId: string,
-  applications: JobDB[],
+  applications: JobApplcationDB[],
   statusToFilter?: string,
-): JobDB[] {
+): JobApplcationDB[] {
   if (statusToFilter) {
     return applications.filter(
       (app) => app.status === statusToFilter && app.job_id === jobId,
@@ -56,10 +56,10 @@ export function filterApplicationsByStatus(
 }
 
 export const StatusColor = Object.freeze({
-  draft: '#fff7ed',
-  interviewing: '#f5fcfc',
-  sourcing: '#edf7ff',
-  closed: '#fff0f1',
+  inactive: '#D93F4C',
+  interviewing: '#228F67',
+  sourcing: '#228F67',
+  closed: '#D93F4C',
 });
 
 export function calculateTimeDifference(postedDate) {
@@ -93,4 +93,9 @@ export function searchJobs(jobs, searchString) {
     });
 
   return filteredData;
+}
+
+export function sendEmail() {
+  window.location.href =
+    'mailto:admin@aglinthq.com?subject=Requesting for new ATS integration&body=';
 }
