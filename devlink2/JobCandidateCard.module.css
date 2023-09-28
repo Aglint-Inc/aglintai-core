@@ -3,10 +3,9 @@
 
   display: flex;
   width: 100%;
-  padding: 10px;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 
@@ -21,54 +20,15 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
-.frame-1022 {
+.div-block-328 {
   position: relative;
   z-index: 2;
 
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  padding: 10px;
   align-items: center;
-}
-
-.candidate-resume-info {
-  display: flex;
-  max-width: 505px;
-  justify-content: flex-start;
-  align-items: center;
-  flex: 1;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.checkbox-wrappers-job {
-  position: relative;
-
-  display: flex;
-  overflow: hidden;
-  width: 14px;
-  height: 14px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
-  border-radius: 4px;
-
-  background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
-
-  cursor: pointer;
-}
-
-.add-icon {
-  display: flex;
-  width: 16px;
-  height: 16px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .cdd-list-number {
@@ -97,10 +57,6 @@
   color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
-.text-kale-800 {
-  color: hsla(186.38297872340425, 95.92%, 9.61%, 1.00);
-}
-
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
@@ -109,8 +65,59 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.text-green-800 {
-  color: hsla(157.5, 68.57%, 13.73%, 1.00);
+.text-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.checkbox-wrappers-job {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 14px;
+  height: 14px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
+  border-radius: 4px;
+
+  background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+
+  cursor: pointer;
+}
+
+.add-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame-1022 {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.candidate-resume-info {
+  display: flex;
+  max-width: 505px;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .frame-1023 {
@@ -147,12 +154,14 @@
   grid-row-gap: 4px;
 }
 
-.fw-semibold.color-blue-800 {
-  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+.text-green-800 {
+  color: hsla(157.5, 68.57%, 13.73%, 1.00);
 }
 
-.fw-semibold.pink-800 {
-  color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .frame-1018 {
@@ -236,14 +245,6 @@
   }
 }
 
-.text-grey-700 {
-  color: hsla(205.26315789473685, 11.52%, 32.35%, 1.00);
-}
-
-.text-lg.text-grey-700.letter-spacing-small {
-  letter-spacing: -0.45px;
-}
-
 .text-grey-500 {
   color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
 }
@@ -306,6 +307,10 @@
   font-weight: 400;
   text-align: center;
   letter-spacing: -0.0002565937174949795px;
+}
+
+.text-block {
+  font-size: 8px;
 }
 
 .frame-1024 {

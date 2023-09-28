@@ -11,9 +11,10 @@ import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ApplicationCard from './ApplicationCard';
-import CompanyLogo from './Common/CompanyLogo';
 import ImportCandidates from './ImportCandidates';
 import SearchField from './SearchField';
+import { capitalize } from './utils';
+import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 
@@ -56,12 +57,8 @@ const JobApplicationComponent = () => {
   const [filteredApplications, setFilteredApplications] =
     useState(sectionApplications);
 
-  const handleSetSection = () => {
-    setSection((prev) =>
-      prev === JobApplicationSections.APPLIED
-        ? JobApplicationSections.INTERVIEWING
-        : JobApplicationSections.APPLIED,
-    );
+  const handleSetSection = (section) => {
+    setSection(section);
   };
 
   return (
@@ -74,33 +71,49 @@ const JobApplicationComponent = () => {
         <ImportCandidates />
       </MuiPopup>
       <JobScreening
-        onClickImportCandidate={{
-          onClick: () => setOpenImportCandidates(true),
+        textJobStatus={capitalize(job.status)}
+        textRole={capitalize(job.job_title)}
+        textApplicantsNumber={`(${applicationsData.count} applicants)`}
+        slotStopSubmission={
+          <>
+            <AUIButton onClick={() => setOpenImportCandidates(true)}>
+              Edit details
+            </AUIButton>
+            <AUIButton onClick={() => setOpenImportCandidates(true)}>
+              Workflow
+            </AUIButton>
+          </>
+        }
+        onClickAllApplicant={{
+          onClick: () => handleSetSection(JobApplicationSections.APPLIED),
         }}
-        slotProfileImage={
-          <Stack
-            onClick={() => {
-              handleSetSection();
-            }}
-          >
-            <CompanyLogo companyName={job.company} companyLogo={job.logo} />
-          </Stack>
-        }
-        textRole={job.job_title}
-        textCompanyLocation={job.company}
-        slotCandidateJobCard={
-          <ApplicantsList applications={filteredApplications} />
-        }
-        countAllApplicant={`${applications.applied.count} applicants`}
-        countScreening={`${applications.interviewing.count} applicants`}
-        countShortlisted={`${applications.rejected.count} applicants`}
+        countAll={applications.applied.count}
+        onClickInterviewing={{
+          onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
+        }}
+        countInterviewing={applications.interviewing.count}
+        onClickRejected={{
+          onClick: () => handleSetSection(JobApplicationSections.REJECTED),
+        }}
+        countRejected={applications.rejected.count}
+        onClickSelected={{
+          onClick: () => handleSetSection(JobApplicationSections.SELECTED),
+        }}
         countSelected={`${applications.selected.count} applicants`}
-        slotSearchInput={
+        slotSearch={
           <SearchField
             applications={sectionApplications}
             section={section}
             setFilteredApplications={setFilteredApplications}
           />
+        }
+        slotCandidateJobCard={
+          <ApplicantsList applications={filteredApplications} />
+        }
+        slotAddCandidates={
+          <AUIButton onClick={() => setOpenImportCandidates(true)}>
+            Import candidates
+          </AUIButton>
         }
       />
     </>
