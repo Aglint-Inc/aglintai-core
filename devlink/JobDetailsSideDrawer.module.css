@@ -244,6 +244,10 @@
   }
 }
 
+.text-sm.fw-semibold.text-white.text-first-capitialize {
+  text-transform: capitalize;
+}
+
 .text-sm.fw-semibold.margin-top-2 {
   margin-top: 2px;
 }
@@ -286,6 +290,10 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.text-green-700 {
+  color: var(--green700-a1b0a24f);
 }
 
 .text-sm.color-grey-400 {
@@ -375,7 +383,6 @@
 
 .job-sidebar-wrapper {
   display: flex;
-  overflow: scroll;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
