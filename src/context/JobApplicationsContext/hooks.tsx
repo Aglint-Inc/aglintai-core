@@ -14,8 +14,10 @@ import {
 } from './types';
 import {
   bulkCreateJobApplicationDbAction,
+  bulkUpdateJobApplicationDbAction,
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
+  getUpdatedJobStatus,
   readJobApplicationDbAction,
   updateJobApplicationDbAction,
 } from './utils';
@@ -32,6 +34,8 @@ enum ActionType {
   READ,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
+  // eslint-disable-next-line no-unused-vars
+  BULK_UPDATE,
   // eslint-disable-next-line no-unused-vars
   DELETE,
 }
@@ -133,7 +137,6 @@ const reducer = (state: JobApplicationsData, action: Action) => {
           ),
         );
       const newState: JobApplicationsData = {
-        ...state,
         applications: segregatedApplications,
         count,
         job: action.payload.jobData,
@@ -313,6 +316,25 @@ const useJobApplicationActions = (
     }
   };
 
+  const handleJobApplicationBulkUpdate = async (
+    updatedApplicationData: JobApplication[],
+  ) => {
+    const { data: d1, error: e1 } = await bulkUpdateJobApplicationDbAction(
+      updatedApplicationData,
+    );
+    if (d1) {
+      const read = await handleJobApplicationRead();
+      if (read) return true;
+      else {
+        handleJobApplicationError(null);
+        return false;
+      }
+    } else {
+      handleJobApplicationError(e1);
+      return false;
+    }
+  };
+
   const handleJobApplicationDelete = async (
     applicationId: string,
     applicationStatus: JobApplicationSections,
@@ -332,6 +354,22 @@ const useJobApplicationActions = (
     }
   };
 
+  const handleUpdateJobStatus = async (
+    applicationIdSet: Set<string>,
+    sections: {
+      source: JobApplicationSections;
+      destination: JobApplicationSections;
+    },
+  ) => {
+    return await handleJobApplicationBulkUpdate(
+      getUpdatedJobStatus(
+        applicationIdSet,
+        applicationsData.applications,
+        sections,
+      ),
+    );
+  };
+
   const handleJobApplicationError = (error) => {
     toast.error(`Oops! Something went wrong.\n ${error?.message}`);
   };
@@ -346,8 +384,10 @@ const useJobApplicationActions = (
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationUpdate,
+    handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,
+    handleUpdateJobStatus,
     initialLoad,
     circularScoreAnimation,
     openImportCandidates,

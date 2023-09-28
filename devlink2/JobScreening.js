@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
+import { ApplicantsListEmpty } from "./ApplicantsListEmpty";
 import * as _utils from "./utils";
 import _styles from "./JobScreening.module.css";
 
@@ -21,6 +22,10 @@ export function JobScreening({
   textJobStatus = "Active",
   slotAddCandidates,
   countAll = "804",
+  isAll = true,
+  isInterviewing = false,
+  isSelected = false,
+  isRejected = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
@@ -123,12 +128,7 @@ export function JobScreening({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cdd-tab-link",
-                  "all",
-                  "filtered"
-                )}
+                className={_utils.cx(_styles, "cdd-tab-link", "all")}
                 tag="div"
                 {...onClickAllApplicant}
               >
@@ -172,9 +172,19 @@ export function JobScreening({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                {isAll ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cdd-tab-link-bg",
+                      "grey-700"
+                    )}
+                    tag="div"
+                  />
+                ) : null}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "cdd-tab-link", "screening")}
+                className={_utils.cx(_styles, "cdd-tab-link", "interviewing")}
                 tag="div"
                 {...onClickInterviewing}
               >
@@ -222,6 +232,16 @@ export function JobScreening({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                {isInterviewing ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cdd-tab-link-bg",
+                      "blue-700"
+                    )}
+                    tag="div"
+                  />
+                ) : null}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "cdd-tab-link", "selected")}
@@ -272,6 +292,16 @@ export function JobScreening({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                {isSelected ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cdd-tab-link-bg",
+                      "green-700"
+                    )}
+                    tag="div"
+                  />
+                ) : null}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "cdd-tab-link", "rejected")}
@@ -322,6 +352,12 @@ export function JobScreening({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                {isRejected ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cdd-tab-link-bg", "red-700")}
+                    tag="div"
+                  />
+                ) : null}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -351,7 +387,7 @@ export function JobScreening({
               className={_utils.cx(_styles, "cdd-content-main")}
               tag="div"
             >
-              {slotCandidateJobCard}
+              {slotCandidateJobCard ?? <ApplicantsListEmpty />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
