@@ -107,7 +107,10 @@ export function NavMenuBottom({
             className={_utils.cx(_styles, "rd-menu-profile-info")}
             tag="div"
           >
-            <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "", "max-width-200")}
+              tag="div"
+            >
               {textName}
             </_Builtin.Block>
             <_Builtin.Block

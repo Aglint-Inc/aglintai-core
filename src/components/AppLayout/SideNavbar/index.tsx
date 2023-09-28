@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { BriefcaseIcon, CandidateIcon, NavJobSubLink } from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
@@ -87,6 +88,7 @@ export default SideNavbar;
 
 function JobSubNavbar() {
   const router = useRouter();
+  const { jobsData } = useJobs();
   return (
     <NavJobSubLink
       onClickJobAll={{
@@ -107,6 +109,18 @@ function JobSubNavbar() {
           router.query.status !== 'active' &&
           router.query.status !== 'inactive' &&
           router.query.status !== 'close')
+      }
+      activeCount={
+        jobsData?.jobs?.filter(
+          (job) => job.status == 'sourcing' || job.status == 'interviewing',
+        ).length
+      }
+      allCount={jobsData?.jobs?.length}
+      inActiveCount={
+        jobsData?.jobs?.filter((job) => job.status == 'inactive').length
+      }
+      closedCount={
+        jobsData?.jobs?.filter((job) => job.status == 'closed').length
       }
       isJobActive={router.query.status === 'active'}
       isJobInactive={router.query.status === 'inactive'}

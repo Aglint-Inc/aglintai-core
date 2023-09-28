@@ -105,9 +105,17 @@ const DashboardComp = () => {
                   />
                 </Stack>
               }
-              // isJobCountTagVisible={filteredJobs.length > 0}
-              // jobCount={filteredJobs.length}
-              textJobsHeader={''}
+              isJobCountTagVisible={filteredJobs.length > 0}
+              jobCount={filteredJobs.length}
+              textJobsHeader={
+                router.query.status == 'close'
+                  ? 'Closed Jobs'
+                  : router.query.status == 'inactive'
+                  ? 'Inactive Jobs'
+                  : router.query.status == 'active'
+                  ? 'Active Jobs'
+                  : 'All Jobs'
+              }
               onClickCreateNewJob={{
                 onClick: () => {
                   setDrawerOpen(true);

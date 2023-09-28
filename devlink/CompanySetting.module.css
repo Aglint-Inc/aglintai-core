@@ -53,6 +53,7 @@
 
 .rd-jobs-header-wrapper {
   display: flex;
+  min-height: 66px;
   padding: 12px 20px;
   justify-content: space-between;
   align-items: center;

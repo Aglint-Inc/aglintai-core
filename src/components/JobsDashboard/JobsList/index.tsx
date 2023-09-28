@@ -1,10 +1,10 @@
-import { Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { JobEmptyState, JobsListingCard } from '@/devlink';
 import { JobApplcationDB } from '@/src/types/data.types';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { JobType } from '../types';
@@ -23,19 +23,21 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
   const router = useRouter();
   if (jobs?.length == 0) {
     return (
-      <JobEmptyState
-        onClickHere={{
-          onClick: () => {
-            router.push(pageRoutes.JOBS + '?flow=create', undefined, {
-              shallow: true,
-            });
-          },
-        }}
-      />
+      <YTransform uniqueKey={router.query.status}>
+        <JobEmptyState
+          onClickHere={{
+            onClick: () => {
+              router.push(pageRoutes.JOBS + '?flow=create', undefined, {
+                shallow: true,
+              });
+            },
+          }}
+        />
+      </YTransform>
     );
   }
   return (
-    <Stack>
+    <YTransform uniqueKey={router.query.status}>
       {jobs?.map((job, ind) => {
         return (
           <JobsListingCard
@@ -161,7 +163,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
           />
         );
       })}
-    </Stack>
+    </YTransform>
   );
 };
 

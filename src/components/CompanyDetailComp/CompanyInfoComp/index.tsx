@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import Image from 'next/image';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import {
@@ -9,17 +8,16 @@ import {
   SkillsInput,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 
 import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddTechnologyDialog from './AddTechnologyDialog';
+import SocialComp from './SocialComp';
 import { debouncedSave } from '../utils';
 import ImageUpload from '../../Common/ImageUpload';
 import UITextField from '../../Common/UITextField';
-import UITypography from '../../Common/UITypography';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -43,6 +41,10 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const handleClose = () => {
     setDialog(initialDialog());
   };
+
+  useEffect(() => {
+    if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
+  }, [logo]);
 
   return (
     <div>
@@ -69,7 +71,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       <CompanyInfo
         slotCompanyLogo={
           <>
-            <ImageUpload image={logo} setImage={setLogo} size={80} />
+            <ImageUpload image={logo} setImage={setLogo} size={70} />
           </>
         }
         onClickChangeLogo={{
@@ -137,56 +139,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   });
                 }}
               />
-
-              <Stack spacing={'20px'}>
-                <UITypography
-                  type={'medium'}
-                  color={palette.grey[800]}
-                  fontBold='normal'
-                >
-                  Social Links
-                </UITypography>
-                <Stack spacing={'10px'}>
-                  {recruiter?.socials &&
-                    Object.keys(recruiter.socials).map((socialName) => {
-                      if (socialName === 'custom') {
-                        return null; // Skip this iteration
-                      }
-                      return (
-                        <Stack
-                          key={socialName}
-                          direction={'row'}
-                          alignItems={'center'}
-                          spacing={2}
-                        >
-                          <Image
-                            src={`/images/logo/${socialName}.svg`}
-                            height={20}
-                            width={20}
-                            alt=''
-                          />
-                          <UITextField
-                            labelSize='medium'
-                            fullWidth
-                            // eslint-disable-next-line security/detect-object-injection
-                            value={recruiter?.socials[socialName]}
-                            // eslint-disable-next-line security/detect-object-injection
-                            placeholder={socialPlaceholder[socialName]}
-                            onChange={(e) => {
-                              handleChange({
-                                ...recruiter,
-                                socials: {
-                                  ...recruiter.socials,
-                                  [socialName]: e.target.value,
-                                },
-                              });
-                            }}
-                          />
-                        </Stack>
-                      );
-                    })}
-                </Stack>
-              </Stack>
+              <SocialComp setIsSaving={setIsSaving} />
             </Stack>
           </Stack>
         }
@@ -339,12 +292,4 @@ const initialEdit = () => {
 
 const initialDialog = () => {
   return { location: false, roles: false, departments: false, stacks: false };
-};
-
-const socialPlaceholder = {
-  linkedin: 'https://www.linkedin.com/company-id',
-  youtube: 'https://www.youtube.com/company-id',
-  twitter: 'https://www.twitter.com/company-id',
-  facebook: 'https://www.facebook.com/company-id',
-  instagram: 'https://www.instagram.com/company-id',
 };

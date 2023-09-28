@@ -212,6 +212,10 @@
   align-items: flex-start;
 }
 
+.max-width-200 {
+  max-width: 200px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;

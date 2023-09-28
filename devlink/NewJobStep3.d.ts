@@ -3,10 +3,11 @@ import * as Types from "./types";
 
 declare function NewJobStep3(props: {
   as?: React.ElementType;
-  slotJobDescription?: Types.Devlink.Slot;
-  onClickAddSkill?: Types.Devlink.RuntimeProps;
-  slotAddedSkill?: Types.Devlink.Slot;
-  slotSuggestedSkill?: Types.Devlink.Slot;
-  isAddSkillVisible?: Types.Visibility.VisibilityConditions;
-  slotRequiredSKill?: Types.Devlink.Slot;
+  onClickAiPoweredScreening?: Types.Devlink.RuntimeProps;
+  onClickStandardScreening?: Types.Devlink.RuntimeProps;
+  isAiPoweredScreeningChecked?: Types.Visibility.VisibilityConditions;
+  isStandardScreeningChecked?: Types.Visibility.VisibilityConditions;
+  slotSkillsQuestion?: Types.Devlink.Slot;
+  howItWorksLink?: Types.Basic.Link;
+  isHowItWorksVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

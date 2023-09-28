@@ -738,6 +738,10 @@
   padding-bottom: 200px;
 }
 
+.cj-input-wrapper.pb-80 {
+  padding-bottom: 80px;
+}
+
 .cj-richtext-editor-wrapper {
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);

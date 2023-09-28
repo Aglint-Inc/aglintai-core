@@ -1,7 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { NewJobStep1 } from "./NewJobStep1";
+import { NewJobSelect } from "./NewJobSelect";
 import { ButtonPrimaryLarge } from "./ButtonPrimaryLarge";
 import { CreateBtn } from "./CreateBtn";
 import { ShareVia } from "./ShareVia";
@@ -55,7 +55,7 @@ export function CreateNewJobDrawer({
       >
         {slotNewJobStep ?? (
           <>
-            <NewJobStep1 />
+            <NewJobSelect />
             <_Builtin.Block
               className={_utils.cx(_styles, "green-house-step-1")}
               tag="div"
