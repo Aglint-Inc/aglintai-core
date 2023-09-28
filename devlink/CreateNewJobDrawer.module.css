@@ -9,6 +9,12 @@
   grid-row-gap: 32px;
 }
 
+.div-block-359 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -151,8 +157,51 @@
   letter-spacing: -0.45px;
 }
 
+.close-drawers {
+  position: relative;
+  bottom: 6px;
+
+  padding: 4px;
+
+  border-radius: 100px;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.close-drawers:hover {
+  background-color: var(--gray100-3a86b552);
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
 .job-sidebar-wrapper {
   display: flex;
+  overflow: scroll;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
@@ -173,15 +222,6 @@
   flex-direction: column;
   grid-column-gap: 7px;
   grid-row-gap: 7px;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -1113,6 +1153,10 @@
 
 .cj-screening-questions-block.hide {
   display: none;
+}
+
+.all-job-sidebar {
+  display: block;
 }
 
 .job-sidebar-main-block {

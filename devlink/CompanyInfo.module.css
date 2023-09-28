@@ -247,6 +247,8 @@
 .slot-location-saved-wrappers {
   display: flex;
   flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .cj-add-skill-btn-new {
@@ -293,4 +295,6 @@
   width: 556px;
   flex-direction: row;
   flex-wrap: wrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }

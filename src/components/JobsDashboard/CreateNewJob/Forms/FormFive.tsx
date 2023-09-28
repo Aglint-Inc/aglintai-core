@@ -38,7 +38,7 @@ const FormFive = () => {
         },
       }}
       isStandardScreeningChecked={interviewType === 'questions-preset'}
-      slotSkillQuestion={<></>}
+      // slotSkillQuestion={<></>}
     />
   );
 };

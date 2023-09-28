@@ -1,0 +1,33 @@
+import * as React from "react";
+import * as Types from "./types";
+
+declare function JobScreening(props: {
+  as?: React.ElementType;
+  slotSmallProfileImage?: Types.Devlink.Slot;
+  textRole?: React.ReactNode;
+  statusBgColor?: Types.Devlink.RuntimeProps;
+  textStatus?: React.ReactNode;
+  slotStopSubmission?: Types.Devlink.Slot;
+  slotSubmissionControlBtn?: Types.Devlink.Slot;
+  slotProfileImage?: Types.Devlink.Slot;
+  textCompanyLocation?: React.ReactNode;
+  onClickAllApplicant?: Types.Devlink.RuntimeProps;
+  countAllApplicant?: React.ReactNode;
+  onClickViewJobPost?: Types.Devlink.RuntimeProps;
+  textpostedDates?: React.ReactNode;
+  onClickScreening?: Types.Devlink.RuntimeProps;
+  countScreening?: React.ReactNode;
+  onClickShortlisted?: Types.Devlink.RuntimeProps;
+  countShortlisted?: React.ReactNode;
+  onClickSelected?: Types.Devlink.RuntimeProps;
+  countSelected?: React.ReactNode;
+  onClickImportCandidate?: Types.Devlink.RuntimeProps;
+  onClickSortBy?: Types.Devlink.RuntimeProps;
+  onClickResumeMatch?: Types.Devlink.RuntimeProps;
+  onClickFilter?: Types.Devlink.RuntimeProps;
+  textShowResults?: React.ReactNode;
+  slotSearchInput?: Types.Devlink.Slot;
+  slotCandidateJobCard?: Types.Devlink.Slot;
+  slotViewJobPost?: Types.Devlink.Slot;
+  slotScreening?: Types.Devlink.Slot;
+}): React.JSX.Element;

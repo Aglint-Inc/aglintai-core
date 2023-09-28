@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 
 import ApplicationDetails from './ApplicationDetails';
 import CircularScore from '../Common/CircularScore';
@@ -17,6 +18,8 @@ const ApplicationCard = ({
   application: JobApplication;
   index: number;
 }) => {
+  const { circularScoreAnimation } = useJobApplications();
+
   const [checked, setChecked] = useState(false);
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
@@ -38,6 +41,8 @@ const ApplicationCard = ({
   const handleCheck = () => {
     setChecked((prev) => !prev);
   };
+
+  const triggerCircularAnimation = circularScoreAnimation.current && index < 10;
 
   const handleOpenSidePanel = (application) => {
     setApplicationDetails(application);
@@ -72,7 +77,11 @@ const ApplicationCard = ({
         textMail={application.email}
         textPhone={application.phone}
         slotScore={
-          <CircularScore fontSize='6px' finalScore={application.score} />
+          <CircularScore
+            fontSize='6px'
+            finalScore={application.score}
+            triggerAnimation={triggerCircularAnimation}
+          />
         }
         textScore={interviewScore}
         scoreTextColor={{ style: { color: getScoreColor(interviewScore) } }}

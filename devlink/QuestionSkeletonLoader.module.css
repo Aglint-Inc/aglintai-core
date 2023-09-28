@@ -1,0 +1,21 @@
+.question-loading-skeleton-wrappers {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: rgba(248, 249, 249, 0.5);
+}
+
+.skeletion-line {
+  height: 16px;
+  border-radius: 6px;
+  background-color: var(--grey200-9ba653f1);
+}
+
+.skeletion-line.width-60 {
+  width: 60%;
+}

@@ -5,4 +5,5 @@ declare function SkillsWithoutQuestionToggle(props: {
   as?: React.ElementType;
   slotToggle?: Types.Devlink.Slot;
   textSkills?: React.ReactNode;
+  onClickToggle?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

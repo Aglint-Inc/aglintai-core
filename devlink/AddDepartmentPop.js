@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { RolesPill } from "./RolesPill";
 import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
 import * as _utils from "./utils";
 import _styles from "./AddDepartmentPop.module.css";
@@ -33,7 +32,7 @@ export function AddDepartmentPop({
         className={_utils.cx(_styles, "slot-roles-wrappers")}
         tag="div"
       >
-        {slotDepartmentsPills ?? <RolesPill />}
+        {slotDepartmentsPills}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-input-fomrs-roles")}
@@ -50,7 +49,7 @@ export function AddDepartmentPop({
           tag="div"
         >
           <_Builtin.Block tag="div" {...onClickDone}>
-            <ButtonOutlinedSmall textLabel="Done" />
+            <ButtonOutlinedSmall textLabel="Save" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -4,11 +4,13 @@ import { memo, useEffect, useState } from 'react';
 const CircularScore = ({
   finalScore,
   fontSize,
+  triggerAnimation = false,
 }: {
   finalScore: number;
+  triggerAnimation?: boolean;
   fontSize: string;
 }) => {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
   const green = {
     score: '#0B3B29',
     border: '#228F67',

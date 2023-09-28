@@ -8,4 +8,5 @@ declare function SkillsWithQuestionToggle(props: {
   slotQuestions?: Types.Devlink.Slot;
   onClickAddAnotherQuestion?: Types.Devlink.RuntimeProps;
   onClickGenerate?: Types.Devlink.RuntimeProps;
+  onClickToggle?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

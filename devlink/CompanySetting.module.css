@@ -198,6 +198,42 @@
   letter-spacing: -0.45px;
 }
 
+.slot-saved {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
 .rd-jobs-wrapper-2 {
   display: flex;
   width: 100%;
@@ -228,15 +264,6 @@
   flex-direction: column;
   grid-column-gap: 22px;
   grid-row-gap: 22px;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -727,10 +754,6 @@
 
 .text-grey-300 {
   color: var(--grey300-03a46dba);
-}
-
-.text-green-500 {
-  color: var(--green500-287ff474);
 }
 
 .text-yellow-500 {

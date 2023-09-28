@@ -176,6 +176,14 @@
   grid-row-gap: 12px;
 }
 
+.button-relative-wrappers {
+  position: relative;
+}
+
+.button-wrappers.disable {
+  background-color: var(--grey200-9ba653f1);
+}
+
 .generate-question-4 {
   display: flex;
   width: 100%;

@@ -17,6 +17,7 @@ export function SkillsWithQuestionToggle({
   slotQuestions,
   onClickAddAnotherQuestion = {},
   onClickGenerate = {},
+  onClickToggle = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -36,6 +37,7 @@ export function SkillsWithQuestionToggle({
           className={_utils.cx(_styles, "toggle-btn-block-4")}
           data-w-id="59f30a20-74c8-9caf-b0bc-682f040d0d68"
           tag="div"
+          {...onClickToggle}
         >
           {slotLottie}
         </_Builtin.Block>
@@ -52,19 +54,25 @@ export function SkillsWithQuestionToggle({
             className={_utils.cx(_styles, "tog-dropdown-list-wrapper")}
             tag="div"
           >
-            {slotQuestions ?? (
-              <>
-                <SkillsQuestionCard />
-                <_Builtin.Block tag="div" />
-              </>
-            )}
+            {slotQuestions ?? <SkillsQuestionCard />}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "button-wrappers")}
+            className={_utils.cx(_styles, "button-relative-wrappers")}
             tag="div"
-            {...onClickAddAnotherQuestion}
           >
-            <AddSocialLink textLabel="Addanother question" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button-wrappers")}
+              tag="div"
+              {...onClickAddAnotherQuestion}
+            >
+              <AddSocialLink textLabel="Addanother question" />
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button-wrappers", "disable")}
+              tag="div"
+            >
+              <AddSocialLink textLabel="Addanother question" />
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "generate-question-4")}

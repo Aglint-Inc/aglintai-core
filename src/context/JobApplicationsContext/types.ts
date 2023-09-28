@@ -1,5 +1,5 @@
 import { Job } from '@context/JobsContext/types';
-import {Dispatch,SetStateAction} from  'react'
+import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
 import { Database } from '@/src/types/schema';
 
@@ -45,7 +45,7 @@ export type JobApplicationContext = {
   // eslint-disable-next-line no-unused-vars
   handleJobApplicationError: (error: any) => void;
   initialLoad: boolean;
-
-  openImportCandidates:boolean;
-  setOpenImportCandidates:Dispatch<SetStateAction<boolean>>;
+  circularScoreAnimation: MutableRefObject<boolean>;
+  openImportCandidates: boolean;
+  setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
 };
