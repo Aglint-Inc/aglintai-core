@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 import { NewJobStep1 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
@@ -22,10 +24,35 @@ const FormOne = ({ nextSlide }) => {
           shortListedCount: 0,
           status: 'draft',
           workPlaceType: '',
-          skills: [],
-          jobDescription: '',
+          skills: ['HTML'],
+          jobDescription: 's',
           interviewType: 'ai-powered',
-          interviewConfig: [],
+          interviewConfig: {
+            skill: {
+              id: nanoid(),
+              copy: 'Skill',
+              questions: [],
+              value: false,
+            },
+            cultural: {
+              id: nanoid(),
+              copy: 'Cultural',
+              value: false,
+              questions: [],
+            },
+            personality: {
+              id: nanoid(),
+              copy: 'Personality',
+              questions: [],
+              value: false,
+            },
+            softSkills: {
+              id: nanoid(),
+              copy: 'Soft Skills',
+              questions: [],
+              value: false,
+            },
+          },
         },
         slideNo: 0,
       },

@@ -141,9 +141,12 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
                       />
                     </>
                   }
-                  isDraftSaved={false}
-                  isSavetoDraftVisible={true}
-                  isSkipButtonVisible={true}
+                  // isDraftSaved={false}
+                  // isSavetoDraftVisible={true}
+                  isSkipButtonVisible={slideNo > 3}
+                  onClickSkip={{
+                    onClick: handleDrawerClose,
+                  }}
                 />
               )
             }

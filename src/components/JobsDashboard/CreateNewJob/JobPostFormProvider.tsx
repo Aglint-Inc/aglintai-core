@@ -5,11 +5,20 @@ import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobType } from '../types';
 
+type Question = {
+  id: string;
+  question: string;
+};
+export type InterviewParam =
+  | 'skill'
+  | 'cultural'
+  | 'personality'
+  | 'softSkills';
 export type InterviewConfigType = {
+  id: string;
   copy: string;
-  label: string;
   value: boolean;
-  questions: string[];
+  questions: Question[];
 };
 
 export type FormJobType = {
@@ -25,7 +34,7 @@ export type FormJobType = {
   skills: string[];
   status: 'sourcing' | 'interviewing' | 'closed' | 'draft';
   interviewType: 'ai-powered' | 'questions-preset';
-  interviewConfig: InterviewConfigType[];
+  interviewConfig: Record<InterviewParam, InterviewConfigType>;
 };
 
 export type JobFormState = {
