@@ -302,6 +302,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .cj-main-wrapper {
   position: relative;
 

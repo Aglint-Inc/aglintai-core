@@ -18,8 +18,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .fw-semibold {
@@ -147,6 +147,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -196,10 +200,6 @@
 
 .text-sm.fw-semibold.text-kale-800.text-first-capital {
   text-transform: capitalize;
-}
-
-.text-yellow-600 {
-  color: var(--yellow600-1478b5f5);
 }
 
 .text-blue-500 {

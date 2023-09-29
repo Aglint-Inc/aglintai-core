@@ -123,7 +123,7 @@ const TipTapAIEditor = ({
         >
           <EditorContent editor={editor} />
         </Stack>
-        <GenerateDescription />
+        {enablAI && <GenerateDescription />}
       </div>
     </TipTapCtx.Provider>
   );

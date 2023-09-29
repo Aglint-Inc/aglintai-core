@@ -155,6 +155,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -677,10 +681,6 @@
 
 .text-sm.fw-semibold.text-kale-800.text-first-capital {
   text-transform: capitalize;
-}
-
-.text-yellow-600 {
-  color: var(--yellow600-1478b5f5);
 }
 
 .text-blue-500 {

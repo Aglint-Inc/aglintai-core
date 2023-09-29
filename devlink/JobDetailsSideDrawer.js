@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { KeySkills } from "./KeySkills";
+import { InterviewResult } from "./InterviewResult";
 import * as _utils from "./utils";
 import _styles from "./JobDetailsSideDrawer.module.css";
 
@@ -17,21 +18,14 @@ export function JobDetailsSideDrawer({
   textSites = "janecooper.com",
   slotKeySkills,
   isKeySkillsVisible = true,
-  textInterviewHeader = "Woohoo. It looks great 😍",
-  slotScore,
-  onClickDetailedFeedback = {},
-  onClickCopyFeedbackLink = {},
-  slotTotalScoreGraph,
   isInterviewVisible = true,
   slotResumeScore,
-  onClickAddToShortlist = {},
-  onClickReject = {},
   textName = "Jane Cooper",
-  textStatus = "Selected",
-  textStatusColorProps = {},
-  statusBgColorProps = {},
   isResumeVisible = true,
+  slotInterviewResult,
+  onClickCopyProfile = {},
   onClickClose = {},
+  isCloseButtonVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -46,48 +40,23 @@ export function JobDetailsSideDrawer({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "fw-semibold",
-              "color-black"
-            )}
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
             {textName}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-298")}
-            tag="div"
-          >
+          {isCloseButtonVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "label-global", "green-100")}
+              className={_utils.cx(_styles, "close-profile-info-cand")}
               tag="div"
-              {...statusBgColorProps}
-            >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-sm",
-                  "fw-semibold",
-                  "text-green-500"
-                )}
-                tag="div"
-                {...textStatusColorProps}
-              >
-                {textStatus}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-297")}
-              tag="div"
+              {...onClickClose}
             >
               <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icon")}
-                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%226%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.64645%203.64645C1.82001%203.47288%202.08944%203.4536%202.28431%203.58859L2.35355%203.64645L6%207.293L9.64645%203.64645C9.82001%203.47288%2010.0894%203.4536%2010.2843%203.58859L10.3536%203.64645C10.5271%203.82001%2010.5464%204.08944%2010.4114%204.28431L10.3536%204.35355L6.35355%208.35355C6.17999%208.52712%205.91056%208.5464%205.71569%208.41141L5.64645%208.35355L1.64645%204.35355C1.45118%204.15829%201.45118%203.84171%201.64645%203.64645Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M2.64645%2013.3536C2.84171%2013.5488%203.15829%2013.5488%203.35355%2013.3536L8%208.70711L12.6464%2013.3536C12.8417%2013.5488%2013.1583%2013.5488%2013.3536%2013.3536C13.5488%2013.1583%2013.5488%2012.8417%2013.3536%2012.6464L8.70711%208L13.3536%203.35355C13.5488%203.15829%2013.5488%202.84171%2013.3536%202.64645C13.1583%202.45118%2012.8417%202.45118%2012.6464%202.64645L8%207.29289L3.35355%202.64645C3.15829%202.45118%202.84171%202.45118%202.64645%202.64645C2.45118%202.84171%202.45118%203.15829%202.64645%203.35355L7.29289%208L2.64645%2012.6464C2.45118%2012.8417%202.45118%2013.1583%202.64645%2013.3536Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_2488_21403%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%222%22%20y%3D%222%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M2.64645%2013.3536C2.84171%2013.5488%203.15829%2013.5488%203.35355%2013.3536L8%208.70711L12.6464%2013.3536C12.8417%2013.5488%2013.1583%2013.5488%2013.3536%2013.3536C13.5488%2013.1583%2013.5488%2012.8417%2013.3536%2012.6464L8.70711%208L13.3536%203.35355C13.5488%203.15829%2013.5488%202.84171%2013.3536%202.64645C13.1583%202.45118%2012.8417%202.45118%2012.6464%202.64645L8%207.29289L3.35355%202.64645C3.15829%202.45118%202.84171%202.45118%202.64645%202.64645C2.45118%202.84171%202.45118%203.15829%202.64645%203.35355L7.29289%208L2.64645%2012.6464C2.45118%2012.8417%202.45118%2013.1583%202.64645%2013.3536Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_2488_21403)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "job-sidebar-wrapper")}
@@ -106,94 +75,132 @@ export function JobDetailsSideDrawer({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "candidate-profile-infor")}
+              className={_utils.cx(_styles, "div-block-383")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "slot-job-details-profile-image")}
+                className={_utils.cx(_styles, "candidate-profile-infor")}
                 tag="div"
               >
-                {slotProfileImage}
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "slot-job-details-profile-image"
+                  )}
+                  tag="div"
+                >
+                  {slotProfileImage}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "frame-1020")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cdd-profile-contact-block")}
+                    tag="div"
+                  >
+                    <_Builtin.Image
+                      className={_utils.cx(_styles, "vectors-wrapper-46")}
+                      loading="lazy"
+                      width={11.999947547912598}
+                      height={11.999947547912598}
+                      src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb624dfe721c77c1cf3f_Vectors-Wrapper.svg"
+                    />
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "",
+                        "text-sm",
+                        "color-grey-600"
+                      )}
+                      dyn={{
+                        bind: {},
+                      }}
+                      tag="div"
+                    >
+                      {textMail}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cdd-profile-contact-block")}
+                    tag="div"
+                  >
+                    <_Builtin.Image
+                      className={_utils.cx(_styles, "vectors-wrapper-43")}
+                      loading="lazy"
+                      width={12}
+                      height={12}
+                      src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb634328f76be652b614_Vectors-Wrapper.svg"
+                    />
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "",
+                        "text-sm",
+                        "color-grey-600"
+                      )}
+                      dyn={{
+                        bind: {},
+                      }}
+                      tag="div"
+                    >
+                      {textPhone}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cdd-profile-contact-block")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icon")}
+                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM10.9%207C10.9656%206.67689%2011%206.34247%2011%206C11%205.65753%2010.9656%205.32311%2010.9%205H9V7H10.9ZM1.41604%208C2.06409%209.48321%203.41091%2010.5913%205.04038%2010.908L3.22288%208H1.41604ZM6%2010.5566L7.59788%208H4.40212L6%2010.5566ZM6.95962%2010.908C8.58909%2010.5913%209.93591%209.48321%2010.584%208H8.77712L6.95962%2010.908ZM1.10002%207C1.03443%206.67689%201%206.34247%201%206C1%205.65753%201.03443%205.32311%201.10002%205H3V7H1.10002ZM4%207V5H8V7H4ZM1.41604%204C2.06409%202.51679%203.41091%201.40874%205.04038%201.092L3.22288%204H1.41604ZM6%201.4434L4.40212%204H7.59788L6%201.4434ZM8.77712%204H10.584C9.93591%202.51679%208.58909%201.40874%206.95962%201.092L8.77712%204Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_9129_31033%22%20style%3D%22mask-type%3Aluminance%22%20maskunits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM10.9%207C10.9656%206.67689%2011%206.34247%2011%206C11%205.65753%2010.9656%205.32311%2010.9%205H9V7H10.9ZM1.41604%208C2.06409%209.48321%203.41091%2010.5913%205.04038%2010.908L3.22288%208H1.41604ZM6%2010.5566L7.59788%208H4.40212L6%2010.5566ZM6.95962%2010.908C8.58909%2010.5913%209.93591%209.48321%2010.584%208H8.77712L6.95962%2010.908ZM1.10002%207C1.03443%206.67689%201%206.34247%201%206C1%205.65753%201.03443%205.32311%201.10002%205H3V7H1.10002ZM4%207V5H8V7H4ZM1.41604%204C2.06409%202.51679%203.41091%201.40874%205.04038%201.092L3.22288%204H1.41604ZM6%201.4434L4.40212%204H7.59788L6%201.4434ZM8.77712%204H10.584C9.93591%202.51679%208.58909%201.40874%206.95962%201.092L8.77712%204Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_9129_31033)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "",
+                        "text-sm",
+                        "color-grey-600"
+                      )}
+                      dyn={{
+                        bind: {},
+                      }}
+                      tag="div"
+                    >
+                      {textSites}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "frame-1020")}
+                className={_utils.cx(_styles, "aui-button-wrap")}
                 tag="div"
+                tabIndex=""
+                {...onClickCopyProfile}
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "cdd-profile-contact-block")}
+                  className={_utils.cx(
+                    _styles,
+                    "aui-button",
+                    "is-small",
+                    "is-button-outlined"
+                  )}
                   tag="div"
+                  tabIndex=""
                 >
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "vectors-wrapper-46")}
-                    loading="lazy"
-                    width={11.999947547912598}
-                    height={11.999947547912598}
-                    src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb624dfe721c77c1cf3f_Vectors-Wrapper.svg"
-                  />
                   <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "",
-                      "text-sm",
-                      "color-grey-600"
-                    )}
-                    dyn={{
-                      bind: {},
-                    }}
+                    className={_utils.cx(_styles, "button-icon", "is-large")}
                     tag="div"
                   >
-                    {textMail}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cdd-profile-contact-block")}
-                  tag="div"
-                >
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "vectors-wrapper-43")}
-                    loading="lazy"
-                    width={12}
-                    height={12}
-                    src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb634328f76be652b614_Vectors-Wrapper.svg"
-                  />
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "",
-                      "text-sm",
-                      "color-grey-600"
-                    )}
-                    dyn={{
-                      bind: {},
-                    }}
-                    tag="div"
-                  >
-                    {textPhone}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cdd-profile-contact-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div">
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(_styles, "icon")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM10.9%207C10.9656%206.67689%2011%206.34247%2011%206C11%205.65753%2010.9656%205.32311%2010.9%205H9V7H10.9ZM1.41604%208C2.06409%209.48321%203.41091%2010.5913%205.04038%2010.908L3.22288%208H1.41604ZM6%2010.5566L7.59788%208H4.40212L6%2010.5566ZM6.95962%2010.908C8.58909%2010.5913%209.93591%209.48321%2010.584%208H8.77712L6.95962%2010.908ZM1.10002%207C1.03443%206.67689%201%206.34247%201%206C1%205.65753%201.03443%205.32311%201.10002%205H3V7H1.10002ZM4%207V5H8V7H4ZM1.41604%204C2.06409%202.51679%203.41091%201.40874%205.04038%201.092L3.22288%204H1.41604ZM6%201.4434L4.40212%204H7.59788L6%201.4434ZM8.77712%204H10.584C9.93591%202.51679%208.58909%201.40874%206.95962%201.092L8.77712%204Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_9129_31033%22%20style%3D%22mask-type%3Aluminance%22%20maskunits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM10.9%207C10.9656%206.67689%2011%206.34247%2011%206C11%205.65753%2010.9656%205.32311%2010.9%205H9V7H10.9ZM1.41604%208C2.06409%209.48321%203.41091%2010.5913%205.04038%2010.908L3.22288%208H1.41604ZM6%2010.5566L7.59788%208H4.40212L6%2010.5566ZM6.95962%2010.908C8.58909%2010.5913%209.93591%209.48321%2010.584%208H8.77712L6.95962%2010.908ZM1.10002%207C1.03443%206.67689%201%206.34247%201%206C1%205.65753%201.03443%205.32311%201.10002%205H3V7H1.10002ZM4%207V5H8V7H4ZM1.41604%204C2.06409%202.51679%203.41091%201.40874%205.04038%201.092L3.22288%204H1.41604ZM6%201.4434L4.40212%204H7.59788L6%201.4434ZM8.77712%204H10.584C9.93591%202.51679%208.58909%201.40874%206.95962%201.092L8.77712%204Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_9129_31033)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_2456_113832%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_2456_113832)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
                     />
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "",
-                      "text-sm",
-                      "color-grey-600"
-                    )}
-                    dyn={{
-                      bind: {},
-                    }}
-                    tag="div"
-                  >
-                    {textSites}
+                  <_Builtin.Block tag="div">
+                    {"Copy Profile URL"}
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
@@ -251,155 +258,7 @@ export function JobDetailsSideDrawer({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block tag="div">
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "analysis-wrapper")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "analysis-summary-block")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "analysis-content-block-copy"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "fw-semibold")}
-                          tag="div"
-                        >
-                          {textInterviewHeader}
-                        </_Builtin.Block>
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "div-block-299")}
-                          tag="div"
-                        >
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "analysis-main-block"
-                            )}
-                            tag="div"
-                          >
-                            <_Builtin.Block
-                              className={_utils.cx(
-                                _styles,
-                                "",
-                                "rating-list-item"
-                              )}
-                              tag="div"
-                            >
-                              <_Builtin.Block
-                                className={_utils.cx(
-                                  _styles,
-                                  "aui-button-wrap"
-                                )}
-                                tag="div"
-                                tabIndex="0"
-                              >
-                                <_Builtin.Block
-                                  className={_utils.cx(
-                                    _styles,
-                                    "aui-button",
-                                    "is-button-outlined"
-                                  )}
-                                  tag="div"
-                                  tabIndex="0"
-                                  {...onClickDetailedFeedback}
-                                >
-                                  <_Builtin.Block
-                                    className={_utils.cx(
-                                      _styles,
-                                      "text-sm",
-                                      "text-blue-600"
-                                    )}
-                                    tag="div"
-                                  >
-                                    {"Detailed feedback"}
-                                  </_Builtin.Block>
-                                </_Builtin.Block>
-                              </_Builtin.Block>
-                            </_Builtin.Block>
-                          </_Builtin.Block>
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "analysis-main-block"
-                            )}
-                            tag="div"
-                          >
-                            <_Builtin.Block
-                              className={_utils.cx(
-                                _styles,
-                                "",
-                                "rating-list-item"
-                              )}
-                              tag="div"
-                            >
-                              <_Builtin.Block
-                                className={_utils.cx(
-                                  _styles,
-                                  "aui-button-wrap"
-                                )}
-                                tag="div"
-                                tabIndex="0"
-                              >
-                                <_Builtin.Block
-                                  className={_utils.cx(_styles, "aui-button")}
-                                  tag="div"
-                                  tabIndex="0"
-                                  {...onClickCopyFeedbackLink}
-                                >
-                                  <_Builtin.Block
-                                    className={_utils.cx(
-                                      _styles,
-                                      "button-icon",
-                                      "is-large"
-                                    )}
-                                    tag="div"
-                                  >
-                                    <_Builtin.HtmlEmbed
-                                      className={_utils.cx(_styles, "icon")}
-                                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_9364_13086%22%20style%3D%22mask-type%3Aluminance%22%20maskunits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_9364_13086)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
-                                    />
-                                  </_Builtin.Block>
-                                  <_Builtin.Block
-                                    className={_utils.cx(
-                                      _styles,
-                                      "text-sm",
-                                      "text-blue-600"
-                                    )}
-                                    tag="div"
-                                  >
-                                    {"Copy Feedback Link"}
-                                  </_Builtin.Block>
-                                </_Builtin.Block>
-                              </_Builtin.Block>
-                            </_Builtin.Block>
-                          </_Builtin.Block>
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "analysis-score-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "vectors-wrapper-13")}
-                          tag="div"
-                        >
-                          {slotScore}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-total-score")}
-                  tag="div"
-                >
-                  {slotTotalScoreGraph}
+                  {slotInterviewResult ?? <InterviewResult />}
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
@@ -433,60 +292,6 @@ export function JobDetailsSideDrawer({
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-302")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "aui-button-wrap")}
-                tag="div"
-                tabIndex=""
-              >
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "aui-button",
-                    "is-small",
-                    "is-button-bg-blue"
-                  )}
-                  tag="div"
-                  tabIndex=""
-                  {...onClickAddToShortlist}
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "button-icon", "is-large")}
-                    tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icon")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%200C2.69%200%200%202.69%200%206C0%209.31%202.69%2012%206%2012C9.31%2012%2012%209.31%2012%206C12%202.69%209.31%200%206%200ZM9.44%204.94L5.94%208.44C5.82%208.56%205.66%208.62%205.5%208.62C5.34%208.62%205.18%208.56%205.06%208.44L3.06%206.44C2.82%206.2%202.82%205.8%203.06%205.56C3.3%205.32%203.7%205.32%203.94%205.56L5.5%207.12L8.56%204.06C8.8%203.82%209.2%203.82%209.44%204.06C9.69%204.3%209.69%204.7%209.44%204.94Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    {"Add to shortlist"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "aui-button-wrap")}
-                tag="div"
-                tabIndex=""
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "aui-button", "is-small")}
-                  tag="div"
-                  tabIndex=""
-                  {...onClickReject}
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-red-600")}
-                    tag="div"
-                  >
-                    {"Reject Candidate"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
