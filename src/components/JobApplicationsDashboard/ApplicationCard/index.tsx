@@ -70,7 +70,7 @@ const ApplicationCard = ({
         slotProfilePic={
           <MuiAvatar
             level={application.first_name}
-            src={'/'}
+            src={application.profile_image}
             variant={'rounded'}
             width={'78px'}
             height={'78px'}

@@ -1146,6 +1146,7 @@ export interface Database {
       }
       job_applications: {
         Row: {
+          profile_image: any
           application_id: string
           branch: string | null
           cgpa: string | null
