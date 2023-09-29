@@ -36,7 +36,7 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
   let formSlide = null;
   const { slideNo } = jobForm;
   if (slideNo === 0) {
-    formSlide = <SelectImportMethod nextSlide={() => changeSlide(1)} />;
+    formSlide = <SelectImportMethod />;
   } else if (slideNo === 1) {
     formSlide = <StepOne formError={formError} setFormError={setFormError} />;
   } else if (slideNo === 2) {
