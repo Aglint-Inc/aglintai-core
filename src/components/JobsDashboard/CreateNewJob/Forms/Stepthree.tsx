@@ -4,6 +4,7 @@ import { htmlToText } from 'html-to-text';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import {
   AddSocialLink,
@@ -213,6 +214,12 @@ const StandardScreenSingle = ({
       setAiGenerating(false);
     }
   };
+
+  useEffect(() => {
+    if (param.value && param.questions.length === 0) {
+      !isAiGenerating && handleGenerateInterviewQns();
+    }
+  }, [param]);
 
   const qns = get(
     jobForm,
