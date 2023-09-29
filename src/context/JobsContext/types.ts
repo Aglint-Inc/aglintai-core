@@ -17,7 +17,7 @@ export type JobContext = {
   handleJobRead: () => Promise<Job[] | undefined>;
   handleJobUpdate: (
     // eslint-disable-next-line no-unused-vars
-    inputData: Job[],
+    inputData: Job,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleJobDelete: (jobId: string) => Promise<boolean>;

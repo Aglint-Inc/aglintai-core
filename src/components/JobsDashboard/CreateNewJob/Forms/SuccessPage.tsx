@@ -5,17 +5,17 @@ import { NewJobSuccess } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
 
-function FormSeven() {
+function SuccessPage() {
   const { jobForm } = useJobForm();
   const router = useRouter();
   const jobLink =
     process.env.NEXT_PUBLIC_HOST_NAME +
-    '/job-post/' +
+    '/jobs/' +
     get(jobForm, 'jobPostId', '');
   return (
     <NewJobSuccess
       onClickViewJob={{
-        onclick: () => {
+        onClick: () => {
           router.push(jobLink);
         },
       }}
@@ -23,4 +23,4 @@ function FormSeven() {
   );
 }
 
-export default FormSeven;
+export default SuccessPage;

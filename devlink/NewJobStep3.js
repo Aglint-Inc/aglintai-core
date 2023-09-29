@@ -51,7 +51,7 @@ export function NewJobStep3({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "select-one-screening")}
+          className={_utils.cx(_styles, "select-one-screening", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -200,7 +200,7 @@ export function NewJobStep3({
             />
           </_Builtin.Link>
         ) : null}
-        <_Builtin.Block className={_utils.cx(_styles, "pd-200")} tag="div" />
+        <_Builtin.Block className={_utils.cx(_styles, "pb-80")} tag="div" />
       </_Builtin.Block>
     </_Component>
   );

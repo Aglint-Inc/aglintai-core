@@ -65,7 +65,7 @@ const TipTapMenus = () => {
             alt='down-arrow'
             height={20}
             width={10}
-            src={'/images/svg/arrowDown.svg '}
+            src={'/images/svg/arrowDown.svg'}
           />
         }
         onClick={handleOpenMenu}
