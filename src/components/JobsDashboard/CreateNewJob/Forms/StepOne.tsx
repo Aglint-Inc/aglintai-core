@@ -1,6 +1,7 @@
+import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
-import isEmpty from 'lodash/isEmpty';
+import { get } from 'lodash';
 import Image from 'next/image';
 import React from 'react';
 
@@ -9,44 +10,23 @@ import { NewJobStep1 } from '@/devlink';
 import { useJobForm } from '../JobPostFormProvider';
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';
-
-const workPlaceOptions = [
-  {
-    name: 'OnSite',
-    value: 'onSite',
-  },
-  {
-    name: 'Hybrid',
-    value: 'hybrid',
-  },
-  {
-    name: 'Remote',
-    value: 'remote',
-  },
-];
-
-const jobTypeOptions = [
-  {
-    name: 'Internship',
-    value: 'internship',
-  },
-  {
-    name: 'Part-time',
-    value: 'part-time',
-  },
-  {
-    name: 'Full-time',
-    value: 'full-time',
-  },
-];
-
 const StepOne = ({ formError, setFormError }) => {
   const {
     jobForm: { formFields },
     handleUpdateFormFields,
   } = useJobForm();
 
-  const { company, jobTitle, jobLocation, jobType, workPlaceType } = formFields;
+  const {
+    company,
+    jobTitle,
+    jobLocation,
+    jobType,
+    workPlaceType,
+    defaultWorkPlaceTypes,
+    defaultJobType,
+    defaultAddress,
+  } = formFields;
+
   return (
     <>
       <NewJobStep1
@@ -97,54 +77,62 @@ const StepOne = ({ formError, setFormError }) => {
               />
               <UISelect
                 label='Workplace Type'
-                menuOptions={workPlaceOptions}
+                menuOptions={defaultWorkPlaceTypes}
                 onChange={(e) => {
                   handleUpdateFormFields({
                     path: 'workPlaceType',
                     value: String(e.target.value),
                   });
                 }}
-                value={
-                  isEmpty(workPlaceType)
-                    ? workPlaceOptions[0].value
-                    : workPlaceType
-                }
-                defaultValue={
-                  isEmpty(workPlaceType)
-                    ? workPlaceOptions[0].value
-                    : workPlaceType
-                }
+                value={workPlaceType}
+                defaultValue={workPlaceType}
                 fullWidth
               />
-              <UITextField
-                label={'Job Location'}
-                defaultValue={jobLocation}
-                value={jobLocation}
-                onChange={(e) => {
-                  setFormError((p) => ({ ...p, location: '' }));
+              <Autocomplete
+                options={defaultAddress}
+                onChange={(event: any, newValue) => {
+                  if (!newValue) return;
                   handleUpdateFormFields({
                     path: 'jobLocation',
-                    value: String(e.target.value),
+                    value: get(newValue, 'value'),
                   });
                 }}
-                placeholder='Ex : San Fransisco, United States'
-                error={Boolean(formError.location)}
-                helperText={formError.location}
+                renderInput={(params) => (
+                  <UITextField
+                    rest={{ ...params }}
+                    label='Job Location'
+                    placeholder='Ex : San Fransisco, United States'
+                    onChange={(e) => {
+                      setFormError((p) => ({ ...p, location: '' }));
+                      handleUpdateFormFields({
+                        path: 'jobLocation',
+                        value: String(e.target.value),
+                      });
+                    }}
+                    error={Boolean(formError.location)}
+                    helperText={formError.location}
+                  />
+                )}
+                defaultValue={{
+                  label: jobLocation,
+                  value: jobLocation,
+                }}
+                freeSolo
+                disablePortal
               />
+
               <UISelect
                 label='Job Type'
-                menuOptions={jobTypeOptions}
+                menuOptions={defaultJobType}
                 onChange={(e) => {
                   handleUpdateFormFields({
                     path: 'jobType',
                     value: String(e.target.value),
                   });
                 }}
-                value={isEmpty(jobType) ? jobTypeOptions[0].value : jobType}
+                value={jobType}
                 fullWidth
-                defaultValue={
-                  isEmpty(jobType) ? jobTypeOptions[0].value : jobType
-                }
+                defaultValue={jobType}
               />
             </Stack>
           </>

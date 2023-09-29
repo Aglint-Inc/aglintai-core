@@ -288,6 +288,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .cj-main-wrapper {
   position: relative;
 
@@ -548,10 +552,6 @@
 
 .text-sm.fw-semibold.text-kale-800.text-first-capital {
   text-transform: capitalize;
-}
-
-.text-yellow-600 {
-  color: var(--yellow600-1478b5f5);
 }
 
 .text-blue-500 {

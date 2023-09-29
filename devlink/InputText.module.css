@@ -142,3 +142,7 @@
 .fw-semibold.text-yellow-700.mt-8 {
   margin-top: 8px;
 }
+
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}

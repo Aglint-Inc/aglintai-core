@@ -145,6 +145,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;

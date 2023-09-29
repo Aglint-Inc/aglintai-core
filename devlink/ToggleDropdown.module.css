@@ -158,6 +158,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .toggle-btn-block {
   align-items: center;
 }

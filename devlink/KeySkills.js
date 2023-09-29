@@ -8,13 +8,8 @@ export function KeySkills({
   textKeySkills = "Javascript",
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "label-global", "rounded-rect", "blue-200")}
-      tag="div"
-    >
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textKeySkills}
-      </_Builtin.Block>
+    <_Component className={_utils.cx(_styles, "key-skills")} tag="div">
+      <_Builtin.Block tag="div">{textKeySkills}</_Builtin.Block>
     </_Component>
   );
 }

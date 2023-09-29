@@ -21,10 +21,12 @@ const MenuBtn = styled(IconButton)({
 // import axios from 'axios';
 
 import { GenerateJobDescAi } from '@/devlink';
+import { generateJobDescription } from '@/src/utils/prompts/addNewJob/generateJobDescription';
 
 import { useTipTap } from './context';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
+import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
 // import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
 
 function MenuBtns() {
@@ -63,7 +65,7 @@ const TipTapMenus = () => {
             alt='down-arrow'
             height={20}
             width={10}
-            src={'/images/svg/downArrow.svg '}
+            src={'/images/svg/arrowDown.svg'}
           />
         }
         onClick={handleOpenMenu}
@@ -271,12 +273,15 @@ const TipTapUndoRedo = () => {
 };
 
 export const GenerateDescription = () => {
+  const [isGenerating, setIsGenerating] = useState(false);
   const [checks, setChecks] = useState({
     benifits: true,
     company: true,
     values: true,
   });
-
+  const {
+    jobForm: { formFields },
+  } = useJobForm();
   const { editor } = useTipTap();
 
   if (!editor) return <></>;
@@ -286,13 +291,23 @@ export const GenerateDescription = () => {
     Boolean(checks.company) ||
     Boolean(checks.values);
 
-  const handlegenerate = () => {
+  const handlegenerate = async () => {
     if (!enableGenerate) return;
-    // console.log(job);
-    // const {
-    //   formFields: { company, jobTitle, jobLocation, jobType, workPlaceType },
-    // } = jobForm;
-    // generateDesc();
+    try {
+      setIsGenerating(true);
+      const jd = await generateJobDescription(
+        formFields.jobTitle,
+        formFields.company,
+        formFields.workPlaceType,
+        formFields.jobLocation,
+        formFields.jobType,
+      );
+      editor.commands.setContent(jd, true, { preserveWhitespace: true });
+    } catch (error) {
+      //
+    } finally {
+      setIsGenerating(false);
+    }
   };
   return (
     <>
@@ -318,7 +333,7 @@ export const GenerateDescription = () => {
         onClickGenerate={{
           onClick: handlegenerate,
         }}
-        isGenerateDisable={!enableGenerate}
+        isGenerateDisable={!enableGenerate || isGenerating}
       />
     </>
   );
