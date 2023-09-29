@@ -1,5 +1,6 @@
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Database } from '@/src/types/schema';
 
@@ -9,9 +10,9 @@ export const getSeedJobFormData = (
   recruiter?: Database['public']['Tables']['recruiter']['Row'],
 ) => {
   const seedFormState: JobFormState = {
-    createAt: undefined,
+    createdAt: undefined,
     updatedAt: undefined,
-    jobPostId: undefined,
+    jobPostId: uuidv4(),
     formType: 'new',
     slideNo: 0,
     formFields: {

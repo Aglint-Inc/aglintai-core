@@ -1,4 +1,4 @@
-import { cloneDeep, debounce, get, set } from 'lodash';
+import { cloneDeep, debounce, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
@@ -75,7 +75,7 @@ export type FormJobType = {
 export type JobFormState = {
   jobPostId: string | undefined;
   updatedAt: string | null;
-  createAt: string | null;
+  createdAt: string | null;
   formType: 'edit' | 'new';
   formFields: FormJobType | null;
   slideNo: number;
@@ -86,7 +86,7 @@ const initialState: JobFormState = {
   formType: 'new',
   jobPostId: null,
   updatedAt: null,
-  createAt: null,
+  createdAt: null,
   slideNo: 0,
 };
 
@@ -117,7 +117,6 @@ type JobsAction =
   | {
       type: 'setPostMeta';
       payload: {
-        jobPostId: string;
         updatedAt: string;
         createdAt: string;
       };
@@ -145,10 +144,9 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'setPostMeta': {
-      const { createdAt, jobPostId, updatedAt } = action.payload;
+      const { createdAt, updatedAt } = action.payload;
       const newState = cloneDeep(state);
       set(newState, 'createAt', createdAt);
-      set(newState, 'jobPostId', jobPostId);
       set(newState, 'updatedAt', updatedAt);
       return newState;
     }
@@ -207,11 +205,8 @@ type JobPostFormProviderParams = {
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
   const { handleJobUpdate } = useJobs();
-  const updateFormTodb = async (currState, saveField) => {
-    // if job is already there update in db sync
-    if (get(currState, 'jobPostId', false)) {
-      await saveJobPostToDb(currState, saveField);
-    } else if (currState.slideNo > 1) {
+  const updateFormTodb = async (currState: JobFormState, saveField) => {
+    if (currState.slideNo > 1) {
       //fresh job being created
       const newJob = await saveJobPostToDb(currState, saveField);
       dispatch({
@@ -219,11 +214,13 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         payload: {
           createdAt: newJob.created_at,
           updatedAt: '',
-          jobPostId: newJob.id,
         },
       });
 
-      handleJobUpdate(newJob);
+      //job post gets created
+      if (!currState.createdAt) {
+        handleJobUpdate(newJob);
+      }
     }
   };
 
@@ -318,7 +315,7 @@ async function saveJobPostToDb(
     if (error) throw new Error(error.message);
     return data[0] as JobType;
   } else {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('public_jobs')
       .update({
         screening_setting: {
@@ -327,8 +324,10 @@ async function saveJobPostToDb(
         },
         screening_questions: [jobForm.formFields.interviewConfig],
       })
-      .eq('id', jobForm.jobPostId);
+      .eq('id', jobForm.jobPostId)
+      .select();
     if (error) throw new Error(error.message);
+    return data[0] as JobType;
   }
 }
 
