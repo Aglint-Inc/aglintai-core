@@ -60,7 +60,7 @@ const StepThree = () => {
       }}
       isStandardScreeningChecked={!isInterviewAiPowered}
       howItWorksLink={{
-        href: 'https://www.aglinthq.com',
+        href: 'https://aglint-ui-e809fff7c40021d-842cb1e45b3df.webflow.io/interview-skill',
       }}
       isHowItWorksVisible
       slotSkillsQuestion={

@@ -187,7 +187,7 @@ export function NewJobStep4({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-278")}
+          className={_utils.cx(_styles, "div-block-278", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -197,7 +197,7 @@ export function NewJobStep4({
             {"Qualification settings"}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "toggle-dropdown")}
+            className={_utils.cx(_styles, "toggle-dropdown", "hide")}
             tag="div"
           >
             <_Builtin.Block
@@ -338,7 +338,8 @@ export function NewJobStep4({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "check-box-automate-wrapopers"
+                      "check-box-automate-wrapopers",
+                      "hide"
                     )}
                     tag="div"
                   >

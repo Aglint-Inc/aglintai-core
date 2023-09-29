@@ -302,6 +302,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .cj-main-wrapper {
   position: relative;
 
@@ -331,6 +335,10 @@
   align-items: stretch;
   border: 1px solid var(--grey200-9ba653f1);
   border-radius: 8px;
+}
+
+.toggle-dropdown.hide {
+  display: none;
 }
 
 .toggle-dropdown-toggle {
@@ -409,6 +417,10 @@
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.check-box-automate-wrapopers.hide {
+  display: none;
 }
 
 .final-check-box {

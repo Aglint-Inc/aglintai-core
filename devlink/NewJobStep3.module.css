@@ -302,6 +302,10 @@
   margin-top: 8px;
 }
 
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
 .cj-main-wrapper {
   position: relative;
 
@@ -323,6 +327,10 @@
   flex-direction: column;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
+}
+
+.select-one-screening.hide {
+  display: none;
 }
 
 .text-md {
@@ -526,6 +534,6 @@
   align-items: center;
 }
 
-.pd-200 {
-  padding-bottom: 200px;
+.pb-80 {
+  padding-bottom: 80px;
 }
