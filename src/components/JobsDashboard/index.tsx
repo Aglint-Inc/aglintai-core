@@ -19,8 +19,8 @@ const DashboardComp = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { jobsData, initialLoad } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState(jobsData.jobs);
+  const { handleInitializeForm } = useJobForm();
   const { recruiter } = useAuthDetails();
-  const { dispatch: jobFormDispatch } = useJobForm();
   useEffect(() => {
     if (router.isReady) {
       if (router.query.flow == 'create') {
@@ -76,12 +76,7 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
-                  jobFormDispatch({
-                    type: 'initForm',
-                    payload: {
-                      recruiterId: recruiter.id,
-                    },
-                  });
+                  handleInitializeForm({ type: 'new', recruiter });
                   setDrawerOpen(true);
                 },
               }}
@@ -132,11 +127,7 @@ const DashboardComp = () => {
             />
           )}
 
-          <CreateNewJob
-            open={drawerOpen}
-            setDrawerOpen={setDrawerOpen}
-            // setJobs={setJobs}
-          />
+          <CreateNewJob open={drawerOpen} setDrawerOpen={setDrawerOpen} />
         </>
       )}
     </Stack>

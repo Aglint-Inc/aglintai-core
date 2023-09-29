@@ -2,7 +2,9 @@ import { cloneDeep, debounce, get, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
+import { RecruiterDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import { getSeedJobFormData } from './seedFormData';
 import { JobType, Status } from '../types';
@@ -23,12 +25,18 @@ export type InterviewConfigType = {
   questions: Question[];
 };
 
+type dropDownOption = {
+  name: string;
+  value: string;
+};
+
 export type FormJobType = {
   jobTitle: string;
   company: string;
-  workPlaceType: 'onSite' | 'hybrid' | 'remote';
+  logo: string;
+  workPlaceType: string;
   jobLocation: string;
-  jobType: 'internship' | 'partTime' | 'fullTime';
+  jobType: string;
   applicantsCount: number;
   interviewingCount: number;
   shortListedCount: number;
@@ -53,6 +61,8 @@ export type FormJobType = {
     };
     feedbackVisible: boolean;
   };
+  defaultWorkPlaceTypes: dropDownOption[];
+  defaultJobType: dropDownOption[];
   recruiterId: string;
 };
 
@@ -79,7 +89,7 @@ type JobsAction =
   | {
       type: 'initForm';
       payload: {
-        recruiterId: string;
+        seedData: JobFormState;
       };
     }
   | {
@@ -118,11 +128,9 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
-      const { recruiterId } = action.payload;
-      const newState = getSeedJobFormData();
-      newState.formFields.recruiterId = recruiterId;
-      newState.slideNo = 1;
-      return newState;
+      const { seedData } = action.payload;
+      seedData.slideNo = 1;
+      return cloneDeep(seedData);
     }
     case 'closeForm': {
       const newState: JobFormState = {
@@ -161,12 +169,21 @@ export type JobsContextType = {
     path: string;
     value: any;
     saveField?: 'job-details' | 'screening';
-  }) => Promise<void> | null;
+  }) => Promise<void>;
+  handleInitializeForm: ({
+    // eslint-disable-next-line no-unused-vars
+    type = 'new',
+  }: {
+    type: JobFormState['formType'];
+    recruiter?: RecruiterDB | null;
+  }) => void;
 };
+
 const initialContextValue: JobsContextType = {
   jobForm: initialState,
   dispatch: () => {},
   handleUpdateFormFields: null,
+  handleInitializeForm: () => {},
 };
 
 const JobsCtx = createContext<JobsContextType>(initialContextValue);
@@ -184,7 +201,6 @@ type JobPostFormProviderParams = {
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
   const { handleJobUpdate, jobsData } = useJobs();
-
   const updateFormTodb = async (currState, saveField) => {
     // if job is already there update in db sync
     if (get(currState, 'jobPostId', false)) {
@@ -236,9 +252,30 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     }
   };
 
+  const handleInitializeForm: JobsContextType['handleInitializeForm'] = ({
+    type = 'new',
+    recruiter,
+  }) => {
+    try {
+      const seedFormData = getSeedJobFormData(recruiter);
+      seedFormData.formType = type;
+      dispatch({
+        type: 'initForm',
+        payload: { seedData: seedFormData },
+      });
+    } catch (err) {
+      toast.error('Failed to perform the action. Please try again');
+    }
+  };
+
   return (
     <JobsCtx.Provider
-      value={{ jobForm: state, dispatch, handleUpdateFormFields }}
+      value={{
+        jobForm: state,
+        dispatch,
+        handleUpdateFormFields,
+        handleInitializeForm,
+      }}
     >
       {children}
     </JobsCtx.Provider>
@@ -256,6 +293,7 @@ async function saveJobPostToDb(
       .from('public_jobs')
       .upsert({
         id: jobForm.jobPostId,
+        logo: jobForm.formFields.logo,
         company: jobForm.formFields.company,
         description: jobForm.formFields.jobDescription,
         job_title: jobForm.formFields.jobTitle,

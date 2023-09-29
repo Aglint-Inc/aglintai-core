@@ -1,8 +1,12 @@
 import { nanoid } from 'nanoid';
 
+import { Database } from '@/src/types/schema';
+
 import { JobFormState } from './JobPostFormProvider';
 
-export const getSeedJobFormData = () => {
+export const getSeedJobFormData = (
+  recruiter?: Database['public']['Tables']['recruiter']['Row'],
+) => {
   const seedFormState: JobFormState = {
     createAt: undefined,
     updatedAt: undefined,
@@ -17,11 +21,14 @@ export const getSeedJobFormData = () => {
       jobTitle: '',
       jobType: 'fullTime',
       shortListedCount: 0,
+      logo: '',
+      defaultJobType: [],
+      defaultWorkPlaceTypes: [],
       status: 'inactive',
       workPlaceType: 'onSite',
       skills: [],
       jobDescription: '',
-      interviewType: 'ai-powered',
+      interviewType: 'questions-preset',
       interviewConfig: {
         skill: {
           id: nanoid(),
@@ -67,5 +74,69 @@ export const getSeedJobFormData = () => {
       recruiterId: '',
     },
   };
+
+  if (recruiter) {
+    seedFormState.formFields.recruiterId = recruiter.id;
+    seedFormState.formFields.company = recruiter.name;
+    seedFormState.formFields.logo = recruiter.logo;
+    seedFormState.formFields.defaultWorkPlaceTypes = Object.keys(
+      recruiter.workplace_type,
+    ).map((o) => {
+      if (o === 'hybrid') {
+        return {
+          value: o,
+          name: 'Hybrid',
+        };
+      } else if (o === 'onsite') {
+        return {
+          name: 'On Site',
+          value: o,
+        };
+      } else if (o === 'offsite') {
+        return {
+          name: 'Off Site',
+          value: o,
+        };
+      }
+    });
+    seedFormState.formFields.defaultJobType = Object.keys(
+      recruiter.employment_type,
+    ).map((o) => {
+      if (o === 'contract') {
+        return {
+          name: 'Contract',
+          value: o,
+        };
+      } else if (o === 'fulltime') {
+        return {
+          name: 'Full Time',
+          value: o,
+        };
+      } else if (o === 'parttime') {
+        return {
+          name: 'Part Time',
+          value: o,
+        };
+      } else if (o === 'temporary') {
+        return {
+          name: 'Temporary',
+          value: o,
+        };
+      } else if (o === 'volunteer') {
+        return {
+          name: 'Volunteer',
+          value: o,
+        };
+      } else if (o === 'internship') {
+        return {
+          name: 'Internship',
+          value: o,
+        };
+      }
+    });
+    seedFormState.formFields.workPlaceType = 'onsite';
+    seedFormState.formFields.jobType = 'fulltime';
+  }
+
   return seedFormState;
 };

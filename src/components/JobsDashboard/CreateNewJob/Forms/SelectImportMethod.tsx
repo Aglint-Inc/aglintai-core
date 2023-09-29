@@ -3,25 +3,17 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { useJobForm } from '../JobPostFormProvider';
 
-const FormOne = ({ nextSlide }) => {
-  const { dispatch } = useJobForm();
+const FormOne = () => {
+  const { handleInitializeForm } = useJobForm();
   const { recruiter } = useAuthDetails();
-  const handleInitiliseForm = () => {
-    recruiter &&
-      dispatch({
-        type: 'initForm',
-        payload: {
-          recruiterId: recruiter.id,
-        },
-      });
-    nextSlide();
-  };
 
   return (
     <>
       <NewJobSelect
         onClickCreateJobAglint={{
-          onClick: handleInitiliseForm,
+          onClick: () => {
+            handleInitializeForm({ type: 'new', recruiter });
+          },
         }}
       />
     </>
