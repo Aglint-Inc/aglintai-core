@@ -96,6 +96,7 @@ const FormThree = () => {
                 value: s,
               });
             }}
+            enablAI
             initialValue={formFields.jobDescription}
           />
         </>
