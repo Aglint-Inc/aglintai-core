@@ -1,0 +1,22 @@
+.cdd-list-empty-block {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  text-align: center;
+}
+
+.cdd-list-empty-lottie-block {
+  width: 100px;
+  height: 100px;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}

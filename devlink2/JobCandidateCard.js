@@ -14,7 +14,7 @@ export function JobCandidateCard({
   textPhone = "(303) 555-0105",
   slotScore,
   scoreTextColor = {},
-  textScore = "0",
+  textScore = "--",
   statusBgColor = {},
   statusTextColor = {},
   textStatus = "In Progress",
@@ -247,12 +247,7 @@ export function JobCandidateCard({
             {...statusBgColor}
           >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "fw-semibold",
-                "text-blue-500"
-              )}
+              className={_utils.cx(_styles, "text-sm", "fw-semibold")}
               dyn={{
                 bind: {},
               }}

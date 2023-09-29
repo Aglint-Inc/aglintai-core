@@ -18,4 +18,8 @@ declare function JobScreening(props: {
   textJobStatus?: React.ReactNode;
   slotAddCandidates?: Types.Devlink.Slot;
   countAll?: React.ReactNode;
+  isAll?: Types.Visibility.VisibilityConditions;
+  isInterviewing?: Types.Visibility.VisibilityConditions;
+  isSelected?: Types.Visibility.VisibilityConditions;
+  isRejected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
