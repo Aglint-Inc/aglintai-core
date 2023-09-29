@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 
 import { Database } from '@/src/types/schema';
@@ -29,6 +30,7 @@ export const getSeedJobFormData = (
       skills: [],
       jobDescription: '',
       interviewType: 'questions-preset',
+      defaultAddress: [],
       interviewConfig: {
         skill: {
           id: nanoid(),
@@ -136,6 +138,16 @@ export const getSeedJobFormData = (
     });
     seedFormState.formFields.workPlaceType = 'onsite';
     seedFormState.formFields.jobType = 'fulltime';
+    seedFormState.formFields.jobLocation = get(
+      recruiter,
+      'office_locations[0]',
+      '',
+    );
+    seedFormState.formFields.defaultAddress = get(
+      recruiter,
+      'office_locations',
+      [],
+    ).map((s) => ({ label: s, value: s }));
   }
 
   return seedFormState;

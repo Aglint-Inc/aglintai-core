@@ -30,6 +30,11 @@ type dropDownOption = {
   value: string;
 };
 
+type AutoCompleteType = {
+  label: string;
+  value: string;
+};
+
 export type FormJobType = {
   jobTitle: string;
   company: string;
@@ -63,6 +68,7 @@ export type FormJobType = {
   };
   defaultWorkPlaceTypes: dropDownOption[];
   defaultJobType: dropDownOption[];
+  defaultAddress: AutoCompleteType[];
   recruiterId: string;
 };
 
@@ -334,7 +340,7 @@ const getjobPostSlug = (
   company: string,
   location: string,
 ) => {
-  if (!jobId || !jobTitle || !company || location) return '';
+  if (!jobId || !jobTitle || !company || !location) return '';
 
   const convertedJobTitle = jobTitle
     .toLowerCase()
