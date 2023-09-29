@@ -10,6 +10,7 @@ export function JobStatus({
   isActive = false,
   isInactive = false,
   onClickStatus = {},
+  textDate = "22 Aug, 11: 30 PM",
 }) {
   return (
     <_Component
@@ -59,7 +60,7 @@ export function JobStatus({
           className={_utils.cx(_styles, "text-kale-800")}
           tag="div"
         >
-          {"22 Aug, 11: 30 PM"}
+          {textDate}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
