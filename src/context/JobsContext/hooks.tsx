@@ -9,9 +9,9 @@ import {
   createJobDbAction,
   deleteJobDbAction,
   initialJobContext,
+  readJobApplicationsAction,
   readJobDbAction,
 } from './utils';
-import { readJobApplicationDbAction } from '../JobApplicationsContext/utils';
 
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
@@ -141,16 +141,16 @@ const useJobActions = () => {
           payload: { jobsData: fechedJobs },
         };
         dispatch(action);
-        return true;
+        return fechedJobs;
       }
       handleJobError(error);
-      return false;
+      return [];
     }
   };
 
-  const handleApplicationsRead = async () => {
+  const handleApplicationsRead = async (jobIds: string[]) => {
     if (recruiter) {
-      const { data, error } = await readJobApplicationDbAction(recruiter.id);
+      const { data, error } = await readJobApplicationsAction(jobIds);
       if (data) {
         const action: Action = {
           type: ActionType.READAPPLICATION,
@@ -203,10 +203,16 @@ const useJobActions = () => {
   const handleJobError = (error) => {
     toast.error(`Oops! Something went wrong.\n ${error?.message}`);
   };
-
   useEffect(() => {
-    handleJobRead();
-    handleApplicationsRead();
+    (async () => {
+      const data = await handleJobRead();
+      if (data) {
+        const jobIds = data.map((job) => {
+          return job.id;
+        });
+        handleApplicationsRead(jobIds);
+      }
+    })();
   }, [recruiter?.id]);
 
   const value = {

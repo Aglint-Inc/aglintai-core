@@ -1159,6 +1159,8 @@ export interface Database {
           feedback: Json | null
           first_name: string
           id: number
+          interview_duration: string | null
+          interviewing_date: string | null
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           job_id: string
@@ -1193,6 +1195,8 @@ export interface Database {
           feedback?: Json | null
           first_name: string
           id?: number
+          interview_duration?: string | null
+          interviewing_date?: string | null
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           job_id: string
@@ -1227,6 +1231,8 @@ export interface Database {
           feedback?: Json | null
           first_name?: string
           id?: number
+          interview_duration?: string | null
+          interviewing_date?: string | null
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           job_id?: string
@@ -2456,11 +2462,14 @@ export interface Database {
           address: Json | null
           application_process: string | null
           available_roles: string[]
+          benefits: string | null
           company_overview: string | null
+          company_values: string | null
           company_website: string | null
           departments: string[]
           e_o_statement: string | null
           email: string | null
+          email_template: Json
           employment_type: Json
           hr_contact: Json | null
           id: string
@@ -2481,11 +2490,14 @@ export interface Database {
           address?: Json | null
           application_process?: string | null
           available_roles?: string[]
+          benefits?: string | null
           company_overview?: string | null
+          company_values?: string | null
           company_website?: string | null
           departments?: string[]
           e_o_statement?: string | null
           email?: string | null
+          email_template?: Json
           employment_type?: Json
           hr_contact?: Json | null
           id?: string
@@ -2506,11 +2518,14 @@ export interface Database {
           address?: Json | null
           application_process?: string | null
           available_roles?: string[]
+          benefits?: string | null
           company_overview?: string | null
+          company_values?: string | null
           company_website?: string | null
           departments?: string[]
           e_o_statement?: string | null
           email?: string | null
+          email_template?: Json
           employment_type?: Json
           hr_contact?: Json | null
           id?: string
@@ -3160,7 +3175,7 @@ export interface Database {
           created_at: string | null
           id: string
           job_id: string | null
-          level: string
+          priority: string
           state: string
           title: string
           type: string[]
@@ -3177,7 +3192,7 @@ export interface Database {
           created_at?: string | null
           id?: string
           job_id?: string | null
-          level?: string
+          priority?: string
           state?: string
           title: string
           type: string[]
@@ -3194,7 +3209,7 @@ export interface Database {
           created_at?: string | null
           id?: string
           job_id?: string | null
-          level?: string
+          priority?: string
           state?: string
           title?: string
           type?: string[]
