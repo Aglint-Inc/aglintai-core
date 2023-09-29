@@ -7,6 +7,7 @@ import {
   InterviewResult,
   InterviewTranscriptCard,
   JobDetailsSideDrawer,
+  ResumeResult,
 } from '@/devlink';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -66,7 +67,7 @@ function ApplicationDetails({
             slotProfileImage={
               <MuiAvatar
                 level={applicationDetails.first_name}
-                src={'/'}
+                src={applicationDetails.profile_image}
                 variant={'rounded'}
                 width={'78px'}
                 height={'78px'}
@@ -76,15 +77,7 @@ function ApplicationDetails({
             isCloseButtonVisible={!openDetailedFeedback}
             slotInterviewResult={
               <InterviewResult
-                textScore={
-                  overAllScore > 90
-                    ? `Absolutely incredible! 🌟😍`
-                    : overAllScore > 70
-                    ? `Truly outstanding! 🤩`
-                    : overAllScore > 50
-                    ? `Excellent job! 👏`
-                    : `Not up to mark! 😑`
-                }
+                textScore={giveRateInWordForInterview(overAllScore)}
                 slotScore={<InterviewScoreCard overAllScore={overAllScore} />}
                 slotInterviewFeedback={
                   <>
@@ -155,68 +148,6 @@ function ApplicationDetails({
               ' ' +
               applicationDetails?.last_name
             }
-            // textInterviewHeader={
-            //   overAllScore > 90
-            //     ? `Absolutely incredible! 🌟😍`
-            //     : overAllScore > 70
-            //     ? `Truly outstanding! 🤩`
-            //     : overAllScore > 50
-            //     ? `Excellent job! 👏`
-            //     : `Not up to mark! 😑`
-            // }
-
-            // onClickCopyFeedbackLink={{
-            //   onClick: () => {
-            //     navigator.clipboard
-            //       .writeText(
-            //         `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
-            //       )
-            //       .then(() => {
-            //         toast.success('Link Copied');
-            //       });
-            //   },
-            // }}
-            // slotScore={
-            //   <Stack height={'100%'} overflow={'hidden'}>
-            //     <CustomProgress
-            //       progress={overAllScore}
-            //       rotation={270}
-            //       fillColor={
-            //         overAllScore >= 90
-            //           ? '#228F67'
-            //           : overAllScore >= 70
-            //           ? '#f79a3e'
-            //           : overAllScore >= 50
-            //           ? '#de701d'
-            //           : '#d93f4c'
-            //       }
-            //       bgFill={
-            //         overAllScore >= 90
-            //           ? '#edf8f4'
-            //           : overAllScore >= 70
-            //           ? '#fff7ed'
-            //           : overAllScore >= 50
-            //           ? '#ffeedb'
-            //           : '#fff0f1'
-            //       }
-            //       size={25}
-            //       strokeWidth={2}
-            //       label={
-            //         <Stack justifyContent={'center'} alignItems={'center'}>
-            //           {overAllScore}%
-            //         </Stack>
-            //       }
-            //       fontSize={15}
-            //     />
-            //   </Stack>
-            // }
-
-            //  ={{
-            //     onClick: () => {
-            //       setOpenDetailedFeedback((pre) => !pre);
-            //     },
-            //   }}
-
             isInterviewVisible={
               applicationDetails.feedback &&
               Math.floor(
@@ -234,36 +165,40 @@ function ApplicationDetails({
             }
             isKeySkillsVisible={false}
             slotResumeScore={
-              <CustomProgress
-                progress={overAllScore}
-                rotation={270}
-                fillColor={
-                  overAllScore >= 90
-                    ? '#228F67'
-                    : overAllScore >= 70
-                    ? '#f79a3e'
-                    : overAllScore >= 50
-                    ? '#de701d'
-                    : '#d93f4c'
+              <ResumeResult
+                slotResumeScore={
+                  <CustomProgress
+                    progress={applicationDetails?.score}
+                    rotation={270}
+                    fillColor={
+                      applicationDetails?.score >= 90
+                        ? '#228F67'
+                        : applicationDetails?.score >= 70
+                        ? '#f79a3e'
+                        : applicationDetails?.score >= 50
+                        ? '#de701d'
+                        : '#d93f4c'
+                    }
+                    bgFill={
+                      applicationDetails?.score >= 90
+                        ? '#edf8f4'
+                        : applicationDetails?.score >= 70
+                        ? '#fff7ed'
+                        : applicationDetails?.score >= 50
+                        ? '#ffeedb'
+                        : '#fff0f1'
+                    }
+                    size={35}
+                    strokeWidth={4.5}
+                    label={applicationDetails?.score}
+                    fontSize={25}
+                  />
                 }
-                bgFill={
-                  overAllScore >= 90
-                    ? '#edf8f4'
-                    : overAllScore >= 70
-                    ? '#fff7ed'
-                    : overAllScore >= 50
-                    ? '#ffeedb'
-                    : '#fff0f1'
-                }
-                size={35}
-                // strokeWidth={5}
-                // text={'Resume Score'}
-                // label={overAllScore}
-                // fontSize={'25px'}
+                textFeedback={giveRateInWordToResume(applicationDetails?.score)}
               />
             }
-            // isResumeVisible={applicationDetails.score}
-            isResumeVisible={false}
+            isResumeVisible={applicationDetails.score}
+            // isResumeVisible={false}
             textPhone={
               applicationDetails.phone ? applicationDetails.phone : '--'
             }
@@ -385,3 +320,39 @@ function ApplicationDetails({
 }
 
 export default ApplicationDetails;
+
+export function giveRateInWordToResume(score: number) {
+  if (score === 0) {
+    return 'Abysmal';
+  } else if (score <= 10) {
+    return 'Terrible';
+  } else if (score <= 20) {
+    return 'Poor';
+  } else if (score <= 30) {
+    return 'Bad';
+  } else if (score <= 40) {
+    return 'Below Average';
+  } else if (score <= 50) {
+    return 'Average';
+  } else if (score <= 60) {
+    return 'Fair';
+  } else if (score <= 70) {
+    return 'Good';
+  } else if (score <= 80) {
+    return 'Very Good';
+  } else if (score <= 90) {
+    return 'Excellent';
+  } else {
+    return 'Outstanding';
+  }
+}
+
+export function giveRateInWordForInterview(overAllScore: number) {
+  return overAllScore > 90
+    ? `Absolutely incredible! 🌟😍`
+    : overAllScore > 70
+    ? `Truly outstanding! 🤩`
+    : overAllScore > 50
+    ? `Excellent job! 👏`
+    : `Not up to mark! 😑`;
+}

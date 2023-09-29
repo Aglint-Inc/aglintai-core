@@ -59,6 +59,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
     "@types/react-lottie": "^1.2.6",
     "typescript": "^5.1.3"
   }

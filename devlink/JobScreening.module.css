@@ -1672,6 +1672,10 @@
   border-radius: 8px;
 }
 
+.toggle-dropdown.hide {
+  display: none;
+}
+
 .toggle-dropdown-toggle {
   display: flex;
   padding: 10px 16px;
