@@ -55,7 +55,6 @@ const ApplicationCard = ({
     setApplicationDetails(application);
     setOpenSidePanel((pre) => !pre);
   };
-
   return (
     <>
       <ApplicationDetails
@@ -70,14 +69,20 @@ const ApplicationCard = ({
         slotProfilePic={
           <MuiAvatar
             level={application.first_name}
-            src={application.profile_image}
+            src={
+              !application.profile_image
+                ? getGravatar(application.email, application?.first_name)
+                : application.profile_image
+            }
             variant={'rounded'}
             width={'78px'}
             height={'78px'}
             fontSize={'28px'}
           />
         }
-        textName={capitalize(application.first_name)}
+        textName={capitalize(
+          application.first_name + ' ' + application?.last_name,
+        )}
         textRole={capitalize(application.job_title)}
         textMail={application.email}
         textPhone={application.phone}
@@ -120,3 +125,16 @@ const getJobStatus = (status: string) => {
 };
 
 export default ApplicationCard;
+
+export function getGravatar(email: string, name: string) {
+  return `https://www.gravatar.com/avatar/${require('crypto')
+    .createHash('md5')
+    .update(email.trim().toLowerCase())
+    .digest('hex')}?d=${encode(name)}`;
+}
+
+function encode(name: any) {
+  return encodeURIComponent(
+    `https://ui-avatars.com/api/background=random&name=${name}`,
+  );
+}

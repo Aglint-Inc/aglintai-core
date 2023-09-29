@@ -15,8 +15,11 @@ import AUIButton from '../../Common/AUIButton';
 // import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
 
 function ImportCandidates() {
-  const { setOpenImportCandidates, handleJobApplicationBulkCreate } =
-    useJobApplications();
+  const {
+    setOpenImportCandidates,
+    handleJobApplicationBulkCreate,
+    applicationsData,
+  } = useJobApplications();
 
   const [bulkImportdata, setbulkImportdata] = useState([]);
   const headers = [
@@ -27,6 +30,7 @@ function ImportCandidates() {
     'job_title',
     'company',
     'status',
+    'score',
     'profile_image',
     'resume',
   ];
@@ -45,8 +49,8 @@ function ImportCandidates() {
       'resume',
     ],
     [
-      'abc',
-      'efg',
+      'xyz',
+      'c',
       'xyz@gmail.com',
       '1234567890',
       'sales manager',
@@ -55,14 +59,48 @@ function ImportCandidates() {
       'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
+    [
+      'chi',
+      'mai',
+      'chinmaichromium@gmail.com',
+      '9876543210',
+      'Engineer',
+      'hireDumb',
+      JobApplicationSections.APPLIED,
+      '',
+      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
+    ],
+    [
+      'abc',
+      'c',
+      'abc@gmail.com',
+      '9876543210',
+      'designer',
+      'hireDumb',
+      JobApplicationSections.APPLIED,
+      '',
+      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
+    ],
   ];
 
   async function createCandidates(candidates) {
-    // console.log(candidates, applicationsData);
-    setOpenImportCandidates(false);
+    const applied = applicationsData.applications.applied.list;
+    const interviewing = applicationsData.applications.interviewing.list;
+    const selected = applicationsData.applications.selected.list;
+    const rejected = applicationsData.applications.rejected.list;
+    const totalApplications = [
+      ...applied,
+      ...interviewing,
+      ...selected,
+      ...rejected,
+    ].map((ele) => ele.email);
+    const filteredCandidates = candidates.filter(
+      (ele) => !totalApplications.includes(ele.email),
+    );
     setbulkImportdata([]);
     setIsLoading(true);
-    const data = await handleJobApplicationBulkCreate(candidates);
+    const data = await handleJobApplicationBulkCreate(filteredCandidates);
+    setOpenImportCandidates(false);
     setIsLoading(data);
   }
 
@@ -99,9 +137,12 @@ function ImportCandidates() {
               setIsLoading(false);
               return;
             }
-            const validityOfHeaders =
-              headers?.length === Object.keys(data[0])?.length &&
-              headers?.every((item) => Object.keys(data[0]).includes(item));
+            let validityOfHeaders =
+              headers?.length >= Object.keys(data[0])?.length &&
+              Object.keys(data[0])?.every((item) => {
+                return headers.includes(item);
+              });
+
             if (validityOfHeaders) {
               // toast.success('Headers Are Valid.');
               // console.log('valid header');
