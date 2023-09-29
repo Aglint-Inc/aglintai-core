@@ -1,5 +1,6 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import toast from '@utils/toast';
+import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
 import { JobApplcationDB } from '@/src/types/data.types';
@@ -43,7 +44,7 @@ type Action =
   | {
       type: ActionType.UPDATE;
       payload: {
-        jobData: Job[];
+        newJob: Job;
       };
     }
   | {
@@ -74,9 +75,13 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.UPDATE: {
+      const { newJob } = action.payload;
       const newState: JobsData = {
         ...state,
-        jobs: action.payload.jobData,
+        jobs: [
+          newJob,
+          ...get(state, 'jobs', []).filter((j) => j.id !== newJob.id),
+        ],
       };
       return newState;
     }
@@ -164,14 +169,13 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (inputData: Job[]) => {
+  const handleJobUpdate = async (newJob: Job) => {
     if (recruiter) {
-      // const { data, error } = await updateJobDbAction(inputData, recruiter.id);
-      if (inputData) {
+      if (newJob) {
         const action: Action = {
           type: ActionType.UPDATE,
           payload: {
-            jobData: inputData,
+            newJob: newJob,
           },
         };
         dispatch(action);

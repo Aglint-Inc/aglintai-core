@@ -206,26 +206,24 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleJobUpdate, jobsData } = useJobs();
+  const { handleJobUpdate } = useJobs();
   const updateFormTodb = async (currState, saveField) => {
     // if job is already there update in db sync
     if (get(currState, 'jobPostId', false)) {
       await saveJobPostToDb(currState, saveField);
     } else if (currState.slideNo > 1) {
       //fresh job being created
-      const d = await saveJobPostToDb(currState, saveField);
+      const newJob = await saveJobPostToDb(currState, saveField);
       dispatch({
         type: 'setPostMeta',
         payload: {
-          createdAt: d.created_at,
+          createdAt: newJob.created_at,
           updatedAt: '',
-          jobPostId: d.id,
+          jobPostId: newJob.id,
         },
       });
-      const updatedJobs = get(jobsData, 'jobs', []).filter(
-        (j) => j.id !== d.id,
-      );
-      handleJobUpdate([d, ...updatedJobs]);
+
+      handleJobUpdate(newJob);
     }
   };
 
