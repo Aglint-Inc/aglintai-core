@@ -1,19 +1,10 @@
-.lan-analysis-block {
+.lan-analysis-header-block {
   display: flex;
-  flex-direction: column;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.lan-analysis-header-card {
-  display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
 }
 
-.lan-analysis-score-block-detailed {
+.lan-analysis-score-block {
   display: flex;
   padding: 4px 8px;
   justify-content: flex-start;
@@ -25,8 +16,6 @@
   border-radius: 100px;
 
   background-color: var(--white-80449ce7);
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .div-block-304 {

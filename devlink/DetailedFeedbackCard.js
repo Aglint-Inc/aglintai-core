@@ -14,12 +14,12 @@ export function DetailedFeedbackCard({
   return (
     <_Component className={_utils.cx(_styles, "lan-analysis-block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "lan-analysis-header-block")}
+        className={_utils.cx(_styles, "lan-analysis-header-card")}
         tag="div"
       >
         <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "lan-analysis-score-block")}
+          className={_utils.cx(_styles, "lan-analysis-score-block-detailed")}
           tag="div"
         >
           <_Builtin.Block

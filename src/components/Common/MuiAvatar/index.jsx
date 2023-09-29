@@ -36,7 +36,7 @@ function MuiAvatar({ level, width, height, variant, src, fontSize }) {
           color={'white.700'}
           fontSize={fontSize}
         >
-          {value ? value[0] : '0'}
+          {value ? value[0].toUpperCase() : '0'}
         </Typography>
       ),
     };
