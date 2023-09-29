@@ -1,6 +1,5 @@
 import Seo from '@components/Common/Seo';
 import JobApplicationProvider from '@context/JobApplicationsContext';
-import JobsProvider /*, { useJobs } */ from '@context/JobsContext';
 
 import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
 
@@ -17,11 +16,7 @@ const JobPage = () => {
 };
 
 JobPage.getProvider = function getProvider(page) {
-  return (
-    <JobsProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
-    </JobsProvider>
-  );
+  return <JobApplicationProvider>{page}</JobApplicationProvider>;
 };
 
 export default JobPage;

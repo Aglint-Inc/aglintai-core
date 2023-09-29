@@ -22,4 +22,10 @@ declare function JobScreening(props: {
   isInterviewing?: Types.Visibility.VisibilityConditions;
   isSelected?: Types.Visibility.VisibilityConditions;
   isRejected?: Types.Visibility.VisibilityConditions;
+  onClickEditJob?: Types.Devlink.RuntimeProps;
+  onClickWorkflow?: Types.Devlink.RuntimeProps;
+  slotSelectActionBar?: Types.Devlink.Slot;
+  bottomBarVisibility?: Types.Visibility.VisibilityConditions;
+  jobLink?: Types.Basic.Link;
+  linkActiveJobs?: Types.Basic.Link;
 }): React.JSX.Element;

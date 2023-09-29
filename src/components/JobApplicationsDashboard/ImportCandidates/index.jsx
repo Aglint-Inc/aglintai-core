@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidate, LoaderSvg, UploadCsv } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -24,9 +25,10 @@ function ImportCandidates() {
     'email',
     'phone',
     'job_title',
-    'score',
     'company',
     'status',
+    'profile_image',
+    'resume',
   ];
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,9 +39,10 @@ function ImportCandidates() {
       'email',
       'phone',
       'job_title',
-      'score',
       'company',
       'status',
+      'profile_image',
+      'resume',
     ],
     [
       'abc',
@@ -47,13 +50,15 @@ function ImportCandidates() {
       'xyz@gmail.com',
       '1234567890',
       'sales manager',
-      80,
       'xyz',
-      'applied',
+      JobApplicationSections.APPLIED,
+      'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
+      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
   ];
 
   async function createCandidates(candidates) {
+    // console.log(candidates, applicationsData);
     setOpenImportCandidates(false);
     setbulkImportdata([]);
     setIsLoading(true);

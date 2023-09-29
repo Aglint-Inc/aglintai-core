@@ -70,7 +70,7 @@ const ApplicationCard = ({
         slotProfilePic={
           <MuiAvatar
             level={application.first_name}
-            src={'/'}
+            src={application.profile_image}
             variant={'rounded'}
             width={'78px'}
             height={'78px'}
@@ -96,7 +96,7 @@ const ApplicationCard = ({
             handleOpenSidePanel(application);
           },
         }}
-        textStatus={capitalize(application.status)}
+        textStatus={capitalize(getJobStatus(application.status))}
         statusTextColor={{ style: { color: statusColors?.color } }}
         statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
         textAppliedOn={appliedOn}
@@ -104,6 +104,19 @@ const ApplicationCard = ({
       />
     </>
   );
+};
+
+const getJobStatus = (status: string) => {
+  switch (status) {
+    case 'applied':
+      return 'new';
+    case 'interviewing':
+      return 'interviewing';
+    case 'selected':
+      return 'qualified';
+    case 'rejected':
+      return 'disqualified';
+  }
 };
 
 export default ApplicationCard;

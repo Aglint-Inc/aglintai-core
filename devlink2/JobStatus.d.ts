@@ -8,4 +8,5 @@ declare function JobStatus(props: {
   isActive?: Types.Visibility.VisibilityConditions;
   isInactive?: Types.Visibility.VisibilityConditions;
   onClickStatus?: Types.Devlink.RuntimeProps;
+  textDate?: React.ReactNode;
 }): React.JSX.Element;

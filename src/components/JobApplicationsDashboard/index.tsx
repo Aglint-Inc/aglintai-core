@@ -1,8 +1,16 @@
+/* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack } from '@mui/material';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import {
+  Dispatch,
+  forwardRef,
+  MutableRefObject,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 
-import { ApplicantsListEmpty, JobScreening } from '@/devlink2';
+import { ApplicantsListEmpty, JobScreening, SelectActionBar } from '@/devlink2';
 import {
   JobApplication,
   JobApplicationSections,
@@ -44,18 +52,13 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const {
-    applicationsData,
-    openImportCandidates,
-    setOpenImportCandidates,
-    handleUpdateJobStatus,
-  } = useJobApplications();
+  const { applicationsData, openImportCandidates, setOpenImportCandidates } =
+    useJobApplications();
 
   const { job, applications } = applicationsData;
 
   const [section, setSection] = useState(JobApplicationSections.APPLIED);
 
-  // eslint-disable-next-line security/detect-object-injection
   const sectionApplications = applications[section].list;
 
   const [checkList, setCheckList] = useState(new Set<string>());
@@ -67,20 +70,7 @@ const JobApplicationComponent = () => {
 
   const handleSetSection = (section) => {
     setSection(section);
-    setTimeout(() => {
-      setCheckList(new Set<string>());
-    }, 500);
-  };
-
-  const handleUpdateJobs = async (destination: JobApplicationSections) => {
-    await handleUpdateJobStatus(checkList, {
-      source: section,
-      destination,
-    });
-    jobUpdate.current = !jobUpdate.current;
-    setTimeout(() => {
-      setCheckList(new Set<string>());
-    }, 500);
+    setCheckList(new Set<string>());
   };
 
   return (
@@ -96,38 +86,8 @@ const JobApplicationComponent = () => {
         textJobStatus={capitalize(job.status)}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={`(${applicationsData.count} applicants)`}
-        slotStopSubmission={
-          <>
-            <AUIButton
-              onClick={async () =>
-                await handleUpdateJobs(JobApplicationSections.APPLIED)
-              }
-            >
-              Move to Applied
-            </AUIButton>
-            <AUIButton
-              onClick={async () =>
-                await handleUpdateJobs(JobApplicationSections.INTERVIEWING)
-              }
-            >
-              Move to interviewing
-            </AUIButton>
-            <AUIButton
-              onClick={async () =>
-                await handleUpdateJobs(JobApplicationSections.SELECTED)
-              }
-            >
-              Move to selected
-            </AUIButton>
-            <AUIButton
-              onClick={async () =>
-                await handleUpdateJobs(JobApplicationSections.REJECTED)
-              }
-            >
-              Move to reject
-            </AUIButton>
-          </>
-        }
+        isAll={section === JobApplicationSections.APPLIED}
+        countAll={applications.applied.count}
         onClickAllApplicant={{
           onClick: () => handleSetSection(JobApplicationSections.APPLIED),
           style: {
@@ -135,7 +95,8 @@ const JobApplicationComponent = () => {
               section === JobApplicationSections.APPLIED ? 'white' : 'inherit',
           },
         }}
-        countAll={applications.applied.count}
+        isInterviewing={section === JobApplicationSections.INTERVIEWING}
+        countInterviewing={applications.interviewing.count}
         onClickInterviewing={{
           onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
           style: {
@@ -145,7 +106,8 @@ const JobApplicationComponent = () => {
                 : 'inherit',
           },
         }}
-        countInterviewing={applications.interviewing.count}
+        isRejected={section === JobApplicationSections.REJECTED}
+        countRejected={applications.rejected.count}
         onClickRejected={{
           onClick: () => handleSetSection(JobApplicationSections.REJECTED),
           style: {
@@ -153,7 +115,8 @@ const JobApplicationComponent = () => {
               section === JobApplicationSections.REJECTED ? 'white' : 'inherit',
           },
         }}
-        countRejected={applications.rejected.count}
+        isSelected={section === JobApplicationSections.SELECTED}
+        countSelected={applications.selected.count}
         onClickSelected={{
           onClick: () => handleSetSection(JobApplicationSections.SELECTED),
           style: {
@@ -161,7 +124,6 @@ const JobApplicationComponent = () => {
               section === JobApplicationSections.SELECTED ? 'white' : 'inherit',
           },
         }}
-        countSelected={applications.selected.count}
         slotSearch={
           <SearchField
             applications={sectionApplications}
@@ -182,6 +144,22 @@ const JobApplicationComponent = () => {
             Import candidates
           </AUIButton>
         }
+        slotSelectActionBar={
+          <ActionBar
+            ref={jobUpdate}
+            section={section}
+            checkList={checkList}
+            setCheckList={setCheckList}
+          />
+        }
+        bottomBarVisibility={checkList.size !== 0}
+        linkActiveJobs={{
+          href: '/jobs',
+        }}
+        jobLink={{
+          href: `https://dev.aglinthq.com/job-post/${job.id}`,
+          target: '_blank',
+        }}
       />
     </>
   );
@@ -215,4 +193,69 @@ const ApplicantsList = ({
   );
 };
 
+const ActionBar = forwardRef(function ActionBar(
+  {
+    section,
+    checkList,
+    setCheckList,
+  }: {
+    section: JobApplicationSections;
+    checkList: Set<string>;
+    setCheckList: Dispatch<SetStateAction<Set<string>>>;
+  },
+  jobUpdate: MutableRefObject<boolean>,
+) {
+  const { handleUpdateJobStatus } = useJobApplications();
+
+  const handleUpdateJobs = async (destination: JobApplicationSections) => {
+    await handleUpdateJobStatus(checkList, {
+      source: section,
+      destination,
+    });
+    jobUpdate.current = !jobUpdate.current;
+    setCheckList(new Set<string>());
+  };
+
+  const isChecked = checkList.size !== 0;
+  const showNew = isChecked && section === JobApplicationSections.REJECTED;
+  const showInterview = isChecked && section === JobApplicationSections.APPLIED;
+  const showSelected =
+    isChecked &&
+    (section === JobApplicationSections.APPLIED ||
+      section === JobApplicationSections.INTERVIEWING);
+  const showReject =
+    isChecked &&
+    (section === JobApplicationSections.APPLIED ||
+      section === JobApplicationSections.INTERVIEWING ||
+      section === JobApplicationSections.SELECTED);
+
+  return (
+    <SelectActionBar
+      isInterview={showInterview}
+      onClickInterview={{
+        onClick: async () =>
+          await handleUpdateJobs(JobApplicationSections.INTERVIEWING),
+      }}
+      isQualified={showSelected}
+      onClickQualified={{
+        onClick: async () =>
+          await handleUpdateJobs(JobApplicationSections.SELECTED),
+      }}
+      isDisqualified={showReject}
+      onClickDisqualified={{
+        onClick: async () =>
+          await handleUpdateJobs(JobApplicationSections.REJECTED),
+      }}
+      onClickMoveNew={{
+        onClick: async () =>
+          await handleUpdateJobs(JobApplicationSections.APPLIED),
+      }}
+      onClickClear={{
+        onClick: () => setCheckList(new Set<string>()),
+      }}
+      textSelected={`${checkList.size} candidates selected`}
+      isMoveNew={showNew}
+    />
+  );
+});
 export default JobApplicationsDashboard;

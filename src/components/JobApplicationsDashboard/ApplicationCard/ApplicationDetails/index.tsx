@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import {
   DetailedFeedback,
   DetailedFeedbackCard,
+  InterviewResult,
   InterviewTranscriptCard,
   JobDetailsSideDrawer,
 } from '@/devlink';
@@ -12,6 +13,8 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
+
+import InterviewScoreCard from '../../Common/InreviewScoreCard';
 
 function ApplicationDetails({
   openSidePanel,
@@ -37,10 +40,24 @@ function ApplicationDetails({
     <SidePanelDrawer
       openSidePanelDrawer={openSidePanel}
       setOpenPanelDrawer={setOpenSidePanel}
+      onClose={() => {
+        setOpenDetailedFeedback(false);
+      }}
     >
       <Stack direction={'row'}>
         <Stack width={'35vw'}>
           <JobDetailsSideDrawer
+            onClickCopyProfile={{
+              onClick: () => {
+                navigator.clipboard
+                  .writeText(
+                    `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
+                  )
+                  .then(() => {
+                    toast.success('Link Copied');
+                  });
+              },
+            }}
             onClickClose={{
               onClick: () => {
                 setOpenSidePanel(false);
@@ -56,65 +73,150 @@ function ApplicationDetails({
                 fontSize={'28px'}
               />
             }
-            textInterviewHeader={
-              overAllScore > 90
-                ? `Absolutely incredible! 🌟😍`
-                : overAllScore > 70
-                ? `Truly outstanding! 🤩`
-                : overAllScore > 50
-                ? `Excellent job! 👏`
-                : `Not up to mark! 😑`
+            isCloseButtonVisible={!openDetailedFeedback}
+            slotInterviewResult={
+              <InterviewResult
+                textScore={
+                  overAllScore > 90
+                    ? `Absolutely incredible! 🌟😍`
+                    : overAllScore > 70
+                    ? `Truly outstanding! 🤩`
+                    : overAllScore > 50
+                    ? `Excellent job! 👏`
+                    : `Not up to mark! 😑`
+                }
+                slotScore={<InterviewScoreCard overAllScore={overAllScore} />}
+                slotInterviewFeedback={
+                  <>
+                    {applicationDetails?.feedback &&
+                      applicationDetails?.feedback.map((feedback, i) => {
+                        let rating = Number(
+                          String(feedback.rating).includes('/')
+                            ? feedback.rating.split('/')[0]
+                            : feedback.rating,
+                        );
+                        return (
+                          <DetailedFeedbackCard
+                            textScorePercentage={rating + '%'}
+                            textHeader={feedback.topic}
+                            textDescription={''}
+                            key={i}
+                            textColorScore={{
+                              style: {
+                                color:
+                                  rating >= 90
+                                    ? '#228F67'
+                                    : rating >= 70
+                                    ? '#f79a3e'
+                                    : rating >= 50
+                                    ? '#de701d'
+                                    : '#d93f4c',
+                              },
+                            }}
+                            slotScore={
+                              <CustomProgress
+                                rotation={270}
+                                fillColor={
+                                  rating >= 90
+                                    ? '#228F67'
+                                    : rating >= 70
+                                    ? '#f79a3e'
+                                    : rating >= 50
+                                    ? '#de701d'
+                                    : '#d93f4c'
+                                }
+                                bgFill={
+                                  rating >= 90
+                                    ? '#edf8f4'
+                                    : rating >= 70
+                                    ? '#fff7ed'
+                                    : rating >= 50
+                                    ? '#ffeedb'
+                                    : '#fff0f1'
+                                }
+                                size={5}
+                                progress={rating}
+                              />
+                            }
+                          />
+                        );
+                      })}
+                  </>
+                }
+                onClickShowTranscript={{
+                  onClick: () => {
+                    setOpenDetailedFeedback(true);
+                  },
+                }}
+              />
             }
-            onClickCopyFeedbackLink={{
-              onClick: () => {
-                navigator.clipboard
-                  .writeText(
-                    `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
-                  )
-                  .then(() => {
-                    toast.success('Link Copied');
-                  });
-              },
-            }}
-            slotScore={
-              <Stack height={'100%'} overflow={'hidden'}>
-                <CustomProgress
-                  progress={overAllScore}
-                  rotation={270}
-                  fillColor={
-                    overAllScore >= 90
-                      ? '#228F67'
-                      : overAllScore >= 70
-                      ? '#f79a3e'
-                      : overAllScore >= 50
-                      ? '#de701d'
-                      : '#d93f4c'
-                  }
-                  bgFill={
-                    overAllScore >= 90
-                      ? '#edf8f4'
-                      : overAllScore >= 70
-                      ? '#fff7ed'
-                      : overAllScore >= 50
-                      ? '#ffeedb'
-                      : '#fff0f1'
-                  }
-                  size={25}
-                  strokeWidth={2}
-                  label={
-                    <Stack justifyContent={'center'} alignItems={'center'}>
-                      {overAllScore}%
-                    </Stack>
-                  }
-                  fontSize={15}
-                />
-              </Stack>
+            textName={
+              applicationDetails?.first_name +
+              ' ' +
+              applicationDetails?.last_name
             }
-            onClickDetailedFeedback={{
-              onClick: () => {
-                setOpenDetailedFeedback((pre) => !pre);
-              },
-            }}
+            // textInterviewHeader={
+            //   overAllScore > 90
+            //     ? `Absolutely incredible! 🌟😍`
+            //     : overAllScore > 70
+            //     ? `Truly outstanding! 🤩`
+            //     : overAllScore > 50
+            //     ? `Excellent job! 👏`
+            //     : `Not up to mark! 😑`
+            // }
+
+            // onClickCopyFeedbackLink={{
+            //   onClick: () => {
+            //     navigator.clipboard
+            //       .writeText(
+            //         `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
+            //       )
+            //       .then(() => {
+            //         toast.success('Link Copied');
+            //       });
+            //   },
+            // }}
+            // slotScore={
+            //   <Stack height={'100%'} overflow={'hidden'}>
+            //     <CustomProgress
+            //       progress={overAllScore}
+            //       rotation={270}
+            //       fillColor={
+            //         overAllScore >= 90
+            //           ? '#228F67'
+            //           : overAllScore >= 70
+            //           ? '#f79a3e'
+            //           : overAllScore >= 50
+            //           ? '#de701d'
+            //           : '#d93f4c'
+            //       }
+            //       bgFill={
+            //         overAllScore >= 90
+            //           ? '#edf8f4'
+            //           : overAllScore >= 70
+            //           ? '#fff7ed'
+            //           : overAllScore >= 50
+            //           ? '#ffeedb'
+            //           : '#fff0f1'
+            //       }
+            //       size={25}
+            //       strokeWidth={2}
+            //       label={
+            //         <Stack justifyContent={'center'} alignItems={'center'}>
+            //           {overAllScore}%
+            //         </Stack>
+            //       }
+            //       fontSize={15}
+            //     />
+            //   </Stack>
+            // }
+
+            //  ={{
+            //     onClick: () => {
+            //       setOpenDetailedFeedback((pre) => !pre);
+            //     },
+            //   }}
+
             isInterviewVisible={
               applicationDetails.feedback &&
               Math.floor(
@@ -174,17 +276,6 @@ function ApplicationDetails({
         <Collapse orientation='horizontal' in={openDetailedFeedback}>
           <Stack width={'30vw'}>
             <DetailedFeedback
-              onClickShare={{
-                onClick: () => {
-                  navigator.clipboard
-                    .writeText(
-                      `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
-                    )
-                    .then(() => {
-                      toast.success('Link Copied');
-                    });
-                },
-              }}
               slotTranscript={
                 <>
                   {applicationDetails.conversation?.map((ele, i) => {

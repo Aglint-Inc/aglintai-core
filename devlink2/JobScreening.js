@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
 import { ApplicantsListEmpty } from "./ApplicantsListEmpty";
+import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
 import _styles from "./JobScreening.module.css";
 
@@ -26,6 +27,18 @@ export function JobScreening({
   isInterviewing = false,
   isSelected = false,
   isRejected = false,
+  onClickEditJob = {},
+  onClickWorkflow = {},
+  slotSelectActionBar,
+  bottomBarVisibility = true,
+
+  jobLink = {
+    href: "#",
+  },
+
+  linkActiveJobs = {
+    href: "#",
+  },
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
@@ -41,9 +54,7 @@ export function JobScreening({
             <_Builtin.Link
               className={_utils.cx(_styles, "link-block")}
               button={false}
-              options={{
-                href: "#",
-              }}
+              options={linkActiveJobs}
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "inline-block")}
@@ -88,12 +99,12 @@ export function JobScreening({
               >
                 {textApplicantsNumber}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">
+              <_Builtin.Link button={false} options={jobLink}>
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icon-embed")}
                   value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3.32843%205.17645L4.001%205.849L3.3%206.564L2.97487%206.23834L1.57843%207.63355C0.807191%208.40479%200.807191%209.65521%201.57843%2010.4264L1.68648%2010.5268C2.46235%2011.1961%203.63514%2011.1626%204.37132%2010.4264L5.76724%209.03071L5.422%208.685L6.122%207.97L6.82843%208.67645C7.02369%208.87171%207.02369%209.18829%206.82843%209.38355L5.07843%2011.1336C3.91667%2012.2953%202.03308%2012.2953%200.87132%2011.1336C-0.29044%209.97179%20-0.29044%208.08821%200.87132%206.92645L2.62132%205.17645C2.81658%204.98118%203.13316%204.98118%203.32843%205.17645ZM8.21984%203.08575C8.41606%202.95272%208.68528%202.97472%208.85709%203.15002C9.0289%203.32532%209.04548%203.59492%208.90853%203.78843L8.84998%203.85709L6.32486%206.33196L3.85709%208.84998L3.78843%208.90853C3.59492%209.04548%203.32532%209.0289%203.15002%208.85709C2.97472%208.68528%202.95272%208.41606%203.08575%208.21984L3.14291%208.15002L5.61778%205.62489L8.15002%203.14291L8.21984%203.08575ZM11.1336%200.87132C12.2953%202.03308%2012.2953%203.91667%2011.1336%205.07843L9.38355%206.82843C9.18829%207.02369%208.87171%207.02369%208.67645%206.82843L7.971%206.123L8.686%205.422L9.03%205.76653L10.4264%204.37132C11.1977%203.60008%2011.1977%202.34966%2010.4264%201.57843L10.3184%201.47804C9.54253%200.808784%208.36973%200.842247%207.63355%201.57843L6.23764%202.97417L6.564%203.301L5.849%204.001L5.17645%203.32843C4.98118%203.13316%204.98118%202.81658%205.17645%202.62132L6.92645%200.87132C8.08821%20-0.29044%209.97179%20-0.29044%2011.1336%200.87132Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
                 />
-              </_Builtin.Block>
+              </_Builtin.Link>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -105,7 +116,46 @@ export function JobScreening({
                 className={_utils.cx(_styles, "div-block-334")}
                 tag="div"
               >
-                {slotStopSubmission}
+                {slotStopSubmission ?? (
+                  <>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "select-action-btn")}
+                      tag="div"
+                      {...onClickEditJob}
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icon-embed")}
+                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M0%209.44681V11.4894C0%2011.7714%200.228621%2012%200.510638%2012H2.55319C2.68862%2012%202.8185%2011.9462%202.91427%2011.8504L10.063%204.70172C10.0631%204.70157%2010.0633%204.70143%2010.0634%204.70128L11.6972%203.06746C12.1009%202.66379%2012.1009%202.03409%2011.6972%201.63041L10.3696%200.302754C9.96591%20-0.100918%209.33621%20-0.100918%208.93254%200.302754L0.149562%209.08573C0.0537992%209.1815%200%209.31138%200%209.44681ZM9.70213%203.61827L10.9715%202.34894L9.65106%201.02853L8.38173%202.29787L9.70213%203.61827ZM7.65957%203.02002L1.02128%209.65832V10.9787H2.34168L8.97998%204.34043L7.65957%203.02002Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-blue-500")}
+                        tag="div"
+                      >
+                        {"Edit Job Details"}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "select-action-btn",
+                        "blue-500"
+                      )}
+                      tag="div"
+                      {...onClickWorkflow}
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icon-embed")}
+                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.83205%200.4453C6.43623%20-0.148433%205.56377%20-0.148433%205.16795%200.4453L3.16795%203.4453C2.72491%204.10985%203.2013%205%204%205H8C8.7987%205%209.27509%204.10985%208.83205%203.4453L6.83205%200.4453ZM4%204L6%201L8%204H4ZM1%207C0.447715%207%200%207.44772%200%208V11C0%2011.5523%200.447715%2012%201%2012H4C4.55228%2012%205%2011.5523%205%2011V8C5%207.44772%204.55228%207%204%207H1ZM1%2011V8H4V11H1ZM9.25%2012C10.7688%2012%2012%2010.7688%2012%209.25C12%207.73122%2010.7688%206.5%209.25%206.5C7.73122%206.5%206.5%207.73122%206.5%209.25C6.5%2010.7688%207.73122%2012%209.25%2012ZM9.25%2011C8.2835%2011%207.5%2010.2165%207.5%209.25C7.5%208.2835%208.2835%207.5%209.25%207.5C10.2165%207.5%2011%208.2835%2011%209.25C11%2010.2165%2010.2165%2011%209.25%2011Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-white")}
+                        tag="div"
+                      >
+                        {"Workflow"}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  </>
+                )}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -168,7 +218,7 @@ export function JobScreening({
                       )}
                       tag="div"
                     >
-                      {"Applied"}
+                      {"New"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -288,7 +338,7 @@ export function JobScreening({
                       )}
                       tag="div"
                     >
-                      {"Selected"}
+                      {"Qualified"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -348,7 +398,7 @@ export function JobScreening({
                       )}
                       tag="div"
                     >
-                      {"Rejected"}
+                      {"Disqualified"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -392,6 +442,14 @@ export function JobScreening({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      {bottomBarVisibility ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-335")}
+          tag="div"
+        >
+          {slotSelectActionBar ?? <SelectActionBar />}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }
