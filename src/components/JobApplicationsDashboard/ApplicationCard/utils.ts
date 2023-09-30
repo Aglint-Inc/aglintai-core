@@ -1,8 +1,11 @@
 export const getScoreColor = (finalScore: number) => {
-  const green = '#228F67';
-  const yellow = '#F79A3E';
-  const red = '#D93F4C';
-  return finalScore > 33 ? (finalScore > 66 ? green : yellow) : red;
+ return finalScore>= 90
+  ? '#228F67'
+  : finalScore>= 70
+  ? '#f79a3e'
+  : finalScore>= 50
+  ? '#de701d'
+  : '#d93f4c'
 };
 
 export const getStatusColor = (status: string) => {
@@ -29,7 +32,7 @@ export const getStatusColor = (status: string) => {
 };
 
 export const getInterviewScore = (feedback) => {
-  return Math.ceil(
+  return Math.floor(
     feedback.reduce((acc, curr) => {
       return (acc += Number(curr.rating));
     }, 0) / feedback.length,

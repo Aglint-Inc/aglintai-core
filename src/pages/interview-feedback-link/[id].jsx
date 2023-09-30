@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -8,11 +8,18 @@ import {
   InterviewResult,
   InterviewScreenFeedback,
   InterviewTranscriptCard,
+  ResumeResult,
 } from '@/devlink';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
+import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
+import {
+  giveRateInWordToResume,
+  handleDownload,
+} from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
+import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import InterviewScoreCard from '@/src/components/JobApplicationsDashboard/Common/InreviewScoreCard';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -24,6 +31,8 @@ function InterviewFeedbackPage() {
   const [job, setJob] = useState({});
   const [openTranscript, setOpenTranscript] = useState(false);
   const [loader, setLoader] = useState(true);
+
+  const [openResume, setOpenResume] = useState(false);
 
   useEffect(() => {
     const { id } = router.query;
@@ -53,20 +62,20 @@ function InterviewFeedbackPage() {
     }
     setLoader(false);
   }
-  const overAllScore =
-    applicationDetails.feedback &&
-    Math.floor(
-      applicationDetails.feedback.reduce(
-        (sum, entry) =>
-          sum +
-          Number(
-            String(entry.rating).includes('/')
-              ? entry.rating.split('/')[0]
-              : entry.rating,
-          ),
-        0,
-      ) / applicationDetails.feedback.length,
-    );
+  const overAllScore = applicationDetails.feedback
+    ? Math.floor(
+        applicationDetails.feedback.reduce(
+          (sum, entry) =>
+            sum +
+            Number(
+              String(entry.rating).includes('/')
+                ? entry.rating.split('/')[0]
+                : entry.rating,
+            ),
+          0,
+        ) / applicationDetails.feedback.length,
+      )
+    : 0;
 
   if (loader) {
     return (
@@ -77,6 +86,22 @@ function InterviewFeedbackPage() {
   } else
     return (
       <div>
+        <Dialog
+          sx={{
+            '& .MuiDialog-paper': {
+              borderRadius: '0px !important',
+            },
+          }}
+          fullWidth
+          open={openResume}
+          onClose={() => setOpenResume(false)}
+        >
+          <Stack>
+            <Stack direction={'row'} justifyContent={'center'}>
+              <ResumePreviewer url={applicationDetails?.resume} />
+            </Stack>
+          </Stack>
+        </Dialog>
         <SidePanelDrawer
           openSidePanelDrawer={openTranscript}
           setOpenPanelDrawer={setOpenTranscript}
@@ -127,6 +152,49 @@ function InterviewFeedbackPage() {
           </Stack>
         </SidePanelDrawer>
         <InterviewScreenFeedback
+          slotResumeResult={
+            <ResumeResult
+              onClickDownloadResume={{
+                onClick: () => {
+                  handleDownload(applicationDetails?.resume);
+                },
+              }}
+              onClickViewResume={{
+                onClick: () => {
+                  setOpenResume(true);
+                },
+              }}
+              slotResumeScore={
+                <CustomProgress
+                  progress={applicationDetails?.score}
+                  rotation={270}
+                  fillColor={
+                    applicationDetails?.score >= 90
+                      ? '#228F67'
+                      : applicationDetails?.score >= 70
+                      ? '#f79a3e'
+                      : applicationDetails?.score >= 50
+                      ? '#de701d'
+                      : '#d93f4c'
+                  }
+                  bgFill={
+                    applicationDetails?.score >= 90
+                      ? '#edf8f4'
+                      : applicationDetails?.score >= 70
+                      ? '#fff7ed'
+                      : applicationDetails?.score >= 50
+                      ? '#ffeedb'
+                      : '#fff0f1'
+                  }
+                  size={35}
+                  strokeWidth={3}
+                  label={applicationDetails?.score}
+                  fontSize={20}
+                />
+              }
+              textFeedback={giveRateInWordToResume(applicationDetails?.score)}
+            />
+          }
           onClickCopyProfile={{
             onClick: () => {
               navigator.clipboard
@@ -145,6 +213,14 @@ function InterviewFeedbackPage() {
               variant={'rounded'}
               level={applicationDetails?.first_name}
               fontSize={'40px'}
+              src={
+                applicationDetails?.email && !applicationDetails?.profile_image
+                  ? getGravatar(
+                      applicationDetails?.email,
+                      applicationDetails?.first_name,
+                    )
+                  : applicationDetails?.profile_image
+              }
             />
           }
           textName={
@@ -181,7 +257,6 @@ function InterviewFeedbackPage() {
         )}
         `
           }
-          // slotFeedbackCard={<></>}
           textNumberQuestion={
             applicationDetails?.conversation &&
             applicationDetails?.conversation.length
