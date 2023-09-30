@@ -2,12 +2,11 @@ import { JobApplication } from '@context/JobApplicationsContext/types';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 
 import ApplicationDetails from './ApplicationDetails';
 import { getInterviewScore, getScoreColor, getStatusColor } from './utils';
-import CircularScore from '../Common/CircularScore';
 import { capitalize, formatTimeStamp } from '../utils';
+import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 const ApplicationCard = ({
@@ -21,7 +20,6 @@ const ApplicationCard = ({
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
 }) => {
-  const { circularScoreAnimation } = useJobApplications();
 
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
@@ -48,8 +46,6 @@ const ApplicationCard = ({
       return newSet;
     });
   };
-
-  const triggerCircularAnimation = circularScoreAnimation.current && index < 10;
 
   const handleOpenSidePanel = (application) => {
     setApplicationDetails(application);
@@ -87,11 +83,31 @@ const ApplicationCard = ({
         textMail={application.email}
         textPhone={application.phone}
         slotScore={
-          <CircularScore
-            level='Resume match'
-            fontSize='6px'
-            finalScore={application.score}
-            triggerAnimation={triggerCircularAnimation}
+          <CustomProgress
+            progress={application?.score}
+            rotation={270}
+            fillColor={
+              application?.score >= 90
+                ? '#228F67'
+                : application?.score >= 70
+                ? '#f79a3e'
+                : application?.score >= 50
+                ? '#de701d'
+                : '#d93f4c'
+            }
+            bgFill={
+              application?.score >= 90
+                ? '#edf8f4'
+                : application?.score >= 70
+                ? '#fff7ed'
+                : application?.score >= 50
+                ? '#ffeedb'
+                : '#fff0f1'
+            }
+            size={30}
+            strokeWidth={3}
+            label={application?.score}
+            fontSize={20}
           />
         }
         textScore={interviewScore}
