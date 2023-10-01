@@ -50,7 +50,7 @@ type Action =
   | {
       type: ActionType.BULK_CREATE;
       payload: {
-        applicationsData: JobApplication[];
+        applicationData: JobApplication[];
       };
     }
   | {
@@ -81,7 +81,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
         ...state,
         applications: {
           ...state.applications,
-          applied: {
+          [action.payload.applicationData.status as JobApplicationSections]: {
             list: [
               ...state.applications.applied.list,
               action.payload.applicationData,
@@ -94,48 +94,22 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     }
 
     case ActionType.BULK_CREATE: {
+      const { newApplications, count } = updateApplications(
+        state.applications,
+        action.payload.applicationData,
+      );
       const newState: JobApplicationsData = {
         ...state,
-        applications: {
-          ...state.applications,
-          applied: {
-            list: [
-              ...state.applications.applied.list,
-              ...action.payload.applicationsData,
-            ],
-            count:
-              state.applications.applied.count +
-              action.payload.applicationsData.length,
-          },
-        },
-        count: state.count + action.payload.applicationsData.length,
+        applications: newApplications,
+        count: count,
       };
       return newState;
     }
 
     case ActionType.READ: {
-      let count = 0;
-      const segregatedApplications: JobApplicationSectionData =
-        action.payload.applicationData.reduce(
-          (acc, curr) => {
-            let objRef = acc[curr.status as JobApplicationSections];
-            objRef.list.push(curr);
-            objRef.count += 1;
-            count += 1;
-            return acc;
-          },
-          Object.assign(
-            {},
-            ...Object.values(JobApplicationSections).map((val) => {
-              return {
-                [val]: {
-                  list: [],
-                  count: 0,
-                },
-              };
-            }),
-          ),
-        );
+      const { segregatedApplications, count } = segregateApplications(
+        action.payload.applicationData,
+      );
       const newState: JobApplicationsData = {
         applications: segregatedApplications,
         count,
@@ -196,6 +170,45 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       return state;
     }
   }
+};
+
+const segregateApplications = (applicationData: JobApplication[]) => {
+  let count = 0;
+  const segregatedApplications: JobApplicationSectionData =
+    applicationData.reduce(
+      (acc, curr) => {
+        let objRef = acc[curr.status as JobApplicationSections];
+        objRef.list.push(curr);
+        objRef.count += 1;
+        count += 1;
+        return acc;
+      },
+      Object.assign(
+        {},
+        ...Object.values(JobApplicationSections).map((val) => {
+          return {
+            [val]: {
+              list: [],
+              count: 0,
+            },
+          };
+        }),
+      ),
+    );
+  return { segregatedApplications, count };
+};
+
+const updateApplications = (
+  stateApplicationData: JobApplicationSectionData,
+  newApplicationData: JobApplication[],
+) => {
+  let count = newApplicationData.length;
+  const newApplications = newApplicationData.reduce((acc, curr) => {
+    acc[curr.status as JobApplicationSections].list.push(curr);
+    acc[curr.status as JobApplicationSections].count += 1;
+    return acc;
+  }, stateApplicationData);
+  return { newApplications, count };
 };
 
 const useJobApplicationActions = (
@@ -265,7 +278,7 @@ const useJobApplicationActions = (
       if (data) {
         const action: Action = {
           type: ActionType.BULK_CREATE,
-          payload: { applicationsData: data },
+          payload: { applicationData: data },
         };
         dispatch(action);
         return true;

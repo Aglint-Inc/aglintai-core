@@ -37,7 +37,11 @@ const SearchField = ({
   const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();
     const newApplications = applications.reduce((acc, curr) => {
-      if (curr.first_name.toLowerCase().includes(value)) acc.push(curr);
+      if (
+        curr.first_name.toLowerCase().includes(value) ||
+        curr.email.toLowerCase().includes(value)
+      )
+        acc.push(curr);
       return acc;
     }, []);
     setFilteredApplications(newApplications);

@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { CandidateListTopBar } from "./CandidateListTopBar";
 import * as _utils from "./utils";
 import _styles from "./ApplicantsListEmpty.module.css";
 
@@ -39,6 +40,7 @@ export function ApplicantsListEmpty({
           {"candidates found."}
         </_Builtin.Block>
       </_Builtin.Block>
+      <CandidateListTopBar />
     </_Component>
   );
 }

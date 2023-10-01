@@ -782,8 +782,8 @@
 .candidate-detail-block {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 26px;
-  grid-row-gap: 26px;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
 }
 
 .cdd-header-block {

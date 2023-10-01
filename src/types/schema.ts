@@ -1157,7 +1157,7 @@ export interface Database {
           email: string
           email_campaign: string | null
           emails: Json | null
-          feedback: Json | null
+          feedback: Json | any
           first_name: string
           id: number
           interview_duration: string | null

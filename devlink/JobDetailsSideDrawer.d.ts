@@ -17,4 +17,6 @@ declare function JobDetailsSideDrawer(props: {
   onClickCopyProfile?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
   isCloseButtonVisible?: Types.Visibility.VisibilityConditions;
+  slotInterviewInfo?: Types.Devlink.Slot;
+  isInterviewInfoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
