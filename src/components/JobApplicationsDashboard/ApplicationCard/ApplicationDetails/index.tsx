@@ -5,13 +5,16 @@ import {
   DetailedFeedback,
   DetailedFeedbackCard,
   InterviewResult,
+  InterviewResultStatus,
   InterviewTranscriptCard,
   JobDetailsSideDrawer,
   ResumeResult,
 } from '@/devlink';
+import AUIButton from '@/src/components/Common/AUIButton';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -27,20 +30,20 @@ function ApplicationDetails({
   const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
   const [openResume, setOpenResume] = useState(false);
 
-  const overAllScore =
-    applicationDetails.feedback &&
-    Math.floor(
-      applicationDetails.feedback.reduce(
-        (sum, entry) =>
-          sum +
-          Number(
-            String(entry.rating).includes('/')
-              ? entry.rating.split('/')[0]
-              : entry.rating,
-          ),
-        0,
-      ) / applicationDetails.feedback.length,
-    );
+  const overAllScore = applicationDetails?.feedback?.length
+    ? Math.floor(
+        applicationDetails.feedback.reduce(
+          (sum, entry) =>
+            sum +
+            Number(
+              String(entry.rating).includes('/')
+                ? entry.rating.split('/')[0]
+                : entry.rating,
+            ),
+          0,
+        ) / applicationDetails.feedback.length,
+      )
+    : 0;
   return (
     <>
       <Dialog
@@ -104,6 +107,96 @@ function ApplicationDetails({
                 />
               }
               isCloseButtonVisible={!openDetailedFeedback}
+              isInterviewInfoVisible={
+                (overAllScore <= 0 &&
+                  applicationDetails.status ===
+                    JobApplicationSections.INTERVIEWING) ||
+                applicationDetails.status === JobApplicationSections.APPLIED
+              }
+              slotInterviewInfo={
+                <>
+                  {applicationDetails.status ===
+                    JobApplicationSections.INTERVIEWING &&
+                    applicationDetails?.feedback?.length === 0 && (
+                      <InterviewResultStatus
+                        bgColorInterviewTag={{
+                          style: { background: '#FFF0F1', color: '#8C232C' },
+                        }}
+                        textStatus={'Incomplete Interview'}
+                        textDescription={
+                          'Candidate not completed interview. Click bellow to resend invite'
+                        }
+                        slotResendButton={
+                          <AUIButton variant='outlined'>Resend Link</AUIButton>
+                        }
+                        onClickCopyInterviewLink={{
+                          onClick: () => {
+                            navigator.clipboard
+                              .writeText(
+                                `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                              )
+                              .then(() => {
+                                toast.success('Link Copied');
+                              });
+                          },
+                        }}
+                      />
+                    )}
+                  {applicationDetails.status ===
+                    JobApplicationSections.INTERVIEWING &&
+                    applicationDetails.feedback === null && (
+                      <InterviewResultStatus
+                        bgColorInterviewTag={{
+                          style: { background: '#CEE2F2', color: '#0F3554' },
+                        }}
+                        textStatus={'Invited'}
+                        textDescription={
+                          'candidate is invited for the interview and received an email with a link to take interview.'
+                        }
+                        slotResendButton={
+                          <AUIButton variant='outlined'>Resend Link</AUIButton>
+                        }
+                        onClickCopyInterviewLink={{
+                          onClick: () => {
+                            navigator.clipboard
+                              .writeText(
+                                `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                              )
+                              .then(() => {
+                                toast.success('Link Copied');
+                              });
+                          },
+                        }}
+                      />
+                    )}
+                  {applicationDetails.status ===
+                    JobApplicationSections.APPLIED && (
+                    <InterviewResultStatus
+                      bgColorInterviewTag={{
+                        style: { background: '#FFF7ED', color: '#703815' },
+                      }}
+                      textStatus={'Pending Invite'}
+                      textDescription={
+                        'Candidate not invited to take interview. Invite candidate to take interview.'
+                      }
+                      slotResendButton={
+                        <AUIButton variant='outlined'>Send Link</AUIButton>
+                      }
+                      onClickCopyInterviewLink={{
+                        onClick: () => {
+                          navigator.clipboard
+                            .writeText(
+                              `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                            )
+                            .then(() => {
+                              toast.success('Link Copied');
+                            });
+                        },
+                      }}
+                    />
+                  )}
+                </>
+              }
               slotInterviewResult={
                 <InterviewResult
                   textScore={giveRateInWordForInterview(overAllScore)}
@@ -177,21 +270,7 @@ function ApplicationDetails({
                 ' ' +
                 applicationDetails?.last_name
               }
-              isInterviewVisible={
-                applicationDetails.feedback &&
-                Math.floor(
-                  applicationDetails.feedback.reduce(
-                    (sum, entry) =>
-                      sum +
-                      Number(
-                        String(entry.rating).includes('/')
-                          ? entry.rating.split('/')[0]
-                          : entry.rating,
-                      ),
-                    0,
-                  ) / applicationDetails.feedback.length,
-                ) !== 0
-              }
+              isInterviewVisible={overAllScore > 0}
               isKeySkillsVisible={false}
               slotResumeScore={
                 <ResumeResult

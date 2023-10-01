@@ -186,20 +186,38 @@ export function NewJobStep3({
         >
           {slotSkillsQuestion}
         </_Builtin.Block>
-        {isHowItWorksVisible ? (
-          <_Builtin.Link
-            className={_utils.cx(_styles, "div-block-358")}
-            data-w-id="fe875246-d6e2-6c92-d88b-e3ffda958483"
-            button={false}
-            options={howItWorksLink}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-386")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
           >
-            <_Builtin.Block tag="div">{"See how it works"}</_Builtin.Block>
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "arrow-right-icon")}
-              value="%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.85355%203.14645C10.0488%203.34172%2010.0488%203.6583%209.85355%203.85356L6.85355%206.85355C6.65829%207.04882%206.34171%207.04882%206.14645%206.85355C5.95119%206.65829%205.95119%206.34171%206.14645%206.14645L8.29289%204.00001L0.5%204C0.223858%204%200%203.77614%200%203.5C0%203.22386%200.223858%203%200.5%203L8.29289%203.00001L6.14645%200.853562C5.95118%200.6583%205.95118%200.341717%206.14645%200.146455C6.34171%20-0.0488067%206.65829%20-0.0488067%206.85355%200.146455L9.85355%203.14645Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-          </_Builtin.Link>
-        ) : null}
+            {"Try the test yourself to get candidate experience."}
+          </_Builtin.Block>
+          <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
+            {
+              "Understand the experience your candidates will go through and finetune the test as well"
+            }
+          </_Builtin.Block>
+          {isHowItWorksVisible ? (
+            <_Builtin.Link
+              className={_utils.cx(_styles, "div-block-358")}
+              data-w-id="fe875246-d6e2-6c92-d88b-e3ffda958483"
+              button={false}
+              options={howItWorksLink}
+            >
+              <_Builtin.Block tag="div">
+                {"Try the test yourself"}
+              </_Builtin.Block>
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "arrow-right-icon")}
+                value="%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.85355%203.14645C10.0488%203.34172%2010.0488%203.6583%209.85355%203.85356L6.85355%206.85355C6.65829%207.04882%206.34171%207.04882%206.14645%206.85355C5.95119%206.65829%205.95119%206.34171%206.14645%206.14645L8.29289%204.00001L0.5%204C0.223858%204%200%203.77614%200%203.5C0%203.22386%200.223858%203%200.5%203L8.29289%203.00001L6.14645%200.853562C5.95118%200.6583%205.95118%200.341717%206.14645%200.146455C6.34171%20-0.0488067%206.65829%20-0.0488067%206.85355%200.146455L9.85355%203.14645Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Link>
+          ) : null}
+        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "pb-80")} tag="div" />
       </_Builtin.Block>
     </_Component>

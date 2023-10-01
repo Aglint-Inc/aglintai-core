@@ -35,7 +35,7 @@
 }
 
 .rd-main-wrapper.profile-wrappers {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .rd-main-wrapper.height-scroll {

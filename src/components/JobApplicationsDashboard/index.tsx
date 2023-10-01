@@ -17,6 +17,7 @@ import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ApplicationCard from './ApplicationCard';
+import InfoDialog from './Common/InfoDialog';
 import ImportCandidates from './ImportCandidates';
 import SearchField from './SearchField';
 import { capitalize } from './utils';
@@ -205,7 +206,17 @@ const ActionBar = ({
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { handleUpdateJobStatus } = useJobApplications();
+  const [openInfoDialog, setOpenInfoDialog] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(true);
 
+  const [dialogInfo, setDialogInfo] = useState({
+    heading: ``,
+    subHeading: '',
+    primaryAction: () => null,
+    primaryText: '',
+    secondaryText: '',
+    variant: '',
+  });
   const handleUpdateJobs = async (destination: JobApplicationSections) => {
     setJobUpdate(true);
     await handleUpdateJobStatus(checkList, {
@@ -228,34 +239,118 @@ const ActionBar = ({
     (section === JobApplicationSections.APPLIED ||
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.SELECTED);
-
+  const DialogInfo = {
+    interviewing: {
+      heading: `Are you sure that you want to move ${
+        Array.from(checkList).length
+      } candidates to interviewing`,
+      subHeading: 'Send interview Emails to these candidates',
+      primaryAction: async () => {
+        await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
+        if (checkEmail) {
+          sendEmails(JobApplicationSections.INTERVIEWING);
+        }
+      },
+      primaryText: 'Send',
+      secondaryText: 'Cancel',
+      variant: 'primary',
+    },
+    selected: {
+      heading: `Are you sure that you want to move ${
+        Array.from(checkList).length
+      } candidates to Selected`,
+      subHeading: undefined,
+      primaryAction: async () => {
+        await handleUpdateJobs(JobApplicationSections.SELECTED);
+        if (checkEmail) {
+          sendEmails(JobApplicationSections.SELECTED);
+        }
+      },
+      primaryText: 'Move to Selected',
+      secondaryText: 'Cancel',
+      variant: 'ai',
+    },
+    rejected: {
+      heading: `Are you sure that you want to reject ${
+        Array.from(checkList).length
+      } candidates`,
+      subHeading: 'Send rejection Emails to these candidates',
+      primaryAction: async () => {
+        await handleUpdateJobs(JobApplicationSections.REJECTED);
+        if (checkEmail) {
+          sendEmails(JobApplicationSections.REJECTED);
+        }
+      },
+      primaryText: 'Rejected',
+      secondaryText: 'Cancel',
+      variant: 'primary',
+    },
+    applied: {
+      heading: `Are you sure that you want to move ${
+        Array.from(checkList).length
+      } candidates to New`,
+      warningMessage:
+        'Moving back to applied will cancel the interviews the candidates have taken and will start the process again. ',
+      primaryAction: async () => {
+        await handleUpdateJobs(JobApplicationSections.APPLIED);
+      },
+      primaryText: 'Move to New',
+      secondaryText: 'Cancel',
+      variant: 'dark',
+    },
+  };
   return (
-    <SelectActionBar
-      isInterview={showInterview}
-      onClickInterview={{
-        onClick: async () =>
-          await handleUpdateJobs(JobApplicationSections.INTERVIEWING),
-      }}
-      isQualified={showSelected}
-      onClickQualified={{
-        onClick: async () =>
-          await handleUpdateJobs(JobApplicationSections.SELECTED),
-      }}
-      isDisqualified={showReject}
-      onClickDisqualified={{
-        onClick: async () =>
-          await handleUpdateJobs(JobApplicationSections.REJECTED),
-      }}
-      onClickMoveNew={{
-        onClick: async () =>
-          await handleUpdateJobs(JobApplicationSections.APPLIED),
-      }}
-      onClickClear={{
-        onClick: () => setCheckList(new Set<string>()),
-      }}
-      textSelected={`${checkList.size} candidates selected`}
-      isMoveNew={showNew}
-    />
+    <>
+      <InfoDialog
+        heading={dialogInfo.heading}
+        subHeading={dialogInfo.subHeading}
+        openInfoDialog={openInfoDialog}
+        onClose={() => {
+          setOpenInfoDialog(false);
+        }}
+        secondaryText={dialogInfo.secondaryText}
+        primaryAction={dialogInfo.primaryAction}
+        primaryText={dialogInfo.primaryText}
+        variant={dialogInfo.variant}
+        checkEmail={checkEmail}
+        setCheckEmail={setCheckEmail}
+        warningMessage={undefined}
+      />
+      <SelectActionBar
+        isInterview={showInterview}
+        onClickInterview={{
+          onClick: async () => {
+            setDialogInfo(DialogInfo.interviewing);
+            setOpenInfoDialog(true);
+          },
+        }}
+        isQualified={showSelected}
+        onClickQualified={{
+          onClick: async () => {
+            setDialogInfo(DialogInfo.selected);
+            setOpenInfoDialog(true);
+          },
+        }}
+        isDisqualified={showReject}
+        onClickDisqualified={{
+          onClick: async () => {
+            setDialogInfo(DialogInfo.rejected);
+            setOpenInfoDialog(true);
+          },
+        }}
+        onClickMoveNew={{
+          onClick: async () => {
+            setDialogInfo(DialogInfo.rejected);
+            setOpenInfoDialog(true);
+          },
+        }}
+        onClickClear={{
+          onClick: () => setCheckList(new Set<string>()),
+        }}
+        textSelected={`${checkList.size} candidates selected`}
+        isMoveNew={showNew}
+      />
+    </>
   );
 };
 
@@ -278,3 +373,8 @@ const AddCandidates = () => {
   );
 };
 export default JobApplicationsDashboard;
+
+function sendEmails(status: string) {
+  // eslint-disable-next-line no-console
+  console.log(status);
+}

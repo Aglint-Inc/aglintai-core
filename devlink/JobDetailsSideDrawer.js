@@ -26,6 +26,8 @@ export function JobDetailsSideDrawer({
   onClickCopyProfile = {},
   onClickClose = {},
   isCloseButtonVisible = true,
+  slotInterviewInfo,
+  isInterviewInfoVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -254,12 +256,37 @@ export function JobDetailsSideDrawer({
                     className={_utils.cx(_styles, "text-sm", "color-grey-500")}
                     tag="div"
                   >
-                    {"Interview"}
+                    {"Interview Result"}
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block tag="div">
                   {slotInterviewResult ?? <InterviewResult />}
                 </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+            {isInterviewInfoVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate-detail-block")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "cdd-header-block")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icon")}
+                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7.86804%203.99886H6.82864L7.85805%202.19989C7.89802%202.08995%207.84805%202%207.74811%202H5.71927C5.61933%202%205.4894%202.08995%205.43943%202.19989L4.47998%204.77841C4.43001%204.88835%204.47998%204.99828%204.58992%204.99828H5.4994L4.47998%207.56681C4.40003%207.7667%204.45999%207.9366%204.70985%207.71673L7.87803%204.2687C8.04794%204.10879%208.03794%203.99886%207.86804%203.99886ZM5.79289%208.14042H11V1.01755H1V8.14042H3V8.6492L2.99995%2010.9824L5.79289%208.14042ZM2%209.15797H1C0.443858%209.15797%200%208.70632%200%208.14042V1.01755C0%200.451648%200.443858%200%201%200H11C11.5561%200%2012%200.451648%2012%201.01755V8.14042C12%208.70632%2011.5561%209.15797%2011%209.15797H6.2071L3.70005%2011.709C3.41435%2011.994%202.98918%2012.0783%202.6192%2011.9233C2.24922%2011.7683%202.00567%2011.4038%202%2010.9896V9.15797Z%22%20fill%3D%22%2387929D%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-sm", "color-grey-500")}
+                    tag="div"
+                  >
+                    {"Interview"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">{slotInterviewInfo}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
             {isResumeVisible ? (
@@ -281,7 +308,7 @@ export function JobDetailsSideDrawer({
                     className={_utils.cx(_styles, "text-sm", "color-grey-500")}
                     tag="div"
                   >
-                    {"Resume"}
+                    {"Resume Match"}
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
