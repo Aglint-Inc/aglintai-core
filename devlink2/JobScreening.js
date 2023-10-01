@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
+import { AddCandidateDropdown } from "./AddCandidateDropdown";
 import { ApplicantsListEmpty } from "./ApplicantsListEmpty";
 import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
@@ -430,7 +431,9 @@ export function JobScreening({
                 tag="div"
               >
                 <_Builtin.Block tag="div">{slotAddCandidates}</_Builtin.Block>
-                <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {slotSearch ?? <AddCandidateDropdown />}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block

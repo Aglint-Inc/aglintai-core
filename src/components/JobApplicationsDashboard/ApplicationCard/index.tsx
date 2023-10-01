@@ -20,7 +20,6 @@ const ApplicationCard = ({
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
 }) => {
-
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
 
