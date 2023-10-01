@@ -83,6 +83,36 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Company Values'
+        value={recruiter?.company_values}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            company_values: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
+      <UITextField
+        labelSize='medium'
+        fullWidth
+        label='Benefits'
+        value={recruiter?.benefits}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            benefits: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
       <Stack>
         <UITypography
           type={'medium'}
@@ -211,5 +241,5 @@ const employmentType = {
 const workplaceType = {
   onsite: ['On Site', '(Employees come to work in person)'],
   hybrid: ['Hybrid', '(Employees work on-site and off-site)'],
-  offsite: ['On Site', '(Employees work off-site)'],
+  offsite: ['Off Site', '(Employees work off-site)'],
 };

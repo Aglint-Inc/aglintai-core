@@ -21,12 +21,16 @@ const MenuBtn = styled(IconButton)({
 // import axios from 'axios';
 
 import { GenerateJobDescAi } from '@/devlink';
-import { generateJobDescription } from '@/src/utils/prompts/addNewJob/generateJobDescription';
+import {
+  JDGenParams,
+  generateJobDescription,
+} from '@/src/utils/prompts/addNewJob/generateJobDescription';
 
 import { useTipTap } from './context';
 import Icon from '../Icons/Icon';
 import UITypography from '../UITypography';
 import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
 
 function MenuBtns() {
@@ -283,6 +287,7 @@ export const GenerateDescription = () => {
     jobForm: { formFields },
   } = useJobForm();
   const { editor } = useTipTap();
+  const { recruiter } = useAuthDetails();
 
   if (!editor) return <></>;
 
@@ -295,13 +300,25 @@ export const GenerateDescription = () => {
     if (!enableGenerate) return;
     try {
       setIsGenerating(true);
-      const jd = await generateJobDescription(
-        formFields.jobTitle,
-        formFields.company,
-        formFields.workPlaceType,
-        formFields.jobLocation,
-        formFields.jobType,
-      );
+
+      const jdGenConfig: JDGenParams = {
+        workPlaceType: formFields.workPlaceType,
+        location: formFields.jobLocation,
+        jobType: formFields.jobType,
+        jobTitle: formFields.jobTitle,
+        company: formFields.company,
+      };
+
+      if (checks.benifits) {
+        jdGenConfig.benifits = recruiter.benefits;
+      }
+      if (checks.company) {
+        jdGenConfig.companyOverview = recruiter.company_overview;
+      }
+      if (checks.values) {
+        jdGenConfig.compnayValues = recruiter.m_v_statement;
+      }
+      const jd = await generateJobDescription(jdGenConfig);
       editor.commands.setContent(jd, true, { preserveWhitespace: true });
     } catch (error) {
       //
