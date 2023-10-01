@@ -143,7 +143,7 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
   return (
     <>
       <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
-        <Stack p={2} width={'500px'} position={'relative'} minHeight={'100vh'}>
+        <Stack p={2} width={'600px'} position={'relative'} minHeight={'100vh'}>
           <CreateNewJobDrawer
             onClickClose={{ onClick: handleDrawerClose }}
             slotNewJobStep={formSlide}
