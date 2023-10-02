@@ -13,4 +13,9 @@ declare function EditJob(props: {
   onClickWorkFlows?: Types.Devlink.RuntimeProps;
   slotLoaderSaving?: Types.Devlink.Slot;
   isWarningVisibles?: Types.Visibility.VisibilityConditions;
+  isDetailsActive?: Types.Visibility.VisibilityConditions;
+  isEmailTemplatesActive?: Types.Visibility.VisibilityConditions;
+  isScreeningQuestionsActive?: Types.Visibility.VisibilityConditions;
+  isWorkflowActive?: Types.Visibility.VisibilityConditions;
+  onClickGotIt?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

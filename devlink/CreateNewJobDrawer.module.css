@@ -1006,6 +1006,8 @@
 
 .cj-skills-wrapper {
   display: flex;
+  width: 380px;
+  margin-top: 6px;
   flex-wrap: wrap;
   align-items: center;
   grid-column-gap: 10px;
@@ -1028,12 +1030,24 @@
   cursor: pointer;
 }
 
+.cj-suggested-skill-block.green-100 {
+  background-color: var(--green100-8db28f70);
+}
+
+.green-100 {
+  background-color: var(--green100-8db28f70);
+}
+
 .small-default-4 {
   color: rgba(47, 57, 65, 1);
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   letter-spacing: -0.00042765619582496583px;
+}
+
+.small-default-4.text-green-800 {
+  color: var(--green800-a83af583);
 }
 
 .frame-1091 {

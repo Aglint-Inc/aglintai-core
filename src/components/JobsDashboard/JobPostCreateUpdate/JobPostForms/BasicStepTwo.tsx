@@ -15,10 +15,10 @@ import { useJobForm } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
 // import UITextField from '../../../Common/UITextField';
 
-const FormThree = () => {
+const BasicStepTwo = () => {
   const {
     handleUpdateFormFields,
-    jobForm: { formFields },
+    jobForm: { formFields, formType },
   } = useJobForm();
   const [suggSkills, setSuggSkills] = useState<string[]>([]);
   const [openSkillForm, setSkillForm] = useState(false);
@@ -143,11 +143,12 @@ const FormThree = () => {
           })}
         </>
       }
+      isJobHeaderVisible={formType === 'new'}
     />
   );
 };
 
-export default FormThree;
+export default BasicStepTwo;
 
 const SkillInput = ({ addSkill, closeForm }) => {
   const [skill, setSkill] = useState('');

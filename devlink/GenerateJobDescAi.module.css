@@ -68,20 +68,30 @@
 }
 
 .loading-generate {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: auto;
   z-index: 2;
 
   display: flex;
   height: 46px;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 
   background-color: #f5fcfc;
+}
+
+.loading-generate.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .lottie-slot-ai-generate {
@@ -314,6 +324,21 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.disclaimer-hover-card {
+  position: absolute;
+  z-index: 2;
+
+  display: none;
+  width: 350px;
+  padding: 10px;
+
+  border-radius: 6px;
+
+  background-color: var(--white-80449ce7);
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .cj-rt-generate-btn-relative {

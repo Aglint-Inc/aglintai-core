@@ -27,9 +27,9 @@ import {
   useJobForm,
 } from '../JobPostFormProvider';
 
-const StepThree = () => {
+const ScreeningQns = () => {
   const {
-    jobForm: { formFields },
+    jobForm: { formFields, formType },
     handleUpdateFormFields,
   } = useJobForm();
 
@@ -39,6 +39,7 @@ const StepThree = () => {
 
   return (
     <NewJobStep3
+      isHeaderVisible={formType === 'new'}
       isAiPoweredScreeningChecked={isInterviewAiPowered}
       onClickAiPoweredScreening={{
         onClick: () => {
@@ -76,7 +77,7 @@ const StepThree = () => {
   );
 };
 
-export default StepThree;
+export default ScreeningQns;
 // ;
 const StandardScreeningParams = () => {
   const { jobForm } = useJobForm();

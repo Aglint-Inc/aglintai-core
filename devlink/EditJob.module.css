@@ -428,21 +428,18 @@
   cursor: pointer;
 }
 
-.job-warning-post {
+.div-block-404 {
   display: flex;
-  margin-bottom: 20px;
-  padding: 15px 20px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 10px;
-
-  background-color: var(--yellow100-51d667b3);
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
-.div-block-404 {
-  display: inline-block;
+.div-block-422 {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .tab-menu-link-edit-jobs {
@@ -548,6 +545,27 @@
   bottom: 0%;
 
   background-color: var(--white-80449ce7);
+
+  box-shadow: 0 1px 2px 0 #f1f1ed;
+}
+
+.job-warning-post {
+  display: flex;
+  margin-bottom: 0px;
+  padding: 15px 20px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 10px;
+
+  background-color: var(--yellow100-51d667b3);
+}
+
+.div-block-423 {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .slot-details-job {

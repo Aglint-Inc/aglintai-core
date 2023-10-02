@@ -2,6 +2,7 @@ import Seo from '@components/Common/Seo';
 import JobApplicationProvider from '@context/JobApplicationsContext';
 
 import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
+import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobPage = () => {
   return (
@@ -10,7 +11,9 @@ const JobPage = () => {
         title='Aglint | Jobs'
         description='AI Powered Talent Development Platform.'
       />
-      <JobApplicationsDashboard />
+      <JobPostFormProvider>
+        <JobApplicationsDashboard />
+      </JobPostFormProvider>
     </>
   );
 };

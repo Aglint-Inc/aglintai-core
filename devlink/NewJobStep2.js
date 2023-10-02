@@ -86,18 +86,33 @@ export function NewJobStep2({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cj-suggested-skills-header")}
+                className={_utils.cx(_styles, "div-block-424")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Suggested skills"}</_Builtin.Block>
-                <_Builtin.Image
-                  className={_utils.cx(_styles, "image-27")}
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                  alt="__wf_reserved_inherit"
-                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890155_Vectors-Wrapper.svg"
-                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "cj-suggested-skills-header")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {"Suggested skills"}
+                  </_Builtin.Block>
+                  <_Builtin.Image
+                    className={_utils.cx(_styles, "image-27")}
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                    alt="__wf_reserved_inherit"
+                    src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890155_Vectors-Wrapper.svg"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                    tag="div"
+                  >
+                    {"Click on the ‘+’ icon to add the suggested skill."}
+                  </_Builtin.Block>
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "cj-skills-wrapper")}

@@ -1,4 +1,9 @@
 import { Switch } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import dayjs from 'dayjs';
 import { get } from 'lodash';
 
 import { NewJobStep4 } from '@/devlink';
@@ -6,7 +11,7 @@ import UITextField from '@/src/components/Common/UITextField';
 
 import { FormJobType, useJobForm } from '../JobPostFormProvider';
 
-function StepFour() {
+function ScreeningSettings() {
   const { jobForm, handleUpdateFormFields } = useJobForm();
   const screeningConfig = get(jobForm, 'formFields.screeningConfig', {
     feedbackVisible: false,
@@ -35,6 +40,8 @@ function StepFour() {
 
   return (
     <NewJobStep4
+      isHeaderVisible={jobForm.formType === 'new'}
+      isSettingHeadingVisible={jobForm.formType === 'new'}
       isAutomatedScreeningChecked1={screeningConfig.screening.minApplicants}
       isAutomatedScreeningChecked2={screeningConfig.screening.minScore}
       isShortlistCandidateChecked1={screeningConfig.shortlist.interviewScore}
@@ -218,8 +225,59 @@ function StepFour() {
           />
         </>
       }
+      onClickImmediatelyCheck={{
+        onClick: () => {
+          handleUpdateFormFields({
+            path: 'screeningConfig.screeningEmail.isImmediate',
+            value: true,
+            saveField: 'screening',
+          });
+        },
+      }}
+      onClickParticularTimeCheck={{
+        onClick: () => {
+          handleUpdateFormFields({
+            path: 'screeningConfig.screeningEmail.isImmediate',
+            value: false,
+            saveField: 'screening',
+          });
+        },
+      }}
+      isImmediatelyChecked={screeningConfig.screeningEmail.isImmediate}
+      isParticularTimeChecked={!screeningConfig.screeningEmail.isImmediate}
+      isChooseTimeVisible={!screeningConfig.screeningEmail.isImmediate}
+      slotTime={
+        <>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              viewRenderers={{
+                hours: renderTimeViewClock,
+                minutes: renderTimeViewClock,
+                seconds: renderTimeViewClock,
+              }}
+              value={dayjs(
+                screeningConfig.screeningEmail.date
+                  ? new Date(screeningConfig.screeningEmail.date)
+                  : new Date().toISOString(),
+              )}
+              onChange={(date: dayjs.Dayjs | null) => {
+                date &&
+                  dayjs(date).isValid() &&
+                  handleUpdateFormFields({
+                    path: 'screeningConfig.screeningEmail.date',
+                    value: dayjs(date).toISOString(),
+                    saveField: 'screening',
+                  });
+              }}
+              slots={{
+                textField: UITextField,
+              }}
+            />
+          </LocalizationProvider>
+        </>
+      }
     />
   );
 }
 
-export default StepFour;
+export default ScreeningSettings;

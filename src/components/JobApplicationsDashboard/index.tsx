@@ -15,8 +15,9 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { Job } from '@/src/context/JobsContext/types';
+import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
+import { JobType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -27,6 +28,8 @@ import SearchField from './SearchField';
 import { capitalize } from './utils';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
+import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
+import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, applicationsData } = useJobApplications();
@@ -55,7 +58,7 @@ const YTransformWrapper = ({ children }) => {
 
 const JobApplicationComponent = () => {
   const { applicationsData } = useJobApplications();
-
+  const { jobsData } = useJobs();
   const { job, applications } = applicationsData;
 
   const [section, setSection] = useState(JobApplicationSections.APPLIED);
@@ -74,92 +77,108 @@ const JobApplicationComponent = () => {
     setCheckList(new Set<string>());
   };
 
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
+  const { recruiter } = useAuthDetails();
+  const { handleInitializeForm } = useJobForm();
   return (
-    <JobScreening
-      textJobStatus={capitalize(job.status)}
-      textRole={capitalize(job.job_title)}
-      textApplicantsNumber={`(${applicationsData.count} applicants)`}
-      isAll={section === JobApplicationSections.APPLIED}
-      countAll={applications.applied.count}
-      onClickAllApplicant={{
-        onClick: () => handleSetSection(JobApplicationSections.APPLIED),
-        style: {
-          color:
-            section === JobApplicationSections.APPLIED ? 'white' : 'inherit',
-        },
-      }}
-      isInterviewing={section === JobApplicationSections.INTERVIEWING}
-      countInterviewing={applications.interviewing.count}
-      onClickInterviewing={{
-        onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
-        style: {
-          color:
-            section === JobApplicationSections.INTERVIEWING
-              ? 'white'
-              : 'inherit',
-        },
-      }}
-      isRejected={section === JobApplicationSections.REJECTED}
-      countRejected={applications.rejected.count}
-      onClickRejected={{
-        onClick: () => handleSetSection(JobApplicationSections.REJECTED),
-        style: {
-          color:
-            section === JobApplicationSections.REJECTED ? 'white' : 'inherit',
-        },
-      }}
-      isSelected={section === JobApplicationSections.SELECTED}
-      countSelected={applications.selected.count}
-      onClickSelected={{
-        onClick: () => handleSetSection(JobApplicationSections.SELECTED),
-        style: {
-          color:
-            section === JobApplicationSections.SELECTED ? 'white' : 'inherit',
-        },
-      }}
-      slotSearch={
-        <SearchField
-          applications={sectionApplications}
-          section={section}
-          jobUpdate={jobUpdate}
-          setFilteredApplications={setFilteredApplications}
-        />
-      }
-      slotCandidateJobCard={
-        <ApplicantsList
-          applications={filteredApplications}
-          checkList={checkList}
-          setCheckList={setCheckList}
-          jobUpdate={jobUpdate}
-        />
-      }
-      slotAddCandidates={<AddCandidates />}
-      slotSelectActionBar={
-        <Stack style={{ backgroundColor: 'white' }}>
-          <Stack
-            style={{
-              opacity: jobUpdate ? 0.5 : 1,
-              pointerEvents: jobUpdate ? 'none' : 'auto',
-            }}
-          >
-            <ActionBar
-              section={section}
-              checkList={checkList}
-              setCheckList={setCheckList}
-              setJobUpdate={setJobUpdate}
-            />
+    <>
+      <JobScreening
+        textJobStatus={capitalize(job.status)}
+        textRole={capitalize(job.job_title)}
+        textApplicantsNumber={`(${applicationsData.count} applicants)`}
+        isAll={section === JobApplicationSections.APPLIED}
+        countAll={applications.applied.count}
+        onClickAllApplicant={{
+          onClick: () => handleSetSection(JobApplicationSections.APPLIED),
+          style: {
+            color:
+              section === JobApplicationSections.APPLIED ? 'white' : 'inherit',
+          },
+        }}
+        isInterviewing={section === JobApplicationSections.INTERVIEWING}
+        countInterviewing={applications.interviewing.count}
+        onClickInterviewing={{
+          onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
+          style: {
+            color:
+              section === JobApplicationSections.INTERVIEWING
+                ? 'white'
+                : 'inherit',
+          },
+        }}
+        isRejected={section === JobApplicationSections.REJECTED}
+        countRejected={applications.rejected.count}
+        onClickRejected={{
+          onClick: () => handleSetSection(JobApplicationSections.REJECTED),
+          style: {
+            color:
+              section === JobApplicationSections.REJECTED ? 'white' : 'inherit',
+          },
+        }}
+        isSelected={section === JobApplicationSections.SELECTED}
+        countSelected={applications.selected.count}
+        onClickSelected={{
+          onClick: () => handleSetSection(JobApplicationSections.SELECTED),
+          style: {
+            color:
+              section === JobApplicationSections.SELECTED ? 'white' : 'inherit',
+          },
+        }}
+        slotSearch={
+          <SearchField
+            applications={sectionApplications}
+            section={section}
+            jobUpdate={jobUpdate}
+            setFilteredApplications={setFilteredApplications}
+          />
+        }
+        slotCandidateJobCard={
+          <ApplicantsList
+            applications={filteredApplications}
+            checkList={checkList}
+            setCheckList={setCheckList}
+            jobUpdate={jobUpdate}
+          />
+        }
+        slotAddCandidates={<AddCandidates />}
+        slotSelectActionBar={
+          <Stack style={{ backgroundColor: 'white' }}>
+            <Stack
+              style={{
+                opacity: jobUpdate ? 0.5 : 1,
+                pointerEvents: jobUpdate ? 'none' : 'auto',
+              }}
+            >
+              <ActionBar
+                section={section}
+                checkList={checkList}
+                setCheckList={setCheckList}
+                setJobUpdate={setJobUpdate}
+              />
+            </Stack>
           </Stack>
-        </Stack>
-      }
-      bottomBarVisibility={checkList.size !== 0}
-      linkActiveJobs={{
-        href: '/jobs',
-      }}
-      jobLink={{
-        href: `https://dev.aglinthq.com/job-post/${job.id}`,
-        target: '_blank',
-      }}
-    />
+        }
+        bottomBarVisibility={checkList.size !== 0}
+        linkActiveJobs={{
+          href: '/jobs',
+        }}
+        jobLink={{
+          href: `https://dev.aglinthq.com/job-post/${job.id}`,
+          target: '_blank',
+        }}
+        onClickEditJob={{
+          onClick: () => {
+            handleInitializeForm({
+              type: 'edit',
+              job: jobsData.jobs.find((j) => j.id === job.id) as any,
+              recruiter,
+            });
+            setEditDrawerOpen(true);
+          },
+        }}
+      />
+      <EditFlow open={editDrawerOpen} setDrawerOpen={setEditDrawerOpen} />
+    </>
   );
 };
 
@@ -406,7 +425,7 @@ export default JobApplicationsDashboard;
 export function sendEmails(
   status: string,
   checkList: Set<string>,
-  applicationsData: { applications: any; count?: number; job?: Job },
+  applicationsData: { applications: any; count?: number; job?: JobType },
   recruiter,
   handleJobApplicationUpdate,
 ) {

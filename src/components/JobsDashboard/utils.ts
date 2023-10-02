@@ -56,9 +56,8 @@ export function filterApplicationsByStatus(
 }
 
 export const StatusColor = Object.freeze({
-  inactive: '#D93F4C',
-  interviewing: '#228F67',
-  sourcing: '#228F67',
+  inactive: '#ED8F1C',
+  active: '#228F67',
   closed: '#D93F4C',
 });
 

@@ -139,7 +139,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                 spacing={'8px'}
               >
                 <Checkbox
-                  isChecked={type[1]}
+                  isChecked={Boolean(type[1])}
                   onClickCheck={{
                     onClick: () => {
                       recruiter.employment_type[type[0]] = !type[1];
@@ -188,7 +188,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                 spacing={'8px'}
               >
                 <Checkbox
-                  isChecked={type[1]}
+                  isChecked={Boolean(type[1])}
                   onClickCheck={{
                     onClick: () => {
                       recruiter.workplace_type[type[0]] = !type[1];

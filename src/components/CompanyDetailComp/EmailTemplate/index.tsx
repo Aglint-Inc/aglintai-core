@@ -335,7 +335,7 @@ const EmailTemplate = () => {
 
 export default EmailTemplate;
 
-const templateObj = {
+export const templateObj: Record<string, string> = {
   interview: 'Interview Email',
   followup: 'Follow up for Interview',
   rejection: 'Rejection Email',

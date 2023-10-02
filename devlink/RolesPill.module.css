@@ -20,6 +20,14 @@
   letter-spacing: -0.00042765619582496583px;
 }
 
+.small-default-4.text-green-800 {
+  color: var(--green800-a83af583);
+}
+
+.text-green-800 {
+  color: var(--green800-a83af583);
+}
+
 .plus---12px-icon {
   display: flex;
   padding: 1px;

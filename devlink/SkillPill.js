@@ -10,12 +10,17 @@ export function SkillPill({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "", "cj-suggested-skill-block")}
+      className={_utils.cx(
+        _styles,
+        "",
+        "cj-suggested-skill-block",
+        "green-100"
+      )}
       tag="div"
       {...onClickRemove}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "", "small-default-4")}
+        className={_utils.cx(_styles, "", "small-default-4", "text-green-800")}
         tag="div"
       >
         {textSkill}

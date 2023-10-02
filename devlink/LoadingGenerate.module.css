@@ -1,0 +1,35 @@
+.loading-generate {
+  z-index: 2;
+
+  display: flex;
+  height: 46px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  background-color: #f5fcfc;
+}
+
+.loading-generate.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.lottie-slot-ai-generate {
+  width: 50px;
+  height: 46px;
+}
+
+.text-kale-800-2 {
+  color: hsla(186.38297872340425, 95.92%, 9.61%, 1.00);
+}

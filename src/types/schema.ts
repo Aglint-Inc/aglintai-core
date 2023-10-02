@@ -1146,6 +1146,7 @@ export interface Database {
       }
       job_applications: {
         Row: {
+          ai_interviewer_id: number | null
           application_id: string
           branch: string | null
           cgpa: string | null
@@ -1163,6 +1164,7 @@ export interface Database {
           interviewing_date: string | null
           is_email_sent: boolean | null
           is_sign_up: boolean | null
+          jd_score: Json | null
           job_id: string
           job_location: string | null
           job_title: string | null
@@ -1183,6 +1185,7 @@ export interface Database {
           utm_term: string | null
         }
         Insert: {
+          ai_interviewer_id?: number | null
           application_id?: string
           branch?: string | null
           cgpa?: string | null
@@ -1200,6 +1203,7 @@ export interface Database {
           interviewing_date?: string | null
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
+          jd_score?: Json | null
           job_id: string
           job_location?: string | null
           job_title?: string | null
@@ -1220,6 +1224,7 @@ export interface Database {
           utm_term?: string | null
         }
         Update: {
+          ai_interviewer_id?: number | null
           application_id?: string
           branch?: string | null
           cgpa?: string | null
@@ -1237,6 +1242,7 @@ export interface Database {
           interviewing_date?: string | null
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
+          jd_score?: Json | null
           job_id?: string
           job_location?: string | null
           job_title?: string | null
@@ -2331,6 +2337,7 @@ export interface Database {
           skills: string[] | null
           slug: string
           status: string | null
+          updated_at: string | null
           workplace_type: string | null
         }
         Insert: {
@@ -2359,6 +2366,7 @@ export interface Database {
           skills?: string[] | null
           slug?: string
           status?: string | null
+          updated_at?: string | null
           workplace_type?: string | null
         }
         Update: {
@@ -2387,6 +2395,7 @@ export interface Database {
           skills?: string[] | null
           slug?: string
           status?: string | null
+          updated_at?: string | null
           workplace_type?: string | null
         }
         Relationships: [
@@ -3174,56 +3183,96 @@ export interface Database {
         }
         Relationships: []
       }
+      support_groups: {
+        Row: {
+          company_id: string | null
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          user_ids: string[]
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_ids?: string[]
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_ids?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_groups_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       support_ticket: {
         Row: {
           action_pending: Json
           assign_to: string | null
-          attachments: string[] | null
-          company_id: string | null
+          "attachments ": string[] | null
+          company_id: string
           content: Json[]
           created_at: string | null
+          email: string | null
+          email_updates: boolean
           id: string
-          job_id: string | null
+          job_id: string
           priority: string
           state: string
+          support_group_id: string | null
           title: string
           type: string[]
           updated_at: string | null
-          user_id: string
+          user_id: string | null
           user_name: string
         }
         Insert: {
           action_pending?: Json
           assign_to?: string | null
-          attachments?: string[] | null
-          company_id?: string | null
+          "attachments "?: string[] | null
+          company_id: string
           content?: Json[]
           created_at?: string | null
+          email?: string | null
+          email_updates?: boolean
           id?: string
-          job_id?: string | null
+          job_id: string
           priority?: string
           state?: string
+          support_group_id?: string | null
           title: string
           type: string[]
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
           user_name: string
         }
         Update: {
           action_pending?: Json
           assign_to?: string | null
-          attachments?: string[] | null
-          company_id?: string | null
+          "attachments "?: string[] | null
+          company_id?: string
           content?: Json[]
           created_at?: string | null
+          email?: string | null
+          email_updates?: boolean
           id?: string
-          job_id?: string | null
+          job_id?: string
           priority?: string
           state?: string
+          support_group_id?: string | null
           title?: string
           type?: string[]
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
           user_name?: string
         }
         Relationships: [
