@@ -1146,6 +1146,7 @@ export interface Database {
       }
       job_applications: {
         Row: {
+          ai_interviewer_id: number | null
           application_id: string
           branch: string | null
           cgpa: string | null

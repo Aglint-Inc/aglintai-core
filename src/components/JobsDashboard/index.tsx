@@ -7,8 +7,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobType } from '@/src/types/data.types';
 
-import CreateNewJob from './CreateNewJob';
-import { useJobForm } from './CreateNewJob/JobPostFormProvider';
+import CreateNewJob from './JobPostCreateUpdate/CreateFlow';
+import { useJobForm } from './JobPostCreateUpdate/JobPostFormProvider';
 import JobsList from './JobsList';
 import { searchJobs, sendEmail } from './utils';
 import Icon from '../Common/Icons/Icon';

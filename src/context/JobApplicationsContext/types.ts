@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Job } from '@context/JobsContext/types';
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
+import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 export enum JobApplicationSections {
@@ -23,7 +23,7 @@ export type JobApplicationSectionData = {
 export type JobApplicationsData = {
   applications: JobApplicationSectionData;
   count: number;
-  job: Job;
+  job: JobType;
 };
 
 export type JobApplication =

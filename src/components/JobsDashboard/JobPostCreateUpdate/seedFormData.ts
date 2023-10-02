@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
+import { JobTypeDB } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { JobFormState } from './JobPostFormProvider';
@@ -16,17 +17,27 @@ export const getSeedJobFormData = (
     formType: 'new',
     slideNo: 0,
     formFields: {
-      applicantsCount: 0,
       company: '',
-      interviewingCount: 0,
       jobLocation: '',
       jobTitle: '',
       jobType: 'fullTime',
-      shortListedCount: 0,
       logo: '',
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
-      status: 'inactive',
+      status: {
+        sourcing: {
+          isActive: false,
+          startTime: null,
+        },
+        interviewing: {
+          isActive: false,
+          startTime: null,
+        },
+        closed: {
+          isActive: false,
+          startTime: null,
+        },
+      },
       workPlaceType: 'onSite',
       skills: [],
       jobDescription: '',
@@ -72,6 +83,11 @@ export const getSeedJobFormData = (
           interviewScore: true,
           minAlgoScore: 8,
           minInterviewScore: 80,
+        },
+        screeningEmail: {
+          date: null,
+          isImmediate: false,
+          emailTemplates: {},
         },
       },
       recruiterId: '',
@@ -149,7 +165,105 @@ export const getSeedJobFormData = (
       'office_locations',
       [],
     ).map((s) => ({ label: s, value: s }));
+    seedFormState.formFields.screeningConfig.screeningEmail = {
+      ...seedFormState.formFields.screeningConfig.screeningEmail,
+      emailTemplates: get(
+        recruiter,
+        'email_template',
+        {},
+      ) as JobFormState['formFields']['screeningConfig']['screeningEmail']['emailTemplates'],
+    };
   }
 
   return seedFormState;
+};
+
+export const dbToClientjobPostForm = (
+  jobPost: JobTypeDB,
+  recruiter: Database['public']['Tables']['recruiter']['Row'],
+) => {
+  const seedData = getSeedJobFormData(recruiter);
+  const jp: JobFormState = {
+    ...seedData,
+    createdAt: jobPost.created_at,
+    formType: 'edit',
+    jobPostId: jobPost.id,
+    slideNo: 1,
+    updatedAt: '',
+    formFields: {
+      ...seedData.formFields,
+      company: jobPost.company,
+      workPlaceType: jobPost.workplace_type,
+      status: jobPost.active_status as JobFormState['formFields']['status'],
+      interviewConfig: {
+        cultural: get(
+          jobPost,
+          'screening_questions[0].cultural',
+          seedData.formFields.interviewConfig.cultural,
+        ),
+        personality: get(
+          jobPost,
+          'screening_questions[0].personality',
+          seedData.formFields.interviewConfig.personality,
+        ),
+        skill: get(
+          jobPost,
+          'screening_questions[0].skill',
+          seedData.formFields.interviewConfig.skill,
+        ),
+        softSkills: get(
+          jobPost,
+          'screening_questions[0].softSkills',
+          seedData.formFields.interviewConfig.softSkills,
+        ),
+      },
+      interviewType: get(
+        jobPost,
+        'screening_setting.interviewType',
+        'questions-preset',
+      ),
+      jobDescription: jobPost.description,
+      jobLocation: jobPost.location,
+      logo: jobPost.logo,
+      skills: get(jobPost, 'skills', []),
+      jobTitle: jobPost.job_title,
+      jobType: jobPost.job_type,
+      screeningConfig: {
+        screening: {
+          ...get(
+            jobPost,
+            'screening_setting.screening',
+            seedData.formFields.screeningConfig.screening,
+          ),
+        },
+        shortlist: {
+          ...get(
+            jobPost,
+            'screening_setting.shortlist',
+            seedData.formFields.screeningConfig.shortlist,
+          ),
+        },
+        feedbackVisible: get(
+          jobPost,
+          'screening_setting.feedbackVisible',
+          seedData.formFields.screeningConfig.feedbackVisible,
+        ),
+        useAglintMatchingAlgo: get(
+          jobPost,
+          'screening_setting.useAglintMatchingAlgo',
+          seedData.formFields.screeningConfig.useAglintMatchingAlgo,
+        ),
+        screeningEmail: {
+          ...get(
+            jobPost,
+            'screening_setting.screeningEmail',
+            seedData.formFields.screeningConfig.screeningEmail,
+          ),
+          emailTemplates: get(jobPost, 'email_template', {}) as any,
+        },
+      },
+    },
+  };
+
+  return jp;
 };

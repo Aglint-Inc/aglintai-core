@@ -24,9 +24,7 @@ const ApplicationCard = ({
   const [applicationDetails, setApplicationDetails] = useState({});
 
   const interviewScore = useMemo(() => {
-    return application?.feedback?.length
-      ? getInterviewScore(application.feedback)
-      : 0;
+    return application?.feedback ? getInterviewScore(application.feedback) : 0;
   }, [application.feedback]);
 
   const statusColors = useMemo(() => {

@@ -1,6 +1,7 @@
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 export const capitalize = (str: string) => {
+  if (!str) return '';
   const s = str.trim();
   if (s.length !== 0)
     return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;

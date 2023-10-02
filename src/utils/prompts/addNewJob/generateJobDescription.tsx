@@ -72,16 +72,15 @@ Your a Helpfull Assistant.
 
 Your'e given a details about a job post in a company.
 
-* Generate Job description in html( use h3 tag for section heading, and bullet points for each section description ).
+* Generate Job description in html( use h5 tag for section heading, and bullet points for each section description ).
 * job description should include fields exactly in the given order
   - Company overview, 
   - Responsibilities,
   - Qualification,
-  - Skills,
   - Benifits
   - Company Values
 
-* Dont include Job Description title in the top.
+* Donot include Job Description title in the top.
 `,
     },
     {

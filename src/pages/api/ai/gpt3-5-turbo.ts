@@ -20,6 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const chatCompletion = await openai.chat.completions.create({
       messages: prompts,
       model: 'gpt-3.5-turbo',
+      temperature: 1,
     });
 
     return res.status(200).json(chatCompletion.choices[0].message.content);

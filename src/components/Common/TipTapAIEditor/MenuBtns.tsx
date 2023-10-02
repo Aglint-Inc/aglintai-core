@@ -18,20 +18,20 @@ const MenuBtn = styled(IconButton)({
     backgroundColor: palette.grey['200'],
   },
 });
-// import axios from 'axios';
 
-import { GenerateJobDescAi } from '@/devlink';
+import { GenerateJobDescAi, LoadingGenerate } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
-  JDGenParams,
   generateJobDescription,
+  JDGenParams,
 } from '@/src/utils/prompts/addNewJob/generateJobDescription';
+import toast from '@/src/utils/toast';
 
 import { useTipTap } from './context';
 import Icon from '../Icons/Icon';
+import DescGenerating from '../Lotties/DescGenerating';
 import UITypography from '../UITypography';
-import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { useJobForm } from '../../JobsDashboard/CreateNewJob/JobPostFormProvider';
+import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 function MenuBtns() {
   return (
@@ -66,6 +66,7 @@ const TipTapMenus = () => {
       <Button
         endIcon={
           <Image
+            unoptimized
             alt='down-arrow'
             height={20}
             width={10}
@@ -127,6 +128,7 @@ const TipTapMenus = () => {
           className={editor.isActive('orderedList') ? 'is-active' : ''}
         >
           <Image
+            unoptimized
             src={'/images/svg/orderList.svg'}
             height={30}
             width={30}
@@ -143,7 +145,8 @@ const TipTapMenus = () => {
           className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
         >
           <Image
-            src={'/images/svg/alignLeft.svg'}
+            unoptimized
+            src={'/images/svg/alignRight.svg'}
             height={30}
             width={30}
             alt='alignLeft'
@@ -159,6 +162,7 @@ const TipTapMenus = () => {
           className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
         >
           <Image
+            unoptimized
             src={'/images/svg/alignLeft.svg'}
             height={30}
             width={30}
@@ -246,6 +250,7 @@ const TipTapUndoRedo = () => {
           }}
         >
           <Image
+            unoptimized
             alt='undo'
             src={'/images/svg/undo.svg'}
             width={22}
@@ -264,6 +269,7 @@ const TipTapUndoRedo = () => {
           }}
         >
           <Image
+            unoptimized
             alt='redo'
             src={'/images/svg/redo.svg'}
             width={22}
@@ -320,12 +326,15 @@ export const GenerateDescription = () => {
       }
       const jd = await generateJobDescription(jdGenConfig);
       editor.commands.setContent(jd, true, { preserveWhitespace: true });
-    } catch (error) {
-      //
+    } catch {
+      toast.error('Something went wrong. Please try again');
     } finally {
       setIsGenerating(false);
     }
   };
+
+  if (isGenerating) return <LoadingGenerate slotLottie={<DescGenerating />} />;
+
   return (
     <>
       <GenerateJobDescAi
@@ -351,6 +360,17 @@ export const GenerateDescription = () => {
           onClick: handlegenerate,
         }}
         isGenerateDisable={!enableGenerate || isGenerating}
+        isBenefitsNotSpecified={false}
+        isValuesNotSpecified={false}
+        textGenerateHeader={
+          editor.isEmpty
+            ? 'Generate job description with AI'
+            : 'Regenerate job description with AI'
+        }
+        isLoading={isGenerating}
+        textLabel1={'Use Company details from company profile'}
+        textLabel2={'Use benefits from company profile'}
+        textLabel3={'Use values from company profile'}
       />
     </>
   );

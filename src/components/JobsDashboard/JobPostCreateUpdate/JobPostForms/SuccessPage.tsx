@@ -9,9 +9,7 @@ function SuccessPage() {
   const { jobForm } = useJobForm();
   const router = useRouter();
   const jobLink =
-    process.env.NEXT_PUBLIC_HOST_NAME +
-    '/jobs/' +
-    get(jobForm, 'jobPostId', '');
+    'https://dev.aglinthq.com' + '/job-post/' + get(jobForm, 'jobPostId', '');
   return (
     <NewJobSuccess
       onClickViewJob={{

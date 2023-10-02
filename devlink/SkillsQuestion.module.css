@@ -34,7 +34,7 @@
 .tog-dropdown-block-2.animated-visibility {
   display: flex;
   margin-top: 10px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 

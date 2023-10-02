@@ -1,6 +1,6 @@
 import Seo from '@/src/components/Common/Seo';
 import DashboardComp from '@/src/components/JobsDashboard';
-import JobPostFormProvider from '@/src/components/JobsDashboard/CreateNewJob/JobPostFormProvider';
+import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const Dashboard = () => {
   return (

@@ -2,6 +2,7 @@ import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { JobType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import {
@@ -22,8 +23,6 @@ import {
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
-import { Job } from '../JobsContext/types';
-
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
@@ -57,7 +56,7 @@ type Action =
       type: ActionType.READ;
       payload: {
         applicationData: JobApplication[];
-        jobData: Job;
+        jobData: JobType;
       };
     }
   | {

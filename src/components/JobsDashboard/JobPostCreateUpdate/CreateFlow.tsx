@@ -11,13 +11,13 @@ import { CreateNewJobDrawer, StepBottomProgress } from '@/devlink';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import SelectImportMethod from './Forms/SelectImportMethod';
-import StepFour from './Forms/StepFour';
-import StepOne from './Forms/StepOne';
-import Stepthree from './Forms/Stepthree';
-import StepTwo from './Forms/StepTwo';
-import SuccessPage from './Forms/SuccessPage';
 import { FormJobType, useJobForm } from './JobPostFormProvider';
+import StepOne from './JobPostForms/BasicStepOne';
+import StepTwo from './JobPostForms/BasicStepTwo';
+import Stepthree from './JobPostForms/ScreeningQns';
+import StepFour from './JobPostForms/ScreeningSettings';
+import SelectImportMethod from './JobPostForms/SelectImportMethod';
+import SuccessPage from './JobPostForms/SuccessPage';
 
 type CreateNewJobParams = {
   open: boolean;
@@ -168,7 +168,7 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
                     </>
                   }
                   // isDraftSaved={false}
-                  // isSavetoDraftVisible={true}
+                  isSavetoDraftVisible={false}
                   isSkipButtonVisible={slideNo == 3 || slideNo == 4}
                   onClickSkip={{
                     onClick: handleDrawerClose,
