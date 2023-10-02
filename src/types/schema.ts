@@ -1146,7 +1146,6 @@ export interface Database {
       }
       job_applications: {
         Row: {
-          profile_image: any
           application_id: string
           branch: string | null
           cgpa: string | null
@@ -1157,7 +1156,7 @@ export interface Database {
           email: string
           email_campaign: string | null
           emails: Json | null
-          feedback: Json | any
+          feedback: Json | null
           first_name: string
           id: number
           interview_duration: string | null
@@ -1171,6 +1170,7 @@ export interface Database {
           last_name: string
           linkedin: string | null
           phone: string | null
+          profile_image: string | null
           resume: string | null
           score: number
           status: string | null
@@ -1207,6 +1207,7 @@ export interface Database {
           last_name: string
           linkedin?: string | null
           phone?: string | null
+          profile_image?: string | null
           resume?: string | null
           score?: number
           status?: string | null
@@ -1243,6 +1244,7 @@ export interface Database {
           last_name?: string
           linkedin?: string | null
           phone?: string | null
+          profile_image?: string | null
           resume?: string | null
           score?: number
           status?: string | null
@@ -2304,11 +2306,13 @@ export interface Database {
       }
       public_jobs: {
         Row: {
+          active_status: Json
           benefits: string[] | null
           company: string | null
           company_details: string | null
           created_at: string
           description: string | null
+          email_template: Json
           id: string
           is_campus: boolean
           job_criteria: Json | null
@@ -2330,11 +2334,13 @@ export interface Database {
           workplace_type: string | null
         }
         Insert: {
+          active_status?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
           created_at?: string
           description?: string | null
+          email_template?: Json
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null
@@ -2356,11 +2362,13 @@ export interface Database {
           workplace_type?: string | null
         }
         Update: {
+          active_status?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
           created_at?: string
           description?: string | null
+          email_template?: Json
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null

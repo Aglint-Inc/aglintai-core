@@ -71,7 +71,8 @@ export const updateJobApplicationDbAction = async (
   const { data, error } = await supabase
     .from('job_applications')
     .update(inputData)
-    .eq('application_id', application_id);
+    .eq('application_id', application_id)
+    .select();
   return { data, error };
 };
 

@@ -13,6 +13,8 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -21,6 +23,7 @@ import toast from '@/src/utils/toast';
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
+import { sendEmails } from '../..';
 import InterviewScoreCard from '../../Common/InreviewScoreCard';
 
 function ApplicationDetails({
@@ -30,7 +33,12 @@ function ApplicationDetails({
 }) {
   const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
   const [openResume, setOpenResume] = useState(false);
-
+  const { recruiter } = useAuthDetails();
+  const {
+    applicationsData,
+    handleUpdateJobStatus,
+    handleJobApplicationUpdate,
+  } = useJobApplications();
   const overAllScore = applicationDetails?.feedback?.length
     ? Math.floor(
         applicationDetails.feedback.reduce(
@@ -181,7 +189,30 @@ function ApplicationDetails({
                         'Candidate not invited to take interview. Invite candidate to take interview.'
                       }
                       slotResendButton={
-                        <AUIButton variant='outlined'>Send Link</AUIButton>
+                        <AUIButton
+                          onClick={async () => {
+                            await handleUpdateJobStatus(
+                              new Set([applicationDetails?.application_id]),
+                              {
+                                source: JobApplicationSections.APPLIED,
+                                destination:
+                                  JobApplicationSections.INTERVIEWING,
+                              },
+                            );
+                            sendEmails(
+                              JobApplicationSections.INTERVIEWING,
+                              new Set(
+                                Array(applicationDetails?.application_id),
+                              ),
+                              applicationsData,
+                              recruiter,
+                              handleJobApplicationUpdate,
+                            );
+                          }}
+                          variant='outlined'
+                        >
+                          Send Link
+                        </AUIButton>
                       }
                       onClickCopyInterviewLink={{
                         onClick: () => {
