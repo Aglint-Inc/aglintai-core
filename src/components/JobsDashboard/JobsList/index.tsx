@@ -103,11 +103,16 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
               slotStatusIcon={
                 <Image
                   src={
-                    job.status == 'closed'
-                      ? '/images/dashboard/closed.svg'
-                      : job.status == 'inactive'
+                    !(
+                      job.active_status.interviewing.isActive ||
+                      job.active_status.sourcing.isActive
+                    ) && !job.active_status.closed.isActive
                       ? '/images/dashboard/inactive.svg'
-                      : '/images/dashboard/active.svg'
+                      : (job.active_status.interviewing.isActive ||
+                          job.active_status.sourcing.isActive) &&
+                        !job.active_status.closed.isActive
+                      ? '/images/dashboard/active.svg'
+                      : '/images/dashboard/closed.svg'
                   }
                   width={10}
                   height={10}
