@@ -222,6 +222,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .div-block-289 {
   display: flex;
   max-width: 420px;

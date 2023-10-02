@@ -7,4 +7,5 @@ declare function ToggleDropdown(props: {
   slotSkillQuestion?: Types.Devlink.Slot;
   slotCustomAddButton?: Types.Devlink.RuntimeProps;
   onClickGenerate?: Types.Devlink.RuntimeProps;
+  slotToggle?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -16,6 +16,7 @@ export function ToggleDropdown({
   slotSkillQuestion,
   slotCustomAddButton = {},
   onClickGenerate = {},
+  slotToggle,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -36,7 +37,7 @@ export function ToggleDropdown({
           className={_utils.cx(_styles, "toggle-btn-block")}
           tag="div"
         >
-          <_Builtin.NotSupported _atom="Animation" />
+          {slotToggle}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

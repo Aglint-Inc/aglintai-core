@@ -159,6 +159,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -261,6 +269,10 @@
   }
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
 .text-lg.text-align-center.no-wrap-company {
   flex: 0 0 auto;
 }
@@ -361,7 +373,7 @@
 
 .aui-button.is-small {
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0px;
 }
 

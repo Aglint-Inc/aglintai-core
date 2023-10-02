@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import {
@@ -9,12 +10,15 @@ import {
   JobScreening,
   SelectActionBar,
 } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
+import { Job } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
+import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
@@ -181,12 +185,14 @@ const ApplicantsList = ({
             : { opacity: 1, pointerEvent: 'auto' };
         return (
           <Stack key={application.application_id} style={styles}>
-            <ApplicationCard
-              application={application}
-              index={i}
-              checkList={checkList}
-              setCheckList={setCheckList}
-            />
+            <ScrollList uniqueKey={application.application_id}>
+              <ApplicationCard
+                application={application}
+                index={i}
+                checkList={checkList}
+                setCheckList={setCheckList}
+              />
+            </ScrollList>
           </Stack>
         );
       })}
@@ -205,10 +211,10 @@ const ActionBar = ({
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { handleUpdateJobStatus } = useJobApplications();
+  const { handleUpdateJobStatus, applicationsData } = useJobApplications();
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
-
+  const { recruiter } = useAuthDetails();
   const [dialogInfo, setDialogInfo] = useState({
     heading: ``,
     subHeading: '',
@@ -248,7 +254,12 @@ const ActionBar = ({
       primaryAction: async () => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
-          sendEmails(JobApplicationSections.INTERVIEWING);
+          sendEmails(
+            JobApplicationSections.INTERVIEWING,
+            checkList,
+            applicationsData,
+            recruiter,
+          );
         }
       },
       primaryText: 'Send',
@@ -263,7 +274,12 @@ const ActionBar = ({
       primaryAction: async () => {
         await handleUpdateJobs(JobApplicationSections.SELECTED);
         if (checkEmail) {
-          sendEmails(JobApplicationSections.SELECTED);
+          sendEmails(
+            JobApplicationSections.SELECTED,
+            checkList,
+            applicationsData,
+            recruiter,
+          );
         }
       },
       primaryText: 'Move to Selected',
@@ -278,7 +294,12 @@ const ActionBar = ({
       primaryAction: async () => {
         await handleUpdateJobs(JobApplicationSections.REJECTED);
         if (checkEmail) {
-          sendEmails(JobApplicationSections.REJECTED);
+          sendEmails(
+            JobApplicationSections.REJECTED,
+            checkList,
+            applicationsData,
+            recruiter,
+          );
         }
       },
       primaryText: 'Rejected',
@@ -289,6 +310,7 @@ const ActionBar = ({
       heading: `Are you sure that you want to move ${
         Array.from(checkList).length
       } candidates to New`,
+      subHeading: undefined,
       warningMessage:
         'Moving back to applied will cancel the interviews the candidates have taken and will start the process again. ',
       primaryAction: async () => {
@@ -340,7 +362,7 @@ const ActionBar = ({
         }}
         onClickMoveNew={{
           onClick: async () => {
-            setDialogInfo(DialogInfo.rejected);
+            setDialogInfo(DialogInfo.applied);
             setOpenInfoDialog(true);
           },
         }}
@@ -374,7 +396,128 @@ const AddCandidates = () => {
 };
 export default JobApplicationsDashboard;
 
-function sendEmails(status: string) {
-  // eslint-disable-next-line no-console
-  console.log(status);
+function sendEmails(
+  status: string,
+  checkList: Set<string>,
+  applicationsData: { applications: any; count?: number; job?: Job },
+  recruiter,
+) {
+  function fillEmailTemplate(
+    template: any,
+    email: {
+      first_name: any;
+      last_name: any;
+      job_title: any;
+      company_name: any;
+      interview_link: any;
+    },
+  ) {
+    let filledTemplate = template;
+
+    const placeholders = {
+      '[firstName]': email.first_name,
+      '[lastName]': email.last_name,
+      '[jobTitle]': email.job_title,
+      '[companyName]': email.company_name,
+      '[interviewLink]': email.interview_link,
+    };
+
+    for (const [placeholder, value] of Object.entries(placeholders)) {
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
+      filledTemplate = filledTemplate.replace(regex, value);
+    }
+
+    return filledTemplate;
+  }
+
+  const emailHandler = async (candidate: {
+    email: any;
+    first_name: any;
+    last_name: any;
+    job_title: any;
+    company: any;
+    application_id: any;
+  }) => {
+    await axios.post('/api/sendgrid', {
+      fromEmail: `messenger@aglinthq.com`,
+      fromName: recruiter?.name,
+      email: candidate?.email,
+      subject:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+            })
+          : status === JobApplicationSections.REJECTED
+          ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+            })
+          : null,
+      text:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(recruiter?.email_template?.interview?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+            })
+          : status === JobApplicationSections.REJECTED
+          ? fillEmailTemplate(recruiter?.email_template?.rejection?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+            })
+          : null,
+    });
+    // .then((res) => {
+    //   if (res.status === 200 && res.data.data === 'Email sent') {
+    //     toast.success('Mail sent successfully');
+    //   }
+    // });
+  };
+
+  if (
+    status === JobApplicationSections.INTERVIEWING ||
+    status === JobApplicationSections.REJECTED
+  ) {
+    const applied = applicationsData.applications.applied.list;
+    const interviewing = applicationsData.applications.interviewing.list;
+    const selected = applicationsData.applications.selected.list;
+    const rejected = applicationsData.applications.rejected.list;
+
+    const allCandidates = [
+      ...applied,
+      ...interviewing,
+      ...selected,
+      ...rejected,
+    ];
+    const allCandidatesIds = allCandidates.map((ele) => ele.application_id);
+    const filteredCandidates = [];
+
+    Array.from(checkList).forEach((id) => {
+      if (allCandidatesIds.includes(id))
+        filteredCandidates.push(
+          allCandidates.filter(
+            (candidate) => candidate.application_id === id,
+          )[0],
+        );
+    });
+
+    // console.log('filteredCandidates', filteredCandidates);
+
+    for (const candidate of filteredCandidates) {
+      emailHandler(candidate);
+    }
+  }
 }

@@ -123,6 +123,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
 .text-kale-800 {
   color: var(--kale800-682c1482);
 }

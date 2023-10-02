@@ -167,6 +167,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -368,7 +376,7 @@
 
 .aui-button.is-small {
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0px;
 }
 

@@ -6,7 +6,6 @@ import {
   DetailedFeedbackCard,
   InterviewResult,
   InterviewResultStatus,
-  InterviewTranscriptCard,
   JobDetailsSideDrawer,
   ResumeResult,
 } from '@/devlink';
@@ -15,9 +14,11 @@ import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
+import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
 import InterviewScoreCard from '../../Common/InreviewScoreCard';
@@ -274,6 +275,39 @@ function ApplicationDetails({
               isKeySkillsVisible={false}
               slotResumeScore={
                 <ResumeResult
+                  textCertificationScore={
+                    applicationDetails?.json_resume?.summary?.qualification
+                      ?.certifications
+                      ? applicationDetails?.json_resume?.summary?.qualification
+                          ?.certifications
+                      : '--'
+                  }
+                  textProjectScore={
+                    applicationDetails?.json_resume?.qualification?.project
+                      ?.relevance
+                      ? applicationDetails?.json_resume?.qualification?.project
+                          ?.relevance
+                      : ''
+                  }
+                  textEducationScore={
+                    applicationDetails?.json_resume?.qualification?.education
+                      ?.relevance
+                      ? applicationDetails?.json_resume?.qualification
+                          ?.education?.relevance
+                      : ''
+                  }
+                  textExperienceScore={
+                    applicationDetails?.json_resume?.qualification?.experience
+                      ?.relevance
+                      ? applicationDetails?.json_resume?.qualification
+                          ?.experience?.relevance
+                      : ''
+                  }
+                  textSkillsScore={
+                    applicationDetails?.json_resume?.skills_score?.score
+                      ? applicationDetails?.json_resume?.skills_score?.score
+                      : '--'
+                  }
                   onClickDownloadResume={{
                     onClick: () => {
                       handleDownload(applicationDetails?.resume);
@@ -335,37 +369,29 @@ function ApplicationDetails({
                   <>
                     {applicationDetails.conversation?.map((ele, i) => {
                       return (
-                        <InterviewTranscriptCard
-                          slotUserImage={
-                            <MuiAvatar
-                              src={'/'}
-                              level={applicationDetails?.first_name}
-                              height={'24px'}
-                              width={'24px'}
-                              fontSize={'15px'}
-                              variant={'circular'}
+                        <>
+                          <ConversationCard
+                            roleImage={interviewerList[Number(0)].image}
+                            roleName={interviewerList[Number(0)].name}
+                            textForSpeech={ele.content}
+                            src={ele.aiVoice}
+                            index={i}
+                            cardFor='ai'
+                          />
+                          {ele.userContent && (
+                            <ConversationCard
+                              cardFor={undefined}
+                              roleImage={getGravatar(
+                                applicationDetails.email,
+                                applicationDetails.first_name,
+                              )}
+                              roleName={applicationDetails.first_name}
+                              textForSpeech={ele.userContent}
+                              src={ele.userVoice}
+                              index={i}
                             />
-                          }
-                          slotAiImage={
-                            <svg
-                              width='24'
-                              height='24'
-                              viewBox='0 0 36 36'
-                              fill='none'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                d='M27.4875 16.8075C24.255 15.9975 22.635 15.6 21.5175 14.4825C20.4 13.3575 20.0025 11.745 19.1925 8.5125L18 3.75L16.8075 8.5125C15.9975 11.745 15.6 13.365 14.4825 14.4825C13.3575 15.6 11.745 15.9975 8.5125 16.8075L3.75 18L8.5125 19.1925C11.745 20.0025 13.365 20.4 14.4825 21.5175C15.6 22.6425 15.9975 24.255 16.8075 27.4875L18 32.25L19.1925 27.4875C20.0025 24.255 20.4 22.635 21.5175 21.5175C22.6425 20.4 24.255 20.0025 27.4875 19.1925L32.25 18L27.4875 16.8075Z'
-                                fill='#FF6224'
-                              ></path>
-                            </svg>
-                          }
-                          textQuestion={ele?.content}
-                          textAnswer={ele.userContent}
-                          textAiName={'Aglint Ai'}
-                          userTextName={applicationDetails?.first_name}
-                          key={i}
-                        />
+                          )}
+                        </>
                       );
                     })}
                   </>

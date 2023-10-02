@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { AddSocialLink } from "./AddSocialLink";
 import * as _utils from "./utils";
 import _styles from "./NewJobStep3.module.css";
 
@@ -22,6 +23,9 @@ export function NewJobStep3({
   },
 
   isHowItWorksVisible = true,
+  isHeaderVisible = true,
+  onClickAddCustomQuestion = {},
+  isChoosePreferredOptionVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -30,22 +34,30 @@ export function NewJobStep3({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-4")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "cj-top-block")} tag="div">
+      {isHeaderVisible ? (
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-grey-600"
-          )}
+          className={_utils.cx(_styles, "cj-top-block")}
           tag="div"
         >
-          {"Step 3: Set Up Screening Questions"}
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-lg",
+              "fw-semibold",
+              "text-grey-600"
+            )}
+            tag="div"
+          >
+            {"Step 3: Set Up Screening Questions"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Pre-screen candidates based on essential criteria."}
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Pre-screen candidates based on essential criteria."}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"
@@ -180,6 +192,22 @@ export function NewJobStep3({
             </_Builtin.Block>
           </_Builtin.Link>
         </_Builtin.Block>
+        {isChoosePreferredOptionVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-405")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Choose Your Preferred Screening Option"}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div" {...onClickAddCustomQuestion}>
+              <AddSocialLink textLabel="Add Custom Question" />
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "skills-without-question")}
           tag="div"

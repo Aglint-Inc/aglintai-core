@@ -101,7 +101,7 @@
 
 .aui-button.is-small {
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0px;
 }
 
@@ -482,6 +482,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
 .text-kale-800 {
   color: var(--kale800-682c1482);
 }
@@ -699,6 +703,14 @@
 
 .text-yellow-600 {
   color: var(--yellow600-1478b5f5);
+}
+
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 .all-interview-result-wrapper {
