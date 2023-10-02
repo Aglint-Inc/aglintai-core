@@ -17,10 +17,8 @@ export function SkillsWithQuestionToggle({
   slotLottie,
   slotQuestions,
   onClickAddAnotherQuestion = {},
-  onClickGenerate = {},
   onClickToggle = {},
   isButtonDisable = false,
-  isGenerateButtonDisable = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 

@@ -14,28 +14,37 @@ export function NewJobStep2({
   slotSuggestedSkill,
   isAddSkillVisible = true,
   slotRequiredSKill,
+  isJobHeaderVisible = true,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-2")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "cj-top-block")} tag="div">
+      {isJobHeaderVisible ? (
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-grey-600"
-          )}
+          className={_utils.cx(_styles, "cj-top-block")}
           tag="div"
         >
-          {"Step 2: Describe The Role"}
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-lg",
+              "fw-semibold",
+              "text-grey-600"
+            )}
+            tag="div"
+          >
+            {"Step 2: Describe The Role"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Help candidates understand what the role involves."}
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Help candidates understand what the role involves."}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"

@@ -11,7 +11,7 @@ export function StepBottomProgress({
   slotProgressBar,
   textStepCount = "Step 1 of 5",
   isDraftSaved = false,
-  isSavetoDraftVisible = false,
+  isSavetoDraftVisible = true,
   onClickSkip = {},
   isSkipButtonVisible = false,
   slotSavingDraftLottie,

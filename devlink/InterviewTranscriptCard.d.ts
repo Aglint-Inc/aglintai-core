@@ -3,12 +3,6 @@ import * as Types from "./types";
 
 declare function InterviewTranscriptCard(props: {
   as?: React.ElementType;
-  slotAiImage?: Types.Devlink.Slot;
-  textAiName?: React.ReactNode;
-  slotPlayButton?: Types.Devlink.Slot;
-  textQuestion?: React.ReactNode;
-  textAnswer?: React.ReactNode;
-  slotUserPlayButton?: Types.Devlink.Slot;
-  slotUserImage?: Types.Devlink.Slot;
-  userTextName?: React.ReactNode;
+  slotAiTranscript?: Types.Devlink.Slot;
+  slotUserTranscript?: Types.Devlink.Slot;
 }): React.JSX.Element;

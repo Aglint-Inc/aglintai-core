@@ -1350,6 +1350,7 @@
   padding: 8px 24px;
   border-radius: 6px;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .company-tab-link:global(.w--current) {
