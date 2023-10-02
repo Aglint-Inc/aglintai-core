@@ -112,15 +112,25 @@ function JobSubNavbar() {
       }
       activeCount={
         jobsData?.jobs?.filter(
-          (job) => job.status == 'sourcing' || job.status == 'interviewing',
-        ).length
+          (job) =>
+            (job.active_status.interviewing.isActive ||
+              job.active_status.sourcing.isActive) &&
+            !job.active_status.closed.isActive,
+        ).length || 0
       }
-      allCount={jobsData?.jobs?.length}
+      allCount={jobsData?.jobs?.length || 0}
       inActiveCount={
-        jobsData?.jobs?.filter((job) => job.status == 'inactive').length
+        jobsData?.jobs?.filter(
+          (job) =>
+            !(
+              job.active_status.interviewing.isActive ||
+              job.active_status.sourcing.isActive
+            ) && !job.active_status.closed.isActive,
+        ).length || 0
       }
       closedCount={
-        jobsData?.jobs?.filter((job) => job.status == 'closed').length
+        jobsData?.jobs?.filter((job) => job.active_status.closed.isActive)
+          .length || 0
       }
       isJobActive={router.query.status === 'active'}
       isJobInactive={router.query.status === 'inactive'}

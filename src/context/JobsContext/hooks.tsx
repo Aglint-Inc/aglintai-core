@@ -3,11 +3,10 @@ import toast from '@utils/toast';
 import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
-import { JobApplcationDB } from '@/src/types/data.types';
+import { JobApplcationDB, JobType, StatusJobs } from '@/src/types/data.types';
 
-import { InputData, Job, JobsData, Status } from './types';
+import { JobsData } from './types';
 import {
-  createJobDbAction,
   deleteJobDbAction,
   initialJobContext,
   readJobApplicationsAction,
@@ -32,19 +31,19 @@ type Action =
   | {
       type: ActionType.CREATE;
       payload: {
-        jobData: Job;
+        jobData: JobType;
       };
     }
   | {
       type: ActionType.READ;
       payload: {
-        jobsData: Job[];
+        jobsData: JobType[];
       };
     }
   | {
       type: ActionType.UPDATE;
       payload: {
-        newJob: Job;
+        newJob: JobType;
       };
     }
   | {
@@ -87,7 +86,7 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.DELETE: {
-      const newJobs: Job[] = state.jobs.filter(
+      const newJobs: JobType[] = state.jobs.filter(
         (job) => job.id !== action.payload.jobId,
       );
       const newState: JobsData = {
@@ -118,29 +117,17 @@ const useJobActions = () => {
   const initialLoad =
     recruiter?.id && jobsData.jobs && jobsData.applications ? true : false;
 
-  const handleJobCreate = async (inputData: InputData) => {
-    if (recruiter) {
-      const { data, error } = await createJobDbAction(recruiter.id, inputData);
-      if (data) {
-        const action: Action = {
-          type: ActionType.CREATE,
-          payload: { jobData: data[0] },
-        };
-        dispatch(action);
-        return data[0];
-      }
-      handleJobError(error);
-      return undefined;
-    }
-  };
-
   const handleJobRead = async () => {
     if (recruiter) {
       const { data, error } = await readJobDbAction(recruiter.id);
       if (data) {
         const fechedJobs = data.map((job) => {
-          return { ...job, status: job.status as unknown as Status };
+          return {
+            ...job,
+            active_status: job.active_status as unknown as StatusJobs,
+          };
         });
+
         const action: Action = {
           type: ActionType.READ,
           payload: { jobsData: fechedJobs },
@@ -169,7 +156,7 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (newJob: Job) => {
+  const handleJobUpdate = async (newJob: JobType) => {
     if (recruiter) {
       if (newJob) {
         const action: Action = {
@@ -221,7 +208,6 @@ const useJobActions = () => {
 
   const value = {
     jobsData,
-    handleJobCreate,
     handleJobRead,
     handleJobUpdate,
     handleJobDelete,
