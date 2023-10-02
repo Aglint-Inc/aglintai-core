@@ -1,5 +1,4 @@
-import { JobApplication } from '@context/JobApplicationsContext/types';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
 
@@ -14,11 +13,6 @@ const ApplicationCard = ({
   index,
   checkList,
   setCheckList,
-}: {
-  application: JobApplication;
-  index: number;
-  checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
 }) => {
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
@@ -128,7 +122,7 @@ const ApplicationCard = ({
   );
 };
 
-const getJobStatus = (status: string) => {
+const getJobStatus = (status) => {
   switch (status) {
     case 'applied':
       return 'new';
@@ -143,14 +137,14 @@ const getJobStatus = (status: string) => {
 
 export default ApplicationCard;
 
-export function getGravatar(email: string, name: string) {
+export function getGravatar(email, name) {
   return `https://www.gravatar.com/avatar/${require('crypto')
     .createHash('md5')
     .update(email.trim().toLowerCase())
     .digest('hex')}?d=${encode(name)}`;
 }
 
-function encode(name: any) {
+function encode(name) {
   return encodeURIComponent(
     `https://ui-avatars.com/api/background=random&name=${name}`,
   );
