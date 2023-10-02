@@ -211,7 +211,11 @@ const ActionBar = ({
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { handleUpdateJobStatus, applicationsData } = useJobApplications();
+  const {
+    handleUpdateJobStatus,
+    applicationsData,
+    handleJobApplicationUpdate,
+  } = useJobApplications();
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
   const { recruiter } = useAuthDetails();
@@ -259,6 +263,7 @@ const ActionBar = ({
             checkList,
             applicationsData,
             recruiter,
+            handleJobApplicationUpdate,
           );
         }
       },
@@ -279,6 +284,7 @@ const ActionBar = ({
             checkList,
             applicationsData,
             recruiter,
+            handleJobApplicationUpdate,
           );
         }
       },
@@ -299,6 +305,7 @@ const ActionBar = ({
             checkList,
             applicationsData,
             recruiter,
+            handleJobApplicationUpdate,
           );
         }
       },
@@ -396,11 +403,12 @@ const AddCandidates = () => {
 };
 export default JobApplicationsDashboard;
 
-function sendEmails(
+export function sendEmails(
   status: string,
   checkList: Set<string>,
   applicationsData: { applications: any; count?: number; job?: Job },
   recruiter,
+  handleJobApplicationUpdate,
 ) {
   function fillEmailTemplate(
     template: any,
@@ -438,53 +446,68 @@ function sendEmails(
     job_title: any;
     company: any;
     application_id: any;
+    emails: any;
   }) => {
-    await axios.post('/api/sendgrid', {
-      fromEmail: `messenger@aglinthq.com`,
-      fromName: recruiter?.name,
-      email: candidate?.email,
-      subject:
-        status === JobApplicationSections.INTERVIEWING
-          ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
-            })
-          : status === JobApplicationSections.REJECTED
-          ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-            })
-          : null,
-      text:
-        status === JobApplicationSections.INTERVIEWING
-          ? fillEmailTemplate(recruiter?.email_template?.interview?.body, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
-            })
-          : status === JobApplicationSections.REJECTED
-          ? fillEmailTemplate(recruiter?.email_template?.rejection?.body, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-            })
-          : null,
-    });
-    // .then((res) => {
-    //   if (res.status === 200 && res.data.data === 'Email sent') {
-    //     toast.success('Mail sent successfully');
-    //   }
-    // });
+    await axios
+      .post('/api/sendgrid', {
+        fromEmail: `messenger@aglinthq.com`,
+        fromName: recruiter?.name,
+        email: candidate?.email,
+        subject:
+          status === JobApplicationSections.INTERVIEWING
+            ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+              })
+            : status === JobApplicationSections.REJECTED
+            ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+              })
+            : null,
+        text:
+          status === JobApplicationSections.INTERVIEWING
+            ? fillEmailTemplate(recruiter?.email_template?.interview?.body, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: `https://app.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+              })
+            : status === JobApplicationSections.REJECTED
+            ? fillEmailTemplate(recruiter?.email_template?.rejection?.body, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+              })
+            : null,
+      })
+      .then(async () => {
+        // if (res.status === 200 && res.data.data === 'Email sent') {
+        //   toast.success('Mail sent successfully');
+        // }
+
+        if (status === JobApplicationSections.INTERVIEWING) {
+          candidate.emails.interviewing = true;
+          await handleJobApplicationUpdate(candidate.application_id, {
+            emails: candidate.emails,
+          });
+        }
+        if (status === JobApplicationSections.REJECTED) {
+          candidate.emails.rejected = true;
+          await handleJobApplicationUpdate(candidate.application_id, {
+            emails: candidate.emails,
+          });
+        }
+      });
   };
 
   if (

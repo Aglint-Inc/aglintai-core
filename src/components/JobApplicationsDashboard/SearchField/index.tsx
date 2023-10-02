@@ -32,7 +32,14 @@ const SearchField = ({
 
   useEffect(() => {
     handleSearch(value);
-  }, [applicationsData.count, section, jobUpdate]);
+  }, [
+    applicationsData.applications.applied.count,
+    applicationsData.applications.interviewing.count,
+    applicationsData.applications.rejected.count,
+    applicationsData.applications.selected.count,
+    section,
+    jobUpdate,
+  ]);
 
   const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();
