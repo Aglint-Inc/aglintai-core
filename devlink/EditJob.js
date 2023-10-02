@@ -118,11 +118,15 @@ export function EditJob({
               {...onClickDetails}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold", "relative")}
                 tag="div"
               >
                 {"Details"}
               </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fake-color-div")}
+                tag="div"
+              />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "company-tab-link")}
@@ -137,7 +141,7 @@ export function EditJob({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "company-tab-link")}
+              className={_utils.cx(_styles, "company-tab-link", "hide")}
               tag="div"
               {...onClickApplyForm}
             >

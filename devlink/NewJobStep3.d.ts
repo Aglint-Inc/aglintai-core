@@ -10,4 +10,7 @@ declare function NewJobStep3(props: {
   slotSkillsQuestion?: Types.Devlink.Slot;
   howItWorksLink?: Types.Basic.Link;
   isHowItWorksVisible?: Types.Visibility.VisibilityConditions;
+  isHeaderVisible?: Types.Visibility.VisibilityConditions;
+  onClickAddCustomQuestion?: Types.Devlink.RuntimeProps;
+  isChoosePreferredOptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

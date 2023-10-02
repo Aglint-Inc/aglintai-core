@@ -149,6 +149,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;

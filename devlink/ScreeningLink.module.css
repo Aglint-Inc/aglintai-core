@@ -177,6 +177,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;

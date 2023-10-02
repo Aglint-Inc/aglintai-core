@@ -108,6 +108,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
 .text-kale-800 {
   color: var(--kale800-682c1482);
 }
@@ -698,6 +702,14 @@
 
 .fw-semibold.text-yellow-700.mt-8 {
   margin-top: 8px;
+}
+
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 .click-fake-div {

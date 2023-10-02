@@ -1,0 +1,29 @@
+.contact-details {
+  display: grid;
+  padding: 10px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 0.7fr 1fr;
+  grid-template-rows: auto;
+}
+
+.contact-fileds-wrappers {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+#w-node-a32b88d4-9ecd-e111-010e-71bb0eac3ec5-0eac3ec4 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-a32b88d4-9ecd-e111-010e-71bb0eac3ec8-0eac3ec4 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

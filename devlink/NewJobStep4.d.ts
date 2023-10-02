@@ -19,4 +19,12 @@ declare function NewJobStep4(props: {
   slotShortlistCandidateCount1?: Types.Devlink.Slot;
   slotShortlistCandidateCount2?: Types.Devlink.Slot;
   slotAiFeedbackToggle?: Types.Devlink.Slot;
+  isHeaderVisible?: Types.Visibility.VisibilityConditions;
+  isSettingHeadingVisible?: Types.Visibility.VisibilityConditions;
+  onClickParticularTimeCheck?: Types.Devlink.RuntimeProps;
+  onClickImmediatelyCheck?: Types.Devlink.RuntimeProps;
+  isImmediatelyChecked?: Types.Visibility.VisibilityConditions;
+  isParticularTimeChecked?: Types.Visibility.VisibilityConditions;
+  slotTime?: Types.Devlink.Slot;
+  isChooseTimeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

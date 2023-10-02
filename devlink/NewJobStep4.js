@@ -26,6 +26,14 @@ export function NewJobStep4({
   slotShortlistCandidateCount1,
   slotShortlistCandidateCount2,
   slotAiFeedbackToggle,
+  isHeaderVisible = true,
+  isSettingHeadingVisible = true,
+  onClickParticularTimeCheck = {},
+  onClickImmediatelyCheck = {},
+  isImmediatelyChecked = false,
+  isParticularTimeChecked = true,
+  slotTime,
+  isChooseTimeVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -34,22 +42,30 @@ export function NewJobStep4({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-5")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "cj-top-block")} tag="div">
+      {isHeaderVisible ? (
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-grey-600"
-          )}
+          className={_utils.cx(_styles, "cj-top-block")}
           tag="div"
         >
-          {"Step 4: Screening Settings"}
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-lg",
+              "fw-semibold",
+              "text-grey-600"
+            )}
+            tag="div"
+          >
+            {"Step 4: Screening Settings"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Optimize your candidate screening process."}
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Optimize your candidate screening process."}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"
@@ -58,12 +74,14 @@ export function NewJobStep4({
           className={_utils.cx(_styles, "div-block-278")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
-            tag="div"
-          >
-            {"Screening settings"}
-          </_Builtin.Block>
+          {isSettingHeadingVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
+              tag="div"
+            >
+              {"Screening settings"}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "toggle-dropdown")}
             tag="div"
@@ -182,6 +200,97 @@ export function NewJobStep4({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "time-radio-wrappers")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-409")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+                      tag="div"
+                    >
+                      {"When do you want to sent screening emails"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "text-sm",
+                        "color-grey-600"
+                      )}
+                      tag="div"
+                    >
+                      {
+                        "At this selected time the screeing emails will go to the selected candidates"
+                      }
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-408")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "radio-button-wrappers")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "radio-wrapper")}
+                        tag="div"
+                        {...onClickParticularTimeCheck}
+                      >
+                        {isParticularTimeChecked ? (
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%228%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%222%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        ) : null}
+                      </_Builtin.Block>
+                      <_Builtin.Block tag="div">
+                        {"At a particular time"}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "radio-button-wrappers")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "radio-wrapper")}
+                        tag="div"
+                        {...onClickImmediatelyCheck}
+                      >
+                        {isImmediatelyChecked ? (
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%228%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%222%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        ) : null}
+                      </_Builtin.Block>
+                      <_Builtin.Block tag="div">{"Immediately"}</_Builtin.Block>
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  {isChooseTimeVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-410")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-411")}
+                        tag="div"
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%206H8C8.27614%206%208.5%206.22386%208.5%206.5C8.5%206.77614%208.27614%207%208%207H5.5C5.22386%207%205%206.77614%205%206.5V3C5%202.72386%205.22386%202.5%205.5%202.5C5.77614%202.5%206%202.72386%206%203V6ZM6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM6%2011C8.76142%2011%2011%208.76142%2011%206C11%203.23858%208.76142%201%206%201C3.23858%201%201%203.23858%201%206C1%208.76142%203.23858%2011%206%2011Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_2570_32154%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%206H8C8.27614%206%208.5%206.22386%208.5%206.5C8.5%206.77614%208.27614%207%208%207H5.5C5.22386%207%205%206.77614%205%206.5V3C5%202.72386%205.22386%202.5%205.5%202.5C5.77614%202.5%206%202.72386%206%203V6ZM6%2012C2.68629%2012%200%209.31371%200%206C0%202.68629%202.68629%200%206%200C9.31371%200%2012%202.68629%2012%206C12%209.31371%209.31371%2012%206%2012ZM6%2011C8.76142%2011%2011%208.76142%2011%206C11%203.23858%208.76142%201%206%201C3.23858%201%201%203.23858%201%206C1%208.76142%203.23858%2011%206%2011Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_2570_32154)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block tag="div">
+                          {"Choose time"}
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                      <_Builtin.Block tag="div">{slotTime}</_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -190,12 +299,14 @@ export function NewJobStep4({
           className={_utils.cx(_styles, "div-block-278", "hide")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
-            tag="div"
-          >
-            {"Qualification settings"}
-          </_Builtin.Block>
+          {isSettingHeadingVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
+              tag="div"
+            >
+              {"Qualification settings"}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "toggle-dropdown", "hide")}
             tag="div"
@@ -376,12 +487,14 @@ export function NewJobStep4({
           className={_utils.cx(_styles, "div-block-278")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
-            tag="div"
-          >
-            {"Additional settings"}
-          </_Builtin.Block>
+          {isSettingHeadingVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
+              tag="div"
+            >
+              {"Additional settings"}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "toggle-dropdown")}
             tag="div"

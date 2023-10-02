@@ -139,6 +139,14 @@
   color: var(--yellow600-1478b5f5);
 }
 
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
 .header-right-button--company {
   display: flex;
   align-items: center;

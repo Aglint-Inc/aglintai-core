@@ -146,3 +146,11 @@
 .text-yellow-600 {
   color: var(--yellow600-1478b5f5);
 }
+
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
