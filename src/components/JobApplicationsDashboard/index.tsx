@@ -17,7 +17,6 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { Job } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
-// import { RecruiterType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
