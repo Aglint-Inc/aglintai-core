@@ -24,6 +24,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
 import ImportCandidates from './ImportCandidates';
+import ImportManualCandidates from './ImportManualCandidates';
+import JobApplicationStatus from './JobStatus';
 import SearchField from './SearchField';
 import { capitalize } from './utils';
 import Loader from '../Common/Loader';
@@ -83,6 +85,7 @@ const JobApplicationComponent = () => {
   return (
     <>
       <JobScreening
+        slotJobStatus={<JobApplicationStatus />}
         textJobStatus={capitalize(job.status)}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={`(${applicationsData.count} applicants)`}
@@ -403,8 +406,12 @@ const ActionBar = ({
 };
 
 const AddCandidates = () => {
-  const { openImportCandidates, setOpenImportCandidates } =
-    useJobApplications();
+  const {
+    openImportCandidates,
+    setOpenImportCandidates,
+    openManualImportCandidates,
+    setOpenManualImportCandidates,
+  } = useJobApplications();
   return (
     <>
       <MuiPopup
@@ -414,12 +421,21 @@ const AddCandidates = () => {
       >
         <ImportCandidates />
       </MuiPopup>
+      <MuiPopup
+        props={{
+          open: openManualImportCandidates,
+        }}
+      >
+        <ImportManualCandidates />
+      </MuiPopup>
       <AddCandidateDropdown
-        onClickManual={{ onClick: () => setOpenImportCandidates(true) }}
+        onClickManual={{ onClick: () => setOpenManualImportCandidates(true) }}
+        onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
       />
     </>
   );
 };
+
 export default JobApplicationsDashboard;
 
 export function sendEmails(

@@ -225,6 +225,8 @@ const useJobApplicationActions = (
   const initialLoad = initialJobLoad && applicationsData ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
+  const [openManualImportCandidates, setOpenManualImportCandidates] =
+    useState(false);
 
   const circularScoreAnimation = useRef(true);
 
@@ -404,6 +406,8 @@ const useJobApplicationActions = (
     circularScoreAnimation,
     openImportCandidates,
     setOpenImportCandidates,
+    openManualImportCandidates,
+    setOpenManualImportCandidates,
   };
 
   return value;

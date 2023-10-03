@@ -28,14 +28,14 @@ export type JobType = Omit<JobTypeDB, 'active_status'> & {
 export type StatusJobs = {
   sourcing: {
     isActive: boolean;
-    timeStamp: Date;
+    timeStamp: string;
   };
   interviewing: {
     isActive: boolean;
-    timeStamp: Date;
+    timeStamp: string;
   };
   closed: {
     isActive: boolean;
-    timeStamp: Date;
+    timeStamp: string;
   };
 };

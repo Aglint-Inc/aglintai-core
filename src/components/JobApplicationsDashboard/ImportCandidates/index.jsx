@@ -176,27 +176,6 @@ function ImportCandidates() {
     >
       <Stack spacing={1} mt='16px'>
         <Fragment>
-          {/* {isLoading || areHeadersLoading ? (
-          <CircularProgress
-            sx={{ fontSize: '4rem', marginBottom: '0.5rem' }}
-            className='container_icon'
-          />
-        ) : bulkImportdata?.length > 0 && areHeadersValid ? (
-          <CloudDone sx={{ fontSize: '4rem' }} />
-        ) : (
-          <CloudUpload sx={{ fontSize: '4rem', color: '#000000' }} />
-        )}
-
-        <HeadingTypography variant='h3'>
-          {isLoading
-            ? 'Uploading...'
-            : areHeadersLoading
-            ? 'Headers Loading...'
-            : bulkImportdata?.length > 0
-            ? 'Completeeed'
-            : text}
-        </HeadingTypography> */}
-
           <ImportCandidate
             slotReuploadBtn={
               <>

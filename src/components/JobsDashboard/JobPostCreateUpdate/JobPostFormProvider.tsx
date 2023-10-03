@@ -228,11 +228,11 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleJobUpdate } = useJobs();
+  const { handleUIJobUpdate } = useJobs();
   const updateFormTodb = async (currState: JobFormState, saveField) => {
     if (currState.formType === 'edit') {
       const updatedJob = await saveJobPostToDb(currState, saveField);
-      handleJobUpdate({
+      handleUIJobUpdate({
         ...updatedJob,
         active_status: updatedJob.active_status as unknown as StatusJobs,
       });
@@ -250,7 +250,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
             updatedAt: newJob.updated_at,
           },
         });
-        handleJobUpdate({
+        handleUIJobUpdate({
           ...newJob,
           active_status: newJob.active_status as unknown as StatusJobs,
         });
@@ -261,7 +261,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         get(currState, 'createdAt', undefined) !== undefined
       ) {
         const newJob = await saveJobPostToDb(currState, saveField);
-        handleJobUpdate({
+        handleUIJobUpdate({
           ...newJob,
           active_status: newJob.active_status as unknown as StatusJobs,
         });

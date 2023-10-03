@@ -5,21 +5,23 @@ import _styles from "./DeleteJobPopup.module.css";
 
 export function DeleteJobPopup({
   as: _Component = _Builtin.Block,
-  slotCloseJobBtn,
+  slotForm,
+  jobTitle = "QA Analysit",
+  jobInfo = "On-site, San Fransisco, United States",
+  closeProps = {},
+  onClickDelete = {},
+  isDeleteDisabled = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "close-job-popup")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "close-job-popup-bg")}
-        tag="div"
-      />
       <_Builtin.Block
         className={_utils.cx(_styles, "close-job-popup-block")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "clj-popup-close-btn")}
+          className={_utils.cx(_styles, "clj-popup-close-btn", "clickable")}
           tag="div"
+          {...closeProps}
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icon-embed")}
@@ -44,7 +46,7 @@ export function DeleteJobPopup({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"QA Analysit"}
+              {jobTitle}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(
@@ -55,7 +57,7 @@ export function DeleteJobPopup({
               )}
               tag="div"
             >
-              {"On-site, San Fransisco, United States"}
+              {jobInfo}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -87,7 +89,7 @@ export function DeleteJobPopup({
                 )}
                 tag="div"
               >
-                {"QA Analyst"}
+                {jobTitle}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -100,25 +102,60 @@ export function DeleteJobPopup({
                 {"below."}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div" />
+            <_Builtin.Block tag="div">{slotForm}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-323")}
+          className={_utils.cx(_styles, "link-block-3")}
           tag="div"
+          href="#"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cancel-text")}
+            className={_utils.cx(_styles, "button-wrapper")}
             tag="div"
+            {...closeProps}
           >
-            {"Cancel "}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-text")}
+                tag="div"
+              >
+                {"Cancel"}
+              </_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "link-block-3")}
+            className={_utils.cx(_styles, "button-wrapper")}
             tag="div"
-            href="#"
+            {...onClickDelete}
           >
-            {slotCloseJobBtn}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button-block", "danger")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-text")}
+                tag="div"
+              >
+                {"Close Job Permanently"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            {isDeleteDisabled ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-block", "disabled")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "button-text")}
+                  tag="div"
+                >
+                  {"Close Job Permanently"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

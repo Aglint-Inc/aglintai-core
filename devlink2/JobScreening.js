@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
 import { AddCandidateDropdown } from "./AddCandidateDropdown";
+import { CandidateListTopBar } from "./CandidateListTopBar";
 import { ApplicantsListEmpty } from "./ApplicantsListEmpty";
 import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
@@ -40,6 +41,8 @@ export function JobScreening({
   linkActiveJobs = {
     href: "#",
   },
+
+  slotJobStatus,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
@@ -415,7 +418,7 @@ export function JobScreening({
               className={_utils.cx(_styles, "cdd-job-status-wrapper")}
               tag="div"
             >
-              <JobStatus isScheduled={true} />
+              {slotJobStatus ?? <JobStatus isScheduled={true} />}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -440,7 +443,12 @@ export function JobScreening({
               className={_utils.cx(_styles, "cdd-content-main")}
               tag="div"
             >
-              {slotCandidateJobCard ?? <ApplicantsListEmpty />}
+              {slotCandidateJobCard ?? (
+                <>
+                  <CandidateListTopBar />
+                  <ApplicantsListEmpty />
+                </>
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

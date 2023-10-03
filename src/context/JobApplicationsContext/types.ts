@@ -65,6 +65,8 @@ export type JobApplicationContext = {
   circularScoreAnimation: MutableRefObject<boolean>;
   openImportCandidates: boolean;
   setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
+  openManualImportCandidates: boolean;
+  setOpenManualImportCandidates: Dispatch<SetStateAction<boolean>>;
   handleUpdateJobStatus: (
     applicationIdSet: Set<string>,
     sections: {

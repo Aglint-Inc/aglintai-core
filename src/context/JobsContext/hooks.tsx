@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
 import { JobApplcationDB, JobType, StatusJobs } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 
 import { JobsData } from './types';
 import {
@@ -11,6 +12,7 @@ import {
   initialJobContext,
   readJobApplicationsAction,
   readJobDbAction,
+  updateJobDbAction,
 } from './utils';
 
 // eslint-disable-next-line no-unused-vars
@@ -23,6 +25,8 @@ enum ActionType {
   READAPPLICATION,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
+  // eslint-disable-next-line no-unused-vars
+  UI_UPDATE,
   // eslint-disable-next-line no-unused-vars
   DELETE,
 }
@@ -42,6 +46,12 @@ type Action =
     }
   | {
       type: ActionType.UPDATE;
+      payload: {
+        jobData: Database['public']['Tables']['public_jobs']['Row'];
+      };
+    }
+  | {
+      type: ActionType.UI_UPDATE;
       payload: {
         newJob: JobType;
       };
@@ -74,6 +84,20 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.UPDATE: {
+      const newJobs: JobType[] = state.jobs.reduce((jobs, job) => {
+        if (job.id === action.payload.jobData.id)
+          jobs.push(action.payload.jobData);
+        else jobs.push(job);
+        return jobs;
+      }, []);
+      const newState: JobsData = {
+        ...state,
+        jobs: newJobs,
+      };
+      return newState;
+    }
+
+    case ActionType.UI_UPDATE: {
       const { newJob } = action.payload;
       const newState: JobsData = {
         ...state,
@@ -156,11 +180,29 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (newJob: JobType) => {
+  const handleJobUpdate = async (jobId: string, newJob: Partial<JobType>) => {
+    if (recruiter) {
+      const { data, error } = await updateJobDbAction({ id: jobId, ...newJob });
+      if (data) {
+        const action: Action = {
+          type: ActionType.UPDATE,
+          payload: {
+            jobData: data[0],
+          },
+        };
+        dispatch(action);
+        return true;
+      }
+      handleJobError(error);
+      return false;
+    }
+  };
+
+  const handleUIJobUpdate = (newJob: JobType) => {
     if (recruiter) {
       if (newJob) {
         const action: Action = {
-          type: ActionType.UPDATE,
+          type: ActionType.UI_UPDATE,
           payload: {
             newJob: newJob,
           },
@@ -168,8 +210,7 @@ const useJobActions = () => {
         dispatch(action);
         return true;
       }
-      // handleJobError(error);
-      return undefined;
+      return false;
     }
   };
 
@@ -210,6 +251,7 @@ const useJobActions = () => {
     jobsData,
     handleJobRead,
     handleJobUpdate,
+    handleUIJobUpdate,
     handleJobDelete,
     handleJobError,
     initialLoad,
