@@ -73,9 +73,7 @@ export const getSeedJobFormData = (
       screeningConfig: {
         feedbackVisible: false,
         screening: {
-          minScore: true,
-          minApplicants: true,
-          minNoApplicants: 40,
+          isSendInterviewToAll: false,
           minNoResumeScore: 50,
         },
         useAglintMatchingAlgo: true,

@@ -160,12 +160,7 @@ export function NewJobStep4({
                       className={_utils.cx(_styles, "text-grey-600")}
                       tag="div"
                     >
-                      {
-                        "Start screening process only after number of applications reaches :"
-                      }
-                    </_Builtin.Block>
-                    <_Builtin.Block tag="div">
-                      {slotAutomatedScreeningCount1}
+                      {"Send interview to all candidates"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -192,7 +187,7 @@ export function NewJobStep4({
                       tag="div"
                     >
                       {
-                        "Invite all candidates to screeninng having resume score above     :"
+                        "Invite all candidates to screening having resume score above     :"
                       }
                     </_Builtin.Block>
                     <_Builtin.Block tag="div">

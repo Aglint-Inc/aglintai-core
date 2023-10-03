@@ -70,9 +70,7 @@ export type FormJobType = {
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
   screeningConfig: {
     screening: {
-      minApplicants: boolean;
-      minScore: boolean;
-      minNoApplicants: number;
+      isSendInterviewToAll: boolean;
       minNoResumeScore: number;
     };
     useAglintMatchingAlgo: boolean;
