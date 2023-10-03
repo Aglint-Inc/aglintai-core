@@ -96,6 +96,7 @@ export type FormJobType = {
 };
 
 export type JobFormState = {
+  isFormOpen: boolean;
   jobPostId: string | undefined;
   updatedAt: string | null;
   createdAt: string | null;
@@ -111,6 +112,7 @@ const initialState: JobFormState = {
   updatedAt: null,
   createdAt: null,
   slideNo: 0,
+  isFormOpen: false,
 };
 
 // Define action types
@@ -119,6 +121,7 @@ type JobsAction =
       type: 'initForm';
       payload: {
         seedData: JobFormState;
+        slideNo: number;
       };
     }
   | {
@@ -156,8 +159,9 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
-      const { seedData } = action.payload;
-      seedData.slideNo = 1;
+      const { seedData, slideNo } = action.payload;
+      seedData.slideNo = slideNo ?? 0;
+      seedData.isFormOpen = true;
       return cloneDeep(seedData);
     }
     case 'closeForm': {
@@ -195,7 +199,6 @@ export type JobsContextType = {
   }: {
     path: string;
     value: any;
-    saveField?: 'job-details' | 'screening';
   }) => Promise<void>;
   handleInitializeForm: ({
     // eslint-disable-next-line no-unused-vars
@@ -204,7 +207,9 @@ export type JobsContextType = {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
     job?: JobTypeDB;
+    slideNo?: number;
   }) => void;
+  handleFormClose?: () => Promise<void>;
 };
 
 const initialContextValue: JobsContextType = {
@@ -228,48 +233,31 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleUIJobUpdate } = useJobs();
-  const updateFormTodb = async (currState: JobFormState, saveField) => {
-    if (currState.formType === 'edit') {
-      const updatedJob = await saveJobPostToDb(currState, saveField);
-      handleUIJobUpdate({
-        ...updatedJob,
-        active_status: updatedJob.active_status as unknown as StatusJobs,
+  const { handleJobUpdate } = useJobs();
+  const updateFormTodb = async (currState: JobFormState) => {
+    if (
+      get(currState, 'createdAt', undefined) === undefined &&
+      currState.slideNo === 1
+    )
+      return;
+
+    const updatedJobDb = await saveJobPostToDb(currState);
+    handleJobUpdate({
+      ...updatedJobDb,
+      active_status: updatedJobDb.active_status as unknown as StatusJobs,
+    });
+
+    if (
+      get(currState, 'createdAt', undefined) === undefined &&
+      currState.slideNo > 1
+    ) {
+      dispatch({
+        type: 'setPostMeta',
+        payload: {
+          createdAt: updatedJobDb.created_at,
+          updatedAt: updatedJobDb.updated_at,
+        },
       });
-    } else if (currState.formType === 'new') {
-      //job data gets inserted for the first time
-      if (
-        get(currState, 'createdAt', undefined) === undefined &&
-        currState.slideNo > 1
-      ) {
-        const newJob = await saveJobPostToDb(currState, saveField);
-        dispatch({
-          type: 'setPostMeta',
-          payload: {
-            createdAt: newJob.created_at,
-            updatedAt: newJob.updated_at,
-          },
-        });
-        handleUIJobUpdate({
-          ...newJob,
-          active_status: newJob.active_status as unknown as StatusJobs,
-        });
-      }
-      //update job data gets updated in first slide
-      if (
-        currState.slideNo === 1 &&
-        get(currState, 'createdAt', undefined) !== undefined
-      ) {
-        const newJob = await saveJobPostToDb(currState, saveField);
-        handleUIJobUpdate({
-          ...newJob,
-          active_status: newJob.active_status as unknown as StatusJobs,
-        });
-      }
-      //update job data gets updated in any a slides
-      if (currState.slideNo > 1 && get(currState, 'createdAt')) {
-        await saveJobPostToDb(currState, saveField);
-      }
     }
   };
 
@@ -280,7 +268,6 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const handleUpdateFormFields = async ({
     path,
     value,
-    saveField = 'job-details',
   }: {
     path: string;
     value: any;
@@ -296,7 +283,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       });
       const updatedState = cloneDeep(state);
       set(updatedState.formFields, path, value);
-      formSyncTODB(updatedState, saveField);
+      formSyncTODB(updatedState);
     } catch {
       //
     }
@@ -306,6 +293,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     type = 'new',
     recruiter,
     job,
+    slideNo,
   }) => {
     try {
       const seedFormData = getSeedJobFormData(recruiter);
@@ -313,17 +301,23 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       if (type === 'new') {
         dispatch({
           type: 'initForm',
-          payload: { seedData: seedFormData },
+          payload: { seedData: seedFormData, slideNo },
         });
       } else {
         dispatch({
           type: 'initForm',
-          payload: { seedData: dbToClientjobPostForm(job, recruiter) },
+          payload: { seedData: dbToClientjobPostForm(job, recruiter), slideNo },
         });
       }
     } catch (err) {
       toast.error('Failed to perform the action. Please try again');
     }
+  };
+
+  const handleFormClose = async () => {
+    dispatch({
+      type: 'closeForm',
+    });
   };
 
   return (
@@ -333,6 +327,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         dispatch,
         handleUpdateFormFields,
         handleInitializeForm,
+        handleFormClose,
       }}
     >
       {children}
@@ -342,54 +337,40 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
 
 export default JobPostFormProvider;
 
-async function saveJobPostToDb(
-  jobForm: JobFormState,
-  saveField: 'job-details' | 'screening',
-) {
-  if (saveField === 'job-details') {
-    const { data, error } = await supabase
-      .from('public_jobs')
-      .upsert({
-        id: jobForm.jobPostId,
-        logo: jobForm.formFields.logo,
-        company: jobForm.formFields.company,
-        description: jobForm.formFields.jobDescription,
-        job_title: jobForm.formFields.jobTitle,
-        job_type: jobForm.formFields.jobType,
-        workplace_type: jobForm.formFields.workPlaceType,
-        active_status: jobForm.formFields.status,
-        skills: jobForm.formFields.skills,
-        slug: jobForm.createdAt
-          ? undefined
-          : getjobPostSlug(
-              jobForm.jobPostId,
-              jobForm.formFields.jobTitle,
-              jobForm.formFields.company,
-              jobForm.formFields.jobLocation,
-            ),
-        recruiter_id: jobForm.formFields.recruiterId,
-        location: jobForm.formFields.jobLocation,
-        email_template:
-          jobForm.formFields.screeningConfig.screeningEmail.emailTemplates,
-      })
-      .select();
-    if (error) throw new Error(error.message);
-    return data[0] as JobTypeDB;
-  } else {
-    const { data, error } = await supabase
-      .from('public_jobs')
-      .update({
-        screening_setting: {
-          interviewType: jobForm.formFields.interviewType,
-          ...jobForm.formFields.screeningConfig,
-        },
-        screening_questions: [jobForm.formFields.interviewConfig],
-      })
-      .eq('id', jobForm.jobPostId)
-      .select();
-    if (error) throw new Error(error.message);
-    return data[0] as JobTypeDB;
-  }
+async function saveJobPostToDb(jobForm: JobFormState) {
+  const { data, error } = await supabase
+    .from('public_jobs')
+    .upsert({
+      id: jobForm.jobPostId,
+      logo: jobForm.formFields.logo,
+      company: jobForm.formFields.company,
+      description: jobForm.formFields.jobDescription,
+      job_title: jobForm.formFields.jobTitle,
+      job_type: jobForm.formFields.jobType,
+      workplace_type: jobForm.formFields.workPlaceType,
+      active_status: jobForm.formFields.status,
+      skills: jobForm.formFields.skills,
+      slug: jobForm.createdAt
+        ? undefined
+        : getjobPostSlug(
+            jobForm.jobPostId,
+            jobForm.formFields.jobTitle,
+            jobForm.formFields.company,
+            jobForm.formFields.jobLocation,
+          ),
+      recruiter_id: jobForm.formFields.recruiterId,
+      location: jobForm.formFields.jobLocation,
+      email_template:
+        jobForm.formFields.screeningConfig.screeningEmail.emailTemplates,
+      screening_setting: {
+        interviewType: jobForm.formFields.interviewType,
+        ...jobForm.formFields.screeningConfig,
+      },
+      screening_questions: [jobForm.formFields.interviewConfig],
+    })
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0] as JobTypeDB;
 }
 
 const getjobPostSlug = (

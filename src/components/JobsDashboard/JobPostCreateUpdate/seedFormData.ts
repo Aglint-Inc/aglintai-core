@@ -11,6 +11,7 @@ export const getSeedJobFormData = (
   recruiter?: Database['public']['Tables']['recruiter']['Row'],
 ) => {
   const seedFormState: JobFormState = {
+    isFormOpen: false,
     createdAt: undefined,
     updatedAt: undefined,
     jobPostId: uuidv4(),

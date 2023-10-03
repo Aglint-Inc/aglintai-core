@@ -19,14 +19,9 @@ import StepFour from './JobPostForms/ScreeningSettings';
 import SelectImportMethod from './JobPostForms/SelectImportMethod';
 import SuccessPage from './JobPostForms/SuccessPage';
 
-type CreateNewJobParams = {
-  open: boolean;
-  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
+function CreateNewJob() {
   const router = useRouter();
-  const { jobForm, dispatch } = useJobForm();
+  const { jobForm, dispatch, handleFormClose } = useJobForm();
   const [formError, setFormError] = useState({
     jobTitle: '',
     company: '',
@@ -137,12 +132,15 @@ function CreateNewJob({ open, setDrawerOpen }: CreateNewJobParams) {
     router.push(pageRoutes.JOBS, undefined, {
       shallow: true,
     });
-    setDrawerOpen(() => false);
-    dispatch({ type: 'closeForm' });
+    handleFormClose();
   };
   return (
     <>
-      <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
+      <Drawer
+        anchor='right'
+        open={jobForm.isFormOpen}
+        onClose={handleDrawerClose}
+      >
         <Stack p={2} width={'600px'} position={'relative'} minHeight={'100vh'}>
           <CreateNewJobDrawer
             onClickClose={{ onClick: handleDrawerClose }}

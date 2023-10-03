@@ -17,7 +17,6 @@ import UITextField from '../Common/UITextField';
 
 const DashboardComp = () => {
   const router = useRouter();
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const { jobsData, initialLoad } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<JobType[]>(jobsData.jobs);
   const { handleInitializeForm } = useJobForm();
@@ -25,7 +24,7 @@ const DashboardComp = () => {
   useEffect(() => {
     if (router.isReady) {
       if (router.query.flow == 'create') {
-        setDrawerOpen(true);
+        handleInitializeForm({ type: 'new', recruiter, slideNo: 0 });
       }
       if (jobsData?.jobs) {
         if (router.query.status == 'all') {
@@ -97,8 +96,7 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
-                  handleInitializeForm({ type: 'new', recruiter });
-                  setDrawerOpen(true);
+                  handleInitializeForm({ type: 'new', recruiter, slideNo: 0 });
                 },
               }}
               onClickRequestIntegration={{ onClick: sendEmail }}
@@ -142,13 +140,17 @@ const DashboardComp = () => {
               }
               onClickCreateNewJob={{
                 onClick: () => {
-                  setDrawerOpen(true);
+                  handleInitializeForm({
+                    type: 'new',
+                    recruiter,
+                    slideNo: 1,
+                  });
                 },
               }}
             />
           )}
 
-          <CreateNewJob open={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          <CreateNewJob />
         </>
       )}
     </Stack>
