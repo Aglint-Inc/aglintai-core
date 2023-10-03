@@ -34,21 +34,6 @@ type AutoCompleteType = {
   value: string;
 };
 
-type JobStatus = {
-  sourcing: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-  interviewing: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-  closed: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-};
-
 type EmailTemplate = Record<
   string,
   {
@@ -65,7 +50,6 @@ export type FormJobType = {
   jobType: string;
   jobDescription: string;
   skills: string[];
-  status: JobStatus;
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
   screeningConfig: {
@@ -346,7 +330,6 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       job_title: jobForm.formFields.jobTitle,
       job_type: jobForm.formFields.jobType,
       workplace_type: jobForm.formFields.workPlaceType,
-      active_status: jobForm.formFields.status,
       skills: jobForm.formFields.skills,
       slug: jobForm.createdAt
         ? undefined

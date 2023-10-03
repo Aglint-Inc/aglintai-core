@@ -85,7 +85,7 @@ const JobApplicationComponent = () => {
     <>
       <JobScreening
         slotJobStatus={<JobApplicationStatus />}
-        textJobStatus={capitalize(job.status)}
+        textJobStatus={null}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={`(${applicationsData.count} applicants)`}
         isAll={section === JobApplicationSections.APPLIED}
