@@ -2,7 +2,12 @@ import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { BriefcaseIcon, CandidateIcon, NavJobSubLink } from '@/devlink';
+import {
+  BriefcaseIcon,
+  CandidateIcon,
+  NavJobSubLink,
+  TicketSublink,
+} from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
@@ -139,6 +144,19 @@ function JobSubNavbar() {
   );
 }
 
+
+function SupportSubNavbar() {
+  return (
+    <>
+      <TicketSublink 
+      
+      
+      />
+    </>
+  );
+}
+
+
 const navList = [
   {
     icon: <BriefcaseIcon />,
@@ -152,4 +170,27 @@ const navList = [
     SubComponents: '',
     route: pageRoutes.CANDIDATES,
   },
+  {
+    icon: <ChatIcon />,
+    text: 'Tickets',
+    SubComponents: <SupportSubNavbar />,
+    route: pageRoutes.SUPPORT,
+  },
 ];
+
+function ChatIcon() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      viewBox='0 0 16 16'
+      fill='none'
+    >
+      <path
+        d='M6.66634 2H9.33301C12.2785 2 14.6663 4.38781 14.6663 7.33333C14.6663 10.2789 12.2785 12.6667 9.33301 12.6667V15C5.99967 13.6667 1.33301 11.6667 1.33301 7.33333C1.33301 4.38781 3.72082 2 6.66634 2ZM7.99967 11.3333H9.33301C11.5421 11.3333 13.333 9.54247 13.333 7.33333C13.333 5.12419 11.5421 3.33333 9.33301 3.33333H6.66634C4.4572 3.33333 2.66634 5.12419 2.66634 7.33333C2.66634 9.74 4.30773 11.3104 7.99967 12.9865V11.3333Z'
+        fill='white'
+      />
+    </svg>
+  );
+}

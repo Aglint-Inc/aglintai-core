@@ -172,6 +172,7 @@ export * from "./SublinksResume";
 export * from "./SuggestedSkillPill";
 export * from "./TermsCondition";
 export * from "./TicketEmptyState";
+export * from "./TicketSublink";
 export * from "./ToggleDropdown";
 export * from "./UploadCsv";
 export * from "./UserProfile";
