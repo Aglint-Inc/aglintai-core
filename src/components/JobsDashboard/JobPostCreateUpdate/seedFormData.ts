@@ -25,20 +25,6 @@ export const getSeedJobFormData = (
       logo: '',
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
-      status: {
-        sourcing: {
-          isActive: false,
-          startTime: null,
-        },
-        interviewing: {
-          isActive: false,
-          startTime: null,
-        },
-        closed: {
-          isActive: false,
-          startTime: null,
-        },
-      },
       workPlaceType: 'onSite',
       skills: [],
       jobDescription: '',
@@ -193,7 +179,6 @@ export const dbToClientjobPostForm = (
       ...seedData.formFields,
       company: jobPost.company,
       workPlaceType: jobPost.workplace_type,
-      status: jobPost.active_status as JobFormState['formFields']['status'],
       interviewConfig: {
         cultural: get(
           jobPost,
