@@ -46,7 +46,6 @@ const ScreeningQns = () => {
           handleUpdateFormFields({
             path: 'interviewType',
             value: 'ai-powered',
-            saveField: 'screening',
           });
         },
       }}
@@ -55,7 +54,6 @@ const ScreeningQns = () => {
           handleUpdateFormFields({
             path: 'interviewType',
             value: 'standard',
-            saveField: 'screening',
           });
         },
       }}
@@ -140,7 +138,6 @@ const AiScreeningConfigParams = () => {
                 checked={paramVal}
                 onChange={() => {
                   handleUpdateFormFields({
-                    saveField: 'screening',
                     path: `interviewConfig.[${p}].value`,
                     value: !paramVal,
                   });
@@ -184,7 +181,6 @@ const StandardScreenSingle = ({
       { question: questionInput, id: nanoid() },
     ];
     handleUpdateFormFields({
-      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });
@@ -205,7 +201,6 @@ const StandardScreenSingle = ({
         question: q,
       })) as InterviewConfigType['questions'];
       handleUpdateFormFields({
-        saveField: 'screening',
         path: `interviewConfig.${paramKey}.questions`,
         value: [...param.questions, ...newQns],
       });
@@ -242,7 +237,6 @@ const StandardScreenSingle = ({
             checked={param.value}
             onChange={() => {
               handleUpdateFormFields({
-                saveField: 'screening',
                 path: `interviewConfig.[${paramKey}].value`,
                 value: !param.value,
               });
@@ -330,7 +324,6 @@ const InterviewQn = ({
     ) as InterviewConfigType['questions'];
     const updatedQns = existingQns.filter((q) => q.id !== qnId);
     handleUpdateFormFields({
-      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });
@@ -354,7 +347,6 @@ const InterviewQn = ({
       },
     );
     handleUpdateFormFields({
-      saveField: 'screening',
       path: `interviewConfig.[${paramKey}].questions`,
       value: [...updatedQns],
     });

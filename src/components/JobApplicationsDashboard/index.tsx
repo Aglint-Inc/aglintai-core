@@ -77,7 +77,6 @@ const JobApplicationComponent = () => {
     setCheckList(new Set<string>());
   };
 
-  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const { recruiter } = useAuthDetails();
   const { handleInitializeForm } = useJobForm();
   return (
@@ -172,12 +171,12 @@ const JobApplicationComponent = () => {
               type: 'edit',
               job: jobsData.jobs.find((j) => j.id === job.id) as any,
               recruiter,
+              slideNo: 1,
             });
-            setEditDrawerOpen(true);
           },
         }}
       />
-      <EditFlow open={editDrawerOpen} setDrawerOpen={setEditDrawerOpen} />
+      <EditFlow />
     </>
   );
 };

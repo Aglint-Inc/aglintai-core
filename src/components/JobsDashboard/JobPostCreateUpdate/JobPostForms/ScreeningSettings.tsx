@@ -50,7 +50,6 @@ function ScreeningSettings() {
         onClick: () => {
           autoScreening &&
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.screening.minApplicants',
               value: !screeningConfig.screening.minApplicants,
             });
@@ -60,7 +59,6 @@ function ScreeningSettings() {
         onClick: () => {
           autoScreening &&
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.screening.minScore',
               value: !screeningConfig.screening.minScore,
             });
@@ -70,7 +68,6 @@ function ScreeningSettings() {
         onClick: () => {
           autoShortList &&
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.shortlist.interviewScore',
               value: !screeningConfig.shortlist.interviewScore,
             });
@@ -80,7 +77,6 @@ function ScreeningSettings() {
         onClick: () => {
           autoShortList &&
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.shortlist.algoScore',
               value: !screeningConfig.shortlist.algoScore,
             });
@@ -94,7 +90,6 @@ function ScreeningSettings() {
             checked={autoScreening}
             onChange={() => {
               handleUpdateFormFields({
-                saveField: 'screening',
                 path: 'screeningConfig.screening',
                 value: {
                   ...screeningConfig.screening,
@@ -114,7 +109,6 @@ function ScreeningSettings() {
           disabled={!autoScreening}
           onChange={(e) => {
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.screening.minNoApplicants',
               value: e.target.value,
             });
@@ -131,7 +125,6 @@ function ScreeningSettings() {
           placeholder='8'
           onChange={(e) => {
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.screening.minNoResumeScore',
               value: e.target.value,
             });
@@ -149,7 +142,6 @@ function ScreeningSettings() {
             defaultChecked={screeningConfig.useAglintMatchingAlgo}
             onChange={() => {
               handleUpdateFormFields({
-                saveField: 'screening',
                 path: 'screeningConfig.useAglintMatchingAlgo',
                 value: !screeningConfig.useAglintMatchingAlgo,
               });
@@ -165,7 +157,6 @@ function ScreeningSettings() {
           defaultChecked={autoShortList}
           onChange={() => {
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.shortlist',
               value: {
                 ...screeningConfig.shortlist,
@@ -183,7 +174,6 @@ function ScreeningSettings() {
           disabled={!autoShortList}
           onChange={(e) => {
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.shortlist.minInterviewScore',
               value: e.target.value,
             });
@@ -199,7 +189,6 @@ function ScreeningSettings() {
           disabled={!autoShortList}
           onChange={(e) => {
             handleUpdateFormFields({
-              saveField: 'screening',
               path: 'screeningConfig.shortlist.minAlgoScore',
               value: e.target.value,
             });
@@ -219,7 +208,6 @@ function ScreeningSettings() {
               handleUpdateFormFields({
                 path: 'screeningConfig.feedbackVisible',
                 value: !screeningConfig.feedbackVisible,
-                saveField: 'screening',
               });
             }}
           />
@@ -230,7 +218,6 @@ function ScreeningSettings() {
           handleUpdateFormFields({
             path: 'screeningConfig.screeningEmail.isImmediate',
             value: true,
-            saveField: 'screening',
           });
         },
       }}
@@ -239,7 +226,6 @@ function ScreeningSettings() {
           handleUpdateFormFields({
             path: 'screeningConfig.screeningEmail.isImmediate',
             value: false,
-            saveField: 'screening',
           });
         },
       }}
@@ -266,7 +252,6 @@ function ScreeningSettings() {
                   handleUpdateFormFields({
                     path: 'screeningConfig.screeningEmail.date',
                     value: dayjs(date).toISOString(),
-                    saveField: 'screening',
                   });
               }}
               slots={{

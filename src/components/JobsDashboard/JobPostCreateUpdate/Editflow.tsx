@@ -16,12 +16,7 @@ import EmailTemplates from './JobPostForms/EmailTemplates';
 import ScreeningQns from './JobPostForms/ScreeningQns';
 import ScreeningSettings from './JobPostForms/ScreeningSettings';
 
-type CreateNewJobParams = {
-  open: boolean;
-  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-function EditFlow({ open, setDrawerOpen }: CreateNewJobParams) {
+function EditFlow() {
   const { jobForm, dispatch } = useJobForm();
   const [formError, setFormError] = useState({
     jobTitle: '',
@@ -77,7 +72,7 @@ function EditFlow({ open, setDrawerOpen }: CreateNewJobParams) {
         return false;
       }
     }
-    if (slideNo === 3) {
+    if (slideNo === 4) {
       if (jobForm.formFields.interviewType === 'ai-powered') {
         return true;
       }
@@ -101,9 +96,9 @@ function EditFlow({ open, setDrawerOpen }: CreateNewJobParams) {
       if (get(interviewConfig, 'softSkills.value', false)) {
         totalQns += get(interviewConfig, 'softSkills.questions', []).length;
       }
-      if (totalQns < 10 || totalQns > 15) {
+      if (totalQns < 10 || totalQns > 25) {
         flag = false;
-        toast.error('Please set atleast 10 and at max 15 Questions');
+        toast.error('Please set atleast 10 and at max 25 Questions');
       }
     }
     return flag;
@@ -153,13 +148,20 @@ function EditFlow({ open, setDrawerOpen }: CreateNewJobParams) {
   };
 
   const handleDrawerClose = () => {
-    setDrawerOpen(() => false);
-    dispatch({ type: 'closeForm' });
+    if (isformValid()) {
+      dispatch({
+        type: 'closeForm',
+      });
+    }
   };
   return (
     <>
-      <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
-        <Stack p={2} width={'800px'} position={'relative'} minHeight={'100vh'}>
+      <Drawer
+        anchor='right'
+        open={jobForm.isFormOpen}
+        onClose={handleDrawerClose}
+      >
+        <Stack width={'800px'} position={'relative'} minHeight={'100vh'}>
           <EditJob
             isJobSaved={true}
             isDetailsActive={slideNo === 1}
@@ -172,11 +174,7 @@ function EditFlow({ open, setDrawerOpen }: CreateNewJobParams) {
               },
             }}
             onClickClose={{
-              onClick: () => {
-                dispatch({
-                  type: 'closeForm',
-                });
-              },
+              onClick: handleDrawerClose,
             }}
             onClickDetails={{
               onClick: () => {
