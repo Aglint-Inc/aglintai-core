@@ -91,6 +91,18 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -390,6 +402,13 @@
 
 .red-700 {
   background-color: hsla(354.8571428571429, 60.00%, 34.31%, 1.00);
+}
+
+.cdd-job-status-wrapper {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
 .rd-job-list-tab-content {

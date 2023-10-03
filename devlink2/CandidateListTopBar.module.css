@@ -3,7 +3,6 @@
 
   display: flex;
   width: 100%;
-  padding-right: 20px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
@@ -17,6 +16,10 @@
 
 .candidate-list-item:hover {
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
+}
+
+.candidate-list-item.top-bar {
+  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
 .div-block-328 {

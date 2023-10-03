@@ -1,3 +1,4 @@
+import { JobType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobContext } from './types';
@@ -6,6 +7,7 @@ export const initialJobContext: JobContext = {
   jobsData: { applications: undefined, jobs: undefined },
   handleJobRead: undefined,
   handleJobUpdate: undefined,
+  handleUIJobUpdate: undefined,
   handleJobDelete: undefined,
   handleJobError: undefined,
   initialLoad: false,
@@ -25,6 +27,14 @@ export const readJobApplicationsAction = async (jobIds: string[]) => {
     .from('job_applications')
     .select('*')
     .in('job_id', jobIds);
+  return { data, error };
+};
+
+export const updateJobDbAction = async (inputData: Partial<JobType>) => {
+  const { data, error } = await supabase
+    .from('public_jobs')
+    .upsert(inputData)
+    .select();
   return { data, error };
 };
 

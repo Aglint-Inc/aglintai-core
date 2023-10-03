@@ -20,6 +20,8 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   circularScoreAnimation: undefined,
   openImportCandidates: false,
   setOpenImportCandidates: undefined,
+  openManualImportCandidates: undefined,
+  setOpenManualImportCandidates: undefined,
   handleUpdateJobStatus: undefined,
 };
 

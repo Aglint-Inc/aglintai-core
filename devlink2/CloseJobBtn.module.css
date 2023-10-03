@@ -1,0 +1,75 @@
+.button-wrapper {
+  position: relative;
+  padding: 3px;
+  border-radius: 4px;
+  transition: all 300ms ease;
+}
+
+.button-block {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+
+  transition: all 300ms ease;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.button-block.primary {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.button-block.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.button-block.primary.outlined {
+  border-color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.button-block.primary.outlined:hover {
+  border-color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.button-block.disabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 6;
+
+  margin: 3px;
+
+  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+
+  cursor: default;
+}
+
+.button-block.danger {
+  background-color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+  color: var(--white-c31c6fe9);
+}
+
+.button-block.danger:hover {
+  background-color: hsla(354.93506493506493, 58.45%, 41.88%, 1.00);
+}
+
+.button-text {
+  font-size: 1em;
+}

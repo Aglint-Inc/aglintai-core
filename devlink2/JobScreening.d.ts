@@ -28,4 +28,5 @@ declare function JobScreening(props: {
   bottomBarVisibility?: Types.Visibility.VisibilityConditions;
   jobLink?: Types.Basic.Link;
   linkActiveJobs?: Types.Basic.Link;
+  slotJobStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

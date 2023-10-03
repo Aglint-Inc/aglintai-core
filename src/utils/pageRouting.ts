@@ -12,5 +12,6 @@ export const pageRoutes = Object.freeze({
   PROFILE: '/profile',
   InterviewFeedbackLink:'interview-feedback-link',
   MOCKTEST:'/interview/mock-test',
-  INTERVIEWLANDINGPAGE:'/landing-page'
+  INTERVIEWLANDINGPAGE:'/landing-page',
+  SUPPORT:'/support'
 });
