@@ -330,6 +330,19 @@ const useJobApplicationActions = (
     }
   };
 
+  const handleJobApplicationUIUpdate = (jobApplication: JobApplication) => {
+    if (recruiter) {
+      const action: Action = {
+        type: ActionType.UPDATE,
+        payload: {
+          applicationData: jobApplication,
+        },
+      };
+      dispatch(action);
+      return true;
+    }
+  };
+
   const handleJobApplicationBulkUpdate = async (
     updatedApplicationData: JobApplication[],
   ) => {
@@ -399,6 +412,7 @@ const useJobApplicationActions = (
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationUpdate,
+    handleJobApplicationUIUpdate,
     handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,

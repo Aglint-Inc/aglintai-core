@@ -53,7 +53,7 @@ export type JobApplicationContext = {
 
     inputData: InputData,
   ) => Promise<boolean>;
-
+  handleJobApplicationUIUpdate: (jobApplication: JobApplication) => boolean;
   handleJobApplicationDelete: (
     applicationId: string,
     applicationStatus: JobApplicationSections,
