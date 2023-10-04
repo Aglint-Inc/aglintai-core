@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import ApplicationDetails from './ApplicationDetails';
 import { getInterviewScore, getScoreColor, getStatusColor } from './utils';
@@ -8,7 +9,17 @@ import { capitalize, formatTimeStamp } from '../utils';
 import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
 
-const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
+const ApplicationCard = ({
+  application,
+  index,
+  checkList,
+  setCheckList,
+}: {
+  application: JobApplication;
+  index: number;
+  checkList: Set<string>;
+  setCheckList: Dispatch<SetStateAction<Set<string>>>;
+}) => {
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
 
@@ -39,6 +50,10 @@ const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
     setApplicationDetails(application);
     setOpenSidePanel((pre) => !pre);
   };
+
+  const jdScoreObj = application.jd_score as any;
+  const jdScore = jdScoreObj?.over_all?.score ?? 0;
+
   return (
     <>
       <ApplicationDetails
@@ -72,29 +87,29 @@ const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
         textPhone={application.phone}
         slotScore={
           <CustomProgress
-            progress={application?.score}
+            progress={jdScore}
             rotation={270}
             fillColor={
-              application?.score >= 90
+              jdScore >= 90
                 ? '#228F67'
-                : application?.score >= 70
+                : jdScore >= 70
                 ? '#f79a3e'
-                : application?.score >= 50
+                : jdScore >= 50
                 ? '#de701d'
                 : '#d93f4c'
             }
             bgFill={
-              application?.score >= 90
+              jdScore >= 90
                 ? '#edf8f4'
-                : application?.score >= 70
+                : jdScore >= 70
                 ? '#fff7ed'
-                : application?.score >= 50
+                : jdScore >= 50
                 ? '#ffeedb'
                 : '#fff0f1'
             }
             size={30}
             strokeWidth={3}
-            label={application?.score}
+            label={jdScore}
             fontSize={20}
           />
         }
