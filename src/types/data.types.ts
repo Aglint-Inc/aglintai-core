@@ -17,6 +17,7 @@ export type RecruiterType = Omit<
   'address' | 'socials'
 > & { address: AddressType | null; socials: SocialsType | null };
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
+
 export type JobApplcationDB =
   Database['public']['Tables']['job_applications']['Row'];
 export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
@@ -39,3 +40,12 @@ export type StatusJobs = {
     timeStamp: string;
   };
 };
+
+export type Support_ticketType =
+  Database['public']['Tables']['support_ticket']['Row'];
+
+export type Public_jobsType =
+  Database['public']['Tables']['public_jobs']['Row'];
+
+export type SupportGroupType =
+  Database['public']['Tables']['support_groups']['Row'];

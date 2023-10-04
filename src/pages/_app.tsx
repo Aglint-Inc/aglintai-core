@@ -13,6 +13,7 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
 import { NotificationsContextProvider } from '../context/Notifications';
 import JobsProvider from '../context/JobsContext';
+import { SupportProvider } from '../context/SupportContext/SupportContext';
 
 const MyApp = ({ Component, pageProps }) => {
   const getProvider = Component.getProvider ?? ((page) => page);
@@ -36,9 +37,11 @@ const MyApp = ({ Component, pageProps }) => {
                 <AuthProvider>
                   <NotificationsContextProvider>
                     <JobsProvider>
-                      <AppLayout>
-                        {getProvider(<Component {...pageProps} />)}
-                      </AppLayout>
+                      <SupportProvider>
+                        <AppLayout>
+                          {getProvider(<Component {...pageProps} />)}
+                        </AppLayout>
+                      </SupportProvider>
                     </JobsProvider>
                   </NotificationsContextProvider>
                 </AuthProvider>

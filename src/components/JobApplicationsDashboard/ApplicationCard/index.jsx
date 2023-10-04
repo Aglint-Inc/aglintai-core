@@ -8,12 +8,7 @@ import { capitalize, formatTimeStamp } from '../utils';
 import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
 
-const ApplicationCard = ({
-  application,
-  index,
-  checkList,
-  setCheckList,
-}) => {
+const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
 

@@ -19,4 +19,6 @@ declare function InboxTickets(props: {
   textDate?: React.ReactNode;
   onClickCheck?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
+  onClickArchive?: Types.Devlink.RuntimeProps;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

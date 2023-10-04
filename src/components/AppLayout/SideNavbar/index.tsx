@@ -9,6 +9,7 @@ import {
   TicketSublink,
 } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
+import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
@@ -144,18 +145,56 @@ function JobSubNavbar() {
   );
 }
 
-
 function SupportSubNavbar() {
+  const router = useRouter();
+  const { allFilter, filters } = useSupportContext();
   return (
     <>
-      <TicketSublink 
-      
-      
+      <TicketSublink
+        allCount={allFilter.all}
+        isAllActive={filters.state === 'all'}
+        onClickAll={{
+          onClick: () => {
+            router.query = { ...router.query, state: 'all' };
+            router.push(router);
+          },
+        }}
+        inProgressCount={allFilter['in progress']}
+        isInProgressActive={filters.state === 'in progress'}
+        onClickInProgress={{
+          onClick: () => {
+            router.query = { ...router.query, state: 'in progress' };
+            router.push(router);
+          },
+        }}
+        resolvedCount={allFilter.Resolved}
+        isResolvedActive={filters.state === 'resolve'}
+        onClickResolve={{
+          onClick: () => {
+            router.query = { ...router.query, state: 'resolved' };
+            router.push(router);
+          },
+        }}
+        openCount={allFilter.open}
+        isOpenActive={filters.state === 'open'}
+        onClickOpen={{
+          onClick: () => {
+            router.query = { ...router.query, state: 'open' };
+            router.push(router);
+          },
+        }}
+        onHoldCount={allFilter['on hold']}
+        isOnHoldActive={filters.state === 'on hold'}
+        onClickOnHold={{
+          onClick: () => {
+            router.query = { ...router.query, state: 'on hold' };
+            router.push(router);
+          },
+        }}
       />
     </>
   );
 }
-
 
 const navList = [
   {
