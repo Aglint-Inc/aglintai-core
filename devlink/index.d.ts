@@ -48,6 +48,7 @@ export * from "./ButtonTextGrey";
 export * from "./ButtonTextLarge";
 export * from "./ButtonTextRegular";
 export * from "./ButtonTextSmall";
+export * from "./CandidateDatabase";
 export * from "./CandidateIcon";
 export * from "./CddProfileInfo";
 export * from "./Checkbox";

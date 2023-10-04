@@ -1,7 +1,14 @@
-import React from 'react';
+
+import {
+  CandidateDatabaseComp
+} from '@/src/components/CandidateDatabase';
 
 function CandidatesPage() {
-  return <div>CandidatesPage</div>;
+  return (
+    <>
+      <CandidateDatabaseComp />
+    </>
+  );
 }
 
 export default CandidatesPage;
