@@ -194,7 +194,9 @@ export default function AppLayout({ children }) {
             </Stack>
             <Stack height={'100%'} justifyContent={'space-between'}>
               <Stack spacing={'10px'}>
+                
                 <SideNavbar />
+              
               </Stack>
               <NavMenuBottom
                 isMyNotification={router.pathname.includes(

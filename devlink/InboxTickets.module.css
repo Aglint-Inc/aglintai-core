@@ -1,9 +1,13 @@
 .inbox-list-sl-block {
   z-index: 2;
+
   display: flex;
   padding: 10px 64px 10px 22px;
   align-items: center;
+
   transition: all 250ms ease;
+
+  cursor: pointer;
 }
 
 .inbox-list-sl-block:hover {
@@ -297,6 +301,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .il-job-info {
   width: 260px;
   margin-left: 32px;
@@ -470,16 +478,12 @@
   transition: all 300ms ease;
 }
 
-.il-actions-image-block:hover {
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
-}
-
 .il-archive-btn {
   position: absolute;
   top: 5px;
   right: 17px;
 
-  display: flex;
+  display: none;
   padding: 7px 16px;
   align-items: center;
   grid-column-gap: 10px;
@@ -492,10 +496,6 @@
   box-shadow: 0 4px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
 
   transition: all 300ms ease;
-}
-
-.il-archive-btn:hover {
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
 }
 
 .icon-embed {

@@ -1,0 +1,12 @@
+.inde-chat-compose-option {
+  padding: 5px 16px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(180, 34.55%, 89.22%, 1.00);
+  border-radius: 100px;
+
+  background-color: hsla(180, 53.85%, 97.45%, 1.00);
+
+  cursor: pointer;
+}
