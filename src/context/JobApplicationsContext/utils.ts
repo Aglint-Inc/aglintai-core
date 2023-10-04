@@ -15,6 +15,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationUpdate: undefined,
+  handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
   handleJobApplicationError: undefined,
   initialLoad: false,
@@ -28,10 +29,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
 
 export const createJobApplicationDbAction = async (
   job_id: string,
-  inputData: Pick<
-    JobApplication,
-    'first_name' | 'last_name' | 'email' | 'score'
-  > &
+  inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
     InputData,
 ) => {
   const { data, error } = await supabase

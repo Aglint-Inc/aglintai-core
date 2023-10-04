@@ -34,6 +34,8 @@ function InterviewFeedbackPage() {
 
   const [openResume, setOpenResume] = useState(false);
 
+  const jdScore = applicationDetails?.jd_score?.over_all?.score ?? 0;
+
   useEffect(() => {
     const { id } = router.query;
     if (id) {
@@ -166,33 +168,33 @@ function InterviewFeedbackPage() {
               }}
               slotResumeScore={
                 <CustomProgress
-                  progress={applicationDetails?.score}
+                  progress={jdScore}
                   rotation={270}
                   fillColor={
-                    applicationDetails?.score >= 90
+                    jdScore >= 90
                       ? '#228F67'
-                      : applicationDetails?.score >= 70
+                      : jdScore >= 70
                       ? '#f79a3e'
-                      : applicationDetails?.score >= 50
+                      : jdScore >= 50
                       ? '#de701d'
                       : '#d93f4c'
                   }
                   bgFill={
-                    applicationDetails?.score >= 90
+                    jdScore >= 90
                       ? '#edf8f4'
-                      : applicationDetails?.score >= 70
+                      : jdScore >= 70
                       ? '#fff7ed'
-                      : applicationDetails?.score >= 50
+                      : jdScore >= 50
                       ? '#ffeedb'
                       : '#fff0f1'
                   }
                   size={35}
                   strokeWidth={3}
-                  label={applicationDetails?.score}
+                  label={jdScore}
                   fontSize={20}
                 />
               }
-              textFeedback={giveRateInWordToResume(applicationDetails?.score)}
+              textFeedback={giveRateInWordToResume(jdScore)}
             />
           }
           onClickCopyProfile={{

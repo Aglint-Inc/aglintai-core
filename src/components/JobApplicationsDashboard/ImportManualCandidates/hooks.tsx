@@ -1,8 +1,11 @@
+import axios from 'axios';
+
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   InputData,
   JobApplication,
 } from '@/src/context/JobApplicationsContext/types';
+import { JobType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import {
@@ -11,29 +14,48 @@ import {
 } from './utils';
 
 const useUploadCandidate = () => {
-  const { handleJobApplicationCreate, handleJobApplicationError } =
-    useJobApplications();
+  const {
+    handleJobApplicationCreate,
+    handleJobApplicationError,
+    handleJobApplicationUIUpdate,
+  } = useJobApplications();
 
   const handleUploadCandidate = async (
-    jobId: string,
+    job: JobType,
     jobApplication: Pick<
       JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score' | 'status'
+      'first_name' | 'last_name' | 'email' | 'status'
     > &
       InputData,
     file: any,
   ) => {
     const { data: duplicate, error: e1 } =
-      await checkDuplicateJobApplicationDbAction(jobApplication.email, jobId);
+      await checkDuplicateJobApplicationDbAction(jobApplication.email, job.id);
     if (!e1) {
       if (!duplicate) {
-        const { data, error } = await uploadResumeDbAction(jobId, file);
+        const { data, error } = await uploadResumeDbAction(job.id, file);
         if (data) {
-          const confirmation = await handleJobApplicationCreate({
+          const applicantData = await handleJobApplicationCreate({
             ...jobApplication,
             resume: data,
           });
-          if (confirmation) {
+          if (applicantData) {
+            const { data: resumeScore } = await axios.post(
+              'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
+              {
+                pdfUrl: applicantData.resume,
+                application_id: applicantData.application_id,
+                description: job.description || job.responsibilities.join(','),
+                job_title: job.job_title,
+                skills: job.skills || [],
+                company_name: job?.company,
+              },
+            );
+            handleJobApplicationUIUpdate({
+              ...applicantData,
+              jd_score: resumeScore,
+            });
+
             toast.success('Job application successfully created!');
             return true;
           }

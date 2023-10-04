@@ -53,6 +53,10 @@ function ApplicationDetails({
         ) / applicationDetails.feedback.length,
       )
     : 0;
+
+  const jdScoreObj = applicationDetails.jd_score as any;
+  const jdScore = jdScoreObj?.over_all?.score ?? 0;
+
   return (
     <>
       <Dialog
@@ -306,36 +310,41 @@ function ApplicationDetails({
               slotResumeScore={
                 <ResumeResult
                   textCertificationScore={
-                    applicationDetails?.json_resume?.summary?.qualification
-                      ?.certifications
-                      ? applicationDetails?.json_resume?.summary?.qualification
-                          ?.certifications
+                    applicationDetails?.jd_score?.qualification?.certifications
+                      .relevance
+                      ? applicationDetails?.jd_score?.qualification
+                          ?.certifications.relevance
                       : '--'
                   }
                   textProjectScore={
-                    applicationDetails?.json_resume?.qualification?.project
+                    applicationDetails?.jd_score?.qualification?.project
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification?.project
+                      ? applicationDetails?.jd_score?.qualification?.project
                           ?.relevance
                       : ''
                   }
                   textEducationScore={
-                    applicationDetails?.json_resume?.qualification?.education
+                    applicationDetails?.jd_score?.qualification?.education
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification
-                          ?.education?.relevance
+                      ? applicationDetails?.jd_score?.qualification?.education
+                          ?.relevance
                       : ''
                   }
                   textExperienceScore={
-                    applicationDetails?.json_resume?.qualification?.experience
+                    applicationDetails?.jd_score?.qualification?.experience
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification
-                          ?.experience?.relevance
+                      ? applicationDetails?.jd_score?.qualification?.experience
+                          ?.relevance
                       : ''
                   }
                   textSkillsScore={
-                    applicationDetails?.json_resume?.skills_score?.score
-                      ? applicationDetails?.json_resume?.skills_score?.score
+                    applicationDetails?.jd_score?.skills_score?.score
+                      ? applicationDetails?.jd_score?.skills_score?.score
+                      : '--'
+                  }
+                  textSummaryScore={
+                    applicationDetails?.summary?.feedback
+                      ? applicationDetails?.summary?.feedback
                       : '--'
                   }
                   onClickDownloadResume={{
@@ -350,38 +359,36 @@ function ApplicationDetails({
                   }}
                   slotResumeScore={
                     <CustomProgress
-                      progress={applicationDetails?.score}
+                      progress={jdScore}
                       rotation={270}
                       fillColor={
-                        applicationDetails?.score >= 90
+                        jdScore >= 90
                           ? '#228F67'
-                          : applicationDetails?.score >= 70
+                          : jdScore >= 70
                           ? '#f79a3e'
-                          : applicationDetails?.score >= 50
+                          : jdScore >= 50
                           ? '#de701d'
                           : '#d93f4c'
                       }
                       bgFill={
-                        applicationDetails?.score >= 90
+                        jdScore >= 90
                           ? '#edf8f4'
-                          : applicationDetails?.score >= 70
+                          : jdScore >= 70
                           ? '#fff7ed'
-                          : applicationDetails?.score >= 50
+                          : jdScore >= 50
                           ? '#ffeedb'
                           : '#fff0f1'
                       }
                       size={35}
                       strokeWidth={3}
-                      label={applicationDetails?.score}
+                      label={jdScore}
                       fontSize={20}
                     />
                   }
-                  textFeedback={giveRateInWordToResume(
-                    applicationDetails?.score,
-                  )}
+                  textFeedback={giveRateInWordToResume(jdScore)}
                 />
               }
-              isResumeVisible={applicationDetails.score}
+              isResumeVisible={jdScore}
               // isResumeVisible={false}
               textPhone={
                 applicationDetails.phone ? applicationDetails.phone : '--'

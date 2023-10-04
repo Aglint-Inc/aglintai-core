@@ -140,19 +140,19 @@ const ImportManualCandidates = () => {
       { newApplicant: applicant, validation: true },
     );
   };
+
   const handleSubmit = async () => {
     const { newApplicant, validation } = handleValidate();
     if (validation) {
       setLoading(true);
       const confirmation = await handleUploadCandidate(
-        job.id,
+        job,
         {
           first_name: applicant.first_name.value,
           last_name: applicant.last_name.value,
           email: applicant.email.value,
           phone: applicant.phone.value,
           linkedin: applicant.linkedin.value,
-          score: 80,
           job_location: job.location,
           job_title: job.job_title,
           company: job.company,

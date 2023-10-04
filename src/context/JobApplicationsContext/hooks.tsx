@@ -244,10 +244,7 @@ const useJobApplicationActions = (
   }, [initialLoad]);
 
   const handleJobApplicationCreate = async (
-    inputData: Pick<
-      JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score'
-    > &
+    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
       InputData,
   ) => {
     if (recruiter) {
@@ -261,10 +258,10 @@ const useJobApplicationActions = (
           payload: { applicationData: data[0] },
         };
         dispatch(action);
-        return true;
+        return data[0];
       }
       handleJobApplicationError(error);
-      return false;
+      return undefined;
     }
   };
 
@@ -330,6 +327,19 @@ const useJobApplicationActions = (
       }
       handleJobApplicationError(error);
       return false;
+    }
+  };
+
+  const handleJobApplicationUIUpdate = (jobApplication: JobApplication) => {
+    if (recruiter) {
+      const action: Action = {
+        type: ActionType.UPDATE,
+        payload: {
+          applicationData: jobApplication,
+        },
+      };
+      dispatch(action);
+      return true;
     }
   };
 
@@ -402,6 +412,7 @@ const useJobApplicationActions = (
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationUpdate,
+    handleJobApplicationUIUpdate,
     handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,

@@ -51,12 +51,12 @@ const CSVGenerator = () => {
       const company = 'Aglint Inc';
       const status = checked
         ? faker.helpers.arrayElement([
-            'applied',
+            'new',
             'interviewing',
-            'selected',
-            'rejected',
+            'qualified',
+            'disqualified',
           ])
-        : 'applied'; // You can change this if needed
+        : 'new'; // You can change this if needed
       const profileImage = faker.image.avatar(); // You can change this if needed
       const resume =
         'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg'; // You can change this if needed
