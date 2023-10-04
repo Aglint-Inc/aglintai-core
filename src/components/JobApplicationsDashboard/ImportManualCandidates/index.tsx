@@ -1,28 +1,20 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable security/detect-unsafe-regex */
+/* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack, TextField, Typography } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { ButtonTextGrey } from '@/devlink';
-import { ButtonOutlinedSmall } from '@/devlink/ButtonOutlinedSmall';
-import { SelectedPopup } from '@/devlink2';
+import { CandidateStatusDropdown, SelectedPopup } from '@/devlink2';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
-// type ApplicantInfo = {
-//   first_name: string;
-//   last_name: string;
-//   email: string;
-//   phone: string;
-//   status: string;
-//   linkedin?: string;
-//   resume?: string;
-//   score: number;
-//   job_title: string;
-//   company: string;
-//   profile_image: string;
-// };
+import useUploadCandidate from './hooks';
+import { capitalize } from '../utils';
+import AUIButton from '../../Common/AUIButton';
+import Loader from '../../Common/Loader';
 
 type FormEntries = {
   first_name: FormField;
@@ -34,16 +26,25 @@ type FormEntries = {
   status: FormField;
 };
 
-type FormField = {
-  value: string;
-  error: boolean;
-  validation: 'text' | 'mail' | 'phone' | 'url';
-};
+type FormField =
+  | {
+      value: string | any;
+      error: boolean;
+      validation: 'text' | 'mail' | 'phone' | 'url';
+      required: boolean;
+    }
+  | {
+      value: any;
+      error: boolean;
+      validation: 'file';
+      required: boolean;
+    };
 
 const initialFormField: FormField = {
   value: null,
   error: false,
   validation: 'text',
+  required: true,
 };
 
 const initialFormFields: FormEntries = {
@@ -51,19 +52,33 @@ const initialFormFields: FormEntries = {
   last_name: initialFormField,
   email: { ...initialFormField, validation: 'mail' },
   phone: { ...initialFormField, validation: 'phone' },
-  linkedin: { ...initialFormField, validation: 'url' },
-  resume: { ...initialFormField, validation: 'url' },
-  status: { ...initialFormField, value: 'applied' },
+  linkedin: { ...initialFormField, validation: 'url', required: false },
+  resume: { ...initialFormField, validation: 'file' },
+  status: { ...initialFormField, value: JobApplicationSections.NEW },
 };
 
 const ImportManualCandidates = () => {
-  const { setOpenManualImportCandidates } = useJobApplications();
+  const { setOpenManualImportCandidates, job } = useJobApplications();
   const [applicant, setApplicant] = useState(initialFormFields);
+  const [loading, setLoading] = useState(false);
+  const { handleUploadCandidate } = useUploadCandidate();
   const handleValidate = () => {
-    setApplicant((prev) => {
-      return Object.entries(prev).reduce((acc, [key, curr]) => {
+    return Object.entries(applicant).reduce(
+      (acc, [key, curr]) => {
         let value = curr.value;
         let error = false;
+        if (
+          !curr.required &&
+          (value === '' || value === null || (value && value.trim() === ''))
+        ) {
+          return {
+            ...acc,
+            newApplicant: {
+              ...acc.newApplicant,
+              [key]: { ...acc.newApplicant[key], value: '', error },
+            },
+          };
+        }
         switch (curr.validation) {
           case 'text':
             {
@@ -76,7 +91,6 @@ const ImportManualCandidates = () => {
               if (
                 value &&
                 value.trim() !== '' &&
-                // eslint-disable-next-line security/detect-unsafe-regex, no-useless-escape
                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
                   value.trim(),
                 )
@@ -90,7 +104,6 @@ const ImportManualCandidates = () => {
               if (
                 value &&
                 value.trim() !== '' &&
-                // eslint-disable-next-line security/detect-unsafe-regex, no-useless-escape
                 /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
                   value.trim(),
                 )
@@ -99,46 +112,113 @@ const ImportManualCandidates = () => {
               else error = true;
             }
             break;
-          case 'phone': {
-            if (
-              value &&
-              value.trim() !== '' &&
-              // eslint-disable-next-line security/detect-unsafe-regex, no-useless-escape
-              /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(value.trim())
-            )
-              value = value.trim();
-            else error = true;
+          case 'phone':
+            {
+              if (
+                value &&
+                value.trim() !== '' &&
+                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+                  value.trim(),
+                )
+              )
+                value = value.trim();
+              else error = true;
+            }
+            break;
+          case 'file': {
+            if (value === null) error = true;
           }
         }
-        // eslint-disable-next-line security/detect-object-injection
-        return { ...acc, [key]: { ...acc[key], value, error } };
-      }, prev);
-    });
+        return {
+          newApplicant: {
+            ...acc.newApplicant,
+            [key]: { ...acc.newApplicant[key], value, error },
+          },
+          validation: error && acc.validation ? false : acc.validation,
+        };
+      },
+      { newApplicant: applicant, validation: true },
+    );
+  };
+  const handleSubmit = async () => {
+    const { newApplicant, validation } = handleValidate();
+    if (validation) {
+      setLoading(true);
+      const confirmation = await handleUploadCandidate(
+        job.id,
+        {
+          first_name: applicant.first_name.value,
+          last_name: applicant.last_name.value,
+          email: applicant.email.value,
+          phone: applicant.phone.value,
+          linkedin: applicant.linkedin.value,
+          score: 80,
+          job_location: job.location,
+          job_title: job.job_title,
+          company: job.company,
+          status: applicant.status.value,
+        },
+        applicant.resume.value,
+      );
+      if (confirmation) {
+        setOpenManualImportCandidates(false);
+        setApplicant(initialFormFields);
+      }
+      setLoading(false);
+    } else setApplicant(newApplicant);
   };
   return (
-    <SelectedPopup
-      onClickClose={{ onClick: () => setOpenManualImportCandidates(false) }}
-      slotTitle={
-        <Stack fontWeight={600} fontSize={'18px'}>
-          Add Candidate
-        </Stack>
-      }
-      slotBody={<FormBody applicant={applicant} setApplicant={setApplicant} />}
-      slotButtons={
-        <>
-          <ButtonTextGrey
-            buttonText={'Cancel'}
-            onClickCancel={{
-              onClick: () => setOpenManualImportCandidates(false),
-            }}
-          />
-          <ButtonOutlinedSmall
-            textLabel={'Add'}
-            onClickButton={{ onClick: () => handleValidate() }}
-          />
-        </>
-      }
-    />
+    <Stack style={{ background: 'white' }}>
+      <Stack
+        style={{
+          opacity: loading ? 0.3 : 1,
+          pointerEvents: loading ? 'none' : 'auto',
+        }}
+      >
+        <SelectedPopup
+          onClickClose={{ onClick: () => setOpenManualImportCandidates(false) }}
+          slotTitle={
+            <Stack fontWeight={600} fontSize={'18px'}>
+              Add Candidate
+            </Stack>
+          }
+          slotBody={
+            <FormBody applicant={applicant} setApplicant={setApplicant} />
+          }
+          slotButtons={
+            <Stack gap={'32px'} flexDirection={'row'} alignItems={'center'}>
+              <ButtonTextGrey
+                buttonText={'Cancel'}
+                onClickCancel={{
+                  onClick: () => setOpenManualImportCandidates(false),
+                }}
+              />
+              {/* <ButtonOutlinedSmall
+                textLabel={'Add'}
+                onClickButton={{ onClick: async () => await handleSubmit() }}
+              /> */}
+              <AUIButton
+                size='small'
+                onClick={async () => await handleSubmit()}
+              >
+                Add Candidate
+              </AUIButton>
+            </Stack>
+          }
+        />
+      </Stack>
+      <Stack
+        position={'absolute'}
+        width={'100%'}
+        height={'100%'}
+        style={{
+          opacity: loading ? 1 : 0,
+          pointerEvents: loading ? 'auto' : 'none',
+        }}
+      >
+        <Loader />
+      </Stack>
+    </Stack>
   );
 };
 
@@ -155,7 +235,11 @@ const FormBody = ({
       return {
         ...prev,
         // eslint-disable-next-line security/detect-object-injection
-        [key]: { ...prev[key], value: e.target.value, error: false },
+        [key]: {
+          ...prev[key],
+          value: key === 'resume' ? e : e.target.value,
+          error: false,
+        },
       };
     });
   };
@@ -219,67 +303,172 @@ const FormBody = ({
         helperText={applicant.linkedin.error && getHelper('LinkedIn url')}
         onChange={(e) => handleChange(e, 'linkedin')}
       />
-      <FileUploader
-        //   handleChange={uploadFile}
-        name='file'
-        types={fileTypes}
+      <Stack
+        fontWeight={600}
+        fontSize={'14px'}
+        flexDirection={'row'}
+        gap={'4px'}
+      >
+        Upload resume
+        <Stack style={{ color: 'red' }}>*</Stack>
+      </Stack>
+      <Stack>
+        <FileUploader
+          handleChange={(e) => handleChange(e, 'resume')}
+          types={fileTypes}
+        >
+          <Stack
+            sx={{
+              border: '1px dashed',
+              borderColor: palette.grey[600],
+              borderRadius: 1,
+              py: '40px',
+              px: '20px',
+              cursor: 'pointer',
+              background: '#fff',
+            }}
+            direction='row'
+            spacing={'8px'}
+            alignItems={'center'}
+            justifyContent={'center'}
+          >
+            {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
+            <Typography
+              variant='body2'
+              sx={{ textAlgin: 'center', fontSize: '14px' }}
+              style={{
+                color: applicant.resume.error ? 'red' : 'inherit',
+                fontWeight: applicant.resume.value ? 600 : 400,
+              }}
+            >
+              {applicant.resume.value
+                ? applicant.resume.value.name
+                : 'Upload candidate resume [PDF/DOCX]'}
+            </Typography>
+            {applicant.resume.value && <CheckIcon />}
+          </Stack>
+        </FileUploader>
+        {applicant.resume.error && (
+          <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
+            Please upload the candidate resume
+          </Stack>
+        )}
+      </Stack>
+      <Stack
+        flexDirection={'row'}
+        gap={2}
+        alignItems={'center'}
+        marginBottom={'30px'}
       >
         <Stack
-          sx={{
-            border: '1px dashed',
-            borderColor: palette.grey[600],
-            borderRadius: 1,
-            py: '40px',
-            px: '20px',
-            cursor: 'pointer',
-            background: '#fff',
-          }}
-          direction='row'
-          spacing={2}
-          alignItems={'center'}
-          justifyContent={'center'}
+          fontWeight={600}
+          fontSize={'14px'}
+          flexDirection={'row'}
+          gap={'4px'}
         >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-          >
-            <path
-              d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
-              fill='#2F3941'
-            />
-          </svg>
-          <Typography variant='body2' sx={{ textAlgin: 'center' }}>
-            {/* {file
-              ? `Uploaded File: ${file?.name}`
-              :  */}
-            Please upload your resume in PDF or DOC format.
-          </Typography>
+          Choose candidates status
+          <Stack style={{ color: 'red' }}>*</Stack>
         </Stack>
-      </FileUploader>
-      <Stack fontWeight={600} fontSize={'14px'}>
-        Choose Applicant Status
+        <StatusDropDown
+          value={applicant.status.value}
+          onChange={(e) => handleChange(e, 'status')}
+        />
       </Stack>
-      <Select
-        id='status'
-        value={applicant.status.value}
-        error={applicant.status.error}
-        placeholder={'Status'}
-        onChange={(e) => handleChange(e, 'status')}
-      >
-        <MenuItem value={'applied'}>Applied</MenuItem>
-        <MenuItem value={'interviewing'}>Interviewing</MenuItem>
-        <MenuItem value={'selected'}>Selected</MenuItem>
-        <MenuItem value={'rejected'}>Rejected</MenuItem>
-      </Select>
     </Stack>
   );
 };
 
 const getHelper = (title: string) => {
   return `Please provide a valid ${title}`;
+};
+
+const FileIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='20'
+      height='20'
+      viewBox='0 0 20 20'
+      fill='none'
+    >
+      <path
+        fill-rule='evenodd'
+        clip-rule='evenodd'
+        d='M3.33464 1.66992H11.6673V5.00167C11.6673 5.92215 12.4135 6.66834 13.334 6.66834H16.668V18.3366H3.33464V1.66992ZM18.3346 18.3366L18.3346 5.87168C18.336 5.84335 18.336 5.81488 18.3346 5.7864L18.3346 5.34139C18.3283 4.90177 18.1486 4.48244 17.8346 4.17472L14.1572 0.497333C13.8555 0.189316 13.4361 0.00960148 12.9965 0.00333974L12.5807 0.0033361C12.5311 -0.0011535 12.4814 -0.00106994 12.4323 0.0033348L3.33464 0.00325522C2.41416 0.00325522 1.66797 0.749447 1.66797 1.66992V18.3366C1.66797 19.2571 2.41416 20.0033 3.33464 20.0033H16.668C17.5884 20.0033 18.3346 19.2571 18.3346 18.3366ZM15.4882 5.00248H13.3333V2.84766L15.4882 5.00248ZM14.1667 15.0026H5.83333C4.72222 15.0026 4.72222 16.6693 5.83333 16.6693H14.1667C15.2778 16.6693 15.2778 15.0026 14.1667 15.0026ZM5.83268 8.33529C5.37245 8.33529 4.99935 8.70838 4.99935 9.16862V12.502C4.99935 12.9622 5.37244 13.3353 5.83268 13.3353H14.166C14.6263 13.3353 14.9993 12.9622 14.9993 12.502V9.16862C14.9993 8.70838 14.6263 8.33529 14.166 8.33529H5.83268Z'
+        fill='#2F3941'
+      />
+    </svg>
+  );
+};
+
+const UploadIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+    >
+      <path
+        d='M1 14.5C1 12.1716 2.22429 10.1291 4.06426 8.9812C4.56469 5.044 7.92686 2 12 2C16.0731 2 19.4353 5.044 19.9357 8.9812C21.7757 10.1291 23 12.1716 23 14.5C23 17.9216 20.3562 20.7257 17 20.9811L7 21C3.64378 20.7257 1 17.9216 1 14.5ZM16.8483 18.9868C19.1817 18.8093 21 16.8561 21 14.5C21 12.927 20.1884 11.4962 18.8771 10.6781L18.0714 10.1754L17.9517 9.23338C17.5735 6.25803 15.0288 4 12 4C8.97116 4 6.42647 6.25803 6.0483 9.23338L5.92856 10.1754L5.12288 10.6781C3.81156 11.4962 3 12.927 3 14.5C3 16.8561 4.81833 18.8093 7.1517 18.9868L7.325 19H16.675L16.8483 18.9868ZM13 13V17H11V13H8L12 8L16 13H13Z'
+        fill='#2F3941'
+      />
+    </svg>
+  );
+};
+
+const CheckIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      viewBox='0 0 16 16'
+      fill='none'
+    >
+      <path
+        fill-rule='evenodd'
+        clip-rule='evenodd'
+        d='M8 0C3.58667 0 0 3.58667 0 8C0 12.4133 3.58667 16 8 16C12.4133 16 16 12.4133 16 8C16 3.58667 12.4133 0 8 0ZM12.5878 6.58781L7.92115 11.2545C7.76115 11.4145 7.54781 11.4945 7.33448 11.4945C7.12115 11.4945 6.90781 11.4145 6.74781 11.2545L4.08115 8.58781C3.76115 8.26781 3.76115 7.73448 4.08115 7.41448C4.40115 7.09448 4.93448 7.09448 5.25448 7.41448L7.33448 9.49448L11.4145 5.41448C11.7345 5.09448 12.2678 5.09448 12.5878 5.41448C12.9211 5.73448 12.9211 6.26781 12.5878 6.58781Z'
+        fill='#228F67'
+      />
+    </svg>
+  );
+};
+
+const StatusDropDown = ({ value, onChange }: { value: string; onChange }) => {
+  const statusTypes = Object.values(JobApplicationSections);
+  const [hover, setHover] = useState(-1);
+  const entries = statusTypes.map((entry, i) => {
+    return (
+      <Stack
+        key={i}
+        onMouseOver={() => setHover(i)}
+        onMouseOut={() => setHover(-1)}
+        onClick={() => onChange({ target: { value: entry } })}
+        p={'4px'}
+        fontSize={'12px'}
+        style={{
+          cursor: 'pointer',
+          textTransform: 'capitalize',
+          backgroundColor:
+            hover === i
+              ? statusTypes[i] === value
+                ? 'rgb(230,231,232)'
+                : 'rgb(239,239,240)'
+              : statusTypes[i] === value
+              ? 'rgb(230,231,232)'
+              : 'white',
+        }}
+      >
+        {entry}
+      </Stack>
+    );
+  });
+  return (
+    <CandidateStatusDropdown slotOptions={entries} title={capitalize(value)} />
+  );
 };
 
 export default ImportManualCandidates;

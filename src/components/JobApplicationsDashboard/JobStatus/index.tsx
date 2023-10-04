@@ -27,11 +27,9 @@ import SpecializedTimePicker from '../../Common/SpecializedTimePicker';
 import UITextField from '../../Common/UITextField';
 
 const JobApplicationStatus = () => {
-  const { applicationsData } = useJobApplications();
+  const { job } = useJobApplications();
   const { jobsData } = useJobs();
-  const status = jobsData.jobs.find(
-    (j) => j.id === applicationsData.job.id,
-  ).active_status;
+  const status = jobsData.jobs.find((j) => j.id === job.id).active_status;
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const sourcingStatusInfo = getStatusInfo(status.sourcing, 'sourcing');
   const interviewingStatusInfo = getStatusInfo(
@@ -103,13 +101,12 @@ type StatusInfo = {
 };
 
 const CloseJob = ({ status }: { status: Status }) => {
-  const { applicationsData } = useJobApplications();
+  const { job } = useJobApplications();
   const { handleJobUpdate } = useJobs();
-  const job = applicationsData.job;
   const [close, setClose] = useState(false);
   const [text, setText] = useState('');
   const handleJobClose = async () => {
-    const confirmation = await handleJobUpdate(applicationsData.job.id, {
+    const confirmation = await handleJobUpdate(job.id, {
       active_status: {
         sourcing: {
           ...status.sourcing,
@@ -164,8 +161,8 @@ const SideDrawerContent = ({
 }) => {
   const [expand, setExpand] = useState(false);
   const { handleJobUpdate } = useJobs();
-  const { applicationsData } = useJobApplications();
-  const jobId = applicationsData.job.id;
+  const { job } = useJobApplications();
+  const jobId = job.id;
 
   const handleJobStatusInactive = async () => {
     await handleJobUpdate(jobId, {
@@ -285,7 +282,9 @@ const JobSchedules = ({
 }) => {
   const [start, setStart] = useState(status[flow].timeStamp ? false : true);
   const [timeStamp, setTimeStamp] = useState(
-    dayjs(status[flow].timeStamp).format('YYYY-MM-DDTHH:mm'),
+    status[flow].timeStamp
+      ? dayjs(status[flow].timeStamp).format('YYYY-MM-DDTHH:mm')
+      : dayjs(new Date()).format('YYYY-MM-DDTHH:mm'),
   );
   const disabled =
     timeStamp.includes('undefined') || timeStamp.includes('Invalid');

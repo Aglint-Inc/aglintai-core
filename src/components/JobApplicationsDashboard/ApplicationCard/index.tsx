@@ -105,7 +105,7 @@ const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
             handleOpenSidePanel(application);
           },
         }}
-        textStatus={capitalize(getJobStatus(application.status))}
+        textStatus={capitalize(application.status)}
         statusTextColor={{ style: { color: statusColors?.color } }}
         statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
         textAppliedOn={appliedOn}
@@ -113,19 +113,6 @@ const ApplicationCard = ({ application, index, checkList, setCheckList }) => {
       />
     </>
   );
-};
-
-const getJobStatus = (status) => {
-  switch (status) {
-    case 'applied':
-      return 'new';
-    case 'interviewing':
-      return 'interviewing';
-    case 'selected':
-      return 'qualified';
-    case 'rejected':
-      return 'disqualified';
-  }
 };
 
 export default ApplicationCard;

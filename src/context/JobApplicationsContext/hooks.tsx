@@ -2,7 +2,6 @@ import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import { JobType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import {
@@ -56,7 +55,6 @@ type Action =
       type: ActionType.READ;
       payload: {
         applicationData: JobApplication[];
-        jobData: JobType;
       };
     }
   | {
@@ -82,12 +80,18 @@ const reducer = (state: JobApplicationsData, action: Action) => {
           ...state.applications,
           [action.payload.applicationData.status as JobApplicationSections]: {
             list: [
-              ...state.applications.applied.list,
+              ...state.applications[
+                action.payload.applicationData.status as JobApplicationSections
+              ].list,
               action.payload.applicationData,
             ],
-            count: state.applications.applied.count + 1,
+            count:
+              state.applications[
+                action.payload.applicationData.status as JobApplicationSections
+              ].count + 1,
           },
         },
+        count: state.count + 1,
       };
       return newState;
     }
@@ -112,7 +116,6 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const newState: JobApplicationsData = {
         applications: segregatedApplications,
         count,
-        job: action.payload.jobData,
       };
       return newState;
     }
@@ -222,6 +225,7 @@ const useJobApplicationActions = (
   const [applicationsData, dispatch] = useReducer(reducer, undefined);
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
+  const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
   const initialLoad = initialJobLoad && applicationsData ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
@@ -293,10 +297,9 @@ const useJobApplicationActions = (
     if (recruiter) {
       const { data, error } = await readJobApplicationDbAction(jobId);
       if (data) {
-        const selectedJob = jobsData.jobs.find((job) => job.id === jobId);
         const action: Action = {
           type: ActionType.READ,
-          payload: { applicationData: data, jobData: selectedJob ?? null },
+          payload: { applicationData: data },
         };
         dispatch(action);
         return true;
@@ -385,7 +388,7 @@ const useJobApplicationActions = (
   };
 
   const handleJobApplicationError = (error) => {
-    toast.error(`Oops! Something went wrong.\n ${error?.message}`);
+    toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
 
   useEffect(() => {
@@ -394,6 +397,7 @@ const useJobApplicationActions = (
 
   const value = {
     applicationsData,
+    job,
     handleJobApplicationCreate,
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,

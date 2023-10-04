@@ -13,11 +13,11 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   JobApplication,
+  JobApplicationsData,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
-import { JobType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -34,9 +34,9 @@ import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
 import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobApplicationsDashboard = () => {
-  const { initialLoad, applicationsData } = useJobApplications();
+  const { initialLoad, job } = useJobApplications();
   return initialLoad ? (
-    applicationsData.job !== null ? (
+    job !== null ? (
       <YTransformWrapper>
         <JobApplicationComponent />
       </YTransformWrapper>
@@ -59,11 +59,11 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData } = useJobApplications();
+  const { applicationsData, job } = useJobApplications();
   const { jobsData } = useJobs();
-  const { job, applications } = applicationsData;
+  const { applications } = applicationsData;
 
-  const [section, setSection] = useState(JobApplicationSections.APPLIED);
+  const [section, setSection] = useState(JobApplicationSections.NEW);
 
   const sectionApplications = applications[section].list;
 
@@ -88,13 +88,12 @@ const JobApplicationComponent = () => {
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={`(${applicationsData.count} applicants)`}
-        isAll={section === JobApplicationSections.APPLIED}
-        countAll={applications.applied.count}
+        isAll={section === JobApplicationSections.NEW}
+        countAll={applications.new.count}
         onClickAllApplicant={{
-          onClick: () => handleSetSection(JobApplicationSections.APPLIED),
+          onClick: () => handleSetSection(JobApplicationSections.NEW),
           style: {
-            color:
-              section === JobApplicationSections.APPLIED ? 'white' : 'inherit',
+            color: section === JobApplicationSections.NEW ? 'white' : 'inherit',
           },
         }}
         isInterviewing={section === JobApplicationSections.INTERVIEWING}
@@ -108,22 +107,26 @@ const JobApplicationComponent = () => {
                 : 'inherit',
           },
         }}
-        isRejected={section === JobApplicationSections.REJECTED}
-        countRejected={applications.rejected.count}
+        isRejected={section === JobApplicationSections.DISQUALIFIED}
+        countRejected={applications.disqualified.count}
         onClickRejected={{
-          onClick: () => handleSetSection(JobApplicationSections.REJECTED),
+          onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
           style: {
             color:
-              section === JobApplicationSections.REJECTED ? 'white' : 'inherit',
+              section === JobApplicationSections.DISQUALIFIED
+                ? 'white'
+                : 'inherit',
           },
         }}
-        isSelected={section === JobApplicationSections.SELECTED}
-        countSelected={applications.selected.count}
+        isSelected={section === JobApplicationSections.QUALIFIED}
+        countSelected={applications.qualified.count}
         onClickSelected={{
-          onClick: () => handleSetSection(JobApplicationSections.SELECTED),
+          onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
           style: {
             color:
-              section === JobApplicationSections.SELECTED ? 'white' : 'inherit',
+              section === JobApplicationSections.QUALIFIED
+                ? 'white'
+                : 'inherit',
           },
         }}
         slotSearch={
@@ -259,17 +262,17 @@ const ActionBar = ({
   };
 
   const isChecked = checkList.size !== 0;
-  const showNew = isChecked && section === JobApplicationSections.REJECTED;
-  const showInterview = isChecked && section === JobApplicationSections.APPLIED;
+  const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
+  const showInterview = isChecked && section === JobApplicationSections.NEW;
   const showSelected =
     isChecked &&
-    (section === JobApplicationSections.APPLIED ||
+    (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING);
   const showReject =
     isChecked &&
-    (section === JobApplicationSections.APPLIED ||
+    (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING ||
-      section === JobApplicationSections.SELECTED);
+      section === JobApplicationSections.QUALIFIED);
   const DialogInfo = {
     interviewing: {
       heading: `Are you sure that you want to move ${
@@ -298,10 +301,10 @@ const ActionBar = ({
       } candidates to Selected`,
       subHeading: undefined,
       primaryAction: async () => {
-        await handleUpdateJobs(JobApplicationSections.SELECTED);
+        await handleUpdateJobs(JobApplicationSections.QUALIFIED);
         if (checkEmail) {
           sendEmails(
-            JobApplicationSections.SELECTED,
+            JobApplicationSections.QUALIFIED,
             checkList,
             applicationsData,
             recruiter,
@@ -319,10 +322,10 @@ const ActionBar = ({
       } candidates`,
       subHeading: 'Send rejection Emails to these candidates',
       primaryAction: async () => {
-        await handleUpdateJobs(JobApplicationSections.REJECTED);
+        await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
         if (checkEmail) {
           sendEmails(
-            JobApplicationSections.REJECTED,
+            JobApplicationSections.DISQUALIFIED,
             checkList,
             applicationsData,
             recruiter,
@@ -342,7 +345,7 @@ const ActionBar = ({
       warningMessage:
         'Moving back to applied will cancel the interviews the candidates have taken and will start the process again. ',
       primaryAction: async () => {
-        await handleUpdateJobs(JobApplicationSections.APPLIED);
+        await handleUpdateJobs(JobApplicationSections.NEW);
       },
       primaryText: 'Move to New',
       secondaryText: 'Cancel',
@@ -440,7 +443,7 @@ export default JobApplicationsDashboard;
 export function sendEmails(
   status: string,
   checkList: Set<string>,
-  applicationsData: { applications: any; count?: number; job?: JobType },
+  applicationsData: JobApplicationsData,
   recruiter,
   handleJobApplicationUpdate,
 ) {
@@ -496,7 +499,7 @@ export function sendEmails(
                 company_name: candidate.company,
                 interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
               })
-            : status === JobApplicationSections.REJECTED
+            : status === JobApplicationSections.DISQUALIFIED
             ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
                 first_name: candidate.first_name,
                 last_name: candidate.last_name,
@@ -514,7 +517,7 @@ export function sendEmails(
                 company_name: candidate.company,
                 interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
               })
-            : status === JobApplicationSections.REJECTED
+            : status === JobApplicationSections.DISQUALIFIED
             ? fillEmailTemplate(recruiter?.email_template?.rejection?.body, {
                 first_name: candidate.first_name,
                 last_name: candidate.last_name,
@@ -535,7 +538,7 @@ export function sendEmails(
             emails: candidate.emails,
           });
         }
-        if (status === JobApplicationSections.REJECTED) {
+        if (status === JobApplicationSections.DISQUALIFIED) {
           candidate.emails.rejected = true;
           await handleJobApplicationUpdate(candidate.application_id, {
             emails: candidate.emails,
@@ -546,18 +549,18 @@ export function sendEmails(
 
   if (
     status === JobApplicationSections.INTERVIEWING ||
-    status === JobApplicationSections.REJECTED
+    status === JobApplicationSections.DISQUALIFIED
   ) {
-    const applied = applicationsData.applications.applied.list;
+    const _new = applicationsData.applications.new.list;
     const interviewing = applicationsData.applications.interviewing.list;
-    const selected = applicationsData.applications.selected.list;
-    const rejected = applicationsData.applications.rejected.list;
+    const qualified = applicationsData.applications.qualified.list;
+    const disqualified = applicationsData.applications.disqualified.list;
 
     const allCandidates = [
-      ...applied,
+      ..._new,
       ...interviewing,
-      ...selected,
-      ...rejected,
+      ...qualified,
+      ...disqualified,
     ];
     const allCandidatesIds = allCandidates.map((ele) => ele.application_id);
     const filteredCandidates = [];

@@ -120,7 +120,7 @@ function ApplicationDetails({
                 (overAllScore <= 0 &&
                   applicationDetails.status ===
                     JobApplicationSections.INTERVIEWING) ||
-                applicationDetails.status === JobApplicationSections.APPLIED
+                applicationDetails.status === JobApplicationSections.NEW
               }
               slotInterviewInfo={
                 <>
@@ -178,8 +178,7 @@ function ApplicationDetails({
                         }}
                       />
                     )}
-                  {applicationDetails.status ===
-                    JobApplicationSections.APPLIED && (
+                  {applicationDetails.status === JobApplicationSections.NEW && (
                     <InterviewResultStatus
                       bgColorInterviewTag={{
                         style: { background: '#FFF7ED', color: '#703815' },
@@ -194,7 +193,7 @@ function ApplicationDetails({
                             await handleUpdateJobStatus(
                               new Set([applicationDetails?.application_id]),
                               {
-                                source: JobApplicationSections.APPLIED,
+                                source: JobApplicationSections.NEW,
                                 destination:
                                   JobApplicationSections.INTERVIEWING,
                               },

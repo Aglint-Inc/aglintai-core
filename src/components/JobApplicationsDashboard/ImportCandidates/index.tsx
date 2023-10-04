@@ -55,7 +55,7 @@ function ImportCandidates() {
       '1234567890',
       'sales manager',
       'xyz',
-      JobApplicationSections.APPLIED,
+      JobApplicationSections.NEW,
       'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
@@ -66,7 +66,7 @@ function ImportCandidates() {
       '9876543210',
       'Engineer',
       'hireDumb',
-      JobApplicationSections.APPLIED,
+      JobApplicationSections.NEW,
       '',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
@@ -77,22 +77,22 @@ function ImportCandidates() {
       '9876543210',
       'designer',
       'hireDumb',
-      JobApplicationSections.APPLIED,
+      JobApplicationSections.NEW,
       '',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
   ];
 
   async function createCandidates(candidates) {
-    const applied = applicationsData.applications.applied.list;
+    const _new = applicationsData.applications.new.list;
     const interviewing = applicationsData.applications.interviewing.list;
-    const selected = applicationsData.applications.selected.list;
-    const rejected = applicationsData.applications.rejected.list;
+    const qualified = applicationsData.applications.qualified.list;
+    const disqualified = applicationsData.applications.disqualified.list;
     const totalApplications = [
-      ...applied,
+      ..._new,
       ...interviewing,
-      ...selected,
-      ...rejected,
+      ...qualified,
+      ...disqualified,
     ].map((ele) => ele.email);
     const filteredCandidates = candidates.filter(
       (ele) => !totalApplications.includes(ele.email),
@@ -159,9 +159,7 @@ function ImportCandidates() {
       else reader.readAsArrayBuffer(file);
     },
     onDropRejected: () => {
-      toast.error('Invalid file.', {
-        duration: 2000,
-      });
+      toast.error('Invalid file.');
     },
     // disabled: !allowed || isLoading || areHeadersLoading,
   });
@@ -172,7 +170,6 @@ function ImportCandidates() {
         bgcolor: 'white',
         borderRadius: '10px',
       }}
-      elevation={10}
     >
       <Stack spacing={1} mt='16px'>
         <Fragment>
