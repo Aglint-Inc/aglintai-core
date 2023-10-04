@@ -85,10 +85,11 @@ export function searchJobs(jobs, searchString) {
     .filter((ele) => ele.job_title)
     .filter((item) => {
       const jobTitle = item.job_title.toLowerCase();
-      const status = item.status.toLowerCase();
+      // const status = item.status.toLowerCase();
 
       // Check if the job title or status contains the search string
-      return jobTitle.includes(search) || status.includes(search);
+      return jobTitle.includes(search);
+      // || status.includes(search);
     });
 
   return filteredData;
