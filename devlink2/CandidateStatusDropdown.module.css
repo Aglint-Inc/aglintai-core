@@ -3,6 +3,7 @@
   z-index: 10;
 
   display: flex;
+  min-width: 120px;
   flex-direction: column;
   justify-content: center;
   grid-column-gap: 6px;

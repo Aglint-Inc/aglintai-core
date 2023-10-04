@@ -8,6 +8,7 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { ButtonTextGrey } from '@/devlink';
 import { CandidateStatusDropdown, SelectedPopup } from '@/devlink2';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
 import useUploadCandidate from './hooks';
@@ -53,7 +54,7 @@ const initialFormFields: FormEntries = {
   phone: { ...initialFormField, validation: 'phone' },
   linkedin: { ...initialFormField, validation: 'url', required: false },
   resume: { ...initialFormField, validation: 'file' },
-  status: { ...initialFormField, value: 'applied' },
+  status: { ...initialFormField, value: JobApplicationSections.NEW },
 };
 
 const ImportManualCandidates = () => {
@@ -437,7 +438,7 @@ const CheckIcon = () => {
 };
 
 const StatusDropDown = ({ value, onChange }: { value: string; onChange }) => {
-  const statusTypes = ['applied', 'interviewing', 'selected', 'rejected'];
+  const statusTypes = Object.values(JobApplicationSections);
   const [hover, setHover] = useState(-1);
   const entries = statusTypes.map((entry, i) => {
     return (

@@ -5,19 +5,17 @@ import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 export enum JobApplicationSections {
-  APPLIED = 'applied',
+  NEW = 'new',
   INTERVIEWING = 'interviewing',
-  SELECTED = 'selected',
-  REJECTED = 'rejected',
+  QUALIFIED = 'qualified',
+  DISQUALIFIED = 'disqualified',
 }
 
 export type JobApplicationSectionData = {
-  [key in JobApplicationSections]:
-    | {
-        list: JobApplication[];
-        count: number;
-      }
-    | undefined;
+  [key in JobApplicationSections]: {
+    list: JobApplication[];
+    count: number;
+  };
 };
 
 export type JobApplicationsData = {
