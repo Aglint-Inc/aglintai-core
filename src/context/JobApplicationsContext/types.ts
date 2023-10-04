@@ -23,7 +23,6 @@ export type JobApplicationSectionData = {
 export type JobApplicationsData = {
   applications: JobApplicationSectionData;
   count: number;
-  job: JobType;
 };
 
 export type JobApplication =
@@ -35,10 +34,11 @@ export type InputData = Partial<
 
 export type JobApplicationContext = {
   applicationsData: JobApplicationsData;
+  job: JobType;
   handleJobApplicationCreate: (
     inputData: Pick<
       JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score'
+      'first_name' | 'last_name' | 'email' | 'score' | 'status'
     > &
       InputData,
   ) => Promise<boolean>;

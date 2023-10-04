@@ -10,6 +10,7 @@ import {
 
 export const initialJobApplicationsContext: JobApplicationContext = {
   applicationsData: undefined,
+  job: undefined,
   handleJobApplicationCreate: undefined,
   handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,

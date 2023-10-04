@@ -34,9 +34,9 @@ import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
 import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobApplicationsDashboard = () => {
-  const { initialLoad, applicationsData } = useJobApplications();
+  const { initialLoad, job } = useJobApplications();
   return initialLoad ? (
-    applicationsData.job !== null ? (
+    job !== null ? (
       <YTransformWrapper>
         <JobApplicationComponent />
       </YTransformWrapper>
@@ -59,9 +59,9 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData } = useJobApplications();
+  const { applicationsData, job } = useJobApplications();
   const { jobsData } = useJobs();
-  const { job, applications } = applicationsData;
+  const { applications } = applicationsData;
 
   const [section, setSection] = useState(JobApplicationSections.APPLIED);
 

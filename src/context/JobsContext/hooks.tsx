@@ -233,7 +233,7 @@ const useJobActions = () => {
   };
 
   const handleJobError = (error) => {
-    toast.error(`Oops! Something went wrong.\n ${error?.message}`);
+    toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
   useEffect(() => {
     (async () => {

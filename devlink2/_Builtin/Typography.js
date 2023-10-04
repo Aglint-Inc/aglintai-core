@@ -1,17 +1,17 @@
-import * as React from 'react';
-export function Heading({ tag = 'h1', ...props }) {
+import * as React from "react";
+export function Heading({ tag = "h1", ...props }) {
   return React.createElement(tag, props);
 }
 export function Paragraph(props) {
-  return React.createElement('p', props);
+  return React.createElement("p", props);
 }
 export function Emphasized(props) {
   return <em {...props} />;
 }
 export function Strong(props) {
-  return React.createElement('strong', props);
+  return React.createElement("strong", props);
 }
-export function Figure({ className = '', figure, ...props }) {
+export function Figure({ className = "", figure, ...props }) {
   const { type, align } = figure;
   if (align) {
     className += `w-richtext-align-${align} `;
@@ -30,9 +30,9 @@ export function Subscript(props) {
 export function Superscript(props) {
   return <sup {...props} />;
 }
-export function RichText({ tag = 'div', className = '', ...props }) {
+export function RichText({ tag = "div", className = "", ...props }) {
   return React.createElement(tag, {
-    className: className + ' w-richtext',
+    className: className + " w-richtext",
     ...props,
   });
 }
