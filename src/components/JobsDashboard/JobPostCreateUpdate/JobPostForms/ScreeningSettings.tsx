@@ -13,26 +13,10 @@ import { FormJobType, useJobForm } from '../JobPostFormProvider';
 
 function ScreeningSettings() {
   const { jobForm, handleUpdateFormFields } = useJobForm();
-  const screeningConfig = get(jobForm, 'formFields.screeningConfig', {
-    feedbackVisible: false,
-    screening: {
-      minScore: true,
-      minApplicants: true,
-      minNoApplicants: 40,
-      minNoResumeScore: 50,
-    },
-    useAglintMatchingAlgo: true,
-    shortlist: {
-      algoScore: true,
-      interviewScore: true,
-      minAlgoScore: 8,
-      minInterviewScore: 80,
-    },
-  }) as FormJobType['screeningConfig'];
-
-  const autoScreening =
-    screeningConfig.screening.minScore ||
-    screeningConfig.screening.minApplicants;
+  const screeningConfig = get(
+    jobForm,
+    'formFields.screeningConfig',
+  ) as FormJobType['screeningConfig'];
 
   const autoShortList =
     screeningConfig.shortlist.algoScore ||
@@ -42,26 +26,28 @@ function ScreeningSettings() {
     <NewJobStep4
       isHeaderVisible={jobForm.formType === 'new'}
       isSettingHeadingVisible={jobForm.formType === 'new'}
-      isAutomatedScreeningChecked1={screeningConfig.screening.minApplicants}
-      isAutomatedScreeningChecked2={screeningConfig.screening.minScore}
+      isAutomatedScreeningChecked1={
+        screeningConfig.screening.isSendInterviewToAll
+      }
+      isAutomatedScreeningChecked2={
+        !screeningConfig.screening.isSendInterviewToAll
+      }
       isShortlistCandidateChecked1={screeningConfig.shortlist.interviewScore}
       isShortlistCandidateChecked2={screeningConfig.shortlist.algoScore}
       onClickAutomateScreeningCheck1={{
         onClick: () => {
-          autoScreening &&
-            handleUpdateFormFields({
-              path: 'screeningConfig.screening.minApplicants',
-              value: !screeningConfig.screening.minApplicants,
-            });
+          handleUpdateFormFields({
+            path: 'screeningConfig.screening.isSendInterviewToAll',
+            value: !screeningConfig.screening.isSendInterviewToAll,
+          });
         },
       }}
       onClickAutomatedScreeningCheck2={{
         onClick: () => {
-          autoScreening &&
-            handleUpdateFormFields({
-              path: 'screeningConfig.screening.minScore',
-              value: !screeningConfig.screening.minScore,
-            });
+          handleUpdateFormFields({
+            path: 'screeningConfig.screening.isSendInterviewToAll',
+            value: !screeningConfig.screening.isSendInterviewToAll,
+          });
         },
       }}
       onClickShortlistCandidateCheck1={{
@@ -82,51 +68,16 @@ function ScreeningSettings() {
             });
         },
       }}
-      slotAutomateScreeningToggle={
-        <>
-          <Switch
-            size='small'
-            color='info'
-            checked={autoScreening}
-            onChange={() => {
-              handleUpdateFormFields({
-                path: 'screeningConfig.screening',
-                value: {
-                  ...screeningConfig.screening,
-                  minScore: autoScreening ? false : true,
-                  minApplicants: autoScreening ? false : true,
-                },
-              });
-            }}
-          />
-        </>
-      }
-      slotAutomatedScreeningCount1={
-        <UITextField
-          type='number'
-          width={'70px'}
-          placeholder='100'
-          disabled={!autoScreening}
-          onChange={(e) => {
-            handleUpdateFormFields({
-              path: 'screeningConfig.screening.minNoApplicants',
-              value: e.target.value,
-            });
-          }}
-          defaultValue={screeningConfig.screening.minNoApplicants}
-          value={screeningConfig.screening.minNoApplicants}
-        />
-      }
       slotAutomatedScreeningCount2={
         <UITextField
-          disabled={!autoScreening}
+          disabled={screeningConfig.screening.isSendInterviewToAll}
           type='number'
           width={'70px'}
           placeholder='8'
           onChange={(e) => {
             handleUpdateFormFields({
               path: 'screeningConfig.screening.minNoResumeScore',
-              value: e.target.value,
+              value: Number(e.target.value),
             });
           }}
           defaultValue={screeningConfig.screening.minNoResumeScore}

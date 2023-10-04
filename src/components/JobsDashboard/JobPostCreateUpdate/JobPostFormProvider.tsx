@@ -34,21 +34,6 @@ type AutoCompleteType = {
   value: string;
 };
 
-type JobStatus = {
-  sourcing: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-  interviewing: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-  closed: {
-    isActive: boolean;
-    startTime: null | string;
-  };
-};
-
 type EmailTemplate = Record<
   string,
   {
@@ -65,14 +50,11 @@ export type FormJobType = {
   jobType: string;
   jobDescription: string;
   skills: string[];
-  status: JobStatus;
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
   screeningConfig: {
     screening: {
-      minApplicants: boolean;
-      minScore: boolean;
-      minNoApplicants: number;
+      isSendInterviewToAll: boolean;
       minNoResumeScore: number;
     };
     useAglintMatchingAlgo: boolean;
@@ -233,7 +215,7 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleJobUpdate } = useJobs();
+  const { handleUIJobUpdate } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     if (
       get(currState, 'createdAt', undefined) === undefined &&
@@ -242,7 +224,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       return;
 
     const updatedJobDb = await saveJobPostToDb(currState);
-    handleJobUpdate({
+    handleUIJobUpdate({
       ...updatedJobDb,
       active_status: updatedJobDb.active_status as unknown as StatusJobs,
     });
@@ -348,7 +330,6 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       job_title: jobForm.formFields.jobTitle,
       job_type: jobForm.formFields.jobType,
       workplace_type: jobForm.formFields.workPlaceType,
-      active_status: jobForm.formFields.status,
       skills: jobForm.formFields.skills,
       slug: jobForm.createdAt
         ? undefined

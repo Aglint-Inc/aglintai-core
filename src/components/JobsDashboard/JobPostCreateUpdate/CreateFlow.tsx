@@ -110,9 +110,9 @@ function CreateNewJob() {
       if (get(interviewConfig, 'softSkills.value', false)) {
         totalQns += get(interviewConfig, 'softSkills.questions', []).length;
       }
-      if (totalQns < 10 || totalQns > 15) {
+      if (totalQns < 10 || totalQns > 25) {
         flag = false;
-        toast.error('Please set atleast 10 and at max 15 Questions');
+        toast.error('Please set atleast 10 and at max 25 Questions');
       }
     }
     return flag;

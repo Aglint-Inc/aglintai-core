@@ -233,6 +233,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;

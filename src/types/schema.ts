@@ -1147,6 +1147,7 @@ export interface Database {
       job_applications: {
         Row: {
           ai_interviewer_id: number | null;
+          api_logs: Json;
           application_id: string;
           branch: string | null;
           cgpa: string | null;
@@ -1170,6 +1171,7 @@ export interface Database {
           job_title: string | null;
           json_resume: Json | null;
           last_name: string;
+          last_updated_at: string | null;
           linkedin: string | null;
           phone: string | null;
           profile_image: string | null;
@@ -1186,6 +1188,7 @@ export interface Database {
         };
         Insert: {
           ai_interviewer_id?: number | null;
+          api_logs?: Json;
           application_id?: string;
           branch?: string | null;
           cgpa?: string | null;
@@ -1209,6 +1212,7 @@ export interface Database {
           job_title?: string | null;
           json_resume?: Json | null;
           last_name: string;
+          last_updated_at?: string | null;
           linkedin?: string | null;
           phone?: string | null;
           profile_image?: string | null;
@@ -1225,6 +1229,7 @@ export interface Database {
         };
         Update: {
           ai_interviewer_id?: number | null;
+          api_logs?: Json;
           application_id?: string;
           branch?: string | null;
           cgpa?: string | null;
@@ -1248,6 +1253,7 @@ export interface Database {
           job_title?: string | null;
           json_resume?: Json | null;
           last_name?: string;
+          last_updated_at?: string | null;
           linkedin?: string | null;
           phone?: string | null;
           profile_image?: string | null;
@@ -1960,6 +1966,30 @@ export interface Database {
           },
         ];
       };
+      notify_me: {
+        Row: {
+          created_at: string | null;
+          email: string;
+          id: string;
+          job_id: string | null;
+          job_title: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          email: string;
+          id?: string;
+          job_id?: string | null;
+          job_title?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          email?: string;
+          id?: string;
+          job_id?: string | null;
+          job_title?: string | null;
+        };
+        Relationships: [];
+      };
       profile: {
         Row: {
           description: string | null;
@@ -2336,7 +2366,6 @@ export interface Database {
           screening_setting: Json | null;
           skills: string[] | null;
           slug: string;
-          status: string | null;
           updated_at: string | null;
           workplace_type: string | null;
         };
@@ -2365,7 +2394,6 @@ export interface Database {
           screening_setting?: Json | null;
           skills?: string[] | null;
           slug?: string;
-          status?: string | null;
           updated_at?: string | null;
           workplace_type?: string | null;
         };
@@ -2394,13 +2422,12 @@ export interface Database {
           screening_setting?: Json | null;
           skills?: string[] | null;
           slug?: string;
-          status?: string | null;
           updated_at?: string | null;
           workplace_type?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'public_jobs_fkey';
+            foreignKeyName: 'public_jobs_recruiter_id_fkey';
             columns: ['recruiter_id'];
             referencedRelation: 'recruiter';
             referencedColumns: ['id'];
@@ -2488,6 +2515,7 @@ export interface Database {
           e_o_statement: string | null;
           email: string | null;
           email_template: Json;
+          employee_size: string | null;
           employment_type: Json;
           hr_contact: Json | null;
           id: string;
@@ -2516,6 +2544,7 @@ export interface Database {
           e_o_statement?: string | null;
           email?: string | null;
           email_template?: Json;
+          employee_size?: string | null;
           employment_type?: Json;
           hr_contact?: Json | null;
           id?: string;
@@ -2544,6 +2573,7 @@ export interface Database {
           e_o_statement?: string | null;
           email?: string | null;
           email_template?: Json;
+          employee_size?: string | null;
           employment_type?: Json;
           hr_contact?: Json | null;
           id?: string;
@@ -3217,6 +3247,7 @@ export interface Database {
       support_ticket: {
         Row: {
           action_pending: Json;
+          application_id: string | null;
           assign_to: string | null;
           'attachments ': string[] | null;
           company_id: string;
@@ -3237,6 +3268,7 @@ export interface Database {
         };
         Insert: {
           action_pending?: Json;
+          application_id?: string | null;
           assign_to?: string | null;
           'attachments '?: string[] | null;
           company_id: string;
@@ -3257,6 +3289,7 @@ export interface Database {
         };
         Update: {
           action_pending?: Json;
+          application_id?: string | null;
           assign_to?: string | null;
           'attachments '?: string[] | null;
           company_id?: string;
