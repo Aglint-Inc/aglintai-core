@@ -36,10 +36,10 @@ export type JobApplicationContext = {
   handleJobApplicationCreate: (
     inputData: Pick<
       JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score' | 'status'
+      'first_name' | 'last_name' | 'email' | 'status'
     > &
       InputData,
-  ) => Promise<boolean>;
+  ) => Promise<JobApplication>;
   handleJobApplicationBulkCreate: (
     inputData: (Pick<
       JobApplication,

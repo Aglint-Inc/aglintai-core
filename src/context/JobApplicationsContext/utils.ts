@@ -30,7 +30,7 @@ export const createJobApplicationDbAction = async (
   job_id: string,
   inputData: Pick<
     JobApplication,
-    'first_name' | 'last_name' | 'email' | 'score'
+    'first_name' | 'last_name' | 'email' 
   > &
     InputData,
 ) => {
