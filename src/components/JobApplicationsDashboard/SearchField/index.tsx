@@ -33,10 +33,10 @@ const SearchField = ({
   useEffect(() => {
     handleSearch(value);
   }, [
-    applicationsData.applications.new.count,
-    applicationsData.applications.interviewing.count,
-    applicationsData.applications.disqualified.count,
-    applicationsData.applications.qualified.count,
+    applicationsData.applications.new,
+    applicationsData.applications.interviewing,
+    applicationsData.applications.disqualified,
+    applicationsData.applications.qualified,
     section,
     jobUpdate,
   ]);

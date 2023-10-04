@@ -310,36 +310,41 @@ function ApplicationDetails({
               slotResumeScore={
                 <ResumeResult
                   textCertificationScore={
-                    applicationDetails?.json_resume?.summary?.qualification
-                      ?.certifications
-                      ? applicationDetails?.json_resume?.summary?.qualification
-                          ?.certifications
+                    applicationDetails?.jd_score?.qualification?.certifications
+                      .relevance
+                      ? applicationDetails?.jd_score?.qualification
+                          ?.certifications.relevance
                       : '--'
                   }
                   textProjectScore={
-                    applicationDetails?.json_resume?.qualification?.project
+                    applicationDetails?.jd_score?.qualification?.project
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification?.project
+                      ? applicationDetails?.jd_score?.qualification?.project
                           ?.relevance
                       : ''
                   }
                   textEducationScore={
-                    applicationDetails?.json_resume?.qualification?.education
+                    applicationDetails?.jd_score?.qualification?.education
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification
-                          ?.education?.relevance
+                      ? applicationDetails?.jd_score?.qualification?.education
+                          ?.relevance
                       : ''
                   }
                   textExperienceScore={
-                    applicationDetails?.json_resume?.qualification?.experience
+                    applicationDetails?.jd_score?.qualification?.experience
                       ?.relevance
-                      ? applicationDetails?.json_resume?.qualification
-                          ?.experience?.relevance
+                      ? applicationDetails?.jd_score?.qualification?.experience
+                          ?.relevance
                       : ''
                   }
                   textSkillsScore={
-                    applicationDetails?.json_resume?.skills_score?.score
-                      ? applicationDetails?.json_resume?.skills_score?.score
+                    applicationDetails?.jd_score?.skills_score?.score
+                      ? applicationDetails?.jd_score?.skills_score?.score
+                      : '--'
+                  }
+                  textSummaryScore={
+                    applicationDetails?.summary?.feedback
+                      ? applicationDetails?.summary?.feedback
                       : '--'
                   }
                   onClickDownloadResume={{

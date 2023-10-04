@@ -14,8 +14,11 @@ import {
 } from './utils';
 
 const useUploadCandidate = () => {
-  const { handleJobApplicationCreate, handleJobApplicationError } =
-    useJobApplications();
+  const {
+    handleJobApplicationCreate,
+    handleJobApplicationError,
+    handleJobApplicationUIUpdate,
+  } = useJobApplications();
 
   const handleUploadCandidate = async (
     job: JobType,
@@ -37,7 +40,7 @@ const useUploadCandidate = () => {
             resume: data,
           });
           if (applicantData) {
-            await axios.post(
+            const { data: resumeScore } = await axios.post(
               'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
               {
                 pdfUrl: applicantData.resume,
@@ -48,9 +51,11 @@ const useUploadCandidate = () => {
                 company_name: job?.company,
               },
             );
+            handleJobApplicationUIUpdate({
+              ...applicantData,
+              jd_score: resumeScore,
+            });
 
-
-          
             toast.success('Job application successfully created!');
             return true;
           }
