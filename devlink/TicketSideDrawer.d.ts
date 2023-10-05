@@ -8,13 +8,6 @@ declare function TicketSideDrawer(props: {
   slotTypeMessage?: Types.Devlink.Slot;
   slotMessageSuggestion?: Types.Devlink.Slot;
   textTicketId?: React.ReactNode;
-  textPriorityLevel?: React.ReactNode;
-  colorPropsPriorityText?: Types.Devlink.RuntimeProps;
-  slotPriorityIcon?: Types.Devlink.Slot;
-  slotAssignedToImage?: Types.Devlink.Slot;
-  textAssignedtoName?: React.ReactNode;
-  bgColorPropsStatus?: Types.Devlink.RuntimeProps;
-  textStatus?: React.ReactNode;
   textCreatedDate?: React.ReactNode;
   slotCandidateImage?: Types.Devlink.Slot;
   textCandidateName?: React.ReactNode;
@@ -29,4 +22,7 @@ declare function TicketSideDrawer(props: {
   textCandidateStatus?: React.ReactNode;
   colorPropsCandidateStatus?: Types.Devlink.RuntimeProps;
   onClickInterviewLink?: Types.Devlink.RuntimeProps;
+  slotStatus?: Types.Devlink.Slot;
+  slotAssignee?: Types.Devlink.Slot;
+  slotPriority?: Types.Devlink.Slot;
 }): React.JSX.Element;

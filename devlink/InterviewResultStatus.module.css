@@ -111,6 +111,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .text-sm.color-grey-400 {
   color: var(--grey400-863ed4b5);
 }
@@ -149,6 +153,15 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .text-kale-600 {
@@ -202,15 +215,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .icons.curser-hover-pointer {

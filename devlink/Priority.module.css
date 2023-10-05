@@ -1,0 +1,25 @@
+.il-priority {
+  width: 120px;
+  margin-left: 32px;
+}
+
+.il-priority.content {
+  display: flex;
+  margin-left: 0px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.il-priority.top {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.il-priority-icon {
+  width: 10px;
+  height: 10px;
+  min-height: 10px;
+  min-width: 10px;
+}

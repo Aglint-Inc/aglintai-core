@@ -544,6 +544,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .profile-mail-wrappers {
   display: flex;
   align-items: center;
@@ -711,6 +715,10 @@
 
 .relative {
   position: relative;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
 }
 
 .all-interview-result-wrapper {

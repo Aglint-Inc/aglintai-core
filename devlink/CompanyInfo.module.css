@@ -157,6 +157,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;

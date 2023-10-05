@@ -103,6 +103,14 @@
   background-color: var(--red500-2e806c7d);
 }
 
+.grey-700 {
+  background-color: var(--grey700-7fbe857b);
+}
+
+.job-link-tag.side-color-nav {
+  background-color: #95a5a6;
+}
+
 .aui_nav_sublink_active-drop {
   position: absolute;
   left: 0%;

@@ -152,6 +152,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .aui-button-wrap {
   display: flex;
   align-items: center;

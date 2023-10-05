@@ -158,6 +158,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .close-pop-email {
   position: static;
   left: auto;

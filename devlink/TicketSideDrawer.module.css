@@ -342,6 +342,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .inde-details-block {
   display: flex;
   flex-direction: column;
@@ -453,49 +457,6 @@
 
 .text-red-600 {
   color: var(--red600-953350ec);
-}
-
-.div-block-446 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.inde-priority-icon {
-  width: 10px;
-  height: 10px;
-  min-height: 10px;
-  min-width: 10px;
-}
-
-.inde-assignee-block {
-  display: flex;
-  padding: 4px 10px 4px 4px;
-  grid-column-gap: 9px;
-  grid-row-gap: 9px;
-
-  border-radius: 100px;
-
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-}
-
-.inde-assignee-image {
-  overflow: hidden;
-  width: 20px;
-  height: 20px;
-  min-height: 20px;
-  min-width: 20px;
-
-  border-radius: 100px;
-}
-
-.inde-status-block {
-  padding: 4px 20px;
-  border-radius: 100px;
-  background-color: hsla(204.07185628742513, 69.87%, 53.14%, 1.00);
-  color: hsla(0, 0.00%, 100.00%, 1.00);
-  text-align: center;
 }
 
 .inde-candidate-image {
