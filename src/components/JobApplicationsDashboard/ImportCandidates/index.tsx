@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import { Fragment, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
@@ -12,7 +13,6 @@ import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
-import axios from 'axios';
 // import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
 
 function ImportCandidates() {
