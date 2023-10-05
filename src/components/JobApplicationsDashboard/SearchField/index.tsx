@@ -3,8 +3,10 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@context/JobApplicationsContext/types';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputAdornment } from '@mui/material';
+import { Collapse, InputAdornment, Stack } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import UITextField from '../../Common/UITextField';
@@ -56,14 +58,34 @@ const SearchField = ({
 
   return (
     <UITextField
+      width={'250px'}
       onChange={(e) => {
         setValue(e.target.value);
       }}
+      value={value}
       placeholder='Search'
       InputProps={{
-        startAdornment: (
+        endAdornment: (
           <InputAdornment position='start'>
-            <SearchIcon sx={{ opacity: 0.5 }} />
+            <Stack
+              position={'absolute'}
+              style={{ transform: 'translateX(-12px)' }}
+            >
+              <Collapse in={value !== ''} sx={{ position: 'relative' }}>
+                <IconButton
+                  onClick={() => setValue('')}
+                  style={{ transform: 'translateX(-4px)' }}
+                >
+                  <CloseIcon sx={{ opacity: 0.5 }} />
+                </IconButton>
+              </Collapse>
+              <Collapse in={value === ''} sx={{ position: 'relative' }}>
+                <SearchIcon
+                  sx={{ opacity: 0.5 }}
+                  style={{ transform: 'translateY(2px)' }}
+                />
+              </Collapse>
+            </Stack>
           </InputAdornment>
         ),
       }}

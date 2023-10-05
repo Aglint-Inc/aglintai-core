@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
@@ -13,12 +13,13 @@ const ApplicationCard = ({
   application,
   index,
   checkList,
-  setCheckList,
+  handleSelect,
 }: {
   application: JobApplication;
   index: number;
   checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
+  // eslint-disable-next-line no-unused-vars
+  handleSelect: (index: number) => void;
 }) => {
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
@@ -37,13 +38,7 @@ const ApplicationCard = ({
   const appliedOn = `Applied on ${creationDate}`;
 
   const handleCheck = () => {
-    setCheckList((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(application.application_id))
-        newSet.delete(application.application_id);
-      else newSet.add(application.application_id);
-      return newSet;
-    });
+    handleSelect(index);
   };
 
   const handleOpenSidePanel = (application) => {

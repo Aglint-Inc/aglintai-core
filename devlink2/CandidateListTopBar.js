@@ -8,7 +8,10 @@ export function CandidateListTopBar({
   onClickCheckbox = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "candidate-list-item")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "candidate-list-item", "top-bar")}
+      tag="div"
+    >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-328")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "checkbox-wrappers-job")}

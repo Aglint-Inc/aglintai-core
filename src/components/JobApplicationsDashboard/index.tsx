@@ -23,9 +23,11 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
+import { useKeyPress } from './hooks';
 import ImportCandidates from './ImportCandidates';
 import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
+import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize } from './utils';
 import Loader from '../Common/Loader';
@@ -198,8 +200,35 @@ const ApplicantsList = ({
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
 }) => {
+  const { pressed } = useKeyPress('Control');
+  const handleSelect = (index: number) => {
+    if (!pressed) {
+      setCheckList((prev) => {
+        const newSet = new Set(prev);
+        const id = applications[index].application_id;
+        if (newSet.has(id)) newSet.delete(id);
+        else newSet.add(id);
+        return newSet;
+      });
+    } else {
+      const start = applications
+        .slice()
+        .findLastIndex(
+          (application, i) =>
+            i <= index && checkList.has(application.application_id),
+        );
+      setCheckList((prev) => {
+        const newSet = applications.reduce((acc, curr, i) => {
+          if (i > start && i <= index && !checkList.has(curr.application_id))
+            acc.push(curr.application_id);
+          return acc;
+        }, []);
+        return new Set([...prev, ...newSet]);
+      });
+    }
+  };
   return applications.length === 0 ? (
-    <ApplicantsListEmpty />
+    <ApplicantsListEmpty slotLottie={<NoApplicants />} />
   ) : (
     <>
       {applications.map((application, i) => {
@@ -214,7 +243,7 @@ const ApplicantsList = ({
                 application={application}
                 index={i}
                 checkList={checkList}
-                setCheckList={setCheckList}
+                handleSelect={handleSelect}
               />
             </ScrollList>
           </Stack>

@@ -104,8 +104,10 @@ const CloseJob = ({ status }: { status: Status }) => {
   const { job } = useJobApplications();
   const { handleJobUpdate } = useJobs();
   const [close, setClose] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const handleJobClose = async () => {
+    setLoading(true);
     const confirmation = await handleJobUpdate(job.id, {
       active_status: {
         sourcing: {
@@ -125,6 +127,7 @@ const CloseJob = ({ status }: { status: Status }) => {
     if (confirmation) {
       toast.success('Job closed successfully');
     }
+    setLoading(false);
     setClose(false);
   };
   const form = (
@@ -138,14 +141,26 @@ const CloseJob = ({ status }: { status: Status }) => {
   return (
     <>
       <MuiPopup props={{ open: close }}>
-        <DeleteJobPopup
-          jobTitle={job.job_title}
-          jobInfo={job.location}
-          slotForm={form}
-          closeProps={{ onClick: () => setClose(false) }}
-          isDeleteDisabled={text !== job.job_title}
-          onClickDelete={{ onClick: async () => await handleJobClose() }}
-        />
+        <Stack
+          style={
+            loading
+              ? {
+                  pointerEvents: 'none',
+                }
+              : {
+                  pointerEvents: 'auto',
+                }
+          }
+        >
+          <DeleteJobPopup
+            jobTitle={job.job_title.trim()}
+            jobInfo={job.location.trim()}
+            slotForm={form}
+            closeProps={{ onClick: () => setClose(false) }}
+            isDeleteDisabled={text.trim() !== job.job_title.trim()}
+            onClickDelete={{ onClick: async () => await handleJobClose() }}
+          />
+        </Stack>
       </MuiPopup>
       <DelJobBtn onClick={{ onClick: () => setClose(true) }} />
     </>
@@ -163,8 +178,10 @@ const SideDrawerContent = ({
   const { handleJobUpdate } = useJobs();
   const { job } = useJobApplications();
   const jobId = job.id;
+  const [loading, setLoading] = useState(false);
 
   const handleJobStatusInactive = async () => {
+    setLoading(true);
     await handleJobUpdate(jobId, {
       active_status: {
         ...status,
@@ -174,11 +191,18 @@ const SideDrawerContent = ({
         },
       },
     });
+    setLoading(false);
     setExpand(false);
   };
   const checked = statusInfo.active || statusInfo.scheduled || expand;
   return (
-    <Stack>
+    <Stack
+      style={
+        loading
+          ? { opacity: 0.4, pointerEvents: 'none', transition: '0.5s' }
+          : { opacity: 1, pointerEvents: 'auto', transition: '0.5s' }
+      }
+    >
       <ToggleSelectDropdown
         dropdownTitle={capitalize(statusInfo.flow)}
         slotToggleBtn={
@@ -212,6 +236,7 @@ const SideDrawerContent = ({
                 jobId={jobId}
                 status={status}
                 flow={statusInfo.flow}
+                setLoading={setLoading}
                 setExpand={setExpand}
               />
             </Collapse>
@@ -249,14 +274,14 @@ const getStatusInfo = (
       ? status.isActive
         ? `${capitalize(flow)} is active`
         : `${capitalize(flow)} starts on ${dayjs(status.timeStamp).format(
-            'DD/MM/YY hh:mm a',
+            'DD MMM, YYYY, hh:mm a',
           )}`
       : `${capitalize(flow)} is off`;
   const primaryStatus =
     status.timeStamp !== null
       ? status.isActive
         ? 'Active'
-        : `${dayjs(status.timeStamp).format('DD/MM/YY hh:mm a')}`
+        : `${dayjs(status.timeStamp).format('DD MMM, YYYY, hh:mm a')}`
       : 'Off';
   return {
     active,
@@ -274,23 +299,24 @@ const JobSchedules = ({
   flow,
   status,
   setExpand,
+  setLoading,
 }: {
   jobId: string;
   flow: Flow;
   status: Status;
   setExpand: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [start, setStart] = useState(status[flow].timeStamp ? false : true);
-  const [timeStamp, setTimeStamp] = useState(
-    status[flow].timeStamp
-      ? dayjs(status[flow].timeStamp).format('YYYY-MM-DDTHH:mm')
-      : dayjs(new Date()).format('YYYY-MM-DDTHH:mm'),
-  );
-  const disabled =
-    timeStamp.includes('undefined') || timeStamp.includes('Invalid');
+  const timeStamp = status[flow].timeStamp
+    ? dayjs(status[flow].timeStamp).format('YYYY-MM-DDTHH:mm')
+    : dayjs(new Date()).format('YYYY-MM-DDTHH:mm');
+  const [date, setDate] = useState(timeStamp.split('T')[0]);
+  const [time, setTime] = useState(timeStamp);
+  const disabled = !(date && time);
   const { handleJobUpdate } = useJobs();
-
   const handleJobStatusUpdate = async () => {
+    setLoading(true);
     await handleJobUpdate(jobId, {
       active_status: {
         ...status,
@@ -300,10 +326,13 @@ const JobSchedules = ({
             ? new Date().toISOString()
             : disabled
             ? null
-            : new Date(timeStamp).toISOString(),
+            : new Date(
+                `${date.split('T')[0]}T${time.split('T')[1]}`,
+              ).toISOString(),
         },
       },
     });
+    setLoading(false);
     setExpand(false);
   };
   return (
@@ -321,8 +350,10 @@ const JobSchedules = ({
       slotBody={
         <JobScheduleBody
           isStart={start}
-          timeStamp={timeStamp}
-          setTimeStamp={setTimeStamp}
+          date={date}
+          time={time}
+          setDate={setDate}
+          setTime={setTime}
           flow={flow}
         />
       }
@@ -347,7 +378,7 @@ const JobStatusDescription = ({
   return (
     <Stack
       style={{
-        color: statusInfo.scheduled ? 'blue' : 'grey',
+        color: statusInfo.scheduled ? '#337fbd' : 'grey',
         textDecoration: statusInfo.scheduled ? 'underline' : 'none',
         cursor: statusInfo.scheduled ? 'pointer' : 'default',
       }}
@@ -369,13 +400,17 @@ const JobStatusDescription = ({
 const JobScheduleBody = ({
   isStart,
   flow,
-  timeStamp,
-  setTimeStamp,
+  date,
+  time,
+  setDate,
+  setTime,
 }: {
   isStart: boolean;
   flow: Flow;
-  timeStamp: string;
-  setTimeStamp: Dispatch<SetStateAction<string>>;
+  date: string;
+  time: string;
+  setDate: Dispatch<SetStateAction<string>>;
+  setTime: Dispatch<SetStateAction<string>>;
 }) => {
   return (
     <>
@@ -394,23 +429,21 @@ const JobScheduleBody = ({
             that time`}
           </Stack>
           <SpecializedDatePicker
-            value={dayjs(timeStamp)}
+            value={dayjs(date).isValid() ? dayjs(date) : null}
             label='Scheduled date'
             onChange={(e) => {
-              setTimeStamp((prev) => {
-                return `${e.format('YYYY-MM-DD')}T${prev.split('T')[1]}`;
-              });
+              setDate(e ? e.format('YYYY-MM-DD') : null);
             }}
           />
           <SpecializedTimePicker
             label={'Scheduled time'}
-            value={dayjs(timeStamp)}
+            value={dayjs(time).isValid() ? dayjs(time) : null}
             onChange={(e) => {
-              setTimeStamp((prev) => {
-                return `${prev.split('T')[0]}T${
-                  e.format('YYYY-MM-DDTHH:mm').split('T')[1]
-                }`;
-              });
+              setTime(
+                e
+                  ? `2000-01-01T${e.format('YYYY-MM-DDTHH:mm').split('T')[1]}`
+                  : null,
+              );
             }}
           />
         </Stack>
