@@ -134,7 +134,13 @@ const SlideDetailsOne = () => {
                         company_values: company.specialties || '',
                         company_overview: company.description || '',
                         m_v_statement: company.tagline || '',
-                        address: company.hq_full_address || '',
+                        address: {
+                          line1: company.hq_address_line1 || '',
+                          line2: company.hq_address_line2 || '',
+                          city: company.hq_city || '',
+                          country: company.hq_country || '',
+                          region: company.hq_region || '',
+                        },
                       })
                       .eq('id', recruiter.id)
                       .select();

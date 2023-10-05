@@ -109,7 +109,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       line2: '',
                       city: '',
                       country: '',
-                      state: '',
+                      region: '',
                     },
                   });
                 }}
