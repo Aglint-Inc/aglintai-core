@@ -83,9 +83,27 @@ const JobApplicationComponent = () => {
 
   const { recruiter } = useAuthDetails();
   const { handleInitializeForm } = useJobForm();
+
+  const handleSelectAll = () => {
+    if (checkList.size === filteredApplications.length)
+      setCheckList(new Set<string>());
+    else
+      setCheckList(
+        new Set(
+          filteredApplications.reduce((acc, curr) => {
+            acc.push(curr.application_id);
+            return acc;
+          }, []),
+        ),
+      );
+  };
   return (
     <>
       <JobScreening
+        isTopbarVisible={filteredApplications.length !== 0}
+        interviewScore={section === JobApplicationSections.INTERVIEWING}
+        selectAllCheckbox={{ onClick: () => handleSelectAll() }}
+        isSelectAllChecked={checkList.size === filteredApplications.length}
         slotJobStatus={<JobApplicationStatus />}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
@@ -135,7 +153,6 @@ const JobApplicationComponent = () => {
           <SearchField
             applications={sectionApplications}
             section={section}
-            jobUpdate={jobUpdate}
             setFilteredApplications={setFilteredApplications}
           />
         }
@@ -241,7 +258,14 @@ const ApplicantsList = ({
     }
   };
   return applications.length === 0 ? (
-    <ApplicantsListEmpty textEmpty={section} slotLottie={<NoApplicants />} />
+    <Stack height={'50vh'} justifyContent={'center'}>
+      <Stack>
+        <ApplicantsListEmpty
+          textEmpty={section}
+          slotLottie={<NoApplicants />}
+        />
+      </Stack>
+    </Stack>
   ) : (
     <>
       {applications.map((application, i) => {
@@ -257,6 +281,7 @@ const ApplicantsList = ({
                 index={i}
                 checkList={checkList}
                 handleSelect={handleSelect}
+                isInterview={section === JobApplicationSections.INTERVIEWING}
               />
             </ScrollList>
           </Stack>

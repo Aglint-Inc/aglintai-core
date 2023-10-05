@@ -233,6 +233,7 @@ const useJobApplicationActions = (
     useState(false);
 
   const circularScoreAnimation = useRef(true);
+  const updateTick = useRef(false);
 
   useEffect(() => {
     if (initialLoad && circularScoreAnimation) {
@@ -258,6 +259,7 @@ const useJobApplicationActions = (
           payload: { applicationData: data[0] },
         };
         dispatch(action);
+        updateTick.current = !updateTick.current;
         return data[0];
       }
       handleJobApplicationError(error);
@@ -280,6 +282,7 @@ const useJobApplicationActions = (
           payload: { applicationData: data },
         };
         dispatch(action);
+        updateTick.current = !updateTick.current;
         return data;
       }
       handleJobApplicationError(error);
@@ -320,6 +323,7 @@ const useJobApplicationActions = (
           },
         };
         dispatch(action);
+        updateTick.current = !updateTick.current;
         return true;
       }
       handleJobApplicationError(error);
@@ -336,6 +340,7 @@ const useJobApplicationActions = (
         },
       };
       dispatch(action);
+      updateTick.current = !updateTick.current;
       return true;
     }
   };
@@ -348,8 +353,10 @@ const useJobApplicationActions = (
     );
     if (d1) {
       const read = await handleJobApplicationRead();
-      if (read) return true;
-      else {
+      if (read) {
+        updateTick.current = !updateTick.current;
+        return true;
+      } else {
         handleJobApplicationError(null);
         return false;
       }
@@ -371,6 +378,7 @@ const useJobApplicationActions = (
           payload: { applicationId, applicationStatus },
         };
         dispatch(action);
+        updateTick.current = !updateTick.current;
         return true;
       }
       handleJobApplicationError(error);
@@ -405,6 +413,7 @@ const useJobApplicationActions = (
   const value = {
     applicationsData,
     job,
+    updateTick: updateTick.current,
     handleJobApplicationCreate,
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
