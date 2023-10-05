@@ -131,8 +131,9 @@ const SlideDetailsOne = () => {
                         logo: company.logo_url,
                         phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
                         office_locations: company.locations || [],
-                        company_values: company.tagline || '',
+                        company_values: company.specialties || '',
                         company_overview: company.description || '',
+                        m_v_statement: company.tagline || '',
                       })
                       .eq('id', recruiter.id)
                       .select();
