@@ -106,9 +106,11 @@ function SupportTicketDetails({
         );
     }
   }, [ticketProp]);
-  const assignedTo = allAssignee.find((item) => {
-    return ticket.assign_to === item.id;
-  });
+  const assignedTo =
+    ticketProp &&
+    allAssignee.find((item) => {
+      return ticketProp.assign_to === item.id;
+    });
   return (
     <Stack width={'70vw'}>
       {ticket && (
@@ -120,8 +122,8 @@ function SupportTicketDetails({
           }
           slotAssignee={
             <AssignmentComponent
-              assign_to={assignedTo.title}
-              imageUrl={assignedTo.image}
+              assign_to={assignedTo?.title}
+              imageUrl={assignedTo?.image}
               setAssignedTo={(assign_to) => {
                 // @ts-ignore
                 callUpdateTicket({ assign_to });

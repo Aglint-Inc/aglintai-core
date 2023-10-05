@@ -82,3 +82,19 @@ export type EmailTemplateType = {
   rejection: ApplicationReceived;
   application_recieved: ApplicationReceived;
 };
+
+export type getNotificationMailBodyType = {
+  details: {
+    fromEmail: string;
+    fromName: string;
+    link?: string;
+    temples?: {
+      subject: string;
+      body: string;
+    };
+  };
+};
+
+export type NotificationsEmailAPIType = {
+  application_id: string;
+} & getNotificationMailBodyType;
