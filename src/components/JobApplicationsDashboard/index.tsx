@@ -181,6 +181,16 @@ const JobApplicationComponent = () => {
             });
           },
         }}
+        onClickWorkflow={{
+          onClick: () => {
+            handleInitializeForm({
+              type: 'edit',
+              job: jobsData.jobs.find((j) => j.id === job.id) as any,
+              recruiter,
+              slideNo: 5,
+            });
+          },
+        }}
       />
       <EditFlow />
     </>

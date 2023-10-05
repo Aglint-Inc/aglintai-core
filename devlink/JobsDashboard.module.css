@@ -239,6 +239,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .div-block-373 {
   display: flex;
   width: 40px;
@@ -335,6 +339,10 @@
 
 .relative {
   position: relative;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
 }
 
 .div-block-371 {

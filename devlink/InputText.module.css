@@ -154,3 +154,7 @@
 .relative {
   position: relative;
 }
+
+.color-white {
+  color: var(--white-80449ce7);
+}

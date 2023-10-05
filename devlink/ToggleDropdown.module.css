@@ -185,6 +185,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .toggle-btn-block {
   align-items: center;
 }

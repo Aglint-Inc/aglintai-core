@@ -1,36 +1,27 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
+import { Priority } from "./Priority";
+import { Assignee } from "./Assignee";
+import { StatusPill } from "./StatusPill";
 import * as _utils from "./utils";
 import _styles from "./InboxTickets.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-1328":{"id":"e-1328","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-453","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1329"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fcc47ab1-9077-3056-077a-a550c14dd34f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fcc47ab1-9077-3056-077a-a550c14dd34f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1696310776032},"e-1329":{"id":"e-1329","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-454","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1328"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"fcc47ab1-9077-3056-077a-a550c14dd34f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"fcc47ab1-9077-3056-077a-a550c14dd34f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1696310776036}},"actionLists":{"a-453":{"id":"a-453","title":"Archive Open","actionItemGroups":[{"actionItems":[{"id":"a-453-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":0,"unit":""}},{"id":"a-453-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":"none"}}]},{"actionItems":[{"id":"a-453-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":100,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":1,"unit":""}},{"id":"a-453-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1696310779721},"a-454":{"id":"a-454","title":"Archive Close","actionItemGroups":[{"actionItems":[{"id":"a-454-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":0,"unit":""}},{"id":"a-454-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".il-archive-btn","selectorGuids":["fc410ff5-c27a-10c7-f298-4ac8d2ccd8e5"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1696310779721}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function InboxTickets({
   as: _Component = _Builtin.Block,
   textIssues = "Qorem ipsum dolor sit amet, consectetur adipiscing elit.",
   textTicketsId = "887",
-  textPriority = "High",
-  colorTextPriority = {},
-  slotPriorityIcon,
-  slotAssigneeImage,
-  textAssigneeName = "Otis Milburn",
   slotCandidateImage,
   textCandidateName = "Maria Johnson",
   textJobRole = "Software Developer",
   textCompanyLocations = "Microsoft, California, United States",
-  textStatus = "Open",
-  colorBgPropsStatus = {},
   textDate = "11-12-2023",
   onClickCheck = {},
   isChecked = true,
-  onClickArchive = {},
   onClickCard = {},
+  slotStatus,
+  slotPriority,
+  slotAssignee,
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component
       className={_utils.cx(_styles, "inbox-list-sl-block")}
@@ -58,36 +49,11 @@ export function InboxTickets({
       >
         {textIssues}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "il-priority", "content")}
-        tag="div"
-      >
-        <_Builtin.Block tag="div" {...colorTextPriority}>
-          {textPriority}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "il-priority-icon")}
-          tag="div"
-        >
-          {slotPriorityIcon}
-        </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-450")} tag="div">
+        {slotPriority ?? <Priority />}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "il-assignee", "content", "assignee")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "il-assignee-image")}
-          tag="div"
-        >
-          {slotAssigneeImage}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-color-black")}
-          tag="div"
-        >
-          {textAssigneeName}
-        </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-451")} tag="div">
+        {slotAssignee ?? <Assignee />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "il-candidate-name")}
@@ -122,12 +88,8 @@ export function InboxTickets({
           {textCompanyLocations}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "il-status", "content")}
-        tag="div"
-        {...colorBgPropsStatus}
-      >
-        {textStatus}
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-449")} tag="div">
+        {slotStatus ?? <StatusPill />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(
@@ -139,40 +101,6 @@ export function InboxTickets({
         tag="div"
       >
         {textDate}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "il-actions", "content")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "il-actions-image-block")}
-          data-w-id="fcc47ab1-9077-3056-077a-a550c14dd34f"
-          tag="div"
-        >
-          <_Builtin.Image
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt="__wf_reserved_inherit"
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/651a94f8aa13f70fec023553_Frame%201282.svg"
-          />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "il-archive-btn")}
-            tag="div"
-            {...onClickArchive}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
-              value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M10%201.5L11%203.5V10C11%2010.2761%2010.7761%2010.5%2010.5%2010.5H1.5C1.22386%2010.5%201%2010.2761%201%2010V3.50177L2%201.5H10ZM10%204.5H2V9.5H10V4.5ZM6.5%205V7H8L6%209L4%207H5.5V5H6.5ZM9.38195%202.5H2.61828L2.11872%203.5H9.88195L9.38195%202.5Z%22%20fill%3D%22black%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-black")}
-              tag="div"
-            >
-              {"Archive"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

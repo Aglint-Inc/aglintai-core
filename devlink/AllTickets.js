@@ -99,12 +99,6 @@ export function AllTickets({
             >
               {"Create Date"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "il-actions", "top")}
-              tag="div"
-            >
-              {"Actions"}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "il-list-block")}

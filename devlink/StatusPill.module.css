@@ -1,0 +1,22 @@
+.il-status {
+  width: 136px;
+  margin-left: 32px;
+}
+
+.il-status.content {
+  margin-left: 0px;
+  padding: 4px 20px;
+
+  border-radius: 100px;
+
+  background-color: hsla(204.07185628742513, 69.87%, 53.14%, 1.00);
+
+  color: hsla(0, 0.00%, 100.00%, 1.00);
+  text-align: center;
+}
+
+.il-status.top {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+  font-size: 12px;
+  line-height: 1.4;
+}

@@ -18,10 +18,6 @@ function ScreeningSettings() {
     'formFields.screeningConfig',
   ) as FormJobType['screeningConfig'];
 
-  const autoShortList =
-    screeningConfig.shortlist.algoScore ||
-    screeningConfig.shortlist.interviewScore;
-
   return (
     <NewJobStep4
       isHeaderVisible={jobForm.formType === 'new'}
@@ -33,7 +29,6 @@ function ScreeningSettings() {
         !screeningConfig.screening.isSendInterviewToAll
       }
       isShortlistCandidateChecked1={screeningConfig.shortlist.interviewScore}
-      isShortlistCandidateChecked2={screeningConfig.shortlist.algoScore}
       onClickAutomateScreeningCheck1={{
         onClick: () => {
           handleUpdateFormFields({
@@ -52,20 +47,10 @@ function ScreeningSettings() {
       }}
       onClickShortlistCandidateCheck1={{
         onClick: () => {
-          autoShortList &&
-            handleUpdateFormFields({
-              path: 'screeningConfig.shortlist.interviewScore',
-              value: !screeningConfig.shortlist.interviewScore,
-            });
-        },
-      }}
-      onClickShortlistCandidateCheck2={{
-        onClick: () => {
-          autoShortList &&
-            handleUpdateFormFields({
-              path: 'screeningConfig.shortlist.algoScore',
-              value: !screeningConfig.shortlist.algoScore,
-            });
+          handleUpdateFormFields({
+            path: 'screeningConfig.shortlist.interviewScore',
+            value: !screeningConfig.shortlist.interviewScore,
+          });
         },
       }}
       slotAutomatedScreeningCount2={
@@ -100,29 +85,11 @@ function ScreeningSettings() {
           />
         </>
       }
-      slotShortlistCandidateToggle={
-        <Switch
-          size='small'
-          color='info'
-          checked={autoShortList}
-          defaultChecked={autoShortList}
-          onChange={() => {
-            handleUpdateFormFields({
-              path: 'screeningConfig.shortlist',
-              value: {
-                ...screeningConfig.shortlist,
-                algoScore: autoShortList ? false : true,
-                interviewScore: autoShortList ? false : true,
-              },
-            });
-          }}
-        />
-      }
       slotShortlistCandidateCount1={
         <UITextField
           type='number'
           width={'70px'}
-          disabled={!autoShortList}
+          disabled={!screeningConfig.shortlist.interviewScore}
           onChange={(e) => {
             handleUpdateFormFields({
               path: 'screeningConfig.shortlist.minInterviewScore',
@@ -131,21 +98,6 @@ function ScreeningSettings() {
           }}
           value={screeningConfig.shortlist.minInterviewScore}
           defaultValue={screeningConfig.shortlist.minInterviewScore}
-        />
-      }
-      slotShortlistCandidateCount2={
-        <UITextField
-          type='number'
-          width={'70px'}
-          disabled={!autoShortList}
-          onChange={(e) => {
-            handleUpdateFormFields({
-              path: 'screeningConfig.shortlist.minAlgoScore',
-              value: e.target.value,
-            });
-          }}
-          value={screeningConfig.shortlist.minAlgoScore}
-          defaultValue={screeningConfig.shortlist.minAlgoScore}
         />
       }
       slotAiFeedbackToggle={

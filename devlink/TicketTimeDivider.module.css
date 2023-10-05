@@ -113,6 +113,10 @@
   color: var(--grey500-0d508ad8);
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .text-sm.color-grey-400 {
   color: var(--grey400-863ed4b5);
 }

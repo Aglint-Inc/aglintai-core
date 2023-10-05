@@ -1,0 +1,30 @@
+import * as React from "react";
+import * as Types from "./types";
+
+declare function JobListing(props: {
+  as?: React.ElementType;
+  slotCompanyLogo?: Types.Devlink.Slot;
+  textCompanyName?: React.ReactNode;
+  textRole?: React.ReactNode;
+  textCompanyLocation?: React.ReactNode;
+  onClickApplyNow?: Types.Devlink.RuntimeProps;
+  slotApplyForThisJob?: Types.Devlink.Slot;
+  onClickShareLink?: Types.Devlink.RuntimeProps;
+  onClickLinkedIn?: Types.Devlink.RuntimeProps;
+  onClickFacebook?: Types.Devlink.RuntimeProps;
+  onClickInstagram?: Types.Devlink.RuntimeProps;
+  onClickTwitter?: Types.Devlink.RuntimeProps;
+  slotImageAskJob?: Types.Devlink.Slot;
+  textAboutJob?: React.ReactNode;
+  onClickAskNow?: Types.Devlink.RuntimeProps;
+  slotInputForm?: Types.Devlink.Slot;
+  onClickNotifyMe?: Types.Devlink.RuntimeProps;
+  textEmployeeCount?: React.ReactNode;
+  textCompanyType?: React.ReactNode;
+  textCompanyDescription?: React.ReactNode;
+  slotLinks?: Types.Devlink.Slot;
+  onClickViewMore?: Types.Devlink.RuntimeProps;
+  slotOpenJobListing?: Types.Devlink.Slot;
+  slotDescription?: Types.Devlink.Slot;
+  slotSocialLink?: Types.Devlink.Slot;
+}): React.JSX.Element;

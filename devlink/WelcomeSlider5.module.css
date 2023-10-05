@@ -543,6 +543,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }

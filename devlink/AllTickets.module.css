@@ -156,6 +156,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .inbox-list {
   width: 100%;
   height: 100%;
@@ -174,18 +178,18 @@
   align-items: flex-start;
 
   background-color: var(--white-80449ce7);
-
-  transition: all 300ms ease;
-
-  cursor: pointer;
 }
 
 .inbox-list-sl-block {
   z-index: 2;
+
   display: flex;
   padding: 10px 64px 10px 22px;
   align-items: center;
+
   transition: all 250ms ease;
+
+  cursor: pointer;
 }
 
 .inbox-list-sl-block:hover {
@@ -247,6 +251,7 @@
 }
 
 .il-issue.content {
+  flex: 0 0 auto;
   font-size: 14px;
 }
 
@@ -257,6 +262,7 @@
 
 .il-priority.content {
   display: flex;
+  margin-left: 0px;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
@@ -296,6 +302,7 @@
 
 .il-assignee.content.assignee {
   width: 130px;
+  margin-left: 0px;
 }
 
 .il-candidate-name {
@@ -335,9 +342,13 @@
 }
 
 .il-status.content {
+  margin-left: 0px;
   padding: 4px 20px;
+
   border-radius: 100px;
+
   background-color: hsla(204.07185628742513, 69.87%, 53.14%, 1.00);
+
   color: hsla(0, 0.00%, 100.00%, 1.00);
   text-align: center;
 }
@@ -357,22 +368,4 @@
   color: hsla(0, 0.00%, 0.00%, 1.00);
   font-size: 12px;
   line-height: 1.4;
-}
-
-.il-actions {
-  width: 60px;
-  margin-left: 32px;
-}
-
-.il-actions.top {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-  font-size: 12px;
-  line-height: 1.4;
-  text-align: right;
-}
-
-.il-actions.content {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
 }

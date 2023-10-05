@@ -53,6 +53,7 @@
     "react-drag-drop-files": "^2.3.10",
     "react-dropzone": "^14.2.3",
     "react-phone-input-2": "^2.15.1",
+    "react-share": "^4.4.1",
     "sass": "1.55.0",
     "supabase": "^1.99.5",
     "tiptap": "^1.32.2",

@@ -147,6 +147,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .header-right-button--company {
   display: flex;
   align-items: center;

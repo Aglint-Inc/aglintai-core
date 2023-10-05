@@ -230,6 +230,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .div-block-289 {
   display: flex;
   max-width: 420px;

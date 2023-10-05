@@ -166,6 +166,10 @@
   z-index: 2;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .toggle-btn-block-absolute {
   position: absolute;
   left: auto;

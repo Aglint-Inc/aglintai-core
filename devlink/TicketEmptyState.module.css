@@ -157,3 +157,7 @@
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
 }
+
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}

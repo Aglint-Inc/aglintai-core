@@ -231,6 +231,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;

@@ -197,6 +197,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .cj-share-copy-wrapper {
   display: flex;
   flex-direction: column;
