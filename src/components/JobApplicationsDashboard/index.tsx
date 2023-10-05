@@ -145,6 +145,7 @@ const JobApplicationComponent = () => {
             checkList={checkList}
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
+            section={section}
           />
         }
         slotAddCandidates={<AddCandidates />}
@@ -194,11 +195,13 @@ const ApplicantsList = ({
   checkList,
   setCheckList,
   jobUpdate,
+  section,
 }: {
   applications: JobApplication[];
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
+  section: string;
 }) => {
   const { pressed } = useKeyPress('Control');
   const handleSelect = (index: number) => {
@@ -228,7 +231,7 @@ const ApplicantsList = ({
     }
   };
   return applications.length === 0 ? (
-    <ApplicantsListEmpty slotLottie={<NoApplicants />} />
+    <ApplicantsListEmpty textEmpty={section} slotLottie={<NoApplicants />} />
   ) : (
     <>
       {applications.map((application, i) => {

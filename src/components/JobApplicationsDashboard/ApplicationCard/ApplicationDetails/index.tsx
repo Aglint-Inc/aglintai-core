@@ -401,99 +401,10 @@ function ApplicationDetails({
           </Stack>
           <Collapse orientation='horizontal' in={openDetailedFeedback}>
             <Stack width={'30vw'}>
-              <DetailedFeedback
-                slotTranscript={
-                  <>
-                    {applicationDetails.conversation?.map((ele, i) => {
-                      return (
-                        <>
-                          <ConversationCard
-                            roleImage={interviewerList[Number(0)].image}
-                            roleName={interviewerList[Number(0)].name}
-                            textForSpeech={ele.content}
-                            src={ele.aiVoice}
-                            index={i}
-                            cardFor='ai'
-                          />
-                          {ele.userContent && (
-                            <ConversationCard
-                              cardFor={undefined}
-                              roleImage={getGravatar(
-                                applicationDetails.email,
-                                applicationDetails.first_name,
-                              )}
-                              roleName={applicationDetails.first_name}
-                              textForSpeech={ele.userContent}
-                              src={ele.userVoice}
-                              index={i}
-                            />
-                          )}
-                        </>
-                      );
-                    })}
-                  </>
-                }
-                slotDetailedFeedback={
-                  <>
-                    {applicationDetails?.feedback?.map((ele, i) => {
-                      let rating = Number(
-                        String(ele.rating).includes('/')
-                          ? ele.rating.split('/')[0]
-                          : ele.rating,
-                      );
-                      return (
-                        <DetailedFeedbackCard
-                          textColorScore={{
-                            style: {
-                              color:
-                                rating >= 90
-                                  ? '#228F67'
-                                  : rating >= 70
-                                  ? '#f79a3e'
-                                  : rating >= 50
-                                  ? '#de701d'
-                                  : '#d93f4c',
-                            },
-                          }}
-                          textHeader={ele?.topic}
-                          textDescription={ele.feedback}
-                          textScorePercentage={rating + '%'}
-                          slotScore={
-                            <CustomProgress
-                              rotation={270}
-                              fillColor={
-                                rating >= 90
-                                  ? '#228F67'
-                                  : rating >= 70
-                                  ? '#f79a3e'
-                                  : rating >= 50
-                                  ? '#de701d'
-                                  : '#d93f4c'
-                              }
-                              bgFill={
-                                rating >= 90
-                                  ? '#edf8f4'
-                                  : rating >= 70
-                                  ? '#fff7ed'
-                                  : rating >= 50
-                                  ? '#ffeedb'
-                                  : '#fff0f1'
-                              }
-                              size={5}
-                              progress={rating}
-                            />
-                          }
-                          key={i}
-                        />
-                      );
-                    })}
-                  </>
-                }
-                onClickBack={{
-                  onClick: () => {
-                    setOpenDetailedFeedback(false);
-                  },
-                }}
+              <Transcript
+                applicationDetails={applicationDetails}
+                setOpenDetailedFeedback={setOpenDetailedFeedback}
+                hideFeedback={false}
               />
             </Stack>
           </Collapse>
@@ -504,6 +415,110 @@ function ApplicationDetails({
 }
 
 export default ApplicationDetails;
+
+export function Transcript({
+  applicationDetails,
+  setOpenDetailedFeedback,
+  hideFeedback,
+}) {
+  return (
+    <DetailedFeedback
+      slotTranscript={
+        <>
+          {applicationDetails.conversation?.map((ele, i) => {
+            return (
+              <>
+                <ConversationCard
+                  roleImage={interviewerList[Number(0)].image}
+                  roleName={interviewerList[Number(0)].name}
+                  textForSpeech={ele.content}
+                  src={ele.aiVoice}
+                  index={i}
+                  cardFor='ai'
+                />
+                {ele.userContent && (
+                  <ConversationCard
+                    cardFor={undefined}
+                    roleImage={getGravatar(
+                      applicationDetails.email,
+                      applicationDetails.first_name,
+                    )}
+                    roleName={applicationDetails.first_name}
+                    textForSpeech={ele.userContent}
+                    src={ele.userVoice}
+                    index={i}
+                  />
+                )}
+              </>
+            );
+          })}
+        </>
+      }
+      slotDetailedFeedback={
+        <>
+          {!hideFeedback &&
+            applicationDetails?.feedback?.map((ele, i) => {
+              let rating = Number(
+                String(ele.rating).includes('/')
+                  ? ele.rating.split('/')[0]
+                  : ele.rating,
+              );
+              return (
+                <DetailedFeedbackCard
+                  textColorScore={{
+                    style: {
+                      color:
+                        rating >= 90
+                          ? '#228F67'
+                          : rating >= 70
+                          ? '#f79a3e'
+                          : rating >= 50
+                          ? '#de701d'
+                          : '#d93f4c',
+                    },
+                  }}
+                  textHeader={ele?.topic}
+                  textDescription={ele.feedback}
+                  textScorePercentage={rating + '%'}
+                  slotScore={
+                    <CustomProgress
+                      rotation={270}
+                      fillColor={
+                        rating >= 90
+                          ? '#228F67'
+                          : rating >= 70
+                          ? '#f79a3e'
+                          : rating >= 50
+                          ? '#de701d'
+                          : '#d93f4c'
+                      }
+                      bgFill={
+                        rating >= 90
+                          ? '#edf8f4'
+                          : rating >= 70
+                          ? '#fff7ed'
+                          : rating >= 50
+                          ? '#ffeedb'
+                          : '#fff0f1'
+                      }
+                      size={5}
+                      progress={rating}
+                    />
+                  }
+                  key={i}
+                />
+              );
+            })}
+        </>
+      }
+      onClickBack={{
+        onClick: () => {
+          setOpenDetailedFeedback(false);
+        },
+      }}
+    />
+  );
+}
 
 export function giveRateInWordToResume(score: number) {
   if (score === 0) {

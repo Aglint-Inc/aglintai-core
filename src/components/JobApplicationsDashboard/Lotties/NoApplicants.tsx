@@ -1,10 +1,10 @@
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 
 const NoApplicants = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: {
+    animationData:     {
       v: '5.4.4',
       fr: 60,
       ip: 0,
@@ -3487,7 +3487,13 @@ const NoApplicants = () => {
       preserveAspectRatio: 'xMidYMid slice',
     },
   };
-  return <Lottie options={defaultOptions} />;
+  return (
+    <Lottie
+      autoPlay={true}
+      loop={true}
+      animationData={defaultOptions.animationData}
+    />
+  );
 };
 
 export default NoApplicants;

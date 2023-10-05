@@ -1,13 +1,12 @@
 import { Dialog, Stack, Typography } from '@mui/material';
+import { capitalize } from '@mui/material/utils';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
-  DetailedFeedback,
   DetailedFeedbackCard,
   InterviewResult,
   InterviewScreenFeedback,
-  InterviewTranscriptCard,
   ResumeResult,
 } from '@/devlink';
 import CustomProgress from '@/src/components/Common/CustomProgress';
@@ -18,12 +17,14 @@ import { getGravatar } from '@/src/components/JobApplicationsDashboard/Applicati
 import {
   giveRateInWordToResume,
   handleDownload,
+  Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import InterviewScoreCard from '@/src/components/JobApplicationsDashboard/Common/InreviewScoreCard';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
+
 function InterviewFeedbackPage() {
   const router = useRouter();
 
@@ -109,93 +110,98 @@ function InterviewFeedbackPage() {
           setOpenPanelDrawer={setOpenTranscript}
         >
           <Stack width={500}>
-            <DetailedFeedback
-              onClickBack={{
-                onClick: () => {
-                  setOpenTranscript(false);
-                },
-              }}
-              slotTranscript={applicationDetails.conversation?.map((ele, i) => {
-                return (
-                  <InterviewTranscriptCard
-                    slotUserImage={
-                      <MuiAvatar
-                        level={applicationDetails?.first_name}
-                        height={'24px'}
-                        width={'24px'}
-                        fontSize={'15px'}
-                        variant={'circular'}
-                      />
-                    }
-                    slotAiImage={
-                      <svg
-                        width='24'
-                        height='24'
-                        viewBox='0 0 36 36'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          d='M27.4875 16.8075C24.255 15.9975 22.635 15.6 21.5175 14.4825C20.4 13.3575 20.0025 11.745 19.1925 8.5125L18 3.75L16.8075 8.5125C15.9975 11.745 15.6 13.365 14.4825 14.4825C13.3575 15.6 11.745 15.9975 8.5125 16.8075L3.75 18L8.5125 19.1925C11.745 20.0025 13.365 20.4 14.4825 21.5175C15.6 22.6425 15.9975 24.255 16.8075 27.4875L18 32.25L19.1925 27.4875C20.0025 24.255 20.4 22.635 21.5175 21.5175C22.6425 20.4 24.255 20.0025 27.4875 19.1925L32.25 18L27.4875 16.8075Z'
-                          fill='#FF6224'
-                        ></path>
-                      </svg>
-                    }
-                    textQuestion={ele?.content}
-                    textAnswer={ele.userContent}
-                    textAiName={'Aglint Ai'}
-                    userTextName={applicationDetails?.first_name}
-                    key={i}
-                  />
-                );
-              })}
-              slotDetailedFeedback={<></>}
+            <Transcript
+              applicationDetails={applicationDetails}
+              setOpenDetailedFeedback={setOpenTranscript}
+              hideFeedback={true}
             />
           </Stack>
         </SidePanelDrawer>
         <InterviewScreenFeedback
+          isInterviewResultVisible={applicationDetails.feedback !== null}
+          isResumeResultVisible={jdScore}
           slotResumeResult={
-            <ResumeResult
-              onClickDownloadResume={{
-                onClick: () => {
-                  handleDownload(applicationDetails?.resume);
-                },
-              }}
-              onClickViewResume={{
-                onClick: () => {
-                  setOpenResume(true);
-                },
-              }}
-              slotResumeScore={
-                <CustomProgress
-                  progress={jdScore}
-                  rotation={270}
-                  fillColor={
-                    jdScore >= 90
-                      ? '#228F67'
-                      : jdScore >= 70
-                      ? '#f79a3e'
-                      : jdScore >= 50
-                      ? '#de701d'
-                      : '#d93f4c'
-                  }
-                  bgFill={
-                    jdScore >= 90
-                      ? '#edf8f4'
-                      : jdScore >= 70
-                      ? '#fff7ed'
-                      : jdScore >= 50
-                      ? '#ffeedb'
-                      : '#fff0f1'
-                  }
-                  size={35}
-                  strokeWidth={3}
-                  label={jdScore}
-                  fontSize={20}
-                />
-              }
-              textFeedback={giveRateInWordToResume(jdScore)}
-            />
+            <>
+              <ResumeResult
+                textCertificationScore={capitalize(
+                  applicationDetails?.jd_score?.qualification?.certifications
+                    .relevance
+                    ? applicationDetails?.jd_score?.qualification
+                        ?.certifications.relevance
+                    : '--',
+                )}
+                textProjectScore={capitalize(
+                  applicationDetails?.jd_score?.qualification?.project
+                    ?.relevance
+                    ? applicationDetails?.jd_score?.qualification?.project
+                        ?.relevance
+                    : '',
+                )}
+                textEducationScore={capitalize(
+                  applicationDetails?.jd_score?.qualification?.education
+                    ?.relevance
+                    ? applicationDetails?.jd_score?.qualification?.education
+                        ?.relevance
+                    : '',
+                )}
+                textExperienceScore={capitalize(
+                  applicationDetails?.jd_score?.qualification?.experience
+                    ?.relevance
+                    ? applicationDetails?.jd_score?.qualification?.experience
+                        ?.relevance
+                    : '',
+                )}
+                textSkillsScore={
+                  applicationDetails?.jd_score?.skills_score?.score
+                    ? applicationDetails?.jd_score?.skills_score?.score
+                    : '--'
+                }
+                textSummaryScore={capitalize(
+                  applicationDetails?.jd_score?.summary?.feedback
+                    ? applicationDetails?.jd_score?.summary?.feedback
+                    : '--',
+                )}
+                onClickDownloadResume={{
+                  onClick: () => {
+                    handleDownload(applicationDetails?.resume);
+                  },
+                }}
+                onClickViewResume={{
+                  onClick: () => {
+                    setOpenResume(true);
+                  },
+                }}
+                slotResumeScore={
+                  <CustomProgress
+                    progress={jdScore}
+                    rotation={270}
+                    fillColor={
+                      jdScore >= 90
+                        ? '#228F67'
+                        : jdScore >= 70
+                        ? '#f79a3e'
+                        : jdScore >= 50
+                        ? '#de701d'
+                        : '#d93f4c'
+                    }
+                    bgFill={
+                      jdScore >= 90
+                        ? '#edf8f4'
+                        : jdScore >= 70
+                        ? '#fff7ed'
+                        : jdScore >= 50
+                        ? '#ffeedb'
+                        : '#fff0f1'
+                    }
+                    size={35}
+                    strokeWidth={3}
+                    label={jdScore}
+                    fontSize={20}
+                  />
+                }
+                textFeedback={giveRateInWordToResume(jdScore)}
+              />
+            </>
           }
           onClickCopyProfile={{
             onClick: () => {

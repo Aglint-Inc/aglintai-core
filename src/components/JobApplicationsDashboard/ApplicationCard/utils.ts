@@ -1,11 +1,11 @@
 export const getScoreColor = (finalScore: number) => {
- return finalScore>= 90
-  ? '#228F67'
-  : finalScore>= 70
-  ? '#f79a3e'
-  : finalScore>= 50
-  ? '#de701d'
-  : '#d93f4c'
+  return finalScore >= 90
+    ? '#228F67'
+    : finalScore >= 70
+    ? '#f79a3e'
+    : finalScore >= 50
+    ? '#de701d'
+    : '#d93f4c';
 };
 
 export const getStatusColor = (status: string) => {
@@ -32,9 +32,11 @@ export const getStatusColor = (status: string) => {
 };
 
 export const getInterviewScore = (feedback) => {
-  return Math.floor(
-    feedback.reduce((acc, curr) => {
-      return (acc += Number(curr.rating));
-    }, 0) / feedback.length,
-  );
+  return feedback.length > 0
+    ? Math.floor(
+        feedback.reduce((acc, curr) => {
+          return (acc += Number(curr.rating));
+        }, 0) / feedback.length,
+      )
+    : 0;
 };

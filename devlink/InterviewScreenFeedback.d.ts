@@ -18,4 +18,6 @@ declare function InterviewScreenFeedback(props: {
   textPhone?: React.ReactNode;
   slotInterviewResult?: Types.Devlink.Slot;
   slotResumeResult?: Types.Devlink.Slot;
+  isInterviewResultVisible?: Types.Visibility.VisibilityConditions;
+  isResumeResultVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

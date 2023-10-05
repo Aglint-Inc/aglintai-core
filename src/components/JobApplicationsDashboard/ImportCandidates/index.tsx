@@ -12,6 +12,7 @@ import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
+import axios from 'axios';
 // import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
 
 function ImportCandidates() {
@@ -97,11 +98,23 @@ function ImportCandidates() {
     const filteredCandidates = candidates.filter(
       (ele) => !totalApplications.includes(ele.email),
     );
+
     setbulkImportdata([]);
     setIsLoading(true);
-    const data = await handleJobApplicationBulkCreate(filteredCandidates);
+    const candidatesList =
+      await handleJobApplicationBulkCreate(filteredCandidates);
+
+    candidatesList.map((candi) => {
+      axios.post(
+        'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
+        {
+          application_id: candi.application_id,
+        },
+      );
+    });
+
     setOpenImportCandidates(false);
-    setIsLoading(data);
+    setIsLoading(false);
   }
 
   const { getRootProps, getInputProps } = useDropzone({

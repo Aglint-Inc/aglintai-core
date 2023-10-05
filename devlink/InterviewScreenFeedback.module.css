@@ -19,7 +19,7 @@
 
 .nav-new-header {
   display: flex;
-  max-width: 878px;
+  max-width: 570px;
   margin-right: auto;
   margin-left: auto;
   padding: 10px 0px;
@@ -339,6 +339,7 @@
 
 .div-block-381 {
   display: flex;
+  margin-top: 40px;
   align-items: flex-start;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
@@ -544,6 +545,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .profile-mail-wrappers {
   display: flex;
   align-items: center;
@@ -711,6 +716,10 @@
 
 .relative {
   position: relative;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
 }
 
 .all-interview-result-wrapper {

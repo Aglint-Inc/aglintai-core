@@ -266,10 +266,7 @@ const useJobApplicationActions = (
   };
 
   const handleJobApplicationBulkCreate = async (
-    inputData: (Pick<
-      JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score'
-    > &
+    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
       InputData)[],
   ) => {
     if (recruiter) {
@@ -283,10 +280,10 @@ const useJobApplicationActions = (
           payload: { applicationData: data },
         };
         dispatch(action);
-        return true;
+        return data;
       }
       handleJobApplicationError(error);
-      return false;
+      return undefined;
     }
   };
 

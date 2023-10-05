@@ -46,7 +46,7 @@ export type JobApplicationContext = {
       'first_name' | 'last_name' | 'email' | 'score'
     > &
       InputData)[],
-  ) => Promise<boolean>;
+  ) => Promise<JobApplication[]>;
   handleJobApplicationRead: () => Promise<boolean>;
   handleJobApplicationUpdate: (
     applicationId: string,
