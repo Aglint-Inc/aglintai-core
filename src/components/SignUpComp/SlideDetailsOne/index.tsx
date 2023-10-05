@@ -1,7 +1,7 @@
 import { Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { WelcomeSlider4 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -36,6 +36,10 @@ const SlideDetailsOne = () => {
       msg: '',
     },
   });
+
+  useEffect(() => {
+    setDetails({ website: recruiter.company_website });
+  }, []);
 
   const formValidation = async (): Promise<boolean> => {
     let isValid = true;
@@ -112,28 +116,37 @@ const SlideDetailsOne = () => {
                   })
                   .then(async (res) => {
                     const company = res.data;
+                    let phone = null;
+                    if (company.phone) {
+                      phone =
+                        company.hq_country == 'US'
+                          ? `+1${company.phone}`
+                          : company.phone;
+                    }
                     await supabase
                       .from('recruiter')
                       .update({
                         industry: company.industries[0] || '',
                         employee_size: company.employee_range,
                         logo: company.logo_url,
-                        phone_number:
-                          company.hq_country == 'US'
-                            ? `+1${company.phone}`
-                            : company.phone, //NEED TO CHANGE THIS LOGIC. It works temporary
+                        phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
                         office_locations: company.locations || [],
                         company_values: company.tagline || '',
                         company_overview: company.description || '',
                       })
                       .eq('id', recruiter.id)
                       .select();
+                    router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.detailsTwo);
                   });
+              } else {
+                router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                  shallow: true,
+                });
+                setStep(stepObj.detailsTwo);
               }
-              router.push(`?step=${stepObj.detailsTwo}`, undefined, {
-                shallow: true,
-              });
-              setStep(stepObj.detailsTwo);
             }
           }
         });
