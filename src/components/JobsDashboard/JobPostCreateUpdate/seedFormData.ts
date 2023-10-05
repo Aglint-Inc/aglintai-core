@@ -64,14 +64,12 @@ export const getSeedJobFormData = (
         },
         useAglintMatchingAlgo: true,
         shortlist: {
-          algoScore: true,
           interviewScore: true,
-          minAlgoScore: 8,
           minInterviewScore: 80,
         },
         screeningEmail: {
-          date: null,
-          isImmediate: false,
+          date: new Date().toISOString(),
+          isImmediate: true,
           emailTemplates: {},
         },
       },
