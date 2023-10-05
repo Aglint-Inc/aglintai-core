@@ -51,3 +51,34 @@ export type Public_jobsType =
 
 export type SupportGroupType =
   Database['public']['Tables']['support_groups']['Row'];
+
+// //////////////////////////////////////// API types ///////////////////////////////////////////////
+
+// support email api
+export type getMailBodyType = {
+  email_type: 'interviewLink' | 'disqualified' | 'qualified';
+  details: {
+    fromEmail: string;
+    fromName: string;
+    link?: string;
+    temples?: {
+      subject: string;
+      body: string;
+    };
+  };
+};
+export type SupportEmailAPIType = {
+  application_id: string;
+} & getMailBodyType;
+
+export type ApplicationReceived = {
+  body: string;
+  default: boolean;
+  subject: string;
+};
+
+export type EmailTemplateType = {
+  interview: ApplicationReceived;
+  rejection: ApplicationReceived;
+  application_recieved: ApplicationReceived;
+};

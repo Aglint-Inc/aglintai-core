@@ -231,9 +231,12 @@ const MenuBar = ({
 };
 export type TipTapEditorType = {
   value?: Content;
-  options: Boolean;
+  options?: Boolean;
+  customOptions?: ReactNode;
   // eslint-disable-next-line no-unused-vars
   onChange?: (value: { text: string; html: string; wordCount: number }) => void;
+  // eslint-disable-next-line no-unused-vars
+  onKeyDown?: (value: React.KeyboardEvent<HTMLDivElement>) => void;
   minRows?: number;
   placeholder?: string;
   // eslint-disable-next-line no-unused-vars
@@ -244,10 +247,12 @@ export type TipTapEditorType = {
 const TipTapEditor = ({
   value,
   onChange,
+  onKeyDown,
   minRows = 6,
   placeholder,
   getValue,
   options = true,
+  customOptions = null,
   toolboxPosition = 'top',
 }: TipTapEditorType) => {
   const editor = useEditor({
@@ -388,7 +393,12 @@ const TipTapEditor = ({
         }}
       >
         {options && <MenuBar editor={editor} />}
-        <EditorContent editor={editor} />
+        {customOptions && (
+          <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+            {customOptions}
+          </div>
+        )}
+        <EditorContent editor={editor} onKeyDown={onKeyDown} />
       </div>
     </Stack>
   );
