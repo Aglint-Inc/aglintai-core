@@ -25,6 +25,7 @@ import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
 import { sendEmails } from '../..';
 import InterviewScoreCard from '../../Common/InreviewScoreCard';
+import { capitalize } from '../../utils';
 
 function ApplicationDetails({
   openSidePanel,
@@ -309,44 +310,44 @@ function ApplicationDetails({
               isKeySkillsVisible={false}
               slotResumeScore={
                 <ResumeResult
-                  textCertificationScore={
+                  textCertificationScore={capitalize(
                     applicationDetails?.jd_score?.qualification?.certifications
                       .relevance
                       ? applicationDetails?.jd_score?.qualification
                           ?.certifications.relevance
-                      : '--'
-                  }
-                  textProjectScore={
+                      : '--',
+                  )}
+                  textProjectScore={capitalize(
                     applicationDetails?.jd_score?.qualification?.project
                       ?.relevance
                       ? applicationDetails?.jd_score?.qualification?.project
                           ?.relevance
-                      : ''
-                  }
-                  textEducationScore={
+                      : '',
+                  )}
+                  textEducationScore={capitalize(
                     applicationDetails?.jd_score?.qualification?.education
                       ?.relevance
                       ? applicationDetails?.jd_score?.qualification?.education
                           ?.relevance
-                      : ''
-                  }
-                  textExperienceScore={
+                      : '',
+                  )}
+                  textExperienceScore={capitalize(
                     applicationDetails?.jd_score?.qualification?.experience
                       ?.relevance
                       ? applicationDetails?.jd_score?.qualification?.experience
                           ?.relevance
-                      : ''
-                  }
+                      : '',
+                  )}
                   textSkillsScore={
                     applicationDetails?.jd_score?.skills_score?.score
                       ? applicationDetails?.jd_score?.skills_score?.score
                       : '--'
                   }
-                  textSummaryScore={
-                    applicationDetails?.summary?.feedback
-                      ? applicationDetails?.summary?.feedback
-                      : '--'
-                  }
+                  textSummaryScore={capitalize(
+                    applicationDetails?.jd_score?.summary?.feedback
+                      ? applicationDetails?.jd_score?.summary?.feedback
+                      : '--',
+                  )}
                   onClickDownloadResume={{
                     onClick: () => {
                       handleDownload(applicationDetails?.resume);
