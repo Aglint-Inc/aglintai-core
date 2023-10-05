@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import { Fragment, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
@@ -97,11 +98,23 @@ function ImportCandidates() {
     const filteredCandidates = candidates.filter(
       (ele) => !totalApplications.includes(ele.email),
     );
+
     setbulkImportdata([]);
     setIsLoading(true);
-    const data = await handleJobApplicationBulkCreate(filteredCandidates);
+    const candidatesList =
+      await handleJobApplicationBulkCreate(filteredCandidates);
+
+    candidatesList.map((candi) => {
+      axios.post(
+        'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
+        {
+          application_id: candi.application_id,
+        },
+      );
+    });
+
     setOpenImportCandidates(false);
-    setIsLoading(data);
+    setIsLoading(false);
   }
 
   const { getRootProps, getInputProps } = useDropzone({

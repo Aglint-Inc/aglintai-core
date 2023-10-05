@@ -28,6 +28,8 @@ export function InterviewScreenFeedback({
   textPhone = "This is some text inside of a div block.",
   slotInterviewResult,
   slotResumeResult,
+  isInterviewResultVisible = true,
+  isResumeResultVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -159,206 +161,214 @@ export function InterviewScreenFeedback({
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "interview-details-wrappers")}
-                tag="div"
-              >
+              {isInterviewResultVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "profile-category-tag")}
-                  tag="div"
-                >
-                  {"Interview Details"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "interview-screen-date-wrappers"
-                  )}
+                  className={_utils.cx(_styles, "interview-details-wrappers")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "interview-date-left")}
+                    className={_utils.cx(_styles, "profile-category-tag")}
                     tag="div"
                   >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "date-all-wrappers")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "date-wrappers-feed")}
-                        tag="div"
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M5.99992%200.666016V1.99935H9.99992V0.666016H11.3333V1.99935H13.9999C14.3681%201.99935%2014.6666%202.29783%2014.6666%202.66602V13.3327C14.6666%2013.7009%2014.3681%2013.9993%2013.9999%2013.9993H1.99992C1.63173%2013.9993%201.33325%2013.7009%201.33325%2013.3327V2.66602C1.33325%202.29783%201.63173%201.99935%201.99992%201.99935H4.66658V0.666016H5.99992ZM13.3333%207.33268H2.66659V12.666H13.3333V7.33268ZM4.66658%203.33268H2.66659V5.99935H13.3333V3.33268H11.3333V4.66602H9.99992V3.33268H5.99992V4.66602H4.66658V3.33268Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
-                          tag="div"
-                        >
-                          {"Date"}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "fw-semibold",
-                          "color-blue-800"
-                        )}
-                        tag="div"
-                      >
-                        {textDate}
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "date-all-wrappers")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "date-wrappers-feed")}
-                        tag="div"
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M7.99967%2014.6693C4.31777%2014.6693%201.33301%2011.6845%201.33301%208.0026C1.33301%204.3207%204.31777%201.33594%207.99967%201.33594C11.6815%201.33594%2014.6663%204.3207%2014.6663%208.0026C14.6663%2011.6845%2011.6815%2014.6693%207.99967%2014.6693ZM7.99967%2013.3359C10.9452%2013.3359%2013.333%2010.9481%2013.333%208.0026C13.333%205.05708%2010.9452%202.66927%207.99967%202.66927C5.05415%202.66927%202.66634%205.05708%202.66634%208.0026C2.66634%2010.9481%205.05415%2013.3359%207.99967%2013.3359ZM8.66634%208.0026H11.333V9.33594H7.33301V4.66927H8.66634V8.0026Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
-                          tag="div"
-                        >
-                          {"Time"}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "fw-semibold",
-                          "color-blue-800"
-                        )}
-                        tag="div"
-                      >
-                        {textTime}
-                      </_Builtin.Block>
-                    </_Builtin.Block>
+                    {"Interview Details"}
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "interview-date-left")}
+                    className={_utils.cx(
+                      _styles,
+                      "interview-screen-date-wrappers"
+                    )}
                     tag="div"
                   >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "date-all-wrappers")}
+                      className={_utils.cx(_styles, "interview-date-left")}
                       tag="div"
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "date-wrappers-feed")}
+                        className={_utils.cx(_styles, "date-all-wrappers")}
                         tag="div"
                       >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M3.99984%202.66732H2.6665V1.33398H13.3332V2.66732H11.9998V4.00065C11.9998%205.0776%2011.4557%205.94377%2010.7706%206.65176C10.302%207.13598%209.73184%207.58198%209.15377%208.00065C9.73184%208.41932%2010.302%208.86532%2010.7706%209.34952C11.4557%2010.0575%2011.9998%2010.9237%2011.9998%2012.0007V13.334H13.3332V14.6673H2.6665V13.334H3.99984V12.0007C3.99984%2010.9237%204.54394%2010.0575%205.2291%209.34952C5.69772%208.86532%206.26785%208.41932%206.8459%208.00065C6.26785%207.58198%205.69772%207.13598%205.2291%206.65176C4.54394%205.94377%203.99984%205.0776%203.99984%204.00065V2.66732ZM5.33317%202.66732V4.00065C5.33317%204.59036%205.6224%205.14086%206.18724%205.72454C6.67184%206.22531%207.30304%206.69385%207.99984%207.18605C8.69664%206.69385%209.32784%206.22531%209.81244%205.72454C10.3773%205.14086%2010.6665%204.59036%2010.6665%204.00065V2.66732H5.33317ZM7.99984%208.81525C7.30304%209.30745%206.67184%209.77598%206.18724%2010.2768C5.6224%2010.8605%205.33317%2011.4109%205.33317%2012.0007V13.334H10.6665V12.0007C10.6665%2011.4109%2010.3773%2010.8605%209.81244%2010.2768C9.32784%209.77598%208.69664%209.30745%207.99984%208.81525Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
                         <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
+                          className={_utils.cx(_styles, "date-wrappers-feed")}
                           tag="div"
                         >
-                          {"Duration"}
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M5.99992%200.666016V1.99935H9.99992V0.666016H11.3333V1.99935H13.9999C14.3681%201.99935%2014.6666%202.29783%2014.6666%202.66602V13.3327C14.6666%2013.7009%2014.3681%2013.9993%2013.9999%2013.9993H1.99992C1.63173%2013.9993%201.33325%2013.7009%201.33325%2013.3327V2.66602C1.33325%202.29783%201.63173%201.99935%201.99992%201.99935H4.66658V0.666016H5.99992ZM13.3333%207.33268H2.66659V12.666H13.3333V7.33268ZM4.66658%203.33268H2.66659V5.99935H13.3333V3.33268H11.3333V4.66602H9.99992V3.33268H5.99992V4.66602H4.66658V3.33268Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {"Date"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "fw-semibold",
+                            "color-blue-800"
+                          )}
+                          tag="div"
+                        >
+                          {textDate}
                         </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "fw-semibold",
-                          "color-blue-800"
-                        )}
+                        className={_utils.cx(_styles, "date-all-wrappers")}
                         tag="div"
                       >
-                        {textDuration}
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "date-wrappers-feed")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M7.99967%2014.6693C4.31777%2014.6693%201.33301%2011.6845%201.33301%208.0026C1.33301%204.3207%204.31777%201.33594%207.99967%201.33594C11.6815%201.33594%2014.6663%204.3207%2014.6663%208.0026C14.6663%2011.6845%2011.6815%2014.6693%207.99967%2014.6693ZM7.99967%2013.3359C10.9452%2013.3359%2013.333%2010.9481%2013.333%208.0026C13.333%205.05708%2010.9452%202.66927%207.99967%202.66927C5.05415%202.66927%202.66634%205.05708%202.66634%208.0026C2.66634%2010.9481%205.05415%2013.3359%207.99967%2013.3359ZM8.66634%208.0026H11.333V9.33594H7.33301V4.66927H8.66634V8.0026Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {"Time"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "fw-semibold",
+                            "color-blue-800"
+                          )}
+                          tag="div"
+                        >
+                          {textTime}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "date-all-wrappers")}
+                      className={_utils.cx(_styles, "interview-date-left")}
                       tag="div"
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "date-wrappers-feed")}
+                        className={_utils.cx(_styles, "date-all-wrappers")}
                         tag="div"
                       >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M3.8418%2011.3353H13.3333V3.33529H2.66659V12.2587L3.8418%2011.3353ZM4.30295%2012.6686L1.33325%2015.002V2.66862C1.33325%202.30043%201.63173%202.00195%201.99992%202.00195H13.9999C14.3681%202.00195%2014.6666%202.30043%2014.6666%202.66862V12.002C14.6666%2012.3702%2014.3681%2012.6686%2013.9999%2012.6686H4.30295ZM7.33325%209.33529H8.66658V10.6686H7.33325V9.33529ZM5.71146%205.87759C5.92417%204.80808%206.86792%204.00195%207.99992%204.00195C9.28858%204.00195%2010.3333%205.04662%2010.3333%206.33529C10.3333%207.62395%209.28858%208.66862%207.99992%208.66862H7.33325V7.33529H7.99992C8.55219%207.33529%208.99992%206.88755%208.99992%206.33529C8.99992%205.783%208.55219%205.33529%207.99992%205.33529C7.51478%205.33529%207.11032%205.68077%207.01912%206.13913L5.71146%205.87759Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
                         <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
+                          className={_utils.cx(_styles, "date-wrappers-feed")}
                           tag="div"
                         >
-                          {"Number of Questions"}
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M3.99984%202.66732H2.6665V1.33398H13.3332V2.66732H11.9998V4.00065C11.9998%205.0776%2011.4557%205.94377%2010.7706%206.65176C10.302%207.13598%209.73184%207.58198%209.15377%208.00065C9.73184%208.41932%2010.302%208.86532%2010.7706%209.34952C11.4557%2010.0575%2011.9998%2010.9237%2011.9998%2012.0007V13.334H13.3332V14.6673H2.6665V13.334H3.99984V12.0007C3.99984%2010.9237%204.54394%2010.0575%205.2291%209.34952C5.69772%208.86532%206.26785%208.41932%206.8459%208.00065C6.26785%207.58198%205.69772%207.13598%205.2291%206.65176C4.54394%205.94377%203.99984%205.0776%203.99984%204.00065V2.66732ZM5.33317%202.66732V4.00065C5.33317%204.59036%205.6224%205.14086%206.18724%205.72454C6.67184%206.22531%207.30304%206.69385%207.99984%207.18605C8.69664%206.69385%209.32784%206.22531%209.81244%205.72454C10.3773%205.14086%2010.6665%204.59036%2010.6665%204.00065V2.66732H5.33317ZM7.99984%208.81525C7.30304%209.30745%206.67184%209.77598%206.18724%2010.2768C5.6224%2010.8605%205.33317%2011.4109%205.33317%2012.0007V13.334H10.6665V12.0007C10.6665%2011.4109%2010.3773%2010.8605%209.81244%2010.2768C9.32784%209.77598%208.69664%209.30745%207.99984%208.81525Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {"Duration"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "fw-semibold",
+                            "color-blue-800"
+                          )}
+                          tag="div"
+                        >
+                          {textDuration}
                         </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "fw-semibold",
-                          "color-blue-800"
-                        )}
+                        className={_utils.cx(_styles, "date-all-wrappers")}
                         tag="div"
                       >
-                        {textNumberQuestion}
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "date-wrappers-feed")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M3.8418%2011.3353H13.3333V3.33529H2.66659V12.2587L3.8418%2011.3353ZM4.30295%2012.6686L1.33325%2015.002V2.66862C1.33325%202.30043%201.63173%202.00195%201.99992%202.00195H13.9999C14.3681%202.00195%2014.6666%202.30043%2014.6666%202.66862V12.002C14.6666%2012.3702%2014.3681%2012.6686%2013.9999%2012.6686H4.30295ZM7.33325%209.33529H8.66658V10.6686H7.33325V9.33529ZM5.71146%205.87759C5.92417%204.80808%206.86792%204.00195%207.99992%204.00195C9.28858%204.00195%2010.3333%205.04662%2010.3333%206.33529C10.3333%207.62395%209.28858%208.66862%207.99992%208.66862H7.33325V7.33529H7.99992C8.55219%207.33529%208.99992%206.88755%208.99992%206.33529C8.99992%205.783%208.55219%205.33529%207.99992%205.33529C7.51478%205.33529%207.11032%205.68077%207.01912%206.13913L5.71146%205.87759Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {"Number of Questions"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "fw-semibold",
+                            "color-blue-800"
+                          )}
+                          tag="div"
+                        >
+                          {textNumberQuestion}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "all-interview-result-wrapper")}
-                tag="div"
-              >
+              ) : null}
+              {isInterviewResultVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
+                  className={_utils.cx(_styles, "all-interview-result-wrapper")}
                   tag="div"
                 >
-                  {"Interview Result"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-600")}
+                    tag="div"
+                  >
+                    {"Interview Result"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-interview-result")}
+                    tag="div"
+                  >
+                    {slotInterviewResult ?? <InterviewResult />}
+                  </_Builtin.Block>
                 </_Builtin.Block>
+              ) : null}
+              {isInterviewResultVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-interview-result")}
+                  className={_utils.cx(_styles, "feedback-score-detailed")}
                   tag="div"
                 >
-                  {slotInterviewResult ?? <InterviewResult />}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-500")}
+                    tag="div"
+                  >
+                    {"Detailed feedback"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-detailed-feedback")}
+                    tag="div"
+                  >
+                    {slotDetailedFeedback ?? <DetailedFeedbackCard />}
+                  </_Builtin.Block>
                 </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "feedback-score-detailed")}
-                tag="div"
-              >
+              ) : null}
+              {isResumeResultVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
+                  className={_utils.cx(_styles, "all-resume-result-profile")}
                   tag="div"
                 >
-                  {"Detailed feedback"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "profile-category-tag")}
+                    tag="div"
+                  >
+                    {"Resume Results"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot_resume-result")}
+                    tag="div"
+                  >
+                    {slotResumeResult ?? <ResumeResult />}
+                  </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-detailed-feedback")}
-                  tag="div"
-                >
-                  {slotDetailedFeedback ?? <DetailedFeedbackCard />}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "all-resume-result-profile")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "profile-category-tag")}
-                  tag="div"
-                >
-                  {"Resume Results"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot_resume-result")}
-                  tag="div"
-                >
-                  {slotResumeResult ?? <ResumeResult />}
-                </_Builtin.Block>
-              </_Builtin.Block>
+              ) : null}
               <_Builtin.Block
                 className={_utils.cx(_styles, "all-powered-wrappers")}
                 tag="div"

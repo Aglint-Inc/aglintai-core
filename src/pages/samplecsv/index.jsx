@@ -59,7 +59,7 @@ const CSVGenerator = () => {
         : 'new'; // You can change this if needed
       const profileImage = faker.image.avatar(); // You can change this if needed
       const resume =
-        'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg'; // You can change this if needed
+        'https://aetdssowoezhaepzhzag.supabase.co/storage/v1/object/public/resume-job-post/public/729ddd04-ea4f-43af-a1f1-d88e1ca9f06a?t=2023-10-04T15:25:41.344Z'; // You can change this if needed
 
       const person = [
         firstName,

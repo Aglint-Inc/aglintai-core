@@ -1,35 +1,42 @@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { Dayjs } from 'dayjs';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import dayjs, { Dayjs } from 'dayjs';
 import * as React from 'react';
 
-export default function SpecializedTimePicker({
+import UITextField from '../UITextField';
+
+const SpecializedTimePicker = ({
   label,
   value,
-  disabled = false,
   onChange,
-  setValue,
 }: {
-  disabled?: boolean;
   label: string;
   value: Dayjs;
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void;
-  // eslint-disable-next-line no-unused-vars
-  setValue?: (e: any) => void;
-}) {
+}) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <TimePicker
+        viewRenderers={{
+          hours: renderTimeViewClock,
+          minutes: renderTimeViewClock,
+          seconds: renderTimeViewClock,
+        }}
         label={label}
-        value={disabled ? null : value}
-        disabled={disabled}
-        onChange={(e) => {
-          if (onChange) onChange(e);
-          if (setValue) setValue(e);
+        value={value}
+        onChange={(date: dayjs.Dayjs | null) => {
+          if (date && dayjs(date).isValid()) onChange(date);
+          else onChange(null);
+        }}
+        slots={{
+          textField: UITextField,
         }}
       />
     </LocalizationProvider>
   );
-}
+};
+
+export default SpecializedTimePicker;

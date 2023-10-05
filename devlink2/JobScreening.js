@@ -3,7 +3,7 @@ import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
 import { AddCandidateDropdown } from "./AddCandidateDropdown";
 import { CandidateListTopBar } from "./CandidateListTopBar";
-import { ApplicantsListEmpty } from "./ApplicantsListEmpty";
+import { JobCandidateCard } from "./JobCandidateCard";
 import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
 import _styles from "./JobScreening.module.css";
@@ -440,24 +440,35 @@ export function JobScreening({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "cdd-content-main")}
+              className={_utils.cx(_styles, "div-block-342")}
               tag="div"
             >
-              {slotCandidateJobCard ?? (
-                <>
-                  <CandidateListTopBar />
-                  <ApplicantsListEmpty />
-                </>
-              )}
-            </_Builtin.Block>
-            {bottomBarVisibility ? (
+              <CandidateListTopBar />
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-335")}
+                className={_utils.cx(_styles, "cdd-content-main")}
                 tag="div"
               >
-                {slotSelectActionBar ?? <SelectActionBar />}
+                {slotCandidateJobCard ?? (
+                  <>
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                    <JobCandidateCard />
+                  </>
+                )}
               </_Builtin.Block>
-            ) : null}
+              {bottomBarVisibility ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-335")}
+                  tag="div"
+                >
+                  {slotSelectActionBar ?? <SelectActionBar />}
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

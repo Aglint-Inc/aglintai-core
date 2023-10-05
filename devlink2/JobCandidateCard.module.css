@@ -1,10 +1,11 @@
 .candidate-list-item {
-  position: sticky;
-  top: 0px;
+  position: relative;
   z-index: 5;
 
   display: flex;
   width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
@@ -23,6 +24,8 @@
 }
 
 .candidate-list-item.top-bar {
+  padding-right: 20px;
+  padding-left: 20px;
   background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
@@ -377,8 +380,6 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
-
-  border-radius: 10px;
 
   background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
 }

@@ -19,7 +19,7 @@
 
 .nav-new-header {
   display: flex;
-  max-width: 878px;
+  max-width: 570px;
   margin-right: auto;
   margin-left: auto;
   padding: 10px 0px;
@@ -339,6 +339,7 @@
 
 .div-block-381 {
   display: flex;
+  margin-top: 40px;
   align-items: flex-start;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
@@ -762,8 +763,8 @@
 
 .text-powered {
   color: var(--grey400-863ed4b5);
-  font-size: 22px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
   letter-spacing: 0.352px;
 }
 

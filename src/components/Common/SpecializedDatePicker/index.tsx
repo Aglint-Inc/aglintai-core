@@ -4,6 +4,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 
+import UITextField from '../UITextField';
+
 export default function SpecializedDatePicker({
   label,
   value,
@@ -13,7 +15,6 @@ export default function SpecializedDatePicker({
   disableFuture = false,
   monthView,
   onChange,
-  setValue,
 }: {
   maxDate?: Dayjs;
   minDate?: Dayjs;
@@ -24,9 +25,7 @@ export default function SpecializedDatePicker({
   value: Dayjs;
   required?: boolean;
   // eslint-disable-next-line no-unused-vars
-  onChange?: (e: any) => void;
-  // eslint-disable-next-line no-unused-vars
-  setValue?: (e: any) => void;
+  onChange: (e: any) => void;
 }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,8 +39,10 @@ export default function SpecializedDatePicker({
         format='DD/MM/YYYY'
         disabled={disabled}
         onChange={(e) => {
-          if (onChange) onChange(e);
-          if (setValue) setValue(e);
+          onChange(e);
+        }}
+        slots={{
+          textField: UITextField,
         }}
       />
     </LocalizationProvider>
