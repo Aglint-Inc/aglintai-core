@@ -322,6 +322,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .cj-main-wrapper {
   position: relative;
 

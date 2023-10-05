@@ -59,9 +59,7 @@ export type FormJobType = {
     };
     useAglintMatchingAlgo: boolean;
     shortlist: {
-      algoScore: boolean;
       interviewScore: boolean;
-      minAlgoScore: number;
       minInterviewScore: number;
     };
     feedbackVisible: boolean;

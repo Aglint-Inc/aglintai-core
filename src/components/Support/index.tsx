@@ -1,17 +1,13 @@
 import { Avatar, Drawer } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { AllTickets } from '@/devlink/AllTickets';
 import { InboxTickets } from '@/devlink/InboxTickets';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
-// import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
-import {
-  mapPriority,
-  mapPriorityColor,
-} from '@/src/utils/support/supportUtils';
 
+// import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
 import SupportTicketDetails from './SupportTicket';
 dayjs.extend(relativeTime);
 
@@ -105,33 +101,33 @@ const Ticket = ({ ticket }) => {
     <InboxTickets
       key={ticket.id}
       textTicketsId={ticket.id}
-      textAssigneeName={ticket.assign_to || 'Not Assigned'}
+      // textAssigneeName={ticket.assign_to || 'Not Assigned'}
       textCandidateName={ticket.user_name}
       textJobRole={ticket.jobsDetails.job_title}
       isChecked={allChecked || checked}
-      textStatus={ticket.state}
-      textPriority={mapPriority(ticket.priority)}
+      // textStatus={ticket.state}
+      // textPriority={mapPriority(ticket.priority)}
       textDate={dayjs(ticket.created_at).fromNow()}
       textCompanyLocations={ticket.jobsDetails.company}
       textIssues={ticket.title}
-      colorTextPriority={{
-        style: {
-          color: mapPriorityColor(ticket.priority),
-        },
-      }}
-      colorBgPropsStatus={{
-        style: {
-          backgroundColor: mapPriorityColor(ticket.priority),
-        },
-      }}
+      // colorTextPriority={{
+      //   style: {
+      //     color: mapPriorityColor(ticket.priority),
+      //   },
+      // }}
+      // colorBgPropsStatus={{
+      //   style: {
+      //     backgroundColor: mapPriorityColor(ticket.priority),
+      //   },
+      // }}
       //   slotPriorityIcon={}
-      slotAssigneeImage={
-        <Avatar
-          src=''
-          alt={ticket.assign_to || 'Not Assigned'}
-          sx={{ height: '100%', width: '100%' }}
-        />
-      }
+      // slotAssigneeImage={
+      //   <Avatar
+      //     src=''
+      //     alt={ticket.assign_to || 'Not Assigned'}
+      //     sx={{ height: '100%', width: '100%' }}
+      //   />
+      // }
       slotCandidateImage={
         <Avatar
           src=''

@@ -234,6 +234,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .page-404-description-wrapper {
   margin-bottom: 42px;
 }

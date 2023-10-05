@@ -231,6 +231,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;

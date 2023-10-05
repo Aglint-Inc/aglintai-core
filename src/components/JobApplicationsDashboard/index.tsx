@@ -171,7 +171,7 @@ const JobApplicationComponent = () => {
           href: '/jobs',
         }}
         jobLink={{
-          href: `https://dev.aglinthq.com/job-post/${job.id}`,
+          href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
           target: '_blank',
         }}
         onClickEditJob={{
@@ -181,6 +181,16 @@ const JobApplicationComponent = () => {
               job: jobsData.jobs.find((j) => j.id === job.id) as any,
               recruiter,
               slideNo: 1,
+            });
+          },
+        }}
+        onClickWorkflow={{
+          onClick: () => {
+            handleInitializeForm({
+              type: 'edit',
+              job: jobsData.jobs.find((j) => j.id === job.id) as any,
+              recruiter,
+              slideNo: 5,
             });
           },
         }}

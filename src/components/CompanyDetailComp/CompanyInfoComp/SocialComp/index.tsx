@@ -13,11 +13,7 @@ import { debouncedSave } from '../../utils';
 
 const SocialComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const customOrder = {
-    linkedin: 1,
-    instagram: 2,
-    // Add other social media platforms in the desired order here
-  };
+
   const [error, setError] = useState(initialError());
 
   let socials = Object.keys(recruiter.socials).sort((a, b) => {
@@ -248,4 +244,10 @@ const initialError = () => {
       msg: '',
     },
   };
+};
+
+export const customOrder = {
+  linkedin: 1,
+  instagram: 2,
+  // Add other social media platforms in the desired order here
 };

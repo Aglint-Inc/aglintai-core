@@ -152,6 +152,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 @media screen and (max-width: 479px) {
   .color-black.fw-semibold.mobile-grow {
     flex: 0 0 auto;

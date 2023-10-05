@@ -16,10 +16,12 @@ export type RecruiterType = Omit<
   Database['public']['Tables']['recruiter']['Row'],
   'address' | 'socials'
 > & { address: AddressType | null; socials: SocialsType | null };
+
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 
 export type JobApplcationDB =
   Database['public']['Tables']['job_applications']['Row'];
+
 export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
 
 export type JobType = Omit<JobTypeDB, 'active_status'> & {

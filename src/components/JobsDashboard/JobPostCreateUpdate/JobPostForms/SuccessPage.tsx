@@ -8,8 +8,11 @@ import { useJobForm } from '../JobPostFormProvider';
 function SuccessPage() {
   const { jobForm } = useJobForm();
   const router = useRouter();
-  const jobLink =
-    'https://dev.aglinthq.com' + '/job-post/' + get(jobForm, 'jobPostId', '');
+  const jobLink = `${process.env.NEXT_PUBLIC_HOST_NAME} + '/job-post/' + ${get(
+    jobForm,
+    'jobPostId',
+    '',
+  )}`;
   return (
     <NewJobSuccess
       onClickViewJob={{

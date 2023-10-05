@@ -154,6 +154,10 @@
   position: relative;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .div-block-382 {
   display: flex;
   flex-direction: column;

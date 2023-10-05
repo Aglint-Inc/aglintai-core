@@ -1,6 +1,10 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { TicketChatBubble } from "./TicketChatBubble";
 import { TicketMessageSuggestion } from "./TicketMessageSuggestion";
+import { PrioritySmall } from "./PrioritySmall";
+import { AssigneeSmall } from "./AssigneeSmall";
+import { StatusPillSmall } from "./StatusPillSmall";
 import * as _utils from "./utils";
 import _styles from "./TicketSideDrawer.module.css";
 
@@ -11,13 +15,6 @@ export function TicketSideDrawer({
   slotTypeMessage,
   slotMessageSuggestion,
   textTicketId = "9849238",
-  textPriorityLevel = "High",
-  colorPropsPriorityText = {},
-  slotPriorityIcon,
-  slotAssignedToImage,
-  textAssignedtoName = "Otis Milburn",
-  bgColorPropsStatus = {},
-  textStatus = "Open",
   textCreatedDate = "11-12-2025",
   slotCandidateImage,
   textCandidateName = "Maria Johnson",
@@ -32,6 +29,9 @@ export function TicketSideDrawer({
   textCandidateStatus = "Incomplete Interview",
   colorPropsCandidateStatus = {},
   onClickInterviewLink = {},
+  slotStatus,
+  slotAssignee,
+  slotPriority,
 }) {
   return (
     <_Component
@@ -75,7 +75,7 @@ export function TicketSideDrawer({
             className={_utils.cx(_styles, "inde-chat-body")}
             tag="div"
           >
-            {slotChatBox}
+            {slotChatBox ?? <TicketChatBubble />}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "inde-chat-compose-wrapper")}
@@ -139,19 +139,8 @@ export function TicketSideDrawer({
                 >
                   {"Priority Level"}
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-446")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div" {...colorPropsPriorityText}>
-                    {textPriorityLevel}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "inde-priority-icon")}
-                    tag="div"
-                  >
-                    {slotPriorityIcon}
-                  </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {slotPriority ?? <PrioritySmall />}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -164,22 +153,8 @@ export function TicketSideDrawer({
                 >
                   {"Assigned to"}
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "inde-assignee-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "inde-assignee-image")}
-                    tag="div"
-                  >
-                    {slotAssignedToImage}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-color-black")}
-                    tag="div"
-                  >
-                    {textAssignedtoName}
-                  </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {slotAssignee ?? <AssigneeSmall />}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -192,12 +167,8 @@ export function TicketSideDrawer({
                 >
                   {"Status"}
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "inde-status-block")}
-                  tag="div"
-                  {...bgColorPropsStatus}
-                >
-                  {textStatus}
+                <_Builtin.Block tag="div">
+                  {slotStatus ?? <StatusPillSmall />}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block

@@ -152,6 +152,10 @@
   letter-spacing: -0.45px;
 }
 
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
 .slot-location-forms {
   margin-top: 32px;
 }

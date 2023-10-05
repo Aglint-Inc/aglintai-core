@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import {
@@ -124,6 +124,25 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 minRows={7}
                 maxRows={7}
               />
+              <UITextField
+                select={true}
+                labelSize='medium'
+                label='Employee Size'
+                value={recruiter?.employee_size}
+                onChange={(e) => {
+                  handleChange({
+                    ...recruiter,
+                    employee_size: e.target.value,
+                  });
+                }}
+              >
+                <MenuItem value={'1 - 5'}>1 - 5</MenuItem>
+                <MenuItem value={'5 - 50'}>5 - 50</MenuItem>
+                <MenuItem value={'50 - 100'}>50 - 100</MenuItem>
+                <MenuItem value={'100 - 500'}>100 - 500</MenuItem>
+                <MenuItem value={'1000 - 5000'}>1000 - 5000</MenuItem>
+                <MenuItem value={'5000+'}>5000+</MenuItem>
+              </UITextField>
             </Stack>
             <Stack spacing={'20px'} width={'100%'}>
               <UITextField
