@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
-  getMailBodyType,
+  getNotificationMailBodyType,
+  NotificationsEmailAPIType,
   Support_ticketType,
-  SupportEmailAPIType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -15,26 +15,25 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { application_id, email_type, details } =
-      req.body as unknown as SupportEmailAPIType;
-    if (!application_id && !email_type) {
+    const { application_id, details } =
+      req.body as unknown as NotificationsEmailAPIType;
+    if (!application_id && !details) {
       return res
         .status(400)
         .send({ message: 'Invalid request. Required props missing.' });
     }
     const ticketDetails = await getSupportTicket(application_id);
-    // if (ticketDetails.email_updates) {
-    const { sent, error } = await sendMail({
-      email_type,
-      details,
-      ticketDetails,
-    });
-    return res.status(200).send({ emailSend: sent, error: error });
-    // } else {
-    //   return res
-    //     .status(200)
-    //     .send({ emailSend: false, error: 'Email update disabled by user!' });
-    // }
+    if (ticketDetails.email_updates) {
+      const { sent, error } = await sendMail({
+        details,
+        ticketDetails,
+      });
+      return res.status(200).send({ emailSend: sent, error: error });
+    } else {
+      return res
+        .status(200)
+        .send({ emailSend: false, error: 'Email update disabled by user!' });
+    }
   }
   res.setHeader('Allow', 'POST');
   res.status(405).end('Method Not Allowed!');
@@ -52,19 +51,25 @@ const getSupportTicket = async (applications_id: string) => {
 };
 
 const sendMail = ({
-  email_type,
   details,
   ticketDetails,
-}: getMailBodyType & { ticketDetails: Support_ticketType }): Promise<{
+}: getNotificationMailBodyType & {
+  ticketDetails: Support_ticketType;
+}): Promise<{
   sent: false;
   error: any;
 }> => {
-  if (email_type === 'interviewLink' && details.link) {
-    details.temples = {
-      subject: 'Interview Link',
-      body: `Use this link to give your interview: ${details.link}`,
-    };
-  }
+  //   if (email_type === 'message' && details.link) {
+  //     details.temples = {
+  //       subject: `${ticketDetails.id}: New Message `,
+  //       body: `${details.temples.body}`,
+  //     };
+  //   } else if (email_type === 'update' && details.link) {
+  //     details.temples = {
+  //       subject: `${ticketDetails.id}: Status updated`,
+  //       body: `${details.temples.body}`,
+  //     };
+  //   }
   const msg = {
     to: ticketDetails.email,
     from: {

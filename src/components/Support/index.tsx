@@ -60,9 +60,11 @@ const Ticket = ({ ticket }) => {
   const { updateTicket, allAssignee } = useSupportContext();
   const { setOpenTicket, allChecked } = useSupportContext();
   const [checked, setChecked] = useState(false);
-  const assignedTo = allAssignee.find((item) => {
-    return ticket.assign_to === item.id;
-  });
+  const assignedTo =
+    ticket &&
+    allAssignee.find((item) => {
+      return ticket.assign_to === item.id;
+    });
   return (
     <InboxTickets
       key={ticket.id}
@@ -70,8 +72,8 @@ const Ticket = ({ ticket }) => {
       // textAssigneeName={ticket.assign_to || 'Not Assigned'}
       slotAssignee={
         <AssignmentComponent
-          assign_to={assignedTo.title}
-          imageUrl={assignedTo.image}
+          assign_to={assignedTo?.title}
+          imageUrl={assignedTo?.image}
           // @ts-ignore
           setAssignedTo={(assign_to) => updateTicket({ assign_to }, ticket.id)}
         />

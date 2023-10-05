@@ -1,9 +1,11 @@
 // ** React Imports
 // import { useRouter } from 'next/router';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
+  NotificationsEmailAPIType,
   Public_jobsType,
   // RecruiterType,
   Support_ticketType,
@@ -125,6 +127,8 @@ const SupportProvider = ({ children }) => {
   >([]);
 
   const updateTicket = (data: Partial<Support_ticketType[]>, id: string) => {
+    const update = data;
+    const old = allTickets.find((ticket) => ticket.id === id);
     return updateSupportTicketInDb({
       id,
       ...data,
@@ -139,6 +143,79 @@ const SupportProvider = ({ children }) => {
       );
       if (openTicket?.id === id) {
         setOpenTicket({ ...openTicket, ...data });
+      }
+      if (data.email_updates) {
+        // @ts-ignore
+        if (update.content) {
+          const last_message = data.content[
+            data.content.length - 1
+          ] as unknown as {
+            id: string;
+            from: string;
+            name: string;
+            text: string;
+            type: string;
+            timeStamp: string;
+          };
+          if (last_message.type === 'message') {
+            sendNotificationEmail({
+              application_id: data.application_id,
+              details: {
+                fromEmail: recruiter.email,
+                fromName: recruiter.name,
+                temples: {
+                  subject: `${data.id}: New Message.`,
+                  body: `Your Ticket have new message from <b>${last_message.name}</b> : ${last_message.text}`,
+                },
+              },
+            });
+          }
+        }
+        // @ts-ignore
+        else if (update.state) {
+          sendNotificationEmail({
+            application_id: data.application_id,
+            details: {
+              fromEmail: recruiter.email,
+              fromName: recruiter.name,
+              temples: {
+                subject: `${data.id}: State Changed.`,
+                body: `Your Ticket state is updated from <b>${old.state}</b> to <b>${data.state}</b>`,
+              },
+            },
+          });
+        }
+        // @ts-ignore
+        else if (update.assign_to) {
+          sendNotificationEmail({
+            application_id: data.application_id,
+            details: {
+              fromEmail: recruiter.email,
+              fromName: recruiter.name,
+              temples: {
+                subject: `${data.id}: Ticket Assignment Changed.`,
+                body: `Ticket is now assigned to <b>${
+                  allAssignee.find(
+                    (assignment) => assignment.id === data.assign_to,
+                  ).title
+                }</b>`,
+              },
+            },
+          });
+          // @ts-ignore
+        } else if (update.priority) {
+          sendNotificationEmail({
+            application_id: data.application_id,
+            details: {
+              fromEmail: recruiter.email,
+              fromName: recruiter.name,
+              temples: {
+                subject: `${data.id}: Priority Updated.`,
+                body: `Ticket state is updated from <b>${old.priority}</b> to <b>${data.priority}</b>`,
+              },
+            },
+          });
+        }
       }
     });
   };
@@ -268,4 +345,18 @@ const getAllAssignee = async (company?: boolean) => {
     }
   }
   return [];
+};
+
+const sendNotificationEmail = ({
+  application_id,
+  details,
+}: NotificationsEmailAPIType) => {
+  return axios
+    .post('/api/support/email', {
+      application_id,
+      details,
+    })
+    .then(({ data }) => {
+      return data as { emailSend: boolean; error: string };
+    });
 };
