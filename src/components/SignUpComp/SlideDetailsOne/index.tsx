@@ -123,7 +123,7 @@ const SlideDetailsOne = () => {
                           ? `+1${company.phone}`
                           : company.phone;
                     }
-                    await supabase
+                    const { data: newData } = await supabase
                       .from('recruiter')
                       .update({
                         industry: company.industries[0] || '',
@@ -134,9 +134,15 @@ const SlideDetailsOne = () => {
                         company_values: company.specialties || '',
                         company_overview: company.description || '',
                         m_v_statement: company.tagline || '',
+                        address: company.hq_full_address || '',
                       })
                       .eq('id', recruiter.id)
                       .select();
+                    setRecruiter({
+                      ...newData[0],
+                      address: newData[0].address as AddressType,
+                      socials: newData[0].socials as SocialsType,
+                    });
                     router.push(`?step=${stepObj.detailsTwo}`, undefined, {
                       shallow: true,
                     });
