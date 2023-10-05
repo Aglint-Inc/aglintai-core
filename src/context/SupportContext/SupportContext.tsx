@@ -5,10 +5,13 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   Public_jobsType,
+  // RecruiterType,
   Support_ticketType,
-  SupportGroupType,
+  // SupportGroupType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+
+import { useAuthDetails } from '../AuthContext/AuthContext';
 
 interface ContextValue {
   // allTickets: (Support_ticketType & { jobsDetails: Public_jobsType })[];
@@ -21,8 +24,8 @@ interface ContextValue {
   allChecked: boolean;
   // eslint-disable-next-line no-unused-vars
   setAllChecked: (x: boolean) => void;
-  allGroups: SupportGroupType[];
-  userGroup: SupportGroupType;
+  // allGroups: SupportGroupType[];
+  // userGroup: SupportGroupType;
   allFilter: {
     all: number;
     open: number;
@@ -31,6 +34,9 @@ interface ContextValue {
     'on hold': number;
   };
   filters: { state: string };
+  allAssignee: { id: string; title: string; image: string }[];
+  // eslint-disable-next-line no-unused-vars
+  updateTicket: (data: Partial<Support_ticketType[]>, id: string) => void;
 }
 
 const defaultProvider = {
@@ -46,8 +52,8 @@ const defaultProvider = {
     x;
     return;
   },
-  allGroups: [],
-  userGroup: null,
+  // allGroups: [],
+  // userGroup: null,
   allFilter: {
     all: 0,
     open: 0,
@@ -56,6 +62,11 @@ const defaultProvider = {
     'on hold': 0,
   },
   filters: { state: 'all' },
+  updateTicket: (data: Partial<Support_ticketType[]>, id: string) => {
+    data;
+    id;
+  },
+  allAssignee: [],
 };
 
 const SupportContext = createContext<ContextValue>(defaultProvider);
@@ -63,6 +74,7 @@ export const useSupportContext = () => useContext(SupportContext);
 
 const SupportProvider = ({ children }) => {
   const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const [allTickets, setAllTickets] = useState<
     (Support_ticketType & { jobsDetails: Public_jobsType })[]
   >([]);
@@ -93,46 +105,84 @@ const SupportProvider = ({ children }) => {
   const tickets = useMemo(() => {
     let tickets = allTickets;
     if (filters.state !== 'all') {
-      tickets = tickets.filter((ticket) => ticket.state === filters.state);
+      tickets = tickets.filter(
+        (ticket) =>
+          ticket.state === filters.state && ticket.assign_to === recruiter.id,
+      );
+    } else {
+      tickets = tickets.filter((ticket) => ticket.assign_to === recruiter.id);
     }
     return tickets;
   }, [filters, allTickets]);
   const [openTicket, setOpenTicket] = useState<
     Support_ticketType & { jobsDetails: Public_jobsType }
   >(null);
-  const [allGroups, setAllGroups] = useState<SupportGroupType[]>([]);
-  const [userGroup, setUserGroup] = useState<SupportGroupType>(null);
+  // const [allGroups, setAllGroups] = useState<SupportGroupType[]>([]);
+  // const [userGroup, setUserGroup] = useState<SupportGroupType>(null);
   const [allChecked, setAllChecked] = useState(false);
+  const [allAssignee, setAllAssignee] = useState<
+    { id: string; title: string; image: string }[]
+  >([]);
 
-  useEffect(() => {
-    getAllGroup().then((data) => {
-      if (data.length) {
-        setAllGroups(data);
-        const selectedGroup = data[0];
-        setUserGroup(selectedGroup);
-        getTickets(selectedGroup.id).then((tickets) => {
-          if (tickets.length) {
-            getJobDetails(tickets.map((ticket) => ticket.job_id)).then(
-              (jobs) => {
-                const temp = {};
-                jobs.map((publicJob) => {
-                  temp[publicJob.id] = publicJob;
-                });
-                const ticketsDetail = tickets.map((ticket) => {
-                  // @ts-ignore
-                  ticket.jobsDetails = temp[ticket.job_id];
-                  return ticket as Support_ticketType & {
-                    jobsDetails: Public_jobsType;
-                  };
-                });
-                setAllTickets(ticketsDetail);
-              },
-            );
+  const updateTicket = (data: Partial<Support_ticketType[]>, id: string) => {
+    return updateSupportTicketInDb({
+      id,
+      ...data,
+    }).then((data) => {
+      setAllTickets(
+        allTickets.map((ticket) => {
+          if (ticket.id === id) {
+            return { ...ticket, ...data };
           }
-        });
+          return ticket;
+        }),
+      );
+      if (openTicket?.id === id) {
+        setOpenTicket({ ...openTicket, ...data });
       }
     });
-  }, []);
+  };
+
+  useEffect(() => {
+    if (recruiter?.id) {
+      getAllAssignee(recruiter.name === 'Aglint Inc').then((data) => {
+        const temp = data?.map((item) => ({
+          id: item.id,
+          title: item.name,
+          image: item.logo,
+        }));
+        setAllAssignee([
+          ...temp,
+          { id: recruiter.id, title: recruiter.name, image: recruiter.logo },
+        ]);
+      });
+      // getAllGroup().then((data) => {
+      //   if (data.length) {
+      //     setAllGroups(data);
+      //     const selectedGroup = data[0];
+      //     setUserGroup(selectedGroup);
+      getTickets(recruiter.id).then((tickets) => {
+        if (tickets.length) {
+          getJobDetails(tickets.map((ticket) => ticket.job_id)).then((jobs) => {
+            const temp = {};
+            jobs.map((publicJob) => {
+              temp[publicJob.id] = publicJob;
+            });
+            const ticketsDetail = tickets.map((ticket) => {
+              // @ts-ignore
+              ticket.jobsDetails = temp[ticket.job_id];
+              return ticket as Support_ticketType & {
+                jobsDetails: Public_jobsType;
+              };
+            });
+            setAllTickets(ticketsDetail);
+          });
+        }
+      });
+    }
+    // }
+    // });
+  }, [recruiter]);
   return (
     <SupportContext.Provider
       value={{
@@ -141,10 +191,12 @@ const SupportProvider = ({ children }) => {
         setOpenTicket,
         allChecked,
         setAllChecked,
-        allGroups,
-        userGroup,
+        // allGroups,
+        // userGroup,
         allFilter,
         filters,
+        updateTicket,
+        allAssignee,
       }}
     >
       {children}
@@ -154,20 +206,20 @@ const SupportProvider = ({ children }) => {
 
 export { SupportContext, SupportProvider };
 
-const getAllGroup = async () => {
-  const { data, error } = await supabase.from('support_groups').select('*');
-  // .eq('company_id', '');
-  if (!error && data.length) {
-    return data;
-  }
-  return [];
-};
+// const getAllGroup = async () => {
+//   const { data, error } = await supabase.from('support_groups').select('*');
+//   // .eq('company_id', '');
+//   if (!error && data.length) {
+//     return data;
+//   }
+//   return [];
+// };
 
-const getTickets = async (group_id: string) => {
+const getTickets = async (assign_to: string) => {
   const { data, error } = await supabase
     .from('support_ticket')
     .select('*')
-    .eq('support_group_id', group_id);
+    .eq('assign_to', assign_to);
   // .eq('company_id', '');
   if (!error && data.length) {
     return data;
@@ -182,6 +234,38 @@ const getJobDetails = async (job_ids: string[]) => {
     .in('id', job_ids);
   if (!error && data.length) {
     return data;
+  }
+  return [];
+};
+const updateSupportTicketInDb = async (
+  ticketData: Partial<Support_ticketType>,
+) => {
+  const { data, error } = await supabase
+    .from('support_ticket')
+    //   @ts-ignore
+    .update({ updated_at: new Date().toISOString(), ...ticketData })
+    .eq('id', ticketData.id)
+    .select();
+  if (!error && data.length) {
+    return data[0];
+  }
+  return null;
+};
+
+const getAllAssignee = async (company?: boolean) => {
+  if (company) {
+    const { data, error } = await supabase.from('recruiter').select();
+    if (!error && data.length) {
+      return data;
+    }
+  } else {
+    const { data, error } = await supabase
+      .from('recruiter')
+      .select()
+      .eq('name', 'Aglint Inc');
+    if (!error && data.length) {
+      return data;
+    }
   }
   return [];
 };
