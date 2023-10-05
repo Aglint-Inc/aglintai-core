@@ -2,7 +2,7 @@ import { Avatar, IconButton, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketMessageSuggestion } from '@/devlink/TicketMessageSuggestion';
@@ -15,9 +15,7 @@ import {
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import {
-  mapPriority,
-  mapPriorityColor,
-  mapStatusColor,
+  mapPriorityColor
 } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -90,25 +88,25 @@ function SupportTicketDetails({
             application &&
             new Date(application?.created_at).toLocaleDateString()
           }
-          textAssignedtoName={ticket.assign_to || 'Not Assigned'}
+          // textAssignedtoName={ticket.assign_to || 'Not Assigned'}
           textAppliedJobRole={ticket.jobsDetails?.job_title}
           textCreatedDate={dayjs(ticket.created_at).fromNow()}
           textCandidateMail={ticket.email || '-'}
           textCandidateName={ticket.user_name}
           // textCandidateSite={ticket.}
           textCandidateStatus={application && application.status}
-          textPriorityLevel={mapPriority(ticket.priority)}
-          colorPropsPriorityText={{
-            style: {
-              color: mapPriorityColor(ticket.priority),
-            },
-          }}
-          textStatus={ticket.state}
-          bgColorPropsStatus={{
-            style: {
-              backgroundColor: mapStatusColor(ticket.priority),
-            },
-          }}
+          // textPriorityLevel={mapPriority(ticket.priority)}
+          // colorPropsPriorityText={{
+          //   style: {
+          //     color: mapPriorityColor(ticket.priority),
+          //   },
+          // }}
+          // textStatus={ticket.state}
+          // bgColorPropsStatus={{
+          //   style: {
+          //     backgroundColor: mapStatusColor(ticket.priority),
+          //   },
+          // }}
           colorPropsCandidateStatus={{
             style: {
               color: mapPriorityColor(ticket.priority),
@@ -124,14 +122,14 @@ function SupportTicketDetails({
               sx={{ height: '100%', width: '100%' }}
             />
           }
-          slotAssignedToImage={
-            <Avatar
-              src={''}
-              variant='rounded'
-              alt={ticket.user_name}
-              sx={{ height: '100%', width: '100%' }}
-            />
-          }
+          // slotAssignedToImage={
+          //   <Avatar
+          //     src={''}
+          //     variant='rounded'
+          //     alt={ticket.user_name}
+          //     sx={{ height: '100%', width: '100%' }}
+          //   />
+          // }
           textCandiatePhone={'-'}
           textCandidateSite={'-'}
           slotTypeMessage={<AddNewMessage sendMessage={sendMessage} />}

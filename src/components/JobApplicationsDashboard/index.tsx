@@ -168,7 +168,7 @@ const JobApplicationComponent = () => {
           href: '/jobs',
         }}
         jobLink={{
-          href: `https://dev.aglinthq.com/job-post/${job.id}`,
+          href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
           target: '_blank',
         }}
         onClickEditJob={{

@@ -32,6 +32,7 @@ type Props = {
   height?: string;
   noBorder?: boolean;
   width?: string;
+  select?: boolean;
 };
 
 // eslint-disable-next-line react/display-name
@@ -62,6 +63,7 @@ const UITextField = React.forwardRef(
       defaultValue,
       noBorder,
       width,
+      select,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -102,6 +104,7 @@ const UITextField = React.forwardRef(
           </UITypography>
         )}
         <MuiTextField
+          select={select}
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
