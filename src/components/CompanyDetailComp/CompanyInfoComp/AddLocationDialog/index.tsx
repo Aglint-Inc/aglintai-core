@@ -1,8 +1,7 @@
 import { Dialog, Stack, TextField } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { AddLocationPop } from '@/devlink';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 
 interface LocationProps {
@@ -15,39 +14,39 @@ interface LocationProps {
 const AddLocationDialog: React.FC<LocationProps> = ({
   handleClose,
   open,
-  handleChange,
+  // handleChange,
 }) => {
-  const isClicked = useRef(false); // Initialize with false
-  const { recruiter } = useAuthDetails();
+  // const isClicked = useRef(false); 
+  // const { recruiter } = useAuthDetails();
   const [location, setLocation] = useState({
     city: '',
     state: '',
     country: '',
   });
 
-  const handleAddLocation = () => {
-    if (location.city || location.state || location.state)
-      if (!isClicked.current) {
-        isClicked.current = true;
-        let locations = recruiter.office_locations;
-        locations.push(
-          [location.city, location.state, location.country]
-            .filter(Boolean)
-            .join(', '),
-        );
-        handleChange({
-          ...recruiter,
-          office_locations: locations,
-        });
-        handleClose();
-        isClicked.current = false;
-        setLocation({
-          city: '',
-          state: '',
-          country: '',
-        });
-      }
-  };
+  // const handleAddLocation = () => {
+  //   if (location.city || location.state || location.state)
+  //     if (!isClicked.current) {
+  //       isClicked.current = true;
+  //       let locations = recruiter.office_locations;
+  //       locations.push(
+  //         [location.city, location.state, location.country]
+  //           .filter(Boolean)
+  //           .join(', '),
+  //       );
+  //       handleChange({
+  //         ...recruiter,
+  //         office_locations: locations,
+  //       });
+  //       handleClose();
+  //       isClicked.current = false;
+  //       setLocation({
+  //         city: '',
+  //         state: '',
+  //         country: '',
+  //       });
+  //     }
+  // };
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -81,7 +80,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         }}
         onClickAdd={{
           onClick: () => {
-            handleAddLocation();
+            // handleAddLocation();
           },
         }}
       />

@@ -40,8 +40,12 @@ const SlideDetailsTwo = () => {
   });
 
   useEffect(() => {
-    fetchUserLocation(); // Call the function to fetch user's location when the component mounts
-  }, []);
+    if (!recruiter.phone_number) {
+      fetchUserLocation(); // Call the function to fetch user's location when the component mounts
+    }
+    setLogo(recruiter.logo);
+    setPhone(recruiter.phone_number);
+  }, [recruiter]);
 
   // Function to fetch the user's location information based on IP address
   const fetchUserLocation = async () => {
