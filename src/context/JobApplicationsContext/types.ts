@@ -33,6 +33,7 @@ export type InputData = Partial<
 export type JobApplicationContext = {
   applicationsData: JobApplicationsData;
   job: JobType;
+  updateTick: boolean;
   handleJobApplicationCreate: (
     inputData: Pick<
       JobApplication,

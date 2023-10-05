@@ -7,7 +7,6 @@ export * from "./utils";
 export * from "./devlink";
 export * from "./AddCandidateDropdown";
 export * from "./ApplicantsListEmpty";
-export * from "./CandidateListTopBar";
 export * from "./CandidateStatusDropdown";
 export * from "./CloseJobBtn";
 export * from "./DeleteJobPopup";

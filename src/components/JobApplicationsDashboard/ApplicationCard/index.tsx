@@ -14,12 +14,14 @@ const ApplicationCard = ({
   index,
   checkList,
   handleSelect,
+  isInterview,
 }: {
   application: JobApplication;
   index: number;
   checkList: Set<string>;
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
+  isInterview: boolean;
 }) => {
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
@@ -120,6 +122,7 @@ const ApplicationCard = ({
         statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
         textAppliedOn={appliedOn}
         onClickCheckbox={{ onClick: handleCheck }}
+        isInterview={isInterview}
       />
     </>
   );

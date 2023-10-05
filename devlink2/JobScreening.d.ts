@@ -29,4 +29,8 @@ declare function JobScreening(props: {
   jobLink?: Types.Basic.Link;
   linkActiveJobs?: Types.Basic.Link;
   slotJobStatus?: Types.Devlink.Slot;
+  isTopbarVisible?: Types.Visibility.VisibilityConditions;
+  interviewScore?: Types.Visibility.VisibilityConditions;
+  selectAllCheckbox?: Types.Devlink.RuntimeProps;
+  isSelectAllChecked?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

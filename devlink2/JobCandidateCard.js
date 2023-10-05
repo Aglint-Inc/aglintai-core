@@ -21,14 +21,18 @@ export function JobCandidateCard({
   textAppliedOn = "Applied on 17 Aug 2023 11:30PM",
   onClickCard = {},
   onClickCheckbox = {},
+  isInterview = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate-list-item")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-328")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "cli-checkbox", "padding-large")}
+        tag="div"
+        {...onClickCheckbox}
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "checkbox-wrappers-job")}
           tag="div"
-          {...onClickCheckbox}
         >
           {isChecked ? (
             <_Builtin.HtmlEmbed
@@ -58,7 +62,7 @@ export function JobCandidateCard({
         {...onClickCard}
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "candidate-resume-info")}
+          className={_utils.cx(_styles, "cli-column", "candidate-info")}
           tag="div"
         >
           <_Builtin.Block
@@ -147,116 +151,104 @@ export function JobCandidateCard({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cli-column", "score")}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cdd-resume-match-score")}
+            className={_utils.cx(_styles, "vectors-wrapper-44")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "vectors-wrapper-44")}
-              tag="div"
-            >
-              {slotScore}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-lg",
-                "fw-semibold",
-                "text-green-800",
-                "hide"
-              )}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-            >
-              {"This is some text inside of a div block."}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "resume-match-score", "hide")}
-              tag="div"
-            >
-              {"Resume Match"}
-            </_Builtin.Block>
+            {slotScore}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "frame-1019", "hide")}
-            tag="div"
-          >
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cli-column", "score")}
+          tag="div"
+        >
+          {isInterview ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "speedometer")}
-              tag="div"
-            >
-              <_Builtin.Image
-                className={_utils.cx(_styles, "vectors-wrapper-47")}
-                width={10}
-                height={8.676880836486816}
-                loading="lazy"
-                src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb65d61e8c06f83171d1_Vectors-Wrapper.svg"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-288")}
+              className={_utils.cx(_styles, "cli-int-score-block")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-sm",
-                  "fw-semibold",
-                  "text-yellow-600"
-                )}
+                className={_utils.cx(_styles, "speedometer")}
+                tag="div"
+              >
+                <_Builtin.Image
+                  className={_utils.cx(_styles, "vectors-wrapper-47")}
+                  width={10}
+                  height={8.676880836486816}
+                  loading="lazy"
+                  src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb65d61e8c06f83171d1_Vectors-Wrapper.svg"
+                />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-288")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-sm",
+                    "fw-semibold",
+                    "text-yellow-600"
+                  )}
+                  dyn={{
+                    bind: {},
+                  }}
+                  tag="div"
+                  {...scoreTextColor}
+                >
+                  {textScore}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-sm",
+                    "fw-semibold",
+                    "text-yellow-600"
+                  )}
+                  tag="div"
+                  {...scoreTextColor}
+                >
+                  {"/100"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cli-column", "status")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "frame-1024")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "frame-1096")}
+              tag="div"
+              {...statusBgColor}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "fw-semibold")}
                 dyn={{
                   bind: {},
                 }}
                 tag="div"
-                {...scoreTextColor}
+                {...statusTextColor}
               >
-                {textScore}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-sm",
-                  "fw-semibold",
-                  "text-yellow-600"
-                )}
-                tag="div"
-                {...scoreTextColor}
-              >
-                {"/100"}
+                {textStatus}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-10", "text-block")}
+              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
               tag="div"
             >
-              {"Interview Score"}
+              {textAppliedOn}
             </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "frame-1024")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "frame-1096")}
-            tag="div"
-            {...statusBgColor}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "fw-semibold")}
-              dyn={{
-                bind: {},
-              }}
-              tag="div"
-              {...statusTextColor}
-            >
-              {textStatus}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-            tag="div"
-          >
-            {textAppliedOn}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
