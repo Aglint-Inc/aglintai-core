@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
   getMailBodyType,
-  Support_ticketType,
+  // Support_ticketType,
   SupportEmailAPIType,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+// import { supabase } from '@/src/utils/supabaseClient';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -15,19 +15,19 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { application_id, email_type, details } =
+    const { application_id, email, email_type, details } =
       req.body as unknown as SupportEmailAPIType;
     if (!application_id && !email_type) {
       return res
         .status(400)
         .send({ message: 'Invalid request. Required props missing.' });
     }
-    const ticketDetails = await getSupportTicket(application_id);
+    // const ticketDetails = await getSupportTicket(application_id);
     // if (ticketDetails.email_updates) {
     const { sent, error } = await sendMail({
       email_type,
       details,
-      ticketDetails,
+      email,
     });
     return res.status(200).send({ emailSend: sent, error: error });
     // } else {
@@ -40,22 +40,22 @@ export default async function handler(
   res.status(405).end('Method Not Allowed!');
 }
 
-const getSupportTicket = async (applications_id: string) => {
-  const { data, error } = await supabase
-    .from('support_ticket')
-    .select()
-    .eq('application_id', applications_id);
-  if (!error && data.length) {
-    return data[0];
-  }
-  return null;
-};
+// const getSupportTicket = async (applications_id: string) => {
+//   const { data, error } = await supabase
+//     .from('support_ticket')
+//     .select()
+//     .eq('application_id', applications_id);
+//   if (!error && data.length) {
+//     return data[0];
+//   }
+//   return null;
+// };
 
 const sendMail = ({
   email_type,
   details,
-  ticketDetails,
-}: getMailBodyType & { ticketDetails: Support_ticketType }): Promise<{
+  email,
+}: getMailBodyType & { email: string }): Promise<{
   sent: false;
   error: any;
 }> => {
@@ -66,7 +66,7 @@ const sendMail = ({
     };
   }
   const msg = {
-    to: ticketDetails.email,
+    to: email,
     from: {
       email: details.fromEmail || 'admin@aglinthq.com',
       name: details.fromName || 'Aglint Admin',
