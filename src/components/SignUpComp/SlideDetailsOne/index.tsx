@@ -93,7 +93,7 @@ const SlideDetailsOne = () => {
               .update({
                 company_website: formatURL(details.website),
                 socials: {
-                  custom: [],
+                  custom: {},
                   twitter: res.data.twitters[0] || '',
                   youtube: res.data.youtubes[0] || '',
                   facebook: res.data.facebooks[0] || '',
