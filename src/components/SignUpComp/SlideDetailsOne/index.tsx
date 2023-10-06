@@ -131,16 +131,8 @@ const SlideDetailsOne = () => {
                         logo: company.logo_url,
                         phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
                         office_locations: company.locations || [],
-                        company_values: company.specialties || '',
                         company_overview: company.description || '',
-                        m_v_statement: company.tagline || '',
-                        address: {
-                          line1: company.hq_address_line1 || '',
-                          line2: company.hq_address_line2 || '',
-                          city: company.hq_city || '',
-                          country: company.hq_country || '',
-                          region: company.hq_region || '',
-                        },
+                        technology_score: extractKeywords(company.specialties),
                       })
                       .eq('id', recruiter.id)
                       .select();
@@ -165,6 +157,19 @@ const SlideDetailsOne = () => {
         });
     }
   };
+
+  function extractKeywords(inputString) {
+    if (inputString) {
+      // Split the input string into an array of keywords using a comma as the delimiter
+      const keywordsArray = inputString
+        .split(',')
+        .map((keyword) => keyword.trim());
+
+      return keywordsArray;
+    } else {
+      return [];
+    }
+  }
 
   function formatURL(userURL) {
     // Remove leading and trailing spaces

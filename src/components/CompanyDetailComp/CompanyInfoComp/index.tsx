@@ -73,8 +73,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           },
         }}
         slotBasicForm={
-          <Stack direction={'row'} p={'4px'} width={'100%'} spacing={'40px'}>
-            <Stack spacing={'20px'} width={'100%'}>
+          <Stack p={'4px'} width={'100%'} spacing={'20px'}>
+            <Stack spacing={'20px'} width={'100%'} direction={'row'}>
               <UITextField
                 labelSize='medium'
                 fullWidth
@@ -95,28 +95,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   handleChange({ ...recruiter, industry: e.target.value });
                 }}
               />
-              <UITextField
-                labelSize='medium'
-                fullWidth
-                label='Company Address'
-                placeholder='Ex. San Francisco, California'
-                value={recruiter?.address?.line1 || ''}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiter,
-                    address: {
-                      line1: e.target.value,
-                      line2: '',
-                      city: '',
-                      country: '',
-                      region: '',
-                    },
-                  });
-                }}
-                multiline
-                minRows={7}
-                maxRows={7}
-              />
+            </Stack>
+            <Stack spacing={'20px'} width={'100%'} direction={'row'}>
               <Autocomplete
                 disableClearable
                 freeSolo
@@ -144,8 +124,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   />
                 )}
               />
-            </Stack>
-            <Stack spacing={'20px'} width={'100%'}>
               <UITextField
                 labelSize='medium'
                 fullWidth
@@ -159,6 +137,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   });
                 }}
               />
+            </Stack>
+            <Stack width={'100%'} maxWidth={'420px'}>
               <SocialComp setIsSaving={setIsSaving} />
             </Stack>
           </Stack>
