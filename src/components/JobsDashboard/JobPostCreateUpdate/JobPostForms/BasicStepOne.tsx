@@ -21,11 +21,13 @@ const BasicStepOne = ({ formError, setFormError }) => {
     company,
     jobTitle,
     jobLocation,
+    department,
     jobType,
     workPlaceType,
     defaultWorkPlaceTypes,
     defaultJobType,
     defaultAddress,
+    defaultDepartments,
   } = formFields;
 
   return (
@@ -34,23 +36,25 @@ const BasicStepOne = ({ formError, setFormError }) => {
         slotForm={
           <>
             <Stack p={1} rowGap={2} component={'form'}>
-              <UITextField
-                label={'Job Title'}
-                defaultValue={jobTitle}
-                value={jobTitle}
-                onChange={(e) => {
-                  setFormError((p) => ({ ...p, jobTitle: '' }));
-                  handleUpdateFormFields({
-                    path: 'jobTitle',
-                    value: String(e.target.value),
-                  });
-                }}
-                error={Boolean(formError.jobTitle)}
-                disabled={formType === 'edit'}
-                helperText={formError.jobTitle}
-                placeholder='Ex : Software developer'
-              />
               <Grid container spacing={2}>
+                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                  <UITextField
+                    label={'Job Title'}
+                    defaultValue={jobTitle}
+                    value={jobTitle}
+                    onChange={(e) => {
+                      setFormError((p) => ({ ...p, jobTitle: '' }));
+                      handleUpdateFormFields({
+                        path: 'jobTitle',
+                        value: String(e.target.value),
+                      });
+                    }}
+                    error={Boolean(formError.jobTitle)}
+                    disabled={formType === 'edit'}
+                    helperText={formError.jobTitle}
+                    placeholder='Ex : Software developer'
+                  />
+                </Grid>
                 <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
                   <UITextField
                     InputProps={{
@@ -102,9 +106,45 @@ const BasicStepOne = ({ formError, setFormError }) => {
                 </Grid>
                 <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
                   <Autocomplete
+                    options={defaultDepartments}
+                    onChange={(event: any, newValue) => {
+                      if (!newValue) return;
+                      setFormError((p) => ({ ...p, department: '' }));
+                      handleUpdateFormFields({
+                        path: 'department',
+                        value: get(newValue, 'value'),
+                      });
+                    }}
+                    renderInput={(params) => (
+                      <UITextField
+                        rest={{ ...params }}
+                        label='Department '
+                        placeholder='Ex : Marketing'
+                        onChange={(e) => {
+                          setFormError((p) => ({ ...p, department: '' }));
+                          handleUpdateFormFields({
+                            path: 'department',
+                            value: String(e.target.value),
+                          });
+                        }}
+                        error={Boolean(formError.department)}
+                        helperText={formError.department}
+                      />
+                    )}
+                    defaultValue={{
+                      label: department,
+                      value: department,
+                    }}
+                    freeSolo
+                    disablePortal
+                  />
+                </Grid>
+                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                  <Autocomplete
                     options={defaultAddress}
                     onChange={(event: any, newValue) => {
                       if (!newValue) return;
+                      setFormError((p) => ({ ...p, location: '' }));
                       handleUpdateFormFields({
                         path: 'jobLocation',
                         value: get(newValue, 'value'),
@@ -134,6 +174,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     disablePortal
                   />
                 </Grid>
+
                 <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
                   <UISelect
                     label='Job Type'

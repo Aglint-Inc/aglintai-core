@@ -22,6 +22,7 @@ function EditFlow() {
     jobTitle: '',
     company: '',
     location: '',
+    department: '',
   });
   const [showWarn, setShowWarn] = useState(true);
   let formSlide = null;
@@ -45,19 +46,19 @@ function EditFlow() {
 
   const isformValid = () => {
     let flag = true;
-    const { company, jobTitle, jobLocation } = jobForm.formFields;
+    const { company, jobTitle, jobLocation, department } = jobForm.formFields;
     if (slideNo === 1) {
-      if (isEmpty(jobTitle)) {
+      if (isEmpty(jobTitle.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
       }
 
-      if (isEmpty(company)) {
+      if (isEmpty(company.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, company: 'Please Enter Company Name' }));
       }
 
-      if (isEmpty(jobLocation)) {
+      if (isEmpty(jobLocation.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, location: 'Please Enter Location' }));
       }
@@ -70,6 +71,10 @@ function EditFlow() {
       if (isEmpty(get(jobForm, 'formFields.skills', []))) {
         toast.error('Please provide required skills to move to next Step');
         return false;
+      }
+      if (isEmpty(department.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
       }
     }
     if (slideNo === 4) {
@@ -161,7 +166,7 @@ function EditFlow() {
         open={jobForm.isFormOpen}
         onClose={handleDrawerClose}
       >
-        <Stack width={'800px'} position={'relative'} minHeight={'100vh'}>
+        <Stack width={'800px'} minHeight={'100vh'}>
           <EditJob
             isJobSaved={true}
             isDetailsActive={slideNo === 1}

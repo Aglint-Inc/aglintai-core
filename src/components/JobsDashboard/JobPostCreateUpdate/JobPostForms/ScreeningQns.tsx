@@ -195,6 +195,7 @@ const StandardScreenSingle = ({
         param.questions.map((p) => p.question).slice(0, 5),
         htmlToText(get(jobForm, 'formFields.jobDescription', '')),
         param.copy,
+        paramKey == 'skill' ? jobForm.formFields.skills : undefined,
       );
       const newQns = qns.map((q) => ({
         id: nanoid(),
@@ -212,7 +213,11 @@ const StandardScreenSingle = ({
   };
 
   useEffect(() => {
-    if (param.value && param.questions.length === 0) {
+    if (
+      param.value &&
+      param.questions.length === 0 &&
+      jobForm.formType === 'new'
+    ) {
       !isAiGenerating && handleGenerateInterviewQns();
     }
   }, [param]);

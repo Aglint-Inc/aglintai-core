@@ -290,13 +290,13 @@ export const GenerateDescription = () => {
     values: true,
   });
   const {
-    jobForm: { formFields },
+    jobForm: { formFields, formType },
   } = useJobForm();
   const { editor } = useTipTap();
   const { recruiter } = useAuthDetails();
 
   if (!editor) return <></>;
-
+  if (formType === 'edit') return <></>;
   const enableGenerate =
     Boolean(checks.benifits) ||
     Boolean(checks.company) ||
