@@ -14,15 +14,13 @@ import UITextField from '../../Common/UITextField';
 const SearchField = ({
   applications,
   section,
-  jobUpdate,
   setFilteredApplications,
 }: {
   applications: JobApplication[];
   section: JobApplicationSections;
-  jobUpdate: boolean;
   setFilteredApplications: Dispatch<SetStateAction<JobApplication[]>>;
 }) => {
-  const { applicationsData } = useJobApplications();
+  const { updateTick } = useJobApplications();
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -34,14 +32,7 @@ const SearchField = ({
 
   useEffect(() => {
     handleSearch(value);
-  }, [
-    applicationsData.applications.new,
-    applicationsData.applications.interviewing,
-    applicationsData.applications.disqualified,
-    applicationsData.applications.qualified,
-    section,
-    jobUpdate,
-  ]);
+  }, [updateTick, section]);
 
   const handleSearch = (val: string) => {
     const value = val.trim().toLowerCase();

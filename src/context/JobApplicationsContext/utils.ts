@@ -25,6 +25,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   openManualImportCandidates: undefined,
   setOpenManualImportCandidates: undefined,
   handleUpdateJobStatus: undefined,
+  updateTick: undefined,
 };
 
 export const createJobApplicationDbAction = async (
@@ -41,10 +42,7 @@ export const createJobApplicationDbAction = async (
 
 export const bulkCreateJobApplicationDbAction = async (
   job_id: string,
-  inputData: (Pick<
-    JobApplication,
-    'first_name' | 'last_name' | 'email'
-  > &
+  inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
     InputData)[],
 ) => {
   const applications = inputData.map((data) => {

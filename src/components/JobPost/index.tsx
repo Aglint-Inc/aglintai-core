@@ -71,6 +71,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
       setError(true);
     }
   };
+  const filteredJobs = jobs.filter((job) => job.id !== post.id);
 
   return (
     <Stack width={'100%'}>
@@ -126,6 +127,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   pt: '20px',
                   pb: '10px',
                   m: 0,
+                  fontWeight: 600,
                 },
               }}
               dangerouslySetInnerHTML={{ __html: post?.description }}
@@ -135,9 +137,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 <Typography
                   variant='h5'
                   color={palette.grey[600]}
-                  sx={{ pt: '20px' }}
+                  sx={{ pt: '20px', fontWeight: 600 }}
                 >
-                  Skills:
+                  Skills
                 </Typography>
                 <List>
                   {post?.skills?.map((skill, index) => (
@@ -164,7 +166,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           recruiter?.socials &&
           Object.entries(recruiter?.socials)?.map((soc, ind) => {
             if (soc[0] === 'custom') {
-              return null; // Skip this iteration
+              return null;
+            } else if (soc[0] !== 'custom' && !soc[1]) {
+              return null;
             }
             return (
               <CompanyListingLinks
@@ -205,22 +209,26 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             <Icon variant='Person' />
           </Avatar>
         }
-        slotOpenJobListing={jobs.map((job, ind) => {
-          return (
-            <OpenJobListingCard
-              key={ind}
-              textJobRole={job.job_title || '--'}
-              textCompanyType={'--'}
-              textLocation={job.location || '--'}
-              textWorkingType={job.job_type || '--'}
-              onClickApplyNow={{
-                onClick: () => {
-                  router.push(job.id);
-                },
-              }}
-            />
-          );
-        })}
+        slotOpenJobListing={
+          filteredJobs.length > 0
+            ? filteredJobs.map((job, ind) => {
+                return (
+                  <OpenJobListingCard
+                    key={ind}
+                    textJobRole={job.job_title || '--'}
+                    textCompanyType={'--'}
+                    textLocation={job.location || '--'}
+                    textWorkingType={job.job_type || '--'}
+                    onClickApplyNow={{
+                      onClick: () => {
+                        router.push(job.id);
+                      },
+                    }}
+                  />
+                );
+              })
+            : 'No More Jobs Postings'
+        }
         onClickViewMore={{
           onClick: () => {
             router.push(pageRoutes.COMPANYPOSTINGS + recruiter.id);

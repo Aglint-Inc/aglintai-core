@@ -1,23 +1,22 @@
-import { Autocomplete, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { WelcomeSlider4 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { industries } from '@/src/utils/industries';
+import { AddressType, SocialsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { stepObj } from '../SlideSignup/utils';
+
 interface Details {
   website: string;
-  industry: string;
 }
 
 interface Error {
   website: ErrorField;
-  industry: ErrorField;
 }
 
 interface ErrorField {
@@ -27,7 +26,7 @@ interface ErrorField {
 
 const SlideDetailsOne = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, setRecruiter } = useAuthDetails();
 
   const { setStep } = useSignupDetails();
   const [details, setDetails] = useState<Details | null>(null);
@@ -36,11 +35,11 @@ const SlideDetailsOne = () => {
       error: false,
       msg: '',
     },
-    industry: {
-      error: false,
-      msg: '',
-    },
   });
+
+  useEffect(() => {
+    setDetails({ website: recruiter.company_website });
+  }, []);
 
   const formValidation = async (): Promise<boolean> => {
     let isValid = true;
@@ -80,50 +79,121 @@ const SlideDetailsOne = () => {
         });
     }
 
-    if (!details?.industry) {
-      isValid = false;
-      error.industry = {
-        error: true,
-        msg: 'Industry is required field',
-      };
-      setError({
-        ...error,
-      });
-    } else {
-      error.industry = {
-        error: false,
-        msg: '',
-      };
-      setError({
-        ...error,
-      });
-    }
     return isValid;
   };
 
   const submitHandler = async () => {
     if ((await formValidation()) && recruiter?.id) {
-      const { error } = await supabase
-        .from('recruiter')
-        .update({
-          company_website: details.website,
-          industry: details.industry,
-        })
-        .eq('id', recruiter.id)
-        .select();
-      if (!error) {
-        router.push(`?step=${stepObj.detailsTwo}`, undefined, {
-          shallow: true,
+      await axios
+        .post('/api/crawlwebsite', { url: formatURL(details.website) })
+        .then(async (res) => {
+          if (res.status === 200) {
+            const { data, error } = await supabase
+              .from('recruiter')
+              .update({
+                company_website: formatURL(details.website),
+                socials: {
+                  custom: {},
+                  twitter: res.data.twitters[0] || '',
+                  youtube: res.data.youtubes[0] || '',
+                  facebook: res.data.facebooks[0] || '',
+                  linkedin: res.data.linkedIns[0] || '',
+                  instagram: res.data.instagrams[0] || '',
+                },
+              })
+              .eq('id', recruiter.id)
+              .select();
+            if (!error) {
+              setRecruiter({
+                ...data[0],
+                address: data[0].address as AddressType,
+                socials: data[0].socials as SocialsType,
+              });
+              if (res.data.linkedIns[0]) {
+                await axios
+                  .post('/api/fetchcompany', {
+                    url: res.data.linkedIns[0],
+                  })
+                  .then(async (res) => {
+                    const company = res.data;
+                    let phone = null;
+                    if (company.phone) {
+                      phone =
+                        company.hq_country == 'US'
+                          ? `+1${company.phone}`
+                          : company.phone;
+                    }
+                    const { data: newData } = await supabase
+                      .from('recruiter')
+                      .update({
+                        industry: company.industries[0] || '',
+                        employee_size: company.employee_range,
+                        logo: company.logo_url,
+                        phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
+                        office_locations: company.locations || [],
+                        company_overview: company.description || '',
+                        technology_score: extractKeywords(company.specialties),
+                      })
+                      .eq('id', recruiter.id)
+                      .select();
+                    setRecruiter({
+                      ...newData[0],
+                      address: newData[0].address as AddressType,
+                      socials: newData[0].socials as SocialsType,
+                    });
+                    router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.detailsTwo);
+                  });
+              } else {
+                router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                  shallow: true,
+                });
+                setStep(stepObj.detailsTwo);
+              }
+            }
+          }
         });
-        setStep(stepObj.detailsTwo);
-      }
     }
   };
+
+  function extractKeywords(inputString) {
+    if (inputString) {
+      // Split the input string into an array of keywords using a comma as the delimiter
+      const keywordsArray = inputString
+        .split(',')
+        .map((keyword) => keyword.trim());
+
+      return keywordsArray;
+    } else {
+      return [];
+    }
+  }
+
+  function formatURL(userURL) {
+    // Remove leading and trailing spaces
+    userURL = userURL.trim();
+
+    // Check if the URL starts with "http://" or "https://"
+    if (!userURL.startsWith('http://') && !userURL.startsWith('https://')) {
+      // If not, add "https://"
+      userURL = 'https://' + userURL;
+    }
+
+    // Check if the URL contains "www."
+    if (!userURL.includes('www.')) {
+      // If not, add "www."
+      userURL = userURL.replace('https://', 'https://www.');
+    }
+
+    return userURL;
+  }
 
   return (
     <>
       <WelcomeSlider4
-        isSaveCompanySiteDisable={!details?.website || !details?.industry}
+        isSaveCompanySiteDisable={!details?.website}
         userName={recruiter?.name}
         onClickSaveCompanySites={{
           onClick: () => {
@@ -151,33 +221,6 @@ const SlideDetailsOne = () => {
                   fontSize: '14px',
                 },
               }}
-            />
-            <Autocomplete
-              disableClearable
-              freeSolo
-              fullWidth
-              options={industries}
-              onChange={(event, value) => {
-                if (value) {
-                  setDetails({ ...details, industry: value });
-                }
-              }}
-              getOptionLabel={(option) => option}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  type='text'
-                  fullWidth
-                  required
-                  InputProps={{
-                    ...params.InputProps,
-                    disableUnderline: true,
-                  }}
-                  label='Choose industry'
-                  error={error.industry.error}
-                  helperText={error.industry.error ? error.industry.msg : ''}
-                />
-              )}
             />
           </Stack>
         }

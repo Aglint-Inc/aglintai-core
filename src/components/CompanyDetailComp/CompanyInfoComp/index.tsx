@@ -1,12 +1,7 @@
-import { MenuItem, Stack } from '@mui/material';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { Autocomplete, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 
-import {
-  CompanyInfo,
-  CompanyLocation,
-  RolesPill,
-  SkillsInput,
-} from '@/devlink';
+import { CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 
@@ -21,10 +16,8 @@ import UITextField from '../../Common/UITextField';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
-  const locationRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
-  const [edit, setEdit] = useState(initialEdit());
   useEffect(() => {
     setLogo(recruiter?.logo);
   }, []);
@@ -65,7 +58,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       />
       <AddLocationDialog
         handleClose={handleClose}
-        open={dialog.location}
+        open={dialog.location.open}
         handleChange={handleChange}
       />
       <CompanyInfo
@@ -80,8 +73,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           },
         }}
         slotBasicForm={
-          <Stack direction={'row'} p={'4px'} width={'100%'} spacing={'40px'}>
-            <Stack spacing={'20px'} width={'100%'}>
+          <Stack p={'4px'} width={'100%'} spacing={'20px'}>
+            <Stack spacing={'20px'} width={'100%'} direction={'row'}>
               <UITextField
                 labelSize='medium'
                 fullWidth
@@ -102,49 +95,41 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   handleChange({ ...recruiter, industry: e.target.value });
                 }}
               />
-              <UITextField
-                labelSize='medium'
-                fullWidth
-                label='Company Address'
-                placeholder='Ex. San Francisco, California'
-                value={recruiter?.address?.line1 || ''}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiter,
-                    address: {
-                      line1: e.target.value,
-                      line2: '',
-                      city: '',
-                      country: '',
-                      state: '',
-                    },
-                  });
-                }}
-                multiline
-                minRows={7}
-                maxRows={7}
-              />
-              <UITextField
-                select={true}
-                labelSize='medium'
-                label='Employee Size'
-                value={recruiter?.employee_size}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiter,
-                    employee_size: e.target.value,
-                  });
-                }}
-              >
-                <MenuItem value={'1 - 5'}>1 - 5</MenuItem>
-                <MenuItem value={'5 - 50'}>5 - 50</MenuItem>
-                <MenuItem value={'50 - 100'}>50 - 100</MenuItem>
-                <MenuItem value={'100 - 500'}>100 - 500</MenuItem>
-                <MenuItem value={'1000 - 5000'}>1000 - 5000</MenuItem>
-                <MenuItem value={'5000+'}>5000+</MenuItem>
-              </UITextField>
             </Stack>
-            <Stack spacing={'20px'} width={'100%'}>
+            <Stack spacing={'20px'} width={'100%'} direction={'row'}>
+              <Autocomplete
+                disableClearable
+                freeSolo
+                fullWidth
+                options={sizes}
+                onChange={(event, value) => {
+                  if (value) {
+                    handleChange({
+                      ...recruiter,
+                      employee_size: value,
+                    });
+                  }
+                }}
+                value={recruiter.employee_size}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                  <UITextField
+                    rest={{ ...params }}
+                    fullWidth
+                    InputProps={{
+                      ...params.InputProps,
+                    }}
+                    label='Employee Size'
+                    labelSize='medium'
+                    onChange={(event) => {
+                      handleChange({
+                        ...recruiter,
+                        employee_size: event.target.value,
+                      });
+                    }}
+                  />
+                )}
+              />
               <UITextField
                 labelSize='medium'
                 fullWidth
@@ -158,64 +143,37 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   });
                 }}
               />
+            </Stack>
+            <Stack width={'100%'} maxWidth={'420px'}>
               <SocialComp setIsSaving={setIsSaving} />
             </Stack>
           </Stack>
         }
         slotLocation={
           <Stack p={'4px'}>
-            {recruiter?.office_locations.map((loc, ind) => {
+            {recruiter?.office_locations.map((loc: any, ind) => {
+              const location = [loc.city, loc.region, loc.country]
+                .filter(Boolean)
+                .join(', ');
+
               return (
                 <>
-                  {edit.location == ind ? (
-                    <SkillsInput
-                      slotInput={
-                        <UITextField
-                          labelSize='medium'
-                          fullWidth
-                          placeholder='Ex. Google'
-                          defaultValue={loc}
-                          ref={locationRef}
-                          noBorder
-                        />
-                      }
-                      onClickCancel={{
+                  <Stack p={'4px'}>
+                    <CompanyLocation
+                      onClickEdit={{
                         onClick: () => {
-                          setEdit(initialEdit());
+                          setDialog({
+                            ...dialog,
+                            location: { open: true, edit: ind },
+                          });
                         },
                       }}
-                      onClickSave={{
-                        onClick: () => {
-                          recruiter.office_locations[Number(ind)] =
-                            locationRef.current.value;
-                          handleChange({ ...recruiter });
-                          setEdit(initialEdit());
-                        },
+                      textLocation={location}
+                      onClickDelete={{
+                        onClick: () => {},
                       }}
                     />
-                  ) : (
-                    <Stack p={'4px'}>
-                      <CompanyLocation
-                        onClickEdit={{
-                          onClick: () => {
-                            setEdit({ ...edit, location: ind });
-                          },
-                        }}
-                        textLocation={loc}
-                        onClickDelete={{
-                          onClick: () => {
-                            let locations = recruiter.office_locations.filter(
-                              (location) => location != loc,
-                            );
-                            handleChange({
-                              ...recruiter,
-                              office_locations: locations,
-                            });
-                          },
-                        }}
-                      />
-                    </Stack>
-                  )}
+                  </Stack>
                 </>
               );
             })}
@@ -280,7 +238,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         })}
         onClickAddLocation={{
           onClick: () => {
-            setDialog({ ...dialog, location: true });
+            setDialog({ ...dialog, location: { open: true, edit: null } });
           },
         }}
         onClickAddAvailableRoles={{
@@ -305,10 +263,20 @@ const CompanyInfoComp = ({ setIsSaving }) => {
 
 export default CompanyInfoComp;
 
-const initialEdit = () => {
-  return { location: null, roles: null, departments: null, stacks: null };
+const initialDialog = () => {
+  return {
+    location: { open: false, edit: null },
+    roles: false,
+    departments: false,
+    stacks: false,
+  };
 };
 
-const initialDialog = () => {
-  return { location: false, roles: false, departments: false, stacks: false };
-};
+export const sizes = [
+  '1 - 5',
+  '5 - 50',
+  '50 - 100',
+  '100 - 500',
+  '1000 - 5000',
+  '5000+',
+];
