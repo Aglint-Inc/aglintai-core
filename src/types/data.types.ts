@@ -57,6 +57,7 @@ export type SupportGroupType =
 // support email api
 export type getMailBodyType = {
   email_type: 'interviewLink' | 'disqualified' | 'qualified';
+
   details: {
     fromEmail: string;
     fromName: string;
@@ -69,6 +70,7 @@ export type getMailBodyType = {
 };
 export type SupportEmailAPIType = {
   application_id: string;
+  email: string;
 } & getMailBodyType;
 
 export type ApplicationReceived = {

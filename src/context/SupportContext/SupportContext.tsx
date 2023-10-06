@@ -352,7 +352,7 @@ const sendNotificationEmail = ({
   details,
 }: NotificationsEmailAPIType) => {
   return axios
-    .post('/api/support/email', {
+    .post('/api/support/notificationEmail', {
       application_id,
       details,
     })
