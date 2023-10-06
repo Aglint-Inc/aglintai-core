@@ -121,6 +121,12 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                     label='Employee Size'
                     labelSize='medium'
+                    onChange={(event) => {
+                      handleChange({
+                        ...recruiter,
+                        employee_size: event.target.value,
+                      });
+                    }}
                   />
                 )}
               />

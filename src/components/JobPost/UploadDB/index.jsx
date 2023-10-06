@@ -4,11 +4,11 @@ import {
   MenuItem,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { Checkbox } from '@/devlink';
@@ -67,6 +67,7 @@ const initialError = () => {
 };
 
 function UploadDB({ post }) {
+  const isSubmitRef = useRef(false);
   const [profile, setProfile] = useState({
     firstName: null,
     lastName: null,
@@ -186,19 +187,6 @@ function UploadDB({ post }) {
   };
 
   const submitHandler = async () => {
-    setProfile({
-      firstName: null,
-      lastName: null,
-      email: null,
-      phoneNumber: null,
-      resume: null,
-      linkedin: null,
-      usn: null,
-      college_name: null,
-      branch: null,
-      cgpa: null,
-      role: null,
-    });
     if (checked && validate()) {
       setLoading(true);
       let jobId = post.id;
@@ -333,42 +321,54 @@ function UploadDB({ post }) {
     }
   };
 
+  function fillEmailTemplate(template, email) {
+    let filledTemplate = template;
+
+    const placeholders = {
+      '[firstName]': email.first_name,
+      '[lastName]': email.last_name,
+      '[jobTitle]': email.job_title,
+      '[companyName]': email.company_name,
+    };
+
+    for (const [placeholder, value] of Object.entries(placeholders)) {
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
+      filledTemplate = filledTemplate.replace(regex, value);
+    }
+
+    return filledTemplate;
+  }
+
   const mailHandler = async () => {
     try {
-      await axios.post('/api/postSlackJobPost', {
-        text: `Post details:
-                      Email - ${profile?.email},
-                      Job - ${post?.job_title},
-                       `,
-      });
-      await axios.post('/api/sendgrid', {
-        fromEmail: 'messenger@aglinthq.com',
-        fromName: post?.company,
-        email: profile?.email,
-        subject: `Thank You for Applying - ${post?.job_title} Position`,
-        text: `<div>
-            <p>Dear ${profile.firstName},</p>
+      const email = {
+        first_name: profile.firstName,
+        last_name: profile.lastName,
+        job_title: post.job_title,
+        company_name: post.company,
+      };
 
-            <p>
-              Thank you for applying for the ${post?.job_title} position at ${post?.company}.
-            </p>
-
-            <p>
-              We have received your application and are currently reviewing all
-              submissions. If your qualifications match our requirements, we
-              will be in touch for the next steps.
-            </p>
-
-            <p>
-              Your time and effort are valued, and we'll keep you updated on the
-              progress of your application.
-            </p>
-
-            <p>Best regards,</p>
-
-            <p>Aglint Inc</p>
-          </div>`,
-      });
+      await axios
+        .post('/api/sendgrid', {
+          fromEmail: `messenger@aglinthq.com`,
+          fromName: post.company,
+          email: profile?.email,
+          subject: fillEmailTemplate(
+            post.email_template.application_recieved.subject,
+            email,
+          ),
+          text: fillEmailTemplate(
+            post.email_template.application_recieved.body,
+            email,
+          ),
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.data === 'Email sent') {
+            toast.success('Mail sent successfully');
+            return true;
+          }
+        });
     } catch (err) {
       //}
     }
@@ -378,7 +378,6 @@ function UploadDB({ post }) {
     <Stack
       id='scrollTarget'
       sx={{
-        background: palette.grey[100],
         p: { xs: '10px', mm: '30px' },
         borderRadius: '10px',
       }}
@@ -673,7 +672,10 @@ function UploadDB({ post }) {
         <Grid item xs={12}>
           <AUIButton
             onClick={() => {
-              submitHandler();
+              if (!isSubmitRef.current) {
+                isSubmitRef.current = true;
+                submitHandler();
+              }
             }}
           >
             Apply Now
