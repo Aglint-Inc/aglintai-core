@@ -22,6 +22,7 @@ export const getSeedJobFormData = (
       jobLocation: '',
       jobTitle: '',
       jobType: 'fullTime',
+      department: '',
       logo: '',
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
@@ -30,6 +31,7 @@ export const getSeedJobFormData = (
       jobDescription: '',
       interviewType: 'questions-preset',
       defaultAddress: [],
+      defaultDepartments: [],
       interviewConfig: {
         skill: {
           id: nanoid(),
@@ -138,16 +140,16 @@ export const getSeedJobFormData = (
     });
     seedFormState.formFields.workPlaceType = 'onsite';
     seedFormState.formFields.jobType = 'fulltime';
-    seedFormState.formFields.jobLocation = get(
-      recruiter,
-      'office_locations[0]',
-      '',
-    );
+    seedFormState.formFields.jobLocation = '';
+    seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
     seedFormState.formFields.defaultAddress = get(
       recruiter,
       'office_locations',
       [],
-    ).map((s) => ({ label: s, value: s }));
+    ).map((s) => ({
+      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
+      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    }));
     seedFormState.formFields.screeningConfig.screeningEmail = {
       ...seedFormState.formFields.screeningConfig.screeningEmail,
       emailTemplates: get(
@@ -156,6 +158,11 @@ export const getSeedJobFormData = (
         {},
       ) as JobFormState['formFields']['screeningConfig']['screeningEmail']['emailTemplates'],
     };
+    seedFormState.formFields.defaultDepartments = get(
+      recruiter,
+      'departments',
+      [],
+    ).map((d) => ({ label: d, value: d }));
   }
 
   return seedFormState;

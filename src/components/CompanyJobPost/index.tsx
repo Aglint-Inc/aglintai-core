@@ -68,7 +68,9 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
           recruiter?.socials &&
           Object.entries(recruiter?.socials)?.map((soc, ind) => {
             if (soc[0] === 'custom') {
-              return null; // Skip this iteration
+              return null;
+            } else if (soc[0] !== 'custom' && !soc[1]) {
+              return null;
             }
             return (
               <CompanyListingLinks
@@ -91,18 +93,25 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
             );
           })
         }
-        slotOfficeLocaionCard={recruiter?.office_locations.map((loc, ind) => {
-          return (
-            <OfficeLocationCard
-              key={ind}
-              textAddress={loc}
-              textCountry={''}
-              textJobPostCount={`${
-                jobs.filter((job) => job.location.includes(loc)).length
-              } Jobs`}
-            />
-          );
-        })}
+        slotOfficeLocaionCard={recruiter?.office_locations.map(
+          (loc: any, ind) => {
+            return (
+              <OfficeLocationCard
+                key={ind}
+                textAddress={
+                  [loc.line1, loc.region, loc.city]
+                    .filter(Boolean)
+                    .join(', ') || ''
+                }
+                textCountry={loc.country}
+                textHeadquater={'asda'}
+                textJobPostCount={`${
+                  jobs.filter((job) => job.location.includes(loc.city)).length
+                } Jobs`}
+              />
+            );
+          },
+        )}
       />
     </div>
   );

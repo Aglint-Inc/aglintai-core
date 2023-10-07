@@ -2347,6 +2347,7 @@ export interface Database {
           company: string | null
           company_details: string | null
           created_at: string
+          department: string | null
           description: string | null
           email_template: Json
           id: string
@@ -2375,6 +2376,7 @@ export interface Database {
           company?: string | null
           company_details?: string | null
           created_at?: string
+          department?: string | null
           description?: string | null
           email_template?: Json
           id?: string
@@ -2403,6 +2405,7 @@ export interface Database {
           company?: string | null
           company_details?: string | null
           created_at?: string
+          department?: string | null
           description?: string | null
           email_template?: Json
           id?: string
@@ -2523,11 +2526,11 @@ export interface Database {
           logo: string | null
           m_v_statement: string | null
           name: string | null
-          office_locations: string[]
+          office_locations: Json[] | null
           phone_number: string | null
           primary_contact: Json | null
           recruiter_type: string | null
-          socials: Json
+          socials: Json | null
           technology_score: string[]
           user_id: string
           workplace_type: Json
@@ -2552,11 +2555,11 @@ export interface Database {
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: string[]
+          office_locations?: Json[] | null
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
-          socials?: Json
+          socials?: Json | null
           technology_score?: string[]
           user_id: string
           workplace_type?: Json
@@ -2581,11 +2584,11 @@ export interface Database {
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: string[]
+          office_locations?: Json[] | null
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
-          socials?: Json
+          socials?: Json | null
           technology_score?: string[]
           user_id?: string
           workplace_type?: Json
@@ -3249,19 +3252,20 @@ export interface Database {
           action_pending: Json
           application_id: string | null
           assign_to: string | null
-          "attachments ": string[] | null
-          company_id: string
+          attachments: string[] | null
+          company_id: string | null
           content: Json[]
           created_at: string | null
           email: string | null
           email_updates: boolean
           id: string
+          idx: string
           job_id: string
           priority: string
           state: string
           support_group_id: string | null
           title: string
-          type: string[]
+          type: string
           updated_at: string | null
           user_id: string | null
           user_name: string
@@ -3270,19 +3274,20 @@ export interface Database {
           action_pending?: Json
           application_id?: string | null
           assign_to?: string | null
-          "attachments "?: string[] | null
-          company_id: string
+          attachments?: string[] | null
+          company_id?: string | null
           content?: Json[]
           created_at?: string | null
           email?: string | null
           email_updates?: boolean
           id?: string
+          idx?: string
           job_id: string
           priority?: string
           state?: string
           support_group_id?: string | null
           title: string
-          type: string[]
+          type: string
           updated_at?: string | null
           user_id?: string | null
           user_name: string
@@ -3291,19 +3296,20 @@ export interface Database {
           action_pending?: Json
           application_id?: string | null
           assign_to?: string | null
-          "attachments "?: string[] | null
-          company_id?: string
+          attachments?: string[] | null
+          company_id?: string | null
           content?: Json[]
           created_at?: string | null
           email?: string | null
           email_updates?: boolean
           id?: string
+          idx?: string
           job_id?: string
           priority?: string
           state?: string
           support_group_id?: string | null
           title?: string
-          type?: string[]
+          type?: string
           updated_at?: string | null
           user_id?: string | null
           user_name?: string

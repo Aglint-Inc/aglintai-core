@@ -1,7 +1,7 @@
 import { Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { WelcomeSlider4 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -36,6 +36,10 @@ const SlideDetailsOne = () => {
       msg: '',
     },
   });
+
+  useEffect(() => {
+    setDetails({ website: recruiter.company_website });
+  }, []);
 
   const formValidation = async (): Promise<boolean> => {
     let isValid = true;
@@ -89,7 +93,7 @@ const SlideDetailsOne = () => {
               .update({
                 company_website: formatURL(details.website),
                 socials: {
-                  custom: [],
+                  custom: {},
                   twitter: res.data.twitters[0] || '',
                   youtube: res.data.youtubes[0] || '',
                   facebook: res.data.facebooks[0] || '',
@@ -112,33 +116,60 @@ const SlideDetailsOne = () => {
                   })
                   .then(async (res) => {
                     const company = res.data;
-                    await supabase
+                    let phone = null;
+                    if (company.phone) {
+                      phone =
+                        company.hq_country == 'US'
+                          ? `+1${company.phone}`
+                          : company.phone;
+                    }
+                    const { data: newData } = await supabase
                       .from('recruiter')
                       .update({
                         industry: company.industries[0] || '',
                         employee_size: company.employee_range,
                         logo: company.logo_url,
-                        phone_number:
-                          company.hq_country == 'US'
-                            ? `+1${company.phone}`
-                            : company.phone, //NEED TO CHANGE THIS LOGIC. It works temporary
+                        phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
                         office_locations: company.locations || [],
-                        company_values: company.tagline || '',
                         company_overview: company.description || '',
+                        technology_score: extractKeywords(company.specialties),
                       })
                       .eq('id', recruiter.id)
                       .select();
+                    setRecruiter({
+                      ...newData[0],
+                      address: newData[0].address as AddressType,
+                      socials: newData[0].socials as SocialsType,
+                    });
+                    router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.detailsTwo);
                   });
+              } else {
+                router.push(`?step=${stepObj.detailsTwo}`, undefined, {
+                  shallow: true,
+                });
+                setStep(stepObj.detailsTwo);
               }
-              router.push(`?step=${stepObj.detailsTwo}`, undefined, {
-                shallow: true,
-              });
-              setStep(stepObj.detailsTwo);
             }
           }
         });
     }
   };
+
+  function extractKeywords(inputString) {
+    if (inputString) {
+      // Split the input string into an array of keywords using a comma as the delimiter
+      const keywordsArray = inputString
+        .split(',')
+        .map((keyword) => keyword.trim());
+
+      return keywordsArray;
+    } else {
+      return [];
+    }
+  }
 
   function formatURL(userURL) {
     // Remove leading and trailing spaces
