@@ -249,7 +249,9 @@ function ApplicationDetails({
                           return (
                             <DetailedFeedbackCard
                               textScorePercentage={rating + '%'}
-                              textHeader={feedback.topic}
+                              textHeader={capitalize(
+                                feedback.topic.replaceAll('_', ' '),
+                              )}
                               textDescription={''}
                               key={i}
                               textColorScore={{
@@ -302,9 +304,9 @@ function ApplicationDetails({
                 />
               }
               textName={
-                applicationDetails?.first_name +
+               capitalize( applicationDetails?.first_name +
                 ' ' +
-                applicationDetails?.last_name
+                applicationDetails?.last_name)
               }
               isInterviewVisible={overAllScore > 0}
               isKeySkillsVisible={false}
@@ -478,7 +480,7 @@ export function Transcript({
                           : '#d93f4c',
                     },
                   }}
-                  textHeader={ele?.topic}
+                  textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
                   textDescription={ele.feedback}
                   textScorePercentage={rating + '%'}
                   slotScore={
