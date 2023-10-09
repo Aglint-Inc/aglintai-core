@@ -209,6 +209,7 @@ function SupportTicketDetails({
               function: () =>
                 sendEmail({
                   application_id: ticket.application_id,
+                  email: application.email,
                   email_type: 'interviewLink',
                   details: {
                     link: getInterviewUrl(ticket.application_id),
@@ -222,6 +223,7 @@ function SupportTicketDetails({
               function: () =>
                 sendEmail({
                   application_id: ticket.application_id,
+                  email: application.email,
                   email_type: 'qualified',
                   details: {
                     fromEmail: recruiter.email,
@@ -251,6 +253,7 @@ function SupportTicketDetails({
               function: () =>
                 sendEmail({
                   application_id: ticket.application_id,
+                  email: application.email,
                   email_type: 'qualified',
                   details: {
                     fromEmail: recruiter.email,
@@ -417,12 +420,14 @@ const getInterviewUrl = (application_id: string) => {
 
 const sendEmail = ({
   application_id,
+  email,
   email_type,
   details,
 }: SupportEmailAPIType) => {
   return axios
     .post('/api/support/email', {
       application_id,
+      email,
       email_type,
       details,
     })

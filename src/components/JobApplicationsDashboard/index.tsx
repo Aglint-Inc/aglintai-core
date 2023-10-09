@@ -2,7 +2,7 @@
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack } from '@mui/material';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import {
   AddCandidateDropdown,
@@ -18,7 +18,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
-import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
@@ -257,6 +257,19 @@ const ApplicantsList = ({
       });
     }
   };
+  const [lastLoad, setLastLoad] = useState(10);
+  const observer = useRef(undefined);
+  const lastApplicationRef = (node: any) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) setLastLoad((prev) => prev + 10);
+    });
+    if (node) observer.current.observe(node);
+  };
+  useEffect(() => {
+    setLastLoad(10);
+  }, [section]);
+
   return applications.length === 0 ? (
     <Stack height={'50vh'} justifyContent={'center'}>
       <Stack>
@@ -268,22 +281,24 @@ const ApplicantsList = ({
     </Stack>
   ) : (
     <>
-      {applications.map((application, i) => {
+      {applications.slice(0, lastLoad).map((application, i) => {
         const styles =
           jobUpdate && checkList.has(application.application_id)
             ? { opacity: 0.5, pointerEvent: 'none' }
             : { opacity: 1, pointerEvent: 'auto' };
         return (
-          <Stack key={application.application_id} style={styles}>
-            <ScrollList uniqueKey={application.application_id}>
-              <ApplicationCard
-                application={application}
-                index={i}
-                checkList={checkList}
-                handleSelect={handleSelect}
-                isInterview={section === JobApplicationSections.INTERVIEWING}
-              />
-            </ScrollList>
+          <Stack
+            key={application.application_id}
+            style={styles}
+            ref={i === lastLoad - 1 ? lastApplicationRef : null}
+          >
+            <ApplicationCard
+              application={application}
+              index={i}
+              checkList={checkList}
+              handleSelect={handleSelect}
+              isInterview={section === JobApplicationSections.INTERVIEWING}
+            />
           </Stack>
         );
       })}

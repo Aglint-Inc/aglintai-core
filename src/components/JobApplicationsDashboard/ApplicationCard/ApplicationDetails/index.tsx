@@ -249,7 +249,9 @@ function ApplicationDetails({
                           return (
                             <DetailedFeedbackCard
                               textScorePercentage={rating + '%'}
-                              textHeader={feedback.topic}
+                              textHeader={capitalize(
+                                feedback.topic.replaceAll('_', ' '),
+                              )}
                               textDescription={''}
                               key={i}
                               textColorScore={{
@@ -301,11 +303,11 @@ function ApplicationDetails({
                   }}
                 />
               }
-              textName={
+              textName={capitalize(
                 applicationDetails?.first_name +
-                ' ' +
-                applicationDetails?.last_name
-              }
+                  ' ' +
+                  applicationDetails?.last_name,
+              )}
               isInterviewVisible={overAllScore > 0}
               isKeySkillsVisible={false}
               slotResumeScore={
@@ -401,7 +403,12 @@ function ApplicationDetails({
             />
           </Stack>
           <Collapse orientation='horizontal' in={openDetailedFeedback}>
-            <Stack width={'30vw'}>
+            <Stack
+              className='hideScrollbar'
+              height={'99vh'}
+              overflow={'auto'}
+              width={'30vw'}
+            >
               <Transcript
                 applicationDetails={applicationDetails}
                 setOpenDetailedFeedback={setOpenDetailedFeedback}
@@ -478,7 +485,7 @@ export function Transcript({
                           : '#d93f4c',
                     },
                   }}
-                  textHeader={ele?.topic}
+                  textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
                   textDescription={ele.feedback}
                   textScorePercentage={rating + '%'}
                   slotScore={

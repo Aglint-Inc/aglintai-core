@@ -49,6 +49,7 @@ export type FormJobType = {
   jobLocation: string;
   jobType: string;
   jobDescription: string;
+  department: string;
   skills: string[];
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
@@ -70,6 +71,7 @@ export type FormJobType = {
     };
   };
   defaultWorkPlaceTypes: dropDownOption[];
+  defaultDepartments: AutoCompleteType[];
   defaultJobType: dropDownOption[];
   defaultAddress: AutoCompleteType[];
   recruiterId: string;
@@ -329,6 +331,7 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       job_type: jobForm.formFields.jobType,
       workplace_type: jobForm.formFields.workPlaceType,
       skills: jobForm.formFields.skills,
+      department: jobForm.formFields.department,
       slug: jobForm.createdAt
         ? undefined
         : getjobPostSlug(
