@@ -36,6 +36,7 @@ const EmailTemplate = () => {
     email: '',
   });
   const [selectedTemplate, setSelectedTemplate] = useState({
+    fromName: '',
     name: '',
     body: '',
     default: false,
@@ -52,6 +53,7 @@ const EmailTemplate = () => {
       body: selectedTemplate.body,
       default: selectedTemplate.default,
       subject: selectedTemplate.subject,
+      fromName: selectedTemplate.fromName,
     };
     debouncedSave({ ...recruiter }, recruiter.id);
     setOpen(false);
@@ -80,7 +82,7 @@ const EmailTemplate = () => {
     await axios
       .post('/api/sendgrid', {
         fromEmail: `messenger@aglinthq.com`,
-        fromName: recruiter?.name,
+        fromName: selectedTemplate?.fromName || recruiter?.name,
         email: email?.email,
         subject: fillEmailTemplate(selectedTemplate.subject, email),
         text: fillEmailTemplate(selectedTemplate.body, email),
@@ -159,6 +161,18 @@ const EmailTemplate = () => {
                     }}
                   />
                 </Stack>
+                <UITextField
+                  labelSize='medium'
+                  fullWidth
+                  label='From Name'
+                  value={selectedTemplate.fromName}
+                  onChange={(e) => {
+                    setSelectedTemplate((prev) => ({
+                      ...prev,
+                      fromName: e.target.value,
+                    }));
+                  }}
+                />
                 <UITextField
                   labelSize='medium'
                   fullWidth
