@@ -1,6 +1,6 @@
 import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   BriefcaseIcon,
@@ -14,15 +14,17 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
 
-  const [index, setIndex] = useState(0);
+  const [subNabOpen, setSubNavOpen] = useState(true);
 
-  function openCloseSubNav(i: number) {
-    if (i === index) {
-      setIndex(null);
+  function openCloseSubNav(route) {
+    if (router.pathname.includes(route)) {
+      setSubNavOpen((pre) => !pre);
     } else {
-      setIndex(i);
+      setSubNavOpen(true);
     }
   }
+
+  useEffect(() => {}, [router]);
   return (
     <>
       {navList.map((item, i) => {
@@ -38,7 +40,7 @@ function SideNavbar() {
                   : 'rgba(255, 255, 255, 0.06)',
             }}
             collapsedSize={32}
-            in={index === i}
+            in={router.pathname === item.route && subNabOpen}
           >
             <Stack
               sx={{
@@ -46,9 +48,10 @@ function SideNavbar() {
                 p: '6px 10px',
                 opacity: router.pathname !== item.route ? 0.6 : 1,
                 zIndex: 2,
+                cursor: 'pointer',
               }}
               onClick={() => {
-                openCloseSubNav(i);
+                openCloseSubNav(item.route);
                 router.push(item.route);
               }}
               direction={'row'}
@@ -71,13 +74,15 @@ function SideNavbar() {
             <Stack
               sx={{
                 transition: `transform 0.4s, opacity ${
-                  index === i ? '0.8s' : '0.2s'
+                  router.pathname === item.route ? '0.8s' : '0.2s'
                 }`,
-                opacity: index === i ? 1 : 0,
+                opacity: router.pathname === item.route ? 1 : 0,
 
                 transform:
-                  index === i ? 'none' : 'translate3d(0px, -50px, 0px)',
-                pointerEvents: index !== i ? 'none' : 'auto',
+                  router.pathname === item.route
+                    ? 'none'
+                    : 'translate3d(0px, -50px, 0px)',
+                pointerEvents: router.pathname !== item.route ? 'none' : 'auto',
               }}
               px={'10px'}
             >

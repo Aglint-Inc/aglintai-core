@@ -170,7 +170,7 @@ function ApplicationDetails({
                         }}
                         textStatus={'Invited'}
                         textDescription={
-                          'candidate is invited for the interview and received an email with a link to take interview.'
+                          'Candidate is invited for the interview and received an email with a link to take interview.'
                         }
                         slotResendButton={
                           <AUIButton variant='outlined'>Resend Link</AUIButton>
