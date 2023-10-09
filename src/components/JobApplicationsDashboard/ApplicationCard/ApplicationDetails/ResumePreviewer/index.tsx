@@ -1,8 +1,8 @@
 function ResumePreviewer({ url }) {
   return (
     <iframe
-      width='700px'
-      height='810px'
+      width='100%'
+      height='800px'
       src={url}
       title='Resume Preview'
       loading='eager'

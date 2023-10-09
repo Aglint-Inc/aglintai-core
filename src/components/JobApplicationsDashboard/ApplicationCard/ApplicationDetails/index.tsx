@@ -65,15 +65,17 @@ function ApplicationDetails({
           '& .MuiDialog-paper': {
             borderRadius: '0px !important',
           },
+          '.MuiDialog-container': {
+            height: 'auto',
+          },
         }}
         fullWidth
+        maxWidth={'lg'}
         open={openResume}
         onClose={() => setOpenResume(false)}
       >
-        <Stack>
-          <Stack direction={'row'} justifyContent={'center'}>
-            <ResumePreviewer url={applicationDetails?.resume} />
-          </Stack>
+        <Stack direction={'row'} justifyContent={'center'}>
+          <ResumePreviewer url={applicationDetails?.resume} />
         </Stack>
       </Dialog>
       <SidePanelDrawer
