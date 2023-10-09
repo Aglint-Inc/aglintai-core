@@ -108,10 +108,14 @@ const SlideTwoSignUp = () => {
       password: details.password,
       options: {
         data: {
-          name: details.name,
           role: 'Recruiter',
-          role_type: flow,
-          sub_role: 'Admin',
+          first_name: '',
+          last_name: '',
+          image_url: '',
+          phone: '',
+          email: '',
+          language: '',
+          timezone: '',
         },
       },
     });

@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
+import { htmlToText } from 'html-to-text';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -66,7 +67,7 @@ const initialError = () => {
   };
 };
 
-function UploadDB({ post }) {
+function UploadDB({ post, setThank, setLoading }) {
   const isSubmitRef = useRef(false);
   const [profile, setProfile] = useState({
     firstName: null,
@@ -85,7 +86,6 @@ function UploadDB({ post }) {
   const [error, setError] = useState(initialError());
   const [file, setFile] = useState();
   // eslint-disable-next-line no-unused-vars
-  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -110,13 +110,6 @@ function UploadDB({ post }) {
       isValid = false;
     } else {
       error.firstName.error = false;
-    }
-
-    if (!profile?.lastName) {
-      error.lastName.error = true;
-      isValid = false;
-    } else {
-      error.lastName.error = false;
     }
 
     if (post?.is_campus && !profile?.usn) {
@@ -188,7 +181,6 @@ function UploadDB({ post }) {
 
   const submitHandler = async () => {
     if (checked && validate()) {
-      setLoading(true);
       let jobId = post.id;
       let id = `${profile.firstName}-${profile.lastName}-${jobId}`;
 
@@ -209,6 +201,7 @@ function UploadDB({ post }) {
       }
 
       if (router.query.application_id) {
+        setLoading(true);
         supabase
           .from('job_applications')
           .update({
@@ -247,6 +240,7 @@ function UploadDB({ post }) {
                 role: null,
               });
               setLoading(false);
+              setThank(true);
               toast.success('Applied Successfully');
             }
           });
@@ -257,11 +251,12 @@ function UploadDB({ post }) {
           .match({ email: profile.email, job_id: jobId })
           .then(async ({ data: checkApplied, error }) => {
             if (!error && checkApplied.length == 0) {
+              setLoading(true);
               supabase
                 .from('job_applications')
                 .insert({
                   first_name: profile.firstName,
-                  last_name: profile.lastName,
+                  last_name: profile.lastName || '',
                   email: profile.email,
                   job_id: jobId,
                   phone: profile.phoneNumber,
@@ -286,8 +281,9 @@ function UploadDB({ post }) {
                         {
                           pdfUrl: data[0].resume,
                           application_id: data[0].application_id,
-                          description:
+                          description: htmlToText(
                             post.description || post.responsibilities.join(','),
+                          ),
                           job_title: post.job_title,
                           skills: post.skills || [],
                           company_name: post?.company,
@@ -309,12 +305,13 @@ function UploadDB({ post }) {
                       role: '',
                     });
                     setLoading(false);
-                    toast.success('Applied Successfully');
+                    setThank(true);
                   }
                 });
             } else {
-              toast.error('You have already applied for this job');
               setLoading(false);
+              isSubmitRef.current = false;
+              toast.error('You have already applied for this job');
             }
           });
       }
@@ -365,7 +362,6 @@ function UploadDB({ post }) {
         })
         .then((res) => {
           if (res.status === 200 && res.data.data === 'Email sent') {
-            toast.success('Mail sent successfully');
             return true;
           }
         });
@@ -378,6 +374,7 @@ function UploadDB({ post }) {
     <Stack
       id='scrollTarget'
       sx={{
+        background: palette.grey[100],
         p: { xs: '10px', mm: '30px' },
         borderRadius: '10px',
       }}
@@ -406,7 +403,6 @@ function UploadDB({ post }) {
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
           <TextField
-            required
             id='last_name'
             margin='none'
             fullWidth
@@ -672,9 +668,13 @@ function UploadDB({ post }) {
         <Grid item xs={12}>
           <AUIButton
             onClick={() => {
-              if (!isSubmitRef.current) {
-                isSubmitRef.current = true;
-                submitHandler();
+              if (post.active_status.sourcing.isActive) {
+                if (!isSubmitRef.current) {
+                  isSubmitRef.current = true;
+                  submitHandler();
+                }
+              } else {
+                toast.error('Suorcing is not active');
               }
             }}
           >
