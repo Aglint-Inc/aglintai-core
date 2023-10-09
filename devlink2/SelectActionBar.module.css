@@ -49,26 +49,13 @@
   color: var(--black-9b0fc3fc);
 }
 
+.text-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
 .select-clear-btn {
   padding: 8px 12px;
   cursor: pointer;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
 }
 
 .text-blue-600 {
@@ -83,14 +70,6 @@
 
 .text-underline:hover {
   opacity: 0.7;
-}
-
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
 }
 
 .select-action-right-block {

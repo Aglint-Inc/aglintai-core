@@ -138,7 +138,12 @@ const SlideDetailsTwo = () => {
     <>
       <WelcomeSlider5
         slotCompanyLogo={
-          <ImageUpload image={logo} setImage={setLogo} size={120} />
+          <ImageUpload
+            image={logo}
+            setImage={setLogo}
+            size={120}
+            table='company-logo'
+          />
         }
         onClickBack={{
           onClick: () => {

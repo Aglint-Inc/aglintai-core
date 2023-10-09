@@ -38,7 +38,7 @@ import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProv
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
   return initialLoad ? (
-    job !== null ? (
+    job !== undefined ? (
       <YTransformWrapper>
         <JobApplicationComponent />
       </YTransformWrapper>
