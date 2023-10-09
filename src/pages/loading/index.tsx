@@ -22,10 +22,14 @@ export default function Loading() {
         const storedValue = localStorage.getItem('flow') || 'Company';
         supabase.auth.updateUser({
           data: {
-            name: '',
             role: 'Recruiter',
-            role_type: storedValue,
-            sub_role: 'Admin',
+            first_name: '',
+            last_name: '',
+            image_url: '',
+            phone: '',
+            email: '',
+            language: '',
+            timezone: '',
           },
         });
         supabase
