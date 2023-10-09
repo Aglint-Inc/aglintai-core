@@ -326,6 +326,18 @@
   color: var(--white-80449ce7);
 }
 
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
+.text-yellow-500 {
+  color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .cj-main-wrapper {
   position: relative;
 
@@ -347,6 +359,10 @@
   flex-direction: column;
   grid-column-gap: 13px;
   grid-row-gap: 13px;
+}
+
+.div-block-278.hide {
+  display: none;
 }
 
 .toggle-dropdown {
@@ -539,14 +555,6 @@
   color: var(--grey300-03a46dba);
 }
 
-.text-green-500 {
-  color: var(--green500-287ff474);
-}
-
-.text-yellow-500 {
-  color: var(--yellow500-c095f0f1);
-}
-
 .text-red-500 {
   color: var(--red500-2e806c7d);
 }
@@ -561,10 +569,6 @@
 
 .text-blue-500 {
   color: var(--blue500-72579298);
-}
-
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
 }
 
 .text-green-700 {

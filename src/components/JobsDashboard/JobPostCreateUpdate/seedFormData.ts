@@ -15,6 +15,7 @@ export const getSeedJobFormData = (
     createdAt: undefined,
     updatedAt: undefined,
     jobPostId: uuidv4(),
+    syncStatus: '',
     formType: 'new',
     slideNo: 0,
     formFields: {
@@ -211,6 +212,7 @@ export const dbToClientjobPostForm = (
         'screening_setting.interviewType',
         'questions-preset',
       ),
+      department: jobPost.department,
       jobDescription: jobPost.description,
       jobLocation: jobPost.location,
       logo: jobPost.logo,

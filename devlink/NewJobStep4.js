@@ -479,7 +479,7 @@ export function NewJobStep4({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-278")}
+          className={_utils.cx(_styles, "div-block-278", "hide")}
           tag="div"
         >
           {isSettingHeadingVisible ? (

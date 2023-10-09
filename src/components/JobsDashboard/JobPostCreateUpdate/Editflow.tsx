@@ -8,13 +8,14 @@ import React from 'react';
 import { EditJob } from '@/devlink';
 import toast from '@/src/utils/toast';
 
-import { FormJobType, useJobForm } from './JobPostFormProvider';
+import { useJobForm } from './JobPostFormProvider';
 import ApplyForm from './JobPostForms/ApplyForm';
 import StepOne from './JobPostForms/BasicStepOne';
 import StepTwo from './JobPostForms/BasicStepTwo';
 import EmailTemplates from './JobPostForms/EmailTemplates';
 import ScreeningQns from './JobPostForms/ScreeningQns';
 import ScreeningSettings from './JobPostForms/ScreeningSettings';
+import SyncStatus from './JobPostForms/SyncStatus';
 
 function EditFlow() {
   const { jobForm, dispatch } = useJobForm();
@@ -24,14 +25,19 @@ function EditFlow() {
     location: '',
     department: '',
   });
-  const [showWarn, setShowWarn] = useState(true);
+  // const [showWarn, setShowWarn] = useState(true);
+  const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
   let formSlide = null;
   const { slideNo } = jobForm;
   if (slideNo === 1) {
     formSlide = (
       <>
         <StepOne formError={formError} setFormError={setFormError} />
-        <StepTwo />
+        <StepTwo
+          showWarnOnEdit={() => {
+            if (jdWarn !== 'shown') setJdWarn('show');
+          }}
+        />
       </>
     );
   } else if (slideNo === 2) {
@@ -75,35 +81,6 @@ function EditFlow() {
       if (isEmpty(department.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
-      }
-    }
-    if (slideNo === 4) {
-      if (jobForm.formFields.interviewType === 'ai-powered') {
-        return true;
-      }
-      const interviewConfig = get(
-        jobForm,
-        'formFields.interviewConfig',
-        {},
-      ) as FormJobType['interviewConfig'];
-
-      let totalQns = 0;
-
-      if (get(interviewConfig, 'cultural.value', false)) {
-        totalQns += get(interviewConfig, 'cultural.questions', []).length;
-      }
-      if (get(interviewConfig, 'skill.value', false)) {
-        totalQns += get(interviewConfig, 'skill.questions', []).length;
-      }
-      if (get(interviewConfig, 'personality.value', false)) {
-        totalQns += get(interviewConfig, 'personality.questions', []).length;
-      }
-      if (get(interviewConfig, 'softSkills.value', false)) {
-        totalQns += get(interviewConfig, 'softSkills.questions', []).length;
-      }
-      if (totalQns < 10 || totalQns > 25) {
-        flag = false;
-        toast.error('Please set atleast 10 and at max 25 Questions');
       }
     }
     return flag;
@@ -168,7 +145,6 @@ function EditFlow() {
       >
         <Stack width={'800px'} minHeight={'100vh'}>
           <EditJob
-            isJobSaved={true}
             isDetailsActive={slideNo === 1}
             isEmailTemplatesActive={slideNo === 2}
             isScreeningQuestionsActive={slideNo === 4}
@@ -205,10 +181,11 @@ function EditFlow() {
             slotDetails={<>{formSlide}</>}
             onClickGotIt={{
               onClick: () => {
-                setShowWarn(false);
+                setJdWarn('shown');
               },
             }}
-            isWarningVisibles={showWarn}
+            isWarningVisibles={jdWarn === 'show' && slideNo == 1}
+            slotSaveStatus={<SyncStatus status={jobForm.syncStatus} />}
           />
         </Stack>
       </Drawer>

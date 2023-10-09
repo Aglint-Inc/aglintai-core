@@ -10,7 +10,7 @@ export const typesDefinition = {
     lineHeight: '16px',
   },
   medium: {
-    fontSize: '14px',
+    fontSize: '16px',
     letterSpacing: '-0.15px',
     lineHeight: '20px',
   },

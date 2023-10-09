@@ -213,14 +213,10 @@ const StandardScreenSingle = ({
   };
 
   useEffect(() => {
-    if (
-      param.value &&
-      param.questions.length === 0 &&
-      jobForm.formType === 'new'
-    ) {
-      !isAiGenerating && handleGenerateInterviewQns();
+    if (param.value && param.questions.length === 0 && !isAiGenerating) {
+      handleGenerateInterviewQns();
     }
-  }, [param]);
+  }, [param, isAiGenerating]);
 
   const qns = get(
     jobForm,
@@ -372,6 +368,7 @@ const InterviewQn = ({
               noBorder
               onChange={(e) => setEditingQn(e.target.value)}
               value={editingQn}
+              multiline
             />
           </Stack>
         }
@@ -381,6 +378,7 @@ const InterviewQn = ({
         onClickCancel={{
           onClick: handleCloseForm,
         }}
+        isSaveIconsVisible={true}
       />
     );
   }
@@ -390,17 +388,11 @@ const InterviewQn = ({
       onClickDelete={{
         onClick: handleDelete,
       }}
-      onClickDislike={{
-        onClick: () => {},
-      }}
       onClickEdit={{
         onClick: () => {
           setEditingQn(question);
           setShowEdit(true);
         },
-      }}
-      onClickLike={{
-        onClick: () => {},
       }}
       textQuestion={question}
     />

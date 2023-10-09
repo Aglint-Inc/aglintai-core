@@ -24,7 +24,7 @@ const DashboardComp = () => {
   useEffect(() => {
     if (router.isReady) {
       if (router.query.flow == 'create') {
-        handleInitializeForm({ type: 'new', recruiter, slideNo: 0 });
+        handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
       }
       if (jobsData?.jobs) {
         if (router.query.status == 'all') {
@@ -96,7 +96,7 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
-                  handleInitializeForm({ type: 'new', recruiter, slideNo: 0 });
+                  handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
                 },
               }}
               onClickRequestIntegration={{ onClick: sendEmail }}

@@ -1,14 +1,18 @@
 import Drawer from '@mui/material/Drawer';
 import LinearProgress from '@mui/material/LinearProgress';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import React from 'react';
 
-import { CreateNewJobDrawer, StepBottomProgress } from '@/devlink';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import {
+  CreateNewJobDrawer,
+  JobDraftPopup,
+  StepBottomProgress,
+} from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
 import { FormJobType, useJobForm } from './JobPostFormProvider';
@@ -18,9 +22,10 @@ import Stepthree from './JobPostForms/ScreeningQns';
 import StepFour from './JobPostForms/ScreeningSettings';
 import SelectImportMethod from './JobPostForms/SelectImportMethod';
 import SuccessPage from './JobPostForms/SuccessPage';
+import SyncStatus from './JobPostForms/SyncStatus';
+import MuiPopup from '../../Common/MuiPopup';
 
 function CreateNewJob() {
-  const router = useRouter();
   const { jobForm, dispatch, handleFormClose } = useJobForm();
   const [formError, setFormError] = useState({
     jobTitle: '',
@@ -28,6 +33,8 @@ function CreateNewJob() {
     location: '',
     department: '',
   });
+  const { handleJobDelete } = useJobs();
+  const [showDiscardWarn, setShowDiscardWarn] = useState(false);
 
   let formSlide = null;
   const { slideNo } = jobForm;
@@ -44,6 +51,7 @@ function CreateNewJob() {
   } else if (slideNo == 5) {
     formSlide = <SuccessPage />;
   }
+
   const changeSlide = async (newSlideNo: number) => {
     try {
       dispatch({
@@ -133,22 +141,47 @@ function CreateNewJob() {
     changeSlide(slideNo + 1);
   };
 
-  const handleDrawerClose = () => {
-    router.push(pageRoutes.JOBS, undefined, {
-      shallow: true,
-    });
-    handleFormClose();
+  const handleCloseDrawer = () => {
+    if (slideNo > 2 || !jobForm.createdAt) resetToInitialState();
+    else setShowDiscardWarn(true);
+    // router.push(pageRoutes.JOBS, undefined, {
+    //   shallow: true,
+    // });
   };
+
+  const discardJob = async () => {
+    try {
+      const flag = await handleJobDelete(jobForm.jobPostId);
+      if (!flag) throw new Error('');
+      toast.success('discarded Job Post SuccessFully');
+      resetToInitialState();
+    } catch (err) {
+      toast.error('Something Went Wrong. Please Try Again');
+    } finally {
+      setShowDiscardWarn(false);
+    }
+  };
+
+  const resetToInitialState = () => {
+    handleFormClose();
+    setFormError(() => ({
+      jobTitle: '',
+      company: '',
+      location: '',
+      department: '',
+    }));
+  };
+
   return (
     <>
       <Drawer
         anchor='right'
         open={jobForm.isFormOpen}
-        onClose={handleDrawerClose}
+        onClose={handleCloseDrawer}
       >
         <Stack p={2} width={'600px'} position={'relative'} minHeight={'100vh'}>
           <CreateNewJobDrawer
-            onClickClose={{ onClick: handleDrawerClose }}
+            onClickClose={{ onClick: handleCloseDrawer }}
             slotNewJobStep={formSlide}
             slotBottomButtonProgress={
               slideNo >= 1 &&
@@ -161,6 +194,7 @@ function CreateNewJob() {
                   onClickContinue={{
                     onClick: handleClickContinue,
                   }}
+                  isBackVisible={slideNo !== 1}
                   slotProgressBar={
                     <>
                       <LinearProgress
@@ -170,18 +204,39 @@ function CreateNewJob() {
                       />
                     </>
                   }
-                  // isDraftSaved={false}
-                  isSavetoDraftVisible={false}
-                  isSkipButtonVisible={slideNo == 3 || slideNo == 4}
+                  isSkipButtonVisible={false}
                   onClickSkip={{
-                    onClick: handleDrawerClose,
+                    onClick: handleCloseDrawer,
                   }}
+                  slotSaveStatus={
+                    <>
+                      <SyncStatus status={jobForm.syncStatus} />
+                    </>
+                  }
+                  // slotSavingDraftLottie={<></>}
+                  // isDraftSaved={true}
+                  // isSavetoDraftVisible={true}
                 />
               )
             }
           />
         </Stack>
       </Drawer>
+      <MuiPopup props={{ open: showDiscardWarn, maxWidth: 'md' }}>
+        <Paper>
+          <JobDraftPopup
+            onClickDiscard={{
+              onClick: discardJob,
+            }}
+            onClickDraft={{
+              onClick: () => {
+                setShowDiscardWarn(false);
+                handleFormClose();
+              },
+            }}
+          />
+        </Paper>
+      </MuiPopup>
     </>
   );
 }
