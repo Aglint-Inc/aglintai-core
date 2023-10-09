@@ -1,4 +1,5 @@
 import { Collapse, Dialog, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import {
@@ -40,6 +41,7 @@ function ApplicationDetails({
     handleUpdateJobStatus,
     handleJobApplicationUpdate,
   } = useJobApplications();
+  const router = useRouter();
   const overAllScore = applicationDetails?.feedback?.length
     ? Math.floor(
         applicationDetails.feedback.reduce(
@@ -124,10 +126,11 @@ function ApplicationDetails({
               }
               isCloseButtonVisible={!openDetailedFeedback}
               isInterviewInfoVisible={
-                (overAllScore <= 0 &&
+                !router.pathname.includes(pageRoutes.CANDIDATES) &&
+                ((overAllScore <= 0 &&
                   applicationDetails.status ===
                     JobApplicationSections.INTERVIEWING) ||
-                applicationDetails.status === JobApplicationSections.NEW
+                  applicationDetails.status === JobApplicationSections.NEW)
               }
               slotInterviewInfo={
                 <>
@@ -566,6 +569,33 @@ export function giveRateInWordForInterview(overAllScore: number) {
     : `Not up to mark! 😑`;
 }
 
+export function giveColorForInterviewScore(rating) {
+  return rating >= 90
+    ? '#228F67'
+    : rating >= 70
+    ? '#f79a3e'
+    : rating >= 50
+    ? '#de701d'
+    : '#d93f4c';
+}
+
+export function getInterviewScore(feedback) {
+  const overAllScore = feedback?.length
+    ? Math.floor(
+        feedback.reduce(
+          (sum, entry) =>
+            sum +
+            Number(
+              String(entry.rating).includes('/')
+                ? entry.rating.split('/')[0]
+                : entry.rating,
+            ),
+          0,
+        ) / feedback.length,
+      )
+    : 0;
+  return overAllScore;
+}
 export const handleDownload = async (pdfUrl) => {
   toast.message('Resume downloading...');
 

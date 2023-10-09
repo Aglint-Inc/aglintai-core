@@ -94,8 +94,12 @@ function InterviewFeedbackPage() {
             '& .MuiDialog-paper': {
               borderRadius: '0px !important',
             },
+            '.MuiDialog-container': {
+              height: 'auto',
+            },
           }}
           fullWidth
+          maxWidth={'lg'}
           open={openResume}
           onClose={() => setOpenResume(false)}
         >
@@ -231,9 +235,11 @@ function InterviewFeedbackPage() {
               }
             />
           }
-          textName={
-           capitalize( applicationDetails?.first_name + ' ' + applicationDetails?.last_name)
-          }
+          textName={capitalize(
+            applicationDetails?.first_name +
+              ' ' +
+              applicationDetails?.last_name,
+          )}
           textRole={capitalize(applicationDetails?.job_title)}
           textMail={applicationDetails?.email}
           textPhone={applicationDetails?.phone}

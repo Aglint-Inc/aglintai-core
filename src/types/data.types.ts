@@ -100,3 +100,35 @@ export type getNotificationMailBodyType = {
 export type NotificationsEmailAPIType = {
   application_id: string;
 } & getNotificationMailBodyType;
+
+// JD score
+export type JdMatchAPIType = {
+  over_all: OverAll;
+  qualification: Qualification;
+  skills_score: SkillsScore;
+  summary: Summary;
+};
+export type OverAll = {
+  match_remark: string;
+  score: number;
+};
+export type Qualification = {
+  certifications: Relevance | null;
+  education: Relevance | null;
+  experience: Relevance | null;
+  project: Relevance | null;
+};
+export type Relevance = {
+  isRelated: boolean;
+  relevance: string;
+  color?: 'string';
+};
+export type SkillsScore = {
+  score: number;
+};
+export type Summary = {
+  feedback: string;
+  remark: string;
+  suggestions: string[];
+  color?: 'string';
+};
