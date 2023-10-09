@@ -303,11 +303,11 @@ function ApplicationDetails({
                   }}
                 />
               }
-              textName={
-               capitalize( applicationDetails?.first_name +
-                ' ' +
-                applicationDetails?.last_name)
-              }
+              textName={capitalize(
+                applicationDetails?.first_name +
+                  ' ' +
+                  applicationDetails?.last_name,
+              )}
               isInterviewVisible={overAllScore > 0}
               isKeySkillsVisible={false}
               slotResumeScore={
@@ -403,7 +403,12 @@ function ApplicationDetails({
             />
           </Stack>
           <Collapse orientation='horizontal' in={openDetailedFeedback}>
-            <Stack width={'30vw'}>
+            <Stack
+              className='hideScrollbar'
+              height={'99vh'}
+              overflow={'auto'}
+              width={'30vw'}
+            >
               <Transcript
                 applicationDetails={applicationDetails}
                 setOpenDetailedFeedback={setOpenDetailedFeedback}
