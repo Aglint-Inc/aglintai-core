@@ -29,12 +29,7 @@ export function DetailedFeedbackCard({
             {slotScore}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-sm",
-              "fw-semibold",
-              "text-yellow-500"
-            )}
+            className={_utils.cx(_styles, "fw-semibold", "text-yellow-500")}
             tag="div"
             {...textColorScore}
           >
@@ -42,10 +37,7 @@ export function DetailedFeedbackCard({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-sm", "color-grey-600")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
         {textDescription}
       </_Builtin.Block>
     </_Component>

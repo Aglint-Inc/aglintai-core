@@ -58,14 +58,14 @@ export function CompanyInfo({
               {...onClickChangeLogo}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "label-12")}
+                className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
                 {textLogoUpdate}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-xsm", "color-grey-600")}
+              className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
               {

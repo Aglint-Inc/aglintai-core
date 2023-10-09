@@ -171,6 +171,22 @@
   color: var(--white-80449ce7);
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
+.text-yellow-500 {
+  color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -273,8 +289,20 @@
   }
 }
 
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
+.text-lg.fw-semibold.inline-block {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-block.ml-4 {
+  margin-left: 6px;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-text.ml-6 {
+  margin-left: 6px;
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -339,6 +367,17 @@
   outline-offset: 0px;
   outline-style: none;
   outline-width: 3px;
+}
+
+.aui-button-wrap.danger.jed {
+  overflow: hidden;
+  border-radius: 4px;
+  color: var(--\[unknown\|variable-2e806c7d\]);
+}
+
+.aui-button-wrap.danger.jed:hover {
+  background-color: hsla(0, 100.00%, 95.78%, 1.00);
+  color: var(--\[unknown\|variable-d3747f47\]);
 }
 
 .aui-button-wrap.mt-16 {
@@ -683,14 +722,6 @@
   color: var(--grey300-03a46dba);
 }
 
-.text-green-500 {
-  color: var(--green500-287ff474);
-}
-
-.text-yellow-500 {
-  color: var(--yellow500-c095f0f1);
-}
-
 .text-red-500 {
   color: var(--red500-2e806c7d);
 }
@@ -705,10 +736,6 @@
 
 .text-blue-500 {
   color: var(--blue500-72579298);
-}
-
-.text-grey-400 {
-  color: var(--grey400-863ed4b5);
 }
 
 .text-green-700 {
@@ -745,6 +772,15 @@
 
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
+}
+
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
 }
 
 .text-red-600 {
@@ -1021,15 +1057,6 @@
   border-width: 1px;
   border-color: rgba(31, 115, 183, 1);
   border-radius: 4px;
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
 }
 
 .label-8 {

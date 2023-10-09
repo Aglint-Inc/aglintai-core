@@ -113,12 +113,7 @@ export function ShareableJobLink({
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "fw-semibold",
-                "color-grey-500"
-              )}
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
               tag="div"
             >
               {"Share via"}
@@ -151,7 +146,7 @@ export function ShareableJobLink({
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+                  className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
                   {"Linkedin"}
@@ -177,7 +172,7 @@ export function ShareableJobLink({
                 />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
                 {"Mail"}

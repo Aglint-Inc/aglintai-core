@@ -21,8 +21,14 @@ const DashboardComp = () => {
   const [filteredJobs, setFilteredJobs] = useState<JobType[]>(jobsData.jobs);
   const { handleInitializeForm } = useJobForm();
   const { recruiter } = useAuthDetails();
+
   useEffect(() => {
     if (router.isReady) {
+      if (!router.query.status) {
+        router.push(`?status=all`, undefined, {
+          shallow: true,
+        });
+      }
       if (router.query.flow == 'create') {
         handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
       }

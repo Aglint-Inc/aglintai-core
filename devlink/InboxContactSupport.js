@@ -63,12 +63,7 @@ export function InboxContactSupport({
               {textJobRole}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "fw-semibold",
-                "text-grey-600"
-              )}
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
               tag="div"
             >
               {textJobCompanyLocations}

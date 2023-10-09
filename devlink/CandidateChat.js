@@ -65,10 +65,21 @@ export function CandidateChat({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "color-white")}
+              className={_utils.cx(_styles, "inde-info-block")}
               tag="div"
             >
-              {textTicketId}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey-500")}
+                tag="div"
+              >
+                {"Ticket ID"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "color-white")}
+                tag="div"
+              >
+                {textTicketId}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "inde-info-block")}

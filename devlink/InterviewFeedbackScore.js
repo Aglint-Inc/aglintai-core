@@ -27,12 +27,7 @@ export function InterviewFeedbackScore({
           {slotScore}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-sm",
-            "fw-semibold",
-            "text-yellow-500"
-          )}
+          className={_utils.cx(_styles, "fw-semibold", "text-yellow-500")}
           tag="div"
           {...textScoreColorProps}
         >

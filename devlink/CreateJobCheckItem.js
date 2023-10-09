@@ -26,8 +26,9 @@ export function CreateJobCheckItem({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-sm", "text-kale-600")}
+        className={_utils.cx(_styles, "text-sm", "text-kale-600", "clickable")}
         tag="div"
+        {...onClickCheck}
       >
         {textLabel1}
       </_Builtin.Block>

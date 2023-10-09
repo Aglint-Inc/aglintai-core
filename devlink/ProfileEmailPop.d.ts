@@ -6,4 +6,5 @@ declare function ProfileEmailPop(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotInput?: Types.Devlink.Slot;
   onClickSendLink?: Types.Devlink.RuntimeProps;
+  changeText?: React.ReactNode;
 }): React.JSX.Element;

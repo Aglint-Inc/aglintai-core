@@ -61,6 +61,17 @@
   outline-width: 3px;
 }
 
+.aui-button-wrap.danger.jed {
+  overflow: hidden;
+  border-radius: 4px;
+  color: var(--\[unknown\|variable-2e806c7d\]);
+}
+
+.aui-button-wrap.danger.jed:hover {
+  background-color: hsla(0, 100.00%, 95.78%, 1.00);
+  color: var(--\[unknown\|variable-d3747f47\]);
+}
+
 .aui-button-wrap.mt-16 {
   margin-top: 16px;
 }
@@ -491,6 +502,22 @@
   color: var(--kale800-682c1482);
 }
 
+.text-lg.fw-semibold.inline-block {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-block.ml-4 {
+  margin-left: 6px;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-text.ml-6 {
+  margin-left: 6px;
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -720,6 +747,18 @@
 
 .color-white {
   color: var(--white-80449ce7);
+}
+
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
+.text-yellow-500 {
+  color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
 }
 
 .all-interview-result-wrapper {

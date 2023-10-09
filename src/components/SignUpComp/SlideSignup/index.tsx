@@ -19,14 +19,15 @@ const SlideTwoSignUp = () => {
   const { setStep, flow } = useSignupDetails();
   const { setUserDetails, setRecruiter } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
   });
 
   const [checked, setChecked] = useState<boolean>(true);
   const [signUpError, setSignUpError] = useState<SignUpError>({
-    name: {
+    first_name: {
       error: false,
       msg: '',
     },
@@ -43,11 +44,11 @@ const SlideTwoSignUp = () => {
 
   const formValidation = async () => {
     let isValid = true;
-    if (!details.name) {
+    if (!details.first_name) {
       isValid = false;
       setSignUpError((prevError) => ({
         ...prevError,
-        name: {
+        first_name: {
           error: true,
           msg: errorMessages.nameRequired,
         },
@@ -55,7 +56,7 @@ const SlideTwoSignUp = () => {
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
-        name: {
+        first_name: {
           error: false,
           msg: '',
         },
@@ -109,8 +110,8 @@ const SlideTwoSignUp = () => {
       options: {
         data: {
           role: 'Recruiter',
-          first_name: '',
-          last_name: '',
+          first_name: details.first_name,
+          last_name: details.last_name,
           image_url: '',
           phone: '',
           email: '',
@@ -126,7 +127,6 @@ const SlideTwoSignUp = () => {
         .insert({
           email: details.email,
           user_id: authdata.data.user.id,
-          name: details.name,
           recruiter_type: flow,
         })
         .select();
@@ -183,7 +183,7 @@ const SlideTwoSignUp = () => {
     <>
       <WelcomeSlider3
         isSignUpButtonVisible={
-          !details.name || !details.email || !details.password
+          !details.first_name || !details.email || !details.password
         }
         onClickRegisterWithGoogle={{
           onClick: () => {
@@ -223,13 +223,31 @@ const SlideTwoSignUp = () => {
               required
               fullWidth
               id='name'
-              label='Company Name'
-              value={details.name}
+              label='First Name'
+              value={details.first_name}
               onChange={(e) => {
-                setDetails({ ...details, name: e.target.value });
+                setDetails({ ...details, first_name: e.target.value });
               }}
-              error={signUpError.name.error}
-              helperText={signUpError.name.error ? signUpError.name.msg : ''}
+              error={signUpError.first_name.error}
+              helperText={
+                signUpError.first_name.error ? signUpError.first_name.msg : ''
+              }
+              inputProps={{
+                autoCapitalize: 'true',
+                style: {
+                  fontSize: '14px',
+                },
+              }}
+            />
+            <TextField
+              margin='none'
+              fullWidth
+              id='name'
+              label='Last Name'
+              value={details.last_name}
+              onChange={(e) => {
+                setDetails({ ...details, last_name: e.target.value });
+              }}
               inputProps={{
                 autoCapitalize: 'true',
                 style: {
@@ -336,3 +354,5 @@ const SlideTwoSignUp = () => {
 };
 
 export default SlideTwoSignUp;
+
+
