@@ -232,9 +232,9 @@ function InterviewFeedbackPage() {
             />
           }
           textName={
-            applicationDetails?.first_name + ' ' + applicationDetails?.last_name
+           capitalize( applicationDetails?.first_name + ' ' + applicationDetails?.last_name)
           }
-          textRole={applicationDetails?.job_title}
+          textRole={capitalize(applicationDetails?.job_title)}
           textMail={applicationDetails?.email}
           textPhone={applicationDetails?.phone}
           textDate={
@@ -320,7 +320,9 @@ function InterviewFeedbackPage() {
                       return (
                         <DetailedFeedbackCard
                           textScorePercentage={rating + '%'}
-                          textHeader={feedback.topic}
+                          textHeader={capitalize(
+                            feedback.topic.replaceAll('_', ' '),
+                          )}
                           textDescription={''}
                           key={i}
                           textColorScore={{
@@ -394,7 +396,7 @@ function InterviewFeedbackPage() {
                             : '#d93f4c',
                       },
                     }}
-                    textHeader={ele?.topic}
+                    textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
                     textDescription={ele.feedback}
                     textScorePercentage={rating + '%'}
                     slotScore={

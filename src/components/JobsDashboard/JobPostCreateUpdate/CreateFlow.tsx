@@ -26,6 +26,7 @@ function CreateNewJob() {
     jobTitle: '',
     company: '',
     location: '',
+    department: '',
   });
 
   let formSlide = null;
@@ -58,21 +59,25 @@ function CreateNewJob() {
 
   const isformValid = () => {
     let flag = true;
-    const { company, jobTitle, jobLocation } = jobForm.formFields;
+    const { company, jobTitle, jobLocation, department } = jobForm.formFields;
     if (slideNo === 1) {
-      if (isEmpty(jobTitle)) {
+      if (isEmpty(jobTitle.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
       }
 
-      if (isEmpty(company)) {
+      if (isEmpty(company.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, company: 'Please Enter Company Name' }));
       }
 
-      if (isEmpty(jobLocation)) {
+      if (isEmpty(jobLocation.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, location: 'Please Enter Location' }));
+      }
+      if (isEmpty(department.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
       }
     }
     if (slideNo == 2) {

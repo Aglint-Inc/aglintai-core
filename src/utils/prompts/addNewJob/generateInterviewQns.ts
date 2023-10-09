@@ -6,6 +6,7 @@ export const generateInterviewQns = async (
   prevQns: string[],
   jobDescription,
   filter: string,
+  skills?: string[],
 ) => {
   const interviewQns = [
     'Sample Question 1',
@@ -35,6 +36,12 @@ export const generateInterviewQns = async (
      
       ${jobDescription}
 
+
+      ${
+        skills &&
+        `* Required Skills :
+          * ${skills.join(', ')}`
+      }
 `,
     },
   ] as MessageType[];
