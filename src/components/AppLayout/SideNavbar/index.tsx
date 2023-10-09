@@ -152,48 +152,43 @@ function JobSubNavbar() {
 
 function SupportSubNavbar() {
   const router = useRouter();
-  const { allFilter, filters } = useSupportContext();
+  const { allFilter } = useSupportContext();
   return (
     <>
       <TicketSublink
         allCount={allFilter.all}
-        isAllActive={filters.state === 'all'}
+        isAllActive={router.query.status === 'all'}
         onClickAll={{
           onClick: () => {
-            router.query = { ...router.query, state: 'all' };
-            router.push(router);
+            router.push(`${pageRoutes.SUPPORT}?status=all`);
           },
         }}
         inProgressCount={allFilter['in progress']}
-        isInProgressActive={filters.state === 'in progress'}
+        isInProgressActive={router.query.status === 'in progress'}
         onClickInProgress={{
           onClick: () => {
-            router.query = { ...router.query, state: 'in progress' };
-            router.push(router);
+            router.push(`${pageRoutes.SUPPORT}?status=in progress`);
           },
         }}
         resolvedCount={allFilter.Resolved}
-        isResolvedActive={filters.state === 'resolve'}
+        isResolvedActive={router.query.status === 'resolve'}
         onClickResolve={{
           onClick: () => {
-            router.query = { ...router.query, state: 'resolved' };
-            router.push(router);
+            router.push(`${pageRoutes.SUPPORT}?status=resolved`);
           },
         }}
         openCount={allFilter.open}
-        isOpenActive={filters.state === 'open'}
+        isOpenActive={router.query.status === 'open'}
         onClickOpen={{
           onClick: () => {
-            router.query = { ...router.query, state: 'open' };
-            router.push(router);
+            router.push(`${pageRoutes.SUPPORT}?status=open`);
           },
         }}
         onHoldCount={allFilter['on hold']}
-        isOnHoldActive={filters.state === 'on hold'}
+        isOnHoldActive={router.query.status === 'on hold'}
         onClickOnHold={{
           onClick: () => {
-            router.query = { ...router.query, state: 'on hold' };
-            router.push(router);
+            router.push(`${pageRoutes.SUPPORT}?status=on hold`);
           },
         }}
       />
