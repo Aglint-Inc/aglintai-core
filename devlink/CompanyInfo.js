@@ -168,7 +168,7 @@ export function CompanyInfo({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Technology Stack"}
+            {"Specialities"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-department-saved-wrappers")}
@@ -189,7 +189,7 @@ export function CompanyInfo({
               className={_utils.cx(_styles, "label-13")}
               tag="div"
             >
-              {"Add technology stack"}
+              {"Add specialities"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

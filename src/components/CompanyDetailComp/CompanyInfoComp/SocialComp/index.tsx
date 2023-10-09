@@ -154,7 +154,7 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack spacing={'20px'}>
-      <UITypography type={'medium'} color={palette.grey[800]} fontBold='normal'>
+      <UITypography type={'small'} color={palette.grey[800]} fontBold='normal'>
         Social Links
       </UITypography>
       <Stack spacing={'10px'}>
@@ -176,7 +176,7 @@ const SocialComp = ({ setIsSaving }) => {
                 alt=''
               />
               <UITextField
-                labelSize='medium'
+                labelSize='small'
                 fullWidth
                 value={recruiter?.socials[socialName]}
                 placeholder={socialPlaceholder[socialName]}

@@ -76,7 +76,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           <Stack p={'4px'} width={'100%'} spacing={'20px'}>
             <Stack spacing={'20px'} width={'100%'} direction={'row'}>
               <UITextField
-                labelSize='medium'
+                labelSize='small'
                 fullWidth
                 label='Company Name'
                 placeholder='Ex. Google'
@@ -86,7 +86,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 }}
               />
               <UITextField
-                labelSize='medium'
+                labelSize='small'
                 fullWidth
                 label='Industry Type'
                 placeholder='Ex. Healthcare'
@@ -120,7 +120,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       ...params.InputProps,
                     }}
                     label='Employee Size'
-                    labelSize='medium'
+                    labelSize='small'
                     onChange={(event) => {
                       handleChange({
                         ...recruiter,
@@ -131,7 +131,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 )}
               />
               <UITextField
-                labelSize='medium'
+                labelSize='small'
                 fullWidth
                 label='Company Website'
                 placeholder='https://companydomain.com'

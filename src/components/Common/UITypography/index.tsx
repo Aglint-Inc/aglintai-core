@@ -5,7 +5,7 @@ import React from 'react';
 
 export const typesDefinition = {
   small: {
-    fontSize: '12px',
+    fontSize: '14px',
     letterSpacing: '0px',
     lineHeight: '16px',
   },
