@@ -18,6 +18,8 @@ import { StatusPillSmall } from '@/devlink/StatusPillSmall';
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketMessageSuggestion } from '@/devlink/TicketMessageSuggestion';
 import { TicketSideDrawer } from '@/devlink/TicketSideDrawer';
+import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
+import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import {
@@ -79,6 +81,7 @@ function SupportTicketDetails({
       });
   };
   const callUpdateTicket = (data: Partial<Support_ticketType[]>) => {
+    // @ts-ignore
     return updateTicket(data, ticket.id);
   };
 
@@ -124,6 +127,7 @@ function SupportTicketDetails({
             <AssignmentComponent
               assign_to={assignedTo?.title}
               imageUrl={assignedTo?.image}
+              recruiterId={ticket.jobsDetails.recruiter_id}
               setAssignedTo={(assign_to) => {
                 // @ts-ignore
                 callUpdateTicket({ assign_to });
@@ -168,39 +172,18 @@ function SupportTicketDetails({
           textCandiatePhone={'-'}
           textCandidateSite={'-'}
           slotChatBox={
-            <Stack gap={2} flexGrow={1}>
-              {ticket.content.map((item, index) => {
-                const itemOne = item as unknown as {
-                  type: string;
-                  from: string;
+            <>
+              {chatBox(
+                ticket.content as {
                   id: string;
+                  from: string;
                   name: string;
                   text: string;
+                  type: string;
                   timeStamp: string;
-                };
-                return (
-                  <TicketChatBubble
-                    key={index}
-                    slotChatImage={
-                      // @ts-ignore
-                      <Avatar
-                        variant='rounded'
-                        src={''}
-                        alt={itemOne.name}
-                        sx={{ height: '100%', width: '100%' }}
-                      />
-                    }
-                    textMessages={
-                      <Typography
-                        dangerouslySetInnerHTML={{ __html: itemOne.text }}
-                      />
-                    }
-                    textTime={dayjs(itemOne.timeStamp).fromNow()}
-                    textName={itemOne.name}
-                  />
-                );
-              })}
-            </Stack>
+                }[],
+              )}
+            </>
           }
           // slotChatBox={'aslk'}
           slotMessageSuggestion={[
@@ -357,6 +340,64 @@ const getJobApplicationDetails = async (application_id: string) => {
   return null;
 };
 
+const chatBox = (
+  content: {
+    id: string;
+    from: string;
+    name: string;
+    text: string;
+    type: string;
+    timeStamp: string;
+  }[],
+) => {
+  const temp = [];
+  let tempDate = content[0].timeStamp;
+  temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+  content.forEach((item, index) => {
+    if (
+      new Date(item.timeStamp).toDateString() !==
+      new Date(tempDate).toDateString()
+    ) {
+      tempDate = item.timeStamp;
+      temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+    }
+    if (item.type === 'message') {
+      temp.push(
+        <TicketChatBubble
+          key={index}
+          slotChatImage={
+            // @ts-ignore
+            <Avatar
+              variant='rounded'
+              src={''}
+              alt={item.name}
+              sx={{ height: '100%', width: '100%' }}
+            />
+          }
+          textMessages={
+            <Typography dangerouslySetInnerHTML={{ __html: item.text }} />
+          }
+          textTime={dayjs(item.timeStamp).fromNow()}
+          textName={item.name}
+        />,
+      );
+    } else {
+      temp.push(
+        <TicketStatusDivider
+          key={index}
+          statusText={item.text.replaceAll('<b>', '').replaceAll('</b>', '')}
+        />,
+      );
+    }
+  });
+
+  return (
+    <Stack gap={2} flexGrow={1}>
+      {temp}
+    </Stack>
+  );
+};
+
 const AddNewMessage = ({ sendMessage }) => {
   const [message, setMessage] = useState<String>();
   return (
@@ -439,10 +480,12 @@ const sendEmail = ({
 const AssignmentComponent = ({
   assign_to,
   imageUrl,
+  recruiterId,
   setAssignedTo,
 }: {
   assign_to: string;
   imageUrl?: string;
+  recruiterId: string;
   // eslint-disable-next-line no-unused-vars
   setAssignedTo: (value: string) => void;
 }) => {
@@ -455,10 +498,14 @@ const AssignmentComponent = ({
         <CustomAutoComplete
           setOpen={setOpen}
           value={assign_to}
-          options={allAssignee.map((assignee) => ({
-            id: assignee.id,
-            title: assignee.title,
-          }))}
+          options={allAssignee
+            .filter(
+              (item) => item.id === recruiterId || item.title === 'Aglint Inc',
+            )
+            .map((assignee) => ({
+              id: assignee.id,
+              title: assignee.title,
+            }))}
           onChange={setAssignedTo}
         />
       ) : (

@@ -16,4 +16,5 @@ declare function InboxTickets(props: {
   slotStatus?: Types.Devlink.Slot;
   slotPriority?: Types.Devlink.Slot;
   slotAssignee?: Types.Devlink.Slot;
+  slotIssue?: Types.Devlink.Slot;
 }): React.JSX.Element;
