@@ -44,6 +44,9 @@ function SideNavbar() {
           >
             <Stack
               sx={{
+                '&:hover': {
+                  opacity: 1,
+                },
                 height: '32px',
                 p: '6px 10px',
                 opacity: router.pathname !== item.route ? 0.6 : 1,
