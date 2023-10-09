@@ -9,6 +9,7 @@ import { InboxTickets } from '@/devlink/InboxTickets';
 import { Priority } from '@/devlink/Priority';
 import { StatusPill } from '@/devlink/StatusPill';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
+import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
 // import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
 import {
   allPriority,
@@ -56,7 +57,11 @@ function Support() {
 }
 export default Support;
 
-const Ticket = ({ ticket }) => {
+const Ticket = ({
+  ticket,
+}: {
+  ticket: Support_ticketType & { jobsDetails: Public_jobsType };
+}) => {
   const { updateTicket, allAssignee } = useSupportContext();
   const { setOpenTicket, allChecked } = useSupportContext();
   const [checked, setChecked] = useState(false);
@@ -70,6 +75,17 @@ const Ticket = ({ ticket }) => {
       key={ticket.id}
       textTicketsId={ticket.id}
       // textAssigneeName={ticket.assign_to || 'Not Assigned'}
+      slotIssue={
+        <Stack
+          className='one-line-clamp'
+          dangerouslySetInnerHTML={{
+            __html: ticket.content?.length
+              ? // @ts-ignore
+                ticket.content[ticket.content.length - 1].text
+              : '',
+          }}
+        ></Stack>
+      }
       slotAssignee={
         <AssignmentComponent
           assign_to={assignedTo?.title}
