@@ -1,9 +1,11 @@
+import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import ApplicationDetails from './ApplicationDetails';
+import JdFetching from './JdFetching';
 import { getInterviewScore, getScoreColor, getStatusColor } from './utils';
 import { capitalize, formatTimeStamp } from '../utils';
 import CustomProgress from '../../Common/CustomProgress';
@@ -23,6 +25,10 @@ const ApplicationCard = ({
   handleSelect: (index: number) => void;
   isInterview: boolean;
 }) => {
+  // this variable is for type change
+  const jobDetails = application as unknown as {
+    jd_score: { summary: { feedback: undefined } };
+  };
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
 
@@ -49,7 +55,7 @@ const ApplicationCard = ({
   };
 
   const jdScoreObj = application.jd_score as any;
-  const jdScore = jdScoreObj?.over_all?.score ?? 0;
+  const jdScore = Math.floor(jdScoreObj?.over_all?.score) ?? 0;
 
   return (
     <>
@@ -83,32 +89,48 @@ const ApplicationCard = ({
         textMail={application.email}
         textPhone={application.phone}
         slotScore={
-          <CustomProgress
-            progress={jdScore}
-            rotation={270}
-            fillColor={
-              jdScore >= 90
-                ? '#228F67'
-                : jdScore >= 70
-                ? '#f79a3e'
-                : jdScore >= 50
-                ? '#de701d'
-                : '#d93f4c'
-            }
-            bgFill={
-              jdScore >= 90
-                ? '#edf8f4'
-                : jdScore >= 70
-                ? '#fff7ed'
-                : jdScore >= 50
-                ? '#ffeedb'
-                : '#fff0f1'
-            }
-            size={30}
-            strokeWidth={3}
-            label={jdScore}
-            fontSize={20}
-          />
+          <>
+            {jobDetails?.jd_score?.summary?.feedback !==
+              'Resume not Parseble' &&
+            application.resume &&
+            application.jd_score !== null ? (
+              application.jd_score === 'loading' ? (
+                <Stack justifyContent={'center'} alignItems={'center'}>
+                  <JdFetching />
+                  Calculating
+                </Stack>
+              ) : (
+                <CustomProgress
+                  progress={jdScore}
+                  rotation={270}
+                  fillColor={
+                    jdScore >= 90
+                      ? '#228F67'
+                      : jdScore >= 70
+                      ? '#f79a3e'
+                      : jdScore >= 50
+                      ? '#de701d'
+                      : '#d93f4c'
+                  }
+                  bgFill={
+                    jdScore >= 90
+                      ? '#edf8f4'
+                      : jdScore >= 70
+                      ? '#fff7ed'
+                      : jdScore >= 50
+                      ? '#ffeedb'
+                      : '#fff0f1'
+                  }
+                  size={30}
+                  strokeWidth={3}
+                  label={jdScore}
+                  fontSize={20}
+                />
+              )
+            ) : (
+              <Stack>Not found</Stack>
+            )}
+          </>
         }
         textScore={interviewScore}
         scoreTextColor={{ style: { color: getScoreColor(interviewScore) } }}
