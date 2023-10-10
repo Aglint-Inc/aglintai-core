@@ -321,10 +321,10 @@ const ActionBar = ({
     handleUpdateJobStatus,
     applicationsData,
     handleJobApplicationUpdate,
+    job,
   } = useJobApplications();
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
-  const { recruiter } = useAuthDetails();
   const [dialogInfo, setDialogInfo] = useState({
     heading: ``,
     subHeading: '',
@@ -368,7 +368,7 @@ const ActionBar = ({
             JobApplicationSections.INTERVIEWING,
             checkList,
             applicationsData,
-            recruiter,
+            job,
             handleJobApplicationUpdate,
           );
         }
@@ -389,7 +389,7 @@ const ActionBar = ({
             JobApplicationSections.QUALIFIED,
             checkList,
             applicationsData,
-            recruiter,
+            job,
             handleJobApplicationUpdate,
           );
         }
@@ -410,7 +410,7 @@ const ActionBar = ({
             JobApplicationSections.DISQUALIFIED,
             checkList,
             applicationsData,
-            recruiter,
+            job,
             handleJobApplicationUpdate,
           );
         }
@@ -526,7 +526,7 @@ export function sendEmails(
   status: string,
   checkList: Set<string>,
   applicationsData: JobApplicationsData,
-  recruiter,
+  job,
   handleJobApplicationUpdate,
 ) {
   function fillEmailTemplate(
@@ -537,6 +537,7 @@ export function sendEmails(
       job_title: any;
       company_name: any;
       interview_link: any;
+      support_link: any;
     },
   ) {
     let filledTemplate = template;
@@ -547,6 +548,7 @@ export function sendEmails(
       '[jobTitle]': email.job_title,
       '[companyName]': email.company_name,
       '[interviewLink]': email.interview_link,
+      '[supportLink]': email.support_link,
     };
 
     for (const [placeholder, value] of Object.entries(placeholders)) {
@@ -570,42 +572,51 @@ export function sendEmails(
     await axios
       .post('/api/sendgrid', {
         fromEmail: `messenger@aglinthq.com`,
-        fromName: recruiter?.name,
+        fromName:
+          status === JobApplicationSections.INTERVIEWING
+            ? job.email_template?.interview.fromName
+            : status === JobApplicationSections.DISQUALIFIED
+            ? job.email_template?.rejection.fromName
+            : null,
         email: candidate?.email,
         subject:
           status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
-              })
-            : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(recruiter?.email_template?.interview.subject, {
+            ? fillEmailTemplate(job.email_template?.interview.subject, {
                 first_name: candidate.first_name,
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
                 interview_link: undefined,
+                support_link: undefined,
+              })
+            : status === JobApplicationSections.DISQUALIFIED
+            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+                support_link: undefined,
               })
             : null,
         text:
           status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(recruiter?.email_template?.interview?.body, {
+            ? fillEmailTemplate(job?.email_template?.interview?.body, {
                 first_name: candidate.first_name,
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
                 interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+                support_link: `https://dev.aglinthq.com/support?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(recruiter?.email_template?.rejection?.body, {
+            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
                 first_name: candidate.first_name,
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
                 interview_link: undefined,
+                support_link: undefined,
               })
             : null,
       })
