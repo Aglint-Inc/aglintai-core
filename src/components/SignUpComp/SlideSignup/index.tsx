@@ -126,17 +126,24 @@ const SlideTwoSignUp = () => {
         .from('recruiter')
         .insert({
           email: details.email,
-          user_id: authdata.data.user.id,
           recruiter_type: flow,
         })
         .select();
-
       if (!error) {
         setRecruiter(data[0] as RecruiterType);
-        router.push(`?step=${stepObj.detailsOne}`, undefined, {
-          shallow: true,
-        });
-        setStep(stepObj.detailsOne);
+        const { error: erroruser } = await supabase
+          .from('recruiter_user')
+          .insert({
+            user_id: authdata.data.user.id,
+            recruiter_id: data[0].id,
+          })
+          .select();
+        if (!erroruser) {
+          router.push(`?step=${stepObj.detailsOne}`, undefined, {
+            shallow: true,
+          });
+          setStep(stepObj.detailsOne);
+        }
       }
     } else {
       if (
@@ -354,5 +361,3 @@ const SlideTwoSignUp = () => {
 };
 
 export default SlideTwoSignUp;
-
-

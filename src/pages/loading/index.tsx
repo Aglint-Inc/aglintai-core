@@ -72,7 +72,7 @@ export default function Loading() {
       },
     });
     supabase
-      .from('recruiter')
+      .from('recruiter_user')
       .select('*')
       .eq('user_id', userDetails?.user?.id)
       .then(({ data, error }) => {
@@ -80,21 +80,34 @@ export default function Loading() {
           if (data.length == 0) {
             (async () => {
               await refershAccessToken();
-              await supabase
-                .from('recruiter')
-                .insert({
-                  email: userDetails.user.email,
-                  user_id: userDetails.user.id,
-                  name:
-                    userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                      '.com',
-                      '',
-                    ) || '',
-                  recruiter_type: storedValue,
-                })
-                .select();
+              const { data: dataRecruiter, error: errorRecruiter } =
+                await supabase
+                  .from('recruiter')
+                  .insert({
+                    email: userDetails.user.email,
+                    name:
+                      userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                        '.com',
+                        '',
+                      ) || '',
+                    recruiter_type: storedValue,
+                  })
+                  .select();
+              if (!errorRecruiter) {
+                const { error: erroruser } = await supabase
+                  .from('recruiter_user')
+                  .insert({
+                    user_id: userDetails.user.id,
+                    recruiter_id: dataRecruiter[0].id,
+                  })
+                  .select();
+                if (!erroruser) {
+                  router.push(
+                    `${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`,
+                  );
+                }
+              }
             })();
-            router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
           } else {
             router.push(pageRoutes.JOBS);
           }

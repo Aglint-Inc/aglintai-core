@@ -1166,7 +1166,7 @@ export interface Database {
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           jd_score: Json | null
-          job_id: string
+          job_id: string | null
           job_location: string | null
           job_title: string | null
           json_resume: Json | null
@@ -1207,7 +1207,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1248,7 +1248,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1268,7 +1268,14 @@ export interface Database {
           utm_source?: string | null
           utm_term?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       job_tracker: {
         Row: {
@@ -2389,7 +2396,7 @@ export interface Database {
           overview?: string | null
           posted_by?: string
           qualifications?: string[] | null
-          recruiter_id?: string
+          recruiter_id: string
           requirements?: string[] | null
           responsibilities?: string[] | null
           screening_questions?: Json[] | null
@@ -2532,7 +2539,6 @@ export interface Database {
           recruiter_type: string | null
           socials: Json | null
           technology_score: string[]
-          user_id: string
           workplace_type: Json
         }
         Insert: {
@@ -2561,7 +2567,6 @@ export interface Database {
           recruiter_type?: string | null
           socials?: Json | null
           technology_score?: string[]
-          user_id: string
           workplace_type?: Json
         }
         Update: {
@@ -2590,12 +2595,38 @@ export interface Database {
           recruiter_type?: string | null
           socials?: Json | null
           technology_score?: string[]
-          user_id?: string
           workplace_type?: Json
+        }
+        Relationships: []
+      }
+      recruiter_user: {
+        Row: {
+          created_at: string
+          recruiter_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          recruiter_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          recruiter_id?: string
+          role?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "recruiter_user_id_fkey"
+            foreignKeyName: "recruiter_user_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -3449,6 +3480,14 @@ export interface Database {
         }
         Returns: number
       }
+      get_present_scheduled_jobs: {
+        Args: Record<PropertyKey, never>
+        Returns: Json[]
+      }
+      get_souring_scheduled_jobs: {
+        Args: Record<PropertyKey, never>
+        Returns: Json[]
+      }
       getquerieswithmessagesbyassignmentid: {
         Args: {
           assignmentid: string
@@ -3501,6 +3540,10 @@ export interface Database {
           signup_count: number | null
           user_id: string | null
         }
+      }
+      move_scheduled_jobs_sourcing_to_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       test_all_rows: {
         Args: Record<PropertyKey, never>
