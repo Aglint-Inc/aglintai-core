@@ -1,4 +1,4 @@
-import { Autocomplete, Stack } from '@mui/material';
+import { Autocomplete, Grid, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
@@ -78,100 +78,86 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           },
         }}
         slotBasicForm={
-          <Stack direction={'row'} p={'4px'} width={'100%'} spacing={'40px'}>
-            <Stack spacing={'20px'} width={'100%'}>
-              <UITextField
-                labelSize='small'
-                fullWidth
-                label='Company Name'
-                placeholder='Ex. Google'
-                value={recruiter?.name}
-                onChange={(e) => {
-                  handleChange({ ...recruiter, name: e.target.value });
-                }}
-              />
-              <UITextField
-                labelSize='small'
-                fullWidth
-                label='Industry Type'
-                placeholder='Ex. Healthcare'
-                value={recruiter?.industry}
-                onChange={(e) => {
-                  handleChange({ ...recruiter, industry: e.target.value });
-                }}
-              />
-              <UITextField
-                labelSize='medium'
-                fullWidth
-                label='Company Address'
-                placeholder='Ex. San Francisco, California'
-                value={recruiter?.address?.line1 || ''}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiter,
-                    address: {
-                      line1: e.target.value,
-                      line2: '',
-                      city: '',
-                      country: '',
-                      region: '',
-                    },
-                  });
-                }}
-                multiline
-                minRows={7}
-                maxRows={7}
-              />
-              <Autocomplete
-                disableClearable
-                freeSolo
-                fullWidth
-                options={sizes}
-                onChange={(event, value) => {
-                  if (value) {
-                    handleChange({
-                      ...recruiter,
-                      employee_size: value,
-                    });
-                  }
-                }}
-                value={recruiter.employee_size}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => (
-                  <UITextField
-                    rest={{ ...params }}
-                    fullWidth
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                    label='Employee Size'
-                    labelSize='small'
-                    onChange={(event) => {
+          <Stack p={'4px'} width={'100%'}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <UITextField
+                  labelSize='small'
+                  fullWidth
+                  label='Company Name'
+                  placeholder='Ex. Google'
+                  value={recruiter?.name}
+                  onChange={(e) => {
+                    handleChange({ ...recruiter, name: e.target.value });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <UITextField
+                  labelSize='small'
+                  fullWidth
+                  label='Industry Type'
+                  placeholder='Ex. Healthcare'
+                  value={recruiter?.industry}
+                  onChange={(e) => {
+                    handleChange({ ...recruiter, industry: e.target.value });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <Autocomplete
+                  disableClearable
+                  freeSolo
+                  fullWidth
+                  options={sizes}
+                  onChange={(event, value) => {
+                    if (value) {
                       handleChange({
                         ...recruiter,
-                        employee_size: event.target.value,
+                        employee_size: value,
                       });
-                    }}
-                  />
-                )}
-              />
-            </Stack>
-            <Stack spacing={'20px'} width={'100%'}>
-              <UITextField
-                labelSize='small'
-                fullWidth
-                label='Company Website'
-                placeholder='https://companydomain.com'
-                value={recruiter?.company_website}
-                onChange={(e) => {
-                  handleChange({
-                    ...recruiter,
-                    company_website: e.target.value,
-                  });
-                }}
-              />
-              <SocialComp setIsSaving={setIsSaving} />
-            </Stack>
+                    }
+                  }}
+                  value={recruiter.employee_size}
+                  getOptionLabel={(option) => option}
+                  renderInput={(params) => (
+                    <UITextField
+                      rest={{ ...params }}
+                      fullWidth
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                      label='Employee Size'
+                      labelSize='small'
+                      onChange={(event) => {
+                        handleChange({
+                          ...recruiter,
+                          employee_size: event.target.value,
+                        });
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <UITextField
+                  labelSize='small'
+                  fullWidth
+                  label='Company Website'
+                  placeholder='https://companydomain.com'
+                  value={recruiter?.company_website}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiter,
+                      company_website: e.target.value,
+                    });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <SocialComp setIsSaving={setIsSaving} />
+              </Grid>
+            </Grid>
           </Stack>
         }
         slotLocation={

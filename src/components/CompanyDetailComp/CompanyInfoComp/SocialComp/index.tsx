@@ -232,7 +232,7 @@ const SocialComp = ({ setIsSaving }) => {
   }
 
   return (
-    <Stack spacing={'20px'}>
+    <Stack spacing={'10px'}>
       <UITypography type={'small'} color={palette.grey[800]} fontBold='normal'>
         Social Links
       </UITypography>

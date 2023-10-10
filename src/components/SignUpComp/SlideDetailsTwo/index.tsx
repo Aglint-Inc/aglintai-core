@@ -281,7 +281,7 @@ export const getInitialEmailTemplate = (company_name: string) => {
       default: true,
       subject: 'Your application at [companyName]',
     },
-    application_received: {
+    application_recieved: {
       fromName: company_name || '',
       body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>Sincerely,</p><p>[companyName]</p>',
       default: true,

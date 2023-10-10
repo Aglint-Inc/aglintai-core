@@ -164,7 +164,7 @@ const EmailTemplate = () => {
                 <UITextField
                   labelSize='small'
                   fullWidth
-                  label='From Name'
+                  label='Sender Name'
                   value={selectedTemplate.fromName}
                   onChange={(e) => {
                     setSelectedTemplate((prev) => ({
