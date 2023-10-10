@@ -230,7 +230,7 @@ const ApplicantsList = ({
   jobUpdate: boolean;
   section: string;
 }) => {
-  const { pressed } = useKeyPress('Control');
+  const { pressed } = useKeyPress('Shift');
   const handleSelect = (index: number) => {
     if (!pressed) {
       setCheckList((prev) => {
@@ -291,6 +291,7 @@ const ApplicantsList = ({
             key={application.application_id}
             style={styles}
             ref={i === lastLoad - 1 ? lastApplicationRef : null}
+            id={'job-application-stack'}
           >
             <ApplicationCard
               application={application}
