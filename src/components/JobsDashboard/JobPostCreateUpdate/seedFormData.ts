@@ -81,6 +81,11 @@ export const getSeedJobFormData = (
   };
 
   if (recruiter) {
+    const defaultAddress = get(recruiter, 'office_locations', []).map((s) => ({
+      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
+      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    }));
+
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
@@ -141,16 +146,10 @@ export const getSeedJobFormData = (
     });
     seedFormState.formFields.workPlaceType = 'onsite';
     seedFormState.formFields.jobType = 'fulltime';
-    seedFormState.formFields.jobLocation = '';
+    seedFormState.formFields.jobLocation = get(defaultAddress, '[0].value', '');
     seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
-    seedFormState.formFields.defaultAddress = get(
-      recruiter,
-      'office_locations',
-      [],
-    ).map((s) => ({
-      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
-      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
-    }));
+
+    seedFormState.formFields.defaultAddress = defaultAddress;
     seedFormState.formFields.screeningConfig.screeningEmail = {
       ...seedFormState.formFields.screeningConfig.screeningEmail,
       emailTemplates: get(
