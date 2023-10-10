@@ -46,7 +46,6 @@ export function JobCandidateCard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm")}
             dyn={{
               bind: {},
             }}
@@ -89,7 +88,7 @@ export function JobCandidateCard({
                 {textName}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                className={_utils.cx(_styles, "text-grey-600")}
                 dyn={{
                   bind: {},
                 }}
@@ -109,12 +108,7 @@ export function JobCandidateCard({
                   src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb624dfe721c77c1cf3f_Vectors-Wrapper.svg"
                 />
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "",
-                    "text-sm",
-                    "color-grey-600"
-                  )}
+                  className={_utils.cx(_styles, "", "text-grey-600")}
                   dyn={{
                     bind: {},
                   }}
@@ -135,12 +129,7 @@ export function JobCandidateCard({
                   src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb634328f76be652b614_Vectors-Wrapper.svg"
                 />
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "",
-                    "text-sm",
-                    "color-grey-600"
-                  )}
+                  className={_utils.cx(_styles, "", "text-grey-600")}
                   dyn={{
                     bind: {},
                   }}
@@ -233,7 +222,7 @@ export function JobCandidateCard({
               {...statusBgColor}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 dyn={{
                   bind: {},
                 }}
@@ -244,7 +233,7 @@ export function JobCandidateCard({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+              className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
               {textAppliedOn}

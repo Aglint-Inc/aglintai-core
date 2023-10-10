@@ -20,7 +20,7 @@ export function RolesPill({
         {textRoles}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "plus---12px-icon")}
+        className={_utils.cx(_styles, "plus---12px-icon", "clickable")}
         tag="div"
         {...onClickRemoveRoles}
       >

@@ -15,12 +15,16 @@ import Icon from '../../Common/Icons/Icon';
 const SlideLogin = () => {
   const router = useRouter();
   const { setStep } = useSignupDetails();
-  const [details, setDetails] = useState<Omit<Details, 'name'>>({
+  const [details, setDetails] = useState<
+    Omit<Details, 'first_name' | 'last_name'>
+  >({
     email: '',
     password: '',
   });
   const [checked, setChecked] = useState<boolean>(true);
-  const [signUpError, setSignUpError] = useState<Omit<SignUpError, 'name'>>({
+  const [signUpError, setSignUpError] = useState<
+    Omit<SignUpError, 'first_name' | 'last_name'>
+  >({
     email: {
       error: false,
       msg: '',

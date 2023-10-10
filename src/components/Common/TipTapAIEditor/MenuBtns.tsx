@@ -19,7 +19,11 @@ const MenuBtn = styled(IconButton)({
   },
 });
 
-import { GenerateJobDescAi, LoadingGenerate } from '@/devlink';
+import {
+  CreateJobCheckItem,
+  GenerateJobDescAi,
+  LoadingGenerate,
+} from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   generateJobDescription,
@@ -282,8 +286,7 @@ const TipTapUndoRedo = () => {
   );
 };
 
-export const GenerateDescription = () => {
-  const [isGenerating, setIsGenerating] = useState(false);
+export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
   const [checks, setChecks] = useState({
     benifits: true,
     company: true,
@@ -305,7 +308,7 @@ export const GenerateDescription = () => {
   const handlegenerate = async () => {
     if (!enableGenerate) return;
     try {
-      setIsGenerating(true);
+      setIsAiGenerating(true);
 
       const jdGenConfig: JDGenParams = {
         workPlaceType: formFields.workPlaceType,
@@ -329,58 +332,72 @@ export const GenerateDescription = () => {
     } catch {
       toast.error('Something went wrong. Please try again');
     } finally {
-      setIsGenerating(false);
+      setIsAiGenerating(false);
     }
   };
 
-  if (isGenerating) return <LoadingGenerate slotLottie={<DescGenerating />} />;
+  if (isAiGenerating)
+    return <LoadingGenerate slotLottie={<DescGenerating />} />;
 
   return (
     <>
       <GenerateJobDescAi
-        isBenefitsChecked={checks.benifits}
-        isCompanyDetailsChecked={checks.company}
-        isValuesChecked={checks.values}
-        onClickBenefitsCheck={{
-          onClick: () => {
-            setChecks((p) => ({ ...p, benifits: !p.benifits }));
-          },
-        }}
         onClickCompanyDdetailsCheck={{
           onClick: () => {
             setChecks((p) => ({ ...p, company: !p.company }));
           },
         }}
-        onClickValuesCheck={{
-          onClick: () => {
-            setChecks((p) => ({ ...p, values: !p.values }));
-          },
-        }}
         onClickGenerate={{
           onClick: handlegenerate,
         }}
-        isGenerateDisable={!enableGenerate || isGenerating}
-        isBenefitsNotSpecified={false}
-        isValuesNotSpecified={false}
+        isGenerateDisable={!enableGenerate || isAiGenerating}
         textGenerateHeader={
           editor.isEmpty
             ? 'Generate job description with AI'
             : 'Regenerate job description with AI'
         }
-        isLoading={isGenerating}
-        textLabel1={'Use Company details from company profile'}
-        textLabel2={'Use benefits from company profile'}
-        textLabel3={'Use values from company profile'}
+        isLoading={isAiGenerating}
+        slotCheckBoxes={
+          <>
+            {recruiter.company_overview && (
+              <CreateJobCheckItem
+                textLabel1={'Use Company details from company profile'}
+                isChecked={checks.company}
+                onClickCheck={{
+                  onClick: () => {
+                    setChecks((p) => ({ ...p, company: !p.company }));
+                  },
+                }}
+              />
+            )}
+            {recruiter.benefits && (
+              <CreateJobCheckItem
+                textLabel1={'Use benefits from company profile'}
+                isChecked={checks.benifits}
+                onClickCheck={{
+                  onClick: () => {
+                    setChecks((p) => ({
+                      ...p,
+                      benifits: !p.benifits,
+                    }));
+                  },
+                }}
+              />
+            )}
+            {recruiter.m_v_statement && (
+              <CreateJobCheckItem
+                textLabel1={'Use values from company profile'}
+                isChecked={checks.values}
+                onClickCheck={{
+                  onClick: () => {
+                    setChecks((p) => ({ ...p, values: !p.values }));
+                  },
+                }}
+              />
+            )}
+          </>
+        }
       />
     </>
   );
 };
-
-// const generateDesc = async () => {
-//   try {
-//     const { data } = await axios.post('/');
-//     console.log(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };

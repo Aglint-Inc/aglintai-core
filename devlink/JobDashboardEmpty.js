@@ -189,6 +189,12 @@ export function JobDashboardEmpty({
                       tag="div"
                       {...onClickGreenHouse}
                     />
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "coming-soon-badges")}
+                      tag="div"
+                    >
+                      <_Builtin.Block tag="div">{"Coming Soon"}</_Builtin.Block>
+                    </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(

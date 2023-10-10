@@ -19,6 +19,12 @@ a {
   overflow: hidden;
 }
 
+#job-application-stack {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 //skeleton loading animation
 [class*='skeleton-item'] {
   width: 100%;

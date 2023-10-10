@@ -63,12 +63,7 @@ export function JobsListingCard({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-sm",
-                    "fw-semibold",
-                    "text-grey-600"
-                  )}
+                  className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
                   dyn={{
                     bind: {},
                   }}
@@ -81,7 +76,7 @@ export function JobsListingCard({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "color-grey-500")}
+          className={_utils.cx(_styles, "text-grey-500")}
           dyn={{
             bind: {},
           }}
@@ -95,11 +90,11 @@ export function JobsListingCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number")}
+          className={_utils.cx(_styles, "applicants-number", "text-grey-700")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-24", "text-grey-600")}
+            className={_utils.cx(_styles, "text-24")}
             dyn={{
               bind: {},
             }}
@@ -108,24 +103,18 @@ export function JobsListingCard({
             {candidateCount}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "",
-              "text-sm",
-              "fw-semibold",
-              "text-grey-600"
-            )}
+            className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
             {"Candidates"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number")}
+          className={_utils.cx(_styles, "applicants-number", "text-grey-700")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-24", "text-grey-700")}
+            className={_utils.cx(_styles, "text-24")}
             dyn={{
               bind: {},
             }}
@@ -134,13 +123,7 @@ export function JobsListingCard({
             {interviewingCount}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "",
-              "text-sm",
-              "fw-semibold",
-              "text-grey-600"
-            )}
+            className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
             {"Interviewing"}
@@ -151,7 +134,7 @@ export function JobsListingCard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-24", "text-green-700")}
+            className={_utils.cx(_styles, "text-24")}
             dyn={{
               bind: {},
             }}
@@ -160,18 +143,18 @@ export function JobsListingCard({
             {selectedCount}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Selected"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number")}
+          className={_utils.cx(_styles, "applicants-number", "text-grey-500")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-24", "text-grey-500")}
+            className={_utils.cx(_styles, "text-24")}
             dyn={{
               bind: {},
             }}
@@ -180,13 +163,7 @@ export function JobsListingCard({
             {rejectedCount}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "",
-              "text-sm",
-              "fw-semibold",
-              "text-grey-500"
-            )}
+            className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
             {"Rejected"}

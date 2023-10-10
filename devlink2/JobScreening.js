@@ -2,7 +2,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
 import { AddCandidateDropdown } from "./AddCandidateDropdown";
-import { JobCandidateCard } from "./JobCandidateCard";
 import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
 import _styles from "./JobScreening.module.css";
@@ -592,20 +591,20 @@ export function JobScreening({
                 className={_utils.cx(_styles, "cdd-content-main")}
                 tag="div"
               >
-                {slotCandidateJobCard ?? <JobCandidateCard />}
+                {slotCandidateJobCard}
               </_Builtin.Block>
-              {bottomBarVisibility ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-335")}
-                  tag="div"
-                >
-                  {slotSelectActionBar ?? <SelectActionBar />}
-                </_Builtin.Block>
-              ) : null}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      {bottomBarVisibility ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-335")}
+          tag="div"
+        >
+          {slotSelectActionBar ?? <SelectActionBar />}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

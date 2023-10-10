@@ -11,8 +11,11 @@ import React, { useState } from 'react';
 
 import styles from './TipTapAIEditor.module.scss';
 
+import { palette } from '@/src/context/Theme/Theme';
+
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
 import MenuBtns, { GenerateDescription } from './MenuBtns';
+import Loader from '../Loader';
 
 export type TipTapAIEditorParams = {
   placeholder: string;
@@ -20,6 +23,7 @@ export type TipTapAIEditorParams = {
   enablAI?: boolean;
   // eslint-disable-next-line no-unused-vars
   handleChange: (s: string) => void;
+  showWarnOnEdit?: () => void;
 };
 
 const TipTapAIEditor = ({
@@ -35,6 +39,7 @@ const TipTapAIEditor = ({
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
+  const [isAiGenerating, setIsAiGenerating] = useState(false);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -99,6 +104,7 @@ const TipTapAIEditor = ({
           </>
         )}
         <Stack
+          position={'relative'}
           sx={{
             '& .ProseMirror': {
               minHeight: '150px',
@@ -119,11 +125,33 @@ const TipTapAIEditor = ({
               outline: 0,
             },
           }}
-          p={2}
         >
-          <EditorContent editor={editor} />
+          {isAiGenerating && (
+            <Stack
+              zIndex={1}
+              position={'absolute'}
+              width={'100%'}
+              height={'100%'}
+              bgcolor={palette.grey[100]}
+              direction={'row'}
+              justifyContent={'center'}
+              alignItems={'center'}
+            >
+              <Loader />
+            </Stack>
+          )}
+
+          <Stack p={2}>
+            <EditorContent editor={editor} />
+          </Stack>
         </Stack>
-        {enablAI && <GenerateDescription />}
+
+        {enablAI && (
+          <GenerateDescription
+            isAiGenerating={isAiGenerating}
+            setIsAiGenerating={setIsAiGenerating}
+          />
+        )}
       </div>
     </TipTapCtx.Provider>
   );

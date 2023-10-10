@@ -23,7 +23,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
   return (
     <Stack p={'4px'} spacing={'20px'}>
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Company Overview'
         value={recruiter?.company_overview}
@@ -38,7 +38,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         maxRows={6}
       />
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Equal Opportunity Statement'
         value={recruiter?.e_o_statement}
@@ -53,7 +53,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         maxRows={6}
       />
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Application Process'
         placeholder='Instructions on how to apply, deadlines, and any required documentation'
@@ -69,7 +69,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         maxRows={6}
       />
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Mission & Vision Statement'
         value={recruiter?.m_v_statement}
@@ -84,7 +84,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         maxRows={6}
       />
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Company Values'
         value={recruiter?.company_values}
@@ -99,7 +99,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         maxRows={6}
       />
       <UITextField
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         label='Benefits'
         value={recruiter?.benefits}
@@ -115,7 +115,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
       />
       <Stack>
         <UITypography
-          type={'medium'}
+          type={'small'}
           color={palette.grey[800]}
           fontBold='normal'
         >
@@ -164,7 +164,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
       </Stack>
       <Stack>
         <UITypography
-          type={'medium'}
+          type={'small'}
           color={palette.grey[800]}
           fontBold='normal'
         >

@@ -5,12 +5,12 @@ import React from 'react';
 
 export const typesDefinition = {
   small: {
-    fontSize: '12px',
+    fontSize: '14px',
     letterSpacing: '0px',
     lineHeight: '16px',
   },
   medium: {
-    fontSize: '14px',
+    fontSize: '16px',
     letterSpacing: '-0.15px',
     lineHeight: '20px',
   },

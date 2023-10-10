@@ -19,11 +19,13 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, userDetails } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
+  const userEmail = userDetails.user.email;
+  const user = userDetails.user.user_metadata;
 
   useEffect(() => {
     if (windowSize.innerWidth > 991) {
@@ -194,9 +196,7 @@ export default function AppLayout({ children }) {
             </Stack>
             <Stack height={'100%'} justifyContent={'space-between'}>
               <Stack spacing={'10px'}>
-                
                 <SideNavbar />
-              
               </Stack>
               <NavMenuBottom
                 isMyNotification={router.pathname.includes(
@@ -204,14 +204,14 @@ export default function AppLayout({ children }) {
                 )}
                 slotProfileImage={
                   <Avatar
-                    src={recruiter?.logo}
+                    src={user.image_url}
                     variant='rounded'
                     sx={{ width: '100%', height: '100%' }}
                   />
                 }
                 isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
-                textEmail={recruiter?.email}
-                textName={recruiter?.name}
+                textEmail={userEmail}
+                textName={`${user.first_name} ${user.last_name}`}
                 onClickLogout={{
                   onClick: (e) => {
                     handleLogout(e);

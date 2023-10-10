@@ -1,7 +1,13 @@
-import { Dialog } from '@mui/material';
+import { Dialog, DialogProps } from '@mui/material';
 import React from 'react';
 
-function MuiPopup({ children, props }) {
+function MuiPopup({
+  children,
+  props,
+}: {
+  children: React.ReactNode;
+  props: DialogProps;
+}) {
   return (
     <Dialog
       sx={{

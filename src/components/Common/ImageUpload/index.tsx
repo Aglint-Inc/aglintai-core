@@ -2,6 +2,7 @@ import { palette } from '@context/Theme/Theme';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { supabase } from '@utils/supabaseClient';
+import { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
@@ -10,7 +11,19 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-function ImageUpload({ setImage, image, size }) {
+function ImageUpload({
+  setImage,
+  image,
+  size,
+  table,
+  handleUpdateProfile = null,
+}: {
+  setImage?: Dispatch<SetStateAction<string>>;
+  image: string;
+  size: number;
+  table: 'company-logo' | 'recruiter-profile';
+  handleUpdateProfile?: any;
+}) {
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
   const [fileSizeError, setFileSizeError] = useState('');
   const [loading, setLoading] = useState<boolean>();
@@ -27,18 +40,26 @@ function ImageUpload({ setImage, image, size }) {
     }
     setFileSizeError('');
     const { data } = await supabase.storage
-      .from('company-logo')
+      .from(table)
       .upload(`public/${userDetails?.user?.id}`, file, {
         cacheControl: '3600',
         // Overwrite file if it exis
         upsert: true,
       });
     if (data?.path) {
-      setImage(
-        `${
-          process.env.NEXT_PUBLIC_SUPABASE_URL
-        }/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`,
-      );
+      if (setImage)
+        setImage(
+          `${
+            process.env.NEXT_PUBLIC_SUPABASE_URL
+          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+        );
+      if (handleUpdateProfile) {
+        await handleUpdateProfile({
+          image_url: `${
+            process.env.NEXT_PUBLIC_SUPABASE_URL
+          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+        });
+      }
       setTimeout(() => {
         setLoading(false);
       }, 2000);
@@ -184,9 +205,11 @@ function ImageUpload({ setImage, image, size }) {
                     </FileUploader>
 
                     <Stack
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
-                        setImage(null);
+                        if (setImage) setImage(null);
+                        if (handleUpdateProfile)
+                          await handleUpdateProfile({ image_url: null });
                       }}
                       sx={{ color: '#fff', cursor: 'pointer' }}
                     >

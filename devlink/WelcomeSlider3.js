@@ -170,12 +170,7 @@ export function WelcomeSlider3({
                 ) : null}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-sm",
-                  "fw-semibold",
-                  "text-grey-600"
-                )}
+                className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
                 tag="div"
               >
                 {"I agree to terms & conditions"}

@@ -1,8 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
+import PublicIcon from '@mui/icons-material/Public';
+import { Dialog, Stack, TextField } from '@mui/material';
+import { Avatar } from '@mui/material';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { AddSocialLink, NewSocialLinkPop } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,15 +17,56 @@ import { debouncedSave } from '../../utils';
 const SocialComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
 
-  const [error, setError] = useState(initialError());
+  const socials = Object.keys(recruiter.socials)
+    .filter((key) => key !== 'custom')
+    .sort((a, b) => {
+      const orderA = customOrder[a] || Infinity;
+      const orderB = customOrder[b] || Infinity;
+      return orderA - orderB;
+    });
 
-  let socials = Object.keys(recruiter.socials).sort((a, b) => {
+  const customSocials = Object.keys(recruiter.socials.custom).sort((a, b) => {
     const orderA = customOrder[a] || Infinity;
     const orderB = customOrder[b] || Infinity;
     return orderA - orderB;
   });
 
-  const handleChange = async (recruit: RecruiterType, socialName?: string) => {
+  const initialError = {
+    linkedin: {
+      error: false,
+      msg: '',
+    },
+    youtube: {
+      error: false,
+      msg: '',
+    },
+    twitter: {
+      error: false,
+      msg: '',
+    },
+    facebook: {
+      error: false,
+      msg: '',
+    },
+    instagram: {
+      error: false,
+      msg: '',
+    },
+    custom: Object.assign(
+      {},
+      ...customSocials.map((s) => {
+        return { [s]: { error: false, msg: '' } };
+      }),
+    ),
+  };
+
+  const [error, setError] = useState(initialError);
+
+  const handleChange = async (
+    recruit: RecruiterType,
+    socialName?: string,
+    custom: boolean = false,
+  ) => {
     if (
       socialName == 'facebook'
         ? validateFacebookUrl(recruiter.socials[socialName])
@@ -36,11 +80,17 @@ const SocialComp = ({ setIsSaving }) => {
         ? validateInstagramUrl(recruiter.socials[socialName])
         : true
     ) {
-      setIsSaving(true);
-      debouncedSave(recruit, recruiter.id);
-      setTimeout(() => {
-        setIsSaving(false);
-      }, 1500);
+      if (
+        !custom ||
+        (custom &&
+          validateCustomUrl(recruiter.socials.custom[socialName], socialName))
+      ) {
+        setIsSaving(true);
+        debouncedSave(recruit, recruiter.id);
+        setTimeout(() => {
+          setIsSaving(false);
+        }, 1500);
+      }
     }
     setRecruiter(recruit);
   };
@@ -152,16 +202,42 @@ const SocialComp = ({ setIsSaving }) => {
     return instagramUrlPattern.test(url);
   }
 
+  function validateCustomUrl(url: string, socialName: string) {
+    if (!validateUrl(url)) {
+      setError((prev) => {
+        return {
+          ...prev,
+          custom: {
+            ...prev.custom,
+            [socialName]: {
+              error: true,
+              msg: 'Please enter valid url',
+            },
+          },
+        };
+      });
+      return false;
+    } else {
+      setError((prev) => {
+        return {
+          ...prev,
+          custom: {
+            ...prev.custom,
+            [socialName]: { error: false, msg: '' },
+          },
+        };
+      });
+      return true;
+    }
+  }
+
   return (
-    <Stack spacing={'20px'}>
-      <UITypography type={'medium'} color={palette.grey[800]} fontBold='normal'>
+    <Stack spacing={'10px'}>
+      <UITypography type={'small'} color={palette.grey[800]} fontBold='normal'>
         Social Links
       </UITypography>
       <Stack spacing={'10px'}>
         {socials?.map((socialName) => {
-          if (socialName === 'custom') {
-            return null; // Skip this iteration
-          }
           return (
             <Stack
               key={socialName}
@@ -176,7 +252,7 @@ const SocialComp = ({ setIsSaving }) => {
                 alt=''
               />
               <UITextField
-                labelSize='medium'
+                labelSize='small'
                 fullWidth
                 value={recruiter?.socials[socialName]}
                 placeholder={socialPlaceholder[socialName]}
@@ -200,12 +276,57 @@ const SocialComp = ({ setIsSaving }) => {
                     socialName,
                   );
                 }}
-                error={error[socialName].error}
+                error={error[socialName]?.error}
                 helperText={error[socialName].msg}
               />
             </Stack>
           );
         })}
+        {customSocials?.map((socialName) => {
+          return (
+            <Stack
+              key={socialName}
+              direction={'row'}
+              alignItems={'center'}
+              spacing={2}
+            >
+              <SocialLogo socialName={socialName} />
+              <UITextField
+                labelSize='medium'
+                fullWidth
+                value={recruiter?.socials.custom[socialName]}
+                placeholder={`https://www.${socialName}.com/company-id`}
+                onBlur={() => {
+                  handleChange(
+                    {
+                      ...recruiter,
+                    },
+                    socialName,
+                    true,
+                  );
+                }}
+                onChange={(e) => {
+                  handleChange(
+                    {
+                      ...recruiter,
+                      socials: {
+                        ...recruiter.socials,
+                        custom: {
+                          [socialName]: e.target.value,
+                        } as any,
+                      },
+                    },
+                    socialName,
+                    true,
+                  );
+                }}
+                error={error.custom[socialName].error}
+                helperText={error.custom[socialName].msg}
+              />
+            </Stack>
+          );
+        })}
+        <AddSocialLinkButton setError={setError} />
       </Stack>
     </Stack>
   );
@@ -221,33 +342,178 @@ const socialPlaceholder = {
   instagram: 'https://www.instagram.com/company-id',
 };
 
-const initialError = () => {
-  return {
-    linkedin: {
-      error: false,
-      msg: '',
-    },
-    youtube: {
-      error: false,
-      msg: '',
-    },
-    twitter: {
-      error: false,
-      msg: '',
-    },
-    facebook: {
-      error: false,
-      msg: '',
-    },
-    instagram: {
-      error: false,
-      msg: '',
-    },
+const AddSocialLinkButton = ({
+  setError,
+}: {
+  setError: Dispatch<SetStateAction<any>>;
+}) => {
+  const { setRecruiter } = useAuthDetails();
+  const [open, setOpen] = useState(false);
+  const initialSocial = {
+    name: { value: null, error: false, type: 'string' },
+    url: { value: null, error: false, type: 'url' },
   };
+  const [social, setSocial] = useState(initialSocial);
+  const [loading, setLoading] = useState(false);
+  const handleValidate = () => {
+    return Object.entries(social).reduce(
+      (acc, [key, curr]) => {
+        const err = !validation(curr.value, curr.type);
+        return {
+          newSocial: {
+            ...acc.newSocial,
+            [key]: {
+              ...acc.newSocial[key],
+              error: err,
+            },
+          },
+          error: err && !acc.error ? true : acc.error,
+        };
+      },
+      { newSocial: social, error: false },
+    );
+  };
+  const handleSubmit = () => {
+    setLoading(true);
+    const { newSocial, error } = handleValidate();
+    if (!error)
+      setRecruiter((recruiter) => {
+        const newRecruiter = {
+          ...recruiter,
+          socials: {
+            ...recruiter.socials,
+            custom: {
+              ...(recruiter.socials.custom as any),
+              [newSocial.name.value.trim().toLowerCase()]: newSocial.url.value
+                .trim()
+                .toLowerCase(),
+            },
+          },
+        };
+        debouncedSave(newRecruiter, newRecruiter.id);
+        setError((prev) => {
+          return {
+            ...prev,
+            custom: {
+              ...prev.custom,
+              [newSocial.name.value.trim().toLowerCase()]: {
+                error: false,
+                msg: '',
+              },
+            },
+          };
+        });
+        handleClose();
+        return newRecruiter;
+      });
+    else setSocial(newSocial);
+    setLoading(false);
+  };
+  const handleChange = (e, key: 'name' | 'url') => {
+    setSocial((prev) => {
+      return {
+        ...prev,
+        [key]: {
+          ...prev[key],
+          value: e.target.value,
+          error: false,
+        },
+      };
+    });
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setLoading(false);
+    setTimeout(() => {
+      setSocial(initialSocial);
+    }, 100);
+  };
+  const forms = (
+    <>
+      <TextField
+        label='Platform name'
+        value={social.name.value}
+        required
+        error={social.name.error}
+        helperText={
+          social.name.error && 'Please enter valid a social media name'
+        }
+        onChange={(e) => handleChange(e, 'name')}
+      />
+      <TextField
+        label='Platform url'
+        value={social.url.value}
+        required
+        error={social.url.error}
+        helperText={social.url.error && 'Please enter valid a social media url'}
+        onChange={(e) => handleChange(e, 'url')}
+      />
+    </>
+  );
+  return (
+    <Stack alignItems={'flex-start'}>
+      <Dialog open={open} onClose={() => handleClose()}>
+        <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
+          <NewSocialLinkPop
+            onClickCancel={{ onClick: () => handleClose() }}
+            onClickAdd={{ onClick: () => handleSubmit() }}
+            slotSocialForms={forms}
+          />
+        </Stack>
+      </Dialog>
+      <AddSocialLink onClickAddSocialLink={{ onClick: () => setOpen(true) }} />
+    </Stack>
+  );
 };
 
 export const customOrder = {
   linkedin: 1,
   instagram: 2,
   // Add other social media platforms in the desired order here
+};
+
+export const SocialLogo = ({ socialName }: { socialName: string }) => {
+  return (
+    <Avatar
+      variant='square'
+      sx={{
+        bgcolor: 'white.700',
+        width: '20px',
+        height: '20px',
+      }}
+      src={`https://logo.clearbit.com/${socialName
+        .toLowerCase()
+        .replaceAll(' ', '')}.com `}
+      alt={socialName}
+    >
+      <PublicIcon />
+    </Avatar>
+  );
+};
+
+const validation = (value: string, method: string) => {
+  switch (method) {
+    case 'string':
+      return validateString(value);
+    case 'url':
+      return validateUrl(value);
+  }
+  return false;
+};
+
+const validateUrl = (url: string) => {
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', // fragment locator
+    'i',
+  );
+  return url !== null && pattern.test(url);
+};
+
+const validateString = (str: string) => {
+  return str !== null && str.trim().length !== 0;
 };

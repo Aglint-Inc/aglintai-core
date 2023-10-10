@@ -64,7 +64,7 @@ export function NewJobSelect({
                 {"Create Job throgh Aglint"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "small-default-3")}
+                className={_utils.cx(_styles, "text-kale-500")}
                 tag="div"
               >
                 {
@@ -79,7 +79,7 @@ export function NewJobSelect({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+            className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
             {"Or Import existing job"}

@@ -14,7 +14,6 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
@@ -35,11 +34,11 @@ function ApplicationDetails({
 }) {
   const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
   const [openResume, setOpenResume] = useState(false);
-  const { recruiter } = useAuthDetails();
   const {
     applicationsData,
     handleUpdateJobStatus,
     handleJobApplicationUpdate,
+    job,
   } = useJobApplications();
   const router = useRouter();
   const overAllScore = applicationDetails?.feedback?.length
@@ -58,7 +57,7 @@ function ApplicationDetails({
     : 0;
 
   const jdScoreObj = applicationDetails.jd_score as any;
-  const jdScore = jdScoreObj?.over_all?.score ?? 0;
+  const jdScore = Number(Math.floor(jdScoreObj?.over_all?.score)) ?? 0;
 
   return (
     <>
@@ -214,7 +213,7 @@ function ApplicationDetails({
                                 Array(applicationDetails?.application_id),
                               ),
                               applicationsData,
-                              recruiter,
+                              job,
                               handleJobApplicationUpdate,
                             );
                           }}
@@ -396,7 +395,7 @@ function ApplicationDetails({
                   textFeedback={giveRateInWordToResume(jdScore)}
                 />
               }
-              isResumeVisible={jdScore}
+              isResumeVisible={applicationDetails.resume && jdScore > 0}
               // isResumeVisible={false}
               textPhone={
                 applicationDetails.phone ? applicationDetails.phone : '--'

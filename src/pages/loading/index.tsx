@@ -6,70 +6,103 @@ import React, { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
-import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
+import {
+  handleEmail,
+  stepObj,
+} from '@/src/components/SignUpComp/SlideSignup/utils';
 import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
 
 export default function Loading() {
   const { userDetails } = useAuthDetails();
   const router = useRouter();
 
   useEffect(() => {
+    handleUser();
+  }, [userDetails]);
+
+  const handleUser = async () => {
     try {
       if (userDetails?.user?.id) {
-        const storedValue = localStorage.getItem('flow') || 'Company';
-        supabase.auth.updateUser({
-          data: {
-            role: 'Recruiter',
-            first_name: '',
-            last_name: '',
-            image_url: '',
-            phone: '',
-            email: '',
-            language: '',
-            timezone: '',
-          },
-        });
-        supabase
-          .from('recruiter')
-          .select('*')
-          .eq('user_id', userDetails?.user?.id)
-          .then(({ data, error }) => {
-            if (!error) {
-              if (data.length == 0) {
-                (async () => {
-                  await refershAccessToken();
-                  await supabase
-                    .from('recruiter')
-                    .insert({
-                      email: userDetails.user.email,
-                      user_id: userDetails.user.id,
-                      name:
-                        userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                          '.com',
-                          '',
-                        ) || '',
-                      recruiter_type: storedValue,
-                    })
-                    .select();
-                })();
-                router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
-              } else {
-                router.push(pageRoutes.JOBS);
-              }
-            } else {
-              router.push(pageRoutes.LOGIN);
-            }
-          });
+        if (userDetails.user.user_metadata.role == 'Employee') {
+          router.push('https://app.aglinthq.com');
+          return;
+        }
+        if (handleEmail(userDetails.user.email).error) {
+          router.push(pageRoutes.SIGNUP);
+          toast.error('Please signup/login with company email');
+          return;
+        }
+        await createUser();
       } else {
         router.push(pageRoutes.LOGIN);
       }
     } catch (error) {
       router.push(pageRoutes.LOGIN);
     }
-  }, [userDetails]);
+  };
+
+  const createUser = () => {
+    const storedValue = localStorage.getItem('flow') || 'Company';
+
+    supabase.auth.updateUser({
+      data: {
+        role: 'Recruiter',
+        first_name: !userDetails.user.user_metadata.first_name
+          ? splitFullName(userDetails.user.user_metadata.full_name).firstName
+          : userDetails.user.user_metadata.first_name,
+        last_name: !userDetails.user.user_metadata.first_name
+          ? splitFullName(userDetails.user.user_metadata.full_name).lastName
+          : userDetails.user.user_metadata.last_name,
+        image_url: !userDetails.user.user_metadata.image_url
+          ? ''
+          : userDetails.user.user_metadata.image_url,
+        phone: !userDetails.user.user_metadata.phone
+          ? ''
+          : userDetails.user.user_metadata.phone,
+        language: !userDetails.user.user_metadata.language
+          ? ''
+          : userDetails.user.user_metadata.language,
+        timezone: !userDetails.user.user_metadata.timezone
+          ? ''
+          : userDetails.user.user_metadata.timezone,
+      },
+    });
+    supabase
+      .from('recruiter')
+      .select('*')
+      .eq('user_id', userDetails?.user?.id)
+      .then(({ data, error }) => {
+        if (!error) {
+          if (data.length == 0) {
+            (async () => {
+              await refershAccessToken();
+              await supabase
+                .from('recruiter')
+                .insert({
+                  email: userDetails.user.email,
+                  user_id: userDetails.user.id,
+                  name:
+                    userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                      '.com',
+                      '',
+                    ) || '',
+                  recruiter_type: storedValue,
+                })
+                .select();
+            })();
+            router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
+          } else {
+            router.push(pageRoutes.JOBS);
+          }
+        } else {
+          router.push(pageRoutes.LOGIN);
+        }
+      });
+  };
 
   const refershAccessToken = async () => {
     await supabase.auth.refreshSession({
@@ -101,4 +134,24 @@ Loading.getProvider = function getProvider(page) {
 
 Loading.getLayout = (page) => {
   return <>{page}</>;
+};
+
+export const splitFullName = (name: string) => {
+  const nameParts = name.trim().split(' ');
+
+  if (nameParts.length === 1) {
+    // If there is only one word, consider it as the first name and no last name
+    return {
+      firstName: nameParts[0],
+      lastName: '',
+    };
+  } else {
+    // If there are multiple words, the last word is the last name, and the rest are the first name
+    const lastName = nameParts.pop();
+    const firstName = nameParts.join(' ');
+    return {
+      firstName,
+      lastName,
+    };
+  }
 };

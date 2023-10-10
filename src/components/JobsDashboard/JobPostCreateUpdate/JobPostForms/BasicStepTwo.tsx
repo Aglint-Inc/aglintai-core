@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +9,8 @@ import {
   SuggestedSkillPill,
 } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
+import { palette } from '@/src/context/Theme/Theme';
 import { generateSkills } from '@/src/utils/prompts/addNewJob/generateSkills';
 import toast from '@/src/utils/toast';
 
@@ -15,17 +18,18 @@ import { useJobForm } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
 // import UITextField from '../../../Common/UITextField';
 
-const BasicStepTwo = () => {
+const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
   const {
     handleUpdateFormFields,
     jobForm: { formFields, formType },
   } = useJobForm();
   const [suggSkills, setSuggSkills] = useState<string[]>([]);
   const [openSkillForm, setSkillForm] = useState(false);
-
+  const [isSkillGenerating, setIsSkillGenerating] = useState(false);
   useEffect(() => {
     (async () => {
       try {
+        setIsSkillGenerating(true);
         let aiGenSkills = [];
         if (sessionStorage.getItem(`ai-gen-skills-${formFields.jobTitle}`)) {
           aiGenSkills = JSON.parse(
@@ -45,6 +49,8 @@ const BasicStepTwo = () => {
         });
       } catch (err) {
         toast.error('Some thing went wrong While generating skills');
+      } finally {
+        setIsSkillGenerating(false);
       }
     })();
   }, []);
@@ -78,6 +84,14 @@ const BasicStepTwo = () => {
     });
   };
 
+  const handleChangeTipTap = (s: string) => {
+    if (showWarnOnEdit) showWarnOnEdit();
+    handleUpdateFormFields({
+      path: 'jobDescription',
+      value: s,
+    });
+  };
+
   return (
     <NewJobStep2
       onClickAddSkill={{
@@ -89,13 +103,9 @@ const BasicStepTwo = () => {
       slotJobDescription={
         <>
           <TipTapAIEditor
+            showWarnOnEdit={showWarnOnEdit}
             placeholder='Job Description'
-            handleChange={(s) => {
-              handleUpdateFormFields({
-                path: 'jobDescription',
-                value: s,
-              });
-            }}
+            handleChange={handleChangeTipTap}
             enablAI
             initialValue={formFields.jobDescription}
           />
@@ -130,6 +140,19 @@ const BasicStepTwo = () => {
       }
       slotSuggestedSkill={
         <>
+          {isSkillGenerating && (
+            <>
+              <UITypography color={palette.grey[400]}>
+                Generating Skills
+              </UITypography>
+              <CircularProgress
+                color='inherit'
+                size={'15px'}
+                sx={{ color: palette.grey[400] }}
+              />
+            </>
+          )}
+
           {suggSkills.map((p) => {
             return (
               <SuggestedSkillPill
@@ -172,6 +195,7 @@ const SkillInput = ({ addSkill, closeForm }) => {
           }}
           slotInput={
             <UITextField
+              placeholder='Problem Solving'
               onChange={(e) => {
                 setSkill(e.target.value);
               }}

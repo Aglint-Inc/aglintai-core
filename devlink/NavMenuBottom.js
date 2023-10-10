@@ -114,7 +114,7 @@ export function NavMenuBottom({
               {textName}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "color-grey-400")}
+              className={_utils.cx(_styles, "text-grey-400")}
               tag="div"
             >
               {textEmail}

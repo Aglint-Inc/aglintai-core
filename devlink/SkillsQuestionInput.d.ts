@@ -6,4 +6,5 @@ declare function SkillsQuestionInput(props: {
   slotInput?: Types.Devlink.Slot;
   onClickSave?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
+  isSaveIconsVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

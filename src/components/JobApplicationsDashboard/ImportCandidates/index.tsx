@@ -95,9 +95,11 @@ function ImportCandidates() {
       ...qualified,
       ...disqualified,
     ].map((ele) => ele.email);
-    const filteredCandidates = candidates.filter(
-      (ele) => !totalApplications.includes(ele.email),
-    );
+    const filteredCandidates = candidates
+      .filter(
+        (ele: { email: string }) => !totalApplications.includes(ele.email),
+      )
+      .map((item: any) => ({ ...item, jd_score: 'loading' }));
 
     setbulkImportdata([]);
     setIsLoading(true);

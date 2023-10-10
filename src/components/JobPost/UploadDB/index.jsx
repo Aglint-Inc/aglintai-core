@@ -290,7 +290,7 @@ function UploadDB({ post, setThank, setLoading }) {
                         },
                       );
                     }
-                    await mailHandler();
+                    await mailHandler(data[0].application_id);
                     setProfile({
                       firstName: '',
                       lastName: '',
@@ -320,36 +320,35 @@ function UploadDB({ post, setThank, setLoading }) {
 
   function fillEmailTemplate(template, email) {
     let filledTemplate = template;
-
     const placeholders = {
       '[firstName]': email.first_name,
       '[lastName]': email.last_name,
       '[jobTitle]': email.job_title,
       '[companyName]': email.company_name,
+      '[supportLink]': email.support_link,
     };
-
     for (const [placeholder, value] of Object.entries(placeholders)) {
       // eslint-disable-next-line security/detect-non-literal-regexp
       const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
       filledTemplate = filledTemplate.replace(regex, value);
     }
-
     return filledTemplate;
   }
 
-  const mailHandler = async () => {
+  const mailHandler = async (application_id) => {
     try {
       const email = {
         first_name: profile.firstName,
         last_name: profile.lastName,
         job_title: post.job_title,
         company_name: post.company,
+        support_link: `https://dev.aglinthq.com/support?id=${application_id}`,
       };
-
       await axios
         .post('/api/sendgrid', {
           fromEmail: `messenger@aglinthq.com`,
-          fromName: post.company,
+          fromName:
+            post.email_template.application_recieved.fromName || post.company,
           email: profile?.email,
           subject: fillEmailTemplate(
             post.email_template.application_recieved.subject,
@@ -358,6 +357,7 @@ function UploadDB({ post, setThank, setLoading }) {
           text: fillEmailTemplate(
             post.email_template.application_recieved.body,
             email,
+            application_id,
           ),
         })
         .then((res) => {

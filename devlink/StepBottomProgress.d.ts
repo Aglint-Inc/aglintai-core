@@ -7,9 +7,8 @@ declare function StepBottomProgress(props: {
   onClickContinue?: Types.Devlink.RuntimeProps;
   slotProgressBar?: Types.Devlink.Slot;
   textStepCount?: React.ReactNode;
-  isDraftSaved?: Types.Visibility.VisibilityConditions;
-  isSavetoDraftVisible?: Types.Visibility.VisibilityConditions;
   onClickSkip?: Types.Devlink.RuntimeProps;
   isSkipButtonVisible?: Types.Visibility.VisibilityConditions;
-  slotSavingDraftLottie?: Types.Devlink.Slot;
+  isBackVisible?: Types.Visibility.VisibilityConditions;
+  slotSaveStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -39,7 +39,7 @@ export function CandidateDatabase({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+              className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
               {textShowingResult}
