@@ -11,6 +11,7 @@ export function AddLocationPop({
   onClickAdd = {},
   isChecked = false,
   onClickCheck = {},
+  headerText = "Addnew location",
 }) {
   return (
     <_Component
@@ -27,7 +28,7 @@ export function AddLocationPop({
           )}
           tag="div"
         >
-          {"Addnew location"}
+          {headerText}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           {"Fill in the address of your company"}
@@ -73,7 +74,7 @@ export function AddLocationPop({
             {"Cancel"}
           </_Builtin.Block>
           <_Builtin.Block tag="div" {...onClickAdd}>
-            <ButtonOutlinedSmall textLabel="Add" />
+            <ButtonOutlinedSmall textLabel="Save" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

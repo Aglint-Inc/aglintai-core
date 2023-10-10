@@ -6,6 +6,7 @@ import { UserMetadata } from '@supabase/supabase-js';
 import React from 'react';
 
 import { ProfileEmailPop, UserProfile } from '@/devlink';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
@@ -20,7 +21,6 @@ type FormValues = {
   error: boolean;
   validation: 'string' | 'phone' | 'mail';
   blocked: boolean;
-  omit: boolean;
   required: boolean;
   disabled: boolean;
   specialForm: boolean;
@@ -31,11 +31,13 @@ type FormFields = {
   last_name: FormValues;
   role: FormValues;
   phone: FormValues;
-  email: FormValues;
 };
 type PreferenceFormFields = {
   language: FormValues;
   timezone: FormValues;
+};
+type EmailFormFields = {
+  email: FormValues;
 };
 const ProfileDashboard = () => {
   const { userDetails, handleUpdateProfile } = useAuthDetails();
@@ -46,7 +48,6 @@ const ProfileDashboard = () => {
     label: null,
     placeholder: null,
     error: false,
-    omit: false,
     blocked: false,
     validation: 'string',
     required: false,
@@ -82,12 +83,12 @@ const ProfileDashboard = () => {
       validation: 'phone',
       label: 'Phone number',
     },
+  };
+  const initialEmail: EmailFormFields = {
     email: {
       ...initialFormValues,
       value: userMail,
       validation: 'mail',
-      omit: true,
-      label: 'Email',
       placeholder: 'john.doe@example.com',
       specialForm: true,
       blocked: true,
@@ -109,9 +110,19 @@ const ProfileDashboard = () => {
       options: ['IST', 'GMT'],
     },
   };
+
+  const [profileChange, setProfileChange] = React.useState(false);
+  const [preferenceChange, setPreferenceChange] = React.useState(false);
+  const [loading, setLoading] = React.useState({
+    profile: false,
+    preferences: false,
+    email: false,
+  });
+
   const [profile, setProfile] = React.useState<FormFields>(
     initalProfileFormFields,
   );
+  const [email, setEmail] = React.useState(initialEmail);
   const [preferences, setPreferences] = React.useState(
     initialPreferenceFormFields,
   );
@@ -121,22 +132,79 @@ const ProfileDashboard = () => {
       <UserProfile
         slotUserImage={<ProfileImage />}
         slotUserForm={
-          <ProfileForms profile={profile} setProfile={setProfile} />
+          <ProfileForms
+            profile={profile}
+            setProfile={setProfile}
+            setChanges={() => setProfileChange(true)}
+          />
         }
+        slotEmail={<ProfileForms profile={email} setProfile={setEmail} />}
         slotPreferenceForm={
-          <ProfileForms profile={preferences} setProfile={setPreferences} />
+          <ProfileForms
+            profile={preferences}
+            setProfile={setPreferences}
+            setChanges={() => setPreferenceChange(true)}
+          />
         }
-        onClickUserInfoSave={{
-          onClick: async () =>
-            await handleSubmit(profile, setProfile, handleUpdateProfile),
+        onClickProfilePhotoChange={{
+          onClick: () => {
+            document.getElementById('image-upload').click();
+          },
         }}
-        onClickPreferenceSave={{
-          onClick: async () =>
-            await handleSubmit(
-              preferences,
-              setPreferences,
-              handleUpdateProfile,
-            ),
+        slotUserInfoBtn={
+          <Stack style={{ pointerEvents: loading.profile ? 'none' : 'auto' }}>
+            <ButtonPrimaryOutlinedRegular
+              buttonText={'Save'}
+              isDisabled={!profileChange}
+              buttonProps={{
+                onClick: async () => {
+                  setLoading((prev) => {
+                    return { ...prev, profile: true };
+                  });
+                  const confirmation = await handleSubmit(
+                    profile,
+                    setProfile,
+                    handleUpdateProfile,
+                  );
+                  if (confirmation) setProfileChange(false);
+                  setLoading((prev) => {
+                    return { ...prev, profile: false };
+                  });
+                },
+              }}
+            />
+          </Stack>
+        }
+        slotPreferencesBtn={
+          <Stack
+            style={{ pointerEvents: loading.preferences ? 'none' : 'auto' }}
+          >
+            <ButtonPrimaryOutlinedRegular
+              buttonText={'Save'}
+              isDisabled={!preferenceChange}
+              buttonProps={{
+                onClick: async () => {
+                  setLoading((prev) => {
+                    return { ...prev, preferences: true };
+                  });
+                  const confirmation = await handleSubmit(
+                    preferences,
+                    setPreferences,
+                    handleUpdateProfile,
+                  );
+                  if (confirmation) setPreferenceChange(false);
+                  setLoading((prev) => {
+                    return { ...prev, preferences: false };
+                  });
+                },
+              }}
+            />
+          </Stack>
+        }
+        onClickEmailChange={{
+          onClick: () => {
+            document.getElementById('job-profile-change-email').click();
+          },
         }}
       />
     </Stack>
@@ -206,14 +274,20 @@ const handleSubmit = async (
     const newUserMeta = Object.assign(
       {},
       ...Object.entries(newProfile).reduce((acc, [key, curr]) => {
-        if (!curr.omit) acc.push({ [key]: curr.value });
+        acc.push({ [key]: curr.value });
         return acc;
       }, []),
     );
     const confirmation = await handleUpdateProfile(newUserMeta);
-    if (confirmation) toast.success('Profile infomation saved successfully');
+    if (confirmation) {
+      toast.success('Profile infomation saved successfully');
+      return true;
+    }
   } else {
-    setProfile(newProfile);
+    {
+      setProfile(newProfile);
+      return false;
+    }
   }
 };
 const validateString = (value: string) => {
@@ -239,11 +313,14 @@ const validatePhone = (value: string) => {
 const ProfileForms = ({
   profile,
   setProfile,
+  setChanges = null,
 }: {
-  profile: FormFields | PreferenceFormFields;
+  profile: FormFields | PreferenceFormFields | EmailFormFields;
   setProfile:
     | React.Dispatch<React.SetStateAction<FormFields>>
-    | React.Dispatch<React.SetStateAction<PreferenceFormFields>>;
+    | React.Dispatch<React.SetStateAction<PreferenceFormFields>>
+    | React.Dispatch<React.SetStateAction<EmailFormFields>>;
+  setChanges?: () => void;
 }) => {
   const handleChange = (e, key: string) => {
     setProfile((prev) => {
@@ -256,6 +333,7 @@ const ProfileForms = ({
         },
       };
     });
+    if (setChanges) setChanges();
   };
   const forms = Object.entries(profile).map(([key, val]) => {
     return (
@@ -353,11 +431,7 @@ const ProfileForm = ({
       return (
         <Stack>
           {value.specialForm && (
-            <SpecialForm
-              name={capitalize(id)}
-              validation={value.validation}
-              triggerChange={(e) => onChange(e, id)}
-            />
+            <SpecialForm name={id} validation={value.validation} />
           )}
           <UITextField
             labelSize='medium'
@@ -379,15 +453,13 @@ const ProfileForm = ({
 const SpecialForm = ({
   name,
   validation,
-  triggerChange,
 }: {
   name: string;
   validation: FormValues['validation'];
-  // eslint-disable-next-line no-unused-vars
-  triggerChange: (e: any) => void;
 }) => {
   const { handleUpdateEmail } = useAuthDetails();
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);
   const handleOpen = () => {
@@ -416,14 +488,16 @@ const SpecialForm = ({
     }
   };
   const handleSubmit = async () => {
+    setLoading(true);
     const { newValue, error } = handleValidate(value);
     if (!error) {
-      triggerChange({ target: { value: newValue } });
+      // triggerChange({ target: { value: newValue } });
       if (validation === 'mail') await handleUpdateEmail(newValue);
       handleClose();
     } else {
       setError(true);
     }
+    setLoading(false);
   };
   const inputSlot = (
     <UITextField
@@ -431,29 +505,22 @@ const SpecialForm = ({
       fullWidth
       value={value}
       error={error}
-      helperText={`Please enter a valid ${name}`}
+      helperText={`Please enter a valid ${capitalize(name)}`}
       onChange={(e) => handleChange(e)}
     />
   );
   return (
     <>
       <Dialog open={open} onClose={() => handleClose()}>
-        <ProfileEmailPop
-          onClickClose={{ onClick: () => handleClose() }}
-          slotInput={inputSlot}
-          onClickSendLink={{ onClick: () => handleSubmit() }}
-        />
+        <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
+          <ProfileEmailPop
+            onClickClose={{ onClick: () => handleClose() }}
+            slotInput={inputSlot}
+            onClickSendLink={{ onClick: () => handleSubmit() }}
+          />
+        </Stack>
       </Dialog>
-      <Stack
-        onClick={() => handleOpen()}
-        color={'#337FBD'}
-        fontSize={'12px'}
-        position={'absolute'}
-        right={0}
-        style={{ transform: 'translate(-100%,10%)', cursor: 'pointer' }}
-      >
-        {`Change ${name}`}
-      </Stack>
+      <Stack id={`job-profile-change-${name}`} onClick={() => handleOpen()} />
     </>
   );
 };

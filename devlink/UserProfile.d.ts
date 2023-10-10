@@ -5,7 +5,10 @@ declare function UserProfile(props: {
   as?: React.ElementType;
   slotUserImage?: Types.Devlink.Slot;
   slotUserForm?: Types.Devlink.Slot;
-  onClickUserInfoSave?: Types.Devlink.RuntimeProps;
-  onClickPreferenceSave?: Types.Devlink.RuntimeProps;
   slotPreferenceForm?: Types.Devlink.Slot;
+  slotEmail?: Types.Devlink.Slot;
+  onClickEmailChange?: Types.Devlink.RuntimeProps;
+  onClickProfilePhotoChange?: Types.Devlink.RuntimeProps;
+  slotUserInfoBtn?: Types.Devlink.Slot;
+  slotPreferencesBtn?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -1,6 +1,7 @@
 // eslint-disable-next-line simple-import-sort/imports
-import '../../devlink/global.css';
+import '../../devlink3/global.css';
 import '../../devlink2/global.css';
+import '../../devlink/global.css';
 import AppLayout from '@components/AppLayout';
 import ErrorBoundary from '@components/Common/ErrorBoundary';
 import { DevlinkMainProvider } from '@context/DevlinkContext';

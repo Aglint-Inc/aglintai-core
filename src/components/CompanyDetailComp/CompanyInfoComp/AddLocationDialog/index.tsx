@@ -10,6 +10,7 @@ import { debouncedSave } from '../../utils';
 interface LocationProps {
   handleClose: () => void;
   open: boolean;
+  edit: number;
   // eslint-disable-next-line no-unused-vars
   // handleChange: (recruiter: RecruiterType) => void;
 }
@@ -17,20 +18,56 @@ interface LocationProps {
 const AddLocationDialog: React.FC<LocationProps> = ({
   handleClose,
   open,
-  // handleChange,
+  edit,
 }) => {
   // const isClicked = useRef(false);
   // const { recruiter } = useAuthDetails();
-  const { setRecruiter } = useAuthDetails();
-
+  const { recruiter, setRecruiter } = useAuthDetails();
+  const initialValue =
+    edit > -1 ? recruiter.office_locations[edit] : (undefined as any);
   const initialFormFields = {
-    line1: { value: '', error: false, validation: 'string' },
-    line2: { value: '', error: false, validation: 'string' },
-    city: { value: '', error: false, validation: 'string' },
-    region: { value: '', error: false, validation: 'string' },
-    country: { value: '', error: false, validation: 'string' },
-    zipcode: { value: '', error: false, validation: 'string' },
-    is_headquarter: { value: false, error: false, validation: 'boolean' },
+    line1: {
+      value: initialValue?.line1 ?? '',
+      error: false,
+      validation: 'string',
+      required: false,
+    },
+    line2: {
+      value: initialValue?.line2 ?? '',
+      error: false,
+      validation: 'string',
+      required: false,
+    },
+    city: {
+      value: initialValue?.city ?? '',
+      error: false,
+      validation: 'string',
+      required: true,
+    },
+    region: {
+      value: initialValue?.region ?? '',
+      error: false,
+      validation: 'string',
+      required: true,
+    },
+    country: {
+      value: initialValue?.country ?? '',
+      error: false,
+      validation: 'string',
+      required: true,
+    },
+    zipcode: {
+      value: initialValue?.zipcode ?? '',
+      error: false,
+      validation: 'string',
+      required: true,
+    },
+    is_headquarter: {
+      value: initialValue?.is_headquarter ?? false,
+      error: false,
+      validation: 'boolean',
+      required: true,
+    },
   };
 
   const [location, setLocation] = useState(initialFormFields);
@@ -51,7 +88,14 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         );
         const newRecruiter = {
           ...recruiter,
-          office_locations: [...recruiter.office_locations, newLocation] as any,
+          office_locations:
+            edit > -1
+              ? (recruiter.office_locations.reduce((acc: any, curr, i) => {
+                  if (i === edit) acc.push(newLocation);
+                  else acc.push(curr);
+                  return acc;
+                }, []) as any)
+              : ([...recruiter.office_locations, newLocation] as any),
         };
         debouncedSave(newRecruiter, newRecruiter.id);
         setLocation(initialFormFields);
@@ -70,7 +114,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         switch (curr.validation) {
           case 'string':
             {
-              if (value.trim().length === 0) {
+              if (curr.required && value.trim().length === 0) {
                 error = true;
               } else {
                 value = value.trim();
@@ -111,10 +155,13 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
+          headerText={edit === -1 ? 'Add location' : 'Edit location'}
           slotForm={
             <Stack>
               <TextField
                 label='Line 1'
+                defaultValue={location.line1.value}
+                required={location.line1.required}
                 onChange={(e) => handleChange(e, 'line1')}
                 error={location.line1.error}
                 helperText={
@@ -123,6 +170,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               />
               <TextField
                 label='Line 2'
+                defaultValue={location.line2.value}
+                required={location.line2.required}
                 onChange={(e) => handleChange(e, 'line2')}
                 error={location.line2.error}
                 helperText={
@@ -131,12 +180,16 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               />
               <TextField
                 label='City'
+                defaultValue={location.city.value}
+                required={location.city.required}
                 onChange={(e) => handleChange(e, 'city')}
                 error={location.city.error}
                 helperText={location.city.error && 'Please enter a valid city'}
               />
               <TextField
                 label='Region'
+                defaultValue={location.region.value}
+                required={location.region.required}
                 onChange={(e) => handleChange(e, 'region')}
                 error={location.region.error}
                 helperText={
@@ -145,6 +198,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               />
               <TextField
                 label='Country'
+                defaultValue={location.country.value}
+                required={location.country.required}
                 onChange={(e) => handleChange(e, 'country')}
                 error={location.country.error}
                 helperText={
@@ -153,6 +208,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               />
               <TextField
                 label='Zip code'
+                defaultValue={location.zipcode.value}
+                required={location.zipcode.required}
                 onChange={(e) => handleChange(e, 'zipcode')}
                 error={location.zipcode.error}
                 helperText={

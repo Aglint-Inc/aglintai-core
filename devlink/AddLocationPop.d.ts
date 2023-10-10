@@ -8,4 +8,5 @@ declare function AddLocationPop(props: {
   onClickAdd?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
   onClickCheck?: Types.Devlink.RuntimeProps;
+  headerText?: React.ReactNode;
 }): React.JSX.Element;

@@ -31,11 +31,11 @@ export default function Loading() {
           router.push('https://app.aglinthq.com');
           return;
         }
-        // if (handleEmail(userDetails.user.email).error) {
-        //   router.push(pageRoutes.SIGNUP);
-        //   toast.error('Please signup/login with company email');
-        //   return;
-        // }
+        if (handleEmail(userDetails.user.email).error) {
+          router.push(pageRoutes.SIGNUP);
+          toast.error('Please signup/login with company email');
+          return;
+        }
         await createUser();
       } else {
         router.push(pageRoutes.LOGIN);
