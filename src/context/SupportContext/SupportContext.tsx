@@ -7,6 +7,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
   NotificationsEmailAPIType,
   Public_jobsType,
+  RecruiterType,
   // RecruiterType,
   Support_ticketType,
   // SupportGroupType,
@@ -38,7 +39,7 @@ interface ContextValue {
   filters: { state: string };
   allAssignee: { id: string; title: string; image: string }[];
   // eslint-disable-next-line no-unused-vars
-  updateTicket: (data: Partial<Support_ticketType[]>, id: string) => void;
+  updateTicket: (data: Partial<Support_ticketType>, id: string) => void;
 }
 
 const defaultProvider = {
@@ -64,7 +65,7 @@ const defaultProvider = {
     'on hold': 0,
   },
   filters: { state: 'all' },
-  updateTicket: (data: Partial<Support_ticketType[]>, id: string) => {
+  updateTicket: (data: Partial<Support_ticketType>, id: string) => {
     data;
     id;
   },
@@ -126,12 +127,40 @@ const SupportProvider = ({ children }) => {
     { id: string; title: string; image: string }[]
   >([]);
 
-  const updateTicket = (data: Partial<Support_ticketType[]>, id: string) => {
+  const sendUpdateEmail = ({
+    subject,
+    body,
+  }: {
+    subject: string;
+    body: string;
+  }) => {
+    if (openTicket.email_updates) {
+      sendNotificationEmail({
+        application_id: openTicket.application_id,
+        details: {
+          fromEmail: recruiter.email,
+          fromName: recruiter.name,
+          temples: {
+            subject: subject,
+            body: body,
+          },
+        },
+      });
+    }
+  };
+
+  const updateTicket = (data: Partial<Support_ticketType>, id: string) => {
     const update = data;
     const old = allTickets.find((ticket) => ticket.id === id);
     return updateSupportTicketInDb({
       id,
       ...data,
+      content: getUpdateMessage({
+        allAssignee,
+        recruiter,
+        oldDetails: old,
+        newDetails: update,
+      }),
     }).then((data) => {
       setAllTickets(
         allTickets.map((ticket) => {
@@ -144,78 +173,42 @@ const SupportProvider = ({ children }) => {
       if (openTicket?.id === id) {
         setOpenTicket({ ...openTicket, ...data });
       }
-      if (data.email_updates) {
-        // @ts-ignore
-        if (update.content) {
-          const last_message = data.content[
-            data.content.length - 1
-          ] as unknown as {
-            id: string;
-            from: string;
-            name: string;
-            text: string;
-            type: string;
-            timeStamp: string;
-          };
-          if (last_message.type === 'message') {
-            sendNotificationEmail({
-              application_id: data.application_id,
-              details: {
-                fromEmail: recruiter.email,
-                fromName: recruiter.name,
-                temples: {
-                  subject: `${data.id}: New Message.`,
-                  body: `Your Ticket have new message from <b>${last_message.name}</b> : ${last_message.text}`,
-                },
-              },
-            });
-          }
-        }
-        // @ts-ignore
-        else if (update.state) {
-          sendNotificationEmail({
-            application_id: data.application_id,
-            details: {
-              fromEmail: recruiter.email,
-              fromName: recruiter.name,
-              temples: {
-                subject: `${data.id}: State Changed.`,
-                body: `Your Ticket state is updated from <b>${old.state}</b> to <b>${data.state}</b>`,
-              },
-            },
+      // @ts-ignore
+      if (update.content) {
+        const last_message = data.content[
+          data.content.length - 1
+        ] as unknown as {
+          id: string;
+          from: string;
+          name: string;
+          text: string;
+          type: string;
+          timeStamp: string;
+        };
+        if (last_message.type === 'message') {
+          sendUpdateEmail({
+            subject: `${data.id}: New Message.`,
+            body: `Your Ticket have new message from <b>${last_message.name}</b> : ${last_message.text}`,
           });
         }
-        // @ts-ignore
-        else if (update.assign_to) {
-          sendNotificationEmail({
-            application_id: data.application_id,
-            details: {
-              fromEmail: recruiter.email,
-              fromName: recruiter.name,
-              temples: {
-                subject: `${data.id}: Ticket Assignment Changed.`,
-                body: `Ticket is now assigned to <b>${
-                  allAssignee.find(
-                    (assignment) => assignment.id === data.assign_to,
-                  ).title
-                }</b>`,
-              },
-            },
-          });
-          // @ts-ignore
-        } else if (update.priority) {
-          sendNotificationEmail({
-            application_id: data.application_id,
-            details: {
-              fromEmail: recruiter.email,
-              fromName: recruiter.name,
-              temples: {
-                subject: `${data.id}: Priority Updated.`,
-                body: `Ticket state is updated from <b>${old.priority}</b> to <b>${data.priority}</b>`,
-              },
-            },
-          });
-        }
+      } else if (update.state) {
+        sendUpdateEmail({
+          subject: `${data.id}: State Changed.`,
+          body: `Your Ticket state is updated from <b>${old.state}</b> to <b>${data.state}</b>`,
+        });
+      } else if (update.assign_to) {
+        sendUpdateEmail({
+          subject: `${data.id}: Ticket Assignment Changed.`,
+          body: `Ticket is now assigned to <b>${
+            allAssignee.find((assignment) => assignment.id === data.assign_to)
+              .title
+          }</b>`,
+        });
+      } else if (update.priority) {
+        sendUpdateEmail({
+          subject: `${data.id}: Priority Updated.`,
+          body: `Ticket state is updated from <b>${old.priority}</b> to <b>${data.priority}</b>`,
+        });
       }
     });
   };
@@ -359,4 +352,47 @@ const sendNotificationEmail = ({
     .then(({ data }) => {
       return data as { emailSend: boolean; error: string };
     });
+};
+
+const getUpdateMessage = ({
+  recruiter,
+  oldDetails,
+  newDetails,
+  allAssignee,
+}: {
+  recruiter: RecruiterType;
+  oldDetails: Partial<Support_ticketType>;
+  newDetails: Partial<Support_ticketType>;
+  allAssignee: { id: string; title: string; image: string }[];
+}) => {
+  const temp: {
+    id: string;
+    from: string;
+    name: string;
+    text: string;
+    type: string;
+    timeStamp: string;
+  } = {
+    id: recruiter.id,
+    from: 'support',
+    type: 'update',
+    name: recruiter.name,
+    timeStamp: new Date().toISOString(),
+    text: null,
+  };
+  const content = oldDetails.content;
+  if (newDetails.content) {
+    return content;
+  } else if (newDetails.state) {
+    temp.text = `Ticket Status is updated from <b>${oldDetails.state}</b> to <b>${newDetails.state}`;
+  } else if (newDetails.assign_to) {
+    temp.text = `Ticket is now assigned to <b>${
+      allAssignee.find((assignment) => assignment.id === newDetails.assign_to)
+        .title
+    }</b>`;
+  } else if (newDetails.priority) {
+    temp.text = `Ticket Priority is updated from <b>${oldDetails.priority}</b> to <b>${newDetails.priority}</b>`;
+  }
+  content.push(temp);
+  return content;
 };

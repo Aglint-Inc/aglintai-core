@@ -3,7 +3,6 @@ import * as Types from "./types";
 
 declare function EditJob(props: {
   as?: React.ElementType;
-  isJobSaved?: Types.Visibility.VisibilityConditions;
   onClickClose?: Types.Devlink.RuntimeProps;
   slotDetails?: Types.Devlink.Slot;
   onClickDetails?: Types.Devlink.RuntimeProps;
@@ -18,4 +17,5 @@ declare function EditJob(props: {
   isScreeningQuestionsActive?: Types.Visibility.VisibilityConditions;
   isWorkflowActive?: Types.Visibility.VisibilityConditions;
   onClickGotIt?: Types.Devlink.RuntimeProps;
+  slotSaveStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -4,7 +4,14 @@ import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/router';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { LoaderSvg } from '@/devlink';
 import {
@@ -12,8 +19,19 @@ import {
   RecruiterType,
   SocialsType,
 } from '@/src/types/data.types';
+import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+
+type UserMeta = {
+  first_name: string;
+  image_url: string;
+  language: string;
+  last_name: string;
+  phone: string;
+  role: string;
+  timezone: string;
+};
 
 interface ContextValue {
   userDetails: Session | null;
@@ -21,8 +39,12 @@ interface ContextValue {
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
   // eslint-disable-next-line no-unused-vars
-  setRecruiter: (recruiter: RecruiterType | null) => void;
+  setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   loading: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateProfile: (userMeta: UserMeta) => Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
@@ -32,6 +54,8 @@ interface ContextValue {
 const defaultProvider = {
   userDetails: null,
   setUserDetails: () => {},
+  handleUpdateProfile: undefined,
+  handleUpdateEmail: undefined,
   recruiter: null,
   setRecruiter: () => {},
   loading: true,
@@ -66,11 +90,9 @@ const AuthProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
-
       if (!data?.session) {
         loading && setLoading(false);
         return;
@@ -108,6 +130,42 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleUpdateProfile = async (userMeta: UserMeta): Promise<boolean> => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: {
+        ...userDetails.user.user_metadata,
+        ...userMeta,
+      },
+    });
+    if (data) {
+      setUserDetails((prev) => {
+        return {
+          ...prev,
+          user: data.user,
+        };
+      });
+      return true;
+    } else {
+      toast.error(`Oops! Something went wrong. (${error.message})`);
+      return false;
+    }
+  };
+
+  const handleUpdateEmail = async (email: string): Promise<boolean> => {
+    const { error } = await supabase.auth.updateUser(
+      {
+        email: email,
+      },
+      { emailRedirectTo: 'http://localhost:3000/loading' },
+    );
+    if (error) {
+      toast.error(`Oops! Something went wrong. (${error.message})`);
+      return false;
+    } else {
+      toast.success(`Confirmation email sent`);
+      return true;
+    }
+  };
   useEffect(() => {
     getSupabaseSession();
   }, []);
@@ -127,6 +185,8 @@ const AuthProvider = ({ children }) => {
         userDetails,
         setUserDetails,
         recruiter,
+        handleUpdateProfile,
+        handleUpdateEmail,
         setRecruiter,
         loading,
         setLoading,

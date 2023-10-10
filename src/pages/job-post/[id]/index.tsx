@@ -52,7 +52,7 @@ function JobPost() {
           }
         });
     }
-  }, [router.isReady]);
+  }, [router]);
 
   function isValidUUID(uuid) {
     const uuidRegex =

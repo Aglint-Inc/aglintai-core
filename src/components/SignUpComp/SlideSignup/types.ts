@@ -4,13 +4,14 @@ export interface FieldError {
 }
 
 export interface SignUpError {
-  name: FieldError;
+  first_name: FieldError;
   email: FieldError;
   password: FieldError;
 }
 
 export interface Details {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 }

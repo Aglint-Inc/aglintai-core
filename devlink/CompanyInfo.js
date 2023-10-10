@@ -58,14 +58,14 @@ export function CompanyInfo({
               {...onClickChangeLogo}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "label-12")}
+                className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
                 {textLogoUpdate}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-xsm", "color-grey-600")}
+              className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
               {
@@ -168,7 +168,7 @@ export function CompanyInfo({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Technology Stack"}
+            {"Specialities"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-department-saved-wrappers")}
@@ -189,7 +189,7 @@ export function CompanyInfo({
               className={_utils.cx(_styles, "label-13")}
               tag="div"
             >
-              {"Add technology stack"}
+              {"Add specialities"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

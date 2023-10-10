@@ -37,6 +37,7 @@ type AutoCompleteType = {
 type EmailTemplate = Record<
   string,
   {
+    fromName: string;
     body: string;
     subject: string;
   }
@@ -85,6 +86,7 @@ export type JobFormState = {
   formType: 'edit' | 'new';
   formFields: FormJobType | null;
   slideNo: number;
+  syncStatus: 'saving' | 'saved' | '';
 };
 
 const initialState: JobFormState = {
@@ -95,6 +97,7 @@ const initialState: JobFormState = {
   createdAt: null,
   slideNo: 0,
   isFormOpen: false,
+  syncStatus: '',
 };
 
 // Define action types
@@ -127,6 +130,12 @@ type JobsAction =
       payload: {
         updatedAt: string;
         createdAt: string;
+      };
+    }
+  | {
+      type: 'setDbSyncStatus';
+      payload: {
+        status: JobFormState['syncStatus'];
       };
     }
   | null;
@@ -163,6 +172,12 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       const { slideNo } = action.payload;
       const newState = cloneDeep(state);
       set(newState, 'slideNo', slideNo);
+      return newState;
+    }
+    case 'setDbSyncStatus': {
+      const { status } = action.payload;
+      const newState = cloneDeep(state);
+      set(newState, 'syncStatus', status);
       return newState;
     }
     default:
@@ -217,29 +232,36 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
   const { handleUIJobUpdate } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
-    if (
-      get(currState, 'createdAt', undefined) === undefined &&
-      currState.slideNo === 1
-    )
-      return;
-
-    const updatedJobDb = await saveJobPostToDb(currState);
-    handleUIJobUpdate({
-      ...updatedJobDb,
-      active_status: updatedJobDb.active_status as unknown as StatusJobs,
-    });
-
-    if (
-      get(currState, 'createdAt', undefined) === undefined &&
-      currState.slideNo > 1
-    ) {
+    try {
       dispatch({
-        type: 'setPostMeta',
+        type: 'setDbSyncStatus',
         payload: {
-          createdAt: updatedJobDb.created_at,
-          updatedAt: updatedJobDb.updated_at,
+          status: 'saving',
         },
       });
+      const updatedJobDb = await saveJobPostToDb(currState);
+      handleUIJobUpdate({
+        ...updatedJobDb,
+        active_status: updatedJobDb.active_status as unknown as StatusJobs,
+      });
+
+      if (get(currState, 'createdAt', undefined) === undefined) {
+        dispatch({
+          type: 'setPostMeta',
+          payload: {
+            createdAt: updatedJobDb.created_at,
+            updatedAt: updatedJobDb.updated_at,
+          },
+        });
+      }
+      dispatch({
+        type: 'setDbSyncStatus',
+        payload: {
+          status: 'saved',
+        },
+      });
+    } catch {
+      toast.error('Something went Wrong. Please Check Your Network');
     }
   };
 

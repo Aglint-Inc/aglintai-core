@@ -26,13 +26,7 @@ export function NewSocialLinkPop({
         className={_utils.cx(_styles, "color-black", "mt-10")}
         tag="div"
       >
-        {"Choose the social meadia platform or continue with typing manually"}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-social-icons")}
-        tag="div"
-      >
-        {slotSocialIcons}
+        {"Enter name and url of the social media of your choice"}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-social-forms")}
@@ -49,7 +43,7 @@ export function NewSocialLinkPop({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cancel-text", "text-sm")}
+            className={_utils.cx(_styles, "cancel-text")}
             tag="div"
             {...onClickCancel}
           >

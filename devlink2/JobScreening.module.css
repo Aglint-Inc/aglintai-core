@@ -101,6 +101,10 @@
   color: var(--black-9b0fc3fc);
 }
 
+.text-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -463,7 +467,7 @@
 }
 
 .candidate-list-item.top-bar {
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
 .cli-column.candidate-info {

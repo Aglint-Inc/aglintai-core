@@ -170,6 +170,22 @@
   color: var(--white-80449ce7);
 }
 
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
+.text-yellow-500 {
+  color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
 .toggle-btn-block-2 {
   display: flex;
   width: 30px;

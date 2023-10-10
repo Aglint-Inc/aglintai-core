@@ -22,6 +22,10 @@ interface CompanyJobPostType {
 
 const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
   const router = useRouter();
+
+  const filteredJobs = jobs.filter(
+    (job: any) => job.active_status.sourcing.isActive,
+  );
   return (
     <div>
       <CompanyListing
@@ -48,12 +52,13 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         textCompanyType={recruiter.industry || '--'}
         textEmployeeCount={recruiter.employee_size || '--'}
         textHeaderDiscription={recruiter.company_values}
-        slotOpenJobListing={jobs.map((job, ind) => {
+        textOpenJobCount={filteredJobs.length}
+        slotOpenJobListing={filteredJobs.map((job, ind) => {
           return (
             <OpenJobListingCard
               key={ind}
               textJobRole={job.job_title || '--'}
-              textCompanyType={'--'}
+              textCompanyType={job.department || '--'}
               textLocation={job.location || '--'}
               textWorkingType={job.job_type || '--'}
               onClickApplyNow={{

@@ -74,7 +74,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
       setError(true);
     }
   };
-  const filteredJobs = jobs.filter((job) => job.id !== post.id);
+  const filteredJobs = jobs
+    .filter((job) => job.id !== post.id)
+    .filter((job: any) => job.active_status.sourcing.isActive);
 
   return (
     <Stack width={'100%'} position={'relative'}>
@@ -125,6 +127,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
         <JobListing
           slotCompanyLogo={
             <Avatar
+              id='topAvatar'
               variant='rounded'
               src={post?.logo}
               sx={{
@@ -270,6 +273,15 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                       textWorkingType={job.job_type || '--'}
                       onClickApplyNow={{
                         onClick: () => {
+                          const targetElement =
+                            document.getElementById('topAvatar');
+                          if (targetElement) {
+                            targetElement.scrollIntoView({
+                              behavior: 'instant',
+                              block: 'end',
+                              inline: 'end',
+                            });
+                          }
                           router.push(job.id);
                         },
                       }}

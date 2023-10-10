@@ -161,6 +161,22 @@
   color: var(--kale800-682c1482);
 }
 
+.text-lg.fw-semibold.inline-block {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-block.ml-4 {
+  margin-left: 6px;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-text.ml-6 {
+  margin-left: 6px;
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }

@@ -70,6 +70,10 @@
   color: var(--black-9b0fc3fc);
 }
 
+.text-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -114,10 +118,6 @@
 
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
 }
 
 .text-blue-600 {

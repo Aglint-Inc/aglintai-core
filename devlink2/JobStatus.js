@@ -19,12 +19,7 @@ export function JobStatus({
       {...onClickStatus}
     >
       <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "text-sm",
-          "fw-semibold",
-          "text-kale-600"
-        )}
+        className={_utils.cx(_styles, "fw-semibold", "text-kale-600")}
         tag="div"
       >
         {title}

@@ -126,6 +126,7 @@ const SlideDetailsOne = () => {
                     const { data: newData } = await supabase
                       .from('recruiter')
                       .update({
+                        name: company.company_name || '',
                         industry: company.industries[0] || '',
                         employee_size: company.employee_range,
                         logo: company.logo_url,

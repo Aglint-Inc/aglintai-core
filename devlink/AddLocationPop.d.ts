@@ -6,4 +6,6 @@ declare function AddLocationPop(props: {
   slotForm?: Types.Devlink.Slot;
   onClickCancel?: Types.Devlink.RuntimeProps;
   onClickAdd?: Types.Devlink.RuntimeProps;
+  isChecked?: Types.Visibility.VisibilityConditions;
+  onClickCheck?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { useRouter } from 'next/router';
 
 import { NewJobSuccess } from '@/devlink';
 
@@ -7,8 +6,7 @@ import { useJobForm } from '../JobPostFormProvider';
 
 function SuccessPage() {
   const { jobForm } = useJobForm();
-  const router = useRouter();
-  const jobLink = `${process.env.NEXT_PUBLIC_HOST_NAME}job-post/${get(
+  const jobLink = `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${get(
     jobForm,
     'jobPostId',
     '',
@@ -17,7 +15,7 @@ function SuccessPage() {
     <NewJobSuccess
       onClickViewJob={{
         onClick: () => {
-          router.push(jobLink);
+          window.open(jobLink, '_blank');
         },
       }}
     />

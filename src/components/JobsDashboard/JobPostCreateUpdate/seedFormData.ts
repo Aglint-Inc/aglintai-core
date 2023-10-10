@@ -15,6 +15,7 @@ export const getSeedJobFormData = (
     createdAt: undefined,
     updatedAt: undefined,
     jobPostId: uuidv4(),
+    syncStatus: '',
     formType: 'new',
     slideNo: 0,
     formFields: {
@@ -80,6 +81,11 @@ export const getSeedJobFormData = (
   };
 
   if (recruiter) {
+    const defaultAddress = get(recruiter, 'office_locations', []).map((s) => ({
+      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
+      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    }));
+
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
@@ -140,16 +146,10 @@ export const getSeedJobFormData = (
     });
     seedFormState.formFields.workPlaceType = 'onsite';
     seedFormState.formFields.jobType = 'fulltime';
-    seedFormState.formFields.jobLocation = '';
+    seedFormState.formFields.jobLocation = get(defaultAddress, '[0].value', '');
     seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
-    seedFormState.formFields.defaultAddress = get(
-      recruiter,
-      'office_locations',
-      [],
-    ).map((s) => ({
-      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
-      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
-    }));
+
+    seedFormState.formFields.defaultAddress = defaultAddress;
     seedFormState.formFields.screeningConfig.screeningEmail = {
       ...seedFormState.formFields.screeningConfig.screeningEmail,
       emailTemplates: get(
@@ -211,6 +211,7 @@ export const dbToClientjobPostForm = (
         'screening_setting.interviewType',
         'questions-preset',
       ),
+      department: jobPost.department,
       jobDescription: jobPost.description,
       jobLocation: jobPost.location,
       logo: jobPost.logo,

@@ -9,15 +9,38 @@ export function ProfileEmailPop({
   onClickClose = {},
   slotInput,
   onClickSendLink = {},
+  changeText = "e-mail address",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "change-email-pop")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "div-block-388")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+          className={_utils.cx(_styles, "div-block-455")}
           tag="div"
         >
-          {"Change e-mail address"}
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-lg",
+              "fw-semibold",
+              "inline-text"
+            )}
+            tag="div"
+          >
+            {"Change"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-lg",
+              "fw-semibold",
+              "inline-text",
+              "ml-6"
+            )}
+            tag="div"
+          >
+            {changeText}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "close-pop-email")}
@@ -37,7 +60,20 @@ export function ProfileEmailPop({
         className={_utils.cx(_styles, "email-input-wrappers")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Your new work e-mail"}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "inline-text")}
+            tag="div"
+          >
+            {"Your new work"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "inline-text", "ml-4")}
+            tag="div"
+          >
+            {changeText}
+          </_Builtin.Block>
+        </_Builtin.Block>
         <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "email-button-bottom")}
@@ -48,7 +84,7 @@ export function ProfileEmailPop({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cancel-text", "text-sm")}
+              className={_utils.cx(_styles, "cancel-text")}
               tag="div"
               {...onClickClose}
             >

@@ -162,9 +162,9 @@ const EmailTemplate = () => {
                   />
                 </Stack>
                 <UITextField
-                  labelSize='medium'
+                  labelSize='small'
                   fullWidth
-                  label='From Name'
+                  label='Sender Name'
                   value={selectedTemplate.fromName}
                   onChange={(e) => {
                     setSelectedTemplate((prev) => ({
@@ -174,7 +174,7 @@ const EmailTemplate = () => {
                   }}
                 />
                 <UITextField
-                  labelSize='medium'
+                  labelSize='small'
                   fullWidth
                   label='Email Subject'
                   value={selectedTemplate.subject}
@@ -188,7 +188,7 @@ const EmailTemplate = () => {
                   multiline
                 />
                 <Stack>
-                  <UITypography type='medium' fontBold='normal'>
+                  <UITypography type='small' fontBold='normal'>
                     Email Body
                   </UITypography>
                   <Stack
@@ -325,7 +325,7 @@ const EmailTemplate = () => {
                     )}
 
                     <AUIButton
-                      size='medium'
+                      size='small'
                       variant={openTest ? 'outlined' : 'text'}
                       onClick={() => {
                         setOpenTest(true);

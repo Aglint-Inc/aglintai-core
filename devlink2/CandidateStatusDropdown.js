@@ -28,10 +28,7 @@ export function CandidateStatusDropdown({
         tag="div"
         {...onClick}
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "fw-semibold")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {title}
         </_Builtin.Block>
         <_Builtin.Block tag="div" {...arrowProps}>

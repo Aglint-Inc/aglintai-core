@@ -31,12 +31,7 @@ export function SelectActionBar({
           {...onClickClear}
         >
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-sm",
-              "text-blue-600",
-              "text-underline"
-            )}
+            className={_utils.cx(_styles, "text-blue-600", "text-underline")}
             tag="div"
           >
             {"Clear Selection"}
