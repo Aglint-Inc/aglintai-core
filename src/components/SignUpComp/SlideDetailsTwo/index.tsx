@@ -287,5 +287,12 @@ export const getInitialEmailTemplate = (company_name: string) => {
       default: true,
       subject: 'We received your application for a position at [companyName]',
     },
+    interview_resend: {
+      fromName: company_name || '',
+      body: "<p>Dear [firstName],</p><p>We noticed that you haven't given your interview for the [jobTitle] position at [companyName]. Don't miss this opportunity!</p><p>You're welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job <a href=[supportLink]>Click Here</a></p><p>We're looking forward to hearing from you soon!</p><p>Warm regards</p>",
+      default: true,
+      subject:
+        'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
+    },
   };
 };

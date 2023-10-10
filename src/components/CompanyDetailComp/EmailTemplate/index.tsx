@@ -351,7 +351,7 @@ export default EmailTemplate;
 
 export const templateObj: Record<string, string> = {
   interview: 'Interview Email',
-  followup: 'Follow up for Interview',
+  interview_resend: 'Follow up for Interview',
   rejection: 'Rejection Email',
   application_recieved: 'Application Recieved Email',
 };
