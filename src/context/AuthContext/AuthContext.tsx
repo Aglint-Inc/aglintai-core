@@ -104,21 +104,29 @@ const AuthProvider = ({ children }) => {
           setUserDetails(newData.session);
         }
       }
-      
+
       if (!error) {
         Cookie.remove('access_token');
         Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
-        const { data: recruiter, error } = await supabase
-          .from('recruiter')
+        const { data: recruiterUser, error: errorUser } = await supabase
+          .from('recruiter_user')
           .select('*')
           .eq('user_id', data.session.user.id);
-        if (!error) {
-          setRecruiter({
-            ...recruiter[0],
-            address: recruiter[0]?.address as unknown as AddressType,
-            socials: recruiter[0]?.socials as unknown as SocialsType,
-          });
+        if (!errorUser && recruiterUser.length > 0) {
+          const { data: recruiter, error } = await supabase
+            .from('recruiter')
+            .select('*')
+            .eq('id', recruiterUser[0].recruiter_id);
+          if (!error && recruiter.length > 0) {
+            setRecruiter({
+              ...recruiter[0],
+              address: recruiter[0]?.address as unknown as AddressType,
+              socials: recruiter[0]?.socials as unknown as SocialsType,
+            });
+          }
+        } else {
+          router.push(pageRoutes.SIGNUP);
         }
       }
     } catch (err) {

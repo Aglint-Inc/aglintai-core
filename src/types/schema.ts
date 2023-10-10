@@ -2602,6 +2602,40 @@ export interface Database {
           }
         ]
       }
+      recruiter_user: {
+        Row: {
+          created_at: string
+          recruiter_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          recruiter_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          recruiter_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recruiter_user_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       referral_coach: {
         Row: {
           coach_id: string | null
@@ -3449,6 +3483,14 @@ export interface Database {
         }
         Returns: number
       }
+      get_present_scheduled_jobs: {
+        Args: Record<PropertyKey, never>
+        Returns: Json[]
+      }
+      get_souring_scheduled_jobs: {
+        Args: Record<PropertyKey, never>
+        Returns: Json[]
+      }
       getquerieswithmessagesbyassignmentid: {
         Args: {
           assignmentid: string
@@ -3501,6 +3543,10 @@ export interface Database {
           signup_count: number | null
           user_id: string | null
         }
+      }
+      move_scheduled_jobs_sourcing_to_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       test_all_rows: {
         Args: Record<PropertyKey, never>
