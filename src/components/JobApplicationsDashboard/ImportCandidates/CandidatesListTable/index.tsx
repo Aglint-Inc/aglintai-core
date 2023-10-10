@@ -1,8 +1,11 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { IconBriefCase, IconCandidate, IconMail, IconPhone } from '@/devlink';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
+
+import { getGravatar } from '../../ApplicationCard';
 function CandidatesListTable({ importedCandidate }) {
   // eslint-disable-next-line no-console
   console.log('importedCandidate', importedCandidate);
@@ -28,7 +31,7 @@ function CandidatesListTable({ importedCandidate }) {
                 name={ele.first_name + ' ' + ele.last_name}
                 role={ele.job_title}
                 email={ele.email}
-                phone={ele.phone}
+                status={ele.status}
               />
             </YTransform>
           );
@@ -85,53 +88,13 @@ function TableHeader() {
         spacing={'5px'}
       >
         <IconPhone />
-        <Typography variant='subtitle2'>Phone</Typography>
+        <Typography variant='subtitle2'>Status</Typography>
       </Stack>
     </Stack>
   );
 }
 
-function TableRow({ name, email, role, phone }) {
-  function stringToColor(string) {
-    let hash = 0;
-    let i;
-
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = '#';
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-
-    return color;
-  }
-
-  function stringAvatar(name, email) {
-    return {
-      sx: {
-        width: '20px',
-        height: '20px',
-        bgcolor: email && stringToColor(email),
-      },
-      children: (
-        <Typography
-          position={'relative'}
-          bottom={'2px'}
-          left={'0.5px'}
-          color={'white.700'}
-        >
-          {name.split(' ')[0][0]}
-        </Typography>
-      ),
-    };
-  }
-
+function TableRow({ name, email, role, status }) {
   return (
     <Stack
       p={'3px'}
@@ -146,7 +109,14 @@ function TableRow({ name, email, role, phone }) {
         alignItems={'center'}
         spacing={'5px'}
       >
-        <Avatar {...stringAvatar(name, email)} />
+        <MuiAvatar
+          width={'20px'}
+          height={'20px'}
+          src={getGravatar(name, email)}
+          fontSize={'20px'}
+          level={name}
+          variant={'circular'}
+        />
         <Typography variant='body2' className='one-line-clamp'>
           {name}
         </Typography>
@@ -170,8 +140,9 @@ function TableRow({ name, email, role, phone }) {
         variant='body2'
         className='one-line-clamp'
         width={`${100 / 5}%`}
+        textAlign={'center'}
       >
-        {phone}
+        {status}
       </Typography>
     </Stack>
   );

@@ -3,6 +3,7 @@ import { createContext } from 'react';
 
 import { DevLinkProvider as DevLinkProvider1, RenderLink } from '@/devlink';
 import { DevLinkProvider as DevLinkProvider2 } from '@/devlink2';
+import { DevLinkProvider as DevLinkProvider3 } from '@/devlink3';
 
 export const DevLinkMainContext = createContext(null);
 export const DevlinkMainProvider = ({ children }) => {
@@ -10,7 +11,9 @@ export const DevlinkMainProvider = ({ children }) => {
     <DevLinkMainContext.Provider value={null}>
       <DevLinkProvider1 renderLink={LinkRenderer}>
         <DevLinkProvider2 renderLink={LinkRenderer}>
-          {children}
+          <DevLinkProvider3 renderLink={LinkRenderer}>
+            {children}
+          </DevLinkProvider3>
         </DevLinkProvider2>
       </DevLinkProvider1>
     </DevLinkMainContext.Provider>

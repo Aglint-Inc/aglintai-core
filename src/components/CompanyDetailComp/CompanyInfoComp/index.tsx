@@ -35,6 +35,23 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     setDialog(initialDialog());
   };
 
+  const handleDeleteLocation = (i: number) => {
+    setRecruiter((recruiter) => {
+      const newRecruiter = {
+        ...recruiter,
+        office_locations: recruiter.office_locations.reduce(
+          (acc: any, curr, index) => {
+            if (i !== index) acc.push(curr);
+            return acc;
+          },
+          [],
+        ) as any,
+      };
+      debouncedSave(newRecruiter, newRecruiter.id);
+      return newRecruiter;
+    });
+  };
+
   useEffect(() => {
     if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
   }, [logo]);
@@ -57,9 +74,10 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         handleChange={handleChange}
       />
       <AddLocationDialog
+        key={Math.random()}
         handleClose={handleClose}
         open={dialog.location.open}
-        // handleChange={handleChange}
+        edit={dialog.location.edit}
       />
       <CompanyInfo
         slotCompanyLogo={
@@ -162,7 +180,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         }
         slotLocation={
           <Stack p={'4px'}>
-            {recruiter?.office_locations.map((loc: any, ind) => {
+            {recruiter?.office_locations.map((loc: any, i) => {
               const location = [loc.city, loc.region, loc.country]
                 .filter(Boolean)
                 .join(', ');
@@ -175,13 +193,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         onClick: () => {
                           setDialog({
                             ...dialog,
-                            location: { open: true, edit: ind },
+                            location: { open: true, edit: i },
                           });
                         },
                       }}
                       textLocation={location}
                       onClickDelete={{
-                        onClick: () => {},
+                        onClick: () => handleDeleteLocation(i),
                       }}
                     />
                   </Stack>
@@ -249,7 +267,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         })}
         onClickAddLocation={{
           onClick: () => {
-            setDialog({ ...dialog, location: { open: true, edit: null } });
+            setDialog({ ...dialog, location: { open: true, edit: -1 } });
           },
         }}
         onClickAddAvailableRoles={{
@@ -276,7 +294,7 @@ export default CompanyInfoComp;
 
 const initialDialog = () => {
   return {
-    location: { open: false, edit: null },
+    location: { open: false, edit: -1 },
     roles: false,
     departments: false,
     stacks: false,

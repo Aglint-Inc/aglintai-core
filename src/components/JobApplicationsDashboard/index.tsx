@@ -230,7 +230,7 @@ const ApplicantsList = ({
   jobUpdate: boolean;
   section: string;
 }) => {
-  const { pressed } = useKeyPress('Control');
+  const { pressed } = useKeyPress('Shift');
   const handleSelect = (index: number) => {
     if (!pressed) {
       setCheckList((prev) => {
@@ -291,6 +291,7 @@ const ApplicantsList = ({
             key={application.application_id}
             style={styles}
             ref={i === lastLoad - 1 ? lastApplicationRef : null}
+            id={'job-application-stack'}
           >
             <ApplicationCard
               application={application}
@@ -328,7 +329,9 @@ const ActionBar = ({
   const [dialogInfo, setDialogInfo] = useState({
     heading: ``,
     subHeading: '',
-    primaryAction: () => null,
+    primaryAction: (checkEmail: boolean) => {
+      checkEmail;
+    },
     primaryText: '',
     secondaryText: '',
     variant: '',
@@ -361,7 +364,7 @@ const ActionBar = ({
         Array.from(checkList).length
       } candidates to interviewing`,
       subHeading: 'Send interview Emails to these candidates',
-      primaryAction: async () => {
+      primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
           sendEmails(
@@ -382,7 +385,7 @@ const ActionBar = ({
         Array.from(checkList).length
       } candidates to Selected`,
       subHeading: undefined,
-      primaryAction: async () => {
+      primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.QUALIFIED);
         if (checkEmail) {
           sendEmails(
@@ -403,7 +406,7 @@ const ActionBar = ({
         Array.from(checkList).length
       } candidates`,
       subHeading: 'Send rejection Emails to these candidates',
-      primaryAction: async () => {
+      primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
         if (checkEmail) {
           sendEmails(
