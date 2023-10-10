@@ -97,11 +97,18 @@ const AuthProvider = ({ children }) => {
         loading && setLoading(false);
         return;
       }
+
+      if (data.session.user.new_email) {
+        const { data: newData, error } = await supabase.auth.refreshSession();
+        if (!error) {
+          setUserDetails(newData.session);
+        }
+      }
+      
       if (!error) {
         Cookie.remove('access_token');
         Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
-
         const { data: recruiter, error } = await supabase
           .from('recruiter')
           .select('*')
