@@ -80,7 +80,7 @@ function InfoDialog({
               </AUIButton>
               <AUIButton
                 onClick={() => {
-                  primaryAction();
+                  primaryAction(checkEmail);
                   onClose();
                 }}
                 variant={variant}
