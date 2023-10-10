@@ -1,6 +1,6 @@
 import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   BriefcaseIcon,
@@ -16,7 +16,7 @@ function SideNavbar() {
 
   const [subNabOpen, setSubNavOpen] = useState(true);
 
-  function openCloseSubNav(route) {
+  function openCloseSubNav(route: string) {
     if (router.pathname.includes(route)) {
       setSubNavOpen((pre) => !pre);
     } else {
@@ -24,7 +24,6 @@ function SideNavbar() {
     }
   }
 
-  useEffect(() => {}, [router]);
   return (
     <>
       {navList.map((item, i) => {
@@ -34,13 +33,12 @@ function SideNavbar() {
             sx={{
               borderRadius: '8px',
               transition: 'all 0.5s',
-              bgcolor:
-                router.pathname !== item.route
-                  ? 'transparent'
-                  : 'rgba(255, 255, 255, 0.06)',
+              bgcolor: !router.pathname.includes(item.route)
+                ? 'transparent'
+                : 'rgba(255, 255, 255, 0.06)',
             }}
             collapsedSize={32}
-            in={router.pathname === item.route && subNabOpen}
+            in={router.pathname.includes(item.route) && subNabOpen}
           >
             <Stack
               sx={{
@@ -49,7 +47,7 @@ function SideNavbar() {
                 },
                 height: '32px',
                 p: '6px 10px',
-                opacity: router.pathname !== item.route ? 0.6 : 1,
+                opacity: !router.pathname.includes(item.route) ? 0.6 : 1,
                 zIndex: 2,
                 cursor: 'pointer',
               }}
@@ -77,15 +75,16 @@ function SideNavbar() {
             <Stack
               sx={{
                 transition: `transform 0.4s, opacity ${
-                  router.pathname === item.route ? '0.8s' : '0.2s'
+                  router.pathname.includes(item.route) ? '0.8s' : '0.2s'
                 }`,
-                opacity: router.pathname === item.route ? 1 : 0,
+                opacity: router.pathname.includes(item.route) ? 1 : 0,
 
-                transform:
-                  router.pathname === item.route
-                    ? 'none'
-                    : 'translate3d(0px, -50px, 0px)',
-                pointerEvents: router.pathname !== item.route ? 'none' : 'auto',
+                transform: router.pathname.includes(item.route)
+                  ? 'none'
+                  : 'translate3d(0px, -50px, 0px)',
+                pointerEvents: !router.pathname.includes(item.route)
+                  ? 'none'
+                  : 'auto',
               }}
               px={'10px'}
             >
