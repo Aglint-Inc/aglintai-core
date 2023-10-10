@@ -347,7 +347,8 @@ function UploadDB({ post, setThank, setLoading }) {
       await axios
         .post('/api/sendgrid', {
           fromEmail: `messenger@aglinthq.com`,
-          fromName: post.company,
+          fromName:
+            post.email_template.application_recieved.fromName || post.company,
           email: profile?.email,
           subject: fillEmailTemplate(
             post.email_template.application_recieved.subject,

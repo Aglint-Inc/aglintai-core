@@ -31,11 +31,11 @@ export default function Loading() {
           router.push('https://app.aglinthq.com');
           return;
         }
-        if (handleEmail(userDetails.user.email).error) {
-          router.push(pageRoutes.SIGNUP);
-          toast.error('Please signup/login with company email');
-          return;
-        }
+        // if (handleEmail(userDetails.user.email).error) {
+        //   router.push(pageRoutes.SIGNUP);
+        //   toast.error('Please signup/login with company email');
+        //   return;
+        // }
         await createUser();
       } else {
         router.push(pageRoutes.LOGIN);
@@ -47,18 +47,28 @@ export default function Loading() {
 
   const createUser = () => {
     const storedValue = localStorage.getItem('flow') || 'Company';
+
     supabase.auth.updateUser({
       data: {
         role: 'Recruiter',
-        first_name: splitFullName(userDetails.user.user_metadata.full_name)
-          .firstName,
-        last_name: splitFullName(userDetails.user.user_metadata.full_name)
-          .lastName,
-        image_url: '',
-        phone: '',
-        email: '',
-        language: '',
-        timezone: '',
+        first_name: !userDetails.user.user_metadata.first_name
+          ? splitFullName(userDetails.user.user_metadata.full_name).firstName
+          : userDetails.user.user_metadata.first_name,
+        last_name: !userDetails.user.user_metadata.first_name
+          ? splitFullName(userDetails.user.user_metadata.full_name).lastName
+          : userDetails.user.user_metadata.last_name,
+        image_url: !userDetails.user.user_metadata.image_url
+          ? ''
+          : userDetails.user.user_metadata.image_url,
+        phone: !userDetails.user.user_metadata.phone
+          ? ''
+          : userDetails.user.user_metadata.phone,
+        language: !userDetails.user.user_metadata.language
+          ? ''
+          : userDetails.user.user_metadata.language,
+        timezone: !userDetails.user.user_metadata.timezone
+          ? ''
+          : userDetails.user.user_metadata.timezone,
       },
     });
     supabase

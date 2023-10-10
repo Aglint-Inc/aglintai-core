@@ -270,7 +270,7 @@ export const getInitialEmailTemplate = (company_name: string) => {
   return {
     interview: {
       fromName: company_name || '',
-      body: "<p>Dear [firstName],</p><p>Thank you for submitting your application for the [jobTitle] at [companyName]. We're pleased to announce that you've been selected for an interview.</p><p>You're welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards</p>",
+      body: "<p>Dear [firstName],</p><p>Thank you for submitting your application for the [jobTitle] at [companyName]. We're pleased to announce that you've been selected for an interview.</p><p>You're welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job <a href=[supportLink]>Click Here</a></p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards</p>",
       default: true,
       subject:
         "Congratulations! You've Been Selected for an Interview with [companyName]",
@@ -283,7 +283,7 @@ export const getInitialEmailTemplate = (company_name: string) => {
     },
     application_recieved: {
       fromName: company_name || '',
-      body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>Sincerely,</p><p>[companyName]</p>',
+      body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job <a href=[supportLink]>Click Here</a></p>  <p>Sincerely,</p><p>[companyName]</p>',
       default: true,
       subject: 'We received your application for a position at [companyName]',
     },
