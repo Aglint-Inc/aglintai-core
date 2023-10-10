@@ -31,7 +31,7 @@ const SlideDetailsTwo = () => {
   const [logo, setLogo] = useState(null);
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
-  const [defaultCountry, setDefaultCountry] = useState(''); // State to store the default country
+  const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
   const [error, setError] = useState<Error>({
     phone: {
       error: false,
