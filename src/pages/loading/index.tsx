@@ -72,7 +72,7 @@ export default function Loading() {
       },
     });
     supabase
-      .from('recruiter')
+      .from('recruiter_user')
       .select('*')
       .eq('user_id', userDetails?.user?.id)
       .then(({ data, error }) => {
