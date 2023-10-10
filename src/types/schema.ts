@@ -1166,7 +1166,7 @@ export interface Database {
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           jd_score: Json | null
-          job_id: string
+          job_id: string | null
           job_location: string | null
           job_title: string | null
           json_resume: Json | null
@@ -1207,7 +1207,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1248,7 +1248,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1268,7 +1268,14 @@ export interface Database {
           utm_source?: string | null
           utm_term?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       job_tracker: {
         Row: {
