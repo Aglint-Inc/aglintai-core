@@ -53,7 +53,9 @@ function SideNavbar() {
               }}
               onClick={() => {
                 openCloseSubNav(item.route);
-                router.push(item.route);
+                if (router.pathname !== item.route) {
+                  router.push(item.route);
+                }
               }}
               direction={'row'}
               alignItems={'center'}
