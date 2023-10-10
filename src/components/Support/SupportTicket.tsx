@@ -150,7 +150,7 @@ function SupportTicketDetails({
           }
           textAppliedJobRole={ticket.jobsDetails?.job_title}
           textCreatedDate={dayjs(ticket.created_at).fromNow()}
-          textCandidateMail={ticket.email || '-'}
+          textCandidateMail={application?.email || '-'}
           textCandidateName={ticket.user_name}
           // textCandidateSite={ticket.}
           textCandidateStatus={application && application.status}
@@ -169,8 +169,8 @@ function SupportTicketDetails({
               sx={{ height: '100%', width: '100%' }}
             />
           }
-          textCandiatePhone={'-'}
-          textCandidateSite={'-'}
+          textCandiatePhone={application?.phone || '-'}
+          textCandidateSite={application?.linkedin || '-'}
           slotChatBox={
             <>
               {chatBox(
