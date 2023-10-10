@@ -153,7 +153,7 @@ function CreateNewJob() {
     try {
       const flag = await handleJobDelete(jobForm.jobPostId);
       if (!flag) throw new Error('');
-      toast.success('discarded Job Post SuccessFully');
+      toast.success('Job Post Discarded');
       resetToInitialState();
     } catch (err) {
       toast.error('Something Went Wrong. Please Try Again');
@@ -198,8 +198,15 @@ function CreateNewJob() {
                   slotProgressBar={
                     <>
                       <LinearProgress
+                        sx={{
+                          borderRadius: '8px',
+                          backgroundColor: '#EDF7FF',
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: '#337FBD',
+                          },
+                          height: '6px',
+                        }}
                         variant='determinate'
-                        color='primary'
                         value={(slideNo / 4) * 100}
                       />
                     </>

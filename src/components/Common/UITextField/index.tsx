@@ -64,6 +64,7 @@ const UITextField = React.forwardRef(
       noBorder,
       width,
       select,
+      height,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -104,6 +105,7 @@ const UITextField = React.forwardRef(
           </UITypography>
         )}
         <MuiTextField
+          margin='none'
           select={select}
           fullWidth={fullWidth}
           value={value}
@@ -138,7 +140,9 @@ const UITextField = React.forwardRef(
             '&': {
               margin: 0,
             },
+
             '& .MuiOutlinedInput-root': {
+              height: height,
               bgcolor: disabled ? 'transparent' : 'white.700',
               fontSize: '14px',
               fieldset: {
