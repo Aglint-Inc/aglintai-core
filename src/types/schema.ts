@@ -2389,7 +2389,7 @@ export interface Database {
           overview?: string | null
           posted_by?: string
           qualifications?: string[] | null
-          recruiter_id?: string
+          recruiter_id: string
           requirements?: string[] | null
           responsibilities?: string[] | null
           screening_questions?: Json[] | null
@@ -2532,7 +2532,6 @@ export interface Database {
           recruiter_type: string | null
           socials: Json | null
           technology_score: string[]
-          user_id: string
           workplace_type: Json
         }
         Insert: {
@@ -2561,7 +2560,6 @@ export interface Database {
           recruiter_type?: string | null
           socials?: Json | null
           technology_score?: string[]
-          user_id: string
           workplace_type?: Json
         }
         Update: {
@@ -2590,17 +2588,9 @@ export interface Database {
           recruiter_type?: string | null
           socials?: Json | null
           technology_score?: string[]
-          user_id?: string
           workplace_type?: Json
         }
-        Relationships: [
-          {
-            foreignKeyName: "recruiter_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       recruiter_user: {
         Row: {

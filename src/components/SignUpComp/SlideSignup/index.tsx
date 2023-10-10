@@ -126,7 +126,6 @@ const SlideTwoSignUp = () => {
         .from('recruiter')
         .insert({
           email: details.email,
-          user_id: authdata.data.user.id,
           recruiter_type: flow,
         })
         .select();

@@ -85,7 +85,6 @@ export default function Loading() {
                   .from('recruiter')
                   .insert({
                     email: userDetails.user.email,
-                    user_id: userDetails.user.id,
                     name:
                       userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
                         '.com',
