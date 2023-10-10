@@ -128,7 +128,7 @@ const EmailTemplate = ({ title, excerpt, path }: EmailTemplateParams) => {
       };
       await axios.post('/api/sendgrid', {
         fromEmail: `messenger@aglinthq.com`,
-        fromName: testEmailform.firstName + testEmailform.lastName,
+        fromName: emailTemplate.fromName,
         email: testEmailform.email,
         subject: fillEmailTemplate(emailTemplate.subject, payload),
         text: fillEmailTemplate(emailTemplate.body, payload),
@@ -157,7 +157,7 @@ const EmailTemplate = ({ title, excerpt, path }: EmailTemplateParams) => {
         </Stack>
         <Stack gap={2} py={2}>
           <UITextField
-            label='From Name'
+            label='Sender Name'
             placeholder='John Doe'
             value={emailTemplate.fromName}
             onChange={(e) => {

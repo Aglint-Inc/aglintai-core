@@ -359,7 +359,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
         isLoading={isAiGenerating}
         slotCheckBoxes={
           <>
-            {
+            {recruiter.company_overview && (
               <CreateJobCheckItem
                 textLabel1={'Use Company details from company profile'}
                 isChecked={checks.company}
@@ -369,7 +369,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
                   },
                 }}
               />
-            }
+            )}
             {recruiter.benefits && (
               <CreateJobCheckItem
                 textLabel1={'Use benefits from company profile'}

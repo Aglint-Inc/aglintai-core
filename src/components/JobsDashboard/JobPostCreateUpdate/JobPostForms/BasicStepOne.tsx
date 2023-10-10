@@ -50,7 +50,6 @@ const BasicStepOne = ({ formError, setFormError }) => {
                       });
                     }}
                     error={Boolean(formError.jobTitle)}
-                    disabled={formType === 'edit'}
                     helperText={formError.jobTitle}
                     placeholder='Ex : Software developer'
                   />

@@ -267,6 +267,7 @@ const StandardScreenSingle = ({
                       noBorder
                       onChange={(e) => setQuestionInput(e.target.value)}
                       value={questionInput}
+                      multiline
                     />
                   </Stack>
                 }
