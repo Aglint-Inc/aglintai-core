@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import {
   Avatar,
-  List,
-  ListItem,
+  Chip,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -191,22 +190,17 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   >
                     Skills
                   </Typography>
-                  <List>
+                  <Stack
+                    mt={'10px'}
+                    gap={2}
+                    direction='row'
+                    alignItems='stretch'
+                    flexWrap='wrap'
+                  >
                     {post?.skills?.map((skill, index) => (
-                      <ListItem key={index} sx={{ pl: '24px' }}>
-                        <Stack direction={'row'} spacing={1}>
-                          <span style={{ fontSize: '24px' }}>&bull;</span>
-                          <Typography
-                            variant='body2'
-                            color={palette.grey[800]}
-                            sx={{ whiteSpace: 'pre-wrap' }}
-                          >
-                            {skill}
-                          </Typography>
-                        </Stack>
-                      </ListItem>
+                      <Chip label={skill} key={index} />
                     ))}
-                  </List>
+                  </Stack>
                 </>
               )}
             </>
