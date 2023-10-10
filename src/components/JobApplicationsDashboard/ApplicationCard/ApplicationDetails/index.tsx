@@ -58,7 +58,7 @@ function ApplicationDetails({
     : 0;
 
   const jdScoreObj = applicationDetails.jd_score as any;
-  const jdScore = jdScoreObj?.over_all?.score ?? 0;
+  const jdScore = Number(Math.floor(jdScoreObj?.over_all?.score)) ?? 0;
 
   return (
     <>
@@ -396,7 +396,7 @@ function ApplicationDetails({
                   textFeedback={giveRateInWordToResume(jdScore)}
                 />
               }
-              isResumeVisible={jdScore}
+              isResumeVisible={applicationDetails.resume && jdScore > 0}
               // isResumeVisible={false}
               textPhone={
                 applicationDetails.phone ? applicationDetails.phone : '--'
