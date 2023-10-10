@@ -38,8 +38,8 @@ const SlideDetailsOne = () => {
   });
 
   useEffect(() => {
-    setDetails({ website: recruiter.company_website });
-  }, []);
+    if (recruiter?.id) setDetails({ website: recruiter.company_website });
+  }, [recruiter]);
 
   const formValidation = async (): Promise<boolean> => {
     let isValid = true;
