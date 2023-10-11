@@ -569,18 +569,6 @@
   flex: 0 0 auto;
 }
 
-.su-form-block {
-  margin-bottom: 0px;
-}
-
-.su-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-}
-
 .input-wrapper {
   position: relative;
 
@@ -592,13 +580,10 @@
   grid-row-gap: 10px;
 }
 
-.div-block-261 {
-  height: 16px;
-}
-
 .div-block-264 {
   display: flex;
   width: 100%;
+  margin-top: 40px;
   align-items: center;
   grid-column-gap: 25px;
   grid-row-gap: 25px;

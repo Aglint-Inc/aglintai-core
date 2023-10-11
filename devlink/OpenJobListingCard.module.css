@@ -3,6 +3,7 @@
   padding: 16px 20px;
   border-radius: 10px;
   text-transform: capitalize;
+  cursor: pointer;
 }
 
 .text-lg {

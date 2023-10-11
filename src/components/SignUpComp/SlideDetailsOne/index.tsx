@@ -36,6 +36,7 @@ const SlideDetailsOne = () => {
       msg: '',
     },
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (recruiter?.id) setDetails({ website: recruiter.company_website });
@@ -84,6 +85,7 @@ const SlideDetailsOne = () => {
 
   const submitHandler = async () => {
     if ((await formValidation()) && recruiter?.id) {
+      setLoading(true);
       await axios
         .post('/api/crawlwebsite', { url: formatURL(details.website) })
         .then(async (res) => {
@@ -154,6 +156,8 @@ const SlideDetailsOne = () => {
                 setStep(stepObj.detailsTwo);
               }
             }
+          } else {
+            setLoading(false);
           }
         });
     }
@@ -194,6 +198,8 @@ const SlideDetailsOne = () => {
   return (
     <>
       <WelcomeSlider4
+        isActiveButtonVisible={!loading}
+        isloadingVisible={loading}
         isSaveCompanySiteDisable={!details?.website}
         userName={recruiter?.name}
         onClickSaveCompanySites={{

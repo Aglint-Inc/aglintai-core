@@ -192,12 +192,9 @@ export function JobListing({
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "about-company-wrapper-open-job")}
-                tag="div"
-              >
+              <_Builtin.Block tag="div">
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "job-listing-open-header")}
+                  className={_utils.cx(_styles, "div-block-467")}
                   tag="div"
                 >
                   <_Builtin.Block
@@ -217,12 +214,12 @@ export function JobListing({
                       {textCompanyName}
                     </_Builtin.Block>
                   </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-job-listing-open-card")}
-                  tag="div"
-                >
-                  {slotOpenJobListing}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-job-listing-open-card")}
+                    tag="div"
+                  >
+                    {slotOpenJobListing}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
@@ -356,7 +353,7 @@ export function JobListing({
               loading="lazy"
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
             />
             <_Builtin.Block

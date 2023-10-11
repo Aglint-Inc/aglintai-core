@@ -7,7 +7,7 @@ export const config = {
 };
 
 // const whiteListedEndPoints =['/api/payment/']
-const whiteListedEndPoints = [];
+const whiteListedEndPoints = ['/api/sendgrid'];
 
 export async function middleware(request) {
   if (isUrlWhiteListed(request.url)) {

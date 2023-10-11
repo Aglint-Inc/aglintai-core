@@ -273,7 +273,7 @@
 
   border-radius: 20px;
 
-  background-color: var(--\[unknown\|variable-3a86b552\]);
+  background-color: #f8f9f9;
 }
 
 .div-block-440 {
@@ -284,8 +284,11 @@
 }
 
 .job-listing-company-slots {
+  overflow: hidden;
   width: 80px;
   height: 80px;
+  flex: 0 0 auto;
+
   border: 1px solid var(--grey200-9ba653f1);
   border-radius: 10px;
 }
@@ -506,27 +509,19 @@
   color: var(--blue600-aad8d97e);
 }
 
-.about-company-wrapper-open-job {
+.div-block-467 {
   position: relative;
 
   display: flex;
   margin-top: 40px;
   padding: 30px;
   flex-direction: column;
-  align-items: stretch;
-  grid-column-gap: 14px;
-  grid-row-gap: 14px;
+  grid-column-gap: 18px;
+  grid-row-gap: 18px;
 
   border-radius: 20px;
 
-  background-color: var(--\[unknown\|variable-0d508ad8\]);
-}
-
-.job-listing-open-header {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 26px;
-  grid-row-gap: 26px;
+  background-color: #f8f9f9;
 }
 
 .div-block-445 {

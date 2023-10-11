@@ -118,80 +118,49 @@ export function WelcomeSlider5({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.FormWrapper className={_utils.cx(_styles, "su-form-block")}>
-            <_Builtin.FormForm
-              className={_utils.cx(_styles, "su-form")}
-              name="email-form"
-              data-name="Email Form"
-              method="get"
-              id="email-form"
+          <_Builtin.Block
+            className={_utils.cx(_styles, "input-wrapper")}
+            tag="div"
+          >
+            {slotPhoneInput}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-264")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "su-two-button", "relative")}
+              tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "input-wrapper")}
+                className={_utils.cx(_styles, "su-btn", "large")}
                 tag="div"
+                {...onClickSave}
               >
-                {slotPhoneInput}
+                <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-261")}
-                tag="div"
-              />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-264")}
-                tag="div"
-              >
+              {isSaveDisableAddCompanyLogo ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "su-two-button", "relative")}
+                  className={_utils.cx(_styles, "su-btn", "large", "disable")}
                   tag="div"
                 >
-                  <_Builtin.FormButton
-                    className={_utils.cx(_styles, "su-btn", "large")}
-                    type="submit"
-                    value="Save & Continue"
-                    data-wait="Please wait..."
-                    {...onClickSave}
-                  />
-                  {isSaveDisableAddCompanyLogo ? (
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "su-btn",
-                        "large",
-                        "disable"
-                      )}
-                      tag="div"
-                    >
-                      <_Builtin.Block tag="div">
-                        {"Save & Continue"}
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
+                  <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-331")}
-                  tag="div"
-                  {...onClickLater}
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-blue-600")}
-                    tag="div"
-                  >
-                    {"I will do this later"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-331")}
+              tag="div"
+              {...onClickLater}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-blue-600")}
+                tag="div"
+              >
+                {"I will do this later"}
               </_Builtin.Block>
-            </_Builtin.FormForm>
-            <_Builtin.FormSuccessMessage>
-              <_Builtin.Block tag="div">
-                {"Thank you! Your submission has been received!"}
-              </_Builtin.Block>
-            </_Builtin.FormSuccessMessage>
-            <_Builtin.FormErrorMessage>
-              <_Builtin.Block tag="div">
-                {"Oops! Something went wrong while submitting the form."}
-              </_Builtin.Block>
-            </_Builtin.FormErrorMessage>
-          </_Builtin.FormWrapper>
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

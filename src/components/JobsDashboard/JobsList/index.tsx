@@ -13,6 +13,7 @@ import {
   filterApplicationsByStatus,
   StatusColor,
 } from '../utils';
+import Icon from '../../Common/Icons/Icon';
 
 interface JobsListProps {
   jobs: JobType[];
@@ -70,6 +71,14 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                     JobApplicationSections.DISQUALIFIED,
                   ).length
                 }
+                slotInterviewIcon={
+                  <Icon variant='DoubleTick' height='16' width='16' />
+                }
+                slotSourcingIcon={
+                  <Icon variant='ClockHistory' height='12' width='12' />
+                }
+                textSourcing={'Sourcing'}
+                textInterview={'Interviewing'}
                 bgColorProps={{
                   style: {
                     backgroundColor:

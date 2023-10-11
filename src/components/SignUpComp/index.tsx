@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
@@ -19,6 +20,25 @@ const SignUpComp = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const { step, setStep, setFlow } = useSignupDetails();
+
+  useEffect(() => {
+    if (recruiter?.id && router.query.step) hanadleSession();
+  }, [recruiter, router]);
+
+  const hanadleSession = async () => {
+    if (
+      router.query.step == stepObj.signin ||
+      router.query.step == stepObj.type
+    ) {
+      if (recruiter?.name) {
+        router.push(pageRoutes.JOBS);
+      } else {
+        router.push(`?step=${stepObj.detailsOne}`, undefined, {
+          shallow: true,
+        });
+      }
+    }
+  };
 
   return (
     <>
