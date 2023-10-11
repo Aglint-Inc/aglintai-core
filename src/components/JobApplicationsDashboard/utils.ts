@@ -28,8 +28,11 @@ export const formatTimeStamp = (timeStamp: string) => {
 
 const getResumeScore = (application: JobApplication) => {
   const jdScoreObj = application.jd_score as any;
-  const jdScore =
-    jdScoreObj === 'loading' ? 0 : Math.floor(jdScoreObj?.over_all?.score) ?? 0;
+  const jdScore = jdScoreObj
+    ? jdScoreObj === 'loading'
+      ? 0
+      : Math.floor(jdScoreObj?.over_all?.score) ?? 0
+    : 0;
   return jdScore;
 };
 
