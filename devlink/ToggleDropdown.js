@@ -83,7 +83,7 @@ export function ToggleDropdown({
                 loading="lazy"
                 width="auto"
                 height="auto"
-                alt="__wf_reserved_inherit"
+                alt=""
                 src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
               />
               <_Builtin.Block tag="div">{"Generate"}</_Builtin.Block>

@@ -10,7 +10,7 @@
   top: 0%;
   right: 0%;
   bottom: auto;
-  z-index: 2;
+  z-index: 99;
 
   border-bottom: 1px none var(--grey200-9ba653f1);
 
@@ -64,12 +64,12 @@
 .aui-button-wrap.danger.jed {
   overflow: hidden;
   border-radius: 4px;
-  color: var(--\[unknown\|variable-2e806c7d\]);
+  color: var(--red-500);
 }
 
 .aui-button-wrap.danger.jed:hover {
   background-color: hsla(0, 100.00%, 95.78%, 1.00);
-  color: var(--\[unknown\|variable-d3747f47\]);
+  color: var(--red-700);
 }
 
 .aui-button-wrap.mt-16 {

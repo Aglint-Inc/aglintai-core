@@ -387,7 +387,7 @@ export function InterviewScreenFeedback({
                     loading="lazy"
                     width="auto"
                     height="auto"
-                    alt="__wf_reserved_inherit"
+                    alt=""
                     src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
                   />
                 </_Builtin.Block>

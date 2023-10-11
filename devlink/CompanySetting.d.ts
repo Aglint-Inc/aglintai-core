@@ -12,4 +12,6 @@ declare function CompanySetting(props: {
   isSaved?: Types.Visibility.VisibilityConditions;
   isSaving?: Types.Visibility.VisibilityConditions;
   slotSavingLottie?: Types.Devlink.Slot;
+  slotTeam?: Types.Devlink.Slot;
+  onClickTeam?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

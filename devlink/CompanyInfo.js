@@ -25,21 +25,20 @@ export function CompanyInfo({
       className={_utils.cx(_styles, "rd-company-primary-info-2")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "rd-email-edit-block-2")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
+          className={_utils.cx(
+            _styles,
+            "text-lg",
+            "fw-semibold",
+            "text-grey-500"
+          )}
           tag="div"
         >
           {"Basic Info"}
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Company logo"}
-        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-348")}
+          className={_utils.cx(_styles, "div-block-348", "top-align")}
           tag="div"
         >
           <_Builtin.Block
@@ -69,33 +68,38 @@ export function CompanyInfo({
               tag="div"
             >
               {
-                "Logo should be having png/svg format and should be less than 5 MB"
+                "Logo should be in PNG/SVG format and should ideally have dimensions of 12px x 12px, with a file size of under 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "slot-form-company-info")}
+        className={_utils.cx(_styles, "profile-inputs-wrapper")}
         tag="div"
       >
         {slotBasicForm}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
+          className={_utils.cx(
+            _styles,
+            "text-lg",
+            "fw-semibold",
+            "text-grey-500"
+          )}
           tag="div"
         >
           {"Advanced Info"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "slot-additional-info")}
+          className={_utils.cx(_styles, "profile-inputs-wrapper")}
           tag="div"
         >
           {slotAdditionalInfoForm}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "office-loaction-wrappers")}
+          className={_utils.cx(_styles, "office-location-wrappers", "margin-0")}
           tag="div"
         >
           <_Builtin.Block
@@ -128,7 +132,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "office-loaction-wrappers")}
+          className={_utils.cx(_styles, "office-location-wrappers", "margin-0")}
           tag="div"
         >
           <_Builtin.Block
@@ -161,7 +165,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "office-loaction-wrappers")}
+          className={_utils.cx(_styles, "office-location-wrappers")}
           tag="div"
         >
           <_Builtin.Block
@@ -194,7 +198,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "office-loaction-wrappers")}
+          className={_utils.cx(_styles, "office-location-wrappers")}
           tag="div"
         >
           <_Builtin.Block

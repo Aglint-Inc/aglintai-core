@@ -112,7 +112,7 @@ export function WelcomeSlider2({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890206_LinkedIn%20-%20png%20-%2012px.png"
                 />
                 <_Builtin.Block

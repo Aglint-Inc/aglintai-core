@@ -70,7 +70,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890234_company%201.svg"
                 />
               </_Builtin.Block>
@@ -118,7 +118,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890233_hiring%201.svg"
                 />
               </_Builtin.Block>
@@ -168,7 +168,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089023a_Role%20Model_Flat%20(1).svg"
                 />
               </_Builtin.Block>

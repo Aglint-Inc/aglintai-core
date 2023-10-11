@@ -17,7 +17,7 @@ export function InterviewNav({ as: _Component = _Builtin.Block, slotButton }) {
           loading="eager"
           width="135"
           height="auto"
-          alt="__wf_reserved_inherit"
+          alt=""
           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901c2_Frame%202%20(2).svg"
         />
       </_Builtin.Block>

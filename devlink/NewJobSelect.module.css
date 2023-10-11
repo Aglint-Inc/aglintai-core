@@ -411,6 +411,10 @@
   margin-top: 17px;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .cj-imports-options-drawer {
   display: grid;
   grid-auto-columns: 1fr;

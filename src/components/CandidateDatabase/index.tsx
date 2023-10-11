@@ -21,9 +21,9 @@ import CustomTable, {
 import UITextField from '../Common/UITextField';
 import { getGravatar } from '../JobApplicationsDashboard/ApplicationCard';
 import ApplicationDetails, {
-  getInterviewScore,
   giveColorForInterviewScore,
 } from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
+import { getInterviewScore } from '../JobApplicationsDashboard/utils';
 
 interface HeadCell {
   id: string;

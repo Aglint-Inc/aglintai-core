@@ -27,7 +27,7 @@ export function DraftCoverBtn({
         loading="lazy"
         width="auto"
         height="auto"
-        alt="__wf_reserved_inherit"
+        alt=""
         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901dd_glitter.png"
       />
       <_Builtin.Block className={_utils.cx(_styles, "text-kale-800")} tag="div">

@@ -258,6 +258,10 @@
   margin-top: 17px;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .click-fake-div {
   position: absolute;
   left: 0%;

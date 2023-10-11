@@ -213,7 +213,7 @@ export function JobDashboardEmpty({
                         loading="lazy"
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad6c1dcf28a5a3af3a0_SVGmix-XJma8a-indeed-member%201%20(2).svg"
                       />
                     </_Builtin.Block>
@@ -275,7 +275,7 @@ export function JobDashboardEmpty({
                         loading="lazy"
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad803eafe8aa1c3b68c_lever_rgb_logo_standard%201%20(2).svg"
                       />
                     </_Builtin.Block>

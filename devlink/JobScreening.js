@@ -1806,8 +1806,8 @@ export function JobScreening({
                                       <_Builtin.Image
                                         width="auto"
                                         height="auto"
-                                        alt="__wf_reserved_inherit"
                                         loading="eager"
+                                        alt=""
                                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089022b_Rectangle%20349.png"
                                       />
                                     </_Builtin.Block>
@@ -1839,22 +1839,22 @@ export function JobScreening({
                                         <_Builtin.Image
                                           width="auto"
                                           height="auto"
-                                          alt="__wf_reserved_inherit"
                                           loading="lazy"
+                                          alt=""
                                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890212_36413fdbae77050b8f006cb7b0099e1c.png"
                                         />
                                         <_Builtin.Image
                                           width="auto"
                                           height="auto"
-                                          alt="__wf_reserved_inherit"
                                           loading="lazy"
+                                          alt=""
                                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089021a_8d2be2254997c1696ce7b0e9f2ccdbbd.png"
                                         />
                                         <_Builtin.Image
                                           width="auto"
                                           height="auto"
-                                          alt="__wf_reserved_inherit"
                                           loading="lazy"
+                                          alt=""
                                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890213_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                                         />
                                       </_Builtin.Block>
@@ -1939,8 +1939,8 @@ export function JobScreening({
                           <_Builtin.Image
                             width="auto"
                             height="auto"
-                            alt="__wf_reserved_inherit"
                             loading="lazy"
+                            alt=""
                             src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890213_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                           />
                         </_Builtin.Block>

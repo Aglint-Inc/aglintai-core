@@ -22,6 +22,8 @@ export function CompanySetting({
   isSaved = false,
   isSaving = false,
   slotSavingLottie,
+  slotTeam,
+  onClickTeam = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -248,7 +250,7 @@ export function CompanySetting({
                                     loading="lazy"
                                     width="auto"
                                     height="auto"
-                                    alt="__wf_reserved_inherit"
+                                    alt=""
                                     src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6504564086fcef0a1ea2fa44_Microsoft%20-%20png%20(1).png"
                                   />
                                 </_Builtin.Block>
@@ -558,7 +560,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f0676980df267679c98b_Frame%201110%20(5).png"
                                 />
                                 <_Builtin.Block
@@ -624,7 +626,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f06b64ee6402186e86f0_Frame%201110.png"
                                 />
                                 <_Builtin.Block
@@ -690,7 +692,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f06a5608b7584d75a00f_Frame%201110%20(1).png"
                                 />
                                 <_Builtin.Block
@@ -756,7 +758,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f067e827f5c96bf16d8a_Frame%201110%20(2).png"
                                 />
                                 <_Builtin.Block
@@ -822,7 +824,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f06845fb7fdc0a494fe3_Frame%201110%20(3).png"
                                 />
                                 <_Builtin.Block
@@ -888,7 +890,7 @@ export function CompanySetting({
                                   loading="lazy"
                                   width="auto"
                                   height="auto"
-                                  alt="__wf_reserved_inherit"
+                                  alt=""
                                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505f06864ee6402186e847b_Frame%201110%20(4).png"
                                 />
                                 <_Builtin.Block
@@ -958,7 +960,7 @@ export function CompanySetting({
                     loading="lazy"
                     width="auto"
                     height="auto"
-                    alt="__wf_reserved_inherit"
+                    alt=""
                     src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6509c8afe7cab371a492adfe_Frame%201080.svg"
                   />
                 </_Builtin.Block>
@@ -1678,7 +1680,7 @@ export function CompanySetting({
                               loading="eager"
                               width="auto"
                               height="auto"
-                              alt="__wf_reserved_inherit"
+                              alt=""
                               src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650ab07fe49618a5fb436e36_rejected%20email.png"
                             />
                           </_Builtin.Block>
@@ -1708,21 +1710,21 @@ export function CompanySetting({
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650561658da9ae0eec4369fb_36413fdbae77050b8f006cb7b0099e1c.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505d49c8da9ae0eec8f4152_8d2be2254997c1696ce7b0e9f2ccdbbd.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505632398784d30b5a36a4e_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                               />
                             </_Builtin.Block>
@@ -1823,7 +1825,7 @@ export function CompanySetting({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650ab07fe49618a5fb436e36_rejected%20email.png"
                 />
               </_Builtin.Block>
@@ -2457,7 +2459,7 @@ export function CompanySetting({
                               loading="eager"
                               width="auto"
                               height="auto"
-                              alt="__wf_reserved_inherit"
+                              alt=""
                               src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6509e0adbdd3ed120adf5f9b_Rectangle%20349.png"
                             />
                           </_Builtin.Block>
@@ -2487,21 +2489,21 @@ export function CompanySetting({
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650561658da9ae0eec4369fb_36413fdbae77050b8f006cb7b0099e1c.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505d49c8da9ae0eec8f4152_8d2be2254997c1696ce7b0e9f2ccdbbd.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505632398784d30b5a36a4e_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                               />
                             </_Builtin.Block>
@@ -2602,7 +2604,7 @@ export function CompanySetting({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650aab74ba12ff7840dd7c29_email%20tempLATE.png"
                 />
               </_Builtin.Block>
@@ -3234,7 +3236,7 @@ export function CompanySetting({
                               loading="eager"
                               width="auto"
                               height="auto"
-                              alt="__wf_reserved_inherit"
+                              alt=""
                               src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650ab080a23a0f8ea5bb8e3c_selected%20email.png"
                             />
                           </_Builtin.Block>
@@ -3264,21 +3266,21 @@ export function CompanySetting({
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650561658da9ae0eec4369fb_36413fdbae77050b8f006cb7b0099e1c.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505d49c8da9ae0eec8f4152_8d2be2254997c1696ce7b0e9f2ccdbbd.png"
                               />
                               <_Builtin.Image
                                 loading="lazy"
                                 width="auto"
                                 height="auto"
-                                alt="__wf_reserved_inherit"
+                                alt=""
                                 src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/6505632398784d30b5a36a4e_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                               />
                             </_Builtin.Block>
@@ -3379,7 +3381,7 @@ export function CompanySetting({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/65002ee61d9b5d55111254cf/650ab080a23a0f8ea5bb8e3c_selected%20email.png"
                 />
               </_Builtin.Block>
@@ -3419,7 +3421,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Company JD Settings"}
+                {"Job Description Settings"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink
@@ -3432,6 +3434,18 @@ export function CompanySetting({
                 tag="div"
               >
                 {"Email Templates"}
+              </_Builtin.Block>
+            </_Builtin.TabsLink>
+            <_Builtin.TabsLink
+              className={_utils.cx(_styles, "company-tab-link")}
+              data-w-tab="Tab 4"
+              {...onClickTeam}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Team"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
@@ -3460,6 +3474,14 @@ export function CompanySetting({
                     <EmailCreateNew />
                   </>
                 )}
+              </_Builtin.Block>
+            </_Builtin.TabsPane>
+            <_Builtin.TabsPane tag="div" data-w-tab="Tab 4">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-465")}
+                tag="div"
+              >
+                {slotTeam}
               </_Builtin.Block>
             </_Builtin.TabsPane>
           </_Builtin.TabsContent>

@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import * as _utils from "./utils";
 import _styles from "./UserProfile.module.css";
@@ -38,7 +39,7 @@ export function UserProfile({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "profile-image-block")}
+          className={_utils.cx(_styles, "profile-image-block", "top-align")}
           id={_utils.cx(
             _styles,
             "w-node-bd76686d-3da8-fe6f-1bbb-2ff07f7f8329-2928a6f4"
@@ -61,14 +62,14 @@ export function UserProfile({
             tag="div"
           >
             <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
-              <ButtonOutlinedRegular textLabel="Change profile photo" />
+              <ButtonOutlinedSmall textLabel="Change profile photo" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
               {
-                "Logo should be having png/svg format and should be less than 5 MB"
+                "Profile picture should be in PNG/SVG format and should ideally have dimensions of 12px x 12px, with a file size of under 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -92,18 +93,23 @@ export function UserProfile({
             >
               {"User Info"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-387")}
-              tag="div"
-            >
-              {slotUserInfoBtn}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "profile-inputs-wrapper")}
             tag="div"
           >
             {slotUserForm}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "flex-hor-left")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-387")}
+              tag="div"
+            >
+              {slotUserInfoBtn}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -125,18 +131,23 @@ export function UserProfile({
             >
               {"Preferences"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-387")}
-              tag="div"
-            >
-              {slotPreferencesBtn}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "profile-inputs-wrapper")}
             tag="div"
           >
             {slotPreferenceForm}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "flex-hor-left")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-387")}
+              tag="div"
+            >
+              {slotPreferencesBtn}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

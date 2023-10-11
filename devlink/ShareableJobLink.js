@@ -85,7 +85,7 @@ export function ShareableJobLink({
               loading="lazy"
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020f_Frame%201092.svg"
             />
           </_Builtin.Block>
@@ -141,7 +141,7 @@ export function ShareableJobLink({
                     loading="lazy"
                     width="auto"
                     height="auto"
-                    alt="__wf_reserved_inherit"
+                    alt=""
                     src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6514038f5de3f5eed2c178bf__linkedin.svg"
                   />
                 </_Builtin.Block>
@@ -167,7 +167,7 @@ export function ShareableJobLink({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6514038e3d544582cf9fe755_Group%20(2).svg"
                 />
               </_Builtin.Block>

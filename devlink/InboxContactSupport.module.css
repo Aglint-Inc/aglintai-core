@@ -130,6 +130,10 @@
   margin-top: 17px;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .slot-contact-form-support {
   margin-top: 37px;
   padding: 30px;
@@ -391,12 +395,12 @@
 .aui-button-wrap.danger.jed {
   overflow: hidden;
   border-radius: 4px;
-  color: var(--\[unknown\|variable-2e806c7d\]);
+  color: var(--red-500);
 }
 
 .aui-button-wrap.danger.jed:hover {
   background-color: hsla(0, 100.00%, 95.78%, 1.00);
-  color: var(--\[unknown\|variable-d3747f47\]);
+  color: var(--red-700);
 }
 
 .aui-button-wrap.mt-16 {

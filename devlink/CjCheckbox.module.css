@@ -65,6 +65,10 @@
   margin-top: 17px;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .text-field-4 {
   width: 50px;
   height: 28px;

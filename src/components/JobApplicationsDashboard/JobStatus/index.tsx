@@ -23,7 +23,7 @@ import { capitalize } from '../utils';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import SpecializedDatePicker from '../../Common/SpecializedDatePicker';
-import SpecializedTimePicker from '../../Common/SpecializedTimePicker';
+// import SpecializedTimePicker from '../../Common/SpecializedTimePicker';
 import UITextField from '../../Common/UITextField';
 
 const JobApplicationStatus = () => {
@@ -238,6 +238,7 @@ const SideDrawerContent = ({
                 flow={statusInfo.flow}
                 setLoading={setLoading}
                 setExpand={setExpand}
+                isSchedule={statusInfo.scheduled}
               />
             </Collapse>
             <Collapse in={!expand}>
@@ -274,14 +275,17 @@ const getStatusInfo = (
       ? status.isActive
         ? `${capitalize(flow)} is active`
         : `${capitalize(flow)} starts on ${dayjs(status.timeStamp).format(
-            'DD MMM, YYYY, hh:mm a',
+            'DD MMM, YYYY',
+            // 'DD MMM, YYYY, hh:mm a',
           )}`
       : `${capitalize(flow)} is off`;
   const primaryStatus =
     status.timeStamp !== null
       ? status.isActive
         ? 'Active'
-        : `${dayjs(status.timeStamp).format('DD MMM, YYYY, hh:mm a')}`
+        : `${dayjs(status.timeStamp).format(
+            'DD MMM, YYYY' /*'DD MMM, YYYY, hh:mm a'*/,
+          )}`
       : 'Off';
   return {
     active,
@@ -300,20 +304,22 @@ const JobSchedules = ({
   status,
   setExpand,
   setLoading,
+  isSchedule,
 }: {
   jobId: string;
   flow: Flow;
   status: Status;
   setExpand: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  isSchedule: boolean;
 }) => {
   const [start, setStart] = useState(status[flow].timeStamp ? false : true);
   const timeStamp = status[flow].timeStamp
-    ? dayjs(status[flow].timeStamp).format('YYYY-MM-DDTHH:mm')
-    : dayjs(new Date()).format('YYYY-MM-DDTHH:mm');
+    ? dayjs(status[flow].timeStamp).format(`YYYY-MM-DDTHH:mm`)
+    : dayjs(new Date()).format(`YYYY-MM-DDTHH:mm`);
   const [date, setDate] = useState(timeStamp.split('T')[0]);
-  const [time, setTime] = useState(timeStamp);
-  const disabled = !(date && time);
+  // const [time, setTime] = useState(timeStamp);
+  const disabled = !(date /*&& time*/);
   const { handleJobUpdate } = useJobs();
   const handleJobStatusUpdate = async () => {
     setLoading(true);
@@ -326,9 +332,10 @@ const JobSchedules = ({
             ? new Date().toISOString()
             : disabled
             ? null
-            : new Date(
-                `${date.split('T')[0]}T${time.split('T')[1]}`,
-              ).toISOString(),
+            : new Date(date).toISOString(),
+          // : new Date(
+          //     `${date.split('T')[0]}T${time.split('T')[1]}`,
+          //   ).toISOString(),
         },
       },
     });
@@ -351,21 +358,25 @@ const JobSchedules = ({
         <JobScheduleBody
           isStart={start}
           date={date}
-          time={time}
           setDate={setDate}
-          setTime={setTime}
           flow={flow}
+          // time={time}
+          // setTime={setTime}
         />
       }
       slotButtons={
         <RecPrimaryBtn
           isDisabled={start ? false : disabled}
-          buttonText={'Start'}
+          buttonText={getButtonText(isSchedule, start)}
           onClickButton={{ onClick: async () => await handleJobStatusUpdate() }}
         />
       }
     />
   );
+};
+
+const getButtonText = (isSchedule: boolean, isStart: boolean) => {
+  return isStart ? 'Start' : isSchedule ? 'Reschedule' : 'Schedule';
 };
 
 const JobStatusDescription = ({
@@ -401,16 +412,15 @@ const JobScheduleBody = ({
   isStart,
   flow,
   date,
-  time,
-  setDate,
-  setTime,
+  setDate, // time,
+  // setTime,
 }: {
   isStart: boolean;
   flow: Flow;
   date: string;
-  time: string;
   setDate: Dispatch<SetStateAction<string>>;
-  setTime: Dispatch<SetStateAction<string>>;
+  // time: string;
+  // setTime: Dispatch<SetStateAction<string>>;
 }) => {
   return (
     <>
@@ -435,7 +445,7 @@ const JobScheduleBody = ({
               setDate(e ? e.format('YYYY-MM-DD') : null);
             }}
           />
-          <SpecializedTimePicker
+          {/* <SpecializedTimePicker
             label={'Scheduled time'}
             value={dayjs(time).isValid() ? dayjs(time) : null}
             onChange={(e) => {
@@ -445,7 +455,7 @@ const JobScheduleBody = ({
                   : null,
               );
             }}
-          />
+          /> */}
         </Stack>
       </Collapse>
     </>

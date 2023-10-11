@@ -635,8 +635,41 @@
 
 .su-btn.large.disable {
   position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   background-color: var(--grey300-03a46dba);
+
   color: var(--grey500-0d508ad8);
+}
+
+.su-btn.large.btn-loading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+}
+
+.su-btn.large.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .su-btn.disable {

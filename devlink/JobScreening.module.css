@@ -46,6 +46,7 @@
 .div-block-271 {
   position: sticky;
   top: 0px;
+  z-index: 99;
 
   display: flex;
   width: 100%;
@@ -862,7 +863,7 @@
 
 .text-xsm {
   font-size: 10px;
-  line-height: 14px;
+  line-height: 12px;
 }
 
 .text-xsm.color-grey-600.inline-text {
@@ -1260,12 +1261,12 @@
 .aui-button-wrap.danger.jed {
   overflow: hidden;
   border-radius: 4px;
-  color: var(--\[unknown\|variable-2e806c7d\]);
+  color: var(--red-500);
 }
 
 .aui-button-wrap.danger.jed:hover {
   background-color: hsla(0, 100.00%, 95.78%, 1.00);
-  color: var(--\[unknown\|variable-d3747f47\]);
+  color: var(--red-700);
 }
 
 .aui-button-wrap.mt-16 {

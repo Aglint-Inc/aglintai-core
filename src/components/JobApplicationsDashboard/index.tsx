@@ -29,7 +29,13 @@ import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
-import { capitalize } from './utils';
+import {
+  capitalize,
+  FilterParameter,
+  getFilteredApplications,
+  getSortedApplications,
+  SortParameter,
+} from './utils';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
@@ -67,13 +73,26 @@ const JobApplicationComponent = () => {
 
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
-  const sectionApplications = applications[section].list;
+  const [sort] = useState<SortParameter>({
+    parameter: 'name',
+    condition: 'asc',
+  });
+
+  const [filters] = useState<FilterParameter[]>([
+    { parameter: 'resume_score', condition: 'ge', count: 0 },
+    { parameter: 'interview_score', condition: 'ge', count: 0 },
+  ]);
+
+  const sectionApplications = getFilteredApplications(
+    getSortedApplications(applications[section].list, sort),
+    filters,
+  );
 
   const [checkList, setCheckList] = useState(new Set<string>());
 
   const [jobUpdate, setJobUpdate] = useState(false);
 
-  const [filteredApplications, setFilteredApplications] =
+  const [searchedApplications, setSearchedApplications] =
     useState(sectionApplications);
 
   const handleSetSection = (section) => {
@@ -85,12 +104,12 @@ const JobApplicationComponent = () => {
   const { handleInitializeForm } = useJobForm();
 
   const handleSelectAll = () => {
-    if (checkList.size === filteredApplications.length)
+    if (checkList.size === searchedApplications.length)
       setCheckList(new Set<string>());
     else
       setCheckList(
         new Set(
-          filteredApplications.reduce((acc, curr) => {
+          searchedApplications.reduce((acc, curr) => {
             acc.push(curr.application_id);
             return acc;
           }, []),
@@ -100,10 +119,10 @@ const JobApplicationComponent = () => {
   return (
     <>
       <JobScreening
-        isTopbarVisible={filteredApplications.length !== 0}
-        interviewScore={section === JobApplicationSections.INTERVIEWING}
+        isTopbarVisible={searchedApplications.length !== 0}
+        interviewScore={section !== JobApplicationSections.NEW}
         selectAllCheckbox={{ onClick: () => handleSelectAll() }}
-        isSelectAllChecked={checkList.size === filteredApplications.length}
+        isSelectAllChecked={checkList.size === searchedApplications.length}
         slotJobStatus={<JobApplicationStatus />}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
@@ -153,12 +172,12 @@ const JobApplicationComponent = () => {
           <SearchField
             applications={sectionApplications}
             section={section}
-            setFilteredApplications={setFilteredApplications}
+            setSearchedApplications={setSearchedApplications}
           />
         }
         slotCandidateJobCard={
           <ApplicantsList
-            applications={filteredApplications}
+            applications={searchedApplications}
             checkList={checkList}
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
@@ -231,30 +250,44 @@ const ApplicantsList = ({
   section: string;
 }) => {
   const { pressed } = useKeyPress('Shift');
+  const [lastPressed, setLastPressed] = useState(null);
+  useEffect(() => {
+    if (checkList.size === 0 || checkList.size === applications.length)
+      setLastPressed(null);
+  }, [checkList.size]);
+  const handleSingleSelect = (index: number) => {
+    setCheckList((prev) => {
+      const newSet = new Set(prev);
+      const id = applications[index].application_id;
+      if (newSet.has(id)) {
+        newSet.delete(id);
+        setLastPressed(null);
+      } else {
+        newSet.add(id);
+        setLastPressed(id);
+      }
+      return newSet;
+    });
+  };
   const handleSelect = (index: number) => {
     if (!pressed) {
-      setCheckList((prev) => {
-        const newSet = new Set(prev);
-        const id = applications[index].application_id;
-        if (newSet.has(id)) newSet.delete(id);
-        else newSet.add(id);
-        return newSet;
-      });
+      handleSingleSelect(index);
     } else {
-      const start = applications
-        .slice()
-        .findLastIndex(
-          (application, i) =>
-            i <= index && checkList.has(application.application_id),
+      if (lastPressed && !checkList.has(applications[index].application_id)) {
+        const start = applications.findIndex(
+          (application) => application.application_id === lastPressed,
         );
-      setCheckList((prev) => {
-        const newSet = applications.reduce((acc, curr, i) => {
-          if (i > start && i <= index && !checkList.has(curr.application_id))
-            acc.push(curr.application_id);
-          return acc;
-        }, []);
-        return new Set([...prev, ...newSet]);
-      });
+        setCheckList((prev) => {
+          const newSet = applications.reduce((acc, curr, i) => {
+            if ((i - start) * (i - index) <= 0) acc.push(curr.application_id);
+            return acc;
+          }, []);
+          return new Set([...prev, ...newSet]);
+        });
+        setLastPressed(null);
+      } else {
+        handleSingleSelect(index);
+      }
     }
   };
   const [lastLoad, setLastLoad] = useState(10);
@@ -298,7 +331,7 @@ const ApplicantsList = ({
               index={i}
               checkList={checkList}
               handleSelect={handleSelect}
-              isInterview={section === JobApplicationSections.INTERVIEWING}
+              isInterview={section !== JobApplicationSections.NEW}
             />
           </Stack>
         );

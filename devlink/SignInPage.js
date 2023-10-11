@@ -16,7 +16,7 @@ export function SignInPage({
         loading="eager"
         width="auto"
         height="auto"
-        alt="__wf_reserved_inherit"
+        alt=""
         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901e8_mitchell-luo-Aw8gYKOMuS4-unsplash%201%20(1).png"
       />
       <_Builtin.Block className={_utils.cx(_styles, "signin-block")} tag="div">
@@ -29,7 +29,7 @@ export function SignInPage({
             loading="lazy"
             width="auto"
             height="auto"
-            alt="__wf_reserved_inherit"
+            alt=""
             src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901b9_64dcade0b3dfcf5fa5627009_App%20Logo.svg"
           />
           <_Builtin.Block
@@ -55,7 +55,7 @@ export function SignInPage({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/6489e9dc3afdc882c7d9be4d/64dcafa38b33dd95c7419091_crossed-fingers_light-skin-tone_1f91e-1f3fb_1f3fb.png"
                 />
               </_Builtin.Block>
@@ -83,7 +83,7 @@ export function SignInPage({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901c0_64dcae8d0156e8d54cb108e9_google%20logo.svg"
                     />
                   </_Builtin.Block>
@@ -97,7 +97,7 @@ export function SignInPage({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901bf_64dcae8db3dfcf5fa563280a__linkedin.svg"
                     />
                   </_Builtin.Block>

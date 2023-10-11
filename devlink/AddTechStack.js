@@ -20,7 +20,7 @@ export function AddTechStack({
         className={_utils.cx(_styles, "text-lg", "fw-semibold", "color-black")}
         tag="div"
       >
-        {"Add technology stack"}
+        {"Add specialities"}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "text-grey-600", "mt-17")}
