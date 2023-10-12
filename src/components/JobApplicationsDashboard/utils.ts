@@ -31,7 +31,9 @@ const getResumeScore = (application: JobApplication) => {
   const jdScore = jdScoreObj
     ? jdScoreObj === 'loading'
       ? 0
-      : Math.floor(jdScoreObj?.over_all?.score) ?? 0
+      : Math.floor(jdScoreObj?.over_all?.score) < 0
+      ? 0
+      : Math.floor(jdScoreObj?.over_all?.score)
     : 0;
   return jdScore;
 };
