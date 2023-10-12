@@ -14,6 +14,7 @@ import {
   StatusColor,
 } from '../utils';
 import Icon from '../../Common/Icons/Icon';
+import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
 interface JobsListProps {
   jobs: JobType[];
@@ -72,13 +73,41 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                   ).length
                 }
                 slotInterviewIcon={
-                  <Icon variant='DoubleTick' height='16' width='16' />
+                  !job.active_status.closed.isActive &&
+                  getStatusInfo(job.active_status.interviewing, 'interviewing')
+                    .scheduled ? (
+                    <Icon variant='ClockHistory' height='12' width='12' />
+                  ) : (
+                    <Icon variant='DoubleTick' height='16' width='16' />
+                  )
                 }
                 slotSourcingIcon={
-                  <Icon variant='ClockHistory' height='12' width='12' />
+                  !job.active_status.closed.isActive &&
+                  getStatusInfo(job.active_status.sourcing, 'sourcing')
+                    .scheduled ? (
+                    <Icon variant='ClockHistory' height='12' width='12' />
+                  ) : (
+                    <Icon variant='DoubleTick' height='16' width='16' />
+                  )
                 }
-                textSourcing={'Sourcing'}
-                textInterview={'Interviewing'}
+                textSourcing={
+                  !job.active_status.closed.isActive &&
+                  getStatusInfo(job.active_status.sourcing, 'sourcing')
+                    .scheduled
+                    ? getStatusInfo(job.active_status.sourcing, 'sourcing')
+                        .primaryStatus
+                    : 'Sourcing'
+                }
+                textInterview={
+                  !job.active_status.closed.isActive &&
+                  getStatusInfo(job.active_status.interviewing, 'interviewing')
+                    .scheduled
+                    ? getStatusInfo(
+                        job.active_status.interviewing,
+                        'interviewing',
+                      ).primaryStatus
+                    : 'Interviewing'
+                }
                 bgColorProps={{
                   style: {
                     backgroundColor:
@@ -108,16 +137,32 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                 }
                 textColorActiveInterviewingProps={{
                   style: {
-                    color: job.active_status.interviewing.isActive
-                      ? '#228F67'
-                      : '#C2C8CC',
+                    color:
+                      !job.active_status.closed.isActive &&
+                      getStatusInfo(
+                        job.active_status.interviewing,
+                        'interviewing',
+                      ).scheduled
+                        ? '#daa520'
+                        : getStatusInfo(
+                            job.active_status.interviewing,
+                            'interviewing',
+                          ).active
+                        ? '#228F67'
+                        : '#C2C8CC',
                   },
                 }}
                 textColorActivePropsSourcing={{
                   style: {
-                    color: job.active_status.sourcing.isActive
-                      ? '#228F67'
-                      : '#C2C8CC',
+                    color:
+                      !job.active_status.closed.isActive &&
+                      getStatusInfo(job.active_status.sourcing, 'sourcing')
+                        .scheduled
+                        ? '#daa520'
+                        : getStatusInfo(job.active_status.sourcing, 'sourcing')
+                            .active
+                        ? '#228F67'
+                        : '#C2C8CC',
                   },
                 }}
                 slotStatusIcon={

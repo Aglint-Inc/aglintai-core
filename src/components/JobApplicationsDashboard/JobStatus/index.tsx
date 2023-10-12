@@ -255,7 +255,7 @@ const SideDrawerContent = ({
   );
 };
 
-const getStatusInfo = (
+export const getStatusInfo = (
   status: { isActive: boolean; timeStamp: string },
   flow: Flow,
 ) => {
@@ -413,8 +413,8 @@ const JobScheduleBody = ({
   flow,
   date,
   setDate, // time,
-  // setTime,
-}: {
+} // setTime,
+: {
   isStart: boolean;
   flow: Flow;
   date: string;
