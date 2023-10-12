@@ -104,7 +104,7 @@ export function JobDashboardEmpty({
                   {"Add Job"}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "small-default-3")}
+                  className={_utils.cx(_styles, "text-grey-600")}
                   tag="div"
                 >
                   {
@@ -126,7 +126,7 @@ export function JobDashboardEmpty({
                 {"Or Connect with your Applicant Tracking System (ATS)"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
                 {"If the ATS you are using is not listed here, "}
@@ -172,11 +172,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Greenhouse"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {
@@ -232,11 +228,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Indeed"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {
@@ -294,11 +286,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Lever"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {

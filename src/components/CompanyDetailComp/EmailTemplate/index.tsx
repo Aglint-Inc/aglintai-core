@@ -108,9 +108,10 @@ const EmailTemplate = () => {
                 gap: '4px',
                 p: '16px',
                 overflow: 'hidden',
-                height: '240px',
+                height: '236px',
                 fontSize: '12px',
                 color: palette.grey[600],
+                a: { fontSize: '12px', color: palette.grey[600] },
               }}
             />
           }

@@ -27,4 +27,6 @@ declare function NewJobStep4(props: {
   isParticularTimeChecked?: Types.Visibility.VisibilityConditions;
   slotTime?: Types.Devlink.Slot;
   isChooseTimeVisible?: Types.Visibility.VisibilityConditions;
+  onClickDisqualifyCheck?: Types.Devlink.RuntimeProps;
+  slotDisqualifyScore?: Types.Devlink.Slot;
 }): React.JSX.Element;

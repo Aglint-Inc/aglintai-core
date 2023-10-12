@@ -153,14 +153,6 @@ const SlideDetailsTwo = () => {
             setStep(stepObj.detailsOne);
           },
         }}
-        onClickLater={{
-          onClick: () => {
-            router.push(`?step=${stepObj.allSet}`, undefined, {
-              shallow: true,
-            });
-            setStep(stepObj.allSet);
-          },
-        }}
         onClickSave={{
           onClick: () => {
             submitHandler();

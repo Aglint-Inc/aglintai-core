@@ -215,7 +215,7 @@ export function NewJobStep3({
           {slotSkillsQuestion}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-386")}
+          className={_utils.cx(_styles, "div-block-386", "hide")}
           tag="div"
         >
           <_Builtin.Block

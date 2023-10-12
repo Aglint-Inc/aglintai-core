@@ -10,7 +10,7 @@ export function CreateBtn({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "cj-add-skill-btn")}
+      className={_utils.cx(_styles, "cj-add-skill-btn", "clickable")}
       tag="div"
       {...onClickButton}
     >

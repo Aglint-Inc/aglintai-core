@@ -14,33 +14,41 @@ export function EmailTemplateCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "email-temp-cards")}
+      className={_utils.cx(_styles, "email-temp-cards-wrapper")}
       id={_utils.cx(
         _styles,
         "w-node-_923d15de-9788-e49f-c431-fc52940f52b2-940f52b2"
       )}
       tag="div"
-      {...onClickViewEdit}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "image-33")} tag="div">
-        {slotTemplateImage}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-341")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "email-temp-cards")}
+        tag="div"
+        {...onClickViewEdit}
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "image-33")} tag="div">
+          {slotTemplateImage}
+        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "email-name-wrappers")}
+          className={_utils.cx(_styles, "div-block-341")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "email-name-wrappers")}
             tag="div"
           >
-            {textEmailTemplateCategory}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600-3")}
-            tag="div"
-          >
-            {textUsedByCount}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+              tag="div"
+            >
+              {textEmailTemplateCategory}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600-3")}
+              tag="div"
+            >
+              {textUsedByCount}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

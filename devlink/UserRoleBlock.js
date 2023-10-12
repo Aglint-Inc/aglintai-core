@@ -12,6 +12,7 @@ export function UserRoleBlock({
   as: _Component = _Builtin.Block,
   roleName = "Recruiter",
   permissionsNumber = "6/8",
+  onClickProps = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -48,6 +49,7 @@ export function UserRoleBlock({
       <_Builtin.Block
         className={_utils.cx(_styles, "tu-role-block-btn", "clickable")}
         tag="div"
+        {...onClickProps}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

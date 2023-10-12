@@ -1,6 +1,5 @@
 .company-listing-wrappers {
   display: block;
-  padding-top: 112px;
 }
 
 .company-listing-hero {
@@ -8,11 +7,12 @@
   width: 700px;
   margin-right: auto;
   margin-left: auto;
-  padding-bottom: 77px;
+  padding-top: 112px;
+  padding-bottom: 78px;
   flex-direction: column;
   align-items: center;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
 
   text-align: center;
 }
@@ -409,11 +409,30 @@
   color: var(--grey400-863ed4b5);
 }
 
-.open-jobs-wrappers {
+.cl-wrapper {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 48px;
+  grid-row-gap: 48px;
+}
+
+.cl-block {
   position: relative;
-  padding: 30px;
+
+  display: flex;
+  padding: 32px;
+  flex-direction: column;
+  align-items: stretch;
+  grid-column-gap: 32px;
+  grid-row-gap: 32px;
+
   border-radius: 20px;
+
   background-color: var(--white-80449ce7);
+}
+
+.cl-block.hide {
+  display: none;
 }
 
 .search-header-open-jobs {
@@ -503,30 +522,6 @@
   background-color: var(--blue500-72579298);
 
   color: var(--white-80449ce7);
-}
-
-.open-jobs-list {
-  margin-top: 50px;
-}
-
-.about-company-wrapper {
-  position: relative;
-
-  display: flex;
-  margin-top: 40px;
-  padding: 30px;
-  flex-direction: column;
-  align-items: stretch;
-  grid-column-gap: 32px;
-  grid-row-gap: 32px;
-
-  border-radius: 20px;
-
-  background-color: var(--white-80449ce7);
-}
-
-.about-company-wrapper.hide {
-  display: none;
 }
 
 .div-block-441 {

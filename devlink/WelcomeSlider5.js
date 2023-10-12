@@ -16,7 +16,6 @@ export function WelcomeSlider5({
   slotPhoneInput,
   isSaveDisableAddCompanyLogo = true,
   onClickSave = {},
-  onClickLater = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -79,7 +78,7 @@ export function WelcomeSlider5({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "auth-form-block")}
+          className={_utils.cx(_styles, "auth-form-block", "max-width-600")}
           tag="div"
         >
           <_Builtin.Block
@@ -147,18 +146,6 @@ export function WelcomeSlider5({
                   <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-331")}
-              tag="div"
-              {...onClickLater}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-600")}
-                tag="div"
-              >
-                {"I will do this later"}
-              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
