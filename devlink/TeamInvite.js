@@ -7,12 +7,14 @@ export function TeamInvite({
   as: _Component = _Builtin.Block,
   slotForm,
   slotButtons,
+  onClickClose = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-invite-members")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "im-close-btn", "clickable")}
         tag="div"
+        {...onClickClose}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

@@ -26,7 +26,7 @@ export function OpenJobListingCard({
       {...onClickApplyNow}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+        className={_utils.cx(_styles, "text-regular", "fw-semibold")}
         tag="div"
       >
         {textJobRole}

@@ -7,12 +7,14 @@ import _styles from "./TeamPendingInvites.module.css";
 export function TeamPendingInvites({
   as: _Component = _Builtin.Block,
   slotList,
+  onClickClose = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-pending-invites")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "pi-close-btn", "clickable")}
         tag="div"
+        {...onClickClose}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

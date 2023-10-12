@@ -37,14 +37,14 @@ export function WelcomeSlider1({
             className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
             tag="div"
           >
-            {"Welcome to Aglint for Recruiters"}
+            {"Join the future of hiring today!"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "ju-header-description")}
             tag="div"
           >
             {
-              "Get ready to revolutionize your hiring process. Let's Start By Identifying Your Role:"
+              "Signup for Aglint's Screening Co-Pilot and find the perfect match."
             }
           </_Builtin.Block>
         </_Builtin.Block>
@@ -199,6 +199,20 @@ export function WelcomeSlider1({
               height={20}
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6500758f12a101e249463e97_Vectors-Wrapper.svg"
             />
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ju-right-top", "align-left")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ju-redirect-text")}
+            tag="div"
+          >
+            {"Already have an account? "}
+            <_Builtin.Span className={_utils.cx(_styles, "sign-in-text")}>
+              {"Sign In"}
+            </_Builtin.Span>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

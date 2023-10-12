@@ -20,7 +20,7 @@ export function SkillPill({
       {...onClickRemove}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "", "small-default-4", "text-green-800")}
+        className={_utils.cx(_styles, "", "text-medium", "text-green-800")}
         tag="div"
       >
         {textSkill}

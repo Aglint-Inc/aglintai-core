@@ -6,4 +6,5 @@ declare function TeamAddRole(props: {
   slotNameInput?: Types.Devlink.Slot;
   slotPermissions?: Types.Devlink.Slot;
   slotButton?: Types.Devlink.Slot;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

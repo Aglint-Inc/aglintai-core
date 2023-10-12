@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
+import { ButtonPrimarySmall } from "./ButtonPrimarySmall";
 import * as _utils from "./utils";
 import _styles from "./EditEmail.module.css";
 
@@ -10,6 +10,8 @@ export function EditEmail({
   onClickSaveChanges = {},
   onClickClose = {},
   slotForm,
+  editEmailDescription = "This is some text inside of a div block.",
+  slotBottom,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "company-email-edit")} tag="div">
@@ -18,10 +20,21 @@ export function EditEmail({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
+          className={_utils.cx(_styles, "cem-header-content")}
           tag="div"
         >
-          {textEmailName}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-regular", "fw-semibold")}
+            tag="div"
+          >
+            {textEmailName}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600")}
+            tag="div"
+          >
+            {editEmailDescription}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           <_Builtin.Block
@@ -49,8 +62,11 @@ export function EditEmail({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-457")} tag="div">
         <_Builtin.Block tag="div" {...onClickSaveChanges}>
-          <ButtonOutlinedSmall textLabel="Save Changes" />
+          <ButtonPrimarySmall textLabel="Save Changes" />
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-470")} tag="div">
+        {slotBottom}
       </_Builtin.Block>
     </_Component>
   );

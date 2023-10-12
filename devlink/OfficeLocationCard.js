@@ -31,7 +31,7 @@ export function OfficeLocationCard({
       <_Builtin.Block
         className={_utils.cx(
           _styles,
-          "text-lg",
+          "text-regular",
           "fw-semibold",
           "text-kale-800"
         )}
@@ -39,10 +39,7 @@ export function OfficeLocationCard({
       >
         {textCountry}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "text-kale-700")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "text-kale-600")} tag="div">
         {textAddress}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "job-post-tag")} tag="div">

@@ -12,4 +12,5 @@ declare function GenerateJobDescAi(props: {
   slotLottie?: Types.Devlink.Slot;
   textLabel1?: React.ReactNode;
   slotCheckBoxes?: Types.Devlink.Slot;
+  isCheckSlotVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

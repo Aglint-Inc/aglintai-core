@@ -101,6 +101,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
+        router.push(pageRoutes.LOGIN);
         loading && setLoading(false);
         return;
       }
@@ -137,6 +138,7 @@ const AuthProvider = ({ children }) => {
         }
       }
     } catch (err) {
+      router.push(pageRoutes.LOGIN);
       //
     } finally {
       setLoading(false);

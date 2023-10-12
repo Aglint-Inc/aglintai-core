@@ -58,6 +58,7 @@
 
 .auth-right-block.login-sign {
   display: flex;
+  padding-top: 80px;
   grid-column-gap: 80px;
   grid-row-gap: 80px;
   opacity: 1;
@@ -240,6 +241,17 @@
 
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .text-xxl.fw-semibold {

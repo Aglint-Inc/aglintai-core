@@ -58,6 +58,7 @@
 
 .auth-right-block.login-sign {
   display: flex;
+  padding-top: 80px;
   grid-column-gap: 80px;
   grid-row-gap: 80px;
   opacity: 1;
@@ -87,6 +88,10 @@
 
 .ju-right-top.right-align {
   justify-content: flex-end;
+}
+
+.ju-right-top.align-left {
+  justify-content: flex-start;
 }
 
 .auth-cta-block {
@@ -215,6 +220,17 @@
 
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .text-xxl.fw-semibold {
@@ -375,14 +391,11 @@
 
 .ju-cta-company-name {
   color: var(--black-0fdbd865);
-  font-size: 16px;
   font-weight: 500;
 }
 
 .ju-cta-company-desc {
   color: rgba(134, 146, 166, 1);
-  font-size: 14px;
-  line-height: 20px;
   font-weight: 400;
   letter-spacing: -0.15399999916553497px;
 }
@@ -397,4 +410,23 @@
   grid-row-gap: 0px;
 
   object-fit: cover;
+}
+
+.ju-redirect-text {
+  align-self: flex-end;
+  color: var(--grey600-d5bebe21);
+}
+
+.ju-redirect-text.left-align {
+  align-self: flex-start;
+}
+
+.sign-in-text {
+  transition: all 250ms ease;
+  color: var(--blue500-72579298);
+  cursor: pointer;
+}
+
+.sign-in-text:hover {
+  color: var(--blue400-49d60774);
 }
