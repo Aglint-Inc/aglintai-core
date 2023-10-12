@@ -36,6 +36,13 @@ export default async function handler(
     }
   }
   res.setHeader('Allow', 'POST');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*'); // replace this your actual origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+  );
   res.status(405).end('Method Not Allowed!');
 }
 

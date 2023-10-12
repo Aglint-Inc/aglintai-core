@@ -16,6 +16,7 @@ import {
 import { LoaderSvg } from '@/devlink';
 import {
   AddressType,
+  RecruiterDB,
   RecruiterType,
   SocialsType,
 } from '@/src/types/data.types';
@@ -49,6 +50,8 @@ interface ContextValue {
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   handleLogout: (event: any) => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
 }
 
 const defaultProvider = {
@@ -61,6 +64,10 @@ const defaultProvider = {
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
+  updateRecruiter: async (updateData: Partial<RecruiterDB>) => {
+    updateData;
+    return true;
+  },
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -183,6 +190,17 @@ const AuthProvider = ({ children }) => {
       return true;
     }
   };
+
+  const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
+    return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
+      if (data) {
+        setRecruiter({ ...recruiter, ...data });
+        return true;
+      }
+      return false;
+    });
+  };
+
   useEffect(() => {
     getSupabaseSession();
   }, []);
@@ -208,6 +226,7 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         handleLogout,
+        updateRecruiter,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -230,4 +249,21 @@ const isRoutePublic = (path = '') => {
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }
+};
+
+const updateRecruiterInDb = async (
+  updateData: Partial<RecruiterDB>,
+  id: string,
+) => {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .update(updateData)
+    .eq('id', id)
+    .select();
+  if (!error && data.length) {
+    delete data[0].socials;
+    delete data[0].address;
+    return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
+  }
+  return null;
 };
