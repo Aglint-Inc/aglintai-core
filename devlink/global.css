@@ -2241,17 +2241,13 @@ textarea.w-select {
   --bgGrey100-ce47127d: hsla(180, 7.69%, 97.45%, 1.00);
   --skeletonGrey-4e9a134f: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
   --bgGrey200-4f66792c: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  --red-500: #d93f4c;
-  --red-700: #8c232c;
-  --gray-100: #f8f9f9;
-  --white: white;
 }
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: var(--grey800-e42b2e06);
   font-size: 14px;
-  line-height: 20px;
+  line-height: 1.4;
 }
 
 h1 {

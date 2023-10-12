@@ -1,6 +1,6 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
 import React, { useState } from 'react';
@@ -33,6 +33,7 @@ type Props = {
   noBorder?: boolean;
   width?: string;
   select?: boolean;
+  secondaryText?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -65,6 +66,7 @@ const UITextField = React.forwardRef(
       width,
       select,
       height,
+      secondaryText,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -103,6 +105,9 @@ const UITextField = React.forwardRef(
             {label}
             {required && <sup>*</sup>}
           </UITypography>
+        )}
+        {secondaryText && (
+          <Typography variant='body2'>{secondaryText}</Typography>
         )}
         <MuiTextField
           margin='none'

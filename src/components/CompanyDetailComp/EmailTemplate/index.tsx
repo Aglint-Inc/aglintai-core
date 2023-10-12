@@ -5,7 +5,6 @@ import {
   Drawer,
   Grid,
   Stack,
-  Switch,
   TextField,
   Typography,
 } from '@mui/material';
@@ -33,7 +32,7 @@ const EmailTemplate = () => {
     last_name: '',
     company_name: recruiter?.name,
     job_title: '',
-    email: '',
+    email: recruiter?.email,
   });
   const [selectedTemplate, setSelectedTemplate] = useState({
     fromName: '',
@@ -99,7 +98,7 @@ const EmailTemplate = () => {
       {templateEntries.map(([templateName, templateData], ind) => (
         <EmailTemplateCard
           key={ind}
-          textEmailTemplateCategory={templateObj[templateName]}
+          textEmailTemplateCategory={templateObj[templateName].listing}
           slotTemplateImage={
             <Stack
               dangerouslySetInnerHTML={{
@@ -127,6 +126,9 @@ const EmailTemplate = () => {
       <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
         <Stack mb={'10px'}>
           <EditEmail
+            editEmailDescription={
+              templateObj[selectedTemplate?.name]?.description
+            }
             onClickSaveChanges={{
               onClick: () => {
                 handlerSave();
@@ -137,34 +139,26 @@ const EmailTemplate = () => {
                 handleDrawerClose();
               },
             }}
-            textEmailName={templateObj[selectedTemplate?.name]}
+            textEmailName={templateObj[selectedTemplate?.name]?.heading}
             slotForm={
               <Stack spacing={'20px'}>
                 <Stack
-                  direction={'row'}
+                  spacing={1}
                   sx={{ bgcolor: palette.grey[100], p: 2, borderRadius: '8px' }}
-                  alignItems={'center'}
                 >
-                  <Typography variant='body2'>
-                    When you create a new job, this email will be enabled by
-                    default in the job editor.
+                  <Typography variant='h5'>
+                    Pro Tip: Customize Your Message
                   </Typography>
-                  <Switch
-                    size='small'
-                    color='info'
-                    checked={selectedTemplate.default}
-                    onChange={() => {
-                      setSelectedTemplate((prev) => ({
-                        ...prev,
-                        default: !selectedTemplate.default,
-                      }));
-                    }}
-                  />
+                  <Typography variant='body2'>
+                    For dynamic content, utilize placeholders like [firstName],
+                    [lastName], [companyName], and [jobTitle].
+                  </Typography>
                 </Stack>
                 <UITextField
                   labelSize='small'
                   fullWidth
                   label='Sender Name'
+                  secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
                   value={selectedTemplate.fromName}
                   onChange={(e) => {
                     setSelectedTemplate((prev) => ({
@@ -176,6 +170,9 @@ const EmailTemplate = () => {
                 <UITextField
                   labelSize='small'
                   fullWidth
+                  placeholder={
+                    templateObj[selectedTemplate?.name]?.subjectPlaceHolder
+                  }
                   label='Email Subject'
                   value={selectedTemplate.subject}
                   onChange={(e) => {
@@ -201,7 +198,9 @@ const EmailTemplate = () => {
                   >
                     <TipTapAIEditor
                       enablAI={false}
-                      placeholder='Job Description'
+                      placeholder={
+                        templateObj[selectedTemplate?.name]?.bodyPlaceHolder
+                      }
                       handleChange={(html) => {
                         setSelectedTemplate((prev) => ({
                           ...prev,
@@ -212,118 +211,109 @@ const EmailTemplate = () => {
                     />
                   </Stack>
                 </Stack>
-
-                <Stack
-                  spacing={1}
-                  sx={{ bgcolor: palette.grey[100], p: 2, borderRadius: '8px' }}
+              </Stack>
+            }
+            slotBottom={
+              <Stack
+                sx={{
+                  bgcolor: palette.grey[100],
+                  p: 2,
+                  borderRadius: '8px',
+                }}
+                spacing={2}
+              >
+                <Collapse
+                  in={openTest}
+                  translate='yes'
+                  unmountOnExit
+                  mountOnEnter
                 >
-                  <Typography variant='h5'>Personalise your message</Typography>
-                  <Typography variant='caption'>
-                    To insert dynamic information, you can use [firstName],
-                    [lastName], [companyName] or [jobTitle]
-                  </Typography>
-                </Stack>
-
-                <Stack
-                  sx={{
-                    bgcolor: palette.grey[100],
-                    p: 2,
-                    borderRadius: '8px',
-                  }}
-                  spacing={2}
-                >
-                  <Collapse
-                    in={openTest}
-                    translate='yes'
-                    unmountOnExit
-                    mountOnEnter
-                  >
-                    <Stack>
-                      <Grid container spacing={1.5}>
-                        <Grid item xs={6}>
-                          <TextField
-                            fullWidth
-                            margin='none'
-                            label='First Name'
-                            value={email?.first_name}
-                            onChange={(e) => {
-                              setEmail((prev) => ({
-                                ...prev,
-                                first_name: e.target.value,
-                              }));
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            fullWidth
-                            margin='none'
-                            label='Last Name'
-                            value={email?.last_name}
-                            onChange={(e) => {
-                              setEmail((prev) => ({
-                                ...prev,
-                                last_name: e.target.value,
-                              }));
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            fullWidth
-                            margin='none'
-                            label='Job Title'
-                            value={email.job_title}
-                            onChange={(e) => {
-                              setEmail((prev) => ({
-                                ...prev,
-                                job_title: e.target.value,
-                              }));
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            fullWidth
-                            margin='none'
-                            label='Company Name'
-                            defaultValue={recruiter?.name}
-                            onChange={(e) => {
-                              setEmail((prev) => ({
-                                ...prev,
-                                company_name: e.target.value,
-                              }));
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            fullWidth
-                            margin='none'
-                            label='Email'
-                            defaultValue={recruiter?.email}
-                            onChange={(e) => {
-                              setEmail((prev) => ({
-                                ...prev,
-                                email: e.target.value,
-                              }));
-                            }}
-                          />
-                        </Grid>
+                  <Stack>
+                    <Grid container spacing={1.5}>
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          margin='none'
+                          label='First Name'
+                          value={email?.first_name}
+                          onChange={(e) => {
+                            setEmail((prev) => ({
+                              ...prev,
+                              first_name: e.target.value,
+                            }));
+                          }}
+                        />
                       </Grid>
-                    </Stack>
-                  </Collapse>
-                  <Stack
-                    direction={'row'}
-                    justifyContent={!openTest ? 'space-between' : 'flex-end'}
-                    alignItems={'center'}
-                  >
-                    {!openTest && (
-                      <Typography variant='body2' maxWidth={'250px'}>
-                        Fill necessary details and enter your email to test
-                      </Typography>
-                    )}
-
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          margin='none'
+                          label='Last Name'
+                          value={email?.last_name}
+                          onChange={(e) => {
+                            setEmail((prev) => ({
+                              ...prev,
+                              last_name: e.target.value,
+                            }));
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          margin='none'
+                          label='Job Title'
+                          value={email.job_title}
+                          onChange={(e) => {
+                            setEmail((prev) => ({
+                              ...prev,
+                              job_title: e.target.value,
+                            }));
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField
+                          fullWidth
+                          margin='none'
+                          label='Company Name'
+                          defaultValue={recruiter?.name}
+                          onChange={(e) => {
+                            setEmail((prev) => ({
+                              ...prev,
+                              company_name: e.target.value,
+                            }));
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          fullWidth
+                          margin='none'
+                          label='Email'
+                          value={email?.email}
+                          onChange={(e) => {
+                            setEmail((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }));
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Stack>
+                </Collapse>
+                <Stack
+                  justifyContent={!openTest ? 'space-between' : 'flex-end'}
+                >
+                  {!openTest && (
+                    <Typography variant='body2'>
+                      See it in Action: Request a Test Mail Input the name and
+                      job title, then use your email to see the feature
+                      firsthand.
+                    </Typography>
+                  )}
+                  <Stack direction={'row'} justifyContent={'flex-end'}>
                     <AUIButton
                       size='small'
                       variant={openTest ? 'outlined' : 'text'}
@@ -334,7 +324,7 @@ const EmailTemplate = () => {
                         }
                       }}
                     >
-                      Test Email
+                      Request a Test Mail
                     </AUIButton>
                   </Stack>
                 </Stack>
@@ -349,9 +339,60 @@ const EmailTemplate = () => {
 
 export default EmailTemplate;
 
-export const templateObj: Record<string, string> = {
-  interview: 'Interview Email',
-  interview_resend: 'Follow up for Interview',
-  rejection: 'Rejection Email',
-  application_recieved: 'Application Recieved Email',
+export const templateObj = {
+  interview: {
+    listing: 'Interview Email',
+    heading: 'Interview Email Settings',
+    description:
+      'Set up a default interview email template. You can make specific changes for individual job posts later.',
+    subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    We are excited to inform you that you have been shortlisted for the [jobTitle] position at [companyName]. We would like to schedule an interview to discuss further.
+    
+    Looking forward to meeting you.
+    
+    Best regards,
+    [senderName]`,
+  },
+  interview_resend: {
+    listing: 'Follow Up Interview',
+    heading: 'Follow Up Interview Email Settings',
+    description:
+      'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
+    subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    We noticed that you haven't given your interview for the [jobTitle] position at [companyName]. Don't miss this opportunity!
+    
+    You're welcome to choose an interview time that suits your schedule.
+    
+    [interviewLink]`,
+  },
+  rejection: {
+    listing: 'Rejection Email',
+    heading: 'Rejection Email Settings',
+    description:
+      'Set up a default interview email template. You can make specific changes for individual job posts later.',
+    subjectPlaceHolder: 'Update on your [jobTitle] interview at [companyName]',
+    bodyPlaceHolder: `Dear [firstName], 
+    
+    After careful consideration, we regret to inform you that we won't be proceeding with your application for the [jobTitle] position. We appreciate your interest in [companyName] and wish you the best in your future endeavors."
+    
+    Best regards,
+    [senderName]`,
+  },
+  application_recieved: {
+    listing: 'Application Recieved Email',
+    heading: 'Application Recieved Email Settings',
+    description:
+      'Set up a default interview email template. You can make specific changes for individual job posts later.',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+    Best regards,
+    [senderName]`,
+  },
 };

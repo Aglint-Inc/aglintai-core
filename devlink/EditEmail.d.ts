@@ -7,4 +7,6 @@ declare function EditEmail(props: {
   onClickSaveChanges?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
   slotForm?: Types.Devlink.Slot;
+  editEmailDescription?: React.ReactNode;
+  slotBottom?: Types.Devlink.Slot;
 }): React.JSX.Element;
