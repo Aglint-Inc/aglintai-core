@@ -216,7 +216,7 @@ const EmailTemplate = ({ title, excerpt, path }: EmailTemplateParams) => {
       >
         <DialogTitle sx={{ background: '#fff' }}>
           <UITypography fontBold='normal' type='large'>
-            Test {title}
+            Test {title.heading}
           </UITypography>
         </DialogTitle>
         <DialogContent>
