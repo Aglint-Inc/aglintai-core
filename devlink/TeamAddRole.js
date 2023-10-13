@@ -8,12 +8,14 @@ export function TeamAddRole({
   slotNameInput,
   slotPermissions,
   slotButton,
+  onClickClose = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-add-user-role")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "aur-close-btn", "clickable")}
         tag="div"
+        {...onClickClose}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

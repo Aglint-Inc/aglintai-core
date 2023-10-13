@@ -8,7 +8,8 @@ import React from 'react';
 import { EditJob } from '@/devlink';
 import toast from '@/src/utils/toast';
 
-import { useJobForm } from './JobPostFormProvider';
+import { JobFormErrorParams } from './CreateFlow';
+import { FormJobType, useJobForm } from './JobPostFormProvider';
 import ApplyForm from './JobPostForms/ApplyForm';
 import StepOne from './JobPostForms/BasicStepOne';
 import StepTwo from './JobPostForms/BasicStepTwo';
@@ -19,11 +20,12 @@ import SyncStatus from './JobPostForms/SyncStatus';
 
 function EditFlow() {
   const { jobForm, dispatch } = useJobForm();
-  const [formError, setFormError] = useState({
+  const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
     company: '',
     location: '',
     department: '',
+    aiQnGen: 0,
   });
   // const [showWarn, setShowWarn] = useState(true);
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
@@ -45,7 +47,7 @@ function EditFlow() {
   } else if (slideNo === 3) {
     formSlide = <ApplyForm />;
   } else if (slideNo == 4) {
-    formSlide = <ScreeningQns />;
+    formSlide = <ScreeningQns setFormError={setFormError} />;
   } else if (slideNo == 5) {
     formSlide = <ScreeningSettings />;
   }
@@ -81,6 +83,66 @@ function EditFlow() {
       if (isEmpty(department.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
+      }
+    }
+
+    if (slideNo === 4) {
+      const interviewConfig = get(
+        jobForm,
+        'formFields.interviewConfig',
+        {},
+      ) as FormJobType['interviewConfig'];
+
+      if (formError.aiQnGen > 0) {
+        toast.error('Please wait till qusetions get generated');
+        return false;
+      }
+
+      let totalQns = 0;
+
+      if (get(interviewConfig, 'cultural.value', false)) {
+        let count = get(interviewConfig, 'cultural.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from culture filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'skill.value', false)) {
+        let count = get(interviewConfig, 'skill.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from skill filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'personality.value', false)) {
+        let count = get(interviewConfig, 'personality.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from personality filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'softSkills.value', false)) {
+        let count = get(interviewConfig, 'softSkills.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from soft skills filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
+      }
+      if (totalQns < 10 || totalQns > 25) {
+        flag = false;
+        toast.error('Please set atleast 10 and at max 25 Questions');
       }
     }
     return flag;
@@ -135,6 +197,13 @@ function EditFlow() {
         type: 'closeForm',
       });
     }
+    setFormError(() => ({
+      jobTitle: '',
+      company: '',
+      location: '',
+      department: '',
+      aiQnGen: 0,
+    }));
   };
   return (
     <>

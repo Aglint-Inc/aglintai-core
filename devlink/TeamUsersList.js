@@ -194,7 +194,7 @@ export function TeamUsersList({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "tu-header-content")}
+            className={_utils.cx(_styles, "tu-header-content", "max-width-500")}
             tag="div"
           >
             <_Builtin.Block

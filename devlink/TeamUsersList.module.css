@@ -24,6 +24,14 @@
   grid-row-gap: 9px;
 }
 
+.max-width-600 {
+  max-width: 600px;
+}
+
+.max-width-500 {
+  max-width: 500px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -197,16 +205,8 @@
   grid-row-gap: 32px;
 }
 
-.max-width-500 {
-  max-width: 500px;
-}
-
 .text-grey-600.width-90 {
   width: 90%;
-}
-
-.max-width-600 {
-  max-width: 600px;
 }
 
 .text-grey-600.mt-5 {
@@ -386,14 +386,12 @@
 
 .cs-team-users-roles {
   display: flex;
-  max-width: 705px;
   flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
 
 .tu-roles-wrapper {
-  display: grid;
   grid-auto-columns: 1fr;
   grid-column-gap: 22px;
   grid-row-gap: 24px;

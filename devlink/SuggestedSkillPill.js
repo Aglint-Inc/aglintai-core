@@ -14,12 +14,7 @@ export function SuggestedSkillPill({
       tag="div"
       {...onClickAdd}
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "small-default-4")}
-        tag="div"
-      >
-        {textSkill}
-      </_Builtin.Block>
+      <_Builtin.Block tag="div">{textSkill}</_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "frame-1091")} tag="div">
         <_Builtin.Image
           className={_utils.cx(_styles, "vectors-wrapper-37")}

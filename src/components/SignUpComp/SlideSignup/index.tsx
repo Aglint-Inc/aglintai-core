@@ -110,13 +110,6 @@ const SlideTwoSignUp = () => {
       options: {
         data: {
           role: 'Recruiter',
-          first_name: details.first_name,
-          last_name: details.last_name,
-          image_url: '',
-          phone: '',
-          email: '',
-          language: '',
-          timezone: '',
         },
       },
     });
@@ -136,6 +129,9 @@ const SlideTwoSignUp = () => {
           .insert({
             user_id: authdata.data.user.id,
             recruiter_id: data[0].id,
+            email: details.email,
+            first_name: details.first_name,
+            last_name: details.last_name || '',
           })
           .select();
         if (!erroruser) {

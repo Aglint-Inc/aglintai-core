@@ -39,7 +39,7 @@ export function SignupSlider({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890203_App%20Logo.svg"
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6527bc4f110b5e72785a18c4_white.svg"
               />
             </_Builtin.Block>
             <_Builtin.SliderWrapper
@@ -120,11 +120,7 @@ export function SignupSlider({
                           tag="div"
                         >
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
                             {"Sarah Lee"}
@@ -132,7 +128,7 @@ export function SignupSlider({
                           <_Builtin.Block
                             className={_utils.cx(
                               _styles,
-                              "text-sm",
+                              "text-md",
                               "fw-semibold"
                             )}
                             tag="div"

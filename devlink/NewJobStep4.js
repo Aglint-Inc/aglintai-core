@@ -34,6 +34,8 @@ export function NewJobStep4({
   isParticularTimeChecked = true,
   slotTime,
   isChooseTimeVisible = false,
+  onClickDisqualifyCheck = {},
+  slotDisqualifyScore,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -140,7 +142,7 @@ export function NewJobStep4({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "check-box-automate-wrapopers"
+                      "check-box-automate-wrappers"
                     )}
                     tag="div"
                   >
@@ -160,13 +162,15 @@ export function NewJobStep4({
                       className={_utils.cx(_styles, "text-grey-600")}
                       tag="div"
                     >
-                      {"Send interview to all candidates"}
+                      {
+                        "Automatically send interview invitations to all candidates."
+                      }
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "check-box-automate-wrapopers"
+                      "check-box-automate-wrappers"
                     )}
                     tag="div"
                   >
@@ -187,7 +191,7 @@ export function NewJobStep4({
                       tag="div"
                     >
                       {
-                        "Invite all candidates to screening having resume score above     :"
+                        "Invite candidates to screening with a resume score above  :"
                       }
                     </_Builtin.Block>
                     <_Builtin.Block tag="div">
@@ -204,17 +208,13 @@ export function NewJobStep4({
                     tag="div"
                   >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+                      className={_utils.cx(_styles, "fw-semibold")}
                       tag="div"
                     >
                       {"When do you want to sent screening emails"}
                     </_Builtin.Block>
                     <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-sm",
-                        "color-grey-600"
-                      )}
+                      className={_utils.cx(_styles, "text-grey-600")}
                       tag="div"
                     >
                       {
@@ -299,7 +299,7 @@ export function NewJobStep4({
               className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
               tag="div"
             >
-              {"Qualification settings"}
+              {"Qualification Criteria"}
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
@@ -383,7 +383,7 @@ export function NewJobStep4({
                   className={_utils.cx(_styles, "fw-semibold", "color-black")}
                   tag="div"
                 >
-                  {"Automatically shortlist candidate"}
+                  {"Invitation Criteria"}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "toggle-btn-block")}
@@ -413,7 +413,7 @@ export function NewJobStep4({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "check-box-automate-wrapopers"
+                      "check-box-automate-wrappers"
                     )}
                     tag="div"
                   >
@@ -434,7 +434,7 @@ export function NewJobStep4({
                       tag="div"
                     >
                       {
-                        "Shortlist all candidates having interview score above :"
+                        "Automatically qualify candidates with an interview score above :"
                       }
                     </_Builtin.Block>
                     <_Builtin.Block tag="div">
@@ -444,7 +444,38 @@ export function NewJobStep4({
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
-                      "check-box-automate-wrapopers",
+                      "check-box-automate-wrappers"
+                    )}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "final-check-box")}
+                      tag="div"
+                      {...onClickDisqualifyCheck}
+                    >
+                      {isShortlistCandidateChecked1 ? (
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7%208.58579L10.2929%205.29289C10.6834%204.90237%2011.3166%204.90237%2011.7071%205.29289C12.0976%205.68342%2012.0976%206.31658%2011.7071%206.70711L7.70711%2010.7071C7.31658%2011.0976%206.68342%2011.0976%206.29289%2010.7071L4.29289%208.70711C3.90237%208.31658%203.90237%207.68342%204.29289%207.29289C4.68342%206.90237%205.31658%206.90237%205.70711%207.29289L7%208.58579Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      ) : null}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-grey-600")}
+                      tag="div"
+                    >
+                      {
+                        "Automatically disqualify candidates with an interview score below :"
+                      }
+                    </_Builtin.Block>
+                    <_Builtin.Block tag="div">
+                      {slotDisqualifyScore}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "check-box-automate-wrappers",
                       "hide"
                     )}
                     tag="div"

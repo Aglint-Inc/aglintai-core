@@ -2,8 +2,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { CompanyInfo } from "./CompanyInfo";
-import { EmailTemplateCard } from "./EmailTemplateCard";
 import { EmailCreateNew } from "./EmailCreateNew";
+import { EmailTemplateCard } from "./EmailTemplateCard";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -3391,7 +3391,8 @@ export function CompanySetting({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-353")} tag="div">
         <_Builtin.TabsWrapper
-          current="Tab 1"
+          className={_utils.cx(_styles, "company-settings-tabs")}
+          current="Tab 3"
           easing="ease"
           fadeIn={300}
           fadeOut={100}
@@ -3449,15 +3450,29 @@ export function CompanySetting({
               </_Builtin.Block>
             </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
-          <_Builtin.TabsContent tag="div">
+          <_Builtin.TabsContent
+            className={_utils.cx(_styles, "cs-tab-content")}
+            tag="div"
+          >
             <_Builtin.TabsPane tag="div" data-w-tab="Tab 1">
-              <_Builtin.Block tag="div">
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cs-tab-content-wrapper",
+                  "company-info"
+                )}
+                tag="div"
+              >
                 {slotCompanyInfo ?? <CompanyInfo />}
               </_Builtin.Block>
             </_Builtin.TabsPane>
             <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
               <_Builtin.Block
-                className={_utils.cx(_styles, "company-jd-wrappers")}
+                className={_utils.cx(
+                  _styles,
+                  "cs-tab-content-wrapper",
+                  "jd-settings"
+                )}
                 tag="div"
               >
                 {slotCompanyJdSetting}
@@ -3465,20 +3480,65 @@ export function CompanySetting({
             </_Builtin.TabsPane>
             <_Builtin.TabsPane tag="div" data-w-tab="Tab 3">
               <_Builtin.Block
-                className={_utils.cx(_styles, "email-temp-wrappers")}
+                className={_utils.cx(
+                  _styles,
+                  "cs-tab-content-wrapper",
+                  "email-settings"
+                )}
                 tag="div"
               >
-                {slotEmailTemplate ?? (
-                  <>
-                    <EmailTemplateCard />
-                    <EmailCreateNew />
-                  </>
-                )}
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "cs-info-header",
+                    "max-width-600"
+                  )}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-f951d516-f1b7-f7ea-9c93-44108fd23327-4b5bf303"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-lg",
+                      "fw-semibold",
+                      "text-grey-500"
+                    )}
+                    tag="div"
+                  >
+                    {"Custom Email Templates"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-600")}
+                    tag="div"
+                  >
+                    {
+                      "Set default email templates that align with your company's branding and voice, ensuring a consistent representation throughout your recruitment journey."
+                    }
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "email-temp-wrappers")}
+                  tag="div"
+                >
+                  {slotEmailTemplate ?? (
+                    <>
+                      <EmailCreateNew />
+                      <EmailTemplateCard />
+                    </>
+                  )}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.TabsPane>
             <_Builtin.TabsPane tag="div" data-w-tab="Tab 4">
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-465")}
+                className={_utils.cx(
+                  _styles,
+                  "cs-tab-content-wrapper",
+                  "team-settings"
+                )}
                 tag="div"
               >
                 {slotTeam}

@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import * as _utils from "./utils";
 import _styles from "./UserProfile.module.css";
 
@@ -65,11 +64,11 @@ export function UserProfile({
               <ButtonOutlinedSmall textLabel="Change profile photo" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
+              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
               tag="div"
             >
               {
-                "Profile picture should be in PNG/SVG format and should ideally have dimensions of 12px x 12px, with a file size of under 5 MB."
+                "Profile picture should be in PNG/SVG format and should ideally have dimensions of 512px x 512px, with a file size of under 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -174,7 +173,7 @@ export function UserProfile({
               tag="div"
               {...onClickEmailChange}
             >
-              <ButtonOutlinedRegular textLabel="Change email" />
+              <ButtonOutlinedSmall textLabel="Change email" />
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

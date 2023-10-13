@@ -19,6 +19,7 @@ export function GenerateJobDescAi({
   slotLottie,
   textLabel1 = "",
   slotCheckBoxes,
+  isCheckSlotVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -81,17 +82,19 @@ export function GenerateJobDescAi({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-check-mark")}
-        tag="div"
-      >
+      {isCheckSlotVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-337")}
+          className={_utils.cx(_styles, "div-check-mark")}
           tag="div"
         >
-          {slotCheckBoxes}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-337")}
+            tag="div"
+          >
+            {slotCheckBoxes}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-rt-generate-btn-relative")}
         tag="div"
