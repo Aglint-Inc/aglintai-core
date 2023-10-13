@@ -6,8 +6,7 @@ export const config = {
   matcher: '/api/:function*',
 };
 
-// const whiteListedEndPoints =['/api/payment/']
-const whiteListedEndPoints = ['/api/sendgrid'];
+const whiteListedEndPoints = ['/api/sendgrid', 'api/ai/gpt3-5-turbo'];
 
 export async function middleware(request) {
   if (isUrlWhiteListed(request.url)) {
