@@ -3,8 +3,8 @@ import * as Types from "./types";
 
 declare function NewJobStep4(props: {
   as?: React.ElementType;
-  slotAiFeedbackToggle?: Types.Devlink.Slot;
-  isHeaderVisible?: Types.Visibility.VisibilityConditions;
-  isSettingHeadingVisible?: Types.Visibility.VisibilityConditions;
-  slotScreening?: Types.Devlink.Slot;
+  slotInterviewWorkflow?: Types.Devlink.Slot;
+  slotInterviewEmail?: Types.Devlink.Slot;
+  slotApplicationWorkflow?: Types.Devlink.Slot;
+  slotDisqualifyEmail?: Types.Devlink.Slot;
 }): React.JSX.Element;
