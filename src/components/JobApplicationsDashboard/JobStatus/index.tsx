@@ -2,7 +2,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Collapse, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import Switch from '@mui/material/Switch';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useState } from 'react';
 
@@ -14,6 +13,7 @@ import {
   RecPrimaryBtn,
   ToggleSelectDropdown,
 } from '@/devlink2';
+import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { StatusJobs } from '@/src/types/data.types';
@@ -174,12 +174,10 @@ const SideDrawerContent = ({
   status: Status;
   statusInfo: StatusInfo;
 }) => {
-  const [expand, setExpand] = useState(false);
   const { handleJobUpdate } = useJobs();
   const { job } = useJobApplications();
   const jobId = job.id;
   const [loading, setLoading] = useState(false);
-
   const handleJobStatusInactive = async () => {
     setLoading(true);
     await handleJobUpdate(jobId, {
@@ -192,9 +190,7 @@ const SideDrawerContent = ({
       },
     });
     setLoading(false);
-    setExpand(false);
   };
-  const checked = statusInfo.active || statusInfo.scheduled || expand;
   return (
     <Stack
       style={
@@ -204,48 +200,38 @@ const SideDrawerContent = ({
       }
     >
       <ToggleSelectDropdown
+        isSourcing={statusInfo.flow === 'sourcing'}
+        isInterviewing={statusInfo.flow === 'interviewing'}
         dropdownTitle={capitalize(statusInfo.flow)}
-        slotToggleBtn={
-          <Switch
-            checked={checked}
-            onClick={async () => {
-              if (statusInfo.active || statusInfo.scheduled)
-                await handleJobStatusInactive();
-              else setExpand((prev) => !prev);
-            }}
-            sx={{
-              '.MuiSwitch-thumb': {
-                color: `${checked ? '#337fbd' : '#ffffff'} !important`,
-                boxShadow: '1px 2px 2px 1px #ddd',
-              },
-              '.MuiSwitch-track': {
-                backgroundColor: `${
-                  checked ? '#98bedd' : '#c5c5c7'
-                } !important`,
-              },
-            }}
-          />
-        }
         statusProps={{ style: statusInfo.style }}
         isSchedule={statusInfo.scheduled}
         isNotSchedule={!statusInfo.scheduled}
         slotSelection={
           <>
-            <Collapse in={expand}>
+            <Collapse in={!statusInfo.active}>
               <JobSchedules
                 jobId={jobId}
                 status={status}
-                flow={statusInfo.flow}
+                statusInfo={statusInfo}
                 setLoading={setLoading}
-                setExpand={setExpand}
                 isSchedule={statusInfo.scheduled}
+                handleJobStatusInactive={handleJobStatusInactive}
               />
             </Collapse>
-            <Collapse in={!expand}>
-              <JobStatusDescription
-                statusInfo={statusInfo}
-                onClick={() => setExpand(true)}
-              />
+            <Collapse in={statusInfo.active}>
+              <Stack gap={2}>
+                <Stack color={'rgb(128,128,128)'}>
+                  {`${capitalize(statusInfo.flow)} is now active`}
+                </Stack>
+                <Stack width={'75px'}>
+                  <ButtonDangerOutlinedRegular
+                    buttonText={'Stop'}
+                    buttonProps={{
+                      onClick: async () => await handleJobStatusInactive(),
+                    }}
+                  />
+                </Stack>
+              </Stack>
             </Collapse>
           </>
         }
@@ -273,11 +259,8 @@ export const getStatusInfo = (
   const secondaryStatus =
     status.timeStamp !== null
       ? status.isActive
-        ? `${capitalize(flow)} is active`
-        : `${capitalize(flow)} starts on ${dayjs(status.timeStamp).format(
-            'DD MMM, YYYY',
-            // 'DD MMM, YYYY, hh:mm a',
-          )}`
+        ? `Active`
+        : `Scheduled on ${dayjs(status.timeStamp).format('DD MMM, YYYY')}`
       : `${capitalize(flow)} is off`;
   const primaryStatus =
     status.timeStamp !== null
@@ -300,19 +283,20 @@ export const getStatusInfo = (
 
 const JobSchedules = ({
   jobId,
-  flow,
   status,
-  setExpand,
+  statusInfo,
   setLoading,
   isSchedule,
+  handleJobStatusInactive,
 }: {
   jobId: string;
-  flow: Flow;
   status: Status;
-  setExpand: Dispatch<SetStateAction<boolean>>;
+  statusInfo: StatusInfo;
   setLoading: Dispatch<SetStateAction<boolean>>;
   isSchedule: boolean;
+  handleJobStatusInactive: () => Promise<void>;
 }) => {
+  const flow = statusInfo.flow;
   const [start, setStart] = useState(status[flow].timeStamp ? false : true);
   const timeStamp = status[flow].timeStamp
     ? dayjs(status[flow].timeStamp).format(`YYYY-MM-DDTHH:mm`)
@@ -340,7 +324,6 @@ const JobSchedules = ({
       },
     });
     setLoading(false);
-    setExpand(false);
   };
   return (
     <JobStatusSelectBlock
@@ -365,47 +348,33 @@ const JobSchedules = ({
         />
       }
       slotButtons={
-        <RecPrimaryBtn
-          isDisabled={start ? false : disabled}
-          buttonText={getButtonText(isSchedule, start)}
-          onClickButton={{ onClick: async () => await handleJobStatusUpdate() }}
-        />
+        <>
+          {!statusInfo.active && (
+            <RecPrimaryBtn
+              isDisabled={start ? false : disabled}
+              buttonText={getButtonText(isSchedule, start)}
+              onClickButton={{
+                onClick: async () => await handleJobStatusUpdate(),
+              }}
+            />
+          )}
+          {(statusInfo.active || statusInfo.scheduled) && (
+            <ButtonDangerOutlinedRegular
+              buttonText={'Stop'}
+              buttonProps={{
+                onClick: async () => await handleJobStatusInactive(),
+              }}
+            />
+          )}
+        </>
       }
+      scheduleText={statusInfo.scheduled ? 'Reschedule' : 'Schedule'}
     />
   );
 };
 
 const getButtonText = (isSchedule: boolean, isStart: boolean) => {
-  return isStart ? 'Start' : isSchedule ? 'Reschedule' : 'Schedule';
-};
-
-const JobStatusDescription = ({
-  statusInfo,
-  onClick,
-}: {
-  statusInfo: StatusInfo;
-  onClick: () => void;
-}) => {
-  return (
-    <Stack
-      style={{
-        color: statusInfo.scheduled ? '#337fbd' : 'grey',
-        textDecoration: statusInfo.scheduled ? 'underline' : 'none',
-        cursor: statusInfo.scheduled ? 'pointer' : 'default',
-      }}
-      onClick={() => {
-        if (statusInfo.scheduled) onClick();
-      }}
-    >
-      {statusInfo.scheduled
-        ? 'Change Schedule'
-        : statusInfo.active
-        ? statusInfo.flow === 'sourcing'
-          ? 'Candidates can submit their applications now. Turn off the toggle to stop receiving submissions.'
-          : 'Candidates can take their interviews now. Turn off the toggle to stop conducting interviews.'
-        : `Turn on the toggle to start ${statusInfo.flow}.`}
-    </Stack>
-  );
+  return isStart ? 'Start now' : isSchedule ? 'Reschedule' : 'Schedule';
 };
 
 const JobScheduleBody = ({

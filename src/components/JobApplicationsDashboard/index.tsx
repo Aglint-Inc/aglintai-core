@@ -74,8 +74,8 @@ const JobApplicationComponent = () => {
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
   const [sort] = useState<SortParameter>({
-    parameter: 'name',
-    condition: 'asc',
+    parameter: 'resume_score',
+    condition: 'desc',
   });
 
   const [filters] = useState<FilterParameter[]>([
