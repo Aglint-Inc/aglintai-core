@@ -6,4 +6,5 @@ declare function WelcomeSlider1(props: {
   onClickCompany?: Types.Devlink.RuntimeProps;
   onClickAgency?: Types.Devlink.RuntimeProps;
   onClickConsultant?: Types.Devlink.RuntimeProps;
+  onClickSignIn?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

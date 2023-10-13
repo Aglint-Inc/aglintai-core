@@ -81,7 +81,7 @@ export function CompanyInfo({
               tag="div"
             >
               {
-                "Logo should be in PNG/SVG format and should ideally have dimensions of 512px x 512px, with a file size of under 5 MB."
+                "Please upload your logo in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>

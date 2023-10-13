@@ -108,8 +108,8 @@ export function JobCandidateCard({
                 >
                   <_Builtin.Image
                     className={_utils.cx(_styles, "vectors-wrapper-46")}
-                    width={11.999947547912598}
-                    height={11.999947547912598}
+                    width="11.999947547912598"
+                    height="11.999947547912598"
                     loading="lazy"
                     src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb624dfe721c77c1cf3f_Vectors-Wrapper.svg"
                   />
@@ -134,8 +134,8 @@ export function JobCandidateCard({
                 >
                   <_Builtin.Image
                     className={_utils.cx(_styles, "vectors-wrapper-43")}
-                    width={12}
-                    height={12}
+                    width="12"
+                    height="12"
                     loading="lazy"
                     src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb634328f76be652b614_Vectors-Wrapper.svg"
                   />
@@ -198,8 +198,8 @@ export function JobCandidateCard({
               >
                 <_Builtin.Image
                   className={_utils.cx(_styles, "vectors-wrapper-47")}
-                  width={10}
-                  height={8.676880836486816}
+                  width="10"
+                  height="8.676880836486816"
                   loading="lazy"
                   src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504bb65d61e8c06f83171d1_Vectors-Wrapper.svg"
                 />

@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { WelcomeSlider4 } from "./WelcomeSlider4";
 import * as _utils from "./utils";
 import _styles from "./SignupSlider.module.css";
 
@@ -687,7 +686,6 @@ export function SignupSlider({
                     </_Builtin.Link>
                   </_Builtin.Block>
                 </_Builtin.Block>
-                <WelcomeSlider4 />
               </>
             )}
           </_Builtin.Block>

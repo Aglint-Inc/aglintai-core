@@ -70,6 +70,11 @@ const SignUpComp = () => {
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
               }}
+              onClickSignIn={{
+                onClick: () => {
+                  router.push(`?step=signin`, undefined, { shallow: true });
+                },
+              }}
             />
           ) : step == stepObj.signup ? (
             <YTransform uniqueKey={step}>
