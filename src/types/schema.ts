@@ -1166,7 +1166,7 @@ export interface Database {
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           jd_score: Json | null
-          job_id: string | null
+          job_id: string
           job_location: string | null
           job_title: string | null
           json_resume: Json | null
@@ -1207,7 +1207,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id: string
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1248,7 +1248,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id?: string
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -2350,6 +2350,7 @@ export interface Database {
       public_jobs: {
         Row: {
           active_status: Json
+          application_count: Json
           benefits: string[] | null
           company: string | null
           company_details: string | null
@@ -2379,6 +2380,7 @@ export interface Database {
         }
         Insert: {
           active_status?: Json
+          application_count?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
@@ -2408,6 +2410,7 @@ export interface Database {
         }
         Update: {
           active_status?: Json
+          application_count?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
@@ -2537,6 +2540,7 @@ export interface Database {
           phone_number: string | null
           primary_contact: Json | null
           recruiter_type: string | null
+          roles: Json
           socials: Json | null
           technology_score: string[]
           workplace_type: Json
@@ -2565,6 +2569,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
+          roles?: Json
           socials?: Json | null
           technology_score?: string[]
           workplace_type?: Json
@@ -2593,6 +2598,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
+          roles?: Json
           socials?: Json | null
           technology_score?: string[]
           workplace_type?: Json
@@ -2602,18 +2608,39 @@ export interface Database {
       recruiter_user: {
         Row: {
           created_at: string
+          email: string | null
+          first_name: string | null
+          join_status: string
+          joined_at: string | null
+          last_name: string | null
+          phone: string | null
+          profile_image: string | null
           recruiter_id: string
           role: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          email?: string | null
+          first_name?: string | null
+          join_status?: string
+          joined_at?: string | null
+          last_name?: string | null
+          phone?: string | null
+          profile_image?: string | null
           recruiter_id: string
           role?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          email?: string | null
+          first_name?: string | null
+          join_status?: string
+          joined_at?: string | null
+          last_name?: string | null
+          phone?: string | null
+          profile_image?: string | null
           recruiter_id?: string
           role?: string
           user_id?: string
@@ -3457,6 +3484,14 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      add_application_count: {
+        Args: {
+          job_id: string
+          key_to_update: string
+          count_to_add: number
+        }
+        Returns: Json
+      }
       chat_notification_upsert: {
         Args: {
           in_assignment_id: string
@@ -3487,6 +3522,16 @@ export interface Database {
       get_souring_scheduled_jobs: {
         Args: Record<PropertyKey, never>
         Returns: Json[]
+      }
+      getjobapplications: {
+        Args: {
+          ids: string[]
+        }
+        Returns: {
+          job_id: string
+          status: string
+          count: number
+        }[]
       }
       getquerieswithmessagesbyassignmentid: {
         Args: {
@@ -3589,6 +3634,15 @@ export interface Database {
           last_updated_at: string
           queries: string[] | null
         }[]
+      }
+      update_application_count: {
+        Args: {
+          job_id: string
+          from_key: string
+          to_key: string
+          count_to_move: number
+        }
+        Returns: Json
       }
     }
     Enums: {
