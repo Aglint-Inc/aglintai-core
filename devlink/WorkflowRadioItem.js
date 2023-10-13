@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { WorkflowRangeBlock } from "./WorkflowRangeBlock";
 import * as _utils from "./utils";
 import _styles from "./WorkflowRadioItem.module.css";
 
@@ -19,6 +18,7 @@ export function WorkflowRadioItem({
       <_Builtin.Block
         className={_utils.cx(_styles, "flex-hor-left", "center-align", "gap-6")}
         tag="div"
+        {...onClick}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "radio-wrapper")}
@@ -38,7 +38,7 @@ export function WorkflowRadioItem({
         className={_utils.cx(_styles, "_wf-radio-range-wrapper")}
         tag="div"
       >
-        {slotScore ?? <WorkflowRangeBlock />}
+        {slotScore}
       </_Builtin.Block>
     </_Component>
   );

@@ -58,12 +58,14 @@
 
 @media screen and (max-width: 991px) {
   .div-block-271 {
+    z-index: 6;
     background-color: var(--white-80449ce7);
   }
 }
 
 @media screen and (max-width: 479px) {
   .div-block-271 {
+    padding-top: 10px;
     padding-bottom: 10px;
     flex-direction: column;
     align-items: stretch;

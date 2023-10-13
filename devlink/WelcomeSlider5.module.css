@@ -27,6 +27,13 @@
   opacity: 1;
 }
 
+@media screen and (max-width: 767px) {
+  .auth-right-block.join-us {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
 .join-us {
   flex-direction: column;
 }
@@ -34,6 +41,20 @@
 .auth-right-block.su-step-one {
   display: flex;
   opacity: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-right-block.su-step-one {
+    padding-left: 0px;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .auth-right-block.su-step-one {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
 }
 
 .su-step-one {
@@ -64,11 +85,40 @@
   opacity: 1;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-right-block.login-sign {
+    padding-left: 0px;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .auth-right-block.login-sign {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
 .auth-right-block.sign-up-sign {
   display: flex;
   grid-column-gap: 80px;
   grid-row-gap: 80px;
   opacity: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-right-block.sign-up-sign {
+    padding-left: 0px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .auth-right-block.sign-up-sign {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
 }
 
 .auth-right-block.su-step-two-profile {
@@ -77,6 +127,19 @@
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   opacity: 1;
+}
+
+@media screen and (max-width: 767px) {
+  .auth-right-block.su-step-two-profile {
+    padding-left: 0px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .auth-right-block.su-step-two-profile {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
 }
 
 .ju-right-top {
@@ -112,6 +175,18 @@
   color: var(--grey700-7fbe857b);
 }
 
+@media screen and (max-width: 767px) {
+  .back-btn-wrapper {
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .back-btn-wrapper {
+    margin-left: 0px;
+  }
+}
+
 .back-icon {
   width: 14px;
   height: 14px;
@@ -143,6 +218,18 @@
   align-items: flex-end;
 }
 
+@media screen and (max-width: 991px) {
+  .su-step-count-wrapper {
+    padding-right: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .su-step-count-wrapper {
+    padding-right: 0px;
+  }
+}
+
 .su-steps-count {
   color: hsla(0, 0.00%, 74.12%, 1.00);
 }
@@ -166,6 +253,18 @@
   grid-row-gap: 24px;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-cta-block.sign-up {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .auth-cta-block.sign-up.tab-edit {
+    align-items: stretch;
+  }
+}
+
 .auth-cta-block.join-us {
   display: none;
 }
@@ -178,11 +277,37 @@
   grid-row-gap: 60px;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-cta-block.su-step-two {
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .auth-cta-block.su-step-two {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .auth-cta-block.su-step-two {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
+
 .auth-cta-block.su-success {
   margin-top: 90px;
   justify-content: flex-start;
   grid-column-gap: 60px;
   grid-row-gap: 60px;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-cta-block.tab-edit {
+    align-items: center;
+  }
 }
 
 .auth-header-block {
@@ -192,6 +317,14 @@
   align-items: flex-start;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-header-block {
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .auth-header-block.join-us {
@@ -358,6 +491,12 @@
   text-align: left;
 }
 
+@media screen and (max-width: 991px) {
+  .ju-header-description {
+    text-align: center;
+  }
+}
+
 .ju-header-description.text-align-center {
   text-align: center;
 }
@@ -416,6 +555,18 @@
   grid-template-rows: auto;
 }
 
+@media screen and (max-width: 767px) {
+  .div-block-263 {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .div-block-263 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .su-two-company-logo {
   display: flex;
   width: 136px;
@@ -427,6 +578,13 @@
   border-radius: 10px;
 
   background-color: var(--gray100-3a86b552);
+}
+
+@media screen and (max-width: 767px) {
+  .su-two-company-logo {
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .div-block-262 {

@@ -76,6 +76,25 @@ export const getSeedJobFormData = (
           emailTemplates: {},
         },
       },
+      newScreeningConfig: {
+        screening: {
+          qualificationRange: null,
+          isManual: false,
+        },
+        interview: {
+          qualificationRange: null,
+          isManual: false,
+        },
+        interviewMail: {
+          timestamp: null,
+          isManual: false,
+        },
+        disqualifiedMail: {
+          timestamp: null,
+          isManual: false,
+        },
+        feedbackVisible: false,
+      },
       recruiterId: '',
     },
   };
@@ -218,6 +237,41 @@ export const dbToClientjobPostForm = (
       skills: get(jobPost, 'skills', []),
       jobTitle: jobPost.job_title,
       jobType: jobPost.job_type,
+      newScreeningConfig: {
+        screening: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.screening',
+            seedData.formFields.newScreeningConfig.screening,
+          ) as any),
+        },
+        interview: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.interview',
+            seedData.formFields.newScreeningConfig.interview,
+          ) as any),
+        },
+        interviewMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.interviewMail',
+            seedData.formFields.newScreeningConfig.interviewMail,
+          ) as any),
+        },
+        disqualifiedMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.disqualifiedMail',
+            seedData.formFields.newScreeningConfig.disqualifiedMail,
+          ) as any),
+        },
+        feedbackVisible: get(
+          jobPost,
+          'new_screening_setting.feedbackVisible',
+          seedData.formFields.newScreeningConfig.feedbackVisible,
+        ) as boolean,
+      },
       screeningConfig: {
         screening: {
           ...get(

@@ -2365,6 +2365,7 @@ export interface Database {
           job_type: string | null
           location: string | null
           logo: string | null
+          new_screening_setting: Json
           overview: string | null
           posted_by: string
           qualifications: string[] | null
@@ -2395,6 +2396,7 @@ export interface Database {
           job_type?: string | null
           location?: string | null
           logo?: string | null
+          new_screening_setting?: Json
           overview?: string | null
           posted_by?: string
           qualifications?: string[] | null
@@ -2425,6 +2427,7 @@ export interface Database {
           job_type?: string | null
           location?: string | null
           logo?: string | null
+          new_screening_setting?: Json
           overview?: string | null
           posted_by?: string
           qualifications?: string[] | null
@@ -3393,6 +3396,30 @@ export interface Database {
           }
         ]
       }
+      test_db: {
+        Row: {
+          embedding: string | null
+          id: number
+          json: Json | null
+          name: string
+          text: string
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          json?: Json | null
+          name: string
+          text: string
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          json?: Json | null
+          name?: string
+          text?: string
+        }
+        Relationships: []
+      }
       url_auth: {
         Row: {
           auth_token: string
@@ -3484,6 +3511,14 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      add_application_count: {
+        Args: {
+          job_id: string
+          key_to_update: string
+          count_to_add: number
+        }
+        Returns: Json
+      }
       chat_notification_upsert: {
         Args: {
           in_assignment_id: string
@@ -3514,6 +3549,16 @@ export interface Database {
       get_souring_scheduled_jobs: {
         Args: Record<PropertyKey, never>
         Returns: Json[]
+      }
+      getjobapplications: {
+        Args: {
+          ids: string[]
+        }
+        Returns: {
+          job_id: string
+          status: string
+          count: number
+        }[]
       }
       getquerieswithmessagesbyassignmentid: {
         Args: {
@@ -3568,131 +3613,20 @@ export interface Database {
           user_id: string | null
         }
       }
+      interviewing_state_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      test_all_rows: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          created_at: string
-          employer_logo: string | null
-          employer_name: string | null
-          employer_website: string | null
-          is_public: boolean
-          job_apply_is_direct: boolean | null
-          job_apply_link: string | null
-          job_apply_quality_score: string | null
-          job_benefits: string[] | null
-          job_city: string | null
-          job_country: string | null
-          job_description: string | null
-          job_employment_type: string | null
-          job_experience_in_place_of_education: boolean | null
-          job_google_link: string | null
-          job_highlights: Json | null
-          job_id: string
-          job_is_remote: boolean | null
-          job_latitude: string | null
-          job_longitude: string | null
-          job_max_salary: number | null
-          job_min_salary: number | null
-          job_offer_expiration_datetime_utc: string | null
-          job_offer_expiration_timestamp: number | null
-          job_onet_job_zone: string | null
-          job_onet_soc: string | null
-          job_posted_at_datetime_utc: string | null
-          job_posted_at_timestamp: number | null
-          job_posting_language: string | null
-          job_publisher: string | null
-          job_required_education: Json | null
-          job_required_experience: Json | null
-          job_required_skills: string | null
-          job_salary_currency: string | null
-          job_salary_period: string | null
-          job_search_id: string | null
-          job_state: string | null
-          job_title: string | null
-          last_updated_at: string
-          queries: string[] | null
-        }[]
-      }
-      update_application_count:
-        | {
-            Args: {
-              job_id: string
-              key_to_update: string
-              count_to_add: number
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              from_key: string
-              to_key: string
-              count_to_move: number
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              count_to_add: number
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              count_to_add: number
-              status_to_add: string
-            }
-            Returns: Json
-          }
-      update_application_count2:
-        | {
-            Args: {
-              job_id: string
-              count_to_add: number
-              status_to_add: string
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              count_to_add: number
-              status_to_add: string
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              key_to_update: string
-              count_to_add: number
-            }
-            Returns: Json
-          }
-        | {
-            Args: {
-              job_id: string
-              count_to_add: number
-            }
-            Returns: Json
-          }
-      update_application_count23: {
+      update_application_count: {
         Args: {
           job_id: string
-          source: string
-          count_to_add: number
+          from_key: string
+          to_key: string
+          count_to_move: number
         }
         Returns: Json
       }

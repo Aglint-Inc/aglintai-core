@@ -200,11 +200,11 @@
   align-items: center;
 }
 
-.toggle-dropdown-content {
+.toggle-dropdown-content-wrapper {
   overflow: hidden;
 }
 
-.tog-dropdown-content-block {
+.toggle-dropdown-content-block {
   display: flex;
   padding: 5px 16px 12px;
   flex-direction: column;

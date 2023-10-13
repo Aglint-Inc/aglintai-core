@@ -13,6 +13,7 @@ export function JobStatusSelectBlock({
   isSchedule = true,
   slotBody,
   slotButtons,
+  scheduleText = "Schedule",
 }) {
   return (
     <_Component
@@ -66,7 +67,7 @@ export function JobStatusSelectBlock({
             className={_utils.cx(_styles, "radio-label")}
             tag="div"
           >
-            {"Schedule"}
+            {scheduleText}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

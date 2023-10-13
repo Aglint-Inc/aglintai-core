@@ -104,6 +104,14 @@
   grid-row-gap: 12px;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-header-block {
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 .auth-header-block.join-us {
   display: flex;
 }
@@ -357,6 +365,12 @@
   color: rgba(134, 146, 166, 1);
   font-weight: 400;
   text-align: left;
+}
+
+@media screen and (max-width: 991px) {
+  .ju-header-description {
+    text-align: center;
+  }
 }
 
 .ju-header-description.text-align-center {
