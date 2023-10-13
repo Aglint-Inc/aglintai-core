@@ -1,6 +1,21 @@
 .radio-button-wrappers {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.flex-hor-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.flex-hor-left.center-align {
+  align-items: center;
+}
+
+.flex-hor-left.center-align.gap-6 {
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }
@@ -42,4 +57,12 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+._wf-radio-range-wrapper {
+  display: flex;
+  margin-left: 20px;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }

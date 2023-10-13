@@ -11,10 +11,6 @@ const _interactionsData = JSON.parse(
 
 export function WorkflowInterviewScreening({
   as: _Component = _Builtin.Block,
-  slotAutomateScreeningToggle,
-  onClickParticularTimeCheck = {},
-  isParticularTimeChecked = true,
-  slotAutomatedScreeningCount2,
   slotRadioButtons,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
@@ -43,9 +39,7 @@ export function WorkflowInterviewScreening({
               className={_utils.cx(_styles, "toggle-btn-block")}
               data-w-id="5d04e353-fade-21e1-c0f9-2e052a2391ef"
               tag="div"
-            >
-              {slotAutomateScreeningToggle}
-            </_Builtin.Block>
+            />
           </_Builtin.Block>
           <_Builtin.List
             className={_utils.cx(_styles, "workflow-description-list")}

@@ -214,7 +214,6 @@
 .text-xxl {
   font-size: 26px;
   line-height: 1.23;
-  text-transform: capitalize;
 }
 
 @media screen and (max-width: 767px) {
@@ -274,6 +273,24 @@
   .hide {
     display: none;
   }
+}
+
+.text-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.text-xxl.fw-semibold.text-grey-700.inline-start {
+  display: inline;
+  margin-left: 5px;
+}
+
+.text-xxl.fw-semibold.inline-at {
+  display: inline;
+}
+
+.text-xxl.fw-semibold.inline-start {
+  display: inline;
+  margin-left: 5px;
 }
 
 .text-xxl.fw-semibold {

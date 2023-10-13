@@ -11,10 +11,6 @@ const _interactionsData = JSON.parse(
 
 export function WorkflowInterviewEmail({
   as: _Component = _Builtin.Block,
-  slotAutomateScreeningToggle,
-  onClickParticularTimeCheck = {},
-  isParticularTimeChecked = true,
-  slotAutomatedScreeningCount2,
   slotRadioButtons,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
@@ -42,9 +38,7 @@ export function WorkflowInterviewEmail({
             <_Builtin.Block
               className={_utils.cx(_styles, "toggle-btn-block")}
               tag="div"
-            >
-              {slotAutomateScreeningToggle}
-            </_Builtin.Block>
+            />
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             {"Configure when to dispatch interview emails to candidates :"}

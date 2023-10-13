@@ -49,12 +49,7 @@ export function UserProfile({
             className={_utils.cx(_styles, "div-block-460")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-324")}
-              tag="div"
-            >
-              {slotUserImage}
-            </_Builtin.Block>
+            {slotUserImage}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-458")}
@@ -100,7 +95,7 @@ export function UserProfile({
             {slotUserForm}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-hor-left")}
+            className={_utils.cx(_styles, "flex-hor-right")}
             tag="div"
           >
             <_Builtin.Block
@@ -112,7 +107,7 @@ export function UserProfile({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "profile-block")}
+          className={_utils.cx(_styles, "profile-block", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -138,7 +133,7 @@ export function UserProfile({
             {slotPreferenceForm}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-hor-left")}
+            className={_utils.cx(_styles, "flex-hor-right")}
             tag="div"
           >
             <_Builtin.Block

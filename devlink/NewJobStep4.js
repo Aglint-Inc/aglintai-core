@@ -14,13 +14,9 @@ const _interactionsData = JSON.parse(
 
 export function NewJobStep4({
   as: _Component = _Builtin.Block,
-  slotAutomateScreeningToggle,
-  slotAutomatedScreeningCount2,
   slotAiFeedbackToggle,
   isHeaderVisible = true,
   isSettingHeadingVisible = true,
-  onClickParticularTimeCheck = {},
-  isParticularTimeChecked = true,
   slotScreening,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
@@ -61,24 +57,9 @@ export function NewJobStep4({
         {slotScreening ?? (
           <>
             <WorkflowApplicationScreening />
-            <WorkflowInterviewScreening
-              slotAutomateScreeningToggle={slotAutomateScreeningToggle}
-              onClickParticularTimeCheck={onClickParticularTimeCheck}
-              isParticularTimeChecked={isParticularTimeChecked}
-              slotAutomatedScreeningCount2={slotAutomatedScreeningCount2}
-            />
-            <WorkflowInterviewEmail
-              slotAutomateScreeningToggle={slotAutomateScreeningToggle}
-              onClickParticularTimeCheck={onClickParticularTimeCheck}
-              isParticularTimeChecked={isParticularTimeChecked}
-              slotAutomatedScreeningCount2={slotAutomatedScreeningCount2}
-            />
-            <WorkflowRejectEmail
-              slotAutomateScreeningToggle={slotAutomateScreeningToggle}
-              onClickParticularTimeCheck={onClickParticularTimeCheck}
-              isParticularTimeChecked={isParticularTimeChecked}
-              slotAutomatedScreeningCount2={slotAutomatedScreeningCount2}
-            />
+            <WorkflowInterviewScreening />
+            <WorkflowInterviewEmail />
+            <WorkflowRejectEmail />
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-278", "hide")}
               tag="div"

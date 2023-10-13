@@ -1,5 +1,6 @@
 .radio-button-wrappers {
   display: flex;
+  flex-direction: column;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;

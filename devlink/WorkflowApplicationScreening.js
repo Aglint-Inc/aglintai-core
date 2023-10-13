@@ -11,8 +11,6 @@ const _interactionsData = JSON.parse(
 
 export function WorkflowApplicationScreening({
   as: _Component = _Builtin.Block,
-  isAllChecked = false,
-  onClickAll = {},
   slotRadioButtons,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
@@ -81,12 +79,7 @@ export function WorkflowApplicationScreening({
               )}
               tag="div"
             >
-              {slotRadioButtons ?? (
-                <WorkflowRadioItem
-                  onClick={onClickAll}
-                  isChecked={isAllChecked}
-                />
-              )}
+              {slotRadioButtons ?? <WorkflowRadioItem />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

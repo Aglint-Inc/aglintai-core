@@ -21,7 +21,7 @@ export function NavMenuBottom({
     >
       {isNotificationVisible ? (
         <_Builtin.Link
-          className={_utils.cx(_styles, "nav_sublink")}
+          className={_utils.cx(_styles, "nav_sublink", "hide")}
           button={false}
           id="cover-letter"
           options={{

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import {
   BriefcaseIcon,
-  CandidateIcon,
+  // CandidateIcon, 
   NavJobSubLink,
   TicketSublink,
 } from '@/devlink';
@@ -207,12 +207,12 @@ const navList = [
     SubComponents: <JobSubNavbar />,
     route: pageRoutes.JOBS,
   },
-  {
-    icon: <CandidateIcon />,
-    text: 'Candidates',
-    SubComponents: '',
-    route: pageRoutes.CANDIDATES,
-  },
+  // {
+  //   icon: <CandidateIcon />,
+  //   text: 'Candidates',
+  //   SubComponents: '',
+  //   route: pageRoutes.CANDIDATES,
+  // },
   {
     icon: <ChatIcon />,
     text: 'Tickets',
