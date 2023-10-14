@@ -1,4 +1,11 @@
-import { Avatar, Drawer, Stack } from '@mui/material';
+import {
+  Avatar,
+  Drawer,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useState } from 'react';
@@ -27,27 +34,39 @@ import { capitalize } from '../JobApplicationsDashboard/utils';
 dayjs.extend(relativeTime);
 
 function Support() {
-  const { tickets, openTicket, setOpenTicket, allChecked, setAllChecked } =
-    useSupportContext();
+  const {
+    tickets,
+    openTicket,
+    // setOpenTicket,
+    setOpenTicketIndex,
+    allChecked,
+    setAllChecked,
+    sort,
+    setSort,
+    sortOrder,
+    setSortOrder,
+    search,
+    setSearch,
+  } = useSupportContext();
   return (
     <>
       <Drawer
         open={Boolean(openTicket)}
         onClose={() => {
-          setOpenTicket(null);
+          setOpenTicketIndex(-1);
         }}
         anchor={'right'}
       >
         <SupportTicketDetails
           ticketProp={openTicket}
           onClose={() => {
-            setOpenTicket(null);
+            setOpenTicketIndex(-1);
           }}
         />
       </Drawer>
       <AllTickets
-        slotTicketList={tickets.map((ticket) => (
-          <Ticket key={ticket.id} ticket={ticket} />
+        slotTicketList={tickets.map((ticket, index) => (
+          <Ticket key={ticket.id} ticket={ticket} index={index} />
         ))}
         onClickAllTicketCheck={{
           onClick: () => {
@@ -55,6 +74,87 @@ function Support() {
           },
         }}
         isAllTicketChecked={allChecked}
+        onClickPriority={{
+          onClick: () => {
+            if (sort === 'priority') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('priority');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortPriorityArrowVisible={sort === 'priority'}
+        onClickSortCandidateName={{
+          onClick: () => {
+            if (sort === 'name') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('name');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortCandidateArrowVisible={sort === 'name'}
+        onClickSortAssignee={{
+          onClick: () => {
+            if (sort === 'assignee') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('assignee');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortAssigneeArrowVisible={sort === 'assignee'}
+        onClickSortStatus={{
+          onClick: () => {
+            if (sort === 'status') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('status');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortStatusVisible={sort === 'status'}
+        onClickSortLastUpdate={{
+          onClick: () => {
+            if (sort === 'lastUpdate') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('lastUpdate');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortUpdateArrowVisible={sort === 'lastUpdate'}
+        onClickSortJobInfo={{
+          onClick: () => {
+            if (sort === 'jobInfo') {
+              // @ts-ignore
+              setSortOrder(-1 * sortOrder);
+            } else {
+              setSort('jobInfo');
+              setSortOrder(1);
+            }
+          },
+        }}
+        isSortJobArrowVisible={sort === 'jobInfo'}
+        slotSearch={
+          <CustomTextField
+            placeholder='Search'
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+        }
       />
     </>
   );
@@ -63,11 +163,13 @@ export default Support;
 
 const Ticket = ({
   ticket,
+  index,
 }: {
   ticket: Support_ticketType & { jobsDetails: Public_jobsType };
+  index: number;
 }) => {
   const { updateTicket, allAssignee } = useSupportContext();
-  const { setOpenTicket, allChecked } = useSupportContext();
+  const { setOpenTicketIndex, allChecked } = useSupportContext();
   const [checked, setChecked] = useState(false);
   const assignedTo =
     ticket &&
@@ -80,7 +182,8 @@ const Ticket = ({
       textTicketsId={ticket.id}
       // textAssigneeName={ticket.assign_to || 'Not Assigned'}
       slotIssue={
-        <OneLineText
+        <LineText
+          line='two'
           color={palette.grey[600]}
           text={
             ticket.content?.length
@@ -99,7 +202,9 @@ const Ticket = ({
         />
       }
       textCandidateName={ticket.user_name}
-      textJobRole={<OneLineText text={ticket.jobsDetails?.job_title || ''} />}
+      textJobRole={
+        <LineText line='two' text={ticket.jobsDetails?.job_title || ''} />
+      }
       isChecked={allChecked || checked}
       // textStatus={ticket.state}
       slotStatus={
@@ -121,9 +226,9 @@ const Ticket = ({
           }}
         />
       }
-      textDate={dayjs(ticket.created_at).fromNow()}
-      textCompanyLocations={ticket.jobsDetails.company}
-      textIssues={ticket.title}
+      textDate={dayjs(ticket.updated_at).fromNow()}
+      textCompanyLocations={''}
+      textIssues={<LineText text={ticket.title || ''} />}
       // colorTextPriority={{
       //   style: {
       //     color: mapPriorityColor(ticket.priority),
@@ -158,7 +263,7 @@ const Ticket = ({
       onClickCard={{
         onClick: () => {
           // router.push(`/support/${ticket.id}`);
-          setOpenTicket(ticket);
+          setOpenTicketIndex(index);
         },
       }}
     />
@@ -358,10 +463,18 @@ const StatusComponent = ({
 //   );
 // };
 
-const OneLineText = ({ text, color }: { text: string; color?: string }) => {
+const LineText = ({
+  text,
+  color,
+  line = 'one',
+}: {
+  text: string;
+  color?: string;
+  line?: 'one' | 'two';
+}) => {
   return (
     <Stack
-      className='one-line-clamp'
+      className={line === 'one' ? 'one-line-clamp' : 'two-line-clamp'}
       dangerouslySetInnerHTML={{
         __html: text,
       }}
@@ -369,5 +482,34 @@ const OneLineText = ({ text, color }: { text: string; color?: string }) => {
         color: color,
       }}
     ></Stack>
+  );
+};
+
+const CustomTextField = (rest: TextFieldProps) => {
+  const { label, required, sx, error, ...props } = rest;
+  return (
+    <Stack gap={1}>
+      <Typography fontFamily={'inherit'}>
+        {label}
+        {required && '*'}
+        {/* {rest?.label && ':'} */}
+      </Typography>
+      {/* @ts-ignore */}
+      <TextField
+        {...props}
+        sx={{
+          ...sx,
+          padding: '0px',
+          '& .MuiInputBase-root': { padding: '4px' },
+          '& input': { padding: '0px' },
+          '& .MuiFilledInput-root': error
+            ? {
+                borderColor: palette.red[600],
+                outlineColor: palette.red[200],
+              }
+            : {},
+        }}
+      />
+    </Stack>
   );
 };

@@ -13,8 +13,15 @@ a {
 }
 
 [class*='one-line-clamp'] {
-  display: -webkit-box;
+  display: -webkit-box !important;
   -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[class*='two-line-clamp'] {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

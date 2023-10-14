@@ -60,28 +60,35 @@
 }
 
 .tli-column.assignee {
-  min-width: 140px;
-  flex: 0 0 auto;
+  min-width: 150px;
 }
 
 .tli-column.name {
   width: 180px;
   min-width: 180px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.job-info {
   width: 240px;
   min-width: 240px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.status {
   width: 120px;
   min-width: 120px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.date {
   width: 140px;
   min-width: 140px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .checkbox-block {
@@ -136,15 +143,35 @@
 }
 
 .il-candidate-image {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
+  width: 25px;
+  height: 25px;
+  min-height: 25px;
+  min-width: 25px;
 
   border-style: solid;
   border-width: 0.5px;
   border-color: hsla(180, 7.69%, 97.45%, 1.00);
   border-radius: 3px;
+}
+
+.il-job-info {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+}
+
+.il-job-info.top {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.il-job-info.content {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 }
 
 .fw-semibold {
@@ -298,26 +325,6 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
-}
-
-.il-job-info {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
-.il-job-info.top {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.il-job-info.content {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
 }
 
 .text-sm {

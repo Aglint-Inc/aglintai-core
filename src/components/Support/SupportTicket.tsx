@@ -55,7 +55,13 @@ function SupportTicketDetails({
   ticketProp: Support_ticketType & { jobsDetails: Public_jobsType };
   onClose: () => void;
 }) {
-  const { updateTicket, allAssignee } = useSupportContext();
+  const {
+    tickets,
+    updateTicket,
+    allAssignee,
+    openTicketIndex,
+    setOpenTicketIndex,
+  } = useSupportContext();
   const router = useRouter();
   const { userDetails, recruiter } = useAuthDetails();
   const [ticket, setTicket] = useState<
@@ -303,6 +309,18 @@ function SupportTicketDetails({
           onClickClose={{
             onClick: onClose,
           }}
+          onClickNext={{
+            onClick: () => {
+              setOpenTicketIndex((openTicketIndex + 1) % tickets.length);
+            },
+          }}
+          onClickPrev={{
+            onClick: () => {
+              openTicketIndex - 1 < 0
+                ? setOpenTicketIndex(tickets.length - 1)
+                : setOpenTicketIndex(openTicketIndex - 1);
+            },
+          }}
         />
       )}
     </Stack>
@@ -379,7 +397,10 @@ const chatBox = (
             />
           }
           textMessages={
-            <Typography dangerouslySetInnerHTML={{ __html: item.text }} />
+            <Typography
+              dangerouslySetInnerHTML={{ __html: item.text }}
+              fontSize={'14px'}
+            />
           }
           textTime={dayjs(item.timeStamp).fromNow()}
           textName={item.name}
@@ -421,6 +442,7 @@ const AddNewMessage = ({ sendMessage }) => {
         placeholder='Type Message'
         value={message}
         minRows={1}
+        maxRows={4}
         onChange={(e) => {
           setMessage(e.html);
         }}

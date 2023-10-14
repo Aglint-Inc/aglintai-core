@@ -254,28 +254,35 @@
 }
 
 .tli-column.assignee {
-  min-width: 140px;
-  flex: 0 0 auto;
+  min-width: 150px;
 }
 
 .tli-column.name {
   width: 180px;
   min-width: 180px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.job-info {
   width: 240px;
   min-width: 240px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.status {
   width: 120px;
   min-width: 120px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .tli-column.date {
   width: 140px;
   min-width: 140px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .checkbox-block {
@@ -312,6 +319,49 @@
 
 .add-icon.pointer {
   cursor: pointer;
+}
+
+.sort-prio {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.div-block-477 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .il-list-block {
