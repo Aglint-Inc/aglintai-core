@@ -786,6 +786,27 @@ export interface Database {
           }
         ]
       }
+      documents: {
+        Row: {
+          content: string
+          embedding: string | null
+          id: number
+          title: string
+        }
+        Insert: {
+          content: string
+          embedding?: string | null
+          id?: number
+          title: string
+        }
+        Update: {
+          content?: string
+          embedding?: string | null
+          id?: number
+          title?: string
+        }
+        Relationships: []
+      }
       employee: {
         Row: {
           address: Json | null
@@ -3616,6 +3637,18 @@ export interface Database {
       interviewing_state_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      match_documents: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: number
+          content: string
+          similarity: number
+        }[]
       }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>

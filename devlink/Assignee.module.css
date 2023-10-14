@@ -25,8 +25,10 @@
 }
 
 .il-assignee.content.assignee {
-  width: 130px;
+  width: auto;
+  min-width: 130px;
   margin-left: 0px;
+  flex: 0 0 auto;
 }
 
 .il-assignee-image {

@@ -26,6 +26,22 @@ const Status = {
 export const mapStatusColor = (status: string) => {
   return Status[String(status.toLocaleLowerCase())];
 };
+// export const mapPriorityColor = (level: string) => {
+//   return Priority[String(level.toLocaleLowerCase())];
+// };
+
+// const Status = {
+//   open: '#3498DB',
+//   pending: '#F1C40F',
+//   'on hold': '#95A5A6',
+//   resolved: '#228F67',
+//   escalated: '#9B59B6',
+//   canceled: '#34495E',
+//   reopened: '#E74C3C',
+// };
+// export const mapStatusColor = (status: string) => {
+//   return Status[String(status.toLocaleLowerCase())];
+// };
 
 export const allPriority = ['low', 'medium', 'high', 'highest'];
 export const allStatus = [
