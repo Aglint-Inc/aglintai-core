@@ -23,6 +23,10 @@ export function JobsListingCard({
   textColorActiveInterviewingProps = {},
   slotStatusIcon,
   candidateCount = "0",
+  textSourcing = "Sourcing",
+  slotSourcingIcon,
+  textInterview = "Interviewing",
+  slotInterviewIcon,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -217,12 +221,14 @@ export function JobsListingCard({
             tag="div"
             {...textColorActivePropsSourcing}
           >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%204.64645C10.3417%204.45118%2010.6583%204.45118%2010.8536%204.64645C11.0488%204.84171%2011.0488%205.15829%2010.8536%205.35355L4.35355%2011.8536C4.15829%2012.0488%203.84171%2012.0488%203.64645%2011.8536L1.14645%209.35355C0.951184%209.15829%200.951184%208.84171%201.14645%208.64645C1.34171%208.45118%201.65829%208.45118%201.85355%208.64645L4%2010.7929L10.1464%204.64645ZM8.35355%2011.8536C8.15829%2012.0488%207.84171%2012.0488%207.64645%2011.8536C7.45118%2011.6583%207.45118%2011.3417%207.64645%2011.1464L14.1464%204.64645C14.3417%204.45118%2014.6583%204.45118%2014.8536%204.64645C15.0488%204.84171%2015.0488%205.15829%2014.8536%205.35355L8.35355%2011.8536Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "icons-slot-source")}
+              tag="div"
+            >
+              {slotSourcingIcon}
+            </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-              {"Sourcing"}
+              {textSourcing}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -230,12 +236,14 @@ export function JobsListingCard({
             tag="div"
             {...textColorActiveInterviewingProps}
           >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%204.64645C10.3417%204.45118%2010.6583%204.45118%2010.8536%204.64645C11.0488%204.84171%2011.0488%205.15829%2010.8536%205.35355L4.35355%2011.8536C4.15829%2012.0488%203.84171%2012.0488%203.64645%2011.8536L1.14645%209.35355C0.951184%209.15829%200.951184%208.84171%201.14645%208.64645C1.34171%208.45118%201.65829%208.45118%201.85355%208.64645L4%2010.7929L10.1464%204.64645ZM8.35355%2011.8536C8.15829%2012.0488%207.84171%2012.0488%207.64645%2011.8536C7.45118%2011.6583%207.45118%2011.3417%207.64645%2011.1464L14.1464%204.64645C14.3417%204.45118%2014.6583%204.45118%2014.8536%204.64645C15.0488%204.84171%2015.0488%205.15829%2014.8536%205.35355L8.35355%2011.8536Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "icons-slot-source")}
+              tag="div"
+            >
+              {slotInterviewIcon}
+            </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-              {"Interviewing"}
+              {textInterview}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

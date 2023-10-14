@@ -86,8 +86,8 @@ export function ScreeningLink({
             <_Builtin.Image
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
               loading="lazy"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020f_Frame%201092.svg"
             />
           </_Builtin.Block>
@@ -142,8 +142,8 @@ export function ScreeningLink({
                     className={_utils.cx(_styles, "share-via-option-icon")}
                     width="auto"
                     height="auto"
-                    alt="__wf_reserved_inherit"
                     loading="lazy"
+                    alt=""
                     src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890206_LinkedIn%20-%20png%20-%2012px.png"
                   />
                 </_Builtin.Block>
@@ -168,8 +168,8 @@ export function ScreeningLink({
                   className={_utils.cx(_styles, "share-via-option-icon")}
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
                   loading="lazy"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec4308901c0_64dcae8d0156e8d54cb108e9_google%20logo.svg"
                 />
               </_Builtin.Block>

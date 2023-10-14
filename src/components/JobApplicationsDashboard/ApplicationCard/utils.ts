@@ -30,13 +30,3 @@ export const getStatusColor = (status: string) => {
   // eslint-disable-next-line security/detect-object-injection
   return statusColors[status];
 };
-
-export const getInterviewScore = (feedback) => {
-  return feedback.length > 0
-    ? Math.floor(
-        feedback.reduce((acc, curr) => {
-          return (acc += Number(curr.rating));
-        }, 0) / feedback.length,
-      )
-    : 0;
-};

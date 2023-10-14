@@ -25,13 +25,22 @@ import SuccessPage from './JobPostForms/SuccessPage';
 import SyncStatus from './JobPostForms/SyncStatus';
 import MuiPopup from '../../Common/MuiPopup';
 
+export type JobFormErrorParams = {
+  jobTitle: string;
+  company: string;
+  location: string;
+  department: string;
+  aiQnGen: number;
+};
+
 function CreateNewJob() {
   const { jobForm, dispatch, handleFormClose } = useJobForm();
-  const [formError, setFormError] = useState({
+  const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
     company: '',
     location: '',
     department: '',
+    aiQnGen: 0,
   });
   const { handleJobDelete } = useJobs();
   const [showDiscardWarn, setShowDiscardWarn] = useState(false);
@@ -45,7 +54,7 @@ function CreateNewJob() {
   } else if (slideNo === 2) {
     formSlide = <StepTwo />;
   } else if (slideNo === 3) {
-    formSlide = <Stepthree />;
+    formSlide = <Stepthree setFormError={setFormError} />;
   } else if (slideNo == 4) {
     formSlide = <StepFour />;
   } else if (slideNo == 5) {
@@ -109,19 +118,52 @@ function CreateNewJob() {
         {},
       ) as FormJobType['interviewConfig'];
 
+      if (formError.aiQnGen > 0) {
+        toast.error('Please wait till qusetions get generated');
+        return false;
+      }
+
       let totalQns = 0;
 
       if (get(interviewConfig, 'cultural.value', false)) {
-        totalQns += get(interviewConfig, 'cultural.questions', []).length;
+        let count = get(interviewConfig, 'cultural.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from culture filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
       }
       if (get(interviewConfig, 'skill.value', false)) {
-        totalQns += get(interviewConfig, 'skill.questions', []).length;
+        let count = get(interviewConfig, 'skill.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from skill filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
       }
       if (get(interviewConfig, 'personality.value', false)) {
-        totalQns += get(interviewConfig, 'personality.questions', []).length;
+        let count = get(interviewConfig, 'personality.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from personality filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
       }
       if (get(interviewConfig, 'softSkills.value', false)) {
-        totalQns += get(interviewConfig, 'softSkills.questions', []).length;
+        let count = get(interviewConfig, 'softSkills.questions', []).length;
+        if (count === 0) {
+          toast.error(
+            `Please add questions from soft skills filter or turn off the filter`,
+          );
+          return false;
+        }
+        totalQns += count;
       }
       if (totalQns < 10 || totalQns > 25) {
         flag = false;
@@ -153,7 +195,7 @@ function CreateNewJob() {
     try {
       const flag = await handleJobDelete(jobForm.jobPostId);
       if (!flag) throw new Error('');
-      toast.success('discarded Job Post SuccessFully');
+      toast.success('Job Post Discarded');
       resetToInitialState();
     } catch (err) {
       toast.error('Something Went Wrong. Please Try Again');
@@ -169,6 +211,7 @@ function CreateNewJob() {
       company: '',
       location: '',
       department: '',
+      aiQnGen: 0,
     }));
   };
 
@@ -198,8 +241,15 @@ function CreateNewJob() {
                   slotProgressBar={
                     <>
                       <LinearProgress
+                        sx={{
+                          borderRadius: '8px',
+                          backgroundColor: '#EDF7FF',
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: '#337FBD',
+                          },
+                          height: '6px',
+                        }}
                         variant='determinate'
-                        color='primary'
                         value={(slideNo / 4) * 100}
                       />
                     </>

@@ -9,7 +9,6 @@ export function ToggleSelectDropdown({
   isSchedule = true,
   isNotSchedule = true,
   statusText = "Interviewing is off.",
-  slotToggleBtn,
   slotSelection,
   statusProps = {},
   isSourcing = false,
@@ -51,17 +50,6 @@ export function ToggleSelectDropdown({
             {dropdownTitle}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "toggle-btn-block")}
-          tag="div"
-        >
-          {slotToggleBtn}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "tsd-toggle-header-block")}
-        tag="div"
-      >
         <_Builtin.Block
           className={_utils.cx(_styles, "tsd-status-block")}
           tag="div"

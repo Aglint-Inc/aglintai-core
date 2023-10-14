@@ -16,22 +16,14 @@ import {
 import { LoaderSvg } from '@/devlink';
 import {
   AddressType,
+  RecruiterDB,
   RecruiterType,
+  RecruiterUserType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-
-type UserMeta = {
-  first_name: string;
-  image_url: string;
-  language: string;
-  last_name: string;
-  phone: string;
-  role: string;
-  timezone: string;
-};
 
 interface ContextValue {
   userDetails: Session | null;
@@ -42,13 +34,16 @@ interface ContextValue {
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   loading: boolean;
   // eslint-disable-next-line no-unused-vars
-  handleUpdateProfile: (userMeta: UserMeta) => Promise<boolean>;
+  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   handleLogout: (event: any) => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
+  recruiterUser: RecruiterUserType | null;
 }
 
 const defaultProvider = {
@@ -61,6 +56,11 @@ const defaultProvider = {
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
+  updateRecruiter: async (updateData: Partial<RecruiterDB>) => {
+    updateData;
+    return true;
+  },
+  recruiterUser: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -89,11 +89,15 @@ const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
+    null,
+  );
   const [loading, setLoading] = useState<boolean>(true);
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
+        router.push(pageRoutes.LOGIN);
         loading && setLoading(false);
         return;
       }
@@ -104,24 +108,34 @@ const AuthProvider = ({ children }) => {
           setUserDetails(newData.session);
         }
       }
-      
+
       if (!error) {
         Cookie.remove('access_token');
         Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
-        const { data: recruiter, error } = await supabase
-          .from('recruiter')
+        const { data: recruiterUser, error: errorUser } = await supabase
+          .from('recruiter_user')
           .select('*')
           .eq('user_id', data.session.user.id);
-        if (!error) {
-          setRecruiter({
-            ...recruiter[0],
-            address: recruiter[0]?.address as unknown as AddressType,
-            socials: recruiter[0]?.socials as unknown as SocialsType,
-          });
+        if (!errorUser && recruiterUser.length > 0) {
+          setRecruiterUser(recruiterUser[0]);
+          const { data: recruiter, error } = await supabase
+            .from('recruiter')
+            .select('*')
+            .eq('id', recruiterUser[0].recruiter_id);
+          if (!error && recruiter.length > 0) {
+            setRecruiter({
+              ...recruiter[0],
+              address: recruiter[0]?.address as unknown as AddressType,
+              socials: recruiter[0]?.socials as unknown as SocialsType,
+            });
+          }
+        } else {
+          router.push(pageRoutes.SIGNUP);
         }
       }
     } catch (err) {
+      router.push(pageRoutes.LOGIN);
       //
     } finally {
       setLoading(false);
@@ -137,20 +151,16 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleUpdateProfile = async (userMeta: UserMeta): Promise<boolean> => {
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        ...userDetails.user.user_metadata,
-        ...userMeta,
-      },
-    });
-    if (data) {
-      setUserDetails((prev) => {
-        return {
-          ...prev,
-          user: data.user,
-        };
-      });
+  const handleUpdateProfile = async (
+    details: RecruiterUserType,
+  ): Promise<boolean> => {
+    const { data, error } = await supabase
+      .from('recruiter_user')
+      .update(details)
+      .eq('user_id', userDetails.user.id)
+      .select();
+    if (!error) {
+      setRecruiterUser(data[0]);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -173,6 +183,17 @@ const AuthProvider = ({ children }) => {
       return true;
     }
   };
+
+  const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
+    return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
+      if (data) {
+        setRecruiter({ ...recruiter, ...data });
+        return true;
+      }
+      return false;
+    });
+  };
+
   useEffect(() => {
     getSupabaseSession();
   }, []);
@@ -198,6 +219,8 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         handleLogout,
+        updateRecruiter,
+        recruiterUser,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -220,4 +243,21 @@ const isRoutePublic = (path = '') => {
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }
+};
+
+const updateRecruiterInDb = async (
+  updateData: Partial<RecruiterDB>,
+  id: string,
+) => {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .update(updateData)
+    .eq('id', id)
+    .select();
+  if (!error && data.length) {
+    delete data[0].socials;
+    delete data[0].address;
+    return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
+  }
+  return null;
 };

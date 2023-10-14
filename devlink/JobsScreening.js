@@ -53,8 +53,8 @@ export function JobsScreening({
             >
               <_Builtin.Image
                 className={_utils.cx(_styles, "vectors-wrapper-41")}
-                width={12}
-                height={12}
+                width="12"
+                height="12"
                 loading="lazy"
                 src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65047121f55e98229ef58e02_Vectors-Wrapper.svg"
               />
@@ -82,8 +82,8 @@ export function JobsScreening({
             >
               <_Builtin.Image
                 className={_utils.cx(_styles, "rd-filter-icon")}
-                width={12}
-                height={12}
+                width="12"
+                height="12"
                 loading="lazy"
                 src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65030d085ea1a69e3594c991_Vectors-Wrapper.svg"
               />
@@ -107,8 +107,8 @@ export function JobsScreening({
               >
                 <_Builtin.Image
                   className={_utils.cx(_styles, "vectors-wrapper-18")}
-                  width={10.939278602600098}
-                  height={10.930898666381836}
+                  width="10.939278602600098"
+                  height="10.930898666381836"
                   loading="lazy"
                   src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65030d090b86d460a1805107_Vectors-Wrapper.svg"
                 />

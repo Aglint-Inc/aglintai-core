@@ -2,12 +2,12 @@
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 import { Autocomplete, Dialog, Stack } from '@mui/material';
-import { UserMetadata } from '@supabase/supabase-js';
 import React from 'react';
 
 import { ProfileEmailPop, UserProfile } from '@/devlink';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import ImageUpload from '../Common/ImageUpload';
@@ -40,8 +40,7 @@ type EmailFormFields = {
   email: FormValues;
 };
 const ProfileDashboard = () => {
-  const { userDetails, handleUpdateProfile } = useAuthDetails();
-  const user = userDetails.user.user_metadata;
+  const { userDetails, handleUpdateProfile, recruiterUser } = useAuthDetails();
   const userMail = userDetails.user.email;
   const initialFormValues: FormValues = {
     value: null,
@@ -58,28 +57,28 @@ const ProfileDashboard = () => {
   const initalProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
-      value: user.first_name,
+      value: recruiterUser.first_name,
       required: true,
       label: 'First name',
       placeholder: 'John',
     },
     last_name: {
       ...initialFormValues,
-      value: user.last_name,
+      value: recruiterUser.last_name,
       required: true,
       label: 'Last name',
       placeholder: 'Doe',
     },
     role: {
       ...initialFormValues,
-      value: user.role,
+      value: recruiterUser.role,
       label: 'Position',
       blocked: true,
       placeholder: 'Recruiter',
     },
     phone: {
       ...initialFormValues,
-      value: user.phone,
+      value: recruiterUser.phone,
       validation: 'phone',
       label: 'Phone number',
     },
@@ -97,14 +96,14 @@ const ProfileDashboard = () => {
   const initialPreferenceFormFields: PreferenceFormFields = {
     language: {
       ...initialFormValues,
-      value: user.language,
+      value: '',
       label: 'Language',
       validation: 'string',
       options: ['English', 'Spanish'],
     },
     timezone: {
       ...initialFormValues,
-      value: user.timezone,
+      value: '',
       label: 'Timezone',
       validation: 'string',
       options: ['IST', 'GMT'],
@@ -139,13 +138,13 @@ const ProfileDashboard = () => {
           />
         }
         slotEmail={<ProfileForms profile={email} setProfile={setEmail} />}
-        slotPreferenceForm={
-          <ProfileForms
-            profile={preferences}
-            setProfile={setPreferences}
-            setChanges={() => setPreferenceChange(true)}
-          />
-        }
+        // slotPreferenceForm={
+        //   <ProfileForms
+        //     profile={preferences}
+        //     setProfile={setPreferences}
+        //     setChanges={() => setPreferenceChange(true)}
+        //   />
+        // }
         onClickProfilePhotoChange={{
           onClick: () => {
             document.getElementById('image-upload').click();
@@ -165,6 +164,7 @@ const ProfileDashboard = () => {
                     profile,
                     setProfile,
                     handleUpdateProfile,
+                    recruiterUser,
                   );
                   if (confirmation) setProfileChange(false);
                   setLoading((prev) => {
@@ -191,6 +191,7 @@ const ProfileDashboard = () => {
                     preferences,
                     setPreferences,
                     handleUpdateProfile,
+                    recruiterUser,
                   );
                   if (confirmation) setPreferenceChange(false);
                   setLoading((prev) => {
@@ -266,19 +267,18 @@ const handleSubmit = async (
   profile: any,
   setProfile: any,
   // eslint-disable-next-line no-unused-vars
-  handleUpdateProfile: (userMeta: UserMetadata) => Promise<boolean>,
+  handleUpdateProfile: (userDetails: RecruiterUserType) => Promise<boolean>,
+  recruiterUser: RecruiterUserType,
   // eslint-disable-next-line no-unused-vars
 ) => {
   const { newProfile, error } = handleValidate(profile);
   if (!error) {
-    const newUserMeta = Object.assign(
-      {},
-      ...Object.entries(newProfile).reduce((acc, [key, curr]) => {
-        acc.push({ [key]: curr.value });
-        return acc;
-      }, []),
-    );
-    const confirmation = await handleUpdateProfile(newUserMeta);
+    const confirmation = await handleUpdateProfile({
+      ...recruiterUser,
+      first_name: profile.first_name.value,
+      last_name: profile.last_name.value,
+      phone: profile.phone.value,
+    });
     if (confirmation) {
       toast.success('Profile infomation saved successfully');
       return true;
@@ -385,6 +385,7 @@ const ProfileForm = ({
     case 'phone': {
       return (
         <UIPhoneInput
+          labelSize='small'
           defaultCountry={defaultCountry}
           label={value.label}
           placeholder={value.placeholder}
@@ -422,7 +423,7 @@ const ProfileForm = ({
                   ...params.InputProps,
                 }}
                 label={value.label}
-                labelSize='medium'
+                labelSize='small'
               />
             )}
           />
@@ -434,7 +435,7 @@ const ProfileForm = ({
             <SpecialForm name={id} validation={value.validation} />
           )}
           <UITextField
-            labelSize='medium'
+            labelSize='small'
             fullWidth
             label={value.label}
             placeholder={value.placeholder}
@@ -501,7 +502,7 @@ const SpecialForm = ({
   };
   const inputSlot = (
     <UITextField
-      labelSize='medium'
+      labelSize='small'
       fullWidth
       value={value}
       error={error}

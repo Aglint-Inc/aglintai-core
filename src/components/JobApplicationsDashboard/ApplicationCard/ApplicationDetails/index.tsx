@@ -578,23 +578,6 @@ export function giveColorForInterviewScore(rating) {
     : '#d93f4c';
 }
 
-export function getInterviewScore(feedback) {
-  const overAllScore = feedback?.length
-    ? Math.floor(
-        feedback.reduce(
-          (sum, entry) =>
-            sum +
-            Number(
-              String(entry.rating).includes('/')
-                ? entry.rating.split('/')[0]
-                : entry.rating,
-            ),
-          0,
-        ) / feedback.length,
-      )
-    : 0;
-  return overAllScore;
-}
 export const handleDownload = async (pdfUrl) => {
   toast.message('Resume downloading...');
 

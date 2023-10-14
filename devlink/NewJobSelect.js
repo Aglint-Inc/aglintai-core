@@ -48,8 +48,8 @@ export function NewJobSelect({
               <_Builtin.Image
                 className={_utils.cx(_styles, "vectors-wrapper-29")}
                 loading="lazy"
-                width={23.75}
-                height={23.75}
+                width="23.75"
+                height="23.75"
                 src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650369589a66f64187642eb1_Vectors-Wrapper.svg"
               />
             </_Builtin.Block>

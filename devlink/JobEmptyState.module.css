@@ -44,6 +44,10 @@
   margin-top: 17px;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

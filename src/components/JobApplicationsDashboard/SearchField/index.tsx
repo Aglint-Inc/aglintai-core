@@ -14,11 +14,11 @@ import UITextField from '../../Common/UITextField';
 const SearchField = ({
   applications,
   section,
-  setFilteredApplications,
+  setSearchedApplications,
 }: {
   applications: JobApplication[];
   section: JobApplicationSections;
-  setFilteredApplications: Dispatch<SetStateAction<JobApplication[]>>;
+  setSearchedApplications: Dispatch<SetStateAction<JobApplication[]>>;
 }) => {
   const { updateTick } = useJobApplications();
   const [value, setValue] = useState('');
@@ -44,7 +44,7 @@ const SearchField = ({
         acc.push(curr);
       return acc;
     }, []);
-    setFilteredApplications(newApplications);
+    setSearchedApplications(newApplications);
   };
 
   return (

@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { WelcomeSlider6 } from "./WelcomeSlider6";
 import * as _utils from "./utils";
 import _styles from "./SignupSlider.module.css";
 
@@ -38,8 +37,8 @@ export function SignupSlider({
                 loading="lazy"
                 width="auto"
                 height="auto"
-                alt="__wf_reserved_inherit"
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890203_App%20Logo.svg"
+                alt=""
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6527bc4f110b5e72785a18c4_white.svg"
               />
             </_Builtin.Block>
             <_Builtin.SliderWrapper
@@ -112,7 +111,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -120,11 +119,7 @@ export function SignupSlider({
                           tag="div"
                         >
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
                             {"Sarah Lee"}
@@ -132,7 +127,7 @@ export function SignupSlider({
                           <_Builtin.Block
                             className={_utils.cx(
                               _styles,
-                              "text-sm",
+                              "text-md",
                               "fw-semibold"
                             )}
                             tag="div"
@@ -147,7 +142,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890202_9b293bfefab6eb73a37b2d3b8de37b30.jpg"
                     />
                     <_Builtin.Block
@@ -207,7 +202,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -242,7 +237,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890205_5cc2627731d6bb27a233e9d1e4fc90f7.jpg"
                     />
                     <_Builtin.Block
@@ -302,7 +297,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -337,7 +332,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020d_33bc4fe49822f82b171f0daf6928f26e-min.jpg"
                     />
                     <_Builtin.Block
@@ -397,7 +392,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -432,7 +427,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020c_76f9501969c1f1d3f67bfa5f8cb9acc8-min.jpg"
                     />
                     <_Builtin.Block
@@ -492,7 +487,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -527,7 +522,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020c_76f9501969c1f1d3f67bfa5f8cb9acc8-min.jpg"
                     />
                     <_Builtin.Block
@@ -587,7 +582,7 @@ export function SignupSlider({
                           loading="lazy"
                           width="auto"
                           height="auto"
-                          alt="__wf_reserved_inherit"
+                          alt=""
                           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
                         />
                         <_Builtin.Block
@@ -622,7 +617,7 @@ export function SignupSlider({
                       loading="lazy"
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890207_8c1682abd5555cad7cc95b890ef191e3-min.jpg"
                     />
                     <_Builtin.Block
@@ -667,7 +662,6 @@ export function SignupSlider({
                   className={_utils.cx(_styles, "hide")}
                   value="%3Cstyle%3E%0A.auth-right-block%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A%0A.auth-right-block%20%7B%0A%20%20-ms-overflow-style%3A%20none%3B%0A%20%20scrollbar-width%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"
                 />
-                <WelcomeSlider6 />
                 <_Builtin.Block
                   className={_utils.cx(_styles, "auth-right-bottom")}
                   tag="div"

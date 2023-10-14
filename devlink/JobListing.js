@@ -192,12 +192,9 @@ export function JobListing({
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "about-company-wrapper-open-job")}
-                tag="div"
-              >
+              <_Builtin.Block tag="div">
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "job-listing-open-header")}
+                  className={_utils.cx(_styles, "div-block-467")}
                   tag="div"
                 >
                   <_Builtin.Block
@@ -217,12 +214,12 @@ export function JobListing({
                       {textCompanyName}
                     </_Builtin.Block>
                   </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-job-listing-open-card")}
-                  tag="div"
-                >
-                  {slotOpenJobListing}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-job-listing-open-card")}
+                    tag="div"
+                  >
+                    {slotOpenJobListing}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
@@ -307,12 +304,27 @@ export function JobListing({
                     {"Get notified with similar job posts"}
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "text-grey-600")}
+                    className={_utils.cx(_styles, "news-job-post")}
                     tag="div"
                   >
-                    {
-                      "Get notified with similar posts and also the new jobs from Zendesk"
-                    }
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "text-grey-600",
+                        "inline-text"
+                      )}
+                      tag="div"
+                    >
+                      {
+                        "Get notified with similar posts and also the new jobs from "
+                      }
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-block-26")}
+                      tag="div"
+                    >
+                      {textCompanyName}
+                    </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "slot-input-fomr")}
@@ -347,18 +359,23 @@ export function JobListing({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+              className={_utils.cx(_styles, "div-block-473")}
               tag="div"
             >
-              {"Powered By"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                tag="div"
+              >
+                {"Powered By"}
+              </_Builtin.Block>
+              <_Builtin.Image
+                loading="lazy"
+                width="auto"
+                height="auto"
+                alt=""
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
+              />
             </_Builtin.Block>
-            <_Builtin.Image
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt="__wf_reserved_inherit"
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
-            />
             <_Builtin.Block
               className={_utils.cx(_styles, "text-sm", "text-grey-600")}
               tag="div"

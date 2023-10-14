@@ -19,10 +19,6 @@
   font-weight: 600;
 }
 
-.text-green-800 {
-  color: hsla(157.5, 68.57%, 13.73%, 1.00);
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
@@ -39,10 +35,6 @@
   display: inline;
   margin-right: 2px;
   margin-left: 2px;
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
 .text-color-black {
@@ -156,4 +148,8 @@
 
 .text-green-700 {
   color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }

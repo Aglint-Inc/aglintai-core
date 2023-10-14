@@ -133,9 +133,9 @@ export function AnalysisDropdownB({
             <_Builtin.Image
               className={_utils.cx(_styles, "arrow-icon")}
               loading="lazy"
-              width={3.999999761581421}
-              height={7.199999809265137}
-              alt="__wf_reserved_inherit"
+              width="3.999999761581421"
+              height="7.199999809265137"
+              alt=""
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/64e4aea57eb054c91bcf9b68_Vectors-Wrapper.svg"
             />
           </_Builtin.Block>

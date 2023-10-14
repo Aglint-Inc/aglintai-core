@@ -186,7 +186,7 @@ function ImportCandidates() {
         borderRadius: '10px',
       }}
     >
-      <Stack spacing={1} mt='16px'>
+      <Stack spacing={1}>
         <Fragment>
           <ImportCandidate
             slotReuploadBtn={

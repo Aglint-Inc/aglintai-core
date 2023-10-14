@@ -9,13 +9,17 @@ import UITextField from '../UITextField';
 
 const SpecializedTimePicker = ({
   label,
+  defaultValue,
   value,
   onChange,
+  minutesStep = 5,
 }: {
-  label: string;
-  value: Dayjs;
+  label?: string;
+  defaultValue?: Dayjs;
+  value?: Dayjs;
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void;
+  minutesStep?: number;
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -25,6 +29,8 @@ const SpecializedTimePicker = ({
           minutes: renderTimeViewClock,
           seconds: renderTimeViewClock,
         }}
+        minutesStep={minutesStep}
+        defaultValue={defaultValue}
         label={label}
         value={value}
         onChange={(date: dayjs.Dayjs | null) => {

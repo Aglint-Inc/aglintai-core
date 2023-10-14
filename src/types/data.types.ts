@@ -132,3 +132,5 @@ export type Summary = {
   suggestions: string[];
   color?: 'string';
 };
+export type RecruiterUserType =
+  Database['public']['Tables']['recruiter_user']['Row'];

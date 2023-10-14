@@ -104,6 +104,14 @@
   grid-row-gap: 12px;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-header-block {
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 .auth-header-block.join-us {
   display: flex;
 }
@@ -285,12 +293,12 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -357,6 +365,12 @@
   color: rgba(134, 146, 166, 1);
   font-weight: 400;
   text-align: left;
+}
+
+@media screen and (max-width: 991px) {
+  .ju-header-description {
+    text-align: center;
+  }
 }
 
 .ju-header-description.text-align-center {

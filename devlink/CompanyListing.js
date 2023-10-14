@@ -177,109 +177,114 @@ export function CompanyListing({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "open-jobs-wrappers")}
+            className={_utils.cx(_styles, "cl-wrapper")}
             tag="div"
-            id="open-job"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "search-header-open-jobs")}
+              className={_utils.cx(_styles, "cl-block")}
               tag="div"
+              id="open-job"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "open-job-notification")}
+                className={_utils.cx(_styles, "search-header-open-jobs")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "open-job-notification")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Open Jobs"}
+                  </_Builtin.Block>
+                  {isOpenJobCountVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-427")}
+                      tag="div"
+                    >
+                      <_Builtin.Block tag="div">
+                        {textOpenJobCount}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "slot-search-company-list")}
+                  tag="div"
+                >
+                  {slotSearchOpenJob}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "open-jobs-list")}
+                tag="div"
+              >
+                {slotOpenJobListing ?? (
+                  <OpenJobListingCard textWorkingType="Internship, On-site" />
+                )}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cl-block")}
+              tag="div"
+              id="about"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-441")}
                 tag="div"
               >
                 <_Builtin.Block
                   className={_utils.cx(_styles, "text-xl", "fw-semibold")}
                   tag="div"
                 >
-                  {"Open Jobs"}
+                  {"About"}
                 </_Builtin.Block>
-                {isOpenJobCountVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-427")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {textOpenJobCount}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                  tag="div"
+                >
+                  {textCompanyName}
+                </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "slot-search-company-list")}
-                tag="div"
-              >
-                {slotSearchOpenJob}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{textCompanyAbout}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "open-jobs-list")}
+              className={_utils.cx(_styles, "cl-block", "hide")}
               tag="div"
-            >
-              {slotOpenJobListing ?? (
-                <OpenJobListingCard textWorkingType="Internship, On-site" />
-              )}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "about-company-wrapper")}
-            tag="div"
-            id="about"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-441")}
-              tag="div"
+              id="gallery"
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-xl", "fw-semibold")}
                 tag="div"
               >
-                {"About"}
+                {"Gallery"}
               </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "gallery-wrappers")}
+                tag="div"
+              >
+                {slotGallery}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cl-block")}
+              tag="div"
+              id="office-location"
+            >
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-xl", "fw-semibold")}
                 tag="div"
               >
-                {textCompanyName}
+                {"Office Locations"}
               </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">{textCompanyAbout}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "about-company-wrapper", "hide")}
-            tag="div"
-            id="gallery"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {"Gallery"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "gallery-wrappers")}
-              tag="div"
-            >
-              {slotGallery}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "about-company-wrapper")}
-            tag="div"
-            id="office-location"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {"Office Locations"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-429")}
-              tag="div"
-            >
-              {slotOfficeLocaionCard ?? <OfficeLocationCard />}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-429")}
+                tag="div"
+              >
+                {slotOfficeLocaionCard ?? <OfficeLocationCard />}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -300,7 +305,7 @@ export function CompanyListing({
                 loading="lazy"
                 width="auto"
                 height="auto"
-                alt="__wf_reserved_inherit"
+                alt=""
                 src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
               />
               <_Builtin.Block

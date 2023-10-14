@@ -19,7 +19,7 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { recruiter, userDetails } = useAuthDetails();
+  const { recruiter, userDetails, recruiterUser } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
@@ -211,7 +211,7 @@ export default function AppLayout({ children }) {
                 }
                 isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
                 textEmail={userEmail}
-                textName={`${user.first_name} ${user.last_name}`}
+                textName={recruiterUser?.first_name}
                 onClickLogout={{
                   onClick: (e) => {
                     handleLogout(e);

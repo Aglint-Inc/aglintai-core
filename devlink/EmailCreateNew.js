@@ -32,8 +32,8 @@ export function EmailCreateNew({
           <_Builtin.Image
             width="auto"
             height="auto"
-            alt="__wf_reserved_inherit"
             loading="lazy"
+            alt=""
             src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6513c98c9df878038d288f9f_Frame%201193.svg"
           />
           <_Builtin.Block tag="div">{"Create new"}</_Builtin.Block>

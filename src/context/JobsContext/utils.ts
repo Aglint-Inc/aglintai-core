@@ -1,4 +1,3 @@
-import { JobType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobContext } from './types';
@@ -30,7 +29,7 @@ export const readJobApplicationsAction = async (jobIds: string[]) => {
   return { data, error };
 };
 
-export const updateJobDbAction = async (inputData: Partial<JobType>) => {
+export const updateJobDbAction = async (inputData) => {
   const { data, error } = await supabase
     .from('public_jobs')
     .upsert(inputData)

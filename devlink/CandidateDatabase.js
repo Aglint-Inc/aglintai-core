@@ -65,8 +65,8 @@ export function CandidateDatabase({
                     <_Builtin.Image
                       className={_utils.cx(_styles, "rd-filter-icon")}
                       loading="lazy"
-                      width={12}
-                      height={12}
+                      width="12"
+                      height="12"
                       src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65030d085ea1a69e3594c991_Vectors-Wrapper.svg"
                     />
                     <_Builtin.Block tag="div">{"Sort by"}</_Builtin.Block>
@@ -82,8 +82,8 @@ export function CandidateDatabase({
                       <_Builtin.Image
                         className={_utils.cx(_styles, "vectors-wrapper-18")}
                         loading="lazy"
-                        width={10.939278602600098}
-                        height={10.930898666381836}
+                        width="10.939278602600098"
+                        height="10.930898666381836"
                         src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65030d090b86d460a1805107_Vectors-Wrapper.svg"
                       />
                     </_Builtin.Block>
@@ -110,8 +110,8 @@ export function CandidateDatabase({
                       <_Builtin.Image
                         className={_utils.cx(_styles, "icon")}
                         loading="lazy"
-                        width={15.5}
-                        height={15.5}
+                        width="15.5"
+                        height="15.5"
                         src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65030d0ada1b1e8bdf3f48e1_Vectors-Wrapper.svg"
                       />
                     </_Builtin.Block>

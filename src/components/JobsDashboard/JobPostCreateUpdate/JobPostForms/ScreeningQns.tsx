@@ -20,6 +20,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { palette } from '@/src/context/Theme/Theme';
 import { generateInterviewQns } from '@/src/utils/prompts/addNewJob/generateInterviewQns';
 
+import { JobFormErrorParams } from '../CreateFlow';
 import {
   FormJobType,
   InterviewConfigType,
@@ -27,7 +28,7 @@ import {
   useJobForm,
 } from '../JobPostFormProvider';
 
-const ScreeningQns = () => {
+const ScreeningQns = ({ setFormError }) => {
   const {
     jobForm: { formFields, formType },
     handleUpdateFormFields,
@@ -67,7 +68,7 @@ const ScreeningQns = () => {
           {isInterviewAiPowered ? (
             <AiScreeningConfigParams />
           ) : (
-            <StandardScreeningParams />
+            <StandardScreeningParams setFormError={setFormError} />
           )}
         </>
       }
@@ -77,7 +78,7 @@ const ScreeningQns = () => {
 
 export default ScreeningQns;
 // ;
-const StandardScreeningParams = () => {
+const StandardScreeningParams = ({ setFormError }) => {
   const { jobForm } = useJobForm();
 
   const params = get(
@@ -89,18 +90,32 @@ const StandardScreeningParams = () => {
   return (
     <>
       <Stack gap={2}>
-        {<StandardScreenSingle param={params.skill} paramKey={'skill'} />}
-        {<StandardScreenSingle param={params.cultural} paramKey={'cultural'} />}
+        {
+          <StandardScreenSingle
+            param={params.skill}
+            paramKey={'skill'}
+            setFormError={setFormError}
+          />
+        }
+        {
+          <StandardScreenSingle
+            param={params.cultural}
+            paramKey={'cultural'}
+            setFormError={setFormError}
+          />
+        }
         {
           <StandardScreenSingle
             param={params.personality}
             paramKey={'personality'}
+            setFormError={setFormError}
           />
         }
         {
           <StandardScreenSingle
             param={params.softSkills}
             paramKey={'softSkills'}
+            setFormError={setFormError}
           />
         }
       </Stack>
@@ -155,9 +170,11 @@ const AiScreeningConfigParams = () => {
 const StandardScreenSingle = ({
   param,
   paramKey,
+  setFormError,
 }: {
   param: InterviewConfigType;
   paramKey: InterviewParam;
+  setFormError: any;
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [questionInput, setQuestionInput] = useState('');
@@ -191,6 +208,10 @@ const StandardScreenSingle = ({
   const handleGenerateInterviewQns = async () => {
     try {
       setAiGenerating(true);
+      setFormError((p: JobFormErrorParams) => ({
+        ...p,
+        aiQnGen: p.aiQnGen + 1,
+      }));
       const qns = await generateInterviewQns(
         param.questions.map((p) => p.question).slice(0, 5),
         htmlToText(get(jobForm, 'formFields.jobDescription', '')),
@@ -209,14 +230,26 @@ const StandardScreenSingle = ({
       // console.log(err);
     } finally {
       setAiGenerating(false);
+      setTimeout(() => {
+        setFormError(
+          (p: JobFormErrorParams) => ({
+            ...p,
+            aiQnGen: p.aiQnGen - 1,
+          }),
+          1500,
+        );
+      });
     }
   };
 
   useEffect(() => {
-    if (param.value && param.questions.length === 0 && !isAiGenerating) {
+    const isQnsGenFirstTime =
+      localStorage.getItem(`${jobForm.jobPostId}-${paramKey}`) !== 'generated';
+    if (param.value && param.questions.length === 0 && isQnsGenFirstTime) {
+      localStorage.setItem(`${jobForm.jobPostId}-${paramKey}`, 'generated');
       handleGenerateInterviewQns();
     }
-  }, [param, isAiGenerating]);
+  }, [param]);
 
   const qns = get(
     jobForm,

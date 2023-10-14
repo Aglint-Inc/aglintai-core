@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
+import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
 import * as _utils from "./utils";
 import _styles from "./UserProfile.module.css";
 
@@ -38,7 +38,7 @@ export function UserProfile({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "profile-image-block")}
+          className={_utils.cx(_styles, "profile-image-block", "top-align")}
           id={_utils.cx(
             _styles,
             "w-node-bd76686d-3da8-fe6f-1bbb-2ff07f7f8329-2928a6f4"
@@ -49,26 +49,21 @@ export function UserProfile({
             className={_utils.cx(_styles, "div-block-460")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-324")}
-              tag="div"
-            >
-              {slotUserImage}
-            </_Builtin.Block>
+            {slotUserImage}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-458")}
             tag="div"
           >
             <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
-              <ButtonOutlinedRegular textLabel="Change profile photo" />
+              <ButtonOutlinedSmall textLabel="Change profile photo" />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
+              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
               tag="div"
             >
               {
-                "Logo should be having png/svg format and should be less than 5 MB"
+                "Please upload your profile pic in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -92,12 +87,6 @@ export function UserProfile({
             >
               {"User Info"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-387")}
-              tag="div"
-            >
-              {slotUserInfoBtn}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "profile-inputs-wrapper")}
@@ -105,9 +94,20 @@ export function UserProfile({
           >
             {slotUserForm}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "flex-hor-right")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-387")}
+              tag="div"
+            >
+              {slotUserInfoBtn}
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "profile-block")}
+          className={_utils.cx(_styles, "profile-block", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -125,18 +125,23 @@ export function UserProfile({
             >
               {"Preferences"}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-387")}
-              tag="div"
-            >
-              {slotPreferencesBtn}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "profile-inputs-wrapper")}
             tag="div"
           >
             {slotPreferenceForm}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "flex-hor-right")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-387")}
+              tag="div"
+            >
+              {slotPreferencesBtn}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -163,7 +168,7 @@ export function UserProfile({
               tag="div"
               {...onClickEmailChange}
             >
-              <ButtonOutlinedRegular textLabel="Change email" />
+              <ButtonOutlinedSmall textLabel="Change email" />
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

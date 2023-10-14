@@ -49,9 +49,9 @@ export function AnalysisSummaryBlock({
             <_Builtin.Image
               className={_utils.cx(_styles, "vectors-wrapper-13")}
               loading="lazy"
-              width={60}
-              height={60}
-              alt="__wf_reserved_inherit"
+              width="60"
+              height="60"
+              alt=""
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/64e489956452e9c146095437_Vectors-Wrapper.svg"
             />
           )}

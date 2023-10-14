@@ -118,6 +118,7 @@ const DashboardComp = () => {
               slotSearchInputJob={
                 <Stack maxWidth={'260px'} width={'100%'}>
                   <UITextField
+                    height='42px'
                     fullWidth
                     placeholder='Search'
                     onChange={(e) => {

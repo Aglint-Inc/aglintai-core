@@ -25,7 +25,7 @@
 }
 
 .inbox-list-sl-block.top-bar {
-  background-color: var(--\[unknown\|variable-3a86b552\]);
+  background-color: var(--gray-100);
 }
 
 .tli-column {
@@ -318,7 +318,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-white {

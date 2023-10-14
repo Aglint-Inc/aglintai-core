@@ -182,7 +182,11 @@ const useJobActions = () => {
 
   const handleJobUpdate = async (jobId: string, newJob: Partial<JobType>) => {
     if (recruiter) {
-      const { data, error } = await updateJobDbAction({ id: jobId, ...newJob });
+      const { data, error } = await updateJobDbAction({
+        id: jobId,
+        ...newJob,
+        recruiter_id: recruiter.id,
+      });
       if (data) {
         const action: Action = {
           type: ActionType.UPDATE,
