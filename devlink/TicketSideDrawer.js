@@ -253,6 +253,45 @@ export function TicketSideDrawer({
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "inde-candidate-status-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-grey-400")}
+                tag="div"
+              >
+                {"Candidate Status"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "inde-candidate-status-text")}
+                tag="div"
+                {...colorPropsCandidateStatus}
+              >
+                {textCandidateStatus}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "inde-int-copy-btn-wrapper")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cj-add-skill-btn-new")}
+                tag="div"
+                {...onClickInterviewLink}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_2743_27651%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_2743_27651)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-600")}
+                  tag="div"
+                >
+                  {"Interview Link"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "inde-details-wrapper")}
@@ -309,45 +348,6 @@ export function TicketSideDrawer({
                     {...onClickAppliedViewJob}
                   >
                     {"View Job"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "inde-candidate-status-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-400")}
-                  tag="div"
-                >
-                  {"Candidate Status"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "inde-candidate-status-text")}
-                  tag="div"
-                  {...colorPropsCandidateStatus}
-                >
-                  {textCandidateStatus}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "inde-int-copy-btn-wrapper")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cj-add-skill-btn-new")}
-                  tag="div"
-                  {...onClickInterviewLink}
-                >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "icons")}
-                    value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_2743_27651%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%207.5C3%207.22386%202.77614%207%202.5%207H1V1H7V2.5C7%202.77614%207.22386%203%207.5%203C7.77614%203%208%202.77614%208%202.5V1C8%200.447715%207.55228%200%207%200H1C0.447715%200%200%200.447715%200%201V7C0%207.55228%200.447715%208%201%208H2.5C2.77614%208%203%207.77614%203%207.5ZM12%205C12%204.44772%2011.5523%204%2011%204H5C4.44772%204%204%204.44772%204%205V11C4%2011.5523%204.44772%2012%205%2012H11C11.5523%2012%2012%2011.5523%2012%2011V5ZM5%2011V5H11V11H5Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_2743_27651)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
-                  />
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-blue-600")}
-                    tag="div"
-                  >
-                    {"Interview Link"}
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>

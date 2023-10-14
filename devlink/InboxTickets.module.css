@@ -1,8 +1,15 @@
+.div-block-474 {
+  display: inline-block;
+}
+
+.div-block-474:hover {
+  background-color: var(--gray-100);
+}
+
 .inbox-list-sl-block {
   z-index: 2;
 
   display: flex;
-  width: 100%;
   padding: 10px 64px 10px 22px;
   align-items: center;
   grid-column-gap: 48px;
@@ -20,11 +27,8 @@
   }
 }
 
-.inbox-list-sl-block:hover {
-  background-color: var(--gray100-3a86b552);
-}
-
 .inbox-list-sl-block.top-bar {
+  width: auto;
   background-color: var(--gray-100);
 }
 
@@ -56,8 +60,8 @@
 }
 
 .tli-column.assignee {
-  width: 140px;
   min-width: 140px;
+  flex: 0 0 auto;
 }
 
 .tli-column.name {

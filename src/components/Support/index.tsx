@@ -1,4 +1,4 @@
-import { Autocomplete, Avatar, Drawer, Stack, TextField } from '@mui/material';
+import { Avatar, Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useState } from 'react';
@@ -8,12 +8,16 @@ import { Assignee } from '@/devlink/Assignee';
 import { InboxTickets } from '@/devlink/InboxTickets';
 import { Priority } from '@/devlink/Priority';
 import { StatusPill } from '@/devlink/StatusPill';
-import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
+import {
+  getPriorityIcon,
+  useSupportContext,
+} from '@/src/context/SupportContext/SupportContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
 // import { Public_jobsType, Support_ticketType } from '@/src/types/data.types';
 import {
-  allPriority,
-  allStatus,
+  // allPriority,
+  // allStatus,
   mapPriorityColor,
   mapStatusColor,
 } from '@/src/utils/support/supportUtils';
@@ -76,31 +80,31 @@ const Ticket = ({
       textTicketsId={ticket.id}
       // textAssigneeName={ticket.assign_to || 'Not Assigned'}
       slotIssue={
-        <Stack
-          className='one-line-clamp'
-          dangerouslySetInnerHTML={{
-            __html: ticket.content?.length
+        <OneLineText
+          color={palette.grey[600]}
+          text={
+            ticket.content?.length
               ? // @ts-ignore
                 ticket.content[ticket.content.length - 1].text
-              : '',
-          }}
-        ></Stack>
+              : ''
+          }
+        />
       }
       slotAssignee={
         <AssignmentComponent
-          assign_to={assignedTo?.title}
+          assign_to={capitalize(assignedTo?.title || '')}
           imageUrl={assignedTo?.image}
           // @ts-ignore
           setAssignedTo={(assign_to) => updateTicket({ assign_to }, ticket.id)}
         />
       }
       textCandidateName={ticket.user_name}
-      textJobRole={ticket.jobsDetails.job_title}
+      textJobRole={<OneLineText text={ticket.jobsDetails?.job_title || ''} />}
       isChecked={allChecked || checked}
       // textStatus={ticket.state}
       slotStatus={
         <StatusComponent
-          status={ticket.state}
+          status={capitalize(ticket?.state || '')}
           setStatus={(state) => {
             // @ts-ignore
             updateTicket({ state }, ticket.id);
@@ -110,7 +114,7 @@ const Ticket = ({
       // textPriority={ticket.priority}
       slotPriority={
         <PriorityComponent
-          priority={ticket.priority}
+          priority={capitalize(ticket.priority)}
           setPriority={(priority) => {
             // @ts-ignore
             updateTicket({ priority }, ticket.id);
@@ -130,7 +134,7 @@ const Ticket = ({
       //     backgroundColor: mapPriorityColor(ticket.priority),
       //   },
       // }}
-      //   slotPriorityIcon={}
+      // slotPriorityIcon={<>{getPriorityIcon(ticket.priority || '')}</>}
       // slotAssigneeImage={
       //   <Avatar
       //     src=''
@@ -163,195 +167,207 @@ const Ticket = ({
 
 const AssignmentComponent = ({
   assign_to,
-  imageUrl,
-  setAssignedTo,
+  imageUrl, // setAssignedTo,
 }: {
   assign_to: string;
   imageUrl?: string;
   // eslint-disable-next-line no-unused-vars
   setAssignedTo: (value: string) => void;
 }) => {
-  const { allAssignee } = useSupportContext();
-  const [open, setOpen] = useState(false);
+  // const { allAssignee } = useSupportContext();
+  // const [open, setOpen] = useState(false);
 
   return (
-    <Stack
-      onClick={(e) => {
-        e.stopPropagation();
-        open || setOpen(true);
-      }}
-      sx={{
-        cursor: 'pointer',
-      }}
-    >
-      {open ? (
-        <CustomAutoComplete
-          setOpen={setOpen}
-          value={assign_to}
-          options={allAssignee.map((assignee) => ({
-            id: assignee.id,
-            title: assignee.title,
-          }))}
-          onChange={setAssignedTo}
+    // <Stack
+    //   onClick={(e) => {
+    //     e.stopPropagation();
+    //     open || setOpen(true);
+    //   }}
+    //   sx={{
+    //     cursor: 'pointer',
+    //   }}
+    // >
+    //   {open ? (
+    //     <CustomAutoComplete
+    //       setOpen={setOpen}
+    //       value={assign_to}
+    //       options={allAssignee.map((assignee) => ({
+    //         id: assignee.id,
+    //         title: assignee.title,
+    //       }))}
+    //       onChange={setAssignedTo}
+    //     />
+    //   ) : (
+    <Assignee
+      textAssigneeName={assign_to || 'Not Assigned'}
+      slotAssigneeImage={
+        <Avatar
+          src={imageUrl || ''}
+          alt={'user_name'}
+          sx={{ height: '100%', width: '100%' }}
         />
-      ) : (
-        <Assignee
-          textAssigneeName={assign_to || 'Not Assigned'}
-          slotAssigneeImage={
-            <Avatar
-              src={imageUrl || ''}
-              alt={'user_name'}
-              sx={{ height: '100%', width: '100%' }}
-            />
-          }
-        />
-      )}
-    </Stack>
+      }
+    />
+    //   )}
+    // </Stack>
   );
 };
 
 const PriorityComponent = ({
-  priority,
-  setPriority,
+  priority, // setPriority,
 }: {
   priority: string;
   // eslint-disable-next-line no-unused-vars
   setPriority: (value: string) => void;
 }) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
-    <Stack
-      onClick={(e) => {
-        e.stopPropagation();
-        open || setOpen(true);
+    // <Stack
+    //   onClick={(e) => {
+    //     e.stopPropagation();
+    //     open || setOpen(true);
+    //   }}
+    //   sx={{
+    //     cursor: 'pointer',
+    //   }}
+    // >
+    //   {open ? (
+    //     <CustomAutoComplete
+    //       setOpen={setOpen}
+    //       value={priority}
+    //       options={allPriority}
+    //       onChange={setPriority}
+    //     />
+    //   ) : (
+    <Priority
+      textPriority={priority}
+      slotPriorityIcon={getPriorityIcon(priority)}
+      colorTextPriority={{
+        style: {
+          color: mapPriorityColor(priority),
+        },
       }}
-      sx={{
-        cursor: 'pointer',
-      }}
-    >
-      {open ? (
-        <CustomAutoComplete
-          setOpen={setOpen}
-          value={priority}
-          options={allPriority}
-          onChange={setPriority}
-        />
-      ) : (
-        <Priority
-          textPriority={priority}
-          colorTextPriority={{
-            style: {
-              color: mapPriorityColor(priority),
-            },
-          }}
-        />
-      )}
-    </Stack>
+    />
+    //   )}
+    // </Stack>
   );
 };
 
 const StatusComponent = ({
-  status,
-  setStatus,
+  status, // setStatus,
 }: {
   status: string;
   // eslint-disable-next-line no-unused-vars
   setStatus: (value: string) => void;
 }) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
-    <Stack
-      onClick={(e) => {
-        e.stopPropagation();
-        open || setOpen(true);
+    // <Stack
+    //   onClick={(e) => {
+    //     e.stopPropagation();
+    //     open || setOpen(true);
+    //   }}
+    //   sx={{
+    //     cursor: 'pointer',
+    //   }}
+    // >
+    //   {open ? (
+    //     <CustomAutoComplete
+    //       setOpen={setOpen}
+    //       value={status}
+    //       options={allStatus}
+    //       onChange={setStatus}
+    //     />
+    //   ) : (
+    <StatusPill
+      textStatus={status}
+      colorBgPropsStatus={{
+        style: {
+          backgroundColor: mapStatusColor(status),
+        },
       }}
-      sx={{
-        cursor: 'pointer',
-      }}
-    >
-      {open ? (
-        <CustomAutoComplete
-          setOpen={setOpen}
-          value={status}
-          options={allStatus}
-          onChange={setStatus}
-        />
-      ) : (
-        <StatusPill
-          textStatus={status}
-          colorBgPropsStatus={{
-            style: {
-              backgroundColor: mapStatusColor(status),
-            },
-          }}
-        />
-      )}
-    </Stack>
+    />
+    //   )}
+    // </Stack>
   );
 };
 
-const CustomAutoComplete = ({
-  value,
-  options,
-  setOpen,
-  onChange,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  setOpen: (x: boolean) => void;
-  options: string[] | { id: string; title: string }[];
-  value: string;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (value: string) => void;
-}) => {
-  return (
-    <Autocomplete
-      open={true}
-      value={value}
-      options={[...options]}
-      getOptionLabel={(option) => {
-        // @ts-ignore
-        return capitalize(option.title || option);
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          inputProps={{
-            ...params.inputProps,
-          }}
-          InputProps={{
-            ...params.InputProps,
-            disableUnderline: true,
-          }}
-          variant='filled'
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={true}
-          onBlur={() => {
-            setOpen(false);
-          }}
-          sx={{
-            minWidth: '150px',
-            '& .MuiAutocomplete-root': { height: '30px' },
-            '& .MuiFormControl-root ': { margin: 0 },
+// const CustomAutoComplete = ({
+//   value,
+//   options,
+//   setOpen,
+//   onChange,
+// }: {
+//   // eslint-disable-next-line no-unused-vars
+//   setOpen: (x: boolean) => void;
+//   options: string[] | { id: string; title: string }[];
+//   value: string;
+//   // eslint-disable-next-line no-unused-vars
+//   onChange: (value: string) => void;
+// }) => {
+//   return (
+//     <Autocomplete
+//       open={true}
+//       value={value}
+//       options={[...options]}
+//       getOptionLabel={(option) => {
+//         // @ts-ignore
+//         return capitalize(option.title || option);
+//       }}
+//       renderInput={(params) => (
+//         <TextField
+//           {...params}
+//           inputProps={{
+//             ...params.inputProps,
+//           }}
+//           InputProps={{
+//             ...params.InputProps,
+//             disableUnderline: true,
+//           }}
+//           variant='filled'
+//           // eslint-disable-next-line jsx-a11y/no-autofocus
+//           autoFocus={true}
+//           onBlur={() => {
+//             setOpen(false);
+//           }}
+//           sx={{
+//             minWidth: '150px',
+//             '& .MuiAutocomplete-root': { height: '30px' },
+//             '& .MuiFormControl-root ': { margin: 0 },
 
-            '& input': { padding: '0px!important', fontSize: '14px' },
-            '& .MuiInputBase-root': {
-              padding: '4px 26px 4px 4px !important',
-            },
-            '& .MuiAutocomplete-endAdornment': {
-              right: '4px!important',
-            },
-          }}
-        />
-      )}
-      onChange={(_, newValue) => {
-        if (newValue) {
-          // @ts-ignore
-          onChange(newValue.id || newValue);
-          setOpen(false);
-        }
+//             '& input': { padding: '0px!important', fontSize: '14px' },
+//             '& .MuiInputBase-root': {
+//               padding: '4px 26px 4px 4px !important',
+//             },
+//             '& .MuiAutocomplete-endAdornment': {
+//               right: '4px!important',
+//             },
+//           }}
+//         />
+//       )}
+//       onChange={(_, newValue) => {
+//         if (newValue) {
+//           // @ts-ignore
+//           onChange(newValue.id || newValue);
+//           setOpen(false);
+//         }
+//       }}
+//     />
+//   );
+// };
+
+const OneLineText = ({ text, color }: { text: string; color?: string }) => {
+  return (
+    <Stack
+      className='one-line-clamp'
+      dangerouslySetInnerHTML={{
+        __html: text,
       }}
-    />
+      sx={{
+        color: color,
+      }}
+    ></Stack>
   );
 };

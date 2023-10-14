@@ -105,7 +105,7 @@ const SupportProvider = ({ children }) => {
     return filters;
   }, [router]);
 
-  const tickets = useMemo(() => {
+  const filteredTickets = useMemo(() => {
     let tickets = allTickets;
     if (filters.state !== 'all') {
       tickets = tickets.filter(
@@ -117,6 +117,13 @@ const SupportProvider = ({ children }) => {
     }
     return tickets;
   }, [filters, allTickets]);
+  const tickets = useMemo(() => {
+    return filteredTickets.sort((a, b) => {
+      // @ts-ignore
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+  }, [filteredTickets]);
+
   const [openTicket, setOpenTicket] = useState<
     Support_ticketType & { jobsDetails: Public_jobsType }
   >(null);
@@ -148,7 +155,6 @@ const SupportProvider = ({ children }) => {
       });
     }
   };
-
   const updateTicket = (data: Partial<Support_ticketType>, id: string) => {
     const update = data;
     const old = allTickets.find((ticket) => ticket.id === id);
@@ -380,7 +386,7 @@ const getUpdateMessage = ({
     timeStamp: new Date().toISOString(),
     text: null,
   };
-  const content = oldDetails.content;
+  const content = newDetails.content ? newDetails.content : oldDetails.content;
   if (newDetails.content) {
     return content;
   } else if (newDetails.state) {
@@ -395,4 +401,44 @@ const getUpdateMessage = ({
   }
   content.push(temp);
   return content;
+};
+
+export const getPriorityIcon = (priority: string) => {
+  if (priority.toLocaleLowerCase() === 'low') {
+    return (
+      <svg
+        width='9'
+        height='8'
+        viewBox='0 0 9 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path d='M4.5 8L0.169872 0.5L8.83013 0.5L4.5 8Z' fill='#467B7C' />
+      </svg>
+    );
+  } else if (priority.toLocaleLowerCase() === 'high') {
+    return (
+      <svg
+        width='9'
+        height='8'
+        viewBox='0 0 9 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path d='M4.5 0L8.83013 7.5H0.169873L4.5 0Z' fill='#D93F4C' />
+      </svg>
+    );
+  } else {
+    return (
+      <svg
+        width='8'
+        height='8'
+        viewBox='0 0 8 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <rect x='0.5' y='0.5' width='7' height='7' fill='#F79A3E' />
+      </svg>
+    );
+  }
 };

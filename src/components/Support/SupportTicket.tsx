@@ -21,7 +21,11 @@ import { TicketSideDrawer } from '@/devlink/TicketSideDrawer';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
+import {
+  getPriorityIcon,
+  useSupportContext,
+} from '@/src/context/SupportContext/SupportContext';
+import { palette } from '@/src/context/Theme/Theme';
 import {
   EmailTemplateType,
   JobApplcationDB,
@@ -115,7 +119,7 @@ function SupportTicketDetails({
       return ticketProp.assign_to === item.id;
     });
   return (
-    <Stack width={'70vw'}>
+    <Stack width={{ sm: '100%', md: '930px' }}>
       {ticket && (
         <TicketSideDrawer
           textAppliedJobCompany={ticket.jobsDetails?.company}
@@ -136,14 +140,14 @@ function SupportTicketDetails({
           }
           slotPriority={
             <PriorityComponent
-              priority={ticket.priority}
+              priority={capitalize(ticket?.priority || '')}
               // @ts-ignore
               setPriority={(priority) => callUpdateTicket({ priority })}
             />
           }
           slotStatus={
             <StatusComponent
-              status={ticket.state}
+              status={capitalize(ticket?.state || '')}
               // @ts-ignore
               setStatus={(state) => callUpdateTicket({ state })}
             />
@@ -153,10 +157,11 @@ function SupportTicketDetails({
           textCandidateMail={application?.email || '-'}
           textCandidateName={ticket.user_name}
           // textCandidateSite={ticket.}
-          textCandidateStatus={application && application.status}
+          textCandidateStatus={application && capitalize(application.status)}
           colorPropsCandidateStatus={{
             style: {
               color: mapPriorityColor(ticket.priority),
+              backgroundColor: palette.grey[200],
             },
           }}
           textTicketId={ticket.id}
@@ -185,19 +190,37 @@ function SupportTicketDetails({
               )}
             </>
           }
-          // slotChatBox={'aslk'}
           slotMessageSuggestion={[
             {
-              type: 'Send Interview',
+              type: 'Invitation mail',
               function: () =>
                 sendEmail({
                   application_id: ticket.application_id,
                   email: application.email,
-                  email_type: 'interviewLink',
+                  email_type: 'qualified',
                   details: {
-                    link: getInterviewUrl(ticket.application_id),
                     fromEmail: recruiter.email,
                     fromName: recruiter.name,
+                    temples: {
+                      subject: fillEmailTemplate(
+                        emailTemplates.interview.subject,
+                        {
+                          first_name: application.first_name,
+                          last_name: application.last_name,
+                          job_title: application.job_title,
+                          company_name: application.company,
+                        },
+                      ),
+                      body: fillEmailTemplate(emailTemplates.interview.body, {
+                        first_name: application.first_name,
+                        last_name: application.last_name,
+                        job_title: application.job_title,
+                        company_name: application.company,
+                      }).replace(
+                        '[interviewLink]',
+                        getInterviewUrl(ticket.application_id),
+                      ),
+                    },
                   },
                 }),
             },
@@ -231,39 +254,6 @@ function SupportTicketDetails({
                   },
                 }),
             },
-            {
-              type: 'Qualified mail',
-              function: () =>
-                sendEmail({
-                  application_id: ticket.application_id,
-                  email: application.email,
-                  email_type: 'qualified',
-                  details: {
-                    fromEmail: recruiter.email,
-                    fromName: recruiter.name,
-                    temples: {
-                      subject: fillEmailTemplate(
-                        emailTemplates.interview.subject,
-                        {
-                          first_name: application.first_name,
-                          last_name: application.last_name,
-                          job_title: application.job_title,
-                          company_name: application.company,
-                        },
-                      ),
-                      body: fillEmailTemplate(emailTemplates.interview.body, {
-                        first_name: application.first_name,
-                        last_name: application.last_name,
-                        job_title: application.job_title,
-                        company_name: application.company,
-                      }).replace(
-                        '[interviewLink]',
-                        getInterviewUrl(ticket.application_id),
-                      ),
-                    },
-                  },
-                }),
-            },
           ].map((item, index) => (
             <TicketMessageSuggestion
               textMessageSuggestion={item.type}
@@ -271,9 +261,23 @@ function SupportTicketDetails({
               onClickSuggestion={{
                 onClick: () => {
                   item.function().then(({ emailSend }) => {
-                    emailSend
-                      ? toast.success('Email sent')
-                      : toast.error('Email not sent');
+                    if (emailSend) {
+                      callUpdateTicket({
+                        // @ts-ignore
+                        content: [
+                          ...(ticket?.content ? ticket.content : []),
+                          {
+                            type: 'update',
+                            from: 'it_support',
+                            id: userDetails.user.id,
+                            name: recruiter?.name,
+                            text: `${item.type} Email Sent`,
+                            timeStamp: new Date().toISOString(),
+                          },
+                        ],
+                      });
+                      toast.success('Email sent');
+                    } else toast.error('Email not sent');
                   });
                 },
               }}
@@ -416,7 +420,7 @@ const AddNewMessage = ({ sendMessage }) => {
         options={false}
         placeholder='Type Message'
         value={message}
-        minRows={4}
+        minRows={1}
         onChange={(e) => {
           setMessage(e.html);
         }}
@@ -426,7 +430,7 @@ const AddNewMessage = ({ sendMessage }) => {
           }
         }}
         toolboxPosition='bottom'
-        customOptions={
+        customSend={
           <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
             <IconButton
               disabled={false}
@@ -518,7 +522,14 @@ const AssignmentComponent = ({
           }}
         >
           <AssigneeSmall
-            textAssignedtoName={assign_to || 'Not Assigned'}
+            textAssignedtoName={
+              <Stack
+                className='one-line-clamp'
+                dangerouslySetInnerHTML={{
+                  __html: assign_to || 'Not Assigned',
+                }}
+              ></Stack>
+            }
             slotAssignedToImage={
               <Avatar
                 src={imageUrl || ''}
@@ -557,6 +568,7 @@ const PriorityComponent = ({
         <Stack onClick={() => setOpen(true)}>
           <PrioritySmall
             textPriorityLevel={priority}
+            slotPriorityIcon={getPriorityIcon(priority)}
             colorPropsPriorityText={{
               style: {
                 color: mapPriorityColor(priority),

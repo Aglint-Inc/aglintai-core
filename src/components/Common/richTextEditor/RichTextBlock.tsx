@@ -232,12 +232,13 @@ const MenuBar = ({
 export type TipTapEditorType = {
   value?: Content;
   options?: Boolean;
-  customOptions?: ReactNode;
+  customSend?: ReactNode;
   // eslint-disable-next-line no-unused-vars
   onChange?: (value: { text: string; html: string; wordCount: number }) => void;
   // eslint-disable-next-line no-unused-vars
   onKeyDown?: (value: React.KeyboardEvent<HTMLDivElement>) => void;
   minRows?: number;
+  maxRows?: number;
   placeholder?: string;
   // eslint-disable-next-line no-unused-vars
   getValue?: (func: () => string) => void;
@@ -249,10 +250,11 @@ const TipTapEditor = ({
   onChange,
   onKeyDown,
   minRows = 6,
+  maxRows = 6,
   placeholder,
   getValue,
   options = true,
-  customOptions = null,
+  customSend = null,
   toolboxPosition = 'top',
 }: TipTapEditorType) => {
   const editor = useEditor({
@@ -362,7 +364,9 @@ const TipTapEditor = ({
       sx={{
         '& .ProseMirror': {
           minHeight: `${minRows}em`,
-          width: '100%',
+          maxHeight: `${maxRows}em`,
+          overflow: 'auto',
+          width: customSend ? '95%' : '100%',
           wordBreak: 'break-word',
         },
         '& .ProseMirror *::selection': {
@@ -378,6 +382,7 @@ const TipTapEditor = ({
         '& .ProseMirror-focused': {
           outline: 0,
         },
+        position: 'relative',
       }}
       borderColor={palette.grey[400]}
       padding={1}
@@ -393,9 +398,16 @@ const TipTapEditor = ({
         }}
       >
         {options && <MenuBar editor={editor} />}
-        {customOptions && (
-          <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-            {customOptions}
+        {customSend && (
+          <div
+            style={{
+              display: 'flex',
+              position: 'absolute',
+              bottom: '0',
+              right: '0px',
+            }}
+          >
+            {customSend}
           </div>
         )}
         <EditorContent editor={editor} onKeyDown={onKeyDown} />
