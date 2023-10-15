@@ -64,13 +64,20 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
 
   const handleAddSkill = (newSkill: string) => {
     if (!newSkill) return;
-    const isSkillAlreadyExist = formFields.skills.find(
-      (s) => s.toLowerCase() === newSkill.toLowerCase(),
-    );
-    if (isSkillAlreadyExist) return;
+
+    const skillsArr = newSkill
+      .trim()
+      .split(',')
+      .filter((t) => t !== ',')
+      .filter(Boolean);
+
+    // const isSkillAlreadyExist = formFields.skills.find(
+    //   (s) => s.toLowerCase() === newSkill.toLowerCase(),
+    // );
+    // if (isSkillAlreadyExist) return;
     handleUpdateFormFields({
       path: 'skills',
-      value: [...formFields.skills, newSkill],
+      value: [...formFields.skills, ...skillsArr],
     });
     const updatedSuggSkills = suggSkills.filter((s) => s !== newSkill);
     setSuggSkills(() => updatedSuggSkills);
@@ -135,6 +142,7 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
             closeForm={() => {
               setSkillForm(false);
             }}
+            handleAddSkill={handleAddSkill}
           />
         ) : null
       }
@@ -173,7 +181,7 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
 
 export default BasicStepTwo;
 
-const SkillInput = ({ addSkill, closeForm }) => {
+const SkillInput = ({ addSkill, closeForm, handleAddSkill }) => {
   const [skill, setSkill] = useState('');
 
   return (
@@ -195,11 +203,20 @@ const SkillInput = ({ addSkill, closeForm }) => {
           }}
           slotInput={
             <UITextField
-              placeholder='Problem Solving'
+              placeholder='Problem Solving, Team Work, Communication'
               onChange={(e) => {
                 setSkill(e.target.value);
               }}
               value={skill}
+              InputProps={{
+                onKeyUpCapture: (e) => {
+                  if (e.key === 'Enter') {
+                    handleAddSkill(skill);
+                    setSkill('');
+                    closeForm();
+                  }
+                },
+              }}
             />
           }
         />

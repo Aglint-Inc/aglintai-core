@@ -1,6 +1,6 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
-import { Stack, Typography } from '@mui/material';
+import { InputBaseComponentProps, Stack, Typography } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
 import React, { useState } from 'react';
@@ -26,7 +26,7 @@ type Props = {
   onSelect?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  InputProps?: any;
+  InputProps?: InputBaseComponentProps;
   defaultValue?: string | number;
   children?: any;
   height?: string;
