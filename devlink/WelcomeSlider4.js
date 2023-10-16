@@ -62,19 +62,13 @@ export function WelcomeSlider4({
               className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
               tag="div"
             >
-              {"Welcome to Aglint for Employers!"}
+              {"Welcome to Aglint for Employers! 🚀"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xxl", "fw-semibold", "hide")}
               tag="div"
             >
               {userName}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
-              tag="div"
-            >
-              {"🚀"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

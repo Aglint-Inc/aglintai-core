@@ -2,6 +2,7 @@
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 import { Autocomplete, Dialog, Stack } from '@mui/material';
+import Link from 'next/link';
 import React from 'react';
 
 import { ProfileEmailPop, UserProfile } from '@/devlink';
@@ -138,13 +139,14 @@ const ProfileDashboard = () => {
           />
         }
         slotEmail={<ProfileForms profile={email} setProfile={setEmail} />}
-        // slotPreferenceForm={
-        //   <ProfileForms
-        //     profile={preferences}
-        //     setProfile={setPreferences}
-        //     setChanges={() => setPreferenceChange(true)}
-        //   />
-        // }
+        slotPassword={
+          <Link
+            href={'/reset-password'}
+            style={{ textDecoration: 'underline' }}
+          >
+            Change password
+          </Link>
+        }
         onClickProfilePhotoChange={{
           onClick: () => {
             document.getElementById('image-upload').click();
@@ -212,13 +214,12 @@ const ProfileDashboard = () => {
   );
 };
 const ProfileImage = () => {
-  const { userDetails, handleUpdateProfile } = useAuthDetails();
-  const user = userDetails.user.user_metadata;
+  const { recruiterUser, handleUpdateProfile } = useAuthDetails();
   return (
     <ImageUpload
-      image={user.image_url}
+      image={recruiterUser.profile_image}
       size={70}
-      table='recruiter-profile'
+      table='recruiter-user'
       handleUpdateProfile={handleUpdateProfile}
     />
   );

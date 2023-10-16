@@ -14,9 +14,11 @@ type Question = {
 };
 export type InterviewParam =
   | 'skill'
-  | 'cultural'
-  | 'personality'
-  | 'softSkills';
+  | 'behavior'
+  | 'communication'
+  | 'performance'
+  | 'education'
+  | 'general';
 export type InterviewConfigType = {
   id: string;
   copy: string;

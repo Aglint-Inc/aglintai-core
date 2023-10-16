@@ -125,6 +125,10 @@
   margin-left: 5px;
 }
 
+.color-black {
+  color: var(--black-0fdbd865);
+}
+
 .text-xl.color-orange {
   color: var(--yellow500-c095f0f1);
 }

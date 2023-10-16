@@ -19,6 +19,13 @@ a {
   overflow: hidden;
 }
 
+[class*='two-line-clamp'] {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 #job-application-stack {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */

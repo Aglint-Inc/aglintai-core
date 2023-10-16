@@ -84,6 +84,10 @@
   margin-left: 5px;
 }
 
+.color-black {
+  color: var(--black-0fdbd865);
+}
+
 .text-xl.color-orange {
   color: var(--yellow500-c095f0f1);
 }
@@ -168,10 +172,6 @@
 
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
-}
-
-.color-black {
-  color: var(--black-0fdbd865);
 }
 
 .text-green-800 {
@@ -347,7 +347,8 @@
 }
 
 .aui-button-wrap {
-  display: flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
 }
 
@@ -371,6 +372,10 @@
 
 .aui-button-wrap.mt-16 {
   margin-top: 16px;
+}
+
+.aui-button-wrap.full {
+  align-items: stretch;
 }
 
 .aui-button {

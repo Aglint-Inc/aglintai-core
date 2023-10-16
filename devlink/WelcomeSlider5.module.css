@@ -45,7 +45,10 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.su-step-one {
+    min-height: 100vh;
+    padding-top: 40px;
     padding-left: 0px;
+    justify-content: flex-start;
     align-items: center;
   }
 }
@@ -70,6 +73,17 @@
 .auth-right-block.su-success {
   display: flex;
   opacity: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-right-block.su-success {
+    overflow: visible;
+    height: 100vh;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .auth-right-block.login {
@@ -108,8 +122,12 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.sign-up-sign {
+    padding-top: 40px;
     padding-left: 0px;
     align-items: center;
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+
     text-align: center;
   }
 }
@@ -127,6 +145,15 @@
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   opacity: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-right-block.su-step-two-profile {
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-left: 0px;
+    align-items: center;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -175,6 +202,12 @@
   color: var(--grey700-7fbe857b);
 }
 
+@media screen and (max-width: 991px) {
+  .back-btn-wrapper {
+    margin-left: 20px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .back-btn-wrapper {
     margin-left: 20px;
@@ -183,6 +216,12 @@
 
 @media screen and (max-width: 479px) {
   .back-btn-wrapper {
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .back-btn-wrapper.mr-0 {
     margin-left: 0px;
   }
 }
@@ -269,6 +308,14 @@
   display: none;
 }
 
+@media screen and (max-width: 991px) {
+  .auth-cta-block.su-step-one {
+    margin-top: 60px;
+    flex: 0 auto;
+    grid-column-gap: 20px;
+  }
+}
+
 .auth-cta-block.su-step-two {
   margin-top: 50px;
   justify-content: flex-start;
@@ -305,6 +352,19 @@
 }
 
 @media screen and (max-width: 991px) {
+  .auth-cta-block.su-success {
+    margin-top: 0px;
+    justify-content: center;
+    align-items: center;
+    flex: 0 auto;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 991px) {
   .auth-cta-block.tab-edit {
     align-items: center;
   }
@@ -321,7 +381,7 @@
 
 @media screen and (max-width: 991px) {
   .auth-header-block {
-    max-width: 400px;
+    max-width: 500px;
     align-items: center;
     text-align: center;
   }

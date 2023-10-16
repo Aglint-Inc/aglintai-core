@@ -2245,8 +2245,10 @@ textarea.w-select {
   --red-700: #8c232c;
   --gray-100: #f8f9f9;
   --grey-600: #68737d;
+  --grey-800: #2f3941;
   --white: white;
   --black: black;
+  --grey-200: #e9ebed;
 }
 
 body {

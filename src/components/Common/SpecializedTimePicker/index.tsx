@@ -38,7 +38,7 @@ const SpecializedTimePicker = ({
           else onChange(null);
         }}
         slots={{
-          textField: UITextField,
+          textField: UITextField as any,
         }}
       />
     </LocalizationProvider>

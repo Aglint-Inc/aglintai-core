@@ -13,7 +13,7 @@ export function TicketStatusDivider({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-sm", "text-grey-400")}
+        className={_utils.cx(_styles, "text-sm", "text-grey-500")}
         tag="div"
       >
         {statusText}

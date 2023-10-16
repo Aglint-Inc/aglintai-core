@@ -99,22 +99,36 @@ const StandardScreeningParams = ({ setFormError }) => {
         }
         {
           <StandardScreenSingle
-            param={params.cultural}
-            paramKey={'cultural'}
+            param={params.behavior}
+            paramKey={'behavior'}
             setFormError={setFormError}
           />
         }
         {
           <StandardScreenSingle
-            param={params.personality}
-            paramKey={'personality'}
+            param={params.communication}
+            paramKey={'communication'}
             setFormError={setFormError}
           />
         }
         {
           <StandardScreenSingle
-            param={params.softSkills}
-            paramKey={'softSkills'}
+            param={params.performance}
+            paramKey={'performance'}
+            setFormError={setFormError}
+          />
+        }
+        {
+          <StandardScreenSingle
+            param={params.education}
+            paramKey={'education'}
+            setFormError={setFormError}
+          />
+        }
+        {
+          <StandardScreenSingle
+            param={params.general}
+            paramKey={'general'}
             setFormError={setFormError}
           />
         }

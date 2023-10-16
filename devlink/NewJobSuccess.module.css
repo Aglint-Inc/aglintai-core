@@ -27,6 +27,9 @@
 
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -85,6 +88,9 @@
   display: flex;
   width: 100%;
   height: 100%;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;
@@ -106,7 +112,7 @@
 
 @media screen and (max-width: 991px) {
   .auth-header-block {
-    max-width: 400px;
+    max-width: 500px;
     align-items: center;
     text-align: center;
   }
@@ -176,6 +182,14 @@
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
+}
+
+@media screen and (max-width: 991px) {
+  .div-block-266 {
+    align-items: center;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
 }
 
 .div-block-266.succes {

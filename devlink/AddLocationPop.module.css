@@ -6,6 +6,12 @@
   background-color: var(--white-80449ce7);
 }
 
+@media screen and (max-width: 767px) {
+  .new-location-pop-wrappers {
+    width: auto;
+  }
+}
+
 .div-block-454 {
   display: flex;
   flex-direction: column;
@@ -228,6 +234,10 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .social-btn-wrappers-pop {

@@ -42,7 +42,7 @@ export default function SpecializedDatePicker({
           onChange(e);
         }}
         slots={{
-          textField: UITextField,
+          textField: UITextField as any,
         }}
       />
     </LocalizationProvider>

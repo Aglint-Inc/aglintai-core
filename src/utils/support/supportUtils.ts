@@ -1,3 +1,5 @@
+import { palette } from '@/src/context/Theme/Theme';
+
 const Priority = {
   low: '#467B7C',
 
@@ -26,6 +28,22 @@ const Status = {
 export const mapStatusColor = (status: string) => {
   return Status[String(status.toLocaleLowerCase())];
 };
+// export const mapPriorityColor = (level: string) => {
+//   return Priority[String(level.toLocaleLowerCase())];
+// };
+
+// const Status = {
+//   open: '#3498DB',
+//   pending: '#F1C40F',
+//   'on hold': '#95A5A6',
+//   resolved: '#228F67',
+//   escalated: '#9B59B6',
+//   canceled: '#34495E',
+//   reopened: '#E74C3C',
+// };
+// export const mapStatusColor = (status: string) => {
+//   return Status[String(status.toLocaleLowerCase())];
+// };
 
 export const allPriority = ['low', 'medium', 'high', 'highest'];
 export const allStatus = [
@@ -65,3 +83,59 @@ export function fillEmailTemplate(
 
   return filledTemplate;
 }
+
+const allCandidateStatusColor = {
+  'invitation not sent': {
+    color: palette.red[500],
+    backgroundColor: palette.red[100],
+  },
+  'invitation sent': {
+    color: palette.yellow[600],
+    backgroundColor: palette.red[100],
+  },
+  'invitation accepted': {
+    color: palette.kale[600],
+    backgroundColor: palette.kale[200],
+  },
+  'invitation rejected': {
+    color: '#8B008B',
+    backgroundColor: 'rgba(139, 0, 139, 0.10)',
+  },
+  'invitation expired': {
+    color: palette.red[500],
+    backgroundColor: palette.red[500],
+  },
+  'invitation completed': {
+    color: palette.blue[600],
+    backgroundColor: palette.blue[100],
+  },
+  'invitation incomplete': {
+    color: palette.grey[700],
+    backgroundColor: palette.grey[200],
+  },
+};
+export const getCandidateStatusColor = (key: string) => {
+  return (
+    allCandidateStatusColor[String(key).toLocaleLowerCase()] || {
+      color: palette.grey[700],
+      backgroundColor: palette.grey[200],
+    }
+  );
+};
+export const priorityOrder = {
+  low: 0,
+  medium: 1,
+  high: 2,
+  highest: 3,
+};
+export const statusOrder = {
+  created: -1,
+  open: 0,
+  pending: 1,
+  'in progress': 2,
+  'on hold': 3,
+  resolved: 4,
+  escalated: 5,
+  canceled: 6,
+  reopened: 7,
+};
