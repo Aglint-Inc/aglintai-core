@@ -14,9 +14,9 @@ import {
   // SupportGroupType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 
 type sortType =
   | 'assignee'
@@ -559,3 +559,72 @@ export const getPriorityIcon = (priority: string) => {
     );
   }
 };
+
+
+type DataType = {
+  qualification: {
+    certifications: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    education: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    experience: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    project: {
+      isRelated: boolean;
+      relevance: string;
+    };
+  };
+  skills: {
+    score: number;
+  };
+};
+type weightsType = {
+  certifications: number;
+  education: number;
+  experience: number;
+  project: number;
+  skills: number;
+};
+export function calculateOverallScore(
+  data: DataType,
+  weights?: weightsType | null,
+): { score: number } {
+  const relevanceScores = {
+    less: 10,
+    ok: 30,
+    more: 50,
+  };
+  const relatedScore = 20;
+  let totalScore: number = 0;
+  let maxScore: number = relevanceScores.more + relatedScore;
+  for (const key of Object.keys(data.qualification)) {
+    const value = data.qualification[String(key)];
+    if (!value) {
+      continue;
+    }
+    const isRelatedScore: number = value.isRelated ? 20 : 0;
+    const relevanceScore: number = relevanceScores[value.relevance] || 0;
+    const weight: number = weights ? weights[String(key)] || 0.25 : 0.25;
+
+    const propertyScore: number =
+      weight * isRelatedScore + weight * relevanceScore;
+    totalScore += propertyScore;
+  }
+
+  totalScore /= maxScore / 100;
+
+  const skillsScore: number = data.skills?.score || 0;
+  const skillsWeight: number = weights ? weights.skills || 0.1 : 0.1;
+
+  totalScore = totalScore * (1 - skillsWeight) + skillsScore * skillsWeight;
+
+  const overallScore: number = Math.round(totalScore * 10) / 10;
+
+  return { score: overallScore };
+}
