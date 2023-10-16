@@ -33,7 +33,7 @@ export function TicketChatBubble({
             {textName}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-400")}
+            className={_utils.cx(_styles, "text-sm", "text-grey-500")}
             tag="div"
           >
             {textTime}

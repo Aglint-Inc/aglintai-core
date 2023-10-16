@@ -94,12 +94,7 @@ export function InboxTickets({
             >
               {slotCandidateImage}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {textCandidateName}
-            </_Builtin.Block>
+            <_Builtin.Block tag="div">{textCandidateName}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -139,12 +134,7 @@ export function InboxTickets({
           className={_utils.cx(_styles, "tli-column", "date")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-color-black")}
-            tag="div"
-          >
-            {textDate}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{textDate}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

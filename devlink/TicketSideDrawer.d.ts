@@ -25,4 +25,7 @@ declare function TicketSideDrawer(props: {
   slotStatus?: Types.Devlink.Slot;
   slotAssignee?: Types.Devlink.Slot;
   slotPriority?: Types.Devlink.Slot;
+  onClickPrev?: Types.Devlink.RuntimeProps;
+  onClickNext?: Types.Devlink.RuntimeProps;
+  slotStatusHeading?: Types.Devlink.Slot;
 }): React.JSX.Element;

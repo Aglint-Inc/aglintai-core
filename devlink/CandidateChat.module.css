@@ -30,6 +30,7 @@
 
 .candidate-chat-left-header {
   display: flex;
+  max-width: 323.140625px;
   padding: 10px;
   align-items: center;
   grid-column-gap: 8px;
@@ -336,8 +337,4 @@
   min-height: 58vh;
   padding-right: 10px;
   padding-left: 10px;
-}
-
-.slot-type-messages {
-  height: 120px;
 }

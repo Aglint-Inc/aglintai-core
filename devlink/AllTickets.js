@@ -10,6 +10,18 @@ export function AllTickets({
   slotSearch,
   onClickAllTicketCheck = {},
   isAllTicketChecked = true,
+  onClickPriority = {},
+  isSortPriorityArrowVisible = true,
+  onClickSortAssignee = {},
+  isSortAssigneeArrowVisible = true,
+  onClickSortCandidateName = {},
+  isSortCandidateArrowVisible = true,
+  onClickSortJobInfo = {},
+  isSortJobArrowVisible = true,
+  onClickSortStatus = {},
+  isSortStatusVisible = true,
+  onClickSortLastUpdate = {},
+  isSortUpdateArrowVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "inbox-main-wrapper")} tag="div">
@@ -82,10 +94,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickPriority}
                 >
-                  {"Priority"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Priority"}
+                  </_Builtin.Block>
+                  {isSortPriorityArrowVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -93,10 +126,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickSortAssignee}
                 >
-                  {"Assignee"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Assignee"}
+                  </_Builtin.Block>
+                  {isSortAssigneeArrowVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -104,10 +158,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickSortCandidateName}
                 >
-                  {"Candidate Name"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Candidate Name"}
+                  </_Builtin.Block>
+                  {isSortCandidateArrowVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -115,10 +190,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickSortJobInfo}
                 >
-                  {"Job Info"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Job Info"}
+                  </_Builtin.Block>
+                  {isSortJobArrowVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -126,10 +222,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickSortStatus}
                 >
-                  {"Status"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Status"}
+                  </_Builtin.Block>
+                  {isSortStatusVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -137,10 +254,31 @@ export function AllTickets({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-black")}
+                  className={_utils.cx(_styles, "sort-prio")}
                   tag="div"
+                  {...onClickSortLastUpdate}
                 >
-                  {"Create Date"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-black")}
+                    tag="div"
+                  >
+                    {"Last Updated"}
+                  </_Builtin.Block>
+                  {isSortUpdateArrowVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-477")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons", "rotate-180")}
+                        value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.3536%208.35355C10.18%208.52712%209.91056%208.5464%209.71569%208.41141L9.64645%208.35355L6%204.707L2.35355%208.35355C2.17999%208.52712%201.91056%208.5464%201.71569%208.41141L1.64645%208.35355C1.47288%208.17999%201.4536%207.91056%201.58859%207.71569L1.64645%207.64645L5.64645%203.64645C5.82001%203.47288%206.08944%203.4536%206.28431%203.58859L6.35355%203.64645L10.3536%207.64645C10.5488%207.84171%2010.5488%208.15829%2010.3536%208.35355Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
@@ -165,7 +303,10 @@ export function AllTickets({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bclass*%3D%22AllTickets_il-list-wrapper__%22%5D%7B%0Aoverflow-y%3Ahidden%3B%0A%0A%7D%0A%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22AllTickets_il-list-wrapper__%22%5D%7B%0Aoverflow-y%3Ahidden%3B%0A%0A%7D%0A%0A%5Bclass*%3D%22AllTickets_il-list-block__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20100px)%3B%0A%0A%7D%0A%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }
