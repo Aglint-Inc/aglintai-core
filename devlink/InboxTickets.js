@@ -105,23 +105,7 @@ export function InboxTickets({
             className={_utils.cx(_styles, "il-job-info")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {textJobRole}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-sm",
-                "fw-semibold",
-                "text-grey-600"
-              )}
-              tag="div"
-            >
-              {textCompanyLocations}
-            </_Builtin.Block>
+            <_Builtin.Block tag="div">{textJobRole}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

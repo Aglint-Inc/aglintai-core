@@ -1,10 +1,11 @@
 import {
   Avatar,
+  AvatarProps,
   Drawer,
+  InputAdornment,
   Stack,
   TextField,
   TextFieldProps,
-  Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -15,6 +16,7 @@ import { Assignee } from '@/devlink/Assignee';
 import { InboxTickets } from '@/devlink/InboxTickets';
 import { Priority } from '@/devlink/Priority';
 import { StatusPill } from '@/devlink/StatusPill';
+import { TicketEmptyState } from '@/devlink/TicketEmptyState';
 import {
   getPriorityIcon,
   useSupportContext,
@@ -28,7 +30,9 @@ import {
   mapPriorityColor,
   mapStatusColor,
 } from '@/src/utils/support/supportUtils';
+import { capitalizeAll, getRandomColor } from '@/src/utils/text/textUtils';
 
+import SupportEmptyLottie from './EmptyLottie';
 import SupportTicketDetails from './SupportTicket';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 dayjs.extend(relativeTime);
@@ -47,27 +51,26 @@ function Support() {
     setSortOrder,
     search,
     setSearch,
+    randomColors,
   } = useSupportContext();
+
   return (
     <>
-      <Drawer
-        open={Boolean(openTicket)}
-        onClose={() => {
-          setOpenTicketIndex(-1);
-        }}
-        anchor={'right'}
-      >
-        <SupportTicketDetails
-          ticketProp={openTicket}
-          onClose={() => {
-            setOpenTicketIndex(-1);
-          }}
-        />
-      </Drawer>
       <AllTickets
-        slotTicketList={tickets.map((ticket, index) => (
-          <Ticket key={ticket.id} ticket={ticket} index={index} />
-        ))}
+        slotTicketList={
+          tickets.length ? (
+            tickets.map((ticket, index) => (
+              <Ticket
+                key={ticket.id}
+                ticket={ticket}
+                index={index}
+                candidateBackgroundColor={randomColors[ticket.id]}
+              />
+            ))
+          ) : (
+            <TicketEmptyState slotLottie={<SupportEmptyLottie />} />
+          )
+        }
         onClickAllTicketCheck={{
           onClick: () => {
             setAllChecked(!allChecked);
@@ -150,12 +153,46 @@ function Support() {
           <CustomTextField
             placeholder='Search'
             value={search}
+            name='search'
             onChange={(e) => {
               setSearch(e.target.value);
+            }}
+            sx={{ height: '32px', width: '245px' }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  position='start'
+                  sx={{
+                    '&': {
+                      margin: '0!important',
+                      paddingRight: '8px',
+                    },
+                  }}
+                >
+                  <SearchIcon />
+                </InputAdornment>
+              ),
             }}
           />
         }
       />
+      <Drawer
+        open={Boolean(openTicket)}
+        onClose={() => {
+          setOpenTicketIndex(-1);
+        }}
+        anchor={'right'}
+        sx={{
+          '& .MuiPaper-root': { overflowY: 'hidden' },
+        }}
+      >
+        <SupportTicketDetails
+          ticketProp={openTicket}
+          onClose={() => {
+            setOpenTicketIndex(-1);
+          }}
+        />
+      </Drawer>
     </>
   );
 }
@@ -164,9 +201,11 @@ export default Support;
 const Ticket = ({
   ticket,
   index,
+  candidateBackgroundColor,
 }: {
   ticket: Support_ticketType & { jobsDetails: Public_jobsType };
   index: number;
+  candidateBackgroundColor?: string;
 }) => {
   const { updateTicket, allAssignee } = useSupportContext();
   const { setOpenTicketIndex, allChecked } = useSupportContext();
@@ -209,7 +248,7 @@ const Ticket = ({
       // textStatus={ticket.state}
       slotStatus={
         <StatusComponent
-          status={capitalize(ticket?.state || '')}
+          status={capitalizeAll(ticket?.state || '')}
           setStatus={(state) => {
             // @ts-ignore
             updateTicket({ state }, ticket.id);
@@ -248,10 +287,10 @@ const Ticket = ({
       //   />
       // }
       slotCandidateImage={
-        <Avatar
+        <CustomAvatar
           src=''
-          alt={ticket.assign_to || 'Not Assigned'}
-          sx={{ height: '100%', width: '100%' }}
+          alt={ticket.user_name || ''}
+          backgroundColor={candidateBackgroundColor}
         />
       }
       onClickCheck={{
@@ -306,11 +345,7 @@ const AssignmentComponent = ({
     <Assignee
       textAssigneeName={assign_to || 'Not Assigned'}
       slotAssigneeImage={
-        <Avatar
-          src={imageUrl || ''}
-          alt={'user_name'}
-          sx={{ height: '100%', width: '100%' }}
-        />
+        <CustomAvatar src={imageUrl || ''} alt={'user_name'} />
       }
     />
     //   )}
@@ -486,21 +521,22 @@ const LineText = ({
 };
 
 const CustomTextField = (rest: TextFieldProps) => {
-  const { label, required, sx, error, ...props } = rest;
+  const { sx, error, ...props } = rest;
   return (
     <Stack gap={1}>
-      <Typography fontFamily={'inherit'}>
+      {/* <Typography fontFamily={'inherit'}>
         {label}
         {required && '*'}
-        {/* {rest?.label && ':'} */}
-      </Typography>
+    </Typography> * /}
+    
       {/* @ts-ignore */}
       <TextField
+        variant='outlined'
         {...props}
         sx={{
           ...sx,
           padding: '0px',
-          '& .MuiInputBase-root': { padding: '4px' },
+          '& .MuiInputBase-root': { padding: '6px 12px' },
           '& input': { padding: '0px' },
           '& .MuiFilledInput-root': error
             ? {
@@ -511,5 +547,58 @@ const CustomTextField = (rest: TextFieldProps) => {
         }}
       />
     </Stack>
+  );
+};
+
+const CustomAvatar = ({
+  src,
+  alt,
+  variant,
+  isRandomColor = false,
+  backgroundColor,
+}: {
+  src: string;
+  alt: string;
+  variant?: AvatarProps['variant'];
+  isRandomColor?: boolean;
+  backgroundColor?: string;
+}) => {
+  return (
+    <Avatar
+      src={src}
+      alt={alt || ''}
+      {...(variant ? { variant } : {})}
+      sx={{
+        height: '100%',
+        width: '100%',
+        fontSize: '1em',
+        ...(backgroundColor
+          ? { backgroundColor }
+          : isRandomColor
+          ? { backgroundColor: getRandomColor() }
+          : {}),
+      }}
+    >
+      {alt.toLocaleUpperCase().slice(0, 1)}
+    </Avatar>
+  );
+};
+
+const SearchIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      viewBox='0 0 16 16'
+      fill='none'
+    >
+      <path
+        fill-rule='evenodd'
+        clip-rule='evenodd'
+        d='M0 6C0 9.31371 2.68629 12 6 12C7.47685 12 8.82908 11.4664 9.87442 10.5815L14.6464 15.3536C14.8417 15.5488 15.1583 15.5488 15.3536 15.3536C15.5488 15.1583 15.5488 14.8417 15.3536 14.6464L10.5815 9.87442C11.4664 8.82908 12 7.47685 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6ZM6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z'
+        fill='#68737D'
+      />
+    </svg>
   );
 };

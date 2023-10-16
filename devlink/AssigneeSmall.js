@@ -17,7 +17,7 @@ export function AssigneeSmall({
         {slotAssignedToImage}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-color-black")}
+        className={_utils.cx(_styles, "text-sm", "color-black")}
         tag="div"
       >
         {textAssignedtoName}

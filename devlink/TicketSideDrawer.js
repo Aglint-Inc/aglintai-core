@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { TicketChatBubble } from "./TicketChatBubble";
 import { TicketMessageSuggestion } from "./TicketMessageSuggestion";
 import { PrioritySmall } from "./PrioritySmall";
@@ -7,6 +8,10 @@ import { AssigneeSmall } from "./AssigneeSmall";
 import { StatusPillSmall } from "./StatusPillSmall";
 import * as _utils from "./utils";
 import _styles from "./TicketSideDrawer.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-1348":{"id":"e-1348","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-469","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1349"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"dc3bee88-5415-402f-888b-22866a4b23fd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"dc3bee88-5415-402f-888b-22866a4b23fd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697451293249},"e-1349":{"id":"e-1349","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-470","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1348"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"dc3bee88-5415-402f-888b-22866a4b23fd","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"dc3bee88-5415-402f-888b-22866a4b23fd","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697451293252},"e-1350":{"id":"e-1350","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-469","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1351"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"420e28e0-89ba-8764-3ae6-a727881c7453"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697451618328},"e-1351":{"id":"e-1351","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-470","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1350"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"420e28e0-89ba-8764-3ae6-a727881c7453"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697451618332}},"actionLists":{"a-469":{"id":"a-469","title":"Tool Tips Hover Arrow Tickets In","actionItemGroups":[{"actionItems":[{"id":"a-469-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":0,"unit":""}},{"id":"a-469-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":"none"}}]},{"actionItems":[{"id":"a-469-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":1,"unit":""}},{"id":"a-469-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697451298718},"a-470":{"id":"a-470","title":"Tool Tips Hover Arrow Tickets out","actionItemGroups":[{"actionItems":[{"id":"a-470-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":0,"unit":""}},{"id":"a-470-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".arrow-tooltips","selectorGuids":["a5e97eb6-5aeb-bfd2-c374-bc898e1a59d2"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697451298718}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function TicketSideDrawer({
   as: _Component = _Builtin.Block,
@@ -36,6 +41,8 @@ export function TicketSideDrawer({
   onClickNext = {},
   slotStatusHeading,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "inbox-details-wrapper-2")}
@@ -67,6 +74,7 @@ export function TicketSideDrawer({
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "arrow-wrapeprs")}
+              data-w-id="420e28e0-89ba-8764-3ae6-a727881c7453"
               tag="div"
               {...onClickNext}
             >
@@ -74,9 +82,16 @@ export function TicketSideDrawer({
                 className={_utils.cx(_styles, "icons")}
                 value="%3Csvg%20width%3D%229%22%20height%3D%2215%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
               />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "arrow-tooltips")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Shift + >"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "arrow-wrapeprs")}
+              data-w-id="dc3bee88-5415-402f-888b-22866a4b23fd"
               tag="div"
               {...onClickPrev}
             >
@@ -84,6 +99,12 @@ export function TicketSideDrawer({
                 className={_utils.cx(_styles, "icons", "rotate-180")}
                 value="%3Csvg%20width%3D%229%22%20height%3D%2215%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
               />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "arrow-tooltips")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Shift + <"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -239,16 +260,21 @@ export function TicketSideDrawer({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "inde-candidate-image")}
+                className={_utils.cx(_styles, "div-block-479")}
                 tag="div"
               >
-                {slotCandidateImage}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {textCandidateName}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "inde-candidate-image")}
+                  tag="div"
+                >
+                  {slotCandidateImage}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {textCandidateName}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "inde-contact-wrapper")}
@@ -396,7 +422,7 @@ export function TicketSideDrawer({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22TicketSideDrawer_inde-chat-body__%22%5D%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%20195px)%3B%0A%7D%0A%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%0A%5Bclass*%3D%22TicketSideDrawer_inde-chat-wrapper__%22%5D%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2058px)%3B%0A%7D%0A%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

@@ -9,6 +9,7 @@ export function TicketChatBubble({
   textName = "Maria Johnson",
   textMessages = "Hi, Im facing internet issues while taking interview. Can you please resend the invitation link because the current invite link is showing expired",
   textTime = "02:21 AM",
+  slotCompanyImage,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "inde-chat-bubble")} tag="div">
@@ -16,7 +17,14 @@ export function TicketChatBubble({
         className={_utils.cx(_styles, "inde-chat-profile-image")}
         tag="div"
       >
-        {slotChatImage}
+        {slotChatImage ?? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "company-inside-logo")}
+            tag="div"
+          >
+            {slotCompanyImage}
+          </_Builtin.Block>
+        )}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "inde-chat-info")}

@@ -201,10 +201,12 @@
 }
 
 .arrow-wrapeprs {
+  position: relative;
+
   display: flex;
   width: 30px;
   height: 30px;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
@@ -247,6 +249,30 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.arrow-tooltips {
+  position: absolute;
+  left: -87%;
+  top: auto;
+  right: 0%;
+  bottom: -78%;
+
+  display: none;
+  min-width: 60px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  border-radius: 4px;
+
+  background-color: var(--grey-800);
+
+  opacity: 0;
+
+  color: var(--white);
+  font-size: 10px;
 }
 
 .clickable {
@@ -295,6 +321,7 @@
   display: flex;
   overflow: auto;
   flex-direction: column;
+  flex: 1;
 }
 
 .inde-chat-compose-wrapper {
@@ -478,12 +505,19 @@
   margin-top: 17px;
 }
 
+.div-block-479 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .inde-candidate-image {
   overflow: hidden;
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
+  width: 25px;
+  height: 25px;
+  min-height: 25px;
+  min-width: 25px;
 
   border-radius: 6px;
 }
@@ -513,9 +547,13 @@
 
 .inde-candidate-status-text {
   padding: 3px 10px 5px;
+
   border-radius: 100px;
+
   background-color: hsla(356, 100.00%, 97.06%, 1.00);
+
   color: hsla(354.8571428571429, 60.00%, 34.31%, 1.00);
+  font-size: 12px;
   font-weight: 600;
 }
 

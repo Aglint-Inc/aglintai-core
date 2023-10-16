@@ -287,19 +287,7 @@ export function AllTickets({
             className={_utils.cx(_styles, "il-list-block")}
             tag="div"
           >
-            {slotTicketList ?? (
-              <>
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-                <InboxTickets />
-              </>
-            )}
+            {slotTicketList ?? <InboxTickets />}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { getRandomColor } from '@/src/components/CandidateDatabase';
 import {
   NotificationsEmailAPIType,
   Public_jobsType,
@@ -15,6 +16,7 @@ import {
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 
 type sortType =
   | 'assignee'
@@ -44,7 +46,7 @@ interface ContextValue {
     Resolved: number;
     'on hold': number;
   };
-  filters: { state: string };
+  filters: { status: string };
   allAssignee: { id: string; title: string; image: string }[];
   // eslint-disable-next-line no-unused-vars
   updateTicket: (data: Partial<Support_ticketType>, id: string) => void;
@@ -62,6 +64,7 @@ interface ContextValue {
   openTicketIndex: number;
   // eslint-disable-next-line no-unused-vars
   setOpenTicketIndex: (x: number) => void;
+  randomColors: { [key: string]: string };
 }
 
 const defaultProvider: ContextValue = {
@@ -86,7 +89,7 @@ const defaultProvider: ContextValue = {
     Resolved: 0,
     'on hold': 0,
   },
-  filters: { state: 'all' },
+  filters: { status: 'all' },
   updateTicket: (data: Partial<Support_ticketType>, id: string) => {
     data;
     id;
@@ -108,6 +111,7 @@ const defaultProvider: ContextValue = {
   setOpenTicketIndex: (x: number) => {
     x;
   },
+  randomColors: {},
 };
 
 const SupportContext = createContext<ContextValue>(defaultProvider);
@@ -135,38 +139,47 @@ const SupportProvider = ({ children }) => {
   }, [allTickets]);
   const filters = useMemo(() => {
     let filters = {
-      state: 'all',
+      status: 'all',
     };
     if (router.isReady) {
-      filters = { ...filters, ...(router.query as { state: string }) };
+      filters = { ...filters, ...(router.query as { status: string }) };
     }
     return filters;
   }, [router]);
-
+  const [randomColors, setRandomColors] = useState<{ [key: string]: string }>(
+    {},
+  );
   const filteredTickets = useMemo(() => {
-    let tickets = allTickets;
-    if (filters.state !== 'all') {
-      tickets = tickets.filter(
-        (ticket) =>
-          ticket.state === filters.state && ticket.assign_to === recruiter.id,
-      );
-    } else {
-      tickets = tickets.filter((ticket) => ticket.assign_to === recruiter.id);
+    const tempColor: { [key: string]: string } = {};
+    let tickets =
+      allTickets.filter((ticket) => {
+        if (ticket.assign_to === recruiter.id) {
+          tempColor[ticket.id] = getRandomColor();
+          return true;
+        }
+        return false;
+      }) || [];
+    setRandomColors(tempColor);
+    // tickets.map(() => randomColor());
+    if (filters.status !== 'all') {
+      tickets = tickets.filter((ticket) => ticket.state === filters.status);
     }
     return tickets;
   }, [filters, allTickets]);
+
   const [sort, setSort] = useState<sortType>('lastUpdate');
   const [sortOrder, setSortOrder] = useState<1 | -1>(1);
   const sortedTicket = useMemo(() => {
     if (sort === 'lastUpdate') {
       return filteredTickets.sort((a, b) => {
         // @ts-ignore
-        return new Date(b.updated_at) - new Date(a.updated_at);
+        return (new Date(b.updated_at) - new Date(a.updated_at)) * sortOrder;
       });
     } else if (sort === 'priority') {
       return filteredTickets.sort((a, b) => {
-        // @ts-ignore
-        return a.priority.localeCompare(b.priority) * sortOrder;
+        return (
+          (priorityOrder[b.priority] - priorityOrder[a.priority]) * sortOrder
+        );
       });
     } else if (sort === 'assignee') {
       return filteredTickets.sort((a, b) => {
@@ -176,7 +189,7 @@ const SupportProvider = ({ children }) => {
     } else if (sort === 'status') {
       return filteredTickets.sort((a, b) => {
         // @ts-ignore
-        return a.state.localeCompare(b.state) * sortOrder;
+        return (statusOrder[b.state] - statusOrder[a.state]) * sortOrder;
       });
     } else if (sort === 'name') {
       return filteredTickets.sort((a, b) => {
@@ -191,22 +204,22 @@ const SupportProvider = ({ children }) => {
         );
       });
     }
+    return filteredTickets;
   }, [filteredTickets, sort, sortOrder]);
 
   const [search, setSearch] = useState<string>();
   const tickets = useMemo(() => {
-    if (sort === 'lastUpdate') {
-      if (!search) return sortedTicket;
-      return sortedTicket.filter((x) => {
-        return (
-          x.user_name.toLocaleLowerCase().includes(search.toLowerCase()) ||
-          x.title.toLocaleLowerCase().includes(search.toLowerCase()) ||
-          x.jobsDetails.job_title
-            .toLocaleLowerCase()
-            .includes(search.toLowerCase())
-        );
-      });
-    }
+    if (!search) return sortedTicket || [];
+    return sortedTicket.filter((x) => {
+      return (
+        x.id.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.user_name.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.title.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.jobsDetails.job_title
+          .toLocaleLowerCase()
+          .includes(search.toLowerCase())
+      );
+    });
   }, [sortedTicket, search]);
 
   const [openTicket, setOpenTicket] = useState<
@@ -304,7 +317,6 @@ const SupportProvider = ({ children }) => {
       }
     });
   };
-
   useEffect(() => {
     if (recruiter?.id) {
       getAllAssignee(recruiter.name === 'Aglint Inc').then((data) => {
@@ -377,6 +389,7 @@ const SupportProvider = ({ children }) => {
         setSearch,
         openTicketIndex,
         setOpenTicketIndex,
+        randomColors,
       }}
     >
       {children}
@@ -520,7 +533,7 @@ export const getPriorityIcon = (priority: string) => {
         <path d='M4.5 8L0.169872 0.5L8.83013 0.5L4.5 8Z' fill='#467B7C' />
       </svg>
     );
-  } else if (priority.toLocaleLowerCase() === 'high') {
+  } else if (priority.toLocaleLowerCase() === 'highest') {
     return (
       <svg
         width='9'

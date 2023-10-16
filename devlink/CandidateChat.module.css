@@ -322,9 +322,13 @@
 
 .inde-status-block {
   padding: 4px 20px;
+
   border-radius: 100px;
+
   background-color: hsla(204.07185628742513, 69.87%, 53.14%, 1.00);
+
   color: hsla(0, 0.00%, 100.00%, 1.00);
+  font-size: 12px;
   text-align: center;
 }
 
