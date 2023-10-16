@@ -36,14 +36,19 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
             sessionStorage.getItem(`ai-gen-skills-${formFields.jobTitle}`),
           );
         }
+
         if (aiGenSkills.length === 0) {
-          const generatedSkills = await generateSkills(formFields.jobTitle);
+          let generatedSkills = await generateSkills(formFields.jobTitle);
+          generatedSkills = generatedSkills
+            .filter((s) => !formFields.skills.find((s2) => s2 === s))
+            .map((s) => s);
           sessionStorage.setItem(
             `ai-gen-skills-${formFields.jobTitle}`,
             JSON.stringify(generatedSkills),
           );
           aiGenSkills = [...generatedSkills];
         }
+
         setSuggSkills(() => {
           return aiGenSkills.map((s) => s);
         });
