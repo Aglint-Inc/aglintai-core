@@ -6,6 +6,12 @@
   background-color: var(--white-80449ce7);
 }
 
+@media screen and (max-width: 767px) {
+  .social-link-pop-wrappers {
+    width: auto;
+  }
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -263,4 +269,8 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }

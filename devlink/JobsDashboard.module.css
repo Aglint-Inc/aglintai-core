@@ -459,6 +459,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .rd-jobs-wrapper {
   display: flex;
   width: 100%;

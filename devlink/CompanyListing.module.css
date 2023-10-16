@@ -27,12 +27,10 @@
 
 @media screen and (max-width: 767px) {
   .company-listing-hero {
-    padding-top: 100px;
-    padding-bottom: 60px;
+    padding: 60px 20px;
     align-items: flex-start;
     grid-column-gap: 20px;
     grid-row-gap: 20px;
-
     text-align: left;
   }
 }
@@ -140,6 +138,10 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .text-lg {
@@ -323,6 +325,8 @@
 @media screen and (max-width: 767px) {
   .open-jobs-sticky-wrappers {
     padding-top: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
   }
 }
 

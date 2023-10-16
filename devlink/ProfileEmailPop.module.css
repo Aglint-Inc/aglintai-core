@@ -223,6 +223,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .email-input-wrappers {
   display: flex;
   margin-top: 10px;

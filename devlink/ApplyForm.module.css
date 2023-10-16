@@ -222,6 +222,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .edit-icons-inbox {
   padding: 4px;
   border-radius: 100px;

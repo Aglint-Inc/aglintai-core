@@ -59,6 +59,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

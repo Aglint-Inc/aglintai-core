@@ -43,6 +43,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;

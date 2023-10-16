@@ -36,6 +36,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .div-block-419 {
   width: 53px;
   height: 24px;

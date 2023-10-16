@@ -290,6 +290,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

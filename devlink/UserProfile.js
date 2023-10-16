@@ -14,6 +14,8 @@ export function UserProfile({
   onClickProfilePhotoChange = {},
   slotUserInfoBtn,
   slotPreferencesBtn,
+  slotPassword,
+  slcotpasswo,
 }) {
   return (
     <_Component
@@ -176,6 +178,28 @@ export function UserProfile({
             tag="div"
           >
             {slotEmail}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "profile-block")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "profile-header-wrappers")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-lg",
+                "fw-semibold",
+                "text-grey-500"
+              )}
+              tag="div"
+            >
+              {"Password"}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotPassword}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

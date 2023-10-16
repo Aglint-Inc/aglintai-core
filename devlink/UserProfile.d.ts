@@ -11,4 +11,6 @@ declare function UserProfile(props: {
   onClickProfilePhotoChange?: Types.Devlink.RuntimeProps;
   slotUserInfoBtn?: Types.Devlink.Slot;
   slotPreferencesBtn?: Types.Devlink.Slot;
+  slotPassword?: Types.Devlink.Slot;
+  slcotpasswo?: Types.Devlink.Slot;
 }): React.JSX.Element;

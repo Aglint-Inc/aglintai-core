@@ -355,6 +355,12 @@
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
 }
 
+@media screen and (max-width: 767px) {
+  .company-tab-link {
+    flex: 0 0 auto;
+  }
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;
@@ -495,6 +501,10 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .div-block-423 {
