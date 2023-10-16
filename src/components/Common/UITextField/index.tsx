@@ -151,6 +151,7 @@ const UITextField = React.forwardRef(
               bgcolor: disabled ? 'transparent' : 'white.700',
               fontSize: '14px',
               fieldset: {
+                pt: '8px',
                 border: noBorder
                   ? 'transparent'
                   : `1px solid ${outlineColor}!important`,

@@ -395,7 +395,7 @@ function ApplicationDetails({
                   textFeedback={giveRateInWordToResume(jdScore)}
                 />
               }
-              isResumeVisible={applicationDetails.resume && jdScore > 0}
+              isResumeVisible={applicationDetails.resume}
               // isResumeVisible={false}
               textPhone={
                 applicationDetails.phone ? applicationDetails.phone : '--'

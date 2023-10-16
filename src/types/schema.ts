@@ -1179,6 +1179,7 @@ export interface Database {
           email: string
           email_campaign: string | null
           emails: Json | null
+          embedding: string | null
           feedback: Json | null
           first_name: string
           id: number
@@ -1220,6 +1221,7 @@ export interface Database {
           email: string
           email_campaign?: string | null
           emails?: Json | null
+          embedding?: string | null
           feedback?: Json | null
           first_name: string
           id?: number
@@ -1261,6 +1263,7 @@ export interface Database {
           email?: string
           email_campaign?: string | null
           emails?: Json | null
+          embedding?: string | null
           feedback?: Json | null
           first_name?: string
           id?: number
@@ -3647,6 +3650,23 @@ export interface Database {
         Returns: {
           id: number
           content: string
+          similarity: number
+        }[]
+      }
+      match_job_applications: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: number
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          jd_score: Json
+          feedback: Json
           similarity: number
         }[]
       }
