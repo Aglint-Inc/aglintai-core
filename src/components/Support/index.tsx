@@ -343,7 +343,13 @@ const AssignmentComponent = ({
     //     />
     //   ) : (
     <Assignee
-      textAssigneeName={assign_to || 'Not Assigned'}
+      textAssigneeName={
+        <LineText
+          line='one'
+          color={palette.grey[600]}
+          text={assign_to || 'Not Assigned'}
+        />
+      }
       slotAssigneeImage={
         <CustomAvatar src={imageUrl || ''} alt={'user_name'} />
       }

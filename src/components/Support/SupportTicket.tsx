@@ -136,9 +136,9 @@ function SupportTicketDetails({
           ?.emailTemplates,
       );
       ticketProp?.application_id &&
-        getJobApplicationDetails(ticketProp.application_id).then(
-          (data) => data && setApplication(data),
-        );
+        getJobApplicationDetails(ticketProp.application_id).then((data) => {
+          return data && setApplication(data);
+        });
     }
   }, [ticketProp]);
   const assignedTo =
