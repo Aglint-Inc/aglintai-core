@@ -791,6 +791,10 @@
   color: var(--red600-953350ec);
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .cj-richtext-editor-wrapper {
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);

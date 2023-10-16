@@ -23,4 +23,5 @@ declare function CreateNewJob(props: {
   textJobName?: React.ReactNode;
   textJobEdit?: React.ReactNode;
   slotPublishButton?: Types.Devlink.Slot;
+  slotSavedChanges?: Types.Devlink.Slot;
 }): React.JSX.Element;

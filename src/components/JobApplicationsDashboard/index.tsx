@@ -2,6 +2,7 @@
 import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import {
@@ -10,13 +11,11 @@ import {
   JobScreening,
   SelectActionBar,
 } from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -38,8 +37,6 @@ import {
 } from './utils';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
-import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
-import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -68,9 +65,8 @@ const YTransformWrapper = ({ children }) => {
 
 const JobApplicationComponent = () => {
   const { applicationsData, job } = useJobApplications();
-  const { jobsData } = useJobs();
   const { applications } = applicationsData;
-
+  const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
   const [sort] = useState<SortParameter>({
@@ -99,9 +95,6 @@ const JobApplicationComponent = () => {
     setSection(section);
     setCheckList(new Set<string>());
   };
-
-  const { recruiter } = useAuthDetails();
-  const { handleInitializeForm } = useJobForm();
 
   const handleSelectAll = () => {
     if (checkList.size === searchedApplications.length)
@@ -212,26 +205,10 @@ const JobApplicationComponent = () => {
         }}
         onClickEditJob={{
           onClick: () => {
-            handleInitializeForm({
-              type: 'edit',
-              job: jobsData.jobs.find((j) => j.id === job.id) as any,
-              recruiter,
-              slideNo: 1,
-            });
-          },
-        }}
-        onClickWorkflow={{
-          onClick: () => {
-            handleInitializeForm({
-              type: 'edit',
-              job: jobsData.jobs.find((j) => j.id === job.id) as any,
-              recruiter,
-              slideNo: 5,
-            });
+            router.push(`/jobs/edit?job_id=${job.id}`);
           },
         }}
       />
-      <EditFlow />
     </>
   );
 };
