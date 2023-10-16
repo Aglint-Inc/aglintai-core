@@ -740,3 +740,7 @@
 .text-red-600 {
   color: var(--red600-953350ec);
 }
+
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
