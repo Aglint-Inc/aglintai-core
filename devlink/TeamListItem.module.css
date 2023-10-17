@@ -3,7 +3,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-  grid-template-columns: 240px 140px 166px 146px 114px;
+  grid-template-columns: 240px 140px 166px 160px 114px;
   grid-template-rows: auto;
 }
 
@@ -199,6 +199,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -276,8 +280,6 @@
   background-color: white;
 
   box-shadow: 0 4px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
-
-  transition: all 300ms ease;
 }
 
 .il-archive-btn-2:hover {
@@ -305,12 +307,6 @@
   grid-row-end: span 1;
 }
 #w-node-a60860aa-9493-87fc-f445-b3f1087efc93-087efc8b {
-  grid-column-start: span 1;
-  grid-column-end: span 1;
-  grid-row-start: span 1;
-  grid-row-end: span 1;
-}
-#w-node-a60860aa-9493-87fc-f445-b3f1087efc95-087efc8b {
   grid-column-start: span 1;
   grid-column-end: span 1;
   grid-row-start: span 1;

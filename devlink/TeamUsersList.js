@@ -10,6 +10,7 @@ export function TeamUsersList({
   slotPendingInviteBtn,
   slotInviteBtn,
   slotUsersRoleList,
+  onClickViewPendingInvites = {},
 }) {
   return (
     <_Component
@@ -79,7 +80,17 @@ export function TeamUsersList({
                   }
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotPendingInviteBtn}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "button-dark-yellow-outline")}
+                  tag="div"
+                  {...onClickViewPendingInvites}
+                >
+                  <_Builtin.Block tag="div">
+                    {"View pending invites"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
@@ -138,7 +149,7 @@ export function TeamUsersList({
                   className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
-                  {"User"}
+                  {"Status"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -201,7 +212,7 @@ export function TeamUsersList({
               className={_utils.cx(_styles, "text-lg", "fw-semibold")}
               tag="div"
             >
-              {"User Roles"}
+              {"Roles"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
