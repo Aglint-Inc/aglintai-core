@@ -236,6 +236,10 @@ const useJobActions = () => {
     }
   };
 
+  const handleGetJob = (jobId: string) => {
+    return jobsData.jobs.find((job) => job.id === jobId);
+  };
+
   const handleJobError = (error) => {
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
@@ -258,6 +262,7 @@ const useJobActions = () => {
     handleUIJobUpdate,
     handleJobDelete,
     handleJobError,
+    handleGetJob,
     initialLoad,
     handleApplicationsRead,
   };

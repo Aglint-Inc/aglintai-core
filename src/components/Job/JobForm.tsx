@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
@@ -5,8 +6,10 @@ import { useState } from 'react';
 import React from 'react';
 
 import { CreateNewJob } from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
+import { ScoreWheelParams } from '../Common/ScoreWheel';
 import { JobFormErrorParams } from '../JobsDashboard/JobPostCreateUpdate/CreateFlow';
 import {
   FormJobType,
@@ -16,12 +19,18 @@ import ApplyForm from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ApplyFo
 import BasicStepOne from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepOne';
 import BasicStepTwo from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepTwo';
 import Emails from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/EmailTemplates';
+import ScoreSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScoreSettings';
 import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningQns';
 import ScreeningSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/SyncStatus';
 
 function JobForm() {
   const { jobForm, dispatch } = useJobForm();
+  const { handleGetJob } = useJobs();
+  const router = useRouter();
+  const jobId = router.query.job_id as string;
+  const currentJob = handleGetJob(jobId);
+
   const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
     company: '',
@@ -46,6 +55,13 @@ function JobForm() {
     );
   } else if (slideNo === 2) {
     formSlide = <ApplyForm />;
+  } else if (slideNo === 3) {
+    formSlide = (
+      <ScoreSettings
+        defaultWeights={currentJob.parameter_weights as ScoreWheelParams}
+        jobId={currentJob.id}
+      />
+    );
   } else if (slideNo === 4) {
     formSlide = <Emails />;
   } else if (slideNo == 5) {
@@ -171,7 +187,13 @@ function JobForm() {
   };
 
   const changeSlide = (
-    slide: 'basic' | 'applyfrom' | 'email' | 'screening' | 'workFlow',
+    slide:
+      | 'basic'
+      | 'applyfrom'
+      | 'email'
+      | 'screening'
+      | 'workFlow'
+      | 'scoreSettings',
   ) => {
     if (!isformValid()) return;
 
@@ -210,6 +232,13 @@ function JobForm() {
           slideNo: 2,
         },
       });
+    } else if (slide === 'scoreSettings') {
+      dispatch({
+        type: 'moveToSlide',
+        payload: {
+          slideNo: 3,
+        },
+      });
     }
   };
 
@@ -233,12 +262,10 @@ function JobForm() {
     formTitle = `Edit Job - ${jobForm.formFields.jobTitle}`;
   }
 
-  const router = useRouter();
-
   return (
     <>
       <CreateNewJob
-        slotCreateJob={<>{formSlide}</>}
+        slotCreateJob={<Stack alignItems={'center'}>{formSlide}</Stack>}
         onClickApplyForm={{
           onClick: () => {
             changeSlide('applyfrom');
@@ -256,7 +283,7 @@ function JobForm() {
         }}
         onClickScoreSetting={{
           onClick: () => {
-            // changeSlide('workFlow');
+            changeSlide('scoreSettings');
           },
         }}
         onClickScreeningQuestions={{
@@ -274,10 +301,11 @@ function JobForm() {
             router.back();
           },
         }}
-        isApplyFormActive={slideNo === 3}
+        isApplyFormActive={slideNo === 2}
         isDetailsActive={slideNo === 1}
         isEmailTemplateActive={slideNo === 4}
         isScreeningQuestionsActive={slideNo === 5}
+        isScoreSettingActive={slideNo === 3}
         isWorkflowsActive={slideNo === 6}
         textJobName={formTitle}
         slotPublishButton={<></>}

@@ -2382,6 +2382,7 @@ export interface Database {
           department: string | null
           description: string | null
           email_template: Json
+          embedding: string | null
           id: string
           is_campus: boolean
           job_criteria: Json | null
@@ -2391,6 +2392,7 @@ export interface Database {
           logo: string | null
           new_screening_setting: Json
           overview: string | null
+          parameter_weights: Json
           posted_by: string
           qualifications: string[] | null
           recruiter_id: string
@@ -2413,6 +2415,7 @@ export interface Database {
           department?: string | null
           description?: string | null
           email_template?: Json
+          embedding?: string | null
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null
@@ -2422,6 +2425,7 @@ export interface Database {
           logo?: string | null
           new_screening_setting?: Json
           overview?: string | null
+          parameter_weights?: Json
           posted_by?: string
           qualifications?: string[] | null
           recruiter_id: string
@@ -2444,6 +2448,7 @@ export interface Database {
           department?: string | null
           description?: string | null
           email_template?: Json
+          embedding?: string | null
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null
@@ -2453,6 +2458,7 @@ export interface Database {
           logo?: string | null
           new_screening_setting?: Json
           overview?: string | null
+          parameter_weights?: Json
           posted_by?: string
           qualifications?: string[] | null
           recruiter_id?: string
