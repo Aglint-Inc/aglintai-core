@@ -134,3 +134,16 @@ export type Summary = {
 };
 export type RecruiterUserType =
   Database['public']['Tables']['recruiter_user']['Row'];
+
+export type RoleType = {
+  sourcing: boolean;
+  screening: boolean;
+  job_posting: boolean;
+  manage_roles: boolean;
+  manage_users: {
+    [key: string]: boolean;
+  };
+  edit_workflow: boolean;
+  send_interview_link: boolean;
+  view_candidates_profile: boolean;
+};

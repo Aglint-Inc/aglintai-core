@@ -19,6 +19,7 @@ import {
   RecruiterDB,
   RecruiterType,
   RecruiterUserType,
+  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
@@ -44,6 +45,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
+  role: RoleType;
 }
 
 const defaultProvider = {
@@ -61,6 +63,7 @@ const defaultProvider = {
     return true;
   },
   recruiterUser: null,
+  role: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -93,6 +96,7 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [role, setRole] = useState<RoleType>(null);
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
@@ -129,6 +133,8 @@ const AuthProvider = ({ children }) => {
               address: recruiter[0]?.address as unknown as AddressType,
               socials: recruiter[0]?.socials as unknown as SocialsType,
             });
+            const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
+            temp && setRole(temp as RoleType);
           }
         } else {
           router.push(pageRoutes.SIGNUP);
@@ -221,6 +227,7 @@ const AuthProvider = ({ children }) => {
         handleLogout,
         updateRecruiter,
         recruiterUser,
+        role,
       }}
     >
       {loading ? <AuthLoader /> : children}
