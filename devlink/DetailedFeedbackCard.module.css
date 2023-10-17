@@ -214,6 +214,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

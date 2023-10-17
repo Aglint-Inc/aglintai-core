@@ -36,14 +36,13 @@ type AutoCompleteType = {
   value: string;
 };
 
-type EmailTemplate = Record<
-  string,
-  {
-    fromName: string;
-    body: string;
-    subject: string;
-  }
->;
+export type EmailDetails = {
+  fromName: string;
+  body: string;
+  subject: string;
+};
+
+type EmailTemplate = Record<string, EmailDetails>;
 export type FormJobType = {
   jobTitle: string;
   company: string;

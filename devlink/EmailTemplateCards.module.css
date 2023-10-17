@@ -181,6 +181,11 @@
   flex: 0 0 auto;
 }
 
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

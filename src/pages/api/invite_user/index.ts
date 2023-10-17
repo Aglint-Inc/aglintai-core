@@ -45,7 +45,7 @@ export default async function handler(
             })
             .select();
           supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}reset-password`,
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
           });
           if (!userError) {
             return res.send({ users, error: null });

@@ -40,6 +40,10 @@
   transform: rotate(180deg);
 }
 
+.icons.pause {
+  display: none;
+}
+
 .div-block-419 {
   width: 53px;
   height: 24px;

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { palette } from '@/src/context/Theme/Theme';
 
 const Priority = {
@@ -139,3 +140,65 @@ export const statusOrder = {
   canceled: 6,
   reopened: 7,
 };
+
+type DataType = {
+  qualification: {
+    certifications: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    education: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    experience: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    project: {
+      isRelated: boolean;
+      relevance: string;
+    };
+  };
+  skills: {
+    score: number;
+  };
+};
+type weightsType = {
+  certifications: number;
+  education: number;
+  experience: number;
+  project: number;
+  skills: number;
+};
+
+export function calculateOverallScore(
+  data: DataType,
+  weights?: weightsType | null,
+): { score: number } {
+  const relevanceScores = {
+    less: 10,
+    ok: 30,
+    more: 50,
+  };
+  const relatedScore = 50;
+  let totalScore: number = 0;
+  for (const key of Object.keys(data.qualification)) {
+    const value = data.qualification[key];
+    if (!value) {
+      continue;
+    }
+    const isRelatedScore: number = value.isRelated ? relatedScore : 0;
+    const relevanceScore: number = relevanceScores[value.relevance] || 0;
+    const weight: number = weights ? weights[key] || 0.25 : 0.25;
+    const propertyScore: number =
+      weight * isRelatedScore + weight * relevanceScore;
+    totalScore += propertyScore;
+  }
+  // totalScore /= maxScore / 100;
+  const skillsScore: number = data.skills?.score || 0;
+  const skillsWeight: number = weights ? weights.skills || 0.1 : 0.1;
+  totalScore = totalScore + skillsScore * skillsWeight;
+  const overallScore: number = Math.round(totalScore * 10) / 10;
+  return { score: overallScore };
+}

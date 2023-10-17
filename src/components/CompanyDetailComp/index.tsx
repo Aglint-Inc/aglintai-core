@@ -44,8 +44,6 @@ const CompanyDetailComp = () => {
           slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
           slotEmailTemplate={<EmailTemplate />}
           slotTeam={<TeamManagement />}
-
-          // slotTeam={<TeamListItem dateText={new Date().toDateString()} />}
         />
       </YTransform>
     </>

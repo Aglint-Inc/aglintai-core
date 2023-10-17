@@ -239,6 +239,73 @@
   height: 16px;
 }
 
+.text-md {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.text-color-grey {
+  color: var(--textLightGrey-914158a7);
+}
+
+.text-color-dark-grey {
+  color: var(--textDarkGrey-65de823a);
+}
+
+.text-md.color-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.color-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.fw-normal {
+  font-weight: 400;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.color-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
+.text-grey-100 {
+  color: var(--gray100-3a86b552);
+}
+
+.text-md.whitespace-prewrap {
+  white-space: pre-wrap;
+}
+
+.text-md.apply-jobs {
+  display: inline;
+}
+
+.text-md.apply-jobs.left-margin-4 {
+  margin-left: 4px;
+}
+
+.color-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
 .is-button-disabled {
   position: absolute;
   left: 0%;

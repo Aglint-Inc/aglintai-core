@@ -83,6 +83,10 @@
   transform: rotate(180deg);
 }
 
+.icons.pause {
+  display: none;
+}
+
 .div-block-485 {
   display: flex;
   margin-top: 14px;

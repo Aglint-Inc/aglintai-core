@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
+import axios from 'axios';
 import React from 'react';
 
 import AUIButton from '@/src/components/Common/AUIButton';
-import axios from 'axios';
 
 const index = () => {
   const submitHandler = async () => {

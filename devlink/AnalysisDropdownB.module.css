@@ -355,3 +355,7 @@
 .text-grey-600-3.mt-5 {
   margin-top: 5px;
 }
+
+.text-grey-600-3.inline-block {
+  display: inline;
+}

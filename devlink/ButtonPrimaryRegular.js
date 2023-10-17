@@ -43,7 +43,9 @@ export function ButtonPrimaryRegular({
             {slotStartIcon}
           </_Builtin.Block>
         ) : null}
-        <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "text-md")} tag="div">
+          {textLabel}
+        </_Builtin.Block>
         {isEndIcon ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "button-icon", "is-large")}

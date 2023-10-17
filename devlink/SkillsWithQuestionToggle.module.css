@@ -186,6 +186,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .toggle-btn-block-absolute {
   position: absolute;
   left: auto;
@@ -292,6 +301,10 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }
 
 .text-sm {

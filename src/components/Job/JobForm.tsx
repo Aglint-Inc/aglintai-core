@@ -1,13 +1,17 @@
+import { Stack } from '@mui/material';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
+import Image from 'next/image';
 import { useState } from 'react';
 import React from 'react';
 
 import { CreateNewJob } from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
-import { JobFormErrorParams } from '../JobsDashboard/JobPostCreateUpdate/CreateFlow';
+import { ScoreWheelParams } from '../Common/ScoreWheel';
+import UITypography from '../Common/UITypography';
 import {
   FormJobType,
   useJobForm,
@@ -16,12 +20,35 @@ import ApplyForm from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ApplyFo
 import BasicStepOne from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepOne';
 import BasicStepTwo from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepTwo';
 import Emails from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/EmailTemplates';
+import ScoreSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScoreSettings';
 import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningQns';
 import ScreeningSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/SyncStatus';
 
+export type JobFormErrorParams = {
+  jobTitle: string;
+  company: string;
+  location: string;
+  department: string;
+  aiQnGen: number;
+};
+
+type slideName = 'details' | 'templates' | 'qns' | 'workflow';
+type FormErrorParams = Record<
+  slideName,
+  {
+    title: string;
+    err: string[];
+  }
+> | null;
+
 function JobForm() {
   const { jobForm, dispatch } = useJobForm();
+  const { handleGetJob } = useJobs();
+  const router = useRouter();
+  const jobId = router.query.job_id as string;
+  const currentJob = handleGetJob(jobId);
+
   const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
     company: '',
@@ -31,7 +58,7 @@ function JobForm() {
   });
   // const [showWarn, setShowWarn] = useState(true);
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
-  let formSlide = null;
+  let formSlide = <></>;
   const { slideNo } = jobForm;
   if (slideNo === 1) {
     formSlide = (
@@ -46,6 +73,13 @@ function JobForm() {
     );
   } else if (slideNo === 2) {
     formSlide = <ApplyForm />;
+  } else if (slideNo === 3) {
+    formSlide = (
+      <ScoreSettings
+        defaultWeights={currentJob.parameter_weights as ScoreWheelParams}
+        jobId={currentJob.id}
+      />
+    );
   } else if (slideNo === 4) {
     formSlide = <Emails />;
   } else if (slideNo == 5) {
@@ -54,7 +88,7 @@ function JobForm() {
     formSlide = <ScreeningSettings />;
   }
 
-  const isformValid = () => {
+  const formValidation = () => {
     let flag = true;
     const { company, jobTitle, jobLocation, department } = jobForm.formFields;
     if (slideNo === 1) {
@@ -74,12 +108,10 @@ function JobForm() {
       }
 
       if (isEmpty(get(jobForm, 'formFields.jobDescription', ''))) {
-        toast.error('Please provide job description to move to next Step');
         return false;
       }
 
       if (isEmpty(get(jobForm, 'formFields.skills', []))) {
-        toast.error('Please provide required skills to move to next Step');
         return false;
       }
       if (isEmpty(department.trim())) {
@@ -105,9 +137,6 @@ function JobForm() {
       if (get(interviewConfig, 'skill.value', false)) {
         let count = get(interviewConfig, 'skill.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from skill filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
@@ -115,9 +144,6 @@ function JobForm() {
       if (get(interviewConfig, 'behavior.value', false)) {
         let count = get(interviewConfig, 'behavior.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from behaviour filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
@@ -125,9 +151,6 @@ function JobForm() {
       if (get(interviewConfig, 'communication.value', false)) {
         let count = get(interviewConfig, 'communication.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from communication filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
@@ -135,9 +158,6 @@ function JobForm() {
       if (get(interviewConfig, 'performance.value', false)) {
         let count = get(interviewConfig, 'performance.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from performance filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
@@ -145,9 +165,6 @@ function JobForm() {
       if (get(interviewConfig, 'education.value', false)) {
         let count = get(interviewConfig, 'education.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from education filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
@@ -155,26 +172,27 @@ function JobForm() {
       if (get(interviewConfig, 'general.value', false)) {
         let count = get(interviewConfig, 'general.questions', []).length;
         if (count === 0) {
-          toast.error(
-            `Please add questions from general filter or turn off the filter`,
-          );
           return false;
         }
         totalQns += count;
       }
       if (totalQns < 10 || totalQns > 25) {
         flag = false;
-        toast.error('Please set atleast 10 and at max 25 Questions');
       }
     }
     return flag;
   };
 
   const changeSlide = (
-    slide: 'basic' | 'applyfrom' | 'email' | 'screening' | 'workFlow',
+    slide:
+      | 'basic'
+      | 'applyfrom'
+      | 'email'
+      | 'screening'
+      | 'workFlow'
+      | 'scoreSettings',
   ) => {
-    if (!isformValid()) return;
-
+    formValidation();
     if (slide === 'basic') {
       dispatch({
         type: 'moveToSlide',
@@ -210,35 +228,26 @@ function JobForm() {
           slideNo: 2,
         },
       });
+    } else if (slide === 'scoreSettings') {
+      dispatch({
+        type: 'moveToSlide',
+        payload: {
+          slideNo: 3,
+        },
+      });
     }
   };
-
-  // const handleDrawerClose = () => {
-  //   if (isformValid()) {
-  //     dispatch({
-  //       type: 'closeForm',
-  //     });
-  //   }
-  //   setFormError(() => ({
-  //     jobTitle: '',
-  //     company: '',
-  //     location: '',
-  //     department: '',
-  //     aiQnGen: 0,
-  //   }));
-  // };
 
   let formTitle = `Create Job - ${jobForm.formFields.jobTitle}`;
   if (jobForm.formType === 'edit') {
     formTitle = `Edit Job - ${jobForm.formFields.jobTitle}`;
   }
 
-  const router = useRouter();
-
+  const warning = findDisclaimers(jobForm.formFields);
   return (
     <>
       <CreateNewJob
-        slotCreateJob={<>{formSlide}</>}
+        slotCreateJob={<Stack alignItems={'center'}>{formSlide}</Stack>}
         onClickApplyForm={{
           onClick: () => {
             changeSlide('applyfrom');
@@ -256,7 +265,7 @@ function JobForm() {
         }}
         onClickScoreSetting={{
           onClick: () => {
-            // changeSlide('workFlow');
+            changeSlide('scoreSettings');
           },
         }}
         onClickScreeningQuestions={{
@@ -274,10 +283,11 @@ function JobForm() {
             router.back();
           },
         }}
-        isApplyFormActive={slideNo === 3}
+        isApplyFormActive={slideNo === 2}
         isDetailsActive={slideNo === 1}
         isEmailTemplateActive={slideNo === 4}
         isScreeningQuestionsActive={slideNo === 5}
+        isScoreSettingActive={slideNo === 3}
         isWorkflowsActive={slideNo === 6}
         textJobName={formTitle}
         slotPublishButton={<></>}
@@ -298,6 +308,18 @@ function JobForm() {
             );
           },
         }}
+        slotDisclaimerDetails={
+          <>
+            <SectionWarning warnings={warning} slidePath={'details'} />
+          </>
+        }
+        isDisclaimerDetailsVisible={!isEmpty(get(warning, 'details.err', []))}
+        isDisclaimerApplyFormVisible={true}
+        isDisclaimerScreeningVisible={true}
+        isDisclaimerEmailVisible={true}
+        isDisclaimerScoreVisible={true}
+        isDisclaimerWorkflowVisible={true}
+        isSavedChangesVisible={true}
         // textJobEdit={jobForm.formType === 'edit' ? 'Edit' : 'Create Job'}
       />
     </>
@@ -305,3 +327,74 @@ function JobForm() {
 }
 
 export default JobForm;
+
+const SectionWarning = ({
+  warnings,
+  slidePath,
+}: {
+  warnings: FormErrorParams;
+  slidePath: slideName;
+}) => {
+  return (
+    <Stack gap={2}>
+      <Stack direction={'row'} gap={0.5} alignItems={'center'}>
+        <Image alt='info' height={14} width={14} src={'/images/svg/info.svg'} />
+        <UITypography fontBold='normal' type='small'>
+          Details
+        </UITypography>
+      </Stack>
+      <Stack>
+        <ul>
+          {warnings[String(slidePath)].err.map((msg, idx) => (
+            <li key={idx}>{msg}</li>
+          ))}
+        </ul>
+      </Stack>
+    </Stack>
+  );
+};
+
+const findDisclaimers = (jobForm: FormJobType) => {
+  let warnings: FormErrorParams = {
+    details: {
+      err: [],
+      title: '',
+    },
+    qns: {
+      err: [],
+      title: '',
+    },
+    templates: {
+      err: [],
+      title: '',
+    },
+    workflow: {
+      err: [],
+      title: '',
+    },
+  };
+
+  if (isEmpty(jobForm.jobTitle.trim())) {
+    warnings.details.err.push('Missing job title');
+  }
+
+  if (isEmpty(jobForm.company.trim())) {
+    warnings.details.err.push('Missing company name');
+  }
+
+  if (isEmpty(jobForm.jobLocation.trim())) {
+    warnings.details.err.push('Missing job location');
+  }
+
+  if (isEmpty(get(jobForm, 'jobDescription', ''))) {
+    warnings.details.err.push('Missing job description');
+  }
+
+  if (isEmpty(get(jobForm, 'skills', []))) {
+    warnings.details.err.push('Select skills for job description');
+  }
+  if (isEmpty(jobForm.department.trim())) {
+    warnings.details.err.push('Missing department');
+  }
+  return warnings;
+};

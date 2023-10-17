@@ -324,10 +324,11 @@ const EmailTemplate = () => {
 
 export default EmailTemplate;
 
-export const templateObj = {
+export const templateObj: Record<string, any> = {
   interview: {
     listing: 'Interview Email',
     heading: 'Interview Email Settings',
+    triggerInfo: 'Triggered when the candidate selected for interview.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
@@ -344,6 +345,8 @@ export const templateObj = {
   interview_resend: {
     listing: 'Follow Up Interview',
     heading: 'Follow Up Interview Email Settings',
+    triggerInfo: 'Triggerd for resending the interview invite.',
+
     description:
       'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
     subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
@@ -359,6 +362,7 @@ export const templateObj = {
   rejection: {
     listing: 'Rejection Email',
     heading: 'Rejection Email Settings',
+    triggerInfo: 'Triggered when the candidate moved to disqualified.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Update on your [jobTitle] interview at [companyName]',
@@ -373,6 +377,7 @@ export const templateObj = {
   application_recieved: {
     listing: 'Application Recieved Email',
     heading: 'Application Recieved Email Settings',
+    triggerInfo: 'Triggered instantly when candidate applied to this job.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',

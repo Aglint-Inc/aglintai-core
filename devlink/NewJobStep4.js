@@ -22,22 +22,6 @@ export function NewJobStep4({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-5")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "cj-top-block")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-grey-600"
-          )}
-          tag="div"
-        >
-          {"Step 4: Screening Settings"}
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Optimize your candidate screening process."}
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"

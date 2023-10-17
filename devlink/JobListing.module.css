@@ -192,6 +192,10 @@
   color: var(--grey600-d5bebe21);
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -477,6 +481,10 @@
   transform: rotate(180deg);
 }
 
+.icons.pause {
+  display: none;
+}
+
 .fw-semibold.cursor-pointer.capitialize {
   text-transform: capitalize;
 }
@@ -567,6 +575,15 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
 }
 
 .company-list-link-wrappers {

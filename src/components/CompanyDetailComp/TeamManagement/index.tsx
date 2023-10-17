@@ -145,16 +145,21 @@ const TeamManagement = () => {
           </AUIButton>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        slotPendingInviteBtn={
-          <AUIButton
-            variant='outlined'
-            onClick={() => {
-              setOpenDrawer({ open: true, window: 'pendingMember' });
-            }}
-          >
-            View Pending Invites
-          </AUIButton>
-        }
+        // slotPendingInviteBtn={
+        //   // <AUIButton
+        //   //   variant='outlined'
+        //   //   onClick={() => {
+        //   //     setOpenDrawer({ open: true, window: 'pendingMember' });
+        //   //   }}
+        //   // >
+        //   //   View Pending Invites
+        //   // </AUIButton>
+        // }
+        onClickViewPendingInvites={{
+          onClick: () => {
+            setOpenDrawer({ open: true, window: 'pendingMember' });
+          },
+        }}
       />
       {role.manage_users && (
         <AddMember
@@ -287,6 +292,9 @@ const AddMember = ({
                 </AUIButton>
               </Stack>
             }
+            onClickClose={{
+              onClick: () => onClose(),
+            }}
           />
         ) : menu === 'pendingMember' ? (
           <TeamPendingInvites
@@ -326,8 +334,8 @@ const AddMember = ({
                 }
               />
             ))}
-            onClickClose={() => {
-              onClose();
+            onClickClose={{
+              onClick: () => onClose(),
             }}
           />
         ) : (
@@ -417,6 +425,20 @@ function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
       }
     });
   };
+  const deleteRole = (name: string) => {
+    const roles = {
+      ...(recruiter.roles as { [key: string]: UserRoleManagementType }),
+    };
+    delete roles[String(name).toLocaleLowerCase()];
+    updateRecruiter({ roles }).then((data) => {
+      if (data) {
+        toast.success('Role delete');
+        setMenu({ edit: false, open: false });
+      } else {
+        toast.error('Role delete failed');
+      }
+    });
+  };
   return (
     <>
       <Stack direction={'row'} gap={2} width={'100%'} flexWrap={'wrap'}>
@@ -470,6 +492,7 @@ function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
         // roles={roles}
         open={menu.open}
         updateRoles={updateRoles}
+        deleteRole={deleteRole}
         onClose={() => {
           setMenu({ ...menu, open: false });
           setSelectedRole(null);
@@ -488,6 +511,7 @@ const TeamMenu = ({
   onClose,
   edit,
   updateRoles,
+  deleteRole,
 }: {
   allRoles: string[];
   role?: UserRoleManagementType;
@@ -497,6 +521,8 @@ const TeamMenu = ({
   edit: boolean;
   // eslint-disable-next-line no-unused-vars
   updateRoles: (name: string, role: UserRoleManagementType) => void;
+  // eslint-disable-next-line no-unused-vars
+  deleteRole: (name: string) => void;
 }) => {
   const [editRole, setEditRole] = useState([]);
   const [manageUsers, setManageUsers] = useState(false);
@@ -687,36 +713,59 @@ const TeamMenu = ({
             />
             // )
           }
-          slotButton={
-            <Stack gap={1}>
-              <AUIButton
-                variant='outlined'
-                size='medium'
-                onClick={() => {
-                  name &&
-                    name.trim() !== '' &&
-                    updateRoles(
-                      name,
-                      // @ts-ignore
-                      parsePermissions(editRole),
-                    );
-                }}
-              >
-                {edit ? 'Save Change' : 'Add'}
-              </AUIButton>
-              {edit && (
-                <AUIButton
-                  variant='error'
-                  size='medium'
-                  onClick={() => {
-                    //
-                  }}
-                >
-                  {'delete'}
-                </AUIButton>
-              )}
-            </Stack>
-          }
+          // slotButton={
+          //   <Stack gap={1}>
+          //     <AUIButton
+          //       variant='outlined'
+          //       size='medium'
+          //       onClick={() => {
+          //         name &&
+          //           name.trim() !== '' &&
+          //           updateRoles(
+          //             name,
+          //             // @ts-ignore
+          //             parsePermissions(editRole),
+          //           );
+          //       }}
+          //     >
+          //       {edit ? 'Save Change' : 'Add'}
+          //     </AUIButton>
+          //     {edit && (
+          //       <AUIButton
+          //         variant='error'
+          //         size='medium'
+          //         onClick={() => {
+          //           //
+          //         }}
+          //       >
+          //         {'delete'}
+          //       </AUIButton>
+          //     )}
+          //   </Stack>
+          // }
+          isDeleteButtonVisible={edit}
+          isTextDescVisible={!edit}
+          onClickClose={{
+            onClick: () => onClose(),
+          }}
+          onClickDelete={{
+            onClick: () => {
+              name && deleteRole(name);
+            },
+          }}
+          onClickSaveChanges={{
+            onClick: () => {
+              name &&
+                name.trim() !== '' &&
+                updateRoles(
+                  name,
+                  // @ts-ignore
+                  parsePermissions(editRole),
+                );
+            },
+          }}
+          textButtonSaveChanges={edit ? 'Save Change' : 'Add User Role'}
+          textEditAddUser={edit ? 'Edit User Role' : 'Add User Role'}
         />
       </Stack>
     </Drawer>

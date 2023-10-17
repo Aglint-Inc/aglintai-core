@@ -47,6 +47,10 @@
   transform: rotate(180deg);
 }
 
+.icons.pause {
+  display: none;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -157,6 +161,10 @@
 
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
 }
 
 .text-blue-800 {
