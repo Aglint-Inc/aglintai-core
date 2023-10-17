@@ -3543,6 +3543,10 @@ export interface Database {
         }
         Returns: Json
       }
+      batchcalcresumejdscore: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       chat_notification_upsert: {
         Args: {
           in_assignment_id: string
@@ -3573,16 +3577,6 @@ export interface Database {
       get_souring_scheduled_jobs: {
         Args: Record<PropertyKey, never>
         Returns: Json[]
-      }
-      getjobapplications: {
-        Args: {
-          ids: string[]
-        }
-        Returns: {
-          job_id: string
-          status: string
-          count: number
-        }[]
       }
       getquerieswithmessagesbyassignmentid: {
         Args: {
@@ -3658,6 +3652,7 @@ export interface Database {
           query_embedding: string
           match_threshold: number
           match_count: number
+          job_ids: string[]
         }
         Returns: {
           id: number
@@ -3667,6 +3662,7 @@ export interface Database {
           email: string
           jd_score: Json
           feedback: Json
+          resume: string
           similarity: number
         }[]
       }

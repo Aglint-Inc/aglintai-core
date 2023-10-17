@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import mixpanel from '@utils/mixpanelInstance';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import Cookie from 'js-cookie';
@@ -71,13 +70,6 @@ supabase.auth.onAuthStateChange((event, session) => {
     try {
       Cookie.remove('access_token');
       Cookie.set('access_token', session.access_token);
-      mixpanel.identify(session.user.id);
-      if (session?.user?.user_metadata?.role)
-        mixpanel.people.set({
-          $email: session.user.email,
-          Role: 'Recruiter',
-          'User ID': session?.user?.id,
-        });
     } catch (error) {
       //
     }
@@ -105,7 +97,6 @@ const AuthProvider = ({ children }) => {
         loading && setLoading(false);
         return;
       }
-
       if (data.session.user.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {

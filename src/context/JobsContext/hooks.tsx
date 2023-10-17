@@ -259,6 +259,7 @@ const useJobActions = () => {
     handleJobDelete,
     handleJobError,
     initialLoad,
+    handleApplicationsRead,
   };
 
   return value;

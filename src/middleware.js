@@ -10,6 +10,7 @@ const whiteListedEndPoints = [
   '/api/sendgrid',
   'api/ai/gpt3-5-turbo',
   'api/ai/create-embeddings',
+  'api/extract-openai',
 ];
 
 export async function middleware(request) {
