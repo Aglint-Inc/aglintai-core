@@ -14,6 +14,7 @@ const whiteListedEndPoints = [
   'api/templates',
   'api/generateVideo',
   'api/checkstatus',
+  'api/webhook',
 ];
 
 export async function middleware(request) {
