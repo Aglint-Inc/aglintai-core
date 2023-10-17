@@ -8,4 +8,5 @@ declare function TeamUsersList(props: {
   slotPendingInviteBtn?: Types.Devlink.Slot;
   slotInviteBtn?: Types.Devlink.Slot;
   slotUsersRoleList?: Types.Devlink.Slot;
+  onClickViewPendingInvites?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
