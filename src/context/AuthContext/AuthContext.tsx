@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import mixpanel from '@utils/mixpanelInstance';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import Cookie from 'js-cookie';
@@ -19,6 +18,7 @@ import {
   RecruiterDB,
   RecruiterType,
   RecruiterUserType,
+  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
@@ -44,6 +44,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
+  role: RoleType;
 }
 
 const defaultProvider = {
@@ -61,6 +62,7 @@ const defaultProvider = {
     return true;
   },
   recruiterUser: null,
+  role: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -68,13 +70,6 @@ supabase.auth.onAuthStateChange((event, session) => {
     try {
       Cookie.remove('access_token');
       Cookie.set('access_token', session.access_token);
-      mixpanel.identify(session.user.id);
-      if (session?.user?.user_metadata?.role)
-        mixpanel.people.set({
-          $email: session.user.email,
-          Role: 'Recruiter',
-          'User ID': session?.user?.id,
-        });
     } catch (error) {
       //
     }
@@ -93,6 +88,7 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [role, setRole] = useState<RoleType>(null);
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
@@ -101,7 +97,6 @@ const AuthProvider = ({ children }) => {
         loading && setLoading(false);
         return;
       }
-
       if (data.session.user.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
@@ -129,6 +124,8 @@ const AuthProvider = ({ children }) => {
               address: recruiter[0]?.address as unknown as AddressType,
               socials: recruiter[0]?.socials as unknown as SocialsType,
             });
+            const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
+            temp && setRole(temp as RoleType);
           }
         } else {
           router.push(pageRoutes.SIGNUP);
@@ -221,6 +218,7 @@ const AuthProvider = ({ children }) => {
         handleLogout,
         updateRecruiter,
         recruiterUser,
+        role,
       }}
     >
       {loading ? <AuthLoader /> : children}
