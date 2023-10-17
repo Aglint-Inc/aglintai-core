@@ -29,7 +29,7 @@ export default async function handler(
         const { error: emailError } = await supabase.auth.resetPasswordForEmail(
           email,
           {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}reset-password`,
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
           },
         );
         if (!emailError) {
