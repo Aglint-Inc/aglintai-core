@@ -19,10 +19,10 @@ import {
 } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
+import { JobFormErrorParams } from '@/src/components/Job/JobForm';
 import { palette } from '@/src/context/Theme/Theme';
 import { generateInterviewQns } from '@/src/utils/prompts/addNewJob/generateInterviewQns';
 
-import { JobFormErrorParams } from '../CreateFlow';
 import {
   FormJobType,
   InterviewConfigType,
@@ -117,7 +117,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'skill.questions', []).length + 'Questions'
+                get(params, 'skill.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
@@ -130,7 +130,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'behavior.questions', []).length + 'Questions'
+                get(params, 'behavior.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
@@ -143,7 +143,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'communication.questions', []).length + 'Questions'
+                get(params, 'communication.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
@@ -156,7 +156,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'performance.questions', []).length + 'Questions'
+                get(params, 'performance.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
@@ -169,7 +169,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'education.questions', []).length + 'Questions'
+                get(params, 'education.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
@@ -182,7 +182,7 @@ const StandardScreeningParams = ({ setFormError }) => {
                 },
               }}
               textNoofQuestions={
-                get(params, 'general.questions', []).length + 'Questions'
+                get(params, 'general.questions', []).length + ' Questions'
               }
             />
           </>

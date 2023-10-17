@@ -194,6 +194,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 .primary-btn-with-logo-wrappers {
   position: relative;
 }
@@ -265,4 +269,8 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }

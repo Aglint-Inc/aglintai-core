@@ -1,0 +1,53 @@
+.cv-sidebar-info-wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  grid-column-gap: 28px;
+  grid-row-gap: 28px;
+}
+
+.cvs-info-navbar {
+  display: flex;
+  background-color: hsla(0, 0.00%, 86.67%, 0.00);
+}
+
+.cvs-info-nav-menu {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.cvs-nav-link {
+  display: flex;
+  padding: 10px 22px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  border-bottom: 2px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.cvs-info-content-main {
+  display: flex;
+  overflow: auto;
+  height: 356px;
+  padding-bottom: 40px;
+  flex-direction: column;
+  grid-column-gap: 32px;
+  grid-row-gap: 32px;
+}

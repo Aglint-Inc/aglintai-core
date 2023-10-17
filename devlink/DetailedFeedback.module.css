@@ -251,6 +251,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;

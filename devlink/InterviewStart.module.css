@@ -217,6 +217,10 @@
   margin-left: 6px;
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }

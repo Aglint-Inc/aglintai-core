@@ -202,6 +202,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 #w-node-_51170ec6-82cc-9cdc-eb5c-1666d3a16dca-d3a16dca {
   grid-column-start: span 1;
   grid-column-end: span 1;

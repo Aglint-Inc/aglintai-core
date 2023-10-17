@@ -46,6 +46,10 @@
   transform: rotate(180deg);
 }
 
+.icons.pause {
+  display: none;
+}
+
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }

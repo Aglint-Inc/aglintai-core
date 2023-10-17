@@ -217,6 +217,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 .cj-share-copy-wrapper {
   display: flex;
   flex-direction: column;

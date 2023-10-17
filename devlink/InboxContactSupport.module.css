@@ -301,6 +301,10 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
 .slot-form-contact {
   margin-top: 20px;
 }
@@ -365,6 +369,10 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }
 
 .div-block-413 {
