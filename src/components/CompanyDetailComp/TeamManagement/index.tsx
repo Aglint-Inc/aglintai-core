@@ -15,7 +15,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { TeamAddRole } from '@/devlink/TeamAddRole';
 import { TeamInvite } from '@/devlink/TeamInvite';
+import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
 import { TeamListItem } from '@/devlink/TeamListItem';
+import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
 import { TeamPermissionBlock } from '@/devlink/TeamPermissionBlock';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { UserRoleAddBlock } from '@/devlink/UserRoleAddBlock';
@@ -46,32 +48,39 @@ export type UserRoleManagementType = {
 };
 
 const TeamManagement = () => {
-  const { recruiter, userDetails } = useAuthDetails();
-  const [members, setMembers] = useState<RecruiterUserType[]>();
-  const [pendingCount, setPendingCount] = useState<Number>(0);
-
+  const { recruiter, userDetails, role } = useAuthDetails();
+  const [members, setMembers] = useState<RecruiterUserType[]>([]);
+  // const [pendingCount, setPendingCount] = useState<Number>(0);
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
-    window: 'addMember' | 'test' | null;
+    window: 'addMember' | 'pendingMember' | null;
   }>({
     open: false,
     window: null,
   });
-  const allRoles = Object.keys(recruiter.roles).map((role) =>
-    capitalizeAll(role),
+  const pendingList = members.filter(
+    (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
+  const inviteUser = pendingList.length;
+  const [allRoles, setAllRoles] = useState<string[]>();
   useEffect(() => {
-    getMembersFromDB(recruiter.id).then((data) => {
-      Boolean(data.length) && setMembers(data);
-      setPendingCount(
-        data.reduce((count, item) => {
-          if (item.join_status === 'invited') {
-            return count + 1;
-          } else return count;
-        }, 0),
+    if (role) {
+      const tempRoles = Object.keys(recruiter.roles).filter(
+        (key) => role.manage_users[String(key)],
       );
-    });
-  }, []);
+      getMembersFromDB(recruiter.id, tempRoles).then((data) => {
+        Boolean(data.length) && setMembers(data);
+        // setPendingCount(
+        //   data.reduce((count, item) => {
+        //     if (item.join_status === 'invited') {
+        //       return count + 1;
+        //     } else return count;
+        //   }, 0),
+        // );}
+      });
+      setAllRoles(tempRoles.map((role) => capitalizeAll(role)));
+    }
+  }, [role]);
   return (
     <>
       <TeamUsersList
@@ -116,9 +125,13 @@ const TeamManagement = () => {
           </>
         }
         slotUsersRoleList={
-          <UserRoleManagement
-            roles={recruiter.roles as UserRoleManagementType}
-          />
+          <>
+            {role.manage_roles && (
+              <UserRoleManagement
+                roles={recruiter.roles as UserRoleManagementType}
+              />
+            )}
+          </>
         }
         slotInviteBtn={
           <AUIButton
@@ -131,17 +144,31 @@ const TeamManagement = () => {
             Invite Member
           </AUIButton>
         }
-        pendInvitesVisibility={Boolean(pendingCount)}
-        
+        pendInvitesVisibility={Boolean(inviteUser)}
+        slotPendingInviteBtn={
+          <AUIButton
+            variant='outlined'
+            onClick={() => {
+              setOpenDrawer({ open: true, window: 'pendingMember' });
+            }}
+          >
+            View Pending Invites
+          </AUIButton>
+        }
       />
-      <AddMember
-        id={userDetails.user.id}
-        allRoles={allRoles}
-        open={openDrawer.open}
-        onClose={() => {
-          setOpenDrawer({ open: false, window: null });
-        }}
-      />
+      {role.manage_users && (
+        <AddMember
+          id={userDetails.user.id}
+          allRoles={allRoles}
+          open={openDrawer.open}
+          menu={openDrawer.window}
+          pendingList={pendingList}
+          onClose={() => {
+            setOpenDrawer({ open: false, window: null });
+          }}
+          addMembers={(users) => setMembers([...users, ...members])}
+        />
+      )}
     </>
   );
 };
@@ -151,13 +178,20 @@ export default TeamManagement;
 const AddMember = ({
   id,
   open,
+  menu,
   allRoles,
+  pendingList,
   onClose,
+  addMembers,
 }: {
   id: string;
   open: boolean;
+  menu: 'addMember' | 'pendingMember';
   allRoles: string[];
+  pendingList: RecruiterUserType[];
   onClose: () => void;
+  // eslint-disable-next-line no-unused-vars
+  addMembers: (x: RecruiterUserType[]) => void;
 }) => {
   const [form, setForm] = useState<{
     name: string;
@@ -187,82 +221,171 @@ const AddMember = ({
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
       <Stack sx={{ width: '500px' }}>
-        <TeamInvite
-          slotForm={
-            <Stack gap={2}>
-              <CustomTextField
-                value={form.name}
-                placeholder='Name'
-                error={formError.name}
-                onFocus={() => {
-                  setFormError({ ...formError, name: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, name: e.target.value });
-                }}
-              />
-              <CustomTextField
-                value={form.email}
-                placeholder='Email ID'
-                error={formError.email}
-                onFocus={() => {
-                  setFormError({ ...formError, email: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, email: e.target.value });
-                }}
-              />
-              <CustomAutocomplete
-                values={form.role}
-                placeholder='User Role'
-                options={allRoles}
-                error={formError.role}
-                onFocus={() => {
-                  setFormError({ ...formError, role: false });
-                }}
-                onChange={(_, newValue) => {
-                  setForm({ ...form, role: newValue });
-                }}
-              />
-            </Stack>
-          }
-          slotButtons={
-            <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
-              {/* <AUIButton variant='text' size='medium'>
+        {menu === 'addMember' ? (
+          <TeamInvite
+            slotForm={
+              <Stack gap={2}>
+                <CustomTextField
+                  value={form.name}
+                  placeholder='Name'
+                  error={formError.name}
+                  onFocus={() => {
+                    setFormError({ ...formError, name: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                  }}
+                />
+                <CustomTextField
+                  value={form.email}
+                  placeholder='Email ID'
+                  error={formError.email}
+                  onFocus={() => {
+                    setFormError({ ...formError, email: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                  }}
+                />
+                <CustomAutocomplete
+                  values={form.role}
+                  placeholder='User Role'
+                  options={allRoles}
+                  error={formError.role}
+                  onFocus={() => {
+                    setFormError({ ...formError, role: false });
+                  }}
+                  onChange={(_, newValue) => {
+                    setForm({ ...form, role: newValue });
+                  }}
+                />
+              </Stack>
+            }
+            slotButtons={
+              <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
+                {/* <AUIButton variant='text' size='medium'>
                 + Add Another
               </AUIButton> */}
-              <AUIButton
-                variant='outlined'
-                size='medium'
-                onClick={() => {
-                  if (checkValidation()) {
-                    axios.post('/api/invite_user', {
-                      users: [form],
-                      id: id,
-                    });
-                  }
-                }}
-              >
-                Invite
-              </AUIButton>
-            </Stack>
-          }
-        />
+                <AUIButton
+                  variant='outlined'
+                  size='medium'
+                  onClick={() => {
+                    if (checkValidation()) {
+                      inviteUser(form, id).then(({ error, users }) => {
+                        if (!error && users) {
+                          addMembers(users);
+                          toast.success('Invite send');
+                          return onClose();
+                        }
+                        // @ts-ignore
+                        return toast.error(error?.message || error);
+                      });
+                    }
+                  }}
+                >
+                  Invite
+                </AUIButton>
+              </Stack>
+            }
+          />
+        ) : menu === 'pendingMember' ? (
+          <TeamPendingInvites
+            slotList={pendingList.map((member) => (
+              <TeamInvitesBlock
+                key={member.user_id}
+                email={member.email}
+                name={member.first_name}
+                slotImage={
+                  <Avatar
+                    variant='circular'
+                    src={member.profile_image}
+                    alt={member.first_name}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                }
+                slotButton={
+                  <AUIButton
+                    variant='outlined'
+                    onClick={() => {
+                      reinviteUser(member.email, id).then(
+                        ({ error, emailSend }) => {
+                          if (!error && emailSend) {
+                            return toast.success('Invite send');
+                          }
+                          // @ts-ignore
+                          return toast.error(error || error?.message);
+                        },
+                      );
+                    }}
+                  >
+                    Resend
+                  </AUIButton>
+                }
+              />
+            ))}
+            onClickClose={() => {
+              onClose();
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </Stack>
     </Drawer>
   );
 };
 
-const getMembersFromDB = async (id: string) => {
-  id;
+const getMembersFromDB = async (id: string, roles: string[]) => {
+  if (roles.length === 0) return [];
   const { data, error } = await supabase
     .from('recruiter_user')
     .select()
-    .eq('recruiter_id', id);
+    .eq('recruiter_id', id)
+    .in('role', roles);
   if (!error && data.length) {
     return data;
   }
   return [];
+};
+
+const inviteUser = (
+  form: {
+    name: string;
+    email: string;
+    role: string;
+  },
+  id: string,
+) => {
+  return axios
+    .post('/api/invite_user', {
+      users: [form],
+      id: id,
+    })
+    .then(
+      ({ data }) =>
+        data as {
+          error: string;
+          users: RecruiterUserType[];
+        },
+    );
+};
+
+const reinviteUser = (email: string, id: string) => {
+  return axios
+    .post('/api/invite_user/resend', {
+      email,
+      id,
+    })
+    .then(
+      ({ data }) =>
+        data as {
+          error: string;
+          emailSend: boolean;
+        },
+    );
 };
 
 function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
