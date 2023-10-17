@@ -37,7 +37,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
           <>
             <Stack p={1} rowGap={2} component={'form'}>
               <Grid container spacing={2}>
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <UITextField
                     label={'Job Title'}
                     defaultValue={jobTitle}
@@ -54,7 +54,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     placeholder='Ex : Software developer'
                   />
                 </Grid>
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <UITextField
                     InputProps={{
                       startAdornment: (
@@ -89,7 +89,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                   />
                 </Grid>
 
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <UISelect
                     label='Workplace Type'
                     menuOptions={defaultWorkPlaceTypes}
@@ -104,7 +104,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     fullWidth
                   />
                 </Grid>
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <Autocomplete
                     options={defaultDepartments}
                     onChange={(event: any, newValue) => {
@@ -139,7 +139,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     disablePortal
                   />
                 </Grid>
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <Autocomplete
                     options={defaultAddress}
                     onChange={(event: any, newValue) => {
@@ -175,7 +175,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                   />
                 </Grid>
 
-                <Grid item spacing={2} sm={formType === 'new' ? 12 : 6}>
+                <Grid item spacing={2} sm={6}>
                   <UISelect
                     label='Job Type'
                     menuOptions={defaultJobType}

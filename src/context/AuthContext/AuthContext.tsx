@@ -18,21 +18,12 @@ import {
   AddressType,
   RecruiterDB,
   RecruiterType,
+  RecruiterUserType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-
-type UserMeta = {
-  first_name: string;
-  image_url: string;
-  language: string;
-  last_name: string;
-  phone: string;
-  role: string;
-  timezone: string;
-};
 
 interface ContextValue {
   userDetails: Session | null;
@@ -43,7 +34,7 @@ interface ContextValue {
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   loading: boolean;
   // eslint-disable-next-line no-unused-vars
-  handleUpdateProfile: (userMeta: UserMeta) => Promise<boolean>;
+  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
@@ -52,6 +43,7 @@ interface ContextValue {
   handleLogout: (event: any) => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
+  recruiterUser: RecruiterUserType | null;
 }
 
 const defaultProvider = {
@@ -68,6 +60,7 @@ const defaultProvider = {
     updateData;
     return true;
   },
+  recruiterUser: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -96,6 +89,9 @@ const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
+    null,
+  );
   const [loading, setLoading] = useState<boolean>(true);
   async function getSupabaseSession() {
     try {
@@ -122,6 +118,7 @@ const AuthProvider = ({ children }) => {
           .select('*')
           .eq('user_id', data.session.user.id);
         if (!errorUser && recruiterUser.length > 0) {
+          setRecruiterUser(recruiterUser[0]);
           const { data: recruiter, error } = await supabase
             .from('recruiter')
             .select('*')
@@ -154,20 +151,16 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleUpdateProfile = async (userMeta: UserMeta): Promise<boolean> => {
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        ...userDetails.user.user_metadata,
-        ...userMeta,
-      },
-    });
-    if (data) {
-      setUserDetails((prev) => {
-        return {
-          ...prev,
-          user: data.user,
-        };
-      });
+  const handleUpdateProfile = async (
+    details: RecruiterUserType,
+  ): Promise<boolean> => {
+    const { data, error } = await supabase
+      .from('recruiter_user')
+      .update(details)
+      .eq('user_id', userDetails.user.id)
+      .select();
+    if (!error) {
+      setRecruiterUser(data[0]);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -227,6 +220,7 @@ const AuthProvider = ({ children }) => {
         setLoading,
         handleLogout,
         updateRecruiter,
+        recruiterUser,
       }}
     >
       {loading ? <AuthLoader /> : children}

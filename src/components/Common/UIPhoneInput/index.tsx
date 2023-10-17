@@ -56,7 +56,7 @@ const UIPhoneInput = ({
   }
 
   return (
-    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'4px'}>
+    <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'0px'}>
       {label && (
         <UITypography type={labelSize} color={labelColor} fontBold='normal'>
           {label}
@@ -156,7 +156,7 @@ export const customPhoneStyle = {
     borderColor: palette.grey[300],
   },
   '& input': {
-    padding: '16px 16px',
+    padding: '10px 10px',
   },
 };
 

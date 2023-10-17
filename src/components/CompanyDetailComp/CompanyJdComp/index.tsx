@@ -26,6 +26,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Company Overview'
+        placeholder='Consider adding this to provide context for generating job descriptions.'
         value={recruiter?.company_overview}
         onChange={(e) => {
           handleChange({
@@ -41,6 +42,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Equal Opportunity Statement'
+        placeholder='Consider adding an inclusivity statement to enhance your job descriptions.'
         value={recruiter?.e_o_statement}
         onChange={(e) => {
           handleChange({
@@ -56,7 +58,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Application Process'
-        placeholder='Instructions on how to apply, deadlines, and any required documentation'
+        placeholder='Consider detailing the steps to clarify the process for potential candidates.'
         value={recruiter?.application_process}
         onChange={(e) => {
           handleChange({
@@ -72,6 +74,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Mission & Vision Statement'
+        placeholder='Consider sharing your core objectives; it helps in finding the right candidate.'
         value={recruiter?.m_v_statement}
         onChange={(e) => {
           handleChange({
@@ -87,6 +90,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Company Values'
+        placeholder='Consider listing your organizational ethos; it guides us in candidate matching.'
         value={recruiter?.company_values}
         onChange={(e) => {
           handleChange({
@@ -102,6 +106,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         labelSize='small'
         fullWidth
         label='Benefits'
+        placeholder='Consider highlighting perks and advantages to enrich your job descriptions.'
         value={recruiter?.benefits}
         onChange={(e) => {
           handleChange({

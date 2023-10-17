@@ -169,12 +169,12 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -263,6 +263,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;
@@ -302,6 +306,9 @@
 
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -416,6 +423,18 @@
   width: 90%;
 }
 
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-600 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-600 {
+    max-width: none;
+  }
+}
+
 .max-width-600 {
   max-width: 600px;
 }
@@ -459,7 +478,8 @@
 }
 
 .aui-button-wrap {
-  display: flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
 }
 
@@ -483,6 +503,10 @@
 
 .aui-button-wrap.mt-16 {
   margin-top: 16px;
+}
+
+.aui-button-wrap.full {
+  align-items: stretch;
 }
 
 .aui-button {

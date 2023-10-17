@@ -25,7 +25,8 @@
 }
 
 .il-assignee.content.assignee {
-  width: 130px;
+  width: auto;
+  max-width: 150px;
   margin-left: 0px;
 }
 
@@ -35,8 +36,4 @@
   min-height: 20px;
   min-width: 20px;
   border-radius: 100px;
-}
-
-.text-color-black {
-  color: hsla(0, 0.00%, 0.00%, 1.00);
 }

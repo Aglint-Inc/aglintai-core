@@ -2243,8 +2243,15 @@ textarea.w-select {
   --bgGrey200-4f66792c: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
   --red-500: #d93f4c;
   --red-700: #8c232c;
+  --red-500: #d93f4c;
+  --red-700: #8c232c;
   --gray-100: #f8f9f9;
+  --grey-600: #68737d;
+  --grey-800: #2f3941;
   --white: white;
+  --black: black;
+  --grey-200: #e9ebed;
+  --green-500: #228f67;
 }
 
 body {

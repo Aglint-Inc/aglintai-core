@@ -77,10 +77,6 @@
   font-weight: 600;
 }
 
-.text-green-800 {
-  color: hsla(157.5, 68.57%, 13.73%, 1.00);
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
@@ -91,10 +87,6 @@
 
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
 .text-color-black {
@@ -276,11 +268,6 @@
   border-color: hsla(158.24999999999997, 33.06%, 52.55%, 1.00);
 }
 
-.cdd-tab-link.selected.filtered {
-  background-color: var(--green700-a3a55e45);
-  color: var(--white-c31c6fe9);
-}
-
 .cdd-tab-link.rejected {
   background-color: var(--red100-da60b1de);
   color: var(--red800-3e023ecd);
@@ -292,11 +279,6 @@
 
 .cdd-tab-link.rejected:global(.w--current) {
   border-color: hsla(309.10344827586204, 70.05%, 40.59%, 1.00);
-}
-
-.cdd-tab-link.rejected.filtered {
-  background-color: var(--red700-fc2a7aca);
-  color: var(--white-c31c6fe9);
 }
 
 .cdd-tab-link.interviewing {
@@ -312,11 +294,6 @@
   border-color: hsla(206.66666666666666, 51.09%, 55.10%, 1.00);
 }
 
-.cdd-tab-link.interviewing.filtered {
-  background-color: var(--blue700-44d5e20c);
-  color: var(--white-c31c6fe9);
-}
-
 .cdd-tab-link.all {
   border-color: transparent;
   background-color: var(--grey100-ce28dc20);
@@ -329,11 +306,6 @@
 
 .cdd-tab-link.all:global(.w--current) {
   border-color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
-.cdd-tab-link.all.filtered {
-  background-color: var(--grey700-2a684da2);
-  color: var(--white-c31c6fe9);
 }
 
 .cdd-tab-link-title {
@@ -470,18 +442,26 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
+.cli-column {
+  overflow-wrap: anywhere;
+}
+
 .cli-column.candidate-info {
   width: 360px;
+  min-width: 360px;
 }
 
 .cli-column.score {
   display: flex;
   width: 140px;
+  min-width: 140px;
   justify-content: center;
   align-items: center;
 }
 
 .cli-column.status {
+  width: 240px;
+  min-width: 240px;
   margin-left: auto;
   padding-right: 20px;
 }
@@ -523,10 +503,6 @@
   cursor: pointer;
 }
 
-.checkbox-wrappers-job.top-bar {
-  margin-left: 20px;
-}
-
 .add-icon {
   display: flex;
   width: 16px;
@@ -558,19 +534,6 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
   white-space: nowrap;
-}
-
-.list-top-bar-description-block.status {
-  margin-left: auto;
-}
-
-.list-top-bar-description-block.width-360 {
-  width: 360px;
-}
-
-.list-top-bar-description-block.scrores-block {
-  width: 120px;
-  justify-content: center;
 }
 
 .cdd-content-main {

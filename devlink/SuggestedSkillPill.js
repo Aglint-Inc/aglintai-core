@@ -19,8 +19,8 @@ export function SuggestedSkillPill({
         <_Builtin.Image
           className={_utils.cx(_styles, "vectors-wrapper-37")}
           loading="lazy"
-          width={10}
-          height={10}
+          width="10"
+          height="10"
           src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504162c0e20c3617cb43447_Vectors-Wrapper.svg"
         />
       </_Builtin.Block>

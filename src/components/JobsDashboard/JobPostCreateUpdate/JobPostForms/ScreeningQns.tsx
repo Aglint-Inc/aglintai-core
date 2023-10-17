@@ -11,6 +11,8 @@ import {
   GenerateQuestion,
   NewJobStep3,
   QuestionSkeletonLoader,
+  ScreeningQuestionMenu,
+  ScreeningQuestions,
   SkillsQuestionCard,
   SkillsQuestionInput,
   SkillsWithoutQuestionToggle,
@@ -80,45 +82,113 @@ export default ScreeningQns;
 // ;
 const StandardScreeningParams = ({ setFormError }) => {
   const { jobForm } = useJobForm();
-
+  const [activeCateg, setActiveCateg] = useState<InterviewParam>('skill');
   const params = get(
     jobForm,
     'formFields.interviewConfig',
     [],
   ) as FormJobType['interviewConfig'];
 
+  const totalQns = Object.keys(params)
+    // eslint-disable-next-line security/detect-object-injection
+    .map((k: InterviewParam) => params[k].questions.length)
+    .reduce((p, curr) => {
+      return p + curr;
+    }, 0);
   return (
     <>
-      <Stack gap={2}>
-        {
+      <ScreeningQuestions
+        slotScreeningRight={
           <StandardScreenSingle
-            param={params.skill}
-            paramKey={'skill'}
+            param={get(params, `${activeCateg}`)}
+            paramKey={activeCateg}
             setFormError={setFormError}
           />
         }
-        {
-          <StandardScreenSingle
-            param={params.cultural}
-            paramKey={'cultural'}
-            setFormError={setFormError}
-          />
+        slotSkillMenu={
+          <>
+            <ScreeningQuestionMenu
+              textSkills={'Skills'}
+              isSkillMenuActive={activeCateg === 'skill'}
+              isSkillOn={get(params, `${'skill'}.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('skill');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'skill.questions', []).length + 'Questions'
+              }
+            />
+            <ScreeningQuestionMenu
+              textSkills={'Behaviour'}
+              isSkillMenuActive={activeCateg === 'behavior'}
+              isSkillOn={get(params, `behavior.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('behavior');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'behavior.questions', []).length + 'Questions'
+              }
+            />
+            <ScreeningQuestionMenu
+              textSkills={'Communication'}
+              isSkillMenuActive={activeCateg === 'communication'}
+              isSkillOn={get(params, `communication.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('communication');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'communication.questions', []).length + 'Questions'
+              }
+            />
+            <ScreeningQuestionMenu
+              textSkills={'Performance'}
+              isSkillMenuActive={activeCateg === 'performance'}
+              isSkillOn={get(params, `performance.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('performance');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'performance.questions', []).length + 'Questions'
+              }
+            />
+            <ScreeningQuestionMenu
+              textSkills={'Education'}
+              isSkillMenuActive={activeCateg === 'education'}
+              isSkillOn={get(params, `education.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('education');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'education.questions', []).length + 'Questions'
+              }
+            />
+            <ScreeningQuestionMenu
+              textSkills={'General'}
+              isSkillMenuActive={activeCateg === 'general'}
+              isSkillOn={get(params, `general.value`)}
+              onClickSkill={{
+                onClick: () => {
+                  setActiveCateg('general');
+                },
+              }}
+              textNoofQuestions={
+                get(params, 'general.questions', []).length + 'Questions'
+              }
+            />
+          </>
         }
-        {
-          <StandardScreenSingle
-            param={params.personality}
-            paramKey={'personality'}
-            setFormError={setFormError}
-          />
-        }
-        {
-          <StandardScreenSingle
-            param={params.softSkills}
-            paramKey={'softSkills'}
-            setFormError={setFormError}
-          />
-        }
-      </Stack>
+        textCountActiveQuestion={totalQns}
+      />
     </>
   );
 };
@@ -277,7 +347,7 @@ const StandardScreenSingle = ({
             }}
           />
         </Stack>
-        <Collapse in={param.value} translate='yes' unmountOnExit mountOnEnter>
+        <Collapse in={true} translate='yes' unmountOnExit mountOnEnter>
           <Stack p={1} gap={1}>
             {qns.map((q) => {
               return (

@@ -19,12 +19,7 @@ export function Assignee({
       >
         {slotAssigneeImage}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-color-black")}
-        tag="div"
-      >
-        {textAssigneeName}
-      </_Builtin.Block>
+      <_Builtin.Block tag="div">{textAssigneeName}</_Builtin.Block>
     </_Component>
   );
 }

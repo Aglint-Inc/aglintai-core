@@ -58,7 +58,7 @@ const Emails = () => {
 export default Emails;
 
 type EmailTemplateParams = {
-  title: string;
+  title: { heading: string; description: string };
   excerpt: string;
   path: string;
 };
@@ -145,7 +145,7 @@ const EmailTemplate = ({ title, excerpt, path }: EmailTemplateParams) => {
       <Stack direction={'column'}>
         <Stack gap={1}>
           <UITypography type='medium' fontBold='normal'>
-            {title}
+            {title.heading}
           </UITypography>
           <UITypography
             type='small'
@@ -216,7 +216,7 @@ const EmailTemplate = ({ title, excerpt, path }: EmailTemplateParams) => {
       >
         <DialogTitle sx={{ background: '#fff' }}>
           <UITypography fontBold='normal' type='large'>
-            Test {title}
+            Test {title.heading}
           </UITypography>
         </DialogTitle>
         <DialogContent>

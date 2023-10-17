@@ -1,6 +1,7 @@
 .radio-button-wrappers {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }
@@ -42,4 +43,8 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }

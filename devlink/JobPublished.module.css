@@ -262,3 +262,7 @@
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
 }
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}

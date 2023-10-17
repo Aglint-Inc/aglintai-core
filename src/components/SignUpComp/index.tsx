@@ -70,6 +70,11 @@ const SignUpComp = () => {
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
               }}
+              onClickSignIn={{
+                onClick: () => {
+                  router.push(`?step=signin`, undefined, { shallow: true });
+                },
+              }}
             />
           ) : step == stepObj.signup ? (
             <YTransform uniqueKey={step}>
@@ -98,7 +103,7 @@ const SignUpComp = () => {
                 }}
                 onClickPostJob={{
                   onClick: () => {
-                    router.push(`?step=${stepObj.allSet}`, undefined, {
+                    router.push(`${pageRoutes.JOBS}?flow=create`, undefined, {
                       shallow: true,
                     });
                   },

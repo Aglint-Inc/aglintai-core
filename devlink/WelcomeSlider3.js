@@ -43,7 +43,7 @@ export function WelcomeSlider3({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "auth-cta-block", "sign-up")}
+        className={_utils.cx(_styles, "auth-cta-block", "sign-up", "tab-edit")}
         tag="div"
       >
         <_Builtin.Block

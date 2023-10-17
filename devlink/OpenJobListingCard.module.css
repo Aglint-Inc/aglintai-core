@@ -27,6 +27,15 @@
   grid-row-gap: 40px;
 }
 
+@media screen and (max-width: 767px) {
+  .open-job-info-list {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+  }
+}
+
 .div-block-428 {
   display: flex;
   align-items: center;
@@ -59,6 +68,10 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -69,6 +82,18 @@
 
 .text-grey-600.width-90 {
   width: 90%;
+}
+
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-600 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-600 {
+    max-width: none;
+  }
 }
 
 .max-width-600 {

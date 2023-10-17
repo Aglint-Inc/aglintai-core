@@ -14,9 +14,11 @@ type Question = {
 };
 export type InterviewParam =
   | 'skill'
-  | 'cultural'
-  | 'personality'
-  | 'softSkills';
+  | 'behavior'
+  | 'communication'
+  | 'performance'
+  | 'education'
+  | 'general';
 export type InterviewConfigType = {
   id: string;
   copy: string;
@@ -70,6 +72,25 @@ export type FormJobType = {
       date: null | string;
       emailTemplates: EmailTemplate;
     };
+  };
+  newScreeningConfig: {
+    screening: {
+      qualificationRange: { min: number; max: number } | null;
+      isManual: boolean;
+    };
+    interview: {
+      qualificationRange: { min: number; max: number } | null;
+      isManual: boolean;
+    };
+    interviewMail: {
+      timestamp: string | null;
+      isManual: boolean;
+    };
+    disqualifiedMail: {
+      timestamp: string | null;
+      isManual: boolean;
+    };
+    feedbackVisible: boolean;
   };
   defaultWorkPlaceTypes: dropDownOption[];
   defaultDepartments: AutoCompleteType[];
@@ -371,6 +392,9 @@ async function saveJobPostToDb(jobForm: JobFormState) {
         ...jobForm.formFields.screeningConfig,
       },
       screening_questions: [jobForm.formFields.interviewConfig],
+      new_screening_setting: {
+        ...jobForm.formFields.newScreeningConfig,
+      },
     })
     .select();
   if (error) throw new Error(error.message);

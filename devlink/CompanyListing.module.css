@@ -17,6 +17,24 @@
   text-align: center;
 }
 
+@media screen and (max-width: 991px) {
+  .company-listing-hero {
+    width: auto;
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .company-listing-hero {
+    padding: 60px 20px;
+    align-items: flex-start;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    text-align: left;
+  }
+}
+
 .company-profile-image-slot {
   display: flex;
   width: 150px;
@@ -27,6 +45,13 @@
 
   border: 1px solid var(--grey200-9ba653f1);
   border-radius: 8px;
+}
+
+@media screen and (max-width: 991px) {
+  .company-profile-image-slot {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .text-xxxl {
@@ -73,6 +98,16 @@
   align-items: center;
 }
 
+@media screen and (max-width: 767px) {
+  .company-info-wrappers {
+    width: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+  }
+}
+
 .div-block-425 {
   display: flex;
   align-items: center;
@@ -103,6 +138,10 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .text-lg {
@@ -205,12 +244,12 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -271,10 +310,24 @@
   grid-row-gap: 10px;
 }
 
+@media screen and (max-width: 767px) {
+  .company-list-link-wrappers {
+    margin-top: 0px;
+  }
+}
+
 .open-jobs-sticky-wrappers {
   padding-right: 40px;
   padding-left: 40px;
   background-color: var(--gray100-3a86b552);
+}
+
+@media screen and (max-width: 767px) {
+  .open-jobs-sticky-wrappers {
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
 }
 
 .container-1216 {
@@ -294,6 +347,12 @@
   justify-content: center;
 
   background-color: var(--gray100-3a86b552);
+}
+
+@media screen and (max-width: 767px) {
+  .sticky-header-wrappers {
+    display: none;
+  }
 }
 
 .div-block-426 {
@@ -431,6 +490,13 @@
   background-color: var(--white-80449ce7);
 }
 
+@media screen and (max-width: 767px) {
+  .cl-block {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
+}
+
 .cl-block.hide {
   display: none;
 }
@@ -439,6 +505,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+  .search-header-open-jobs {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+  }
 }
 
 .open-job-notification {
@@ -549,6 +624,12 @@
   grid-template-rows: auto;
 }
 
+@media screen and (max-width: 767px) {
+  .div-block-429 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .aglint-powered-footer {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -562,9 +643,15 @@
   grid-row-gap: 12px;
 }
 
+@media screen and (max-width: 479px) {
+  .div-block-432 {
+    flex-direction: column;
+  }
+}
+
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-sm.fw-semibold.text-white.margin-top-4 {
@@ -652,4 +739,8 @@
 
 .text-red-600 {
   color: var(--red600-953350ec);
+}
+
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
 }

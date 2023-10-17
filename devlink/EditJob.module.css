@@ -209,12 +209,12 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -353,6 +353,12 @@
   padding-right: 24px;
   padding-bottom: 8px;
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .company-tab-link {
+    flex: 0 0 auto;
+  }
 }
 
 .cursor-pointer {
@@ -495,6 +501,10 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .div-block-423 {

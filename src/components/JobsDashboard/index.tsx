@@ -3,12 +3,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { JobDashboardEmpty, JobsDashboard } from '@/devlink';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobType } from '@/src/types/data.types';
 
-import CreateNewJob from './JobPostCreateUpdate/CreateFlow';
-import { useJobForm } from './JobPostCreateUpdate/JobPostFormProvider';
 import JobsList from './JobsList';
 import { searchJobs, sendEmail } from './utils';
 import Icon from '../Common/Icons/Icon';
@@ -19,8 +16,6 @@ const DashboardComp = () => {
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<JobType[]>(jobsData.jobs);
-  const { handleInitializeForm } = useJobForm();
-  const { recruiter } = useAuthDetails();
 
   useEffect(() => {
     if (router.isReady) {
@@ -29,9 +24,9 @@ const DashboardComp = () => {
           shallow: true,
         });
       }
-      if (router.query.flow == 'create') {
-        handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
-      }
+      // if (router.query.flow == 'create') {
+      //   handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
+      // }
       if (jobsData?.jobs) {
         if (router.query.status == 'all') {
           setFilteredJobs(jobsData.jobs);
@@ -102,7 +97,7 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
-                  handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
+                  router.push('/jobs/new');
                 },
               }}
               onClickRequestIntegration={{ onClick: sendEmail }}
@@ -147,17 +142,11 @@ const DashboardComp = () => {
               }
               onClickCreateNewJob={{
                 onClick: () => {
-                  handleInitializeForm({
-                    type: 'new',
-                    recruiter,
-                    slideNo: 1,
-                  });
+                  router.push('/jobs/new');
                 },
               }}
             />
           )}
-
-          <CreateNewJob />
         </>
       )}
     </Stack>

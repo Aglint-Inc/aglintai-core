@@ -19,13 +19,13 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { recruiter, userDetails } = useAuthDetails();
+  const { recruiter, userDetails, recruiterUser } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const userEmail = userDetails.user.email;
-  const user = userDetails.user.user_metadata;
+  const profileImage = recruiterUser.profile_image;
 
   useEffect(() => {
     if (windowSize.innerWidth > 991) {
@@ -204,14 +204,14 @@ export default function AppLayout({ children }) {
                 )}
                 slotProfileImage={
                   <Avatar
-                    src={user.image_url}
+                    src={profileImage}
                     variant='rounded'
                     sx={{ width: '100%', height: '100%' }}
                   />
                 }
                 isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
                 textEmail={userEmail}
-                textName={`${user.first_name} ${user.last_name}`}
+                textName={recruiterUser?.first_name}
                 onClickLogout={{
                   onClick: (e) => {
                     handleLogout(e);

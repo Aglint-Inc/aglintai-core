@@ -40,21 +40,33 @@ export const getSeedJobFormData = (
           questions: [],
           value: false,
         },
-        cultural: {
+        behavior: {
           id: nanoid(),
-          copy: 'Cultural',
+          copy: 'Behavior',
           value: false,
           questions: [],
         },
-        personality: {
+        communication: {
           id: nanoid(),
-          copy: 'Personality',
+          copy: 'Communication',
           questions: [],
           value: false,
         },
-        softSkills: {
+        performance: {
           id: nanoid(),
-          copy: 'Soft Skills',
+          copy: 'Performance',
+          questions: [],
+          value: false,
+        },
+        education: {
+          id: nanoid(),
+          copy: 'Education',
+          questions: [],
+          value: false,
+        },
+        general: {
+          id: nanoid(),
+          copy: 'General',
           questions: [],
           value: false,
         },
@@ -75,6 +87,25 @@ export const getSeedJobFormData = (
           isImmediate: true,
           emailTemplates: {},
         },
+      },
+      newScreeningConfig: {
+        screening: {
+          qualificationRange: null,
+          isManual: false,
+        },
+        interview: {
+          qualificationRange: null,
+          isManual: false,
+        },
+        interviewMail: {
+          timestamp: null,
+          isManual: false,
+        },
+        disqualifiedMail: {
+          timestamp: null,
+          isManual: false,
+        },
+        feedbackVisible: false,
       },
       recruiterId: '',
     },
@@ -185,25 +216,35 @@ export const dbToClientjobPostForm = (
       company: jobPost.company,
       workPlaceType: jobPost.workplace_type,
       interviewConfig: {
-        cultural: get(
-          jobPost,
-          'screening_questions[0].cultural',
-          seedData.formFields.interviewConfig.cultural,
-        ),
-        personality: get(
-          jobPost,
-          'screening_questions[0].personality',
-          seedData.formFields.interviewConfig.personality,
-        ),
         skill: get(
           jobPost,
           'screening_questions[0].skill',
           seedData.formFields.interviewConfig.skill,
         ),
-        softSkills: get(
+        behavior: get(
           jobPost,
-          'screening_questions[0].softSkills',
-          seedData.formFields.interviewConfig.softSkills,
+          'screening_questions[0].behavior',
+          seedData.formFields.interviewConfig.behavior,
+        ),
+        communication: get(
+          jobPost,
+          'screening_questions[0].communication',
+          seedData.formFields.interviewConfig.communication,
+        ),
+        performance: get(
+          jobPost,
+          'screening_questions[0].performance',
+          seedData.formFields.interviewConfig.performance,
+        ),
+        education: get(
+          jobPost,
+          'screening_questions[0].education',
+          seedData.formFields.interviewConfig.education,
+        ),
+        general: get(
+          jobPost,
+          'screening_questions[0].general',
+          seedData.formFields.interviewConfig.general,
         ),
       },
       interviewType: get(
@@ -218,6 +259,41 @@ export const dbToClientjobPostForm = (
       skills: get(jobPost, 'skills', []),
       jobTitle: jobPost.job_title,
       jobType: jobPost.job_type,
+      newScreeningConfig: {
+        screening: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.screening',
+            seedData.formFields.newScreeningConfig.screening,
+          ) as any),
+        },
+        interview: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.interview',
+            seedData.formFields.newScreeningConfig.interview,
+          ) as any),
+        },
+        interviewMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.interviewMail',
+            seedData.formFields.newScreeningConfig.interviewMail,
+          ) as any),
+        },
+        disqualifiedMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.disqualifiedMail',
+            seedData.formFields.newScreeningConfig.disqualifiedMail,
+          ) as any),
+        },
+        feedbackVisible: get(
+          jobPost,
+          'new_screening_setting.feedbackVisible',
+          seedData.formFields.newScreeningConfig.feedbackVisible,
+        ) as boolean,
+      },
       screeningConfig: {
         screening: {
           ...get(

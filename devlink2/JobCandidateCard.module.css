@@ -60,10 +60,6 @@
   cursor: pointer;
 }
 
-.checkbox-wrappers-job.top-bar {
-  margin-left: 20px;
-}
-
 .add-icon {
   display: flex;
   width: 16px;
@@ -98,18 +94,26 @@
   margin-left: 20px;
 }
 
+.cli-column {
+  overflow-wrap: anywhere;
+}
+
 .cli-column.candidate-info {
   width: 360px;
+  min-width: 360px;
 }
 
 .cli-column.score {
   display: flex;
   width: 140px;
+  min-width: 140px;
   justify-content: center;
   align-items: center;
 }
 
 .cli-column.status {
+  width: 240px;
+  min-width: 240px;
   margin-left: auto;
   padding-right: 20px;
 }
@@ -143,10 +147,6 @@
   font-weight: 600;
 }
 
-.text-green-800 {
-  color: hsla(157.5, 68.57%, 13.73%, 1.00);
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
@@ -163,10 +163,6 @@
   display: inline;
   margin-right: 2px;
   margin-left: 2px;
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
 .text-color-black {
@@ -231,17 +227,6 @@
   grid-row-gap: 3px;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .speedometer {
   display: flex;
   padding: 2px 1px;
@@ -275,32 +260,6 @@
 
 .text-yellow-600 {
   color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
 }
 
 .frame-1024 {
