@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import { useState } from 'react';
 
-import { EditEmail, EmailTemplateCard } from '@/devlink';
+import { EditEmail, EmailTemplateCards } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
@@ -96,27 +96,11 @@ const EmailTemplate = () => {
   return (
     <>
       {templateEntries.map(([templateName, templateData], ind) => (
-        <EmailTemplateCard
+        <EmailTemplateCards
           key={ind}
-          textEmailTemplateCategory={templateObj[templateName].listing}
-          slotTemplateImage={
-            <Stack
-              dangerouslySetInnerHTML={{
-                __html: templateData.body,
-              }}
-              sx={{
-                gap: '4px',
-                p: '16px',
-                overflow: 'hidden',
-                height: '236px',
-                fontSize: '12px',
-                color: palette.grey[600],
-                a: { fontSize: '12px', color: palette.grey[600] },
-              }}
-            />
-          }
-          textUsedByCount={''}
-          onClickViewEdit={{
+          textDescription={templateObj[templateName].trigger}
+          textTitle={templateObj[templateName].listing}
+          onClickApplicationRecieved={{
             onClick: () => {
               setSelectedTemplate({ ...templateData, name: templateName });
               setOpen(true);
@@ -355,6 +339,7 @@ export const templateObj = {
     
     Best regards,
     [senderName]`,
+    trigger: 'Triggered when canditate moved to interviewing state',
   },
   interview_resend: {
     listing: 'Follow Up Interview',
@@ -369,6 +354,7 @@ export const templateObj = {
     You're welcome to choose an interview time that suits your schedule.
     
     [interviewLink]`,
+    trigger: 'Triggered when you click resend interview link',
   },
   rejection: {
     listing: 'Rejection Email',
@@ -382,6 +368,7 @@ export const templateObj = {
     
     Best regards,
     [senderName]`,
+    trigger: 'Triggered when canditate moved to rejected state',
   },
   application_recieved: {
     listing: 'Application Recieved Email',
@@ -395,5 +382,6 @@ export const templateObj = {
 
     Best regards,
     [senderName]`,
+    trigger: 'Triggered instantly when canditate apply for a job',
   },
 };

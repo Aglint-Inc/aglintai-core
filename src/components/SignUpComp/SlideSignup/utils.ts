@@ -73,5 +73,6 @@ export const createSampleJobCandidate = async (recruiter_id) => {
 export const candidateDatabaseSampleJob = () => {
   return {
     job_title: 'Candidate Database',
+    is_campus: true,
   };
 };

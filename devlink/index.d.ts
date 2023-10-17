@@ -78,6 +78,7 @@ export * from "./EditableListItem";
 export * from "./EmailCreateNew";
 export * from "./EmailTemplate";
 export * from "./EmailTemplateCard";
+export * from "./EmailTemplateCards";
 export * from "./EmailTemplates";
 export * from "./EmailTemplatesStart";
 export * from "./ForgotPassword";

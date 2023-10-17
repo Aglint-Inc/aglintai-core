@@ -11,6 +11,9 @@ const whiteListedEndPoints = [
   'api/ai/gpt3-5-turbo',
   'api/ai/create-embeddings',
   'api/extract-openai',
+  'api/templates',
+  'api/generateVideo',
+  'api/checkstatus',
 ];
 
 export async function middleware(request) {
