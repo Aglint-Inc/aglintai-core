@@ -9,9 +9,11 @@ import {
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { FileUploader } from 'react-drag-drop-files';
 
 import { LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
+import { fileTypes } from '@/src/components/JobPost/UploadDB';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -22,13 +24,13 @@ const FileUpload = ({ setOpenSidePanel }) => {
   const [loading, setLoading] = useState(false);
   const { jobsData, handleApplicationsRead } = useJobs();
 
-  const InputChange = (e) => {
+  const InputChange = (files) => {
     // --For Multiple File Input
     let images = [];
     let uploadedFileNames = selectedfile.map((file) => file.filename);
 
-    for (let i = 0; i < e.target.files.length; i++) {
-      let file = e.target.files[i];
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
 
       if (file.type.includes('csv')) {
         toast.error(
@@ -53,6 +55,7 @@ const FileUpload = ({ setOpenSidePanel }) => {
 
   const FileUploadSubmit = async () => {
     let candidateDatabaseJob = jobsData.jobs.filter((job) => job.is_campus);
+
     if (candidateDatabaseJob?.length > 0) {
       setLoading(true);
       for (const [ind, file] of selectedfile.entries()) {
@@ -181,7 +184,31 @@ const FileUpload = ({ setOpenSidePanel }) => {
         height={'100vh'}
         spacing={2}
       >
-        <div>
+        <FileUploader
+          handleChange={InputChange}
+          multiple={true}
+          name='file'
+          types={fileTypes}
+        >
+          <Stack
+            sx={{
+              border: '1px dashed',
+              borderColor: palette.grey[600],
+              borderRadius: 1,
+              py: '40px',
+              px: '20px',
+              cursor: 'pointer',
+              background: '#fff',
+            }}
+            direction='row'
+            spacing={2}
+            alignItems={'center'}
+            justifyContent={'center'}
+          >
+            Drag and drop your resumes in .pdf or .docx or .txt format.
+          </Stack>
+        </FileUploader>
+        {/* <div>
           <label
             htmlFor='fileupload'
             style={{
@@ -216,7 +243,7 @@ const FileUpload = ({ setOpenSidePanel }) => {
             accept='.pdf, .docx, .txt'
             style={{ display: 'none' }}
           />
-        </div>
+        </div> */}
 
         <Stack spacing={2} overflow={'scroll'} position={'relative'}>
           {loading && (

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import React from 'react';
 
 import AUIButton from '@/src/components/Common/AUIButton';
 
@@ -33,6 +32,7 @@ const index = () => {
         console.log(res);
       });
   };
+
   return (
     <div>
       <AUIButton
