@@ -12,13 +12,12 @@ import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
-// import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
 
 function ImportCandidatesCSV() {
   const {
     setOpenImportCandidates,
-    handleJobApplicationBulkCreate,
     applicationsData,
+    handleJobApplicationBulkCreate,
   } = useJobApplications();
 
   const [bulkImportdata, setbulkImportdata] = useState([]);

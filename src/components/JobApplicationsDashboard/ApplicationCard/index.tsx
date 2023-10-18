@@ -2,14 +2,16 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { calculateOverallScore } from '@/src/utils/support/supportUtils';
 
 import ApplicationDetails from './ApplicationDetails';
 import JdFetching from './JdFetching';
 import { getScoreColor, getStatusColor } from './utils';
 import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
-import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
+import ScoreWheel, { ScoreWheelParams } from '../../Common/ScoreWheel';
 
 const ApplicationCard = ({
   application,
@@ -26,11 +28,11 @@ const ApplicationCard = ({
   isInterview: boolean;
 }) => {
   // this variable is for type change
+  const { job } = useJobApplications();
   const jobDetails = application as unknown as {
     jd_score: { summary: { feedback: undefined } };
   };
   const [openSidePanel, setOpenSidePanel] = useState(false);
-  const [applicationDetails, setApplicationDetails] = useState({});
 
   const interviewScore = application?.feedback
     ? getInterviewScore(application.feedback)
@@ -45,20 +47,42 @@ const ApplicationCard = ({
     handleSelect(index);
   };
 
-  const handleOpenSidePanel = (application) => {
-    setApplicationDetails(application);
+  const handleOpenSidePanel = () => {
     setOpenSidePanel((pre) => !pre);
   };
 
   const jdScoreObj = application.jd_score as any;
-  const jdScore = Math.floor(jdScoreObj?.over_all?.score) ?? 0;
+
+  const jdScore = jdScoreObj
+    ? calculateOverallScore({
+        qualification: jdScoreObj.qualification,
+        skills: jdScoreObj.skills_score,
+      })
+    : null;
+
+  const resumeScoreWheel =
+    jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
+    application.resume &&
+    application.jd_score === null ? (
+      <Stack justifyContent={'center'} alignItems={'center'}>
+        <JdFetching />
+        Calculating
+      </Stack>
+    ) : (
+      <ScoreWheel
+        id={`ScoreWheelApplicationCard${index + 1}`}
+        weights={job.parameter_weights as ScoreWheelParams}
+        score={jdScore}
+        fontSize={7}
+      />
+    );
 
   return (
     <>
       <ApplicationDetails
         openSidePanel={openSidePanel}
         setOpenSidePanel={setOpenSidePanel}
-        applicationDetails={applicationDetails}
+        applicationDetails={application}
       />
 
       <JobCandidateCard
@@ -84,55 +108,12 @@ const ApplicationCard = ({
         textRole={capitalize(application.job_title)}
         textMail={application.email}
         textPhone={application.phone}
-        slotScore={
-          <>
-            {jobDetails?.jd_score?.summary?.feedback !==
-              'Resume not Parseble' &&
-            application.resume &&
-            application.jd_score !== null ? (
-              application.jd_score === 'loading' ? (
-                <Stack justifyContent={'center'} alignItems={'center'}>
-                  <JdFetching />
-                  Calculating
-                </Stack>
-              ) : (
-                <CustomProgress
-                  progress={jdScore}
-                  rotation={270}
-                  fillColor={
-                    jdScore >= 90
-                      ? '#228F67'
-                      : jdScore >= 70
-                      ? '#f79a3e'
-                      : jdScore >= 50
-                      ? '#de701d'
-                      : '#d93f4c'
-                  }
-                  bgFill={
-                    jdScore >= 90
-                      ? '#edf8f4'
-                      : jdScore >= 70
-                      ? '#fff7ed'
-                      : jdScore >= 50
-                      ? '#ffeedb'
-                      : '#fff0f1'
-                  }
-                  size={30}
-                  strokeWidth={3}
-                  label={jdScore}
-                  fontSize={20}
-                />
-              )
-            ) : (
-              <Stack>Not found</Stack>
-            )}
-          </>
-        }
+        slotScore={resumeScoreWheel}
         textScore={interviewScore}
         scoreTextColor={{ style: { color: getScoreColor(interviewScore) } }}
         onClickCard={{
           onClick: () => {
-            handleOpenSidePanel(application);
+            handleOpenSidePanel();
           },
         }}
         textStatus={capitalize(application.status)}

@@ -203,7 +203,7 @@ function InterviewFeedbackPage() {
                     fontSize={20}
                   />
                 }
-                textFeedback={giveRateInWordToResume(jdScore)}
+                textFeedback={giveRateInWordToResume(jdScore).text}
               />
             </>
           }

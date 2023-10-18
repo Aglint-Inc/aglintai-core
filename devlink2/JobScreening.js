@@ -649,7 +649,7 @@ export function JobScreening({
       ) : null}
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22JobScreening_div-block-342__%22%5D%7B%0Aoverflow-x%3A%20auto%3B%0Aoverflow-y%3Ahidden%3B%20%20%20%20%20%20%20%0A%7D%0A%0A%5Bclass*%3D%22JobScreening_cdd-content-main__%22%5D%7B%0Aoverflow-x%3Ahidden%3B%0Aoverflow-y%3Aauto%3B%20%20%20%20%20%20%20%0A%7D%0A%0A.div-block-342%7B%0Aoverflow-x%3A%20auto%3B%0Aoverflow-y%3Ahidden%3B%20%0A%7D%0A%0A.cdd-content-main%7B%0A%0Aoverflow-x%3A%20auto%3B%0Aoverflow-y%3Ahidden%3B%20%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22JobScreening_div-block-342__%22%5D%7B%0Aoverflow-x%3A%20auto%3B%0Aoverflow-y%3Ahidden%3B%20%20%20%20%20%20%20%0A%7D%0A%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

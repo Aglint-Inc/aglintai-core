@@ -80,7 +80,7 @@ export type FormJobType = {
   };
   resumeScoreSettings: {
     skills: number;
-    projects: number;
+    project: number;
     education: number;
     experience: number;
     certifications: number;

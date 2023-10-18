@@ -117,6 +117,10 @@ export const getFilteredApplications = (
   }, []);
 };
 
+export const getIntactApplications = (applications: JobApplication[]) => {
+  return applications.filter((a) => a.json_resume !== null);
+};
+
 const handleFilterParameter = (
   filterParameter: FilterParameter,
   application: JobApplication,

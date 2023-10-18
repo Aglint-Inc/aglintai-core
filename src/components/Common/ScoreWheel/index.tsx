@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const initialScores: ScoreWheelParams = {
   experience: 100,
   education: 100,
-  projects: 100,
+  project: 100,
   certifications: 100,
   skills: 100,
 };
@@ -14,17 +14,21 @@ const initialScores: ScoreWheelParams = {
 export type ScoreWheelParams = {
   experience: number;
   education: number;
-  projects: number;
+  project: number;
   certifications: number;
   skills: number;
 };
 
 const ScoreWheel = ({
+  id,
   weights,
   score,
+  fontSize = 14,
 }: {
-  weights: ScoreWheelParams;
-  score?: ScoreWheelParams;
+  id: string;
+  weights: any;
+  score?: any;
+  fontSize?: number;
 }) => {
   const newScore = { ...initialScores, ...score };
   const isSettings = score === undefined;
@@ -56,7 +60,7 @@ const ScoreWheel = ({
   return (
     <>
       <Stack
-        id={'ResumeScoreWheel'}
+        id={id}
         width={'100%'}
         display={'flex'}
         alignItems={'center'}
@@ -67,7 +71,7 @@ const ScoreWheel = ({
           background: `conic-gradient(${conicGradient})`,
         }}
         onMouseMove={(e) => {
-          setDegree(getCursorDegrees(e));
+          setDegree(getCursorDegrees(e, id));
         }}
         onMouseOut={() => {
           setDegree(null);
@@ -94,15 +98,22 @@ const ScoreWheel = ({
                 : 'black',
           }}
         >
-          <Stack fontSize={'12px'} sx={{ transform: 'translateY(2px)' }}>
-            <Stack fontSize={'30px'} sx={{ fontWeight: 600 }}>
+          <Stack
+            fontSize={`${fontSize}px`}
+            sx={{ transform: 'translateY(2px)' }}
+          >
+            <Stack fontSize={'200%'} sx={{ fontWeight: 600 }}>
               {isSettings
                 ? hoverKey
                   ? `${weights[hoverKey] ?? unused.count}%`
                   : unused.isUnused
                   ? `${unused.count}%`
                   : '100%'
-                : `${score[hoverKey] ?? overallScore}%`}
+                : `${
+                    hoverKey
+                      ? Math.trunc((weights[hoverKey] * score[hoverKey]) / 100)
+                      : overallScore
+                  }`}
             </Stack>
             {isSettings
               ? hoverKey
@@ -199,8 +210,8 @@ const getDisabledState = (degree: number, start: number, end: number) => {
   return degree === null || (degree <= end && degree >= start);
 };
 
-const getCursorDegrees = (e: any) => {
-  const div = document.getElementById('ResumeScoreWheel');
+const getCursorDegrees = (e: any, id: string) => {
+  const div = document.getElementById(id);
   const coords = div.getBoundingClientRect();
   const center = {
     x: coords.left + coords.width / 2,
@@ -214,7 +225,10 @@ const getCursorDegrees = (e: any) => {
   return correctedDegrees;
 };
 
-const getOverallScore = (weight: ScoreWheelParams, score: ScoreWheelParams) => {
+export const getOverallScore = (
+  weight: ScoreWheelParams,
+  score: ScoreWheelParams,
+) => {
   return score
     ? Math.trunc(
         Object.keys(weight).reduce((acc, curr) => {
@@ -223,6 +237,37 @@ const getOverallScore = (weight: ScoreWheelParams, score: ScoreWheelParams) => {
         }, 0),
       )
     : 0;
+};
+
+export const getResumeScore = (jd_score, parameter_weights) => {
+  const data = {
+    qualification: jd_score.qualification,
+    skills: jd_score.skills_score,
+  };
+  const relevanceScores = {
+    less: 10,
+    ok: 30,
+    more: 50,
+  };
+  const relatedScore = 50;
+  const detailedScores = {};
+  for (const key of Object.keys(data.qualification)) {
+    const value = data.qualification[key];
+    if (!value) {
+      continue;
+    }
+    detailedScores[key] = value.isRelated
+      ? relatedScore + relevanceScores[value.relevance] || 0
+      : 0;
+  }
+  const skillsScore: number = data.skills?.score || 0;
+  detailedScores['skills'] = skillsScore * 0.1;
+  return Math.trunc(
+    Object.keys(parameter_weights).reduce((acc, curr) => {
+      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
+      return acc;
+    }, 0),
+  );
 };
 
 export default ScoreWheel;

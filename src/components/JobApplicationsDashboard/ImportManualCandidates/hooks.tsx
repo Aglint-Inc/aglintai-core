@@ -1,4 +1,3 @@
-
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   InputData,
@@ -13,11 +12,8 @@ import {
 } from './utils';
 
 const useUploadCandidate = () => {
-  const {
-    handleJobApplicationCreate,
-    handleJobApplicationError,
-    handleJobApplicationUIUpdate,
-  } = useJobApplications();
+  const { handleJobApplicationError, handleJobApplicationCreate } =
+    useJobApplications();
 
   const handleUploadCandidate = async (
     job: JobType,
@@ -39,10 +35,9 @@ const useUploadCandidate = () => {
             resume: data,
           });
           if (applicantData) {
-            handleJobApplicationUIUpdate({
-              ...applicantData,
-            });
-            toast.success('Job application successfully created!');
+            toast.success(
+              'Job application uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+            );
             return true;
           }
         } else {

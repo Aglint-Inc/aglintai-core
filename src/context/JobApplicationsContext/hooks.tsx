@@ -74,37 +74,44 @@ type Action =
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
     case ActionType.CREATE: {
-      const newState: JobApplicationsData = {
-        ...state,
-        applications: {
-          ...state.applications,
-          [action.payload.applicationData.status as JobApplicationSections]: {
-            list: [
-              ...state.applications[
-                action.payload.applicationData.status as JobApplicationSections
-              ].list,
-              action.payload.applicationData,
-            ],
-            count:
-              state.applications[
-                action.payload.applicationData.status as JobApplicationSections
-              ].count + 1,
-          },
-        },
-        count: state.count + 1,
-      };
+      const newState: JobApplicationsData = action.payload.applicationData
+        .json_resume
+        ? {
+            ...state,
+            applications: {
+              ...state.applications,
+              [action.payload.applicationData.status as JobApplicationSections]:
+                {
+                  list: [
+                    ...state.applications[
+                      action.payload.applicationData
+                        .status as JobApplicationSections
+                    ].list,
+                    action.payload.applicationData,
+                  ],
+                  count:
+                    state.applications[
+                      action.payload.applicationData
+                        .status as JobApplicationSections
+                    ].count + 1,
+                },
+            },
+            count: state.count + 1,
+          }
+        : { ...state, processing: state.processing + 1 };
       return newState;
     }
 
     case ActionType.BULK_CREATE: {
-      const { newApplications, count } = updateApplications(
+      const { newApplications, processing } = updateApplications(
         state.applications,
         action.payload.applicationData,
       );
       const newState: JobApplicationsData = {
         ...state,
         applications: newApplications,
-        count: count,
+        count: state.count,
+        processing: processing,
       };
       return newState;
     }
@@ -113,9 +120,13 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const { segregatedApplications, count } = segregateApplications(
         action.payload.applicationData,
       );
+      const processing = action.payload.applicationData.filter(
+        (a) => a.json_resume === null,
+      ).length;
       const newState: JobApplicationsData = {
         applications: segregatedApplications,
         count,
+        processing,
       };
       return newState;
     }
@@ -179,10 +190,12 @@ const segregateApplications = (applicationData: JobApplication[]) => {
   const segregatedApplications: JobApplicationSectionData =
     applicationData.reduce(
       (acc, curr) => {
-        let objRef = acc[curr.status as JobApplicationSections];
-        objRef.list.push(curr);
-        objRef.count += 1;
-        count += 1;
+        if (curr.json_resume !== null) {
+          let objRef = acc[curr.status as JobApplicationSections];
+          objRef.list.push(curr);
+          objRef.count += 1;
+          count += 1;
+        }
         return acc;
       },
       Object.assign(
@@ -205,12 +218,17 @@ const updateApplications = (
   newApplicationData: JobApplication[],
 ) => {
   let count = newApplicationData.length;
+  let processing = 0;
   const newApplications = newApplicationData.reduce((acc, curr) => {
-    acc[curr.status as JobApplicationSections].list.push(curr);
-    acc[curr.status as JobApplicationSections].count += 1;
+    if (curr.json_resume !== null) {
+      acc[curr.status as JobApplicationSections].list.push(curr);
+      acc[curr.status as JobApplicationSections].count += 1;
+    } else {
+      processing += 1;
+    }
     return acc;
   }, stateApplicationData);
-  return { newApplications, count };
+  return { newApplications, count, processing };
 };
 
 const useJobApplicationActions = (
