@@ -195,6 +195,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
           </>
         }
         isJobHeaderVisible={formType === 'new'}
+        isAddJob={formType === 'new'}
       />
     </>
   );

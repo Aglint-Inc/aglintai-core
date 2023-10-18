@@ -280,10 +280,6 @@
   align-items: center;
 }
 
-@media screen and (max-width: 991px) {
-
-}
-
 .new-interview-start-grid {
   display: grid;
   width: 100%;

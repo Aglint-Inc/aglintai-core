@@ -92,7 +92,9 @@ export function NewInterviewScreen({
               )}
               tag="div"
             >
-              {slotInterviewRight ?? <InterviewInterviewerScreen />}
+              {slotInterviewRight ?? (
+                <InterviewInterviewerScreen textAi="Hi, Im your interviewer today. I would like to ask some ase indroduce yourself?" />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

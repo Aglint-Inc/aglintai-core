@@ -230,3 +230,151 @@
 .inline-text {
   display: inline;
 }
+
+.content-11 {
+  display: flex;
+  height: 32px;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.content-11.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 4px;
+
+  background-color: var(--grey300-03a46dba);
+
+  color: var(--grey400-863ed4b5);
+
+  cursor: auto;
+}
+
+.content-11.active {
+  border: 1px solid var(--kale800-682c1482);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.vectors-wrapper-55 {
+  display: flex;
+  width: 12px;
+  height: 13.1484375px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  object-fit: cover;
+}
+
+.vectors-wrapper-55.disable {
+  filter: brightness(200%);
+}
+
+.label-5 {
+  color: rgba(1, 43, 48, 1);
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: -0.00042765619582496583px;
+}
+
+.label-5.disable {
+  color: var(--grey500-0d508ad8);
+}
+
+.job-details-button-wrappers {
+  display: flex;
+  margin-top: 50px;
+}
+
+.job-details-button-wrappers.remove-bottom {
+  margin-top: 0px;
+}
+
+.proceed-to-apply {
+  position: relative;
+}
+
+.blue-process-button {
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #1f73b7;
+
+  transition: all 250ms ease;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.blue-process-button:hover {
+  opacity: 0.8;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.grey-disable-process-button {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
+}

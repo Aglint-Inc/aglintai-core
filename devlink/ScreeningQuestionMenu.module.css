@@ -210,6 +210,17 @@
   background-color: #d9d9d9;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .radio-green-active {
   width: 6px;
   height: 6px;

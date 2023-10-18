@@ -165,6 +165,7 @@
 .content-11.active {
   border: 1px solid var(--kale800-682c1482);
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .vectors-wrapper-55 {

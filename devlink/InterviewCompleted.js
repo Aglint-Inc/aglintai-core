@@ -8,6 +8,8 @@ export function InterviewCompleted({
   slotLottie,
   slotCompanyLogo,
   onClickSupport = {},
+  textTitle = "Completed Interview Successfully.",
+  textDescription = "Thank you for taking your time to take this interview. We will be in touch with you soon.If you have any questions please ",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-499")} tag="div">
@@ -48,7 +50,7 @@ export function InterviewCompleted({
                 )}
                 tag="div"
               >
-                {"Completed Interview Successfully."}
+                {textTitle}
               </_Builtin.Block>
               <_Builtin.Block tag="div">
                 <_Builtin.Block
@@ -59,9 +61,7 @@ export function InterviewCompleted({
                   )}
                   tag="div"
                 >
-                  {
-                    "Thank you for taking your time to take this interview. We will be in touch with you soon.If you have any questions please "
-                  }
+                  {textDescription}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(
