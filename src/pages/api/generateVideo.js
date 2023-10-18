@@ -22,7 +22,7 @@ export default function handler(req, res) {
   };
 
   const headers = {
-    'X-Api-Key': 'NTUwYWI1MDg2ODMxNGFmOGI0Y2Y0NWQzY2FlMmIwN2YtMTY5NzU2MTcwOA==',
+    'X-Api-Key': process.env.HEYGEN_API_KEY,
     'Content-Type': 'application/json',
   };
 

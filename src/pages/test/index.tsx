@@ -14,7 +14,7 @@ const index = () => {
   const generating = async () => {
     axios
       .post('/api/generateVideo', {
-        text: 'What are the best practices for optimizing website performance in terms of HTML?',
+        text: 'Tell me about a time when you had to communicate complex information to a non-technical audience. How did you ensure they understood the information?',
       })
       .then((res) => {
         console.log(res);
@@ -27,7 +27,7 @@ const index = () => {
   const checkstatus = async () => {
     axios
       .post('/api/checkstatus', {
-        video_id: '8611296c1fe747c4a6ad75cd113f62bd ',
+        video_id: 'de1f874bf4d047e4aa65843db82033c0',
       })
       .then((res) => {
         console.log(res);

@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export default function handler(req, res) {
-  const API_KEY =
-    'NTUwYWI1MDg2ODMxNGFmOGI0Y2Y0NWQzY2FlMmIwN2YtMTY5NzU2MTcwOA=='; // Replace with your HeyGen API key
+  const API_KEY = process.env.HEYGEN_API_KEY; // Replace with your HeyGen API key
 
   const headers = {
     'X-Api-Key': API_KEY,
