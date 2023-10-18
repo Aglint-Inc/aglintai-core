@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-unsafe-regex */
+/* eslint-disable security/detect-object-injection */
 import * as React from 'react';
 /**
  * The cx function takes a css module object and the name of the element classes.

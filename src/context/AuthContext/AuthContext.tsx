@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
-
 import { useRouter } from 'next/router';
 import {
   createContext,

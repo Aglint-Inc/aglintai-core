@@ -14,9 +14,9 @@ import {
 } from '@/src/types/data.types';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabaseClient';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 import TipTapEditor from '../../Common/richTextEditor/RichTextBlock';
-import { capitalize } from '@/src/utils/text/textUtils';
 
 // import TipTapEditor from '../Candidates/Coach/RichText/RichTextBlock';
 

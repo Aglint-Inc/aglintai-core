@@ -33,6 +33,7 @@ import {
   Support_ticketType,
   SupportEmailAPIType,
 } from '@/src/types/data.types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import {
   allPriority,
@@ -47,7 +48,6 @@ import toast from '@/src/utils/toast';
 
 import TipTapEditor from '../Common/richTextEditor/RichTextBlock';
 import { capitalize } from '../JobApplicationsDashboard/utils';
-import { pageRoutes } from '@/src/utils/pageRouting';
 
 dayjs.extend(relativeTime);
 
