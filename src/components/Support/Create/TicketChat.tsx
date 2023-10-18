@@ -16,6 +16,7 @@ import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import TipTapEditor from '../../Common/richTextEditor/RichTextBlock';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 // import TipTapEditor from '../Candidates/Coach/RichText/RichTextBlock';
 
@@ -118,7 +119,7 @@ function TicketChat({
           textCompany={ticket.jobDetails?.company}
           textRole={<Stack>{ticket.jobDetails?.job_title}</Stack>}
           textTicketId={ticket.id}
-          textStatus={ticket.state}
+          textStatus={capitalize(ticket.state)}
           slotCompanyLogo={
             <Avatar
               variant='rounded'
