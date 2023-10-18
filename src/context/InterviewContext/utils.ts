@@ -21,8 +21,7 @@ export async function updateFeedbackOnJobApplications(
         ) / feedback.length,
       )
     : 0;
-  console.log(overAllScore);
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('job_applications')
     .update({
       feedback: feedback,
