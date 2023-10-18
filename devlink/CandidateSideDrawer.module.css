@@ -1,5 +1,5 @@
 .candiate-side-drawer-wrapper {
-  width: 100%;
+  width: 420px;
   height: 100%;
 }
 
@@ -39,6 +39,21 @@
 
 .clickable:hover {
   opacity: 0.8;
+}
+
+.cvs-header-nav-icon.clickable.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icon-embed {
@@ -326,15 +341,4 @@
 
 .text-kale-600-2 {
   color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }

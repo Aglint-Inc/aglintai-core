@@ -28,13 +28,6 @@ export function ImportCandidatesCsv({
           >
             {"Drag CSV file to start importing"}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ic-import-text")}
-            tag="div"
-            {...onClickDownloadSample}
-          >
-            {"Download Sample CSV"}
-          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "ic-divider-block", "_2")}

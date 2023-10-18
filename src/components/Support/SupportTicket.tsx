@@ -33,6 +33,7 @@ import {
   Support_ticketType,
   SupportEmailAPIType,
 } from '@/src/types/data.types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import {
   allPriority,
@@ -332,7 +333,7 @@ function SupportTicketDetails({
           onClickAppliedViewJob={{
             onClick: () => {
               router.push(
-                ` https://dev.aglinthq.com/job-post/${ticket.job_id}`,
+                ` https://recruiter.aglinthq.com/job-post/${ticket.job_id}`,
               );
             },
           }}
@@ -550,7 +551,7 @@ const AddNewMessage = ({ sendMessage }) => {
 };
 
 const getInterviewUrl = (application_id: string) => {
-  return `https://dev.aglinthq.com/landing-page?id=${application_id}`;
+  return `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${application_id}`;
 };
 
 const sendEmail = ({

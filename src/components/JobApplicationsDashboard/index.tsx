@@ -16,9 +16,9 @@ import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import Loader from '../Common/Loader';
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
+import ResumeUpload from './FileUpload';
 import { useKeyPress } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
@@ -32,7 +32,7 @@ import {
   getSortedApplications,
   SortParameter,
 } from './utils';
-import ResumeUpload from './FileUpload';
+import Loader from '../Common/Loader';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -611,7 +611,7 @@ export function sendEmails(
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
-                interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+                interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
                 support_link: `https://recruiter.aglinthq.com/support?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED

@@ -10,4 +10,5 @@ declare function ImportCandidates(props: {
   onClickImportResume?: Types.Devlink.RuntimeProps;
   onClickAddManually?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
+  onClickDownloadSample?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

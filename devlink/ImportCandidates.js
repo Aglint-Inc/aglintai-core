@@ -12,6 +12,7 @@ export function ImportCandidates({
   onClickImportResume = {},
   onClickAddManually = {},
   onClickClose = {},
+  onClickDownloadSample = {},
 }) {
   return (
     <_Component
@@ -81,6 +82,18 @@ export function ImportCandidates({
           tag="div"
         >
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 1">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-511")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ic-import-text")}
+                tag="div"
+                {...onClickDownloadSample}
+              >
+                {"Download Sample CSV"}
+              </_Builtin.Block>
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot-import")}
               tag="div"

@@ -16,6 +16,7 @@ const whiteListedEndPoints = [
   'api/checkstatus',
   'api/webhook',
   'api/interview',
+  'api/interviewChatOpenAi',
 ];
 
 export async function middleware(request) {

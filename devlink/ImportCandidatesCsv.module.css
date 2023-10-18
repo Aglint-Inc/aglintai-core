@@ -203,11 +203,6 @@
   z-index: 5;
 }
 
-.ic-import-text {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-  cursor: pointer;
-}
-
 .ic-divider-block {
   display: flex;
   width: 100%;

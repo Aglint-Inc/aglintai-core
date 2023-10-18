@@ -39,7 +39,8 @@ export function CandidateSideDrawer({
                 className={_utils.cx(
                   _styles,
                   "cvs-header-nav-icon",
-                  "clickable"
+                  "clickable",
+                  "hide"
                 )}
                 tag="div"
                 {...onClickPrev}
@@ -53,7 +54,8 @@ export function CandidateSideDrawer({
                 className={_utils.cx(
                   _styles,
                   "cvs-header-nav-icon",
-                  "clickable"
+                  "clickable",
+                  "hide"
                 )}
                 tag="div"
                 {...onClickNext}
@@ -187,10 +189,6 @@ export function CandidateSideDrawer({
       >
         {slotCandidateDetails ?? <CandidateDetails />}
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22CandidateSideDrawer_cvs-info-content-main__%22%5D%7B%0Aheight%3A%20calc(100%25%20-%20320px)%3B%0A%7D%0A%3C%2Fstyle%3E"
-      />
     </_Component>
   );
 }

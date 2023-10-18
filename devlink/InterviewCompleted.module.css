@@ -24,6 +24,11 @@
   flex: 1;
 }
 
+.int-completed-logo-block {
+  max-height: 120px;
+  max-width: 120px;
+}
+
 .int-completed-main-block {
   display: flex;
   max-width: 550px;
@@ -256,12 +261,6 @@
 }
 
 .int-completed-bottom {
-  position: fixed;
-  left: 0%;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
-
   display: flex;
   width: 100%;
   padding: 16px;

@@ -1,3 +1,7 @@
+.new-create-job {
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+}
+
 .new-create-job-header {
   position: sticky;
   top: 0px;
@@ -8,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
 
-  border-bottom: 1px solid var(--grey-200);
+  border-bottom: 1px solid #e9ebed;
 
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
@@ -371,7 +375,7 @@
 
   border-radius: 10px;
 
-  background-color: var(--gray-100);
+  background-color: #f8f9f9;
 }
 
 .create-job-menu-wrap {
