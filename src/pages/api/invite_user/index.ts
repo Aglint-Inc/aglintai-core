@@ -11,7 +11,7 @@ export type InviteUserType = {
   users: { name: string; email: string; role: string }[];
   id: string;
 };
-
+const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -45,14 +45,16 @@ export default async function handler(
             })
             .select();
           supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+            redirectTo,
           });
           if (!userError) {
-            return res.send({ users, error: null });
+            return res.send({ users: users, error: null });
           } else {
             return res.status(200).send({
-              userDetails: null,
-              error: 'Error in creating and inviting the user.',
+              users: null,
+              error:
+                userError.message || 'Error in creating and inviting the user.',
+              redirectTo,
             });
           }
           // } else if (error.message === 'User already registered') {
