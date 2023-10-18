@@ -48,7 +48,6 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     description: false,
     email: false,
   });
-  
 
   const checkValidations = () => {
     const temp = { ...detailsError };
@@ -107,7 +106,7 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     <InboxContactSupport
       slotCheckbox={
         <Checkbox
-          isChecked={details?.email_update}
+          isChecked={Boolean(details?.email_update)}
           onClickCheck={{
             onClick: () => {
               setDetails({ ...details, email_update: !details?.email_update });
