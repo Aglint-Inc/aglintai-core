@@ -107,7 +107,7 @@ const TipTapAIEditor = ({
           position={'relative'}
           sx={{
             '& .ProseMirror': {
-              minHeight: '150px',
+              minHeight: '250px',
               width: '100%',
               wordBreak: 'break-word',
             },
