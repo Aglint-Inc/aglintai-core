@@ -13,6 +13,13 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
+.div-block-478 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -121,12 +128,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -179,6 +190,99 @@
   color: var(--kale700-f5e4c087);
 }
 
+.close-slide-wrappers {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+}
+
+.div-block-476 {
+  display: flex;
+  flex-direction: row-reverse;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.arrow-wrapeprs {
+  position: relative;
+
+  display: flex;
+  width: 30px;
+  height: 30px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid #e9ebed;
+  border-radius: 4px;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.arrow-wrapeprs:hover {
+  opacity: 0.7;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.arrow-tooltips {
+  position: absolute;
+  left: -87%;
+  top: auto;
+  right: 0%;
+  bottom: -78%;
+
+  display: none;
+  min-width: 60px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  border-radius: 4px;
+
+  background-color: var(--grey-800);
+
+  opacity: 0;
+
+  color: var(--white);
+  font-size: 10px;
+}
+
 .clickable {
   transition: all 300ms ease;
   cursor: pointer;
@@ -200,7 +304,6 @@
 
 .inde-main-wrapper {
   display: grid;
-  height: 100%;
   grid-auto-columns: 1fr;
   grid-column-gap: 9px;
   grid-row-gap: 9px;
@@ -225,17 +328,16 @@
 .inde-chat-body {
   display: flex;
   overflow: auto;
-  max-height: 65vh;
   flex-direction: column;
+  flex: 1;
 }
 
 .inde-chat-compose-wrapper {
   z-index: 2;
 
   display: flex;
-  min-height: 200px;
   padding-top: 24px;
-  padding-bottom: 15px;
+  padding-bottom: 24px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -271,15 +373,6 @@
   flex-direction: column;
   grid-column-gap: 14px;
   grid-row-gap: 14px;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -374,6 +467,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .inde-details-block {
   display: flex;
   flex-direction: column;
@@ -396,6 +498,18 @@
   width: 90%;
 }
 
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-600 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-600 {
+    max-width: none;
+  }
+}
+
 .max-width-600 {
   max-width: 600px;
 }
@@ -408,12 +522,19 @@
   margin-top: 17px;
 }
 
+.div-block-479 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .inde-candidate-image {
   overflow: hidden;
-  width: 80px;
-  height: 80px;
-  min-height: 80px;
-  min-width: 80px;
+  width: 25px;
+  height: 25px;
+  min-height: 25px;
+  min-width: 25px;
 
   border-radius: 6px;
 }
@@ -430,6 +551,68 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.inde-candidate-status-block {
+  display: flex;
+  margin-top: 6px;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.inde-candidate-status-text {
+  padding: 3px 10px 5px;
+
+  border-radius: 100px;
+
+  background-color: hsla(356, 100.00%, 97.06%, 1.00);
+
+  color: hsla(354.8571428571429, 60.00%, 34.31%, 1.00);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.inde-int-copy-btn-wrapper {
+  display: flex;
+  margin-top: -8px;
+  align-items: center;
+}
+
+.cj-add-skill-btn-new {
+  display: flex;
+  height: 40px;
+  padding: 10px 16px 10px 10px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  transition: all 250ms ease;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.cj-add-skill-btn-new:hover {
+  opacity: 0.7;
+}
+
+.cj-add-skill-btn-new.disable {
+  cursor: auto;
+}
+
+.cj-add-skill-btn-new.disable:hover {
+  opacity: 1;
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .inde-job-info {
@@ -467,77 +650,6 @@
 
 .inde-job-view-btn:hover {
   opacity: 0.7;
-}
-
-.inde-candidate-status-block {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
-}
-
-.inde-candidate-status-text {
-  padding: 3px 10px 5px;
-  border-radius: 100px;
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
-  color: hsla(354.8571428571429, 60.00%, 34.31%, 1.00);
-  font-weight: 600;
-}
-
-.inde-int-copy-btn-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.cj-add-skill-btn-new {
-  display: flex;
-  height: 40px;
-  padding: 10px 16px 10px 10px;
-  justify-content: center;
-  align-items: center;
-  flex: 0 auto;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  transition: all 250ms ease;
-
-  text-decoration: none;
-
-  cursor: pointer;
-}
-
-.cj-add-skill-btn-new:hover {
-  opacity: 0.7;
-}
-
-.cj-add-skill-btn-new.disable {
-  cursor: auto;
-}
-
-.cj-add-skill-btn-new.disable:hover {
-  opacity: 1;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 #w-node-_3b8246a3-aa09-b40c-4a21-cd175fe7b8db-5fe7b8d4 {

@@ -84,7 +84,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .fw-semibold {
@@ -251,6 +251,10 @@
   color: var(--red600-953350ec);
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .frame-1023 {
   display: flex;
   width: 100%;
@@ -367,6 +371,15 @@
 
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
 }
 
 .frame-1018 {
@@ -500,6 +513,10 @@
 
 .text-lg.fw-semibold.inline-text.ml-6 {
   margin-left: 6px;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
 }
 
 .text-lg.text-align-center.no-wrap-company {

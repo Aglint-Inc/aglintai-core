@@ -196,12 +196,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -272,6 +276,10 @@
 
 .text-grey-600-3.mt-5 {
   margin-top: 5px;
+}
+
+.text-grey-600-3.inline-block {
+  display: inline;
 }
 
 .support-wrapper {

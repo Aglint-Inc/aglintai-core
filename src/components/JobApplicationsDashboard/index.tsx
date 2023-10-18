@@ -609,7 +609,7 @@ export function sendEmails(
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
-                interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
+                interview_link: `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
                 support_link: `https://dev.aglinthq.com/support?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED

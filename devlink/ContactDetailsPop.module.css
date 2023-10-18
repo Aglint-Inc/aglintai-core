@@ -43,6 +43,14 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -151,12 +159,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -268,7 +280,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 #w-node-_1aff2e56-11f6-55c6-e7a7-29ea9f4d193a-9f4d1931 {

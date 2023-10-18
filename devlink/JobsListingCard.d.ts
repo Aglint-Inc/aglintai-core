@@ -16,4 +16,8 @@ declare function JobsListingCard(props: {
   textColorActiveInterviewingProps?: Types.Devlink.RuntimeProps;
   slotStatusIcon?: Types.Devlink.Slot;
   candidateCount?: React.ReactNode;
+  textSourcing?: React.ReactNode;
+  slotSourcingIcon?: Types.Devlink.Slot;
+  textInterview?: React.ReactNode;
+  slotInterviewIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

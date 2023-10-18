@@ -30,6 +30,7 @@
 
 .candidate-chat-left-header {
   display: flex;
+  max-width: 323.140625px;
   padding: 10px;
   align-items: center;
   grid-column-gap: 8px;
@@ -209,9 +210,18 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-white {
@@ -305,6 +315,10 @@
   color: var(--red600-953350ec);
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .div-block-448 {
   display: flex;
   flex-direction: column;
@@ -321,9 +335,13 @@
 
 .inde-status-block {
   padding: 4px 20px;
+
   border-radius: 100px;
+
   background-color: hsla(204.07185628742513, 69.87%, 53.14%, 1.00);
+
   color: hsla(0, 0.00%, 100.00%, 1.00);
+  font-size: 12px;
   text-align: center;
 }
 
@@ -336,8 +354,4 @@
   min-height: 58vh;
   padding-right: 10px;
   padding-left: 10px;
-}
-
-.slot-type-messages {
-  height: 120px;
 }

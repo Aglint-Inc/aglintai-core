@@ -21,30 +21,6 @@ export function NewJobStep2({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-2")}
       tag="div"
     >
-      {isJobHeaderVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cj-top-block")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "fw-semibold",
-              "text-grey-600"
-            )}
-            tag="div"
-          >
-            {"Step 2: Describe The Role"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Help candidates understand what the role involves."}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"
@@ -101,7 +77,7 @@ export function NewJobStep2({
                     loading="lazy"
                     width="auto"
                     height="auto"
-                    alt="__wf_reserved_inherit"
+                    alt=""
                     src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890155_Vectors-Wrapper.svg"
                   />
                 </_Builtin.Block>

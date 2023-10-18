@@ -25,7 +25,7 @@ export function PageNothing({ as: _Component = _Builtin.Block }) {
               loading="lazy"
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089000e_Illustration%2015%20(1).svg"
             />
           </_Builtin.Block>

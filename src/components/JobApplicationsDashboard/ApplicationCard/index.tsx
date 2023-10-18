@@ -155,7 +155,7 @@ export default ApplicationCard;
 export function getGravatar(email, name) {
   return `https://www.gravatar.com/avatar/${require('crypto')
     .createHash('md5')
-    .update(email.trim().toLowerCase())
+    .update(email ? email.trim().toLowerCase() : '')
     .digest('hex')}?d=${encode(name)}`;
 }
 

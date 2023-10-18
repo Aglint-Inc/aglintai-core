@@ -41,6 +41,7 @@ import toast from '@/src/utils/toast';
 
 import TipTapEditor from '../Common/richTextEditor/RichTextBlock';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 dayjs.extend(relativeTime);
 
@@ -456,7 +457,7 @@ const AddNewMessage = ({ sendMessage }) => {
 };
 
 const getInterviewUrl = (application_id: string) => {
-  return `https://dev.aglinthq.com/landing-page?id=${application_id}`;
+  return `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${application_id}`;
 };
 
 const sendEmail = ({

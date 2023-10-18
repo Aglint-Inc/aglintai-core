@@ -205,15 +205,24 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .toggle-btn-block {
   align-items: center;
 }
 
-.toggle-dropdown-content {
+.toggle-dropdown-content-wrapper {
   overflow: hidden;
 }
 
-.tog-dropdown-content-block {
+.toggle-dropdown-content-block {
   display: flex;
   padding: 5px 16px 12px;
   flex-direction: column;

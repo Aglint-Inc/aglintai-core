@@ -27,8 +27,8 @@ export function ImportCandidate({
           <_Builtin.Image
             className={_utils.cx(_styles, "vectors-wrapper-48")}
             loading="lazy"
-            width={16}
-            height={16}
+            width="16"
+            height="16"
             src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650579a6f5ad07724ccef247_Vectors-Wrapper.svg"
           />
         </_Builtin.Block>

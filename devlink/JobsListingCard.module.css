@@ -251,6 +251,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;
@@ -350,7 +359,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-white {
@@ -440,6 +449,10 @@
   color: var(--red600-953350ec);
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .div-block-369 {
   display: flex;
   grid-column-gap: 10px;
@@ -453,20 +466,9 @@
   grid-row-gap: 5px;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
+.icons-slot-source {
+  width: 16px;
+  height: 16px;
 }
 
 #w-node-ca45e366-fcfe-0176-2cef-1032591f3083-e4f6dd07 {

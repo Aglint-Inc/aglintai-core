@@ -82,12 +82,28 @@
   cursor: pointer;
 }
 
-.clickable:hover {
+.skip-text:hover {
   opacity: 0.8;
 }
 
-.text-red-600 {
-  color: var(--red600-953350ec);
+.cj-continue-btn.indeed-btn {
+  display: none;
+}
+
+.cj-continue-btn.lever-btn {
+  display: none;
+}
+
+.cj-progress-bar-wrapper {
+  width: 100%;
+  height: 6px;
+  border-radius: 100px;
+}
+
+.cj-steps-info-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fw-semibold {
@@ -245,4 +261,13 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
 }

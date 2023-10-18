@@ -35,7 +35,7 @@ export function MainNav({
             loading="lazy"
             width="auto"
             height="auto"
-            alt="__wf_reserved_inherit"
+            alt=""
             src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890009_Frame%205.svg"
           />
         </_Builtin.NavbarBrand>

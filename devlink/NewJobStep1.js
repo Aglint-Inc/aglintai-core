@@ -13,32 +13,6 @@ export function NewJobStep1({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-1")}
       tag="div"
     >
-      {isJobHeaderVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cj-top-block")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "fw-semibold",
-              "text-grey-600"
-            )}
-            tag="div"
-          >
-            {"Step 1: Basic Job Information"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {
-              "Fill in the necessary fields to describe the job you're offering."
-            }
-          </_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"

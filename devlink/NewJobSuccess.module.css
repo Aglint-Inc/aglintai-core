@@ -27,6 +27,9 @@
 
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -85,6 +88,9 @@
   display: flex;
   width: 100%;
   height: 100%;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;
@@ -102,6 +108,14 @@
   align-items: flex-start;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
+}
+
+@media screen and (max-width: 991px) {
+  .auth-header-block {
+    max-width: 500px;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .auth-header-block.join-us {
@@ -168,6 +182,14 @@
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
+}
+
+@media screen and (max-width: 991px) {
+  .div-block-266 {
+    align-items: center;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
 }
 
 .div-block-266.succes {
@@ -285,12 +307,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -357,6 +383,12 @@
   color: rgba(134, 146, 166, 1);
   font-weight: 400;
   text-align: left;
+}
+
+@media screen and (max-width: 991px) {
+  .ju-header-description {
+    text-align: center;
+  }
 }
 
 .ju-header-description.text-align-center {

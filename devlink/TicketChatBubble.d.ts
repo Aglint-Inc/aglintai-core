@@ -7,4 +7,5 @@ declare function TicketChatBubble(props: {
   textName?: React.ReactNode;
   textMessages?: React.ReactNode;
   textTime?: React.ReactNode;
+  slotCompanyImage?: Types.Devlink.Slot;
 }): React.JSX.Element;

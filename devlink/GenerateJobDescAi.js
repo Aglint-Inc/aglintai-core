@@ -19,6 +19,7 @@ export function GenerateJobDescAi({
   slotLottie,
   textLabel1 = "",
   slotCheckBoxes,
+  isCheckSlotVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -47,7 +48,7 @@ export function GenerateJobDescAi({
               loading="lazy"
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
             />
           </_Builtin.Block>
@@ -81,17 +82,19 @@ export function GenerateJobDescAi({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-check-mark")}
-        tag="div"
-      >
+      {isCheckSlotVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-337")}
+          className={_utils.cx(_styles, "div-check-mark")}
           tag="div"
         >
-          {slotCheckBoxes}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-337")}
+            tag="div"
+          >
+            {slotCheckBoxes}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-rt-generate-btn-relative")}
         tag="div"
@@ -107,7 +110,7 @@ export function GenerateJobDescAi({
             loading="lazy"
             width="auto"
             height="auto"
-            alt="__wf_reserved_inherit"
+            alt=""
             src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
           />
           <_Builtin.Block className={_utils.cx(_styles, "label-5")} tag="div">
@@ -124,7 +127,7 @@ export function GenerateJobDescAi({
               loading="lazy"
               width="auto"
               height="auto"
-              alt="__wf_reserved_inherit"
+              alt=""
               src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890239_glitter.svg"
             />
             <_Builtin.Block

@@ -104,7 +104,7 @@ export function JobDashboardEmpty({
                   {"Add Job"}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "small-default-3")}
+                  className={_utils.cx(_styles, "text-grey-600")}
                   tag="div"
                 >
                   {
@@ -126,7 +126,7 @@ export function JobDashboardEmpty({
                 {"Or Connect with your Applicant Tracking System (ATS)"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
                 {"If the ATS you are using is not listed here, "}
@@ -172,11 +172,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Greenhouse"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {
@@ -213,7 +209,7 @@ export function JobDashboardEmpty({
                         loading="lazy"
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad6c1dcf28a5a3af3a0_SVGmix-XJma8a-indeed-member%201%20(2).svg"
                       />
                     </_Builtin.Block>
@@ -232,11 +228,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Indeed"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {
@@ -275,7 +267,7 @@ export function JobDashboardEmpty({
                         loading="lazy"
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad803eafe8aa1c3b68c_lever_rgb_logo_standard%201%20(2).svg"
                       />
                     </_Builtin.Block>
@@ -294,11 +286,7 @@ export function JobDashboardEmpty({
                         {"Import Job from Lever"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "text-sm",
-                          "color-grey-600"
-                        )}
+                        className={_utils.cx(_styles, "text-grey-600")}
                         tag="div"
                       >
                         {

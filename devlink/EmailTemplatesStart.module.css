@@ -1,0 +1,11 @@
+.email-start-wrap {
+  display: grid;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}

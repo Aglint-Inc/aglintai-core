@@ -23,9 +23,10 @@ export function OpenJobListingCard({
       className={_utils.cx(_styles, "open-jobs-list-card")}
       data-w-id="3b6022e9-7521-6a98-1483-a49ee53c9b86"
       tag="div"
+      {...onClickApplyNow}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+        className={_utils.cx(_styles, "text-regular", "fw-semibold")}
         tag="div"
       >
         {textJobRole}

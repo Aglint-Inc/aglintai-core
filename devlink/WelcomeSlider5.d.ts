@@ -9,5 +9,4 @@ declare function WelcomeSlider5(props: {
   slotPhoneInput?: Types.Devlink.Slot;
   isSaveDisableAddCompanyLogo?: Types.Visibility.VisibilityConditions;
   onClickSave?: Types.Devlink.RuntimeProps;
-  onClickLater?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -1,0 +1,277 @@
+.mic-card-block-wrapper-2 {
+  width: 730px;
+  height: 330px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 20px 28px 0 rgba(47, 57, 65, 0.35);
+}
+
+@media screen and (max-width: 991px) {
+  .mic-card-block-wrapper-2 {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .mic-card-block-wrapper-2 {
+    height: auto;
+    max-width: 90%;
+  }
+}
+
+.mic-grid-block-2 {
+  display: grid;
+  height: 100%;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .mic-grid-block-2 {
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+    grid-template-columns: 1fr;
+  }
+}
+
+.mic-block-image-2 {
+  width: 300px;
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 767px) {
+  .mic-block-image-2 {
+    width: 200px;
+    margin-top: 20px;
+  }
+}
+
+.click-allow-wrapper-blocked-2 {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+@media screen and (max-width: 767px) {
+  .click-allow-wrapper-blocked-2 {
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.text-xxl-2 {
+  font-size: 26px;
+  line-height: 1.23;
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: 767px) {
+  .text-xxl-2 {
+    font-size: 22px;
+  }
+}
+
+.color-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.fw-semibold.cursor-pointer.capitialize {
+  text-transform: capitalize;
+}
+
+.color-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.fw-semibold.color-grey-600.margin-top-10 {
+  margin-top: 10px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.fw-semibold.color-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
+.text-grey-800 {
+  color: var(--grey800-e42b2e06);
+}
+
+.fw-semibold.margin-right-5 {
+  margin-right: 5px;
+}
+
+.text-kale-800 {
+  color: var(--kale800-682c1482);
+}
+
+.text-yellow-800 {
+  color: var(--yellow800-b1e3bc9b);
+}
+
+.text-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.text-grey-100 {
+  color: var(--gray100-3a86b552);
+}
+
+.text-red-800 {
+  color: var(--red800-2e6a9098);
+}
+
+.color-black {
+  color: var(--black-0fdbd865);
+}
+
+.fw-semibold.pink-800 {
+  color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.text-green-800 {
+  color: var(--green800-a83af583);
+}
+
+.color-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
+.fw-semibold.indeed {
+  display: none;
+}
+
+.fw-semibold.lever {
+  display: none;
+}
+
+.fw-semibold.workday {
+  display: none;
+}
+
+.fw-semibold.indeed-text {
+  display: none;
+}
+
+.fw-semibold.lever-text {
+  display: none;
+}
+
+.fw-semibold.workday-text {
+  display: none;
+}
+
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.fw-semibold.text-yellow-700.mt-8 {
+  margin-top: 8px;
+}
+
+.text-yellow-600 {
+  color: var(--yellow600-1478b5f5);
+}
+
+.fw-semibold.relative {
+  z-index: 2;
+}
+
+.relative {
+  position: relative;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
+}
+
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.text-green-500 {
+  color: var(--green500-287ff474);
+}
+
+.text-yellow-500 {
+  color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-400 {
+  color: var(--grey400-863ed4b5);
+}
+
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.color-grey-600.max-width-350 {
+  max-width: 350px;
+}
+
+.color-grey-600.growth-stretch {
+  flex: 0 0 auto;
+}
+
+#w-node-f94ff02a-6fc4-2aac-d979-e76ce8a0c605-e8a0c603 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+  align-self: center;
+  justify-self: center;
+}
+#w-node-f94ff02a-6fc4-2aac-d979-e76ce8a0c607-e8a0c603 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+  align-self: center;
+  justify-self: start;
+}

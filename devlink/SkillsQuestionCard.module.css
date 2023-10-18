@@ -11,12 +11,6 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 
   transition: all 300ms ease;
-
-  cursor: pointer;
-}
-
-.dropdown-list-item-2:hover {
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
 .color-black-2 {
@@ -151,4 +145,12 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }

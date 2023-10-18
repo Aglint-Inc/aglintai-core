@@ -20,13 +20,14 @@ export function AddRolesPop({
         className={_utils.cx(_styles, "text-lg", "fw-semibold", "color-black")}
         tag="div"
       >
-        {"Add available roles"}
+        {"Add roles"}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "text-grey-600", "mt-17")}
         tag="div"
       >
         {"Choose from the list or type your own and press enter"}
+        <br />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-roles-wrappers")}

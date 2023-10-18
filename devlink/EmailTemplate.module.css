@@ -187,6 +187,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -305,6 +314,10 @@
   margin-left: 6px;
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-lg.text-align-center.no-wrap-company {
   flex: 0 0 auto;
 }
@@ -358,7 +371,8 @@
 }
 
 .aui-button-wrap {
-  display: flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
 }
 
@@ -372,16 +386,20 @@
 .aui-button-wrap.danger.jed {
   overflow: hidden;
   border-radius: 4px;
-  color: var(--\[unknown\|variable-2e806c7d\]);
+  color: var(--red-500);
 }
 
 .aui-button-wrap.danger.jed:hover {
   background-color: hsla(0, 100.00%, 95.78%, 1.00);
-  color: var(--\[unknown\|variable-d3747f47\]);
+  color: var(--red-700);
 }
 
 .aui-button-wrap.mt-16 {
   margin-top: 16px;
+}
+
+.aui-button-wrap.full {
+  align-items: stretch;
 }
 
 .aui-button {
@@ -420,7 +438,6 @@
 
 .aui-button.is-small {
   padding: 8px 12px;
-  font-size: 14px;
   letter-spacing: 0px;
 }
 
@@ -693,7 +710,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-white {
@@ -785,6 +802,10 @@
 
 .text-red-600 {
   color: var(--red600-953350ec);
+}
+
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .cj-richtext-editor-wrapper {

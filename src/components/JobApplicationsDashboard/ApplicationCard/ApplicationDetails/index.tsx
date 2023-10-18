@@ -151,7 +151,7 @@ function ApplicationDetails({
                           onClick: () => {
                             navigator.clipboard
                               .writeText(
-                                `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                                `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                               )
                               .then(() => {
                                 toast.success('Link Copied');
@@ -178,7 +178,7 @@ function ApplicationDetails({
                           onClick: () => {
                             navigator.clipboard
                               .writeText(
-                                `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                                `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                               )
                               .then(() => {
                                 toast.success('Link Copied');
@@ -226,7 +226,7 @@ function ApplicationDetails({
                         onClick: () => {
                           navigator.clipboard
                             .writeText(
-                              `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
+                              `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                             )
                             .then(() => {
                               toast.success('Link Copied');

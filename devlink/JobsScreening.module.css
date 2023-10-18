@@ -132,12 +132,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -368,7 +372,7 @@
 
 .text-sm {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.4;
 }
 
 .text-white {
@@ -488,6 +492,10 @@
 
 .text-red-600 {
   color: var(--red600-953350ec);
+}
+
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .input {

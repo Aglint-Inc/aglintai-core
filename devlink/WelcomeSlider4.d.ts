@@ -7,4 +7,6 @@ declare function WelcomeSlider4(props: {
   slotProfileForm1?: Types.Devlink.Slot;
   onClickSaveCompanySites?: Types.Devlink.RuntimeProps;
   isSaveCompanySiteDisable?: Types.Visibility.VisibilityConditions;
+  isloadingVisible?: Types.Visibility.VisibilityConditions;
+  isActiveButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

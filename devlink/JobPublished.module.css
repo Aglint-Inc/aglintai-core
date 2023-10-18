@@ -194,6 +194,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .primary-btn-with-logo-wrappers {
   position: relative;
 }
@@ -261,4 +270,12 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }

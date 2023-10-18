@@ -251,6 +251,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;
@@ -301,6 +310,9 @@
 
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 

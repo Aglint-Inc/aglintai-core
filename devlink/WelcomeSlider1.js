@@ -13,6 +13,7 @@ export function WelcomeSlider1({
   onClickCompany = {},
   onClickAgency = {},
   onClickConsultant = {},
+  onClickSignIn = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -26,7 +27,7 @@ export function WelcomeSlider1({
         tag="div"
       />
       <_Builtin.Block
-        className={_utils.cx(_styles, "auth-cta-block")}
+        className={_utils.cx(_styles, "auth-cta-block", "tab-edit")}
         tag="div"
       >
         <_Builtin.Block
@@ -37,14 +38,14 @@ export function WelcomeSlider1({
             className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
             tag="div"
           >
-            {"Welcome to Aglint for Recruiters"}
+            {"Join the future of hiring today!"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "ju-header-description")}
             tag="div"
           >
             {
-              "Get ready to revolutionize your hiring process. Let's Start By Identifying Your Role:"
+              "Signup for Aglint's Screening Co-Pilot and find the perfect match."
             }
           </_Builtin.Block>
         </_Builtin.Block>
@@ -70,7 +71,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890234_company%201.svg"
                 />
               </_Builtin.Block>
@@ -95,8 +96,8 @@ export function WelcomeSlider1({
             <_Builtin.Image
               className={_utils.cx(_styles, "ju-cta-arrow", "animated-opacity")}
               loading="lazy"
-              width={20}
-              height={20}
+              width="20"
+              height="20"
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6500758f12a101e249463e97_Vectors-Wrapper.svg"
             />
           </_Builtin.Block>
@@ -118,7 +119,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890233_hiring%201.svg"
                 />
               </_Builtin.Block>
@@ -145,8 +146,8 @@ export function WelcomeSlider1({
             <_Builtin.Image
               className={_utils.cx(_styles, "ju-cta-arrow", "animated-opacity")}
               loading="lazy"
-              width={20}
-              height={20}
+              width="20"
+              height="20"
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6500758f12a101e249463e97_Vectors-Wrapper.svg"
             />
           </_Builtin.Block>
@@ -168,7 +169,7 @@ export function WelcomeSlider1({
                   loading="lazy"
                   width="auto"
                   height="auto"
-                  alt="__wf_reserved_inherit"
+                  alt=""
                   src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089023a_Role%20Model_Flat%20(1).svg"
                 />
               </_Builtin.Block>
@@ -195,10 +196,27 @@ export function WelcomeSlider1({
             <_Builtin.Image
               className={_utils.cx(_styles, "ju-cta-arrow", "animated-opacity")}
               loading="lazy"
-              width={20}
-              height={20}
+              width="20"
+              height="20"
               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6500758f12a101e249463e97_Vectors-Wrapper.svg"
             />
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ju-right-top", "align-left")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ju-redirect-text")}
+            tag="div"
+          >
+            {"Already have an account? "}
+            <_Builtin.Span
+              className={_utils.cx(_styles, "sign-in-text")}
+              {...onClickSignIn}
+            >
+              {"Sign In"}
+            </_Builtin.Span>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

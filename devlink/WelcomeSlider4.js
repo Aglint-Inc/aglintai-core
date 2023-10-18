@@ -14,6 +14,8 @@ export function WelcomeSlider4({
   slotProfileForm1,
   onClickSaveCompanySites = {},
   isSaveCompanySiteDisable = true,
+  isloadingVisible = false,
+  isActiveButtonVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -60,19 +62,13 @@ export function WelcomeSlider4({
               className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
               tag="div"
             >
-              {"Welcome"}
+              {"Welcome to Aglint for Employers! 🚀"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
+              className={_utils.cx(_styles, "text-xxl", "fw-semibold", "hide")}
               tag="div"
             >
               {userName}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
-              tag="div"
-            >
-              {"😇"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -80,39 +76,63 @@ export function WelcomeSlider4({
             tag="div"
           >
             {
-              "You're one step closer to revolutionizing your recruitment efforts."
+              "Enter your company website URL, and our system will automatically fetch the necessary details to set up your company profile. Let's dive in!"
             }
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "auth-form-block")}
+          className={_utils.cx(_styles, "auth-cta-form-block")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot-profile-form-1")}
-            tag="div"
-          >
-            {slotProfileForm1}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "saveand-btn-wrapper", "relative")}
+            className={_utils.cx(_styles, "auth-form-block")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "su-btn", "large")}
+              className={_utils.cx(_styles, "slot-profile-form-1")}
               tag="div"
-              {...onClickSaveCompanySites}
             >
-              <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
+              {slotProfileForm1}
             </_Builtin.Block>
-            {isSaveCompanySiteDisable ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "su-btn", "large", "disable")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "saveand-btn-wrapper", "relative")}
+              tag="div"
+            >
+              {isloadingVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "su-btn",
+                    "large",
+                    "btn-loading"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "loader-icons")}
+                    value="%3Cstyle%3E%0A.loadersvg%2C%0A.loaderpath%7B%0A%20%20fill%3A%20%23ffff%3B%0A%7D%0A%3C%2Fstyle%3E%20%0A%20%20%3Csvg%20class%3D'loadersvg'%20version%3D%221.1%22%20id%3D%22loader-1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%20%20%20%20%20width%3D%2216px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2050%2050%22%20style%3D%22enable-background%3Anew%200%200%2050%2050%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%20%20%3Cpath%20class%3D'loaderpath'%20fill%3D%22%23000%22%20d%3D%22M43.935%2C25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318%2C0-18.683%2C8.365-18.683%2C18.683h4.068c0-8.071%2C6.543-14.615%2C14.615-14.615c8.072%2C0%2C14.615%2C6.543%2C14.615%2C14.615H43.935z%22%3E%0A%20%20%20%20%3CanimateTransform%20attributeType%3D%22xml%22%0A%20%20%20%20%20%20attributeName%3D%22transform%22%0A%20%20%20%20%20%20type%3D%22rotate%22%0A%20%20%20%20%20%20from%3D%220%2025%2025%22%0A%20%20%20%20%20%20to%3D%22360%2025%2025%22%0A%20%20%20%20%20%20dur%3D%220.6s%22%0A%20%20%20%20%20%20repeatCount%3D%22indefinite%22%2F%3E%0A%20%20%20%20%3C%2Fpath%3E%0A%20%20%3C%2Fsvg%3E"
+                  />
+                  <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              {isActiveButtonVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "su-btn", "large", "active")}
+                  tag="div"
+                  {...onClickSaveCompanySites}
+                >
+                  <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              {isSaveCompanySiteDisable ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "su-btn", "large", "disable")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

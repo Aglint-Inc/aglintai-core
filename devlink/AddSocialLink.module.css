@@ -54,6 +54,14 @@
   opacity: 0.8;
 }
 
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }

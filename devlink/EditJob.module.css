@@ -209,12 +209,16 @@
   margin-left: 6px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
-}
-
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-lg.text-align-center.no-wrap-company {
@@ -343,6 +347,8 @@
 
   background-color: transparent;
 
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
   cursor: pointer;
 }
 
@@ -351,6 +357,12 @@
   padding-right: 24px;
   padding-bottom: 8px;
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .company-tab-link {
+    flex: 0 0 auto;
+  }
 }
 
 .cursor-pointer {
@@ -454,6 +466,15 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
 .fake-color-div {
   position: absolute;
   left: 0%;
@@ -493,6 +514,14 @@
 
 .icons.curser-hover-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }
 
 .div-block-423 {

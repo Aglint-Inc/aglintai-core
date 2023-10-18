@@ -16,8 +16,8 @@ export function JobEmptyState({
         <_Builtin.Image
           width="auto"
           height="auto"
-          alt="__wf_reserved_inherit"
           loading="lazy"
+          alt=""
           src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890235_Exam_Flat.svg"
         />
         <_Builtin.Block
