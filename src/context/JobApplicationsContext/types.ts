@@ -21,6 +21,7 @@ export type JobApplicationSectionData = {
 export type JobApplicationsData = {
   applications: JobApplicationSectionData;
   count: number;
+  processing: number;
 };
 
 export type JobApplication =

@@ -29,6 +29,7 @@ import {
   capitalize,
   FilterParameter,
   getFilteredApplications,
+  getIntactApplications,
   getSortedApplications,
   SortParameter,
 } from './utils';
@@ -81,7 +82,10 @@ const JobApplicationComponent = () => {
   ]);
 
   const sectionApplications = getFilteredApplications(
-    getSortedApplications(applications[section].list, sort),
+    getSortedApplications(
+      getIntactApplications(applications[section].list),
+      sort,
+    ),
     filters,
   );
 
@@ -143,7 +147,7 @@ const JobApplicationComponent = () => {
         slotJobStatus={<JobApplicationStatus />}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
-        textApplicantsNumber={`(${applicationsData.count} applicants)`}
+        textApplicantsNumber={`(${applicationsData.count} applicants , ${applicationsData.processing} processing)`}
         isAll={section === JobApplicationSections.NEW}
         countAll={applications.new.count}
         onClickAllApplicant={{
@@ -236,7 +240,7 @@ const JobApplicationComponent = () => {
   );
 };
 
-const   ApplicantsList = ({
+const ApplicantsList = ({
   applications,
   checkList,
   setCheckList,

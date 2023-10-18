@@ -1,5 +1,7 @@
 import { Avatar } from '@mui/material';
 
+import { IconCompanySmall } from '@/devlink';
+
 const CompanyLogo = ({
   companyLogo,
   companyName,
@@ -13,8 +15,9 @@ const CompanyLogo = ({
       sx={{
         bgcolor: 'white.700',
         width: '100%',
-        height: 'auto',
+        height: '100%',
       }}
+      style={{ color: 'black' }}
       src={
         companyLogo ||
         `https://logo.clearbit.com/${companyName
@@ -23,8 +26,7 @@ const CompanyLogo = ({
       }
       alt={companyName}
     >
-      Company
-      {/* <CompanyIconsmall /> */}
+      <IconCompanySmall />
     </Avatar>
   );
 };

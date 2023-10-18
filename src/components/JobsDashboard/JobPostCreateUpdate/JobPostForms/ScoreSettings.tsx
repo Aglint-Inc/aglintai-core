@@ -1,8 +1,10 @@
 import { Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { ResumeScoreSetting } from '@/devlink';
-import ScoreWheel from '@/src/components/Common/ScoreWheel';
+import ScoreWheel, {
+  ScoreWheelParams,
+} from '@/src/components/Common/ScoreWheel';
 import ScoreWheelControls from '@/src/components/Common/ScoreWheel/controls';
 
 import { useJobForm } from '../JobPostFormProvider';
@@ -33,10 +35,20 @@ const ScoreSettings = () => {
             gap={'40px'}
           >
             <ScoreWheelControls
-              weights={jobForm.formFields.resumeScoreSettings}
-              setWeights={setWeights}
+              weights={
+                jobForm.formFields
+                  .resumeScoreSettings as unknown as ScoreWheelParams
+              }
+              setWeights={
+                setWeights as unknown as Dispatch<
+                  SetStateAction<ScoreWheelParams>
+                >
+              }
             />
-            <ScoreWheel weights={jobForm.formFields.resumeScoreSettings} />
+            <ScoreWheel
+              id={'ScoreWheelSetting'}
+              weights={jobForm.formFields.resumeScoreSettings}
+            />
           </Stack>
         </>
       }

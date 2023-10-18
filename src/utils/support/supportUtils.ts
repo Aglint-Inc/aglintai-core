@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { palette } from '@/src/context/Theme/Theme';
 
 const Priority = {
@@ -164,41 +165,25 @@ type DataType = {
     score: number;
   };
 };
-type weightsType = {
-  certifications: number;
-  education: number;
-  experience: number;
-  project: number;
-  skills: number;
-};
 
-export function calculateOverallScore(
-  data: DataType,
-  weights?: weightsType | null,
-): { score: number } {
+export function calculateOverallScore(data: DataType): ScoreWheelParams {
   const relevanceScores = {
     less: 10,
     ok: 30,
     more: 50,
   };
   const relatedScore = 50;
-  let totalScore: number = 0;
+  const detailedScores = {};
   for (const key of Object.keys(data.qualification)) {
     const value = data.qualification[key];
     if (!value) {
       continue;
     }
-    const isRelatedScore: number = value.isRelated ? relatedScore : 0;
-    const relevanceScore: number = relevanceScores[value.relevance] || 0;
-    const weight: number = weights ? weights[key] || 0.25 : 0.25;
-    const propertyScore: number =
-      weight * isRelatedScore + weight * relevanceScore;
-    totalScore += propertyScore;
+    detailedScores[key] = value.isRelated
+      ? relatedScore + relevanceScores[value.relevance] || 0
+      : 0;
   }
-  // totalScore /= maxScore / 100;
   const skillsScore: number = data.skills?.score || 0;
-  const skillsWeight: number = weights ? weights.skills || 0.1 : 0.1;
-  totalScore = totalScore + skillsScore * skillsWeight;
-  const overallScore: number = Math.round(totalScore * 10) / 10;
-  return { score: overallScore };
+  detailedScores['skills'] = skillsScore * 0.1;
+  return detailedScores as ScoreWheelParams;
 }
