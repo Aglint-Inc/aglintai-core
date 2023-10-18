@@ -347,7 +347,7 @@ function UploadDB({ post, setThank, setLoading }) {
         last_name: profile.lastName,
         job_title: post.job_title,
         company_name: post.company,
-        support_link: `https://dev.aglinthq.com/support?id=${application_id}`,
+        support_link: `https://recruiter.aglinthq.com/support?id=${application_id}`,
       };
       await axios
         .post('/api/sendgrid', {

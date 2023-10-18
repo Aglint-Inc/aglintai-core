@@ -63,6 +63,12 @@
   object-fit: contain;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -92,6 +98,14 @@
   color: var(--black-9b0fc3fc);
 }
 
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-grey-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
 .div-block-332 {
   display: flex;
   flex-direction: column;
@@ -115,31 +129,40 @@
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
+.text-kale-600 {
+  color: var(--kale-600);
 }
 
-.text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+.text-yellow-700 {
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.text-yellow-600 {
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .div-block-331 {

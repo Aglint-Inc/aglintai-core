@@ -1,12 +1,11 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
-import { ImportCandidate, LoaderSvg, UploadCsv } from '@/devlink';
+import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
@@ -15,7 +14,7 @@ import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
 // import { bulkCreateJobApplicationDbAction } from '@/src/context/JobApplicationsContext/utils';
 
-function ImportCandidates() {
+function ImportCandidatesCSV() {
   const {
     setOpenImportCandidates,
     handleJobApplicationBulkCreate,
@@ -51,8 +50,8 @@ function ImportCandidates() {
     ],
     [
       'xyz',
-      'c',
-      'xyz@gmail.com',
+      'abc',
+      'xyzabc@gmail.com',
       '1234567890',
       'sales manager',
       'xyz',
@@ -60,21 +59,11 @@ function ImportCandidates() {
       'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
-    [
-      'chi',
-      'mai',
-      'chinmaichromium@gmail.com',
-      '9876543210',
-      'Engineer',
-      'hireDumb',
-      JobApplicationSections.NEW,
-      '',
-      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
-    ],
+
     [
       'abc',
-      'c',
-      'abc@gmail.com',
+      'd',
+      'abcd@gmail.com',
       '9876543210',
       'designer',
       'hireDumb',
@@ -95,26 +84,15 @@ function ImportCandidates() {
       ...qualified,
       ...disqualified,
     ].map((ele) => ele.email);
-    const filteredCandidates = candidates
-      .filter(
-        (ele: { email: string }) => !totalApplications.includes(ele.email),
-      )
-      .map((item: any) => ({ ...item, jd_score: 'loading' }));
-
+    const filteredCandidates = candidates.filter(
+      (ele: { email: string }) => !totalApplications.includes(ele.email),
+    );
     setbulkImportdata([]);
     setIsLoading(true);
-    const candidatesList =
-      await handleJobApplicationBulkCreate(filteredCandidates);
-
-    candidatesList.map((candi) => {
-      axios.post(
-        'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-        {
-          application_id: candi.application_id,
-        },
-      );
-    });
-
+    await handleJobApplicationBulkCreate(filteredCandidates);
+    toast.success(
+      'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+    );
     setOpenImportCandidates(false);
     setIsLoading(false);
   }
@@ -129,6 +107,7 @@ function ImportCandidates() {
         '.xls',
       ],
     },
+    multiple: false,
     onDrop: (acceptedFiles) => {
       setIsLoading(true);
       const file = acceptedFiles.map((file) => Object.assign(file))[0];
@@ -186,69 +165,53 @@ function ImportCandidates() {
         borderRadius: '10px',
       }}
     >
-      <Stack spacing={1}>
-        <Fragment>
-          <ImportCandidate
-            slotReuploadBtn={
-              <>
-                {bulkImportdata.length ? (
-                  <Stack {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <AUIButton variant='text'>Browse again</AUIButton>
-                  </Stack>
-                ) : null}
-              </>
-            }
-            onClickClose={{ onClick: () => setOpenImportCandidates(false) }}
-            slotDownload={
-              <CSVLink filename={'candidates-sample.csv'} data={csvData}>
-                <Stack direction={'row'}>
-                  <Typography
-                    sx={{
-                      textDecoration: 'underline',
-                    }}
-                    color={'blue.600'}
-                    fontSize={'14px'}
-                  >
-                    Download Sample CSV
-                  </Typography>
-                </Stack>
-              </CSVLink>
-            }
-            slotUpload={
-              <>
-                {isLoading ? (
-                  <Stack
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    direction={'row'}
-                    width={'100%'}
-                    height={'200px'}
-                  >
-                    <LoaderSvg />
-                  </Stack>
-                ) : bulkImportdata?.length > 0 ? (
-                  <CandidatesListTable importedCandidate={bulkImportdata} />
-                ) : (
-                  <>
-                    <Stack {...getRootProps()}>
-                      <input {...getInputProps()} />
-                      <UploadCsv />
-                    </Stack>
-                  </>
-                )}
-              </>
-            }
-            onClickImport={{
-              onClick: () => {
-                createCandidates(bulkImportdata);
-              },
+      <Stack direction={'row'} justifyContent={'flex-end'} pb={2}>
+        <CSVLink filename={'candidates-sample.csv'} data={csvData}>
+          <Typography
+            sx={{
+              textDecoration: 'underline',
             }}
-            isImportDisable={!bulkImportdata.length}
-          />
-        </Fragment>
+            color={'blue.600'}
+            fontSize={'14px'}
+          >
+            Download Sample CSV
+          </Typography>
+        </CSVLink>
+      </Stack>
+      <Stack spacing={1}>
+        {isLoading ? (
+          <Stack
+            justifyContent={'center'}
+            alignItems={'center'}
+            direction={'row'}
+            width={'100%'}
+            height={'200px'}
+          >
+            <LoaderSvg />
+          </Stack>
+        ) : bulkImportdata?.length > 0 ? (
+          <>
+            <CandidatesListTable importedCandidate={bulkImportdata} />{' '}
+            <Stack direction={'row'} justifyContent={'flex-end'}>
+              <AUIButton
+                onClick={() => {
+                  createCandidates(bulkImportdata);
+                }}
+              >
+                Upload
+              </AUIButton>
+            </Stack>
+          </>
+        ) : (
+          <>
+            <Stack {...getRootProps()}>
+              <input {...getInputProps()} />
+              <ImportCandidatesCsv />
+            </Stack>
+          </>
+        )}
       </Stack>
     </Stack>
   );
 }
-export default ImportCandidates;
+export default ImportCandidatesCSV;

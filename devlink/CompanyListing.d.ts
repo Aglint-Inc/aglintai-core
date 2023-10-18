@@ -16,4 +16,7 @@ declare function CompanyListing(props: {
   textCompanyAbout?: React.ReactNode;
   slotGallery?: Types.Devlink.Slot;
   slotOfficeLocaionCard?: Types.Devlink.Slot;
+  isOpenJobsVisible?: Types.Visibility.VisibilityConditions;
+  isAboutJobVisible?: Types.Visibility.VisibilityConditions;
+  isOfficeLocationVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

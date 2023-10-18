@@ -3,6 +3,11 @@ import * as Types from "./types";
 
 declare function ImportCandidates(props: {
   as?: React.ElementType;
-  onClickDownloadSample?: Types.Devlink.RuntimeProps;
-  onClickBrowse?: Types.Devlink.RuntimeProps;
+  slotImportCsv?: Types.Devlink.Slot;
+  slotImportResume?: Types.Devlink.Slot;
+  slotAddManually?: Types.Devlink.Slot;
+  onClickImportCsv?: Types.Devlink.RuntimeProps;
+  onClickImportResume?: Types.Devlink.RuntimeProps;
+  onClickAddManually?: Types.Devlink.RuntimeProps;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

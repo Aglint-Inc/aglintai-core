@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import { useState } from 'react';
-import React from 'react';
 
 import { CreateNewJob } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
@@ -299,11 +298,7 @@ function JobForm() {
         onClickPreview={{
           onClick: () => {
             window.open(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${get(
-                jobForm,
-                'jobPostId',
-                '',
-              )}`,
+              `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(jobForm, 'jobPostId', '')}`,
               '_blank',
             );
           },

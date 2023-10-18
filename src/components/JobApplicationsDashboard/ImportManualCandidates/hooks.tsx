@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -40,22 +39,9 @@ const useUploadCandidate = () => {
             resume: data,
           });
           if (applicantData) {
-            const { data: resumeScore } = await axios.post(
-              'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-              {
-                pdfUrl: applicantData.resume,
-                application_id: applicantData.application_id,
-                description: job.description || job.responsibilities.join(','),
-                job_title: job.job_title,
-                skills: job.skills || [],
-                company_name: job?.company,
-              },
-            );
             handleJobApplicationUIUpdate({
               ...applicantData,
-              jd_score: resumeScore,
             });
-
             toast.success('Job application successfully created!');
             return true;
           }

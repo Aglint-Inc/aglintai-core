@@ -131,7 +131,7 @@ const EmailTemplate = () => {
                   </Typography>
                   <Typography variant='body2'>
                     For dynamic content, utilize placeholders like [firstName],
-                    [lastName], [companyName], and [jobTitle].
+                    [lastName], [companyName], [jobTitle] and [supportLink].
                   </Typography>
                 </Stack>
                 <UITextField

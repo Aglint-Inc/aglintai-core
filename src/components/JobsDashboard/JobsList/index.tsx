@@ -29,7 +29,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
         <JobEmptyState
           onClickHere={{
             onClick: () => {
-              router.push(pageRoutes.JOBS + '?flow=create', undefined, {
+              router.push(`${pageRoutes.CREATEJOB}`, undefined, {
                 shallow: true,
               });
             },

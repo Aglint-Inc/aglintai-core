@@ -34,30 +34,6 @@ export function NewJobStep3({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-4")}
       tag="div"
     >
-      {isHeaderVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cj-top-block")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "fw-semibold",
-              "text-grey-600"
-            )}
-            tag="div"
-          >
-            {"Step 3: Set Up Screening Questions"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Pre-screen candidates based on essential criteria."}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"

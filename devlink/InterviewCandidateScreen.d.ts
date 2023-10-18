@@ -16,4 +16,7 @@ declare function InterviewCandidateScreen(props: {
   onClickEditDone?: Types.Devlink.RuntimeProps;
   onClickMicStop?: Types.Devlink.RuntimeProps;
   slotMicSpeakingLottie?: Types.Devlink.Slot;
+  slotMic?: Types.Devlink.Slot;
+  isMicVisible?: Types.Visibility.VisibilityConditions;
+  isSpeakingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

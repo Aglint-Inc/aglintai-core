@@ -1,16 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
-import { Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import {
-  AddCandidateDropdown,
-  ApplicantsListEmpty,
-  JobScreening,
-  SelectActionBar,
-} from '@/devlink2';
+import { ImportCandidates } from '@/devlink';
+import { ApplicantsListEmpty, JobScreening, SelectActionBar } from '@/devlink2';
 import {
   JobApplication,
   JobApplicationsData,
@@ -20,10 +16,11 @@ import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import Loader from '../Common/Loader';
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
 import { useKeyPress } from './hooks';
-import ImportCandidates from './ImportCandidates';
+import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
@@ -35,8 +32,7 @@ import {
   getSortedApplications,
   SortParameter,
 } from './utils';
-import Loader from '../Common/Loader';
-import MuiPopup from '../Common/MuiPopup';
+import ResumeUpload from './FileUpload';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -64,7 +60,12 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData, job } = useJobApplications();
+  const {
+    applicationsData,
+    job,
+    setOpenImportCandidates,
+    openImportCandidates,
+  } = useJobApplications();
   const { applications } = applicationsData;
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
@@ -111,7 +112,30 @@ const JobApplicationComponent = () => {
   };
   return (
     <>
+      <Dialog
+        open={openImportCandidates}
+        onClose={() => setOpenImportCandidates(false)}
+        maxWidth='md'
+      >
+        <ImportCandidates
+          slotAddManually={<ImportManualCandidates />}
+          slotImportCsv={<ImportCandidatesCSV />}
+          onClickClose={{
+            onClick: () => {
+              setOpenImportCandidates(false);
+            },
+          }}
+          slotImportResume={
+            <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+          }
+        />
+      </Dialog>
       <JobScreening
+        onClickAddCandidates={{
+          onClick: () => {
+            setOpenImportCandidates(true);
+          },
+        }}
         isTopbarVisible={searchedApplications.length !== 0}
         interviewScore={section !== JobApplicationSections.NEW}
         selectAllCheckbox={{ onClick: () => handleSelectAll() }}
@@ -177,7 +201,6 @@ const JobApplicationComponent = () => {
             section={section}
           />
         }
-        slotAddCandidates={<AddCandidates />}
         slotSelectActionBar={
           <Stack style={{ backgroundColor: 'white' }}>
             <Stack
@@ -200,7 +223,7 @@ const JobApplicationComponent = () => {
           href: '/jobs',
         }}
         jobLink={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
+          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
           target: '_blank',
         }}
         onClickEditJob={{
@@ -213,7 +236,7 @@ const JobApplicationComponent = () => {
   );
 };
 
-const ApplicantsList = ({
+const   ApplicantsList = ({
   applications,
   checkList,
   setCheckList,
@@ -502,37 +525,6 @@ const ActionBar = ({
   );
 };
 
-const AddCandidates = () => {
-  const {
-    openImportCandidates,
-    setOpenImportCandidates,
-    openManualImportCandidates,
-    setOpenManualImportCandidates,
-  } = useJobApplications();
-  return (
-    <>
-      <MuiPopup
-        props={{
-          open: openImportCandidates,
-        }}
-      >
-        <ImportCandidates />
-      </MuiPopup>
-      <MuiPopup
-        props={{
-          open: openManualImportCandidates,
-        }}
-      >
-        <ImportManualCandidates />
-      </MuiPopup>
-      <AddCandidateDropdown
-        onClickManual={{ onClick: () => setOpenManualImportCandidates(true) }}
-        onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
-      />
-    </>
-  );
-};
-
 export default JobApplicationsDashboard;
 
 export function sendEmails(
@@ -620,7 +612,7 @@ export function sendEmails(
                 job_title: candidate.job_title,
                 company_name: candidate.company,
                 interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
-                support_link: `https://dev.aglinthq.com/support?id=${candidate.application_id}`,
+                support_link: `https://recruiter.aglinthq.com/support?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED
             ? fillEmailTemplate(job?.email_template?.rejection?.body, {

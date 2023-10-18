@@ -1,9 +1,12 @@
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 export const capitalize = (str: string) => {
-  const s = str.trim().replaceAll('_', ' ');
-  if (s.length !== 0)
-    return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  if (str) {
+    const s = str.trim().replaceAll('_', ' ');
+    if (s.length !== 0)
+      return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  }
+  return '';
 };
 
 export const formatTimeStamp = (timeStamp: string) => {

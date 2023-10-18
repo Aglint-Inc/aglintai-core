@@ -22,7 +22,7 @@ const DashboardComp = () => {
   useEffect(() => {
     if (router.isReady) {
       if (!router.query.status) {
-        router.push(`?status=all`, undefined, {
+        router.push(`?status=active`, undefined, {
           shallow: true,
         });
       }

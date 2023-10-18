@@ -13,6 +13,12 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
+      {
+        source: '/login',
+        destination: '/signup?step=signin',
+        basePath: false,
+        permanent: true,
+      },
     ];
   },
   images: {
