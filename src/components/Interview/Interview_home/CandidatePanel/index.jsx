@@ -57,12 +57,14 @@ function CandidatePanel() {
                   fontSize={'22px'}
                   padding={'34px'}
                   color={
-                    listening
+                    listening && !senderRef?.current?.value
                       ? 'rgba(255, 255, 255, 0.29)'
                       : 'rgba(255, 255, 255, 1)'
                   }
                 >
-                  {listening ? 'Start Speaking now' : senderRef?.current?.value}
+                  {listening && !senderRef?.current?.value
+                    ? 'Start Speaking now'
+                    : senderRef?.current?.value}
                 </Typography>
               </Stack>
               <Stack

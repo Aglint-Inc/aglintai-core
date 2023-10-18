@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { createContext, useContext, useEffect, useRef } from 'react';
 
 import { useInterviewDetailsContext } from '../InterviewDetails';
@@ -19,6 +20,8 @@ let tempTime = 0;
 
 const context = [];
 const totalNumberOfQuestions = [];
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -28,6 +31,7 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { updateFeedbackOnJobApplications } from './utils';
 const useInterviewContext = () => useContext(InterviewContext);
 function InterviewContextProvider({ children }) {
   let {
@@ -36,7 +40,7 @@ function InterviewContextProvider({ children }) {
     listening,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-
+  const router = useRouter();
   const { jobDetails, candidateDetails } = useInterviewDetailsContext();
 
   useEffect(() => {
@@ -60,6 +64,10 @@ function InterviewContextProvider({ children }) {
   const [loadingRes, setLoadingRes] = useState(false);
 
   const [allowMic, setAllowMic] = useState(false);
+
+  const [openEndInterview, setOpenEndInterview] = useState(false);
+
+  const [openThanksPage, setOpenThanksPage] = useState(false);
 
   // timer
 
@@ -248,7 +256,7 @@ function InterviewContextProvider({ children }) {
 
     if (userText) {
       senderRef.current.value = '';
-      setQuestionIndex((pre) => pre + 1);
+
       audioElement = null;
       context.push({
         role: 'user',
@@ -269,6 +277,14 @@ function InterviewContextProvider({ children }) {
       SpeechRecognition.stopListening();
       resetTranscript();
       setLoadingRes(true);
+      if (totalNumberOfQuestions.length === questionIndex + 1) {
+        setOpenEndInterview(true);
+        setOpenThanksPage(true);
+        getFeedback();
+        return null;
+      } else {
+        setQuestionIndex((pre) => pre + 1);
+      }
       handleSpeak(
         'assistant',
         totalNumberOfQuestions[Number(questionIndex + 1)],
@@ -360,9 +376,63 @@ function InterviewContextProvider({ children }) {
 
   // feedback
 
-  function getFeedback() {
+  async function getFeedback() {
     // eslint-disable-next-line no-console
-    console.log(context);
+    stopRecording();
+    SpeechRecognition.abortListening();
+    SpeechRecognition.stopListening();
+    resetTranscript();
+    audioElement?.pause();
+
+    const result = await axios.post('/api/interview', {
+      interviewData: context,
+    });
+
+    const structuredFeedback = result.data.data.results.map((item) => {
+      const key = Object.keys(item)[0];
+      const feedback = item[key].feedback;
+      const rating = item[key].rating;
+      return {
+        topic: key,
+        feedback,
+        rating,
+      };
+    });
+
+    const res = await updateFeedbackOnJobApplications(
+      candidateDetails,
+      jobDetails,
+      structuredFeedback,
+      conversations,
+      interviewerIndex,
+      '00:00',
+    );
+    if (res) {
+      router.push(`/thanks-page?id=${candidateDetails?.application_id}`);
+    }
+  }
+
+  async function disconnecting() {
+    // eslint-disable-next-line no-console
+    console.log('dis');
+    stopRecording();
+    SpeechRecognition.abortListening();
+    SpeechRecognition.stopListening();
+    resetTranscript();
+    audioElement?.pause();
+
+    const structuredFeedback = [];
+    const res = await updateFeedbackOnJobApplications(
+      candidateDetails,
+      jobDetails,
+      structuredFeedback,
+      conversations,
+      interviewerIndex,
+      '00:00',
+    );
+    if (res) {
+      router.push(`/thanks-page?id=${candidateDetails?.application_id}`);
+    }
   }
   return (
     <InterviewContext.Provider
@@ -390,12 +460,18 @@ function InterviewContextProvider({ children }) {
         allowMic,
         setAllowMic,
         getFeedback,
+        disconnecting,
         speaking,
         micLevel,
         loadingRes,
 
         animationFrameId,
-        audioBlob
+        audioBlob,
+
+        openThanksPage,
+        setOpenThanksPage,
+        openEndInterview,
+        setOpenEndInterview,
       }}
     >
       {children}
