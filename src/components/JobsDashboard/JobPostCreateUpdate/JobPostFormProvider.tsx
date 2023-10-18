@@ -392,6 +392,7 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       new_screening_setting: {
         ...jobForm.formFields.newScreeningConfig,
       },
+      parameter_weights: jobForm.formFields.resumeScoreSettings,
     })
     .select();
   if (error) throw new Error(error.message);
