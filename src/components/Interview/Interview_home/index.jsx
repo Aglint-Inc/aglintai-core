@@ -17,11 +17,20 @@ import { getGravatar } from '../../JobApplicationsDashboard/ApplicationCard';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
-  const [openEndInterview, setOpenEndInterview] = useState(false);
-  const [openThanksPage, setOpenThanksPage] = useState(false);
 
-  const { conversations, getFeedback } = useInterviewContext();
+  const {
+    conversations,
+    getFeedback,
+    totalNumberOfQuestions,
+    questionIndex,
+    openThanksPage,
+    setOpenThanksPage,
+    openEndInterview,
+    setOpenEndInterview,
+    disconnecting,
+  } = useInterviewContext();
   const { candidateDetails, jobDetails } = useInterviewDetailsContext();
+
   return (
     <Stack>
       <SidePanelDrawer
@@ -58,7 +67,7 @@ function Interview_home() {
             isDisconnectVisible={!openThanksPage}
             onClickDisconnect={{
               onClick: () => {
-                getFeedback();
+                disconnecting();
                 setOpenThanksPage(true);
               },
             }}
@@ -87,8 +96,13 @@ function Interview_home() {
         }
         onClickEndInterview={{
           onClick: () => {
-            console.log('End Interview');
-            setOpenEndInterview(true);
+            if (totalNumberOfQuestions.length === questionIndex + 1) {
+              setOpenEndInterview(true);
+              setOpenThanksPage(true);
+              getFeedback();
+            } else {
+              setOpenEndInterview(true);
+            }
           },
         }}
         onClickSupport={{

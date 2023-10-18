@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { pageRoutes } from '@/src/utils/pageRouting';
+
 import { getCandidateDetails, getJobDetails } from './utils';
 
 const InterviewDetailsContext = createContext();
@@ -23,12 +25,19 @@ function InterviewDetailsContextProvider({ children }) {
   function fetchingDetails(application_id) {
     getCandidateDetails(application_id).then(async (candidate_details) => {
       const job_Details = await getJobDetails(candidate_details?.job_id);
-
       // console.log(candidate_details, job_Details);
       if (candidate_details?.length === 0 || job_Details?.length === 0) {
         router.push('/404');
         return null;
       }
+      if (
+        router.pathname.includes(pageRoutes.MOCKTEST) &&
+        candidate_details?.feedback !== null
+      ) {
+        router.push(`/thanks-page?id=${application_id}`);
+        return;
+      }
+
       setCandidateDetails(candidate_details || {});
       setJobDetails(job_Details || {});
       setInitialLoading(false);
