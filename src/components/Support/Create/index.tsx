@@ -106,7 +106,7 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     <InboxContactSupport
       slotCheckbox={
         <Checkbox
-          isChecked={details?.email_update}
+          isChecked={Boolean(details?.email_update)}
           onClickCheck={{
             onClick: () => {
               setDetails({ ...details, email_update: !details?.email_update });
