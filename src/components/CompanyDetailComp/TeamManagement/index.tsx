@@ -11,6 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { TeamAddRole } from '@/devlink/TeamAddRole';
@@ -31,6 +33,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
+dayjs.extend(relativeTime);
 
 export type UserRoleManagementType = {
   send_interview_link: boolean;
@@ -89,7 +92,7 @@ const TeamManagement = () => {
             {members?.map((member) => (
               <TeamListItem
                 key={1}
-                dateText={new Date(member.joined_at).toLocaleDateString()}
+                dateText={dayjs(member.joined_at).fromNow()}
                 slotProfileImage={
                   <Avatar
                     variant='circular'

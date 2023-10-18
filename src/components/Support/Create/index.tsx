@@ -44,6 +44,7 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     description: false,
     email: false,
   });
+  
 
   const checkValidations = () => {
     const temp = { ...detailsError };
