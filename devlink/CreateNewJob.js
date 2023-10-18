@@ -176,7 +176,7 @@ export function CreateNewJob({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "create-job-menu-wrap", "hide")}
+            className={_utils.cx(_styles, "create-job-menu-wrap")}
             tag="div"
             {...onClickScoreSetting}
           >
