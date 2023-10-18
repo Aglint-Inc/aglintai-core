@@ -12,6 +12,8 @@ export type ReInviteType = {
   id: string;
 };
 
+const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -29,7 +31,7 @@ export default async function handler(
         const { error: emailError } = await supabase.auth.resetPasswordForEmail(
           email,
           {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+            redirectTo,
           },
         );
         if (!emailError) {
@@ -37,7 +39,8 @@ export default async function handler(
         } else {
           return res.status(200).send({
             userDetails: null,
-            error: 'Error in resending the invite to user.',
+            error:
+              emailError.message || 'Error in resending the invite to user.',
           });
         }
         // } else if (error.message === 'User already registered') {
