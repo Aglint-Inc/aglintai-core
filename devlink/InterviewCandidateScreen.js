@@ -77,6 +77,7 @@ export function InterviewCandidateScreen({
               className={_utils.cx(_styles, "mic-wrapper")}
               data-w-id="f2d886eb-8c84-d536-a957-771e87df95bc"
               tag="div"
+              id="mic-trigger"
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "interview-mic-wrapper")}

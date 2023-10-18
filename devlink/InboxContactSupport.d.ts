@@ -10,4 +10,5 @@ declare function InboxContactSupport(props: {
   onClickReport?: Types.Devlink.RuntimeProps;
   isTicketSubmitSuccessfully?: Types.Visibility.VisibilityConditions;
   onClickCopyLinkToTicket?: Types.Devlink.RuntimeProps;
+  slotLogo?: Types.Devlink.Slot;
 }): React.JSX.Element;

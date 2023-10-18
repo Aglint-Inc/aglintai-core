@@ -10,4 +10,9 @@ declare function NewJobStep2(props: {
   isAddSkillVisible?: Types.Visibility.VisibilityConditions;
   slotRequiredSKill?: Types.Devlink.Slot;
   isJobHeaderVisible?: Types.Visibility.VisibilityConditions;
+  onClickGenerate?: Types.Devlink.RuntimeProps;
+  isGenerateVisible?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  isAddJob?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

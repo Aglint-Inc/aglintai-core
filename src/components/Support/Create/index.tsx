@@ -1,7 +1,8 @@
 import {
   Autocomplete,
   AutocompleteProps,
-  Checkbox,
+  Avatar,
+  // Checkbox,
   Chip,
   Stack,
   TextField,
@@ -11,6 +12,7 @@ import {
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { Checkbox } from '@/devlink';
 import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 import { palette } from '@/src/context/Theme/Theme';
 import {
@@ -19,7 +21,9 @@ import {
   PublicJobsType,
   SupportTicketType,
 } from '@/src/types/data.types';
+import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabaseClient';
+import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 function Support({ userDetails }: { userDetails: EmployeeType }) {
@@ -103,9 +107,11 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     <InboxContactSupport
       slotCheckbox={
         <Checkbox
-          checked={details?.email_update}
-          onChange={(e) => {
-            setDetails({ ...details, email_update: e.target.checked });
+          isChecked={details?.email_update}
+          onClickCheck={{
+            onClick: () => {
+              setDetails({ ...details, email_update: !details?.email_update });
+            },
           }}
         />
       }
@@ -163,6 +169,17 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
             });
         },
       }}
+      slotLogo={
+        <Avatar
+          variant='rounded'
+          src={getCompanyIcon(jobDetails?.company) || ''}
+          alt={capitalize(jobDetails?.company || '')}
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      }
     />
   );
 }
@@ -240,6 +257,7 @@ const AddSupportTicket = ({
         required
         value={details?.title}
         label='Title'
+        placeholder='Enter Your Issue Title'
         error={detailsError?.title}
         onFocus={() => {
           setDetailsError({ ...detailsError, title: false });
@@ -249,6 +267,7 @@ const AddSupportTicket = ({
       <CustomAutocomplete
         required
         label='Issue Type'
+        placeholder='Choose Issue Type'
         error={detailsError?.type}
         onFocus={() => {
           setDetailsError({ ...detailsError, type: false });
@@ -275,6 +294,7 @@ const AddSupportTicket = ({
         required
         multiline
         error={detailsError?.description}
+        placeholder='Describe Your Issue'
         onFocus={() => {
           setDetailsError({ ...detailsError, description: false });
         }}
@@ -305,8 +325,8 @@ const AddSupportTicket = ({
 const CustomTextField = (rest: TextFieldProps) => {
   const { label, required, sx, error, ...props } = rest;
   return (
-    <Stack gap={1}>
-      <Typography fontFamily={'inherit'}>
+    <Stack>
+      <Typography fontFamily={'inherit'} fontSize={'14px'}>
         {label}
         {required && '*'}
         {/* {rest?.label && ':'} */}
@@ -317,7 +337,7 @@ const CustomTextField = (rest: TextFieldProps) => {
         sx={{
           ...sx,
           padding: '0px',
-          '& .MuiInputBase-root': { padding: '8px' },
+          '& .MuiInputBase-root': { padding: '10px 12px' },
           '& input': { padding: '0px' },
           '& .MuiFilledInput-root': error
             ? {
@@ -332,10 +352,10 @@ const CustomTextField = (rest: TextFieldProps) => {
 };
 // @ts-ignore
 const CustomAutocomplete = (props: AutocompleteProps) => {
-  const { label, required, error, ...rest } = props;
+  const { label, required, error, placeholder, ...rest } = props;
   return (
-    <Stack gap={1}>
-      <Typography fontFamily={'inherit'}>
+    <Stack>
+      <Typography fontFamily={'inherit'} fontSize={'14px'}>
         {label}
         {required && '*'}
         {/* {rest?.label && ':'} */}
@@ -362,11 +382,12 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
               ...params.InputProps,
               disableUnderline: true,
             }}
+            placeholder={placeholder}
             variant='filled'
             sx={{
               '& input': { padding: '0px!important' },
               '& .MuiInputBase-root': {
-                padding: '8px 39px 8px 8px !important',
+                padding: '10px 39px 10px 12px !important',
               },
               '& .MuiFilledInput-root': error
                 ? {

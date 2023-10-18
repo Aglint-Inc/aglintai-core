@@ -2241,7 +2241,8 @@ textarea.w-select {
   --bgGrey100-ce47127d: hsla(180, 7.69%, 97.45%, 1.00);
   --skeletonGrey-4e9a134f: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
   --bgGrey200-4f66792c: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  --white: white;
+  --red-500: #d93f4c;
+  --red-700: #8c232c;
 }
 
 body {

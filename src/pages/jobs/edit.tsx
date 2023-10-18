@@ -39,7 +39,7 @@ function Edit() {
           job: jobApp,
           type: 'edit',
           recruiter,
-          slideNo: 1,
+          currSlide: 'details',
         });
         setIsFormInit(false);
       } catch (err) {

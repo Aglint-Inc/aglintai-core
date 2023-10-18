@@ -70,7 +70,7 @@
 
   border-radius: 100px;
 
-  background-color: var(--blue-500);
+  background-color: #337fbd;
 
   transition: all 250ms ease;
 
@@ -124,7 +124,7 @@
 
   border-radius: 100px;
 
-  background-color: var(--white);
+  background-color: white;
 
   transition: all 250ms ease;
 
@@ -145,7 +145,7 @@
 
   border-radius: 100px;
 
-  background-color: var(--yellow-500);
+  background-color: #f79a3e;
 
   transition: all 250ms ease;
 
@@ -166,7 +166,7 @@
 
   border-radius: 100px;
 
-  background-color: var(--yellow-500);
+  background-color: #f79a3e;
 
   transition: all 250ms ease;
 
@@ -182,7 +182,7 @@
 
   border-radius: 100px;
 
-  background-color: var(--green-500);
+  background-color: #228f67;
 
   transition: all 250ms ease;
 

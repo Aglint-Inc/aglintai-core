@@ -22,7 +22,6 @@ export type InterviewParam =
 export type InterviewConfigType = {
   id: string;
   copy: string;
-  value: boolean;
   questions: Question[];
 };
 
@@ -55,22 +54,10 @@ export type FormJobType = {
   skills: string[];
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: Record<InterviewParam, InterviewConfigType>;
-  screeningConfig: {
-    screening: {
-      isSendInterviewToAll: boolean;
-      minNoResumeScore: number;
-    };
-    useAglintMatchingAlgo: boolean;
-    shortlist: {
-      interviewScore: boolean;
-      minInterviewScore: number;
-    };
-    feedbackVisible: boolean;
-    screeningEmail: {
-      isImmediate: boolean;
-      date: null | string;
-      emailTemplates: EmailTemplate;
-    };
+  screeningEmail: {
+    isImmediate: boolean;
+    date: null | string;
+    emailTemplates: EmailTemplate;
   };
   newScreeningConfig: {
     screening: {
@@ -91,6 +78,13 @@ export type FormJobType = {
     };
     feedbackVisible: boolean;
   };
+  resumeScoreSettings: {
+    skills: number;
+    projects: number;
+    education: number;
+    experience: number;
+    certifications: number;
+  };
   defaultWorkPlaceTypes: dropDownOption[];
   defaultDepartments: AutoCompleteType[];
   defaultJobType: dropDownOption[];
@@ -105,7 +99,13 @@ export type JobFormState = {
   createdAt: string | null;
   formType: 'edit' | 'new';
   formFields: FormJobType | null;
-  slideNo: number;
+  currSlide:
+    | 'details'
+    | 'templates'
+    | 'screening'
+    | 'workflow'
+    | 'resumeScore'
+    | 'applyForm';
   syncStatus: 'saving' | 'saved' | '';
 };
 
@@ -115,9 +115,9 @@ const initialState: JobFormState = {
   jobPostId: null,
   updatedAt: null,
   createdAt: null,
-  slideNo: 0,
   isFormOpen: false,
   syncStatus: '',
+  currSlide: 'details',
 };
 
 // Define action types
@@ -126,7 +126,7 @@ type JobsAction =
       type: 'initForm';
       payload: {
         seedData: JobFormState;
-        slideNo: number;
+        currSlide: JobFormState['currSlide'];
       };
     }
   | {
@@ -142,7 +142,7 @@ type JobsAction =
   | {
       type: 'moveToSlide';
       payload: {
-        slideNo: number;
+        nextSlide: JobFormState['currSlide'];
       };
     }
   | {
@@ -170,8 +170,8 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'initForm': {
-      const { seedData, slideNo } = action.payload;
-      seedData.slideNo = slideNo ?? 0;
+      const { seedData, currSlide } = action.payload;
+      seedData.currSlide = currSlide ?? 'details';
       seedData.isFormOpen = true;
       return cloneDeep(seedData);
     }
@@ -189,9 +189,9 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       return newState;
     }
     case 'moveToSlide': {
-      const { slideNo } = action.payload;
+      const { nextSlide } = action.payload;
       const newState = cloneDeep(state);
-      set(newState, 'slideNo', slideNo);
+      set(newState, 'currSlide', nextSlide);
       return newState;
     }
     case 'setDbSyncStatus': {
@@ -224,7 +224,7 @@ export type JobsContextType = {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
     job?: JobTypeDB;
-    slideNo?: number;
+    currSlide?: JobFormState['currSlide'];
   }) => void;
   handleFormClose?: () => Promise<void>;
 };
@@ -280,7 +280,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           status: 'saved',
         },
       });
-    } catch {
+    } catch (err) {
       toast.error('Something went Wrong. Please Check Your Network');
     }
   };
@@ -317,7 +317,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     type = 'new',
     recruiter,
     job,
-    slideNo,
+    currSlide,
   }) => {
     try {
       const seedFormData = getSeedJobFormData(recruiter);
@@ -325,12 +325,15 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       if (type === 'new') {
         dispatch({
           type: 'initForm',
-          payload: { seedData: seedFormData, slideNo },
+          payload: { seedData: seedFormData, currSlide },
         });
       } else {
         dispatch({
           type: 'initForm',
-          payload: { seedData: dbToClientjobPostForm(job, recruiter), slideNo },
+          payload: {
+            seedData: dbToClientjobPostForm(job, recruiter),
+            currSlide,
+          },
         });
       }
     } catch (err) {
@@ -384,12 +387,7 @@ async function saveJobPostToDb(jobForm: JobFormState) {
           ),
       recruiter_id: jobForm.formFields.recruiterId,
       location: jobForm.formFields.jobLocation,
-      email_template:
-        jobForm.formFields.screeningConfig.screeningEmail.emailTemplates,
-      screening_setting: {
-        interviewType: jobForm.formFields.interviewType,
-        ...jobForm.formFields.screeningConfig,
-      },
+      email_template: jobForm.formFields.screeningEmail.emailTemplates,
       screening_questions: [jobForm.formFields.interviewConfig],
       new_screening_setting: {
         ...jobForm.formFields.newScreeningConfig,
