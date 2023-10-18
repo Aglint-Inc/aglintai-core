@@ -23,7 +23,7 @@ function New() {
     handleInitializeForm({
       type: 'new',
       recruiter,
-      slideNo: 1,
+      currSlide: 'details',
     });
     setIsFormInit(false);
   }, []);

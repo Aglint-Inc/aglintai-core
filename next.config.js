@@ -22,9 +22,7 @@ const nextConfig = {
     ];
   },
   images: {
-    images: {
-      domains: ['uploads-ssl.webflow.com'],
-    },
+    domains: ['uploads-ssl.webflow.com'],
     dangerouslyAllowSVG: true,
     remotePatterns: [
       {

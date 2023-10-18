@@ -1,4 +1,5 @@
-import { Stack } from '@mui/material';
+import { Popper, Stack } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
@@ -6,13 +7,14 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { CreateNewJob } from '@/devlink';
-import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
-import { ScoreWheelParams } from '../Common/ScoreWheel';
 import UITypography from '../Common/UITypography';
+import { templateObj } from '../CompanyDetailComp/EmailTemplate';
 import {
   FormJobType,
+  InterviewParam,
+  JobFormState,
   useJobForm,
 } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import ApplyForm from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ApplyForm';
@@ -32,7 +34,13 @@ export type JobFormErrorParams = {
   aiQnGen: number;
 };
 
-type slideName = 'details' | 'templates' | 'qns' | 'workflow';
+type slideName =
+  | 'details'
+  | 'templates'
+  | 'screening'
+  | 'workflow'
+  | 'resumeScore';
+
 type FormErrorParams = Record<
   slideName,
   {
@@ -43,10 +51,7 @@ type FormErrorParams = Record<
 
 function JobForm() {
   const { jobForm, dispatch } = useJobForm();
-  const { handleGetJob } = useJobs();
   const router = useRouter();
-  const jobId = router.query.job_id as string;
-  const currentJob = handleGetJob(jobId);
 
   const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
@@ -55,11 +60,11 @@ function JobForm() {
     department: '',
     aiQnGen: 0,
   });
-  // const [showWarn, setShowWarn] = useState(true);
+
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
   let formSlide = <></>;
-  const { slideNo } = jobForm;
-  if (slideNo === 1) {
+  const { currSlide } = jobForm;
+  if (currSlide === 'details') {
     formSlide = (
       <>
         <BasicStepOne formError={formError} setFormError={setFormError} />
@@ -70,27 +75,22 @@ function JobForm() {
         />
       </>
     );
-  } else if (slideNo === 2) {
+  } else if (currSlide === 'applyForm') {
     formSlide = <ApplyForm />;
-  } else if (slideNo === 3) {
-    formSlide = (
-      <ScoreSettings
-        defaultWeights={currentJob.parameter_weights as ScoreWheelParams}
-        jobId={currentJob.id}
-      />
-    );
-  } else if (slideNo === 4) {
+  } else if (currSlide === 'resumeScore') {
+    formSlide = <ScoreSettings />;
+  } else if (currSlide === 'templates') {
     formSlide = <Emails />;
-  } else if (slideNo == 5) {
+  } else if (currSlide == 'screening') {
     formSlide = <ScreeningQns setFormError={setFormError} />;
-  } else if (slideNo == 6) {
+  } else if (currSlide == 'workflow') {
     formSlide = <ScreeningSettings />;
   }
 
   const formValidation = () => {
     let flag = true;
     const { company, jobTitle, jobLocation, department } = jobForm.formFields;
-    if (slideNo === 1) {
+    if (currSlide === 'details') {
       if (isEmpty(jobTitle.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
@@ -119,7 +119,7 @@ function JobForm() {
       }
     }
 
-    if (slideNo === 5) {
+    if (currSlide === 'screening') {
       const interviewConfig = get(
         jobForm,
         'formFields.interviewConfig',
@@ -182,89 +182,61 @@ function JobForm() {
     return flag;
   };
 
-  const changeSlide = (
-    slide:
-      | 'basic'
-      | 'applyfrom'
-      | 'email'
-      | 'screening'
-      | 'workFlow'
-      | 'scoreSettings',
-  ) => {
+  const changeSlide = (nextSlide: JobFormState['currSlide']) => {
     formValidation();
-    if (slide === 'basic') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 1,
-        },
-      });
-    } else if (slide === 'screening') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 5,
-        },
-      });
-    } else if (slide === 'workFlow') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 6,
-        },
-      });
-    } else if (slide === 'email') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 4,
-        },
-      });
-    } else if (slide === 'applyfrom') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 2,
-        },
-      });
-    } else if (slide === 'scoreSettings') {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          slideNo: 3,
-        },
-      });
-    }
+    dispatch({
+      type: 'moveToSlide',
+      payload: {
+        nextSlide: nextSlide,
+      },
+    });
+    handleUpdateMaxVisitedSlideNo(slidePathToNum[String(nextSlide)]);
   };
 
-  let formTitle = `Create Job - ${jobForm.formFields.jobTitle}`;
+  let formTitle = `Create Job - ${
+    jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
+  }`;
   if (jobForm.formType === 'edit') {
-    formTitle = `Edit Job - ${jobForm.formFields.jobTitle}`;
+    formTitle = `Edit Job - ${
+      jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
+    }`;
   }
-
   const warning = findDisclaimers(jobForm.formFields);
+
+  const handleUpdateMaxVisitedSlideNo = (slideNo: number) => {
+    if (jobForm.formType === 'edit') return;
+    const currMax = Number(
+      localStorage.getItem(`MaxVisitedSlideNo-${jobForm.jobPostId}`) || -1,
+    );
+    if (slideNo > currMax) {
+      localStorage.setItem(
+        `MaxVisitedSlideNo-${jobForm.jobPostId}`,
+        String(slideNo),
+      );
+    }
+  };
   return (
     <>
       <CreateNewJob
         slotCreateJob={<Stack alignItems={'center'}>{formSlide}</Stack>}
         onClickApplyForm={{
           onClick: () => {
-            changeSlide('applyfrom');
+            changeSlide('applyForm');
           },
         }}
         onClickEmailTemplates={{
           onClick: () => {
-            changeSlide('email');
+            changeSlide('templates');
           },
         }}
         onClickDetails={{
           onClick: () => {
-            changeSlide('basic');
+            changeSlide('details');
           },
         }}
         onClickScoreSetting={{
           onClick: () => {
-            changeSlide('scoreSettings');
+            changeSlide('resumeScore');
           },
         }}
         onClickScreeningQuestions={{
@@ -274,7 +246,7 @@ function JobForm() {
         }}
         onClickWorkflows={{
           onClick: () => {
-            changeSlide('workFlow');
+            changeSlide('workflow');
           },
         }}
         onClickBack={{
@@ -282,12 +254,12 @@ function JobForm() {
             router.back();
           },
         }}
-        isApplyFormActive={slideNo === 2}
-        isDetailsActive={slideNo === 1}
-        isEmailTemplateActive={slideNo === 4}
-        isScreeningQuestionsActive={slideNo === 5}
-        isScoreSettingActive={slideNo === 3}
-        isWorkflowsActive={slideNo === 6}
+        isApplyFormActive={currSlide === 'applyForm'}
+        isDetailsActive={currSlide === 'details'}
+        isEmailTemplateActive={currSlide === 'templates'}
+        isScreeningQuestionsActive={currSlide === 'screening'}
+        isScoreSettingActive={currSlide === 'resumeScore'}
+        isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
         slotPublishButton={<></>}
         slotSavedChanges={
@@ -305,17 +277,54 @@ function JobForm() {
         }}
         slotDisclaimerDetails={
           <>
-            <SectionWarning warnings={warning} slidePath={'details'} />
+            <SectionWarning
+              warnings={warning}
+              slidePath={'details'}
+              currSlideNo={1}
+            />
           </>
         }
-        isDisclaimerDetailsVisible={false}
-        isDisclaimerApplyFormVisible={false}
-        isDisclaimerScreeningVisible={false}
-        isDisclaimerEmailVisible={false}
-        isDisclaimerScoreVisible={false}
-        isDisclaimerWorkflowVisible={false}
-        isSavedChangesVisible={false}
-        // textJobEdit={jobForm.formType === 'edit' ? 'Edit' : 'Create Job'}
+        slotDisclaimerApplyForm={
+          <>
+            {/* <SectionWarning warnings={warning} slidePath={'details'} /> */}
+          </>
+        }
+        slotDisclaimerScoreSetting={
+          <>
+            <SectionWarning
+              warnings={warning}
+              slidePath={'resumeScore'}
+              currSlideNo={3}
+            />
+          </>
+        }
+        slotDisclaimerScreening={
+          <>
+            <SectionWarning
+              warnings={warning}
+              slidePath={'screening'}
+              currSlideNo={4}
+            />
+          </>
+        }
+        slotDisclaimerWorkflow={
+          <>
+            <SectionWarning
+              warnings={warning}
+              slidePath={'workflow'}
+              currSlideNo={5}
+            />
+          </>
+        }
+        slotEmailDisclaimer={
+          <>
+            <SectionWarning
+              warnings={warning}
+              slidePath={'templates'}
+              currSlideNo={6}
+            />
+          </>
+        }
       />
     </>
   );
@@ -326,26 +335,77 @@ export default JobForm;
 const SectionWarning = ({
   warnings,
   slidePath,
+  currSlideNo,
 }: {
   warnings: FormErrorParams;
   slidePath: slideName;
+  currSlideNo: number;
 }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const {
+    jobForm: { formType, jobPostId },
+  } = useJobForm();
+  const handleMouseEnter = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMouseLeave = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  const isShowWarn =
+    (formType === 'edit' && warnings[String(slidePath)].err.length > 0) ||
+    (formType === 'new' &&
+      currSlideNo <=
+        Number(localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1) &&
+      warnings[String(slidePath)].err.length > 0);
+
   return (
-    <Stack gap={2}>
-      <Stack direction={'row'} gap={0.5} alignItems={'center'}>
-        <Image alt='info' height={14} width={14} src={'/images/svg/info.svg'} />
-        <UITypography fontBold='normal' type='small'>
-          Details
-        </UITypography>
-      </Stack>
-      <Stack>
-        <ul>
-          {warnings[String(slidePath)].err.map((msg, idx) => (
-            <li key={idx}>{msg}</li>
-          ))}
-        </ul>
-      </Stack>
-    </Stack>
+    <>
+      {isShowWarn && (
+        <Stack onMouseOver={handleMouseEnter} onMouseOut={handleMouseLeave}>
+          <Image
+            alt='info'
+            height={16}
+            width={16}
+            src={'/images/svg/info.svg'}
+          />
+        </Stack>
+      )}
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        sx={{
+          zIndex: 1,
+          borderRadius: 2,
+        }}
+      >
+        <Paper sx={{ p: 1, mt: 4.5, width: '320px', borderRadius: '10px' }}>
+          <Stack gap={2} borderRadius={4}>
+            <Stack direction={'row'} gap={0.5} alignItems={'center'}>
+              <Image
+                alt='info'
+                height={14}
+                width={14}
+                src={'/images/svg/info.svg'}
+              />
+              <UITypography fontBold='normal' type='small'>
+                Warnings
+              </UITypography>
+            </Stack>
+            <Stack>
+              <ul>
+                {warnings[String(slidePath)].err.map((msg, idx) => (
+                  <li key={idx}>{msg}</li>
+                ))}
+              </ul>
+            </Stack>
+          </Stack>
+        </Paper>
+      </Popper>
+    </>
   );
 };
 
@@ -355,7 +415,7 @@ const findDisclaimers = (jobForm: FormJobType) => {
       err: [],
       title: '',
     },
-    qns: {
+    screening: {
       err: [],
       title: '',
     },
@@ -364,6 +424,10 @@ const findDisclaimers = (jobForm: FormJobType) => {
       title: '',
     },
     workflow: {
+      err: [],
+      title: '',
+    },
+    resumeScore: {
       err: [],
       title: '',
     },
@@ -391,5 +455,70 @@ const findDisclaimers = (jobForm: FormJobType) => {
   if (isEmpty(jobForm.department.trim())) {
     warnings.details.err.push('Missing department');
   }
+
+  // screening qns
+  const totalQns = Object.keys(jobForm.interviewConfig)
+    .map((key: InterviewParam) => {
+      return jobForm.interviewConfig[String(key)].questions;
+    })
+    .reduce((prev, curr) => {
+      return prev + curr.length;
+    }, 0);
+
+  if (totalQns < 5) {
+    warnings.screening.err.push('Please provide minimum 5 screening questions');
+  }
+  if (totalQns > 20) {
+    warnings.screening.err.push(
+      'Please provide maximum 20 screening questions',
+    );
+  }
+
+  Object.keys(get(jobForm, 'screeningEmail.emailTemplates', {})).map(
+    (emailPath) => {
+      const template = jobForm.screeningEmail.emailTemplates[String(emailPath)];
+
+      if (isEmpty(template.fromName.trim())) {
+        warnings.templates.err.push(
+          `Please provide From name template ${
+            templateObj[String(emailPath)].listing
+          }`,
+        );
+      }
+
+      if (isEmpty(template.subject.trim())) {
+        warnings.templates.err.push(
+          `Please provide Subject template ${
+            templateObj[String(emailPath)].listing
+          }`,
+        );
+      }
+
+      if (isEmpty(template.body.trim())) {
+        warnings.templates.err.push(
+          `Please provide email body for template ${
+            templateObj[String(emailPath)].listing
+          }`,
+        );
+      }
+    },
+  );
+
+  const totalResScore = Object.values(jobForm.resumeScoreSettings).reduce(
+    (acc, curr) => acc + curr,
+    0,
+  );
+  if (totalResScore !== 100) {
+    warnings.resumeScore.err.push('Total sections score should be 100');
+  }
   return warnings;
+};
+
+const slidePathToNum: Record<JobFormState['currSlide'], number> = {
+  details: 1,
+  applyForm: 2,
+  resumeScore: 3,
+  screening: 4,
+  workflow: 5,
+  templates: 6,
 };

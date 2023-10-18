@@ -25,7 +25,7 @@ const Emails = () => {
   const { jobForm } = useJobForm();
   const [editTemplate, setEditTemplate] = useState('');
   const emails: EmailTemplateParams[] = Object.keys(
-    jobForm.formFields.screeningConfig.screeningEmail.emailTemplates,
+    jobForm.formFields.screeningEmail.emailTemplates,
   ).map((email) => ({
     title: templateObj[`${email}`],
     excerpt: '',
@@ -58,30 +58,14 @@ const Emails = () => {
             })}
           </>
         }
+        isAddJob={jobForm.formType == 'new'}
+        isProceedDisable={false}
       />
 
       <EditEmailDrawer
         templatePath={editTemplate}
         setTemplatePath={setEditTemplate}
       />
-      {/* <EmailTemplates
-        slotEmailTemplates={
-          <>
-            <Stack gap={3}>
-              {emails.map((email) => {
-                return (
-                  <EmailTemplate
-                    key={email.path}
-                    path={email.path}
-                    title={email.title}
-                    excerpt=''
-                  />
-                );
-              })}
-            </Stack>
-          </>
-        }
-      /> */}
     </>
   );
 };
@@ -111,7 +95,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
 
   const template = get(
     jobForm.formFields,
-    `screeningConfig.screeningEmail.emailTemplates.${templatePath}`,
+    `screeningEmail.emailTemplates.${templatePath}`,
     {
       fromName: '',
       body: '',
@@ -202,7 +186,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                     value={template.fromName}
                     onChange={(e) => {
                       handleUpdateFormFields({
-                        path: `screeningConfig.screeningEmail.emailTemplates.${templatePath}.fromName`,
+                        path: `screeningEmail.emailTemplates.${templatePath}.fromName`,
                         value: e.target.value,
                       });
 
@@ -222,7 +206,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                     value={template.subject}
                     onChange={(e) => {
                       handleUpdateFormFields({
-                        path: `screeningConfig.screeningEmail.emailTemplates.${templatePath}.subject`,
+                        path: `screeningEmail.emailTemplates.${templatePath}.subject`,
                         value: e.target.value,
                       });
                     }}
@@ -248,7 +232,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                         }
                         handleChange={(html) => {
                           handleUpdateFormFields({
-                            path: `screeningConfig.screeningEmail.emailTemplates.${templatePath}.body`,
+                            path: `screeningEmail.emailTemplates.${templatePath}.body`,
                             value: html,
                           });
                         }}

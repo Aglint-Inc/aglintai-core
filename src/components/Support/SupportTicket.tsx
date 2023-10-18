@@ -486,8 +486,9 @@ const AddNewMessage = ({ sendMessage }) => {
                 sendMessage(message)?.then(() => setMessage(''));
               }}
             >
-              {message?.replaceAll('<p>', '').replaceAll('</p>', '').trim() ===
-              '' ? (
+              {message &&
+              message?.replaceAll('<p>', '').replaceAll('</p>', '').trim() !==
+                '' ? (
                 <svg
                   width='24'
                   height='24'
@@ -495,15 +496,15 @@ const AddNewMessage = ({ sendMessage }) => {
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
                 >
-                  <rect width='24' height='24' rx='3.42857' fill='#F8F9F9' />
-                  <g clip-path='url(#clip0_3401_41253)'>
+                  <rect width='24' height='24' rx='3.42857' fill='#2F3941' />
+                  <g clip-path='url(#clip0_3401_41257)'>
                     <path
                       d='M6.85693 12.5708H10.2855V11.4279H6.85693V6.19685C6.85693 6.03905 6.98485 5.91113 7.14265 5.91113C7.19079 5.91113 7.23816 5.9233 7.28034 5.9465L17.8303 11.749C17.9686 11.825 18.019 11.9988 17.943 12.137C17.9169 12.1845 17.8778 12.2236 17.8303 12.2497L7.28034 18.0522C7.14208 18.1282 6.96834 18.0778 6.8923 17.9395C6.8691 17.8974 6.85693 17.85 6.85693 17.8018V12.5708Z'
-                      fill='#87929D'
+                      fill='white'
                     />
                   </g>
                   <defs>
-                    <clipPath id='clip0_3401_41253'>
+                    <clipPath id='clip0_3401_41257'>
                       <rect
                         width='13.7143'
                         height='13.7143'
@@ -521,15 +522,15 @@ const AddNewMessage = ({ sendMessage }) => {
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
                 >
-                  <rect width='24' height='24' rx='3.42857' fill='#2F3941' />
-                  <g clip-path='url(#clip0_3401_41257)'>
+                  <rect width='24' height='24' rx='3.42857' fill='#F8F9F9' />
+                  <g clip-path='url(#clip0_3401_41253)'>
                     <path
                       d='M6.85693 12.5708H10.2855V11.4279H6.85693V6.19685C6.85693 6.03905 6.98485 5.91113 7.14265 5.91113C7.19079 5.91113 7.23816 5.9233 7.28034 5.9465L17.8303 11.749C17.9686 11.825 18.019 11.9988 17.943 12.137C17.9169 12.1845 17.8778 12.2236 17.8303 12.2497L7.28034 18.0522C7.14208 18.1282 6.96834 18.0778 6.8923 17.9395C6.8691 17.8974 6.85693 17.85 6.85693 17.8018V12.5708Z'
-                      fill='white'
+                      fill='#87929D'
                     />
                   </g>
                   <defs>
-                    <clipPath id='clip0_3401_41257'>
+                    <clipPath id='clip0_3401_41253'>
                       <rect
                         width='13.7143'
                         height='13.7143'

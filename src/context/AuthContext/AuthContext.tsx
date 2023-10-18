@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
-import Cookie from 'js-cookie';
+
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -66,15 +66,19 @@ const defaultProvider = {
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    try {
-      Cookie.remove('access_token');
-      Cookie.set('access_token', session.access_token);
-    } catch (error) {
-      //
-    }
-  } else {
-    Cookie.remove('access_token');
+  // console.log('session event: ', {
+  //   event,
+  //   time: new Date().toLocaleString(),
+  //   session: session.access_token,
+  //   cookie: Cookie.get('access_token'),
+  // });
+  if (event === 'SIGNED_OUT') {
+    // delete cookies on sign out
+    const expires = new Date(0).toUTCString();
+    document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
+  } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+    const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
+    document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
   }
 });
 
@@ -105,8 +109,6 @@ const AuthProvider = ({ children }) => {
       }
 
       if (!error) {
-        Cookie.remove('access_token');
-        Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
         const { data: recruiterUser, error: errorUser } = await supabase
           .from('recruiter_user')
@@ -143,7 +145,6 @@ const AuthProvider = ({ children }) => {
     event.preventDefault();
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      Cookie.remove('access_token');
       router.push('/signup');
     }
   };

@@ -12,7 +12,11 @@ const FormOne = () => {
       <NewJobSelect
         onClickCreateJobAglint={{
           onClick: () => {
-            handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
+            handleInitializeForm({
+              type: 'new',
+              recruiter,
+              currSlide: 'details',
+            });
           },
         }}
       />
