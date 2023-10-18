@@ -21,7 +21,7 @@ function ImageUpload({
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
   size: number;
-  table: 'company-logo' | 'recruiter-profile';
+  table: 'company-logo' | 'recruiter-user';
   handleUpdateProfile?: any;
 }) {
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
@@ -55,7 +55,7 @@ function ImageUpload({
         );
       if (handleUpdateProfile) {
         await handleUpdateProfile({
-          image_url: `${
+          profile_image: `${
             process.env.NEXT_PUBLIC_SUPABASE_URL
           }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
         });

@@ -367,6 +367,10 @@
   display: flex;
 }
 
+.div-block-426.hide {
+  display: none;
+}
+
 .header-menu-wrappers {
   display: flex;
   padding: 10px 20px;

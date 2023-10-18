@@ -7,6 +7,7 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import CompanyInfoComp from './CompanyInfoComp';
 import CompanyJdComp from './CompanyJdComp';
 import EmailTemplate from './EmailTemplate';
+import TeamManagement from './TeamManagement';
 import {
   generateDepartments,
   generateRoles,
@@ -42,6 +43,7 @@ const CompanyDetailComp = () => {
           slotCompanyInfo={<CompanyInfoComp setIsSaving={setIsSaving} />}
           slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
           slotEmailTemplate={<EmailTemplate />}
+          slotTeam={<TeamManagement />}
         />
       </YTransform>
     </>

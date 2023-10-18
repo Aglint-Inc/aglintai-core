@@ -9,4 +9,5 @@ declare function InterviewWelcome(props: {
   onClickStart?: Types.Devlink.RuntimeProps;
   onClickAboutCompany?: Types.Devlink.RuntimeProps;
   onClickSupport?: Types.Devlink.RuntimeProps;
+  textCompanyDescription?: React.ReactNode;
 }): React.JSX.Element;

@@ -10,13 +10,6 @@
   background-color: #f8f9f9;
 }
 
-.cvs-school-logo {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
-}
-
 .cvs-school-info-block {
   display: flex;
   flex-direction: column;

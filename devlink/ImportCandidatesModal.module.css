@@ -4,7 +4,7 @@
   display: flex;
   width: 100%;
   max-width: 750px;
-  padding: 24px 24px 70px;
+  padding: 24px 24px 40px;
   flex-direction: column;
   align-items: center;
   grid-column-gap: 18px;
@@ -21,6 +21,10 @@
   top: 32px;
   right: 24px;
   bottom: auto;
+}
+
+.ic-popup-close-btn.clickable {
+  z-index: 2;
 }
 
 .clickable {
@@ -42,6 +46,12 @@
   object-fit: contain;
 }
 
+.tabs-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .ic-tabs-links-wrapper {
   display: flex;
   padding: 6px;
@@ -58,6 +68,14 @@
 .ic-tab-link-block {
   position: relative;
   padding: 6px 16px;
+  border-radius: 10px;
+  background-color: hsla(0, 0.00%, 100.00%, 0.00);
+}
+
+.ic-tab-link-block:global(.w--current) {
+  border-radius: 10px;
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .fw-semibold {
@@ -226,20 +244,12 @@
   z-index: 5;
 }
 
-.ic-tab-link-highlight {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  border-radius: 10px;
-
-  background-color: white;
-
-  box-shadow: 0 4px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
+.tabs-content-4 {
+  overflow: visible;
+  width: 700px;
+  margin-top: 18px;
 }
 
-.ic-import-main {
-  width: 100%;
+.slot-import {
+  height: 400px;
 }

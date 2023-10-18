@@ -45,7 +45,6 @@
 .cvs-info-content-main {
   display: flex;
   overflow: auto;
-  height: 356px;
   padding-bottom: 40px;
   flex-direction: column;
   grid-column-gap: 32px;

@@ -6,4 +6,6 @@ declare function InterviewCompleted(props: {
   slotLottie?: Types.Devlink.Slot;
   slotCompanyLogo?: Types.Devlink.Slot;
   onClickSupport?: Types.Devlink.RuntimeProps;
+  textTitle?: React.ReactNode;
+  textDescription?: React.ReactNode;
 }): React.JSX.Element;

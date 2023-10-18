@@ -158,8 +158,8 @@ export function EmailTemplate({
                                 _styles,
                                 "vectors-wrapper-31"
                               )}
-                              width={11.00003719329834}
-                              height={5.00001859664917}
+                              width="11.00003719329834"
+                              height="5.00001859664917"
                               loading="lazy"
                               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504043394863d835c0a86cc_Vectors-Wrapper.svg"
                             />
@@ -219,8 +219,8 @@ export function EmailTemplate({
                                 _styles,
                                 "vectors-wrapper-33"
                               )}
-                              width={14}
-                              height={13}
+                              width="14"
+                              height="13"
                               loading="lazy"
                               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/650406032fb689392940aa9d_Vectors-Wrapper.svg"
                             />
@@ -238,8 +238,8 @@ export function EmailTemplate({
                                 _styles,
                                 "vectors-wrapper-34"
                               )}
-                              width={13.769068717956543}
-                              height={13.850000381469727}
+                              width="13.769068717956543"
+                              height="13.850000381469727"
                               loading="lazy"
                               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65040604bc4e5ef14157a09d_Vectors-Wrapper.svg"
                             />
@@ -258,8 +258,8 @@ export function EmailTemplate({
                                 "",
                                 "vectors-wrapper-33"
                               )}
-                              width={14}
-                              height={13}
+                              width="14"
+                              height="13"
                               loading="lazy"
                               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/65040605c8b96fcc667a74b1_Vectors-Wrapper.svg"
                             />
@@ -277,8 +277,8 @@ export function EmailTemplate({
                                 _styles,
                                 "vectors-wrapper-32"
                               )}
-                              width={14.25}
-                              height={13}
+                              width="14.25"
+                              height="13"
                               loading="lazy"
                               src="https://uploads-ssl.webflow.com/64688200899246757fda7a37/6504060655c5313f7f217aa2_Vectors-Wrapper.svg"
                             />
@@ -492,8 +492,8 @@ export function EmailTemplate({
                     <_Builtin.Image
                       width="auto"
                       height="auto"
-                      alt="__wf_reserved_inherit"
                       loading="lazy"
+                      alt=""
                       src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890212_36413fdbae77050b8f006cb7b0099e1c.png"
                     />
                   </_Builtin.Block>
@@ -519,22 +519,22 @@ export function EmailTemplate({
                       <_Builtin.Image
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
                         loading="lazy"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890212_36413fdbae77050b8f006cb7b0099e1c.png"
                       />
                       <_Builtin.Image
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
                         loading="lazy"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089021a_8d2be2254997c1696ce7b0e9f2ccdbbd.png"
                       />
                       <_Builtin.Image
                         width="auto"
                         height="auto"
-                        alt="__wf_reserved_inherit"
                         loading="lazy"
+                        alt=""
                         src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890213_abc7bfd9cfc0e34b54dcccc1b45fada9.png"
                       />
                     </_Builtin.Block>

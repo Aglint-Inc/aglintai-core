@@ -12,12 +12,6 @@ export function CandidateEducationCard({
   return (
     <_Component className={_utils.cx(_styles, "cvs-education-block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "cvs-school-logo")}
-        tag="div"
-      >
-        {slotEducationLogo}
-      </_Builtin.Block>
-      <_Builtin.Block
         className={_utils.cx(_styles, "cvs-school-info-block")}
         tag="div"
       >

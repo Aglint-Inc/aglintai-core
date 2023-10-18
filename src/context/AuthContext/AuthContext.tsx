@@ -1,8 +1,7 @@
 import { Stack } from '@mui/material';
-import mixpanel from '@utils/mixpanelInstance';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
-import Cookie from 'js-cookie';
+
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -16,22 +15,15 @@ import {
 import { LoaderSvg } from '@/devlink';
 import {
   AddressType,
+  RecruiterDB,
   RecruiterType,
+  RecruiterUserType,
+  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-
-type UserMeta = {
-  first_name: string;
-  image_url: string;
-  language: string;
-  last_name: string;
-  phone: string;
-  role: string;
-  timezone: string;
-};
 
 interface ContextValue {
   userDetails: Session | null;
@@ -42,13 +34,17 @@ interface ContextValue {
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   loading: boolean;
   // eslint-disable-next-line no-unused-vars
-  handleUpdateProfile: (userMeta: UserMeta) => Promise<boolean>;
+  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   handleLogout: (event: any) => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
+  recruiterUser: RecruiterUserType | null;
+  role: RoleType;
 }
 
 const defaultProvider = {
@@ -61,25 +57,28 @@ const defaultProvider = {
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
+  updateRecruiter: async (updateData: Partial<RecruiterDB>) => {
+    updateData;
+    return true;
+  },
+  recruiterUser: null,
+  role: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    try {
-      Cookie.remove('access_token');
-      Cookie.set('access_token', session.access_token);
-      mixpanel.identify(session.user.id);
-      if (session?.user?.user_metadata?.role)
-        mixpanel.people.set({
-          $email: session.user.email,
-          Role: 'Recruiter',
-          'User ID': session?.user?.id,
-        });
-    } catch (error) {
-      //
-    }
-  } else {
-    Cookie.remove('access_token');
+  // console.log('session event: ', {
+  //   event,
+  //   time: new Date().toLocaleString(),
+  //   session: session.access_token,
+  //   cookie: Cookie.get('access_token'),
+  // });
+  if (event === 'SIGNED_OUT') {
+    // delete cookies on sign out
+    const expires = new Date(0).toUTCString();
+    document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
+  } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+    const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
+    document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
   }
 });
 
@@ -89,15 +88,19 @@ const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
+    null,
+  );
   const [loading, setLoading] = useState<boolean>(true);
+  const [role, setRole] = useState<RoleType>(null);
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
+        router.push(pageRoutes.LOGIN);
         loading && setLoading(false);
         return;
       }
-
       if (data.session.user.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
@@ -106,14 +109,13 @@ const AuthProvider = ({ children }) => {
       }
 
       if (!error) {
-        Cookie.remove('access_token');
-        Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
         const { data: recruiterUser, error: errorUser } = await supabase
           .from('recruiter_user')
           .select('*')
           .eq('user_id', data.session.user.id);
         if (!errorUser && recruiterUser.length > 0) {
+          setRecruiterUser(recruiterUser[0]);
           const { data: recruiter, error } = await supabase
             .from('recruiter')
             .select('*')
@@ -124,12 +126,15 @@ const AuthProvider = ({ children }) => {
               address: recruiter[0]?.address as unknown as AddressType,
               socials: recruiter[0]?.socials as unknown as SocialsType,
             });
+            const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
+            temp && setRole(temp as RoleType);
           }
         } else {
           router.push(pageRoutes.SIGNUP);
         }
       }
     } catch (err) {
+      router.push(pageRoutes.LOGIN);
       //
     } finally {
       setLoading(false);
@@ -140,25 +145,20 @@ const AuthProvider = ({ children }) => {
     event.preventDefault();
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      Cookie.remove('access_token');
       router.push('/signup');
     }
   };
 
-  const handleUpdateProfile = async (userMeta: UserMeta): Promise<boolean> => {
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        ...userDetails.user.user_metadata,
-        ...userMeta,
-      },
-    });
-    if (data) {
-      setUserDetails((prev) => {
-        return {
-          ...prev,
-          user: data.user,
-        };
-      });
+  const handleUpdateProfile = async (
+    details: RecruiterUserType,
+  ): Promise<boolean> => {
+    const { data, error } = await supabase
+      .from('recruiter_user')
+      .update(details)
+      .eq('user_id', userDetails.user.id)
+      .select();
+    if (!error) {
+      setRecruiterUser(data[0]);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -181,6 +181,17 @@ const AuthProvider = ({ children }) => {
       return true;
     }
   };
+
+  const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
+    return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
+      if (data) {
+        setRecruiter({ ...recruiter, ...data });
+        return true;
+      }
+      return false;
+    });
+  };
+
   useEffect(() => {
     getSupabaseSession();
   }, []);
@@ -206,6 +217,9 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         handleLogout,
+        updateRecruiter,
+        recruiterUser,
+        role,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -228,4 +242,21 @@ const isRoutePublic = (path = '') => {
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }
+};
+
+const updateRecruiterInDb = async (
+  updateData: Partial<RecruiterDB>,
+  id: string,
+) => {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .update(updateData)
+    .eq('id', id)
+    .select();
+  if (!error && data.length) {
+    delete data[0].socials;
+    delete data[0].address;
+    return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
+  }
+  return null;
 };

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
@@ -19,6 +20,25 @@ const SignUpComp = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const { step, setStep, setFlow } = useSignupDetails();
+
+  useEffect(() => {
+    if (recruiter?.id && router.query.step) hanadleSession();
+  }, [recruiter, router]);
+
+  const hanadleSession = async () => {
+    if (
+      router.query.step == stepObj.signin ||
+      router.query.step == stepObj.type
+    ) {
+      if (recruiter?.name) {
+        router.push(pageRoutes.JOBS);
+      } else {
+        router.push(`?step=${stepObj.detailsOne}`, undefined, {
+          shallow: true,
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -50,6 +70,11 @@ const SignUpComp = () => {
                   router.push(`?step=signup`, undefined, { shallow: true });
                 },
               }}
+              onClickSignIn={{
+                onClick: () => {
+                  router.push(`?step=signin`, undefined, { shallow: true });
+                },
+              }}
             />
           ) : step == stepObj.signup ? (
             <YTransform uniqueKey={step}>
@@ -78,7 +103,7 @@ const SignUpComp = () => {
                 }}
                 onClickPostJob={{
                   onClick: () => {
-                    router.push(`?step=${stepObj.allSet}`, undefined, {
+                    router.push(`${pageRoutes.JOBS}?flow=create`, undefined, {
                       shallow: true,
                     });
                   },

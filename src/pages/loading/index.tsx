@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
 import {
+  createSampleJobCandidate,
   handleEmail,
   stepObj,
 } from '@/src/components/SignUpComp/SlideSignup/utils';
@@ -94,11 +95,19 @@ export default function Loading() {
                   })
                   .select();
               if (!errorRecruiter) {
+                await createSampleJobCandidate(dataRecruiter[0].id);
                 const { error: erroruser } = await supabase
                   .from('recruiter_user')
                   .insert({
                     user_id: userDetails.user.id,
                     recruiter_id: dataRecruiter[0].id,
+                    email: userDetails.user.user_metadata.email,
+                    first_name: splitFullName(
+                      userDetails.user.user_metadata.full_name,
+                    ).firstName,
+                    last_name: splitFullName(
+                      userDetails.user.user_metadata.full_name,
+                    ).lastName,
                   })
                   .select();
                 if (!erroruser) {

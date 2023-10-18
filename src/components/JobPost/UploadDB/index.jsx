@@ -275,22 +275,27 @@ function UploadDB({ post, setThank, setLoading }) {
                 .select()
                 .then(async ({ data, error }) => {
                   if (!error) {
-                    if (!post?.is_campus) {
-                      axios.post(
-                        'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-                        {
-                          pdfUrl: data[0].resume,
-                          application_id: data[0].application_id,
-                          description: htmlToText(
-                            post.description || post.responsibilities.join(','),
-                          ),
-                          job_title: post.job_title,
-                          skills: post.skills || [],
-                          company_name: post?.company,
-                        },
-                      );
-                    }
                     await mailHandler(data[0].application_id);
+                    if (!post?.is_campus) {
+                      try {
+                        axios.post(
+                          'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
+                          {
+                            pdfUrl: data[0].resume,
+                            application_id: data[0].application_id,
+                            description: htmlToText(
+                              post.description ||
+                                post.responsibilities.join(','),
+                            ),
+                            job_title: post.job_title,
+                            skills: post.skills || [],
+                            company_name: post?.company,
+                          },
+                        );
+                      } catch (err) {
+                        //
+                      }
+                    }
                     setProfile({
                       firstName: '',
                       lastName: '',
@@ -342,7 +347,7 @@ function UploadDB({ post, setThank, setLoading }) {
         last_name: profile.lastName,
         job_title: post.job_title,
         company_name: post.company,
-        support_link: `https://dev.aglinthq.com/support?id=${application_id}`,
+        support_link: `https://recruiter.aglinthq.com/support?id=${application_id}`,
       };
       await axios
         .post('/api/sendgrid', {

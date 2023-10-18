@@ -132,3 +132,28 @@ export type Summary = {
   suggestions: string[];
   color?: 'string';
 };
+export type RecruiterUserType =
+  Database['public']['Tables']['recruiter_user']['Row'];
+
+export type RoleType = {
+  sourcing: boolean;
+  screening: boolean;
+  job_posting: boolean;
+  manage_roles: boolean;
+  manage_users: {
+    [key: string]: boolean;
+  };
+  edit_workflow: boolean;
+  send_interview_link: boolean;
+  view_candidates_profile: boolean;
+};
+
+export type EmployeeType = Database['public']['Tables']['employee']['Row'];
+
+export type JobApplicationType =
+  Database['public']['Tables']['job_applications']['Row'];
+
+export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
+
+export type SupportTicketType =
+  Database['public']['Tables']['support_ticket']['Row'];

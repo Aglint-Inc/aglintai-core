@@ -1,9 +1,12 @@
+/* eslint-disable security/detect-object-injection */
 import { svgList } from '@components/Common/Icons/svgList';
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { supabase } from '@utils/supabaseClient';
+import axios from 'axios';
+import { htmlToText } from 'html-to-text';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -11,8 +14,11 @@ import React, { useEffect, useState } from 'react';
 import { CandidateDatabase, Checkbox } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { JdMatchAPIType, JobApplcationDB } from '@/src/types/data.types';
+import toast from '@/src/utils/toast';
 
+import ImportDrawer from './ImportDrawer';
 import AlertDialog from '../Common/AlertDialog';
+import AUIButton from '../Common/AUIButton';
 import MuiAvatar from '../Common/MuiAvatar';
 import CustomTable, {
   EnhancedCell,
@@ -21,9 +27,9 @@ import CustomTable, {
 import UITextField from '../Common/UITextField';
 import { getGravatar } from '../JobApplicationsDashboard/ApplicationCard';
 import ApplicationDetails, {
-  getInterviewScore,
   giveColorForInterviewScore,
 } from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
+import { getInterviewScore } from '../JobApplicationsDashboard/utils';
 
 interface HeadCell {
   id: string;
@@ -62,31 +68,79 @@ const headCells: readonly HeadCell[] = [
     label: 'Interview Score',
     icon: 'InterviewScore',
   },
+  {
+    id: 'SimilarityScore',
+    label: 'Similarity',
+    icon: 'InterviewScore',
+  },
 ];
 
 type ExtendedApplication = JobApplcationDB & {
-  bgcolor: string;
+  similarity: string;
 };
 
 export function CandidateDatabaseComp() {
   const router = useRouter();
-  const { jobsData } = useJobs();
-  const [search, setSearch] = useState<string>('');
   const [people, setPeople] = useState<ExtendedApplication[]>([]);
   // const { people, setPeople } = useContacts();
   const [deleteDialog, setDeleteDialog] = useState(false);
   // const [detailOpen, setDetailOpen] = useState(false);
   const [peopleDetail, setPeopleDetail] = useState({});
   const [selected, setSelected] = useState([]);
+  const { jobsData } = useJobs();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [importDrawerOpen, setImportDrawerOpen] = useState(false);
 
   useEffect(() => {
-    if (jobsData.applications) {
-      let addColor = jobsData.applications?.map((app) => {
-        return { ...app, bgcolor: getRandomColor() };
-      });
-      setPeople(addColor);
+    if (jobsData?.applications) {
+      setPeople(jobsData.applications as ExtendedApplication[]);
     }
   }, [jobsData]);
+
+  const matchJobApplication = async (text) => {
+    if (text) {
+      const input = htmlToText(text).replace(/\n/g, ' ');
+      const response = await axios.post('/api/ai/create-embeddings', {
+        text: input,
+      });
+      if (response.status === 200) {
+        const embedding = Array.from(response.data.data[0].embedding);
+
+        const { data: applications } = await supabase.rpc(
+          'match_job_applications',
+          {
+            job_ids: jobsData.jobs.map((job) => job.id),
+            query_embedding: embedding as any,
+            match_threshold: 0.78, // Choose an appropriate threshold for your data
+            match_count: 1000, // Choose the number of matches
+          },
+        );
+        setPeople(applications as any);
+        handleClose();
+      } else {
+        toast.error('Something went wrong');
+        handleClose();
+      }
+    }
+  };
+
+  function filterUniqueJsonArray(jsonArray, key) {
+    const uniqueValues = new Set();
+    const result = [];
+
+    for (const item of jsonArray) {
+      const itemValue = item[key];
+
+      if (itemValue === null || itemValue === '') {
+        result.push(item);
+      } else if (!uniqueValues.has(itemValue)) {
+        uniqueValues.add(itemValue);
+        result.push(item);
+      }
+    }
+
+    return result;
+  }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -129,49 +183,52 @@ export function CandidateDatabaseComp() {
     await supabase.from('contact_people').delete().in('contact_id', selected);
   };
 
-  function searchContacts(query) {
-    const lowercaseQuery = query.toLowerCase().trim();
-
-    if (lowercaseQuery === '') {
-      return people; // Return all contacts if query is empty
-    }
-
-    return people.filter((contact) => {
-      const fullName = `${contact.first_name} ${
-        contact.last_name || ''
-      }`.toLowerCase();
-      const companyName = (contact.company || '').toLowerCase();
-      const role = (contact.job_title || '').toLowerCase();
-
-      return (
-        fullName.includes(lowercaseQuery) ||
-        companyName.includes(lowercaseQuery) ||
-        role.includes(lowercaseQuery)
-      );
-    });
-  }
-
   //filter
-  const visibleRows = searchContacts(search);
   const [openSidePanel, setOpenPanelDrawer] = useState(false);
 
   function viewDetails(row: ExtendedApplication) {
     setPeopleDetail(row);
-    router.push(`?contact_id=${row.application_id}`, undefined, {
+    router.push(`?application_id=${row.application_id}`, undefined, {
       shallow: true,
     });
     setOpenPanelDrawer(true);
   }
 
+  //popover
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+  //popover
+
+  function convertToPercentage(decimalNumber) {
+    const percentage = (decimalNumber * 100).toFixed(1) + '%';
+    return percentage;
+  }
+
   return (
     <>
+      <ImportDrawer
+        openSidePanel={importDrawerOpen}
+        setOpenSidePanel={setImportDrawerOpen}
+      />
       <ApplicationDetails
         applicationDetails={peopleDetail}
         openSidePanel={openSidePanel}
         setOpenSidePanel={setOpenPanelDrawer}
       />
       <CandidateDatabase
-        textShowingResult={`Showing ${visibleRows.length} results`}
+        textShowingResult={`Showing ${people.length} results`}
         slotDataTable={
           <Box
             sx={{
@@ -207,11 +264,9 @@ export function CandidateDatabaseComp() {
               />
             )}
 
-            {/* {savingToDb && <LoadingBackdrop text={'Enriching your contacts'} />} */}
-
             <CustomTable
               selected={selected}
-              body={visibleRows.map((row, index) => {
+              body={filterUniqueJsonArray(people, 'email').map((row, index) => {
                 const temp = row.jd_score as unknown as JdMatchAPIType;
                 const jdScore = temp?.over_all?.score ?? 0;
                 const isItemSelected = isSelected(row.application_id);
@@ -303,6 +358,11 @@ export function CandidateDatabaseComp() {
                         {getInterviewScore(row.feedback)}
                       </span>
                     </EnhancedCell>
+                    <EnhancedCell>
+                      {row.similarity
+                        ? convertToPercentage(row.similarity || 0)
+                        : '--'}
+                    </EnhancedCell>
                   </TableRow>
                 );
               })}
@@ -319,16 +379,66 @@ export function CandidateDatabaseComp() {
           </Box>
         }
         slotSearch={
-          <UITextField
-            labelSize='medium'
-            fullWidth
-            placeholder='Search'
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            type='search'
-          />
+          <Stack direction={'row'} spacing={2}>
+            <AUIButton
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                setImportDrawerOpen(true);
+              }}
+            >
+              Import candidates
+            </AUIButton>
+            <AUIButton variant='outlined' size='small' onClick={handleClick}>
+              Search candidates
+            </AUIButton>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              sx={{
+                border: 'none',
+                '& .MuiPaper-root': {
+                  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)', // Add box shadow
+                  borderRadius: 2, // Remove border-radius
+                },
+              }}
+              anchorPosition={{ top: 2000, left: 400 }}
+            >
+              <Stack
+                width={500}
+                sx={{
+                  p: 2,
+                }}
+              >
+                <UITextField
+                  labelSize='small'
+                  fullWidth
+                  placeholder='Ex. React developer in bangalore or give entire job description'
+                  multiline
+                  minRows={6}
+                  maxRows={12}
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                  }}
+                />
+                <Stack direction={'row'} justifyContent={'flex-end'} pt='20px'>
+                  <AUIButton
+                    size='small'
+                    onClick={() => matchJobApplication(searchQuery)}
+                  >
+                    Search
+                  </AUIButton>
+                </Stack>
+              </Stack>
+            </Popover>
+          </Stack>
         }
       />
     </>

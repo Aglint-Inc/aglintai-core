@@ -3,10 +3,9 @@ import { errorMessages } from '@utils/errorMessages';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ResetPassword } from '@/devlink';
-import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
@@ -96,7 +95,7 @@ export default function ResetPasswordComponent() {
       });
       if (!error) {
         toast.success('Password Reset Successfully');
-        router.push(pageRoutes.LOGIN);
+        router.push(pageRoutes.JOBS);
       } else {
         if (error == 'AuthApiError: Password should be at least 8 characters') {
           // toast.error('Password should be at least 8 characters');
@@ -146,44 +145,21 @@ export default function ResetPasswordComponent() {
         slotResetPasswordForm={
           <Stack component='form' onSubmit={handleSubmit} spacing={2}>
             <Stack spacing={2}>
-              <Stack
-                sx={{
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  borderColor: palette.grey[200],
-                }}
-              >
-                <Password
-                  validate={handlePassword}
-                  passwordRef={newpassword}
-                  error={confirmPasswordError}
-                  setError={setConfirmPasswordError}
-                />
-              </Stack>
-              <Stack
-                sx={{
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  borderColor: palette.grey[200],
-                }}
-              >
-                <Password
-                  validate={handlePassword}
-                  passwordRef={confirmpassword}
-                  label='Confirm Password'
-                  error={passwordError}
-                  setError={setPasswordError}
-                />
-              </Stack>
+              <Password
+                validate={handlePassword}
+                passwordRef={newpassword}
+                error={confirmPasswordError}
+                setError={setConfirmPasswordError}
+              />
+
+              <Password
+                validate={handlePassword}
+                passwordRef={confirmpassword}
+                label='Confirm Password'
+                error={passwordError}
+                setError={setPasswordError}
+              />
             </Stack>
-            {/* <CustomButton
-              fullWidth
-              disableElevation
-              type='submit'
-              variant='create'
-              size='large'
-              text={'Reset password'}
-            /> */}
             <AUIButton size='small' onClick={handleSubmit}>
               Reset password
             </AUIButton>

@@ -1,9 +1,12 @@
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 export const capitalize = (str: string) => {
-  const s = str.trim().replaceAll('_', ' ');
-  if (s.length !== 0)
-    return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  if (str) {
+    const s = str.trim().replaceAll('_', ' ');
+    if (s.length !== 0)
+      return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  }
+  return '';
 };
 
 export const formatTimeStamp = (timeStamp: string) => {
@@ -26,14 +29,16 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-export const getInterviewScore = (feedback) => {
-  return feedback
-    ? Math.ceil(
-        feedback.reduce((acc, curr) => {
-          return (acc += Number(curr.rating));
-        }, 0) / feedback.length,
-      )
+const getResumeScore = (application: JobApplication) => {
+  const jdScoreObj = application.jd_score as any;
+  const jdScore = jdScoreObj
+    ? jdScoreObj === 'loading'
+      ? 0
+      : Math.floor(jdScoreObj?.over_all?.score) < 0
+      ? 0
+      : Math.floor(jdScoreObj?.over_all?.score)
     : 0;
+  return jdScore;
 };
 
 export type FilterParameter = {
@@ -42,14 +47,72 @@ export type FilterParameter = {
   count: number;
 };
 
+export type SortParameter = {
+  parameter:
+    | 'resume_score'
+    | 'interview_score'
+    | 'name'
+    | 'email'
+    | 'applied_on';
+  condition: 'asc' | 'desc';
+};
+
+export const getSortedApplications = (
+  applications: JobApplication[],
+  sortParameters: SortParameter,
+) => {
+  switch (sortParameters.parameter) {
+    case 'resume_score':
+      {
+        applications.sort((a, b) => getResumeScore(a) - getResumeScore(b));
+      }
+      break;
+    case 'interview_score':
+      {
+        applications.sort(
+          (a, b) =>
+            getInterviewScore(a.feedback) - getInterviewScore(b.feedback),
+        );
+      }
+      break;
+    case 'applied_on':
+      {
+        applications.sort(
+          (a, b) =>
+            (new Date(a.created_at) as any) - (new Date(b.created_at) as any),
+        );
+      }
+      break;
+    case 'email':
+      {
+        applications.sort((a, b) => a.email.localeCompare(b.email));
+      }
+      break;
+    case 'name':
+      {
+        applications.sort((a, b) =>
+          `${a.first_name} ${a.last_name}`.localeCompare(
+            `${b.first_name} ${b.last_name}`,
+          ),
+        );
+      }
+      break;
+  }
+  return sortParameters.condition === 'asc'
+    ? applications
+    : applications.reverse();
+};
+
 export const getFilteredApplications = (
   applications: JobApplication[],
   filterParameters: FilterParameter[],
 ) => {
   return applications.reduce((acc, curr) => {
-    filterParameters.map((filter) => {
-      if (handleFilterParameter(filter, curr)) acc.push(curr);
-    });
+    const valid = filterParameters.reduce((validity, filter) => {
+      if (validity && handleFilterParameter(filter, curr)) return true;
+      else return false;
+    }, true);
+    if (valid) acc.push(curr);
     return acc;
   }, []);
 };
@@ -60,7 +123,10 @@ const handleFilterParameter = (
 ) => {
   switch (filterParameter.parameter) {
     case 'resume_score':
-      return handleFilterCondition(filterParameter, application.score);
+      return handleFilterCondition(
+        filterParameter,
+        getResumeScore(application),
+      );
 
     case 'interview_score':
       return handleFilterCondition(
@@ -89,3 +155,23 @@ const handleFilterCondition = (
       return score !== filterParameter.count;
   }
 };
+
+export function getInterviewScore(feedback) {
+  const overAllScore = feedback
+    ? feedback?.length !== 0
+      ? Math.floor(
+          feedback.reduce(
+            (sum, entry) =>
+              sum +
+              Number(
+                String(entry.rating).includes('/')
+                  ? entry.rating.split('/')[0]
+                  : entry.rating,
+              ),
+            0,
+          ) / feedback.length,
+        )
+      : 0
+    : 0;
+  return overAllScore;
+}

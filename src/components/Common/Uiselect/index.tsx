@@ -73,7 +73,7 @@ const UISelect = ({
             },
             '.MuiSelect-outlined': {
               fontSize: '14px',
-              p: '7px 5px',
+              p: '8px 14px',
             },
             outline: `3px solid ${focus ? borderColor : 'transparent'}`,
           },

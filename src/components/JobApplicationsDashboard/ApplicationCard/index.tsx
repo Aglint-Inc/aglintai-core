@@ -1,13 +1,13 @@
 import { Stack } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import ApplicationDetails from './ApplicationDetails';
 import JdFetching from './JdFetching';
-import { getInterviewScore, getScoreColor, getStatusColor } from './utils';
-import { capitalize, formatTimeStamp } from '../utils';
+import { getScoreColor, getStatusColor } from './utils';
+import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
 import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
 
@@ -32,17 +32,13 @@ const ApplicationCard = ({
   const [openSidePanel, setOpenSidePanel] = useState(false);
   const [applicationDetails, setApplicationDetails] = useState({});
 
-  const interviewScore = useMemo(() => {
-    return application?.feedback ? getInterviewScore(application.feedback) : 0;
-  }, [application.feedback]);
+  const interviewScore = application?.feedback
+    ? getInterviewScore(application.feedback)
+    : 0;
 
-  const statusColors = useMemo(() => {
-    return getStatusColor(application.status);
-  }, [application.status]);
+  const statusColors = getStatusColor(application.status);
 
-  const creationDate = useMemo(() => {
-    return formatTimeStamp(application.created_at);
-  }, [application.created_at]);
+  const creationDate = formatTimeStamp(application.created_at);
   const appliedOn = `Applied on ${creationDate}`;
 
   const handleCheck = () => {

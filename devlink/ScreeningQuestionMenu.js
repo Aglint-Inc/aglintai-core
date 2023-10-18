@@ -29,7 +29,7 @@ export function ScreeningQuestionMenu({
             {textSkills}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "radio-btn-wrappers-green")}
+            className={_utils.cx(_styles, "radio-btn-wrappers-green", "hide")}
             tag="div"
           >
             {isSkillOn ? (

@@ -6,8 +6,18 @@ export const config = {
   matcher: '/api/:function*',
 };
 
-// const whiteListedEndPoints =['/api/payment/']
-const whiteListedEndPoints = ['/api/interviewChatOpenAi'];
+const whiteListedEndPoints = [
+  '/api/sendgrid',
+  'api/ai/gpt3-5-turbo',
+  'api/ai/create-embeddings',
+  'api/extract-openai',
+  'api/templates',
+  'api/generateVideo',
+  'api/checkstatus',
+  'api/webhook',
+  'api/interview',
+  'api/interviewChatOpenAi',
+];
 
 export async function middleware(request) {
   if (isUrlWhiteListed(request.url)) {

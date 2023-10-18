@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { getRandomColor } from '@/src/components/CandidateDatabase';
 import {
   NotificationsEmailAPIType,
   Public_jobsType,
@@ -13,17 +14,26 @@ import {
   // SupportGroupType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+
+type sortType =
+  | 'assignee'
+  | 'status'
+  | 'priority'
+  | 'name'
+  | 'jobInfo'
+  | 'lastUpdate';
 
 interface ContextValue {
   // allTickets: (Support_ticketType & { jobsDetails: Public_jobsType })[];
   tickets: (Support_ticketType & { jobsDetails: Public_jobsType })[];
   openTicket: Support_ticketType & { jobsDetails: Public_jobsType };
-  setOpenTicket: (
-    // eslint-disable-next-line no-unused-vars
-    x: Support_ticketType & { jobsDetails: Public_jobsType },
-  ) => void;
+  // setOpenTicket: (
+  //   // eslint-disable-next-line no-unused-vars
+  //   x: Support_ticketType & { jobsDetails: Public_jobsType },
+  // ) => void;
   allChecked: boolean;
   // eslint-disable-next-line no-unused-vars
   setAllChecked: (x: boolean) => void;
@@ -36,20 +46,35 @@ interface ContextValue {
     Resolved: number;
     'on hold': number;
   };
-  filters: { state: string };
+  filters: { status: string };
   allAssignee: { id: string; title: string; image: string }[];
   // eslint-disable-next-line no-unused-vars
   updateTicket: (data: Partial<Support_ticketType>, id: string) => void;
+  sort: sortType;
+  setSort: (
+    // eslint-disable-next-line no-unused-vars
+    x: sortType,
+  ) => void;
+  sortOrder: 1 | -1;
+  // eslint-disable-next-line no-unused-vars
+  setSortOrder: (x: 1 | -1) => void;
+  search: string;
+  // eslint-disable-next-line no-unused-vars
+  setSearch: (x: string) => void;
+  openTicketIndex: number;
+  // eslint-disable-next-line no-unused-vars
+  setOpenTicketIndex: (x: number) => void;
+  randomColors: { [key: string]: string };
 }
 
-const defaultProvider = {
-  allTickets: [],
+const defaultProvider: ContextValue = {
+  // allTickets: [],
   tickets: [],
   openTicket: null,
-  setOpenTicket: (x: Support_ticketType & { jobsDetails: Public_jobsType }) => {
-    x;
-    return;
-  },
+  // setOpenTicket: (x: Support_ticketType & { jobsDetails: Public_jobsType }) => {
+  //   x;
+  //   return;
+  // },
   allChecked: false,
   setAllChecked: (x) => {
     x;
@@ -64,12 +89,29 @@ const defaultProvider = {
     Resolved: 0,
     'on hold': 0,
   },
-  filters: { state: 'all' },
+  filters: { status: 'all' },
   updateTicket: (data: Partial<Support_ticketType>, id: string) => {
     data;
     id;
   },
   allAssignee: [],
+  sort: 'lastUpdate',
+  setSort: (x: ContextValue['sort']) => {
+    x;
+  },
+  sortOrder: 1,
+  setSortOrder: (x: 1 | -1) => {
+    x;
+  },
+  search: '',
+  setSearch: (x: string) => {
+    x;
+  },
+  openTicketIndex: -1,
+  setOpenTicketIndex: (x: number) => {
+    x;
+  },
+  randomColors: {},
 };
 
 const SupportContext = createContext<ContextValue>(defaultProvider);
@@ -97,29 +139,93 @@ const SupportProvider = ({ children }) => {
   }, [allTickets]);
   const filters = useMemo(() => {
     let filters = {
-      state: 'all',
+      status: 'all',
     };
     if (router.isReady) {
-      filters = { ...filters, ...(router.query as { state: string }) };
+      filters = { ...filters, ...(router.query as { status: string }) };
     }
     return filters;
   }, [router]);
-
-  const tickets = useMemo(() => {
-    let tickets = allTickets;
-    if (filters.state !== 'all') {
-      tickets = tickets.filter(
-        (ticket) =>
-          ticket.state === filters.state && ticket.assign_to === recruiter.id,
-      );
-    } else {
-      tickets = tickets.filter((ticket) => ticket.assign_to === recruiter.id);
+  const [randomColors, setRandomColors] = useState<{ [key: string]: string }>(
+    {},
+  );
+  const filteredTickets = useMemo(() => {
+    const tempColor: { [key: string]: string } = {};
+    let tickets =
+      allTickets.filter((ticket) => {
+        if (ticket.assign_to === recruiter.id) {
+          tempColor[ticket.id] = getRandomColor();
+          return true;
+        }
+        return false;
+      }) || [];
+    setRandomColors(tempColor);
+    // tickets.map(() => randomColor());
+    if (filters.status !== 'all') {
+      tickets = tickets.filter((ticket) => ticket.state === filters.status);
     }
     return tickets;
   }, [filters, allTickets]);
+
+  const [sort, setSort] = useState<sortType>('lastUpdate');
+  const [sortOrder, setSortOrder] = useState<1 | -1>(1);
+  const sortedTicket = useMemo(() => {
+    if (sort === 'lastUpdate') {
+      return filteredTickets.sort((a, b) => {
+        // @ts-ignore
+        return (new Date(b.updated_at) - new Date(a.updated_at)) * sortOrder;
+      });
+    } else if (sort === 'priority') {
+      return filteredTickets.sort((a, b) => {
+        return (
+          (priorityOrder[b.priority] - priorityOrder[a.priority]) * sortOrder
+        );
+      });
+    } else if (sort === 'assignee') {
+      return filteredTickets.sort((a, b) => {
+        // @ts-ignore
+        return a.assign_to.localeCompare(b.assign_to) * sortOrder;
+      });
+    } else if (sort === 'status') {
+      return filteredTickets.sort((a, b) => {
+        // @ts-ignore
+        return (statusOrder[b.state] - statusOrder[a.state]) * sortOrder;
+      });
+    } else if (sort === 'name') {
+      return filteredTickets.sort((a, b) => {
+        // @ts-ignore
+        return a.user_name.localeCompare(b.user_name) * sortOrder;
+      });
+    } else if (sort === 'jobInfo') {
+      return filteredTickets.sort((a, b) => {
+        return (
+          a.jobsDetails.job_title.localeCompare(b.jobsDetails.job_title) *
+          sortOrder
+        );
+      });
+    }
+    return filteredTickets;
+  }, [filteredTickets, sort, sortOrder]);
+
+  const [search, setSearch] = useState<string>();
+  const tickets = useMemo(() => {
+    if (!search) return sortedTicket || [];
+    return sortedTicket.filter((x) => {
+      return (
+        x.id.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.user_name.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.title.toLocaleLowerCase().includes(search.toLowerCase()) ||
+        x.jobsDetails.job_title
+          .toLocaleLowerCase()
+          .includes(search.toLowerCase())
+      );
+    });
+  }, [sortedTicket, search]);
+
   const [openTicket, setOpenTicket] = useState<
     Support_ticketType & { jobsDetails: Public_jobsType }
   >(null);
+  const [openTicketIndex, setOpenTicketIndex] = useState<number>();
   // const [allGroups, setAllGroups] = useState<SupportGroupType[]>([]);
   // const [userGroup, setUserGroup] = useState<SupportGroupType>(null);
   const [allChecked, setAllChecked] = useState(false);
@@ -148,7 +254,6 @@ const SupportProvider = ({ children }) => {
       });
     }
   };
-
   const updateTicket = (data: Partial<Support_ticketType>, id: string) => {
     const update = data;
     const old = allTickets.find((ticket) => ticket.id === id);
@@ -212,7 +317,6 @@ const SupportProvider = ({ children }) => {
       }
     });
   };
-
   useEffect(() => {
     if (recruiter?.id) {
       getAllAssignee(recruiter.name === 'Aglint Inc').then((data) => {
@@ -253,12 +357,22 @@ const SupportProvider = ({ children }) => {
     // }
     // });
   }, [recruiter]);
+  useEffect(() => {
+    if (openTicketIndex === null) {
+      return;
+    }
+    if (openTicketIndex === -1) {
+      setOpenTicket(null);
+    } else {
+      setOpenTicket(tickets[Number(openTicketIndex)]);
+    }
+  }, [openTicketIndex]);
   return (
     <SupportContext.Provider
       value={{
         tickets,
         openTicket,
-        setOpenTicket,
+        // setOpenTicket,
         allChecked,
         setAllChecked,
         // allGroups,
@@ -267,6 +381,15 @@ const SupportProvider = ({ children }) => {
         filters,
         updateTicket,
         allAssignee,
+        sort,
+        setSort,
+        sortOrder,
+        setSortOrder,
+        search,
+        setSearch,
+        openTicketIndex,
+        setOpenTicketIndex,
+        randomColors,
       }}
     >
       {children}
@@ -380,7 +503,7 @@ const getUpdateMessage = ({
     timeStamp: new Date().toISOString(),
     text: null,
   };
-  const content = oldDetails.content;
+  const content = newDetails.content ? newDetails.content : oldDetails.content;
   if (newDetails.content) {
     return content;
   } else if (newDetails.state) {
@@ -395,4 +518,44 @@ const getUpdateMessage = ({
   }
   content.push(temp);
   return content;
+};
+
+export const getPriorityIcon = (priority: string) => {
+  if (priority.toLocaleLowerCase() === 'low') {
+    return (
+      <svg
+        width='9'
+        height='8'
+        viewBox='0 0 9 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path d='M4.5 8L0.169872 0.5L8.83013 0.5L4.5 8Z' fill='#467B7C' />
+      </svg>
+    );
+  } else if (priority.toLocaleLowerCase() === 'highest') {
+    return (
+      <svg
+        width='9'
+        height='8'
+        viewBox='0 0 9 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <path d='M4.5 0L8.83013 7.5H0.169873L4.5 0Z' fill='#D93F4C' />
+      </svg>
+    );
+  } else {
+    return (
+      <svg
+        width='8'
+        height='8'
+        viewBox='0 0 8 8'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <rect x='0.5' y='0.5' width='7' height='7' fill='#F79A3E' />
+      </svg>
+    );
+  }
 };

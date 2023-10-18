@@ -1,12 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Avatar,
-  List,
-  ListItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Chip, Stack, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -182,7 +175,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 }}
                 dangerouslySetInnerHTML={{ __html: post?.description }}
               />
-              {post?.skills && (
+              {post?.skills.length > 0 && (
                 <>
                   <Typography
                     variant='h5'
@@ -191,22 +184,17 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   >
                     Skills
                   </Typography>
-                  <List>
+                  <Stack
+                    mt={'10px'}
+                    gap={2}
+                    direction='row'
+                    alignItems='stretch'
+                    flexWrap='wrap'
+                  >
                     {post?.skills?.map((skill, index) => (
-                      <ListItem key={index} sx={{ pl: '24px' }}>
-                        <Stack direction={'row'} spacing={1}>
-                          <span style={{ fontSize: '24px' }}>&bull;</span>
-                          <Typography
-                            variant='body2'
-                            color={palette.grey[800]}
-                            sx={{ whiteSpace: 'pre-wrap' }}
-                          >
-                            {skill}
-                          </Typography>
-                        </Stack>
-                      </ListItem>
+                      <Chip label={skill} key={index} />
                     ))}
-                  </List>
+                  </Stack>
                 </>
               )}
             </>
@@ -262,33 +250,35 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             </Avatar>
           }
           slotOpenJobListing={
-            filteredJobs.length > 0
-              ? filteredJobs.map((job, ind) => {
-                  return (
-                    <OpenJobListingCard
-                      key={ind}
-                      textJobRole={job.job_title || '--'}
-                      textCompanyType={job.department || '--'}
-                      textLocation={job.location || '--'}
-                      textWorkingType={job.job_type || '--'}
-                      onClickApplyNow={{
-                        onClick: () => {
-                          const targetElement =
-                            document.getElementById('topAvatar');
-                          if (targetElement) {
-                            targetElement.scrollIntoView({
-                              behavior: 'instant',
-                              block: 'end',
-                              inline: 'end',
-                            });
-                          }
-                          router.push(job.id);
-                        },
-                      }}
-                    />
-                  );
-                })
-              : 'No More Jobs Postings'
+            <Stack spacing={2}>
+              {filteredJobs.length > 0
+                ? filteredJobs.map((job, ind) => {
+                    return (
+                      <OpenJobListingCard
+                        key={ind}
+                        textJobRole={job.job_title || '--'}
+                        textCompanyType={job.department || '--'}
+                        textLocation={job.location || '--'}
+                        textWorkingType={job.job_type || '--'}
+                        onClickApplyNow={{
+                          onClick: () => {
+                            const targetElement =
+                              document.getElementById('topAvatar');
+                            if (targetElement) {
+                              targetElement.scrollIntoView({
+                                behavior: 'instant',
+                                block: 'end',
+                                inline: 'end',
+                              });
+                            }
+                            router.push(job.id);
+                          },
+                        }}
+                      />
+                    );
+                  })
+                : 'No More Jobs Postings'}
+            </Stack>
           }
           onClickViewMore={{
             onClick: () => {

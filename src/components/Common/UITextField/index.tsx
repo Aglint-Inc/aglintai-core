@@ -1,6 +1,6 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
-import { Stack } from '@mui/material';
+import { InputBaseComponentProps, Stack, Typography } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
 import React, { useState } from 'react';
@@ -26,13 +26,14 @@ type Props = {
   onSelect?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  InputProps?: any;
+  InputProps?: InputBaseComponentProps;
   defaultValue?: string | number;
   children?: any;
   height?: string;
   noBorder?: boolean;
   width?: string;
   select?: boolean;
+  secondaryText?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -64,6 +65,8 @@ const UITextField = React.forwardRef(
       noBorder,
       width,
       select,
+      height,
+      secondaryText,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -103,7 +106,11 @@ const UITextField = React.forwardRef(
             {required && <sup>*</sup>}
           </UITypography>
         )}
+        {secondaryText && (
+          <Typography variant='body2'>{secondaryText}</Typography>
+        )}
         <MuiTextField
+          margin='none'
           select={select}
           fullWidth={fullWidth}
           value={value}
@@ -139,9 +146,11 @@ const UITextField = React.forwardRef(
               margin: 0,
             },
             '& .MuiOutlinedInput-root': {
+              height: multiline ? height : '40px',
               bgcolor: disabled ? 'transparent' : 'white.700',
               fontSize: '14px',
               fieldset: {
+                pt: '8px',
                 border: noBorder
                   ? 'transparent'
                   : `1px solid ${outlineColor}!important`,

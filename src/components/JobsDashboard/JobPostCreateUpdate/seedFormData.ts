@@ -17,7 +17,7 @@ export const getSeedJobFormData = (
     jobPostId: uuidv4(),
     syncStatus: '',
     formType: 'new',
-    slideNo: 0,
+    currSlide: 'details',
     formFields: {
       company: '',
       jobLocation: '',
@@ -38,43 +38,64 @@ export const getSeedJobFormData = (
           id: nanoid(),
           copy: 'Skill',
           questions: [],
-          value: false,
         },
-        cultural: {
+        behavior: {
           id: nanoid(),
-          copy: 'Cultural',
-          value: false,
+          copy: 'Behavior',
+
           questions: [],
         },
-        personality: {
+        communication: {
           id: nanoid(),
-          copy: 'Personality',
+          copy: 'Communication',
           questions: [],
-          value: false,
         },
-        softSkills: {
+        performance: {
           id: nanoid(),
-          copy: 'Soft Skills',
+          copy: 'Performance',
           questions: [],
-          value: false,
+        },
+        education: {
+          id: nanoid(),
+          copy: 'Education',
+          questions: [],
+        },
+        general: {
+          id: nanoid(),
+          copy: 'General',
+          questions: [],
         },
       },
-      screeningConfig: {
-        feedbackVisible: false,
+      screeningEmail: {
+        date: new Date().toISOString(),
+        isImmediate: true,
+        emailTemplates: {},
+      },
+      newScreeningConfig: {
         screening: {
-          isSendInterviewToAll: false,
-          minNoResumeScore: 50,
+          qualificationRange: null,
+          isManual: false,
         },
-        useAglintMatchingAlgo: true,
-        shortlist: {
-          interviewScore: true,
-          minInterviewScore: 80,
+        interview: {
+          qualificationRange: null,
+          isManual: false,
         },
-        screeningEmail: {
-          date: new Date().toISOString(),
-          isImmediate: true,
-          emailTemplates: {},
+        interviewMail: {
+          timestamp: null,
+          isManual: false,
         },
+        disqualifiedMail: {
+          timestamp: null,
+          isManual: false,
+        },
+        feedbackVisible: false,
+      },
+      resumeScoreSettings: {
+        certifications: 20,
+        education: 20,
+        experience: 20,
+        projects: 20,
+        skills: 20,
       },
       recruiterId: '',
     },
@@ -150,13 +171,13 @@ export const getSeedJobFormData = (
     seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
 
     seedFormState.formFields.defaultAddress = defaultAddress;
-    seedFormState.formFields.screeningConfig.screeningEmail = {
-      ...seedFormState.formFields.screeningConfig.screeningEmail,
+    seedFormState.formFields.screeningEmail = {
+      ...seedFormState.formFields.screeningEmail,
       emailTemplates: get(
         recruiter,
         'email_template',
         {},
-      ) as JobFormState['formFields']['screeningConfig']['screeningEmail']['emailTemplates'],
+      ) as JobFormState['formFields']['screeningEmail']['emailTemplates'],
     };
     seedFormState.formFields.defaultDepartments = get(
       recruiter,
@@ -178,32 +199,42 @@ export const dbToClientjobPostForm = (
     createdAt: jobPost.created_at,
     formType: 'edit',
     jobPostId: jobPost.id,
-    slideNo: 1,
+    currSlide: 'details',
     updatedAt: '',
     formFields: {
       ...seedData.formFields,
       company: jobPost.company,
       workPlaceType: jobPost.workplace_type,
       interviewConfig: {
-        cultural: get(
-          jobPost,
-          'screening_questions[0].cultural',
-          seedData.formFields.interviewConfig.cultural,
-        ),
-        personality: get(
-          jobPost,
-          'screening_questions[0].personality',
-          seedData.formFields.interviewConfig.personality,
-        ),
         skill: get(
           jobPost,
           'screening_questions[0].skill',
           seedData.formFields.interviewConfig.skill,
         ),
-        softSkills: get(
+        behavior: get(
           jobPost,
-          'screening_questions[0].softSkills',
-          seedData.formFields.interviewConfig.softSkills,
+          'screening_questions[0].behavior',
+          seedData.formFields.interviewConfig.behavior,
+        ),
+        communication: get(
+          jobPost,
+          'screening_questions[0].communication',
+          seedData.formFields.interviewConfig.communication,
+        ),
+        performance: get(
+          jobPost,
+          'screening_questions[0].performance',
+          seedData.formFields.interviewConfig.performance,
+        ),
+        education: get(
+          jobPost,
+          'screening_questions[0].education',
+          seedData.formFields.interviewConfig.education,
+        ),
+        general: get(
+          jobPost,
+          'screening_questions[0].general',
+          seedData.formFields.interviewConfig.general,
         ),
       },
       interviewType: get(
@@ -218,39 +249,50 @@ export const dbToClientjobPostForm = (
       skills: get(jobPost, 'skills', []),
       jobTitle: jobPost.job_title,
       jobType: jobPost.job_type,
-      screeningConfig: {
+      newScreeningConfig: {
         screening: {
-          ...get(
+          ...(get(
             jobPost,
-            'screening_setting.screening',
-            seedData.formFields.screeningConfig.screening,
-          ),
+            'new_screening_setting.screening',
+            seedData.formFields.newScreeningConfig.screening,
+          ) as any),
         },
-        shortlist: {
-          ...get(
+        interview: {
+          ...(get(
             jobPost,
-            'screening_setting.shortlist',
-            seedData.formFields.screeningConfig.shortlist,
-          ),
+            'new_screening_setting.interview',
+            seedData.formFields.newScreeningConfig.interview,
+          ) as any),
+        },
+        interviewMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.interviewMail',
+            seedData.formFields.newScreeningConfig.interviewMail,
+          ) as any),
+        },
+        disqualifiedMail: {
+          ...(get(
+            jobPost,
+            'new_screening_setting.disqualifiedMail',
+            seedData.formFields.newScreeningConfig.disqualifiedMail,
+          ) as any),
         },
         feedbackVisible: get(
           jobPost,
-          'screening_setting.feedbackVisible',
-          seedData.formFields.screeningConfig.feedbackVisible,
-        ),
-        useAglintMatchingAlgo: get(
-          jobPost,
-          'screening_setting.useAglintMatchingAlgo',
-          seedData.formFields.screeningConfig.useAglintMatchingAlgo,
-        ),
-        screeningEmail: {
-          ...get(
-            jobPost,
-            'screening_setting.screeningEmail',
-            seedData.formFields.screeningConfig.screeningEmail,
-          ),
-          emailTemplates: get(jobPost, 'email_template', {}) as any,
-        },
+          'new_screening_setting.feedbackVisible',
+          seedData.formFields.newScreeningConfig.feedbackVisible,
+        ) as boolean,
+      },
+
+      resumeScoreSettings: {
+        ...(get(jobPost, 'parameter_weights', {
+          certifications: 20,
+          education: 20,
+          experience: 20,
+          projects: 20,
+          skills: 20,
+        }) as JobFormState['formFields']['resumeScoreSettings']),
       },
     },
   };

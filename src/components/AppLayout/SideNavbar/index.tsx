@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import {
   BriefcaseIcon,
-  CandidateIcon,
+  // CandidateIcon,
   NavJobSubLink,
   TicketSublink,
 } from '@/devlink';
@@ -128,24 +128,28 @@ function JobSubNavbar() {
       activeCount={
         jobsData?.jobs?.filter(
           (job) =>
+            !job.is_campus &&
             (job.active_status.interviewing.isActive ||
               job.active_status.sourcing.isActive) &&
             !job.active_status.closed.isActive,
         ).length || 0
       }
-      allCount={jobsData?.jobs?.length || 0}
+      allCount={jobsData?.jobs?.filter((job) => !job.is_campus).length || 0}
       inActiveCount={
         jobsData?.jobs?.filter(
           (job) =>
+            !job.is_campus &&
             !(
               job.active_status.interviewing.isActive ||
               job.active_status.sourcing.isActive
-            ) && !job.active_status.closed.isActive,
+            ) &&
+            !job.active_status.closed.isActive,
         ).length || 0
       }
       closedCount={
-        jobsData?.jobs?.filter((job) => job.active_status.closed.isActive)
-          .length || 0
+        jobsData?.jobs?.filter(
+          (job) => !job.is_campus && job.active_status.closed.isActive,
+        ).length || 0
       }
       isJobActive={router.query.status === 'active'}
       isJobInactive={router.query.status === 'inactive'}
@@ -207,12 +211,12 @@ const navList = [
     SubComponents: <JobSubNavbar />,
     route: pageRoutes.JOBS,
   },
-  {
-    icon: <CandidateIcon />,
-    text: 'Candidates',
-    SubComponents: '',
-    route: pageRoutes.CANDIDATES,
-  },
+  // {
+  //   icon: <CandidateIcon />,
+  //   text: 'Candidates',
+  //   SubComponents: '',
+  //   route: pageRoutes.CANDIDATES,
+  // },
   {
     icon: <ChatIcon />,
     text: 'Tickets',

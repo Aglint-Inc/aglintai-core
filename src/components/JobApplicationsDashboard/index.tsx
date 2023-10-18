@@ -1,39 +1,38 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
-import { Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import {
-  AddCandidateDropdown,
-  ApplicantsListEmpty,
-  JobScreening,
-  SelectActionBar,
-} from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ImportCandidates } from '@/devlink';
+import { ApplicantsListEmpty, JobScreening, SelectActionBar } from '@/devlink2';
 import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import InfoDialog from './Common/InfoDialog';
+import ResumeUpload from './FileUpload';
 import { useKeyPress } from './hooks';
-import ImportCandidates from './ImportCandidates';
+import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
-import { capitalize } from './utils';
+import {
+  capitalize,
+  FilterParameter,
+  getFilteredApplications,
+  getSortedApplications,
+  SortParameter,
+} from './utils';
 import Loader from '../Common/Loader';
-import MuiPopup from '../Common/MuiPopup';
-import EditFlow from '../JobsDashboard/JobPostCreateUpdate/Editflow';
-import { useJobForm } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -61,19 +60,36 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData, job } = useJobApplications();
-  const { jobsData } = useJobs();
+  const {
+    applicationsData,
+    job,
+    setOpenImportCandidates,
+    openImportCandidates,
+  } = useJobApplications();
   const { applications } = applicationsData;
-
+  const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
-  const sectionApplications = applications[section].list;
+  const [sort] = useState<SortParameter>({
+    parameter: 'resume_score',
+    condition: 'desc',
+  });
+
+  const [filters] = useState<FilterParameter[]>([
+    { parameter: 'resume_score', condition: 'ge', count: 0 },
+    { parameter: 'interview_score', condition: 'ge', count: 0 },
+  ]);
+
+  const sectionApplications = getFilteredApplications(
+    getSortedApplications(applications[section].list, sort),
+    filters,
+  );
 
   const [checkList, setCheckList] = useState(new Set<string>());
 
   const [jobUpdate, setJobUpdate] = useState(false);
 
-  const [filteredApplications, setFilteredApplications] =
+  const [searchedApplications, setSearchedApplications] =
     useState(sectionApplications);
 
   const handleSetSection = (section) => {
@@ -81,16 +97,13 @@ const JobApplicationComponent = () => {
     setCheckList(new Set<string>());
   };
 
-  const { recruiter } = useAuthDetails();
-  const { handleInitializeForm } = useJobForm();
-
   const handleSelectAll = () => {
-    if (checkList.size === filteredApplications.length)
+    if (checkList.size === searchedApplications.length)
       setCheckList(new Set<string>());
     else
       setCheckList(
         new Set(
-          filteredApplications.reduce((acc, curr) => {
+          searchedApplications.reduce((acc, curr) => {
             acc.push(curr.application_id);
             return acc;
           }, []),
@@ -99,11 +112,34 @@ const JobApplicationComponent = () => {
   };
   return (
     <>
+      <Dialog
+        open={openImportCandidates}
+        onClose={() => setOpenImportCandidates(false)}
+        maxWidth='md'
+      >
+        <ImportCandidates
+          slotAddManually={<ImportManualCandidates />}
+          slotImportCsv={<ImportCandidatesCSV />}
+          onClickClose={{
+            onClick: () => {
+              setOpenImportCandidates(false);
+            },
+          }}
+          slotImportResume={
+            <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+          }
+        />
+      </Dialog>
       <JobScreening
-        isTopbarVisible={filteredApplications.length !== 0}
-        interviewScore={section === JobApplicationSections.INTERVIEWING}
+        onClickAddCandidates={{
+          onClick: () => {
+            setOpenImportCandidates(true);
+          },
+        }}
+        isTopbarVisible={searchedApplications.length !== 0}
+        interviewScore={section !== JobApplicationSections.NEW}
         selectAllCheckbox={{ onClick: () => handleSelectAll() }}
-        isSelectAllChecked={checkList.size === filteredApplications.length}
+        isSelectAllChecked={checkList.size === searchedApplications.length}
         slotJobStatus={<JobApplicationStatus />}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
@@ -153,19 +189,18 @@ const JobApplicationComponent = () => {
           <SearchField
             applications={sectionApplications}
             section={section}
-            setFilteredApplications={setFilteredApplications}
+            setSearchedApplications={setSearchedApplications}
           />
         }
         slotCandidateJobCard={
           <ApplicantsList
-            applications={filteredApplications}
+            applications={searchedApplications}
             checkList={checkList}
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
             section={section}
           />
         }
-        slotAddCandidates={<AddCandidates />}
         slotSelectActionBar={
           <Stack style={{ backgroundColor: 'white' }}>
             <Stack
@@ -188,36 +223,20 @@ const JobApplicationComponent = () => {
           href: '/jobs',
         }}
         jobLink={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
+          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
           target: '_blank',
         }}
         onClickEditJob={{
           onClick: () => {
-            handleInitializeForm({
-              type: 'edit',
-              job: jobsData.jobs.find((j) => j.id === job.id) as any,
-              recruiter,
-              slideNo: 1,
-            });
-          },
-        }}
-        onClickWorkflow={{
-          onClick: () => {
-            handleInitializeForm({
-              type: 'edit',
-              job: jobsData.jobs.find((j) => j.id === job.id) as any,
-              recruiter,
-              slideNo: 5,
-            });
+            router.push(`/jobs/edit?job_id=${job.id}`);
           },
         }}
       />
-      <EditFlow />
     </>
   );
 };
 
-const ApplicantsList = ({
+const   ApplicantsList = ({
   applications,
   checkList,
   setCheckList,
@@ -231,30 +250,44 @@ const ApplicantsList = ({
   section: string;
 }) => {
   const { pressed } = useKeyPress('Shift');
+  const [lastPressed, setLastPressed] = useState(null);
+  useEffect(() => {
+    if (checkList.size === 0 || checkList.size === applications.length)
+      setLastPressed(null);
+  }, [checkList.size]);
+  const handleSingleSelect = (index: number) => {
+    setCheckList((prev) => {
+      const newSet = new Set(prev);
+      const id = applications[index].application_id;
+      if (newSet.has(id)) {
+        newSet.delete(id);
+        setLastPressed(null);
+      } else {
+        newSet.add(id);
+        setLastPressed(id);
+      }
+      return newSet;
+    });
+  };
   const handleSelect = (index: number) => {
     if (!pressed) {
-      setCheckList((prev) => {
-        const newSet = new Set(prev);
-        const id = applications[index].application_id;
-        if (newSet.has(id)) newSet.delete(id);
-        else newSet.add(id);
-        return newSet;
-      });
+      handleSingleSelect(index);
     } else {
-      const start = applications
-        .slice()
-        .findLastIndex(
-          (application, i) =>
-            i <= index && checkList.has(application.application_id),
+      if (lastPressed && !checkList.has(applications[index].application_id)) {
+        const start = applications.findIndex(
+          (application) => application.application_id === lastPressed,
         );
-      setCheckList((prev) => {
-        const newSet = applications.reduce((acc, curr, i) => {
-          if (i > start && i <= index && !checkList.has(curr.application_id))
-            acc.push(curr.application_id);
-          return acc;
-        }, []);
-        return new Set([...prev, ...newSet]);
-      });
+        setCheckList((prev) => {
+          const newSet = applications.reduce((acc, curr, i) => {
+            if ((i - start) * (i - index) <= 0) acc.push(curr.application_id);
+            return acc;
+          }, []);
+          return new Set([...prev, ...newSet]);
+        });
+        setLastPressed(null);
+      } else {
+        handleSingleSelect(index);
+      }
     }
   };
   const [lastLoad, setLastLoad] = useState(10);
@@ -298,7 +331,7 @@ const ApplicantsList = ({
               index={i}
               checkList={checkList}
               handleSelect={handleSelect}
-              isInterview={section === JobApplicationSections.INTERVIEWING}
+              isInterview={section !== JobApplicationSections.NEW}
             />
           </Stack>
         );
@@ -492,37 +525,6 @@ const ActionBar = ({
   );
 };
 
-const AddCandidates = () => {
-  const {
-    openImportCandidates,
-    setOpenImportCandidates,
-    openManualImportCandidates,
-    setOpenManualImportCandidates,
-  } = useJobApplications();
-  return (
-    <>
-      <MuiPopup
-        props={{
-          open: openImportCandidates,
-        }}
-      >
-        <ImportCandidates />
-      </MuiPopup>
-      <MuiPopup
-        props={{
-          open: openManualImportCandidates,
-        }}
-      >
-        <ImportManualCandidates />
-      </MuiPopup>
-      <AddCandidateDropdown
-        onClickManual={{ onClick: () => setOpenManualImportCandidates(true) }}
-        onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
-      />
-    </>
-  );
-};
-
 export default JobApplicationsDashboard;
 
 export function sendEmails(
@@ -609,8 +611,8 @@ export function sendEmails(
                 last_name: candidate.last_name,
                 job_title: candidate.job_title,
                 company_name: candidate.company,
-                interview_link: `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
-                support_link: `https://dev.aglinthq.com/support?id=${candidate.application_id}`,
+                interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
+                support_link: `https://recruiter.aglinthq.com/support?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED
             ? fillEmailTemplate(job?.email_template?.rejection?.body, {

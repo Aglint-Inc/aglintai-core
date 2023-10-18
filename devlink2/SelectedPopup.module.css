@@ -38,6 +38,12 @@
   object-fit: contain;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .selected-popup-main {
   display: flex;
   flex-direction: column;

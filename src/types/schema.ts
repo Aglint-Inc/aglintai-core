@@ -786,6 +786,27 @@ export interface Database {
           }
         ]
       }
+      documents: {
+        Row: {
+          content: string
+          embedding: string | null
+          id: number
+          title: string
+        }
+        Insert: {
+          content: string
+          embedding?: string | null
+          id?: number
+          title: string
+        }
+        Update: {
+          content?: string
+          embedding?: string | null
+          id?: number
+          title?: string
+        }
+        Relationships: []
+      }
       employee: {
         Row: {
           address: Json | null
@@ -1158,6 +1179,7 @@ export interface Database {
           email: string
           email_campaign: string | null
           emails: Json | null
+          embedding: string | null
           feedback: Json | null
           first_name: string
           id: number
@@ -1166,7 +1188,7 @@ export interface Database {
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           jd_score: Json | null
-          job_id: string | null
+          job_id: string
           job_location: string | null
           job_title: string | null
           json_resume: Json | null
@@ -1199,6 +1221,7 @@ export interface Database {
           email: string
           email_campaign?: string | null
           emails?: Json | null
+          embedding?: string | null
           feedback?: Json | null
           first_name: string
           id?: number
@@ -1207,7 +1230,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id: string
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1240,6 +1263,7 @@ export interface Database {
           email?: string
           email_campaign?: string | null
           emails?: Json | null
+          embedding?: string | null
           feedback?: Json | null
           first_name?: string
           id?: number
@@ -1248,7 +1272,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id?: string
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -2350,6 +2374,7 @@ export interface Database {
       public_jobs: {
         Row: {
           active_status: Json
+          application_count: Json
           benefits: string[] | null
           company: string | null
           company_details: string | null
@@ -2357,6 +2382,7 @@ export interface Database {
           department: string | null
           description: string | null
           email_template: Json
+          embedding: string | null
           id: string
           is_campus: boolean
           job_criteria: Json | null
@@ -2364,7 +2390,9 @@ export interface Database {
           job_type: string | null
           location: string | null
           logo: string | null
+          new_screening_setting: Json
           overview: string | null
+          parameter_weights: Json
           posted_by: string
           qualifications: string[] | null
           recruiter_id: string
@@ -2379,6 +2407,7 @@ export interface Database {
         }
         Insert: {
           active_status?: Json
+          application_count?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
@@ -2386,6 +2415,7 @@ export interface Database {
           department?: string | null
           description?: string | null
           email_template?: Json
+          embedding?: string | null
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null
@@ -2393,7 +2423,9 @@ export interface Database {
           job_type?: string | null
           location?: string | null
           logo?: string | null
+          new_screening_setting?: Json
           overview?: string | null
+          parameter_weights?: Json
           posted_by?: string
           qualifications?: string[] | null
           recruiter_id: string
@@ -2408,6 +2440,7 @@ export interface Database {
         }
         Update: {
           active_status?: Json
+          application_count?: Json
           benefits?: string[] | null
           company?: string | null
           company_details?: string | null
@@ -2415,6 +2448,7 @@ export interface Database {
           department?: string | null
           description?: string | null
           email_template?: Json
+          embedding?: string | null
           id?: string
           is_campus?: boolean
           job_criteria?: Json | null
@@ -2422,7 +2456,9 @@ export interface Database {
           job_type?: string | null
           location?: string | null
           logo?: string | null
+          new_screening_setting?: Json
           overview?: string | null
+          parameter_weights?: Json
           posted_by?: string
           qualifications?: string[] | null
           recruiter_id?: string
@@ -2537,6 +2573,7 @@ export interface Database {
           phone_number: string | null
           primary_contact: Json | null
           recruiter_type: string | null
+          roles: Json
           socials: Json | null
           technology_score: string[]
           workplace_type: Json
@@ -2565,6 +2602,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
+          roles?: Json
           socials?: Json | null
           technology_score?: string[]
           workplace_type?: Json
@@ -2593,6 +2631,7 @@ export interface Database {
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_type?: string | null
+          roles?: Json
           socials?: Json | null
           technology_score?: string[]
           workplace_type?: Json
@@ -2602,18 +2641,39 @@ export interface Database {
       recruiter_user: {
         Row: {
           created_at: string
+          email: string | null
+          first_name: string | null
+          join_status: string
+          joined_at: string | null
+          last_name: string | null
+          phone: string | null
+          profile_image: string | null
           recruiter_id: string
           role: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          email?: string | null
+          first_name?: string | null
+          join_status?: string
+          joined_at?: string | null
+          last_name?: string | null
+          phone?: string | null
+          profile_image?: string | null
           recruiter_id: string
           role?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          email?: string | null
+          first_name?: string | null
+          join_status?: string
+          joined_at?: string | null
+          last_name?: string | null
+          phone?: string | null
+          profile_image?: string | null
           recruiter_id?: string
           role?: string
           user_id?: string
@@ -3366,6 +3426,30 @@ export interface Database {
           }
         ]
       }
+      test_db: {
+        Row: {
+          embedding: string | null
+          id: number
+          json: Json | null
+          name: string
+          text: string
+        }
+        Insert: {
+          embedding?: string | null
+          id?: number
+          json?: Json | null
+          name: string
+          text: string
+        }
+        Update: {
+          embedding?: string | null
+          id?: number
+          json?: Json | null
+          name?: string
+          text?: string
+        }
+        Relationships: []
+      }
       url_auth: {
         Row: {
           auth_token: string
@@ -3457,6 +3541,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      add_application_count: {
+        Args: {
+          job_id: string
+          key_to_update: string
+          count_to_add: number
+        }
+        Returns: Json
+      }
+      batchcalcresumejdscore: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       chat_notification_upsert: {
         Args: {
           in_assignment_id: string
@@ -3541,54 +3637,53 @@ export interface Database {
           user_id: string | null
         }
       }
+      interviewing_state_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      match_documents: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: number
+          content: string
+          similarity: number
+        }[]
+      }
+      match_job_applications: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+          job_ids: string[]
+        }
+        Returns: {
+          id: number
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          jd_score: Json
+          feedback: Json
+          resume: string
+          similarity: number
+        }[]
+      }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      test_all_rows: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          created_at: string
-          employer_logo: string | null
-          employer_name: string | null
-          employer_website: string | null
-          is_public: boolean
-          job_apply_is_direct: boolean | null
-          job_apply_link: string | null
-          job_apply_quality_score: string | null
-          job_benefits: string[] | null
-          job_city: string | null
-          job_country: string | null
-          job_description: string | null
-          job_employment_type: string | null
-          job_experience_in_place_of_education: boolean | null
-          job_google_link: string | null
-          job_highlights: Json | null
+      update_application_count: {
+        Args: {
           job_id: string
-          job_is_remote: boolean | null
-          job_latitude: string | null
-          job_longitude: string | null
-          job_max_salary: number | null
-          job_min_salary: number | null
-          job_offer_expiration_datetime_utc: string | null
-          job_offer_expiration_timestamp: number | null
-          job_onet_job_zone: string | null
-          job_onet_soc: string | null
-          job_posted_at_datetime_utc: string | null
-          job_posted_at_timestamp: number | null
-          job_posting_language: string | null
-          job_publisher: string | null
-          job_required_education: Json | null
-          job_required_experience: Json | null
-          job_required_skills: string | null
-          job_salary_currency: string | null
-          job_salary_period: string | null
-          job_search_id: string | null
-          job_state: string | null
-          job_title: string | null
-          last_updated_at: string
-          queries: string[] | null
-        }[]
+          from_key: string
+          to_key: string
+          count_to_move: number
+        }
+        Returns: Json
       }
     }
     Enums: {

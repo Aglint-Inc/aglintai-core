@@ -5,10 +5,6 @@
   align-items: center;
 }
 
-.inbox-list-sl-block.top-bar {
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-}
-
 .checkbox-wrappers-job {
   position: relative;
 
@@ -28,10 +24,6 @@
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
 
   cursor: pointer;
-}
-
-.checkbox-wrappers-job.top-bar {
-  margin-left: 20px;
 }
 
 .add-icon {
@@ -126,11 +118,6 @@
   opacity: 0.8;
 }
 
-.il-priority-option.v-margin-4 {
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
@@ -143,6 +130,12 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .il-dropdown-content {
@@ -165,11 +158,6 @@
   top: 32px;
 }
 
-.il-dropdown-content.status {
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
 .il-dropdown-content-block {
   display: flex;
   padding: 8px;
@@ -190,18 +178,6 @@
 .il-assignee {
   width: 120px;
   margin-left: 32px;
-}
-
-.il-assignee.top {
-  color: var(--black-9b0fc3fc);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.rd-email-content-input {
-  min-height: 180px;
-  margin-bottom: 12px;
-  border: 1px none black;
 }
 
 .il-assignee.content {
@@ -238,12 +214,6 @@
   color: var(--black-9b0fc3fc);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .text-color-black.inline-block.text-red-500 {
   color: var(--red500-5e487426);
 }
@@ -276,10 +246,6 @@
   font-weight: 600;
 }
 
-.text-green-800 {
-  color: hsla(157.5, 68.57%, 13.73%, 1.00);
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
@@ -293,18 +259,56 @@
 }
 
 .text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+  color: var(--kale-600);
+}
+
+.text-yellow-700 {
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
+}
+
+.text-grey-500 {
+  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+.text-yellow-600 {
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
 .il-job-info {
   width: 260px;
   margin-left: 32px;
-}
-
-.il-job-info.top {
-  color: var(--black-9b0fc3fc);
-  font-size: 12px;
-  line-height: 1.4;
 }
 
 .il-job-info.content {
@@ -317,36 +321,6 @@
 .text-sm {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
 }
 
 .ils-dropdown-option {
@@ -408,22 +382,9 @@
   margin-left: 32px;
 }
 
-.il-create-date.top {
-  color: var(--black-9b0fc3fc);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .il-actions {
   width: 60px;
   margin-left: 32px;
-}
-
-.il-actions.top {
-  color: var(--black-9b0fc3fc);
-  font-size: 12px;
-  line-height: 1.4;
-  text-align: right;
 }
 
 .il-actions.content {

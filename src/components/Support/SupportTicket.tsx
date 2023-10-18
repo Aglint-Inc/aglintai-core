@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Avatar,
+  AvatarProps,
   IconButton,
   Stack,
   TextField,
@@ -21,7 +22,10 @@ import { TicketSideDrawer } from '@/devlink/TicketSideDrawer';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
+import {
+  getPriorityIcon,
+  useSupportContext,
+} from '@/src/context/SupportContext/SupportContext';
 import {
   EmailTemplateType,
   JobApplcationDB,
@@ -34,9 +38,11 @@ import {
   allPriority,
   allStatus,
   fillEmailTemplate,
+  getCandidateStatusColor,
   mapPriorityColor,
   mapStatusColor,
 } from '@/src/utils/support/supportUtils';
+import { capitalizeAll, getRandomColor } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import TipTapEditor from '../Common/richTextEditor/RichTextBlock';
@@ -48,11 +54,19 @@ dayjs.extend(relativeTime);
 function SupportTicketDetails({
   ticketProp,
   onClose,
+  candidateBackgroundColor,
 }: {
   ticketProp: Support_ticketType & { jobsDetails: Public_jobsType };
   onClose: () => void;
+  candidateBackgroundColor?: string;
 }) {
-  const { updateTicket, allAssignee } = useSupportContext();
+  const {
+    tickets,
+    updateTicket,
+    allAssignee,
+    openTicketIndex,
+    setOpenTicketIndex,
+  } = useSupportContext();
   const router = useRouter();
   const { userDetails, recruiter } = useAuthDetails();
   const [ticket, setTicket] = useState<
@@ -85,6 +99,24 @@ function SupportTicketDetails({
     // @ts-ignore
     return updateTicket(data, ticket.id);
   };
+  useEffect(() => {
+    const onNev = function onPress(event) {
+      if (event.shiftKey) {
+        // Do something awesome
+        if (event.key === 'ArrowLeft') {
+          openTicketIndex - 1 < 0
+            ? setOpenTicketIndex(tickets.length - 1)
+            : setOpenTicketIndex(openTicketIndex - 1);
+        } else if (event.key === 'ArrowRight') {
+          setOpenTicketIndex((openTicketIndex + 1) % tickets.length);
+        }
+      }
+    };
+    document.addEventListener('keydown', onNev, false);
+    return () => {
+      document.removeEventListener('keydown', onNev, false);
+    };
+  }, [openTicketIndex]);
 
   useEffect(() => {
     // getTicket(ticket_id).then((data) => {
@@ -105,9 +137,9 @@ function SupportTicketDetails({
           ?.emailTemplates,
       );
       ticketProp?.application_id &&
-        getJobApplicationDetails(ticketProp.application_id).then(
-          (data) => data && setApplication(data),
-        );
+        getJobApplicationDetails(ticketProp.application_id).then((data) => {
+          return data && setApplication(data);
+        });
     }
   }, [ticketProp]);
   const assignedTo =
@@ -116,13 +148,12 @@ function SupportTicketDetails({
       return ticketProp.assign_to === item.id;
     });
   return (
-    <Stack width={'70vw'}>
+    <Stack width={{ sm: '100%', md: '930px' }}>
       {ticket && (
         <TicketSideDrawer
           textAppliedJobCompany={ticket.jobsDetails?.company}
           textAppliedJobPostedDate={
-            application &&
-            new Date(application?.created_at).toLocaleDateString()
+            application && dayjs(application?.created_at).fromNow()
           }
           slotAssignee={
             <AssignmentComponent
@@ -137,41 +168,51 @@ function SupportTicketDetails({
           }
           slotPriority={
             <PriorityComponent
-              priority={ticket.priority}
+              priority={capitalize(ticket?.priority || '')}
               // @ts-ignore
               setPriority={(priority) => callUpdateTicket({ priority })}
             />
           }
           slotStatus={
             <StatusComponent
-              status={ticket.state}
+              status={capitalize(ticket?.state || '')}
               // @ts-ignore
               setStatus={(state) => callUpdateTicket({ state })}
             />
           }
           textAppliedJobRole={ticket.jobsDetails?.job_title}
           textCreatedDate={dayjs(ticket.created_at).fromNow()}
-          textCandidateMail={ticket.email || '-'}
+          textCandidateMail={application?.email || '-'}
           textCandidateName={ticket.user_name}
           // textCandidateSite={ticket.}
-          textCandidateStatus={application && application.status}
+          textCandidateStatus={application && capitalize(application.status)}
+          slotStatusHeading={
+            <StatusComponent
+              status={capitalize(ticket?.state || '')}
+              // @ts-ignore
+              setStatus={(state) => callUpdateTicket({ state })}
+            />
+          }
           colorPropsCandidateStatus={{
             style: {
-              color: mapPriorityColor(ticket.priority),
+              ...getCandidateStatusColor(
+                application?.status || 'invitation sent',
+              ),
             },
           }}
           textTicketId={ticket.id}
-          textIssuesTitle={ticket.title}
+          textIssuesTitle={`#${ticket.id}: ${ticket.title}`}
           slotCandidateImage={
-            <Avatar
+            <CustomAvatar
               src={''}
               variant='rounded'
               alt={ticket.user_name}
-              sx={{ height: '100%', width: '100%' }}
+              isRandomColor={true}
+              backgroundColor={candidateBackgroundColor}
             />
           }
-          textCandiatePhone={'-'}
-          textCandidateSite={'-'}
+          textCandiatePhone={application?.phone || '-'}
+          textCandidateSite={application?.linkedin || '-'}
           slotChatBox={
             <>
               {chatBox(
@@ -186,19 +227,37 @@ function SupportTicketDetails({
               )}
             </>
           }
-          // slotChatBox={'aslk'}
           slotMessageSuggestion={[
             {
-              type: 'Send Interview',
+              type: 'Invitation mail',
               function: () =>
                 sendEmail({
                   application_id: ticket.application_id,
                   email: application.email,
-                  email_type: 'interviewLink',
+                  email_type: 'qualified',
                   details: {
-                    link: getInterviewUrl(ticket.application_id),
                     fromEmail: recruiter.email,
                     fromName: recruiter.name,
+                    temples: {
+                      subject: fillEmailTemplate(
+                        emailTemplates.interview.subject,
+                        {
+                          first_name: application.first_name,
+                          last_name: application.last_name,
+                          job_title: application.job_title,
+                          company_name: application.company,
+                        },
+                      ),
+                      body: fillEmailTemplate(emailTemplates.interview.body, {
+                        first_name: application.first_name,
+                        last_name: application.last_name,
+                        job_title: application.job_title,
+                        company_name: application.company,
+                      }).replace(
+                        '[interviewLink]',
+                        getInterviewUrl(ticket.application_id),
+                      ),
+                    },
                   },
                 }),
             },
@@ -232,39 +291,6 @@ function SupportTicketDetails({
                   },
                 }),
             },
-            {
-              type: 'Qualified mail',
-              function: () =>
-                sendEmail({
-                  application_id: ticket.application_id,
-                  email: application.email,
-                  email_type: 'qualified',
-                  details: {
-                    fromEmail: recruiter.email,
-                    fromName: recruiter.name,
-                    temples: {
-                      subject: fillEmailTemplate(
-                        emailTemplates.interview.subject,
-                        {
-                          first_name: application.first_name,
-                          last_name: application.last_name,
-                          job_title: application.job_title,
-                          company_name: application.company,
-                        },
-                      ),
-                      body: fillEmailTemplate(emailTemplates.interview.body, {
-                        first_name: application.first_name,
-                        last_name: application.last_name,
-                        job_title: application.job_title,
-                        company_name: application.company,
-                      }).replace(
-                        '[interviewLink]',
-                        getInterviewUrl(ticket.application_id),
-                      ),
-                    },
-                  },
-                }),
-            },
           ].map((item, index) => (
             <TicketMessageSuggestion
               textMessageSuggestion={item.type}
@@ -272,9 +298,23 @@ function SupportTicketDetails({
               onClickSuggestion={{
                 onClick: () => {
                   item.function().then(({ emailSend }) => {
-                    emailSend
-                      ? toast.success('Email sent')
-                      : toast.error('Email not sent');
+                    if (emailSend) {
+                      callUpdateTicket({
+                        // @ts-ignore
+                        content: [
+                          ...(ticket?.content ? ticket.content : []),
+                          {
+                            type: 'update',
+                            from: 'it_support',
+                            id: userDetails.user.id,
+                            name: recruiter?.name,
+                            text: `${item.type} Email Sent`,
+                            timeStamp: new Date().toISOString(),
+                          },
+                        ],
+                      });
+                      toast.success('Email sent');
+                    } else toast.error('Email not sent');
                   });
                 },
               }}
@@ -293,12 +333,24 @@ function SupportTicketDetails({
           onClickAppliedViewJob={{
             onClick: () => {
               router.push(
-                ` https://dev.aglinthq.com/job-post/${ticket.job_id}`,
+                ` https://recruiter.aglinthq.com/job-post/${ticket.job_id}`,
               );
             },
           }}
           onClickClose={{
             onClick: onClose,
+          }}
+          onClickNext={{
+            onClick: () => {
+              setOpenTicketIndex((openTicketIndex + 1) % tickets.length);
+            },
+          }}
+          onClickPrev={{
+            onClick: () => {
+              openTicketIndex - 1 < 0
+                ? setOpenTicketIndex(tickets.length - 1)
+                : setOpenTicketIndex(openTicketIndex - 1);
+            },
           }}
         />
       )}
@@ -368,15 +420,13 @@ const chatBox = (
           key={index}
           slotChatImage={
             // @ts-ignore
-            <Avatar
-              variant='rounded'
-              src={''}
-              alt={item.name}
-              sx={{ height: '100%', width: '100%' }}
-            />
+            <CustomAvatar variant='rounded' src={''} alt={item.name} />
           }
           textMessages={
-            <Typography dangerouslySetInnerHTML={{ __html: item.text }} />
+            <Typography
+              dangerouslySetInnerHTML={{ __html: item.text }}
+              fontSize={'14px'}
+            />
           }
           textTime={dayjs(item.timeStamp).fromNow()}
           textName={item.name}
@@ -417,7 +467,8 @@ const AddNewMessage = ({ sendMessage }) => {
         options={false}
         placeholder='Type Message'
         value={message}
-        minRows={4}
+        minRows={1}
+        maxRows={4}
         onChange={(e) => {
           setMessage(e.html);
         }}
@@ -427,7 +478,7 @@ const AddNewMessage = ({ sendMessage }) => {
           }
         }}
         toolboxPosition='bottom'
-        customOptions={
+        customSend={
           <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
             <IconButton
               disabled={false}
@@ -436,18 +487,61 @@ const AddNewMessage = ({ sendMessage }) => {
                 sendMessage(message)?.then(() => setMessage(''));
               }}
             >
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M3 13.0001H9V11.0001H3V1.8457C3 1.56956 3.22386 1.3457 3.5 1.3457C3.58425 1.3457 3.66714 1.36699 3.74096 1.4076L22.2034 11.562C22.4454 11.695 22.5337 11.9991 22.4006 12.241C22.3549 12.3241 22.2865 12.3925 22.2034 12.4382L3.74096 22.5925C3.499 22.7256 3.19497 22.6374 3.06189 22.3954C3.02129 22.3216 3 22.2387 3 22.1544V13.0001Z'
-                  fill='#2F3941'
-                />
-              </svg>
+              {message &&
+              message?.replaceAll('<p>', '').replaceAll('</p>', '').trim() !==
+                '' ? (
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <rect width='24' height='24' rx='3.42857' fill='#2F3941' />
+                  <g clip-path='url(#clip0_3401_41257)'>
+                    <path
+                      d='M6.85693 12.5708H10.2855V11.4279H6.85693V6.19685C6.85693 6.03905 6.98485 5.91113 7.14265 5.91113C7.19079 5.91113 7.23816 5.9233 7.28034 5.9465L17.8303 11.749C17.9686 11.825 18.019 11.9988 17.943 12.137C17.9169 12.1845 17.8778 12.2236 17.8303 12.2497L7.28034 18.0522C7.14208 18.1282 6.96834 18.0778 6.8923 17.9395C6.8691 17.8974 6.85693 17.85 6.85693 17.8018V12.5708Z'
+                      fill='white'
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id='clip0_3401_41257'>
+                      <rect
+                        width='13.7143'
+                        height='13.7143'
+                        fill='white'
+                        transform='translate(5.14307 5.14258)'
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+              ) : (
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <rect width='24' height='24' rx='3.42857' fill='#F8F9F9' />
+                  <g clip-path='url(#clip0_3401_41253)'>
+                    <path
+                      d='M6.85693 12.5708H10.2855V11.4279H6.85693V6.19685C6.85693 6.03905 6.98485 5.91113 7.14265 5.91113C7.19079 5.91113 7.23816 5.9233 7.28034 5.9465L17.8303 11.749C17.9686 11.825 18.019 11.9988 17.943 12.137C17.9169 12.1845 17.8778 12.2236 17.8303 12.2497L7.28034 18.0522C7.14208 18.1282 6.96834 18.0778 6.8923 17.9395C6.8691 17.8974 6.85693 17.85 6.85693 17.8018V12.5708Z'
+                      fill='#87929D'
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id='clip0_3401_41253'>
+                      <rect
+                        width='13.7143'
+                        height='13.7143'
+                        fill='white'
+                        transform='translate(5.14307 5.14258)'
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+              )}
             </IconButton>
           </Stack>
         }
@@ -457,7 +551,7 @@ const AddNewMessage = ({ sendMessage }) => {
 };
 
 const getInterviewUrl = (application_id: string) => {
-  return `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${application_id}`;
+  return `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${application_id}`;
 };
 
 const sendEmail = ({
@@ -519,13 +613,19 @@ const AssignmentComponent = ({
           }}
         >
           <AssigneeSmall
-            textAssignedtoName={assign_to || 'Not Assigned'}
+            textAssignedtoName={
+              <Stack
+                className='one-line-clamp'
+                dangerouslySetInnerHTML={{
+                  __html: assign_to || 'Not Assigned',
+                }}
+              ></Stack>
+            }
             slotAssignedToImage={
-              <Avatar
+              <CustomAvatar
                 src={imageUrl || ''}
                 variant='rounded'
                 alt={'user_name'}
-                sx={{ height: '100%', width: '100%' }}
               />
             }
           />
@@ -558,6 +658,7 @@ const PriorityComponent = ({
         <Stack onClick={() => setOpen(true)}>
           <PrioritySmall
             textPriorityLevel={priority}
+            slotPriorityIcon={getPriorityIcon(priority)}
             colorPropsPriorityText={{
               style: {
                 color: mapPriorityColor(priority),
@@ -592,7 +693,7 @@ const StatusComponent = ({
       ) : (
         <Stack onClick={() => setOpen(true)}>
           <StatusPillSmall
-            textStatus={status}
+            textStatus={capitalizeAll(status)}
             bgColorPropsStatus={{
               style: {
                 backgroundColor: mapStatusColor(status),
@@ -666,5 +767,39 @@ const CustomAutoComplete = ({
         }
       }}
     />
+  );
+};
+
+const CustomAvatar = ({
+  src,
+  alt,
+  variant,
+  isRandomColor = false,
+  backgroundColor,
+}: {
+  src: string;
+  alt: string;
+  variant?: AvatarProps['variant'];
+  isRandomColor?: boolean;
+  backgroundColor?: string;
+}) => {
+  return (
+    <Avatar
+      src={src}
+      alt={alt || ''}
+      {...(variant ? { variant } : {})}
+      sx={{
+        height: '100%',
+        width: '100%',
+        fontSize: '1em',
+        ...(backgroundColor
+          ? { backgroundColor }
+          : isRandomColor
+          ? { backgroundColor: getRandomColor() }
+          : {}),
+      }}
+    >
+      {alt.toLocaleUpperCase().slice(0, 1)}
+    </Avatar>
   );
 };

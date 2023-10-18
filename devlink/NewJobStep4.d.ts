@@ -7,4 +7,7 @@ declare function NewJobStep4(props: {
   slotInterviewEmail?: Types.Devlink.Slot;
   slotApplicationWorkflow?: Types.Devlink.Slot;
   slotDisqualifyEmail?: Types.Devlink.Slot;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProcced?: Types.Devlink.RuntimeProps;
+  isJobAdd?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

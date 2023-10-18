@@ -33,4 +33,5 @@ declare function JobScreening(props: {
   interviewScore?: Types.Visibility.VisibilityConditions;
   selectAllCheckbox?: Types.Devlink.RuntimeProps;
   isSelectAllChecked?: Types.Visibility.VisibilityConditions;
+  onClickAddCandidates?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

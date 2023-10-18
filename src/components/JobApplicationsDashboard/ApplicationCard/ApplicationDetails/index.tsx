@@ -151,7 +151,7 @@ function ApplicationDetails({
                           onClick: () => {
                             navigator.clipboard
                               .writeText(
-                                `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
+                                `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                               )
                               .then(() => {
                                 toast.success('Link Copied');
@@ -178,7 +178,7 @@ function ApplicationDetails({
                           onClick: () => {
                             navigator.clipboard
                               .writeText(
-                                `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
+                                `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                               )
                               .then(() => {
                                 toast.success('Link Copied');
@@ -226,7 +226,7 @@ function ApplicationDetails({
                         onClick: () => {
                           navigator.clipboard
                             .writeText(
-                              `https://dev.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
+                              `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
                             )
                             .then(() => {
                               toast.success('Link Copied');
@@ -395,7 +395,7 @@ function ApplicationDetails({
                   textFeedback={giveRateInWordToResume(jdScore)}
                 />
               }
-              isResumeVisible={applicationDetails.resume && jdScore > 0}
+              isResumeVisible={applicationDetails.resume}
               // isResumeVisible={false}
               textPhone={
                 applicationDetails.phone ? applicationDetails.phone : '--'
@@ -578,23 +578,6 @@ export function giveColorForInterviewScore(rating) {
     : '#d93f4c';
 }
 
-export function getInterviewScore(feedback) {
-  const overAllScore = feedback?.length
-    ? Math.floor(
-        feedback.reduce(
-          (sum, entry) =>
-            sum +
-            Number(
-              String(entry.rating).includes('/')
-                ? entry.rating.split('/')[0]
-                : entry.rating,
-            ),
-          0,
-        ) / feedback.length,
-      )
-    : 0;
-  return overAllScore;
-}
 export const handleDownload = async (pdfUrl) => {
   toast.message('Resume downloading...');
 

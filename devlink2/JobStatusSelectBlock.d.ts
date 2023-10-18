@@ -10,4 +10,5 @@ declare function JobStatusSelectBlock(props: {
   isSchedule?: Types.Visibility.VisibilityConditions;
   slotBody?: Types.Devlink.Slot;
   slotButtons?: Types.Devlink.Slot;
+  scheduleText?: React.ReactNode;
 }): React.JSX.Element;

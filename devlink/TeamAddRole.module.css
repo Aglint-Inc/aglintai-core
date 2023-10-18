@@ -316,6 +316,13 @@
   letter-spacing: -0.154px;
 }
 
+.button-outline-blue-600.regular.with-icon {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
 .button-red-link {
   display: flex;
   padding: 10px 16px;

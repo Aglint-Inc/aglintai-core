@@ -182,7 +182,11 @@ const useJobActions = () => {
 
   const handleJobUpdate = async (jobId: string, newJob: Partial<JobType>) => {
     if (recruiter) {
-      const { data, error } = await updateJobDbAction({ id: jobId, ...newJob });
+      const { data, error } = await updateJobDbAction({
+        id: jobId,
+        ...newJob,
+        recruiter_id: recruiter.id,
+      });
       if (data) {
         const action: Action = {
           type: ActionType.UPDATE,
@@ -232,6 +236,10 @@ const useJobActions = () => {
     }
   };
 
+  const handleGetJob = (jobId: string) => {
+    return jobsData.jobs.find((job) => job.id === jobId);
+  };
+
   const handleJobError = (error) => {
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
@@ -254,7 +262,9 @@ const useJobActions = () => {
     handleUIJobUpdate,
     handleJobDelete,
     handleJobError,
+    handleGetJob,
     initialLoad,
+    handleApplicationsRead,
   };
 
   return value;

@@ -3,12 +3,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { JobDashboardEmpty, JobsDashboard } from '@/devlink';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobType } from '@/src/types/data.types';
 
-import CreateNewJob from './JobPostCreateUpdate/CreateFlow';
-import { useJobForm } from './JobPostCreateUpdate/JobPostFormProvider';
 import JobsList from './JobsList';
 import { searchJobs, sendEmail } from './utils';
 import Icon from '../Common/Icons/Icon';
@@ -18,58 +15,68 @@ import UITextField from '../Common/UITextField';
 const DashboardComp = () => {
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
-  const [filteredJobs, setFilteredJobs] = useState<JobType[]>(jobsData.jobs);
-  const { handleInitializeForm } = useJobForm();
-  const { recruiter } = useAuthDetails();
+  const [filteredJobs, setFilteredJobs] = useState<JobType[]>(
+    jobsData.jobs?.filter((job) => !job.is_campus),
+  );
 
   useEffect(() => {
     if (router.isReady) {
       if (!router.query.status) {
-        router.push(`?status=all`, undefined, {
+        router.push(`?status=active`, undefined, {
           shallow: true,
         });
       }
-      if (router.query.flow == 'create') {
-        handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
-      }
       if (jobsData?.jobs) {
-        if (router.query.status == 'all') {
-          setFilteredJobs(jobsData.jobs);
-        } else if (router.query.status == 'active') {
-          const filter = jobsData.jobs.filter(
-            (job) =>
-              (job.active_status.interviewing.isActive ||
-                job.active_status.sourcing.isActive) &&
-              !job.active_status.closed.isActive,
-          );
-          setFilteredJobs(filter);
-        } else if (router.query.status == 'close') {
-          const filter = jobsData.jobs.filter((job) => {
-            return job.active_status.closed.isActive;
-          });
-          setFilteredJobs(filter);
-        } else if (router.query.status == 'inactive') {
-          const filter = jobsData.jobs.filter(
-            (job) =>
-              !(
-                job.active_status.interviewing.isActive ||
-                job.active_status.sourcing.isActive
-              ) && !job.active_status.closed.isActive,
-          );
-          setFilteredJobs(filter);
-        } else {
-          setFilteredJobs(jobsData.jobs);
-        }
+        initialFilterJobs();
       }
     }
   }, [router, jobsData]);
 
-  const handlerFilter = (e) => {
+  const initialFilterJobs = () => {
     if (router.query.status == 'all') {
-      setFilteredJobs([...searchJobs(jobsData.jobs, e.target.value)]);
+      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
     } else if (router.query.status == 'active') {
       const filter = jobsData.jobs.filter(
         (job) =>
+          !job.is_campus &&
+          (job.active_status.interviewing.isActive ||
+            job.active_status.sourcing.isActive) &&
+          !job.active_status.closed.isActive,
+      );
+      setFilteredJobs(filter);
+    } else if (router.query.status == 'close') {
+      const filter = jobsData.jobs.filter((job) => {
+        return !job.is_campus && job.active_status.closed.isActive;
+      });
+      setFilteredJobs(filter);
+    } else if (router.query.status == 'inactive') {
+      const filter = jobsData.jobs.filter(
+        (job) =>
+          !job.is_campus &&
+          !(
+            job.active_status.interviewing.isActive ||
+            job.active_status.sourcing.isActive
+          ) &&
+          !job.active_status.closed.isActive,
+      );
+      setFilteredJobs(filter);
+    } else {
+      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
+    }
+  };
+
+  const handlerFilter = (e) => {
+    if (router.query.status == 'all') {
+      setFilteredJobs([
+        ...searchJobs(
+          jobsData.jobs.filter((job) => !job.is_campus),
+          e.target.value,
+        ),
+      ]);
+    } else if (router.query.status == 'active') {
+      const filter = jobsData.jobs.filter(
+        (job) =>
+          !job.is_campus &&
           (job.active_status.interviewing.isActive ||
             job.active_status.sourcing.isActive) &&
           !job.active_status.closed.isActive,
@@ -77,16 +84,18 @@ const DashboardComp = () => {
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'close') {
       const filter = jobsData.jobs.filter(
-        (job) => job.active_status.closed.isActive,
+        (job) => !job.is_campus && job.active_status.closed.isActive,
       );
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'inactive') {
       const filter = jobsData.jobs.filter(
         (job) =>
+          !job.is_campus &&
           !(
             job.active_status.interviewing.isActive ||
             job.active_status.sourcing.isActive
-          ) && !job.active_status.closed.isActive,
+          ) &&
+          !job.active_status.closed.isActive,
       );
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     }
@@ -102,7 +111,7 @@ const DashboardComp = () => {
             <JobDashboardEmpty
               onClickAddJob={{
                 onClick: () => {
-                  handleInitializeForm({ type: 'new', recruiter, slideNo: 1 });
+                  router.push('/jobs/new');
                 },
               }}
               onClickRequestIntegration={{ onClick: sendEmail }}
@@ -118,6 +127,7 @@ const DashboardComp = () => {
               slotSearchInputJob={
                 <Stack maxWidth={'260px'} width={'100%'}>
                   <UITextField
+                    height='42px'
                     fullWidth
                     placeholder='Search'
                     onChange={(e) => {
@@ -146,17 +156,11 @@ const DashboardComp = () => {
               }
               onClickCreateNewJob={{
                 onClick: () => {
-                  handleInitializeForm({
-                    type: 'new',
-                    recruiter,
-                    slideNo: 1,
-                  });
+                  router.push('/jobs/new');
                 },
               }}
             />
           )}
-
-          <CreateNewJob />
         </>
       )}
     </Stack>
