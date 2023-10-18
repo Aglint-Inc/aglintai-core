@@ -313,13 +313,13 @@ function JobForm() {
             <SectionWarning warnings={warning} slidePath={'details'} />
           </>
         }
-        isDisclaimerDetailsVisible={!isEmpty(get(warning, 'details.err', []))}
-        isDisclaimerApplyFormVisible={true}
-        isDisclaimerScreeningVisible={true}
-        isDisclaimerEmailVisible={true}
-        isDisclaimerScoreVisible={true}
-        isDisclaimerWorkflowVisible={true}
-        isSavedChangesVisible={true}
+        isDisclaimerDetailsVisible={false}
+        isDisclaimerApplyFormVisible={false}
+        isDisclaimerScreeningVisible={false}
+        isDisclaimerEmailVisible={false}
+        isDisclaimerScoreVisible={false}
+        isDisclaimerWorkflowVisible={false}
+        isSavedChangesVisible={false}
         // textJobEdit={jobForm.formType === 'edit' ? 'Edit' : 'Create Job'}
       />
     </>
