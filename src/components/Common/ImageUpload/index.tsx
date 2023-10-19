@@ -209,7 +209,7 @@ function ImageUpload({
                         e.stopPropagation();
                         if (setImage) setImage(null);
                         if (handleUpdateProfile)
-                          await handleUpdateProfile({ image_url: null });
+                          await handleUpdateProfile({ profile_image: null });
                       }}
                       sx={{ color: '#fff', cursor: 'pointer' }}
                     >

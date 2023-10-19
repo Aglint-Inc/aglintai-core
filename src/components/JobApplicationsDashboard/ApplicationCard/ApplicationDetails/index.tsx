@@ -1,6 +1,6 @@
 import { /*Collapse,*/ Dialog, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import {
   CandidateDetails,
@@ -489,41 +489,79 @@ const NewJobApplicationSideDrawer = ({
 };
 
 const NewCandidateDetails = ({ applicationDetails }) => {
+  const experienceRef = useRef(null);
+  const scoreRef = useRef(null);
+  const educationRef = useRef(null);
+  const skillsRef = useRef(null);
   return (
     <CandidateDetails
+      onClickScore={{
+        onClick: () =>
+          scoreRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+          }),
+      }}
       slotInterviewScore={
-        applicationDetails.feedback ? (
-          <NewInterviewScoreDetails applicationDetails={applicationDetails} />
-        ) : (
-          <></>
-        )
+        <Stack ref={scoreRef}>
+          {applicationDetails.feedback ? (
+            <NewInterviewScoreDetails applicationDetails={applicationDetails} />
+          ) : (
+            <></>
+          )}
+          {applicationDetails.json_resume ? (
+            <NewResumeScoreDetails applicationDetails={applicationDetails} />
+          ) : (
+            <></>
+          )}
+        </Stack>
       }
-      slotResumeScore={
-        applicationDetails.json_resume ? (
-          <NewResumeScoreDetails applicationDetails={applicationDetails} />
-        ) : (
-          <></>
-        )
-      }
+      onClickEducation={{
+        onClick: () =>
+          educationRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+          }),
+      }}
       slotEducation={
         applicationDetails.json_resume ? (
-          <NewEducationDetails
-            education={applicationDetails.json_resume.education}
-          />
+          <Stack ref={educationRef}>
+            <NewEducationDetails
+              education={applicationDetails.json_resume.education}
+            />
+          </Stack>
         ) : (
           <></>
         )
       }
+      onClickExperience={{
+        onClick: () =>
+          experienceRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+          }),
+      }}
       slotExperiences={
         applicationDetails.json_resume ? (
-          <NewExperienceDetails work={applicationDetails.json_resume.work} />
+          <Stack ref={experienceRef}>
+            <NewExperienceDetails work={applicationDetails.json_resume.work} />
+          </Stack>
         ) : (
           <></>
         )
       }
+      onClickSkills={{
+        onClick: () =>
+          skillsRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+          }),
+      }}
       slotSkills={
         applicationDetails.json_resume ? (
-          <NewSkillDetails skills={applicationDetails.json_resume.skills} />
+          <Stack ref={skillsRef}>
+            <NewSkillDetails skills={applicationDetails.json_resume.skills} />
+          </Stack>
         ) : (
           <></>
         )
@@ -558,15 +596,12 @@ const NewInterviewScoreDetails = ({ applicationDetails }) => {
 const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
-      <SmallCircularScore
-        finalScore={parseInt(f.rating.replace('/100', ''))}
-        triggerAnimation={true}
-      />
+      <SmallCircularScore finalScore={f.rating} triggerAnimation={true} />
     );
     return (
       <ResumeFeedbackScore
         key={i}
-        textFeedback={f.topic}
+        textFeedback={capitalize(f.topic)}
         textScoreState={circularScore}
       />
     );
