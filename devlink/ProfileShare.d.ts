@@ -32,4 +32,10 @@ declare function ProfileShare(props: {
   onClickSkills?: Types.Devlink.RuntimeProps;
   onClickActivity?: Types.Devlink.RuntimeProps;
   slotCompanyLogo?: Types.Devlink.Slot;
+  isInterviewActive?: Types.Visibility.VisibilityConditions;
+  isResumeActive?: Types.Visibility.VisibilityConditions;
+  isEducationActive?: Types.Visibility.VisibilityConditions;
+  isExperienceActive?: Types.Visibility.VisibilityConditions;
+  isSkillActive?: Types.Visibility.VisibilityConditions;
+  isOverviewVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

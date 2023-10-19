@@ -1,41 +1,55 @@
-import { Dialog, Stack, Typography } from '@mui/material';
-import { capitalize } from '@mui/material/utils';
+import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
+  CandidateEducationCard,
+  CandidateExperienceCard,
+  CandidateResumeScore,
+  CandidateSkillPills,
   DetailedFeedbackCard,
-  InterviewResult,
-  InterviewScreenFeedback,
-  ResumeResult,
+  InterviewAiTranscriptCard,
+  InterviewCandidateCard,
+  ProfileInterviewScore,
+  ProfileShare,
+  ResumeFeedbackScore,
 } from '@/devlink';
-import CustomProgress from '@/src/components/Common/CustomProgress';
 import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import ScoreWheel, {
+  ScoreWheelParams,
+  getOverallScore,
+} from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import {
+  InterviewFeedbackParams,
+  NewResumeScoreDetails,
+  ResumeFeedbackParams,
+  Transcript,
   giveRateInWordToResume,
   handleDownload,
-  Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
-import InterviewScoreCard from '@/src/components/JobApplicationsDashboard/Common/InreviewScoreCard';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import JdFetching from '@/src/components/JobApplicationsDashboard/ApplicationCard/JdFetching';
+import { JobApplcationDB, JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
-import toast from '@/src/utils/toast';
+import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
+import SmallCircularScore from '@/src/components/Common/SmallCircularScore';
+import { calculateOverallScore } from '@/src/utils/support/supportUtils';
+import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import React from 'react';
+import Image from 'next/image';
 
 function InterviewFeedbackPage() {
   const router = useRouter();
-
-  const [applicationDetails, setApplicationDetails] = useState({});
-  const [job, setJob] = useState({});
+  const [applicationDetails, setApplicationDetails] =
+    useState<JobApplcationDB>();
+  const [job, setJob] = useState<JobTypeDB>();
+  const [recruiter, setRecruiter] = useState();
   const [openTranscript, setOpenTranscript] = useState(false);
   const [loader, setLoader] = useState(true);
-
   const [openResume, setOpenResume] = useState(false);
-
-  const jdScore = applicationDetails?.jd_score?.over_all?.score ?? 0;
 
   useEffect(() => {
     const { id } = router.query;
@@ -61,24 +75,53 @@ function InterviewFeedbackPage() {
       .select()
       .eq('id', job_id);
     if (!error) {
+      const { data: recruiter, error: errorRecruiter } = await supabase
+        .from('recuiter')
+        .select()
+        .eq('id', data[0].recruiter_id);
+      if (!errorRecruiter) {
+        setRecruiter(recruiter[0]);
+      }
       setJob(data[0]);
+      setLoader(false);
     }
-    setLoader(false);
   }
-  const overAllScore = applicationDetails.feedback
-    ? Math.floor(
-        applicationDetails.feedback.reduce(
-          (sum, entry) =>
-            sum +
-            Number(
-              String(entry.rating).includes('/')
-                ? entry.rating.split('/')[0]
-                : entry.rating,
-            ),
-          0,
-        ) / applicationDetails.feedback.length,
-      )
-    : 0;
+  let resumeScoreWheel = <></>;
+  let interviewScore = 0;
+
+  if (applicationDetails && job) {
+    interviewScore = getInterviewScore(applicationDetails.feedback);
+    const jobDetails = applicationDetails as unknown as {
+      jd_score: { summary: { feedback: undefined } };
+    };
+    const jdScoreObj = applicationDetails.jd_score as any;
+
+    const jdScore = calculateOverallScore({
+      qualification: jdScoreObj.qualification,
+      skills: jdScoreObj.skills_score,
+    });
+
+    resumeScoreWheel =
+      jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
+      applicationDetails.resume &&
+      applicationDetails.jd_score !== null ? (
+        applicationDetails.jd_score === 'loading' ? (
+          <Stack justifyContent={'center'} alignItems={'center'}>
+            <JdFetching />
+            Calculating
+          </Stack>
+        ) : (
+          <ScoreWheel
+            id={`ScoreWheelApplicationCard${Math.random()}`}
+            weights={job.parameter_weights as ScoreWheelParams}
+            score={jdScore}
+            fontSize={7}
+          />
+        )
+      ) : (
+        <Stack>Not found</Stack>
+      );
+  }
 
   if (loader) {
     return (
@@ -88,7 +131,7 @@ function InterviewFeedbackPage() {
     );
   } else
     return (
-      <div>
+      <>
         <Dialog
           sx={{
             '& .MuiDialog-paper': {
@@ -121,7 +164,144 @@ function InterviewFeedbackPage() {
             />
           </Stack>
         </SidePanelDrawer>
-        <InterviewScreenFeedback
+
+        <ProfileShare
+          isOverviewVisible={false}
+          textInterviewScore={`${interviewScore} / 100`}
+          slotResumeScore={resumeScoreWheel}
+          slotInterview={
+            <ProfileInterviewScore
+              slotFeedbackScore={
+                <InterviewFeedbackParams
+                  feedbackParamsObj={applicationDetails.feedback}
+                />
+              }
+              slotDetailedFeedback={applicationDetails.feedback.map(
+                (ele, i) => {
+                  const circularScore = (
+                    <SmallCircularScore
+                      finalScore={ele.rating}
+                      triggerAnimation={true}
+                    />
+                  );
+                  return (
+                    <DetailedFeedbackCard key={i} slotScore={circularScore} />
+                  );
+                },
+              )}
+            />
+          }
+          isInterviewVisible={applicationDetails.conversation !== null}
+          slotInterviewTranscript={applicationDetails.conversation.map(
+            (con, i) => {
+              return (
+                <>
+                  <InterviewAiTranscriptCard
+                    key={i}
+                    textAiScript={con.content}
+                    slotAiImage={
+                      <Image
+                        src={'/images/logo/aglint.svg'}
+                        width={20}
+                        height={20}
+                        alt=''
+                      />
+                    }
+                    textAiName={'Interviewer'}
+                  />
+                  <InterviewCandidateCard
+                    key={i}
+                    textCandidateScript={con.userContent}
+                    slotCandidateImage={
+                      <MuiAvatar
+                        level={applicationDetails.first_name}
+                        src={
+                          applicationDetails?.email &&
+                          !applicationDetails?.profile_image
+                            ? getGravatar(
+                                applicationDetails?.email,
+                                applicationDetails?.first_name,
+                              )
+                            : applicationDetails?.profile_image
+                        }
+                        variant={'rounded'}
+                        width={'auto'}
+                        height={'auto'}
+                        fontSize={'28px'}
+                      />
+                    }
+                  />
+                </>
+              );
+            },
+          )}
+          isEducationVisible={
+            applicationDetails?.json_resume?.education.length > 0
+          }
+          slotCandidateEducationCard={applicationDetails?.json_resume?.education.map(
+            (e, i) => (
+              <CandidateEducationCard
+                key={i}
+                textUniversityName={e.institution}
+                textDate={`${e.startDate} ${
+                  e.endDate && `${e.startDate && '-'} ${e.endDate}`
+                }`}
+              />
+            ),
+          )}
+          isExperienceVisible={applicationDetails?.json_resume?.work.length > 0}
+          slotCandidateExperienceCard={applicationDetails?.json_resume?.work.map(
+            (w, i) => (
+              <CandidateExperienceCard
+                key={i}
+                slotLogo={
+                  <CompanyLogo
+                    companyName={w.name ? w.name.trim().toLowerCase() : null}
+                  />
+                }
+                textRole={w.position}
+                textCompany={w.name}
+                textDate={`${w.startDate} - ${w.endDate}`}
+              />
+            ),
+          )}
+          isSkillVisible={applicationDetails?.json_resume?.skills.length > 0}
+          slotSkill={applicationDetails?.json_resume?.skills.map((s, i) => (
+            <CandidateSkillPills key={i} textSkill={s.name} />
+          ))}
+          slotResume={
+            <Stack maxWidth={'400px'}>
+              <NewResumeScoreDetails
+                applicationDetails={applicationDetails}
+                job={job}
+              />
+            </Stack>
+          }
+          textMail={applicationDetails?.email}
+          textPhone={applicationDetails?.phone || ''}
+          textName={
+            applicationDetails?.first_name + ' ' + applicationDetails?.last_name
+          }
+          isActivityVisible={false}
+          slotProfileImage={
+            <MuiAvatar
+              level={applicationDetails.first_name}
+              src={
+                applicationDetails?.email && !applicationDetails?.profile_image
+                  ? getGravatar(
+                      applicationDetails?.email,
+                      applicationDetails?.first_name,
+                    )
+                  : applicationDetails?.profile_image
+              }
+              variant={'rounded'}
+              width={'auto'}
+              height={'auto'}
+              fontSize={'28px'}
+            />
+          }
+        />
+        {/* <InterviewScreenFeedback
           isInterviewResultVisible={applicationDetails.feedback !== null}
           isResumeResultVisible={jdScore}
           slotResumeResult={
@@ -436,8 +616,8 @@ function InterviewFeedbackPage() {
               })}
             </>
           }
-        />
-      </div>
+        /> */}
+      </>
     );
 }
 

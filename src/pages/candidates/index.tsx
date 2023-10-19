@@ -1,12 +1,10 @@
-
-import {
-  CandidateDatabaseComp
-} from '@/src/components/CandidateDatabase';
+import { CandidateDatabaseComingSoon } from '@/devlink';
 
 function CandidatesPage() {
   return (
     <>
-      <CandidateDatabaseComp />
+      <CandidateDatabaseComingSoon />
+      {/* <CandidateDatabaseComp /> */}
     </>
   );
 }

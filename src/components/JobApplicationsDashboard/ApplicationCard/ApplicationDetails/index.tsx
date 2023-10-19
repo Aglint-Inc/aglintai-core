@@ -493,6 +493,8 @@ const NewCandidateDetails = ({ applicationDetails }) => {
   const scoreRef = useRef(null);
   const educationRef = useRef(null);
   const skillsRef = useRef(null);
+  const { job } = useJobApplications();
+
   return (
     <CandidateDetails
       onClickScore={{
@@ -510,7 +512,10 @@ const NewCandidateDetails = ({ applicationDetails }) => {
             <></>
           )}
           {applicationDetails.json_resume ? (
-            <NewResumeScoreDetails applicationDetails={applicationDetails} />
+            <NewResumeScoreDetails
+              applicationDetails={applicationDetails}
+              job={job}
+            />
           ) : (
             <></>
           )}
@@ -593,7 +598,7 @@ const NewInterviewScoreDetails = ({ applicationDetails }) => {
   // return circularScore;
 };
 
-const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
+export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
       <SmallCircularScore finalScore={f.rating} triggerAnimation={true} />
@@ -608,9 +613,8 @@ const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   });
 };
 
-const NewResumeScoreDetails = ({ applicationDetails }) => {
+export const NewResumeScoreDetails = ({ applicationDetails, job }) => {
   const [openResume, setOpenResume] = useState(false);
-  const { job } = useJobApplications();
   const jobDetails = applicationDetails as unknown as {
     jd_score: { summary: { feedback: undefined } };
   };
@@ -693,7 +697,7 @@ const NewResumeScoreDetails = ({ applicationDetails }) => {
   );
 };
 
-const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
+export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
   const feedbackParams = scoreWheelDependencies.parameterOrder.filter(
     (p) => p !== 'skills',
   );

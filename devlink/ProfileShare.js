@@ -42,6 +42,12 @@ export function ProfileShare({
   onClickSkills = {},
   onClickActivity = {},
   slotCompanyLogo,
+  isInterviewActive = false,
+  isResumeActive = false,
+  isEducationActive = false,
+  isExperienceActive = false,
+  isSkillActive = false,
+  isOverviewVisible = true,
 }) {
   return (
     <_Component
@@ -228,36 +234,38 @@ export function ProfileShare({
           className={_utils.cx(_styles, "ps-container")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ps-intro-overview-block")}
-            tag="div"
-          >
+          {isOverviewVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "ps-overview-top-block")}
+              className={_utils.cx(_styles, "ps-intro-overview-block")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "icon-block-3")}
+                className={_utils.cx(_styles, "ps-overview-top-block")}
                 tag="div"
               >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cg%20clip-path%3D%22url(%23clip0_3341_29934)%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12.667%206.00008L13.5003%204.16675L15.3337%203.33341L13.5003%202.50008L12.667%200.666748L11.8337%202.50008L10.0003%203.33341L11.8337%204.16675L12.667%206.00008ZM7.66699%206.33342L6.00033%202.66675L4.33366%206.33342L0.666992%208.00008L4.33366%209.66675L6.00033%2013.3334L7.66699%209.66675L11.3337%208.00008L7.66699%206.33342ZM12.667%2010.0001L11.8337%2011.8334L10.0003%2012.6667L11.8337%2013.5001L12.667%2015.3334L13.5003%2013.5001L15.3337%2012.6667L13.5003%2011.8334L12.667%2010.0001Z%22%20fill%3D%22%2317494D%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cclippath%20id%3D%22clip0_3341_29934%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22white%22%2F%3E%0A%20%20%20%20%3C%2Fclippath%3E%0A%20%20%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "icon-block-3")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icon-embed")}
+                    value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cg%20clip-path%3D%22url(%23clip0_3341_29934)%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M12.667%206.00008L13.5003%204.16675L15.3337%203.33341L13.5003%202.50008L12.667%200.666748L11.8337%202.50008L10.0003%203.33341L11.8337%204.16675L12.667%206.00008ZM7.66699%206.33342L6.00033%202.66675L4.33366%206.33342L0.666992%208.00008L4.33366%209.66675L6.00033%2013.3334L7.66699%209.66675L11.3337%208.00008L7.66699%206.33342ZM12.667%2010.0001L11.8337%2011.8334L10.0003%2012.6667L11.8337%2013.5001L12.667%2015.3334L13.5003%2013.5001L15.3337%2012.6667L13.5003%2011.8334L12.667%2010.0001Z%22%20fill%3D%22%2317494D%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cclippath%20id%3D%22clip0_3341_29934%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22white%22%2F%3E%0A%20%20%20%20%3C%2Fclippath%3E%0A%20%20%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-kale-800-2")}
+                  tag="div"
+                >
+                  {"Overview"}
+                </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-kale-800-2")}
-                tag="div"
+              <_Builtin.Paragraph
+                className={_utils.cx(_styles, "text-kale-600-3")}
               >
-                {"Overview"}
-              </_Builtin.Block>
+                {textOverview}
+              </_Builtin.Paragraph>
             </_Builtin.Block>
-            <_Builtin.Paragraph
-              className={_utils.cx(_styles, "text-kale-600-3")}
-            >
-              {textOverview}
-            </_Builtin.Paragraph>
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.NavbarWrapper
@@ -273,10 +281,6 @@ export function ProfileShare({
           noScroll: false,
         }}
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "hide")}
-          value="%3Cstyle%3E%0A.ps-nav-menu%20%7B%0A%09overflow-x%3A%20auto%3B%0A%7D%0A%3C%2Fstyle%3E"
-        />
         <_Builtin.Block
           className={_utils.cx(_styles, "ps-container")}
           tag="div"
@@ -290,53 +294,108 @@ export function ProfileShare({
               tag="nav"
               role="navigation"
             >
-              <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
-                options={{
-                  href: "#interview",
-                }}
-                {...onClickInterviewScore}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "avtive-profile-wrappers")}
+                tag="div"
               >
-                {"Interview Score"}
-              </_Builtin.NavbarLink>
-              <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
-                options={{
-                  href: "#resume",
-                }}
-                {...onClickResumeScore}
+                <_Builtin.NavbarLink
+                  className={_utils.cx(_styles, "ps-tab-link")}
+                  options={{
+                    href: "#interview",
+                  }}
+                  {...onClickInterviewScore}
+                >
+                  {"Interview Score"}
+                </_Builtin.NavbarLink>
+                {isInterviewActive ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "active-profiles")}
+                    tag="div"
+                  />
+                ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "avtive-profile-wrappers")}
+                tag="div"
               >
-                {"Resume Score"}
-              </_Builtin.NavbarLink>
-              <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
-                options={{
-                  href: "#education",
-                }}
-                {...onClickEducation}
+                <_Builtin.NavbarLink
+                  className={_utils.cx(_styles, "ps-tab-link")}
+                  options={{
+                    href: "#resume",
+                  }}
+                  {...onClickResumeScore}
+                >
+                  {"Resume Score"}
+                </_Builtin.NavbarLink>
+                {isResumeActive ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "active-profiles")}
+                    tag="div"
+                  />
+                ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "avtive-profile-wrappers")}
+                tag="div"
               >
-                {"Education"}
-              </_Builtin.NavbarLink>
-              <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
-                options={{
-                  href: "#experiences",
-                }}
-                {...onClickExperience}
+                <_Builtin.NavbarLink
+                  className={_utils.cx(_styles, "ps-tab-link")}
+                  options={{
+                    href: "#education",
+                  }}
+                  {...onClickEducation}
+                >
+                  {"Education"}
+                </_Builtin.NavbarLink>
+                {isEducationActive ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "active-profiles")}
+                    tag="div"
+                  />
+                ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "avtive-profile-wrappers")}
+                tag="div"
               >
-                {"Experiences"}
-              </_Builtin.NavbarLink>
-              <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
-                options={{
-                  href: "#skills",
-                }}
-                {...onClickSkills}
+                <_Builtin.NavbarLink
+                  className={_utils.cx(_styles, "ps-tab-link")}
+                  options={{
+                    href: "#experiences",
+                  }}
+                  {...onClickExperience}
+                >
+                  {"Experiences"}
+                </_Builtin.NavbarLink>
+                {isExperienceActive ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "active-profiles")}
+                    tag="div"
+                  />
+                ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "avtive-profile-wrappers")}
+                tag="div"
               >
-                {"Skills"}
-              </_Builtin.NavbarLink>
+                <_Builtin.NavbarLink
+                  className={_utils.cx(_styles, "ps-tab-link")}
+                  options={{
+                    href: "#skills",
+                  }}
+                  {...onClickSkills}
+                >
+                  {"Skills"}
+                </_Builtin.NavbarLink>
+                {isSkillActive ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "active-profiles")}
+                    tag="div"
+                  />
+                ) : null}
+              </_Builtin.Block>
               <_Builtin.NavbarLink
-                className={_utils.cx(_styles, "ps-tab-link")}
+                className={_utils.cx(_styles, "ps-tab-link", "hide")}
                 options={{
                   href: "#activity",
                 }}
@@ -366,6 +425,7 @@ export function ProfileShare({
             type: "section",
           }}
           tag="section"
+          id="interview"
         >
           <_Builtin.Block
             className={_utils.cx(
@@ -437,6 +497,7 @@ export function ProfileShare({
             type: "section",
           }}
           tag="section"
+          id="resume"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "ps-container")}
@@ -453,6 +514,7 @@ export function ProfileShare({
             type: "section",
           }}
           tag="section"
+          id="education"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "ps-container")}
@@ -492,6 +554,7 @@ export function ProfileShare({
             type: "section",
           }}
           tag="section"
+          id="experiences"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "ps-container")}
@@ -531,6 +594,7 @@ export function ProfileShare({
             type: "section",
           }}
           tag="section"
+          id="skills"
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "ps-container")}
