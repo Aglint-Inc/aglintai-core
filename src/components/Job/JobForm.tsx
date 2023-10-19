@@ -251,7 +251,7 @@ function JobForm() {
         }}
         onClickBack={{
           onClick: () => {
-            router.back();
+            router.push('/jobs');
           },
         }}
         isApplyFormActive={currSlide === 'applyForm'}
@@ -270,7 +270,11 @@ function JobForm() {
         onClickPreview={{
           onClick: () => {
             window.open(
-              `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(jobForm, 'jobPostId', '')}`,
+              `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
+                jobForm,
+                'jobPostId',
+                '',
+              )}`,
               '_blank',
             );
           },

@@ -13,6 +13,8 @@ export function JobDashboardEmpty({
   textHeader = "Jobs",
   onClickIndeed = {},
   onClickLever = {},
+  isOldTitleVisible = true,
+  isSelectTitleVisible = false,
 }) {
   return (
     <_Component
@@ -42,37 +44,42 @@ export function JobDashboardEmpty({
             className={_utils.cx(_styles, "cj-option-wrapper")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-374")}
-              tag="div"
-            >
+            {isOldTitleVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                className={_utils.cx(_styles, "div-block-374")}
                 tag="div"
               >
-                {"Let's set up your first job for screening."}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-700")}
-                tag="div"
-              >
-                {
-                  "Aglint assists you in sourcing and screening candidates by conducting assessments focused on skills, cultural fit, personality fit, soft skills, and more. "
-                }
-                <_Builtin.Span
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500",
-                    "cursor-pointer"
-                  )}
-                  {...onClickHowItWorks}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                  tag="div"
                 >
-                  {"See how it works."}
-                </_Builtin.Span>
+                  {"Let's set up your first job for screening."}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-grey-700")}
+                  tag="div"
+                >
+                  {
+                    "Aglint assists you in sourcing and screening candidates by conducting assessments focused on skills, cultural fit, personality fit, soft skills, and more."
+                  }
+                </_Builtin.Block>
               </_Builtin.Block>
-            </_Builtin.Block>
+            ) : null}
+            {isSelectTitleVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+                tag="div"
+              >
+                {"Select an option to continue with"}
+              </_Builtin.Block>
+            ) : null}
             <_Builtin.Block
-              className={_utils.cx(_styles, "cj-option-block", "yellow-100")}
+              className={_utils.cx(
+                _styles,
+                "cj-option-block",
+                "yellow-100",
+                "small-card-add-job"
+              )}
               tag="div"
               {...onClickAddJob}
             >
@@ -133,7 +140,20 @@ export function JobDashboardEmpty({
                 tag="div"
               >
                 {
-                  "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to request integration. In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
+                  "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to "
+                }
+                <_Builtin.Span
+                  className={_utils.cx(
+                    _styles,
+                    "text-blue-500",
+                    "cursor-pointer"
+                  )}
+                  {...onClickRequestIntegration}
+                >
+                  {"request integration"}
+                </_Builtin.Span>
+                {
+                  ". In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
                 }
               </_Builtin.Block>
             </_Builtin.Block>
@@ -171,7 +191,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         {
-                          "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to request integration. In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
+                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>
@@ -221,7 +241,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         {
-                          "Enter your Greenhouse API key. Your job listings will be automatically synced."
+                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>
@@ -277,7 +297,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         {
-                          "Enter your Greenhouse API key. Your job listings will be automatically synced."
+                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>

@@ -11,4 +11,6 @@ declare function JobDashboardEmpty(props: {
   textHeader?: React.ReactNode;
   onClickIndeed?: Types.Devlink.RuntimeProps;
   onClickLever?: Types.Devlink.RuntimeProps;
+  isOldTitleVisible?: Types.Visibility.VisibilityConditions;
+  isSelectTitleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

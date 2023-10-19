@@ -2,12 +2,13 @@ import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { JobDashboardEmpty, JobsDashboard } from '@/devlink';
+import { JobsDashboard } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobType } from '@/src/types/data.types';
 
+import EmptyJobDashboard from './EmptyJobDashboard';
 import JobsList from './JobsList';
-import { searchJobs, sendEmail } from './utils';
+import { searchJobs } from './utils';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
@@ -108,13 +109,11 @@ const DashboardComp = () => {
       ) : (
         <>
           {jobsData?.jobs?.length == 0 ? (
-            <JobDashboardEmpty
-              onClickAddJob={{
-                onClick: () => {
-                  router.push('/jobs/new');
-                },
+            <EmptyJobDashboard
+              heading={'Jobs'}
+              handleClickAddJob={() => {
+                router.push(`/jobs/new?flow=manual`);
               }}
-              onClickRequestIntegration={{ onClick: sendEmail }}
             />
           ) : (
             <JobsDashboard
