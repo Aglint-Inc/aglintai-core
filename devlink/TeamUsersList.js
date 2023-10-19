@@ -12,6 +12,7 @@ export function TeamUsersList({
   slotInviteBtn,
   slotUsersRoleList,
   onClickViewPendingInvites = {},
+  textPending = "You currently have two pending invites awaiting your response.",
 }) {
   return (
     <_Component
@@ -76,9 +77,7 @@ export function TeamUsersList({
                   className={_utils.cx(_styles, "text-yellow-800")}
                   tag="div"
                 >
-                  {
-                    "You currently have two pending invites awaiting your response."
-                  }
+                  {textPending}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block tag="div">

@@ -290,37 +290,8 @@
   grid-row-gap: 32px;
 }
 
-.button-outline-blue-600 {
-  border: 1px solid var(--blue600-aad8d97e);
-  border-radius: 4px;
-
-  color: var(--blue600-aad8d97e);
-  font-size: 12px;
-  line-height: 16px;
-
-  cursor: pointer;
-}
-
-.button-outline-blue-600:hover {
-  opacity: 0.7;
-}
-
-.button-outline-blue-600.button-sm {
-  padding: 8px 12px;
-}
-
-.button-outline-blue-600.regular {
-  padding: 10px 16px;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.154px;
-}
-
-.button-outline-blue-600.regular.with-icon {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+.aur-buttons-wrapper.swipe-flex {
+  flex-direction: row-reverse;
 }
 
 .button-red-link {

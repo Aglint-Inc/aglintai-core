@@ -714,6 +714,10 @@
   display: block;
 }
 
+.image-39 {
+  transform: scale(1.2);
+}
+
 .coming-soon-badges {
   position: absolute;
   left: auto;
@@ -734,10 +738,6 @@
   color: var(--blue500-72579298);
   font-size: 14px;
   font-weight: 600;
-}
-
-.image-39 {
-  transform: scale(1.2);
 }
 
 .image-38 {

@@ -582,6 +582,7 @@
 
 .rd-job-list-tab-content {
   display: flex;
+  overflow: hidden;
   height: 100%;
   flex-direction: column;
   grid-column-gap: 12px;
@@ -656,10 +657,18 @@
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
 
+.div-block-370 {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
 .div-block-342 {
   position: relative;
 
   display: flex;
+  overflow: auto;
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -694,6 +703,9 @@
 }
 
 .candidate-list-item.top-bar {
+  position: sticky;
+  top: 0px;
+  z-index: 99;
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
@@ -705,12 +717,14 @@
 }
 
 .cli-column {
+  padding: 10px;
   overflow-wrap: anywhere;
 }
 
 .cli-column.candidate-info {
   width: 360px;
   min-width: 360px;
+  padding-left: 20px;
 }
 
 .cli-column.score {
@@ -733,7 +747,7 @@
   z-index: 2;
 
   display: flex;
-  padding: 10px 10px 10px 30px;
+  padding-left: 30px;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -748,6 +762,10 @@
 .cli-checkbox.padding-large {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+
+.cli-checkbox.top {
+  padding-left: 20px;
 }
 
 .checkbox-wrappers-job {
@@ -783,13 +801,9 @@
 .list-main-info {
   position: relative;
   z-index: 2;
-
   display: flex;
   width: 100%;
-  padding: 10px;
-  align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  align-items: stretch;
 }
 
 .list-main-info.top-bar {
@@ -830,7 +844,8 @@
 .cdd-content-main {
   position: relative;
 
-  padding-bottom: 278px;
+  display: flex;
+  padding-bottom: 180px;
   flex-direction: column;
   justify-content: flex-start;
   grid-auto-columns: 1fr;

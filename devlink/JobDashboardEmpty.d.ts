@@ -8,4 +8,7 @@ declare function JobDashboardEmpty(props: {
   slotImport?: Types.Devlink.Slot;
   onClickAddJob?: Types.Devlink.RuntimeProps;
   onClickGreenHouse?: Types.Devlink.RuntimeProps;
+  textHeader?: React.ReactNode;
+  onClickIndeed?: Types.Devlink.RuntimeProps;
+  onClickLever?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
