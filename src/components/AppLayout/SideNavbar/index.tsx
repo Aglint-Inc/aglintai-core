@@ -6,6 +6,7 @@ import {
   BriefcaseIcon,
   CandidateIcon,
   NavJobSubLink,
+  SoonBadge,
   TicketSublink,
 } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
@@ -73,6 +74,7 @@ function SideNavbar() {
               >
                 {item.text}
               </Typography>
+              {item.commingsoon && <SoonBadge />}
             </Stack>
             <Stack
               sx={{
@@ -210,18 +212,21 @@ const navList = [
     text: 'Jobs',
     SubComponents: <JobSubNavbar />,
     route: pageRoutes.JOBS,
+    commingsoon: false,
   },
   {
     icon: <CandidateIcon />,
     text: 'Candidates',
     SubComponents: '',
     route: pageRoutes.CANDIDATES,
+    commingsoon: true,
   },
   {
     icon: <ChatIcon />,
     text: 'Tickets',
     SubComponents: <SupportSubNavbar />,
     route: pageRoutes.SUPPORT,
+    commingsoon: false,
   },
 ];
 

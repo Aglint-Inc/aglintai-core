@@ -222,6 +222,7 @@ export * from "./SkillsQuestionCard";
 export * from "./SkillsQuestionInput";
 export * from "./SkillsWithQuestionToggle";
 export * from "./SkillsWithoutQuestionToggle";
+export * from "./SoonBadge";
 export * from "./StatusPill";
 export * from "./StatusPillSmall";
 export * from "./StepBottomProgress";
