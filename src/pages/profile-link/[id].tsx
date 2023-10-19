@@ -22,10 +22,10 @@ import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import {
   DetailedInterviewFeedbackParams,
+  giveColorForInterviewScore,
   InterviewFeedbackParams,
   NewResumeScoreDetails,
   Transcript,
-  giveColorForInterviewScore,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import JdFetching from '@/src/components/JobApplicationsDashboard/ApplicationCard/JdFetching';
@@ -33,9 +33,9 @@ import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/Compan
 import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import { calculateOverallScore } from '@/src/utils/support/supportUtils';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 function InterviewFeedbackPage() {
