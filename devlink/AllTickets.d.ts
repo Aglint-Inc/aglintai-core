@@ -19,4 +19,5 @@ declare function AllTickets(props: {
   isSortStatusVisible?: Types.Visibility.VisibilityConditions;
   onClickSortLastUpdate?: Types.Devlink.RuntimeProps;
   isSortUpdateArrowVisible?: Types.Visibility.VisibilityConditions;
+  textHeaderStatus?: React.ReactNode;
 }): React.JSX.Element;

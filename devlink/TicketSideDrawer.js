@@ -86,7 +86,7 @@ export function TicketSideDrawer({
                 className={_utils.cx(_styles, "arrow-tooltips")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Shift + >"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Shift + →"}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -103,7 +103,7 @@ export function TicketSideDrawer({
                 className={_utils.cx(_styles, "arrow-tooltips")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Shift + <"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Shift + ←"}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

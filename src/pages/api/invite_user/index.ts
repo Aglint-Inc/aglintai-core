@@ -44,17 +44,21 @@ export default async function handler(
               join_status: 'invited',
             })
             .select();
-          supabase.auth.resetPasswordForEmail(email, {
+          const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo,
           });
           if (!userError) {
-            return res.send({ users: users, error: null });
+            return res.send({
+              users: users,
+              error: null,
+              emailError: error,
+              redirectTo,
+            });
           } else {
             return res.status(200).send({
               users: null,
               error:
                 userError.message || 'Error in creating and inviting the user.',
-              redirectTo,
             });
           }
           // } else if (error.message === 'User already registered') {

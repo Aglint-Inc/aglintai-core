@@ -439,6 +439,12 @@
   z-index: 5;
 }
 
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
 .div-block-464 {
   display: flex;
   flex-direction: column;

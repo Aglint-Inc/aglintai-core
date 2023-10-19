@@ -2643,6 +2643,7 @@ export interface Database {
           created_at: string
           email: string | null
           first_name: string | null
+          is_deactivated: boolean | null
           join_status: string
           joined_at: string | null
           last_name: string | null
@@ -2656,6 +2657,7 @@ export interface Database {
           created_at?: string
           email?: string | null
           first_name?: string | null
+          is_deactivated?: boolean | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
@@ -2669,6 +2671,7 @@ export interface Database {
           created_at?: string
           email?: string | null
           first_name?: string | null
+          is_deactivated?: boolean | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null

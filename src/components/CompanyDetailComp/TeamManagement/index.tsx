@@ -13,6 +13,7 @@ import {
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import converter from 'number-to-words';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { TeamAddRole } from '@/devlink/TeamAddRole';
@@ -51,7 +52,7 @@ export type UserRoleManagementType = {
 };
 
 const TeamManagement = () => {
-  const { recruiter, userDetails, role } = useAuthDetails();
+  const { recruiter, recruiterUser, userDetails, role } = useAuthDetails();
   const [members, setMembers] = useState<RecruiterUserType[]>([]);
   // const [pendingCount, setPendingCount] = useState<Number>(0);
   const [openDrawer, setOpenDrawer] = useState<{
@@ -66,6 +67,12 @@ const TeamManagement = () => {
   );
   const inviteUser = pendingList.length;
   const [allRoles, setAllRoles] = useState<string[]>();
+  const handleMemberUpdate = async (
+    details: Partial<RecruiterUserType>,
+    id: string,
+  ) => {
+    return await setMemberInDb(details, id);
+  };
   useEffect(() => {
     if (role) {
       const tempRoles = Object.keys(recruiter.roles).filter(
@@ -90,39 +97,51 @@ const TeamManagement = () => {
         slotTeamList={
           <>
             {members?.map((member) => (
-              <TeamListItem
-                key={1}
-                dateText={dayjs(member.joined_at).fromNow()}
-                slotProfileImage={
-                  <Avatar
-                    variant='circular'
-                    src={member.profile_image}
-                    alt={member.first_name}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                }
-                userEmail={member.email}
-                userName={`${member.first_name || ''} ${
-                  member.last_name || ''
-                }`}
-                slotUserRole={capitalizeAll(member.role)}
-                userStatusProps={{
-                  style:
-                    member.join_status === 'invited'
-                      ? {
-                          backgroundColor: palette.yellow[200],
-                          color: palette.yellow[800],
+              <Member
+                key={member.user_id}
+                member={member}
+                allRoles={allRoles.map((role) => capitalizeAll(role))}
+                canUpdate={recruiterUser?.user_id !== member.user_id}
+                memberRoleUpdate={(role: string) => {
+                  handleMemberUpdate({ role }, member.user_id).then(
+                    (member) => {
+                      if (recruiterUser?.user_id === member.user_id) {
+                        toast.error('Cannot Update Role Your Account');
+                      } else {
+                        if (member) {
+                          setMembers(
+                            members.map((mem) => {
+                              if (mem.user_id === member.user_id) {
+                                return member;
+                              }
+                              return mem;
+                            }),
+                          );
+                          toast.success('Role Updated Successfully');
                         }
-                      : {
-                          backgroundColor: palette.green[200],
-                          color: palette.green[800],
-                        },
+                      }
+                    },
+                  );
                 }}
-                userStatusText={capitalizeAll(member.join_status)}
-                onClickRemove={() => {}}
+                removeMember={() => {
+                  if (recruiterUser?.user_id === member.user_id) {
+                    toast.error('Cannot Remove User Account');
+                  } else {
+                    handleMemberUpdate(
+                      { is_deactivated: true },
+                      member.user_id,
+                    ).then((result) => {
+                      if (result) {
+                        setMembers((members) =>
+                          members.filter(
+                            (mem) => mem.user_id !== member.user_id,
+                          ),
+                        );
+                        toast.success('Member Removed');
+                      }
+                    });
+                  }
+                }}
               />
             ))}
           </>
@@ -138,8 +157,7 @@ const TeamManagement = () => {
         }
         slotInviteBtn={
           <AUIButton
-            variant='outlined'
-            size='medium'
+            size='small'
             onClick={() => {
               setOpenDrawer({ open: true, window: 'addMember' });
             }}
@@ -148,21 +166,15 @@ const TeamManagement = () => {
           </AUIButton>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        // slotPendingInviteBtn={
-        //   // <AUIButton
-        //   //   variant='outlined'
-        //   //   onClick={() => {
-        //   //     setOpenDrawer({ open: true, window: 'pendingMember' });
-        //   //   }}
-        //   // >
-        //   //   View Pending Invites
-        //   // </AUIButton>
-        // }
         onClickViewPendingInvites={{
           onClick: () => {
             setOpenDrawer({ open: true, window: 'pendingMember' });
           },
         }}
+        textPending={`You currently have ${converter.toWords(
+          pendingList?.length,
+        )} pending invites awaiting your response.
+`}
       />
       {role.manage_users && (
         <AddMember
@@ -319,7 +331,7 @@ const AddMember = ({
                 }
                 slotButton={
                   <AUIButton
-                    variant='outlined'
+                    size='small'
                     onClick={() => {
                       reinviteUser(member.email, id).then(
                         ({ error, emailSend }) => {
@@ -349,17 +361,120 @@ const AddMember = ({
   );
 };
 
+const Member = ({
+  member,
+  allRoles,
+  canUpdate,
+  memberRoleUpdate,
+  removeMember,
+}: {
+  member: RecruiterUserType;
+  allRoles: string[];
+  canUpdate: boolean;
+  // eslint-disable-next-line no-unused-vars
+  memberRoleUpdate: (x: string) => void;
+  removeMember: () => void;
+}) => {
+  const [editRole, setEditRole] = useState(false);
+  return (
+    <TeamListItem
+      key={1}
+      dateText={dayjs(member.joined_at).fromNow()}
+      slotProfileImage={
+        <Avatar
+          variant='circular'
+          src={member.profile_image}
+          alt={member.first_name}
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      }
+      userEmail={member.email}
+      userName={`${member.first_name || ''} ${member.last_name || ''}`}
+      slotUserRole={
+        canUpdate && editRole ? (
+          <CustomAutocomplete
+            fullWidth
+            open={true}
+            clearIcon={false}
+            value={capitalizeAll(member.role)}
+            options={allRoles}
+            sx={{
+              width: '100%',
+            }}
+            onBlur={() => {
+              setEditRole(false);
+            }}
+            onChange={(_, newValue) => {
+              newValue && memberRoleUpdate(newValue.toLowerCase());
+              setEditRole(false);
+            }}
+            InputProps={{
+              fontSize: '14px',
+            }}
+          />
+        ) : (
+          <Stack
+            onClick={() => {
+              setEditRole(true);
+            }}
+            sx={{
+              cursor: canUpdate ? 'pointer' : 'not-allowed',
+            }}
+          >
+            {capitalizeAll(member.role)}
+          </Stack>
+        )
+      }
+      userStatusProps={{
+        style:
+          member.join_status === 'invited'
+            ? {
+                backgroundColor: palette.yellow[200],
+                color: palette.yellow[800],
+              }
+            : {
+                backgroundColor: palette.green[200],
+                color: palette.green[800],
+              },
+      }}
+      userStatusText={<Stack>{capitalizeAll(member.join_status)}</Stack>}
+      onClickRemove={{
+        onClick: removeMember,
+      }}
+    />
+  );
+};
+
 const getMembersFromDB = async (id: string, roles: string[]) => {
   if (roles.length === 0) return [];
   const { data, error } = await supabase
     .from('recruiter_user')
     .select()
+    .eq('is_deactivated', false)
     .eq('recruiter_id', id)
     .in('role', roles);
   if (!error && data.length) {
     return data;
   }
   return [];
+};
+
+const setMemberInDb = async (
+  details: Partial<RecruiterUserType>,
+  id: string,
+) => {
+  const { data, error } = await supabase
+    .from('recruiter_user')
+    .update(details)
+    .eq('user_id', id)
+    .select();
+  if (!error && data.length) {
+    return data[0];
+  }
+  return null;
 };
 
 const inviteUser = (
@@ -623,6 +738,9 @@ const TeamMenu = ({
                             },
                           })
                         }
+                        sx={{
+                          filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
+                        }}
                       />
                     }
                   />
@@ -656,6 +774,9 @@ const TeamMenu = ({
                       }
                       setManageUsers(!manageUsers);
                     }}
+                    sx={{
+                      filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
+                    }}
                   />
                 }
               />
@@ -681,6 +802,9 @@ const TeamMenu = ({
                               // @ts-ignore
                               manage_users,
                             });
+                          }}
+                          sx={{
+                            filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
                           }}
                         />
                       }
@@ -858,9 +982,9 @@ const CustomTextField = (rest: TextFieldProps) => {
 };
 // @ts-ignore
 const CustomAutocomplete = (props: AutocompleteProps) => {
-  const { label, required, ...rest } = props;
+  const { label, required, clearIcon, fullWidth, ...rest } = props;
   return (
-    <Stack gap={1}>
+    <Stack width={'100%'}>
       <Typography fontFamily={'inherit'}>
         {label}
         {required && '*'}
@@ -868,6 +992,8 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
       </Typography>
       <Autocomplete
         {...rest}
+        clearIcon={clearIcon}
+        fullWidth={fullWidth}
         renderTags={(value: readonly string[], getTagProps) =>
           value.map((option: string, index: number) => (
             <Chip
