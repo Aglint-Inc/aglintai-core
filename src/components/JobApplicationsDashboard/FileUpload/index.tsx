@@ -95,7 +95,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
 
   return (
     <>
-      <Stack spacing={2} maxHeight={'100%'} overflow={'auto'}>
+      <Stack spacing={2} height={'100%'} overflow={'auto'} p={'1px'}>
         {selectedfile.length == 0 && (
           <FileUploader
             handleChange={InputChange}
@@ -103,7 +103,9 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
             name='file'
             types={fileTypes}
           >
-            <ImportResume />
+            <Stack height={'398px'}>
+              <ImportResume />
+            </Stack>
           </FileUploader>
         )}
 

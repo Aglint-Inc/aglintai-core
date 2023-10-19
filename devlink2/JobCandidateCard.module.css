@@ -20,6 +20,9 @@
 }
 
 .candidate-list-item.top-bar {
+  position: sticky;
+  top: 0px;
+  z-index: 99;
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
@@ -35,7 +38,7 @@
   z-index: 2;
 
   display: flex;
-  padding: 10px 10px 10px 30px;
+  padding-left: 30px;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -50,6 +53,10 @@
 .cli-checkbox.padding-large {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+
+.cli-checkbox.top {
+  padding-left: 20px;
 }
 
 .checkbox-wrappers-job {
@@ -94,13 +101,9 @@
 .list-main-info {
   position: relative;
   z-index: 2;
-
   display: flex;
   width: 100%;
-  padding: 10px;
-  align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  align-items: stretch;
 }
 
 .list-main-info.top-bar {
@@ -121,12 +124,18 @@
 }
 
 .cli-column {
+  padding: 10px;
   overflow-wrap: anywhere;
 }
 
 .cli-column.candidate-info {
   width: 360px;
   min-width: 360px;
+  padding-left: 20px;
+}
+
+.grey-100 {
+  background-color: hsla(180, 7.69%, 97.45%, 1.00);
 }
 
 .cli-column.score {

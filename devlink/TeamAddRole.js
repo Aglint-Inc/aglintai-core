@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./TeamAddRole.module.css";
 
@@ -83,15 +84,11 @@ export function TeamAddRole({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "aur-buttons-wrapper")}
+        className={_utils.cx(_styles, "aur-buttons-wrapper", "swipe-flex")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "button-outline-blue-600", "regular")}
-          tag="div"
-          {...onClickSaveChanges}
-        >
-          <_Builtin.Block tag="div">{textButtonSaveChanges}</_Builtin.Block>
+        <_Builtin.Block tag="div" {...onClickSaveChanges}>
+          <ButtonPrimaryRegular textLabel="Save Changes" />
         </_Builtin.Block>
         {isDeleteButtonVisible ? (
           <_Builtin.Block

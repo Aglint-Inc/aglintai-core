@@ -7,8 +7,11 @@
 }
 
 .cvs-info-navbar {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
   display: flex;
-  background-color: hsla(0, 0.00%, 86.67%, 0.00);
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
 .cvs-info-nav-menu {

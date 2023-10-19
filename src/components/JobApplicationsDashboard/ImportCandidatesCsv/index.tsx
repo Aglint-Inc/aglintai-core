@@ -158,10 +158,10 @@ function ImportCandidatesCSV() {
   });
   return (
     <Stack
-      p={1}
       sx={{
         bgcolor: 'white',
         borderRadius: '10px',
+        height: '100%',
       }}
     >
       <Stack direction={'row'} justifyContent={'flex-end'} pb={2}>
@@ -177,7 +177,7 @@ function ImportCandidatesCSV() {
           </Typography>
         </CSVLink>
       </Stack>
-      <Stack spacing={1}>
+      <Stack spacing={1} height={'100%'}>
         {isLoading ? (
           <Stack
             justifyContent={'center'}
@@ -202,12 +202,10 @@ function ImportCandidatesCSV() {
             </Stack>
           </>
         ) : (
-          <>
-            <Stack {...getRootProps()}>
-              <input {...getInputProps()} />
-              <ImportCandidatesCsv />
-            </Stack>
-          </>
+          <Stack {...getRootProps()} sx={{ height: '100%' }}>
+            <input {...getInputProps()} />
+            <ImportCandidatesCsv />
+          </Stack>
         )}
       </Stack>
     </Stack>

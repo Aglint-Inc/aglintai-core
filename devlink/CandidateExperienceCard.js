@@ -26,10 +26,16 @@ export function CandidateExperienceCard({
         className={_utils.cx(_styles, "cvs-company-info-block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+          tag="div"
+        >
           {textRole}
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+          tag="div"
+        >
           {textCompany}
         </_Builtin.Block>
         <_Builtin.Block
@@ -37,12 +43,6 @@ export function CandidateExperienceCard({
           tag="div"
         >
           {textDate}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
-          tag="div"
-        >
-          {textLocations}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

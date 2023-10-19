@@ -10,6 +10,9 @@ export function JobDashboardEmpty({
   slotImport,
   onClickAddJob = {},
   onClickGreenHouse = {},
+  textHeader = "Jobs",
+  onClickIndeed = {},
+  onClickLever = {},
 }) {
   return (
     <_Component
@@ -24,7 +27,7 @@ export function JobDashboardEmpty({
           className={_utils.cx(_styles, "text-lg", "fw-semibold")}
           tag="div"
         >
-          {"Jobs"}
+          {textHeader}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -129,17 +132,9 @@ export function JobDashboardEmpty({
                 className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
-                {"If the ATS you are using is not listed here, "}
-                <_Builtin.Span
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500",
-                    "cursor-pointer"
-                  )}
-                  {...onClickRequestIntegration}
-                >
-                  {"Request integration."}
-                </_Builtin.Span>
+                {
+                  "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to request integration. In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
+                }
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -176,7 +171,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         {
-                          "Enter your Greenhouse API key. Your job listings will be automatically synced."
+                          "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to request integration. In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>
@@ -185,12 +180,6 @@ export function JobDashboardEmpty({
                       tag="div"
                       {...onClickGreenHouse}
                     />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "coming-soon-badges")}
-                      tag="div"
-                    >
-                      <_Builtin.Block tag="div">{"Coming Soon"}</_Builtin.Block>
-                    </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(
@@ -236,12 +225,10 @@ export function JobDashboardEmpty({
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>
-                    <_Builtin.Link
+                    <_Builtin.Block
                       className={_utils.cx(_styles, "click-fake-div")}
-                      button={false}
-                      options={{
-                        href: "mailto:admin@company.com",
-                      }}
+                      tag="div"
+                      {...onClickIndeed}
                     />
                     <_Builtin.Block
                       className={_utils.cx(_styles, "coming-soon-badges")}
@@ -294,19 +281,11 @@ export function JobDashboardEmpty({
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>
-                    <_Builtin.Link
-                      className={_utils.cx(_styles, "click-fake-div")}
-                      button={false}
-                      options={{
-                        href: "mailto:admin@company.com",
-                      }}
-                    />
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "coming-soon-badges")}
+                      className={_utils.cx(_styles, "click-fake-div")}
                       tag="div"
-                    >
-                      <_Builtin.Block tag="div">{"Coming Soon"}</_Builtin.Block>
-                    </_Builtin.Block>
+                      {...onClickLever}
+                    />
                   </_Builtin.Block>
                 </>
               )}
