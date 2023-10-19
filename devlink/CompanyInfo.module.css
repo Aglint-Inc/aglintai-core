@@ -436,8 +436,8 @@
 .profile-inputs-wrapper {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .cs-info-wrapper {

@@ -48,6 +48,14 @@
   margin-left: 2px;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }

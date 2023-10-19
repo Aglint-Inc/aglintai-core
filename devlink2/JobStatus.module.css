@@ -116,6 +116,14 @@
   object-fit: contain;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
 }

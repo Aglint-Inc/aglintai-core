@@ -1,6 +1,13 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ProfileInterviewScore } from "./ProfileInterviewScore";
+import { InterviewAiTranscriptCard } from "./InterviewAiTranscriptCard";
+import { InterviewCandidateCard } from "./InterviewCandidateCard";
+import { ResumeScore } from "./ResumeScore";
+import { CandidateEducationCard } from "./CandidateEducationCard";
+import { CandidateExperienceCard } from "./CandidateExperienceCard";
+import { CandidateSkillPills } from "./CandidateSkillPills";
+import { ActivityFlowCard } from "./ActivityFlowCard";
 import * as _utils from "./utils";
 import _styles from "./ProfileShare.module.css";
 
@@ -16,6 +23,25 @@ export function ProfileShare({
   propsTextColor = {},
   textOverview = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   slotInterview,
+  slotResume,
+  isEducationVisible = true,
+  isResumeVisible = true,
+  isInterviewVisible = true,
+  slotInterviewTranscript,
+  slotCandidateEducationCard,
+  isExperienceVisible = true,
+  slotCandidateExperienceCard,
+  isSkillVisible = true,
+  slotSkill,
+  isActivityVisible = true,
+  slotActivity,
+  onClickInterviewScore = {},
+  onClickResumeScore = {},
+  onClickEducation = {},
+  onClickExperience = {},
+  onClickSkills = {},
+  onClickActivity = {},
+  slotCompanyLogo,
 }) {
   return (
     <_Component
@@ -41,7 +67,9 @@ export function ProfileShare({
               <_Builtin.Block
                 className={_utils.cx(_styles, "ps-header-logo-block")}
                 tag="div"
-              />
+              >
+                {slotCompanyLogo}
+              </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
                   _styles,
@@ -267,6 +295,7 @@ export function ProfileShare({
                 options={{
                   href: "#interview",
                 }}
+                {...onClickInterviewScore}
               >
                 {"Interview Score"}
               </_Builtin.NavbarLink>
@@ -275,6 +304,7 @@ export function ProfileShare({
                 options={{
                   href: "#resume",
                 }}
+                {...onClickResumeScore}
               >
                 {"Resume Score"}
               </_Builtin.NavbarLink>
@@ -283,6 +313,7 @@ export function ProfileShare({
                 options={{
                   href: "#education",
                 }}
+                {...onClickEducation}
               >
                 {"Education"}
               </_Builtin.NavbarLink>
@@ -291,6 +322,7 @@ export function ProfileShare({
                 options={{
                   href: "#experiences",
                 }}
+                {...onClickExperience}
               >
                 {"Experiences"}
               </_Builtin.NavbarLink>
@@ -299,6 +331,7 @@ export function ProfileShare({
                 options={{
                   href: "#skills",
                 }}
+                {...onClickSkills}
               >
                 {"Skills"}
               </_Builtin.NavbarLink>
@@ -307,6 +340,7 @@ export function ProfileShare({
                 options={{
                   href: "#activity",
                 }}
+                {...onClickActivity}
               >
                 {"Activity"}
               </_Builtin.NavbarLink>
@@ -325,1858 +359,235 @@ export function ProfileShare({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.NavbarWrapper>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "ps-scroll-tag",
-            "w-node-_9ce633d1-a452-24e9-ac76-bec9d3f0cb93-d3f0cb54"
-          )}
-          id={_utils.cx(_styles, "interview")}
-          tag="div"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
+      {isInterviewVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-interview-block")}
+            className={_utils.cx(
+              _styles,
+              "ps-scroll-tag",
+              "w-node-_9ce633d1-a452-24e9-ac76-bec9d3f0cb93-d3f0cb54"
+            )}
+            id={_utils.cx(_styles, "interview")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "ps-tab-analysis-block")}
-              id={_utils.cx(
-                _styles,
-                "w-node-_9ce633d1-a452-24e9-ac76-bec9d3f0cb96-d3f0cb54"
-              )}
-              tag="div"
-            >
-              {slotInterview ?? <ProfileInterviewScore />}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-tab-transcript-block")}
+              className={_utils.cx(_styles, "ps-tab-interview-block")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-514")}
+                className={_utils.cx(_styles, "ps-tab-analysis-block")}
+                id={_utils.cx(
+                  _styles,
+                  "w-node-_9ce633d1-a452-24e9-ac76-bec9d3f0cb96-d3f0cb54"
+                )}
+                tag="div"
+              >
+                {slotInterview ?? <ProfileInterviewScore />}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ps-tab-transcript-block")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "text-lg",
-                    "fw-semibold",
-                    "text-grey-600"
+                  className={_utils.cx(_styles, "div-block-514")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-lg",
+                      "fw-semibold",
+                      "text-grey-600"
+                    )}
+                    tag="div"
+                  >
+                    {"Transcript"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ps-transcript-body")}
+                  tag="div"
+                >
+                  {slotInterviewTranscript ?? (
+                    <>
+                      <InterviewAiTranscriptCard />
+                      <InterviewCandidateCard />
+                    </>
                   )}
-                  tag="div"
-                >
-                  {"Transcript"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-transcript-body")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "int-ts-transcript-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "int-ts-transcript-header-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "int-ts-image-block")}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-700-2")}
-                      tag="div"
-                    >
-                      {"Interviewer"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
-                      }
-                    </_Builtin.Block>
-                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-scroll-tag")}
-          tag="div"
-          id="resume"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
+        </_Builtin.Section>
+      ) : null}
+      {isResumeVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-resume")}
+            className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
-            <_Builtin.Block tag="div">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-lg",
-                  "fw-semibold",
-                  "inline-block"
-                )}
-                tag="div"
-              >
-                {"Resume Score : "}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "ps-analysis-text",
-                  "inline-block"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-                  tag="div"
-                >
-                  {"Excellent"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-res-score-block")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-res-overview-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Summary"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Good"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Experience"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Less"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Education"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"More"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Projects"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Not present"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Certifications"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Less"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-details-block-2")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg")}
-                    tag="div"
-                  >
-                    {"Skills"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cvs-score-detail-count-block"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"0"}</_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-res-score-wrapper")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-res-score")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-score-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "ps-analysis-text")}
-                    tag="div"
-                  />
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "ps-res-button", "clickable")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(_styles, "icon-embed")}
-                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2213%22%20viewbox%3D%220%200%2012%2013%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%208.19509L9.04645%205.64864C9.24171%205.45338%209.55829%205.45338%209.75355%205.64864C9.94882%205.84391%209.94882%206.16049%209.75355%206.35575L6.65355%209.45575C6.25829%209.85101%205.64171%209.85101%205.24645%209.45575L2.14645%206.35575C1.95118%206.16049%201.95118%205.84391%202.14645%205.64864C2.34171%205.45338%202.65829%205.45338%202.85355%205.64864L5.5%208.29509V1.0022C5.5%200.726055%205.72386%200.502197%206%200.502197C6.27614%200.502197%206.5%200.726055%206.5%201.0022V8.19509ZM1.5%2012.5022C1.22386%2012.5022%201%2012.2783%201%2012.0022C1%2011.7261%201.22386%2011.5022%201.5%2011.5022H10.5C10.7761%2011.5022%2011%2011.7261%2011%2012.0022C11%2012.2783%2010.7761%2012.5022%2010.5%2012.5022H1.5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
-                      />
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-blue-600-2")}
-                      tag="div"
-                    >
-                      {"Download Resume"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "ps-res-button", "clickable")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(_styles, "icon-embed")}
-                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2213%22%20viewbox%3D%220%200%2012%2013%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.99986%2010.5022C3.49288%2010.5022%201.5331%209.05872%200.209412%207.16773C-0.0709987%206.76464%20-0.0709987%206.23204%200.208768%205.84759C1.51713%203.95774%203.48959%202.5022%205.99986%202.5022C8.50685%202.5022%2010.4666%203.94567%2011.7903%205.83666C12.0695%206.23794%2012.0707%206.76756%2011.7881%207.16095C10.4797%209.04879%208.5083%2010.5022%205.99986%2010.5022ZM10.9688%206.58759C11.009%206.53204%2011.009%206.46464%2010.9702%206.40893C9.81544%204.7592%208.10883%203.5022%205.99986%203.5022C3.88855%203.5022%202.17163%204.76916%201.02423%206.42628C0.990728%206.47235%200.990728%206.53976%201.02948%206.59547C2.18429%208.2452%203.89089%209.5022%205.99986%209.5022C8.11118%209.5022%209.8281%208.23523%2010.9688%206.58759ZM5.99986%208.5022C4.8953%208.5022%203.99986%207.60677%203.99986%206.5022C3.99986%205.39763%204.8953%204.5022%205.99986%204.5022C7.10443%204.5022%207.99986%205.39763%207.99986%206.5022C7.99986%207.60677%207.10443%208.5022%205.99986%208.5022ZM5.99986%207.5022C6.55215%207.5022%206.99986%207.05448%206.99986%206.5022C6.99986%205.94991%206.55215%205.5022%205.99986%205.5022C5.44758%205.5022%204.99986%205.94991%204.99986%206.5022C4.99986%207.05448%205.44758%207.5022%205.99986%207.5022Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
-                      />
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-blue-600-2")}
-                      tag="div"
-                    >
-                      {"View Resume"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
+            {slotResume ?? <ResumeScore />}
           </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-scroll-tag", "education")}
-          tag="div"
-          id="education"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
+        </_Builtin.Section>
+      ) : null}
+      {isEducationVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-education-block")}
-            tag="section"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-              tag="div"
-            >
-              {"Education"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-education-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-education-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-logo")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"University Of Waterloo"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"May 2015"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-education-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-logo")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Turner Fenton Secondary Scholl"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"May 2006 - May 2010"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-education-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-logo")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-school-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Thompson Rivers UniversityCompany NameDateLocation"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-scroll-tag")}
-          tag="div"
-          id="experiences"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-experiences")}
+            className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-              tag="div"
-            >
-              {"Experiences"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-experiences-wrapper")}
-              tag="div"
+              className={_utils.cx(_styles, "ps-tab-education-block")}
+              tag="section"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-experiences-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-logo-2")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Senior Software Engineer"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Google"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"May 2017"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"New York, New York, United States"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-experiences-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-logo-2")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Chief Technology Officer & Co-Founder"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Kira Talent"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"Apr 2012 - May 2016"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"Lotoronto, Ontario, Canada"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-experiences-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-logo-2")}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-company-info-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Software Engineering Intern"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Microsoft"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"Jan 2012 - Apr 2012"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "fw-semibold",
-                      "text-grey-500"
-                    )}
-                    tag="div"
-                  >
-                    {"San Fransisco"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-scroll-tag")}
-          tag="div"
-          id="skills"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-skills-block")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-              tag="div"
-            >
-              {"Skills"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-skills-wrapper")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Entry to Senior-Level Professionals"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Business HR"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Business Operations"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Business Management"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Customer Service"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"PR/Communications"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
-                tag="div"
-              >
-                {"Healthcare"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-skills-block")}
+                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
                 tag="div"
               >
                 {"Education"}
               </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ps-education-wrapper")}
+                tag="div"
+              >
+                {slotCandidateEducationCard ?? (
+                  <CandidateEducationCard
+                    id={_utils.cx(
+                      _styles,
+                      "w-node-_1f8a595e-4e9c-edda-2651-1287fa18e689-d3f0cb54"
+                    )}
+                  />
+                )}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
-      <_Builtin.Section
-        className={_utils.cx(_styles, "ps-section")}
-        grid={{
-          type: "section",
-        }}
-        tag="section"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-scroll-tag")}
-          tag="div"
-          id="activity"
-        />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
-          tag="div"
+        </_Builtin.Section>
+      ) : null}
+      {isExperienceVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "ps-tab-activity-block")}
+            className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-              tag="div"
-            >
-              {"Activity"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ps-activity-wrapper")}
+              className={_utils.cx(_styles, "ps-tab-experiences")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "ps-activity-block")}
+                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-left")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "ps-activity-indicator-wrapper"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "ps-activity-indicator-block"
-                      )}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "ps-activity-line-wrapper")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ps-activity-line-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-right")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-515")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg")}
-                      tag="div"
-                    >
-                      {"Applied"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
-                      tag="div"
-                    >
-                      {"27 Jan 2023 11:30 PM"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                {"Experiences"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "ps-activity-block")}
+                className={_utils.cx(_styles, "ps-experiences-wrapper")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-left")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
+                {slotCandidateExperienceCard ?? (
+                  <CandidateExperienceCard
+                    id={_utils.cx(
                       _styles,
-                      "ps-activity-indicator-wrapper"
+                      "w-node-_750dd902-e862-8a98-c797-66d4d947a42c-d3f0cb54"
                     )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "ps-activity-indicator-block"
-                      )}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "ps-activity-line-wrapper")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ps-activity-line-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-right")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-515")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg")}
-                      tag="div"
-                    >
-                      {"Recieved interview invite"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
-                      tag="div"
-                    >
-                      {"27 Jan 2023 11:30 PM"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-activity-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-left")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "ps-activity-indicator-wrapper"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "ps-activity-indicator-block"
-                      )}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "ps-activity-line-wrapper")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ps-activity-line-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-right")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-515")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg")}
-                      tag="div"
-                    >
-                      {"Incomplete Interview"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
-                      tag="div"
-                    >
-                      {"27 Jan 2023 11:30 PM"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-activity-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-left")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "ps-activity-indicator-wrapper"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "ps-activity-indicator-block"
-                      )}
-                      tag="div"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "ps-activity-line-wrapper")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ps-activity-line-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "ps-activity-line-dot")}
-                          tag="div"
-                        />
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-right")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-515")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg")}
-                      tag="div"
-                    >
-                      {"Recieved interview resend invite"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
-                      tag="div"
-                    >
-                      {"27 Jan 2023 11:30 PM"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "ps-activity-block")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-left")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "ps-activity-indicator-wrapper"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "ps-activity-indicator-block"
-                      )}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "ps-activity-active-icon"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icon-embed")}
-                          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%3E%0A%20%20%3Ccircle%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%2210%22%20fill%3D%22%23EDF7FF%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%229.99999%22%20cy%3D%229.99981%22%20r%3D%227.22222%22%20fill%3D%22%23CEE2F2%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%229.99999%22%20cy%3D%229.99986%22%20r%3D%224.44444%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "ps-activity-line-wrapper")}
-                      tag="div"
-                    />
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "ps-activity-right")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-515")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg")}
-                      tag="div"
-                    >
-                      {"Completed Interview"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
-                      tag="div"
-                    >
-                      {"27 Jan 2023 11:30 PM"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                  />
+                )}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Section>
+        </_Builtin.Section>
+      ) : null}
+      {isSkillVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ps-container")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ps-tab-skills-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+                tag="div"
+              >
+                {"Skills"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ps-skills-wrapper")}
+                tag="div"
+              >
+                {slotSkill ?? <CandidateSkillPills />}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Section>
+      ) : null}
+      {isActivityVisible ? (
+        <_Builtin.Section
+          className={_utils.cx(_styles, "ps-section")}
+          grid={{
+            type: "section",
+          }}
+          tag="section"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ps-container")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ps-tab-activity-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+                tag="div"
+              >
+                {"Activity"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ps-activity-wrapper")}
+                tag="div"
+              >
+                {slotActivity ?? <ActivityFlowCard />}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Section>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "ps-footer")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "ps-container")}

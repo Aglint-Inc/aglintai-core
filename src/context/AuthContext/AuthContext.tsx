@@ -37,6 +37,8 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
+  handleUpdatePassword: (password: string) => Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   handleLogout: (event: any) => Promise<void>;
@@ -51,6 +53,7 @@ const defaultProvider = {
   setUserDetails: () => {},
   handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
+  handleUpdatePassword: undefined,
   recruiter: null,
   setRecruiter: () => {},
   loading: true,
@@ -192,6 +195,19 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleUpdatePassword = async (password: string): Promise<boolean> => {
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    if (error) {
+      toast.error(`Oops! Something went wrong. (${error.message})`);
+      return false;
+    } else {
+      toast.success(`Password reset successfully`);
+      return true;
+    }
+  };
+
   const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
     return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
       if (data) {
@@ -223,6 +239,7 @@ const AuthProvider = ({ children }) => {
         recruiter,
         handleUpdateProfile,
         handleUpdateEmail,
+        handleUpdatePassword,
         setRecruiter,
         loading,
         setLoading,

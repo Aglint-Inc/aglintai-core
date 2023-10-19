@@ -1,12 +1,10 @@
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Collapse, InputAdornment, Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
+import Slider from '@mui/material/Slider';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { NewJobStep4, WorkflowRadioItem } from '@/devlink';
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
-import UITextField from '@/src/components/Common/UITextField';
 
 import { useJobForm } from '../JobPostFormProvider';
 function ScreeningSettings() {
@@ -63,11 +61,17 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
     switch (choice) {
       case 'manual':
         {
+          setRange((prev) => {
+            return { ...prev, active: false };
+          });
           handleUpdate(true, null);
         }
         break;
       case 'automate':
         {
+          setRange((prev) => {
+            return { ...prev, active: false };
+          });
           handleUpdate(false, null);
         }
         break;
@@ -76,94 +80,86 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
       }
     }
   };
-  const handleRangeInput = (e: any, type: 'min' | 'max') => {
-    if (type === 'min') {
-      if (e) {
-        if (e < 0)
-          setRange((prev) => {
-            return { ...prev, min: 0, active: true };
-          });
-        else if (e > 100)
-          setRange((prev) => {
-            return { ...prev, min: 100, active: true };
-          });
-        else
-          setRange((prev) => {
-            return {
-              ...prev,
-              min: e,
-              active: true,
-            };
-          });
+
+  const handleRangeChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number,
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    if (newValue[1] - newValue[0] < 1) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - 1);
+        setRange({
+          active: true,
+          min: clamped,
+          max: clamped + 1,
+        });
       } else {
-        setRange((prev) => {
-          return { ...prev, min: null, active: false };
+        const clamped = Math.max(newValue[1], 1);
+        setRange({
+          active: true,
+          min: clamped - 1,
+          max: clamped,
         });
       }
     } else {
-      if (e) {
-        if (e > 100)
-          setRange((prev) => {
-            return { ...prev, max: 100, active: true };
-          });
-        else if (e < 0)
-          setRange((prev) => {
-            return { ...prev, max: 0, active: true };
-          });
-        else
-          setRange((prev) => {
-            return {
-              ...prev,
-              max: e,
-              active: true,
-            };
-          });
-      } else {
-        setRange((prev) => {
-          return {
-            ...prev,
-            max: null,
-            active: false,
-          };
-        });
-      }
+      setRange({
+        active: true,
+        min: newValue[0],
+        max: newValue[1],
+      });
     }
   };
-  const rangeFields = (
-    <Stack gap={2} mt={2}>
-      <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-        <UITextField
-          value={range.max}
-          type='number'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='start'>
-                <CheckCircleIcon sx={{ color: 'rgb(34,143,103)' }} />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => handleRangeInput(parseInt(e.target.value), 'max')}
-        />
+
+  const newRangeFields = (
+    <Stack mt={2} gap={2} width={'651px'}>
+      <Stack
+        width={'100%'}
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        fontWeight={600}
+        position={'relative'}
+      >
         <Stack
-          color={'rgb(34,143,103)'}
-        >{`Candidates above this range will be qualified`}</Stack>
+          width={'217px'}
+          textAlign={'left'}
+          style={{ color: '#d3212c' }}
+        >{`Auto-disqualification  < ${range.min}`}</Stack>
+        <Stack
+          width={'217px'}
+          textAlign={'center'}
+        >{`${range.min} ≤ Manual review ≤ ${range.max} `}</Stack>
+        <Stack
+          width={'217px'}
+          textAlign={'right'}
+          style={{ color: '#069c56' }}
+        >{`Auto-qualification > ${range.max}`}</Stack>
       </Stack>
-      <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-        <UITextField
-          value={range.min}
-          type='number'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='start'>
-                <CancelIcon sx={{ color: 'rgb(217,63,76)' }} />
-              </InputAdornment>
-            ),
+      <Stack width={'650px'}>
+        <Slider
+          track='inverted'
+          value={[range.min, range.max]}
+          onChange={handleRangeChange}
+          valueLabelDisplay='auto'
+          disableSwap
+          sx={{
+            '& .MuiSlider-rail': {
+              backgroundImage: `linear-gradient(to right, #f2bcc0 ${range.min}%, #eff0f0 ${range.min}%, #eff0f0 ${range.max}%, #b4e1cc ${range.max}%)`,
+            },
+            '& .MuiSlider-track': {
+              display: 'none',
+            },
+            '& > .MuiSlider-thumb': {
+              background: '#d3212c',
+            },
+            '& > .MuiSlider-thumb ~ .MuiSlider-thumb': {
+              background: '#069c56',
+            },
           }}
-          onChange={(e) => handleRangeInput(parseInt(e.target.value), 'min')}
         />
-        <Stack
-          color={'rgb(217,63,76)'}
-        >{`Candidates below this range will be disqualified`}</Stack>
       </Stack>
     </Stack>
   );
@@ -208,7 +204,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         } score criteria for applicant progression`}
         slotScore={
           <Collapse in={workflowObj.qualificationRange !== null}>
-            {rangeFields}
+            {newRangeFields}
           </Collapse>
         }
       />

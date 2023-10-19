@@ -6,6 +6,7 @@ import { JobTypeDB } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { JobFormState } from './JobPostFormProvider';
+import { scoreWheelDependencies } from '../../Common/ScoreWheel';
 
 export const getSeedJobFormData = (
   recruiter?: Database['public']['Tables']['recruiter']['Row'],
@@ -74,28 +75,24 @@ export const getSeedJobFormData = (
       newScreeningConfig: {
         screening: {
           qualificationRange: null,
-          isManual: false,
+          isManual: true,
         },
         interview: {
           qualificationRange: null,
-          isManual: false,
+          isManual: true,
         },
         interviewMail: {
           timestamp: null,
-          isManual: false,
+          isManual: true,
         },
         disqualifiedMail: {
           timestamp: null,
-          isManual: false,
+          isManual: true,
         },
         feedbackVisible: false,
       },
       resumeScoreSettings: {
-        certifications: 20,
-        education: 20,
-        experience: 20,
-        project: 20,
-        skills: 20,
+        ...scoreWheelDependencies.initialScoreWheelWeights,
       },
       recruiterId: '',
     },
@@ -287,11 +284,7 @@ export const dbToClientjobPostForm = (
 
       resumeScoreSettings: {
         ...(get(jobPost, 'parameter_weights', {
-          certifications: 20,
-          education: 20,
-          experience: 20,
-          project: 20,
-          skills: 20,
+          ...scoreWheelDependencies.initialScoreWheelWeights,
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
     },

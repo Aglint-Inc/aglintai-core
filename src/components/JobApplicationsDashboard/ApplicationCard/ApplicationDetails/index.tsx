@@ -26,6 +26,7 @@ import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   getOverallScore,
+  scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
@@ -643,12 +644,12 @@ const NewResumeScoreDetails = ({ applicationDetails }) => {
         }}
         slotFeedbackScore={
           <>
-            <ResumeFeedbackParams
-              feedbackParamsObj={jdScoreObj.qualification}
-            />
             <ResumeFeedbackScore
               textFeedback={'Skills'}
               textScoreState={jdScoreObj.skills_score.score ?? '--'}
+            />
+            <ResumeFeedbackParams
+              feedbackParamsObj={jdScoreObj.qualification}
             />
           </>
         }
@@ -658,14 +659,31 @@ const NewResumeScoreDetails = ({ applicationDetails }) => {
 };
 
 const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
+  const feedbackParams = scoreWheelDependencies.parameterOrder.filter(
+    (p) => p !== 'skills',
+  );
+  const getCustomText = (e) => {
+    switch (e) {
+      case 'more':
+        return 'High match';
+      case 'ok':
+        return 'Medium match';
+      case 'less':
+        return 'Low match';
+    }
+    return '--';
+  };
   return (
     <>
-      {Object.entries(feedbackParamsObj).map(([key, value]: any, i) => {
+      {feedbackParams.map((key, i) => {
         return (
           <ResumeFeedbackScore
             key={i}
             textFeedback={capitalize(key)}
-            textScoreState={capitalize(value.relevance) ?? '--'}
+            textScoreState={
+              // eslint-disable-next-line security/detect-object-injection
+              getCustomText(feedbackParamsObj[key].relevance) ?? '--'
+            }
           />
         );
       })}
@@ -678,7 +696,9 @@ const NewEducationDetails = ({ education }) => {
     <CandidateEducationCard
       key={i}
       textUniversityName={e.institution}
-      textDate={`${e.startDate} ${e.endDate && `- ${e.endDate}`}`}
+      textDate={`${e.startDate} ${
+        e.endDate && `${e.startDate && '-'} ${e.endDate}`
+      }`}
     />
   ));
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
@@ -688,7 +708,11 @@ const NewExperienceDetails = ({ work }) => {
   const workList = work.map((w, i) => (
     <CandidateExperienceCard
       key={i}
-      slotLogo={<CompanyLogo companyName={w.name} companyLogo={w.url} />}
+      slotLogo={
+        <CompanyLogo
+          companyName={w.name ? w.name.trim().toLowerCase() : null}
+        />
+      }
       textRole={w.position}
       textCompany={w.name}
       textDate={`${w.startDate} - ${w.endDate}`}
@@ -810,16 +834,14 @@ export function Transcript({
 }
 
 export function giveRateInWordToResume(score: number) {
-  if (score <= 20) {
-    return { color: '#d3212c', bgColor: '#fbe9ea', text: 'Abysmal' };
-  } else if (score <= 40) {
-    return { color: '#ff681e', bgColor: '#fff0e9', text: 'Poor' };
-  } else if (score <= 60) {
-    return { color: '#ff980e', bgColor: '#fff5e7', text: 'Average' };
-  } else if (score <= 80) {
-    return { color: '#069c56', bgColor: '#e6f5ee', text: 'Good' };
+  if (score <= 25) {
+    return { color: '#d3212c', bgColor: '#fbe9ea', text: 'Poor' };
+  } else if (score <= 50) {
+    return { color: '#ff681e', bgColor: '#fff0e9', text: 'Fair' };
+  } else if (score <= 75) {
+    return { color: '#ff980e', bgColor: '#fff5e7', text: 'Good' };
   } else {
-    return { color: '#006b3d', bgColor: '#e6f0ec', text: 'Excellent' };
+    return { color: '#069c56', bgColor: '#e6f5ee', text: 'Excellent' };
   }
 }
 
