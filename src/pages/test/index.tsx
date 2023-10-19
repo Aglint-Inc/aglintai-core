@@ -4,12 +4,6 @@ import axios from 'axios';
 import AUIButton from '@/src/components/Common/AUIButton';
 
 const index = () => {
-  const submitHandler = async () => {
-    axios.post('/api/templates').then((res) => {
-      console.log(res);
-    });
-  };
-
   const generating = async () => {
     axios
       .post('/api/generateVideo', {
@@ -86,13 +80,6 @@ const index = () => {
 
   return (
     <div>
-      <AUIButton
-        onClick={() => {
-          submitHandler();
-        }}
-      >
-        List templates
-      </AUIButton>
       <AUIButton
         onClick={() => {
           generating();

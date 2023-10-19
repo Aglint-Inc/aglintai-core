@@ -108,12 +108,12 @@ const DashboardComp = () => {
         <Loader />
       ) : (
         <>
-          {jobsData?.jobs?.length == 0 ? (
+          {jobsData?.jobs?.filter((job) => !job.is_campus)?.length == 0 ? (
             <EmptyJobDashboard
-              heading={'Jobs'}
               handleClickAddJob={() => {
-                router.push(`/jobs/new?flow=manual`);
+                router.push('/jobs/new?flow=manual');
               }}
+              heading={'Jobs'}
             />
           ) : (
             <JobsDashboard
