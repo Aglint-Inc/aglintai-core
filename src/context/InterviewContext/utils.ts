@@ -1,7 +1,7 @@
 import { supabase } from '@/src/utils/supabaseClient';
 export async function updateFeedbackOnJobApplications(
   candidateDetails: { application_id: any },
-  jobDetails: { screening_setting: { shortlist: { minInterviewScore: any } } },
+  jobDetails: any,
   feedback: any,
   conversation: any,
   interviewIndex: any,
@@ -21,18 +21,28 @@ export async function updateFeedbackOnJobApplications(
         ) / feedback.length,
       )
     : 0;
+
+  const maxScore = Number(
+    jobDetails?.new_screening_setting?.interview?.qualificationRange?.max,
+  );
+
+  const minScore = Number(
+    jobDetails?.new_screening_setting?.interview?.qualificationRange.min,
+  );
+  const isManual = jobDetails?.new_screening_setting?.interview?.isManual;
   const { error } = await supabase
     .from('job_applications')
     .update({
       feedback: feedback,
       conversation: conversation,
       ai_interviewer_id: interviewIndex,
-      status:
-        overAllScore >=
-        // @ts-ignore
-        Number(jobDetails?.screening_setting?.shortlist?.minInterviewScore)
-          ? 'qualified'
-          : 'disqualified',
+      status: isManual
+        ? 'interviewing'
+        : overAllScore >= maxScore
+        ? 'qualified'
+        : overAllScore < maxScore && overAllScore > minScore
+        ? 'interviewing'
+        : 'disqualified',
       interview_duration: interviewDuration,
     })
     .eq('application_id', candidateDetails?.application_id);

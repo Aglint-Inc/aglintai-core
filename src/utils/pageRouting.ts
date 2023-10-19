@@ -11,7 +11,7 @@ export const pageRoutes = Object.freeze({
   SETTINGS: '/settings',
   PROFILE: '/profile',
   InterviewFeedbackLink: 'interview-feedback-link',
-  MOCKTEST: '/mock-test',
+  MOCKTEST: '/interview',
   JOBPOST: '/job-post/',
   COMPANYPOSTINGS: '/company-postings/',
   SUPPORT: '/support',

@@ -108,7 +108,7 @@ function Interview_home() {
         onClickSupport={{
           onClick: () => {
             window.open(
-              `https://recruiter.aglinthq.com/support?id=${candidateDetails.application_id}`,
+              `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
             );
           },
         }}

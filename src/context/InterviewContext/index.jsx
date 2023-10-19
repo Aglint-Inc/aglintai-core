@@ -267,10 +267,6 @@ function InterviewContextProvider({ children }) {
         pre[conversations.length - 1].userContent = userText;
         return [...pre];
       });
-      context.push({
-        role: 'assistant',
-        content: totalNumberOfQuestions[Number(questionIndex + 1)],
-      });
 
       stopRecording();
       SpeechRecognition.abortListening();
@@ -284,6 +280,10 @@ function InterviewContextProvider({ children }) {
         return null;
       } else {
         setQuestionIndex((pre) => pre + 1);
+        context.push({
+          role: 'assistant',
+          content: totalNumberOfQuestions[Number(questionIndex + 1)],
+        });
       }
       handleSpeak(
         'assistant',
