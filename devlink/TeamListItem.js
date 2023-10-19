@@ -63,7 +63,7 @@ export function TeamListItem({
         )}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotUserRole}</_Builtin.Block>
+        {slotUserRole}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "tu-list-item")} tag="div">
         <_Builtin.Block

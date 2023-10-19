@@ -114,6 +114,16 @@ const AuthProvider = ({ children }) => {
           .select('*')
           .eq('user_id', data.session.user.id);
         if (!errorUser && recruiterUser.length > 0) {
+          if (recruiterUser[0].is_deactivated) {
+            // route something don't login
+          }
+          // @ts-ignore
+          (recruiterUser[0].join_status || '').toLocaleLowerCase() ===
+            'invited' &&
+            handleUpdateProfile(
+              { join_status: 'joined' },
+              data.session.user.id,
+            );
           setRecruiterUser(recruiterUser[0]);
           const { data: recruiter, error } = await supabase
             .from('recruiter')
@@ -149,12 +159,13 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleUpdateProfile = async (
-    details: RecruiterUserType,
+    details: Partial<RecruiterUserType>,
+    id?: string,
   ): Promise<boolean> => {
     const { data, error } = await supabase
       .from('recruiter_user')
       .update(details)
-      .eq('user_id', userDetails.user.id)
+      .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
       setRecruiterUser(data[0]);
