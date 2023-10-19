@@ -26,7 +26,12 @@ export function NewJobSelect({
             {"Select an option to continue with"}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cj-option-block", "yellow-100")}
+            className={_utils.cx(
+              _styles,
+              "cj-option-block",
+              "yellow-100",
+              "small-card-add-job"
+            )}
             tag="div"
             {...onClickCreateJobAglint}
           >
@@ -63,10 +68,7 @@ export function NewJobSelect({
               >
                 {"Create Job throgh Aglint"}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-kale-500")}
-                tag="div"
-              >
+              <_Builtin.Block tag="div">
                 {
                   "Craft your job listing effortlessly in just three simple steps with Aglint."
                 }

@@ -239,6 +239,12 @@
   display: inline;
 }
 
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}
+
 #w-node-_923d15de-9788-e49f-c431-fc52940f52b2-940f52b2 {
   grid-column-start: span 1;
   grid-column-end: span 1;

@@ -79,6 +79,16 @@
   color: var(--yellow800-b1e3bc9b);
 }
 
+.text-color-white {
+  color: white;
+}
+
+@media screen and (max-width: 479px) {
+  .text-xxxl.fw-semibold.text-color-white.mobile-lg {
+    font-size: 18px;
+  }
+}
+
 .fw-bold {
   font-weight: 700;
 }
@@ -489,6 +499,17 @@
   z-index: 5;
 }
 
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
 .cl-wrapper {
   display: flex;
   flex-direction: column;
@@ -603,6 +624,16 @@
 
 .text-xl.color-orange {
   color: var(--yellow500-c095f0f1);
+}
+
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
 }
 
 .div-block-427 {

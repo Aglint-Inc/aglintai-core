@@ -58,8 +58,8 @@ function CameraHolder() {
         <video
           style={{
             width: '100%',
-            height: '100%',
-            // height: 'calc(100% - 235px)',
+            // height: '100%',
+            height: 'calc(100% - 235px)',
 
             // borderRadius: '50%',
             objectFit: 'cover',

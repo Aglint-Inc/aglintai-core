@@ -84,6 +84,16 @@
   color: var(--yellow800-b1e3bc9b);
 }
 
+.text-color-white {
+  color: white;
+}
+
+@media screen and (max-width: 479px) {
+  .text-xxxl.fw-semibold.text-color-white.mobile-lg {
+    font-size: 18px;
+  }
+}
+
 .fw-bold {
   font-weight: 700;
 }
@@ -280,6 +290,12 @@
 
 .text-grey-600-3.inline-block {
   display: inline;
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
 }
 
 .support-wrapper {

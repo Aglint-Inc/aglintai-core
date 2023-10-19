@@ -63,3 +63,32 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+
+
+//scroll bar css and visibility condition
+* {
+  /*width*/
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 3px;
+  }
+
+  /*track*/
+  &::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255, 0);
+  }
+
+  /*thumb*/
+  &::-webkit-scrollbar-thumb {
+    visibility: hidden;
+    background: rgba(152, 152, 152, 0.7);
+    border-radius: 8px;
+  }
+
+  &:active::-webkit-scrollbar-thumb,
+  :focus::-webkit-scrollbar-thumb,
+  :hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+  }
+}

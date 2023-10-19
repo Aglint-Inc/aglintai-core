@@ -33,3 +33,9 @@
 .text-grey-600-3.inline-block {
   display: inline;
 }
+
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}

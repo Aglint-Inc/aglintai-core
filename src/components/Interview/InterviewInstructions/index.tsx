@@ -44,7 +44,7 @@ function InterviewInstructions() {
           }
           textCompany={jobDetails?.company}
           textRole={jobDetails?.job_title}
-          // textCompanyDiscription={jobDetails?.company_details}
+          textCompanyDescription={jobDetails?.company_details}
           onClickStart={{
             onClick: () => {
               startInterview();

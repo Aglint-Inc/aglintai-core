@@ -139,6 +139,16 @@
   font-weight: 700;
 }
 
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -360,6 +370,17 @@
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
 .text-sm {
