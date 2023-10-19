@@ -1,4 +1,4 @@
-import { /*Collapse,*/ Dialog, Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
@@ -15,6 +15,11 @@ import {
   CandidateSkillPills,
   DetailedFeedback,
   DetailedFeedbackCard,
+  DetailedFeedbackCardSmall,
+  FeedbackScore,
+  InterviewAiTranscriptCard,
+  InterviewCandidateCard,
+  InterviewDetailedFeedback,
   // InterviewResult,
   // InterviewResultStatus,
   // JobDetailsSideDrawer,
@@ -52,7 +57,7 @@ function ApplicationDetails({
   setOpenSidePanel,
   applicationDetails,
 }) {
-  const [, /*openDetailedFeedback*/ setOpenDetailedFeedback] = useState(false);
+  const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
   // const {
   //   applicationsData,
   //   handleUpdateJobStatus,
@@ -415,6 +420,24 @@ function ApplicationDetails({
   //   );
   // };
 
+  const candidateImage = (
+    <MuiAvatar
+      level={applicationDetails.first_name}
+      src={
+        applicationDetails?.email && !applicationDetails?.profile_image
+          ? getGravatar(
+              applicationDetails?.email,
+              applicationDetails?.first_name,
+            )
+          : applicationDetails?.profile_image
+      }
+      variant={'rounded'}
+      width={'auto'}
+      height={'auto'}
+      fontSize={'28px'}
+    />
+  );
+
   return (
     <SidePanelDrawer
       openSidePanelDrawer={openSidePanel}
@@ -423,20 +446,120 @@ function ApplicationDetails({
         setOpenDetailedFeedback(false);
       }}
     >
-      {/* <JobApplicationSideDrawer /> */}
-      <NewJobApplicationSideDrawer
-        applicationDetails={applicationDetails}
-        setOpenSidePanel={setOpenSidePanel}
-      />
+      {!openDetailedFeedback ? (
+        <NewJobApplicationSideDrawer
+          applicationDetails={applicationDetails}
+          setOpenSidePanel={setOpenSidePanel}
+          setOpenDetailedFeedback={setOpenDetailedFeedback}
+          candidateImage={candidateImage}
+        />
+      ) : (
+        <NewDetailedFeedback
+          applicationDetails={applicationDetails}
+          candidateImage={candidateImage}
+          onClose={() => {
+            setOpenDetailedFeedback(false);
+          }}
+        />
+      )}
     </SidePanelDrawer>
   );
 }
 
 export default ApplicationDetails;
 
+const NewDetailedFeedback = ({
+  applicationDetails,
+  candidateImage,
+  onClose,
+}) => {
+  return (
+    <InterviewDetailedFeedback
+      onClickClose={{
+        onClick: () => {
+          onClose();
+        },
+      }}
+      slotCandidateImage={candidateImage}
+      textName={capitalize(
+        applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
+      )}
+      textMail={applicationDetails.email ? applicationDetails.email : '--'}
+      slotDetailedFeedback={
+        <DetailedInterviewFeedbackParams
+          feedbackParamsObj={applicationDetails.feedback}
+        />
+      }
+      slotTranscript={
+        <TranscriptParams
+          feedbackParams={applicationDetails.conversation}
+          candidateImage={candidateImage}
+        />
+      }
+    />
+  );
+};
+
+const TranscriptParams = ({ feedbackParams, candidateImage }) => {
+  return feedbackParams.map((con, i) => {
+    return (
+      <>
+        <InterviewAiTranscriptCard
+          key={i}
+          textAiScript={con.content}
+          slotAiImage={
+            <svg
+              width='24'
+              height='24'
+              viewBox='0 0 36 36'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M27.4875 16.8075C24.255 15.9975 22.635 15.6 21.5175 14.4825C20.4 13.3575 20.0025 11.745 19.1925 8.5125L18 3.75L16.8075 8.5125C15.9975 11.745 15.6 13.365 14.4825 14.4825C13.3575 15.6 11.745 15.9975 8.5125 16.8075L3.75 18L8.5125 19.1925C11.745 20.0025 13.365 20.4 14.4825 21.5175C15.6 22.6425 15.9975 24.255 16.8075 27.4875L18 32.25L19.1925 27.4875C20.0025 24.255 20.4 22.635 21.5175 21.5175C22.6425 20.4 24.255 20.0025 27.4875 19.1925L32.25 18L27.4875 16.8075Z'
+                fill='#FF6224'
+              ></path>
+            </svg>
+          }
+          textAiName={'Interviewer'}
+        />
+        <InterviewCandidateCard
+          key={i}
+          textCandidateScript={con.userContent}
+          slotCandidateImage={candidateImage}
+        />
+      </>
+    );
+  });
+};
+
+const DetailedInterviewFeedbackParams = ({ feedbackParamsObj }) => {
+  return feedbackParamsObj.map((f, i) => {
+    const color =
+      f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
+    const circularScore = (
+      <Stack style={{ transform: 'scale(0.3)' }}>
+        <SmallCircularScore finalScore={f.rating} triggerAnimation={false} />
+      </Stack>
+    );
+    return (
+      <DetailedFeedbackCardSmall
+        key={i}
+        textHeader={capitalize(f.topic)}
+        textDescription={f.feedback}
+        textColorScore={{ style: { color: color } }}
+        slotScore={circularScore}
+        textScorePercentage={`${f.rating}%`}
+      />
+    );
+  });
+};
+
 const NewJobApplicationSideDrawer = ({
   applicationDetails,
   setOpenSidePanel,
+  setOpenDetailedFeedback,
+  candidateImage,
 }) => {
   return (
     <CandidateSideDrawer
@@ -456,45 +579,74 @@ const NewJobApplicationSideDrawer = ({
           setOpenSidePanel(false);
         },
       }}
-      slotCandidateImage={
-        <MuiAvatar
-          level={applicationDetails.first_name}
-          src={
-            applicationDetails?.email && !applicationDetails?.profile_image
-              ? getGravatar(
-                  applicationDetails?.email,
-                  applicationDetails?.first_name,
-                )
-              : applicationDetails?.profile_image
-          }
-          variant={'rounded'}
-          width={'auto'}
-          height={'auto'}
-          fontSize={'28px'}
-        />
-      }
+      slotCandidateImage={candidateImage}
       textName={capitalize(
         applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
       )}
-      textPhone={applicationDetails.phone ? applicationDetails.phone : '--'}
       textMail={applicationDetails.email ? applicationDetails.email : '--'}
       textOverviewDesc={
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       }
       slotCandidateDetails={
-        <NewCandidateDetails applicationDetails={applicationDetails} />
+        <NewCandidateDetails
+          applicationDetails={applicationDetails}
+          setOpenDetailedFeedback={setOpenDetailedFeedback}
+        />
       }
     />
   );
 };
 
-const NewCandidateDetails = ({ applicationDetails }) => {
+const NewCandidateDetails = ({
+  applicationDetails,
+  setOpenDetailedFeedback,
+}) => {
   const experienceRef = useRef(null);
   const scoreRef = useRef(null);
   const educationRef = useRef(null);
   const skillsRef = useRef(null);
   return (
     <CandidateDetails
+      slotInterviewScore={
+        <>
+          <Stack ref={scoreRef}>
+            {applicationDetails.feedback ? (
+              <NewInterviewScoreDetails
+                applicationDetails={applicationDetails}
+                setOpenDetailedFeedback={setOpenDetailedFeedback}
+              />
+            ) : (
+              <></>
+            )}
+            {applicationDetails.json_resume ? (
+              <NewResumeScoreDetails applicationDetails={applicationDetails} />
+            ) : (
+              <></>
+            )}
+          </Stack>
+          {applicationDetails.json_resume ? (
+            <>
+              <Stack ref={educationRef}>
+                <NewEducationDetails
+                  education={applicationDetails.json_resume.education}
+                />
+              </Stack>
+              <Stack ref={experienceRef}>
+                <NewExperienceDetails
+                  work={applicationDetails.json_resume.work}
+                />
+              </Stack>
+              <Stack ref={skillsRef}>
+                <NewSkillDetails
+                  skills={applicationDetails.json_resume.skills}
+                />
+              </Stack>
+            </>
+          ) : (
+            <></>
+          )}
+        </>
+      }
       onClickScore={{
         onClick: () =>
           scoreRef.current.scrollIntoView({
@@ -502,20 +654,6 @@ const NewCandidateDetails = ({ applicationDetails }) => {
             block: 'end',
           }),
       }}
-      slotInterviewScore={
-        <Stack ref={scoreRef}>
-          {applicationDetails.feedback ? (
-            <NewInterviewScoreDetails applicationDetails={applicationDetails} />
-          ) : (
-            <></>
-          )}
-          {applicationDetails.json_resume ? (
-            <NewResumeScoreDetails applicationDetails={applicationDetails} />
-          ) : (
-            <></>
-          )}
-        </Stack>
-      }
       onClickEducation={{
         onClick: () =>
           educationRef.current.scrollIntoView({
@@ -523,17 +661,6 @@ const NewCandidateDetails = ({ applicationDetails }) => {
             block: 'end',
           }),
       }}
-      slotEducation={
-        applicationDetails.json_resume ? (
-          <Stack ref={educationRef}>
-            <NewEducationDetails
-              education={applicationDetails.json_resume.education}
-            />
-          </Stack>
-        ) : (
-          <></>
-        )
-      }
       onClickExperience={{
         onClick: () =>
           experienceRef.current.scrollIntoView({
@@ -541,15 +668,6 @@ const NewCandidateDetails = ({ applicationDetails }) => {
             block: 'end',
           }),
       }}
-      slotExperiences={
-        applicationDetails.json_resume ? (
-          <Stack ref={experienceRef}>
-            <NewExperienceDetails work={applicationDetails.json_resume.work} />
-          </Stack>
-        ) : (
-          <></>
-        )
-      }
       onClickSkills={{
         onClick: () =>
           skillsRef.current.scrollIntoView({
@@ -557,20 +675,14 @@ const NewCandidateDetails = ({ applicationDetails }) => {
             block: 'end',
           }),
       }}
-      slotSkills={
-        applicationDetails.json_resume ? (
-          <Stack ref={skillsRef}>
-            <NewSkillDetails skills={applicationDetails.json_resume.skills} />
-          </Stack>
-        ) : (
-          <></>
-        )
-      }
     />
   );
 };
 
-const NewInterviewScoreDetails = ({ applicationDetails }) => {
+const NewInterviewScoreDetails = ({
+  applicationDetails,
+  setOpenDetailedFeedback,
+}) => {
   const interviewScore = getInterviewScore(applicationDetails.feedback);
   const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
@@ -581,6 +693,11 @@ const NewInterviewScoreDetails = ({ applicationDetails }) => {
       }
       propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
       propsTextColor={{ style: { color: feedbackObj.color } }}
+      onClickDetailedFeedback={{
+        onClick: () => {
+          setOpenDetailedFeedback(true);
+        },
+      }}
       slotInterviewFeedbackScore={
         applicationDetails.feedback && (
           <InterviewFeedbackParams
@@ -596,13 +713,19 @@ const NewInterviewScoreDetails = ({ applicationDetails }) => {
 const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
-      <SmallCircularScore finalScore={f.rating} triggerAnimation={true} />
+      <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
+        <SmallCircularScore finalScore={f.rating} triggerAnimation={false} />
+      </Stack>
     );
+    const color =
+      f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     return (
-      <ResumeFeedbackScore
+      <FeedbackScore
         key={i}
         textFeedback={capitalize(f.topic)}
-        textScoreState={circularScore}
+        textScorePercentage={`${f.rating}%`}
+        slotFeedbackScoreGraphs={circularScore}
+        propsTextScore={{ style: { color: color } }}
       />
     );
   });
@@ -700,11 +823,11 @@ const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
   const getCustomText = (e) => {
     switch (e) {
       case 'more':
-        return 'High match';
+        return 'High';
       case 'ok':
-        return 'Medium match';
+        return 'Medium';
       case 'less':
-        return 'Low match';
+        return 'Low';
     }
     return '--';
   };

@@ -53,3 +53,10 @@
   grid-column-gap: 32px;
   grid-row-gap: 32px;
 }
+
+.div-block-517 {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 32px;
+  grid-row-gap: 32px;
+}
