@@ -184,6 +184,6 @@ export function calculateOverallScore(data: DataType): ScoreWheelParams {
       : 0;
   }
   const skillsScore: number = data.skills?.score || 0;
-  detailedScores['skills'] = skillsScore * 0.1;
+  detailedScores['skills'] = skillsScore;
   return detailedScores as ScoreWheelParams;
 }
