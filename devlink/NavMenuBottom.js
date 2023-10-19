@@ -108,13 +108,18 @@ export function NavMenuBottom({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "", "max-width-130")}
+              className={_utils.cx(
+                _styles,
+                "",
+                "max-width-130",
+                "one-line-clamp"
+              )}
               tag="div"
             >
               {textName}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-400")}
+              className={_utils.cx(_styles, "text-grey-400", "one-line-clamp")}
               tag="div"
             >
               {textEmail}

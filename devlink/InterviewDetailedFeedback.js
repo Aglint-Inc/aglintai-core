@@ -78,7 +78,12 @@ export function InterviewDetailedFeedback({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotDetailedFeedback}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-519")}
+          tag="div"
+        >
+          {slotDetailedFeedback}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-494")}
           tag="div"

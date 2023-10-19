@@ -84,6 +84,7 @@ export * from "./CreateNewJobDrawer";
 export * from "./CsvIcon";
 export * from "./DetailedFeedback";
 export * from "./DetailedFeedbackCard";
+export * from "./DetailedFeedbackCardSmall";
 export * from "./DisconnectInterviewModal";
 export * from "./DraftCoverBtn";
 export * from "./DropdownEntry";

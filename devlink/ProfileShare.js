@@ -226,15 +226,15 @@ export function ProfileShare({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "profile-share-overview-wrapper")}
-        tag="div"
-      >
+      {isOverviewVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "ps-container")}
+          className={_utils.cx(_styles, "profile-share-overview-wrapper")}
           tag="div"
         >
-          {isOverviewVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ps-container")}
+            tag="div"
+          >
             <_Builtin.Block
               className={_utils.cx(_styles, "ps-intro-overview-block")}
               tag="div"
@@ -265,11 +265,11 @@ export function ProfileShare({
                 {textOverview}
               </_Builtin.Paragraph>
             </_Builtin.Block>
-          ) : null}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.NavbarWrapper
-        className={_utils.cx(_styles, "profile-share-navbar")}
+        className={_utils.cx(_styles, "profile-share-navbar", "hide")}
         tag="div"
         config={{
           animation: "default",
@@ -428,15 +428,6 @@ export function ProfileShare({
           id="interview"
         >
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "ps-scroll-tag",
-              "w-node-_9ce633d1-a452-24e9-ac76-bec9d3f0cb93-d3f0cb54"
-            )}
-            id={_utils.cx(_styles, "interview")}
-            tag="div"
-          />
-          <_Builtin.Block
             className={_utils.cx(_styles, "ps-container")}
             tag="div"
           >
@@ -485,6 +476,10 @@ export function ProfileShare({
                     </>
                   )}
                 </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-520")}
+                  tag="div"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

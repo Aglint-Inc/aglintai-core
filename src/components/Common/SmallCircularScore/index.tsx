@@ -43,46 +43,32 @@ const SmallCircularScore = ({
     }
   }, [score, finalScore]);
   return (
-    <Stack flexDirection={'row'} alignItems={'center'} width={'70px'}>
-      <Stack sx={{ transform: 'scale(0.4)' }}>
+    <Stack>
+      <Stack
+        width={'30px'}
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        borderRadius={'100%'}
+        sx={{
+          aspectRatio: 1,
+          background: `conic-gradient(${color.border},${3.6 * score}deg,${
+            color.background
+          } 0deg)`,
+        }}
+      >
         <Stack
-          width={'40px'}
+          width={'25px'}
           display={'flex'}
           alignItems={'center'}
           justifyContent={'center'}
-          borderRadius={'50%'}
+          borderRadius={'100%'}
+          textAlign={'center'}
           sx={{
             aspectRatio: 1,
-            background: `conic-gradient(${color.border},${3.6 * score}deg,${
-              color.background
-            } 0deg)`,
+            backgroundColor: color.background,
           }}
-        >
-          <Stack
-            width={'80%'}
-            display={'flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            borderRadius={'50%'}
-            textAlign={'center'}
-            sx={{
-              aspectRatio: 1,
-              backgroundColor: color.background,
-            }}
-          />
-        </Stack>
-      </Stack>
-      <Stack color={color.border} fontSize={'6px'}>
-        <Stack
-          fontSize={'14px'}
-          sx={{
-            color: color.border,
-            fontWeight: 600,
-            transform: 'translateY(-2px)',
-          }}
-        >
-          {`${score}%`}
-        </Stack>
+        />
       </Stack>
     </Stack>
   );

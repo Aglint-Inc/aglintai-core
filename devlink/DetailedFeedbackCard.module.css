@@ -13,6 +13,10 @@
   grid-row-gap: 16px;
 }
 
+.lan-analysis-header-card.space-between {
+  justify-content: space-between;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -223,6 +227,11 @@
 
 .green-200 {
   background-color: var(--green200-3c062f81);
+}
+
+.div-block-304.width-10 {
+  width: 10px;
+  height: 10px;
 }
 
 .cursor-pointer {

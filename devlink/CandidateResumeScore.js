@@ -12,10 +12,15 @@ export function CandidateResumeScore({
   onClickDownloadResume = {},
   onClickViewResume = {},
   slotFeedbackScore,
+  textStyleProps = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cvs-info-block")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "fw-semibold")}
+        tag="div"
+        {...textStyleProps}
+      >
         {"Resume Score"}
       </_Builtin.Block>
       <_Builtin.Block

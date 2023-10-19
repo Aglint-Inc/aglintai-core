@@ -46,6 +46,11 @@
   background-color: var(--green200-3c062f81);
 }
 
+.div-block-304.width-10 {
+  width: 10px;
+  height: 10px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
