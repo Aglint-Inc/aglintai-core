@@ -11,13 +11,15 @@ function InterviewThanks() {
   return (
     <InterviewCompleted
       slotCompanyLogo={
-        <MuiAvatar width={'60px'} height={'60px'} src={jobDetails?.logo} />
+        jobDetails?.logo ? (
+          <MuiAvatar width={'60px'} height={'60px'} src={jobDetails?.logo} />
+        ) : null
       }
       slotLottie={<CompleteLottie />}
       onClickSupport={{
         onClick: () => {
           window.open(
-            `https://recruiter.aglinthq.com/support?id=${candidateDetails?.application_id}`,
+            `https://recruiter.aglinthq.com/support/create?id=${candidateDetails?.application_id}`,
           );
         },
       }}

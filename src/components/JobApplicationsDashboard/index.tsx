@@ -616,7 +616,7 @@ export function sendEmails(
                 job_title: candidate.job_title,
                 company_name: candidate.company,
                 interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
-                support_link: `https://recruiter.aglinthq.com/support?id=${candidate.application_id}`,
+                support_link: `https://recruiter.aglinthq.com/support/create?id=${candidate.application_id}`,
               })
             : status === JobApplicationSections.DISQUALIFIED
             ? fillEmailTemplate(job?.email_template?.rejection?.body, {
