@@ -137,6 +137,7 @@ const SupportProvider = ({ children }) => {
 
     return allFilter;
   }, [allTickets]);
+  
   const filters = useMemo(() => {
     let filters = {
       status: 'all',
