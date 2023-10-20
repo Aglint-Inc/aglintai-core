@@ -99,7 +99,9 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        router.push(pageRoutes.LOGIN);
+        if (!isRoutePublic(router.route)) {
+          router.push(pageRoutes.LOGIN);
+        }
         loading && setLoading(false);
         return;
       }
@@ -184,7 +186,7 @@ const AuthProvider = ({ children }) => {
       {
         email: email,
       },
-      { emailRedirectTo: 'http://localhost:3000/loading' },
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -265,7 +267,11 @@ const AuthLoader = () => {
 };
 
 const isRoutePublic = (path = '') => {
-  const whiteListedRoutes = [pageRoutes.LOGIN, pageRoutes.SIGNUP];
+  const whiteListedRoutes = [
+    pageRoutes.LOGIN,
+    pageRoutes.SIGNUP,
+    pageRoutes.INTERVIEW,
+  ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }
