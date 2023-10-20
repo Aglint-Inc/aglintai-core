@@ -12,6 +12,8 @@ export function EditEmail({
   slotForm,
   editEmailDescription = "This is some text inside of a div block.",
   slotBottom,
+  isSaveChangesButtonVisible = true,
+  isRequestTestMailVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "company-email-edit")} tag="div">
@@ -60,14 +62,24 @@ export function EditEmail({
       >
         {slotForm}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-457")} tag="div">
-        <_Builtin.Block tag="div" {...onClickSaveChanges}>
-          <ButtonPrimarySmall textLabel="Save Changes" />
+      {isSaveChangesButtonVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-457")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div" {...onClickSaveChanges}>
+            <ButtonPrimarySmall textLabel="Save Changes" />
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-470")} tag="div">
-        {slotBottom}
-      </_Builtin.Block>
+      ) : null}
+      {isRequestTestMailVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-470")}
+          tag="div"
+        >
+          {slotBottom}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

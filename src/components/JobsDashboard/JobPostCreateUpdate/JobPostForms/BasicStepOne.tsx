@@ -60,7 +60,10 @@ const BasicStepOne = ({ formError, setFormError }) => {
                       startAdornment: (
                         <InputAdornment position='start'>
                           <Image
-                            style={{ borderRadius: '4px' }}
+                            style={{
+                              borderRadius: '4px',
+                              objectFit: 'contain',
+                            }}
                             alt='building'
                             src={`${
                               formFields.logo

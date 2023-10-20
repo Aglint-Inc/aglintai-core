@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { EmailTemplateCards } from "./EmailTemplateCards";
+import { ButtonPrimarySmall } from "./ButtonPrimarySmall";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplatesStart.module.css";
 
@@ -14,6 +15,7 @@ export function EmailTemplatesStart({
   isProceedDisable = true,
   onClickProceed = {},
   isAddJob = true,
+  onClickDone = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-508")} tag="div">
@@ -48,6 +50,16 @@ export function EmailTemplatesStart({
       >
         {slotEmailTemplateCards ?? <EmailTemplateCards />}
       </_Builtin.Block>
+      {isAddJob ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-522")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div" {...onClickDone}>
+            <ButtonPrimarySmall textLabel="Done" />
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }
