@@ -108,72 +108,73 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
             </Stack>
           </FileUploader>
         )}
-
-        <Stack spacing={2} overflow={'scroll'} position={'relative'}>
-          {loading && (
+        {selectedfile.length !== 0 && (
+          <Stack spacing={2} overflow={'scroll'} position={'relative'}>
+            {loading && (
+              <Stack
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 2,
+                }}
+                alignItems={'center'}
+              >
+                <LoaderSvg />
+              </Stack>
+            )}
             <Stack
+              spacing={2}
               sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: 2,
+                pointerEvents: loading ? 'none' : 'auto',
+                opacity: loading ? 0.5 : 1,
               }}
-              alignItems={'center'}
             >
-              <LoaderSvg />
-            </Stack>
-          )}
-          <Stack
-            spacing={2}
-            sx={{
-              pointerEvents: loading ? 'none' : 'auto',
-              opacity: loading ? 0.5 : 1,
-            }}
-          >
-            {selectedfile.map((data, index) => {
-              const { name, type, lastModifiedDate, size } = data;
-              return (
-                <Paper
-                  sx={{
-                    p: 2,
-                  }}
-                  key={index}
-                >
-                  <Stack spacing={1}>
-                    <Stack direction={'row'} justifyContent={'space-between'}>
-                      <Tooltip title={name}>
-                        <Typography variant='h5' className='one-line-clamp'>
-                          {name}
-                        </Typography>
-                      </Tooltip>
+              {selectedfile.map((data, index) => {
+                const { name, type, lastModifiedDate, size } = data;
+                return (
+                  <Paper
+                    sx={{
+                      p: 2,
+                    }}
+                    key={index}
+                  >
+                    <Stack spacing={1}>
+                      <Stack direction={'row'} justifyContent={'space-between'}>
+                        <Tooltip title={name}>
+                          <Typography variant='h5' className='one-line-clamp'>
+                            {name}
+                          </Typography>
+                        </Tooltip>
 
-                      <Typography variant='caption'>{type}</Typography>
+                        <Typography variant='caption'>{type}</Typography>
+                      </Stack>
+                      <Stack direction={'row'} spacing={2}>
+                        <Typography variant='body2'>Size : {size}</Typography>
+                        <Typography variant='body2'>
+                          Modified Time :{' '}
+                          {dayjs(lastModifiedDate).format('MMM D, YYYY h:mm A')}
+                        </Typography>
+                      </Stack>
+                      <Stack direction={'row'} justifyContent={'flex-end'}>
+                        <Typography
+                          sx={{ cursor: 'pointer' }}
+                          variant='caption'
+                          color={'error.main'}
+                          component={'span'}
+                          onClick={() => DeleteSelectFile(name)}
+                        >
+                          Delete
+                        </Typography>
+                      </Stack>
                     </Stack>
-                    <Stack direction={'row'} spacing={2}>
-                      <Typography variant='body2'>Size : {size}</Typography>
-                      <Typography variant='body2'>
-                        Modified Time :{' '}
-                        {dayjs(lastModifiedDate).format('MMM D, YYYY h:mm A')}
-                      </Typography>
-                    </Stack>
-                    <Stack direction={'row'} justifyContent={'flex-end'}>
-                      <Typography
-                        sx={{ cursor: 'pointer' }}
-                        variant='caption'
-                        color={'error.main'}
-                        component={'span'}
-                        onClick={() => DeleteSelectFile(name)}
-                      >
-                        Delete
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                </Paper>
-              );
-            })}
+                  </Paper>
+                );
+              })}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
 
         {selectedfile.length !== 0 && (
           <Stack direction={'row'} justifyContent={'flex-end'}>
