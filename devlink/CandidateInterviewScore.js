@@ -23,7 +23,11 @@ export function CandidateInterviewScore({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cvs-score-overview-block")}
+          className={_utils.cx(
+            _styles,
+            "cvs-score-overview-block",
+            "no-margin"
+          )}
           tag="div"
         >
           <_Builtin.Block
@@ -46,7 +50,11 @@ export function CandidateInterviewScore({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-score-info-block")}
+            className={_utils.cx(
+              _styles,
+              "cvs-score-info-block",
+              "interview-no-gap"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -85,7 +93,11 @@ export function CandidateInterviewScore({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cvs-score-details-wrapper")}
+          className={_utils.cx(
+            _styles,
+            "cvs-score-details-wrapper",
+            "no-margin"
+          )}
           tag="div"
         >
           {slotInterviewFeedbackScore ?? <FeedbackScore />}

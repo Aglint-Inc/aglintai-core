@@ -264,6 +264,13 @@
 .cvs-score-info-block {
   display: flex;
   flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.cvs-score-info-block.interview-no-gap {
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .ps-res-button {

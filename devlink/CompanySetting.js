@@ -3393,7 +3393,7 @@ export function CompanySetting({
       <_Builtin.Block className={_utils.cx(_styles, "div-block-353")} tag="div">
         <_Builtin.TabsWrapper
           className={_utils.cx(_styles, "company-settings-tabs")}
-          current="Tab 3"
+          current="Tab 1"
           easing="ease"
           fadeIn={300}
           fadeOut={100}
@@ -3440,7 +3440,7 @@ export function CompanySetting({
             </_Builtin.TabsLink>
             {isTeamVisible ? (
               <_Builtin.TabsLink
-                className={_utils.cx(_styles, "company-tab-link")}
+                className={_utils.cx(_styles, "company-tab-link", "hide")}
                 data-w-tab="Tab 4"
                 {...onClickTeam}
               >

@@ -275,11 +275,11 @@
 
   border-radius: 4px;
 
-  background-color: var(--grey-800);
+  background-color: #2f3941;
 
   opacity: 0;
 
-  color: var(--white);
+  color: white;
   font-size: 10px;
 }
 

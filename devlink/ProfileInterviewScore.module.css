@@ -202,7 +202,16 @@
 
 .cvs-score-overview-block {
   display: flex;
+  margin-top: 36px;
+  margin-left: 30px;
   align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+}
+
+.cvs-score-overview-block.no-margin {
+  margin-top: 0px;
+  margin-left: 0px;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
 }

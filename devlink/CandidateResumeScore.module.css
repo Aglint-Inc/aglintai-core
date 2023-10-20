@@ -193,7 +193,16 @@
 
 .cvs-score-overview-block {
   display: flex;
+  margin-top: 36px;
+  margin-left: 30px;
   align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+}
+
+.cvs-score-overview-block.no-margin {
+  margin-top: 0px;
+  margin-left: 0px;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
 }
@@ -204,11 +213,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  transform: scale(1.8);
 }
 
 .cvs-score-info-block {
   display: flex;
   flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.cvs-score-info-block.interview-no-gap {
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .div-block-491 {
@@ -268,6 +286,7 @@
 
 .cvs-score-details-wrapper {
   display: flex;
+  margin-top: 35px;
   padding: 20px;
   flex-direction: column;
   grid-column-gap: 8px;
@@ -276,4 +295,8 @@
   border-radius: 10px;
 
   background-color: #f8f9f9;
+}
+
+.cvs-score-details-wrapper.no-margin {
+  margin-top: 0px;
 }
