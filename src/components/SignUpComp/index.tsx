@@ -103,7 +103,7 @@ const SignUpComp = () => {
                 }}
                 onClickPostJob={{
                   onClick: () => {
-                    router.push(`${pageRoutes.JOBS}?flow=create`, undefined, {
+                    router.push(`${pageRoutes.JOBS}/new`, undefined, {
                       shallow: true,
                     });
                   },
