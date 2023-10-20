@@ -45,6 +45,7 @@ function Support() {
     setOpenTicketIndex,
     allChecked,
     setAllChecked,
+    filters,
     sort,
     setSort,
     sortOrder,
@@ -175,6 +176,7 @@ function Support() {
             }}
           />
         }
+        textHeaderStatus={capitalize(filters.status)}
       />
       <Drawer
         open={Boolean(openTicket)}

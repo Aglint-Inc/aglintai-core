@@ -26,6 +26,7 @@ import {
   getPriorityIcon,
   useSupportContext,
 } from '@/src/context/SupportContext/SupportContext';
+import { palette } from '@/src/context/Theme/Theme';
 import {
   EmailTemplateType,
   JobApplcationDB,
@@ -33,6 +34,7 @@ import {
   Support_ticketType,
   SupportEmailAPIType,
 } from '@/src/types/data.types';
+import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import {
@@ -405,14 +407,14 @@ const chatBox = (
 ) => {
   const temp = [];
   let tempDate = content[0].timeStamp;
-  temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+  temp.push(<TicketTimeDivider textDate={getDayFormate(tempDate)} />);
   content.forEach((item, index) => {
     if (
       new Date(item.timeStamp).toDateString() !==
       new Date(tempDate).toDateString()
     ) {
       tempDate = item.timeStamp;
-      temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+      temp.push(<TicketTimeDivider textDate={getDayFormate(tempDate)} />);
     }
     if (item.type === 'message') {
       temp.push(
@@ -545,6 +547,8 @@ const AddNewMessage = ({ sendMessage }) => {
             </IconButton>
           </Stack>
         }
+        borderColor={palette.grey[100]}
+        padding={1.5}
       />
     </Stack>
   );

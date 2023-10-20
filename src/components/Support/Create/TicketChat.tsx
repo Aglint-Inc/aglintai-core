@@ -7,11 +7,13 @@ import { CandidateChat } from '@/devlink/CandidateChat';
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
+import { palette } from '@/src/context/Theme/Theme';
 import {
   EmployeeType,
   PublicJobsType,
   SupportTicketType,
 } from '@/src/types/data.types';
+import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabaseClient';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -41,6 +43,9 @@ function TicketChat({
   }, []);
 
   const sendMessage = (message: string) => {
+    if (message?.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '') {
+      return;
+    }
     return updateTicket({
       // @ts-ignore
       content: [
@@ -235,6 +240,8 @@ const AddNewMessage = ({ sendMessage }) => {
             </IconButton>
           </Stack>
         }
+        borderColor={palette.grey[100]}
+        padding={1.5}
       />
     </Stack>
   );
@@ -267,14 +274,14 @@ const chatBox = (
 ) => {
   const temp = [];
   let tempDate = content[0].timeStamp;
-  temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+  temp.push(<TicketTimeDivider textDate={getDayFormate(tempDate)} />);
   content.forEach((item, index) => {
     if (
       new Date(item.timeStamp).toDateString() !==
       new Date(tempDate).toDateString()
     ) {
       tempDate = item.timeStamp;
-      temp.push(<TicketTimeDivider textDate={dayjs(tempDate).fromNow()} />);
+      temp.push(<TicketTimeDivider textDate={getDayFormate(tempDate)} />);
     }
     if (item.type === 'message') {
       temp.push(
@@ -290,7 +297,10 @@ const chatBox = (
             />
           }
           textMessages={
-            <Typography dangerouslySetInnerHTML={{ __html: item.text }} />
+            <Typography
+              dangerouslySetInnerHTML={{ __html: item.text }}
+              fontSize={'14px'}
+            />
           }
           textTime={dayjs(item.timeStamp).fromNow()}
           textName={item.name}
