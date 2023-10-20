@@ -37,6 +37,8 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
+  handleUpdatePassword: (password: string) => Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   handleLogout: (event: any) => Promise<void>;
@@ -51,6 +53,7 @@ const defaultProvider = {
   setUserDetails: () => {},
   handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
+  handleUpdatePassword: undefined,
   recruiter: null,
   setRecruiter: () => {},
   loading: true,
@@ -96,7 +99,9 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        router.push(pageRoutes.LOGIN);
+        if (!isRoutePublic(router.route)) {
+          router.push(pageRoutes.LOGIN);
+        }
         loading && setLoading(false);
         return;
       }
@@ -181,13 +186,26 @@ const AuthProvider = ({ children }) => {
       {
         email: email,
       },
-      { emailRedirectTo: 'http://localhost:3000/loading' },
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
       toast.success(`Confirmation email sent`);
+      return true;
+    }
+  };
+
+  const handleUpdatePassword = async (password: string): Promise<boolean> => {
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    if (error) {
+      toast.error(`Oops! Something went wrong. (${error.message})`);
+      return false;
+    } else {
+      toast.success(`Password reset successfully`);
       return true;
     }
   };
@@ -223,6 +241,7 @@ const AuthProvider = ({ children }) => {
         recruiter,
         handleUpdateProfile,
         handleUpdateEmail,
+        handleUpdatePassword,
         setRecruiter,
         loading,
         setLoading,
@@ -248,7 +267,11 @@ const AuthLoader = () => {
 };
 
 const isRoutePublic = (path = '') => {
-  const whiteListedRoutes = [pageRoutes.LOGIN, pageRoutes.SIGNUP];
+  const whiteListedRoutes = [
+    pageRoutes.LOGIN,
+    pageRoutes.SIGNUP,
+    pageRoutes.INTERVIEW,
+  ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }

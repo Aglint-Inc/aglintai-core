@@ -34,7 +34,7 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #25282a;
 
   backdrop-filter: blur(10px);
 }
@@ -55,6 +55,7 @@
 }
 
 .interview-btn-new {
+  position: relative;
   display: flex;
   grid-column-gap: 13px;
   grid-row-gap: 13px;
@@ -78,7 +79,7 @@
 }
 
 .interview-edit-wrappers:hover {
-  background-color: var(--blue-600);
+  background-color: #1f73b7;
 }
 
 .icons {
@@ -132,7 +133,11 @@
 }
 
 .interview-edit-done-wrapper:hover {
-  background-color: var(--gray-100);
+  background-color: #f8f9f9;
+}
+
+.mic-wrapper {
+  position: relative;
 }
 
 .interview-mic-wrapper {
@@ -153,7 +158,7 @@
 }
 
 .interview-mic-wrapper:hover {
-  background-color: var(--yellow-600);
+  background-color: #ed8f1c;
 }
 
 .interview-mic-speaking-wrapper {
@@ -174,10 +179,21 @@
 }
 
 .interview-mic-speaking-wrapper:hover {
-  background-color: var(--yellow-600);
+  background-color: #ed8f1c;
+}
+
+.disable-all-btn-interview {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
 }
 
 .submit-btn-wrapers-inter {
+  position: relative;
+
   padding: 10px 20px;
 
   border-radius: 100px;
@@ -186,14 +202,14 @@
 
   transition: all 250ms ease;
 
-  color: var(--white);
+  color: white;
   font-weight: 600;
 
   cursor: pointer;
 }
 
 .submit-btn-wrapers-inter:hover {
-  background-color: var(--green-600);
+  background-color: #038153;
 }
 
 .time-wrappers-interview-new {

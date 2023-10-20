@@ -257,7 +257,14 @@ export default function AppLayout({ children }) {
                   <Avatar
                     src={profileImage}
                     variant='rounded'
-                    sx={{ width: '100%', height: '100%' }}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
                   />
                 }
                 isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
@@ -371,7 +378,13 @@ export default function AppLayout({ children }) {
                 <Avatar
                   src={recruiter?.logo}
                   variant='rounded'
-                  sx={{ width: '100%', height: '100%' }}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
+                    },
+                  }}
                 />
               }
             />

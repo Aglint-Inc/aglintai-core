@@ -17,6 +17,7 @@ const toast = {
       cancel: '✕',
     });
   },
+
   warning: (message) => {
     createToast(message, {
       timeout: 3000,

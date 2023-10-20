@@ -104,6 +104,25 @@ function InterviewContextProvider({ children }) {
     clearInterval(timmer); // Clear the interval to stop the timer
   }
 
+  // print char
+
+  const [character, setCharacter] = useState('');
+  function printCharactersOneByOne(inputString, delay = 100) {
+    let index = 0;
+    function printNextCharacter() {
+      if (index < inputString.length) {
+        const character = inputString.charAt(index);
+        setCharacter((pre) => pre + character);
+        index++;
+        setTimeout(printNextCharacter, delay);
+      }
+    }
+
+    printNextCharacter();
+  }
+
+  // end
+
   async function startInterview() {
     audioElement = null;
     interviewerIndex = null;
@@ -242,6 +261,7 @@ function InterviewContextProvider({ children }) {
         //   console.log(`Progress: ${progressPercentage}%`);
         // });
         audioElement?.play();
+        printCharactersOneByOne(textToSpeech, 50);
       } else {
         setLoadingRes(false);
       }
@@ -255,6 +275,7 @@ function InterviewContextProvider({ children }) {
     const userText = senderRef?.current?.value;
 
     if (userText) {
+      setCharacter('');
       senderRef.current.value = '';
 
       audioElement = null;
@@ -374,6 +395,17 @@ function InterviewContextProvider({ children }) {
     }
   };
 
+  function stopListening() {
+    if (!browserSupportsSpeechRecognition) {
+      alert(`Brawser does't suppert`);
+      return null;
+    }
+
+    stopRecording();
+    SpeechRecognition.abortListening();
+    SpeechRecognition.stopListening();
+    resetTranscript();
+  }
   // feedback
 
   async function getFeedback() {
@@ -452,11 +484,11 @@ function InterviewContextProvider({ children }) {
         senderRef,
 
         handleListing,
+        stopListening,
         listening,
         conversations,
         openSidePanelDrawer,
         setOpenSidePanelDrawer,
-
         allowMic,
         setAllowMic,
         getFeedback,
@@ -472,6 +504,8 @@ function InterviewContextProvider({ children }) {
         setOpenThanksPage,
         openEndInterview,
         setOpenEndInterview,
+
+        character,
       }}
     >
       {children}

@@ -308,13 +308,13 @@ export function CandidateDatabaseComp() {
                         spacing={2}
                       >
                         <MuiAvatar
+                          variant='circular'
                           level={row.first_name}
                           src={
                             !row.profile_image
                               ? getGravatar(row.email, row?.first_name)
                               : row.profile_image
                           }
-                          variant={''}
                           width={'20px'}
                           height={'20px'}
                           fontSize={'28px'}

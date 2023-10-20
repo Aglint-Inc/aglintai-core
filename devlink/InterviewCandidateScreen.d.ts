@@ -19,4 +19,6 @@ declare function InterviewCandidateScreen(props: {
   slotMic?: Types.Devlink.Slot;
   isMicVisible?: Types.Visibility.VisibilityConditions;
   isSpeakingVisible?: Types.Visibility.VisibilityConditions;
+  isAllButtonDisable?: Types.Visibility.VisibilityConditions;
+  isMicSubmitButtonDisable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

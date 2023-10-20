@@ -73,40 +73,52 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                   ).length
                 }
                 slotInterviewIcon={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.interviewing, 'interviewing')
-                    .scheduled ? (
-                    <Icon variant='ClockHistory' height='12' width='12' />
+                  !job.active_status.closed.isActive ? (
+                    getStatusInfo(
+                      job.active_status.interviewing,
+                      'interviewing',
+                    ).scheduled ? (
+                      <Icon variant='ClockHistory' height='12' width='12' />
+                    ) : (
+                      <Icon variant='DoubleTick' height='16' width='16' />
+                    )
                   ) : (
-                    <Icon variant='DoubleTick' height='16' width='16' />
+                    ''
                   )
                 }
                 slotSourcingIcon={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.sourcing, 'sourcing')
-                    .scheduled ? (
-                    <Icon variant='ClockHistory' height='12' width='12' />
+                  !job.active_status.closed.isActive ? (
+                    getStatusInfo(job.active_status.sourcing, 'sourcing')
+                      .scheduled ? (
+                      <Icon variant='ClockHistory' height='12' width='12' />
+                    ) : (
+                      <Icon variant='DoubleTick' height='16' width='16' />
+                    )
                   ) : (
-                    <Icon variant='DoubleTick' height='16' width='16' />
+                    ''
                   )
                 }
                 textSourcing={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.sourcing, 'sourcing')
-                    .scheduled
+                  !job.active_status.closed.isActive
                     ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .primaryStatus
-                    : 'Sourcing'
+                        .scheduled
+                      ? getStatusInfo(job.active_status.sourcing, 'sourcing')
+                          .primaryStatus
+                      : 'Sourcing'
+                    : ''
                 }
                 textInterview={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.interviewing, 'interviewing')
-                    .scheduled
+                  !job.active_status.closed.isActive
                     ? getStatusInfo(
                         job.active_status.interviewing,
                         'interviewing',
-                      ).primaryStatus
-                    : 'Interviewing'
+                      ).scheduled
+                      ? getStatusInfo(
+                          job.active_status.interviewing,
+                          'interviewing',
+                        ).primaryStatus
+                      : 'Interviewing'
+                    : ''
                 }
                 bgColorProps={{
                   style: {

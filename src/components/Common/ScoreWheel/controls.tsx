@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 
-import { ScoreWheelParams, wheelColors } from '.';
+import { scoreWheelDependencies, ScoreWheelParams } from '.';
 
 const ScoreWheelControls = ({
   weights,
@@ -19,14 +19,19 @@ const ScoreWheelControls = ({
     acc -= curr;
     return acc;
   }, 100);
-  const sliders = Object.entries(weights).map(([key, value], i) => (
+  const sliders = scoreWheelDependencies.parameterOrder.map((key, i) => (
     <ScoreWheelSlider
       key={i}
+      id={i}
       label={key}
-      weight={value}
+      weight={weights[key]}
       limit={limit}
       setWeights={setWeights}
-      color={wheelColors[i % wheelColors.length]}
+      color={
+        scoreWheelDependencies.wheelColors[
+          i % scoreWheelDependencies.wheelColors.length
+        ]
+      }
     />
   ));
   const handleEqualise = () => {
@@ -69,12 +74,14 @@ const ScoreWheelControls = ({
 };
 
 const ScoreWheelSlider = ({
+  id,
   label,
   weight,
   limit,
   setWeights,
   color,
 }: {
+  id;
   label: string;
   weight: number;
   limit: number;
@@ -93,7 +100,7 @@ const ScoreWheelSlider = ({
       <Stack fontWeight={600}>{capitalize(label)}</Stack>
       <Stack width={'300px'} ml={'auto'}>
         <Slider
-          id='ScoreWheelSliders'
+          id={`ScoreWheelSliders${id}`}
           name={label}
           valueLabelDisplay='auto'
           value={weight}

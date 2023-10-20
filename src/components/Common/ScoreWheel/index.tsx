@@ -3,20 +3,37 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-const initialScores: ScoreWheelParams = {
-  experience: 100,
-  education: 100,
-  project: 100,
-  certifications: 100,
-  skills: 100,
+export const scoreWheelDependencies = {
+  initialScoreWheelScores: {
+    skills: 100,
+    experience: 100,
+    project: 100,
+    education: 100,
+    certifications: 100,
+  } as ScoreWheelParams,
+  initialScoreWheelWeights: {
+    skills: 20,
+    experience: 20,
+    project: 20,
+    education: 20,
+    certifications: 20,
+  } as ScoreWheelParams,
+  wheelColors: ['#E8A838', '#F1E15B', '#F47560', '#E8C1A0', '#97E3D5'],
+  parameterOrder: [
+    'skills',
+    'experience',
+    'project',
+    'education',
+    'certifications',
+  ],
 };
 
 export type ScoreWheelParams = {
-  experience: number;
-  education: number;
-  project: number;
-  certifications: number;
   skills: number;
+  experience: number;
+  project: number;
+  education: number;
+  certifications: number;
 };
 
 const ScoreWheel = ({
@@ -30,7 +47,10 @@ const ScoreWheel = ({
   score?: any;
   fontSize?: number;
 }) => {
-  const newScore = { ...initialScores, ...score };
+  const newScore = {
+    ...scoreWheelDependencies.initialScoreWheelScores,
+    ...score,
+  };
   const isSettings = score === undefined;
   const [delay, setDelay] = useState(0);
   const [degree, setDegree] = useState(null);
@@ -131,13 +151,6 @@ const ScoreWheel = ({
   );
 };
 
-export const wheelColors = [
-  '#E8A838',
-  '#F1E15B',
-  '#F47560',
-  '#E8C1A0',
-  '#97E3D5',
-];
 const getStyles = (
   delay: number,
   weights: ScoreWheelParams,
@@ -149,21 +162,24 @@ const getStyles = (
   const unusedColor = '#f4f5f6';
   const count = Object.keys(weights).length;
   let hoverKey = null;
-  const conicGradientObj = Object.entries(weights).reduce(
-    (acc, [key, value], i) => {
+  const conicGradientObj = scoreWheelDependencies.parameterOrder.reduce(
+    (acc, key, i) => {
       const startDegree = acc.start;
-      let scoreDegree = acc.start + (3.6 * value * score[key] * delay) / 10000;
+      let scoreDegree =
+        acc.start + (3.6 * weights[key] * score[key] * delay) / 10000;
       const unused = acc.unused - weights[key];
-      const endDegree = acc.start + 3.6 * value;
+      const endDegree = acc.start + 3.6 * weights[key];
       if (scoreDegree > endDegree - 1) scoreDegree = endDegree - 1;
       else if (scoreDegree < startDegree + 1) scoreDegree = startDegree + 1;
       const isDisabled = getDisabledState(degree, startDegree, endDegree);
       hoverKey = isDisabled && degree !== null ? key : hoverKey;
       const currentDarkColor = isDisabled
-        ? wheelColors[i % wheelColors.length]
+        ? scoreWheelDependencies.wheelColors[
+            i % scoreWheelDependencies.wheelColors.length
+          ]
         : disabledColor;
       const currentLightColor = isDisabled
-        ? lightColors[i % wheelColors.length]
+        ? lightColors[i % scoreWheelDependencies.wheelColors.length]
         : disabledColor;
       let newConicGradient =
         acc.conicGradient +

@@ -523,6 +523,21 @@
   z-index: 5;
 }
 
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .rd-email-temp-wrapper {
   display: grid;
   grid-auto-columns: 1fr;
@@ -1353,6 +1368,16 @@
 
 .text-grey-600-3.inline-block {
   display: inline;
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
 }
 
 .toggle-btn-block {

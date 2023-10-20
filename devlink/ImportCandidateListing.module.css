@@ -24,6 +24,16 @@
   display: inline;
 }
 
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
 .ic-import-preview-main {
   margin-top: 12px;
   margin-bottom: 18px;

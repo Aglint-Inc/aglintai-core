@@ -15,6 +15,8 @@ function CandidatePanel() {
     senderRef,
     handleListing,
     listening,
+    speaking,
+    stopListening,
   } = useInterviewContext();
 
   const [edit, setEdit] = useState(false);
@@ -42,6 +44,7 @@ function CandidatePanel() {
             setTimeout(() => {
               senderRef.current.focus();
             }, 200);
+            stopListening();
           },
         }}
         onClickEditDone={{
@@ -52,18 +55,26 @@ function CandidatePanel() {
         slotText={
           <>
             <Stack height={'100%'} direction={'row'}>
-              <Stack width={'100%'} display={edit ? 'none' : 'block'}>
+              <Stack
+                padding={'34px'}
+                direction={'row'}
+                display={edit ? 'none' : 'block'}
+              >
                 <Typography
                   fontSize={'22px'}
-                  padding={'34px'}
+                  lineHeight={'24px'}
                   color={
-                    listening && !senderRef?.current?.value
+                    speaking || (listening && !senderRef?.current?.value)
                       ? 'rgba(255, 255, 255, 0.29)'
                       : 'rgba(255, 255, 255, 1)'
                   }
+                  overflow={'auto'}
+                  height={'100px'}
                 >
-                  {listening && !senderRef?.current?.value
-                    ? 'Start Speaking now'
+                  {speaking
+                    ? 'Listening to the question'
+                    : listening && !senderRef?.current?.value
+                    ? `Start speaking or click 'edit' to type your answer`
                     : senderRef?.current?.value}
                 </Typography>
               </Stack>
@@ -81,10 +92,10 @@ function CandidatePanel() {
                   },
                   '& .MuiInputBase-root': {
                     height: '100%',
-                    padding: { xs: '0px', sm: '34px' },
+                    padding: { xs: '0px', sm: '24px 24px 0px 24px' },
                     background: 'white.700 !important',
                   },
-                  p: { xs: '12px 20px', md: '0px' },
+                  // p: { xs: '12px 20px', md: '0px' },
                 }}
                 position={'relative'}
               >
@@ -105,12 +116,15 @@ function CandidatePanel() {
                       fontWeight: 600,
                       height: '100% !important',
                       overflow: 'auto !important',
+                      background: 'rgba(255, 255, 255, 0.11)',
+                      borderRadius: '20px !important',
+                      padding: '15px',
                     },
                   }}
                   // className={`${classes.textField} ${classes.textFieldSmall} ${classes.textFieldExtraSmall}`}
                   inputRef={senderRef}
                   multiline
-                  // rows={windowSize.innerWidth < 991 ? 6 : 9.7}
+                  rows={3}
                   type='text'
                 />
               </Stack>
@@ -129,6 +143,8 @@ function CandidatePanel() {
             handleListing();
           },
         }}
+        isAllButtonDisable={speaking}
+        isMicSubmitButtonDisable={edit}
         isSpeakingVisible={listening}
         isMicVisible={!listening}
         onClickSubmit={{

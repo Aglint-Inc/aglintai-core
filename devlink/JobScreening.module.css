@@ -723,6 +723,21 @@
   z-index: 5;
 }
 
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;
@@ -1836,6 +1851,16 @@
   border-radius: 10px;
 
   background-color: var(--yellow100-51d667b3);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 .div-block-293 {

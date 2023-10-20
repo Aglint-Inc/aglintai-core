@@ -318,6 +318,16 @@
   opacity: 0.7;
 }
 
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
@@ -436,8 +446,8 @@
 .profile-inputs-wrapper {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .cs-info-wrapper {
@@ -524,6 +534,21 @@
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .flex-vertical-left {

@@ -1,8 +1,11 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Autocomplete, Dialog, Stack } from '@mui/material';
-import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import React from 'react';
 
 import { ProfileEmailPop, UserProfile } from '@/devlink';
@@ -18,9 +21,11 @@ import { capitalize } from '../JobApplicationsDashboard/utils';
 type FormValues = {
   value: string;
   label: string;
+  type: 'text' | 'password';
   placeholder: string;
   error: boolean;
-  validation: 'string' | 'phone' | 'mail';
+  validation: 'string' | 'phone' | 'mail' | 'password';
+  helperText: string;
   blocked: boolean;
   required: boolean;
   disabled: boolean;
@@ -40,12 +45,23 @@ type PreferenceFormFields = {
 type EmailFormFields = {
   email: FormValues;
 };
+type PasswordFormFields = {
+  password: FormValues;
+  confirmPassword: FormValues;
+};
 const ProfileDashboard = () => {
-  const { userDetails, handleUpdateProfile, recruiterUser } = useAuthDetails();
+  const {
+    userDetails,
+    handleUpdateProfile,
+    recruiterUser,
+    handleUpdatePassword,
+  } = useAuthDetails();
   const userMail = userDetails.user.email;
   const initialFormValues: FormValues = {
     value: null,
     label: null,
+    type: 'text',
+    helperText: null,
     placeholder: null,
     error: false,
     blocked: false,
@@ -94,6 +110,24 @@ const ProfileDashboard = () => {
       blocked: true,
     },
   };
+  const initialPassword: PasswordFormFields = {
+    password: {
+      ...initialFormValues,
+      value: '',
+      validation: 'password',
+      type: 'password',
+      required: true,
+      label: 'Password',
+    },
+    confirmPassword: {
+      ...initialFormValues,
+      value: '',
+      validation: 'password',
+      type: 'password',
+      required: true,
+      label: 'Confirm password',
+    },
+  };
   const initialPreferenceFormFields: PreferenceFormFields = {
     language: {
       ...initialFormValues,
@@ -117,12 +151,15 @@ const ProfileDashboard = () => {
     profile: false,
     preferences: false,
     email: false,
+    password: false,
   });
 
   const [profile, setProfile] = React.useState<FormFields>(
     initalProfileFormFields,
   );
   const [email, setEmail] = React.useState(initialEmail);
+  const [password, setPassword] = React.useState(initialPassword);
+  const [passwordChange, setPasswordChange] = React.useState(false);
   const [preferences, setPreferences] = React.useState(
     initialPreferenceFormFields,
   );
@@ -140,12 +177,42 @@ const ProfileDashboard = () => {
         }
         slotEmail={<ProfileForms profile={email} setProfile={setEmail} />}
         slotPassword={
-          <Link
-            href={'/reset-password'}
-            style={{ textDecoration: 'underline' }}
-          >
-            Change password
-          </Link>
+          <ProfileForms
+            profile={password}
+            setProfile={setPassword}
+            setChanges={() => setPasswordChange(true)}
+          />
+        }
+        slotSavePassword={
+          <Stack style={{ pointerEvents: loading.password ? 'none' : 'auto' }}>
+            <ButtonPrimaryOutlinedRegular
+              buttonText={'Save password'}
+              isDisabled={
+                !passwordChange ||
+                password.password.value === '' ||
+                password.confirmPassword.value === ''
+              }
+              buttonProps={{
+                onClick: async () => {
+                  setLoading((prev) => {
+                    return { ...prev, profile: true };
+                  });
+                  const confirmation = await handleSubmitPassword(
+                    password,
+                    setPassword,
+                    handleUpdatePassword,
+                  );
+                  if (confirmation) {
+                    setPasswordChange(true);
+                    setPassword(initialPassword);
+                  }
+                  setLoading((prev) => {
+                    return { ...prev, password: false };
+                  });
+                },
+              }}
+            />
+          </Stack>
         }
         onClickProfilePhotoChange={{
           onClick: () => {
@@ -160,7 +227,7 @@ const ProfileDashboard = () => {
               buttonProps={{
                 onClick: async () => {
                   setLoading((prev) => {
-                    return { ...prev, profile: true };
+                    return { ...prev, password: true };
                   });
                   const confirmation = await handleSubmit(
                     profile,
@@ -264,13 +331,38 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     },
   );
 };
+
+const handleValidatePassword = (password: PasswordFormFields) => {
+  if (
+    validatePassword(password.password.value) &&
+    validatePassword(password.confirmPassword.value)
+  ) {
+    if (
+      password.password.value.trim() === password.confirmPassword.value.trim()
+    ) {
+      return {
+        newPassword: password.password.value.trim(),
+        error: null,
+      };
+    } else
+      return {
+        newPassword: null,
+        error: 'Passwords do not match',
+      };
+  } else
+    return {
+      newPassword: null,
+      error:
+        'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
+    };
+};
+
 const handleSubmit = async (
   profile: any,
   setProfile: any,
   // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userDetails: RecruiterUserType) => Promise<boolean>,
   recruiterUser: RecruiterUserType,
-  // eslint-disable-next-line no-unused-vars
 ) => {
   const { newProfile, error } = handleValidate(profile);
   if (!error) {
@@ -291,8 +383,42 @@ const handleSubmit = async (
     }
   }
 };
+
+const handleSubmitPassword = async (
+  password: any,
+  setPassword: any,
+  // eslint-disable-next-line no-unused-vars
+  handleUpdatePassword: (password: string) => Promise<boolean>,
+) => {
+  const { newPassword, error } = handleValidatePassword(password);
+  if (!error) {
+    await handleUpdatePassword(newPassword);
+    return true;
+  } else {
+    setPassword((prev) => {
+      return {
+        ...prev,
+        password: { ...prev.password, error: true, helperText: error },
+        confirmPassword: {
+          ...prev.confirmPassword,
+          error: true,
+          helperText: error,
+        },
+      };
+    });
+  }
+};
 const validateString = (value: string) => {
   return value && value.trim() !== '';
+};
+const validatePassword = (value: string) => {
+  if (
+    validateString(value) &&
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+      value.trim(),
+    )
+  )
+    return true;
 };
 const validateMail = (value: string) => {
   return (
@@ -316,11 +442,16 @@ const ProfileForms = ({
   setProfile,
   setChanges = null,
 }: {
-  profile: FormFields | PreferenceFormFields | EmailFormFields;
+  profile:
+    | FormFields
+    | PreferenceFormFields
+    | EmailFormFields
+    | PasswordFormFields;
   setProfile:
     | React.Dispatch<React.SetStateAction<FormFields>>
     | React.Dispatch<React.SetStateAction<PreferenceFormFields>>
-    | React.Dispatch<React.SetStateAction<EmailFormFields>>;
+    | React.Dispatch<React.SetStateAction<EmailFormFields>>
+    | React.Dispatch<React.SetStateAction<PasswordFormFields>>;
   setChanges?: () => void;
 }) => {
   const handleChange = (e, key: string) => {
@@ -362,6 +493,15 @@ const ProfileForm = ({
   onChange: (e: any, key: string, phoneFormat?: any) => void;
 }) => {
   const [defaultCountry, setDefaultCountry] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleClickShowPassword = () => {
+    if (value.value) setShowPassword(!showPassword);
+  };
+
   const fetchUserLocation = async () => {
     try {
       const response = await fetch('https://ipinfo.io/json', {
@@ -398,6 +538,41 @@ const ProfileForm = ({
             onChange({ target: { value: formattedValue } }, id, data.format);
           }}
           helperText={`Please enter a valid ${capitalize(id)}`}
+        />
+      );
+    }
+    case 'password': {
+      return (
+        <UITextField
+          labelSize='small'
+          fullWidth
+          type={showPassword ? 'text' : 'password'}
+          label={value.label}
+          placeholder={value.placeholder}
+          required={value.required}
+          value={value.value}
+          disabled={value.blocked}
+          error={value.error}
+          helperText={
+            value.helperText ?? `Please enter a valid ${capitalize(id)}`
+          }
+          onChange={(e) => onChange(e, id)}
+          InputProps={{
+            disableUnderline: true,
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge='end'
+                  style={{ opacity: value.value ? 1 : 0.5 }}
+                >
+                  {!showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       );
     }
@@ -444,7 +619,9 @@ const ProfileForm = ({
             value={value.value}
             disabled={value.blocked}
             error={value.error}
-            helperText={`Please enter a valid ${capitalize(id)}`}
+            helperText={
+              value.helperText ?? `Please enter a valid ${capitalize(id)}`
+            }
             onChange={(e) => onChange(e, id)}
           />
         </Stack>

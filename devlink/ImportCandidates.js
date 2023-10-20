@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ImportResume } from "./ImportResume";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
 
@@ -61,7 +62,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import Resume(s)"}
+              {"Import Resume"}
             </_Builtin.Block>
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
@@ -86,7 +87,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportCsv}
+              {slotImportCsv ?? <ImportResume />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">

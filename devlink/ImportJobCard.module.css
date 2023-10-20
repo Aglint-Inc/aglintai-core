@@ -3,7 +3,6 @@
 
   display: flex;
   width: 100%;
-  max-width: 232px;
   padding: 12px 11px;
   flex-direction: column;
   justify-content: flex-start;
@@ -49,6 +48,10 @@
 
 .yellow-100 {
   background-color: var(--yellow100-51d667b3);
+}
+
+.cj-option-block.yellow-100.small-card-add-job {
+  max-width: 240px;
 }
 
 .cj-option-block.work {
@@ -245,6 +248,21 @@
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .max-width-500 {

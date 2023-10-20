@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { JobStatus } from "./JobStatus";
-import { JobCandidateCard } from "./JobCandidateCard";
 import { SelectActionBar } from "./SelectActionBar";
 import * as _utils from "./utils";
 import _styles from "./JobScreening.module.css";
@@ -147,7 +146,8 @@ export function JobScreening({
                       className={_utils.cx(
                         _styles,
                         "select-action-btn",
-                        "blue-500"
+                        "blue-500",
+                        "hide"
                       )}
                       tag="div"
                       {...onClickWorkflow}
@@ -498,10 +498,21 @@ export function JobScreening({
                           )}
                           tag="div"
                         >
+                          <_Builtin.Block
+                            className={_utils.cx(
+                              _styles,
+                              "checkbox-border-block"
+                            )}
+                            tag="div"
+                          />
                           {isSelectAllChecked ? (
-                            <_Builtin.HtmlEmbed
-                              className={_utils.cx(_styles, "add-icon")}
-                              value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2017%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20y%3D%220.5%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7%209.08579L10.2929%205.79289C10.6834%205.40237%2011.3166%205.40237%2011.7071%205.79289C12.0976%206.18342%2012.0976%206.81658%2011.7071%207.20711L7.70711%2011.2071C7.31658%2011.5976%206.68342%2011.5976%206.29289%2011.2071L4.29289%209.20711C3.90237%208.81658%203.90237%208.18342%204.29289%207.79289C4.68342%207.40237%205.31658%207.40237%205.70711%207.79289L7%209.08579Z%22%20fill%3D%22white%22%2F%3E%0A%3Crect%20x%3D%221.5%22%20y%3D%222%22%20width%3D%2213%22%20height%3D%2213%22%20rx%3D%223.5%22%20stroke%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                            <_Builtin.Image
+                              className={_utils.cx(_styles, "cli-check-image")}
+                              loading="lazy"
+                              width="auto"
+                              height="auto"
+                              alt=""
+                              src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
                             />
                           ) : null}
                         </_Builtin.Block>
@@ -576,7 +587,12 @@ export function JobScreening({
                         </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "cli-column", "score")}
+                        className={_utils.cx(
+                          _styles,
+                          "cli-column",
+                          "score",
+                          "grey-100"
+                        )}
                         tag="div"
                       >
                         {interviewScore ? (
@@ -603,7 +619,12 @@ export function JobScreening({
                         ) : null}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "cli-column", "status")}
+                        className={_utils.cx(
+                          _styles,
+                          "cli-column",
+                          "status",
+                          "grey-100"
+                        )}
                         tag="div"
                       >
                         <_Builtin.Block
@@ -635,22 +656,7 @@ export function JobScreening({
                   className={_utils.cx(_styles, "cdd-content-main")}
                   tag="div"
                 >
-                  {slotCandidateJobCard ?? (
-                    <>
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                      <JobCandidateCard />
-                    </>
-                  )}
+                  {slotCandidateJobCard}
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>

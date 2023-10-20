@@ -26,7 +26,7 @@ export function CandidateDetails({
       tag="div"
     >
       <_Builtin.NavbarWrapper
-        className={_utils.cx(_styles, "cvs-info-navbar")}
+        className={_utils.cx(_styles, "cvs-info-navbar", "hide")}
         tag="div"
         config={{
           animation: "default",
@@ -85,20 +85,19 @@ export function CandidateDetails({
         className={_utils.cx(_styles, "cvs-info-content-main")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {slotInterviewScore ?? <CandidateInterviewScore />}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotResumeScore ?? <CandidateResumeScore />}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotEducation ?? <CandidateEducation />}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotExperiences ?? <CandidateExperience />}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotSkills ?? <CandidateSkill />}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-517")}
+          tag="div"
+        >
+          {slotInterviewScore ?? (
+            <>
+              <CandidateInterviewScore />
+              <CandidateResumeScore />
+              <CandidateEducation />
+              <CandidateExperience />
+              <CandidateSkill />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed className={_utils.cx(_styles, "hide")} />

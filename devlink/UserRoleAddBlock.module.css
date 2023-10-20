@@ -221,6 +221,21 @@
   z-index: 5;
 }
 
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 #w-node-_5b99b463-1eb2-741e-96b1-9a81bc941679-bc941679 {
   grid-column-start: span 1;
   grid-column-end: span 1;

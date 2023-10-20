@@ -275,11 +275,11 @@
 
   border-radius: 4px;
 
-  background-color: var(--grey-800);
+  background-color: #2f3941;
 
   opacity: 0;
 
-  color: var(--white);
+  color: white;
   font-size: 10px;
 }
 
@@ -476,10 +476,19 @@
   z-index: 5;
 }
 
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
 @media screen and (max-width: 767px) {
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .inde-details-block {

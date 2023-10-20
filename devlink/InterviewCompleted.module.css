@@ -242,6 +242,16 @@
   display: inline;
 }
 
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
 .text-blue-500-2 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }

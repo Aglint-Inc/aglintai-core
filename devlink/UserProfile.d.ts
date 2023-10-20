@@ -13,4 +13,5 @@ declare function UserProfile(props: {
   slotPreferencesBtn?: Types.Devlink.Slot;
   slotPassword?: Types.Devlink.Slot;
   slcotpasswo?: Types.Devlink.Slot;
+  slotSavePassword?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -72,3 +72,13 @@
 .cursor-pointer:hover {
   opacity: 0.7;
 }
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}

@@ -1,8 +1,25 @@
-import { Avatar, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 
-function MuiAvatar({ level, width, height, variant, src, fontSize }) {
-  function stringToColor(string) {
+interface MuiAvatarProps {
+  level: string;
+  width?: string;
+  height?: string;
+  variant: 'circular' | 'rounded' | 'square';
+  src?: string;
+  fontSize?: string;
+}
+
+export default function MuiAvatar({
+  level,
+  width,
+  height,
+  variant,
+  src,
+  fontSize,
+}: MuiAvatarProps): React.JSX.Element {
+  function stringToColor(string: string): string {
     let hash = 0;
     let i;
 
@@ -21,7 +38,10 @@ function MuiAvatar({ level, width, height, variant, src, fontSize }) {
     return color + '70';
   }
 
-  function stringAvatar(value) {
+  function stringAvatar(value: string): {
+    sx: { width: string; height: string; bgcolor: string };
+    children: React.JSX.Element;
+  } {
     return {
       sx: {
         width: width ? width : '40px',
@@ -31,8 +51,6 @@ function MuiAvatar({ level, width, height, variant, src, fontSize }) {
       children: (
         <Typography
           position={'relative'}
-          bottom={'2px'}
-          left={'0.5px'}
           color={'white.700'}
           fontSize={fontSize}
         >
@@ -41,9 +59,8 @@ function MuiAvatar({ level, width, height, variant, src, fontSize }) {
       ),
     };
   }
+
   return (
     <Avatar src={src ? src : '/'} variant={variant} {...stringAvatar(level)} />
   );
 }
-
-export default MuiAvatar;

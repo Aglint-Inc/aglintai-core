@@ -7,6 +7,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { dbToClientjobPostForm, getSeedJobFormData } from './seedFormData';
+import { ScoreWheelParams } from '../../Common/ScoreWheel';
 
 type Question = {
   id: string;
@@ -78,13 +79,7 @@ export type FormJobType = {
     };
     feedbackVisible: boolean;
   };
-  resumeScoreSettings: {
-    skills: number;
-    project: number;
-    education: number;
-    experience: number;
-    certifications: number;
-  };
+  resumeScoreSettings: ScoreWheelParams;
   defaultWorkPlaceTypes: dropDownOption[];
   defaultDepartments: AutoCompleteType[];
   defaultJobType: dropDownOption[];
