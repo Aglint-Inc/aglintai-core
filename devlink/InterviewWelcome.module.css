@@ -1170,6 +1170,10 @@
   background-color: var(--gray-100);
 }
 
+.disclaimer-ai-wrappers.hide {
+  display: none;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -1370,6 +1374,26 @@
 
 .contact-support:hover {
   opacity: 0.8;
+}
+
+.interview-take-tour-wrappers {
+  display: flex;
+  margin-top: 17px;
+  padding: 12px 12px 12px 8px;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: #edf7ff;
+}
+
+.question-wrappers-interview {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #w-node-_12a2d91a-7668-4d3c-6f7d-217c73bd52f9-c25f4a74 {

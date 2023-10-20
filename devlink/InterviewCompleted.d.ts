@@ -8,4 +8,5 @@ declare function InterviewCompleted(props: {
   onClickSupport?: Types.Devlink.RuntimeProps;
   textTitle?: React.ReactNode;
   textDescription?: React.ReactNode;
+  propsTextColor?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

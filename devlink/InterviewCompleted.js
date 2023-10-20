@@ -10,6 +10,7 @@ export function InterviewCompleted({
   onClickSupport = {},
   textTitle = "Completed Interview Successfully.",
   textDescription = "Thank you for taking your time to take this interview. We will be in touch with you soon.If you have any questions please ",
+  propsTextColor = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-499")} tag="div">
@@ -49,6 +50,7 @@ export function InterviewCompleted({
                   "text-green-600"
                 )}
                 tag="div"
+                {...propsTextColor}
               >
                 {textTitle}
               </_Builtin.Block>
@@ -79,7 +81,11 @@ export function InterviewCompleted({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "int-completed-bottom")}
+            className={_utils.cx(
+              _styles,
+              "int-completed-bottom",
+              "fixed-bottom"
+            )}
             tag="div"
           >
             <_Builtin.Block
