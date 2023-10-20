@@ -1,5 +1,6 @@
 import WarningIcon from '@mui/icons-material/Warning';
 import { Stack } from '@mui/material';
+import md5 from 'blueimp-md5';
 
 import { JobCandidateCard } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -77,7 +78,7 @@ const ApplicationCard = ({
           level={application.first_name}
           src={
             !application.profile_image
-              ? getGravatar(application.email, application?.first_name)
+              ? getGravatar(application.email)
               : application.profile_image
           }
           variant={'rounded'}
@@ -117,15 +118,15 @@ const ApplicationCard = ({
 
 export default ApplicationCard;
 
-export function getGravatar(email, name) {
-  return `https://www.gravatar.com/avatar/${require('crypto')
-    .createHash('md5')
-    .update(email ? email.trim().toLowerCase() : '')
-    .digest('hex')}?d=${encode(name)}?d=retro&s=240&r=g`;
+export function getGravatar(email) {
+  let imgUrl = `https://www.gravatar.com/avatar/${md5(
+    email ? email.trim().toLowerCase() : '',
+  )}?d=retro&s=240&r=g`;
+  return imgUrl;
 }
 
-function encode(name) {
-  return encodeURIComponent(
-    `https://ui-avatars.com/api/background=random&name=${name}`,
-  );
-}
+// function encode(name) {
+//   return encodeURIComponent(
+//     `https://ui-avatars.com/api/background=random&name=${name}`,
+//   );
+// }
