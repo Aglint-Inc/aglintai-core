@@ -86,7 +86,7 @@ function ImageUpload({
                 height: size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 },
                 textTransform: 'capitalize',
                 bgcolor: 'transparent',
