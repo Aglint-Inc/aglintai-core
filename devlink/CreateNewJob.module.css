@@ -477,6 +477,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .white-active-bg {
   position: absolute;
   left: 0%;

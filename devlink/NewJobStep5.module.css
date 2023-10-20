@@ -381,6 +381,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cj-main-wrapper {
   position: relative;
 

@@ -192,6 +192,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;

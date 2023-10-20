@@ -214,6 +214,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .radio-btn-wrappers-green {
   width: 6px;
   height: 6px;

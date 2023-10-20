@@ -290,6 +290,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }

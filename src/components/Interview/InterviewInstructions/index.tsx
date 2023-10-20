@@ -1,4 +1,7 @@
+/* eslint-disable no-inner-declarations */
+//@ts-nocheck
 import { Avatar, Stack } from '@mui/material';
+import { useEffect } from 'react';
 
 import { InterviewWelcome } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
@@ -10,6 +13,56 @@ function InterviewInstructions() {
   const { initialLoading, jobDetails, candidateDetails } =
     useInterviewDetailsContext();
   const { startInterview } = useInterviewContext();
+
+  useEffect(() => {
+    setTimeout(() => {
+      getTour();
+    }, 2000);
+  }, []);
+
+  function getTour() {
+    const nextTourButtons = document.querySelectorAll('[data-next-button]');
+    nextTourButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        const nextStep = this.getAttribute('data-next-button');
+        tourAnimation(nextStep);
+      });
+    });
+
+    const tourBoxes = document.querySelectorAll('[tour-box]');
+    const tourPositions = document.querySelectorAll('[data-tour-step]');
+    function tourAnimation(nextStep: string) {
+      if (nextStep == 'finish') {
+        document
+          .querySelector(`[data-tour-completed]`)
+          .setAttribute('data-tour-completed', 'true');
+      } else if (nextStep == 'reset') {
+        setTimeout(() => {
+          document
+            .querySelector(`[data-tour-completed]`)
+            .setAttribute('data-tour-completed', 'false');
+          document.querySelector(`[data-next-button="1"]`).click();
+        }, 200);
+      } else {
+        tourBoxes.forEach((tourBox) => {
+          const tourBoxValue = tourBox.getAttribute('tour-box');
+
+          if (tourBoxValue === nextStep) {
+            tourBox.setAttribute('tour-box-active', 'true');
+            tourPositions.forEach((position) => {
+              if (position.getAttribute('data-tour-step') === nextStep) {
+                position.setAttribute('data-active-step', 'true');
+              } else {
+                position.setAttribute('data-active-step', 'false');
+              }
+            });
+          } else {
+            tourBox.setAttribute('tour-box-active', 'false');
+          }
+        });
+      }
+    }
+  }
   return (
     <div>
       {initialLoading ? (
@@ -44,6 +97,7 @@ function InterviewInstructions() {
           }
           textCompany={jobDetails?.company}
           textRole={jobDetails?.job_title}
+          isAboutVisible={jobDetails?.company_details}
           textCompanyDescription={jobDetails?.company_details}
           onClickStart={{
             onClick: () => {

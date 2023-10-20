@@ -698,6 +698,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .profile-mail-wrappers {
   display: flex;
   align-items: center;

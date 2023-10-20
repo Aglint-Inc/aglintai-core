@@ -510,6 +510,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cl-wrapper {
   display: flex;
   flex-direction: column;

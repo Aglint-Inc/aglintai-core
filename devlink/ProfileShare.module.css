@@ -466,6 +466,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .text-grey-600-3 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -490,6 +494,10 @@
   .text-grey-600-3.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
 }
 
 .profile-share-overview-wrapper {

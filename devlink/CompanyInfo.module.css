@@ -318,6 +318,16 @@
   opacity: 0.7;
 }
 
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
@@ -535,6 +545,10 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .flex-vertical-left {

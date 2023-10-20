@@ -207,6 +207,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .rd-company-sidebar {
   position: fixed;
   left: 0%;
@@ -1073,6 +1077,16 @@
   border-radius: 10px;
 
   background-color: var(--yellow100-51d667b3);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 .rd-email-edit-btn {

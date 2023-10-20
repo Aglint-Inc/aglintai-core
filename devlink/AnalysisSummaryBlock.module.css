@@ -215,6 +215,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

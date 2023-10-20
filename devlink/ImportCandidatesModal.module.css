@@ -255,6 +255,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .tabs-content-4 {
   overflow: visible;
   width: 700px;

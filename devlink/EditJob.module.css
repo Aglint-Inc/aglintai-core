@@ -486,6 +486,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .fake-color-div {
   position: absolute;
   left: 0%;

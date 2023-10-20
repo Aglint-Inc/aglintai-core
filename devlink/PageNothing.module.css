@@ -266,6 +266,10 @@
   }
 }
 
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
 .support-wrapper {
   display: flex;
   grid-column-gap: 4px;

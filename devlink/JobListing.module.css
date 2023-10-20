@@ -607,6 +607,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .company-list-link-wrappers {
   display: flex;
   margin-top: 20px;

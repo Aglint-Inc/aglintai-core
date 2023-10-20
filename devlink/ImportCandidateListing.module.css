@@ -30,6 +30,10 @@
   }
 }
 
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
 .ic-import-preview-main {
   margin-top: 12px;
   margin-bottom: 18px;

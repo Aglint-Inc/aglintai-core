@@ -22,7 +22,7 @@ export function JobDashboardEmpty({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "job-header-empty")}
+        className={_utils.cx(_styles, "job-header-empty", "no-sticky")}
         tag="div"
       >
         <_Builtin.Block

@@ -282,3 +282,7 @@
     font-size: 14px;
   }
 }
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}

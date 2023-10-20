@@ -283,6 +283,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .height-calc-interview {
   display: flex;
   width: 100%;

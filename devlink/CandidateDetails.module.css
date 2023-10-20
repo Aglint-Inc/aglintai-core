@@ -14,6 +14,21 @@
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
+.cvs-info-navbar.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .cvs-info-nav-menu {
   display: flex;
   width: 100%;
@@ -32,17 +47,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 
   cursor: pointer;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .cvs-info-content-main {

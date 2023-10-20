@@ -450,6 +450,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .div-block-464 {
   display: flex;
   flex-direction: column;

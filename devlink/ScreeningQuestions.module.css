@@ -195,6 +195,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .question-slot-tab-wrappers {
   display: grid;
   margin-top: 22px;

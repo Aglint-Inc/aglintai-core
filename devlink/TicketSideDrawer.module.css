@@ -487,6 +487,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .inde-details-block {
   display: flex;
   flex-direction: column;

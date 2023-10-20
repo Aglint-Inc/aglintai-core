@@ -393,6 +393,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;

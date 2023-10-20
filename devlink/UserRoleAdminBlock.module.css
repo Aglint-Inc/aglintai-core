@@ -222,6 +222,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 #w-node-_51170ec6-82cc-9cdc-eb5c-1666d3a16dca-d3a16dca {
   grid-column-start: span 1;
   grid-column-end: span 1;

@@ -124,7 +124,7 @@ function CandidatePanel() {
                   // className={`${classes.textField} ${classes.textFieldSmall} ${classes.textFieldExtraSmall}`}
                   inputRef={senderRef}
                   multiline
-                  rows={5}
+                  rows={3}
                   type='text'
                 />
               </Stack>

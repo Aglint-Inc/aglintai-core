@@ -206,6 +206,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .toggle-btn-block-2 {
   display: flex;
   width: 30px;

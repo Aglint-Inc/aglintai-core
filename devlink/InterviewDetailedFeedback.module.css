@@ -194,6 +194,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cvs-details-close-btn {
   display: flex;
   padding: 3px 7px;
@@ -283,6 +287,10 @@
   .text-grey-600-3.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
 }
 
 .div-block-519 {

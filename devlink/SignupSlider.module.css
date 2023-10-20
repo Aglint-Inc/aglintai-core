@@ -440,6 +440,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .text-md {
   font-size: 14px;
   line-height: 20px;

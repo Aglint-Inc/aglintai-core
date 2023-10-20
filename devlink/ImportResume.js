@@ -28,7 +28,7 @@ export function ImportResume({
             {"Drag candidates resume(s)"}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600-3")}
+            className={_utils.cx(_styles, "text-grey-600-3", "regular")}
             tag="div"
           >
             {

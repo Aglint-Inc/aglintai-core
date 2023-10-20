@@ -274,6 +274,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cj-option-block {
   position: relative;
 

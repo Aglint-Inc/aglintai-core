@@ -15,7 +15,10 @@ export function CandidateResumeScore({
   textStyleProps = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "cvs-info-block")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "cvs-info-block", "mt-20")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "fw-semibold")}
         tag="div"

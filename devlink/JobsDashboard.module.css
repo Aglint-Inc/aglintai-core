@@ -400,6 +400,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .div-block-371 {
   display: flex;
   align-items: center;

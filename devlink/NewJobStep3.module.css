@@ -445,6 +445,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cj-add-skill-btn {
   display: flex;
   height: 40px;

@@ -214,6 +214,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .primary-btn-with-logo-wrappers {
   position: relative;
 }

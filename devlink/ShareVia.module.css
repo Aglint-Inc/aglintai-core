@@ -225,6 +225,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;

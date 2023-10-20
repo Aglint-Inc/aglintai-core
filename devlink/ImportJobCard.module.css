@@ -261,6 +261,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

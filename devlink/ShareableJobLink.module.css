@@ -237,6 +237,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cj-share-copy-wrapper {
   display: flex;
   flex-direction: column;

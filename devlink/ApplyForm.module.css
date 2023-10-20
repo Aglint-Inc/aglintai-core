@@ -403,6 +403,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .div-block-400 {
   display: flex;
   margin-top: 0px;

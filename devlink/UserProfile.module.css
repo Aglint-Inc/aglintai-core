@@ -543,6 +543,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .profile-inputs-wrapper {
   display: flex;
   flex-direction: column;

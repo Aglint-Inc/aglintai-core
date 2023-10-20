@@ -248,6 +248,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cv-tab-candidate-count {
   margin-left: auto;
   padding-right: 10px;

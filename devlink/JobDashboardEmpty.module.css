@@ -1,6 +1,6 @@
 .job-dashboard-empty-landing-wrappers {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   padding-bottom: 20px;
 }
 
@@ -22,6 +22,10 @@
   z-index: 2;
   padding: 16px 20px;
   background-color: var(--gray100-3a86b552);
+}
+
+.job-header-empty.no-sticky {
+  position: static;
 }
 
 .text-lg {
@@ -595,6 +599,16 @@
   color: var(--blue500-72579298);
 }
 
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
 .cj-imports-options {
   display: grid;
   grid-auto-columns: 1fr;
@@ -726,6 +740,10 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .click-fake-div {

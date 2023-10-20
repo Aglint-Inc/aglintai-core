@@ -199,6 +199,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .clickable {
   transition: all 300ms ease;
   cursor: pointer;
@@ -536,4 +540,8 @@
   .text-grey-600-3.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
 }

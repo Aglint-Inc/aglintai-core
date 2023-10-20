@@ -214,6 +214,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .ic-divider-block {
   display: flex;
   width: 100%;

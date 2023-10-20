@@ -26,7 +26,7 @@ export function CandidateDetails({
       tag="div"
     >
       <_Builtin.NavbarWrapper
-        className={_utils.cx(_styles, "cvs-info-navbar")}
+        className={_utils.cx(_styles, "cvs-info-navbar", "hide")}
         tag="div"
         config={{
           animation: "default",

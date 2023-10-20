@@ -191,6 +191,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .cdb-coming-soon-label {
   padding-top: 1px;
   padding-right: 10px;
@@ -414,4 +418,8 @@
   .text-grey-600-3.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
 }

@@ -305,6 +305,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .text-grey-600-3 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -331,8 +335,13 @@
   }
 }
 
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
 .cvs-intro-overview-block {
   display: flex;
+  margin-bottom: 20px;
   padding: 14px 36px 17px 15px;
   flex-direction: column;
   grid-column-gap: 14px;

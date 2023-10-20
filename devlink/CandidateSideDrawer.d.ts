@@ -13,4 +13,5 @@ declare function CandidateSideDrawer(props: {
   textPhone?: React.ReactNode;
   textOverviewDesc?: React.ReactNode;
   slotCandidateDetails?: Types.Devlink.Slot;
+  isOverviewVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

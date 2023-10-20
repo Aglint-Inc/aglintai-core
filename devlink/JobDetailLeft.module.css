@@ -270,6 +270,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .div-block-289 {
   display: flex;
   max-width: 420px;

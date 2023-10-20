@@ -208,6 +208,10 @@
   }
 }
 
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .clickable {
   transition: all 300ms ease;
   cursor: pointer;
