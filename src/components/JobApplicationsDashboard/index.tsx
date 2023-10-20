@@ -34,6 +34,7 @@ import {
   SortParameter,
 } from './utils';
 import Loader from '../Common/Loader';
+import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -85,7 +86,9 @@ const JobApplicationComponent = () => {
     getSortedApplications(
       getIntactApplications(applications[section].list),
       sort,
+      job.parameter_weights as ScoreWheelParams,
     ),
+    job.parameter_weights as ScoreWheelParams,
     filters,
   );
 

@@ -187,3 +187,17 @@ export function calculateOverallScore(data: DataType): ScoreWheelParams {
   detailedScores['skills'] = skillsScore;
   return detailedScores as ScoreWheelParams;
 }
+
+export const getOverallResumeScore = (jd_score, parameter_weights) => {
+  const data = {
+    qualification: jd_score.qualification,
+    skills: jd_score.skills_score,
+  };
+  const detailedScores = calculateOverallScore(data);
+  return Math.trunc(
+    Object.keys(parameter_weights).reduce((acc, curr) => {
+      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
+      return acc;
+    }, 0),
+  );
+};

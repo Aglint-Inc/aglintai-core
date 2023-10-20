@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { get } from 'lodash';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { EditEmail, EmailTemplateCards, EmailTemplatesStart } from '@/devlink';
@@ -23,6 +24,7 @@ import { EmailDetails, useJobForm } from '../JobPostFormProvider';
 
 const Emails = () => {
   const { jobForm } = useJobForm();
+  const router = useRouter();
   const [editTemplate, setEditTemplate] = useState('');
   const emails: EmailTemplateParams[] = Object.keys(
     jobForm.formFields.screeningEmail.emailTemplates,
@@ -60,6 +62,11 @@ const Emails = () => {
         }
         isAddJob={jobForm.formType == 'new'}
         isProceedDisable={false}
+        onClickDone={{
+          onClick: () => {
+            router.replace('/jobs');
+          },
+        }}
       />
 
       <EditEmailDrawer
@@ -359,6 +366,8 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   </Stack>
                 </Stack>
               }
+              isRequestTestMailVisible={false}
+              isSaveChangesButtonVisible={false}
             />
           </Stack>
         )}

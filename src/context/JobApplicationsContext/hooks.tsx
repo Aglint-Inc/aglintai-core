@@ -295,6 +295,9 @@ const useJobApplicationActions = (
         inputData,
       );
       if (data) {
+        toast.success(
+          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+        );
         const action: Action = {
           type: ActionType.BULK_CREATE,
           payload: { applicationData: data },

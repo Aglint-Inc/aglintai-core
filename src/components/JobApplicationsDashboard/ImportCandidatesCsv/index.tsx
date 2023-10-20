@@ -89,9 +89,6 @@ function ImportCandidatesCSV() {
     setbulkImportdata([]);
     setIsLoading(true);
     await handleJobApplicationBulkCreate(filteredCandidates);
-    toast.success(
-      'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
-    );
     setOpenImportCandidates(false);
     setIsLoading(false);
   }

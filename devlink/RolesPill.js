@@ -13,10 +13,7 @@ export function RolesPill({
       className={_utils.cx(_styles, "", "cj-suggested-roles-block")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "", "small-default-4")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
         {textRoles}
       </_Builtin.Block>
       <_Builtin.Block

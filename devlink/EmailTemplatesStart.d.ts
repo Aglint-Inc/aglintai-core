@@ -11,4 +11,5 @@ declare function EmailTemplatesStart(props: {
   isProceedDisable?: Types.Visibility.VisibilityConditions;
   onClickProceed?: Types.Devlink.RuntimeProps;
   isAddJob?: Types.Visibility.VisibilityConditions;
+  onClickDone?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
