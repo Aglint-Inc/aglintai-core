@@ -38,7 +38,11 @@ export function NewInterviewScreen({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "button-blue-link-icon")}
+              className={_utils.cx(
+                _styles,
+                "button-blue-link-icon",
+                "mobile-landscape-hide"
+              )}
               tag="div"
               {...onClickTransscript}
             >
@@ -99,7 +103,11 @@ export function NewInterviewScreen({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "new-interview-footer")}
+          className={_utils.cx(
+            _styles,
+            "new-interview-footer",
+            "mobile-landscape-hide"
+          )}
           tag="div"
         >
           <_Builtin.Block

@@ -1,6 +1,7 @@
-import { Dialog, Stack } from '@mui/material';
+import { Dialog, Drawer, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import {
   CandidateDetails,
@@ -24,6 +25,7 @@ import {
   // InterviewResultStatus,
   // JobDetailsSideDrawer,
   ResumeFeedbackScore,
+  UnableFetchResume,
   // ResumeResult,
 } from '@/devlink';
 // import AUIButton from '@/src/components/Common/AUIButton';
@@ -34,9 +36,10 @@ import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
-import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import SmallCircularScore from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { JobType } from '@/src/types/data.types';
 // import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -46,425 +49,90 @@ import toast from '@/src/utils/toast';
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
-import JdFetching from '../JdFetching';
 import CompanyLogo from '../../Common/CompanyLogo';
 // import { sendEmails } from '../..';
 // import InterviewScoreCard from '../../Common/InreviewScoreCard';
 import { capitalize, getInterviewScore } from '../../utils';
 
-function ApplicationDetails({
-  openSidePanel,
-  setOpenSidePanel,
+const ApplicationDetails = ({
+  open,
+  onClose,
   applicationDetails,
-}) {
-  const [openDetailedFeedback, setOpenDetailedFeedback] = useState(false);
-  // const {
-  //   applicationsData,
-  //   handleUpdateJobStatus,
-  //   handleJobApplicationUpdate,
-  //   job,
-  // } = useJobApplications();
-  // const router = useRouter();
-  // const overAllScore = applicationDetails?.feedback?.length
-  //   ? Math.floor(
-  //       applicationDetails.feedback.reduce(
-  //         (sum, entry) =>
-  //           sum +
-  //           Number(
-  //             String(entry.rating).includes('/')
-  //               ? entry.rating.split('/')[0]
-  //               : entry.rating,
-  //           ),
-  //         0,
-  //       ) / applicationDetails.feedback.length,
-  //     )
-  //   : 0;
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}: {
+  open: boolean;
+  onClose: () => void;
+  applicationDetails: JobApplication;
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}) => {
+  const [drawerOpen, setDrawerOpen] = useState(open);
+  const [openFeedback, setOpenFeedback] = useState(false);
 
-  // const jdScoreObj = applicationDetails.jd_score as any;
-  // const jdScore = Number(Math.floor(jdScoreObj?.over_all?.score)) ?? 0;
-
-  // const JobApplicationSideDrawer = () => {
-  //   return (
-  //     <Stack direction={'row'}>
-  //       <Stack width={'35vw'}>
-  //         <JobDetailsSideDrawer
-  //           onClickCopyProfile={{
-  //             onClick: () => {
-  //               navigator.clipboard
-  //                 .writeText(
-  //                   `https://recruiter.aglinthq.com/${pageRoutes.InterviewFeedbackLink}/${applicationDetails.application_id}`,
-  //                 )
-  //                 .then(() => {
-  //                   toast.success('Link Copied');
-  //                 });
-  //             },
-  //           }}
-  //           onClickClose={{
-  //             onClick: () => {
-  //               setOpenSidePanel(false);
-  //             },
-  //           }}
-  //           slotProfileImage={
-  //             <MuiAvatar
-  //               level={applicationDetails.first_name}
-  //               src={
-  //                 applicationDetails?.email &&
-  //                 !applicationDetails?.profile_image
-  //                   ? getGravatar(
-  //                       applicationDetails?.email,
-  //                       applicationDetails?.first_name,
-  //                     )
-  //                   : applicationDetails?.profile_image
-  //               }
-  //               variant={'rounded'}
-  //               width={'78px'}
-  //               height={'78px'}
-  //               fontSize={'28px'}
-  //             />
-  //           }
-  //           isCloseButtonVisible={!openDetailedFeedback}
-  //           isInterviewInfoVisible={
-  //             !router.pathname.includes(pageRoutes.CANDIDATES) &&
-  //             ((overAllScore <= 0 &&
-  //               applicationDetails.status ===
-  //                 JobApplicationSections.INTERVIEWING) ||
-  //               applicationDetails.status === JobApplicationSections.NEW)
-  //           }
-  //           slotInterviewInfo={
-  //             <>
-  //               {applicationDetails.status ===
-  //                 JobApplicationSections.INTERVIEWING &&
-  //                 applicationDetails?.feedback?.length === 0 && (
-  //                   <InterviewResultStatus
-  //                     bgColorInterviewTag={{
-  //                       style: { background: '#FFF0F1', color: '#8C232C' },
-  //                     }}
-  //                     textStatus={'Incomplete Interview'}
-  //                     textDescription={
-  //                       'Candidate not completed interview. Click bellow to resend invite'
-  //                     }
-  //                     slotResendButton={
-  //                       <AUIButton variant='outlined'>Resend Link</AUIButton>
-  //                     }
-  //                     onClickCopyInterviewLink={{
-  //                       onClick: () => {
-  //                         navigator.clipboard
-  //                           .writeText(
-  //                             `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
-  //                           )
-  //                           .then(() => {
-  //                             toast.success('Link Copied');
-  //                           });
-  //                       },
-  //                     }}
-  //                   />
-  //                 )}
-  //               {applicationDetails.status ===
-  //                 JobApplicationSections.INTERVIEWING &&
-  //                 applicationDetails.feedback === null && (
-  //                   <InterviewResultStatus
-  //                     bgColorInterviewTag={{
-  //                       style: { background: '#CEE2F2', color: '#0F3554' },
-  //                     }}
-  //                     textStatus={'Invited'}
-  //                     textDescription={
-  //                       'Candidate is invited for the interview and received an email with a link to take interview.'
-  //                     }
-  //                     slotResendButton={
-  //                       <AUIButton variant='outlined'>Resend Link</AUIButton>
-  //                     }
-  //                     onClickCopyInterviewLink={{
-  //                       onClick: () => {
-  //                         navigator.clipboard
-  //                           .writeText(
-  //                             `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
-  //                           )
-  //                           .then(() => {
-  //                             toast.success('Link Copied');
-  //                           });
-  //                       },
-  //                     }}
-  //                   />
-  //                 )}
-  //               {applicationDetails.status === JobApplicationSections.NEW && (
-  //                 <InterviewResultStatus
-  //                   bgColorInterviewTag={{
-  //                     style: { background: '#FFF7ED', color: '#703815' },
-  //                   }}
-  //                   textStatus={'Pending Invite'}
-  //                   textDescription={
-  //                     'Candidate not invited to take interview. Invite candidate to take interview.'
-  //                   }
-  //                   slotResendButton={
-  //                     <AUIButton
-  //                       onClick={async () => {
-  //                         await handleUpdateJobStatus(
-  //                           new Set([applicationDetails?.application_id]),
-  //                           {
-  //                             source: JobApplicationSections.NEW,
-  //                             destination: JobApplicationSections.INTERVIEWING,
-  //                           },
-  //                         );
-  //                         sendEmails(
-  //                           JobApplicationSections.INTERVIEWING,
-  //                           new Set(Array(applicationDetails?.application_id)),
-  //                           applicationsData,
-  //                           job,
-  //                           handleJobApplicationUpdate,
-  //                         );
-  //                       }}
-  //                       variant='outlined'
-  //                     >
-  //                       Send Link
-  //                     </AUIButton>
-  //                   }
-  //                   onClickCopyInterviewLink={{
-  //                     onClick: () => {
-  //                       navigator.clipboard
-  //                         .writeText(
-  //                           `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${applicationDetails.application_id}`,
-  //                         )
-  //                         .then(() => {
-  //                           toast.success('Link Copied');
-  //                         });
-  //                     },
-  //                   }}
-  //                 />
-  //               )}
-  //             </>
-  //           }
-  //           slotInterviewResult={
-  //             <InterviewResult
-  //               textScore={giveRateInWordForInterview(overAllScore)}
-  //               slotScore={<InterviewScoreCard overAllScore={overAllScore} />}
-  //               slotInterviewFeedback={
-  //                 <>
-  //                   {applicationDetails?.feedback &&
-  //                     applicationDetails?.feedback.map((feedback, i) => {
-  //                       let rating = Number(
-  //                         String(feedback.rating).includes('/')
-  //                           ? feedback.rating.split('/')[0]
-  //                           : feedback.rating,
-  //                       );
-  //                       return (
-  //                         <DetailedFeedbackCard
-  //                           textScorePercentage={rating + '%'}
-  //                           textHeader={capitalize(
-  //                             feedback.topic.replaceAll('_', ' '),
-  //                           )}
-  //                           textDescription={''}
-  //                           key={i}
-  //                           textColorScore={{
-  //                             style: {
-  //                               color:
-  //                                 rating >= 90
-  //                                   ? '#228F67'
-  //                                   : rating >= 70
-  //                                   ? '#f79a3e'
-  //                                   : rating >= 50
-  //                                   ? '#de701d'
-  //                                   : '#d93f4c',
-  //                             },
-  //                           }}
-  //                           slotScore={
-  //                             <CustomProgress
-  //                               rotation={270}
-  //                               fillColor={
-  //                                 rating >= 90
-  //                                   ? '#228F67'
-  //                                   : rating >= 70
-  //                                   ? '#f79a3e'
-  //                                   : rating >= 50
-  //                                   ? '#de701d'
-  //                                   : '#d93f4c'
-  //                               }
-  //                               bgFill={
-  //                                 rating >= 90
-  //                                   ? '#edf8f4'
-  //                                   : rating >= 70
-  //                                   ? '#fff7ed'
-  //                                   : rating >= 50
-  //                                   ? '#ffeedb'
-  //                                   : '#fff0f1'
-  //                               }
-  //                               size={5}
-  //                               progress={rating}
-  //                             />
-  //                           }
-  //                         />
-  //                       );
-  //                     })}
-  //                 </>
-  //               }
-  //               onClickShowTranscript={{
-  //                 onClick: () => {
-  //                   setOpenDetailedFeedback(true);
-  //                 },
-  //               }}
-  //             />
-  //           }
-  //           textName={capitalize(
-  //             applicationDetails?.first_name +
-  //               ' ' +
-  //               applicationDetails?.last_name,
-  //           )}
-  //           isInterviewVisible={overAllScore > 0}
-  //           isKeySkillsVisible={false}
-  //           slotResumeScore={
-  //             <ResumeResult
-  //               textCertificationScore={capitalize(
-  //                 applicationDetails?.jd_score?.qualification?.certifications
-  //                   .relevance
-  //                   ? applicationDetails?.jd_score?.qualification
-  //                       ?.certifications.relevance
-  //                   : '--',
-  //               )}
-  //               textProjectScore={capitalize(
-  //                 applicationDetails?.jd_score?.qualification?.project
-  //                   ?.relevance
-  //                   ? applicationDetails?.jd_score?.qualification?.project
-  //                       ?.relevance
-  //                   : '',
-  //               )}
-  //               textEducationScore={capitalize(
-  //                 applicationDetails?.jd_score?.qualification?.education
-  //                   ?.relevance
-  //                   ? applicationDetails?.jd_score?.qualification?.education
-  //                       ?.relevance
-  //                   : '',
-  //               )}
-  //               textExperienceScore={capitalize(
-  //                 applicationDetails?.jd_score?.qualification?.experience
-  //                   ?.relevance
-  //                   ? applicationDetails?.jd_score?.qualification?.experience
-  //                       ?.relevance
-  //                   : '',
-  //               )}
-  //               textSkillsScore={
-  //                 applicationDetails?.jd_score?.skills_score?.score
-  //                   ? applicationDetails?.jd_score?.skills_score?.score
-  //                   : '--'
-  //               }
-  //               textSummaryScore={capitalize(
-  //                 applicationDetails?.jd_score?.summary?.feedback
-  //                   ? applicationDetails?.jd_score?.summary?.feedback
-  //                   : '--',
-  //               )}
-  //               onClickDownloadResume={{
-  //                 onClick: () => {
-  //                   handleDownload(applicationDetails?.resume);
-  //                 },
-  //               }}
-  //               onClickViewResume={{
-  //                 onClick: () => {
-  //                   setOpenResume(true);
-  //                 },
-  //               }}
-  //               slotResumeScore={
-  //                 <CustomProgress
-  //                   progress={jdScore}
-  //                   rotation={270}
-  //                   fillColor={
-  //                     jdScore >= 90
-  //                       ? '#228F67'
-  //                       : jdScore >= 70
-  //                       ? '#f79a3e'
-  //                       : jdScore >= 50
-  //                       ? '#de701d'
-  //                       : '#d93f4c'
-  //                   }
-  //                   bgFill={
-  //                     jdScore >= 90
-  //                       ? '#edf8f4'
-  //                       : jdScore >= 70
-  //                       ? '#fff7ed'
-  //                       : jdScore >= 50
-  //                       ? '#ffeedb'
-  //                       : '#fff0f1'
-  //                   }
-  //                   size={35}
-  //                   strokeWidth={3}
-  //                   label={jdScore}
-  //                   fontSize={20}
-  //                 />
-  //               }
-  //               textFeedback={giveRateInWordToResume(jdScore)}
-  //             />
-  //           }
-  //           isResumeVisible={applicationDetails.resume}
-  //           // isResumeVisible={false}
-  //           textPhone={
-  //             applicationDetails.phone ? applicationDetails.phone : '--'
-  //           }
-  //           textMail={
-  //             applicationDetails.email ? applicationDetails.email : '--'
-  //           }
-  //           textSites={applicationDetails.company}
-  //         />
-  //       </Stack>
-  //       <Collapse orientation='horizontal' in={openDetailedFeedback}>
-  //         <Stack
-  //           className='hideScrollbar'
-  //           height={'99vh'}
-  //           overflow={'auto'}
-  //           width={'30vw'}
-  //         >
-  //           <Transcript
-  //             applicationDetails={applicationDetails}
-  //             setOpenDetailedFeedback={setOpenDetailedFeedback}
-  //             hideFeedback={false}
-  //           />
-  //         </Stack>
-  //       </Collapse>
-  //     </Stack>
-  //   );
-  // };
-
-  const candidateImage = (
+  const candidateImage = applicationDetails ? (
     <MuiAvatar
       level={applicationDetails.first_name}
       src={
-        applicationDetails?.email && !applicationDetails?.profile_image
+        !applicationDetails.profile_image
           ? getGravatar(
-              applicationDetails?.email,
+              applicationDetails.email,
               applicationDetails?.first_name,
             )
-          : applicationDetails?.profile_image
+          : applicationDetails.profile_image
       }
       variant={'rounded'}
-      width={'auto'}
-      height={'auto'}
+      width={'100%'}
+      height={'100%'}
       fontSize={'28px'}
     />
+  ) : (
+    <></>
   );
 
+  useEffect(() => {
+    if (open) {
+      setDrawerOpen(true);
+    }
+  }, [open]);
+
+  const handleClose = () => {
+    setDrawerOpen(false);
+    setTimeout(() => {
+      onClose();
+    }, 400);
+  };
+
   return (
-    <SidePanelDrawer
-      openSidePanelDrawer={openSidePanel}
-      setOpenPanelDrawer={setOpenSidePanel}
-      onClose={() => {
-        setOpenDetailedFeedback(false);
+    <Drawer
+      sx={{
+        zIndex: 1300,
       }}
+      anchor={'right'}
+      open={drawerOpen}
+      onClose={() => handleClose()}
     >
-      {!openDetailedFeedback ? (
+      {!openFeedback ? (
         <NewJobApplicationSideDrawer
           applicationDetails={applicationDetails}
-          setOpenSidePanel={setOpenSidePanel}
-          setOpenDetailedFeedback={setOpenDetailedFeedback}
+          onClose={() => handleClose()}
+          setOpenFeedback={setOpenFeedback}
           candidateImage={candidateImage}
+          handleSelectNextApplication={handleSelectNextApplication}
+          handleSelectPrevApplication={handleSelectPrevApplication}
         />
       ) : (
         <NewDetailedFeedback
           applicationDetails={applicationDetails}
           candidateImage={candidateImage}
           onClose={() => {
-            setOpenDetailedFeedback(false);
+            setOpenFeedback(false);
           }}
         />
       )}
-    </SidePanelDrawer>
+    </Drawer>
   );
-}
+};
 
 export default ApplicationDetails;
 
@@ -557,12 +225,16 @@ export const DetailedInterviewFeedbackParams = ({ feedbackParamsObj }) => {
 
 const NewJobApplicationSideDrawer = ({
   applicationDetails,
-  setOpenSidePanel,
-  setOpenDetailedFeedback,
+  onClose,
+  setOpenFeedback,
   candidateImage,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
 }) => {
   return (
     <CandidateSideDrawer
+      onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
+      onClickNext={{ onClick: () => handleSelectNextApplication() }}
       onClickCopyProfile={{
         onClick: () => {
           navigator.clipboard
@@ -575,9 +247,7 @@ const NewJobApplicationSideDrawer = ({
         },
       }}
       onClickClose={{
-        onClick: () => {
-          setOpenSidePanel(false);
-        },
+        onClick: () => onClose(),
       }}
       slotCandidateImage={candidateImage}
       textName={capitalize(
@@ -590,17 +260,15 @@ const NewJobApplicationSideDrawer = ({
       slotCandidateDetails={
         <NewCandidateDetails
           applicationDetails={applicationDetails}
-          setOpenDetailedFeedback={setOpenDetailedFeedback}
+          setOpenFeedback={setOpenFeedback}
         />
       }
+      isOverviewVisible={false}
     />
   );
 };
 
-const NewCandidateDetails = ({
-  applicationDetails,
-  setOpenDetailedFeedback,
-}) => {
+const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
   const experienceRef = useRef(null);
   const scoreRef = useRef(null);
   const educationRef = useRef(null);
@@ -615,38 +283,49 @@ const NewCandidateDetails = ({
             {applicationDetails.feedback ? (
               <NewInterviewScoreDetails
                 applicationDetails={applicationDetails}
-                setOpenDetailedFeedback={setOpenDetailedFeedback}
+                setOpenFeedback={setOpenFeedback}
               />
             ) : (
               <></>
             )}
-            {applicationDetails.json_resume ? (
-              <NewResumeScoreDetails
-                applicationDetails={applicationDetails}
-                job={job}
-                feedback={false}
-              />
-            ) : (
-              <></>
-            )}
+            <NewResumeSection
+              applicationDetails={applicationDetails}
+              job={job}
+            />
           </Stack>
           {applicationDetails.json_resume ? (
             <>
-              <Stack ref={educationRef}>
-                <NewEducationDetails
-                  education={applicationDetails.json_resume.education}
-                />
-              </Stack>
-              <Stack ref={experienceRef}>
-                <NewExperienceDetails
-                  work={applicationDetails.json_resume.work}
-                />
-              </Stack>
-              <Stack ref={skillsRef}>
-                <NewSkillDetails
-                  skills={applicationDetails.json_resume.skills}
-                />
-              </Stack>
+              {applicationDetails.json_resume.education &&
+              applicationDetails.json_resume.education.length !== 0 ? (
+                <Stack ref={educationRef}>
+                  <NewEducationDetails
+                    education={applicationDetails.json_resume.education}
+                  />
+                </Stack>
+              ) : (
+                <></>
+              )}
+              {applicationDetails.json_resume.work &&
+              applicationDetails.json_resume.work.length !== 0 ? (
+                <Stack ref={experienceRef}>
+                  <NewExperienceDetails
+                    work={applicationDetails.json_resume.work}
+                  />
+                </Stack>
+              ) : (
+                <></>
+              )}
+
+              {applicationDetails.json_resume.skills &&
+              applicationDetails.json_resume.skills.length !== 0 ? (
+                <Stack ref={skillsRef}>
+                  <NewSkillDetails
+                    skills={applicationDetails.json_resume.skills}
+                  />
+                </Stack>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <></>
@@ -685,10 +364,7 @@ const NewCandidateDetails = ({
   );
 };
 
-const NewInterviewScoreDetails = ({
-  applicationDetails,
-  setOpenDetailedFeedback,
-}) => {
+const NewInterviewScoreDetails = ({ applicationDetails, setOpenFeedback }) => {
   const interviewScore = getInterviewScore(applicationDetails.feedback);
   const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
@@ -700,9 +376,7 @@ const NewInterviewScoreDetails = ({
       propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
       propsTextColor={{ style: { color: feedbackObj.color } }}
       onClickDetailedFeedback={{
-        onClick: () => {
-          setOpenDetailedFeedback(true);
-        },
+        onClick: () => setOpenFeedback(true),
       }}
       slotInterviewFeedbackScore={
         applicationDetails.feedback && (
@@ -714,6 +388,53 @@ const NewInterviewScoreDetails = ({
     />
   );
   // return circularScore;
+};
+
+const NewResumeSection = ({ applicationDetails, job }) => {
+  const [openResume, setOpenResume] = useState(false);
+  return (
+    <>
+      <Dialog
+        sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: '0px !important',
+          },
+          '.MuiDialog-container': {
+            height: 'auto',
+          },
+        }}
+        fullWidth
+        maxWidth={'lg'}
+        open={openResume}
+        onClose={() => setOpenResume(false)}
+      >
+        <Stack direction={'row'} justifyContent={'center'}>
+          <ResumePreviewer url={applicationDetails?.resume} />
+        </Stack>
+      </Dialog>
+      {applicationDetails.json_resume ? (
+        <NewResumeScoreDetails
+          applicationDetails={applicationDetails}
+          job={job}
+          feedback={false}
+          setOpenResume={setOpenResume}
+        />
+      ) : (
+        <UnableFetchResume
+          onClickDownloadResume={{
+            onClick: () => {
+              handleDownload(applicationDetails?.resume);
+            },
+          }}
+          onClickViewResume={{
+            onClick: () => {
+              setOpenResume(true);
+            },
+          }}
+        />
+      )}
+    </>
+  );
 };
 
 export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
@@ -741,93 +462,61 @@ export const NewResumeScoreDetails = ({
   applicationDetails,
   job,
   feedback,
+  setOpenResume,
+}: {
+  applicationDetails: JobApplication;
+  job: JobType;
+  feedback: JobApplication['feedback'];
+  setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [openResume, setOpenResume] = useState(false);
-  const jobDetails = applicationDetails as unknown as {
-    jd_score: { summary: { feedback: undefined } };
-  };
   const jdScoreObj = applicationDetails.jd_score as any;
 
   const jdScore = calculateOverallScore({
     qualification: jdScoreObj.qualification,
     skills: jdScoreObj.skills_score,
   });
-  const resumeScoreWheel =
-    jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
-    applicationDetails.resume &&
-    applicationDetails.jd_score !== null ? (
-      applicationDetails.jd_score === 'loading' ? (
-        <Stack justifyContent={'center'} alignItems={'center'}>
-          <JdFetching />
-          Calculating
-        </Stack>
-      ) : (
-        <ScoreWheel
-          id={`ScoreWheelApplicationCard${Math.random()}`}
-          weights={job.parameter_weights as ScoreWheelParams}
-          score={jdScore}
-          fontSize={7}
-        />
-      )
-    ) : (
-      <Stack>Not found</Stack>
-    );
+
+  const resumeScoreWheel = (
+    <ScoreWheel
+      id={`ScoreWheelApplicationCard${Math.random()}`}
+      weights={job.parameter_weights as ScoreWheelParams}
+      score={jdScore}
+      fontSize={7}
+    />
+  );
   const feedbackObj = giveRateInWordToResume(
     getOverallScore(job.parameter_weights as ScoreWheelParams, jdScore),
   );
   return (
-    <>
-      <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            borderRadius: '0px !important',
-          },
-          '.MuiDialog-container': {
-            height: 'auto',
-          },
-        }}
-        fullWidth
-        maxWidth={'lg'}
-        open={openResume}
-        onClose={() => setOpenResume(false)}
-      >
-        <Stack direction={'row'} justifyContent={'center'}>
-          <ResumePreviewer url={applicationDetails?.resume} />
-        </Stack>
-      </Dialog>
-
-      <CandidateResumeScore
-        textStyleProps={{
-          style: {
-            fontSize: feedback ? '18px' : '14px',
-          },
-        }}
-        slotScoreGraph={resumeScoreWheel}
-        textScoreState={feedbackObj.text}
-        propsTextColor={{ style: { color: feedbackObj.color } }}
-        onClickDownloadResume={{
-          onClick: () => {
-            handleDownload(applicationDetails?.resume);
-          },
-        }}
-        onClickViewResume={{
-          onClick: () => {
-            setOpenResume(true);
-          },
-        }}
-        slotFeedbackScore={
-          <>
-            <ResumeFeedbackScore
-              textFeedback={'Skills'}
-              textScoreState={jdScoreObj.skills_score.score ?? '--'}
-            />
-            <ResumeFeedbackParams
-              feedbackParamsObj={jdScoreObj.qualification}
-            />
-          </>
-        }
-      />
-    </>
+    <CandidateResumeScore
+      textStyleProps={{
+        style: {
+          fontSize: feedback ? '18px' : '14px',
+        },
+      }}
+      slotScoreGraph={resumeScoreWheel}
+      textScoreState={feedbackObj.text}
+      propsTextColor={{ style: { color: feedbackObj.color } }}
+      onClickDownloadResume={{
+        onClick: () => {
+          handleDownload(applicationDetails?.resume);
+        },
+      }}
+      onClickViewResume={{
+        onClick: () => {
+          setOpenResume(true);
+        },
+      }}
+      slotFeedbackScore={
+        <>
+          <ResumeFeedbackScore
+            textFeedback={'Skills'}
+            textScoreState={jdScoreObj.skills_score.score ?? '--'}
+          />
+          <ResumeFeedbackParams feedbackParamsObj={jdScoreObj.qualification} />
+        </>
+      }
+    />
   );
 };
 
@@ -878,20 +567,24 @@ const NewEducationDetails = ({ education }) => {
 };
 
 const NewExperienceDetails = ({ work }) => {
-  const workList = work.map((w, i) => (
-    <CandidateExperienceCard
-      key={i}
-      slotLogo={
-        <CompanyLogo
-          companyName={w.name ? w.name.trim().toLowerCase() : null}
-        />
-      }
-      textRole={w.position}
-      textCompany={w.name}
-      textDate={`${w.startDate} - ${w.endDate}`}
-      //TODO: Do something about textLocation
-    />
-  ));
+  const workList = work.reduce((acc, w, i) => {
+    if (w.name && w.position) {
+      acc.push(
+        <CandidateExperienceCard
+          key={i}
+          slotLogo={
+            <CompanyLogo
+              companyName={w.name ? w.name.trim().toLowerCase() : null}
+            />
+          }
+          textRole={w.position}
+          textCompany={w.name}
+          textDate={`${w.startDate} - ${w.endDate}`}
+        />,
+      );
+    }
+    return acc;
+  }, []);
   return <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />;
 };
 

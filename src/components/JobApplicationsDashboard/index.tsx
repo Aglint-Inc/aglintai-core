@@ -17,6 +17,7 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
+import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import InfoDialog from './Common/InfoDialog';
 import ResumeUpload from './FileUpload';
 import { useKeyPress } from './hooks';
@@ -26,6 +27,7 @@ import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import {
+  ApiLogState,
   capitalize,
   FilterParameter,
   getFilteredApplications,
@@ -84,7 +86,7 @@ const JobApplicationComponent = () => {
 
   const sectionApplications = getFilteredApplications(
     getSortedApplications(
-      getIntactApplications(applications[section].list),
+      getIntactApplications(applications[section].list)[ApiLogState.SUCCESS],
       sort,
       job.parameter_weights as ScoreWheelParams,
     ),
@@ -93,6 +95,7 @@ const JobApplicationComponent = () => {
   );
 
   const [checkList, setCheckList] = useState(new Set<string>());
+  const [currentApplication, setCurrentApplication] = useState(-1);
 
   const [jobUpdate, setJobUpdate] = useState(false);
 
@@ -102,6 +105,19 @@ const JobApplicationComponent = () => {
   const handleSetSection = (section) => {
     setSection(section);
     setCheckList(new Set<string>());
+  };
+
+  const handleSelectCurrentApplication = (i: number) => {
+    setCurrentApplication(i);
+  };
+
+  const handleSelectNextApplication = () => {
+    if (currentApplication < searchedApplications.length - 1)
+      setCurrentApplication((prev) => prev + 1);
+  };
+
+  const handleSelectPrevApplication = () => {
+    if (currentApplication > 0) setCurrentApplication((prev) => prev - 1);
   };
 
   const handleSelectAll = () => {
@@ -117,6 +133,7 @@ const JobApplicationComponent = () => {
         ),
       );
   };
+
   return (
     <>
       <Dialog
@@ -137,6 +154,13 @@ const JobApplicationComponent = () => {
           }
         />
       </Dialog>
+      <ApplicationDetails
+        open={currentApplication !== -1}
+        onClose={() => handleSelectCurrentApplication(-1)}
+        handleSelectNextApplication={() => handleSelectNextApplication()}
+        handleSelectPrevApplication={() => handleSelectPrevApplication()}
+        applicationDetails={searchedApplications[currentApplication]}
+      />
       <JobScreening
         onClickAddCandidates={{
           onClick: () => {
@@ -150,7 +174,7 @@ const JobApplicationComponent = () => {
         slotJobStatus={<JobApplicationStatus />}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
-        textApplicantsNumber={`(${applicationsData.count} applicants , ${applicationsData.processing} processing)`}
+        textApplicantsNumber={`(${applicationsData.count.success} success , ${applicationsData.count.processing} processing , ${applicationsData.count.failed} failed)`}
         isAll={section === JobApplicationSections.NEW}
         countAll={applications.new.count}
         onClickAllApplicant={{
@@ -206,6 +230,8 @@ const JobApplicationComponent = () => {
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
             section={section}
+            handleSelectCurrentApplication={handleSelectCurrentApplication}
+            currentApplication={currentApplication}
           />
         }
         slotSelectActionBar={
@@ -249,12 +275,17 @@ const ApplicantsList = ({
   setCheckList,
   jobUpdate,
   section,
+  handleSelectCurrentApplication,
+  currentApplication,
 }: {
   applications: JobApplication[];
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
   section: string;
+  // eslint-disable-next-line no-unused-vars
+  handleSelectCurrentApplication: (id: number) => void;
+  currentApplication: number;
 }) => {
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
@@ -339,6 +370,8 @@ const ApplicantsList = ({
               checkList={checkList}
               handleSelect={handleSelect}
               isInterview={section !== JobApplicationSections.NEW}
+              handleOpenDetails={() => handleSelectCurrentApplication(i)}
+              isSelected={currentApplication === i}
             />
           </Stack>
         );

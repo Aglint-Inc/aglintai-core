@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
@@ -127,7 +128,40 @@ export const getFilteredApplications = (
 };
 
 export const getIntactApplications = (applications: JobApplication[]) => {
-  return applications.filter((a) => a.json_resume !== null);
+  return applications.reduce(
+    (acc, curr) => {
+      const key = intactConditionFilter(curr);
+      return { ...acc, [key]: [...acc[key], curr] };
+    },
+    {
+      [ApiLogState.FAILED]: [],
+      [ApiLogState.SUCCESS]: [],
+      [ApiLogState.PROCESSING]: [],
+    },
+  );
+};
+
+// eslint-disable-next-line no-unused-vars
+export enum ApiLogState {
+  // eslint-disable-next-line no-unused-vars
+  FAILED = 'failed',
+  // eslint-disable-next-line no-unused-vars
+  SUCCESS = 'success',
+  // eslint-disable-next-line no-unused-vars
+  PROCESSING = 'processing',
+}
+
+export const intactConditionFilter = (application: JobApplication) => {
+  const apiLogObj = application.api_logs as any;
+  if (!apiLogObj) return ApiLogState.PROCESSING;
+  switch (apiLogObj.scoreStatus) {
+    case 'Failed':
+      return ApiLogState.FAILED;
+    case 'success':
+      return ApiLogState.SUCCESS;
+    default:
+      return ApiLogState.PROCESSING;
+  }
 };
 
 const handleFilterParameter = (

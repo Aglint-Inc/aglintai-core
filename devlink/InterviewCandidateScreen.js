@@ -133,6 +133,12 @@ export function InterviewCandidateScreen({
                 tag="div"
               />
             ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "transcript-show-mobile")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed />
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

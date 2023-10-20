@@ -9,7 +9,7 @@ const CompanyLogo = ({
   companyLogo?: string;
   companyName: string;
 }) => {
-  return (
+  return companyName ? (
     <Avatar
       variant='square'
       sx={{
@@ -25,6 +25,18 @@ const CompanyLogo = ({
           .replaceAll(' ', '')}.com `
       }
       alt={companyName}
+    >
+      <IconCompanySmall />
+    </Avatar>
+  ) : (
+    <Avatar
+      variant='square'
+      sx={{
+        bgcolor: 'white.700',
+        width: '100%',
+        height: '100%',
+      }}
+      style={{ color: 'black' }}
     >
       <IconCompanySmall />
     </Avatar>

@@ -1,7 +1,12 @@
+/* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import {
+  ApiLogState,
+  intactConditionFilter,
+} from '@/src/components/JobApplicationsDashboard/utils';
 import toast from '@/src/utils/toast';
 
 import {
@@ -96,22 +101,23 @@ const reducer = (state: JobApplicationsData, action: Action) => {
                     ].count + 1,
                 },
             },
-            count: state.count + 1,
           }
-        : { ...state, processing: state.processing + 1 };
+        : {
+            ...state,
+            count: { ...state.count, processing: state.count.processing + 1 },
+          };
       return newState;
     }
 
     case ActionType.BULK_CREATE: {
-      const { newApplications, processing } = updateApplications(
+      const { newApplications, count } = updateApplications(
         state.applications,
         action.payload.applicationData,
       );
       const newState: JobApplicationsData = {
         ...state,
         applications: newApplications,
-        count: state.count,
-        processing: processing,
+        count: count,
       };
       return newState;
     }
@@ -120,13 +126,9 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const { segregatedApplications, count } = segregateApplications(
         action.payload.applicationData,
       );
-      const processing = action.payload.applicationData.filter(
-        (a) => a.json_resume === null,
-      ).length;
       const newState: JobApplicationsData = {
         applications: segregatedApplications,
         count,
-        processing,
       };
       return newState;
     }
@@ -174,7 +176,10 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const newState: JobApplicationsData = {
         ...state,
         applications: newApplications,
-        count: state.count - 1,
+        count: {
+          ...state.count,
+          success: state.count.success - 1,
+        },
       };
       return newState;
     }
@@ -186,17 +191,38 @@ const reducer = (state: JobApplicationsData, action: Action) => {
 };
 
 const segregateApplications = (applicationData: JobApplication[]) => {
-  let count = 0;
+  let count = Object.assign(
+    {},
+    ...Object.values(ApiLogState).map((v) => {
+      return { [v]: 0 };
+    }),
+    // eslint-disable-next-line no-unused-vars
+  ) as { [key in ApiLogState]: number };
   const segregatedApplications: JobApplicationSectionData =
     applicationData.reduce(
       (acc, curr) => {
-        if (curr.json_resume !== null) {
-          let objRef = acc[curr.status as JobApplicationSections];
-          objRef.list.push(curr);
-          objRef.count += 1;
-          count += 1;
+        switch (intactConditionFilter(curr)) {
+          case ApiLogState.SUCCESS: {
+            const status = curr.status as JobApplicationSections;
+            count.success += 1;
+            return {
+              ...acc,
+              [status]: {
+                ...acc[status],
+                list: [...acc[status].list, curr],
+                count: acc[status].count + 1,
+              },
+            };
+          }
+          case ApiLogState.FAILED: {
+            count.failed += 1;
+            return acc;
+          }
+          case ApiLogState.PROCESSING: {
+            count.processing += 1;
+            return acc;
+          }
         }
-        return acc;
       },
       Object.assign(
         {},
@@ -217,18 +243,31 @@ const updateApplications = (
   stateApplicationData: JobApplicationSectionData,
   newApplicationData: JobApplication[],
 ) => {
-  let count = newApplicationData.length;
-  let processing = 0;
+  let count = Object.assign(
+    {},
+    ...Object.values(ApiLogState).map((v) => {
+      return { [v]: 0 };
+    }),
+    // eslint-disable-next-line no-unused-vars
+  ) as { [key in ApiLogState]: number };
   const newApplications = newApplicationData.reduce((acc, curr) => {
-    if (curr.json_resume !== null) {
-      acc[curr.status as JobApplicationSections].list.push(curr);
-      acc[curr.status as JobApplicationSections].count += 1;
-    } else {
-      processing += 1;
+    switch (intactConditionFilter(curr)) {
+      case ApiLogState.SUCCESS: {
+        acc[curr.status as JobApplicationSections].list.push(curr);
+        acc[curr.status as JobApplicationSections].count += 1;
+        count.success += 1;
+        return acc;
+      }
+      case ApiLogState.PROCESSING: {
+        count.processing += 1;
+        return acc;
+      }
+      case ApiLogState.FAILED: {
+        count.failed += 1;
+      }
     }
-    return acc;
   }, stateApplicationData);
-  return { newApplications, count, processing };
+  return { newApplications, count };
 };
 
 const useJobApplicationActions = (

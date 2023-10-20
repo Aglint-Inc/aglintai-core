@@ -12,7 +12,10 @@ export function CandidateDatabaseComingSoon({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "cdb-top-bar")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+          tag="div"
+        >
           {"Candidate Database"}
         </_Builtin.Block>
         <_Builtin.Block

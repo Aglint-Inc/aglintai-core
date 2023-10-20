@@ -20,4 +20,5 @@ declare function JobCandidateCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   onClickCheckbox?: Types.Devlink.RuntimeProps;
   isInterview?: Types.Visibility.VisibilityConditions;
+  isSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

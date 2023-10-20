@@ -297,7 +297,7 @@ function InterviewFeedbackPage() {
             <Stack maxWidth={'400px'}>
               <NewResumeScoreDetails
                 applicationDetails={applicationDetails}
-                job={job}
+                job={job as any}
                 feedback={true}
               />
             </Stack>

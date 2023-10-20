@@ -253,13 +253,14 @@ function NavbarOverlay({ children }) {
     },
     [toggleOpen]
   );
+  const overlayHeight = getOverlayHeight();
   return (
     <div
       className="w-nav-overlay"
       id="w-nav-overlay"
       style={{
         display: isOpen ? "block" : "none",
-        height: getOverlayHeight(),
+        height: overlayHeight ? overlayHeight : undefined,
         width: isOpen ? "100%" : 0,
       }}
       onClick={overlayToggleOpen}

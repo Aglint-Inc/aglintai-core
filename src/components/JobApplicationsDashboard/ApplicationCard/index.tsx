@@ -1,13 +1,11 @@
+import WarningIcon from '@mui/icons-material/Warning';
 import { Stack } from '@mui/material';
-import { useState } from 'react';
 
 import { JobCandidateCard } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { calculateOverallScore } from '@/src/utils/support/supportUtils';
 
-import ApplicationDetails from './ApplicationDetails';
-import JdFetching from './JdFetching';
 import { getScoreColor, getStatusColor } from './utils';
 import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -19,6 +17,8 @@ const ApplicationCard = ({
   checkList,
   handleSelect,
   isInterview,
+  handleOpenDetails,
+  isSelected = false,
 }: {
   application: JobApplication;
   index: number;
@@ -26,13 +26,12 @@ const ApplicationCard = ({
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
   isInterview: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleOpenDetails: () => void;
+  isSelected: boolean;
 }) => {
   // this variable is for type change
   const { job } = useJobApplications();
-  const jobDetails = application as unknown as {
-    jd_score: { summary: { feedback: undefined } };
-  };
-  const [openSidePanel, setOpenSidePanel] = useState(false);
 
   const interviewScore = application?.feedback
     ? getInterviewScore(application.feedback)
@@ -47,10 +46,6 @@ const ApplicationCard = ({
     handleSelect(index);
   };
 
-  const handleOpenSidePanel = () => {
-    setOpenSidePanel((pre) => !pre);
-  };
-
   const jdScoreObj = application.jd_score as any;
 
   const jdScore = jdScoreObj
@@ -60,70 +55,63 @@ const ApplicationCard = ({
       })
     : null;
 
-  const resumeScoreWheel =
-    jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
-    application.resume &&
-    application.jd_score === null ? (
-      <Stack justifyContent={'center'} alignItems={'center'}>
-        <JdFetching />
-        Calculating
-      </Stack>
-    ) : (
-      <ScoreWheel
-        id={`ScoreWheelApplicationCard${index + 1}`}
-        weights={job.parameter_weights as ScoreWheelParams}
-        score={jdScore}
-        fontSize={7}
-      />
-    );
-
+  const resumeScoreWheel = application.json_resume ? (
+    <ScoreWheel
+      id={`ScoreWheelApplicationCard${index + 1}`}
+      weights={job.parameter_weights as ScoreWheelParams}
+      score={jdScore}
+      fontSize={7}
+    />
+  ) : (
+    <Stack textAlign={'center'} alignItems={'center'}>
+      <WarningIcon style={{ color: 'goldenrod' }} />
+      <Stack>Resume unparsable</Stack>
+    </Stack>
+  );
   return (
-    <>
-      <ApplicationDetails
-        openSidePanel={openSidePanel}
-        setOpenSidePanel={setOpenSidePanel}
-        applicationDetails={application}
-      />
-
-      <JobCandidateCard
-        textOrder={index + 1}
-        isChecked={checkList.has(application.application_id)}
-        slotProfilePic={
-          <MuiAvatar
-            level={application.first_name}
-            src={
-              !application.profile_image
-                ? getGravatar(application.email, application?.first_name)
-                : application.profile_image
-            }
-            variant={'rounded'}
-            width={'78px'}
-            height={'78px'}
-            fontSize={'28px'}
-          />
-        }
-        textName={capitalize(
-          application.first_name + ' ' + application?.last_name,
-        )}
-        textRole={capitalize(application.job_title)}
-        textMail={application.email}
-        textPhone={application.phone}
-        slotScore={resumeScoreWheel}
-        textScore={interviewScore}
-        scoreTextColor={{ style: { color: getScoreColor(interviewScore) } }}
-        onClickCard={{
-          onClick: () => {
-            handleOpenSidePanel();
-          },
-        }}
-        textStatus={capitalize(application.status)}
-        statusTextColor={{ style: { color: statusColors?.color } }}
-        statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
-        textAppliedOn={appliedOn}
-        onClickCheckbox={{ onClick: handleCheck }}
-        isInterview={isInterview}
-      />
-    </>
+    <JobCandidateCard
+      textOrder={index + 1}
+      isChecked={checkList.has(application.application_id)}
+      slotProfilePic={
+        <MuiAvatar
+          level={application.first_name}
+          src={
+            !application.profile_image
+              ? getGravatar(application.email, application?.first_name)
+              : application.profile_image
+          }
+          variant={'rounded'}
+          width={'78px'}
+          height={'78px'}
+          fontSize={'28px'}
+        />
+      }
+      textName={capitalize(
+        application.first_name + ' ' + application?.last_name,
+      )}
+      textRole={capitalize(application.job_title)}
+      textMail={application.email}
+      textPhone={application.phone}
+      slotScore={resumeScoreWheel}
+      textScore={application.feedback ? interviewScore : '--'}
+      scoreTextColor={{
+        style: {
+          color: application.feedback ? getScoreColor(interviewScore) : 'grey',
+        },
+      }}
+      onClickCard={{
+        onClick: () => {
+          handleOpenDetails();
+        },
+      }}
+      textStatus={capitalize(application.status)}
+      statusTextColor={{ style: { color: statusColors?.color } }}
+      statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
+      textAppliedOn={appliedOn}
+      onClickCheckbox={{ onClick: handleCheck }}
+      isInterview={isInterview}
+      isSelected={isSelected}
+    />
   );
 };
 
@@ -133,7 +121,7 @@ export function getGravatar(email, name) {
   return `https://www.gravatar.com/avatar/${require('crypto')
     .createHash('md5')
     .update(email ? email.trim().toLowerCase() : '')
-    .digest('hex')}?d=${encode(name)}`;
+    .digest('hex')}?d=${encode(name)}?d=retro&s=240&r=g`;
 }
 
 function encode(name) {

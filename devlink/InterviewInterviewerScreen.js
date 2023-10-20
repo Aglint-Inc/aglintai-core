@@ -66,7 +66,11 @@ export function InterviewInterviewerScreen({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-interviewer-wrappers")}
+        className={_utils.cx(
+          _styles,
+          "text-interviewer-wrappers",
+          "mobile-landscape-hide"
+        )}
         tag="div"
         {...propsScroll}
       >

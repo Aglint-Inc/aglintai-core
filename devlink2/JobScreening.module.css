@@ -735,8 +735,8 @@
 }
 
 .cli-column.candidate-info {
-  width: 360px;
-  min-width: 360px;
+  width: 400px;
+  min-width: 400px;
   padding-left: 20px;
 }
 
@@ -749,10 +749,12 @@
 }
 
 .cli-column.status {
+  display: flex;
   width: 250px;
   min-width: 250px;
   margin-left: auto;
   padding-right: 20px;
+  align-items: center;
 }
 
 .cli-checkbox {
@@ -870,6 +872,10 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-grey-600.no-wrap {
+  white-space: nowrap;
 }
 
 .cdd-content-main {

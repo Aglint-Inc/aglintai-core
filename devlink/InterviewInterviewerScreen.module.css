@@ -16,8 +16,25 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .new-interview-right-wrappers {
+    justify-content: center;
+    align-items: flex-end;
+  }
+}
+
 .div-block-497 {
   position: relative;
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-497 {
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    right: 0%;
+    bottom: 0%;
+  }
 }
 
 .slot-interviewee-video {
@@ -29,6 +46,12 @@
   .slot-interviewee-video {
     width: 277px;
     height: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .slot-interviewee-video {
+    width: auto;
   }
 }
 
@@ -147,6 +170,12 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .mobile-landscape-hide {
+    display: none;
+  }
+}
+
 .width-text {
   width: 100%;
 }
@@ -176,6 +205,19 @@
     top: auto;
     right: auto;
     bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .question-pill-wrapper {
+    position: relative;
+    left: auto;
+    top: auto;
+    right: auto;
+    bottom: auto;
+
+    margin-right: 6px;
+    margin-bottom: 18px;
   }
 }
 
@@ -218,5 +260,15 @@
     bottom: 10px;
 
     display: block;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .mobile-play-pause-wrappers {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    z-index: 2;
+    margin-bottom: 18px;
   }
 }

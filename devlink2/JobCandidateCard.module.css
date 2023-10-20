@@ -148,8 +148,8 @@
 }
 
 .cli-column.candidate-info {
-  width: 360px;
-  min-width: 360px;
+  width: 400px;
+  min-width: 400px;
   padding-left: 20px;
 }
 
@@ -166,10 +166,12 @@
 }
 
 .cli-column.status {
+  display: flex;
   width: 250px;
   min-width: 250px;
   margin-left: auto;
   padding-right: 20px;
+  align-items: center;
 }
 
 .candidate-profile-info {
@@ -277,6 +279,10 @@
   }
 }
 
+.text-grey-600.no-wrap {
+  white-space: nowrap;
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;
@@ -367,8 +373,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 .frame-1096 {
@@ -392,4 +398,10 @@
   z-index: 1;
 
   background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
+}
+
+.checked-bg.selected {
+  z-index: 2;
+  border: 2px solid var(--blue-500);
+  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 0.00);
 }

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
+import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
 import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -20,8 +21,9 @@ export type JobApplicationSectionData = {
 
 export type JobApplicationsData = {
   applications: JobApplicationSectionData;
-  count: number;
-  processing: number;
+  count: {
+    [key in ApiLogState]: number;
+  };
 };
 
 export type JobApplication =

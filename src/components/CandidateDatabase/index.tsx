@@ -223,9 +223,9 @@ export function CandidateDatabaseComp() {
         setOpenSidePanel={setImportDrawerOpen}
       />
       <ApplicationDetails
-        applicationDetails={peopleDetail}
-        openSidePanel={openSidePanel}
-        setOpenSidePanel={setOpenPanelDrawer}
+        applicationDetails={peopleDetail as any}
+        onClose={() => setOpenPanelDrawer(false)}
+        open={openSidePanel}
       />
       <CandidateDatabase
         textShowingResult={`Showing ${people.length} results`}
