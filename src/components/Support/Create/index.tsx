@@ -130,7 +130,7 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
               assign_to:
                 details.type === allType[1]
                   ? jobDetails.jobDetails.recruiter_id
-                  : '3658efe6-4287-46ec-ba37-c0f8fbad09cb',
+                  : process.env.NEXT_PUBLIC_DEFAULT_COMPANY,
               id: generateCustomUUID(
                 jobDetails?.jobDetails?.company || 'aglint',
               ),
