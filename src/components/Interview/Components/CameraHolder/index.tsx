@@ -49,7 +49,7 @@ function CameraHolder() {
           )}
           // src={undefined}
           fontSize={'200px'}
-          height={'calc(100% - 235px)'}
+          height={'calc(100% - 245px)'}
           width={'100%'}
           variant={'rounded'}
           level={candidateDetails && candidateDetails?.first_name}
@@ -59,7 +59,7 @@ function CameraHolder() {
           style={{
             width: '100%',
             // height: '100%',
-            height: 'calc(100% - 235px)',
+            height: 'calc(100% - 245px)',
 
             // borderRadius: '50%',
             objectFit: 'cover',

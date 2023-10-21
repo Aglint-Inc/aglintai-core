@@ -46,6 +46,7 @@ function CandidatePanel() {
             }, 200);
             stopListening();
           },
+          id: 'edit-pencil',
         }}
         onClickEditDone={{
           onClick: () => {
@@ -56,9 +57,20 @@ function CandidatePanel() {
           <>
             <Stack height={'100%'} direction={'row'}>
               <Stack
+                onClick={() => {
+                  if (!speaking) {
+                    setEdit(true);
+                    setTimeout(() => {
+                      senderRef.current.focus();
+                    }, 200);
+                    stopListening();
+                    document.getElementById('edit-pencil').click();
+                  }
+                }}
                 padding={'34px'}
                 direction={'row'}
                 display={edit ? 'none' : 'block'}
+                width={'100%'}
               >
                 <Typography
                   fontSize={'22px'}
@@ -92,7 +104,7 @@ function CandidatePanel() {
                   },
                   '& .MuiInputBase-root': {
                     height: '100%',
-                    padding: { xs: '0px', sm: '24px 24px 0px 24px' },
+                    padding: { xs: '0px', sm: '34px' },
                     background: 'white.700 !important',
                   },
                   // p: { xs: '12px 20px', md: '0px' },

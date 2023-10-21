@@ -377,7 +377,7 @@ function InterviewContextProvider({ children }) {
   // handle listening
   const handleListing = () => {
     if (!browserSupportsSpeechRecognition) {
-      alert(`Brawser does't suppert`);
+      toast.error(`Brawser does't suppert`);
       return null;
     }
     if (!listening) {
@@ -397,7 +397,7 @@ function InterviewContextProvider({ children }) {
 
   function stopListening() {
     if (!browserSupportsSpeechRecognition) {
-      alert(`Brawser does't suppert`);
+      toast.error(`Brawser does't suppert`);
       return null;
     }
 
@@ -445,8 +445,6 @@ function InterviewContextProvider({ children }) {
   }
 
   async function disconnecting() {
-    // eslint-disable-next-line no-console
-    console.log('dis');
     stopRecording();
     SpeechRecognition.abortListening();
     SpeechRecognition.stopListening();

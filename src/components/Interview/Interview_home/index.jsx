@@ -37,7 +37,7 @@ function Interview_home() {
         openSidePanelDrawer={openSidePanelDrawer}
         setOpenPanelDrawer={setOpenPanelDrawer}
       >
-        <Stack width={'500px'}>
+        <Stack width={'400px'}>
           <Transcript
             conversations={conversations}
             setOpenPanelDrawer={setOpenPanelDrawer}
