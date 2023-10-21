@@ -402,6 +402,6 @@
 
 .checked-bg.selected {
   z-index: 2;
-  border: 2px solid var(--blue-500);
+  border: 2px none var(--blue-500);
   background-color: hsla(206.66666666666666, 100.00%, 96.47%, 0.00);
 }

@@ -479,6 +479,10 @@
   color: var(--red600-953350ec);
 }
 
+.text-sm.text-grey-500.width-ticket-d {
+  width: 49.91667175292969px;
+}
+
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
 }
@@ -841,6 +845,8 @@
 .button-icon {
   width: 12px;
   height: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-icon.is-large {

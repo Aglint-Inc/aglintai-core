@@ -454,7 +454,7 @@ const findDisclaimers = (jobForm: FormJobType) => {
   }
 
   if (isEmpty(get(jobForm, 'skills', []))) {
-    warnings.details.err.push('Select skills for job description');
+    warnings.details.err.push('Missing skills');
   }
   if (isEmpty(jobForm.department.trim())) {
     warnings.details.err.push('Missing department');

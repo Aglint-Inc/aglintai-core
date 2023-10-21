@@ -78,14 +78,14 @@ export function CandidateDatabaseComingSoon({
             className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
-            {"Jorem ipsum dolor sit amet, consectetur adipiscing elit."}
+            {"Find Your Ideal Candidate with AI-Powered Matching!"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600-3")}
             tag="div"
           >
             {
-              "Forem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
+              "Search your existing candidate pool to find your ideal match. Import candidates from your ATS, or upload them directly. Simply use natural language to search and find your perfect match in no time!"
             }
           </_Builtin.Block>
         </_Builtin.Block>

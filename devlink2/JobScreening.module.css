@@ -101,6 +101,23 @@
   }
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
 .div-block-283 {
   display: flex;
   justify-content: center;
@@ -191,23 +208,6 @@
   color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
 .text-yellow-600 {
   color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
@@ -264,6 +264,7 @@
 
   transition: all 300ms ease;
 
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
   white-space: nowrap;
 
   cursor: pointer;

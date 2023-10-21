@@ -1,16 +1,16 @@
-body {
-  padding: 0;
-  margin: 0;
-}
+// body {
+//   padding: 0;
+//   margin: 0;
+// }
 
-a {
-  margin: 0;
-  font-weight: 400;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
-  line-height: 1.43;
-  text-decoration: none;
-}
+// a {
+//   margin: 0;
+//   font-weight: 400;
+//   font-family: 'DM Sans', sans-serif;
+//   font-size: 0.875rem;
+//   line-height: 1.43;
+//   text-decoration: none;
+// }
 
 [class*='one-line-clamp'] {
   display: -webkit-box !important;
@@ -91,4 +91,8 @@ input[type='number'] {
   :hover::-webkit-scrollbar-thumb {
     visibility: visible;
   }
+}
+
+.tiptap p {
+  margin: 1em 0;
 }

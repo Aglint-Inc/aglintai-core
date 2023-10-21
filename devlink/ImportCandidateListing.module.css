@@ -34,6 +34,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 .ic-import-preview-main {
   margin-top: 12px;
   margin-bottom: 18px;
@@ -343,6 +347,8 @@
 .button-icon {
   width: 12px;
   height: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-icon.is-large {

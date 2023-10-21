@@ -293,7 +293,6 @@ const FileUpload = ({ setOpenSidePanel }) => {
                     <Stack direction={'row'} spacing={2}>
                       <Typography variant='body2'>Size : {size}</Typography>
                       <Typography variant='body2'>
-                        Modified Time :{' '}
                         {dayjs(lastModifiedDate).format('MMM D, YYYY h:mm A')}
                       </Typography>
                     </Stack>

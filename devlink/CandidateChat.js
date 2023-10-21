@@ -76,7 +76,12 @@ export function CandidateChat({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey-500")}
+                className={_utils.cx(
+                  _styles,
+                  "text-sm",
+                  "text-grey-500",
+                  "width-ticket-d"
+                )}
                 tag="div"
               >
                 {"Ticket ID"}
@@ -93,7 +98,12 @@ export function CandidateChat({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey-500")}
+                className={_utils.cx(
+                  _styles,
+                  "text-sm",
+                  "text-grey-500",
+                  "width-ticket-d"
+                )}
                 tag="div"
               >
                 {"Status"}

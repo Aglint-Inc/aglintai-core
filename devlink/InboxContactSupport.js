@@ -119,7 +119,7 @@ export function InboxContactSupport({
             tag="div"
           >
             <_Builtin.Block tag="div" {...onClickReport}>
-              <ButtonOutlinedRegular textLabel="Report" />
+              <ButtonOutlinedRegular textLabel="Submit" />
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

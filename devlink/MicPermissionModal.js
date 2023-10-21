@@ -54,7 +54,7 @@ export function MicPermissionModal({ as: _Component = _Builtin.Block }) {
               tag="div"
             >
               {
-                "Please click on 'Allow' to grant access to your microphone and video for the interview."
+                "Please click on 'Allow' to grant access to your microphone and video for the Assessment."
               }
             </_Builtin.Block>
           </_Builtin.Block>

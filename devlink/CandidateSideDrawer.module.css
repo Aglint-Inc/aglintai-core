@@ -339,6 +339,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 .cvs-intro-overview-block {
   display: flex;
   margin-bottom: 20px;
