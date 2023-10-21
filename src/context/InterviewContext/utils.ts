@@ -27,7 +27,7 @@ export async function updateFeedbackOnJobApplications(
   );
 
   const minScore = Number(
-    jobDetails?.new_screening_setting?.interview?.qualificationRange.min,
+    jobDetails?.new_screening_setting?.interview?.qualificationRange?.min,
   );
   const isManual = jobDetails?.new_screening_setting?.interview?.isManual;
   const { error } = await supabase
