@@ -284,9 +284,9 @@
   display: flex;
   width: 100%;
   padding: 12px 11px;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 13px;
   grid-row-gap: 13px;
 
@@ -331,6 +331,7 @@
 }
 
 .cj-option-block.yellow-100.small-card-add-job {
+  width: 240px;
   max-width: 240px;
 }
 

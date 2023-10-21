@@ -146,6 +146,7 @@
 
   transition: all 300ms ease;
 
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
   white-space: nowrap;
 
   cursor: pointer;

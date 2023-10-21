@@ -500,6 +500,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 .profile-share-overview-wrapper {
   padding: 24px 40px 36px;
 }

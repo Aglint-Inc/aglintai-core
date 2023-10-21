@@ -161,7 +161,8 @@ function ImportCandidatesCSV() {
         height: '100%',
       }}
     >
-      <Stack direction={'row'} justifyContent={'flex-end'} pb={2}>
+      <Stack direction={'row'} pb={2}>
+        <Typography fontSize={'14px'}>Need help?&nbsp;</Typography>
         <CSVLink filename={'candidates-sample.csv'} data={csvData}>
           <Typography
             sx={{
@@ -170,7 +171,7 @@ function ImportCandidatesCSV() {
             color={'blue.600'}
             fontSize={'14px'}
           >
-            Download Sample CSV
+            Download our sample file here.
           </Typography>
         </CSVLink>
       </Stack>
@@ -194,7 +195,7 @@ function ImportCandidatesCSV() {
                   createCandidates(bulkImportdata);
                 }}
               >
-                Upload
+                Import
               </AUIButton>
             </Stack>
           </>

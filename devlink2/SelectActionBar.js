@@ -56,7 +56,7 @@ export function SelectActionBar({
               className={_utils.cx(_styles, "text-blue-700")}
               tag="div"
             >
-              {"Send Interview"}
+              {"Start Assessment"}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

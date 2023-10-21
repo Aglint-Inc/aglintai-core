@@ -268,3 +268,15 @@
 .slot-import {
   height: 400px;
 }
+
+.div-block-524 {
+  margin-bottom: 12px;
+}
+
+.color-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.color-grey-700.margin-top-12 {
+  margin-top: 12px;
+}

@@ -25,7 +25,7 @@ export function JobsListingCard({
   candidateCount = "0",
   textSourcing = "Sourcing",
   slotSourcingIcon,
-  textInterview = "Interviewing",
+  textInterview = "Assessment",
   slotInterviewIcon,
   isSourcingInterviewVisible = true,
 }) {
@@ -111,7 +111,7 @@ export function JobsListingCard({
             className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
-            {"Candidates"}
+            {"Applicants"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -131,7 +131,7 @@ export function JobsListingCard({
             className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
-            {"Interviewing"}
+            {"Assessment"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -151,7 +151,7 @@ export function JobsListingCard({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Selected"}
+            {"Qualified"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -171,7 +171,7 @@ export function JobsListingCard({
             className={_utils.cx(_styles, "", "fw-semibold")}
             tag="div"
           >
-            {"Rejected"}
+            {"Disqualified"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

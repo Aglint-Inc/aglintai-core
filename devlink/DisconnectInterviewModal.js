@@ -73,8 +73,9 @@ export function DisconnectInterviewModal({
                 tag="div"
               >
                 {
-                  "Your interview will be marked as incomplete since you didn’t answered all questions. Click ‘cancel’ to continue to interview."
+                  "Your interview will be marked as incomplete since you didn’t answer all questions. Click ‘continue’ to proceed with the interview."
                 }
+                <br />
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -111,7 +112,7 @@ export function DisconnectInterviewModal({
                       tag="div"
                       tabIndex="0"
                     >
-                      <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
+                      <_Builtin.Block tag="div">{"Continue"}</_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -132,10 +133,12 @@ export function DisconnectInterviewModal({
             {slotLoaderLottie}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600-3")}
+            className={_utils.cx(_styles, "text-grey-600-3", "width-400")}
             tag="div"
           >
-            {"Completed all questions. Redirecting to thanks"}
+            {
+              "Completed all questions. Please wait while we process the questions and answers."
+            }
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

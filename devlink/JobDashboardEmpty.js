@@ -14,7 +14,7 @@ export function JobDashboardEmpty({
   onClickIndeed = {},
   onClickLever = {},
   isOldTitleVisible = true,
-  isSelectTitleVisible = false,
+  isSelectTitleVisible = true,
 }) {
   return (
     <_Component
@@ -44,30 +44,9 @@ export function JobDashboardEmpty({
             className={_utils.cx(_styles, "cj-option-wrapper")}
             tag="div"
           >
-            {isOldTitleVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-374")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-                  tag="div"
-                >
-                  {"Let's set up your first job for screening."}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-700")}
-                  tag="div"
-                >
-                  {
-                    "Aglint assists you in sourcing and screening candidates by conducting assessments focused on skills, cultural fit, personality fit, soft skills, and more."
-                  }
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
             {isSelectTitleVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
                 {"Select an option to continue with"}
@@ -83,17 +62,6 @@ export function JobDashboardEmpty({
               tag="div"
               {...onClickAddJob}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "frame-1036")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-6")}
-                  tag="div"
-                >
-                  {"Recommended"}
-                </_Builtin.Block>
-              </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "cj-option-icon-block")}
                 tag="div"
@@ -113,14 +81,6 @@ export function JobDashboardEmpty({
                 >
                   {"Add Job"}
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
-                  tag="div"
-                >
-                  {
-                    "Craft your job listing effortlessly in just three simple steps with Aglint."
-                  }
-                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -132,29 +92,11 @@ export function JobDashboardEmpty({
               className={_utils.cx(_styles, "div-block-375")}
               tag="div"
             >
-              <_Builtin.Block tag="div">
-                {"Or Connect with your Applicant Tracking System (ATS)"}
-              </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-600")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {
-                  "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to "
-                }
-                <_Builtin.Span
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500",
-                    "cursor-pointer"
-                  )}
-                  {...onClickRequestIntegration}
-                >
-                  {"request integration"}
-                </_Builtin.Span>
-                {
-                  ". In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
-                }
+                {"Or Connect with your Applicant Tracking System (ATS)"}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -184,21 +126,55 @@ export function JobDashboardEmpty({
                         className={_utils.cx(_styles, "fw-semibold")}
                         tag="div"
                       >
-                        {"Import Job from Greenhouse"}
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey-600")}
-                        tag="div"
-                      >
-                        {
-                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
-                        }
+                        {"Greenhouse"}
                       </_Builtin.Block>
                     </_Builtin.Block>
                     <_Builtin.Block
                       className={_utils.cx(_styles, "click-fake-div")}
                       tag="div"
                       {...onClickGreenHouse}
+                    />
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cj-option-block",
+                      "kale-100"
+                    )}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "cj-option-icon-block")}
+                      tag="div"
+                    >
+                      <_Builtin.Image
+                        className={_utils.cx(_styles, "image-38")}
+                        loading="lazy"
+                        width="auto"
+                        height="auto"
+                        alt=""
+                        src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad803eafe8aa1c3b68c_lever_rgb_logo_standard%201%20(2).svg"
+                      />
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "cj-option-info")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "fw-semibold",
+                          "text-kale-800"
+                        )}
+                        tag="div"
+                      >
+                        {"Lever"}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "click-fake-div")}
+                      tag="div"
+                      {...onClickLever}
                     />
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -234,15 +210,7 @@ export function JobDashboardEmpty({
                         )}
                         tag="div"
                       >
-                        {"Import Job from Indeed"}
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey-600")}
-                        tag="div"
-                      >
-                        {
-                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
-                        }
+                        {"Indeed"}
                       </_Builtin.Block>
                     </_Builtin.Block>
                     <_Builtin.Block
@@ -257,58 +225,29 @@ export function JobDashboardEmpty({
                       <_Builtin.Block tag="div">{"Coming Soon"}</_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "cj-option-block",
-                      "kale-100"
-                    )}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "cj-option-icon-block")}
-                      tag="div"
-                    >
-                      <_Builtin.Image
-                        className={_utils.cx(_styles, "image-38")}
-                        loading="lazy"
-                        width="auto"
-                        height="auto"
-                        alt=""
-                        src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65155ad803eafe8aa1c3b68c_lever_rgb_logo_standard%201%20(2).svg"
-                      />
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "cj-option-info")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "fw-semibold",
-                          "text-kale-800"
-                        )}
-                        tag="div"
-                      >
-                        {"Import Job from Lever"}
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey-600")}
-                        tag="div"
-                      >
-                        {
-                          "Drop us a line at customersuccess@aglinthq.com with your integration request, and we'll handle everything for you!"
-                        }
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "click-fake-div")}
-                      tag="div"
-                      {...onClickLever}
-                    />
-                  </_Builtin.Block>
                 </>
               )}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {
+                "If the applicant tracking system (ATS) you are using is not listed here, please don't hesitate to "
+              }
+              <_Builtin.Span
+                className={_utils.cx(
+                  _styles,
+                  "text-blue-500",
+                  "cursor-pointer"
+                )}
+                {...onClickRequestIntegration}
+              >
+                {"request integration"}
+              </_Builtin.Span>
+              {
+                ". In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
+              }
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
