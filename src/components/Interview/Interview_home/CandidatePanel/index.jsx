@@ -125,7 +125,8 @@ function CandidatePanel() {
                     '& textarea': {
                       color: 'white.700',
                       fontSize: '22px',
-                      fontWeight: 600,
+                      fontWeight: 400,
+                      lineHeight: '24px',
                       height: '100% !important',
                       overflow: 'auto !important',
                       background: 'rgba(255, 255, 255, 0.11)',
