@@ -431,12 +431,13 @@ const ActionBar = ({
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.QUALIFIED);
+  const checkListCount = checkList.size;
   const DialogInfo = {
     interviewing: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to interviewing`,
-      subHeading: 'Send interview Emails to these candidates',
+      heading: `Are you sure that you want to start interviewing ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
+      subHeading: 'Send interview email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
@@ -449,14 +450,14 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Send',
+      primaryText: 'Qualify for Interview',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     selected: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to Selected`,
+      heading: `Are you sure that you want to qualify ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
       subHeading: undefined,
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.QUALIFIED);
@@ -470,15 +471,15 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Move to Selected',
+      primaryText: 'Qualify',
       secondaryText: 'Cancel',
       variant: 'ai',
     },
     rejected: {
-      heading: `Are you sure that you want to reject ${
-        Array.from(checkList).length
-      } candidates`,
-      subHeading: 'Send rejection Emails to these candidates',
+      heading: `Are you sure that you want to disqualifiy ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
+      subHeading: 'Send rejection email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
         if (checkEmail) {
@@ -491,17 +492,17 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Rejected',
+      primaryText: 'Disqualify',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     applied: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to New`,
+      heading: `Are you sure that you want to move ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      } to New`,
       subHeading: undefined,
       warningMessage:
-        'Moving back to applied will cancel the interviews the candidates have taken and will start the process again. ',
+        'Moving candidates to new will restart the entire process and reset candidate history.',
       primaryAction: async () => {
         await handleUpdateJobs(JobApplicationSections.NEW);
       },
@@ -558,7 +559,9 @@ const ActionBar = ({
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
         }}
-        textSelected={`${checkList.size} candidates selected`}
+        textSelected={`${checkListCount} candidate${
+          checkListCount !== 1 ? 's' : ''
+        } selected`}
         isMoveNew={showNew}
       />
     </>

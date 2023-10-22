@@ -116,7 +116,7 @@ const SlideDetailsTwo = () => {
 
   const submitHandler = async () => {
     if (recruiter?.id && formValidation(recruiter?.name)) {
-      const { error } = await supabase
+      const { error: e1 } = await supabase
         .from('recruiter')
         .update({
           logo: logo,
@@ -126,9 +126,12 @@ const SlideDetailsTwo = () => {
           industry: recruiter.industry,
           email_template: getInitialEmailTemplate(recruiter.name),
         })
-        .eq('id', recruiter.id)
-        .select();
-      if (!error) {
+        .eq('id', recruiter.id);
+      const { error: e2 } = await supabase
+        .from('recruiter_user')
+        .update({ profile_image: logo, phone: phone })
+        .eq('recruiter_id', recruiter.id);
+      if (!(e1 && e2)) {
         setStep(stepObj.allSet);
       }
     }
