@@ -55,7 +55,7 @@ export function ForgotPassword({
           )}
           button={false}
           options={{
-            href: "https://recruiter.aglinthq.com/signup?step=signin",
+            href: "/signup?step=signin",
           }}
         >
           <_Builtin.Block

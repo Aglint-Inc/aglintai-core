@@ -861,6 +861,10 @@
   padding-bottom: 40px;
 }
 
+.aglint-powered-footer.pt-100 {
+  padding-top: 100px;
+}
+
 .div-block-432 {
   display: flex;
   justify-content: center;

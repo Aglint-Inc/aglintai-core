@@ -28,4 +28,5 @@ declare function TicketSideDrawer(props: {
   onClickPrev?: Types.Devlink.RuntimeProps;
   onClickNext?: Types.Devlink.RuntimeProps;
   slotStatusHeading?: Types.Devlink.Slot;
+  isLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
