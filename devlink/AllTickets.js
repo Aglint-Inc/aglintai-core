@@ -310,7 +310,7 @@ export function AllTickets({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22AllTickets_il-list-wrapper__%22%5D%7B%0Aoverflow-y%3Ahidden%3B%0A%0A%7D%0A%0A%5Bclass*%3D%22AllTickets_il-list-block__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20100px)%3B%0A%0A%7D%0A%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%0A%0A%5Bclass*%3D%22AllTickets_il-list-block__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20100px)%3B%0A%0A%7D%0A%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

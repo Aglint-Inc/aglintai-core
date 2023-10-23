@@ -7,15 +7,3 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
-
-.vectors-wrapper-24 {
-  display: flex;
-  width: 180px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-
-  object-fit: none;
-}

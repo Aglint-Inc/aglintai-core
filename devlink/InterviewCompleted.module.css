@@ -252,6 +252,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 .text-blue-500-2 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }

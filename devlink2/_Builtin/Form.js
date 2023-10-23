@@ -11,6 +11,8 @@ export function FormWrapper({
   ...props
 }) {
   const [state, setState] = React.useState(initialState);
+  const formName =
+    (children.find((c) => c.type === FormForm)?.props)["data-name"] ?? "Form";
   return React.createElement(
     "div",
     {
@@ -19,11 +21,13 @@ export function FormWrapper({
     },
     React.Children.map(children, (child) => {
       if (child.type === FormForm) {
+        const style = {};
+        if (state === "success") {
+          style.display = "none";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: {
-            display: ["normal", "error"].includes(state) ? "block" : "none",
-          },
+          style,
           onSubmit: (e) => {
             try {
               e.preventDefault();
@@ -42,18 +46,39 @@ export function FormWrapper({
               throw err;
             }
           },
+          "aria-label": formName,
         });
       }
       if (child.type === FormSuccessMessage) {
+        const style = {};
+        if (state === "success") {
+          style.display = "block";
+        }
+        if (state === "error") {
+          style.display = "none";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: { display: state == "success" ? "block" : "none" },
+          style,
+          tabIndex: -1,
+          role: "region",
+          "aria-label": `${formName} success`,
         });
       }
       if (child.type === FormErrorMessage) {
+        const style = {};
+        if (state === "success") {
+          style.display = "none";
+        }
+        if (state === "error") {
+          style.display = "block";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: { display: state == "error" ? "block" : "none" },
+          tabIndex: -1,
+          role: "region",
+          "aria-label": `${formName} failure`,
+          style,
         });
       }
       return child;
@@ -69,7 +94,6 @@ export function FormBlockLabel(props) {
 export function FormTextInput({ className = "", ...props }) {
   return React.createElement("input", {
     ...props,
-    type: "text",
     className: className + " w-input",
     onKeyDown: onKeyDownInputHandlers,
   });

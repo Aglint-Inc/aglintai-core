@@ -71,12 +71,7 @@ export function CreateNewJob({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-xl",
-                "fw-semibold",
-                "color-black"
-              )}
+              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
               tag="div"
             >
               {textJobName}

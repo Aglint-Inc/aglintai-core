@@ -249,6 +249,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 #w-node-_923d15de-9788-e49f-c431-fc52940f52b2-940f52b2 {
   grid-column-start: span 1;
   grid-column-end: span 1;

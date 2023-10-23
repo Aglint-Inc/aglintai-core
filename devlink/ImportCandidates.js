@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ImportResume } from "./ImportResume";
+import { ImportCandidatesCsv } from "./ImportCandidatesCsv";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
 
@@ -14,6 +15,7 @@ export function ImportCandidates({
   onClickAddManually = {},
   onClickClose = {},
   onClickDownloadSample = {},
+  onClickDownloadFiles = {},
 }) {
   return (
     <_Component
@@ -32,7 +34,7 @@ export function ImportCandidates({
       </_Builtin.Block>
       <_Builtin.TabsWrapper
         className={_utils.cx(_styles, "tabs-3")}
-        current="Tab 1"
+        current="Tab 2"
         easing="ease"
         fadeIn={300}
         fadeOut={100}
@@ -50,7 +52,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import CSV"}
+              {"Upload Resume"}
             </_Builtin.Block>
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
@@ -62,7 +64,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import Resume"}
+              {"Import CSV"}
             </_Builtin.Block>
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
@@ -74,7 +76,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Add manually"}
+              {"Add Manually"}
             </_Builtin.Block>
           </_Builtin.TabsLink>
         </_Builtin.TabsMenu>
@@ -87,15 +89,28 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportCsv ?? <ImportResume />}
+              {slotImportResume ?? <ImportResume />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
             <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-524")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "color-grey-700")}
+                tag="div"
+              >
+                {
+                  "Import applicants by uploading a CSV or XLSX file containing First Name, Last Name, Email, and a link to their resume (PDF, DOC, or TXT format). Simply drag and drop your file or click to upload."
+                }
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportResume}
+              {slotImportCsv ?? <ImportCandidatesCsv />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 3">

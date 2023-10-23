@@ -293,6 +293,10 @@
   font-weight: 400;
 }
 
+.text-grey-600-3.width-400 {
+  max-width: 380px;
+}
+
 .div-block-519 {
   display: flex;
   flex-direction: column;

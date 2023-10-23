@@ -122,8 +122,8 @@ export default ApplicationCard;
 export function getGravatar(email, first_name = '') {
   let imgUrl = `https://www.gravatar.com/avatar/${md5(
     email ? email.trim().toLowerCase() : '',
-  )}?d=retro&s=240&r=g`;
-
+  )}?d=blank&s=240&r=g`;
+  
   return imgUrl;
 }
 

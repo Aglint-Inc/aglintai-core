@@ -9,7 +9,7 @@ export function InterviewCompleted({
   slotCompanyLogo,
   onClickSupport = {},
   textTitle = "Completed Interview Successfully.",
-  textDescription = "Thank you for taking your time to take this interview. We will be in touch with you soon.If you have any questions please ",
+  textDescription = "Thank you for taking your time to take this interview. We will be in touch with you soon. If you have any questions please ",
   propsTextColor = {},
 }) {
   return (

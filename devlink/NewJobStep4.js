@@ -124,7 +124,7 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "fw-semibold", "color-black")}
                 tag="div"
               >
-                {"Interview Scoring Workflow"}
+                {"Assessment Scoring Workflow"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "toggle-btn-block")}
@@ -139,17 +139,17 @@ export function NewJobStep4({
             >
               <_Builtin.ListItem>
                 {
-                  "Guide your recruitment decisions with our Interview Scoring Workflow."
+                  "Guide your recruitment decisions with our Assessment Scoring Workflow."
                 }
               </_Builtin.ListItem>
               <_Builtin.ListItem>
                 {
-                  "Use scoring thresholds to seamlessly categorize candidates based on their interview scores."
+                  "Use scoring thresholds to seamlessly categorize candidates based on their Assessment scores."
                 }
               </_Builtin.ListItem>
               <_Builtin.ListItem>
                 {
-                  "Set specific limits to guide their progression through the interview stage, or choose to handle the process manually."
+                  "Set specific limits to guide their progression through the Assessment stage, or choose to handle the process manually."
                 }
               </_Builtin.ListItem>
             </_Builtin.List>
@@ -182,7 +182,7 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "fw-semibold", "color-black")}
                 tag="div"
               >
-                {"Interview Email Schedule"}
+                {"Assessment Email Schedule"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "toggle-btn-block")}
@@ -190,7 +190,7 @@ export function NewJobStep4({
               />
             </_Builtin.Block>
             <_Builtin.Block tag="div">
-              {"Configure when to dispatch interview emails to candidates :"}
+              {"Configure when to dispatch Assessment emails to candidates :"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
