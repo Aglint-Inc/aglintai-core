@@ -54,7 +54,6 @@ function Support() {
     setSearch,
     randomColors,
   } = useSupportContext();
-
   return (
     <>
       <AllTickets
@@ -214,9 +213,11 @@ const Ticket = ({
   const [checked, setChecked] = useState(false);
   const assignedTo =
     ticket &&
-    allAssignee.find((item) => {
-      return ticket.assign_to === item.id;
-    });
+    allAssignee
+      .find((item) => ticket.support_group_id === item.recruiter.id)
+      ?.employees.find((employee) => {
+        return ticket.assign_to === employee.user_id;
+      });
   return (
     <InboxTickets
       key={ticket.id}
@@ -236,8 +237,10 @@ const Ticket = ({
       }
       slotAssignee={
         <AssignmentComponent
-          assign_to={capitalize(assignedTo?.title || '')}
-          imageUrl={assignedTo?.image}
+          assign_to={capitalize(
+            `${assignedTo?.first_name || ''} ${assignedTo?.last_name || ''}`,
+          )}
+          imageUrl={assignedTo?.profile_image}
           // @ts-ignore
           setAssignedTo={(assign_to) => updateTicket({ assign_to }, ticket.id)}
         />

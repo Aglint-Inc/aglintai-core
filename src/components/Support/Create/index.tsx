@@ -127,10 +127,14 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
         onClick: () => {
           if (checkValidations()) {
             submitSupportTicketInDb({
-              assign_to:
+              support_group_id:
                 details.type === allType[1]
                   ? jobDetails.jobDetails.recruiter_id
-                  : process.env.NEXT_PUBLIC_DEFAULT_COMPANY,
+                  : process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID,
+              assign_to: null,
+              // details.type === allType[1]
+              //   ? jobDetails.jobDetails.recruiter_id
+              //   : process.env.NEXT_PUBLIC_DEFAULT_COMPANY,
               id: generateCustomUUID(
                 jobDetails?.jobDetails?.company || 'aglint',
               ),

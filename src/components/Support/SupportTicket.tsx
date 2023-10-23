@@ -6,6 +6,9 @@ import {
   Stack,
   TextField,
   Typography,
+  darken,
+  lighten,
+  styled,
 } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -97,7 +100,7 @@ function SupportTicketDetails({
         ],
       });
   };
-  const callUpdateTicket = (data: Partial<Support_ticketType[]>) => {
+  const callUpdateTicket = (data: Partial<Support_ticketType>) => {
     // @ts-ignore
     return updateTicket(data, ticket.id);
   };
@@ -147,7 +150,7 @@ function SupportTicketDetails({
   const assignedTo =
     ticketProp &&
     allAssignee.find((item) => {
-      return ticketProp.assign_to === item.id;
+      return ticketProp.support_group_id === item.recruiter.id;
     });
   return (
     <Stack width={{ sm: '100%', md: '930px' }}>
@@ -159,12 +162,19 @@ function SupportTicketDetails({
           }
           slotAssignee={
             <AssignmentComponent
-              assign_to={assignedTo?.title}
-              imageUrl={assignedTo?.image}
+              assign_to={
+                assignedTo?.employees[0] &&
+                `${assignedTo?.employees[0]?.first_name} ${assignedTo?.employees[0]?.last_name}`
+              }
+              imageUrl={assignedTo?.recruiter?.image}
               recruiterId={ticket.jobsDetails.recruiter_id}
-              setAssignedTo={(assign_to) => {
+              setAssignedTo={(assign_to: string, support_group_id?: string) => {
                 // @ts-ignore
-                callUpdateTicket({ assign_to });
+                callUpdateTicket(
+                  support_group_id
+                    ? { support_group_id, assign_to }
+                    : { assign_to },
+                );
               }}
             />
           }
@@ -585,26 +595,53 @@ const AssignmentComponent = ({
   assign_to: string;
   imageUrl?: string;
   recruiterId: string;
-  // eslint-disable-next-line no-unused-vars
-  setAssignedTo: (value: string) => void;
+  setAssignedTo: (
+    // eslint-disable-next-line no-unused-vars
+    assign_to: string,
+    // eslint-disable-next-line no-unused-vars
+    support_group_id?: string,
+  ) => void;
 }) => {
   const { allAssignee } = useSupportContext();
   const [open, setOpen] = useState(false);
-
   return (
     <>
       {open ? (
         <CustomAutoComplete
           setOpen={setOpen}
-          value={assign_to}
-          options={allAssignee
-            .filter(
-              (item) => item.id === recruiterId || item.title === 'Aglint Inc',
-            )
-            .map((assignee) => ({
-              id: assignee.id,
-              title: assignee.title,
-            }))}
+          // value={assign_to}
+          options={(() => {
+            const temp = allAssignee
+              .filter(
+                (item) =>
+                  item.recruiter.id === recruiterId ||
+                  item.recruiter.title ===
+                    process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME,
+              )
+              .map((assignee) =>
+                assignee.employees.map((employee) => ({
+                  id: employee.user_id,
+                  title: `${employee.first_name} ${employee.last_name}`,
+                  recruiter_id: assignee.recruiter.id,
+                  recruiter_name: assignee.recruiter.title,
+                })),
+              )
+              .flat(1);
+            return temp;
+          })()}
+          // @ts-ignore
+          groupBy={(option) => option.recruiter_name}
+          renderGroup={(params) => {
+            return (
+              <li key={params.key}>
+                <GroupHeader className='one-line-clamp'>
+                  {params.group}
+                </GroupHeader>
+                <GroupItems>{params.children}</GroupItems>
+              </li>
+            );
+          }}
+          getOptionLabel={(option) => option.title}
           onChange={setAssignedTo}
         />
       ) : (
@@ -715,13 +752,26 @@ const CustomAutoComplete = ({
   options,
   setOpen,
   onChange,
+  ...rest
 }: {
   // eslint-disable-next-line no-unused-vars
   setOpen: (x: boolean) => void;
-  options: string[] | { id: string; title: string }[];
+  options:
+    | string[]
+    | { id: string; title: string }[]
+    | {
+        id: string;
+        title: string;
+        recruiter_id: string;
+        recruiter_name: string;
+      }[];
   value: string;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (value: string) => void;
+  onChange: (
+    // eslint-disable-next-line no-unused-vars
+    assign_to: string,
+    // eslint-disable-next-line no-unused-vars
+    support_group_id?: string,
+  ) => void;
 }) => {
   return (
     <Autocomplete
@@ -732,44 +782,47 @@ const CustomAutoComplete = ({
         // @ts-ignore
         return capitalize(option.title || option);
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          inputProps={{
-            ...params.inputProps,
-          }}
-          InputProps={{
-            ...params.InputProps,
-            disableUnderline: true,
-          }}
-          variant='filled'
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={true}
-          onBlur={() => {
-            setOpen(false);
-          }}
-          sx={{
-            minWidth: '150px',
-            '& .MuiAutocomplete-root': { height: '30px' },
-            '& .MuiFormControl-root ': { margin: 0 },
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            inputProps={{
+              ...params.inputProps,
+            }}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+            }}
+            variant='filled'
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={true}
+            onBlur={() => {
+              setOpen(false);
+            }}
+            sx={{
+              minWidth: '150px',
+              '& .MuiAutocomplete-root': { height: '30px' },
+              '& .MuiFormControl-root ': { margin: 0 },
 
-            '& input': { padding: '0px!important', fontSize: '14px' },
-            '& .MuiInputBase-root': {
-              padding: '4px 26px 4px 4px !important',
-            },
-            '& .MuiAutocomplete-endAdornment': {
-              right: '4px!important',
-            },
-          }}
-        />
-      )}
+              '& input': { padding: '0px!important', fontSize: '14px' },
+              '& .MuiInputBase-root': {
+                padding: '4px 26px 4px 4px !important',
+              },
+              '& .MuiAutocomplete-endAdornment': {
+                right: '4px!important',
+              },
+            }}
+          />
+        );
+      }}
       onChange={(_, newValue) => {
         if (newValue) {
           // @ts-ignore
-          onChange(newValue.id || newValue);
+          onChange(newValue.id || newValue, newValue.recruiter_id || null);
           setOpen(false);
         }
       }}
+      {...rest}
     />
   );
 };
@@ -807,3 +860,18 @@ const CustomAvatar = ({
     </Avatar>
   );
 };
+
+const GroupHeader = styled('div')(({ theme }) => ({
+  position: 'sticky',
+  top: '-8px',
+  padding: '4px 10px',
+  color: theme.palette.primary.main,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? lighten(theme.palette.primary.light, 0.85)
+      : darken(theme.palette.primary.main, 0.8),
+}));
+
+const GroupItems = styled('ul')({
+  padding: 0,
+});

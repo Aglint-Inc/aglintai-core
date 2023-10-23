@@ -1,6 +1,6 @@
 import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   BriefcaseIcon,
@@ -9,12 +9,13 @@ import {
   SoonBadge,
   TicketSublink,
 } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
-
+  const { recruiter } = useAuthDetails();
   const [subNabOpen, setSubNavOpen] = useState(true);
 
   function openCloseSubNav(route: string) {
@@ -25,9 +26,17 @@ function SideNavbar() {
     }
   }
 
+  const newNaveList = useMemo(() => {
+    const tempList = navList;
+    if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
+      return tempList.filter((x) => x.route === '/support');
+    }
+    return tempList;
+  }, [recruiter]);
+
   return (
     <>
-      {navList.map((item, i) => {
+      {newNaveList.map((item, i) => {
         return (
           <Collapse
             key={i}

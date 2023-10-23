@@ -47,7 +47,15 @@ interface ContextValue {
     'on hold': number;
   };
   filters: { status: string };
-  allAssignee: { id: string; title: string; image: string }[];
+  allAssignee: {
+    recruiter: { id: string; title: string; image: string };
+    employees: {
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      profile_image: string;
+    }[];
+  }[];
   // eslint-disable-next-line no-unused-vars
   updateTicket: (data: Partial<Support_ticketType>, id: string) => void;
   sort: sortType;
@@ -137,7 +145,7 @@ const SupportProvider = ({ children }) => {
 
     return allFilter;
   }, [allTickets]);
-  
+
   const filters = useMemo(() => {
     let filters = {
       status: 'all',
@@ -154,7 +162,7 @@ const SupportProvider = ({ children }) => {
     const tempColor: { [key: string]: string } = {};
     let tickets =
       allTickets.filter((ticket) => {
-        if (ticket.assign_to === recruiter.id) {
+        if (ticket.support_group_id === recruiter.id) {
           tempColor[ticket.id] = getRandomColor();
           return true;
         }
@@ -231,7 +239,15 @@ const SupportProvider = ({ children }) => {
   // const [userGroup, setUserGroup] = useState<SupportGroupType>(null);
   const [allChecked, setAllChecked] = useState(false);
   const [allAssignee, setAllAssignee] = useState<
-    { id: string; title: string; image: string }[]
+    {
+      recruiter: { id: string; title: string; image: string };
+      employees: {
+        user_id: string;
+        first_name: string;
+        last_name: string;
+        profile_image: string;
+      }[];
+    }[]
   >([]);
 
   const sendUpdateEmail = ({
@@ -306,8 +322,9 @@ const SupportProvider = ({ children }) => {
         sendUpdateEmail({
           subject: `${data.id}: Ticket Assignment Changed.`,
           body: `Ticket is now assigned to <b>${
-            allAssignee.find((assignment) => assignment.id === data.assign_to)
-              .title
+            allAssignee.find(
+              (assignment) => assignment.recruiter.id === data.support_group_id,
+            ).recruiter.title
           }</b>`,
         });
       } else if (update.priority) {
@@ -320,16 +337,30 @@ const SupportProvider = ({ children }) => {
   };
   useEffect(() => {
     if (recruiter?.id) {
-      getAllAssignee(recruiter.name === 'Aglint Inc').then((data) => {
+      getAllAssignee(
+        recruiter.name === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME,
+      ).then((data) => {
         const temp = data?.map((item) => ({
-          id: item.id,
-          title: item.name,
-          image: item.logo,
+          recruiter: {
+            id: item.recruiter.id,
+            title: item.recruiter.name,
+            image: item.recruiter.logo,
+          },
+          employees: item.employee,
         }));
-        setAllAssignee([
-          ...temp,
-          { id: recruiter.id, title: recruiter.name, image: recruiter.logo },
-        ]);
+        getAllEmployee(recruiter.id).then((data) => {
+          setAllAssignee([
+            ...temp,
+            {
+              recruiter: {
+                id: recruiter.id,
+                title: recruiter.name,
+                image: recruiter.logo,
+              },
+              employees: data,
+            },
+          ]);
+        });
       });
       // getAllGroup().then((data) => {
       //   if (data.length) {
@@ -413,7 +444,7 @@ const getTickets = async (assign_to: string) => {
   const { data, error } = await supabase
     .from('support_ticket')
     .select('*')
-    .eq('assign_to', assign_to);
+    .eq('support_group_id', assign_to);
   // .eq('company_id', '');
   if (!error && data.length) {
     return data;
@@ -446,20 +477,69 @@ const updateSupportTicketInDb = async (
   return null;
 };
 
+const getAllAdmins = async (recruiter_ids: string[]) => {
+  const { error, data } = await supabase
+    .from('recruiter_user')
+    .select('user_id,first_name,last_name,profile_image, recruiter_id')
+    .in('recruiter_id', recruiter_ids)
+    .neq('join_status', 'invited')
+    .eq('is_deactivated', false);
+  if (!error) {
+    const temp: {
+      [key: string]: [
+        {
+          user_id: string;
+          first_name: string;
+          last_name: string;
+          profile_image: string;
+        },
+      ];
+    } = {};
+    data.forEach((item) => {
+      temp[item.recruiter_id] = [item];
+    });
+    return temp;
+  }
+  return {};
+};
+
 const getAllAssignee = async (company?: boolean) => {
   if (company) {
-    const { data, error } = await supabase.from('recruiter').select();
+    const { data, error } = await supabase
+      .from('recruiter')
+      .select()
+      .neq('name', process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME);
     if (!error && data.length) {
-      return data;
+      const tempAdmins = await getAllAdmins(data.map((item) => item.id));
+      return data.map((item) => {
+        return {
+          recruiter: item,
+          employee: tempAdmins[item.id] ?? [],
+        };
+      });
     }
   } else {
     const { data, error } = await supabase
       .from('recruiter')
       .select()
-      .eq('name', 'Aglint Inc');
+      .eq('name', process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME);
     if (!error && data.length) {
-      return data;
+      // const tempAdmins = await getAllEmployee(data[0].id);
+      return data.map((item) => ({ recruiter: item, employee: [] }));
     }
+  }
+  return [];
+};
+
+const getAllEmployee = async (recruiter_id: string) => {
+  const { error, data } = await supabase
+    .from('recruiter_user')
+    .select('user_id,first_name,last_name,profile_image')
+    .eq('recruiter_id', recruiter_id)
+    .neq('join_status', 'invited')
+    .eq('is_deactivated', false);
+  if (!error) {
+    return data;
   }
   return [];
 };
@@ -487,7 +567,15 @@ const getUpdateMessage = ({
   recruiter: RecruiterType;
   oldDetails: Partial<Support_ticketType>;
   newDetails: Partial<Support_ticketType>;
-  allAssignee: { id: string; title: string; image: string }[];
+  allAssignee: {
+    recruiter: { id: string; title: string; image: string };
+    employees: {
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      profile_image: string;
+    }[];
+  }[];
 }) => {
   const temp: {
     id: string;
@@ -511,8 +599,9 @@ const getUpdateMessage = ({
     temp.text = `Ticket Status is updated from <b>${oldDetails.state}</b> to <b>${newDetails.state}`;
   } else if (newDetails.assign_to) {
     temp.text = `Ticket is now assigned to <b>${
-      allAssignee.find((assignment) => assignment.id === newDetails.assign_to)
-        .title
+      allAssignee.find(
+        (assignment) => assignment.recruiter.id === newDetails.support_group_id,
+      ).recruiter.title
     }</b>`;
   } else if (newDetails.priority) {
     temp.text = `Ticket Priority is updated from <b>${oldDetails.priority}</b> to <b>${newDetails.priority}</b>`;
