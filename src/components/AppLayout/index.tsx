@@ -189,6 +189,7 @@ export default function AppLayout({ children }) {
           position={'relative'}
           p={'14px'}
           bgcolor={'#25282a'}
+          width={'260px'}
         >
           <Stack height={'calc(100vh - 28px)'}>
             <Stack pb={'30px'} pt={'20px'}>
