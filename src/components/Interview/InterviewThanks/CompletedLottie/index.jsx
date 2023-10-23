@@ -10,7 +10,7 @@ function CompleteLottie() {
       <Lottie
         lottieRef={lottieRef}
         animationData={complete_lottie}
-        loop={true}
+        loop={false}
         autoplay={true}
       />
     </div>
