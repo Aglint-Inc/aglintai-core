@@ -1,6 +1,6 @@
 function ResumePreviewer({ url }) {
   return (
-    <iframe
+    <embed
       style={{
         height: '95vh',
         border:'0'
@@ -8,8 +8,7 @@ function ResumePreviewer({ url }) {
       width='100%'
       src={url}
       title='Resume Preview'
-      loading='eager'
-    ></iframe>
+    ></embed>
   );
 }
 

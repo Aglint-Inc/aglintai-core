@@ -7,7 +7,7 @@ export default function ForgotPasswordPage() {
     <div>
       <Seo
         title='Aglint | Forgot Password'
-        description='AI Powered Talent Development Platform.'
+        description='Find Your Ideal Candidate with AI-Powered Matching!'
       />
       <ForgotPasswordComponent />
     </div>

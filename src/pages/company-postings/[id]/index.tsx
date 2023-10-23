@@ -45,7 +45,7 @@ function JobPost() {
     <Stack minHeight={'100vh'}>
       <Seo
         title={recruiter?.name || 'Company'}
-        description='AI Powered Talent Development Platform.'
+        description='Explore exciting career opportunities and find your perfect job match on our job listing page'
       />
       {loading ? (
         <Stack height={'100vh'}>

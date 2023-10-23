@@ -398,6 +398,7 @@ const NewResumeSection = ({ applicationDetails, job }) => {
         sx={{
           '& .MuiDialog-paper': {
             borderRadius: '0px !important',
+            border: 'none !important',
           },
           '.MuiDialog-container': {
             height: 'auto',
