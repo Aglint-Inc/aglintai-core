@@ -267,7 +267,7 @@
 
 .change-profile-content {
   display: flex;
-  max-width: 320px;
+  max-width: 340px;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 8px;

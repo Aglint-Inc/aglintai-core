@@ -33,7 +33,7 @@ export function TicketSublink({
           className={_utils.cx(_styles, "div-block-365")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Open"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Created"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "job-link-tag", "blue-500")}
             tag="div"
@@ -46,7 +46,7 @@ export function TicketSublink({
             className={_utils.cx(_styles, "aui_nav_sublink_active-drop")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Open"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Created"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "job-link-tag", "blue-500")}
               tag="div"
