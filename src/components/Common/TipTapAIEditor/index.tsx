@@ -1,6 +1,7 @@
 import { Stack } from '@mui/system';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+// import FontFamily from '@tiptap/extension-font-family'
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
