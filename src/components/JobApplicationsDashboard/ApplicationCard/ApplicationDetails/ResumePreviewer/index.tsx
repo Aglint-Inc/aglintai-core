@@ -3,6 +3,7 @@ function ResumePreviewer({ url }) {
     <iframe
       style={{
         height: '95vh',
+        border:'0'
       }}
       width='100%'
       src={url}
