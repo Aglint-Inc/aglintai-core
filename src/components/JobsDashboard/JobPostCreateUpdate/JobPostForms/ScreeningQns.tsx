@@ -1,5 +1,6 @@
 import { Collapse } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import axios from 'axios';
 import { htmlToText } from 'html-to-text';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -17,6 +18,7 @@ import {
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { JobFormErrorParams } from '@/src/components/Job/JobForm';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { generateInterviewQns } from '@/src/utils/prompts/addNewJob/generateInterviewQns';
 
@@ -134,6 +136,7 @@ const ScreeningQns = ({ setFormError }) => {
         isProceedDisable={false}
         onClickProceed={{
           onClick: () => {
+            // console.log(params);
             dispatch({
               type: 'moveToSlide',
               payload: {
@@ -156,6 +159,7 @@ const StandardScreenSingle = ({
   paramKey: InterviewParam;
   setFormError: any;
 }) => {
+  const { recruiter } = useAuthDetails();
   const [showForm, setShowForm] = useState(false);
   const [questionInput, setQuestionInput] = useState('');
   const [isAiGenerating, setAiGenerating] = useState(false);
@@ -198,14 +202,58 @@ const StandardScreenSingle = ({
         param.copy,
         paramKey == 'skill' ? jobForm.formFields.skills : undefined,
       );
-      const newQns = qns.map((q) => ({
-        id: nanoid(),
-        question: q,
-      })) as InterviewConfigType['questions'];
-      handleUpdateFormFields({
-        path: `interviewConfig.${paramKey}.questions`,
-        value: [...param.questions, ...newQns],
-      });
+
+      // old code
+
+      if (recruiter?.email != 'dheeraj+1@aglinthq.com') {
+        const newQns = qns.map((q) => ({
+          id: nanoid(),
+          question: q,
+        })) as InterviewConfigType['questions'];
+        handleUpdateFormFields({
+          path: `interviewConfig.${paramKey}.questions`,
+          value: [...param.questions, ...newQns],
+        });
+      }
+      if (recruiter?.email == 'dheeraj+1@aglinthq.com') {
+        // new code
+        const newQns = [];
+        const axiosRequests = [];
+
+        qns.forEach((q) => {
+          // Create an Axios request for each question and store it in an array
+          const request = axios
+            .post('/api/generateVideo', { text: q })
+            .then(({ data }) => {
+              const {
+                data: { video_id },
+              } = data;
+              newQns.push({
+                id: nanoid(),
+                question: q,
+                video_id: video_id,
+                video_url: '',
+              });
+            });
+          axiosRequests.push(request);
+        });
+
+        // Use Promise.all to wait for all Axios requests to complete
+        Promise.all(axiosRequests)
+          .then(() => {
+            // All requests have completed, you can now log newQns
+            // console.log(newQns);
+            handleUpdateFormFields({
+              path: `interviewConfig.${paramKey}.questions`,
+              value: [...param.questions, ...newQns],
+            });
+          })
+          .catch((error) => {
+            return error;
+            // console.error('An error occurred:', error);
+          });
+        // new code end
+      }
     } catch (err) {
       // console.log(err);
     } finally {
