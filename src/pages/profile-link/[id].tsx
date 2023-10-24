@@ -23,6 +23,7 @@ import { getGravatar } from '@/src/components/JobApplicationsDashboard/Applicati
 import {
   DetailedInterviewFeedbackParams,
   giveColorForInterviewScore,
+  giveRateInWordForInterview,
   InterviewFeedbackParams,
   NewResumeScoreDetails,
   Transcript,
@@ -171,6 +172,22 @@ function InterviewFeedbackPage() {
             applicationDetails.feedback && (
               <>
                 <ProfileInterviewScore
+                  textInterviewScore={
+                    interviewScore ? `${interviewScore} / 100` : '--'
+                  }
+                  propsTextColor={{
+                    style: {
+                      color: giveColorForInterviewScore(interviewScore),
+                    },
+                  }}
+                  propsTextColorInterviewScore={{
+                    style: {
+                      color: giveColorForInterviewScore(interviewScore),
+                    },
+                  }}
+                  textInterviewScoreState={giveRateInWordForInterview(
+                    interviewScore,
+                  )}
                   slotFeedbackScore={
                     <InterviewFeedbackParams
                       feedbackParamsObj={applicationDetails.feedback}
