@@ -65,7 +65,7 @@ const ScoreWheelControls = ({
       {sliders}
       <Stack width={'100px'}>
         <ButtonPrimaryOutlinedRegular
-          buttonText={'Equalise'}
+          buttonText={'Reset'}
           buttonProps={{ onClick: () => handleEqualise() }}
         />
       </Stack>
