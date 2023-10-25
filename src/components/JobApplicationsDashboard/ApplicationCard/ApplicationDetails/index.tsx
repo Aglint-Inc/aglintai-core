@@ -1,6 +1,6 @@
 import { Dialog, Drawer, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -21,6 +21,7 @@ import {
   InterviewAiTranscriptCard,
   InterviewCandidateCard,
   InterviewDetailedFeedback,
+  InterviewResultStatus,
   // InterviewResult,
   // InterviewResultStatus,
   // JobDetailsSideDrawer,
@@ -28,6 +29,7 @@ import {
   UnableFetchResume,
   // ResumeResult,
 } from '@/devlink';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 // import AUIButton from '@/src/components/Common/AUIButton';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -38,7 +40,10 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import SmallCircularScore from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  JobApplication,
+  JobApplicationSections,
+} from '@/src/context/JobApplicationsContext/types';
 import { JobType } from '@/src/types/data.types';
 // import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
@@ -49,6 +54,7 @@ import toast from '@/src/utils/toast';
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
+import { emailHandler } from '../..';
 import CompanyLogo from '../../Common/CompanyLogo';
 // import { sendEmails } from '../..';
 // import InterviewScoreCard from '../../Common/InreviewScoreCard';
@@ -239,7 +245,7 @@ const NewJobApplicationSideDrawer = ({
         onClick: () => {
           navigator.clipboard
             .writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
             )
             .then(() => {
               toast.success('Link Copied');
@@ -264,26 +270,28 @@ const NewJobApplicationSideDrawer = ({
         />
       }
       isOverviewVisible={false}
+      isLinkedInVisible={applicationDetails.linkedin !== null}
     />
   );
 };
 
 const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
-  const experienceRef = useRef(null);
-  const scoreRef = useRef(null);
-  const educationRef = useRef(null);
-  const skillsRef = useRef(null);
   const { job } = useJobApplications();
-
   return (
     <CandidateDetails
       slotInterviewScore={
         <>
-          <Stack ref={scoreRef}>
+          <>
             {applicationDetails.feedback ? (
               <NewInterviewScoreDetails
                 applicationDetails={applicationDetails}
                 setOpenFeedback={setOpenFeedback}
+              />
+            ) : applicationDetails.status ===
+              JobApplicationSections.INTERVIEWING ? (
+              <NewInterviewStatus
+                applicationDetails={applicationDetails}
+                job={job}
               />
             ) : (
               <></>
@@ -292,37 +300,31 @@ const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
               applicationDetails={applicationDetails}
               job={job}
             />
-          </Stack>
+          </>
           {applicationDetails.json_resume ? (
             <>
               {applicationDetails.json_resume.education &&
               applicationDetails.json_resume.education.length !== 0 ? (
-                <Stack ref={educationRef}>
-                  <NewEducationDetails
-                    education={applicationDetails.json_resume.education}
-                  />
-                </Stack>
+                <NewEducationDetails
+                  education={applicationDetails.json_resume.education}
+                />
               ) : (
                 <></>
               )}
               {applicationDetails.json_resume.work &&
               applicationDetails.json_resume.work.length !== 0 ? (
-                <Stack ref={experienceRef}>
-                  <NewExperienceDetails
-                    work={applicationDetails.json_resume.work}
-                  />
-                </Stack>
+                <NewExperienceDetails
+                  work={applicationDetails.json_resume.work}
+                />
               ) : (
                 <></>
               )}
 
               {applicationDetails.json_resume.skills &&
               applicationDetails.json_resume.skills.length !== 0 ? (
-                <Stack ref={skillsRef}>
-                  <NewSkillDetails
-                    skills={applicationDetails.json_resume.skills}
-                  />
-                </Stack>
+                <NewSkillDetails
+                  skills={applicationDetails.json_resume.skills}
+                />
               ) : (
                 <></>
               )}
@@ -332,35 +334,81 @@ const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
           )}
         </>
       }
-      onClickScore={{
-        onClick: () =>
-          scoreRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          }),
-      }}
-      onClickEducation={{
-        onClick: () =>
-          educationRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          }),
-      }}
-      onClickExperience={{
-        onClick: () =>
-          experienceRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          }),
-      }}
-      onClickSkills={{
-        onClick: () =>
-          skillsRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          }),
-      }}
     />
+  );
+};
+
+const NewInterviewStatus = ({
+  applicationDetails,
+  job,
+}: {
+  applicationDetails: JobApplication;
+  job: JobType;
+}) => {
+  const { handleJobApplicationUpdate } = useJobApplications();
+  const [loading, setLoading] = useState(false);
+  const invited = applicationDetails.emails['interviewing'] ?? false;
+  const status = {
+    bgColor: invited ? '#CEE2F2' : '#FFF7ED',
+    text: invited ? 'Invited' : 'Pending Invite',
+    color: invited ? '#0F3554' : '#703815',
+    description: invited
+      ? 'Candidate has been invited to take the interview.'
+      : 'Candidate has not been invited to take the interview.',
+    btnText: invited ? 'Resend link' : 'Invite now',
+  };
+  const handleSendLink = async () => {
+    setLoading(true);
+    const confirmation = await emailHandler(
+      {
+        email: applicationDetails.email,
+        first_name: applicationDetails.first_name,
+        last_name: applicationDetails.last_name,
+        job_title: job.job_title,
+        company: job.company,
+        application_id: applicationDetails.application_id,
+        emails: applicationDetails.emails,
+      },
+      job,
+      handleJobApplicationUpdate,
+      JobApplicationSections.INTERVIEWING,
+    );
+    if (confirmation) toast.success('Mail sent successfully');
+    else toast.error('Mail not sent');
+    setLoading(false);
+  };
+  return (
+    <Stack
+      style={{
+        opacity: loading ? 0.4 : 1,
+        transition: '0.5s',
+        pointerEvents: loading ? 'none' : 'auto',
+      }}
+    >
+      <InterviewResultStatus
+        bgColorInterviewTag={{ style: { backgroundColor: status.bgColor } }}
+        textStatus={status.text}
+        colorPropsTextStatus={{ style: { color: status.color } }}
+        textDescription={status.description}
+        onClickCopyInterviewLink={{
+          onClick: () => {
+            navigator.clipboard
+              .writeText(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.INTERVIEW}?id=${applicationDetails.application_id}`,
+              )
+              .then(() => {
+                toast.success('Interview link copied');
+              });
+          },
+        }}
+        slotResendButton={
+          <ButtonPrimaryOutlinedRegular
+            buttonText={status.btnText}
+            buttonProps={{ onClick: async () => await handleSendLink() }}
+          />
+        }
+      />
+    </Stack>
   );
 };
 

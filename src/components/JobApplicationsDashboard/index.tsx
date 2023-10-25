@@ -577,117 +577,6 @@ export function sendEmails(
   job,
   handleJobApplicationUpdate,
 ) {
-  function fillEmailTemplate(
-    template: any,
-    email: {
-      first_name: any;
-      last_name: any;
-      job_title: any;
-      company_name: any;
-      interview_link: any;
-      support_link: any;
-    },
-  ) {
-    let filledTemplate = template;
-
-    const placeholders = {
-      '[firstName]': email.first_name,
-      '[lastName]': email.last_name,
-      '[jobTitle]': email.job_title,
-      '[companyName]': email.company_name,
-      '[interviewLink]': email.interview_link,
-      '[supportLink]': email.support_link,
-    };
-
-    for (const [placeholder, value] of Object.entries(placeholders)) {
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-      filledTemplate = filledTemplate.replace(regex, value);
-    }
-
-    return filledTemplate;
-  }
-
-  const emailHandler = async (candidate: {
-    email: any;
-    first_name: any;
-    last_name: any;
-    job_title: any;
-    company: any;
-    application_id: any;
-    emails: any;
-  }) => {
-    await axios
-      .post('/api/sendgrid', {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName:
-          status === JobApplicationSections.INTERVIEWING
-            ? job.email_template?.interview.fromName
-            : status === JobApplicationSections.DISQUALIFIED
-            ? job.email_template?.rejection.fromName
-            : null,
-        email: candidate?.email,
-        subject:
-          status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(job.email_template?.interview.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-        text:
-          status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(job?.email_template?.interview?.body, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
-                support_link: `https://recruiter.aglinthq.com/support/create?id=${candidate.application_id}`,
-              })
-            : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-      })
-      .then(async () => {
-        // if (res.status === 200 && res.data.data === 'Email sent') {
-        //   toast.success('Mail sent successfully');
-        // }
-
-        if (status === JobApplicationSections.INTERVIEWING) {
-          candidate.emails.interviewing = true;
-          await handleJobApplicationUpdate(candidate.application_id, {
-            emails: candidate.emails,
-          });
-        }
-        if (status === JobApplicationSections.DISQUALIFIED) {
-          candidate.emails.rejected = true;
-          await handleJobApplicationUpdate(candidate.application_id, {
-            emails: candidate.emails,
-          });
-        }
-      });
-  };
-
   if (
     status === JobApplicationSections.INTERVIEWING ||
     status === JobApplicationSections.DISQUALIFIED
@@ -718,7 +607,124 @@ export function sendEmails(
     // console.log('filteredCandidates', filteredCandidates);
 
     for (const candidate of filteredCandidates) {
-      emailHandler(candidate);
+      emailHandler(candidate, job, handleJobApplicationUpdate, status);
     }
   }
+}
+
+export const emailHandler = async (
+  candidate: {
+    email: any;
+    first_name: any;
+    last_name: any;
+    job_title: any;
+    company: any;
+    application_id: any;
+    emails: any;
+  },
+  job: any,
+  handleJobApplicationUpdate: any,
+  status: JobApplicationSections,
+) => {
+  return await axios
+    .post('/api/sendgrid', {
+      fromEmail: `messenger@aglinthq.com`,
+      fromName:
+        status === JobApplicationSections.INTERVIEWING
+          ? job.email_template?.interview.fromName
+          : status === JobApplicationSections.DISQUALIFIED
+          ? job.email_template?.rejection.fromName
+          : null,
+      email: candidate?.email,
+      subject:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(job.email_template?.interview.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : status === JobApplicationSections.DISQUALIFIED
+          ? fillEmailTemplate(job?.email_template?.rejection.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : null,
+      text:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(job?.email_template?.interview?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
+              support_link: `https://recruiter.aglinthq.com/support/create?id=${candidate.application_id}`,
+            })
+          : status === JobApplicationSections.DISQUALIFIED
+          ? fillEmailTemplate(job?.email_template?.rejection?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : null,
+    })
+    .then(async () => {
+      if (status === JobApplicationSections.INTERVIEWING) {
+        candidate.emails.interviewing = true;
+        await handleJobApplicationUpdate(candidate.application_id, {
+          emails: candidate.emails,
+        });
+        return true;
+      }
+      if (status === JobApplicationSections.DISQUALIFIED) {
+        candidate.emails.rejected = true;
+        await handleJobApplicationUpdate(candidate.application_id, {
+          emails: candidate.emails,
+        });
+        return true;
+      }
+    })
+    .catch(() => {
+      return false;
+    });
+};
+
+function fillEmailTemplate(
+  template: any,
+  email: {
+    first_name: any;
+    last_name: any;
+    job_title: any;
+    company_name: any;
+    interview_link: any;
+    support_link: any;
+  },
+) {
+  let filledTemplate = template;
+
+  const placeholders = {
+    '[firstName]': email.first_name,
+    '[lastName]': email.last_name,
+    '[jobTitle]': email.job_title,
+    '[companyName]': email.company_name,
+    '[interviewLink]': email.interview_link,
+    '[supportLink]': email.support_link,
+  };
+
+  for (const [placeholder, value] of Object.entries(placeholders)) {
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
+    filledTemplate = filledTemplate.replace(regex, value);
+  }
+
+  return filledTemplate;
 }

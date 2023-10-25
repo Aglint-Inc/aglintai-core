@@ -1,5 +1,7 @@
 .interview-result-status {
   display: flex;
+  padding-right: 16px;
+  padding-left: 16px;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 10px;
@@ -295,6 +297,10 @@
 
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
 }
 
 .div-block-385 {

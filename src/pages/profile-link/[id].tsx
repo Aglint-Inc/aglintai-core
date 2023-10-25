@@ -284,7 +284,7 @@ function InterviewFeedbackPage() {
             onClick: () => {
               navigator.clipboard
                 .writeText(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
                 )
                 .then(() => {
                   toast.success('Link Copied');

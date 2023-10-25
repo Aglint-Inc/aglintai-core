@@ -45,18 +45,20 @@ export function JobScreening({
   selectAllCheckbox = {},
   isSelectAllChecked = false,
   onClickAddCandidates = {},
+  isPreviewVisible = true,
+  slotAtsBadge,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-271")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "job-details-header")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "rd-jobs-header-wrapper-jobs")}
+          className={_utils.cx(_styles, "job-details-header-block")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-281")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "jdet-main")} tag="div">
             <_Builtin.Link
               className={_utils.cx(_styles, "link-block", "bold-text-mobile")}
               button={false}
@@ -90,7 +92,7 @@ export function JobScreening({
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-329")}
+              className={_utils.cx(_styles, "jdet-header-title-block")}
               tag="div"
             >
               <_Builtin.Block
@@ -110,23 +112,26 @@ export function JobScreening({
               >
                 {textApplicantsNumber}
               </_Builtin.Block>
-              <_Builtin.Link button={false} options={jobLink}>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-blue-500")}
-                  tag="div"
-                >
-                  {"Preview"}
-                </_Builtin.Block>
-              </_Builtin.Link>
+              {isPreviewVisible ? (
+                <_Builtin.Link button={false} options={jobLink}>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-blue-500")}
+                    tag="div"
+                  >
+                    {"Preview"}
+                  </_Builtin.Block>
+                </_Builtin.Link>
+              ) : null}
             </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotAtsBadge}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "submission-controls")}
+            className={_utils.cx(_styles, "jdet-edit-controls-wrapper")}
             tag="div"
           >
             <_Builtin.Block tag="div">
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-334")}
+                className={_utils.cx(_styles, "jdet-edit-controls-block")}
                 tag="div"
               >
                 {slotStopSubmission ?? (
@@ -670,7 +675,7 @@ export function JobScreening({
       </_Builtin.Block>
       {bottomBarVisibility ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-335")}
+          className={_utils.cx(_styles, "job-details-selection-bar")}
           tag="div"
         >
           {slotSelectActionBar ?? <SelectActionBar />}

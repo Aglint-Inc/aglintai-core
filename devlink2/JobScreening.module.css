@@ -26,15 +26,15 @@
   }
 }
 
-.div-block-271 {
+.job-details-header {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  background-color: hsla(180, 7.69%, 97.45%, 0.50);
+  border-bottom: 1px solid var(--grey-200);
 }
 
-.rd-jobs-header-wrapper-jobs {
+.job-details-header-block {
   display: flex;
   padding: 16px 20px;
   justify-content: space-between;
@@ -44,20 +44,20 @@
 }
 
 @media screen and (max-width: 767px) {
-  .rd-jobs-header-wrapper-jobs {
+  .job-details-header-block {
     align-items: flex-start;
   }
 }
 
 @media screen and (max-width: 479px) {
-  .rd-jobs-header-wrapper-jobs {
+  .job-details-header-block {
     flex-direction: column;
     grid-column-gap: 12px;
     grid-row-gap: 12px;
   }
 }
 
-.div-block-281 {
+.jdet-main {
   display: flex;
   align-items: center;
   grid-column-gap: 6px;
@@ -65,14 +65,14 @@
 }
 
 @media screen and (max-width: 767px) {
-  .div-block-281 {
+  .jdet-main {
     flex-direction: column;
     align-items: flex-start;
   }
 }
 
 @media screen and (max-width: 479px) {
-  .div-block-281 {
+  .jdet-main {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
   }
@@ -147,7 +147,7 @@
   }
 }
 
-.div-block-329 {
+.jdet-header-title-block {
   display: flex;
   align-items: center;
   grid-column-gap: 6px;
@@ -155,14 +155,14 @@
 }
 
 @media screen and (max-width: 767px) {
-  .div-block-329 {
+  .jdet-header-title-block {
     max-width: 200px;
     flex-wrap: wrap;
   }
 }
 
 @media screen and (max-width: 479px) {
-  .div-block-329 {
+  .jdet-header-title-block {
     max-width: none;
   }
 }
@@ -232,23 +232,23 @@
   opacity: 0.7;
 }
 
-.submission-controls {
+.jdet-edit-controls-wrapper {
   display: flex;
   align-items: center;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
 }
 
-.div-block-334 {
+.jdet-edit-controls-block {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
 }
 
 @media screen and (max-width: 479px) {
-  .div-block-334 {
+  .jdet-edit-controls-block {
     flex-direction: row-reverse;
   }
 }
@@ -897,7 +897,7 @@
   }
 }
 
-.div-block-335 {
+.job-details-selection-bar {
   position: sticky;
   left: 0%;
   top: auto;
