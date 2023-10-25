@@ -213,8 +213,6 @@ export function LeverPosting() {
     return dbJobs;
   };
 
-  console.log(selectedLeverPostings);
-
   const importLever = async () => {
     try {
       setSavingToDb(true);

@@ -33,6 +33,7 @@ export const createJobApplications = async (selectedLeverPostings) => {
             )[0].id,
           };
         });
+
         await createLeverReference(referenceObj);
       } else {
         toast.error(
