@@ -13,4 +13,6 @@ declare function CandidateListItem(props: {
   phone?: React.ReactNode;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   interviewScore?: React.ReactNode;
+  slotResumeScoreIcon?: Types.Devlink.Slot;
+  slotInterviewScoreIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -2741,6 +2741,10 @@ export function JobDetails({
                     </>
                   )}
                 </_Builtin.Block>
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "hide")}
+                  value="%3Cstyle%3E%0A.cv-list%3A%3A-webkit-scrollbar-track%20%7B%0A%09margin-top%3A%2032px%3B%0A%7D%0A%3C%2Fstyle%3E"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

@@ -41,7 +41,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
-  handleLogout: (event: any) => Promise<void>;
+  handleLogout: () => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
@@ -155,8 +155,7 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
+  const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       router.push('/signup');
