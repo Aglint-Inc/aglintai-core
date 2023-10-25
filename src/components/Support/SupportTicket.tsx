@@ -152,7 +152,6 @@ function SupportTicketDetails({
     allAssignee.find((item) => {
       return ticketProp.support_group_id === item.recruiter.id;
     });
-    console.log({assignedTo})
   return (
     <Stack width={{ sm: '100%', md: '930px' }}>
       {ticket && (
