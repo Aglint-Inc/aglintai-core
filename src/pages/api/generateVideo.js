@@ -5,9 +5,9 @@ export default function handler(req, res) {
     background: '#ffffff',
     clips: [
       {
-        avatar_id: 'Angela-inblackskirt-20220820',
+        avatar_id: 'Daisy-inskirt-20220818',
         avatar_style: 'normal',
-        input_text: req.body.text,
+        input_text: 'Welcome to HeyGen API',
         offset: {
           x: 0,
           y: 0,
@@ -22,7 +22,7 @@ export default function handler(req, res) {
   };
 
   const headers = {
-    'X-Api-Key': process.env.HEYGEN_API_KEY,
+    'X-Api-Key': process.env.HEYGEN_KEY,
     'Content-Type': 'application/json',
   };
 

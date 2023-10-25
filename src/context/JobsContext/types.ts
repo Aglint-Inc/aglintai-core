@@ -1,8 +1,13 @@
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { JobType } from '@/src/types/data.types';
 
 export type JobsData = {
   jobs: JobType[] | undefined;
-  applications: JobApplcationDB[] | undefined;
+  applications: ApplicationData[] | undefined;
+};
+
+export type ApplicationData = {
+  job_id: string;
+  status: string;
 };
 
 export type InputData = Partial<Omit<JobType, 'created_at' | 'recruiter_id'>>;

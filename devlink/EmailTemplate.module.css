@@ -829,6 +829,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .cj-richtext-editor-wrapper {
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);

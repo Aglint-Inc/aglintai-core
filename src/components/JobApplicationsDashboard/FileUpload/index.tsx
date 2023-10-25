@@ -7,10 +7,11 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import { fileTypes } from '@/src/components/JobPost/UploadDB';
 import { useJobs } from '@/src/context/JobsContext';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
+
+import { fileTypes } from '../../CandidateDatabase/ImportDrawer/FileUpload';
 
 const ResumeUpload = ({ setOpenSidePanel }) => {
   const router = useRouter();

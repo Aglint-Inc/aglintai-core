@@ -43,7 +43,7 @@ export const fetchApplications = (jobIds) => {
 
 export function filterApplicationsByStatus(
   jobId: string,
-  applications: JobApplcationDB[],
+  applications: any,
   statusToFilter?: string,
 ): JobApplcationDB[] {
   if (statusToFilter) {

@@ -6,7 +6,7 @@ import { JobsDashboard } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobType } from '@/src/types/data.types';
 
-import EmptyJobDashboard from './EmptyJobDashboard';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import JobsList from './JobsList';
 import { searchJobs } from './utils';
 import Icon from '../Common/Icons/Icon';

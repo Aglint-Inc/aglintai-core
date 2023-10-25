@@ -307,6 +307,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;

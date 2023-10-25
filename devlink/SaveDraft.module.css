@@ -212,6 +212,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .save-draft-load {
   position: relative;
   left: 0%;

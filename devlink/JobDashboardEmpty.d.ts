@@ -9,8 +9,10 @@ declare function JobDashboardEmpty(props: {
   onClickAddJob?: Types.Devlink.RuntimeProps;
   onClickGreenHouse?: Types.Devlink.RuntimeProps;
   textHeader?: React.ReactNode;
-  onClickIndeed?: Types.Devlink.RuntimeProps;
+  onClickAshby?: Types.Devlink.RuntimeProps;
   onClickLever?: Types.Devlink.RuntimeProps;
   isOldTitleVisible?: Types.Visibility.VisibilityConditions;
   isSelectTitleVisible?: Types.Visibility.VisibilityConditions;
+  slotAts?: Types.Devlink.Slot;
+  isAtsOptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

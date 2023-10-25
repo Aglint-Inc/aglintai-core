@@ -38,6 +38,12 @@
   background-color: var(--black-0fdbd865);
 }
 
+@media screen and (max-width: 991px) {
+  .auth-left-wrapper {
+    display: none;
+  }
+}
+
 .auth-icon-block {
   position: absolute;
   z-index: 5;
@@ -52,8 +58,14 @@
 @media screen and (max-width: 991px) {
   .auth-icon-block.tab-logo {
     display: block;
-    margin-top: 26px;
-    margin-left: 30px;
+    width: 100%;
+    margin-top: 0px;
+    margin-left: 0px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+
+    background-color: hsla(0, 0.00%, 100.00%, 1.00);
   }
 }
 
@@ -615,6 +627,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -623,6 +639,12 @@
 @media screen and (max-width: 479px) {
   .hide {
     display: none;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .image-41 {
+    width: 100px;
   }
 }
 
@@ -640,6 +662,7 @@
   .auth-right-wrapper {
     padding-top: 0px;
     padding-right: 0px;
+    padding-bottom: 0px;
   }
 }
 

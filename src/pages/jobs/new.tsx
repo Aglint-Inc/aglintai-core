@@ -3,7 +3,7 @@ import { useRouter } from 'next/dist/client/router';
 import React, { useEffect } from 'react';
 
 import JobForm from '@/src/components/Job/JobForm';
-import EmptyJobDashboard from '@/src/components/JobsDashboard/EmptyJobDashboard';
+import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
 import JobPostFormProvider, {
   useJobForm,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';

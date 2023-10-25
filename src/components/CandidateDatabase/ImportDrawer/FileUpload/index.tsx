@@ -13,7 +13,6 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import { fileTypes } from '@/src/components/JobPost/UploadDB';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -337,3 +336,5 @@ export const candidateDatabaseSampleJob = () => {
     is_campus: true,
   };
 };
+
+export const fileTypes = ['PDF', 'DOCX', 'TXT'];

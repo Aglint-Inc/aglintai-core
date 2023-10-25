@@ -323,6 +323,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .analysis-score-block {
   display: flex;
   width: 60px;

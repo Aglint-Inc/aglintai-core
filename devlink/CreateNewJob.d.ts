@@ -36,4 +36,6 @@ declare function CreateNewJob(props: {
   slotDisclaimerScreening?: Types.Devlink.Slot;
   isDisclaimerWorkflowVisible?: Types.Visibility.VisibilityConditions;
   slotDisclaimerWorkflow?: Types.Devlink.Slot;
+  isPreviewVisible?: Types.Visibility.VisibilityConditions;
+  slotAtsBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

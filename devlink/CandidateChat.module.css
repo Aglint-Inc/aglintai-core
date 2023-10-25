@@ -338,6 +338,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .div-block-448 {
   display: flex;
   flex-direction: column;

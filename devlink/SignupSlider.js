@@ -647,23 +647,24 @@ export function SignupSlider({
             </_Builtin.SliderWrapper>
           </_Builtin.Block>
           <_Builtin.Block
+            className={_utils.cx(_styles, "auth-icon-block", "tab-logo")}
+            tag="div"
+          >
+            <_Builtin.Image
+              className={_utils.cx(_styles, "image-41")}
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653373c8383c4338fb06d412_Vector%20(2).svg"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(_styles, "auth-right-wrapper")}
             tag="div"
           >
             {slotRightSlider ?? (
               <>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "auth-icon-block", "tab-logo")}
-                  tag="div"
-                >
-                  <_Builtin.Image
-                    loading="lazy"
-                    width="auto"
-                    height="auto"
-                    alt=""
-                    src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65299bda678f56ba6ba1c434_logo-email-template.svg"
-                  />
-                </_Builtin.Block>
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "hide")}
                   value="%3Cstyle%3E%0A.auth-right-block%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A%0A.auth-right-block%20%7B%0A%20%20-ms-overflow-style%3A%20none%3B%0A%20%20scrollbar-width%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"

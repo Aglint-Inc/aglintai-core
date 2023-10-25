@@ -3,10 +3,10 @@ import toast from '@utils/toast';
 import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
-import { JobApplcationDB, JobType, StatusJobs } from '@/src/types/data.types';
+import { JobType, StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { JobsData } from './types';
+import { ApplicationData, JobsData } from './types';
 import {
   deleteJobDbAction,
   initialJobContext,
@@ -62,8 +62,10 @@ type Action =
     }
   | {
       type: ActionType.READAPPLICATION;
-      payload: { applicationData: JobApplcationDB[] };
+      payload: { applicationData: ApplicationData[] };
     };
+
+
 
 const reducer = (state: JobsData, action: Action) => {
   switch (action.type) {

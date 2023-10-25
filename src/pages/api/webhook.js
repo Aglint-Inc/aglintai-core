@@ -1,11 +1,16 @@
 /* eslint-disable no-console */
+import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabaseClient';
+    // Add your logic to process the webhook data
 
 export default async function handler(req, res) {
   // Handle incoming webhook data here
   const payload = req.body;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
   // const payload = {
   //   event_type: 'avatar_video_gif.success',
   //   event_data: {

@@ -94,6 +94,13 @@
   grid-row-gap: 8px;
 }
 
+.div-block-529 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -273,6 +280,10 @@
 
 .fw-semibold.mb-14 {
   margin-bottom: 14px;
+}
+
+.div-block-530 {
+  height: 20px;
 }
 
 .tittle-company-location {
@@ -477,6 +488,10 @@
 
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
 }
 
 .div-block-369 {
