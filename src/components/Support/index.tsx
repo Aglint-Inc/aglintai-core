@@ -9,7 +9,9 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import { AllTickets } from '@/devlink/AllTickets';
 import { Assignee } from '@/devlink/Assignee';
@@ -54,6 +56,17 @@ function Support() {
     setSearch,
     randomColors,
   } = useSupportContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (!router.query.status) {
+        router.push(`?status=all`, undefined, {
+          shallow: true,
+        });
+      }
+    }
+  }, [router.isReady]);
   return (
     <>
       <AllTickets

@@ -42,6 +42,14 @@
   align-items: center;
 }
 
+.icon-block.clickable.padding-4 {
+  padding: 4px;
+}
+
+.icon-block.clickable.padding-4.relative {
+  position: relative;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

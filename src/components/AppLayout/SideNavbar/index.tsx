@@ -9,6 +9,7 @@ import {
   SoonBadge,
   TicketSublink,
 } from '@/devlink';
+import { RsnSettingsIcon } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
@@ -43,9 +44,11 @@ function SideNavbar() {
             sx={{
               borderRadius: '8px',
               transition: 'all 0.5s',
-              bgcolor: !router.pathname.includes(item.route)
-                ? 'transparent'
-                : 'rgba(255, 255, 255, 0.06)',
+              bgcolor:
+                !router.pathname.includes(item.route) ||
+                item.SubComponents !== null
+                  ? 'transparent'
+                  : 'rgba(255, 255, 255, 0.2)',
             }}
             collapsedSize={32}
             in={router.pathname.includes(item.route) && subNabOpen}
@@ -118,15 +121,43 @@ function JobSubNavbar() {
   return (
     <NavJobSubLink
       onClickJobAll={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'all'
+              ? 'rgba(255,255,255,0.2)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=all`),
       }}
       onClickJobActive={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'active'
+              ? 'rgba(255,255,255,0.2)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=active`),
       }}
       onClickJobInactive={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'inactive'
+              ? 'rgba(255,255,255,0.2)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=inactive`),
       }}
       onClickJobClosed={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'close'
+              ? 'rgba(255,255,255,0.2)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=close`),
       }}
       isJobAll={
@@ -178,6 +209,13 @@ function SupportSubNavbar() {
         allCount={allFilter.all}
         isAllActive={router.query.status === 'all'}
         onClickAll={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'all'
+                ? 'rgba(255,255,255,0.2)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=all`);
           },
@@ -185,13 +223,27 @@ function SupportSubNavbar() {
         inProgressCount={allFilter['in progress']}
         isInProgressActive={router.query.status === 'in progress'}
         onClickInProgress={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'in progress'
+                ? 'rgba(255,255,255,0.2)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=in progress`);
           },
         }}
         resolvedCount={allFilter.Resolved}
-        isResolvedActive={router.query.status === 'resolve'}
+        isResolvedActive={router.query.status === 'resolved'}
         onClickResolve={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'resolved'
+                ? 'rgba(255,255,255,0.2)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=resolved`);
           },
@@ -199,6 +251,13 @@ function SupportSubNavbar() {
         openCount={allFilter.open}
         isOpenActive={router.query.status === 'open'}
         onClickOpen={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'open'
+                ? 'rgba(255,255,255,0.2)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=open`);
           },
@@ -206,6 +265,13 @@ function SupportSubNavbar() {
         onHoldCount={allFilter['on hold']}
         isOnHoldActive={router.query.status === 'on hold'}
         onClickOnHold={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'on hold'
+                ? 'rgba(255,255,255,0.2)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=on hold`);
           },
@@ -226,7 +292,7 @@ const navList = [
   {
     icon: <CandidateIcon />,
     text: 'Candidates',
-    SubComponents: '',
+    SubComponents: null,
     route: pageRoutes.CANDIDATES,
     commingsoon: true,
   },
@@ -236,6 +302,13 @@ const navList = [
     SubComponents: <SupportSubNavbar />,
     route: pageRoutes.SUPPORT,
     commingsoon: false,
+  },
+  {
+    icon: <RsnSettingsIcon />,
+    text: 'Company Settings',
+    SubComponents: null,
+    route: pageRoutes.COMPANY,
+    comingsoon: false,
   },
 ];
 

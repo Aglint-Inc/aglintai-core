@@ -15,6 +15,8 @@ export function CandidateListItem({
   phone = "(704) 555-0127",
   isInterviewVisible = false,
   interviewScore = "32%",
+  slotResumeScoreIcon,
+  slotInterviewScoreIcon,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cv-list-row", "item")} tag="div">
@@ -65,7 +67,9 @@ export function CandidateListItem({
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-res-score-icon")}
           tag="div"
-        />
+        >
+          {slotResumeScoreIcon}
+        </_Builtin.Block>
         <_Builtin.Block tag="div">{resumeScore}</_Builtin.Block>
       </_Builtin.Block>
       {isInterviewVisible ? (
@@ -81,7 +85,9 @@ export function CandidateListItem({
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-res-score-icon")}
             tag="div"
-          />
+          >
+            {slotInterviewScoreIcon}
+          </_Builtin.Block>
           <_Builtin.Block tag="div">{interviewScore}</_Builtin.Block>
         </_Builtin.Block>
       ) : null}

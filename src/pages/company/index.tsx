@@ -1,15 +1,12 @@
 import React from 'react';
 
-import CompanyDetailComp from '@/src/components/CompanyDetailComp';
 import Seo from '@/src/components/Common/Seo';
+import CompanyDetailComp from '@/src/components/CompanyDetailComp';
 
 function CompanyPage() {
   return (
     <>
-    <Seo
-        title='Aglint | Company Settings'
-        description='Company Settings'
-      />
+      <Seo title='Aglint | Company Settings' description='Company Settings' />
       <CompanyDetailComp />
     </>
   );
