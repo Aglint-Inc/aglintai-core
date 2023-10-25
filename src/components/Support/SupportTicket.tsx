@@ -152,6 +152,7 @@ function SupportTicketDetails({
     allAssignee.find((item) => {
       return ticketProp.support_group_id === item.recruiter.id;
     });
+    console.log({assignedTo})
   return (
     <Stack width={{ sm: '100%', md: '930px' }}>
       {ticket && (
@@ -166,7 +167,7 @@ function SupportTicketDetails({
                 assignedTo?.employees[0] &&
                 `${assignedTo?.employees[0]?.first_name} ${assignedTo?.employees[0]?.last_name}`
               }
-              imageUrl={assignedTo?.recruiter?.image}
+              imageUrl={assignedTo?.employees[0]?assignedTo?.employees[0].profile_image:''}
               recruiterId={ticket.jobsDetails.recruiter_id}
               setAssignedTo={(assign_to: string, support_group_id?: string) => {
                 // @ts-ignore
