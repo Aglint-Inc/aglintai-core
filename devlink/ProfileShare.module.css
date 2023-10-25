@@ -77,6 +77,14 @@
   padding: 10px 16px;
 }
 
+.cvs-header-copy-icon {
+  transition: all 250ms ease;
+}
+
+.cvs-header-copy-icon:hover {
+  opacity: 0.6;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

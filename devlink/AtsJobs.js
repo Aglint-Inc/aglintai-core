@@ -25,6 +25,7 @@ export function AtsJobs({
   slotAtsCard,
   slotLogo,
   textNumberofJobs = "This is some text inside of a div block.",
+  isSelected = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -47,8 +48,10 @@ export function AtsJobs({
         className={_utils.cx(_styles, "ats-import-wrappers")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textNumberofJobs}</_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+          {textNumberofJobs}
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "aui-button-wrap")}
             tag="div"
@@ -77,6 +80,12 @@ export function AtsJobs({
             ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
+        {isSelected ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "selected-div-wrap")}
+            tag="div"
+          />
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-search-wrappers")}

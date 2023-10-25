@@ -660,6 +660,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-wrapper {
+    overflow: visible;
+    min-height: 100dvh;
     padding-top: 0px;
     padding-right: 0px;
     padding-bottom: 0px;

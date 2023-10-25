@@ -25,7 +25,10 @@ export function AtsCard({
       tag="div"
       {...onClickCheck}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "relative-1", "pt-2")}
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "final-check-box")}
           tag="div"

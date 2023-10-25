@@ -22,12 +22,23 @@
 }
 
 .ats-import-wrappers {
+  position: relative;
+
   display: flex;
   margin-top: 24px;
   padding-right: 24px;
   padding-left: 24px;
   justify-content: space-between;
   align-items: center;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1.pt-2 {
+  padding-top: 2px;
 }
 
 .aui-button-wrap {
@@ -366,6 +377,16 @@
   top: -1px;
   right: -1px;
   bottom: -1px;
+}
+
+.selected-div-wrap {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: var(--gray-100);
 }
 
 .ats-search-wrappers {

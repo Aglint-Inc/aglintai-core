@@ -17,4 +17,5 @@ declare function AtsJobs(props: {
   slotAtsCard?: Types.Devlink.Slot;
   slotLogo?: Types.Devlink.Slot;
   textNumberofJobs?: React.ReactNode;
+  isSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

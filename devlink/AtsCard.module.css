@@ -20,6 +20,10 @@
   z-index: 1;
 }
 
+.relative-1.pt-2 {
+  padding-top: 2px;
+}
+
 .final-check-box {
   display: flex;
   width: 17px;

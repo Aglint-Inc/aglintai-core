@@ -29,6 +29,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.join-us {
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 40px;
   }
 }
@@ -109,6 +111,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.login-sign {
+    overflow: scroll;
+    height: 100dvh;
     padding-left: 0px;
     align-items: center;
   }
@@ -130,6 +134,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.sign-up-sign {
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 60px;
     padding-left: 0px;
     align-items: center;
@@ -157,7 +163,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.su-step-two-profile {
-    min-height: 100vh;
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 60px;
     padding-left: 0px;
     align-items: center;
@@ -551,6 +558,13 @@
   background-color: var(--blue100-d2a1a159);
 }
 
+@media screen and (max-width: 479px) {
+  .ju-cta-btn {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .ju-cta-btn-block {
   display: flex;
   justify-content: center;
@@ -558,6 +572,13 @@
   flex: 0 auto;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
+}
+
+@media screen and (max-width: 479px) {
+  .ju-cta-btn-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .ju-cta-image {

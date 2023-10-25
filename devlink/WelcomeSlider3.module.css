@@ -29,6 +29,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.join-us {
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 40px;
   }
 }
@@ -109,6 +111,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.login-sign {
+    overflow: scroll;
+    height: 100dvh;
     padding-left: 0px;
     align-items: center;
   }
@@ -130,6 +134,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.sign-up-sign {
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 60px;
     padding-left: 0px;
     align-items: center;
@@ -157,7 +163,8 @@
 
 @media screen and (max-width: 991px) {
   .auth-right-block.su-step-two-profile {
-    min-height: 100vh;
+    overflow: scroll;
+    height: 100dvh;
     padding-top: 60px;
     padding-left: 0px;
     align-items: center;
@@ -753,6 +760,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media screen and (max-width: 479px) {
+  .terms-sign-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .terms-sign-wrapper.login-terms {
+    flex-direction: row;
+    align-items: stretch;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
 }
 
 .terms-sub-wrappers {
