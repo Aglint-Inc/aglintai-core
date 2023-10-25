@@ -14,7 +14,7 @@ export const createJobApplications = async (selectedLeverPostings) => {
           email: cand.emails[0],
           linkedin: cand.links[0],
           phone: cand.phones[0]?.value,
-          job_id: post.id,
+          job_id: post.job_id,
         };
       });
 

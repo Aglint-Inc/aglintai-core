@@ -173,7 +173,6 @@ export function LeverPosting() {
   const createJobObject = async () => {
     const dbJobs = selectedLeverPostings.map((post) => {
       return {
-        id: post.id,
         location: post.categories.location,
         job_title: post.text,
         description: post.content.descriptionHtml,
@@ -214,6 +213,8 @@ export function LeverPosting() {
     return dbJobs;
   };
 
+  console.log(selectedLeverPostings);
+
   const importLever = async () => {
     try {
       setSavingToDb(true);
@@ -225,7 +226,18 @@ export function LeverPosting() {
         .select();
 
       if (!error) {
-        await createJobApplications(selectedLeverPostings);
+        const jobsObj = selectedLeverPostings.map((post) => {
+          return {
+            ...post,
+            job_id: newJobs.filter(
+              (job) =>
+                job.job_title == post.text &&
+                job.location == post.categories.location,
+            )[0].id,
+          };
+        });
+
+        await createJobApplications(jobsObj);
         newJobs.map((job) => {
           handleUIJobUpdate({
             ...job,
@@ -255,6 +267,8 @@ export function LeverPosting() {
   const handleClose = () => {
     //
   };
+
+  console.log(selectedLeverPostings);
 
   return (
     <>

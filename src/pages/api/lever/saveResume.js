@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
@@ -51,9 +52,7 @@ export default async function handler(req, res) {
               `public/${payload.application_id}` + '.pdf',
               responseUrl.data,
               {
-                contentType: 'application/pdf',
                 cacheControl: '3600',
-                // Overwrite file if it exist
                 upsert: true,
               },
             );
@@ -77,6 +76,7 @@ export default async function handler(req, res) {
         });
       // Fetch the file from the URL
     } catch (error) {
+      console.error('Error:', error);
       return res.status(400).json({ error: error.message });
     }
   } else {
