@@ -268,8 +268,6 @@ export function LeverPosting() {
     //
   };
 
-  console.log(selectedLeverPostings);
-
   return (
     <>
       <Dialog open={savingToDb} onClose={handleClose}>
