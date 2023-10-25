@@ -4,7 +4,8 @@ import React from 'react';
 
 import { JobEmptyState, JobsListingCard } from '@/devlink';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { ApplicationData } from '@/src/context/JobsContext/types';
+import { JobType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -18,7 +19,7 @@ import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
 interface JobsListProps {
   jobs: JobType[];
-  applications: JobApplcationDB[];
+  applications: ApplicationData[];
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {

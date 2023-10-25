@@ -5,6 +5,8 @@ export default function handler(req, res) {
     // eslint-disable-next-line no-console
     console.log('Received webhook data:', payload);
 
+    
+
     // Add your logic to process the webhook data
 
     // Respond with a success message

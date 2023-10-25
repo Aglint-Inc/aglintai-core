@@ -448,6 +448,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .profile-block {
   display: flex;
   flex-direction: column;

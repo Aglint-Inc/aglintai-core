@@ -245,6 +245,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .ratings-details-dropdown-arrow {
   display: flex;
   width: 12.800000190734863px;

@@ -359,6 +359,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .cdd-content-main {
   display: grid;
   grid-auto-columns: 1fr;

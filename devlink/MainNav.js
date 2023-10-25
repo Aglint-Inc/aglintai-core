@@ -32,11 +32,12 @@ export function MainNav({
           }}
         >
           <_Builtin.Image
+            className={_utils.cx(_styles, "image-40")}
             loading="lazy"
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890009_Frame%205.svg"
+            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
           />
         </_Builtin.NavbarBrand>
         {signVisibility ? (

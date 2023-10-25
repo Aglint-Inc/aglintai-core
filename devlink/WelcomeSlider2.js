@@ -162,7 +162,7 @@ export function WelcomeSlider2({
                   className={_utils.cx(_styles, "forgot-password-link")}
                   button={false}
                   options={{
-                    href: "https://recruiter.aglinthq.com/forgot-password",
+                    href: "/forgot-password",
                   }}
                 >
                   <_Builtin.Block

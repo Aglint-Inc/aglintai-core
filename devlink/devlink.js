@@ -4331,21 +4331,25 @@ var fp = s((z) => {
   };
   z.createPluginInstance = YL;
   var zL = (e, r, t) => {
-    let n = UL().getInstance(e),
-      i = t.config.target.objectId;
-    if (!n || !i) return;
-    let a = n.spline.findObjectById(i);
-    if (!a) return;
-    let { PLUGIN_SPLINE: o } = r;
-    o.positionX != null && (a.position.x = o.positionX),
-      o.positionY != null && (a.position.y = o.positionY),
-      o.positionZ != null && (a.position.z = o.positionZ),
-      o.rotationX != null && (a.rotation.x = o.rotationX),
-      o.rotationY != null && (a.rotation.y = o.rotationY),
-      o.rotationZ != null && (a.rotation.z = o.rotationZ),
-      o.scaleX != null && (a.scale.x = o.scaleX),
-      o.scaleY != null && (a.scale.y = o.scaleY),
-      o.scaleZ != null && (a.scale.z = o.scaleZ);
+    let n = UL(),
+      i = n.getInstance(e),
+      a = t.config.target.objectId,
+      o = (u) => {
+        if (!u) throw new Error("Invalid spline app passed to renderSpline");
+        let c = a && u.findObjectById(a);
+        if (!c) return;
+        let { PLUGIN_SPLINE: l } = r;
+        l.positionX != null && (c.position.x = l.positionX),
+          l.positionY != null && (c.position.y = l.positionY),
+          l.positionZ != null && (c.position.z = l.positionZ),
+          l.rotationX != null && (c.rotation.x = l.rotationX),
+          l.rotationY != null && (c.rotation.y = l.rotationY),
+          l.rotationZ != null && (c.rotation.z = l.rotationZ),
+          l.scaleX != null && (c.scale.x = l.scaleX),
+          l.scaleY != null && (c.scale.y = l.scaleY),
+          l.scaleZ != null && (c.scale.z = l.scaleZ);
+      };
+    i ? o(i.spline) : n.setLoadHandler(e, o);
   };
   z.renderPlugin = zL;
   var QL = () => null;
@@ -7661,27 +7665,30 @@ var Ka = s((Me) => {
         f = (0, De.default)(u, "mediaQueries", n.mediaQueryKeys);
       if (!yn(f, i.mediaQueryKey)) return;
       l.forEach((d) => {
-        var E;
-        let { config: g, actionTypeId: v } = d,
-          _ =
-            (g == null || (E = g.target) === null || E === void 0
+        var E, g;
+        let { config: v, actionTypeId: _ } = d,
+          T =
+            (v == null || (E = v.target) === null || E === void 0
               ? void 0
-              : E.useEventTarget) === !0
+              : E.useEventTarget) === !0 &&
+            (v == null || (g = v.target) === null || g === void 0
+              ? void 0
+              : g.objectId) == null
               ? { target: u.target, targets: u.targets }
-              : g,
-          T = hn({ config: _, event: u, elementApi: B }),
-          I = On(v);
-        T.forEach((y) => {
-          let O = I ? $a(v)(y, d) : null;
+              : v,
+          I = hn({ config: T, event: u, elementApi: B }),
+          y = On(_);
+        I.forEach((O) => {
+          let A = y ? $a(_)(O, d) : null;
           Ja({
-            destination: Qa({ element: y, actionItem: d, elementApi: B }, O),
+            destination: Qa({ element: O, actionItem: d, elementApi: B }, A),
             immediate: !0,
             store: e,
-            element: y,
+            element: O,
             eventId: t,
             actionItem: d,
             actionListId: r,
-            pluginInstance: O,
+            pluginInstance: A,
           });
         });
       });

@@ -41,10 +41,18 @@
   }
 }
 
+.nav-brand-logo {
+  width: 100px;
+}
+
 @media screen and (max-width: 767px) {
   .nav-brand-logo {
     padding-left: 0px;
   }
+}
+
+.image-40 {
+  width: 100%;
 }
 
 .sign-slots {

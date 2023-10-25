@@ -842,6 +842,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .text-block-26 {
   display: inline;
   color: var(--grey-600);
@@ -859,6 +863,10 @@
 .aglint-powered-footer {
   padding-top: 40px;
   padding-bottom: 40px;
+}
+
+.aglint-powered-footer.pt-100 {
+  padding-top: 100px;
 }
 
 .div-block-432 {

@@ -29,7 +29,7 @@ export function InterviewResultStatus({
         className={_utils.cx(_styles, "fw-semibold", "mb-14")}
         tag="div"
       >
-        {"Interview Score"}
+        {"Interview Status"}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "interview-status-tag")}

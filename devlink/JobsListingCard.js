@@ -28,6 +28,7 @@ export function JobsListingCard({
   textInterview = "Assessment",
   slotInterviewIcon,
   isSourcingInterviewVisible = true,
+  slotAtsBadge,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -51,13 +52,24 @@ export function JobsListingCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
-              dyn={{
-                bind: {},
-              }}
+              className={_utils.cx(_styles, "div-block-529")}
               tag="div"
             >
-              {textJobRole}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+                dyn={{
+                  bind: {},
+                }}
+                tag="div"
+              >
+                {textJobRole}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-530")}
+                tag="div"
+              >
+                {slotAtsBadge}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "tittle-company-location")}

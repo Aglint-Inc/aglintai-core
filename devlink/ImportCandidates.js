@@ -34,7 +34,7 @@ export function ImportCandidates({
       </_Builtin.Block>
       <_Builtin.TabsWrapper
         className={_utils.cx(_styles, "tabs-3")}
-        current="Tab 2"
+        current="Tab 1"
         easing="ease"
         fadeIn={300}
         fadeOut={100}
