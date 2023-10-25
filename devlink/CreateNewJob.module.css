@@ -389,6 +389,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .create-job-header-right {
   display: flex;
   align-items: center;
@@ -422,11 +426,26 @@
   background-color: #f8f9f9;
 }
 
+@media screen and (max-width: 767px) {
+  .create-new-job-menu-wrappers {
+    overflow: auto;
+    width: 100%;
+    max-width: none;
+    border-radius: 0px;
+  }
+}
+
 .create-job-menu-wrap {
   position: relative;
   padding: 6px 16px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .create-job-menu-wrap {
+    flex: 0 0 auto;
+  }
 }
 
 .fw-semibold.cursor-pointer.capitialize {

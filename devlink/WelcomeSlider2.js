@@ -128,7 +128,11 @@ export function WelcomeSlider2({
               {slotSignInForm}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "terms-sign-wrapper")}
+              className={_utils.cx(
+                _styles,
+                "terms-sign-wrapper",
+                "login-terms"
+              )}
               tag="div"
             >
               <_Builtin.Block

@@ -255,6 +255,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .low-arrow-icon {
   display: flex;
   width: 12px;

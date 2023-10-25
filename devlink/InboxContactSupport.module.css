@@ -487,6 +487,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
+
 .slot-form-contact {
   margin-top: 20px;
 }

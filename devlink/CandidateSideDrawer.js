@@ -16,7 +16,7 @@ export function CandidateSideDrawer({
   textPhone = "(704) 555-0127",
   textOverviewDesc = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   slotCandidateDetails,
-  isOverviewVisible = false,
+  isOverviewVisible = true,
   onClickLinkedIn = {},
   isLinkedInVisible = true,
 }) {

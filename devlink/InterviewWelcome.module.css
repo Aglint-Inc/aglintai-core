@@ -109,6 +109,10 @@
   margin-left: 5px;
 }
 
+.text-xxl.fw-semibold.mb-40 {
+  margin-bottom: 40px;
+}
+
 .text-xxl.fw-semibold {
   cursor: default;
 }
@@ -1354,6 +1358,10 @@
 
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
 }
 
 .interview-estimate-company {

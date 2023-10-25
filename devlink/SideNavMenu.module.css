@@ -84,8 +84,7 @@
 
 .soon-nav-badge {
   display: flex;
-  width: 36px;
-  height: 15px;
+  padding: 2px 7px 4px;
   flex-direction: column;
   justify-content: center;
   align-items: center;

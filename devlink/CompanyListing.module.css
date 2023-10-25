@@ -819,3 +819,7 @@
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
 }
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
+}
