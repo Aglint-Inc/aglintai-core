@@ -50,16 +50,16 @@ Thank you,
             );
           },
         }}
-        onClickIndeed={{
+        onClickAshby={{
           onClick: () => {
             window.open(
               `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
-                `Aglint: Aglint: Request Integration with Indeed`,
+                `Aglint: Aglint: Request Integration with Ashby`,
               )}&body=${encodeURIComponent(
                 `
 Hello,
 
-Requesting integration of Indeed into Aglint
+Requesting integration of Ashby into Aglint
 
 Thank you,
 [Your Name]
