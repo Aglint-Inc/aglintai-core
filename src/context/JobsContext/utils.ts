@@ -26,7 +26,7 @@ export const readJobDbAction = async (recruiter_id: string) => {
 export const readJobApplicationsAction = async (jobIds: string[]) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select('job_id,status')
+    .select('job_id,status,email')
     .in('job_id', jobIds);
   return { data, error };
 };

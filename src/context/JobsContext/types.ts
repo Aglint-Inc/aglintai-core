@@ -8,6 +8,7 @@ export type JobsData = {
 export type ApplicationData = {
   job_id: string;
   status: string;
+  email: string;
 };
 
 export type InputData = Partial<Omit<JobType, 'created_at' | 'recruiter_id'>>;
