@@ -50,7 +50,7 @@ Thank you,
             );
           },
         }}
-        onClickIndeed={{
+        onClickAshby={{
           onClick: () => {
             window.open(
               `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
