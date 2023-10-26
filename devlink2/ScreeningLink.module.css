@@ -77,6 +77,11 @@
   color: var(--kale-600);
 }
 
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .text-yellow-700 {
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
@@ -152,11 +157,6 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 
   overflow-wrap: anywhere;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
 }
 
 .cj-copy-icon {

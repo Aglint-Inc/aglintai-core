@@ -145,6 +145,7 @@ const SlideDetailsTwo = () => {
             image={logo}
             setImage={setLogo}
             size={120}
+            dynamic
             table='company-logo'
           />
         }

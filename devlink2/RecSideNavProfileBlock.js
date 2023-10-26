@@ -63,12 +63,7 @@ export function RecSideNavProfileBlock({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "rs-header-profile-image",
-            "bg-white",
-            "clickable"
-          )}
+          className={_utils.cx(_styles, "rs-header-profile-image", "clickable")}
           tag="div"
           {...onclickProfileImage}
         >

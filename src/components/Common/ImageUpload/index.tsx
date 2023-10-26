@@ -19,12 +19,14 @@ function ImageUpload({
   size,
   table,
   handleUpdateProfile = null,
-}: {
+  dynamic=false,
+  }: {
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
   size: number;
   table: 'company-logo' | 'recruiter-user';
   handleUpdateProfile?: any;
+  dynamic?:boolean;
 }) {
   const router = useRouter();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
@@ -85,8 +87,8 @@ function ImageUpload({
             <Avatar
               src={image}
               sx={{
-                width: size,
-                height: size,
+                width: dynamic?'100%':size,
+                height: dynamic?'100%': size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',

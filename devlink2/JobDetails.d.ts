@@ -6,7 +6,6 @@ declare function JobDetails(props: {
   textJobStatus?: React.ReactNode;
   textRole?: React.ReactNode;
   textApplicantsNumber?: React.ReactNode;
-  slotAtsBadge?: Types.Devlink.Slot;
   onClickEditJobs?: Types.Devlink.RuntimeProps;
   isPreviewVisible?: Types.Visibility.VisibilityConditions;
   jobLink?: Types.Basic.Link;
@@ -14,17 +13,10 @@ declare function JobDetails(props: {
   slotBottomBar?: Types.Devlink.Slot;
   slotSidebar?: Types.Devlink.Slot;
   slotTabs?: Types.Devlink.Slot;
-  onClickNew?: Types.Devlink.RuntimeProps;
-  onClickInterview?: Types.Devlink.RuntimeProps;
-  onClickQualified?: Types.Devlink.RuntimeProps;
-  onClickDisqualified?: Types.Devlink.RuntimeProps;
-  countNew?: React.ReactNode;
-  countInterview?: React.ReactNode;
-  countQualified?: React.ReactNode;
-  countDisqualified?: React.ReactNode;
   slotFilterBlock?: Types.Devlink.Slot;
   slotCandidatesList?: Types.Devlink.Slot;
   onclickSelectAll?: Types.Devlink.RuntimeProps;
   isListTopBarVisible?: Types.Visibility.VisibilityConditions;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
+  isAllChecked?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -26,11 +26,12 @@
   height: 30px;
   min-height: 30px;
   min-width: 30px;
-  padding: 4px;
 
   border-radius: 6px;
 
   background-color: var(--white);
+
+  object-fit: cover;
 }
 
 .text-color-white {
@@ -127,6 +128,8 @@
   min-width: 30px;
 
   border-radius: 20px;
+
+  object-fit: cover;
 }
 
 .bg-white {

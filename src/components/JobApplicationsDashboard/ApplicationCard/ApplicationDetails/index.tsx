@@ -1,5 +1,4 @@
-import { Dialog, Drawer, Stack } from '@mui/material';
-// import { useRouter } from 'next/router';
+import { Dialog, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
@@ -38,7 +37,7 @@ import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
-import SmallCircularScore from '@/src/components/Common/SmallCircularScore';
+import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -56,6 +55,7 @@ import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
 import { emailHandler } from '../..';
 import CompanyLogo from '../../Common/CompanyLogo';
+import { useKeyPress } from '../../hooks';
 // import { sendEmails } from '../..';
 // import InterviewScoreCard from '../../Common/InreviewScoreCard';
 import { capitalize, getInterviewScore } from '../../utils';
@@ -102,6 +102,13 @@ const ApplicationDetails = ({
     }
   }, [open]);
 
+  useEffect(() => {
+    if (applicationDetails === undefined) {
+      setDrawerOpen(false);
+      onClose();
+    }
+  }, [applicationDetails === undefined]);
+
   const handleClose = () => {
     setDrawerOpen(false);
     setTimeout(() => {
@@ -110,33 +117,38 @@ const ApplicationDetails = ({
   };
 
   return (
-    <Drawer
-      sx={{
-        zIndex: 1300,
+    <Stack
+      style={{
+        display: applicationDetails ? 'flex' : 'none',
+        transition: '0.4s',
+        width: drawerOpen ? '420px' : '0px',
+        pointerEvents: drawerOpen ? 'auto' : 'none',
       }}
-      anchor={'right'}
-      open={drawerOpen}
-      onClose={() => handleClose()}
     >
-      {!openFeedback ? (
-        <NewJobApplicationSideDrawer
-          applicationDetails={applicationDetails}
-          onClose={() => handleClose()}
-          setOpenFeedback={setOpenFeedback}
-          candidateImage={candidateImage}
-          handleSelectNextApplication={handleSelectNextApplication}
-          handleSelectPrevApplication={handleSelectPrevApplication}
-        />
+      {applicationDetails ? (
+        !openFeedback ? (
+          <NewJobApplicationSideDrawer
+            open={open}
+            applicationDetails={applicationDetails}
+            onClose={() => handleClose()}
+            setOpenFeedback={setOpenFeedback}
+            candidateImage={candidateImage}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
+          />
+        ) : (
+          <NewDetailedFeedback
+            applicationDetails={applicationDetails}
+            candidateImage={candidateImage}
+            onClose={() => {
+              setOpenFeedback(false);
+            }}
+          />
+        )
       ) : (
-        <NewDetailedFeedback
-          applicationDetails={applicationDetails}
-          candidateImage={candidateImage}
-          onClose={() => {
-            setOpenFeedback(false);
-          }}
-        />
+        <></>
       )}
-    </Drawer>
+    </Stack>
   );
 };
 
@@ -213,7 +225,7 @@ export const DetailedInterviewFeedbackParams = ({ feedbackParamsObj }) => {
       f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     const circularScore = (
       <Stack style={{ transform: 'scale(0.3)' }}>
-        <SmallCircularScore finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
       </Stack>
     );
     return (
@@ -230,6 +242,7 @@ export const DetailedInterviewFeedbackParams = ({ feedbackParamsObj }) => {
 };
 
 const NewJobApplicationSideDrawer = ({
+  open,
   applicationDetails,
   onClose,
   setOpenFeedback,
@@ -237,6 +250,21 @@ const NewJobApplicationSideDrawer = ({
   handleSelectNextApplication,
   handleSelectPrevApplication,
 }) => {
+  const [copy, setCopy] = useState(false);
+  const { pressed: shift } = useKeyPress('Shift');
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+  const leftShift = shift && left;
+  const rightShift = shift && right;
+  useEffect(() => {
+    if (open) {
+      if (leftShift) {
+        handleSelectPrevApplication();
+      } else if (rightShift) {
+        handleSelectNextApplication();
+      }
+    }
+  }, [leftShift, rightShift]);
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
@@ -248,7 +276,10 @@ const NewJobApplicationSideDrawer = ({
               `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
             )
             .then(() => {
-              toast.success('Link Copied');
+              setCopy(true);
+              setTimeout(() => {
+                setCopy(false);
+              }, 1000);
             });
         },
       }}
@@ -259,7 +290,7 @@ const NewJobApplicationSideDrawer = ({
       textName={capitalize(
         applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
       )}
-      textMail={applicationDetails.email ? applicationDetails.email : '--'}
+      textMail={applicationDetails?.email ? applicationDetails.email : '--'}
       textOverviewDesc={
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       }
@@ -271,6 +302,7 @@ const NewJobApplicationSideDrawer = ({
       }
       isOverviewVisible={false}
       isLinkedInVisible={applicationDetails.linkedin !== null}
+      isCopiedMessageVisible={copy}
     />
   );
 };
@@ -470,11 +502,7 @@ const NewResumeSection = ({ applicationDetails, job }) => {
         />
       ) : (
         <UnableFetchResume
-          onClickDownloadResume={{
-            onClick: () => {
-              handleDownload(applicationDetails?.resume);
-            },
-          }}
+          propsLink={{ href: applicationDetails.resume }}
           onClickViewResume={{
             onClick: () => {
               setOpenResume(true);
@@ -490,7 +518,7 @@ export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
       <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
-        <SmallCircularScore finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
       </Stack>
     );
     const color =
@@ -546,16 +574,12 @@ export const NewResumeScoreDetails = ({
       slotScoreGraph={resumeScoreWheel}
       textScoreState={feedbackObj.text}
       propsTextColor={{ style: { color: feedbackObj.color } }}
-      onClickDownloadResume={{
-        onClick: () => {
-          handleDownload(applicationDetails?.resume);
-        },
-      }}
       onClickViewResume={{
         onClick: () => {
           setOpenResume(true);
         },
       }}
+      propsLink={{ href: applicationDetails.resume }}
       slotFeedbackScore={
         <>
           <ResumeFeedbackScore
@@ -779,22 +803,3 @@ export function giveColorForInterviewScore(rating) {
     ? '#de701d'
     : '#d93f4c';
 }
-
-export const handleDownload = async (pdfUrl) => {
-  toast.message('Resume downloading...');
-
-  try {
-    const response = await fetch(pdfUrl);
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'resume.pdf';
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    toast.error('Error downloading PDF:');
-  }
-};
