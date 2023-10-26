@@ -1,16 +1,15 @@
 import WarningIcon from '@mui/icons-material/Warning';
-import { Stack } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import md5 from 'blueimp-md5';
 
-import { JobCandidateCard } from '@/devlink2';
+import { CandidateListItem } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { calculateOverallScore } from '@/src/utils/support/supportUtils';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
-import { getScoreColor, getStatusColor } from './utils';
 import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
 import MuiAvatar from '../../Common/MuiAvatar';
-import ScoreWheel, { ScoreWheelParams } from '../../Common/ScoreWheel';
+import { SmallCircularScore } from '../../Common/SmallCircularScore';
 
 const ApplicationCard = ({
   application,
@@ -31,49 +30,27 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  // this variable is for type change
   const { job } = useJobApplications();
 
   const interviewScore = application?.feedback
     ? getInterviewScore(application.feedback)
     : 0;
 
-  const statusColors = getStatusColor(application.status);
-
   const creationDate = formatTimeStamp(application.created_at);
-  const appliedOn = `Applied on ${creationDate}`;
 
   const handleCheck = () => {
     handleSelect(index);
   };
 
-  const jdScoreObj = application.jd_score as any;
-
-  const jdScore = jdScoreObj
-    ? calculateOverallScore({
-        qualification: jdScoreObj.qualification,
-        skills: jdScoreObj.skills_score,
-      })
-    : null;
-
-  const resumeScoreWheel = application.json_resume ? (
-    <ScoreWheel
-      id={`ScoreWheelApplicationCard${index + 1}`}
-      weights={job.parameter_weights as ScoreWheelParams}
-      score={jdScore}
-      fontSize={7}
-    />
-  ) : (
-    <Stack textAlign={'center'} alignItems={'center'}>
-      <WarningIcon style={{ color: 'goldenrod' }} />
-      <Stack>Resume unparsable</Stack>
-    </Stack>
+  const resumeScore = getOverallResumeScore(
+    application.jd_score,
+    job.parameter_weights,
   );
   return (
-    <JobCandidateCard
-      textOrder={index + 1}
+    <CandidateListItem
+      onclickSelect={{ onClick: handleCheck }}
       isChecked={checkList.has(application.application_id)}
-      slotProfilePic={
+      slotProfileImage={
         <MuiAvatar
           level={application.first_name}
           src={
@@ -81,37 +58,65 @@ const ApplicationCard = ({
               ? getGravatar(application.email)
               : application.profile_image
           }
-          variant={'rounded'}
-          width={'78px'}
-          height={'78px'}
-          fontSize={'28px'}
+          variant='rounded'
+          width='100%'
+          height='100%'
+          // sx={{
+          //   width: '100%',
+          //   height: '100%',
+          //   background: '#fff',
+          //   '& .MuiAvatar-img ': {
+          //     objectFit: 'contain',
+          //   },
+          // }}
         />
       }
-      textName={capitalize(
-        application.first_name + ' ' + application?.last_name,
-      )}
-      textRole={capitalize(application.job_title)}
-      textMail={application.email}
-      textPhone={application.phone}
-      slotScore={resumeScoreWheel}
-      textScore={application.feedback ? interviewScore : '--'}
-      scoreTextColor={{
-        style: {
-          color: application.feedback ? getScoreColor(interviewScore) : 'grey',
-        },
-      }}
-      onClickCard={{
+      name={
+        application.first_name
+          ? capitalize(
+              application.first_name + ' ' + application?.last_name || '',
+            )
+          : '---'
+      }
+      jobTitle={
+        application.job_title ? capitalize(application.job_title) : '---'
+      }
+      slotResumeScore={
+        application.json_resume ? (
+          <SmallCircularScore
+            finalScore={resumeScore}
+            scale={0.5}
+            showScore={true}
+          />
+        ) : (
+          <Tooltip title='Resume not parsable' placement='right' arrow>
+            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+          </Tooltip>
+        )
+      }
+      email={application.email || '---'}
+      phone={application.phone || '---'}
+      isInterviewVisible={isInterview}
+      slotInterviewScore={
+        application?.feedback ? (
+          <SmallCircularScore
+            finalScore={interviewScore}
+            scale={0.5}
+            showScore={true}
+          />
+        ) : (
+          <Tooltip title='Yet to be interviewed' placement='right' arrow>
+            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+          </Tooltip>
+        )
+      }
+      appliedDate={creationDate}
+      onclickCandidate={{
         onClick: () => {
           handleOpenDetails();
         },
       }}
-      textStatus={capitalize(application.status)}
-      statusTextColor={{ style: { color: statusColors?.color } }}
-      statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
-      textAppliedOn={appliedOn}
-      onClickCheckbox={{ onClick: handleCheck }}
-      isInterview={isInterview}
-      isSelected={isSelected}
+      isHighlighted={isSelected}
     />
   );
 };
@@ -123,12 +128,6 @@ export function getGravatar(email, first_name = '') {
   let imgUrl = `https://www.gravatar.com/avatar/${md5(
     email ? email.trim().toLowerCase() : '',
   )}?d=blank&s=240&r=g`;
-  
+
   return imgUrl;
 }
-
-// function encode(name) {
-//   return encodeURIComponent(
-//     `https://ui-avatars.com/api/background=random&name=${name}`,
-//   );
-// }

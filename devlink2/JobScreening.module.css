@@ -43,10 +43,17 @@
   flex: 1;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 991px) {
   .job-details-header-block {
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
   }
+}
+
+@media screen and (max-width: 767px) {
+
 }
 
 @media screen and (max-width: 479px) {
@@ -64,17 +71,22 @@
   grid-row-gap: 6px;
 }
 
+@media screen and (max-width: 991px) {
+
+}
+
 @media screen and (max-width: 767px) {
-  .jdet-main {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+
 }
 
 @media screen and (max-width: 479px) {
   .jdet-main {
+    flex-wrap: wrap;
+    grid-auto-columns: 1fr;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
   }
 }
 
@@ -154,16 +166,24 @@
   grid-row-gap: 6px;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 991px) {
   .jdet-header-title-block {
-    max-width: 200px;
-    flex-wrap: wrap;
+    width: 100%;
   }
+}
+
+@media screen and (max-width: 767px) {
+
 }
 
 @media screen and (max-width: 479px) {
   .jdet-header-title-block {
-    max-width: none;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
   }
 }
 
@@ -189,6 +209,11 @@
 
 .text-kale-600 {
   color: var(--kale-600);
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .text-yellow-700 {
@@ -232,11 +257,36 @@
   opacity: 0.7;
 }
 
+@media screen and (max-width: 991px) {
+  .text-blue-500.tablet-left-auto {
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .tablet-left-auto {
+    margin-left: auto;
+  }
+}
+
 .jdet-edit-controls-wrapper {
   display: flex;
   align-items: center;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
+}
+
+@media screen and (max-width: 767px) {
+  .jdet-edit-controls-wrapper {
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .jdet-edit-controls-wrapper {
+    flex-wrap: wrap;
+  }
 }
 
 .jdet-edit-controls-block {
@@ -318,6 +368,10 @@
   display: none;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -334,10 +388,6 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-}
-
-.text-color-white {
-  color: white;
 }
 
 .rd-jobs-wrapper {

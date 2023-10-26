@@ -8,6 +8,10 @@ export function UnableFetchResume({
   as: _Component = _Builtin.Block,
   onClickViewResume = {},
   onClickDownloadResume = {},
+
+  propsLink = {
+    href: "#",
+  },
 }) {
   return (
     <_Component className={_utils.cx(_styles, "unable-fetch")} tag="div">
@@ -38,22 +42,22 @@ export function UnableFetchResume({
         <_Builtin.Block tag="div" {...onClickViewResume}>
           <ButtonPrimarySmall textLabel="View Resume" />
         </_Builtin.Block>
-        <_Builtin.Block
+        <_Builtin.Link
           className={_utils.cx(
             _styles,
             "button-outline-blue-600",
             "button-sm",
             "with-icon"
           )}
-          tag="div"
-          {...onClickDownloadResume}
+          button={false}
+          options={propsLink}
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}
             value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.625%208.84467V0.375C5.625%200.167893%205.79289%200%206%200C6.20711%200%206.375%200.167893%206.375%200.375V8.76967L9.03483%206.10984C9.18128%205.96339%209.41872%205.96339%209.56516%206.10984C9.71161%206.25628%209.71161%206.49372%209.56516%206.64016L6.49016%209.71517C6.19372%2010.0116%205.73128%2010.0116%205.43483%209.71517L2.35983%206.64016C2.21339%206.49372%202.21339%206.25628%202.35983%206.10984C2.50628%205.96339%202.74372%205.96339%202.89017%206.10984L5.625%208.84467ZM1.125%2012C0.917893%2012%200.75%2011.8321%200.75%2011.625C0.75%2011.4179%200.917893%2011.25%201.125%2011.25H10.875C11.0821%2011.25%2011.25%2011.4179%2011.25%2011.625C11.25%2011.8321%2011.0821%2012%2010.875%2012H1.125Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
           />
           <_Builtin.Block tag="div">{"Download Resume"}</_Builtin.Block>
-        </_Builtin.Block>
+        </_Builtin.Link>
       </_Builtin.Block>
     </_Component>
   );

@@ -5,4 +5,5 @@ declare function UnableFetchResume(props: {
   as?: React.ElementType;
   onClickViewResume?: Types.Devlink.RuntimeProps;
   onClickDownloadResume?: Types.Devlink.RuntimeProps;
+  propsLink?: Types.Basic.Link;
 }): React.JSX.Element;

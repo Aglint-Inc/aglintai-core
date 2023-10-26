@@ -6,10 +6,17 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ImportCandidates } from '@/devlink';
-import { ApplicantsListEmpty, JobScreening, SelectActionBar } from '@/devlink2';
+import {
+  ApplicantsListEmpty,
+  JobDetails,
+  JobDetailsFilterBlock,
+  JobDetailsTabs,
+  SelectActionBar,
+} from '@/devlink2';
 import {
   JobApplication,
   JobApplicationsData,
+  JobApplicationSectionData,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
@@ -64,12 +71,7 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const {
-    applicationsData,
-    job,
-    setOpenImportCandidates,
-    openImportCandidates,
-  } = useJobApplications();
+  const { applicationsData, job } = useJobApplications();
   const { applications } = applicationsData;
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
@@ -92,7 +94,7 @@ const JobApplicationComponent = () => {
     ),
     job.parameter_weights as ScoreWheelParams,
     filters,
-  );
+  ) as JobApplication[];
 
   const [checkList, setCheckList] = useState(new Set<string>());
   const [currentApplication, setCurrentApplication] = useState(-1);
@@ -135,6 +137,97 @@ const JobApplicationComponent = () => {
   };
 
   return (
+    <JobDetails
+      textJobStatus={null}
+      textRole={capitalize(job.job_title)}
+      textApplicantsNumber={`(${applicationsData.count.success} success , ${applicationsData.count.processing} processing , ${applicationsData.count.failed} failed)`}
+      onClickEditJobs={{
+        onClick: () => {
+          router.push(`/jobs/edit?job_id=${job.id}`);
+        },
+      }}
+      jobLink={{
+        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
+        target: '_blank',
+      }}
+      slotJobStatus={<JobApplicationStatus />}
+      slotBottomBar={
+        <Stack style={{ backgroundColor: 'white' }}>
+          <Stack
+            style={{
+              opacity: jobUpdate ? 0.5 : 1,
+              pointerEvents: jobUpdate ? 'none' : 'auto',
+            }}
+          >
+            {checkList.size > 0 && (
+              <ActionBar
+                section={section}
+                checkList={checkList}
+                setCheckList={setCheckList}
+                setJobUpdate={setJobUpdate}
+              />
+            )}
+          </Stack>
+        </Stack>
+      }
+      slotSidebar={
+        <ApplicationDetails
+          open={currentApplication !== -1}
+          onClose={() => handleSelectCurrentApplication(-1)}
+          handleSelectNextApplication={() => handleSelectNextApplication()}
+          handleSelectPrevApplication={() => handleSelectPrevApplication()}
+          applicationDetails={
+            searchedApplications[
+              currentApplication === -1 ? 0 : currentApplication
+            ]
+          }
+        />
+      }
+      slotTabs={
+        <NewJobDetailsTabs
+          section={section}
+          handleSetSection={handleSetSection}
+          applications={applications}
+        />
+      }
+      slotFilterBlock={
+        <NewJobFilterBlock
+          sectionApplications={sectionApplications}
+          section={section}
+          setSearchedApplications={setSearchedApplications}
+        />
+      }
+      slotCandidatesList={
+        <ApplicantsList
+          applications={searchedApplications}
+          checkList={checkList}
+          setCheckList={setCheckList}
+          jobUpdate={jobUpdate}
+          section={section}
+          handleSelectCurrentApplication={handleSelectCurrentApplication}
+          currentApplication={currentApplication}
+        />
+      }
+      onclickSelectAll={{ onClick: () => handleSelectAll() }}
+      isListTopBarVisible={searchedApplications.length !== 0}
+      isInterviewVisible={section !== JobApplicationSections.NEW}
+      isAllChecked={checkList.size === searchedApplications.length}
+    />
+  );
+};
+
+const NewJobFilterBlock = ({
+  sectionApplications,
+  section,
+  setSearchedApplications,
+}: {
+  sectionApplications: JobApplication[];
+  section: JobApplicationSections;
+  setSearchedApplications: Dispatch<SetStateAction<JobApplication[]>>;
+}) => {
+  const { setOpenImportCandidates, openImportCandidates } =
+    useJobApplications();
+  return (
     <>
       <Dialog
         open={openImportCandidates}
@@ -154,68 +247,8 @@ const JobApplicationComponent = () => {
           }
         />
       </Dialog>
-      <ApplicationDetails
-        open={currentApplication !== -1}
-        onClose={() => handleSelectCurrentApplication(-1)}
-        handleSelectNextApplication={() => handleSelectNextApplication()}
-        handleSelectPrevApplication={() => handleSelectPrevApplication()}
-        applicationDetails={searchedApplications[currentApplication]}
-      />
-      <JobScreening
-        onClickAddCandidates={{
-          onClick: () => {
-            setOpenImportCandidates(true);
-          },
-        }}
-        isTopbarVisible={searchedApplications.length !== 0}
-        interviewScore={section !== JobApplicationSections.NEW}
-        selectAllCheckbox={{ onClick: () => handleSelectAll() }}
-        isSelectAllChecked={checkList.size === searchedApplications.length}
-        slotJobStatus={<JobApplicationStatus />}
-        textJobStatus={null}
-        textRole={capitalize(job.job_title)}
-        textApplicantsNumber={`(${applicationsData.count.success} success , ${applicationsData.count.processing} processing , ${applicationsData.count.failed} failed)`}
-        isAll={section === JobApplicationSections.NEW}
-        countAll={applications.new.count}
-        onClickAllApplicant={{
-          onClick: () => handleSetSection(JobApplicationSections.NEW),
-          style: {
-            color: section === JobApplicationSections.NEW ? 'white' : 'inherit',
-          },
-        }}
-        isInterviewing={section === JobApplicationSections.INTERVIEWING}
-        countInterviewing={applications.interviewing.count}
-        onClickInterviewing={{
-          onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
-          style: {
-            color:
-              section === JobApplicationSections.INTERVIEWING
-                ? 'white'
-                : 'inherit',
-          },
-        }}
-        isRejected={section === JobApplicationSections.DISQUALIFIED}
-        countRejected={applications.disqualified.count}
-        onClickRejected={{
-          onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
-          style: {
-            color:
-              section === JobApplicationSections.DISQUALIFIED
-                ? 'white'
-                : 'inherit',
-          },
-        }}
-        isSelected={section === JobApplicationSections.QUALIFIED}
-        countSelected={applications.qualified.count}
-        onClickSelected={{
-          onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
-          style: {
-            color:
-              section === JobApplicationSections.QUALIFIED
-                ? 'white'
-                : 'inherit',
-          },
-        }}
+      <JobDetailsFilterBlock
+        onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={
           <SearchField
             applications={sectionApplications}
@@ -223,49 +256,44 @@ const JobApplicationComponent = () => {
             setSearchedApplications={setSearchedApplications}
           />
         }
-        slotCandidateJobCard={
-          <ApplicantsList
-            applications={searchedApplications}
-            checkList={checkList}
-            setCheckList={setCheckList}
-            jobUpdate={jobUpdate}
-            section={section}
-            handleSelectCurrentApplication={handleSelectCurrentApplication}
-            currentApplication={currentApplication}
-          />
-        }
-        slotSelectActionBar={
-          <Stack style={{ backgroundColor: 'white' }}>
-            <Stack
-              style={{
-                opacity: jobUpdate ? 0.5 : 1,
-                pointerEvents: jobUpdate ? 'none' : 'auto',
-              }}
-            >
-              <ActionBar
-                section={section}
-                checkList={checkList}
-                setCheckList={setCheckList}
-                setJobUpdate={setJobUpdate}
-              />
-            </Stack>
-          </Stack>
-        }
-        bottomBarVisibility={checkList.size !== 0}
-        linkActiveJobs={{
-          href: '/jobs',
-        }}
-        jobLink={{
-          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
-          target: '_blank',
-        }}
-        onClickEditJob={{
-          onClick: () => {
-            router.push(`/jobs/edit?job_id=${job.id}`);
-          },
-        }}
       />
     </>
+  );
+};
+
+const NewJobDetailsTabs = ({
+  section,
+  handleSetSection,
+  applications,
+}: {
+  section: JobApplicationSections;
+  // eslint-disable-next-line no-unused-vars
+  handleSetSection: (section: any) => void;
+  applications: JobApplicationSectionData;
+}) => {
+  return (
+    <JobDetailsTabs
+      isNewSelected={section === JobApplicationSections.NEW}
+      countNew={applications.new.count}
+      onClickNew={{
+        onClick: () => handleSetSection(JobApplicationSections.NEW),
+      }}
+      isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
+      countInterview={applications.interviewing.count}
+      onClickInterview={{
+        onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
+      }}
+      isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
+      countDisqualified={applications.disqualified.count}
+      onClickDisqualified={{
+        onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
+      }}
+      isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
+      countQualified={applications.qualified.count}
+      onClickQualified={{
+        onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
+      }}
+    />
   );
 };
 
@@ -328,17 +356,19 @@ const ApplicantsList = ({
       }
     }
   };
-  const [lastLoad, setLastLoad] = useState(10);
+  const paginationLimit = 100;
+  const [lastLoad, setLastLoad] = useState(paginationLimit);
   const observer = useRef(undefined);
   const lastApplicationRef = (node: any) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) setLastLoad((prev) => prev + 10);
+      if (entries[0].isIntersecting)
+        setLastLoad((prev) => prev + paginationLimit);
     });
     if (node) observer.current.observe(node);
   };
   useEffect(() => {
-    setLastLoad(10);
+    setLastLoad(paginationLimit);
   }, [section]);
 
   return applications.length === 0 ? (
@@ -434,10 +464,10 @@ const ActionBar = ({
   const checkListCount = checkList.size;
   const DialogInfo = {
     interviewing: {
-      heading: `Are you sure that you want to start interviewing ${checkListCount} candidate${
+      heading: `Are you sure that you want to start the assessment process for ${checkListCount} candidate${
         checkListCount !== 1 ? 's' : ''
       }`,
-      subHeading: 'Send interview email',
+      subHeading: 'Send assessment email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
@@ -450,7 +480,7 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Qualify for Interview',
+      primaryText: 'Qualify for Assessment',
       secondaryText: 'Cancel',
       variant: 'primary',
     },

@@ -11,4 +11,8 @@ declare function JobDetailsTabs(props: {
   countQualified?: React.ReactNode;
   onClickDisqualified?: Types.Devlink.RuntimeProps;
   countDisqualified?: React.ReactNode;
+  isNewSelected?: Types.Visibility.VisibilityConditions;
+  isInterviewSelected?: Types.Visibility.VisibilityConditions;
+  isQualifiedSelected?: Types.Visibility.VisibilityConditions;
+  isDisqualifiedSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -16,7 +16,7 @@ export function JobDetailsFilterBlock({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "cv-tab-filter-left")}
+        className={_utils.cx(_styles, "cv-tab-filter-left", "hide")}
         tag="div"
       >
         <_Builtin.Block
@@ -77,7 +77,7 @@ export function JobDetailsFilterBlock({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-upload-icon-block")}
+          className={_utils.cx(_styles, "cv-upload-icon-block", "clickable")}
           tag="div"
           {...onClickUpload}
         >
