@@ -79,6 +79,30 @@ export interface Database {
         }
         Relationships: []
       }
+      ai_videos: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          id: number
+          video_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          video_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          video_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       cal_dot_com: {
         Row: {
           created_at: string
@@ -1188,7 +1212,7 @@ export interface Database {
           is_email_sent: boolean | null
           is_sign_up: boolean | null
           jd_score: Json | null
-          job_id: string
+          job_id: string | null
           job_location: string | null
           job_title: string | null
           json_resume: Json | null
@@ -1230,7 +1254,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1272,7 +1296,7 @@ export interface Database {
           is_email_sent?: boolean | null
           is_sign_up?: boolean | null
           jd_score?: Json | null
-          job_id?: string
+          job_id?: string | null
           job_location?: string | null
           job_title?: string | null
           json_resume?: Json | null
@@ -1664,6 +1688,33 @@ export interface Database {
           jobs_updation_id?: string
           last_updated_at?: string
           query?: string | null
+        }
+        Relationships: []
+      }
+      lever_reference: {
+        Row: {
+          application_id: string
+          created_at: string
+          is_resume_fetched: boolean
+          last_synced: string
+          opportunity_id: string
+          posting_id: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          is_resume_fetched?: boolean
+          last_synced?: string
+          opportunity_id: string
+          posting_id: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          is_resume_fetched?: boolean
+          last_synced?: string
+          opportunity_id?: string
+          posting_id?: string
         }
         Relationships: []
       }
@@ -2477,6 +2528,12 @@ export interface Database {
             columns: ["recruiter_id"]
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "decrypted_recruiter"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -2566,6 +2623,7 @@ export interface Database {
           hr_contact: Json | null
           id: string
           industry: string | null
+          lever_key: string | null
           logo: string | null
           m_v_statement: string | null
           name: string | null
@@ -2595,6 +2653,7 @@ export interface Database {
           hr_contact?: Json | null
           id?: string
           industry?: string | null
+          lever_key?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
@@ -2624,6 +2683,7 @@ export interface Database {
           hr_contact?: Json | null
           id?: string
           industry?: string | null
+          lever_key?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
@@ -2686,6 +2746,12 @@ export interface Database {
             foreignKeyName: "recruiter_user_recruiter_id_fkey"
             columns: ["recruiter_id"]
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "decrypted_recruiter"
             referencedColumns: ["id"]
           },
           {
@@ -3338,6 +3404,12 @@ export interface Database {
             columns: ["company_id"]
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_groups_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "decrypted_recruiter"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -3413,6 +3485,12 @@ export interface Database {
             foreignKeyName: "support_ticket_company_id_fkey"
             columns: ["company_id"]
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_ticket_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "decrypted_recruiter"
             referencedColumns: ["id"]
           },
           {
@@ -3541,7 +3619,102 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      decrypted_recruiter: {
+        Row: {
+          address: Json | null
+          application_process: string | null
+          available_roles: string[] | null
+          benefits: string | null
+          company_overview: string | null
+          company_values: string | null
+          company_website: string | null
+          decrypted_lever_key: string | null
+          departments: string[] | null
+          e_o_statement: string | null
+          email: string | null
+          email_template: Json | null
+          employee_size: string | null
+          employment_type: Json | null
+          hr_contact: Json | null
+          id: string | null
+          industry: string | null
+          lever_key: string | null
+          logo: string | null
+          m_v_statement: string | null
+          name: string | null
+          office_locations: Json[] | null
+          phone_number: string | null
+          primary_contact: Json | null
+          recruiter_type: string | null
+          roles: Json | null
+          socials: Json | null
+          technology_score: string[] | null
+          workplace_type: Json | null
+        }
+        Insert: {
+          address?: Json | null
+          application_process?: string | null
+          available_roles?: string[] | null
+          benefits?: string | null
+          company_overview?: string | null
+          company_values?: string | null
+          company_website?: string | null
+          decrypted_lever_key?: never
+          departments?: string[] | null
+          e_o_statement?: string | null
+          email?: string | null
+          email_template?: Json | null
+          employee_size?: string | null
+          employment_type?: Json | null
+          hr_contact?: Json | null
+          id?: string | null
+          industry?: string | null
+          lever_key?: string | null
+          logo?: string | null
+          m_v_statement?: string | null
+          name?: string | null
+          office_locations?: Json[] | null
+          phone_number?: string | null
+          primary_contact?: Json | null
+          recruiter_type?: string | null
+          roles?: Json | null
+          socials?: Json | null
+          technology_score?: string[] | null
+          workplace_type?: Json | null
+        }
+        Update: {
+          address?: Json | null
+          application_process?: string | null
+          available_roles?: string[] | null
+          benefits?: string | null
+          company_overview?: string | null
+          company_values?: string | null
+          company_website?: string | null
+          decrypted_lever_key?: never
+          departments?: string[] | null
+          e_o_statement?: string | null
+          email?: string | null
+          email_template?: Json | null
+          employee_size?: string | null
+          employment_type?: Json | null
+          hr_contact?: Json | null
+          id?: string | null
+          industry?: string | null
+          lever_key?: string | null
+          logo?: string | null
+          m_v_statement?: string | null
+          name?: string | null
+          office_locations?: Json[] | null
+          phone_number?: string | null
+          primary_contact?: Json | null
+          recruiter_type?: string | null
+          roles?: Json | null
+          socials?: Json | null
+          technology_score?: string[] | null
+          workplace_type?: Json | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_application_count: {
@@ -3571,6 +3744,10 @@ export interface Database {
         }
         Returns: undefined
       }
+      fetch_and_send_resume_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       get_job_application_count: {
         Args: {
           table_name: string
@@ -3583,9 +3760,11 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
-      get_souring_scheduled_jobs: {
-        Args: Record<PropertyKey, never>
-        Returns: Json[]
+      getapplicationswithnotstartedscore: {
+        Args: {
+          job_id_param: string
+        }
+        Returns: unknown
       }
       getquerieswithmessagesbyassignmentid: {
         Args: {

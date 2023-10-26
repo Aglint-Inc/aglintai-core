@@ -10,4 +10,5 @@ declare function CandidateResumeScore(props: {
   onClickViewResume?: Types.Devlink.RuntimeProps;
   slotFeedbackScore?: Types.Devlink.Slot;
   textStyleProps?: Types.Devlink.RuntimeProps;
+  propsLink?: Types.Basic.Link;
 }): React.JSX.Element;
