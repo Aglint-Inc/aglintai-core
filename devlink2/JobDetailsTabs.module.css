@@ -2,7 +2,16 @@
   display: flex;
 }
 
+@media screen and (max-width: 767px) {
+  .cv-tab-links-wrapper {
+    width: 100%;
+    font-size: 2vw;
+  }
+}
+
 .cv-tab-link-block {
+  position: relative;
+
   display: flex;
   min-width: 180px;
   padding: 12px 16px;
@@ -23,12 +32,59 @@
   background-color: var(--grey-100);
 }
 
+@media screen and (max-width: 767px) {
+  .cv-tab-link-block {
+    min-width: auto;
+    padding: 0.75em 1em;
+    flex: 1;
+    grid-column-gap: 0.5em;
+    grid-row-gap: 0.5em;
+  }
+}
+
 .cv-tab-link-block.br-1 {
   border-right: 1px solid var(--grey-200);
 }
 
 .cv-tab-link-block.bl-1 {
   border-left-width: 1px;
+}
+
+.cv-tab-link-block-inner {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  width: 100%;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .cv-tab-link-block-inner {
+    grid-column-gap: 0.5em;
+    grid-row-gap: 0.5em;
+    font-size: 1em;
+    line-height: 1.4;
+  }
+}
+
+.cv-tab-link-block-inner.br-1 {
+  border-right: 1px solid var(--grey-200);
+}
+
+.cv-tab-link-block-inner.bl-1 {
+  border-left-width: 1px;
+}
+
+@media screen and (max-width: 767px) {
+  .cv-tab-link-icon-block {
+    width: 1.6em;
+    height: 1.6em;
+    min-height: 1.6em;
+    min-width: 1.6em;
+  }
 }
 
 .icon-embed {
@@ -77,6 +133,11 @@
 
 .text-kale-600 {
   color: var(--kale-600);
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .text-yellow-700 {
@@ -131,6 +192,17 @@
   color: var(--white);
 }
 
+@media screen and (max-width: 767px) {
+  .cv-tab-candidate-count {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+}
+
 .yellow-400 {
   background-color: hsla(31.78571428571429, 100.00%, 67.06%, 1.00);
 }
@@ -154,4 +226,28 @@
 
 .red-400 {
   background-color: hsla(355.1470588235294, 70.83%, 62.35%, 1.00);
+}
+
+.cv-tab-link-selected {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.yellow-100 {
+  background-color: hsla(33.33333333333332, 100.00%, 96.47%, 1.00);
+}
+
+.blue-100 {
+  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
+}
+
+.green-100 {
+  background-color: hsla(158.18181818181827, 44.00%, 95.10%, 1.00);
+}
+
+.red-100 {
+  background-color: hsla(356, 100.00%, 97.06%, 1.00);
 }

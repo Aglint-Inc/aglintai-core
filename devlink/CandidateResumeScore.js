@@ -13,6 +13,10 @@ export function CandidateResumeScore({
   onClickViewResume = {},
   slotFeedbackScore,
   textStyleProps = {},
+
+  propsLink = {
+    href: "#",
+  },
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cvs-info-block")} tag="div">
@@ -53,14 +57,14 @@ export function CandidateResumeScore({
                 {textScoreState}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
+            <_Builtin.Link
               className={_utils.cx(
                 _styles,
                 "cvs-download-res-btn",
                 "clickable"
               )}
-              tag="div"
-              {...onClickDownloadResume}
+              button={false}
+              options={propsLink}
             >
               <_Builtin.Block tag="div">
                 <_Builtin.HtmlEmbed
@@ -74,7 +78,7 @@ export function CandidateResumeScore({
               >
                 {"Download Resume"}
               </_Builtin.Block>
-            </_Builtin.Block>
+            </_Builtin.Link>
             <_Builtin.Block
               className={_utils.cx(_styles, "cvs-view-res-btn", "clickable")}
               tag="div"

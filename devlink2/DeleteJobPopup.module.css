@@ -145,6 +145,11 @@
   color: var(--kale-600);
 }
 
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .text-yellow-700 {
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
@@ -166,11 +171,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
 }
 
 .div-block-331 {

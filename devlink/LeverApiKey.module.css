@@ -1,0 +1,38 @@
+.api-key-wrappers {
+  display: flex;
+  margin-top: 22px;
+  justify-content: space-between;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
+}
+
+.slot-search-lever-api {
+  width: 100%;
+}
+
+.lever-api-generate-wrap {
+  margin-top: 20px;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #f8f9f9;
+}
+
+.lever-api-image-wraps {
+  margin-top: 18px;
+  margin-bottom: 28px;
+}
+
+.mt-18 {
+  margin-top: 18px;
+}
+
+.text-link-lever {
+  transition: all 250ms ease;
+  color: #337fbd;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.text-link-lever:hover {
+  opacity: 0.8;
+}

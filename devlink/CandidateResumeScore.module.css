@@ -251,6 +251,10 @@
   border-radius: 4px;
 }
 
+.cvs-download-res-btn.clickable {
+  text-decoration: none;
+}
+
 .cvs-download-res-btn.clickable:hover {
   background-color: #f8f9f9;
 }

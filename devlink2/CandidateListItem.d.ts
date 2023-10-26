@@ -8,11 +8,12 @@ declare function CandidateListItem(props: {
   slotProfileImage?: Types.Devlink.Slot;
   name?: React.ReactNode;
   jobTitle?: React.ReactNode;
-  resumeScore?: React.ReactNode;
   email?: React.ReactNode;
   phone?: React.ReactNode;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
-  interviewScore?: React.ReactNode;
-  slotResumeScoreIcon?: Types.Devlink.Slot;
-  slotInterviewScoreIcon?: Types.Devlink.Slot;
+  slotResumeScore?: Types.Devlink.Slot;
+  slotInterviewScore?: Types.Devlink.Slot;
+  isHighlighted?: Types.Visibility.VisibilityConditions;
+  appliedDate?: React.ReactNode;
+  onclickCandidate?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

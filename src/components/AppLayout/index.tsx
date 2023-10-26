@@ -75,11 +75,11 @@ export default function AppLayout({ children }) {
           borderRight={'1px solid'}
           borderColor={'grey.200'}
           position={'relative'}
-          p={'14px'}
-          bgcolor={'#000000'}
+          p={'28px 20px 12px 16px'}
+          bgcolor={'#25282A'}
           width={'260px'}
         >
-          <Stack height={'calc(100vh - 28px)'}>
+          <Stack height={'calc(100vh - 44px)'}>
             <RecSideNavProfileBlock
               companyName={companyName}
               onclickCompany={{
@@ -117,7 +117,7 @@ export default function AppLayout({ children }) {
                 />
               }
             />
-            <Stack height={'100%'} justifyContent={'space-between'} pt={'24px'}>
+            <Stack height={'100%'} justifyContent={'space-between'} pt={'26px'}>
               <Stack spacing={'10px'}>
                 <SideNavbar />
               </Stack>
