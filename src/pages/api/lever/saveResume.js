@@ -45,6 +45,7 @@ export default async function handler(req, res) {
               );
             }
 
+            let extension = responseUrl.headers['content-type'];
             // Upload the file to Supabase Storage
             const { data, error: uploadError } = await supabase.storage
               .from(bucketName)
@@ -54,9 +55,8 @@ export default async function handler(req, res) {
                 }`,
                 responseUrl.data,
                 {
-                  contentType: response.data.data[0].file.ext,
+                  contentType: extension,
                   cacheControl: '3600',
-                  // Overwrite file if it exist
                   upsert: true,
                 },
               );
