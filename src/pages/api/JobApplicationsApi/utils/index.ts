@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
+import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   JobApplicationSections,
@@ -19,9 +20,21 @@ export const deleteNewJobApplicationDbAction = async (
   return { data: error ? false : true, error };
 };
 
+const getApiStatus = (apiStatus: ApiLogState) => {
+  switch (apiStatus) {
+    case ApiLogState.SUCCESS:
+      return 'success';
+    case ApiLogState.FAILED:
+      return 'Failed';
+    case ApiLogState.PROCESSING:
+      return 'calculating';
+  }
+};
+
 export const readNewJobApplicationDbAction = async (
   job_id: string,
   status: JobApplicationSections,
+  apiStatus?: ApiLogState,
   range?: {
     start: number;
     end: number;
@@ -29,20 +42,27 @@ export const readNewJobApplicationDbAction = async (
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
-  const { data, error } = range
-    ? await supabase
-        .from('job_applications')
-        .select('*')
-        .eq('job_id', job_id)
-        .eq('status', status)
-        .range(range.start, range.end)
-        .abortSignal(controller.signal)
-    : await supabase
-        .from('job_applications')
-        .select('*')
-        .eq('job_id', job_id)
-        .eq('status', status)
-        .abortSignal(controller.signal);
+
+  let query = supabase
+    .from('job_applications')
+    .select('*')
+    .eq('job_id', job_id)
+    .eq('status', status);
+
+  if (range) {
+    query = query.range(range.start, range.end);
+  }
+
+  if (apiStatus) {
+    query = query.contains('api_logs', {
+      scoreStatus: getApiStatus(apiStatus),
+    });
+  }
+
+  query = query.abortSignal(controller.signal);
+
+  const { data, error } = await query;
+
   return { data, error };
 };
 

@@ -2,6 +2,7 @@
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   JobApplicationSections,
@@ -13,7 +14,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ReadJobApplicationApi['response']>,
 ) => {
-  const { job_id, status, range } =
+  const { job_id, status, range, apiStatus } =
     req.body as ReadJobApplicationApi['request'];
   if (
     !job_id ||
@@ -21,15 +22,16 @@ const handler = async (
       (typeof range.start !== 'number' ||
         range.start < 0 ||
         typeof range.end !== 'number' ||
-        range.end < range.start))
+        range.end < range.start)) ||
+    (apiStatus && !Object.values(ApiLogState).includes(apiStatus))
   )
     res.status(400).send({
       data: null,
       error: { message: 'Invalid parameters' },
     } as ReadJobApplicationApi['response']);
   const promises = status
-    ? createSinglePromise(job_id, status, range ?? null)
-    : createMultiPromise(job_id, range ?? null);
+    ? createSinglePromise(job_id, status, apiStatus ?? null, range ?? null)
+    : createMultiPromise(job_id, apiStatus ?? null, range ?? null);
   const responses = await Promise.allSettled([...promises]);
   const result = status
     ? handleSinglePromiseValidation(responses[0], status)
@@ -42,17 +44,21 @@ export default handler;
 const createSinglePromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
   status: ReadJobApplicationApi['request']['status'],
+  apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
   range?: ReadJobApplicationApi['request']['range'],
 ) => {
-  return [readNewJobApplicationDbAction(job_id, status, range ?? null)];
+  return [
+    readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
+  ];
 };
 
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
+  apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
   range?: ReadJobApplicationApi['request']['range'],
 ) => {
   return Object.values(JobApplicationSections).map((status) =>
-    readNewJobApplicationDbAction(job_id, status, range ?? null),
+    readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
   );
 };
 
@@ -121,6 +127,7 @@ export type ReadJobApplicationApi =
           start: number;
           end: number;
         };
+        apiStatus?: ApiLogState;
       };
       response: {
         data: {
@@ -142,6 +149,7 @@ export type ReadJobApplicationApi =
           start: number;
           end: number;
         };
+        apiStatus?: ApiLogState;
       };
       response: {
         data: {
@@ -158,6 +166,7 @@ export type ReadJobApplicationApi =
           start: number;
           end: number;
         };
+        apiStatus?: ApiLogState;
       };
       response: {
         data: {
@@ -174,6 +183,7 @@ export type ReadJobApplicationApi =
           start: number;
           end: number;
         };
+        apiStatus?: ApiLogState;
       };
       response: {
         data: {
@@ -190,6 +200,7 @@ export type ReadJobApplicationApi =
           start: number;
           end: number;
         };
+        apiStatus?: ApiLogState;
       };
       response: {
         data: {
