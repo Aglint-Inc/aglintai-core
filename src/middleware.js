@@ -6,7 +6,11 @@ export const config = {
   matcher: '/api/:function*',
 };
 
-const whiteListedEndPoints = ['/api/sendgrid', '/api/lever/saveResume'];
+const whiteListedEndPoints = [
+  '/api/sendgrid',
+  '/api/lever/saveResume',
+  '/api/webhook',
+];
 
 export async function middleware(request) {
   if (isUrlWhiteListed(request.url)) {
