@@ -11,12 +11,11 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  color: var(--white);
+  color: var(--grey-300);
 }
 
 .rs-logout-btn.clickable:hover {
   opacity: 1;
-  color: var(--red-500);
 }
 
 .clickable {
@@ -40,6 +39,21 @@
 
 .icon-block.clickable.padding-4.relative {
   position: relative;
+}
+
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icon-embed {

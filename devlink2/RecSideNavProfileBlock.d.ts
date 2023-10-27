@@ -11,4 +11,5 @@ declare function RecSideNavProfileBlock(props: {
   onclickNotification?: Types.Devlink.RuntimeProps;
   onclickProfileImage?: Types.Devlink.RuntimeProps;
   notificationCount?: React.ReactNode;
+  companyNameProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

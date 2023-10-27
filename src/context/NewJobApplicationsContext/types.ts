@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
+import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -11,17 +12,7 @@ export enum JobApplicationSections {
   DISQUALIFIED = 'disqualified',
 }
 
-export type JobApplicationSectionData = {
-  [key in JobApplicationSections]: {
-    list: JobApplication[];
-    count: number;
-  };
-};
-
-export type JobApplicationsData = {
-  applications: JobApplicationSectionData;
-  count: number;
-};
+export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
 export type JobApplication =
   Database['public']['Tables']['job_applications']['Row'];
@@ -31,24 +22,12 @@ export type InputData = Partial<
 >;
 
 export type JobApplicationContext = {
-  applicationsData: JobApplicationsData;
+  applications: JobApplicationsData;
   job: JobType;
   updateTick: boolean;
-  handleJobApplicationCreate: (
-    inputData: Pick<
-      JobApplication,
-      'first_name' | 'last_name' | 'email' | 'status'
-    > &
-      InputData,
-  ) => Promise<JobApplication>;
-  handleJobApplicationBulkCreate: (
-    inputData: (Pick<
-      JobApplication,
-      'first_name' | 'last_name' | 'email' | 'score'
-    > &
-      InputData)[],
-  ) => Promise<JobApplication[]>;
-  handleJobApplicationRead: () => Promise<boolean>;
+  handleJobApplicationRead: (
+    request: ReadJobApplicationApi['request'],
+  ) => Promise<boolean>;
   handleJobApplicationUpdate: (
     applicationId: string,
 

@@ -122,7 +122,7 @@ export type ReadJobApplicationApi =
   | {
       request: {
         job_id: string;
-        status: null;
+        status?: null;
         range?: {
           start: number;
           end: number;
@@ -131,12 +131,10 @@ export type ReadJobApplicationApi =
       };
       response: {
         data: {
-          applications: {
-            [JobApplicationSections.NEW]: JobApplication[];
-            [JobApplicationSections.QUALIFIED]: JobApplication[];
-            [JobApplicationSections.INTERVIEWING]: JobApplication[];
-            [JobApplicationSections.DISQUALIFIED]: JobApplication[];
-          };
+          [JobApplicationSections.NEW]: JobApplication[];
+          [JobApplicationSections.QUALIFIED]: JobApplication[];
+          [JobApplicationSections.INTERVIEWING]: JobApplication[];
+          [JobApplicationSections.DISQUALIFIED]: JobApplication[];
         };
         error: PostgrestError | null;
       };

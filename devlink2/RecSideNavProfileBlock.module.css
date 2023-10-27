@@ -4,8 +4,20 @@
   align-items: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .rs-header-block-left {
   display: flex;
+  overflow: hidden;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
@@ -61,6 +73,10 @@
 
 .icon-block.clickable.padding-4.relative {
   position: relative;
+}
+
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
 }
 
 .icon-embed {

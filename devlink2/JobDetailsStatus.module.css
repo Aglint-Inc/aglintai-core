@@ -48,6 +48,10 @@
   color: var(--kale-600);
 }
 
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
 .jdet-status-info-block {
   display: flex;
   align-items: center;

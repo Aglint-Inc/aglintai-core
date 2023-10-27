@@ -4,15 +4,13 @@ import {
   InputData,
   JobApplication,
   JobApplicationContext,
-  JobApplicationSectionData,
+  JobApplicationsData,
   JobApplicationSections,
 } from './types';
 
 export const initialJobApplicationsContext: JobApplicationContext = {
-  applicationsData: undefined,
+  applications: undefined,
   job: undefined,
-  handleJobApplicationCreate: undefined,
-  handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationUIUpdate: undefined,
@@ -92,7 +90,7 @@ export const deleteJobApplicationDbAction = async (application_id: string) => {
 
 export const getUpdatedJobStatus = (
   applicationIdSet: Set<string>,
-  applications: JobApplicationSectionData,
+  applications: JobApplicationsData,
   sections: {
     source: JobApplicationSections;
     destination: JobApplicationSections;

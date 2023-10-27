@@ -7,15 +7,20 @@ export function RecSideNavProfileBlock({
   as: _Component = _Builtin.Block,
   onclickCompany = {},
   slotCompanyLogo,
-  companyName = "Charlie Health",
+  companyName = "Charlie Health fhhodfhoefdfo",
   isNotCountVisible = false,
   slotProfileImage,
   onclickNotification = {},
   onclickProfileImage = {},
   notificationCount = "9",
+  companyNameProps = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "rs-header-block")} tag="div">
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A.line-clamp-1%20%7B%0Adisplay%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%201%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%20%20%0A%20%20overflow%3A%20hidden%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
       <_Builtin.Block
         className={_utils.cx(_styles, "rs-header-block-left", "clickable")}
         tag="div"
@@ -28,8 +33,14 @@ export function RecSideNavProfileBlock({
           {slotCompanyLogo}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-color-white", "fw-semibold")}
+          className={_utils.cx(
+            _styles,
+            "text-color-white",
+            "fw-semibold",
+            "line-clamp-1"
+          )}
           tag="div"
+          {...companyNameProps}
         >
           {companyName}
         </_Builtin.Block>
@@ -44,7 +55,8 @@ export function RecSideNavProfileBlock({
             "icon-block",
             "clickable",
             "padding-4",
-            "relative"
+            "relative",
+            "hide"
           )}
           tag="div"
           {...onclickNotification}

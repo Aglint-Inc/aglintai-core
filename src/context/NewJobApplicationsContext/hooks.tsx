@@ -1,7 +1,9 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import toast from '@/src/utils/toast';
 
 import {
@@ -9,16 +11,13 @@ import {
   JobApplication,
   JobApplicationContext,
   JobApplicationsData,
-  JobApplicationSectionData,
   JobApplicationSections,
 } from './types';
 import {
-  bulkCreateJobApplicationDbAction,
   bulkUpdateJobApplicationDbAction,
-  createJobApplicationDbAction,
   deleteJobApplicationDbAction,
   getUpdatedJobStatus,
-  readJobApplicationDbAction,
+  // readJobApplicationDbAction,
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
@@ -40,21 +39,9 @@ enum ActionType {
 
 type Action =
   | {
-      type: ActionType.CREATE;
-      payload: {
-        applicationData: JobApplication;
-      };
-    }
-  | {
-      type: ActionType.BULK_CREATE;
-      payload: {
-        applicationData: JobApplication[];
-      };
-    }
-  | {
       type: ActionType.READ;
       payload: {
-        applicationData: JobApplication[];
+        applicationData: JobApplicationsData;
       };
     }
   | {
@@ -73,97 +60,35 @@ type Action =
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
-    case ActionType.CREATE: {
-      const newState: JobApplicationsData = {
-        ...state,
-        applications: {
-          ...state.applications,
-          [action.payload.applicationData.status as JobApplicationSections]: {
-            list: [
-              ...state.applications[
-                action.payload.applicationData.status as JobApplicationSections
-              ].list,
-              action.payload.applicationData,
-            ],
-            count:
-              state.applications[
-                action.payload.applicationData.status as JobApplicationSections
-              ].count + 1,
-          },
-        },
-        count: state.count + 1,
-      };
-      return newState;
-    }
-
-    case ActionType.BULK_CREATE: {
-      const { newApplications, count } = updateApplications(
-        state.applications,
-        action.payload.applicationData,
-      );
-      const newState: JobApplicationsData = {
-        ...state,
-        applications: newApplications,
-        count: count,
-      };
-      return newState;
-    }
-
     case ActionType.READ: {
-      const { segregatedApplications, count } = segregateApplications(
-        action.payload.applicationData,
-      );
       const newState: JobApplicationsData = {
-        applications: segregatedApplications,
-        count,
+        ...action.payload.applicationData,
       };
       return newState;
     }
 
     case ActionType.UPDATE: {
-      const newApplications: JobApplicationSectionData = {
-        ...state.applications,
-        [action.payload.applicationData.status as JobApplicationSections]: {
-          ...state.applications[
-            action.payload.applicationData.status as JobApplicationSections
-          ],
-          list: state.applications[
-            action.payload.applicationData.status as JobApplicationSections
-          ].list.reduce((acc, curr) => {
-            if (
-              curr.application_id ===
-              action.payload.applicationData.application_id
-            )
-              acc.push(action.payload.applicationData);
-            else acc.push(curr);
-            return acc;
-          }, []),
-        },
-      };
       const newState: JobApplicationsData = {
         ...state,
-        applications: newApplications,
+        [action.payload.applicationData.status]: [
+          ...action.payload.applicationData[
+            action.payload.applicationData.status
+          ],
+          action.payload.applicationData,
+        ],
       };
       return newState;
     }
 
     case ActionType.DELETE: {
-      const newApplications: JobApplicationSectionData = {
-        ...state.applications,
-        [action.payload.applicationStatus]: {
-          list: state.applications[
-            action.payload.applicationStatus
-          ].list.filter(
-            (application) =>
-              application.application_id !== action.payload.applicationId,
-          ),
-          count: state.applications[action.payload.applicationStatus].count - 1,
-        },
-      };
       const newState: JobApplicationsData = {
         ...state,
-        applications: newApplications,
-        count: state.count - 1,
+        [action.payload.applicationStatus]: state[
+          action.payload.applicationStatus
+        ].filter(
+          (a: JobApplication) =>
+            a.application_id !== action.payload.applicationId,
+        ),
       };
       return newState;
     }
@@ -174,46 +99,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
   }
 };
 
-const segregateApplications = (applicationData: JobApplication[]) => {
-  let count = 0;
-  const segregatedApplications: JobApplicationSectionData =
-    applicationData.reduce(
-      (acc, curr) => {
-        let objRef = acc[curr.status as JobApplicationSections];
-        objRef.list.push(curr);
-        objRef.count += 1;
-        count += 1;
-        return acc;
-      },
-      Object.assign(
-        {},
-        ...Object.values(JobApplicationSections).map((val) => {
-          return {
-            [val]: {
-              list: [],
-              count: 0,
-            },
-          };
-        }),
-      ),
-    );
-  return { segregatedApplications, count };
-};
-
-const updateApplications = (
-  stateApplicationData: JobApplicationSectionData,
-  newApplicationData: JobApplication[],
-) => {
-  let count = newApplicationData.length;
-  const newApplications = newApplicationData.reduce((acc, curr) => {
-    acc[curr.status as JobApplicationSections].list.push(curr);
-    acc[curr.status as JobApplicationSections].count += 1;
-    return acc;
-  }, stateApplicationData);
-  return { newApplications, count };
-};
-
-const useJobApplicationActions = (
+const useProviderJobApplicationActions = (
   job_id: string = undefined,
 ): JobApplicationContext => {
   const { recruiter } = useAuthDetails();
@@ -222,11 +108,11 @@ const useJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const [applicationsData, dispatch] = useReducer(reducer, undefined);
+  const [applications, dispatch] = useReducer(reducer, undefined);
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
-  const initialLoad = initialJobLoad && applicationsData ? true : false;
+  const initialLoad = initialJobLoad && applications ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [openManualImportCandidates, setOpenManualImportCandidates] =
@@ -244,55 +130,12 @@ const useJobApplicationActions = (
     }
   }, [initialLoad]);
 
-  const handleJobApplicationCreate = async (
-    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData,
+  const handleJobApplicationRead = async (
+    request: ReadJobApplicationApi['request'],
   ) => {
     if (recruiter) {
-      const { data, error } = await createJobApplicationDbAction(
-        jobId,
-        inputData,
-      );
-      if (data) {
-        const action: Action = {
-          type: ActionType.CREATE,
-          payload: { applicationData: data[0] },
-        };
-        dispatch(action);
-        updateTick.current = !updateTick.current;
-        return data[0];
-      }
-      handleJobApplicationError(error);
-      return undefined;
-    }
-  };
-
-  const handleJobApplicationBulkCreate = async (
-    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData)[],
-  ) => {
-    if (recruiter) {
-      const { data, error } = await bulkCreateJobApplicationDbAction(
-        jobId,
-        inputData,
-      );
-      if (data) {
-        const action: Action = {
-          type: ActionType.BULK_CREATE,
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        updateTick.current = !updateTick.current;
-        return data;
-      }
-      handleJobApplicationError(error);
-      return undefined;
-    }
-  };
-
-  const handleJobApplicationRead = async () => {
-    if (recruiter) {
-      const { data, error } = await readJobApplicationDbAction(jobId);
+      const { data, error }: ReadJobApplicationApi['response'] =
+        await axios.post('/api/JobApplicationsApi/read', { body: request });
       if (data) {
         const action: Action = {
           type: ActionType.READ,
@@ -352,7 +195,10 @@ const useJobApplicationActions = (
       updatedApplicationData,
     );
     if (d1) {
-      const read = await handleJobApplicationRead();
+      const read = await handleJobApplicationRead({
+        job_id: jobId,
+        range: { start: 0, end: 10 },
+      });
       if (read) {
         updateTick.current = !updateTick.current;
         return true;
@@ -394,11 +240,7 @@ const useJobApplicationActions = (
     },
   ) => {
     return await handleJobApplicationBulkUpdate(
-      getUpdatedJobStatus(
-        applicationIdSet,
-        applicationsData.applications,
-        sections,
-      ),
+      getUpdatedJobStatus(applicationIdSet, applications, sections),
     );
   };
 
@@ -407,15 +249,14 @@ const useJobApplicationActions = (
   };
 
   useEffect(() => {
-    if (initialJobLoad) handleJobApplicationRead();
+    if (initialJobLoad)
+      handleJobApplicationRead({ job_id: jobId, range: { start: 0, end: 10 } });
   }, [initialJobLoad]);
 
   const value = {
-    applicationsData,
+    applications,
     job,
     updateTick: updateTick.current,
-    handleJobApplicationCreate,
-    handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationUpdate,
     handleJobApplicationUIUpdate,
@@ -434,4 +275,4 @@ const useJobApplicationActions = (
   return value;
 };
 
-export default useJobApplicationActions;
+export default useProviderJobApplicationActions;
