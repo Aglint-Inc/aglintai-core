@@ -35,14 +35,14 @@ import SearchField from './SearchField';
 import {
   // ApiLogState,
   capitalize,
-  FilterParameter,
-  getFilteredApplications,
+  // FilterParameter,
+  // getFilteredApplications,
   // getIntactApplications,
-  getSortedApplications,
-  SortParameter,
+  // getSortedApplications,
+  // SortParameter,
 } from './utils';
 import Loader from '../Common/Loader';
-import { ScoreWheelParams } from '../Common/ScoreWheel';
+// import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -74,26 +74,28 @@ const JobApplicationComponent = () => {
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
-  const [sort] = useState<SortParameter>({
-    parameter: 'resume_score',
-    condition: 'desc',
-  });
+  // const [sort] = useState<SortParameter>({
+  //   parameter: 'resume_score',
+  //   condition: 'desc',
+  // });
 
-  const [filters] = useState<FilterParameter[]>([
-    { parameter: 'resume_score', condition: 'ge', count: 0 },
-    { parameter: 'interview_score', condition: 'ge', count: 0 },
-  ]);
+  // const [filters] = useState<FilterParameter[]>([
+  //   { parameter: 'resume_score', condition: 'ge', count: 0 },
+  //   { parameter: 'interview_score', condition: 'ge', count: 0 },
+  // ]);
 
-  const sectionApplications = getFilteredApplications(
-    getSortedApplications(
-      applications[section],
-      // getIntactApplications(applications[section])[ApiLogState.SUCCESS],
-      sort,
-      job.parameter_weights as ScoreWheelParams,
-    ),
-    job.parameter_weights as ScoreWheelParams,
-    filters,
-  ) as JobApplication[];
+  // const sectionApplications = getFilteredApplications(
+  //   getSortedApplications(
+  //     applications[section],
+  //     // getIntactApplications(applications[section])[ApiLogState.SUCCESS],
+  //     sort,
+  //     job.parameter_weights as ScoreWheelParams,
+  //   ),
+  //   job.parameter_weights as ScoreWheelParams,
+  //   filters,
+  // ) as JobApplication[];
+
+  const sectionApplications = applications[section];
 
   const [checkList, setCheckList] = useState(new Set<string>());
   const [currentApplication, setCurrentApplication] = useState(-1);
@@ -186,7 +188,7 @@ const JobApplicationComponent = () => {
         <NewJobDetailsTabs
           section={section}
           handleSetSection={handleSetSection}
-          // 'XXXXX' applications={applications}
+          applications={applications}
         />
       }
       slotFilterBlock={
@@ -262,32 +264,33 @@ const NewJobFilterBlock = ({
 
 const NewJobDetailsTabs = ({
   section,
-  handleSetSection, // 'XXXXX' applications,
+  handleSetSection,
+  applications,
 }: {
   section: JobApplicationSections;
   // eslint-disable-next-line no-unused-vars
   handleSetSection: (section: any) => void;
-  // 'XXXXX' applications: JobApplicationsData;
+  applications: JobApplicationsData;
 }) => {
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
-      countNew={'XXXXX'}
+      countNew={applications.new.length}
       onClickNew={{
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
       isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
-      countInterview={'XXXXX'}
+      countInterview={applications.interviewing.length}
       onClickInterview={{
         onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
-      countDisqualified={'XXXXX'}
+      countDisqualified={applications.disqualified.length}
       onClickDisqualified={{
         onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
       }}
       isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
-      countQualified={'XXXXX'}
+      countQualified={applications.qualified.length}
       onClickQualified={{
         onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
       }}
@@ -308,17 +311,22 @@ const ApplicantsList = ({
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
-  section: string;
+  section: JobApplicationSections;
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
+  const { handleJobApplicationPaginatedRead, applicationDepth } =
+    useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
+  const [paginationLoad, setPaginationLoad] = useState(false);
+
   useEffect(() => {
     if (checkList.size === 0 || checkList.size === applications.length)
       setLastPressed(null);
   }, [checkList.size]);
+
   const handleSingleSelect = (index: number) => {
     setCheckList((prev) => {
       const newSet = new Set(prev);
@@ -354,20 +362,19 @@ const ApplicantsList = ({
       }
     }
   };
-  const paginationLimit = 100;
-  const [lastLoad, setLastLoad] = useState(paginationLimit);
+
   const observer = useRef(undefined);
-  const lastApplicationRef = (node: any) => {
+  const lastApplicationRef = async (node: any) => {
     if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting)
-        setLastLoad((prev) => prev + paginationLimit);
+    observer.current = new IntersectionObserver(async (entries) => {
+      if (entries[0].isIntersecting && !paginationLoad) {
+        setPaginationLoad(true);
+        await handleJobApplicationPaginatedRead(section);
+        setPaginationLoad(false);
+      }
     });
     if (node) observer.current.observe(node);
   };
-  useEffect(() => {
-    setLastLoad(paginationLimit);
-  }, [section]);
 
   return applications.length === 0 ? (
     <Stack height={'50vh'} justifyContent={'center'}>
@@ -380,7 +387,7 @@ const ApplicantsList = ({
     </Stack>
   ) : (
     <>
-      {applications.slice(0, lastLoad).map((application, i) => {
+      {applications.map((application, i) => {
         const styles =
           jobUpdate && checkList.has(application.application_id)
             ? { opacity: 0.5, pointerEvent: 'none' }
@@ -389,8 +396,8 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
-            ref={i === lastLoad - 1 ? lastApplicationRef : null}
-            id={'job-application-stack'}
+            ref={i === applicationDepth[section] ? lastApplicationRef : null}
+            id={`job-application-stack-${i}`}
           >
             <ApplicationCard
               application={application}
@@ -404,6 +411,11 @@ const ApplicantsList = ({
           </Stack>
         );
       })}
+      {paginationLoad && (
+        <Stack>
+          <Loader />
+        </Stack>
+      )}
     </>
   );
 };

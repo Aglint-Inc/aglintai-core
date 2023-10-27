@@ -23,6 +23,7 @@ export type InputData = Partial<
 
 export type JobApplicationContext = {
   applications: JobApplicationsData;
+  applicationDepth: { [key in JobApplicationSections]: number };
   job: JobType;
   updateTick: boolean;
   handleJobApplicationRead: (

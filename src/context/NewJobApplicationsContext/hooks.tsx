@@ -79,7 +79,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     }
     case ActionType.INSERT: {
       const newState: JobApplicationsData = {
-        ...action.payload.applicationData,
+        ...state,
         [action.payload.applicationStatus]: [
           ...state[action.payload.applicationStatus],
           ...action.payload.applicationData[action.payload.applicationStatus],
@@ -87,7 +87,6 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       };
       return newState;
     }
-
     case ActionType.UPDATE: {
       const newState: JobApplicationsData = {
         ...state,
@@ -129,13 +128,14 @@ const useProviderJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const paginationLimit = 22;
+  const paginationLimit = 16;
 
   const initialJobApplicationDepth = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
     return { ...acc, [curr]: paginationLimit };
-  }, {});
+    // eslint-disable-next-line no-unused-vars
+  }, {}) as { [key in JobApplicationSections]: number };
 
   const [applications, dispatch] = useReducer(reducer, undefined);
   const [applicationDepth, setApplicationDepth] = useState(
@@ -194,10 +194,11 @@ const useProviderJobApplicationActions = (
         url: '/api/JobApplicationsApi/read',
         data: {
           job_id: jobId,
+          status: section,
           apiStatus: ApiLogState.SUCCESS,
           range: {
-            start: applicationDepth[section],
-            end: applicationDepth[section] + paginationLimit,
+            start: applicationDepth[section] + 1,
+            end: applicationDepth[section] + paginationLimit + 1,
           },
         },
       });
@@ -211,6 +212,7 @@ const useProviderJobApplicationActions = (
         setApplicationDepth((prev) => {
           return { ...prev, [section]: prev[section] + paginationLimit };
         });
+        updateTick.current = !updateTick.current;
         return true;
       }
       handleJobApplicationError(error);
@@ -321,13 +323,13 @@ const useProviderJobApplicationActions = (
     if (initialJobLoad)
       handleJobApplicationRead({
         job_id: jobId,
-        apiStatus: ApiLogState.SUCCESS,
         range: { start: 0, end: paginationLimit },
       });
   }, [initialJobLoad]);
 
   const value = {
     applications,
+    applicationDepth,
     job,
     updateTick: updateTick.current,
     handleJobApplicationRead,

@@ -23,11 +23,11 @@ export const deleteNewJobApplicationDbAction = async (
 const getApiStatus = (apiStatus: ApiLogState) => {
   switch (apiStatus) {
     case ApiLogState.SUCCESS:
-      return 'success';
+      return ['success'];
     case ApiLogState.FAILED:
-      return 'Failed';
+      return ['Failed'];
     case ApiLogState.PROCESSING:
-      return 'calculating';
+      return ['calculating', 'not started'];
   }
 };
 
@@ -54,8 +54,10 @@ export const readNewJobApplicationDbAction = async (
   }
 
   if (apiStatus) {
-    query = query.contains('api_logs', {
-      scoreStatus: getApiStatus(apiStatus),
+    getApiStatus(apiStatus).map((s) => {
+      query = query.contains('api_logs', {
+        scoreStatus: s,
+      });
     });
   }
 
