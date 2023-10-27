@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/JobApplicationsContext';
+import { useJobApplications } from '@context/NewJobApplicationsContext';
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -16,9 +16,8 @@ import {
 import {
   JobApplication,
   JobApplicationsData,
-  JobApplicationSectionData,
   JobApplicationSections,
-} from '@/src/context/JobApplicationsContext/types';
+} from '@/src/context/NewJobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -34,11 +33,11 @@ import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import {
-  ApiLogState,
+  // ApiLogState,
   capitalize,
   FilterParameter,
   getFilteredApplications,
-  getIntactApplications,
+  // getIntactApplications,
   getSortedApplications,
   SortParameter,
 } from './utils';
@@ -71,8 +70,7 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applicationsData, job } = useJobApplications();
-  const { applications } = applicationsData;
+  const { applications, job } = useJobApplications();
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
@@ -88,7 +86,8 @@ const JobApplicationComponent = () => {
 
   const sectionApplications = getFilteredApplications(
     getSortedApplications(
-      getIntactApplications(applications[section].list)[ApiLogState.SUCCESS],
+      applications[section],
+      // getIntactApplications(applications[section])[ApiLogState.SUCCESS],
       sort,
       job.parameter_weights as ScoreWheelParams,
     ),
@@ -140,7 +139,7 @@ const JobApplicationComponent = () => {
     <JobDetails
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
-      textApplicantsNumber={`(${applicationsData.count.success} success , ${applicationsData.count.processing} processing , ${applicationsData.count.failed} failed)`}
+      textApplicantsNumber={`(${'XXXXX'} success , ${'XXXXX'} processing , ${'XXXXX'} failed)`}
       onClickEditJobs={{
         onClick: () => {
           router.push(`/jobs/edit?job_id=${job.id}`);
@@ -187,7 +186,7 @@ const JobApplicationComponent = () => {
         <NewJobDetailsTabs
           section={section}
           handleSetSection={handleSetSection}
-          applications={applications}
+          // 'XXXXX' applications={applications}
         />
       }
       slotFilterBlock={
@@ -263,33 +262,32 @@ const NewJobFilterBlock = ({
 
 const NewJobDetailsTabs = ({
   section,
-  handleSetSection,
-  applications,
+  handleSetSection, // 'XXXXX' applications,
 }: {
   section: JobApplicationSections;
   // eslint-disable-next-line no-unused-vars
   handleSetSection: (section: any) => void;
-  applications: JobApplicationSectionData;
+  // 'XXXXX' applications: JobApplicationsData;
 }) => {
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
-      countNew={applications.new.count}
+      countNew={'XXXXX'}
       onClickNew={{
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
       isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
-      countInterview={applications.interviewing.count}
+      countInterview={'XXXXX'}
       onClickInterview={{
         onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
-      countDisqualified={applications.disqualified.count}
+      countDisqualified={'XXXXX'}
       onClickDisqualified={{
         onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
       }}
       isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
-      countQualified={applications.qualified.count}
+      countQualified={'XXXXX'}
       onClickQualified={{
         onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
       }}
@@ -423,7 +421,7 @@ const ActionBar = ({
 }) => {
   const {
     handleUpdateJobStatus,
-    applicationsData,
+    applications,
     handleJobApplicationUpdate,
     job,
   } = useJobApplications();
@@ -474,7 +472,7 @@ const ActionBar = ({
           sendEmails(
             JobApplicationSections.INTERVIEWING,
             checkList,
-            applicationsData,
+            applications,
             job,
             handleJobApplicationUpdate,
           );
@@ -495,7 +493,7 @@ const ActionBar = ({
           sendEmails(
             JobApplicationSections.QUALIFIED,
             checkList,
-            applicationsData,
+            applications,
             job,
             handleJobApplicationUpdate,
           );
@@ -516,7 +514,7 @@ const ActionBar = ({
           sendEmails(
             JobApplicationSections.DISQUALIFIED,
             checkList,
-            applicationsData,
+            applications,
             job,
             handleJobApplicationUpdate,
           );
@@ -603,7 +601,7 @@ export default JobApplicationsDashboard;
 export function sendEmails(
   status: string,
   checkList: Set<string>,
-  applicationsData: JobApplicationsData,
+  applications: JobApplicationsData,
   job,
   handleJobApplicationUpdate,
 ) {
@@ -611,10 +609,10 @@ export function sendEmails(
     status === JobApplicationSections.INTERVIEWING ||
     status === JobApplicationSections.DISQUALIFIED
   ) {
-    const _new = applicationsData.applications.new.list;
-    const interviewing = applicationsData.applications.interviewing.list;
-    const qualified = applicationsData.applications.qualified.list;
-    const disqualified = applicationsData.applications.disqualified.list;
+    const _new = applications['new'];
+    const interviewing = applications['interviewing'];
+    const qualified = applications['qualified'];
+    const disqualified = applications['disqualified'];
 
     const allCandidates = [
       ..._new,

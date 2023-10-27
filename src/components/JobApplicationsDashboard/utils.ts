@@ -127,19 +127,19 @@ export const getFilteredApplications = (
   }, []);
 };
 
-export const getIntactApplications = (applications: JobApplication[]) => {
-  return applications.reduce(
-    (acc, curr) => {
-      const key = intactConditionFilter(curr);
-      return { ...acc, [key]: [...acc[key], curr] };
-    },
-    {
-      [ApiLogState.FAILED]: [],
-      [ApiLogState.SUCCESS]: [],
-      [ApiLogState.PROCESSING]: [],
-    },
-  );
-};
+// export const getIntactApplications = (applications: JobApplication[]) => {
+//   return applications.reduce(
+//     (acc, curr) => {
+//       const key = intactConditionFilter(curr);
+//       return { ...acc, [key]: [...acc[key], curr] };
+//     },
+//     {
+//       [ApiLogState.FAILED]: [],
+//       [ApiLogState.SUCCESS]: [],
+//       [ApiLogState.PROCESSING]: [],
+//     },
+//   );
+// };
 
 // eslint-disable-next-line no-unused-vars
 export enum ApiLogState {

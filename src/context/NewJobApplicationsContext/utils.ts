@@ -12,6 +12,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   applications: undefined,
   job: undefined,
   handleJobApplicationRead: undefined,
+  handleJobApplicationPaginatedRead: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
@@ -96,12 +97,9 @@ export const getUpdatedJobStatus = (
     destination: JobApplicationSections;
   },
 ): JobApplication[] => {
-  return applications[sections.source].list.reduce(
-    (acc: JobApplication[], curr) => {
-      if (applicationIdSet.has(curr.application_id))
-        acc.push({ ...curr, status: sections.destination });
-      return acc;
-    },
-    [],
-  );
+  return applications[sections.source].reduce((acc: JobApplication[], curr) => {
+    if (applicationIdSet.has(curr.application_id))
+      acc.push({ ...curr, status: sections.destination });
+    return acc;
+  }, []);
 };

@@ -3,8 +3,8 @@ import { Tooltip } from '@mui/material';
 import md5 from 'blueimp-md5';
 
 import { CandidateListItem } from '@/devlink2';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
 import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';

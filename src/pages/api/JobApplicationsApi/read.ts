@@ -71,7 +71,10 @@ const handleSinglePromiseValidation = (
   status: ReadJobApplicationApi['request']['status'],
 ) => {
   if (responses.status === 'fulfilled')
-    return { data: { [status]: responses.value.data }, error: null };
+    return {
+      data: { [status]: responses.value.data },
+      error: null,
+    };
   return { data: null, error: { [status]: responses.reason } };
 };
 
@@ -118,92 +121,23 @@ const handleMultiPromiseValidation = (
   };
 };
 
-export type ReadJobApplicationApi =
-  | {
-      request: {
-        job_id: string;
-        status?: null;
-        range?: {
-          start: number;
-          end: number;
-        };
-        apiStatus?: ApiLogState;
-      };
-      response: {
-        data: {
-          [JobApplicationSections.NEW]: JobApplication[];
-          [JobApplicationSections.QUALIFIED]: JobApplication[];
-          [JobApplicationSections.INTERVIEWING]: JobApplication[];
-          [JobApplicationSections.DISQUALIFIED]: JobApplication[];
-        };
-        error: PostgrestError | null;
-      };
-    }
-  | {
-      request: {
-        job_id: string;
-        status: JobApplicationSections.NEW;
-        range?: {
-          start: number;
-          end: number;
-        };
-        apiStatus?: ApiLogState;
-      };
-      response: {
-        data: {
-          [JobApplicationSections.NEW]: JobApplication[];
-        };
-        error: PostgrestError | null;
-      };
-    }
-  | {
-      request: {
-        job_id: string;
-        status: JobApplicationSections.QUALIFIED;
-        range?: {
-          start: number;
-          end: number;
-        };
-        apiStatus?: ApiLogState;
-      };
-      response: {
-        data: {
-          [JobApplicationSections.QUALIFIED]: JobApplication[];
-        };
-        error: PostgrestError;
-      };
-    }
-  | {
-      request: {
-        job_id: string;
-        status: JobApplicationSections.INTERVIEWING;
-        range?: {
-          start: number;
-          end: number;
-        };
-        apiStatus?: ApiLogState;
-      };
-      response: {
-        data: {
-          [JobApplicationSections.INTERVIEWING]: JobApplication[];
-        };
-        error: PostgrestError;
-      };
-    }
-  | {
-      request: {
-        job_id: string;
-        status: JobApplicationSections.DISQUALIFIED;
-        range?: {
-          start: number;
-          end: number;
-        };
-        apiStatus?: ApiLogState;
-      };
-      response: {
-        data: {
-          [JobApplicationSections.DISQUALIFIED]: JobApplication[];
-        };
-        error: PostgrestError;
-      };
+export type ReadJobApplicationApi = {
+  request: {
+    job_id: string;
+    status?: JobApplicationSections;
+    range?: {
+      start: number;
+      end: number;
     };
+    apiStatus?: ApiLogState;
+  };
+  response: {
+    data: {
+      [JobApplicationSections.NEW]?: JobApplication[];
+      [JobApplicationSections.QUALIFIED]?: JobApplication[];
+      [JobApplicationSections.INTERVIEWING]?: JobApplication[];
+      [JobApplicationSections.DISQUALIFIED]?: JobApplication[];
+    };
+    error: PostgrestError;
+  };
+};

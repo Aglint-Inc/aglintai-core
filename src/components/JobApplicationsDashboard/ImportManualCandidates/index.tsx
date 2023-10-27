@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/JobApplicationsContext';
+// import { useJobApplications } from '@context/NewJobApplicationsContext';
 import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -9,7 +9,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
-import useUploadCandidate from './hooks';
+// import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 
@@ -55,10 +55,10 @@ const initialFormFields: FormEntries = {
 };
 
 const ImportManualCandidates = () => {
-  const { job, setOpenImportCandidates } = useJobApplications();
+  // const { job, setOpenImportCandidates } = useJobApplications();
   const [applicant, setApplicant] = useState(initialFormFields);
-  const [loading, setLoading] = useState(false);
-  const { handleUploadCandidate } = useUploadCandidate();
+  const [loading /*, setLoading*/] = useState(false);
+  // const { handleUploadCandidate } = useUploadCandidate();
   const handleValidate = () => {
     return Object.entries(applicant).reduce(
       (acc, [key, curr]) => {
@@ -126,30 +126,31 @@ const ImportManualCandidates = () => {
   };
 
   const handleSubmit = async () => {
-    const { newApplicant, validation } = handleValidate();
-    if (validation) {
-      setLoading(true);
-      const confirmation = await handleUploadCandidate(
-        job,
-        {
-          first_name: applicant.first_name.value,
-          last_name: applicant.last_name.value,
-          email: applicant.email.value,
-          phone: applicant.phone.value,
-          linkedin: applicant.linkedin.value,
-          job_location: job.location,
-          job_title: job.job_title,
-          company: job.company,
-          status: applicant.status.value,
-        },
-        applicant.resume.value,
-      );
-      if (confirmation) {
-        setOpenImportCandidates(false);
-        setApplicant(initialFormFields);
-      }
-      setLoading(false);
-    } else setApplicant(newApplicant);
+    const { newApplicant /*validation*/ } = handleValidate();
+    // if (validation) {
+    //   setLoading(true);
+    //   const confirmation = await handleUploadCandidate(
+    //     job,
+    //     {
+    //       first_name: applicant.first_name.value,
+    //       last_name: applicant.last_name.value,
+    //       email: applicant.email.value,
+    //       phone: applicant.phone.value,
+    //       linkedin: applicant.linkedin.value,
+    //       job_location: job.location,
+    //       job_title: job.job_title,
+    //       company: job.company,
+    //       status: applicant.status.value,
+    //     },
+    //     applicant.resume.value,
+    //   );
+    //   if (confirmation) {
+    //     setOpenImportCandidates(false);
+    //     setApplicant(initialFormFields);
+    //   }
+    //   setLoading(false);
+    // } else
+    setApplicant(newApplicant);
   };
   return (
     <Stack style={{ background: 'white' }}>

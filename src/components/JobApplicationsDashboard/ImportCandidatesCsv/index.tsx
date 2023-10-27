@@ -6,19 +6,15 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+// import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
 
 function ImportCandidatesCSV() {
-  const {
-    setOpenImportCandidates,
-    applicationsData,
-    handleJobApplicationBulkCreate,
-  } = useJobApplications();
+  // const { setOpenImportCandidates, applications } = useJobApplications();
 
   const [bulkImportdata, setbulkImportdata] = useState([]);
   const headers = [
@@ -72,26 +68,26 @@ function ImportCandidatesCSV() {
     ],
   ];
 
-  async function createCandidates(candidates) {
-    const _new = applicationsData.applications.new.list;
-    const interviewing = applicationsData.applications.interviewing.list;
-    const qualified = applicationsData.applications.qualified.list;
-    const disqualified = applicationsData.applications.disqualified.list;
-    const totalApplications = [
-      ..._new,
-      ...interviewing,
-      ...qualified,
-      ...disqualified,
-    ].map((ele) => ele.email);
-    const filteredCandidates = candidates.filter(
-      (ele: { email: string }) => !totalApplications.includes(ele.email),
-    );
-    setbulkImportdata([]);
-    setIsLoading(true);
-    await handleJobApplicationBulkCreate(filteredCandidates);
-    setOpenImportCandidates(false);
-    setIsLoading(false);
-  }
+  // async function createCandidates(candidates) {
+  //   const _new = applications['new'];
+  //   const interviewing = applications['interviewing'];
+  //   const qualified = applications['qualified'];
+  //   const disqualified = applications['disqualified'];
+  //   const totalApplications = [
+  //     ..._new,
+  //     ...interviewing,
+  //     ...qualified,
+  //     ...disqualified,
+  //   ].map((ele) => ele.email);
+  //   const filteredCandidates = candidates.filter(
+  //     (ele: { email: string }) => !totalApplications.includes(ele.email),
+  //   );
+  //   setbulkImportdata([]);
+  //   setIsLoading(true);
+  //   await handleJobApplicationBulkCreate(filteredCandidates);
+  //   setOpenImportCandidates(false);
+  //   setIsLoading(false);
+  // }
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -191,9 +187,9 @@ function ImportCandidatesCSV() {
             <CandidatesListTable importedCandidate={bulkImportdata} />{' '}
             <Stack direction={'row'} justifyContent={'flex-end'}>
               <AUIButton
-                onClick={() => {
-                  createCandidates(bulkImportdata);
-                }}
+              // onClick={() => {
+              //   createCandidates(bulkImportdata);
+              // }}
               >
                 Import
               </AUIButton>

@@ -1,8 +1,8 @@
-import { useJobApplications } from '@context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
 } from '@context/JobApplicationsContext/types';
+import { useJobApplications } from '@context/NewJobApplicationsContext';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse, InputAdornment, Stack } from '@mui/material';
