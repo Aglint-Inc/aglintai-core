@@ -80,15 +80,22 @@ const handleMultiPromiseValidation = (
     (acc, curr, i) => {
       const { data, error } = handleSinglePromiseValidation(responses[i], curr);
       if (data) {
-        if (acc.data === null) acc.data = [data];
-        else {
-          acc.data.push(data);
-        }
+        return {
+          ...acc,
+          data: {
+            ...acc.data,
+            ...data,
+          },
+        };
       } else if (error) {
-        if (acc.error === null) acc.error = [error];
-        else acc.error.push(error);
+        return {
+          ...acc,
+          error: {
+            ...acc.error,
+            ...error,
+          },
+        };
       }
-      return acc;
     },
     {
       data: null,
