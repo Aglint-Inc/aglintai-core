@@ -33,7 +33,7 @@ const handler = async (
   const responses = await Promise.allSettled([...promises]);
   const result = status
     ? handleSinglePromiseValidation(responses[0], status)
-    : await handleMultiPromiseWithCount(responses);
+    : await handleMultiPromiseValidation(responses);
   res.status(200).send(result as ReadJobApplicationApi['response']);
 };
 
@@ -102,22 +102,6 @@ const handleMultiPromiseValidation = (
       [JobApplicationSections.INTERVIEWING]: JobApplication[];
     };
     error: PostgrestError;
-  };
-};
-
-const handleMultiPromiseWithCount = async (
-  // eslint-disable-next-line no-undef
-  responses: PromiseSettledResult<{
-    data: JobApplication[];
-    error: PostgrestError;
-  }>[],
-) => {
-  const { data: d1, error: e1 } = handleMultiPromiseValidation(responses);
-  return {
-    data: {
-      applications: d1,
-    },
-    error: e1,
   };
 };
 
