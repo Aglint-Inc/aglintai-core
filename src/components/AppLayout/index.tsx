@@ -20,9 +20,9 @@ export default function AppLayout({ children }) {
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
-  const companyName = recruiter.name;
-  const logo = recruiter.logo;
-  const profileImage = recruiterUser.profile_image;
+  const companyName = recruiter?.name;
+  const logo = recruiter?.logo;
+  const profileImage = recruiterUser?.profile_image;
 
   useEffect(() => {
     if (windowSize.innerWidth > 991) {

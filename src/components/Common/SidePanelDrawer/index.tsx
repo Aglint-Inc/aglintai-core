@@ -22,6 +22,7 @@ function SidePanelDrawer({
       sx={{
         zIndex: Number(zIndex),
       }}
+      disableEscapeKeyDown
       anchor={dir}
       open={openSidePanelDrawer}
       onClose={() => {

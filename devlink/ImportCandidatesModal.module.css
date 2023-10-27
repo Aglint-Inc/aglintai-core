@@ -268,3 +268,7 @@
 .slot-import {
   height: 400px;
 }
+
+.slot-import.height-350 {
+  height: 350px;
+}

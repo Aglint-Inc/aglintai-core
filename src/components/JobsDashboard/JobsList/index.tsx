@@ -1,14 +1,16 @@
+import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { JobEmptyState, JobsListingCard } from '@/devlink';
+import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { ApplicationData } from '@/src/context/JobsContext/types';
 import { JobType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {
   calculateTimeDifference,
   filterApplicationsByStatus,
@@ -46,6 +48,21 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
           <>
             <ScrollList uniqueKey={ind}>
               <JobsListingCard
+                slotAtsBadge={
+                  job.posted_by == POSTED_BY.LEVER ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/lever.png'
+                          sx={{ width: '100%', height: '14px' }}
+                        />
+                      }
+                    />
+                  ) : (
+                    ''
+                  )
+                }
                 key={ind}
                 textJobRole={job.job_title}
                 textCompanyLocation={`${job.company}, ${job.location}`}

@@ -1,6 +1,8 @@
 .lever-step-1-wrappers {
+  width: 706px;
+  height: 710px;
   max-width: 706px;
-  padding: 30px;
+  padding: 30px 20px;
   border-radius: 10px;
 }
 
@@ -63,4 +65,8 @@
 
 .icons.pause {
   display: none;
+}
+
+.div-block-536 {
+  height: 590px;
 }

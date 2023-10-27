@@ -1,6 +1,10 @@
 .fetching-job-wrappers {
   display: flex;
+  height: 590px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 22px;
   grid-row-gap: 22px;

@@ -1,21 +1,13 @@
 .ats-wrappers-outer {
   padding: 22px 0px 0px;
-  border: 1px solid #e9ebed;
+  border: 1px none #e9ebed;
   border-radius: 10px;
-}
-
-.margin-24-lr {
-  margin-right: 24px;
-  margin-left: 24px;
 }
 
 .ats-import-wrappers {
   position: relative;
-
   display: flex;
   margin-top: 24px;
-  padding-right: 24px;
-  padding-left: 24px;
   justify-content: space-between;
   align-items: center;
 }
@@ -380,8 +372,6 @@
 .ats-search-wrappers {
   display: flex;
   margin-top: 18px;
-  padding-right: 24px;
-  padding-left: 24px;
   justify-content: space-between;
 }
 
@@ -431,6 +421,8 @@
 
 .slot-ats-cards-wrappers {
   display: flex;
+  overflow: scroll;
+  max-height: 420px;
   margin-top: 34px;
   flex-direction: column;
 }

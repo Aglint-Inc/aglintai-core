@@ -18,8 +18,11 @@ let animationFrameId;
 let timmer;
 let tempTime = 0;
 
+//video
+
 const context = [];
 const totalNumberOfQuestions = [];
+const video_Ids = [];
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -46,20 +49,42 @@ function InterviewContextProvider({ children }) {
   useEffect(() => {
     if (Object.keys(jobDetails).length) {
       const jsonData = jobDetails?.screening_questions[0];
-
       // Extract and format the questions
       for (const category in jsonData) {
         // eslint-disable-next-line security/detect-object-injection
         const questions = jsonData[category].questions;
+        // const videoIds = jsonData[category].questions;
+        // console.log(videoIds, category);
         for (const question of questions) {
+          if (question?.video_id) {
+            video_Ids.push(question?.video_id);
+          }
+
+          // console.log(question.video_id);
           totalNumberOfQuestions.push(question.question);
         }
       }
     }
+    if (router?.query?.id && video_Ids.length === 0) {
+      setVideoAssessment(false);
+    } else {
+      setVideoAssessment(true);
+    }
+
+    video_Ids.forEach(async (ele) => {
+      const { data, error } = await supabase
+        .from('ai_videos')
+        .select()
+        .eq('video_id', ele);
+      if (!error) {
+        setVideo_Urls((pre) => [...pre, data[0]?.file_url + data[0]?.video_id]);
+        // console.log(data[0].file_url + data[0].video_id, ele);
+      }
+    });
   }, [jobDetails]);
 
   const [openSidePanelDrawer, setOpenSidePanelDrawer] = useState(false);
-
+  const [videoAssessment, setVideoAssessment] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [loadingRes, setLoadingRes] = useState(false);
 
@@ -81,6 +106,12 @@ function InterviewContextProvider({ children }) {
   const [speaking, setSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
   const senderRef = useRef();
+  const videoRef = useRef();
+
+  const [videoLoad, setVideoLoad] = useState(true);
+
+  // video
+  const [video_Urls, setVideo_Urls] = useState([]);
 
   function startTimer() {
     timmer = setInterval(updateTimer, 1000); // Start the timer with a 1-second interval
@@ -268,6 +299,118 @@ function InterviewContextProvider({ children }) {
     } catch (error) {
       setLoadingRes(false);
       return error;
+    }
+  }
+
+  async function startVideoInterview() {
+    const timeforMicPer = setTimeout(() => {
+      setAllowMic(true);
+      //   document.getElementById('open-mic').click();
+    }, 1000);
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then(async () => {
+        // Permission granted
+        setAllowMic(false);
+        setOpenSidePanelDrawer(true);
+        clearTimeout(timeforMicPer);
+        // startTimer();
+        setSpeaking(true);
+
+        context.push({
+          role: 'assistant',
+          content: totalNumberOfQuestions[Number(questionIndex)],
+        });
+
+        setLoadingRes(false);
+        setConversations((pre) => [
+          ...pre,
+          {
+            role: 'assistant',
+            content: totalNumberOfQuestions[Number(questionIndex)],
+            userRole: '',
+            userContent: '',
+            userVoice: '',
+            aiAnswer: '',
+            aiVoice: ``,
+          },
+        ]);
+      })
+      .catch(() => {
+        clearTimeout(timeforMicPer);
+        setAllowMic(true);
+      })
+      .finally(() => {
+        clearTimeout(timeforMicPer);
+      });
+  }
+  function handleVideoPlay() {
+    setSpeaking(true);
+    stopListening();
+  }
+  function handleVideoPause() {
+    stopListening();
+    setSpeaking(false);
+  }
+  function handleVideoEnd() {
+    startRecording();
+
+    SpeechRecognition.startListening({
+      continuous: true,
+    });
+
+    setSpeaking(false);
+  }
+  async function submitVideoAnswers() {
+    const userText = senderRef?.current?.value;
+    if (userText) {
+      senderRef.current.value = '';
+      setSpeaking(true);
+
+      audioElement = null;
+      context.push({
+        role: 'user',
+        content: userText,
+      });
+      setConversations((pre) => {
+        pre[conversations.length - 1].userRole = 'You';
+        pre[conversations.length - 1].userContent = userText;
+        return [...pre];
+      });
+
+      stopRecording();
+      SpeechRecognition.abortListening();
+      SpeechRecognition.stopListening();
+      resetTranscript();
+      setLoadingRes(true);
+      if (totalNumberOfQuestions.length === questionIndex + 1) {
+        setOpenEndInterview(true);
+        setOpenThanksPage(true);
+        getFeedback();
+        return null;
+      } else {
+        setQuestionIndex((pre) => pre + 1);
+        context.push({
+          role: 'assistant',
+          content: totalNumberOfQuestions[Number(questionIndex + 1)],
+        });
+      }
+
+      setLoadingRes(false);
+      setConversations((pre) => [
+        ...pre,
+        {
+          role: 'assistant',
+          content: totalNumberOfQuestions[Number(questionIndex + 1)],
+          userRole: '',
+          userContent: '',
+          userVoice: '',
+          aiAnswer: '',
+          aiVoice: ``,
+        },
+      ]);
+    } else {
+      toast.warning('Please provide your answer!');
     }
   }
 
@@ -504,6 +647,20 @@ function InterviewContextProvider({ children }) {
         setOpenEndInterview,
 
         character,
+        startVideoInterview,
+        submitVideoAnswers,
+
+        video_Ids,
+        video_Urls,
+
+        setVideo_Urls,
+        videoRef,
+        videoLoad,
+        setVideoLoad,
+        handleVideoEnd,
+        handleVideoPlay,
+        handleVideoPause,
+        videoAssessment,
       }}
     >
       {children}

@@ -4,16 +4,14 @@ import { useEffect, useState } from 'react';
 import { InterviewCandidateScreen } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
-import { ActiveVoice } from '../../Components/ActiveVoice';
-import CameraHolder from '../../Components/CameraHolder';
+import { ActiveVoice } from '../../../Components/ActiveVoice';
+import CameraHolder from '../../../Components/CameraHolder';
 function VideoCandidatePanel() {
   const {
     getSecond,
     getminutes,
     transcript,
     submitVideoAnswers,
-    submitAnswers,
-    videoAssessment,
     senderRef,
     handleListing,
     listening,
@@ -164,8 +162,7 @@ function VideoCandidatePanel() {
         isMicVisible={!listening}
         onClickSubmit={{
           onClick: () => {
-            if (videoAssessment) submitVideoAnswers();
-            else submitAnswers();
+            submitVideoAnswers();
           },
         }}
       />
