@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { LoadingJobsAts } from "./LoadingJobsAts";
 import * as _utils from "./utils";
 import _styles from "./LeverModal.module.css";
 
@@ -40,7 +41,7 @@ export function LeverModal({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-536")} tag="div">
-        {slotApiKey}
+        {slotApiKey ?? <LoadingJobsAts />}
       </_Builtin.Block>
     </_Component>
   );

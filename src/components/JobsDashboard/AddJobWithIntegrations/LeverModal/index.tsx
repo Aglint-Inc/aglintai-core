@@ -179,7 +179,11 @@ export function LeverModalComp({ state, handleClose, setState }) {
         ) : state === STATE_LEVER_DIALOG.FETCHING ? (
           <LeverFetching
             slotLottie={
-              <Stack height={'100px'} style={{ transform: 'rotate(270deg)' }}>
+              <Stack
+                height={'100px'}
+                style={{ transform: 'rotate(270deg)' }}
+                width={'100px'}
+              >
                 <FetchingJobsLever />
               </Stack>
             }
