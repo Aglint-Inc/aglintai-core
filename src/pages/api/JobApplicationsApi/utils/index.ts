@@ -22,19 +22,27 @@ export const deleteNewJobApplicationDbAction = async (
 export const readNewJobApplicationDbAction = async (
   job_id: string,
   status: JobApplicationSections,
-  readFrom?: number,
+  range?: {
+    start: number;
+    end: number;
+  } | null,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
-  const start = readFrom ?? 0;
-  const end = start + 99;
-  const { data, error } = await supabase
-    .from('job_applications')
-    .select('*')
-    .eq('job_id', job_id)
-    .eq('status', status)
-    .range(start, end)
-    .abortSignal(controller.signal);
+  const { data, error } = range
+    ? await supabase
+        .from('job_applications')
+        .select('*')
+        .eq('job_id', job_id)
+        .eq('status', status)
+        .range(range.start, range.end)
+        .abortSignal(controller.signal)
+    : await supabase
+        .from('job_applications')
+        .select('*')
+        .eq('job_id', job_id)
+        .eq('status', status)
+        .abortSignal(controller.signal);
   return { data, error };
 };
 

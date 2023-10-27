@@ -13,11 +13,23 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ReadJobApplicationApi['response']>,
 ) => {
-  const { job_id, status, readFrom } =
+  const { job_id, status, range } =
     req.body as ReadJobApplicationApi['request'];
+  if (
+    !job_id ||
+    (range &&
+      (typeof range.start !== 'number' ||
+        range.start < 0 ||
+        typeof range.end !== 'number' ||
+        range.end < range.start))
+  )
+    res.status(400).send({
+      data: null,
+      error: { message: 'Invalid parameters' },
+    } as ReadJobApplicationApi['response']);
   const promises = status
-    ? createSinglePromise(job_id, status, readFrom ?? null)
-    : createMultiPromise(job_id, readFrom ?? null);
+    ? createSinglePromise(job_id, status, range ?? null)
+    : createMultiPromise(job_id, range ?? null);
   const responses = await Promise.allSettled([...promises]);
   const result = status
     ? handleSinglePromiseValidation(responses[0], status)
@@ -30,17 +42,17 @@ export default handler;
 const createSinglePromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
   status: ReadJobApplicationApi['request']['status'],
-  readFrom?: ReadJobApplicationApi['request']['readFrom'],
+  range?: ReadJobApplicationApi['request']['range'],
 ) => {
-  return [readNewJobApplicationDbAction(job_id, status, readFrom ?? null)];
+  return [readNewJobApplicationDbAction(job_id, status, range ?? null)];
 };
 
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
-  readFrom?: ReadJobApplicationApi['request']['readFrom'],
+  range?: ReadJobApplicationApi['request']['range'],
 ) => {
   return Object.values(JobApplicationSections).map((status) =>
-    readNewJobApplicationDbAction(job_id, status, readFrom ?? null),
+    readNewJobApplicationDbAction(job_id, status, range ?? null),
   );
 };
 
@@ -114,7 +126,10 @@ export type ReadJobApplicationApi =
       request: {
         job_id: string;
         status: null;
-        readFrom?: number;
+        range?: {
+          start: number;
+          end: number;
+        };
       };
       response: {
         data: {
@@ -132,7 +147,10 @@ export type ReadJobApplicationApi =
       request: {
         job_id: string;
         status: JobApplicationSections.NEW;
-        readFrom?: number;
+        range?: {
+          start: number;
+          end: number;
+        };
       };
       response: {
         data: {
@@ -145,7 +163,10 @@ export type ReadJobApplicationApi =
       request: {
         job_id: string;
         status: JobApplicationSections.QUALIFIED;
-        readFrom?: number;
+        range?: {
+          start: number;
+          end: number;
+        };
       };
       response: {
         data: {
@@ -158,7 +179,10 @@ export type ReadJobApplicationApi =
       request: {
         job_id: string;
         status: JobApplicationSections.INTERVIEWING;
-        readFrom?: number;
+        range?: {
+          start: number;
+          end: number;
+        };
       };
       response: {
         data: {
@@ -171,7 +195,10 @@ export type ReadJobApplicationApi =
       request: {
         job_id: string;
         status: JobApplicationSections.DISQUALIFIED;
-        readFrom?: number;
+        range?: {
+          start: number;
+          end: number;
+        };
       };
       response: {
         data: {
