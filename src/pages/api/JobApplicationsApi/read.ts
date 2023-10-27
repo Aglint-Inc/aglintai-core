@@ -7,11 +7,7 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 
-import {
-  getJobApplicationCount,
-  GetJobApplicationCountResponse,
-  readNewJobApplicationDbAction,
-} from './utils';
+import { readNewJobApplicationDbAction } from './utils';
 
 const handler = async (
   req: NextApiRequest,
@@ -105,22 +101,11 @@ const handleMultiPromiseWithCount = async (
   }>[],
 ) => {
   const { data: d1, error: e1 } = handleMultiPromiseValidation(responses);
-  const idList = Object.values(d1).reduce((acc, curr) => {
-    return [...acc, ...curr.map((application) => application.application_id)];
-  }, []) as string[];
-  const { data: d2, error: e2 } = await getJobApplicationCount(idList);
   return {
     data: {
       applications: d1,
-      count: d2,
     },
-    error:
-      e1 || e2
-        ? {
-            applications: e1,
-            count: e2,
-          }
-        : null,
+    error: e1,
   };
 };
 
@@ -139,12 +124,8 @@ export type ReadJobApplicationApi =
             [JobApplicationSections.INTERVIEWING]: JobApplication[];
             [JobApplicationSections.DISQUALIFIED]: JobApplication[];
           };
-          count: GetJobApplicationCountResponse['data'];
         };
-        error: {
-          applications: PostgrestError;
-          count: PostgrestError;
-        } | null;
+        error: PostgrestError | null;
       };
     }
   | {
@@ -157,7 +138,7 @@ export type ReadJobApplicationApi =
         data: {
           [JobApplicationSections.NEW]: JobApplication[];
         };
-        error: PostgrestError;
+        error: PostgrestError | null;
       };
     }
   | {
