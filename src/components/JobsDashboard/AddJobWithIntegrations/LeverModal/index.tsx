@@ -267,21 +267,27 @@ export function LeverModalComp({ state, handleClose, setState }) {
                               }
                               onClickCheck={{
                                 onClick: () => {
-                                  if (
-                                    selectedLeverPostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedLeverPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
+                                  if (selectedLeverPostings.length < 5) {
+                                    if (
+                                      selectedLeverPostings?.some(
+                                        (p) => p.id === post.id,
+                                      )
+                                    ) {
+                                      // If the object is already in the array, remove it
+                                      setSelectedLeverPostings((prev) =>
+                                        prev.filter((p) => p.id !== post.id),
+                                      );
+                                    } else {
+                                      // If the object is not in the array, add it
+                                      setSelectedLeverPostings((prev) => [
+                                        ...prev,
+                                        post,
+                                      ]);
+                                    }
                                   } else {
-                                    // If the object is not in the array, add it
-                                    setSelectedLeverPostings((prev) => [
-                                      ...prev,
-                                      post,
-                                    ]);
+                                    toast.error(
+                                      'You can select maximum 5 jobs at a time',
+                                    );
                                   }
                                 },
                               }}

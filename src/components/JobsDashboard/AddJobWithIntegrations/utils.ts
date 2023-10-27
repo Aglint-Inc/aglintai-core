@@ -61,7 +61,7 @@ export function extractLinkedInURL(arr) {
 }
 
 const createLeverReference = async (reference) => {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('lever_reference')
     .insert(reference)
     .select();
@@ -70,7 +70,15 @@ const createLeverReference = async (reference) => {
     toast.error(
       'Sorry unable to import. Please try again later or contact support.',
     );
+  } else {
+    createGoogleTaskQueue(data);
   }
+};
+
+const createGoogleTaskQueue = async (dbRecords) => {
+  await axios.post('/api/lever/createQueue', {
+    records: dbRecords,
+  });
 };
 
 const fetchAllCandidates = async (post_id, apiKey) => {
