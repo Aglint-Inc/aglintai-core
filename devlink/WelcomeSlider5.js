@@ -136,7 +136,12 @@ export function WelcomeSlider5({
                 tag="div"
                 {...onClickSave}
               >
-                <_Builtin.Block tag="div">{"Save & Continue"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-no-wrap")}
+                  tag="div"
+                >
+                  {"Save & Continue"}
+                </_Builtin.Block>
               </_Builtin.Block>
               {isSaveDisableAddCompanyLogo ? (
                 <_Builtin.Block

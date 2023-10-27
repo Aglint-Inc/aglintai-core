@@ -1,0 +1,33 @@
+.int-ts-transcript-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.int-ts-transcript-header-block {
+  display: flex;
+  padding: 4px 12px 4px 4px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 100px;
+
+  background-color: #f8f9f9;
+}
+
+.int-ts-image-block {
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  min-width: 24px;
+
+  border-radius: 100px;
+}
+
+.text-grey-700-2 {
+  color: hsla(205.26315789473685, 11.52%, 32.35%, 1.00);
+}

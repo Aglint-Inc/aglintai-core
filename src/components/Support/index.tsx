@@ -9,7 +9,9 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import { AllTickets } from '@/devlink/AllTickets';
 import { Assignee } from '@/devlink/Assignee';
@@ -45,6 +47,7 @@ function Support() {
     setOpenTicketIndex,
     allChecked,
     setAllChecked,
+    filters,
     sort,
     setSort,
     sortOrder,
@@ -53,7 +56,17 @@ function Support() {
     setSearch,
     randomColors,
   } = useSupportContext();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (router.isReady) {
+      if (!router.query.status) {
+        router.push(`?status=all`, undefined, {
+          shallow: true,
+        });
+      }
+    }
+  }, [router.isReady]);
   return (
     <>
       <AllTickets
@@ -175,6 +188,7 @@ function Support() {
             }}
           />
         }
+        textHeaderStatus={capitalize(filters.status)}
       />
       <Drawer
         open={Boolean(openTicket)}
@@ -212,9 +226,11 @@ const Ticket = ({
   const [checked, setChecked] = useState(false);
   const assignedTo =
     ticket &&
-    allAssignee.find((item) => {
-      return ticket.assign_to === item.id;
-    });
+    allAssignee
+      .find((item) => ticket.support_group_id === item.recruiter.id)
+      ?.employees.find((employee) => {
+        return ticket.assign_to === employee.user_id;
+      });
   return (
     <InboxTickets
       key={ticket.id}
@@ -234,8 +250,10 @@ const Ticket = ({
       }
       slotAssignee={
         <AssignmentComponent
-          assign_to={capitalize(assignedTo?.title || '')}
-          imageUrl={assignedTo?.image}
+          assign_to={capitalize(
+            `${assignedTo?.first_name || ''} ${assignedTo?.last_name || ''}`,
+          )}
+          imageUrl={assignedTo?.profile_image}
           // @ts-ignore
           setAssignedTo={(assign_to) => updateTicket({ assign_to }, ticket.id)}
         />

@@ -6,6 +6,7 @@ import { JobTypeDB } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { JobFormState } from './JobPostFormProvider';
+import { scoreWheelDependencies } from '../../Common/ScoreWheel';
 
 export const getSeedJobFormData = (
   recruiter?: Database['public']['Tables']['recruiter']['Row'],
@@ -17,7 +18,7 @@ export const getSeedJobFormData = (
     jobPostId: uuidv4(),
     syncStatus: '',
     formType: 'new',
-    slideNo: 0,
+    currSlide: 'details',
     formFields: {
       company: '',
       jobLocation: '',
@@ -38,74 +39,60 @@ export const getSeedJobFormData = (
           id: nanoid(),
           copy: 'Skill',
           questions: [],
-          value: false,
         },
         behavior: {
           id: nanoid(),
           copy: 'Behavior',
-          value: false,
+
           questions: [],
         },
         communication: {
           id: nanoid(),
           copy: 'Communication',
           questions: [],
-          value: false,
         },
         performance: {
           id: nanoid(),
           copy: 'Performance',
           questions: [],
-          value: false,
         },
         education: {
           id: nanoid(),
           copy: 'Education',
           questions: [],
-          value: false,
         },
         general: {
           id: nanoid(),
           copy: 'General',
           questions: [],
-          value: false,
         },
       },
-      screeningConfig: {
-        feedbackVisible: false,
-        screening: {
-          isSendInterviewToAll: false,
-          minNoResumeScore: 50,
-        },
-        useAglintMatchingAlgo: true,
-        shortlist: {
-          interviewScore: true,
-          minInterviewScore: 80,
-        },
-        screeningEmail: {
-          date: new Date().toISOString(),
-          isImmediate: true,
-          emailTemplates: {},
-        },
+      screeningEmail: {
+        date: new Date().toISOString(),
+        isImmediate: true,
+        emailTemplates: {},
       },
       newScreeningConfig: {
         screening: {
           qualificationRange: null,
-          isManual: false,
+          isManual: true,
         },
         interview: {
           qualificationRange: null,
-          isManual: false,
+          isManual: true,
         },
         interviewMail: {
           timestamp: null,
-          isManual: false,
+          isManual: true,
         },
         disqualifiedMail: {
           timestamp: null,
-          isManual: false,
+          isManual: true,
         },
         feedbackVisible: false,
+      },
+      resumeScoreSettings: {
+        ...scoreWheelDependencies.initialScoreWheelWeights,
       },
       recruiterId: '',
     },
@@ -181,13 +168,13 @@ export const getSeedJobFormData = (
     seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
 
     seedFormState.formFields.defaultAddress = defaultAddress;
-    seedFormState.formFields.screeningConfig.screeningEmail = {
-      ...seedFormState.formFields.screeningConfig.screeningEmail,
+    seedFormState.formFields.screeningEmail = {
+      ...seedFormState.formFields.screeningEmail,
       emailTemplates: get(
         recruiter,
         'email_template',
         {},
-      ) as JobFormState['formFields']['screeningConfig']['screeningEmail']['emailTemplates'],
+      ) as JobFormState['formFields']['screeningEmail']['emailTemplates'],
     };
     seedFormState.formFields.defaultDepartments = get(
       recruiter,
@@ -209,7 +196,7 @@ export const dbToClientjobPostForm = (
     createdAt: jobPost.created_at,
     formType: 'edit',
     jobPostId: jobPost.id,
-    slideNo: 1,
+    currSlide: 'details',
     updatedAt: '',
     formFields: {
       ...seedData.formFields,
@@ -294,39 +281,11 @@ export const dbToClientjobPostForm = (
           seedData.formFields.newScreeningConfig.feedbackVisible,
         ) as boolean,
       },
-      screeningConfig: {
-        screening: {
-          ...get(
-            jobPost,
-            'screening_setting.screening',
-            seedData.formFields.screeningConfig.screening,
-          ),
-        },
-        shortlist: {
-          ...get(
-            jobPost,
-            'screening_setting.shortlist',
-            seedData.formFields.screeningConfig.shortlist,
-          ),
-        },
-        feedbackVisible: get(
-          jobPost,
-          'screening_setting.feedbackVisible',
-          seedData.formFields.screeningConfig.feedbackVisible,
-        ),
-        useAglintMatchingAlgo: get(
-          jobPost,
-          'screening_setting.useAglintMatchingAlgo',
-          seedData.formFields.screeningConfig.useAglintMatchingAlgo,
-        ),
-        screeningEmail: {
-          ...get(
-            jobPost,
-            'screening_setting.screeningEmail',
-            seedData.formFields.screeningConfig.screeningEmail,
-          ),
-          emailTemplates: get(jobPost, 'email_template', {}) as any,
-        },
+
+      resumeScoreSettings: {
+        ...(get(jobPost, 'parameter_weights', {
+          ...scoreWheelDependencies.initialScoreWheelWeights,
+        }) as JobFormState['formFields']['resumeScoreSettings']),
       },
     },
   };

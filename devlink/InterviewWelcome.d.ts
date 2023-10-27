@@ -3,9 +3,12 @@ import * as Types from "./types";
 
 declare function InterviewWelcome(props: {
   as?: React.ElementType;
-  slotCompanyLogo?: Types.Devlink.Slot;
+  slotLogo?: Types.Devlink.Slot;
   textRole?: React.ReactNode;
   textCompany?: React.ReactNode;
-  onClickStartInterview?: Types.Devlink.RuntimeProps;
+  onClickStart?: Types.Devlink.RuntimeProps;
   onClickAboutCompany?: Types.Devlink.RuntimeProps;
+  onClickSupport?: Types.Devlink.RuntimeProps;
+  textCompanyDescription?: React.ReactNode;
+  isAboutVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

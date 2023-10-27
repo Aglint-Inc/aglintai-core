@@ -2,6 +2,7 @@ import { palette } from '@context/Theme/Theme';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { supabase } from '@utils/supabaseClient';
+import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -10,6 +11,7 @@ import { LoaderSvg } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 function ImageUpload({
   setImage,
@@ -17,13 +19,16 @@ function ImageUpload({
   size,
   table,
   handleUpdateProfile = null,
-}: {
+  dynamic=false,
+  }: {
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
   size: number;
   table: 'company-logo' | 'recruiter-user';
   handleUpdateProfile?: any;
+  dynamic?:boolean;
 }) {
+  const router = useRouter();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
   const [fileSizeError, setFileSizeError] = useState('');
   const [loading, setLoading] = useState<boolean>();
@@ -82,23 +87,32 @@ function ImageUpload({
             <Avatar
               src={image}
               sx={{
-                width: size,
-                height: size,
+                width: dynamic?'100%':size,
+                height: dynamic?'100%': size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 },
                 textTransform: 'capitalize',
                 bgcolor: 'transparent',
               }}
               variant='square'
             >
-              <Icon
-                variant='CompanyOutlinedBig'
-                height='32'
-                width='32'
-                color='#87929D'
-              />
+              {router.route.includes(pageRoutes.PROFILE) ? (
+                <Icon
+                  variant='UserSolo'
+                  height='32'
+                  width='32'
+                  color='#87929D'
+                />
+              ) : (
+                <Icon
+                  variant='CompanyOutlinedBig'
+                  height='32'
+                  width='32'
+                  color='#87929D'
+                />
+              )}
             </Avatar>
             {image && (
               <Stack position={'absolute'} bottom={-10} left={26}></Stack>
@@ -209,7 +223,7 @@ function ImageUpload({
                         e.stopPropagation();
                         if (setImage) setImage(null);
                         if (handleUpdateProfile)
-                          await handleUpdateProfile({ image_url: null });
+                          await handleUpdateProfile({ profile_image: null });
                       }}
                       sx={{ color: '#fff', cursor: 'pointer' }}
                     >

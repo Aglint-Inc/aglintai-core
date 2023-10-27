@@ -11,7 +11,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';
-import { handleEmail, handlePassword, stepObj } from './utils';
+import { createSampleJobCandidate, handleEmail, handlePassword, stepObj } from './utils';
 import Icon from '../../Common/Icons/Icon';
 
 const SlideTwoSignUp = () => {
@@ -124,6 +124,7 @@ const SlideTwoSignUp = () => {
         .select();
       if (!error) {
         setRecruiter(data[0] as RecruiterType);
+        await createSampleJobCandidate(data[0].id);
         const { error: erroruser } = await supabase
           .from('recruiter_user')
           .insert({
@@ -181,6 +182,8 @@ const SlideTwoSignUp = () => {
         toast.error(err.message);
       }
   };
+
+ 
 
   return (
     <>

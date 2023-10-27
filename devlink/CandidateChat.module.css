@@ -210,6 +210,30 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
@@ -306,8 +330,16 @@
   color: var(--red600-953350ec);
 }
 
+.text-sm.text-grey-500.width-ticket-d {
+  width: 49.91667175292969px;
+}
+
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
 }
 
 .div-block-448 {
@@ -342,7 +374,8 @@
 
 .chat-inbox-wrappers {
   overflow: scroll;
-  min-height: 58vh;
+  height: 65vh;
   padding-right: 10px;
+  padding-bottom: 20px;
   padding-left: 10px;
 }

@@ -18,10 +18,9 @@ const Password = ({ passwordRef, label, error, onChange }) => {
       required
       margin='normal'
       fullWidth
-      variant='outlined'
       name='password'
       type={showPassword ? 'text' : 'password'}
-      placeholder={label || 'Password'}
+      label={label || 'Password'}
       autoComplete='current-password'
       id='password'
       onChange={onChange}

@@ -1,6 +1,9 @@
 .cj-rt-generate-block-2 {
   display: flex;
   overflow: hidden;
+  margin-right: 17px;
+  margin-bottom: 15px;
+  margin-left: 17px;
   padding: 0px 16px 8px;
   flex-direction: column;
   align-items: flex-start;
@@ -98,7 +101,7 @@
 }
 
 .div-check-mark {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .div-block-337 {
@@ -165,6 +168,7 @@
 .content-11.active {
   border: 1px solid var(--kale800-682c1482);
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .vectors-wrapper-55 {

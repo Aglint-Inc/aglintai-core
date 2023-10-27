@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { TeamListItem } from "./TeamListItem";
 import * as _utils from "./utils";
 import _styles from "./TeamUsersList.module.css";
 
@@ -10,6 +11,8 @@ export function TeamUsersList({
   slotPendingInviteBtn,
   slotInviteBtn,
   slotUsersRoleList,
+  onClickViewPendingInvites = {},
+  textPending = "You currently have two pending invites awaiting your response.",
 }) {
   return (
     <_Component
@@ -74,12 +77,20 @@ export function TeamUsersList({
                   className={_utils.cx(_styles, "text-yellow-800")}
                   tag="div"
                 >
-                  {
-                    "You currently have two pending invites awaiting your response."
-                  }
+                  {textPending}
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{slotPendingInviteBtn}</_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "button-dark-yellow-outline")}
+                  tag="div"
+                  {...onClickViewPendingInvites}
+                >
+                  <_Builtin.Block tag="div">
+                    {"View pending invites"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
@@ -138,7 +149,7 @@ export function TeamUsersList({
                   className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
-                  {"User"}
+                  {"Status"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -180,7 +191,7 @@ export function TeamUsersList({
               className={_utils.cx(_styles, "div-block-464")}
               tag="div"
             >
-              {slotTeamList}
+              {slotTeamList ?? <TeamListItem />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -201,7 +212,7 @@ export function TeamUsersList({
               className={_utils.cx(_styles, "text-lg", "fw-semibold")}
               tag="div"
             >
-              {"User Roles"}
+              {"Roles"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}

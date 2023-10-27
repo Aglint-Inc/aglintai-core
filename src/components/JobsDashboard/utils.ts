@@ -43,7 +43,7 @@ export const fetchApplications = (jobIds) => {
 
 export function filterApplicationsByStatus(
   jobId: string,
-  applications: JobApplcationDB[],
+  applications: any,
   statusToFilter?: string,
 ): JobApplcationDB[] {
   if (statusToFilter) {
@@ -81,18 +81,22 @@ export function searchJobs(jobs, searchString) {
   const search = searchString.toLowerCase();
 
   // Use the filter method to search for matching job titles or statuses
-  const filteredData = jobs
-    .filter((ele) => ele.job_title)
-    .filter((item) => {
-      const jobTitle = item.job_title.toLowerCase();
-      // const status = item.status.toLowerCase();
 
-      // Check if the job title or status contains the search string
-      return jobTitle.includes(search);
-      // || status.includes(search);
-    });
+  if (search) {
+    const filteredData = jobs
+      .filter((ele) => ele.job_title)
+      .filter((item) => {
+        const jobTitle = item.job_title.toLowerCase();
+        // const status = item.status.toLowerCase();
 
-  return filteredData;
+        // Check if the job title or status contains the search string
+        return jobTitle.includes(search);
+        // || status.includes(search);
+      });
+    return filteredData;
+  } else {
+    return jobs;
+  }
 }
 
 export function sendEmail() {

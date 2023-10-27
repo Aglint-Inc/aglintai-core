@@ -13,4 +13,7 @@ declare function ScreeningQuestions(props: {
   slotSkillMenu?: Types.Devlink.Slot;
   slotScreeningRight?: Types.Devlink.Slot;
   textCountActiveQuestion?: React.ReactNode;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isAddJob?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

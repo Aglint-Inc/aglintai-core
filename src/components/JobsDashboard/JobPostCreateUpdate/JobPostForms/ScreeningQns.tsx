@@ -1,28 +1,27 @@
-import { Collapse, Switch } from '@mui/material';
+import { Collapse } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import axios from 'axios';
 import { htmlToText } from 'html-to-text';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 
 import {
   AddSocialLink,
   GenerateQuestion,
-  NewJobStep3,
   QuestionSkeletonLoader,
   ScreeningQuestionMenu,
   ScreeningQuestions,
   SkillsQuestionCard,
   SkillsQuestionInput,
-  SkillsWithoutQuestionToggle,
 } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
+import { JobFormErrorParams } from '@/src/components/Job/JobForm';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { generateInterviewQns } from '@/src/utils/prompts/addNewJob/generateInterviewQns';
 
-import { JobFormErrorParams } from '../CreateFlow';
 import {
   FormJobType,
   InterviewConfigType,
@@ -30,58 +29,9 @@ import {
   useJobForm,
 } from '../JobPostFormProvider';
 
-const ScreeningQns = ({ setFormError }) => {
-  const {
-    jobForm: { formFields, formType },
-    handleUpdateFormFields,
-  } = useJobForm();
-
-  // const [] = useState();
-  const isInterviewAiPowered =
-    get(formFields, 'interviewType', '') === 'ai-powered';
-
-  return (
-    <NewJobStep3
-      isHeaderVisible={formType === 'new'}
-      isAiPoweredScreeningChecked={isInterviewAiPowered}
-      onClickAiPoweredScreening={{
-        onClick: () => {
-          handleUpdateFormFields({
-            path: 'interviewType',
-            value: 'ai-powered',
-          });
-        },
-      }}
-      onClickStandardScreening={{
-        onClick: () => {
-          handleUpdateFormFields({
-            path: 'interviewType',
-            value: 'standard',
-          });
-        },
-      }}
-      isStandardScreeningChecked={!isInterviewAiPowered}
-      howItWorksLink={{
-        href: 'https://aglint-ui-e809fff7c40021d-842cb1e45b3df.webflow.io/interview-skill',
-      }}
-      isHowItWorksVisible
-      slotSkillsQuestion={
-        <>
-          {isInterviewAiPowered ? (
-            <AiScreeningConfigParams />
-          ) : (
-            <StandardScreeningParams setFormError={setFormError} />
-          )}
-        </>
-      }
-    />
-  );
-};
-
-export default ScreeningQns;
 // ;
-const StandardScreeningParams = ({ setFormError }) => {
-  const { jobForm } = useJobForm();
+const ScreeningQns = ({ setFormError }) => {
+  const { jobForm, dispatch } = useJobForm();
   const [activeCateg, setActiveCateg] = useState<InterviewParam>('skill');
   const params = get(
     jobForm,
@@ -110,129 +60,92 @@ const StandardScreeningParams = ({ setFormError }) => {
             <ScreeningQuestionMenu
               textSkills={'Skills'}
               isSkillMenuActive={activeCateg === 'skill'}
-              isSkillOn={get(params, `${'skill'}.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('skill');
                 },
               }}
               textNoofQuestions={
-                get(params, 'skill.questions', []).length + 'Questions'
+                get(params, 'skill.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
               textSkills={'Behaviour'}
               isSkillMenuActive={activeCateg === 'behavior'}
-              isSkillOn={get(params, `behavior.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('behavior');
                 },
               }}
               textNoofQuestions={
-                get(params, 'behavior.questions', []).length + 'Questions'
+                get(params, 'behavior.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
               textSkills={'Communication'}
               isSkillMenuActive={activeCateg === 'communication'}
-              isSkillOn={get(params, `communication.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('communication');
                 },
               }}
               textNoofQuestions={
-                get(params, 'communication.questions', []).length + 'Questions'
+                get(params, 'communication.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
               textSkills={'Performance'}
               isSkillMenuActive={activeCateg === 'performance'}
-              isSkillOn={get(params, `performance.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('performance');
                 },
               }}
               textNoofQuestions={
-                get(params, 'performance.questions', []).length + 'Questions'
+                get(params, 'performance.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
               textSkills={'Education'}
               isSkillMenuActive={activeCateg === 'education'}
-              isSkillOn={get(params, `education.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('education');
                 },
               }}
               textNoofQuestions={
-                get(params, 'education.questions', []).length + 'Questions'
+                get(params, 'education.questions', []).length + ' Questions'
               }
             />
             <ScreeningQuestionMenu
               textSkills={'General'}
               isSkillMenuActive={activeCateg === 'general'}
-              isSkillOn={get(params, `general.value`)}
               onClickSkill={{
                 onClick: () => {
                   setActiveCateg('general');
                 },
               }}
               textNoofQuestions={
-                get(params, 'general.questions', []).length + 'Questions'
+                get(params, 'general.questions', []).length + ' Questions'
               }
             />
           </>
         }
         textCountActiveQuestion={totalQns}
+        isAddJob={jobForm.formType === 'new'}
+        isProceedDisable={false}
+        onClickProceed={{
+          onClick: () => {
+            // console.log(params);
+            dispatch({
+              type: 'moveToSlide',
+              payload: {
+                nextSlide: 'workflow',
+              },
+            });
+          },
+        }}
       />
-    </>
-  );
-};
-
-const AiScreeningConfigParams = () => {
-  const { jobForm, handleUpdateFormFields } = useJobForm();
-  const params = get(
-    jobForm,
-    'formFields.interviewConfig',
-    [],
-  ) as FormJobType['interviewConfig'];
-  return (
-    <>
-      {Object.keys(params).map((p) => {
-        const paramVal = get(
-          jobForm,
-          `formFields.interviewConfig.[${p}].value`,
-          false,
-        );
-        const copy = get(
-          jobForm,
-          `formFields.interviewConfig.[${p}].copy`,
-          false,
-        );
-        return (
-          <SkillsWithoutQuestionToggle
-            key={p}
-            slotToggle={
-              <Switch
-                size='small'
-                color='info'
-                checked={paramVal}
-                onChange={() => {
-                  handleUpdateFormFields({
-                    path: `interviewConfig.[${p}].value`,
-                    value: !paramVal,
-                  });
-                }}
-              />
-            }
-            textSkills={copy}
-          />
-        );
-      })}
     </>
   );
 };
@@ -246,6 +159,7 @@ const StandardScreenSingle = ({
   paramKey: InterviewParam;
   setFormError: any;
 }) => {
+  const { recruiter } = useAuthDetails();
   const [showForm, setShowForm] = useState(false);
   const [questionInput, setQuestionInput] = useState('');
   const [isAiGenerating, setAiGenerating] = useState(false);
@@ -288,14 +202,58 @@ const StandardScreenSingle = ({
         param.copy,
         paramKey == 'skill' ? jobForm.formFields.skills : undefined,
       );
-      const newQns = qns.map((q) => ({
-        id: nanoid(),
-        question: q,
-      })) as InterviewConfigType['questions'];
-      handleUpdateFormFields({
-        path: `interviewConfig.${paramKey}.questions`,
-        value: [...param.questions, ...newQns],
-      });
+
+      // old code
+
+      if (recruiter?.email != 'dheeraj+1@aglinthq.com') {
+        const newQns = qns.map((q) => ({
+          id: nanoid(),
+          question: q,
+        })) as InterviewConfigType['questions'];
+        handleUpdateFormFields({
+          path: `interviewConfig.${paramKey}.questions`,
+          value: [...param.questions, ...newQns],
+        });
+      }
+      if (recruiter?.email == 'dheeraj+1@aglinthq.com') {
+        // new code
+        const newQns = [];
+        const axiosRequests = [];
+
+        qns.forEach((q) => {
+          // Create an Axios request for each question and store it in an array
+          const request = axios
+            .post('/api/generateVideo', { text: q })
+            .then(({ data }) => {
+              const {
+                data: { video_id },
+              } = data;
+              newQns.push({
+                id: nanoid(),
+                question: q,
+                video_id: video_id,
+                video_url: '',
+              });
+            });
+          axiosRequests.push(request);
+        });
+
+        // Use Promise.all to wait for all Axios requests to complete
+        Promise.all(axiosRequests)
+          .then(() => {
+            // All requests have completed, you can now log newQns
+            // console.log(newQns);
+            handleUpdateFormFields({
+              path: `interviewConfig.${paramKey}.questions`,
+              value: [...param.questions, ...newQns],
+            });
+          })
+          .catch((error) => {
+            return error;
+            // console.error('An error occurred:', error);
+          });
+        // new code end
+      }
     } catch (err) {
       // console.log(err);
     } finally {
@@ -312,15 +270,6 @@ const StandardScreenSingle = ({
     }
   };
 
-  useEffect(() => {
-    const isQnsGenFirstTime =
-      localStorage.getItem(`${jobForm.jobPostId}-${paramKey}`) !== 'generated';
-    if (param.value && param.questions.length === 0 && isQnsGenFirstTime) {
-      localStorage.setItem(`${jobForm.jobPostId}-${paramKey}`, 'generated');
-      handleGenerateInterviewQns();
-    }
-  }, [param]);
-
   const qns = get(
     jobForm,
     `formFields.interviewConfig.[${paramKey}].questions`,
@@ -335,17 +284,6 @@ const StandardScreenSingle = ({
           <Stack>
             <UITypography fontBold='normal'>{param.copy}</UITypography>
           </Stack>
-          <Switch
-            size='small'
-            color='info'
-            checked={param.value}
-            onChange={() => {
-              handleUpdateFormFields({
-                path: `interviewConfig.[${paramKey}].value`,
-                value: !param.value,
-              });
-            }}
-          />
         </Stack>
         <Collapse in={true} translate='yes' unmountOnExit mountOnEnter>
           <Stack p={1} gap={1}>
@@ -502,3 +440,5 @@ const InterviewQn = ({
     />
   );
 };
+
+export default ScreeningQns;

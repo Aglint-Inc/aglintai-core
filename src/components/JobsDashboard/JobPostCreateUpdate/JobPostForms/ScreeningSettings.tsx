@@ -1,191 +1,33 @@
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-// import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
-// import dayjs from 'dayjs';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Collapse, InputAdornment, Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
+import Slider from '@mui/material/Slider';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { NewJobStep4, WorkflowRadioItem } from '@/devlink';
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
-import UITextField from '@/src/components/Common/UITextField';
 
-// import UITextField from '@/src/components/Common/UITextField';
 import { useJobForm } from '../JobPostFormProvider';
 function ScreeningSettings() {
-  // const { jobForm, handleUpdateFormFields } = useJobForm();
-  // const screeningConfig = get(
-  //   jobForm,
-  //   'formFields.screeningConfig',
-  // ) as FormJobType['screeningConfig'];
+  const { dispatch } = useJobForm();
+
   return (
-    // <NewJobStep4
-    //   isHeaderVisible={jobForm.formType === 'new'}
-    //   isSettingHeadingVisible={jobForm.formType === 'new'}
-    //   isAutomatedScreeningChecked1={
-    //     screeningConfig.screening.isSendInterviewToAll
-    //   }
-    //   isAutomatedScreeningChecked2={
-    //     !screeningConfig.screening.isSendInterviewToAll
-    //   }
-    //   isShortlistCandidateChecked1={screeningConfig.shortlist.interviewScore}
-    //   onClickAutomateScreeningCheck1={{
-    //     onClick: () => {
-    //       handleUpdateFormFields({
-    //         path: 'screeningConfig.screening.isSendInterviewToAll',
-    //         value: !screeningConfig.screening.isSendInterviewToAll,
-    //       });
-    //     },
-    //   }}
-    //   onClickAutomatedScreeningCheck2={{
-    //     onClick: () => {
-    //       handleUpdateFormFields({
-    //         path: 'screeningConfig.screening.isSendInterviewToAll',
-    //         value: !screeningConfig.screening.isSendInterviewToAll,
-    //       });
-    //     },
-    //   }}
-    //   onClickShortlistCandidateCheck1={{
-    //     onClick: () => {
-    //       handleUpdateFormFields({
-    //         path: 'screeningConfig.shortlist.interviewScore',
-    //         value: !screeningConfig.shortlist.interviewScore,
-    //       });
-    //     },
-    //   }}
-    //   slotAutomatedScreeningCount2={
-    //     <UITextField
-    //       disabled={screeningConfig.screening.isSendInterviewToAll}
-    //       type='number'
-    //       width={'70px'}
-    //       placeholder='8'
-    //       onChange={(e) => {
-    // handleUpdateFormFields({
-    //   path: 'screeningConfig.screening.minNoResumeScore',
-    //   value: Number(e.target.value),
-    // });
-    //       }}
-    //       defaultValue={screeningConfig.screening.minNoResumeScore}
-    //       value={screeningConfig.screening.minNoResumeScore}
-    //     />
-    //   }
-    //   slotResumeJdToggle={
-    //     <>
-    //       <Switch
-    //         color='info'
-    //         size='small'
-    //         checked={screeningConfig.useAglintMatchingAlgo}
-    //         defaultChecked={screeningConfig.useAglintMatchingAlgo}
-    //         onChange={() => {
-    //           handleUpdateFormFields({
-    //             path: 'screeningConfig.useAglintMatchingAlgo',
-    //             value: !screeningConfig.useAglintMatchingAlgo,
-    //           });
-    //         }}
-    //       />
-    //     </>
-    //   }
-    //   slotShortlistCandidateCount1={
-    //     <UITextField
-    //       type='number'
-    //       width={'70px'}
-    //       disabled={!screeningConfig.shortlist.interviewScore}
-    //       onChange={(e) => {
-    //         handleUpdateFormFields({
-    //           path: 'screeningConfig.shortlist.minInterviewScore',
-    //           value: e.target.value,
-    //         });
-    //       }}
-    //       value={screeningConfig.shortlist.minInterviewScore}
-    //       defaultValue={screeningConfig.shortlist.minInterviewScore}
-    //     />
-    //   }
-    //   slotAiFeedbackToggle={
-    //     <>
-    //       <Switch
-    //         size='small'
-    //         color='info'
-    //         defaultChecked={screeningConfig.feedbackVisible}
-    //         checked={screeningConfig.feedbackVisible}
-    //         onChange={() => {
-    //           handleUpdateFormFields({
-    //             path: 'screeningConfig.feedbackVisible',
-    //             value: !screeningConfig.feedbackVisible,
-    //           });
-    //         }}
-    //       />
-    //     </>
-    //   }
-    //   onClickImmediatelyCheck={{
-    //     onClick: () => {
-    //       handleUpdateFormFields({
-    //         path: 'screeningConfig.screeningEmail.isImmediate',
-    //         value: true,
-    //       });
-    //     },
-    //   }}
-    //   onClickParticularTimeCheck={{
-    //     onClick: () => {
-    //       handleUpdateFormFields({
-    //         path: 'screeningConfig.screeningEmail.isImmediate',
-    //         value: false,
-    //       });
-    //     },
-    //   }}
-    //   isImmediatelyChecked={screeningConfig.screeningEmail.isImmediate}
-    //   isParticularTimeChecked={!screeningConfig.screeningEmail.isImmediate}
-    //   isChooseTimeVisible={!screeningConfig.screeningEmail.isImmediate}
-    //   slotTime={
-    //     <>
-    //       <LocalizationProvider dateAdapter={AdapterDayjs}>
-    //         <TimePicker
-    //           viewRenderers={{
-    //             hours: renderTimeViewClock,
-    //             minutes: renderTimeViewClock,
-    //             seconds: renderTimeViewClock,
-    //           }}
-    //           value={dayjs(
-    //             screeningConfig.screeningEmail.date
-    //               ? new Date(screeningConfig.screeningEmail.date)
-    //               : new Date().toISOString(),
-    //           )}
-    //           onChange={(date: dayjs.Dayjs | null) => {
-    //             date &&
-    //               dayjs(date).isValid() &&
-    //               handleUpdateFormFields({
-    //                 path: 'screeningConfig.screeningEmail.date',
-    //                 value: dayjs(date).toISOString(),
-    //               });
-    //           }}
-    //           slots={{
-    //             textField: UITextField,
-    //           }}
-    //         />
-    //       </LocalizationProvider>
-    //     </>
-    //   }
-    // />
-    // <NewJobStep4 />
-    // <Stack>
-    //   <ApplicationScoringWorkflow />
-    //   ----------
-    //   <InterviewScoringWorkflow />
-    //   ----------
-    //   <InterviewEmailSchedule />
-    //   ----------
-    //   <DisqualifiedEmailSchedule />
-    // </Stack>
     <NewJobStep4
       slotApplicationWorkflow={<WorkFlow flow='screening' />}
       slotInterviewWorkflow={<WorkFlow flow='interview' />}
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}
       slotDisqualifyEmail={<EmailSchedule flow='disqualifiedMail' />}
+      isProceedDisable={false}
+      onClickProcced={{
+        onClick: () => {
+          dispatch({
+            type: 'moveToSlide',
+            payload: {
+              nextSlide: 'templates',
+            },
+          });
+        },
+      }}
     />
-    // <>KKK</>
-    // <NewJobStep4 />
   );
 }
 
@@ -219,11 +61,17 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
     switch (choice) {
       case 'manual':
         {
+          setRange((prev) => {
+            return { ...prev, active: false };
+          });
           handleUpdate(true, null);
         }
         break;
       case 'automate':
         {
+          setRange((prev) => {
+            return { ...prev, active: false };
+          });
           handleUpdate(false, null);
         }
         break;
@@ -232,94 +80,86 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
       }
     }
   };
-  const handleRangeInput = (e: any, type: 'min' | 'max') => {
-    if (type === 'min') {
-      if (e) {
-        if (e < 0)
-          setRange((prev) => {
-            return { ...prev, min: 0, active: true };
-          });
-        else if (e > 100)
-          setRange((prev) => {
-            return { ...prev, min: 100, active: true };
-          });
-        else
-          setRange((prev) => {
-            return {
-              ...prev,
-              min: e,
-              active: true,
-            };
-          });
+
+  const handleRangeChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number,
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    if (newValue[1] - newValue[0] < 1) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - 1);
+        setRange({
+          active: true,
+          min: clamped,
+          max: clamped + 1,
+        });
       } else {
-        setRange((prev) => {
-          return { ...prev, min: null, active: false };
+        const clamped = Math.max(newValue[1], 1);
+        setRange({
+          active: true,
+          min: clamped - 1,
+          max: clamped,
         });
       }
     } else {
-      if (e) {
-        if (e > 100)
-          setRange((prev) => {
-            return { ...prev, max: 100, active: true };
-          });
-        else if (e < 0)
-          setRange((prev) => {
-            return { ...prev, max: 0, active: true };
-          });
-        else
-          setRange((prev) => {
-            return {
-              ...prev,
-              max: e,
-              active: true,
-            };
-          });
-      } else {
-        setRange((prev) => {
-          return {
-            ...prev,
-            max: null,
-            active: false,
-          };
-        });
-      }
+      setRange({
+        active: true,
+        min: newValue[0],
+        max: newValue[1],
+      });
     }
   };
-  const rangeFields = (
-    <Stack gap={2} mt={2}>
-      <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-        <UITextField
-          value={range.max}
-          type='number'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='start'>
-                <CheckCircleIcon sx={{ color: 'rgb(34,143,103)' }} />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => handleRangeInput(parseInt(e.target.value), 'max')}
-        />
+
+  const newRangeFields = (
+    <Stack mt={2} gap={2} width={'651px'}>
+      <Stack
+        width={'100%'}
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        fontWeight={600}
+        position={'relative'}
+      >
         <Stack
-          color={'rgb(34,143,103)'}
-        >{`Candidates above this range will be qualified`}</Stack>
+          width={'217px'}
+          textAlign={'left'}
+          style={{ color: '#d3212c' }}
+        >{`Auto-disqualification  < ${range.min}`}</Stack>
+        <Stack
+          width={'217px'}
+          textAlign={'center'}
+        >{`${range.min} ≤ Manual review ≤ ${range.max} `}</Stack>
+        <Stack
+          width={'217px'}
+          textAlign={'right'}
+          style={{ color: '#069c56' }}
+        >{`Auto-qualification > ${range.max}`}</Stack>
       </Stack>
-      <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
-        <UITextField
-          value={range.min}
-          type='number'
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='start'>
-                <CancelIcon sx={{ color: 'rgb(217,63,76)' }} />
-              </InputAdornment>
-            ),
+      <Stack width={'650px'}>
+        <Slider
+          track='inverted'
+          value={[range.min, range.max]}
+          onChange={handleRangeChange}
+          valueLabelDisplay='auto'
+          disableSwap
+          sx={{
+            '& .MuiSlider-rail': {
+              backgroundImage: `linear-gradient(to right, #f2bcc0 ${range.min}%, #eff0f0 ${range.min}%, #eff0f0 ${range.max}%, #b4e1cc ${range.max}%)`,
+            },
+            '& .MuiSlider-track': {
+              display: 'none',
+            },
+            '& > .MuiSlider-thumb': {
+              background: '#d3212c',
+            },
+            '& > .MuiSlider-thumb ~ .MuiSlider-thumb': {
+              background: '#069c56',
+            },
           }}
-          onChange={(e) => handleRangeInput(parseInt(e.target.value), 'min')}
         />
-        <Stack
-          color={'rgb(217,63,76)'}
-        >{`Candidates below this range will be disqualified`}</Stack>
       </Stack>
     </Stack>
   );
@@ -364,7 +204,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         } score criteria for applicant progression`}
         slotScore={
           <Collapse in={workflowObj.qualificationRange !== null}>
-            {rangeFields}
+            {newRangeFields}
           </Collapse>
         }
       />

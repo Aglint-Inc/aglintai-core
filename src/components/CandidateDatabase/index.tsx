@@ -16,6 +16,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { JdMatchAPIType, JobApplcationDB } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
+import ImportDrawer from './ImportDrawer';
 import AlertDialog from '../Common/AlertDialog';
 import AUIButton from '../Common/AUIButton';
 import MuiAvatar from '../Common/MuiAvatar';
@@ -88,6 +89,7 @@ export function CandidateDatabaseComp() {
   const [selected, setSelected] = useState([]);
   const { jobsData } = useJobs();
   const [searchQuery, setSearchQuery] = useState('');
+  const [importDrawerOpen, setImportDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (jobsData?.applications) {
@@ -107,6 +109,7 @@ export function CandidateDatabaseComp() {
         const { data: applications } = await supabase.rpc(
           'match_job_applications',
           {
+            job_ids: jobsData.jobs.map((job) => job.id),
             query_embedding: embedding as any,
             match_threshold: 0.78, // Choose an appropriate threshold for your data
             match_count: 1000, // Choose the number of matches
@@ -123,13 +126,20 @@ export function CandidateDatabaseComp() {
 
   function filterUniqueJsonArray(jsonArray, key) {
     const uniqueValues = new Set();
-    return jsonArray.filter((item) => {
-      if (!uniqueValues.has(item[key])) {
-        uniqueValues.add(item[key]);
-        return true;
+    const result = [];
+
+    for (const item of jsonArray) {
+      const itemValue = item[key];
+
+      if (itemValue === null || itemValue === '') {
+        result.push(item);
+      } else if (!uniqueValues.has(itemValue)) {
+        uniqueValues.add(itemValue);
+        result.push(item);
       }
-      return false;
-    });
+    }
+
+    return result;
   }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,10 +218,14 @@ export function CandidateDatabaseComp() {
 
   return (
     <>
+      <ImportDrawer
+        openSidePanel={importDrawerOpen}
+        setOpenSidePanel={setImportDrawerOpen}
+      />
       <ApplicationDetails
-        applicationDetails={peopleDetail}
-        openSidePanel={openSidePanel}
-        setOpenSidePanel={setOpenPanelDrawer}
+        applicationDetails={peopleDetail as any}
+        onClose={() => setOpenPanelDrawer(false)}
+        open={openSidePanel}
       />
       <CandidateDatabase
         textShowingResult={`Showing ${people.length} results`}
@@ -294,13 +308,13 @@ export function CandidateDatabaseComp() {
                         spacing={2}
                       >
                         <MuiAvatar
+                          variant='circular'
                           level={row.first_name}
                           src={
                             !row.profile_image
                               ? getGravatar(row.email, row?.first_name)
                               : row.profile_image
                           }
-                          variant={''}
                           width={'20px'}
                           height={'20px'}
                           fontSize={'28px'}
@@ -365,7 +379,16 @@ export function CandidateDatabaseComp() {
           </Box>
         }
         slotSearch={
-          <>
+          <Stack direction={'row'} spacing={2}>
+            <AUIButton
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                setImportDrawerOpen(true);
+              }}
+            >
+              Import candidates
+            </AUIButton>
             <AUIButton variant='outlined' size='small' onClick={handleClick}>
               Search candidates
             </AUIButton>
@@ -415,7 +438,7 @@ export function CandidateDatabaseComp() {
                 </Stack>
               </Stack>
             </Popover>
-          </>
+          </Stack>
         }
       />
     </>

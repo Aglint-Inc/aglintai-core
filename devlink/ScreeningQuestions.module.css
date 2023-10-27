@@ -3,6 +3,7 @@
   max-width: 780px;
   margin-right: auto;
   margin-left: auto;
+  padding-bottom: 40px;
 }
 
 .active-question-wrappers {
@@ -174,6 +175,30 @@
   color: var(--grey400-863ed4b5);
 }
 
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
+}
+
 .question-slot-tab-wrappers {
   display: grid;
   margin-top: 22px;
@@ -240,6 +265,65 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.job-details-button-wrappers {
+  display: flex;
+  margin-top: 50px;
+}
+
+.job-details-button-wrappers.remove-bottom {
+  margin-top: 0px;
+}
+
+.proceed-to-apply {
+  position: relative;
+}
+
+.blue-process-button {
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #1f73b7;
+
+  transition: all 250ms ease;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.blue-process-button:hover {
+  opacity: 0.8;
+}
+
+.grey-disable-process-button {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
 }
 
 #w-node-_81d3a818-75ac-e76d-249a-24d52763c096-09de0af9 {

@@ -9,6 +9,12 @@
   grid-row-gap: 6px;
 }
 
+@media screen and (max-width: 991px) {
+  .add-candidates-dropdown {
+    z-index: 5;
+  }
+}
+
 .ac-dropdown-trigger {
   display: flex;
   padding: 8px 12px;
@@ -34,6 +40,20 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .text-blue-600 {

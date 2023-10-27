@@ -100,6 +100,16 @@
   font-weight: 700;
 }
 
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
+}
+
 .interview-card-screen {
   position: relative;
 
@@ -215,6 +225,10 @@
 
 .text-lg.fw-semibold.inline-text.ml-6 {
   margin-left: 6px;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
 }
 
 .text-blue-800 {
@@ -568,6 +582,8 @@
 .button-icon {
   width: 12px;
   height: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-icon.is-large {

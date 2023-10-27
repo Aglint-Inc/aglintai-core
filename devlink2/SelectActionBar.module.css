@@ -10,6 +10,16 @@
   box-shadow: 0 -2px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
 }
 
+@media screen and (max-width: 991px) {
+  .select-action-bar {
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+  }
+}
+
 .select-action-left-block {
   display: flex;
   align-items: center;
@@ -42,7 +52,56 @@
 }
 
 .text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+  color: var(--kale-600);
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-yellow-700 {
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
+}
+
+.text-grey-500 {
+  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+.text-yellow-600 {
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
 .select-clear-btn {
@@ -72,6 +131,15 @@
   grid-row-gap: 10px;
 }
 
+@media screen and (max-width: 479px) {
+  .select-action-right-block {
+    overflow: auto;
+    width: 100%;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+  }
+}
+
 .select-action-btn {
   display: flex;
   padding: 8px 12px;
@@ -83,6 +151,7 @@
 
   transition: all 300ms ease;
 
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
   white-space: nowrap;
 
   cursor: pointer;
@@ -101,7 +170,7 @@
 }
 
 .select-action-btn.green-100:hover {
-  background-color: hsla(158.18181818181827, 100.00%, 89.78%, 1.00);
+  background-color: #d1e8df;
 }
 
 .green-100 {
@@ -132,6 +201,25 @@
   background-color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
+.select-action-btn.blue-500.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.text-color-white {
+  color: white;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -140,6 +228,14 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .text-blue-700 {

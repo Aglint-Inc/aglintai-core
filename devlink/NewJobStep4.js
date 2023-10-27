@@ -14,6 +14,9 @@ export function NewJobStep4({
   slotInterviewEmail,
   slotApplicationWorkflow,
   slotDisqualifyEmail,
+  isProceedDisable = true,
+  onClickProcced = {},
+  isJobAdd = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -22,26 +25,31 @@ export function NewJobStep4({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-5")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "cj-top-block")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-grey-600"
-          )}
-          tag="div"
-        >
-          {"Step 4: Screening Settings"}
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Optimize your candidate screening process."}
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper")}
         tag="div"
       >
+        {isJobAdd ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-507", "remove-bottom")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Workflows"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {
+                "Automate your hiring process by setting up conditions in workflow."
+              }
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "_wf-screening-block")}
           tag="div"
@@ -58,7 +66,7 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "fw-semibold", "color-black")}
                 tag="div"
               >
-                {"Application scoring workflow"}
+                {"Application Scoring Workflow"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "toggle-btn-block")}
@@ -73,7 +81,7 @@ export function NewJobStep4({
             >
               <_Builtin.ListItem>
                 {
-                  "Guide your recruitment decisions with our Application Scoring Workflow."
+                  "Guide your recruitment decisions with our application scoring workflow."
                 }
               </_Builtin.ListItem>
               <_Builtin.ListItem>
@@ -116,7 +124,7 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "fw-semibold", "color-black")}
                 tag="div"
               >
-                {"Interview Scoring Workflow"}
+                {"Assessment Scoring Workflow"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "toggle-btn-block")}
@@ -131,17 +139,17 @@ export function NewJobStep4({
             >
               <_Builtin.ListItem>
                 {
-                  "Guide your recruitment decisions with our Interview Scoring Workflow."
+                  "Guide your recruitment decisions with our assessment scoring workflow."
                 }
               </_Builtin.ListItem>
               <_Builtin.ListItem>
                 {
-                  "Use scoring thresholds to seamlessly categorize candidates based on their interview scores."
+                  "Use scoring thresholds to seamlessly categorize candidates based on their assessment scores."
                 }
               </_Builtin.ListItem>
               <_Builtin.ListItem>
                 {
-                  "Set specific limits to guide their progression through the interview stage, or choose to handle the process manually."
+                  "Set specific limits to guide their progression through the assessment stage, or choose to handle the process manually."
                 }
               </_Builtin.ListItem>
             </_Builtin.List>
@@ -174,7 +182,7 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "fw-semibold", "color-black")}
                 tag="div"
               >
-                {"Interview Email Schedule"}
+                {"Assessment Email Schedule"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "toggle-btn-block")}
@@ -182,7 +190,7 @@ export function NewJobStep4({
               />
             </_Builtin.Block>
             <_Builtin.Block tag="div">
-              {"Configure when to dispatch interview emails to candidates :"}
+              {"Configure when to dispatch assessment emails to candidates :"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -294,6 +302,49 @@ export function NewJobStep4({
             />
           </_Builtin.Block>
         </_Builtin.Block>
+        {isJobAdd ? (
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "job-details-button-wrappers",
+              "remove-bottom"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "proceed-to-apply")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "blue-process-button")}
+                tag="div"
+                {...onClickProcced}
+              >
+                <_Builtin.Block tag="div">
+                  {"Proceed to email templates"}
+                </_Builtin.Block>
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+              {isProceedDisable ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "grey-disable-process-button")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {"Proceed to email templates"}
+                  </_Builtin.Block>
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons")}
+                    value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "pd-200")} tag="div" />
     </_Component>

@@ -9,7 +9,9 @@ export const initialJobContext: JobContext = {
   handleUIJobUpdate: undefined,
   handleJobDelete: undefined,
   handleJobError: undefined,
+  handleGetJob: undefined,
   initialLoad: false,
+  handleApplicationsRead: undefined,
 };
 
 export const readJobDbAction = async (recruiter_id: string) => {
@@ -24,7 +26,7 @@ export const readJobDbAction = async (recruiter_id: string) => {
 export const readJobApplicationsAction = async (jobIds: string[]) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*')
+    .select('job_id,status,email')
     .in('job_id', jobIds);
   return { data, error };
 };

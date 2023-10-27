@@ -11,11 +11,16 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import converter from 'number-to-words';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { TeamAddRole } from '@/devlink/TeamAddRole';
 import { TeamInvite } from '@/devlink/TeamInvite';
+import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
 import { TeamListItem } from '@/devlink/TeamListItem';
+import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
 import { TeamPermissionBlock } from '@/devlink/TeamPermissionBlock';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { UserRoleAddBlock } from '@/devlink/UserRoleAddBlock';
@@ -29,6 +34,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
+dayjs.extend(relativeTime);
 
 export type UserRoleManagementType = {
   send_interview_link: boolean;
@@ -46,84 +52,112 @@ export type UserRoleManagementType = {
 };
 
 const TeamManagement = () => {
-  const { recruiter, userDetails } = useAuthDetails();
-  const [members, setMembers] = useState<RecruiterUserType[]>();
-  const [pendingCount, setPendingCount] = useState<Number>(0);
-
+  const { recruiter, recruiterUser, userDetails, role } = useAuthDetails();
+  const [members, setMembers] = useState<RecruiterUserType[]>([]);
+  // const [pendingCount, setPendingCount] = useState<Number>(0);
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
-    window: 'addMember' | 'test' | null;
+    window: 'addMember' | 'pendingMember' | null;
   }>({
     open: false,
     window: null,
   });
-  const allRoles = Object.keys(recruiter.roles).map((role) =>
-    capitalizeAll(role),
+  const pendingList = members.filter(
+    (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
+  const inviteUser = pendingList.length;
+  const [allRoles, setAllRoles] = useState<string[]>();
+  const handleMemberUpdate = async (
+    details: Partial<RecruiterUserType>,
+    id: string,
+  ) => {
+    return await setMemberInDb(details, id);
+  };
   useEffect(() => {
-    getMembersFromDB(recruiter.id).then((data) => {
-      Boolean(data.length) && setMembers(data);
-      setPendingCount(
-        data.reduce((count, item) => {
-          if (item.join_status === 'invited') {
-            return count + 1;
-          } else return count;
-        }, 0),
+    if (role) {
+      const tempRoles = Object.keys(recruiter.roles).filter(
+        (key) => role.manage_users[String(key)],
       );
-    });
-  }, []);
+      getMembersFromDB(recruiter.id, tempRoles).then((data) => {
+        Boolean(data.length) && setMembers(data);
+        // setPendingCount(
+        //   data.reduce((count, item) => {
+        //     if (item.join_status === 'invited') {
+        //       return count + 1;
+        //     } else return count;
+        //   }, 0),
+        // );}
+      });
+      setAllRoles(tempRoles.map((role) => capitalizeAll(role)));
+    }
+  }, [role]);
   return (
     <>
       <TeamUsersList
         slotTeamList={
           <>
             {members?.map((member) => (
-              <TeamListItem
-                key={1}
-                dateText={new Date(member.joined_at).toLocaleDateString()}
-                slotProfileImage={
-                  <Avatar
-                    variant='circular'
-                    src={member.profile_image}
-                    alt={member.first_name}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                }
-                userEmail={member.email}
-                userName={`${member.first_name || ''} ${
-                  member.last_name || ''
-                }`}
-                slotUserRole={capitalizeAll(member.role)}
-                userStatusProps={{
-                  style:
-                    member.join_status === 'invited'
-                      ? {
-                          backgroundColor: palette.yellow[200],
-                          color: palette.yellow[800],
+              <Member
+                key={member.user_id}
+                member={member}
+                allRoles={allRoles.map((role) => capitalizeAll(role))}
+                canUpdate={recruiterUser?.user_id !== member.user_id}
+                memberRoleUpdate={(role: string) => {
+                  handleMemberUpdate({ role }, member.user_id).then(
+                    (member) => {
+                      if (recruiterUser?.user_id === member.user_id) {
+                        toast.error('Cannot Update Role Your Account');
+                      } else {
+                        if (member) {
+                          setMembers(
+                            members.map((mem) => {
+                              if (mem.user_id === member.user_id) {
+                                return member;
+                              }
+                              return mem;
+                            }),
+                          );
+                          toast.success('Role Updated Successfully');
                         }
-                      : {
-                          backgroundColor: palette.green[200],
-                          color: palette.green[800],
-                        },
+                      }
+                    },
+                  );
                 }}
-                userStatusText={capitalizeAll(member.join_status)}
-                onClickRemove={() => {}}
+                removeMember={() => {
+                  if (recruiterUser?.user_id === member.user_id) {
+                    toast.error('Cannot Remove User Account');
+                  } else {
+                    handleMemberUpdate(
+                      { is_deactivated: true },
+                      member.user_id,
+                    ).then((result) => {
+                      if (result) {
+                        setMembers((members) =>
+                          members.filter(
+                            (mem) => mem.user_id !== member.user_id,
+                          ),
+                        );
+                        toast.success('Member Removed');
+                      }
+                    });
+                  }
+                }}
               />
             ))}
           </>
         }
         slotUsersRoleList={
-          <UserRoleManagement
-            roles={recruiter.roles as UserRoleManagementType}
-          />
+          <>
+            {role.manage_roles && (
+              <UserRoleManagement
+                roles={recruiter.roles as UserRoleManagementType}
+              />
+            )}
+          </>
         }
         slotInviteBtn={
           <AUIButton
-            variant='outlined'
-            size='medium'
+            size='small'
             onClick={() => {
               setOpenDrawer({ open: true, window: 'addMember' });
             }}
@@ -131,17 +165,30 @@ const TeamManagement = () => {
             Invite Member
           </AUIButton>
         }
-        pendInvitesVisibility={Boolean(pendingCount)}
-        
-      />
-      <AddMember
-        id={userDetails.user.id}
-        allRoles={allRoles}
-        open={openDrawer.open}
-        onClose={() => {
-          setOpenDrawer({ open: false, window: null });
+        pendInvitesVisibility={Boolean(inviteUser)}
+        onClickViewPendingInvites={{
+          onClick: () => {
+            setOpenDrawer({ open: true, window: 'pendingMember' });
+          },
         }}
+        textPending={`You currently have ${converter.toWords(
+          pendingList?.length,
+        )} pending invites awaiting your response.
+`}
       />
+      {role.manage_users && (
+        <AddMember
+          id={userDetails.user.id}
+          allRoles={allRoles}
+          open={openDrawer.open}
+          menu={openDrawer.window}
+          pendingList={pendingList}
+          onClose={() => {
+            setOpenDrawer({ open: false, window: null });
+          }}
+          addMembers={(users) => setMembers([...users, ...members])}
+        />
+      )}
     </>
   );
 };
@@ -151,13 +198,20 @@ export default TeamManagement;
 const AddMember = ({
   id,
   open,
+  menu,
   allRoles,
+  pendingList,
   onClose,
+  addMembers,
 }: {
   id: string;
   open: boolean;
+  menu: 'addMember' | 'pendingMember';
   allRoles: string[];
+  pendingList: RecruiterUserType[];
   onClose: () => void;
+  // eslint-disable-next-line no-unused-vars
+  addMembers: (x: RecruiterUserType[]) => void;
 }) => {
   const [form, setForm] = useState<{
     name: string;
@@ -187,82 +241,277 @@ const AddMember = ({
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
       <Stack sx={{ width: '500px' }}>
-        <TeamInvite
-          slotForm={
-            <Stack gap={2}>
-              <CustomTextField
-                value={form.name}
-                placeholder='Name'
-                error={formError.name}
-                onFocus={() => {
-                  setFormError({ ...formError, name: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, name: e.target.value });
-                }}
-              />
-              <CustomTextField
-                value={form.email}
-                placeholder='Email ID'
-                error={formError.email}
-                onFocus={() => {
-                  setFormError({ ...formError, email: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, email: e.target.value });
-                }}
-              />
-              <CustomAutocomplete
-                values={form.role}
-                placeholder='User Role'
-                options={allRoles}
-                error={formError.role}
-                onFocus={() => {
-                  setFormError({ ...formError, role: false });
-                }}
-                onChange={(_, newValue) => {
-                  setForm({ ...form, role: newValue });
-                }}
-              />
-            </Stack>
-          }
-          slotButtons={
-            <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
-              {/* <AUIButton variant='text' size='medium'>
+        {menu === 'addMember' ? (
+          <TeamInvite
+            slotForm={
+              <Stack gap={2}>
+                <CustomTextField
+                  value={form.name}
+                  placeholder='Name'
+                  error={formError.name}
+                  onFocus={() => {
+                    setFormError({ ...formError, name: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                  }}
+                />
+                <CustomTextField
+                  value={form.email}
+                  placeholder='Email ID'
+                  error={formError.email}
+                  onFocus={() => {
+                    setFormError({ ...formError, email: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                  }}
+                />
+                <CustomAutocomplete
+                  values={form.role}
+                  placeholder='User Role'
+                  options={allRoles}
+                  error={formError.role}
+                  onFocus={() => {
+                    setFormError({ ...formError, role: false });
+                  }}
+                  onChange={(_, newValue) => {
+                    setForm({ ...form, role: newValue });
+                  }}
+                />
+              </Stack>
+            }
+            slotButtons={
+              <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
+                {/* <AUIButton variant='text' size='medium'>
                 + Add Another
               </AUIButton> */}
-              <AUIButton
-                variant='outlined'
-                size='medium'
-                onClick={() => {
-                  if (checkValidation()) {
-                    axios.post('/api/invite_user', {
-                      users: [form],
-                      id: id,
-                    });
-                  }
-                }}
-              >
-                Invite
-              </AUIButton>
-            </Stack>
-          }
-        />
+                <AUIButton
+                  variant='outlined'
+                  size='medium'
+                  onClick={() => {
+                    if (checkValidation()) {
+                      inviteUser(form, id).then(({ error, users }) => {
+                        if (!error && users) {
+                          addMembers(users);
+                          toast.success('Invite send');
+                          return onClose();
+                        }
+                        // @ts-ignore
+                        return toast.error(error?.message || error);
+                      });
+                    }
+                  }}
+                >
+                  Invite
+                </AUIButton>
+              </Stack>
+            }
+            onClickClose={{
+              onClick: () => onClose(),
+            }}
+          />
+        ) : menu === 'pendingMember' ? (
+          <TeamPendingInvites
+            slotList={pendingList.map((member) => (
+              <TeamInvitesBlock
+                key={member.user_id}
+                email={member.email}
+                name={member.first_name}
+                slotImage={
+                  <Avatar
+                    variant='circular'
+                    src={member.profile_image}
+                    alt={member.first_name}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                }
+                slotButton={
+                  <AUIButton
+                    size='small'
+                    onClick={() => {
+                      reinviteUser(member.email, id).then(
+                        ({ error, emailSend }) => {
+                          if (!error && emailSend) {
+                            return toast.success('Invite send');
+                          }
+                          // @ts-ignore
+                          return toast.error(error || error?.message);
+                        },
+                      );
+                    }}
+                  >
+                    Resend
+                  </AUIButton>
+                }
+              />
+            ))}
+            onClickClose={{
+              onClick: () => onClose(),
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </Stack>
     </Drawer>
   );
 };
 
-const getMembersFromDB = async (id: string) => {
-  id;
+const Member = ({
+  member,
+  allRoles,
+  canUpdate,
+  memberRoleUpdate,
+  removeMember,
+}: {
+  member: RecruiterUserType;
+  allRoles: string[];
+  canUpdate: boolean;
+  // eslint-disable-next-line no-unused-vars
+  memberRoleUpdate: (x: string) => void;
+  removeMember: () => void;
+}) => {
+  const [editRole, setEditRole] = useState(false);
+  return (
+    <TeamListItem
+      key={1}
+      dateText={dayjs(member.joined_at).fromNow()}
+      slotProfileImage={
+        <Avatar
+          variant='circular'
+          src={member.profile_image}
+          alt={member.first_name}
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      }
+      userEmail={member.email}
+      userName={`${member.first_name || ''} ${member.last_name || ''}`}
+      slotUserRole={
+        canUpdate && editRole ? (
+          <CustomAutocomplete
+            fullWidth
+            open={true}
+            clearIcon={false}
+            value={capitalizeAll(member.role)}
+            options={allRoles}
+            sx={{
+              width: '100%',
+            }}
+            onBlur={() => {
+              setEditRole(false);
+            }}
+            onChange={(_, newValue) => {
+              newValue && memberRoleUpdate(newValue.toLowerCase());
+              setEditRole(false);
+            }}
+            InputProps={{
+              fontSize: '14px',
+            }}
+          />
+        ) : (
+          <Stack
+            onClick={() => {
+              setEditRole(true);
+            }}
+            sx={{
+              cursor: canUpdate ? 'pointer' : 'not-allowed',
+            }}
+          >
+            {capitalizeAll(member.role)}
+          </Stack>
+        )
+      }
+      userStatusProps={{
+        style:
+          member.join_status === 'invited'
+            ? {
+                backgroundColor: palette.yellow[200],
+                color: palette.yellow[800],
+              }
+            : {
+                backgroundColor: palette.green[200],
+                color: palette.green[800],
+              },
+      }}
+      userStatusText={<Stack>{capitalizeAll(member.join_status)}</Stack>}
+      onClickRemove={{
+        onClick: removeMember,
+      }}
+    />
+  );
+};
+
+const getMembersFromDB = async (id: string, roles: string[]) => {
+  if (roles.length === 0) return [];
   const { data, error } = await supabase
     .from('recruiter_user')
     .select()
-    .eq('recruiter_id', id);
+    .eq('is_deactivated', false)
+    .eq('recruiter_id', id)
+    .in('role', roles);
   if (!error && data.length) {
     return data;
   }
   return [];
+};
+
+const setMemberInDb = async (
+  details: Partial<RecruiterUserType>,
+  id: string,
+) => {
+  const { data, error } = await supabase
+    .from('recruiter_user')
+    .update(details)
+    .eq('user_id', id)
+    .select();
+  if (!error && data.length) {
+    return data[0];
+  }
+  return null;
+};
+
+const inviteUser = (
+  form: {
+    name: string;
+    email: string;
+    role: string;
+  },
+  id: string,
+) => {
+  return axios
+    .post('/api/invite_user', {
+      users: [form],
+      id: id,
+    })
+    .then(
+      ({ data }) =>
+        data as {
+          error: string;
+          users: RecruiterUserType[];
+        },
+    );
+};
+
+const reinviteUser = (email: string, id: string) => {
+  return axios
+    .post('/api/invite_user/resend', {
+      email,
+      id,
+    })
+    .then(
+      ({ data }) =>
+        data as {
+          error: string;
+          emailSend: boolean;
+        },
+    );
 };
 
 function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
@@ -291,6 +540,20 @@ function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
         setMenu({ edit: false, open: false });
       } else {
         toast.error('Role save failed');
+      }
+    });
+  };
+  const deleteRole = (name: string) => {
+    const roles = {
+      ...(recruiter.roles as { [key: string]: UserRoleManagementType }),
+    };
+    delete roles[String(name).toLocaleLowerCase()];
+    updateRecruiter({ roles }).then((data) => {
+      if (data) {
+        toast.success('Role delete');
+        setMenu({ edit: false, open: false });
+      } else {
+        toast.error('Role delete failed');
       }
     });
   };
@@ -347,6 +610,7 @@ function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
         // roles={roles}
         open={menu.open}
         updateRoles={updateRoles}
+        deleteRole={deleteRole}
         onClose={() => {
           setMenu({ ...menu, open: false });
           setSelectedRole(null);
@@ -365,6 +629,7 @@ const TeamMenu = ({
   onClose,
   edit,
   updateRoles,
+  deleteRole,
 }: {
   allRoles: string[];
   role?: UserRoleManagementType;
@@ -374,6 +639,8 @@ const TeamMenu = ({
   edit: boolean;
   // eslint-disable-next-line no-unused-vars
   updateRoles: (name: string, role: UserRoleManagementType) => void;
+  // eslint-disable-next-line no-unused-vars
+  deleteRole: (name: string) => void;
 }) => {
   const [editRole, setEditRole] = useState([]);
   const [manageUsers, setManageUsers] = useState(false);
@@ -471,6 +738,9 @@ const TeamMenu = ({
                             },
                           })
                         }
+                        sx={{
+                          filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
+                        }}
                       />
                     }
                   />
@@ -504,6 +774,9 @@ const TeamMenu = ({
                       }
                       setManageUsers(!manageUsers);
                     }}
+                    sx={{
+                      filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
+                    }}
                   />
                 }
               />
@@ -529,6 +802,9 @@ const TeamMenu = ({
                               // @ts-ignore
                               manage_users,
                             });
+                          }}
+                          sx={{
+                            filter: `drop-shadow(0px 0.8333333134651184px 1.6666666269302368px rgba(0, 0, 0, 0.20)) drop-shadow(0px 0.0833333358168602px 0.25px rgba(0, 0, 0, 0.10))`,
                           }}
                         />
                       }
@@ -564,36 +840,59 @@ const TeamMenu = ({
             />
             // )
           }
-          slotButton={
-            <Stack gap={1}>
-              <AUIButton
-                variant='outlined'
-                size='medium'
-                onClick={() => {
-                  name &&
-                    name.trim() !== '' &&
-                    updateRoles(
-                      name,
-                      // @ts-ignore
-                      parsePermissions(editRole),
-                    );
-                }}
-              >
-                {edit ? 'Save Change' : 'Add'}
-              </AUIButton>
-              {edit && (
-                <AUIButton
-                  variant='error'
-                  size='medium'
-                  onClick={() => {
-                    //
-                  }}
-                >
-                  {'delete'}
-                </AUIButton>
-              )}
-            </Stack>
-          }
+          // slotButton={
+          //   <Stack gap={1}>
+          //     <AUIButton
+          //       variant='outlined'
+          //       size='medium'
+          //       onClick={() => {
+          //         name &&
+          //           name.trim() !== '' &&
+          //           updateRoles(
+          //             name,
+          //             // @ts-ignore
+          //             parsePermissions(editRole),
+          //           );
+          //       }}
+          //     >
+          //       {edit ? 'Save Change' : 'Add'}
+          //     </AUIButton>
+          //     {edit && (
+          //       <AUIButton
+          //         variant='error'
+          //         size='medium'
+          //         onClick={() => {
+          //           //
+          //         }}
+          //       >
+          //         {'delete'}
+          //       </AUIButton>
+          //     )}
+          //   </Stack>
+          // }
+          isDeleteButtonVisible={edit}
+          isTextDescVisible={!edit}
+          onClickClose={{
+            onClick: () => onClose(),
+          }}
+          onClickDelete={{
+            onClick: () => {
+              name && deleteRole(name);
+            },
+          }}
+          onClickSaveChanges={{
+            onClick: () => {
+              name &&
+                name.trim() !== '' &&
+                updateRoles(
+                  name,
+                  // @ts-ignore
+                  parsePermissions(editRole),
+                );
+            },
+          }}
+          textButtonSaveChanges={edit ? 'Save Change' : 'Add User Role'}
+          textEditAddUser={edit ? 'Edit User Role' : 'Add User Role'}
         />
       </Stack>
     </Drawer>
@@ -683,9 +982,9 @@ const CustomTextField = (rest: TextFieldProps) => {
 };
 // @ts-ignore
 const CustomAutocomplete = (props: AutocompleteProps) => {
-  const { label, required, ...rest } = props;
+  const { label, required, clearIcon, fullWidth, ...rest } = props;
   return (
-    <Stack gap={1}>
+    <Stack width={'100%'}>
       <Typography fontFamily={'inherit'}>
         {label}
         {required && '*'}
@@ -693,6 +992,8 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
       </Typography>
       <Autocomplete
         {...rest}
+        clearIcon={clearIcon}
+        fullWidth={fullWidth}
         renderTags={(value: readonly string[], getTagProps) =>
           value.map((option: string, index: number) => (
             <Chip

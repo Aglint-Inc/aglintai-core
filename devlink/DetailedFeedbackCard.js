@@ -17,7 +17,9 @@ export function DetailedFeedbackCard({
         className={_utils.cx(_styles, "lan-analysis-header-card")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "text-lg")} tag="div">
+          {textHeader}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "lan-analysis-score-block-detailed")}
           tag="div"

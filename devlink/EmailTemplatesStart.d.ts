@@ -7,4 +7,9 @@ declare function EmailTemplatesStart(props: {
   onClickInterviewInvite?: Types.Devlink.RuntimeProps;
   onClickFollowInterview?: Types.Devlink.RuntimeProps;
   onClickDisqualified?: Types.Devlink.RuntimeProps;
+  slotEmailTemplateCards?: Types.Devlink.Slot;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isAddJob?: Types.Visibility.VisibilityConditions;
+  onClickDone?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

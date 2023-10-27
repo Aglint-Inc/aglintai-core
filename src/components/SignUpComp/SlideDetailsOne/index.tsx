@@ -118,13 +118,6 @@ const SlideDetailsOne = () => {
                   })
                   .then(async (res) => {
                     const company = res.data;
-                    let phone = null;
-                    if (company.phone) {
-                      phone =
-                        company.hq_country == 'US'
-                          ? `+1${company.phone}`
-                          : company.phone;
-                    }
                     const { data: newData } = await supabase
                       .from('recruiter')
                       .update({
@@ -132,7 +125,6 @@ const SlideDetailsOne = () => {
                         industry: company.industries[0] || '',
                         employee_size: company.employee_range,
                         logo: company.logo_url,
-                        phone_number: phone, //NEED TO CHANGE THIS LOGIC. It works temporary
                         office_locations: company.locations || [],
                         company_overview: company.description || '',
                         technology_score: extractKeywords(company.specialties),

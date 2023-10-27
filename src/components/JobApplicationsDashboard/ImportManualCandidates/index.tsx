@@ -6,13 +6,10 @@ import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { ButtonTextGrey } from '@/devlink';
-import { CandidateStatusDropdown, SelectedPopup } from '@/devlink2';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
 import useUploadCandidate from './hooks';
-import { capitalize } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 
@@ -58,7 +55,7 @@ const initialFormFields: FormEntries = {
 };
 
 const ImportManualCandidates = () => {
-  const { setOpenManualImportCandidates, job } = useJobApplications();
+  const { job, setOpenImportCandidates } = useJobApplications();
   const [applicant, setApplicant] = useState(initialFormFields);
   const [loading, setLoading] = useState(false);
   const { handleUploadCandidate } = useUploadCandidate();
@@ -112,19 +109,6 @@ const ImportManualCandidates = () => {
               else error = true;
             }
             break;
-          case 'phone':
-            {
-              if (
-                value &&
-                value.trim() !== '' &&
-                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
-                  value.trim(),
-                )
-              )
-                value = value.trim();
-              else error = true;
-            }
-            break;
           case 'file': {
             if (value === null) error = true;
           }
@@ -161,7 +145,7 @@ const ImportManualCandidates = () => {
         applicant.resume.value,
       );
       if (confirmation) {
-        setOpenManualImportCandidates(false);
+        setOpenImportCandidates(false);
         setApplicant(initialFormFields);
       }
       setLoading(false);
@@ -175,37 +159,12 @@ const ImportManualCandidates = () => {
           pointerEvents: loading ? 'none' : 'auto',
         }}
       >
-        <SelectedPopup
-          onClickClose={{ onClick: () => setOpenManualImportCandidates(false) }}
-          slotTitle={
-            <Stack fontWeight={600} fontSize={'18px'}>
-              Add Candidate
-            </Stack>
-          }
-          slotBody={
-            <FormBody applicant={applicant} setApplicant={setApplicant} />
-          }
-          slotButtons={
-            <Stack gap={'32px'} flexDirection={'row'} alignItems={'center'}>
-              <ButtonTextGrey
-                buttonText={'Cancel'}
-                onClickCancel={{
-                  onClick: () => setOpenManualImportCandidates(false),
-                }}
-              />
-              {/* <ButtonOutlinedSmall
-                textLabel={'Add'}
-                onClickButton={{ onClick: async () => await handleSubmit() }}
-              /> */}
-              <AUIButton
-                size='small'
-                onClick={async () => await handleSubmit()}
-              >
-                Add Candidate
-              </AUIButton>
-            </Stack>
-          }
-        />
+        <FormBody applicant={applicant} setApplicant={setApplicant} />
+        <Stack direction={'row'} justifyContent={'flex-end'}>
+          <AUIButton size='small' onClick={async () => await handleSubmit()}>
+            Add Candidate
+          </AUIButton>
+        </Stack>
       </Stack>
       <Stack
         position={'absolute'}
@@ -285,7 +244,6 @@ const FormBody = ({
           margin='none'
           label={'Phone number'}
           fullWidth
-          required
           id={'phone_number'}
           value={applicant.phone.value}
           error={applicant.phone.error}
@@ -303,76 +261,58 @@ const FormBody = ({
         helperText={applicant.linkedin.error && getHelper('LinkedIn url')}
         onChange={(e) => handleChange(e, 'linkedin')}
       />
-      <Stack
-        fontWeight={600}
-        fontSize={'14px'}
-        flexDirection={'row'}
-        gap={'4px'}
-      >
-        Upload resume
-        <Stack style={{ color: 'red' }}>*</Stack>
-      </Stack>
-      <Stack>
-        <FileUploader
-          handleChange={(e) => handleChange(e, 'resume')}
-          types={fileTypes}
-        >
-          <Stack
-            sx={{
-              border: '1px dashed',
-              borderColor: palette.grey[600],
-              borderRadius: 1,
-              py: '40px',
-              px: '20px',
-              cursor: 'pointer',
-              background: '#fff',
-            }}
-            direction='row'
-            spacing={'8px'}
-            alignItems={'center'}
-            justifyContent={'center'}
-          >
-            {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
-            <Typography
-              variant='body2'
-              sx={{ textAlgin: 'center', fontSize: '14px' }}
-              style={{
-                color: applicant.resume.error ? 'red' : 'inherit',
-                fontWeight: applicant.resume.value ? 600 : 400,
-              }}
-            >
-              {applicant.resume.value
-                ? applicant.resume.value.name
-                : 'Upload candidate resume [PDF/DOCX]'}
-            </Typography>
-            {applicant.resume.value && <CheckIcon />}
-          </Stack>
-        </FileUploader>
-        {applicant.resume.error && (
-          <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
-            Please upload the candidate resume
-          </Stack>
-        )}
-      </Stack>
-      <Stack
-        flexDirection={'row'}
-        gap={2}
-        alignItems={'center'}
-        marginBottom={'30px'}
-      >
+      <Stack spacing={1}>
         <Stack
           fontWeight={600}
           fontSize={'14px'}
           flexDirection={'row'}
           gap={'4px'}
         >
-          Choose candidates status
+          Upload resume
           <Stack style={{ color: 'red' }}>*</Stack>
         </Stack>
-        <StatusDropDown
-          value={applicant.status.value}
-          onChange={(e) => handleChange(e, 'status')}
-        />
+        <Stack pb={2}>
+          <FileUploader
+            handleChange={(e) => handleChange(e, 'resume')}
+            types={fileTypes}
+          >
+            <Stack
+              sx={{
+                border: '1px dashed',
+                borderColor: palette.grey[600],
+                borderRadius: 1,
+                py: '34px',
+                px: '20px',
+                cursor: 'pointer',
+                background: '#fff',
+              }}
+              direction='row'
+              spacing={'8px'}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
+              <Typography
+                variant='body2'
+                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                style={{
+                  color: applicant.resume.error ? 'red' : 'inherit',
+                  fontWeight: applicant.resume.value ? 600 : 400,
+                }}
+              >
+                {applicant.resume.value
+                  ? applicant.resume.value.name
+                  : 'Upload candidate resume [PDF/DOCX]'}
+              </Typography>
+              {applicant.resume.value && <CheckIcon />}
+            </Stack>
+          </FileUploader>
+          {applicant.resume.error && (
+            <Stack fontSize={'0.75rem'} style={{ color: 'red' }}>
+              Please upload the candidate resume
+            </Stack>
+          )}
+        </Stack>
       </Stack>
     </Stack>
   );
@@ -434,40 +374,6 @@ const CheckIcon = () => {
         fill='#228F67'
       />
     </svg>
-  );
-};
-
-const StatusDropDown = ({ value, onChange }: { value: string; onChange }) => {
-  const statusTypes = Object.values(JobApplicationSections);
-  const [hover, setHover] = useState(-1);
-  const entries = statusTypes.map((entry, i) => {
-    return (
-      <Stack
-        key={i}
-        onMouseOver={() => setHover(i)}
-        onMouseOut={() => setHover(-1)}
-        onClick={() => onChange({ target: { value: entry } })}
-        p={'4px'}
-        fontSize={'12px'}
-        style={{
-          cursor: 'pointer',
-          textTransform: 'capitalize',
-          backgroundColor:
-            hover === i
-              ? statusTypes[i] === value
-                ? 'rgb(230,231,232)'
-                : 'rgb(239,239,240)'
-              : statusTypes[i] === value
-              ? 'rgb(230,231,232)'
-              : 'white',
-        }}
-      >
-        {entry}
-      </Stack>
-    );
-  });
-  return (
-    <CandidateStatusDropdown slotOptions={entries} title={capitalize(value)} />
   );
 };
 

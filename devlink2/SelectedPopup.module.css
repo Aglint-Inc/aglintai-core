@@ -38,6 +38,20 @@
   object-fit: contain;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .selected-popup-main {
   display: flex;
   flex-direction: column;

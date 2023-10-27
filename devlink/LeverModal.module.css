@@ -1,0 +1,72 @@
+.lever-step-1-wrappers {
+  width: 706px;
+  height: 710px;
+  max-width: 706px;
+  padding: 30px 20px;
+  border-radius: 10px;
+}
+
+.lever-1-header-wraps {
+  position: relative;
+  display: flex;
+  margin-bottom: 25px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lever-close-button {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: -12px;
+  bottom: auto;
+
+  padding: 4px;
+
+  border-radius: 100px;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.lever-close-button:hover {
+  background-color: #f8f9f9;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.div-block-536 {
+  height: 590px;
+}

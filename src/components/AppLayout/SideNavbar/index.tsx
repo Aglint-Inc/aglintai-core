@@ -1,19 +1,21 @@
 import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { NavJobSubLink, SoonBadge, TicketSublink } from '@/devlink';
 import {
-  BriefcaseIcon,
-  CandidateIcon,
-  NavJobSubLink,
-  TicketSublink,
-} from '@/devlink';
+  RsnDatabaseIcon,
+  RsnJobsIcon,
+  RsnSettingsIcon,
+  RsnTicketsIcon,
+} from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
-
+  const { recruiter } = useAuthDetails();
   const [subNabOpen, setSubNavOpen] = useState(true);
 
   function openCloseSubNav(route: string) {
@@ -24,20 +26,30 @@ function SideNavbar() {
     }
   }
 
+  const newNaveList = useMemo(() => {
+    const tempList = navList;
+    if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
+      return tempList.filter((x) => x.route === '/support');
+    }
+    return tempList;
+  }, [recruiter]);
+
   return (
-    <>
-      {navList.map((item, i) => {
+    <Stack>
+      {newNaveList.map((item, i) => {
         return (
           <Collapse
             key={i}
             sx={{
               borderRadius: '8px',
               transition: 'all 0.5s',
-              bgcolor: !router.pathname.includes(item.route)
-                ? 'transparent'
-                : 'rgba(255, 255, 255, 0.06)',
+              bgcolor:
+                !router.pathname.includes(item.route) ||
+                item.SubComponents !== null
+                  ? 'transparent'
+                  : 'rgba(255, 255, 255, 0.1)',
             }}
-            collapsedSize={32}
+            collapsedSize={48}
             in={router.pathname.includes(item.route) && subNabOpen}
           >
             <Stack
@@ -45,8 +57,8 @@ function SideNavbar() {
                 '&:hover': {
                   opacity: 1,
                 },
-                height: '32px',
-                p: '6px 10px',
+                height: '48px',
+                p: '12px 10px 14px 10px',
                 opacity: !router.pathname.includes(item.route) ? 0.6 : 1,
                 zIndex: 2,
                 cursor: 'pointer',
@@ -62,17 +74,22 @@ function SideNavbar() {
               spacing={'8px'}
               color={'white.700'}
             >
-              {item.icon}
+              <Stack style={{ transform: 'translateY(1px)' }}>
+                {item.icon}
+              </Stack>
               <Typography
                 color={'white.700'}
                 fontSize={'14px'}
                 fontStyle={'normal'}
                 fontWeight={400}
-                lineHeight={' 20px'}
+                lineHeight={'20px'}
                 letterSpacing={'-0.154px'}
               >
                 {item.text}
               </Typography>
+              <Stack style={{ transform: 'translateY(2px)' }}>
+                {item.comingsoon && <SoonBadge />}
+              </Stack>
             </Stack>
             <Stack
               sx={{
@@ -95,7 +112,7 @@ function SideNavbar() {
           </Collapse>
         );
       })}
-    </>
+    </Stack>
   );
 }
 
@@ -107,15 +124,43 @@ function JobSubNavbar() {
   return (
     <NavJobSubLink
       onClickJobAll={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'all'
+              ? 'rgba(255,255,255,0.1)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=all`),
       }}
       onClickJobActive={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'active'
+              ? 'rgba(255,255,255,0.1)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=active`),
       }}
       onClickJobInactive={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'inactive'
+              ? 'rgba(255,255,255,0.1)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=inactive`),
       }}
       onClickJobClosed={{
+        style: {
+          borderRadius: '8px',
+          backgroundColor:
+            router.query.status === 'close'
+              ? 'rgba(255,255,255,0.1)'
+              : 'transparent',
+        },
         onClick: () => router.push(`${pageRoutes.JOBS}?status=close`),
       }}
       isJobAll={
@@ -128,24 +173,28 @@ function JobSubNavbar() {
       activeCount={
         jobsData?.jobs?.filter(
           (job) =>
+            !job.is_campus &&
             (job.active_status.interviewing.isActive ||
               job.active_status.sourcing.isActive) &&
             !job.active_status.closed.isActive,
         ).length || 0
       }
-      allCount={jobsData?.jobs?.length || 0}
+      allCount={jobsData?.jobs?.filter((job) => !job.is_campus).length || 0}
       inActiveCount={
         jobsData?.jobs?.filter(
           (job) =>
+            !job.is_campus &&
             !(
               job.active_status.interviewing.isActive ||
               job.active_status.sourcing.isActive
-            ) && !job.active_status.closed.isActive,
+            ) &&
+            !job.active_status.closed.isActive,
         ).length || 0
       }
       closedCount={
-        jobsData?.jobs?.filter((job) => job.active_status.closed.isActive)
-          .length || 0
+        jobsData?.jobs?.filter(
+          (job) => !job.is_campus && job.active_status.closed.isActive,
+        ).length || 0
       }
       isJobActive={router.query.status === 'active'}
       isJobInactive={router.query.status === 'inactive'}
@@ -163,6 +212,13 @@ function SupportSubNavbar() {
         allCount={allFilter.all}
         isAllActive={router.query.status === 'all'}
         onClickAll={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'all'
+                ? 'rgba(255,255,255,0.1)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=all`);
           },
@@ -170,13 +226,27 @@ function SupportSubNavbar() {
         inProgressCount={allFilter['in progress']}
         isInProgressActive={router.query.status === 'in progress'}
         onClickInProgress={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'in progress'
+                ? 'rgba(255,255,255,0.1)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=in progress`);
           },
         }}
         resolvedCount={allFilter.Resolved}
-        isResolvedActive={router.query.status === 'resolve'}
+        isResolvedActive={router.query.status === 'resolved'}
         onClickResolve={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'resolved'
+                ? 'rgba(255,255,255,0.1)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=resolved`);
           },
@@ -184,6 +254,13 @@ function SupportSubNavbar() {
         openCount={allFilter.open}
         isOpenActive={router.query.status === 'open'}
         onClickOpen={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'open'
+                ? 'rgba(255,255,255,0.1)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=open`);
           },
@@ -191,6 +268,13 @@ function SupportSubNavbar() {
         onHoldCount={allFilter['on hold']}
         isOnHoldActive={router.query.status === 'on hold'}
         onClickOnHold={{
+          style: {
+            borderRadius: '8px',
+            backgroundColor:
+              router.query.status === 'on hold'
+                ? 'rgba(255,255,255,0.1)'
+                : 'transparent',
+          },
           onClick: () => {
             router.push(`${pageRoutes.SUPPORT}?status=on hold`);
           },
@@ -202,38 +286,31 @@ function SupportSubNavbar() {
 
 const navList = [
   {
-    icon: <BriefcaseIcon />,
+    icon: <RsnJobsIcon />,
     text: 'Jobs',
     SubComponents: <JobSubNavbar />,
     route: pageRoutes.JOBS,
+    comingsoon: false,
   },
   {
-    icon: <CandidateIcon />,
+    icon: <RsnDatabaseIcon />,
     text: 'Candidates',
-    SubComponents: '',
+    SubComponents: null,
     route: pageRoutes.CANDIDATES,
+    comingsoon: true,
   },
   {
-    icon: <ChatIcon />,
+    icon: <RsnTicketsIcon />,
     text: 'Tickets',
     SubComponents: <SupportSubNavbar />,
     route: pageRoutes.SUPPORT,
+    comingsoon: false,
+  },
+  {
+    icon: <RsnSettingsIcon />,
+    text: 'Company Settings',
+    SubComponents: null,
+    route: pageRoutes.COMPANY,
+    comingsoon: false,
   },
 ];
-
-function ChatIcon() {
-  return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      width='16'
-      height='16'
-      viewBox='0 0 16 16'
-      fill='none'
-    >
-      <path
-        d='M6.66634 2H9.33301C12.2785 2 14.6663 4.38781 14.6663 7.33333C14.6663 10.2789 12.2785 12.6667 9.33301 12.6667V15C5.99967 13.6667 1.33301 11.6667 1.33301 7.33333C1.33301 4.38781 3.72082 2 6.66634 2ZM7.99967 11.3333H9.33301C11.5421 11.3333 13.333 9.54247 13.333 7.33333C13.333 5.12419 11.5421 3.33333 9.33301 3.33333H6.66634C4.4572 3.33333 2.66634 5.12419 2.66634 7.33333C2.66634 9.74 4.30773 11.3104 7.99967 12.9865V11.3333Z'
-        fill='white'
-      />
-    </svg>
-  );
-}

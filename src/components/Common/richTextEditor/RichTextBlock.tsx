@@ -243,6 +243,8 @@ export type TipTapEditorType = {
   // eslint-disable-next-line no-unused-vars
   getValue?: (func: () => string) => void;
   toolboxPosition?: ToolboxPosition;
+  borderColor?: string;
+  padding?: number | string;
 };
 
 const TipTapEditor = ({
@@ -256,6 +258,8 @@ const TipTapEditor = ({
   options = true,
   customSend = null,
   toolboxPosition = 'top',
+  borderColor = '',
+  padding = 1,
 }: TipTapEditorType) => {
   const editor = useEditor({
     extensions: [
@@ -359,7 +363,7 @@ const TipTapEditor = ({
   }, [value]);
   return (
     <Stack
-      border={'1px solid'}
+      border={`1px solid ${borderColor}`}
       borderRadius={'8px'}
       sx={{
         '& .ProseMirror': {
@@ -385,7 +389,7 @@ const TipTapEditor = ({
         position: 'relative',
       }}
       borderColor={palette.grey[400]}
-      padding={1}
+      padding={padding}
     >
       <div
         style={{
@@ -403,8 +407,8 @@ const TipTapEditor = ({
             style={{
               display: 'flex',
               position: 'absolute',
-              bottom: '0',
-              right: '0px',
+              bottom: '4px',
+              right: '4px',
             }}
           >
             {customSend}

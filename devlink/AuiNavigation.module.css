@@ -141,6 +141,16 @@
   font-weight: 700;
 }
 
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
+}
+
 .aui-links {
   display: flex;
   align-items: center;

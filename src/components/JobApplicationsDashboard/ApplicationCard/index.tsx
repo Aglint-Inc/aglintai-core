@@ -1,15 +1,15 @@
-import { Stack } from '@mui/material';
-import { useState } from 'react';
+import WarningIcon from '@mui/icons-material/Warning';
+import { Tooltip } from '@mui/material';
+import md5 from 'blueimp-md5';
 
-import { JobCandidateCard } from '@/devlink2';
+import { CandidateListItem } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
-import ApplicationDetails from './ApplicationDetails';
-import JdFetching from './JdFetching';
-import { getScoreColor, getStatusColor } from './utils';
 import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
-import CustomProgress from '../../Common/CustomProgress';
 import MuiAvatar from '../../Common/MuiAvatar';
+import { SmallCircularScore } from '../../Common/SmallCircularScore';
 
 const ApplicationCard = ({
   application,
@@ -17,6 +17,8 @@ const ApplicationCard = ({
   checkList,
   handleSelect,
   isInterview,
+  handleOpenDetails,
+  isSelected = false,
 }: {
   application: JobApplication;
   index: number;
@@ -24,139 +26,108 @@ const ApplicationCard = ({
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
   isInterview: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleOpenDetails: () => void;
+  isSelected: boolean;
 }) => {
-  // this variable is for type change
-  const jobDetails = application as unknown as {
-    jd_score: { summary: { feedback: undefined } };
-  };
-  const [openSidePanel, setOpenSidePanel] = useState(false);
-  const [applicationDetails, setApplicationDetails] = useState({});
+  const { job } = useJobApplications();
 
   const interviewScore = application?.feedback
     ? getInterviewScore(application.feedback)
     : 0;
 
-  const statusColors = getStatusColor(application.status);
-
   const creationDate = formatTimeStamp(application.created_at);
-  const appliedOn = `Applied on ${creationDate}`;
 
   const handleCheck = () => {
     handleSelect(index);
   };
 
-  const handleOpenSidePanel = (application) => {
-    setApplicationDetails(application);
-    setOpenSidePanel((pre) => !pre);
-  };
-
-  const jdScoreObj = application.jd_score as any;
-  const jdScore = Math.floor(jdScoreObj?.over_all?.score) ?? 0;
-
+  const resumeScore = getOverallResumeScore(
+    application.jd_score,
+    job.parameter_weights,
+  );
   return (
-    <>
-      <ApplicationDetails
-        openSidePanel={openSidePanel}
-        setOpenSidePanel={setOpenSidePanel}
-        applicationDetails={applicationDetails}
-      />
-
-      <JobCandidateCard
-        textOrder={index + 1}
-        isChecked={checkList.has(application.application_id)}
-        slotProfilePic={
-          <MuiAvatar
-            level={application.first_name}
-            src={
-              !application.profile_image
-                ? getGravatar(application.email, application?.first_name)
-                : application.profile_image
-            }
-            variant={'rounded'}
-            width={'78px'}
-            height={'78px'}
-            fontSize={'28px'}
+    <CandidateListItem
+      onclickSelect={{ onClick: handleCheck }}
+      isChecked={checkList.has(application.application_id)}
+      slotProfileImage={
+        <MuiAvatar
+          level={application.first_name}
+          src={
+            !application.profile_image
+              ? getGravatar(application.email)
+              : application.profile_image
+          }
+          variant='rounded'
+          width='100%'
+          height='100%'
+          // sx={{
+          //   width: '100%',
+          //   height: '100%',
+          //   background: '#fff',
+          //   '& .MuiAvatar-img ': {
+          //     objectFit: 'contain',
+          //   },
+          // }}
+        />
+      }
+      name={
+        application.first_name
+          ? capitalize(
+              application.first_name + ' ' + application?.last_name || '',
+            )
+          : '---'
+      }
+      jobTitle={
+        application.job_title ? capitalize(application.job_title) : '---'
+      }
+      slotResumeScore={
+        application.json_resume ? (
+          <SmallCircularScore
+            finalScore={resumeScore}
+            scale={0.5}
+            showScore={true}
           />
-        }
-        textName={capitalize(
-          application.first_name + ' ' + application?.last_name,
-        )}
-        textRole={capitalize(application.job_title)}
-        textMail={application.email}
-        textPhone={application.phone}
-        slotScore={
-          <>
-            {jobDetails?.jd_score?.summary?.feedback !==
-              'Resume not Parseble' &&
-            application.resume &&
-            application.jd_score !== null ? (
-              application.jd_score === 'loading' ? (
-                <Stack justifyContent={'center'} alignItems={'center'}>
-                  <JdFetching />
-                  Calculating
-                </Stack>
-              ) : (
-                <CustomProgress
-                  progress={jdScore}
-                  rotation={270}
-                  fillColor={
-                    jdScore >= 90
-                      ? '#228F67'
-                      : jdScore >= 70
-                      ? '#f79a3e'
-                      : jdScore >= 50
-                      ? '#de701d'
-                      : '#d93f4c'
-                  }
-                  bgFill={
-                    jdScore >= 90
-                      ? '#edf8f4'
-                      : jdScore >= 70
-                      ? '#fff7ed'
-                      : jdScore >= 50
-                      ? '#ffeedb'
-                      : '#fff0f1'
-                  }
-                  size={30}
-                  strokeWidth={3}
-                  label={jdScore}
-                  fontSize={20}
-                />
-              )
-            ) : (
-              <Stack>Not found</Stack>
-            )}
-          </>
-        }
-        textScore={interviewScore}
-        scoreTextColor={{ style: { color: getScoreColor(interviewScore) } }}
-        onClickCard={{
-          onClick: () => {
-            handleOpenSidePanel(application);
-          },
-        }}
-        textStatus={capitalize(application.status)}
-        statusTextColor={{ style: { color: statusColors?.color } }}
-        statusBgColor={{ style: { color: statusColors?.backgroundColor } }}
-        textAppliedOn={appliedOn}
-        onClickCheckbox={{ onClick: handleCheck }}
-        isInterview={isInterview}
-      />
-    </>
+        ) : (
+          <Tooltip title='Resume not parsable' placement='right' arrow>
+            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+          </Tooltip>
+        )
+      }
+      email={application.email || '---'}
+      phone={application.phone || '---'}
+      isInterviewVisible={isInterview}
+      slotInterviewScore={
+        application?.feedback ? (
+          <SmallCircularScore
+            finalScore={interviewScore}
+            scale={0.5}
+            showScore={true}
+          />
+        ) : (
+          <Tooltip title='Yet to be interviewed' placement='right' arrow>
+            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+          </Tooltip>
+        )
+      }
+      appliedDate={creationDate}
+      onclickCandidate={{
+        onClick: () => {
+          handleOpenDetails();
+        },
+      }}
+      isHighlighted={isSelected}
+    />
   );
 };
 
 export default ApplicationCard;
 
-export function getGravatar(email, name) {
-  return `https://www.gravatar.com/avatar/${require('crypto')
-    .createHash('md5')
-    .update(email.trim().toLowerCase())
-    .digest('hex')}?d=${encode(name)}`;
-}
+// eslint-disable-next-line no-unused-vars
+export function getGravatar(email, first_name = '') {
+  let imgUrl = `https://www.gravatar.com/avatar/${md5(
+    email ? email.trim().toLowerCase() : '',
+  )}?d=blank&s=240&r=g`;
 
-function encode(name) {
-  return encodeURIComponent(
-    `https://ui-avatars.com/api/background=random&name=${name}`,
-  );
+  return imgUrl;
 }

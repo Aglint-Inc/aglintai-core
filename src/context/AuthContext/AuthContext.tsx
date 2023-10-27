@@ -1,8 +1,6 @@
 import { Stack } from '@mui/material';
-import mixpanel from '@utils/mixpanelInstance';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
-import Cookie from 'js-cookie';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -19,6 +17,7 @@ import {
   RecruiterDB,
   RecruiterType,
   RecruiterUserType,
+  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
@@ -38,12 +37,15 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
+  handleUpdatePassword: (password: string) => Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
   // eslint-disable-next-line no-unused-vars
-  handleLogout: (event: any) => Promise<void>;
+  handleLogout: () => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
+  role: RoleType;
 }
 
 const defaultProvider = {
@@ -51,6 +53,7 @@ const defaultProvider = {
   setUserDetails: () => {},
   handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
+  handleUpdatePassword: undefined,
   recruiter: null,
   setRecruiter: () => {},
   loading: true,
@@ -61,25 +64,23 @@ const defaultProvider = {
     return true;
   },
   recruiterUser: null,
+  role: null,
 };
 
 supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    try {
-      Cookie.remove('access_token');
-      Cookie.set('access_token', session.access_token);
-      mixpanel.identify(session.user.id);
-      if (session?.user?.user_metadata?.role)
-        mixpanel.people.set({
-          $email: session.user.email,
-          Role: 'Recruiter',
-          'User ID': session?.user?.id,
-        });
-    } catch (error) {
-      //
-    }
-  } else {
-    Cookie.remove('access_token');
+  // console.log('session event: ', {
+  //   event,
+  //   time: new Date().toLocaleString(),
+  //   session: session.access_token,
+  //   cookie: Cookie.get('access_token'),
+  // });
+  if (event === 'SIGNED_OUT') {
+    // delete cookies on sign out
+    const expires = new Date(0).toUTCString();
+    document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
+  } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+    const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
+    document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
   }
 });
 
@@ -93,15 +94,17 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [role, setRole] = useState<RoleType>(null);
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        router.push(pageRoutes.LOGIN);
+        if (!isRoutePublic(router.route)) {
+          router.push(pageRoutes.LOGIN);
+        }
         loading && setLoading(false);
         return;
       }
-
       if (data.session.user.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
@@ -110,14 +113,22 @@ const AuthProvider = ({ children }) => {
       }
 
       if (!error) {
-        Cookie.remove('access_token');
-        Cookie.set('access_token', data.session.access_token);
         setUserDetails(data.session);
         const { data: recruiterUser, error: errorUser } = await supabase
           .from('recruiter_user')
           .select('*')
           .eq('user_id', data.session.user.id);
         if (!errorUser && recruiterUser.length > 0) {
+          if (recruiterUser[0].is_deactivated) {
+            // route something don't login
+          }
+          // @ts-ignore
+          (recruiterUser[0].join_status || '').toLocaleLowerCase() ===
+            'invited' &&
+            handleUpdateProfile(
+              { join_status: 'joined' },
+              data.session.user.id,
+            );
           setRecruiterUser(recruiterUser[0]);
           const { data: recruiter, error } = await supabase
             .from('recruiter')
@@ -129,6 +140,8 @@ const AuthProvider = ({ children }) => {
               address: recruiter[0]?.address as unknown as AddressType,
               socials: recruiter[0]?.socials as unknown as SocialsType,
             });
+            const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
+            temp && setRole(temp as RoleType);
           }
         } else {
           router.push(pageRoutes.SIGNUP);
@@ -142,22 +155,21 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
+  const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      Cookie.remove('access_token');
       router.push('/signup');
     }
   };
 
   const handleUpdateProfile = async (
-    details: RecruiterUserType,
+    details: Partial<RecruiterUserType>,
+    id?: string,
   ): Promise<boolean> => {
     const { data, error } = await supabase
       .from('recruiter_user')
       .update(details)
-      .eq('user_id', userDetails.user.id)
+      .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
       setRecruiterUser(data[0]);
@@ -173,13 +185,26 @@ const AuthProvider = ({ children }) => {
       {
         email: email,
       },
-      { emailRedirectTo: 'http://localhost:3000/loading' },
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
       toast.success(`Confirmation email sent`);
+      return true;
+    }
+  };
+
+  const handleUpdatePassword = async (password: string): Promise<boolean> => {
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    if (error) {
+      toast.error(`Oops! Something went wrong. (${error.message})`);
+      return false;
+    } else {
+      toast.success(`Password reset successfully`);
       return true;
     }
   };
@@ -215,12 +240,14 @@ const AuthProvider = ({ children }) => {
         recruiter,
         handleUpdateProfile,
         handleUpdateEmail,
+        handleUpdatePassword,
         setRecruiter,
         loading,
         setLoading,
         handleLogout,
         updateRecruiter,
         recruiterUser,
+        role,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -239,7 +266,11 @@ const AuthLoader = () => {
 };
 
 const isRoutePublic = (path = '') => {
-  const whiteListedRoutes = [pageRoutes.LOGIN, pageRoutes.SIGNUP];
+  const whiteListedRoutes = [
+    pageRoutes.LOGIN,
+    pageRoutes.SIGNUP,
+    pageRoutes.INTERVIEW,
+  ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
   }

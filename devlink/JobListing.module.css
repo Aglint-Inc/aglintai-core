@@ -192,6 +192,10 @@
   color: var(--grey600-d5bebe21);
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -416,6 +420,16 @@
   font-weight: 700;
 }
 
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
+}
+
 .job-company-info-wrappers {
   display: flex;
   width: 600px;
@@ -475,6 +489,10 @@
 
 .icons.rotate-180 {
   transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -567,6 +585,30 @@
 
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
+}
+
+.fw-semibold.grow-line {
+  flex: 0 0 auto;
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.fw-semibold.text-lg.text-yellow-600.mobile-14 {
+  color: #ed8f1c;
+  -webkit-text-stroke-color: #ed8f1c;
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
+}
+
+.fw-semibold.mb-14 {
+  margin-bottom: 14px;
 }
 
 .company-list-link-wrappers {
@@ -792,8 +834,16 @@
   color: var(--red600-953350ec);
 }
 
+.text-sm.text-grey-500.width-ticket-d {
+  width: 49.91667175292969px;
+}
+
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-sm.text-first-capital {
+  text-transform: capitalize;
 }
 
 .text-block-26 {
@@ -813,6 +863,10 @@
 .aglint-powered-footer {
   padding-top: 40px;
   padding-bottom: 40px;
+}
+
+.aglint-powered-footer.pt-100 {
+  padding-top: 100px;
 }
 
 .div-block-432 {

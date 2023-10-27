@@ -1,6 +1,7 @@
 import { Stack } from '@mui/system';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+// import FontFamily from '@tiptap/extension-font-family'
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
@@ -107,7 +108,7 @@ const TipTapAIEditor = ({
           position={'relative'}
           sx={{
             '& .ProseMirror': {
-              minHeight: '150px',
+              minHeight: '250px',
               width: '100%',
               wordBreak: 'break-word',
             },

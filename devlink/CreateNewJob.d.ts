@@ -24,4 +24,18 @@ declare function CreateNewJob(props: {
   textJobEdit?: React.ReactNode;
   slotPublishButton?: Types.Devlink.Slot;
   slotSavedChanges?: Types.Devlink.Slot;
+  isDisclaimerDetailsVisible?: Types.Visibility.VisibilityConditions;
+  slotDisclaimerDetails?: Types.Devlink.Slot;
+  isDisclaimerApplyFormVisible?: Types.Visibility.VisibilityConditions;
+  slotDisclaimerApplyForm?: Types.Devlink.Slot;
+  isDisclaimerScoreVisible?: Types.Visibility.VisibilityConditions;
+  slotDisclaimerScoreSetting?: Types.Devlink.Slot;
+  isDisclaimerEmailVisible?: Types.Visibility.VisibilityConditions;
+  slotEmailDisclaimer?: Types.Devlink.Slot;
+  isDisclaimerScreeningVisible?: Types.Visibility.VisibilityConditions;
+  slotDisclaimerScreening?: Types.Devlink.Slot;
+  isDisclaimerWorkflowVisible?: Types.Visibility.VisibilityConditions;
+  slotDisclaimerWorkflow?: Types.Devlink.Slot;
+  isPreviewVisible?: Types.Visibility.VisibilityConditions;
+  slotAtsBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

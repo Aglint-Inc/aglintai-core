@@ -13,12 +13,16 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
+      {
+        source: '/login',
+        destination: '/signup?step=signin',
+        basePath: false,
+        permanent: true,
+      },
     ];
   },
   images: {
-    images: {
-      domains: ['uploads-ssl.webflow.com'],
-    },
+    domains: ['uploads-ssl.webflow.com'],
     dangerouslyAllowSVG: true,
     remotePatterns: [
       {

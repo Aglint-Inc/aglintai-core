@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-object-injection */
+import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { palette } from '@/src/context/Theme/Theme';
 
 const Priority = {
@@ -138,4 +140,64 @@ export const statusOrder = {
   escalated: 5,
   canceled: 6,
   reopened: 7,
+};
+
+type DataType = {
+  qualification: {
+    certifications: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    education: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    experience: {
+      isRelated: boolean;
+      relevance: string;
+    };
+    project: {
+      isRelated: boolean;
+      relevance: string;
+    };
+  };
+  skills: {
+    score: number;
+  };
+};
+
+export function calculateOverallScore(data: DataType): ScoreWheelParams {
+  const relevanceScores = {
+    less: 10,
+    ok: 30,
+    more: 50,
+  };
+  const relatedScore = 50;
+  const detailedScores = {};
+  for (const key of Object.keys(data.qualification)) {
+    const value = data.qualification[key];
+    if (!value) {
+      continue;
+    }
+    detailedScores[key] = value.isRelated
+      ? relatedScore + relevanceScores[value.relevance] || 0
+      : 0;
+  }
+  const skillsScore: number = data.skills?.score || 0;
+  detailedScores['skills'] = skillsScore;
+  return detailedScores as ScoreWheelParams;
+}
+
+export const getOverallResumeScore = (jd_score, parameter_weights) => {
+  const data = {
+    qualification: jd_score.qualification,
+    skills: jd_score.skills_score,
+  };
+  const detailedScores = calculateOverallScore(data);
+  return Math.trunc(
+    Object.keys(parameter_weights).reduce((acc, curr) => {
+      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
+      return acc;
+    }, 0),
+  );
 };

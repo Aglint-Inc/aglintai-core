@@ -59,15 +59,15 @@ export declare function FormBooleanInput({
   type,
   inputType,
   ...props
-}: FormInputProps): any;
+}: FormInputProps): JSX.Element;
 export declare function FormCheckboxInput({
   className,
   ...props
-}: FormInputProps): any;
+}: FormInputProps): JSX.Element;
 export declare function FormRadioInput({
   className,
   ...props
-}: FormInputProps): any;
+}: FormInputProps): JSX.Element;
 type FileUploadWrapperProps = Props<"div"> & {
   maxSize?: number;
 };
@@ -180,5 +180,5 @@ export declare function FormReCaptcha({
   siteKey,
   theme,
   size,
-}: FormReCaptchaProps): any;
+}: FormReCaptchaProps): JSX.Element;
 export {};

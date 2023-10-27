@@ -22,6 +22,7 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
   const {
     handleUpdateFormFields,
     jobForm: { formFields, formType },
+    dispatch,
   } = useJobForm();
   const [suggSkills, setSuggSkills] = useState<string[]>([]);
   const [openSkillForm, setSkillForm] = useState(false);
@@ -35,18 +36,6 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
           aiGenSkills = JSON.parse(
             sessionStorage.getItem(`ai-gen-skills-${formFields.jobTitle}`),
           );
-        }
-
-        if (aiGenSkills.length === 0) {
-          let generatedSkills = await generateSkills(formFields.jobTitle);
-          generatedSkills = generatedSkills
-            .filter((s) => !formFields.skills.find((s2) => s2 === s))
-            .map((s) => s);
-          sessionStorage.setItem(
-            `ai-gen-skills-${formFields.jobTitle}`,
-            JSON.stringify(generatedSkills),
-          );
-          aiGenSkills = [...generatedSkills];
         }
 
         setSuggSkills(() => {
@@ -104,6 +93,27 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
     });
   };
 
+  const handleGenSugSkills = async () => {
+    try {
+      setIsSkillGenerating(true);
+      let generatedSkills = await generateSkills(formFields.jobTitle);
+      generatedSkills = generatedSkills
+        .filter((s) => !formFields.skills.find((s2) => s2 === s))
+        .map((s) => s);
+      sessionStorage.setItem(
+        `ai-gen-skills-${formFields.jobTitle}`,
+        JSON.stringify(generatedSkills),
+      );
+      setSuggSkills(() => {
+        return generatedSkills.map((s) => s);
+      });
+    } catch (err) {
+      toast.error('Some thing went wrong While generating skills');
+    } finally {
+      setIsSkillGenerating(false);
+    }
+  };
+
   return (
     <NewJobStep2
       onClickAddSkill={{
@@ -125,10 +135,10 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
       }
       slotAddedSkill={
         <>
-          {formFields.skills.map((p) => {
+          {formFields.skills.map((p, idx) => {
             return (
               <SkillPill
-                key={p}
+                key={idx}
                 textSkill={p}
                 onClickRemove={{
                   onClick: () => {
@@ -180,6 +190,22 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
         </>
       }
       isJobHeaderVisible={formType === 'new'}
+      onClickGenerate={{
+        onClick: handleGenSugSkills,
+      }}
+      isGenerateVisible={!(suggSkills.length > 0 || isSkillGenerating)}
+      isProceedDisable={false}
+      onClickProceed={{
+        onClick: () => {
+          dispatch({
+            type: 'moveToSlide',
+            payload: {
+              nextSlide: 'resumeScore',
+            },
+          });
+        },
+      }}
+      isAddJob={formType === 'new'}
     />
   );
 };

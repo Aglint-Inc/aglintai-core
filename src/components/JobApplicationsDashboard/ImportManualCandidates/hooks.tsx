@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   InputData,
@@ -14,11 +12,8 @@ import {
 } from './utils';
 
 const useUploadCandidate = () => {
-  const {
-    handleJobApplicationCreate,
-    handleJobApplicationError,
-    handleJobApplicationUIUpdate,
-  } = useJobApplications();
+  const { handleJobApplicationError, handleJobApplicationCreate } =
+    useJobApplications();
 
   const handleUploadCandidate = async (
     job: JobType,
@@ -40,23 +35,9 @@ const useUploadCandidate = () => {
             resume: data,
           });
           if (applicantData) {
-            const { data: resumeScore } = await axios.post(
-              'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-              {
-                pdfUrl: applicantData.resume,
-                application_id: applicantData.application_id,
-                description: job.description || job.responsibilities.join(','),
-                job_title: job.job_title,
-                skills: job.skills || [],
-                company_name: job?.company,
-              },
+            toast.success(
+              'Job application uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
             );
-            handleJobApplicationUIUpdate({
-              ...applicantData,
-              jd_score: resumeScore,
-            });
-
-            toast.success('Job application successfully created!');
             return true;
           }
         } else {

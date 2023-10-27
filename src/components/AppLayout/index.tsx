@@ -5,11 +5,7 @@ import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import {
-  AglintRecruiterLogo,
-  NavMenuBottom,
-  NotificationAndProfile,
-} from '@/devlink';
+import { RecSideNavBottomBlock, RecSideNavProfileBlock } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
@@ -19,12 +15,13 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { recruiter, userDetails, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
-  const userEmail = userDetails.user.email;
+  const companyName = recruiter.name;
+  const logo = recruiter.logo;
   const profileImage = recruiterUser.profile_image;
 
   useEffect(() => {
@@ -67,119 +64,10 @@ export default function AppLayout({ children }) {
   // console.log(router, pageRoutes.JOBS);
   return (
     <Stack zIndex={2000} direction={'row'}>
-      {/* <Stack
-        zIndex={2}
-        sx={{
-          transition: 'all 0.4s',
-          transitionDelay:
-            router.pathname !== pageRoutes.DASHBOARD && expand ? '0.4s' : '0s',
-          opacity: router.pathname !== pageRoutes.DASHBOARD && expand ? 1 : 0,
-          pointerEvents:
-            (router.pathname.includes(pageRoutes.JOBS) ||
-              router.pathname.includes(pageRoutes.INTERVIEW) ||
-              router.pathname.includes(pageRoutes.RESUME) ||
-              router.pathname === pageRoutes.COVER_LETTER) &&
-            expand
-              ? 'auto'
-              : 'none',
-        }}
-        position={'absolute'}
-        top={60}
-        left={284}
-        display={windowSize?.innerWidth < 991 ? 'none' : 'block'}
-      >
-        <ArrowLeft
-          onClickArrowLeft={{
-            onClick: () => {
-              setExpand(false);
-            },
-          }}
-        />
-      </Stack> */}
-
       <Stack
         display={windowSize?.innerWidth < 991 ? 'none' : 'flex'}
         direction={'row'}
       >
-        {/* <Stack position={'relative'}>
-          <Stack
-            sx={{
-              transition: 'all 0.4s',
-              transitionDelay: !expand ? '0.4s' : '0s',
-              zIndex: 3,
-              opacity:
-                (router.pathname.includes(pageRoutes.JOBS) ||
-                  router.pathname.includes(pageRoutes.INTERVIEW) ||
-                  router.pathname.includes(pageRoutes.RESUME) ||
-                  router.pathname === pageRoutes.COVER_LETTER) &&
-                !expand
-                  ? 1
-                  : 0,
-              pointerEvents:
-                (router.pathname.includes(pageRoutes.JOBS) ||
-                  router.pathname.includes(pageRoutes.INTERVIEW) ||
-                  router.pathname.includes(pageRoutes.RESUME) ||
-                  router.pathname === pageRoutes.COVER_LETTER) &&
-                !expand
-                  ? 'auto'
-                  : 'none',
-            }}
-            position={'absolute'}
-            top={60}
-            right={0}
-          >
-            <ArrowRight
-              onClickArrowRight={{
-                onClick: () => {
-                  setExpand(true);
-                },
-              }}
-            />
-          </Stack>
-          <Stack zIndex={2}>
-            <SidemenuLeft
-              isDashboard={router.pathname === pageRoutes.DASHBOARD}
-              isJobs={router.pathname.includes(pageRoutes.JOBS)}
-              isResume={
-                router.pathname.includes(pageRoutes.RESUME) ||
-                router.pathname === pageRoutes.COVER_LETTER
-              }
-              isCoach={router.pathname === pageRoutes.Career_COACH}
-              isPro={true}
-              isInterview={router.pathname.includes(pageRoutes.INTERVIEW)}
-              isNotification={router.pathname === pageRoutes.NOTIFICATIONS}
-              isSettings={router.pathname === pageRoutes.SETTINGS}
-              // isReferral={router.pathname === pageRoutes.REFERRAL}
-              onClickInterview={{
-                onClick: () => {
-                  setExpand(true);
-                },
-              }}
-              onClickJobs={{
-                onClick: () => {
-                  setExpand(true);
-                },
-              }}
-              onClickResume={{
-                onClick: () => {
-                  setExpand(true);
-                },
-              }}
-              textNotificationCount={0}
-              isNotificationCount={false}
-              slotProfileImage={
-                <Avatar
-                  // src={employeeDtails[0]?.image}
-                  variant='rounded'
-                  sx={{ width: '100%', height: '100%' }}
-                />
-              }
-              onClickLogout={{
-                onClick: handleLogout,
-              }}
-            />
-          </Stack>
-        </Stack> */}
         <Stack
           sx={{
             transition: 'width 0.4s, border 0.6s',
@@ -187,38 +75,60 @@ export default function AppLayout({ children }) {
           borderRight={'1px solid'}
           borderColor={'grey.200'}
           position={'relative'}
-          p={'14px'}
-          bgcolor={'#25282a'}
+          p={'28px 20px 12px 16px'}
+          bgcolor={'#25282A'}
+          width={'260px'}
         >
-          <Stack height={'calc(100vh - 28px)'}>
-            <Stack pb={'24px'}>
-              <AglintRecruiterLogo />
-            </Stack>
-            <Stack height={'100%'} justifyContent={'space-between'}>
+          <Stack height={'calc(100vh - 44px)'}>
+            <RecSideNavProfileBlock
+              companyName={companyName}
+              onclickCompany={{
+                onClick: () => router.push(pageRoutes.COMPANY),
+              }}
+              onclickProfileImage={{
+                onClick: () => router.push(pageRoutes.PROFILE),
+              }}
+              slotCompanyLogo={
+                <Avatar
+                  src={logo}
+                  variant='rounded'
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#fff',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
+                    },
+                  }}
+                />
+              }
+              slotProfileImage={
+                <Avatar
+                  src={profileImage}
+                  variant='rounded'
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#fff',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
+                    },
+                  }}
+                />
+              }
+            />
+            <Stack height={'100%'} justifyContent={'space-between'} pt={'26px'}>
               <Stack spacing={'10px'}>
                 <SideNavbar />
               </Stack>
-              <NavMenuBottom
-                isMyNotification={router.pathname.includes(
-                  pageRoutes.NOTIFICATIONS,
-                )}
-                slotProfileImage={
-                  <Avatar
-                    src={profileImage}
-                    variant='rounded'
-                    sx={{ width: '100%', height: '100%' }}
-                  />
-                }
-                isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
-                textEmail={userEmail}
-                textName={recruiterUser?.first_name}
-                onClickLogout={{
-                  onClick: (e) => {
-                    handleLogout(e);
-                  },
-                }}
-              />
             </Stack>
+            <RecSideNavBottomBlock
+              onclickLogout={{
+                onClick: () => {
+                  handleLogout();
+                },
+              }}
+            />
           </Stack>
         </Stack>
       </Stack>
@@ -248,7 +158,7 @@ export default function AppLayout({ children }) {
               }}
             />
           </Stack>
-          <Stack width={'100%'} minHeight={'66px'}></Stack>
+          <Stack width={'100%'} minHeight={'66px'} />
           <Stack
             position={'fixed'}
             top={-1}
@@ -260,9 +170,7 @@ export default function AppLayout({ children }) {
             direction={'row'}
             bgcolor={'#25282a'}
             justifyContent={'right'}
-            // boxShadow={'0px 3px 5px #04444D26'}
-          ></Stack>
-
+          />
           <Stack
             position={'fixed'}
             top={-1}
@@ -270,60 +178,65 @@ export default function AppLayout({ children }) {
             zIndex={9}
             minHeight={'66px'}
             maxHeight={'66px'}
-            width={'60%'}
+            width={'100%'}
             direction={'row'}
             justifyContent={'left'}
           >
-            <Stack width={'100%'} alignItems={'center'} direction={'row'}>
-              <Stack
-                position={'relative'}
-                height={'53px'}
-                left={'4px'}
-                width={'40px'}
-                overflow={'hidden'}
-              >
-                <Stack
-                  onClick={() => {
-                    // console.log(lottieRef.current);
-                    // lottieRef.current.play();
-                    setExpand((pre) => !pre);
-                  }}
-                  width={'130px'}
-                  position={'absolute'}
-                  top={'-38px'}
-                  left={'-44px'}
-                >
-                  <MenuLottie lottieRef={lottieRef} isStop={expand} />
-                </Stack>
-              </Stack>
-              <Stack zIndex={2000}>
-                <AglintRecruiterLogo />
-              </Stack>
+            <Stack
+              onClick={() => {
+                setExpand((pre) => !pre);
+              }}
+              width={'130px'}
+              position={'absolute'}
+              top={'-33px'}
+              left={'-44px'}
+            >
+              <MenuLottie lottieRef={lottieRef} isStop={expand} />
             </Stack>
-          </Stack>
-          <Stack
-            position={'fixed'}
-            top={1}
-            right={10}
-            zIndex={7}
-            minHeight={'66px'}
-            maxHeight={'66px'}
-            width={'40%'}
-            direction={'row'}
-            justifyContent={'right'}
-            color={'white.700'}
-          >
-            <NotificationAndProfile
-              isNotificationCountVisible={true}
-              textNotificationCOunt={0}
-              slotProfileImage={
-                <Avatar
-                  src={recruiter?.logo}
-                  variant='rounded'
-                  sx={{ width: '100%', height: '100%' }}
-                />
-              }
-            />
+            <Stack
+              width={'calc(100% - 80px)'}
+              position={'absolute'}
+              top={'17px'}
+              left={'60px'}
+            >
+              <RecSideNavProfileBlock
+                companyName={companyName}
+                onclickCompany={{
+                  onClick: () => router.push(pageRoutes.COMPANY),
+                }}
+                onclickProfileImage={{
+                  onClick: () => router.push(pageRoutes.PROFILE),
+                }}
+                slotCompanyLogo={
+                  <Avatar
+                    src={logo}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
+                slotProfileImage={
+                  <Avatar
+                    src={profileImage}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
+              />
+            </Stack>
           </Stack>
           <Stack width={'100vw'}>
             <Drawer
@@ -331,6 +244,8 @@ export default function AppLayout({ children }) {
                 '& .MuiDrawer-paper': {
                   border: 'none !important',
                   bgcolor: '#25282a !important',
+                  width: '100%',
+                  padding: '0 30px 10px 30px',
                 },
                 zIndex: 8,
               }}
@@ -341,63 +256,21 @@ export default function AppLayout({ children }) {
               variant='persistent'
             >
               <Stack
+                height={'100%'}
                 justifyContent={'space-between'}
-                bgcolor={'#25282a !important'}
-                height={'100dvh'}
-                width={300}
-                sx={{
-                  transition: `transform 0.4s, opacity 0.5s`,
-                  opacity: expand ? 1 : 0,
-                  transform: expand ? 'none' : 'translate3d(-200px, 0px, 0px)',
-                }}
+                pt={'88px'}
               >
-                <Stack width={'100%'} minHeight={'66px'}></Stack>
-
-                <Stack
-                  pt={'30px'}
-                  px={'15px'}
-                  spacing={'10px'}
-                  height={'100%'}
-                  // bgcolor={'red.300'}
-                >
-                  <Stack
-                    onClick={() => {
-                      setLoadingProgress(true);
-                    }}
-                  >
-                    <Stack spacing={'10px'}>
-                      <SideNavbar />
-                    </Stack>
-                  </Stack>
-                </Stack>
-
-                <Stack py={'10px'}>
-                  <Stack px={'15px'}>
-                    <NavMenuBottom
-                      isNotificationVisible={false}
-                      isProfileVisible={false}
-                      isMyNotification={router.pathname.includes(
-                        pageRoutes.NOTIFICATIONS,
-                      )}
-                      slotProfileImage={
-                        <Avatar
-                          src={recruiter?.logo}
-                          variant='rounded'
-                          sx={{ width: '100%', height: '100%' }}
-                        />
-                      }
-                      isMyCompany={router.pathname.includes(pageRoutes.COMPANY)}
-                      textEmail={recruiter?.email}
-                      textName={recruiter?.name}
-                      onClickLogout={{
-                        onClick: (e) => {
-                          handleLogout(e);
-                        },
-                      }}
-                    />
-                  </Stack>
+                <Stack spacing={'10px'}>
+                  <SideNavbar />
                 </Stack>
               </Stack>
+              <RecSideNavBottomBlock
+                onclickLogout={{
+                  onClick: () => {
+                    handleLogout();
+                  },
+                }}
+              />
             </Drawer>
             <Stack
               zIndex={7}
@@ -416,7 +289,6 @@ export default function AppLayout({ children }) {
             ></Stack>
           </Stack>
         </Stack>
-        {/* end mobile navbar */}
         {children}
       </Stack>
     </Stack>

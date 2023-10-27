@@ -6,7 +6,7 @@ const ProfilePage = () => {
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
+        title='Aglint | Profile'
         description='AI Powered Talent Development Platform.'
       />
       <ProfileDashboard />

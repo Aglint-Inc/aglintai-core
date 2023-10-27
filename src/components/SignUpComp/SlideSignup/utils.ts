@@ -1,4 +1,5 @@
 import { errorMessages } from '@/src/utils/errorMessages';
+import { supabase } from '@/src/utils/supabaseClient';
 
 import { FieldError } from './types';
 
@@ -59,4 +60,19 @@ export const stepObj = {
   detailsOne: 'details-one',
   detailsTwo: 'details-two',
   allSet: 'all-set',
+};
+
+export const createSampleJobCandidate = async (recruiter_id) => {
+  let sampleData = candidateDatabaseSampleJob();
+  await supabase
+    .from('public_jobs')
+    .insert({ ...sampleData, recruiter_id: recruiter_id })
+    .select();
+};
+
+export const candidateDatabaseSampleJob = () => {
+  return {
+    job_title: 'Candidate Database',
+    is_campus: true,
+  };
 };

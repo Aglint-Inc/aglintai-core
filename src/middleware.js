@@ -8,9 +8,10 @@ export const config = {
 
 const whiteListedEndPoints = [
   '/api/sendgrid',
-  '/api/JobApplicationsUtils',
-  'api/ai/gpt3-5-turbo',
-  'api/ai/create-embeddings',
+  // '/api/JobApplicationsUtils',
+  // 'api/ai/gpt3-5-turbo',
+  // 'api/ai/create-embeddings',
+  '/api/lever/saveResume',
 ];
 
 export async function middleware(request) {

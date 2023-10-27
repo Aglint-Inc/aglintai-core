@@ -1,19 +1,22 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@context/JobApplicationsContext';
-import { Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
+import { ImportCandidates } from '@/devlink';
 import {
-  AddCandidateDropdown,
   ApplicantsListEmpty,
-  JobScreening,
+  JobDetails,
+  JobDetailsFilterBlock,
+  JobDetailsTabs,
   SelectActionBar,
 } from '@/devlink2';
 import {
   JobApplication,
   JobApplicationsData,
+  JobApplicationSectionData,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
@@ -21,22 +24,26 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
+import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import InfoDialog from './Common/InfoDialog';
+import ResumeUpload from './FileUpload';
 import { useKeyPress } from './hooks';
-import ImportCandidates from './ImportCandidates';
+import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import {
+  ApiLogState,
   capitalize,
   FilterParameter,
   getFilteredApplications,
+  getIntactApplications,
   getSortedApplications,
   SortParameter,
 } from './utils';
 import Loader from '../Common/Loader';
-import MuiPopup from '../Common/MuiPopup';
+import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -80,11 +87,17 @@ const JobApplicationComponent = () => {
   ]);
 
   const sectionApplications = getFilteredApplications(
-    getSortedApplications(applications[section].list, sort),
+    getSortedApplications(
+      getIntactApplications(applications[section].list)[ApiLogState.SUCCESS],
+      sort,
+      job.parameter_weights as ScoreWheelParams,
+    ),
+    job.parameter_weights as ScoreWheelParams,
     filters,
-  );
+  ) as JobApplication[];
 
   const [checkList, setCheckList] = useState(new Set<string>());
+  const [currentApplication, setCurrentApplication] = useState(-1);
 
   const [jobUpdate, setJobUpdate] = useState(false);
 
@@ -94,6 +107,19 @@ const JobApplicationComponent = () => {
   const handleSetSection = (section) => {
     setSection(section);
     setCheckList(new Set<string>());
+  };
+
+  const handleSelectCurrentApplication = (i: number) => {
+    setCurrentApplication(i);
+  };
+
+  const handleSelectNextApplication = () => {
+    if (currentApplication < searchedApplications.length - 1)
+      setCurrentApplication((prev) => prev + 1);
+  };
+
+  const handleSelectPrevApplication = () => {
+    if (currentApplication > 0) setCurrentApplication((prev) => prev - 1);
   };
 
   const handleSelectAll = () => {
@@ -109,58 +135,120 @@ const JobApplicationComponent = () => {
         ),
       );
   };
+
+  return (
+    <JobDetails
+      textJobStatus={null}
+      textRole={capitalize(job.job_title)}
+      textApplicantsNumber={`(${applicationsData.count.success} success , ${applicationsData.count.processing} processing , ${applicationsData.count.failed} failed)`}
+      onClickEditJobs={{
+        onClick: () => {
+          router.push(`/jobs/edit?job_id=${job.id}`);
+        },
+      }}
+      jobLink={{
+        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
+        target: '_blank',
+      }}
+      slotJobStatus={<JobApplicationStatus />}
+      slotBottomBar={
+        <Stack style={{ backgroundColor: 'white' }}>
+          <Stack
+            style={{
+              opacity: jobUpdate ? 0.5 : 1,
+              pointerEvents: jobUpdate ? 'none' : 'auto',
+            }}
+          >
+            {checkList.size > 0 && (
+              <ActionBar
+                section={section}
+                checkList={checkList}
+                setCheckList={setCheckList}
+                setJobUpdate={setJobUpdate}
+              />
+            )}
+          </Stack>
+        </Stack>
+      }
+      slotSidebar={
+        <ApplicationDetails
+          open={currentApplication !== -1}
+          onClose={() => handleSelectCurrentApplication(-1)}
+          handleSelectNextApplication={() => handleSelectNextApplication()}
+          handleSelectPrevApplication={() => handleSelectPrevApplication()}
+          applicationDetails={
+            searchedApplications[
+              currentApplication === -1 ? 0 : currentApplication
+            ]
+          }
+        />
+      }
+      slotTabs={
+        <NewJobDetailsTabs
+          section={section}
+          handleSetSection={handleSetSection}
+          applications={applications}
+        />
+      }
+      slotFilterBlock={
+        <NewJobFilterBlock
+          sectionApplications={sectionApplications}
+          section={section}
+          setSearchedApplications={setSearchedApplications}
+        />
+      }
+      slotCandidatesList={
+        <ApplicantsList
+          applications={searchedApplications}
+          checkList={checkList}
+          setCheckList={setCheckList}
+          jobUpdate={jobUpdate}
+          section={section}
+          handleSelectCurrentApplication={handleSelectCurrentApplication}
+          currentApplication={currentApplication}
+        />
+      }
+      onclickSelectAll={{ onClick: () => handleSelectAll() }}
+      isListTopBarVisible={searchedApplications.length !== 0}
+      isInterviewVisible={section !== JobApplicationSections.NEW}
+      isAllChecked={checkList.size === searchedApplications.length}
+    />
+  );
+};
+
+const NewJobFilterBlock = ({
+  sectionApplications,
+  section,
+  setSearchedApplications,
+}: {
+  sectionApplications: JobApplication[];
+  section: JobApplicationSections;
+  setSearchedApplications: Dispatch<SetStateAction<JobApplication[]>>;
+}) => {
+  const { setOpenImportCandidates, openImportCandidates } =
+    useJobApplications();
   return (
     <>
-      <JobScreening
-        isTopbarVisible={searchedApplications.length !== 0}
-        interviewScore={section !== JobApplicationSections.NEW}
-        selectAllCheckbox={{ onClick: () => handleSelectAll() }}
-        isSelectAllChecked={checkList.size === searchedApplications.length}
-        slotJobStatus={<JobApplicationStatus />}
-        textJobStatus={null}
-        textRole={capitalize(job.job_title)}
-        textApplicantsNumber={`(${applicationsData.count} applicants)`}
-        isAll={section === JobApplicationSections.NEW}
-        countAll={applications.new.count}
-        onClickAllApplicant={{
-          onClick: () => handleSetSection(JobApplicationSections.NEW),
-          style: {
-            color: section === JobApplicationSections.NEW ? 'white' : 'inherit',
-          },
-        }}
-        isInterviewing={section === JobApplicationSections.INTERVIEWING}
-        countInterviewing={applications.interviewing.count}
-        onClickInterviewing={{
-          onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
-          style: {
-            color:
-              section === JobApplicationSections.INTERVIEWING
-                ? 'white'
-                : 'inherit',
-          },
-        }}
-        isRejected={section === JobApplicationSections.DISQUALIFIED}
-        countRejected={applications.disqualified.count}
-        onClickRejected={{
-          onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
-          style: {
-            color:
-              section === JobApplicationSections.DISQUALIFIED
-                ? 'white'
-                : 'inherit',
-          },
-        }}
-        isSelected={section === JobApplicationSections.QUALIFIED}
-        countSelected={applications.qualified.count}
-        onClickSelected={{
-          onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
-          style: {
-            color:
-              section === JobApplicationSections.QUALIFIED
-                ? 'white'
-                : 'inherit',
-          },
-        }}
+      <Dialog
+        open={openImportCandidates}
+        onClose={() => setOpenImportCandidates(false)}
+        maxWidth='md'
+      >
+        <ImportCandidates
+          slotAddManually={<ImportManualCandidates />}
+          slotImportCsv={<ImportCandidatesCSV />}
+          onClickClose={{
+            onClick: () => {
+              setOpenImportCandidates(false);
+            },
+          }}
+          slotImportResume={
+            <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+          }
+        />
+      </Dialog>
+      <JobDetailsFilterBlock
+        onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={
           <SearchField
             applications={sectionApplications}
@@ -168,48 +256,44 @@ const JobApplicationComponent = () => {
             setSearchedApplications={setSearchedApplications}
           />
         }
-        slotCandidateJobCard={
-          <ApplicantsList
-            applications={searchedApplications}
-            checkList={checkList}
-            setCheckList={setCheckList}
-            jobUpdate={jobUpdate}
-            section={section}
-          />
-        }
-        slotAddCandidates={<AddCandidates />}
-        slotSelectActionBar={
-          <Stack style={{ backgroundColor: 'white' }}>
-            <Stack
-              style={{
-                opacity: jobUpdate ? 0.5 : 1,
-                pointerEvents: jobUpdate ? 'none' : 'auto',
-              }}
-            >
-              <ActionBar
-                section={section}
-                checkList={checkList}
-                setCheckList={setCheckList}
-                setJobUpdate={setJobUpdate}
-              />
-            </Stack>
-          </Stack>
-        }
-        bottomBarVisibility={checkList.size !== 0}
-        linkActiveJobs={{
-          href: '/jobs',
-        }}
-        jobLink={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
-          target: '_blank',
-        }}
-        onClickEditJob={{
-          onClick: () => {
-            router.push(`/jobs/edit?job_id=${job.id}`);
-          },
-        }}
       />
     </>
+  );
+};
+
+const NewJobDetailsTabs = ({
+  section,
+  handleSetSection,
+  applications,
+}: {
+  section: JobApplicationSections;
+  // eslint-disable-next-line no-unused-vars
+  handleSetSection: (section: any) => void;
+  applications: JobApplicationSectionData;
+}) => {
+  return (
+    <JobDetailsTabs
+      isNewSelected={section === JobApplicationSections.NEW}
+      countNew={applications.new.count}
+      onClickNew={{
+        onClick: () => handleSetSection(JobApplicationSections.NEW),
+      }}
+      isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
+      countInterview={applications.interviewing.count}
+      onClickInterview={{
+        onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
+      }}
+      isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
+      countDisqualified={applications.disqualified.count}
+      onClickDisqualified={{
+        onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
+      }}
+      isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
+      countQualified={applications.qualified.count}
+      onClickQualified={{
+        onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
+      }}
+    />
   );
 };
 
@@ -219,12 +303,17 @@ const ApplicantsList = ({
   setCheckList,
   jobUpdate,
   section,
+  handleSelectCurrentApplication,
+  currentApplication,
 }: {
   applications: JobApplication[];
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
   section: string;
+  // eslint-disable-next-line no-unused-vars
+  handleSelectCurrentApplication: (id: number) => void;
+  currentApplication: number;
 }) => {
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
@@ -267,17 +356,19 @@ const ApplicantsList = ({
       }
     }
   };
-  const [lastLoad, setLastLoad] = useState(10);
+  const paginationLimit = 100;
+  const [lastLoad, setLastLoad] = useState(paginationLimit);
   const observer = useRef(undefined);
   const lastApplicationRef = (node: any) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) setLastLoad((prev) => prev + 10);
+      if (entries[0].isIntersecting)
+        setLastLoad((prev) => prev + paginationLimit);
     });
     if (node) observer.current.observe(node);
   };
   useEffect(() => {
-    setLastLoad(10);
+    setLastLoad(paginationLimit);
   }, [section]);
 
   return applications.length === 0 ? (
@@ -309,6 +400,8 @@ const ApplicantsList = ({
               checkList={checkList}
               handleSelect={handleSelect}
               isInterview={section !== JobApplicationSections.NEW}
+              handleOpenDetails={() => handleSelectCurrentApplication(i)}
+              isSelected={currentApplication === i}
             />
           </Stack>
         );
@@ -368,12 +461,13 @@ const ActionBar = ({
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.QUALIFIED);
+  const checkListCount = checkList.size;
   const DialogInfo = {
     interviewing: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to interviewing`,
-      subHeading: 'Send interview Emails to these candidates',
+      heading: `Are you sure that you want to start the assessment process for ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
+      subHeading: 'Send assessment email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
@@ -386,14 +480,14 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Send',
+      primaryText: 'Qualify for Assessment',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     selected: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to Selected`,
+      heading: `Are you sure that you want to qualify ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
       subHeading: undefined,
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.QUALIFIED);
@@ -407,15 +501,15 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Move to Selected',
+      primaryText: 'Qualify',
       secondaryText: 'Cancel',
       variant: 'ai',
     },
     rejected: {
-      heading: `Are you sure that you want to reject ${
-        Array.from(checkList).length
-      } candidates`,
-      subHeading: 'Send rejection Emails to these candidates',
+      heading: `Are you sure that you want to disqualifiy ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      }`,
+      subHeading: 'Send rejection email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
         if (checkEmail) {
@@ -428,17 +522,17 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Rejected',
+      primaryText: 'Disqualify',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     applied: {
-      heading: `Are you sure that you want to move ${
-        Array.from(checkList).length
-      } candidates to New`,
+      heading: `Are you sure that you want to move ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      } to New`,
       subHeading: undefined,
       warningMessage:
-        'Moving back to applied will cancel the interviews the candidates have taken and will start the process again. ',
+        'Moving candidates to new will restart the entire process and reset candidate history.',
       primaryAction: async () => {
         await handleUpdateJobs(JobApplicationSections.NEW);
       },
@@ -495,39 +589,10 @@ const ActionBar = ({
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
         }}
-        textSelected={`${checkList.size} candidates selected`}
+        textSelected={`${checkListCount} candidate${
+          checkListCount !== 1 ? 's' : ''
+        } selected`}
         isMoveNew={showNew}
-      />
-    </>
-  );
-};
-
-const AddCandidates = () => {
-  const {
-    openImportCandidates,
-    setOpenImportCandidates,
-    openManualImportCandidates,
-    setOpenManualImportCandidates,
-  } = useJobApplications();
-  return (
-    <>
-      <MuiPopup
-        props={{
-          open: openImportCandidates,
-        }}
-      >
-        <ImportCandidates />
-      </MuiPopup>
-      <MuiPopup
-        props={{
-          open: openManualImportCandidates,
-        }}
-      >
-        <ImportManualCandidates />
-      </MuiPopup>
-      <AddCandidateDropdown
-        onClickManual={{ onClick: () => setOpenManualImportCandidates(true) }}
-        onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
       />
     </>
   );
@@ -542,117 +607,6 @@ export function sendEmails(
   job,
   handleJobApplicationUpdate,
 ) {
-  function fillEmailTemplate(
-    template: any,
-    email: {
-      first_name: any;
-      last_name: any;
-      job_title: any;
-      company_name: any;
-      interview_link: any;
-      support_link: any;
-    },
-  ) {
-    let filledTemplate = template;
-
-    const placeholders = {
-      '[firstName]': email.first_name,
-      '[lastName]': email.last_name,
-      '[jobTitle]': email.job_title,
-      '[companyName]': email.company_name,
-      '[interviewLink]': email.interview_link,
-      '[supportLink]': email.support_link,
-    };
-
-    for (const [placeholder, value] of Object.entries(placeholders)) {
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-      filledTemplate = filledTemplate.replace(regex, value);
-    }
-
-    return filledTemplate;
-  }
-
-  const emailHandler = async (candidate: {
-    email: any;
-    first_name: any;
-    last_name: any;
-    job_title: any;
-    company: any;
-    application_id: any;
-    emails: any;
-  }) => {
-    await axios
-      .post('/api/sendgrid', {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName:
-          status === JobApplicationSections.INTERVIEWING
-            ? job.email_template?.interview.fromName
-            : status === JobApplicationSections.DISQUALIFIED
-            ? job.email_template?.rejection.fromName
-            : null,
-        email: candidate?.email,
-        subject:
-          status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(job.email_template?.interview.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-        text:
-          status === JobApplicationSections.INTERVIEWING
-            ? fillEmailTemplate(job?.email_template?.interview?.body, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: `https://dev.aglinthq.com/${pageRoutes.INTERVIEWLANDINGPAGE}?id=${candidate.application_id}`,
-                support_link: `https://dev.aglinthq.com/support?id=${candidate.application_id}`,
-              })
-            : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-      })
-      .then(async () => {
-        // if (res.status === 200 && res.data.data === 'Email sent') {
-        //   toast.success('Mail sent successfully');
-        // }
-
-        if (status === JobApplicationSections.INTERVIEWING) {
-          candidate.emails.interviewing = true;
-          await handleJobApplicationUpdate(candidate.application_id, {
-            emails: candidate.emails,
-          });
-        }
-        if (status === JobApplicationSections.DISQUALIFIED) {
-          candidate.emails.rejected = true;
-          await handleJobApplicationUpdate(candidate.application_id, {
-            emails: candidate.emails,
-          });
-        }
-      });
-  };
-
   if (
     status === JobApplicationSections.INTERVIEWING ||
     status === JobApplicationSections.DISQUALIFIED
@@ -683,7 +637,124 @@ export function sendEmails(
     // console.log('filteredCandidates', filteredCandidates);
 
     for (const candidate of filteredCandidates) {
-      emailHandler(candidate);
+      emailHandler(candidate, job, handleJobApplicationUpdate, status);
     }
   }
+}
+
+export const emailHandler = async (
+  candidate: {
+    email: any;
+    first_name: any;
+    last_name: any;
+    job_title: any;
+    company: any;
+    application_id: any;
+    emails: any;
+  },
+  job: any,
+  handleJobApplicationUpdate: any,
+  status: JobApplicationSections,
+) => {
+  return await axios
+    .post('/api/sendgrid', {
+      fromEmail: `messenger@aglinthq.com`,
+      fromName:
+        status === JobApplicationSections.INTERVIEWING
+          ? job.email_template?.interview.fromName
+          : status === JobApplicationSections.DISQUALIFIED
+          ? job.email_template?.rejection.fromName
+          : null,
+      email: candidate?.email,
+      subject:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(job.email_template?.interview.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : status === JobApplicationSections.DISQUALIFIED
+          ? fillEmailTemplate(job?.email_template?.rejection.subject, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : null,
+      text:
+        status === JobApplicationSections.INTERVIEWING
+          ? fillEmailTemplate(job?.email_template?.interview?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
+              support_link: `https://recruiter.aglinthq.com/support/create?id=${candidate.application_id}`,
+            })
+          : status === JobApplicationSections.DISQUALIFIED
+          ? fillEmailTemplate(job?.email_template?.rejection?.body, {
+              first_name: candidate.first_name,
+              last_name: candidate.last_name,
+              job_title: candidate.job_title,
+              company_name: candidate.company,
+              interview_link: undefined,
+              support_link: undefined,
+            })
+          : null,
+    })
+    .then(async () => {
+      if (status === JobApplicationSections.INTERVIEWING) {
+        candidate.emails.interviewing = true;
+        await handleJobApplicationUpdate(candidate.application_id, {
+          emails: candidate.emails,
+        });
+        return true;
+      }
+      if (status === JobApplicationSections.DISQUALIFIED) {
+        candidate.emails.rejected = true;
+        await handleJobApplicationUpdate(candidate.application_id, {
+          emails: candidate.emails,
+        });
+        return true;
+      }
+    })
+    .catch(() => {
+      return false;
+    });
+};
+
+function fillEmailTemplate(
+  template: any,
+  email: {
+    first_name: any;
+    last_name: any;
+    job_title: any;
+    company_name: any;
+    interview_link: any;
+    support_link: any;
+  },
+) {
+  let filledTemplate = template;
+
+  const placeholders = {
+    '[firstName]': email.first_name,
+    '[lastName]': email.last_name,
+    '[jobTitle]': email.job_title,
+    '[companyName]': email.company_name,
+    '[interviewLink]': email.interview_link,
+    '[supportLink]': email.support_link,
+  };
+
+  for (const [placeholder, value] of Object.entries(placeholders)) {
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
+    filledTemplate = filledTemplate.replace(regex, value);
+  }
+
+  return filledTemplate;
 }

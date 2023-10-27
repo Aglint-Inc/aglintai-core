@@ -16,20 +16,21 @@
   justify-content: center;
   align-items: center;
 
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
   border-radius: 4px;
 
-  background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+  background-color: var(--white);
 
   cursor: pointer;
 }
 
 .add-icon {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
   display: flex;
-  width: 16px;
-  height: 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -132,6 +133,20 @@
   object-fit: contain;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .il-dropdown-content {
   position: absolute;
   left: 0%;
@@ -208,12 +223,6 @@
   color: var(--black-9b0fc3fc);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .text-color-black.inline-block.text-red-500 {
   color: var(--red500-5e487426);
 }
@@ -259,7 +268,56 @@
 }
 
 .text-kale-600 {
-  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+  color: var(--kale-600);
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-yellow-700 {
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
+}
+
+.text-grey-500 {
+  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+.text-yellow-600 {
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+}
+
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
 .il-job-info {
@@ -272,15 +330,6 @@
   flex-direction: column;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .ils-dropdown-option {

@@ -128,31 +128,54 @@ export function WelcomeSlider2({
               {slotSignInForm}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "terms-sign-wrapper")}
+              className={_utils.cx(
+                _styles,
+                "terms-sign-wrapper",
+                "login-terms"
+              )}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "terms-sub-wrappers")}
+                className={_utils.cx(_styles, "div-block-523")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "terms-check-wrapper")}
-                  tag="div"
-                  {...onClickCheck}
-                >
-                  {isChecked ? (
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "html-embed-69")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M0.666626%203.16797C0.666626%201.78726%201.78591%200.667969%203.16663%200.667969H14.8333C16.214%200.667969%2017.3333%201.78726%2017.3333%203.16797V14.8346C17.3333%2016.2153%2016.214%2017.3346%2014.8333%2017.3346H3.16663C1.78591%2017.3346%200.666626%2016.2153%200.666626%2014.8346V3.16797Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M13.0952%205.91211C13.4206%206.23755%2013.4206%206.76518%2013.0952%207.09062L7.92259%2012.5073C7.59715%2012.8327%207.06951%2012.8327%206.74408%2012.5073L4.24408%2010.0073C3.91864%209.68185%203.91864%209.15421%204.24408%208.82878C4.56951%208.50334%205.09715%208.50334%205.42259%208.82878L7.33333%2010.7395L11.9167%205.91211C12.2421%205.58667%2012.7697%205.58667%2013.0952%205.91211Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  ) : null}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-600")}
+                  className={_utils.cx(_styles, "terms-sub-wrappers")}
                   tag="div"
                 >
-                  {"Remember me"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "terms-check-wrapper")}
+                    tag="div"
+                    {...onClickCheck}
+                  >
+                    {isChecked ? (
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "html-embed-69")}
+                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M0.666626%203.16797C0.666626%201.78726%201.78591%200.667969%203.16663%200.667969H14.8333C16.214%200.667969%2017.3333%201.78726%2017.3333%203.16797V14.8346C17.3333%2016.2153%2016.214%2017.3346%2014.8333%2017.3346H3.16663C1.78591%2017.3346%200.666626%2016.2153%200.666626%2014.8346V3.16797Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M13.0952%205.91211C13.4206%206.23755%2013.4206%206.76518%2013.0952%207.09062L7.92259%2012.5073C7.59715%2012.8327%207.06951%2012.8327%206.74408%2012.5073L4.24408%2010.0073C3.91864%209.68185%203.91864%209.15421%204.24408%208.82878C4.56951%208.50334%205.09715%208.50334%205.42259%208.82878L7.33333%2010.7395L11.9167%205.91211C12.2421%205.58667%2012.7697%205.58667%2013.0952%205.91211Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    ) : null}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-600")}
+                    tag="div"
+                  >
+                    {"Remember me"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
+                <_Builtin.Link
+                  className={_utils.cx(_styles, "forgot-password-link")}
+                  button={false}
+                  options={{
+                    href: "/forgot-password",
+                  }}
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-underline")}
+                    tag="div"
+                  >
+                    {"Forgot Password"}
+                  </_Builtin.Block>
+                </_Builtin.Link>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(

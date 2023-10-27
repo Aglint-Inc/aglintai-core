@@ -93,3 +93,14 @@ export const generateRoles = async (industry: string) => {
   if (Array.isArray(jsonData.roles))
     localStorage.setItem('roles', JSON.stringify(jsonData.roles));
 };
+
+export const slugify = (text: string) => {
+  const newText = text
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/,/g, '')
+    .replace(/\//g, '-')
+    .replace(/[()]/g, '');
+
+  return newText;
+};

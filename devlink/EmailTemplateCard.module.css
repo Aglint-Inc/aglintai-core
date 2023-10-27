@@ -161,6 +161,10 @@
   color: var(--grey600-d5bebe21);
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -229,6 +233,24 @@
 
 .text-grey-600-3.mt-5 {
   margin-top: 5px;
+}
+
+.text-grey-600-3.inline-block {
+  display: inline;
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600-3.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600-3.regular {
+  font-weight: 400;
+}
+
+.text-grey-600-3.width-400 {
+  max-width: 380px;
 }
 
 #w-node-_923d15de-9788-e49f-c431-fc52940f52b2-940f52b2 {

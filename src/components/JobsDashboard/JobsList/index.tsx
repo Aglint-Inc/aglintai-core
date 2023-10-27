@@ -1,13 +1,16 @@
+import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { JobEmptyState, JobsListingCard } from '@/devlink';
+import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { ApplicationData } from '@/src/context/JobsContext/types';
+import { JobType } from '@/src/types/data.types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {
   calculateTimeDifference,
   filterApplicationsByStatus,
@@ -18,7 +21,7 @@ import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
 interface JobsListProps {
   jobs: JobType[];
-  applications: JobApplcationDB[];
+  applications: ApplicationData[];
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
@@ -29,7 +32,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
         <JobEmptyState
           onClickHere={{
             onClick: () => {
-              router.push(pageRoutes.JOBS + '?flow=create', undefined, {
+              router.push(`${pageRoutes.CREATEJOB}`, undefined, {
                 shallow: true,
               });
             },
@@ -45,6 +48,21 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
           <>
             <ScrollList uniqueKey={ind}>
               <JobsListingCard
+                slotAtsBadge={
+                  job.posted_by == POSTED_BY.LEVER ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/lever.png'
+                          sx={{ width: '100%', height: '14px' }}
+                        />
+                      }
+                    />
+                  ) : (
+                    ''
+                  )
+                }
                 key={ind}
                 textJobRole={job.job_title}
                 textCompanyLocation={`${job.company}, ${job.location}`}
@@ -73,40 +91,52 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                   ).length
                 }
                 slotInterviewIcon={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.interviewing, 'interviewing')
-                    .scheduled ? (
-                    <Icon variant='ClockHistory' height='12' width='12' />
+                  !job.active_status.closed.isActive ? (
+                    getStatusInfo(
+                      job.active_status.interviewing,
+                      'interviewing',
+                    ).scheduled ? (
+                      <Icon variant='ClockHistory' height='12' width='12' />
+                    ) : (
+                      <Icon variant='DoubleTick' height='16' width='16' />
+                    )
                   ) : (
-                    <Icon variant='DoubleTick' height='16' width='16' />
+                    ''
                   )
                 }
                 slotSourcingIcon={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.sourcing, 'sourcing')
-                    .scheduled ? (
-                    <Icon variant='ClockHistory' height='12' width='12' />
+                  !job.active_status.closed.isActive ? (
+                    getStatusInfo(job.active_status.sourcing, 'sourcing')
+                      .scheduled ? (
+                      <Icon variant='ClockHistory' height='12' width='12' />
+                    ) : (
+                      <Icon variant='DoubleTick' height='16' width='16' />
+                    )
                   ) : (
-                    <Icon variant='DoubleTick' height='16' width='16' />
+                    ''
                   )
                 }
                 textSourcing={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.sourcing, 'sourcing')
-                    .scheduled
+                  !job.active_status.closed.isActive
                     ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .primaryStatus
-                    : 'Sourcing'
+                        .scheduled
+                      ? getStatusInfo(job.active_status.sourcing, 'sourcing')
+                          .primaryStatus
+                      : 'Sourcing'
+                    : ''
                 }
                 textInterview={
-                  !job.active_status.closed.isActive &&
-                  getStatusInfo(job.active_status.interviewing, 'interviewing')
-                    .scheduled
+                  !job.active_status.closed.isActive
                     ? getStatusInfo(
                         job.active_status.interviewing,
                         'interviewing',
-                      ).primaryStatus
-                    : 'Interviewing'
+                      ).scheduled
+                      ? getStatusInfo(
+                          job.active_status.interviewing,
+                          'interviewing',
+                        ).primaryStatus
+                      : 'Interviewing'
+                    : ''
                 }
                 bgColorProps={{
                   style: {

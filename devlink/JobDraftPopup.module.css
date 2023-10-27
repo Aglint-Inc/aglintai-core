@@ -131,6 +131,10 @@
   color: var(--grey600-d5bebe21);
 }
 
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -414,6 +418,8 @@
 .button-icon {
   width: 12px;
   height: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-icon.is-large {

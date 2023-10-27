@@ -1,9 +1,16 @@
+/* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
+
+import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 export const capitalize = (str: string) => {
-  const s = str.trim().replaceAll('_', ' ');
-  if (s.length !== 0)
-    return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  if (str) {
+    const s = str.trim().replaceAll('_', ' ');
+    if (s.length !== 0)
+      return `${s.charAt(0).toUpperCase()}${s.slice(1, s.length)}`;
+  }
+  return '';
 };
 
 export const formatTimeStamp = (timeStamp: string) => {
@@ -26,14 +33,13 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-const getResumeScore = (application: JobApplication) => {
+const getResumeScore = (
+  application: JobApplication,
+  parameter_weights: ScoreWheelParams,
+) => {
   const jdScoreObj = application.jd_score as any;
   const jdScore = jdScoreObj
-    ? jdScoreObj === 'loading'
-      ? 0
-      : Math.floor(jdScoreObj?.over_all?.score) < 0
-      ? 0
-      : Math.floor(jdScoreObj?.over_all?.score)
+    ? getOverallResumeScore(application.jd_score, parameter_weights)
     : 0;
   return jdScore;
 };
@@ -57,11 +63,16 @@ export type SortParameter = {
 export const getSortedApplications = (
   applications: JobApplication[],
   sortParameters: SortParameter,
+  parameter_weights: ScoreWheelParams,
 ) => {
   switch (sortParameters.parameter) {
     case 'resume_score':
       {
-        applications.sort((a, b) => getResumeScore(a) - getResumeScore(b));
+        applications.sort(
+          (a, b) =>
+            getResumeScore(a, parameter_weights) -
+            getResumeScore(b, parameter_weights),
+        );
       }
       break;
     case 'interview_score':
@@ -102,11 +113,13 @@ export const getSortedApplications = (
 
 export const getFilteredApplications = (
   applications: JobApplication[],
+  parameter_weights: ScoreWheelParams,
   filterParameters: FilterParameter[],
 ) => {
   return applications.reduce((acc, curr) => {
     const valid = filterParameters.reduce((validity, filter) => {
-      if (validity && handleFilterParameter(filter, curr)) return true;
+      if (validity && handleFilterParameter(filter, curr, parameter_weights))
+        return true;
       else return false;
     }, true);
     if (valid) acc.push(curr);
@@ -114,15 +127,53 @@ export const getFilteredApplications = (
   }, []);
 };
 
+export const getIntactApplications = (applications: JobApplication[]) => {
+  return applications.reduce(
+    (acc, curr) => {
+      const key = intactConditionFilter(curr);
+      return { ...acc, [key]: [...acc[key], curr] };
+    },
+    {
+      [ApiLogState.FAILED]: [],
+      [ApiLogState.SUCCESS]: [],
+      [ApiLogState.PROCESSING]: [],
+    },
+  );
+};
+
+// eslint-disable-next-line no-unused-vars
+export enum ApiLogState {
+  // eslint-disable-next-line no-unused-vars
+  FAILED = 'failed',
+  // eslint-disable-next-line no-unused-vars
+  SUCCESS = 'success',
+  // eslint-disable-next-line no-unused-vars
+  PROCESSING = 'processing',
+}
+
+export const intactConditionFilter = (application: JobApplication) => {
+  const apiLogObj = application.api_logs as any;
+  if (!apiLogObj) return ApiLogState.PROCESSING;
+  switch (apiLogObj.scoreStatus) {
+    case 'Failed':
+      return ApiLogState.FAILED;
+    case 'success':
+      return ApiLogState.SUCCESS;
+    default:
+      return ApiLogState.PROCESSING;
+  }
+};
+
 const handleFilterParameter = (
   filterParameter: FilterParameter,
   application: JobApplication,
+  parameter_weights: ScoreWheelParams,
 ) => {
   switch (filterParameter.parameter) {
     case 'resume_score':
       return handleFilterCondition(
         filterParameter,
-        getResumeScore(application),
+        getResumeScore(application, parameter_weights),
       );
 
     case 'interview_score':

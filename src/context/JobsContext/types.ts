@@ -1,8 +1,14 @@
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { JobType } from '@/src/types/data.types';
 
 export type JobsData = {
   jobs: JobType[] | undefined;
-  applications: JobApplcationDB[] | undefined;
+  applications: ApplicationData[] | undefined;
+};
+
+export type ApplicationData = {
+  job_id: string;
+  status: string;
+  email: string;
 };
 
 export type InputData = Partial<Omit<JobType, 'created_at' | 'recruiter_id'>>;
@@ -22,5 +28,9 @@ export type JobContext = {
   handleJobDelete: (jobId: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleJobError: (error: any) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleGetJob: (jobId: string) => JobType;
+  // eslint-disable-next-line no-unused-vars
+  handleApplicationsRead: (jobIds: string[]) => void;
   initialLoad: boolean;
 };
