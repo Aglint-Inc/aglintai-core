@@ -8,11 +8,11 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import Loader from '../../Common/Loader';
-
 function InterviewInstructions() {
   const { initialLoading, jobDetails, candidateDetails } =
     useInterviewDetailsContext();
-  const { startInterview } = useInterviewContext();
+  const { startInterview, video_Urls, startVideoInterview, videoAssessment } =
+    useInterviewContext();
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,6 +63,7 @@ function InterviewInstructions() {
       }
     }
   }
+
   return (
     <div>
       {initialLoading ? (
@@ -70,41 +71,68 @@ function InterviewInstructions() {
           <Loader />
         </Stack>
       ) : (
-        <InterviewWelcome
-          onClickSupport={{
-            onClick: () => {
-              window.open(
-                `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
+        <>
+          {video_Urls.length > 0 &&
+            video_Urls.map((ele: any, i: number) => {
+              return (
+                <div
+                  key={i}
+                  style={{
+                    display: 'none',
+                  }}
+                >
+                  <video
+                    preload='auto'
+                    key={i}
+                    src={ele?.split('.mp4')[0] + '.mp4'}
+                  >
+                    <track
+                      kind='captions'
+                      srclang='en'
+                      label='English'
+                      default
+                    />
+                  </video>
+                </div>
               );
-            },
-          }}
-          onClickAboutCompany={{
-            onClick: () => {
-              window.open(
-                `https://recruiter.aglinthq.com/job-post/${jobDetails?.id}`,
-              );
-            },
-          }}
-          slotLogo={
-            <Avatar
-              variant='circular'
-              src={jobDetails?.logo}
-              sx={{
-                width: '50px',
-                height: '50px',
-              }}
-            />
-          }
-          textCompany={jobDetails?.company}
-          textRole={jobDetails?.job_title}
-          isAboutVisible={jobDetails?.company_details}
-          textCompanyDescription={jobDetails?.company_details}
-          onClickStart={{
-            onClick: () => {
-              startInterview();
-            },
-          }}
-        />
+            })}
+          <InterviewWelcome
+            onClickSupport={{
+              onClick: () => {
+                window.open(
+                  `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
+                );
+              },
+            }}
+            onClickAboutCompany={{
+              onClick: () => {
+                window.open(
+                  `https://recruiter.aglinthq.com/job-post/${jobDetails?.id}`,
+                );
+              },
+            }}
+            slotLogo={
+              <Avatar
+                variant='circular'
+                src={jobDetails?.logo}
+                sx={{
+                  width: '50px',
+                  height: '50px',
+                }}
+              />
+            }
+            textCompany={jobDetails?.company}
+            textRole={jobDetails?.job_title}
+            isAboutVisible={jobDetails?.company_details}
+            textCompanyDescription={jobDetails?.company_details}
+            onClickStart={{
+              onClick: () => {
+                if (videoAssessment) startVideoInterview();
+                else startInterview();
+              },
+            }}
+          />
+        </>
       )}
     </div>
   );

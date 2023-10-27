@@ -7,7 +7,9 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import CandidatePanel from './CandidatePanel';
+import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
+import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
 import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -28,6 +30,7 @@ function Interview_home() {
     openEndInterview,
     setOpenEndInterview,
     disconnecting,
+    videoAssessment,
   } = useInterviewContext();
   const { candidateDetails, jobDetails } = useInterviewDetailsContext();
 
@@ -118,8 +121,12 @@ function Interview_home() {
             setOpenPanelDrawer(true);
           },
         }}
-        slotInterviewRight={<InterviewerPanel />}
-        slotInterviewLeft={<CandidatePanel />}
+        slotInterviewRight={
+          videoAssessment ? <VideoInterviewerPanel /> : <InterviewerPanel />
+        }
+        slotInterviewLeft={
+          videoAssessment ? <VideoCandidatePanel /> : <CandidatePanel />
+        }
       />
     </Stack>
   );

@@ -11,4 +11,7 @@ declare function InterviewInterviewerScreen(props: {
   textAi?: React.ReactNode;
   propsScroll?: Types.Devlink.RuntimeProps;
   onClickPause?: Types.Devlink.RuntimeProps;
+  isPlayPauseVisible?: Types.Visibility.VisibilityConditions;
+  isPlayButtonVisible?: Types.Visibility.VisibilityConditions;
+  isPauseButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
