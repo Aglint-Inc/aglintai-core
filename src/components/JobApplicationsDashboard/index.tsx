@@ -42,6 +42,7 @@ import {
   // SortParameter,
 } from './utils';
 import Loader from '../Common/Loader';
+import RefreshButton from '../Common/RefreshButton';
 // import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 const JobApplicationsDashboard = () => {
@@ -70,7 +71,12 @@ const YTransformWrapper = ({ children }) => {
 };
 
 const JobApplicationComponent = () => {
-  const { applications, job } = useJobApplications();
+  const {
+    applications,
+    job,
+    handleJobApplicationPaginatedPolling,
+    applicationDepth,
+  } = useJobApplications();
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
 
@@ -137,6 +143,28 @@ const JobApplicationComponent = () => {
       );
   };
 
+  const [refresh, setRefresh] = useState(false);
+  const refreshRef = useRef(true);
+
+  const handleAutoRefresh = async () => {
+    setRefresh(true);
+    await handleJobApplicationPaginatedPolling(
+      Object.values(JobApplicationSections),
+    );
+    setRefresh(false);
+  };
+
+  const handleManualRefresh = async () => {
+    refreshRef.current = !refreshRef.current;
+    await handleAutoRefresh();
+  };
+
+  usePolling(async () => await handleAutoRefresh(), 30000, [
+    ...Object.values(applicationDepth),
+    section,
+    refreshRef.current,
+  ]);
+
   return (
     <JobDetails
       textJobStatus={null}
@@ -151,7 +179,16 @@ const JobApplicationComponent = () => {
         href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
         target: '_blank',
       }}
-      slotJobStatus={<JobApplicationStatus />}
+      slotJobStatus={
+        <>
+          <RefreshButton
+            isDisabled={refresh}
+            text={'Refresh'}
+            onClick={async () => await handleManualRefresh()}
+          />
+          <JobApplicationStatus />
+        </>
+      }
       slotBottomBar={
         <Stack style={{ backgroundColor: 'white' }}>
           <Stack
@@ -207,6 +244,7 @@ const JobApplicationComponent = () => {
           section={section}
           handleSelectCurrentApplication={handleSelectCurrentApplication}
           currentApplication={currentApplication}
+          refresh={refresh}
         />
       }
       onclickSelectAll={{ onClick: () => handleSelectAll() }}
@@ -306,6 +344,7 @@ const ApplicantsList = ({
   section,
   handleSelectCurrentApplication,
   currentApplication,
+  refresh,
 }: {
   applications: JobApplication[];
   checkList: Set<string>;
@@ -315,12 +354,10 @@ const ApplicantsList = ({
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
+  refresh: boolean;
 }) => {
-  const {
-    handleJobApplicationPaginatedRead,
-    handleJobApplicationPaginatedPolling,
-    applicationDepth,
-  } = useJobApplications();
+  const { handleJobApplicationPaginatedRead, applicationDepth } =
+    useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
   const [paginationLoad, setPaginationLoad] = useState(false);
@@ -344,6 +381,7 @@ const ApplicantsList = ({
       return newSet;
     });
   };
+
   const handleSelect = (index: number) => {
     if (!pressed) {
       handleSingleSelect(index);
@@ -366,21 +404,16 @@ const ApplicantsList = ({
     }
   };
 
-  usePolling(
-    async () => {
-      await handleJobApplicationPaginatedPolling(
-        Object.values(JobApplicationSections),
-      );
-    },
-    30000,
-    [...Object.values(applicationDepth), section],
-  );
+  // useEffect(() => {
+  //   if (refresh) setPaginationLoad(true);
+  //   else setPaginationLoad(false);
+  // }, [refresh]);
 
   const observer = useRef(undefined);
   const lastApplicationRef = async (node: any) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(async (entries) => {
-      if (entries[0].isIntersecting && !paginationLoad) {
+      if (entries[0].isIntersecting && !paginationLoad && !refresh) {
         setPaginationLoad(true);
         await handleJobApplicationPaginatedRead([section]);
         setPaginationLoad(false);

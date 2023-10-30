@@ -55,7 +55,8 @@
 
 .cv-list-column.checkbox {
   z-index: 10;
-  padding-right: 16px;
+  margin-right: 0px;
+  padding-right: 24px;
   padding-left: 16px;
 }
 

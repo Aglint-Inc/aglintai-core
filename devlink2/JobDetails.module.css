@@ -202,14 +202,34 @@
   }
 }
 
-@media screen and (max-width: 991px) {
-  .tablet-left-auto {
-    margin-left: auto;
-  }
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-yellow-500 {
+  color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
+}
+
+.text-kale-500 {
+  color: hsla(181.11111111111111, 27.84%, 38.04%, 1.00);
 }
 
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-grey-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+@media screen and (max-width: 991px) {
+  .tablet-left-auto {
+    margin-left: auto;
+  }
 }
 
 .text-underline {
@@ -461,7 +481,8 @@
 
 .cv-list-column.checkbox {
   z-index: 10;
-  padding-right: 16px;
+  margin-right: 0px;
+  padding-right: 24px;
   padding-left: 16px;
 }
 
@@ -574,6 +595,12 @@
 
 .cv-list-body {
   padding-bottom: 70px;
+}
+
+.cv-skeletal-block {
+  width: 100%;
+  height: 16px;
+  background-color: var(--grey-100);
 }
 
 .job-details-selection-bar {

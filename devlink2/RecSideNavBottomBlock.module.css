@@ -11,11 +11,12 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  color: var(--grey-300);
+  color: var(--white);
 }
 
 .rs-logout-btn.clickable:hover {
   opacity: 1;
+  color: var(--grey-300);
 }
 
 .clickable {
