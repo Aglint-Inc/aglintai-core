@@ -137,9 +137,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const newState: JobApplicationsData = {
         ...state,
         [action.payload.applicationData.status]: [
-          ...action.payload.applicationData[
-            action.payload.applicationData.status
-          ],
+          ...state[action.payload.applicationData.status],
           action.payload.applicationData,
         ],
       };
