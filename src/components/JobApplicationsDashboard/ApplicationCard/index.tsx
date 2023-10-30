@@ -1,5 +1,5 @@
 import WarningIcon from '@mui/icons-material/Warning';
-import { Tooltip } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 import md5 from 'blueimp-md5';
 
 import { CandidateListItem } from '@/devlink2';
@@ -7,7 +7,14 @@ import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
-import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
+import {
+  ApiLogState,
+  capitalize,
+  formatTimeStamp,
+  getInterviewScore,
+  intactConditionFilter,
+} from '../utils';
+import Calculating from '../../Common/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { SmallCircularScore } from '../../Common/SmallCircularScore';
 
@@ -61,14 +68,6 @@ const ApplicationCard = ({
           variant='rounded'
           width='100%'
           height='100%'
-          // sx={{
-          //   width: '100%',
-          //   height: '100%',
-          //   background: '#fff',
-          //   '& .MuiAvatar-img ': {
-          //     objectFit: 'contain',
-          //   },
-          // }}
         />
       }
       name={
@@ -82,15 +81,23 @@ const ApplicationCard = ({
         application.job_title ? capitalize(application.job_title) : '---'
       }
       slotResumeScore={
-        application.json_resume ? (
-          <SmallCircularScore
-            finalScore={resumeScore}
-            scale={0.5}
-            showScore={true}
-          />
+        intactConditionFilter(application) === ApiLogState.PROCESSING ? (
+          application.json_resume ? (
+            <SmallCircularScore
+              finalScore={resumeScore}
+              scale={0.5}
+              showScore={true}
+            />
+          ) : (
+            <Tooltip title='Resume not parsable' placement='right' arrow>
+              <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+            </Tooltip>
+          )
         ) : (
-          <Tooltip title='Resume not parsable' placement='right' arrow>
-            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+          <Tooltip title='Ongoing scoring' placement='right' arrow>
+            <Stack style={{ scale: '0.3' }}>
+              <Calculating />
+            </Stack>
           </Tooltip>
         )
       }
