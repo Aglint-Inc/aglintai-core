@@ -1,7 +1,9 @@
-SELECT cron.schedule (
-    'interviewing_make_active',
-    '0 7 * * *', -- Run at 7:00 AM PT
+select
+  cron.schedule (
+    'change status job_sourcing',
+    '*/30 * * * *', -- every 30 minute
     $$
-    SELECT leverCandidateSync();
+    select
+    move_scheduled_jobs_sourcing_to_active();
     $$
-);
+  );
