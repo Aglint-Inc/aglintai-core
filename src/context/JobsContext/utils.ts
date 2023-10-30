@@ -20,7 +20,45 @@ export const readJobDbAction = async (recruiter_id: string) => {
     .select('*')
     .order('created_at', { ascending: false })
     .eq('recruiter_id', recruiter_id);
-  return { data, error };
+
+  const ids = data.map((job) => job.id);
+
+  const { data: dataCount, error: errorCount } = await supabase.rpc(
+    'getjobapplications',
+    {
+      ids,
+    },
+  );
+
+  if (errorCount) {
+    return { data: undefined, error: errorCount };
+  }
+
+  const jobsWithCount = data.map((job) => {
+    return {
+      ...job,
+      count: {
+        new:
+          dataCount.filter(
+            (data) => data.job_id === job.id && data.status === 'new',
+          )[0]?.count || 0,
+        interviewing:
+          dataCount.filter(
+            (data) => data.job_id === job.id && data.status === 'interviewing',
+          )[0]?.count || 0,
+        qualified:
+          dataCount.filter(
+            (data) => data.job_id === job.id && data.status === 'qualified',
+          )[0]?.count || 0,
+        disqualified:
+          dataCount.filter(
+            (data) => data.job_id === job.id && data.status === 'disqualified',
+          )[0]?.count || 0,
+      },
+    };
+  });
+
+  return { data: jobsWithCount, error };
 };
 
 export const readJobApplicationsAction = async (jobIds: string[]) => {

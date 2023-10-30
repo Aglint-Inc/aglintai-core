@@ -1,7 +1,7 @@
-import { JobType } from '@/src/types/data.types';
+import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
 
 export type JobsData = {
-  jobs: JobType[] | undefined;
+  jobs: JobTypeDashboard[] | undefined;
   applications: ApplicationData[] | undefined;
 };
 
@@ -11,26 +11,40 @@ export type ApplicationData = {
   email: string;
 };
 
-export type InputData = Partial<Omit<JobType, 'created_at' | 'recruiter_id'>>;
+export type InputData = Partial<
+  Omit<JobTypeDashboard, 'created_at' | 'recruiter_id'>
+>;
 
 export type JobContext = {
   jobsData: JobsData;
-  handleJobRead: () => Promise<JobType[] | undefined>;
+  handleJobRead: () => Promise<JobTypeDashboard[] | undefined>;
   handleJobUpdate: (
     // eslint-disable-next-line no-unused-vars
     jobId: string,
     // eslint-disable-next-line no-unused-vars
-    inputData: Partial<JobType>,
+    inputData: Partial<JobTypeDashboard>,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
-  handleUIJobUpdate: (newJob: JobType) => boolean;
+  handleUIJobUpdate: (newJob: JobTypeDashboard) => boolean;
   // eslint-disable-next-line no-unused-vars
   handleJobDelete: (jobId: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleJobError: (error: any) => void;
   // eslint-disable-next-line no-unused-vars
-  handleGetJob: (jobId: string) => JobType;
+  handleGetJob: (jobId: string) => JobTypeDashboard;
   // eslint-disable-next-line no-unused-vars
   handleApplicationsRead: (jobIds: string[]) => void;
   initialLoad: boolean;
+};
+
+export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
+  active_status: StatusJobs | null;
+  count: CountJobs;
+};
+
+export type CountJobs = {
+  new: string;
+  interviewing: string;
+  qualified: string;
+  disqualified: string;
 };
