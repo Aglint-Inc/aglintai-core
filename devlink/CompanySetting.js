@@ -3423,7 +3423,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Job Description Settings"}
+                {"Job Site Settings"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink

@@ -175,7 +175,16 @@ export function UserProfile({
               tag="div"
               {...onClickEmailChange}
             >
-              <ButtonOutlinedSmall textLabel="Change email" />
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "text-blue-600",
+                  "cursor-pointer"
+                )}
+                tag="div"
+              >
+                {"Change email"}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
