@@ -26,7 +26,7 @@ import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import InfoDialog from './Common/InfoDialog';
 import ResumeUpload from './FileUpload';
-import { useKeyPress } from './hooks';
+import { useKeyPress, usePolling } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
@@ -316,8 +316,11 @@ const ApplicantsList = ({
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
-  const { handleJobApplicationPaginatedRead, applicationDepth } =
-    useJobApplications();
+  const {
+    handleJobApplicationPaginatedRead,
+    handleJobApplicationPaginatedPolling,
+    applicationDepth,
+  } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
   const [paginationLoad, setPaginationLoad] = useState(false);
@@ -363,13 +366,23 @@ const ApplicantsList = ({
     }
   };
 
+  usePolling(
+    async () => {
+      await handleJobApplicationPaginatedPolling(
+        Object.values(JobApplicationSections),
+      );
+    },
+    30000,
+    [...Object.values(applicationDepth), section],
+  );
+
   const observer = useRef(undefined);
   const lastApplicationRef = async (node: any) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(async (entries) => {
       if (entries[0].isIntersecting && !paginationLoad) {
         setPaginationLoad(true);
-        await handleJobApplicationPaginatedRead(section);
+        await handleJobApplicationPaginatedRead([section]);
         setPaginationLoad(false);
       }
     });

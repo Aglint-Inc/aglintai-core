@@ -14,6 +14,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   job: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationPaginatedRead: undefined,
+  handleJobApplicationPaginatedPolling: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,

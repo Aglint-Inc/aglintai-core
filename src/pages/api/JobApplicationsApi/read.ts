@@ -14,51 +14,56 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ReadJobApplicationApi['response']>,
 ) => {
-  const { job_id, status, range, apiStatus } =
+  const { job_id, ranges, apiStatus } =
     req.body as ReadJobApplicationApi['request'];
   if (
     !job_id ||
-    (range &&
-      (typeof range.start !== 'number' ||
-        range.start < 0 ||
-        typeof range.end !== 'number' ||
-        range.end < range.start)) ||
+    // (range &&
+    //   (typeof range.start !== 'number' ||
+    //     range.start < 0 ||
+    //     typeof range.end !== 'number' ||
+    //     range.end < range.start)) ||
     (apiStatus && !Object.values(ApiLogState).includes(apiStatus))
   )
     res.status(400).send({
       data: null,
       error: { message: 'Invalid parameters' },
     } as ReadJobApplicationApi['response']);
-  const promises = status
-    ? createSinglePromise(job_id, status, apiStatus ?? null, range ?? null)
-    : createMultiPromise(job_id, apiStatus ?? null, range ?? null);
+  const promises = await createMultiPromise(
+    job_id,
+    apiStatus ?? null,
+    ranges ?? null,
+  );
   const responses = await Promise.allSettled([...promises]);
-  const result = status
-    ? handleSinglePromiseValidation(responses[0], status)
-    : await handleMultiPromiseValidation(responses);
+  const result = await handleMultiPromiseValidation(responses, ranges);
   res.status(200).send(result as ReadJobApplicationApi['response']);
 };
 
 export default handler;
 
-const createSinglePromise = (
-  job_id: ReadJobApplicationApi['request']['job_id'],
-  status: ReadJobApplicationApi['request']['status'],
-  apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
-  range?: ReadJobApplicationApi['request']['range'],
-) => {
-  return [
-    readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
-  ];
-};
+// const createSinglePromise = (
+//   job_id: ReadJobApplicationApi['request']['job_id'],
+//   status: JobApplicationSections,
+//   apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
+//   range?: ReadJobApplicationApi['request']['range'],
+// ) => {
+//   return [
+//     readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
+//   ];
+// };
 
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
   apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
-  range?: ReadJobApplicationApi['request']['range'],
+  ranges?: ReadJobApplicationApi['request']['ranges'],
 ) => {
-  return Object.values(JobApplicationSections).map((status) =>
-    readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
+  return Object.entries(ranges).map(([key, value]) =>
+    readNewJobApplicationDbAction(
+      job_id,
+      key as JobApplicationSections,
+      apiStatus,
+      value ?? null,
+    ),
   );
 };
 
@@ -68,7 +73,7 @@ const handleSinglePromiseValidation = (
     data: JobApplication[];
     error: PostgrestError;
   }>,
-  status: ReadJobApplicationApi['request']['status'],
+  status: JobApplicationSections,
 ) => {
   if (responses.status === 'fulfilled')
     return {
@@ -84,10 +89,14 @@ const handleMultiPromiseValidation = (
     data: JobApplication[];
     error: PostgrestError;
   }>[],
+  ranges: ReadJobApplicationApi['request']['ranges'],
 ) => {
-  return Object.values(JobApplicationSections).reduce(
+  return Object.keys(ranges).reduce(
     (acc, curr, i) => {
-      const { data, error } = handleSinglePromiseValidation(responses[i], curr);
+      const { data, error } = handleSinglePromiseValidation(
+        responses[i],
+        curr as JobApplicationSections,
+      );
       if (data) {
         return {
           ...acc,
@@ -124,10 +133,12 @@ const handleMultiPromiseValidation = (
 export type ReadJobApplicationApi = {
   request: {
     job_id: string;
-    status?: JobApplicationSections;
-    range?: {
-      start: number;
-      end: number;
+    ranges?: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: {
+        start: number;
+        end: number;
+      };
     };
     apiStatus?: ApiLogState;
   };

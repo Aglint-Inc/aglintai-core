@@ -29,8 +29,11 @@ export type JobApplicationContext = {
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
   ) => Promise<boolean>;
-  handleJobApplicationPaginatedRead: (
-    section: JobApplicationSections,
+  handleJobApplicationPaginatedRead: ([
+    section,
+  ]: JobApplicationSections[]) => Promise<boolean>;
+  handleJobApplicationPaginatedPolling: (
+    sections: JobApplicationSections[],
   ) => Promise<boolean>;
   handleJobApplicationUpdate: (
     applicationId: string,

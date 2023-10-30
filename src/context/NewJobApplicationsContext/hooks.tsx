@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import toast from '@/src/utils/toast';
 
@@ -32,7 +31,9 @@ enum ActionType {
   // eslint-disable-next-line no-unused-vars
   READ,
   // eslint-disable-next-line no-unused-vars
-  INSERT,
+  PAGINATED_READ,
+  // eslint-disable-next-line no-unused-vars
+  PAGINATED_UPDATE,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
   // eslint-disable-next-line no-unused-vars
@@ -49,10 +50,15 @@ type Action =
       };
     }
   | {
-      type: ActionType.INSERT;
+      type: ActionType.PAGINATED_READ;
       payload: {
         applicationData: JobApplicationsData;
-        applicationStatus: JobApplicationSections;
+      };
+    }
+  | {
+      type: ActionType.PAGINATED_UPDATE;
+      payload: {
+        applicationData: JobApplicationsData;
       };
     }
   | {
@@ -77,14 +83,26 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       };
       return newState;
     }
-    case ActionType.INSERT: {
-      const newState: JobApplicationsData = {
-        ...state,
-        [action.payload.applicationStatus]: [
-          ...state[action.payload.applicationStatus],
-          ...action.payload.applicationData[action.payload.applicationStatus],
-        ],
-      };
+    case ActionType.PAGINATED_READ: {
+      const newState: JobApplicationsData = Object.entries(
+        action.payload.applicationData,
+      ).reduce(
+        (acc, [key, value]) => {
+          return { ...acc, [key]: [...state[key], ...value] };
+        },
+        { ...state },
+      );
+      return newState;
+    }
+    case ActionType.PAGINATED_UPDATE: {
+      const newState: JobApplicationsData = Object.entries(
+        action.payload.applicationData,
+      ).reduce(
+        (acc, [key, value]) => {
+          return { ...acc, [key]: [...value] };
+        },
+        { ...state },
+      );
       return newState;
     }
     case ActionType.UPDATE: {
@@ -141,6 +159,12 @@ const useProviderJobApplicationActions = (
   const [applicationDepth, setApplicationDepth] = useState(
     initialJobApplicationDepth,
   );
+  const initialRanges = Object.values(JobApplicationSections).reduce(
+    (acc, curr) => {
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+    },
+    {},
+  ) as ReadJobApplicationApi['request']['ranges'];
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
@@ -186,32 +210,71 @@ const useProviderJobApplicationActions = (
   };
 
   const handleJobApplicationPaginatedRead = async (
-    section: JobApplicationSections,
+    sections: JobApplicationSections[],
   ) => {
     if (recruiter) {
+      const ranges = sections.reduce((acc, curr) => {
+        return {
+          ...acc,
+          [curr]: {
+            start: applicationDepth[curr] + 1,
+            end: applicationDepth[curr] + paginationLimit + 1,
+          },
+        };
+      }, {});
       const { data: axiosData } = await axios({
         method: 'post',
         url: '/api/JobApplicationsApi/read',
         data: {
           job_id: jobId,
-          status: section,
-          apiStatus: ApiLogState.SUCCESS,
-          range: {
-            start: applicationDepth[section] + 1,
-            end: applicationDepth[section] + paginationLimit + 1,
-          },
+          ranges: ranges,
         },
       });
       const { data, error }: ReadJobApplicationApi['response'] = axiosData;
       if (data) {
         const action: Action = {
-          type: ActionType.INSERT,
-          payload: { applicationData: data, applicationStatus: section },
+          type: ActionType.PAGINATED_READ,
+          payload: { applicationData: data },
         };
         dispatch(action);
-        setApplicationDepth((prev) => {
-          return { ...prev, [section]: prev[section] + paginationLimit + 1 };
-        });
+        setApplicationDepth(
+          sections.reduce(
+            (acc, curr) => {
+              return { ...acc, [curr]: acc[curr] + paginationLimit + 1 };
+            },
+            { ...applicationDepth },
+          ),
+        );
+        updateTick.current = !updateTick.current;
+        return true;
+      }
+      handleJobApplicationError(error);
+      return false;
+    }
+  };
+
+  const handleJobApplicationPaginatedPolling = async (
+    sections: JobApplicationSections[],
+  ) => {
+    if (recruiter) {
+      const ranges = sections.reduce((acc, curr) => {
+        return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+      }, {});
+      const { data: axiosData } = await axios({
+        method: 'post',
+        url: '/api/JobApplicationsApi/read',
+        data: {
+          job_id: jobId,
+          ranges: ranges,
+        },
+      });
+      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
+      if (data) {
+        const action: Action = {
+          type: ActionType.PAGINATED_UPDATE,
+          payload: { applicationData: data },
+        };
+        dispatch(action);
         updateTick.current = !updateTick.current;
         return true;
       }
@@ -268,7 +331,7 @@ const useProviderJobApplicationActions = (
     if (d1) {
       const read = await handleJobApplicationRead({
         job_id: jobId,
-        range: { start: 0, end: 10 },
+        ranges: initialRanges,
       });
       if (read) {
         updateTick.current = !updateTick.current;
@@ -323,7 +386,7 @@ const useProviderJobApplicationActions = (
     if (initialJobLoad)
       handleJobApplicationRead({
         job_id: jobId,
-        range: { start: 0, end: paginationLimit - 1 },
+        ranges: initialRanges,
       });
   }, [initialJobLoad]);
 
@@ -334,6 +397,7 @@ const useProviderJobApplicationActions = (
     updateTick: updateTick.current,
     handleJobApplicationRead,
     handleJobApplicationPaginatedRead,
+    handleJobApplicationPaginatedPolling,
     handleJobApplicationUpdate,
     handleJobApplicationUIUpdate,
     handleJobApplicationBulkUpdate,
