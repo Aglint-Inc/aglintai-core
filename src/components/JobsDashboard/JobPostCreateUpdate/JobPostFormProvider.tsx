@@ -259,10 +259,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         ...updatedJobDb,
         active_status: updatedJobDb.active_status as unknown as StatusJobs,
         count: {
-          new: '0',
-          interviewing: '0',
-          qualified: '0',
-          disqualified: '0',
+          new: 0,
+          interviewing: 0,
+          qualified: 0,
+          disqualified: 0,
         },
       });
 

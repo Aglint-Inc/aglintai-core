@@ -108,10 +108,10 @@ export function LeverModalComp({ state, handleClose, setState }) {
             ...job,
             active_status: job.active_status as unknown as StatusJobs,
             count: {
-              new: '0',
-              interviewing: '0',
-              qualified: '0',
-              disqualified: '0',
+              new: 0,
+              interviewing: 0,
+              qualified: 0,
+              disqualified: 0,
             },
           });
         });
