@@ -53,6 +53,7 @@ import toast from '@/src/utils/toast';
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { getGravatar } from '..';
+import { applicationValidity } from '../utils';
 import { emailHandler } from '../..';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
@@ -333,7 +334,7 @@ const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
               job={job}
             />
           </>
-          {applicationDetails.json_resume ? (
+          {applicationValidity(applicationDetails) ? (
             <>
               {applicationDetails.json_resume.education &&
               applicationDetails.json_resume.education.length !== 0 ? (
@@ -493,7 +494,7 @@ const NewResumeSection = ({ applicationDetails, job }) => {
           <ResumePreviewer url={applicationDetails?.resume} />
         </Stack>
       </Dialog>
-      {applicationDetails.json_resume ? (
+      {applicationValidity(applicationDetails) ? (
         <NewResumeScoreDetails
           applicationDetails={applicationDetails}
           job={job}

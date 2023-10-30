@@ -26,6 +26,10 @@ export type JobApplicationContext = {
   applicationDepth: { [key in JobApplicationSections]: number };
   job: JobType;
   updateTick: boolean;
+  handleJobApplicationCreate: (
+    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
+      InputData,
+  ) => Promise<JobApplication>;
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
   ) => Promise<boolean>;

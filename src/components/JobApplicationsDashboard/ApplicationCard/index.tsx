@@ -49,10 +49,10 @@ const ApplicationCard = ({
     handleSelect(index);
   };
 
-  const resumeScore = getOverallResumeScore(
-    application.jd_score,
-    job.parameter_weights,
-  );
+  const resumeScore = application.jd_score
+    ? getOverallResumeScore(application.jd_score, job.parameter_weights)
+    : 0;
+
   return (
     <CandidateListItem
       onclickSelect={{ onClick: handleCheck }}
@@ -81,8 +81,8 @@ const ApplicationCard = ({
         application.job_title ? capitalize(application.job_title) : '---'
       }
       slotResumeScore={
-        intactConditionFilter(application) === ApiLogState.PROCESSING ? (
-          application.json_resume ? (
+        intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
+          application.json_resume && application.jd_score ? (
             <SmallCircularScore
               finalScore={resumeScore}
               scale={0.5}

@@ -1,3 +1,7 @@
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+
+import { ApiLogState, intactConditionFilter } from '../utils';
+
 export const getScoreColor = (finalScore: number) => {
   return finalScore >= 90
     ? '#228F67'
@@ -29,4 +33,12 @@ export const getStatusColor = (status: string) => {
   };
   // eslint-disable-next-line security/detect-object-injection
   return statusColors[status];
+};
+
+export const applicationValidity = (application: JobApplication) => {
+  return (
+    intactConditionFilter(application) !== ApiLogState.PROCESSING &&
+    application.json_resume &&
+    application.jd_score
+  );
 };

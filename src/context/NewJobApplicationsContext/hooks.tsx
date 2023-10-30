@@ -16,6 +16,7 @@ import {
 } from './types';
 import {
   bulkUpdateJobApplicationDbAction,
+  createJobApplicationDbAction,
   deleteJobApplicationDbAction,
   getUpdatedJobStatus,
   // readJobApplicationDbAction,
@@ -43,6 +44,12 @@ enum ActionType {
 }
 
 type Action =
+  | {
+      type: ActionType.CREATE;
+      payload: {
+        application: JobApplication;
+      };
+    }
   | {
       type: ActionType.READ;
       payload: {
@@ -77,6 +84,13 @@ type Action =
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
+    case ActionType.CREATE: {
+      const newState: JobApplicationsData = {
+        ...state,
+        new: [...state.new, action.payload.application],
+      };
+      return newState;
+    }
     case ActionType.READ: {
       const newState: JobApplicationsData = {
         ...action.payload.applicationData,
@@ -185,6 +199,29 @@ const useProviderJobApplicationActions = (
       return () => clearTimeout(timer);
     }
   }, [initialLoad]);
+
+  const handleJobApplicationCreate = async (
+    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
+      InputData,
+  ) => {
+    if (recruiter) {
+      const { data, error } = await createJobApplicationDbAction(
+        jobId,
+        inputData,
+      );
+      if (data) {
+        const action: Action = {
+          type: ActionType.CREATE,
+          payload: { application: data[0] },
+        };
+        dispatch(action);
+        updateTick.current = !updateTick.current;
+        return data[0];
+      }
+      handleJobApplicationError(error);
+      return undefined;
+    }
+  };
 
   const handleJobApplicationRead = async (
     request: ReadJobApplicationApi['request'],
@@ -395,6 +432,7 @@ const useProviderJobApplicationActions = (
     applicationDepth,
     job,
     updateTick: updateTick.current,
+    handleJobApplicationCreate,
     handleJobApplicationRead,
     handleJobApplicationPaginatedRead,
     handleJobApplicationPaginatedPolling,

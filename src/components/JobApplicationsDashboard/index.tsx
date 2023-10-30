@@ -159,7 +159,7 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 30000, [
+  usePolling(async () => await handleAutoRefresh(), 10000, [
     ...Object.values(applicationDepth),
     section,
     refreshRef.current,
