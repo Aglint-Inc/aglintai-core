@@ -13,6 +13,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   applicationDepth: undefined,
   job: undefined,
   handleJobApplicationCreate: undefined,
+  handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationPaginatedRead: undefined,
   handleJobApplicationPaginatedPolling: undefined,

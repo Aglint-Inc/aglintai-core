@@ -15,6 +15,7 @@ import {
   JobApplicationSections,
 } from './types';
 import {
+  bulkCreateJobApplicationDbAction,
   bulkUpdateJobApplicationDbAction,
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
@@ -48,6 +49,12 @@ type Action =
       type: ActionType.CREATE;
       payload: {
         application: JobApplication;
+      };
+    }
+  | {
+      type: ActionType.BULK_CREATE;
+      payload: {
+        applications: JobApplication[];
       };
     }
   | {
@@ -88,6 +95,13 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const newState: JobApplicationsData = {
         ...state,
         new: [...state.new, action.payload.application],
+      };
+      return newState;
+    }
+    case ActionType.BULK_CREATE: {
+      const newState: JobApplicationsData = {
+        ...state,
+        new: [...state.new, ...action.payload.applications],
       };
       return newState;
     }
@@ -217,6 +231,32 @@ const useProviderJobApplicationActions = (
         dispatch(action);
         updateTick.current = !updateTick.current;
         return data[0];
+      }
+      handleJobApplicationError(error);
+      return undefined;
+    }
+  };
+
+  const handleJobApplicationBulkCreate = async (
+    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
+      InputData)[],
+  ) => {
+    if (recruiter) {
+      const { data, error } = await bulkCreateJobApplicationDbAction(
+        jobId,
+        inputData,
+      );
+      if (data) {
+        toast.success(
+          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+        );
+        const action: Action = {
+          type: ActionType.BULK_CREATE,
+          payload: { applications: data },
+        };
+        dispatch(action);
+        updateTick.current = !updateTick.current;
+        return data;
       }
       handleJobApplicationError(error);
       return undefined;
@@ -433,6 +473,7 @@ const useProviderJobApplicationActions = (
     job,
     updateTick: updateTick.current,
     handleJobApplicationCreate,
+    handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationPaginatedRead,
     handleJobApplicationPaginatedPolling,

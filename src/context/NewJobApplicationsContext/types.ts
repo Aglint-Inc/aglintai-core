@@ -30,6 +30,10 @@ export type JobApplicationContext = {
     inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
       InputData,
   ) => Promise<JobApplication>;
+  handleJobApplicationBulkCreate: (
+    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
+      InputData)[],
+  ) => Promise<JobApplication[]>;
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
   ) => Promise<boolean>;
