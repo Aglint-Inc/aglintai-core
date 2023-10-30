@@ -133,7 +133,7 @@ const useProviderJobApplicationActions = (
   const initialJobApplicationDepth = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
-    return { ...acc, [curr]: paginationLimit };
+    return { ...acc, [curr]: paginationLimit - 1 };
     // eslint-disable-next-line no-unused-vars
   }, {}) as { [key in JobApplicationSections]: number };
 
@@ -210,7 +210,7 @@ const useProviderJobApplicationActions = (
         };
         dispatch(action);
         setApplicationDepth((prev) => {
-          return { ...prev, [section]: prev[section] + paginationLimit };
+          return { ...prev, [section]: prev[section] + paginationLimit + 1 };
         });
         updateTick.current = !updateTick.current;
         return true;
@@ -323,7 +323,7 @@ const useProviderJobApplicationActions = (
     if (initialJobLoad)
       handleJobApplicationRead({
         job_id: jobId,
-        range: { start: 0, end: paginationLimit },
+        range: { start: 0, end: paginationLimit - 1 },
       });
   }, [initialJobLoad]);
 
