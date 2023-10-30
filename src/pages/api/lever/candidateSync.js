@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
@@ -16,12 +17,19 @@ export default async function handler(req, res) {
   const jobId = req.body.job_id;
   let apiKey;
   let previousApplications = [];
+
+  if (!jobId) {
+    console.log('No job id found');
+    res.status(400).send('No job id found');
+    return;
+  }
   const { data: referenceJob, error: errorJob } = await supabase
     .from('lever_job_reference')
     .select('*')
     .eq('job_id', jobId);
   if (!errorJob) {
     if (referenceJob.length === 0) {
+      console.log('No job reference found');
       res.status(400).send('No job reference found');
       return;
     }
@@ -57,6 +65,7 @@ export default async function handler(req, res) {
         });
 
         if (newApplications.length === 0) {
+          console.log('No new applications found');
           res.status(200).send('No new applications found');
         }
 
