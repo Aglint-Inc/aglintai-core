@@ -678,6 +678,10 @@
   margin-top: 16px;
 }
 
+.mt-16 {
+  margin-top: 16px;
+}
+
 .aui-button-wrap.full {
   align-items: stretch;
 }

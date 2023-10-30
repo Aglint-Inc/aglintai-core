@@ -1,0 +1,66 @@
+import React from "react";
+import * as _Builtin from "./_Builtin";
+import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
+import * as _utils from "./utils";
+import _styles from "./AssesmentSetting.module.css";
+
+export function AssesmentSetting({
+  as: _Component = _Builtin.Block,
+  slotAvatarVideo,
+  textAvatarName = "Avatar_name",
+  onClickChangeAvatar = {},
+  slotToggleButton,
+  onClickToggle = {},
+}) {
+  return (
+    <_Component
+      className={_utils.cx(_styles, "assessment-setting-wrap")}
+      tag="div"
+    >
+      <_Builtin.Block tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Choose your avatar"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "color-grey-600", "mt-10")}
+          tag="div"
+        >
+          {
+            "Choose your avatar, this avatar will be featured in AI-generated videos.By default an avatar is selected by aglint"
+          }
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotAvatarVideo}</_Builtin.Block>
+      <_Builtin.Block tag="div" {...onClickChangeAvatar}>
+        <ButtonOutlinedRegular textLabel="Change Avatar" />
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "ai-assessment-setting-wrap")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"AI generated videos"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "color-grey-600")}
+          tag="div"
+        >
+          {
+            "Activate the toggle to enable the use of AI-generated videos for the assessment. You can also set this option at the job level. If configured here, it will serve as the default setting"
+          }
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "toggle-ai-assesment")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div" {...onClickToggle}>
+            {slotToggleButton}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {"Use AI generated videos for assesment"}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      </_Builtin.Block>
+    </_Component>
+  );
+}
