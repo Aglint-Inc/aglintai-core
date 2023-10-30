@@ -28,6 +28,7 @@ import LoaderLever from '../Loader';
 import {
   createJobApplications,
   createJobObject,
+  createLeverJobReference,
   fetchAllJobs,
   getLeverStatusColor,
   POSTED_BY,
@@ -79,6 +80,18 @@ export function LeverModalComp({ state, handleClose, setState }) {
         .insert(dbJobs)
         .select();
       if (!error) {
+        selectedLeverPostings.map(async (post) => {
+          await createLeverJobReference({
+            posting_id: post.id,
+            recruiter_id: recruiter.id,
+            job_id: newJobs.filter(
+              (job) =>
+                job.job_title == post.text &&
+                job.location == post.categories.location,
+            )[0].id,
+          });
+        });
+
         const jobsObj = selectedLeverPostings.map((post) => {
           return {
             ...post,

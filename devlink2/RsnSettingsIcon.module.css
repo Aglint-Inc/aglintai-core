@@ -21,6 +21,21 @@
   position: relative;
 }
 
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

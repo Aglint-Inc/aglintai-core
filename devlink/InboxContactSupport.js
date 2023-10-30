@@ -2,7 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Checkbox } from "./Checkbox";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./InboxContactSupport.module.css";
 
@@ -119,7 +119,7 @@ export function InboxContactSupport({
             tag="div"
           >
             <_Builtin.Block tag="div" {...onClickReport}>
-              <ButtonOutlinedRegular textLabel="Submit" />
+              <ButtonPrimaryRegular textLabel="Submit" />
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

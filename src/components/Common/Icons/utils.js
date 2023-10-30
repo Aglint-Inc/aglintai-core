@@ -97,7 +97,7 @@ export const useLayoutEffect = isServer ? () => {} : React.useLayoutEffect;
 export function useResizeObserver(ref, fn) {
   const observer = React.useMemo(
     () => (isServer ? null : new ResizeObserver(([entry]) => fn(entry))),
-    [fn]
+    [fn],
   );
   React.useEffect(() => {
     const target = ref.current;
@@ -114,13 +114,13 @@ export function isUrl(str) {
     return false;
   }
   return /((http|https):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?/i.test(
-    str.trim()
+    str.trim(),
   );
 }
 function isScriptPresent(regex) {
   return Array.from(document.scripts).reduce(
     (isPresent, script) => (isPresent ? isPresent : regex.test(script.src)),
-    false
+    false,
   );
 }
 export function loadScript(src, options) {
@@ -177,7 +177,7 @@ export function dispatchCustomEvent(element, eventName) {
     new CustomEvent(eventName, {
       bubbles: true,
       cancelable: true,
-    })
+    }),
   );
 }
 export function useClickOut(ref, action) {
@@ -209,7 +209,7 @@ export function extractElement(elements, type) {
       }
       // Recursively process the children
       const children = removeElementByType(
-        React.Children.toArray(element.props.children)
+        React.Children.toArray(element.props.children),
       );
       // Return a new element with the updated children
       return React.cloneElement(element, element.props, ...children);

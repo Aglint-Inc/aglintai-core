@@ -1,10 +1,6 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
-import {
-  Drawer,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Drawer, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { EditEmail, EmailTemplateCards } from '@/devlink';
@@ -321,9 +317,9 @@ export default EmailTemplate;
 
 export const templateObj: Record<string, any> = {
   interview: {
-    listing: 'Interview Email',
-    heading: 'Interview Email Settings',
-    triggerInfo: 'Triggered when the candidate selected for interview.',
+    listing: 'Assessment Email',
+    heading: 'Assessment Email Settings',
+    triggerInfo: 'Triggered when the candidate selected for assessment.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
@@ -335,7 +331,7 @@ export const templateObj: Record<string, any> = {
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when canditate moved to interviewing state',
+    trigger: 'Triggered when canditate moved to assessment state',
   },
   interview_resend: {
     listing: 'Follow Up Interview',
@@ -355,9 +351,9 @@ export const templateObj: Record<string, any> = {
     trigger: 'Triggered when you click resend interview link',
   },
   rejection: {
-    listing: 'Rejection Email',
-    heading: 'Rejection Email Settings',
-    triggerInfo: 'Triggered when the candidate moved to disqualified.',
+    listing: 'Disqualified Email',
+    heading: 'Disqualified Email Settings',
+    triggerInfo: 'Triggered when the candidate moved to disqualified state.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Update on your [jobTitle] interview at [companyName]',
@@ -367,7 +363,7 @@ export const templateObj: Record<string, any> = {
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when canditate moved to rejected state',
+    trigger: 'Triggered when canditate moved to disqualified state',
   },
   application_recieved: {
     listing: 'Application Recieved Email',

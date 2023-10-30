@@ -16,7 +16,7 @@
 
 .rs-logout-btn.clickable:hover {
   opacity: 1;
-  color: var(--red-500);
+  color: var(--grey-300);
 }
 
 .clickable {
@@ -40,6 +40,21 @@
 
 .icon-block.clickable.padding-4.relative {
   position: relative;
+}
+
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icon-embed {

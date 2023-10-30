@@ -9,6 +9,7 @@ export const config = {
 const whiteListedEndPoints = [
   '/api/sendgrid',
   '/api/lever/saveResume',
+  '/api/lever/candidateSync',
   '/api/webhook',
 ];
 
