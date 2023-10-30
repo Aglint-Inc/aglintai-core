@@ -3,10 +3,10 @@ import toast from '@utils/toast';
 import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
-import { JobType, StatusJobs } from '@/src/types/data.types';
+import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { ApplicationData, JobsData } from './types';
+import { ApplicationData, CountJobs, JobsData, JobTypeDashboard } from './types';
 import {
   deleteJobDbAction,
   initialJobContext,
@@ -35,13 +35,13 @@ type Action =
   | {
       type: ActionType.CREATE;
       payload: {
-        jobData: JobType;
+        jobData: JobTypeDashboard;
       };
     }
   | {
       type: ActionType.READ;
       payload: {
-        jobsData: JobType[];
+        jobsData: JobTypeDashboard[];
       };
     }
   | {
@@ -53,7 +53,7 @@ type Action =
   | {
       type: ActionType.UI_UPDATE;
       payload: {
-        newJob: JobType;
+        newJob: JobTypeDashboard;
       };
     }
   | {
@@ -64,8 +64,6 @@ type Action =
       type: ActionType.READAPPLICATION;
       payload: { applicationData: ApplicationData[] };
     };
-
-
 
 const reducer = (state: JobsData, action: Action) => {
   switch (action.type) {
@@ -86,7 +84,7 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.UPDATE: {
-      const newJobs: JobType[] = state.jobs.reduce((jobs, job) => {
+      const newJobs: JobTypeDashboard[] = state.jobs.reduce((jobs, job) => {
         if (job.id === action.payload.jobData.id)
           jobs.push(action.payload.jobData);
         else jobs.push(job);
@@ -112,7 +110,7 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.DELETE: {
-      const newJobs: JobType[] = state.jobs.filter(
+      const newJobs: JobTypeDashboard[] = state.jobs.filter(
         (job) => job.id !== action.payload.jobId,
       );
       const newState: JobsData = {
@@ -140,17 +138,18 @@ const useJobActions = () => {
   const { recruiter } = useAuthDetails();
 
   const [jobsData, dispatch] = useReducer(reducer, initialJobContext.jobsData);
-  const initialLoad =
-    recruiter?.id && jobsData.jobs && jobsData.applications ? true : false;
+  const initialLoad = recruiter?.id && jobsData.jobs ? true : false;
 
   const handleJobRead = async () => {
     if (recruiter) {
       const { data, error } = await readJobDbAction(recruiter.id);
+
       if (data) {
         const fechedJobs = data.map((job) => {
           return {
             ...job,
             active_status: job.active_status as unknown as StatusJobs,
+            count: job.count as unknown as CountJobs,
           };
         });
 
@@ -182,7 +181,7 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (jobId: string, newJob: Partial<JobType>) => {
+  const handleJobUpdate = async (jobId: string, newJob: Partial<JobTypeDashboard>) => {
     if (recruiter) {
       const { data, error } = await updateJobDbAction({
         id: jobId,
@@ -204,7 +203,7 @@ const useJobActions = () => {
     }
   };
 
-  const handleUIJobUpdate = (newJob: JobType) => {
+  const handleUIJobUpdate = (newJob: JobTypeDashboard) => {
     if (recruiter) {
       if (newJob) {
         const action: Action = {
@@ -247,13 +246,7 @@ const useJobActions = () => {
   };
   useEffect(() => {
     (async () => {
-      const data = await handleJobRead();
-      if (data) {
-        const jobIds = data.map((job) => {
-          return job.id;
-        });
-        handleApplicationsRead(jobIds);
-      }
+      await handleJobRead();
     })();
   }, [recruiter?.id]);
 

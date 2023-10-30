@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { JobsDashboard } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
-import { JobType } from '@/src/types/data.types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import JobsList from './JobsList';
@@ -16,7 +16,7 @@ import UITextField from '../Common/UITextField';
 const DashboardComp = () => {
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
-  const [filteredJobs, setFilteredJobs] = useState<JobType[]>(
+  const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
     jobsData.jobs?.filter((job) => !job.is_campus),
   );
 
@@ -117,12 +117,7 @@ const DashboardComp = () => {
             />
           ) : (
             <JobsDashboard
-              slotAllJobs={
-                <JobsList
-                  jobs={filteredJobs}
-                  applications={jobsData?.applications}
-                />
-              }
+              slotAllJobs={<JobsList jobs={filteredJobs} />}
               slotSearchInputJob={
                 <Stack maxWidth={'260px'} width={'100%'}>
                   <UITextField

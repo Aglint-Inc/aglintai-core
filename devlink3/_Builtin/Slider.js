@@ -1,15 +1,15 @@
-import * as React from "react";
-import { triggerIXEvent } from "../interactions";
-import { EASING_FUNCTIONS, KEY_CODES, cj, debounce } from "../utils";
+import * as React from 'react';
+import { triggerIXEvent } from '../interactions';
+import { EASING_FUNCTIONS, KEY_CODES, cj, debounce } from '../utils';
 const DEFAULT_SLIDER_CONFIG = {
   navSpacing: 3,
   navShadow: false,
   autoplay: false,
   delay: 4000,
   iconArrows: true,
-  animation: "slide",
+  animation: 'slide',
   navNumbers: true,
-  easing: "ease",
+  easing: 'ease',
   navRound: true,
   hideArrows: false,
   disableSwipe: false,
@@ -54,7 +54,7 @@ function useSwipe({ onSwipeLeft, onSwipeRight, config }) {
     onTouchEnd: handleTouchEnd,
   };
 }
-export function SliderWrapper({ className = "", ...props }) {
+export function SliderWrapper({ className = '', ...props }) {
   const [slideAmount, setSlideAmount] = React.useState(0);
   const [selectedSlide, setSelectedSlide] = React.useState(0);
   const [prevSelectedSlide, setPrevSelectedSlide] = React.useState(0);
@@ -99,9 +99,9 @@ export function SliderWrapper({ className = "", ...props }) {
     >
       <div
         {...swipeHandlers}
-        className={cj(className, "w-slider")}
-        role="region"
-        aria-label="carousel"
+        className={cj(className, 'w-slider')}
+        role='region'
+        aria-label='carousel'
       >
         {props.children}
       </div>
@@ -120,7 +120,7 @@ function useAutoplay() {
   const [autoMaxCount, setAutoMaxCount] = React.useState(0);
   const autoMaxReached = React.useMemo(
     () => autoMaxCount >= autoMax && autoMax > 0,
-    [autoMax, autoMaxCount]
+    [autoMax, autoMaxCount],
   );
   React.useEffect(() => {
     const shouldAutoplay = autoplay && !autoMaxReached && !isAutoplayPaused;
@@ -136,7 +136,7 @@ function useAutoplay() {
   const pauseAutoplay = () => setAutoplayPause(false);
   return { resumeAutoplay, pauseAutoplay };
 }
-export function SliderMask({ className = "", children, ...props }) {
+export function SliderMask({ className = '', children, ...props }) {
   const { setSlideAmount } = React.useContext(SliderContext);
   const [isHovered, setHovered] = React.useState(false);
   const { resumeAutoplay, pauseAutoplay } = useAutoplay();
@@ -146,7 +146,7 @@ export function SliderMask({ className = "", children, ...props }) {
   return (
     <div
       {...props}
-      className={cj(className, "w-slider-mask")}
+      className={cj(className, 'w-slider-mask')}
       onMouseEnter={() => {
         pauseAutoplay();
         setHovered(true);
@@ -166,16 +166,16 @@ export function SliderMask({ className = "", children, ...props }) {
         });
       })}
       <div
-        aria-live={isHovered ? "polite" : "off"}
-        aria-atomic="true"
-        className="w-slider-aria-label"
+        aria-live={isHovered ? 'polite' : 'off'}
+        aria-atomic='true'
+        className='w-slider-aria-label'
       />
     </div>
   );
 }
 export function SliderSlide({
-  tag = "div",
-  className = "",
+  tag = 'div',
+  className = '',
   style = {},
   index,
   ...props
@@ -194,10 +194,10 @@ export function SliderSlide({
       transform: `translateX(-${current * 100}%)`,
       transition: `transform ${duration}ms ${EASING_FUNCTIONS[easing]} 0s`,
     };
-    if (animation === "slide") {
+    if (animation === 'slide') {
       return base;
     }
-    if (animation === "cross") {
+    if (animation === 'cross') {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -206,7 +206,7 @@ export function SliderSlide({
         } 0s, transform 1ms linear ${isSlideActive ? 0 : duration}ms`,
       };
     }
-    if (animation === "outin") {
+    if (animation === 'outin') {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -215,7 +215,7 @@ export function SliderSlide({
         }ms, transform 1ms linear ${isSlidePrevious ? duration / 2 : 0}ms`,
       };
     }
-    if (animation === "fade") {
+    if (animation === 'fade') {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -224,7 +224,7 @@ export function SliderSlide({
         } 0s, transform 1ms linear ${isSlideActive ? 0 : duration}ms`,
       };
     }
-    if (animation === "over") {
+    if (animation === 'over') {
       return {
         ...base,
         transition: `transform ${duration}ms ${EASING_FUNCTIONS[easing]} ${
@@ -239,21 +239,21 @@ export function SliderSlide({
     (node) => {
       triggerIXEvent(node, isSlideActive);
     },
-    [isSlideActive]
+    [isSlideActive],
   );
   return React.createElement(tag, {
     ...props,
-    className: cj(className, "w-slide"),
+    className: cj(className, 'w-slide'),
     style: { ...style, ...animationStyle },
-    "aria-label": `${index + 1} of ${slideAmount}`,
-    role: "group",
+    'aria-label': `${index + 1} of ${slideAmount}`,
+    role: 'group',
     ref,
-    "aria-hidden": !isSlideActive ? "true" : "false",
+    'aria-hidden': !isSlideActive ? 'true' : 'false',
   });
 }
 export function SliderArrow({
-  className = "",
-  dir = "left",
+  className = '',
+  dir = 'left',
   children,
   ...props
 }) {
@@ -265,15 +265,15 @@ export function SliderArrow({
     slide: { current },
   } = React.useContext(SliderContext);
   const handleSlideChange = debounce(() => {
-    if (dir === "left") {
+    if (dir === 'left') {
       goToPreviousSlide();
     } else {
       goToNextSlide();
     }
   });
   const isHidden = React.useMemo(() => {
-    if (dir === "left" && hideArrows && current === 0) return true;
-    if (dir === "right" && hideArrows && current === slideAmount - 1)
+    if (dir === 'left' && hideArrows && current === 0) return true;
+    if (dir === 'right' && hideArrows && current === slideAmount - 1)
       return true;
     return false;
   }, [dir, hideArrows, current, slideAmount]);
@@ -288,17 +288,17 @@ export function SliderArrow({
           handleSlideChange();
         }
       }}
-      role="button"
+      role='button'
       tabIndex={0}
       className={cj(className, `w-slider-arrow-${dir}`)}
-      aria-label={`${dir === "left" ? "previous" : "next"} slide`}
-      style={{ display: isHidden ? "none" : "block" }}
+      aria-label={`${dir === 'left' ? 'previous' : 'next'} slide`}
+      style={{ display: isHidden ? 'none' : 'block' }}
     >
       {children}
     </div>
   );
 }
-export function SliderNav({ className = "", ...props }) {
+export function SliderNav({ className = '', ...props }) {
   const {
     slideAmount,
     navInvert,
@@ -370,9 +370,9 @@ export function SliderNav({ className = "", ...props }) {
       onMouseLeave={(e) => e.stopPropagation()}
       className={cj(
         className,
-        `w-slider-nav ${navInvert ? "w-slider-nav-invert" : ""} ${
-          navShadow ? "w-shadow" : ""
-        } ${navRound ? "w-round" : ""} ${navNumbers ? "w-num" : ""}`
+        `w-slider-nav ${navInvert ? 'w-slider-nav-invert' : ''} ${
+          navShadow ? 'w-shadow' : ''
+        } ${navRound ? 'w-round' : ''} ${navNumbers ? 'w-num' : ''}`,
       )}
     >
       {dots}
@@ -394,13 +394,13 @@ function SliderDot({ index, focusedDot, handleFocus, setFocusedDot }) {
     }
   }, [focusedDot, index]);
   const isSlideActive = selectedSlide == index;
-  const label = navNumbers ? index + 1 : "";
+  const label = navNumbers ? index + 1 : '';
   return (
     <div
-      className={`w-slider-dot ${isSlideActive ? "w-active" : ""}`}
+      className={`w-slider-dot ${isSlideActive ? 'w-active' : ''}`}
       aria-label={`Show slide ${index + 1} of ${slideAmount}`}
       aria-pressed={isSlideActive}
-      role="button"
+      role='button'
       tabIndex={isSlideActive ? 0 : -1}
       style={{
         marginRight: `${navSpacing}px`,

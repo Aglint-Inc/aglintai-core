@@ -65,6 +65,10 @@
   position: relative;
 }
 
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

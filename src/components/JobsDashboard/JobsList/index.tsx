@@ -4,27 +4,23 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { ApplicationData } from '@/src/context/JobsContext/types';
-import { JobType } from '@/src/types/data.types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import {
   calculateTimeDifference,
-  filterApplicationsByStatus,
-  StatusColor,
+  StatusColor
 } from '../utils';
 import Icon from '../../Common/Icons/Icon';
 import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
 interface JobsListProps {
-  jobs: JobType[];
-  applications: ApplicationData[];
+  jobs: JobTypeDashboard[];
 }
 
-const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
+const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const router = useRouter();
   if (jobs?.length == 0) {
     return (
@@ -67,29 +63,14 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
                 textJobRole={job.job_title}
                 textCompanyLocation={`${job.company}, ${job.location}`}
                 candidateCount={
-                  filterApplicationsByStatus(job.id, applications).length
+                  job.count.new +
+                  job.count.interviewing +
+                  job.count.qualified +
+                  job.count.disqualified
                 }
-                interviewingCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.INTERVIEWING,
-                  ).length
-                }
-                selectedCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.QUALIFIED,
-                  ).length
-                }
-                rejectedCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.DISQUALIFIED,
-                  ).length
-                }
+                interviewingCount={job.count.interviewing}
+                selectedCount={job.count.qualified}
+                rejectedCount={job.count.disqualified}
                 slotInterviewIcon={
                   !job.active_status.closed.isActive ? (
                     getStatusInfo(

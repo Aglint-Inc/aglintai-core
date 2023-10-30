@@ -2,7 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
-    // Add your logic to process the webhook data
+// Add your logic to process the webhook data
 
 export default async function handler(req, res) {
   // Handle incoming webhook data here

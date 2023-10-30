@@ -28,6 +28,7 @@ import LoaderLever from '../Loader';
 import {
   createJobApplications,
   createJobObject,
+  createLeverJobReference,
   fetchAllJobs,
   getLeverStatusColor,
   POSTED_BY,
@@ -36,7 +37,7 @@ import {
 export function LeverModalComp({ state, handleClose, setState }) {
   const { recruiter, setRecruiter } = useAuthDetails();
   const router = useRouter();
-  const { handleUIJobUpdate, handleApplicationsRead, jobsData } = useJobs();
+  const { handleUIJobUpdate, jobsData } = useJobs();
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
   const [leverFilter, setLeverFilter] = useState('published');
@@ -79,6 +80,18 @@ export function LeverModalComp({ state, handleClose, setState }) {
         .insert(dbJobs)
         .select();
       if (!error) {
+        selectedLeverPostings.map(async (post) => {
+          await createLeverJobReference({
+            posting_id: post.id,
+            recruiter_id: recruiter.id,
+            job_id: newJobs.filter(
+              (job) =>
+                job.job_title == post.text &&
+                job.location == post.categories.location,
+            )[0].id,
+          });
+        });
+
         const jobsObj = selectedLeverPostings.map((post) => {
           return {
             ...post,
@@ -94,11 +107,14 @@ export function LeverModalComp({ state, handleClose, setState }) {
           handleUIJobUpdate({
             ...job,
             active_status: job.active_status as unknown as StatusJobs,
+            count: {
+              new: 0,
+              interviewing: 0,
+              qualified: 0,
+              disqualified: 0,
+            },
           });
         });
-        const oldJobsIds = jobsData.jobs.map((job) => job.id);
-        const newJobsIds = newJobs.map((job) => job.id);
-        handleApplicationsRead([...oldJobsIds, ...newJobsIds]);
         toast.success('Jobs Imported Successfully');
         router.push(`${pageRoutes.JOBS}?status=active`);
       } else {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -7,6 +8,21 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
   const applications = await Promise.all(
     selectedLeverPostings.map(async (post) => {
       const allCandidates = await fetchAllCandidates(post.id, apiKey);
+      // for creating lever job reference
+      const refCandidates = allCandidates.map((cand) => {
+        return {
+          first_name: splitFullName(cand.name).firstName,
+          last_name: splitFullName(cand.name).lastName,
+          email: cand.emails[0],
+          linkedin: extractLinkedInURL(cand.links || []),
+          phone: cand.phones[0]?.value,
+          job_id: post.job_id,
+          application_id: uuidv4(),
+          id: cand.id,
+        };
+      });
+      // for creating lever job reference
+
       const dbCandidates = allCandidates.map((cand) => {
         return {
           first_name: splitFullName(cand.name).firstName,
@@ -15,22 +31,22 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           linkedin: extractLinkedInURL(cand.links || []),
           phone: cand.phones[0]?.value,
           job_id: post.job_id,
+          application_id: uuidv4(),
         };
       });
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('job_applications')
         .insert(dbCandidates)
         .select();
 
       if (!error) {
-        const referenceObj = data.map((app) => {
+        const referenceObj = refCandidates.map((ref) => {
           return {
-            application_id: app.application_id,
-            posting_id: app.job_id,
-            opportunity_id: allCandidates.filter(
-              (cand) => cand.emails[0] == app.email,
-            )[0].id,
+            application_id: ref.application_id,
+            posting_id: post.id,
+            opportunity_id: ref.id,
+            public_job_id: post.job_id,
           };
         });
 
@@ -60,7 +76,7 @@ export function extractLinkedInURL(arr) {
   return '';
 }
 
-const createLeverReference = async (reference) => {
+export const createLeverReference = async (reference) => {
   const { data, error } = await supabase
     .from('lever_reference')
     .insert(reference)
@@ -71,7 +87,21 @@ const createLeverReference = async (reference) => {
       'Sorry unable to import. Please try again later or contact support.',
     );
   } else {
-    createGoogleTaskQueue(data);
+    await createGoogleTaskQueue(data);
+    return data;
+  }
+};
+
+export const createLeverJobReference = async (reference) => {
+  const { error } = await supabase
+    .from('lever_job_reference')
+    .insert(reference)
+    .select();
+
+  if (error) {
+    toast.error(
+      'Sorry unable to import. Please try again later or contact support.',
+    );
   }
 };
 
