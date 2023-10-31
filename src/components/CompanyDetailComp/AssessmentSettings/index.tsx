@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
+import axios from 'axios';
 import React, { useRef, useState } from 'react';
 
 import { AssesmentModal, AssesmentSetting, AvatarCard } from '@/devlink';
@@ -28,6 +29,17 @@ function AssessmentSettings() {
   }
   return (
     <div>
+      <Button
+        onClick={async () => {
+          // console.log('dheeraj');
+          const data = await axios.post('/api/generateVideo', {
+            text: 'Hello world',
+          });
+          console.log(data);
+        }}
+      >
+        onClick
+      </Button>
       <MuiPopup
         props={{
           open: openPopup,
