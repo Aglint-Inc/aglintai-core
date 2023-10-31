@@ -42,6 +42,7 @@ export default async function handler(req, res) {
 
   // Function to download the file from the URL
   const downloadFile = async () => {
+    console.log('function calling...');
     if (!url.includes('.gif')) {
       const response = await axios.get(url, { responseType: 'arraybuffer' });
       const data = Buffer.from(response.data);
