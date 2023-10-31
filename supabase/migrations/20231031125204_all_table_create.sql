@@ -5,12 +5,14 @@ create extension if not exists "pg_cron" with schema "extensions";
 create extension if not exists "vector" with schema "extensions";
 
 
+create extension if not exists "citext" with schema "public" version '1.6';
+
 create table "public"."candidates" (
     "id" uuid not null default uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
-    "first_name" text not null,
-    "last_name" text not null,
-    "email" text not null,
+    "first_name" citext not null,
+    "last_name" citext not null,
+    "email" citext not null,
     "phone" text,
     "resume" text,
     "linkedin" text,
@@ -26,7 +28,7 @@ create table "public"."candidates" (
 create table "public"."job_applications" (
     "application_id" uuid not null default uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
-    "score" numeric not null default 0,
+    "resume_score" numeric not null default 0,
     "feedback" jsonb,
     "used_token" jsonb[] not null default '{}'::jsonb[],
     "conversation" jsonb[] default '{}'::jsonb[],
@@ -39,8 +41,10 @@ create table "public"."job_applications" (
     "jd_score" jsonb,
     "api_logs" jsonb not null default '{"scoreStatus": "not started"}'::jsonb,
     "last_updated_at" timestamp without time zone default now(),
-    "job_id" uuid,
-    "resume_text" jsonb
+    "job_id" uuid not null,
+    "resume_text" jsonb,
+    "candidate_id" uuid not null,
+    "interview_score" numeric not null default '0'::numeric
 );
 
 
@@ -60,7 +64,7 @@ create table "public"."lever_reference" (
     "application_id" uuid not null,
     "opportunity_id" uuid not null,
     "posting_id" uuid not null,
-    "public_job_id" uuid
+    "public_job_id" uuid not null
 );
 
 
@@ -223,6 +227,10 @@ alter table "public"."support_groups" add constraint "support_groups_pkey" PRIMA
 
 alter table "public"."support_ticket" add constraint "support_ticket_pkey" PRIMARY KEY using index "support_ticket_pkey";
 
+alter table "public"."job_applications" add constraint "job_applications_candidate_id_fkey" FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE SET NULL not valid;
+
+alter table "public"."job_applications" validate constraint "job_applications_candidate_id_fkey";
+
 alter table "public"."job_applications" add constraint "job_applications_job_id_fkey" FOREIGN KEY (job_id) REFERENCES public_jobs(id) ON DELETE SET NULL not valid;
 
 alter table "public"."job_applications" validate constraint "job_applications_job_id_fkey";
@@ -235,7 +243,7 @@ alter table "public"."lever_job_reference" add constraint "lever_job_reference_r
 
 alter table "public"."lever_job_reference" validate constraint "lever_job_reference_recruiter_id_fkey";
 
-alter table "public"."lever_reference" add constraint "lever_reference_public_job_id_fkey" FOREIGN KEY (public_job_id) REFERENCES public_jobs(id) ON DELETE SET NULL not valid;
+alter table "public"."lever_reference" add constraint "lever_reference_public_job_id_fkey" FOREIGN KEY (public_job_id) REFERENCES public_jobs(id) ON DELETE CASCADE not valid;
 
 alter table "public"."lever_reference" validate constraint "lever_reference_public_job_id_fkey";
 
@@ -329,6 +337,21 @@ BEGIN
         active_status -> 'interviewing' ->> 'timeStamp',
         'YYYY-MM-DD'
       ) = current_date;
+END;
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.getjobapplications(ids uuid[])
+ RETURNS TABLE(job_id uuid, status text, count bigint)
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  RETURN QUERY
+    SELECT ja.job_id, ja.status, count(*)
+    FROM public.job_applications AS ja
+    WHERE ja.job_id = ANY(ids)
+    GROUP BY ja.job_id, ja.status
+    ORDER BY ja.job_id, ja.status;
 END;
 $function$
 ;
