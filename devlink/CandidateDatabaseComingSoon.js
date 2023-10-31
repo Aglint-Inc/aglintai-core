@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonPrimarySmall } from "./ButtonPrimarySmall";
 import * as _utils from "./utils";
 import _styles from "./CandidateDatabaseComingSoon.module.css";
 
@@ -71,7 +72,7 @@ export function CandidateDatabaseComingSoon({
               className={_utils.cx(_styles, "text-yellow-800-4")}
               tag="div"
             >
-              {"Coming Soon"}
+              {"Request Access"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -88,6 +89,14 @@ export function CandidateDatabaseComingSoon({
               "Search your existing candidate pool to find your ideal match. Import candidates from your ATS, or upload them directly. Simply use natural language to search and find your perfect match in no time!"
             }
           </_Builtin.Block>
+          <_Builtin.Link
+            button={false}
+            options={{
+              href: "mailto:customersuccess@aglinthq.com",
+            }}
+          >
+            <ButtonPrimarySmall textLabel="Request Access" />
+          </_Builtin.Link>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

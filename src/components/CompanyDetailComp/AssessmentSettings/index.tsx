@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Stack } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { FormControlLabel, Stack, Switch } from '@mui/material';
+import { useRef, useState } from 'react';
 
 import { AssesmentModal, AssesmentSetting, AvatarCard } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { avatar_list } from '@/src/utils/avatarlist';
+import { supabase } from '@/src/utils/supabaseClient';
 
 import MuiPopup from '../../Common/MuiPopup';
 let tempObj = avatar_list[0];
@@ -11,7 +13,11 @@ function AssessmentSettings() {
   const [openPopup, setPopup] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [index, setIndex] = useState(null);
-  const [selectedAvatar, setSelectedAvatar] = useState(avatar_list[0]);
+  const { recruiter } = useAuthDetails();
+
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    recruiter?.ai_avatar || avatar_list[0],
+  );
   const videoRef = useRef(null);
   function onVideoPlay() {
     if (!playing) {
@@ -25,6 +31,21 @@ function AssessmentSettings() {
   function closePopup() {
     setPopup(false);
     setIndex(null);
+  }
+  async function handleChangeAvatar() {
+    setSelectedAvatar(tempObj);
+    const { data, error } = await supabase
+      .from('recruiter')
+      .update({
+        ai_avatar: tempObj,
+      })
+      .eq('id', recruiter.id)
+      .select();
+    if (!error) {
+      setPopup(false);
+      return data[0];
+      // console.log(data);
+    }
   }
   return (
     <div>
@@ -63,13 +84,48 @@ function AssessmentSettings() {
             })}
             onClickChoose={{
               onClick: () => {
-                setSelectedAvatar(tempObj);
+                handleChangeAvatar();
               },
             }}
           />
         </Stack>
       </MuiPopup>
       <AssesmentSetting
+        slotToggleButton={
+          <FormControlLabel
+            control={
+              <Switch
+                sx={{
+                  '& .MuiSwitch-thumb': {
+                    color: 'white.700', // Color of the switching ball
+                    height: '13px',
+                    width: '13px',
+                    opacity: 1,
+                  },
+                  '& .MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+                    backgroundColor: '#1F73B7',
+                    opacity: 1,
+                  },
+                  '& .MuiSwitch-switchBase': {
+                    top: '6px ',
+                    left: '6px',
+                  },
+                  '& .MuiSwitch-switchBase.Mui-checked': {
+                    left: '0px',
+                  },
+                  '& .MuiSwitch-track': {
+                    // backgroundColor: '#1F73B7', // Background color of the switch
+                    height: '20px',
+                    width: '34px',
+                    borderRadius: '20px',
+                  },
+                }}
+                defaultChecked
+              />
+            }
+            label=''
+          />
+        }
         textAvatarName={avatar_list[0].name}
         slotAvatarVideo={
           <Stack bgcolor={'white.700'}>
@@ -84,10 +140,12 @@ function AssessmentSettings() {
                     height: '100%',
                     objectFit: 'cover',
                   }}
+                  //@ts-expect-error
                   src={selectedAvatar.video_url}
                   ref={videoRef}
                 />
               }
+              //@ts-expect-error
               textAvatarName={selectedAvatar.name}
             />
           </Stack>
@@ -119,7 +177,10 @@ function Card({ selectedIndex, index, video_url, name }) {
     <AvatarCard
       isActive={index === selectedIndex}
       onClickPlayPause={{
-        onClick: onVideoPlay,
+        onClick: (event: { stopPropagation: () => void }) => {
+          event.stopPropagation();
+          onVideoPlay();
+        },
       }}
       isPlay={!playing}
       isPause={playing}

@@ -89,7 +89,7 @@ const ProfileDashboard = () => {
     role: {
       ...initialFormValues,
       value: recruiterUser.role,
-      label: 'Position',
+      label: 'Job title',
       blocked: true,
       placeholder: 'Recruiter',
     },
