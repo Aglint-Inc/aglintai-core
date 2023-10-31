@@ -9,6 +9,7 @@ function InterviewerPanel() {
   return (
     <>
       <InterviewInterviewerScreen
+        isPlayPauseVisible={false}
         slotAiVideo={
           <Avatar
             sx={{

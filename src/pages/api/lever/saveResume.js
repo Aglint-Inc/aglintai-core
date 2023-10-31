@@ -87,7 +87,9 @@ export default async function handler(req, res) {
                 .eq('application_id', payload.application_id);
             }
 
-            return res.status(200).json({ fileLink });
+            return res
+              .status(200)
+              .json({ resume: fileLink, json_resume: jsonResume });
           } else {
             console.log('no resume url from lever');
             res.status(400).send('no resume url from lever');
@@ -134,28 +136,30 @@ async function transformers(jsonData, opportunity_id) {
   };
 
   // Transform work experience data
-  outputData.work = jsonData.positions.map((position) => ({
+  outputData.work = jsonData?.positions?.map((position) => ({
     url: '',
     name: position.org,
     skills: [],
-    endDate: position?.end?.year
-      ? `${getMonthName(position.end.month)} ${position.end.year}`
+    endDate: position?.end
+      ? `${getMonthName(position?.end?.month)} ${position?.end?.year}`
       : 'Present',
     description: position.summary,
     position: position.title,
-    startDate: `${getMonthName(position.start.month)} ${position.start.year}`,
+    startDate: position?.start
+      ? `${getMonthName(position.start.month)} ${position.start.year}`
+      : '',
     highlights: [],
   }));
 
-  outputData.education = jsonData.schools.map((school) => ({
+  outputData.education = jsonData?.schools?.map((school) => ({
     url: '',
-    area: school.field,
+    area: school?.field,
     score: '',
     courses: [],
     endDate: '',
     startDate: '',
-    studyType: school.degree,
-    institution: school.org,
+    studyType: school?.degree,
+    institution: school?.org,
   }));
 
   //get candidate basic details from lever api
@@ -196,19 +200,23 @@ async function transformers(jsonData, opportunity_id) {
 }
 
 function getMonthName(monthNumber) {
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return months[monthNumber - 1];
+  if (monthNumber) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[monthNumber - 1];
+  } else {
+    return '';
+  }
 }

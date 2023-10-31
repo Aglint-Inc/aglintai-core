@@ -1222,6 +1222,7 @@ export interface Database {
           phone: string | null
           profile_image: string | null
           resume: string | null
+          resume_text: Json | null
           score: number
           status: string | null
           used_token: Json[]
@@ -1264,6 +1265,7 @@ export interface Database {
           phone?: string | null
           profile_image?: string | null
           resume?: string | null
+          resume_text?: Json | null
           score?: number
           status?: string | null
           used_token?: Json[]
@@ -1306,6 +1308,7 @@ export interface Database {
           phone?: string | null
           profile_image?: string | null
           resume?: string | null
+          resume_text?: Json | null
           score?: number
           status?: string | null
           used_token?: Json[]
@@ -1691,32 +1694,79 @@ export interface Database {
         }
         Relationships: []
       }
+      lever_job_reference: {
+        Row: {
+          created_at: string
+          id: number
+          job_id: string
+          last_synced_at: string | null
+          posting_id: string
+          recruiter_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          job_id: string
+          last_synced_at?: string | null
+          posting_id: string
+          recruiter_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          job_id?: string
+          last_synced_at?: string | null
+          posting_id?: string
+          recruiter_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lever_job_reference_job_id_fkey"
+            columns: ["job_id"]
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lever_job_reference_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       lever_reference: {
         Row: {
           application_id: string
           created_at: string
-          is_resume_fetched: boolean
           last_synced: string
           opportunity_id: string
           posting_id: string
+          public_job_id: string | null
         }
         Insert: {
           application_id: string
           created_at?: string
-          is_resume_fetched?: boolean
           last_synced?: string
           opportunity_id: string
           posting_id: string
+          public_job_id?: string | null
         }
         Update: {
           application_id?: string
           created_at?: string
-          is_resume_fetched?: boolean
           last_synced?: string
           opportunity_id?: string
           posting_id?: string
+          public_job_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "lever_reference_public_job_id_fkey"
+            columns: ["public_job_id"]
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       linkedin_profile_cache: {
         Row: {
@@ -2528,12 +2578,6 @@ export interface Database {
             columns: ["recruiter_id"]
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_jobs_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            referencedRelation: "decrypted_recruiter"
-            referencedColumns: ["id"]
           }
         ]
       }
@@ -2746,12 +2790,6 @@ export interface Database {
             foreignKeyName: "recruiter_user_recruiter_id_fkey"
             columns: ["recruiter_id"]
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "recruiter_user_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            referencedRelation: "decrypted_recruiter"
             referencedColumns: ["id"]
           },
           {
@@ -3404,12 +3442,6 @@ export interface Database {
             columns: ["company_id"]
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "support_groups_company_id_fkey"
-            columns: ["company_id"]
-            referencedRelation: "decrypted_recruiter"
-            referencedColumns: ["id"]
           }
         ]
       }
@@ -3485,12 +3517,6 @@ export interface Database {
             foreignKeyName: "support_ticket_company_id_fkey"
             columns: ["company_id"]
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "support_ticket_company_id_fkey"
-            columns: ["company_id"]
-            referencedRelation: "decrypted_recruiter"
             referencedColumns: ["id"]
           },
           {
@@ -3619,102 +3645,7 @@ export interface Database {
       }
     }
     Views: {
-      decrypted_recruiter: {
-        Row: {
-          address: Json | null
-          application_process: string | null
-          available_roles: string[] | null
-          benefits: string | null
-          company_overview: string | null
-          company_values: string | null
-          company_website: string | null
-          decrypted_lever_key: string | null
-          departments: string[] | null
-          e_o_statement: string | null
-          email: string | null
-          email_template: Json | null
-          employee_size: string | null
-          employment_type: Json | null
-          hr_contact: Json | null
-          id: string | null
-          industry: string | null
-          lever_key: string | null
-          logo: string | null
-          m_v_statement: string | null
-          name: string | null
-          office_locations: Json[] | null
-          phone_number: string | null
-          primary_contact: Json | null
-          recruiter_type: string | null
-          roles: Json | null
-          socials: Json | null
-          technology_score: string[] | null
-          workplace_type: Json | null
-        }
-        Insert: {
-          address?: Json | null
-          application_process?: string | null
-          available_roles?: string[] | null
-          benefits?: string | null
-          company_overview?: string | null
-          company_values?: string | null
-          company_website?: string | null
-          decrypted_lever_key?: never
-          departments?: string[] | null
-          e_o_statement?: string | null
-          email?: string | null
-          email_template?: Json | null
-          employee_size?: string | null
-          employment_type?: Json | null
-          hr_contact?: Json | null
-          id?: string | null
-          industry?: string | null
-          lever_key?: string | null
-          logo?: string | null
-          m_v_statement?: string | null
-          name?: string | null
-          office_locations?: Json[] | null
-          phone_number?: string | null
-          primary_contact?: Json | null
-          recruiter_type?: string | null
-          roles?: Json | null
-          socials?: Json | null
-          technology_score?: string[] | null
-          workplace_type?: Json | null
-        }
-        Update: {
-          address?: Json | null
-          application_process?: string | null
-          available_roles?: string[] | null
-          benefits?: string | null
-          company_overview?: string | null
-          company_values?: string | null
-          company_website?: string | null
-          decrypted_lever_key?: never
-          departments?: string[] | null
-          e_o_statement?: string | null
-          email?: string | null
-          email_template?: Json | null
-          employee_size?: string | null
-          employment_type?: Json | null
-          hr_contact?: Json | null
-          id?: string | null
-          industry?: string | null
-          lever_key?: string | null
-          logo?: string | null
-          m_v_statement?: string | null
-          name?: string | null
-          office_locations?: Json[] | null
-          phone_number?: string | null
-          primary_contact?: Json | null
-          recruiter_type?: string | null
-          roles?: Json | null
-          socials?: Json | null
-          technology_score?: string[] | null
-          workplace_type?: Json | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       add_application_count: {
@@ -3765,6 +3696,16 @@ export interface Database {
           job_id_param: string
         }
         Returns: unknown
+      }
+      getjobapplications: {
+        Args: {
+          ids: string[]
+        }
+        Returns: {
+          job_id: string
+          status: string
+          count: number
+        }[]
       }
       getquerieswithmessagesbyassignmentid: {
         Args: {

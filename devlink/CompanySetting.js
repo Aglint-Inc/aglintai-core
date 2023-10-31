@@ -4,6 +4,7 @@ import * as _interactions from "./interactions";
 import { CompanyInfo } from "./CompanyInfo";
 import { EmailTemplateCards } from "./EmailTemplateCards";
 import { CreateNewEmailCard } from "./CreateNewEmailCard";
+import { AssesmentSetting } from "./AssesmentSetting";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -25,6 +26,7 @@ export function CompanySetting({
   slotTeam,
   onClickTeam = {},
   isTeamVisible = true,
+  slotAssesmentSetting,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -3423,7 +3425,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Job Description Settings"}
+                {"Job Site Settings"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink
@@ -3452,6 +3454,17 @@ export function CompanySetting({
                 </_Builtin.Block>
               </_Builtin.TabsLink>
             ) : null}
+            <_Builtin.TabsLink
+              className={_utils.cx(_styles, "company-tab-link")}
+              data-w-tab="Tab 5"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Assesment Settings"}
+              </_Builtin.Block>
+            </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
           <_Builtin.TabsContent
             className={_utils.cx(_styles, "cs-tab-content")}
@@ -3545,6 +3558,11 @@ export function CompanySetting({
                 tag="div"
               >
                 {slotTeam}
+              </_Builtin.Block>
+            </_Builtin.TabsPane>
+            <_Builtin.TabsPane tag="div" data-w-tab="Tab 5">
+              <_Builtin.Block tag="div">
+                {slotAssesmentSetting ?? <AssesmentSetting />}
               </_Builtin.Block>
             </_Builtin.TabsPane>
           </_Builtin.TabsContent>

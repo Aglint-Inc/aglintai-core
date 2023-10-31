@@ -6,12 +6,14 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 
 import { ActiveVoice } from '../../Components/ActiveVoice';
 import CameraHolder from '../../Components/CameraHolder';
-function CandidatePanel() {
+function VideoCandidatePanel() {
   const {
     getSecond,
     getminutes,
     transcript,
+    submitVideoAnswers,
     submitAnswers,
+    videoAssessment,
     senderRef,
     handleListing,
     listening,
@@ -162,7 +164,8 @@ function CandidatePanel() {
         isMicVisible={!listening}
         onClickSubmit={{
           onClick: () => {
-            submitAnswers();
+            if (videoAssessment) submitVideoAnswers();
+            else submitAnswers();
           },
         }}
       />
@@ -170,4 +173,4 @@ function CandidatePanel() {
   );
 }
 
-export default CandidatePanel;
+export default VideoCandidatePanel;

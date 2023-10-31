@@ -28,6 +28,7 @@ import LoaderLever from '../Loader';
 import {
   createJobApplications,
   createJobObject,
+  createLeverJobReference,
   fetchAllJobs,
   getLeverStatusColor,
   POSTED_BY,
@@ -36,7 +37,7 @@ import {
 export function LeverModalComp({ state, handleClose, setState }) {
   const { recruiter, setRecruiter } = useAuthDetails();
   const router = useRouter();
-  const { handleUIJobUpdate, handleApplicationsRead, jobsData } = useJobs();
+  const { handleUIJobUpdate, jobsData } = useJobs();
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
   const [leverFilter, setLeverFilter] = useState('published');
@@ -79,6 +80,18 @@ export function LeverModalComp({ state, handleClose, setState }) {
         .insert(dbJobs)
         .select();
       if (!error) {
+        selectedLeverPostings.map(async (post) => {
+          await createLeverJobReference({
+            posting_id: post.id,
+            recruiter_id: recruiter.id,
+            job_id: newJobs.filter(
+              (job) =>
+                job.job_title == post.text &&
+                job.location == post.categories.location,
+            )[0].id,
+          });
+        });
+
         const jobsObj = selectedLeverPostings.map((post) => {
           return {
             ...post,
@@ -94,11 +107,14 @@ export function LeverModalComp({ state, handleClose, setState }) {
           handleUIJobUpdate({
             ...job,
             active_status: job.active_status as unknown as StatusJobs,
+            count: {
+              new: 0,
+              interviewing: 0,
+              qualified: 0,
+              disqualified: 0,
+            },
           });
         });
-        const oldJobsIds = jobsData.jobs.map((job) => job.id);
-        const newJobsIds = newJobs.map((job) => job.id);
-        handleApplicationsRead([...oldJobsIds, ...newJobsIds]);
         toast.success('Jobs Imported Successfully');
         router.push(`${pageRoutes.JOBS}?status=active`);
       } else {
@@ -179,7 +195,11 @@ export function LeverModalComp({ state, handleClose, setState }) {
         ) : state === STATE_LEVER_DIALOG.FETCHING ? (
           <LeverFetching
             slotLottie={
-              <Stack height={'100px'} style={{ transform: 'rotate(270deg)' }}>
+              <Stack
+                height={'100px'}
+                style={{ transform: 'rotate(270deg)' }}
+                width={'100px'}
+              >
                 <FetchingJobsLever />
               </Stack>
             }
@@ -263,21 +283,27 @@ export function LeverModalComp({ state, handleClose, setState }) {
                               }
                               onClickCheck={{
                                 onClick: () => {
-                                  if (
-                                    selectedLeverPostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedLeverPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
+                                  if (selectedLeverPostings.length < 5) {
+                                    if (
+                                      selectedLeverPostings?.some(
+                                        (p) => p.id === post.id,
+                                      )
+                                    ) {
+                                      // If the object is already in the array, remove it
+                                      setSelectedLeverPostings((prev) =>
+                                        prev.filter((p) => p.id !== post.id),
+                                      );
+                                    } else {
+                                      // If the object is not in the array, add it
+                                      setSelectedLeverPostings((prev) => [
+                                        ...prev,
+                                        post,
+                                      ]);
+                                    }
                                   } else {
-                                    // If the object is not in the array, add it
-                                    setSelectedLeverPostings((prev) => [
-                                      ...prev,
-                                      post,
-                                    ]);
+                                    toast.error(
+                                      'You can select maximum 5 jobs at a time',
+                                    );
                                   }
                                 },
                               }}

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION get_present_scheduled_jobs() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION move_scheduled_jobs_sourcing_to_active() RETURNS VOID AS $$
 BEGIN
   UPDATE public_jobs
   SET
