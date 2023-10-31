@@ -7,7 +7,7 @@ export default function handler(req, res) {
       {
         avatar_id: 'Daisy-inskirt-20220818',
         avatar_style: 'normal',
-        input_text: 'Welcome to HeyGen API',
+        input_text: req.body.text,
         offset: {
           x: 0,
           y: 0,
