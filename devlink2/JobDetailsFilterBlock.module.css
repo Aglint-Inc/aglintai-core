@@ -36,6 +36,10 @@
 }
 
 .jdet-filter-block {
+  position: relative;
+}
+
+.jdet-filter-trigger {
   display: flex;
   align-items: center;
   grid-column-gap: 8px;
@@ -91,6 +95,28 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.jder-filter-content {
+  position: absolute;
+  z-index: 99;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background-color: var(--white);
+
+  box-shadow: 0 6px 30px 0 hsla(0, 0.00%, 0.00%, 0.10);
+}
+
+.jdet-filter-content-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-block {
+  padding: 8px 16px;
 }
 
 .cv-sort-label {

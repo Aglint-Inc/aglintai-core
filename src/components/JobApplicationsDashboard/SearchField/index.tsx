@@ -1,50 +1,29 @@
-import {
-  JobApplication,
-  JobApplicationSections,
-} from '@context/JobApplicationsContext/types';
 import { useJobApplications } from '@context/NewJobApplicationsContext';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse, InputAdornment, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import UITextField from '../../Common/UITextField';
 
-const SearchField = ({
-  applications,
-  section,
-  setSearchedApplications,
-}: {
-  applications: JobApplication[];
-  section: JobApplicationSections;
-  setSearchedApplications: Dispatch<SetStateAction<JobApplication[]>>;
-}) => {
-  const { updateTick } = useJobApplications();
+const SearchField = () => {
+  const { searchParameters, handleJobApplicationFilter } = useJobApplications();
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleSearch(value);
+    const timer = setTimeout(async () => {
+      await handleSearch(value);
     }, 400);
     return () => clearTimeout(timer);
   }, [value]);
 
-  useEffect(() => {
-    handleSearch(value);
-  }, [updateTick, section]);
-
-  const handleSearch = (val: string) => {
+  const handleSearch = async (val: string) => {
     const value = val.trim().toLowerCase();
-    const newApplications = applications.reduce((acc, curr) => {
-      if (
-        curr.first_name.toLowerCase().includes(value) ||
-        curr.email.toLowerCase().includes(value)
-      )
-        acc.push(curr);
-      return acc;
-    }, []);
-    setSearchedApplications(newApplications);
+    await handleJobApplicationFilter({
+      ...searchParameters,
+      search: value,
+    });
   };
 
   return (

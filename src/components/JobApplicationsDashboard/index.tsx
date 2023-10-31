@@ -76,30 +76,11 @@ const JobApplicationComponent = () => {
     job,
     handleJobApplicationPaginatedPolling,
     applicationDepth,
+    updateTick,
+    searchParameters,
   } = useJobApplications();
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
-
-  // const [sort] = useState<SortParameter>({
-  //   parameter: 'resume_score',
-  //   condition: 'desc',
-  // });
-
-  // const [filters] = useState<FilterParameter[]>([
-  //   { parameter: 'resume_score', condition: 'ge', count: 0 },
-  //   { parameter: 'interview_score', condition: 'ge', count: 0 },
-  // ]);
-
-  // const sectionApplications = getFilteredApplications(
-  //   getSortedApplications(
-  //     applications[section],
-  //     // getIntactApplications(applications[section])[ApiLogState.SUCCESS],
-  //     sort,
-  //     job.parameter_weights as ScoreWheelParams,
-  //   ),
-  //   job.parameter_weights as ScoreWheelParams,
-  //   filters,
-  // ) as JobApplication[];
 
   const sectionApplications = applications[section];
 
@@ -107,9 +88,6 @@ const JobApplicationComponent = () => {
   const [currentApplication, setCurrentApplication] = useState(-1);
 
   const [jobUpdate, setJobUpdate] = useState(false);
-
-  const [searchedApplications, setSearchedApplications] =
-    useState(sectionApplications);
 
   const handleSetSection = (section) => {
     setSection(section);
@@ -121,7 +99,7 @@ const JobApplicationComponent = () => {
   };
 
   const handleSelectNextApplication = () => {
-    if (currentApplication < searchedApplications.length - 1)
+    if (currentApplication < sectionApplications.length - 1)
       setCurrentApplication((prev) => prev + 1);
   };
 
@@ -129,13 +107,14 @@ const JobApplicationComponent = () => {
     if (currentApplication > 0) setCurrentApplication((prev) => prev - 1);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleSelectAll = () => {
-    if (checkList.size === searchedApplications.length)
+    if (checkList.size === sectionApplications.length)
       setCheckList(new Set<string>());
     else
       setCheckList(
         new Set(
-          searchedApplications.reduce((acc, curr) => {
+          sectionApplications.reduce((acc, curr) => {
             acc.push(curr.application_id);
             return acc;
           }, []),
@@ -159,17 +138,19 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 10000, [
+  usePolling(async () => await handleAutoRefresh(), 60000, [
     ...Object.values(applicationDepth),
     section,
     refreshRef.current,
+    updateTick,
+    searchParameters.search,
   ]);
 
   return (
     <JobDetails
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
-      textApplicantsNumber={`(${'XXXXX'} success , ${'XXXXX'} processing , ${'XXXXX'} failed)`}
+      textApplicantsNumber={``}
       onClickEditJobs={{
         onClick: () => {
           router.push(`/jobs/edit?job_id=${job.id}`);
@@ -215,7 +196,7 @@ const JobApplicationComponent = () => {
           handleSelectNextApplication={() => handleSelectNextApplication()}
           handleSelectPrevApplication={() => handleSelectPrevApplication()}
           applicationDetails={
-            searchedApplications[
+            sectionApplications[
               currentApplication === -1 ? 0 : currentApplication
             ]
           }
@@ -225,19 +206,12 @@ const JobApplicationComponent = () => {
         <NewJobDetailsTabs
           section={section}
           handleSetSection={handleSetSection}
-          applications={applications}
         />
       }
-      slotFilterBlock={
-        <NewJobFilterBlock
-          sectionApplications={sectionApplications}
-          section={section}
-          setSearchedApplications={setSearchedApplications}
-        />
-      }
+      slotFilterBlock={<NewJobFilterBlock />}
       slotCandidatesList={
         <ApplicantsList
-          applications={searchedApplications}
+          applications={sectionApplications}
           checkList={checkList}
           setCheckList={setCheckList}
           jobUpdate={jobUpdate}
@@ -247,23 +221,15 @@ const JobApplicationComponent = () => {
           refresh={refresh}
         />
       }
-      onclickSelectAll={{ onClick: () => handleSelectAll() }}
-      isListTopBarVisible={searchedApplications.length !== 0}
+      // onclickSelectAll={{ onClick: () => handleSelectAll() }}
+      isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
-      isAllChecked={checkList.size === searchedApplications.length}
+      isAllChecked={checkList.size === sectionApplications.length}
     />
   );
 };
 
-const NewJobFilterBlock = ({
-  sectionApplications,
-  section,
-  setSearchedApplications,
-}: {
-  sectionApplications: JobApplication[];
-  section: JobApplicationSections;
-  setSearchedApplications: Dispatch<SetStateAction<JobApplication[]>>;
-}) => {
+const NewJobFilterBlock = () => {
   const { setOpenImportCandidates, openImportCandidates } =
     useJobApplications();
   return (
@@ -288,13 +254,7 @@ const NewJobFilterBlock = ({
       </Dialog>
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
-        slotSearch={
-          <SearchField
-            applications={sectionApplications}
-            section={section}
-            setSearchedApplications={setSearchedApplications}
-          />
-        }
+        slotSearch={<SearchField />}
       />
     </>
   );
@@ -303,32 +263,32 @@ const NewJobFilterBlock = ({
 const NewJobDetailsTabs = ({
   section,
   handleSetSection,
-  applications,
 }: {
   section: JobApplicationSections;
   // eslint-disable-next-line no-unused-vars
   handleSetSection: (section: any) => void;
-  applications: JobApplicationsData;
 }) => {
+  const { job } = useJobApplications();
+  const count = job.count;
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
-      countNew={applications.new.length}
+      countNew={count.new}
       onClickNew={{
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
       isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
-      countInterview={applications.interviewing.length}
+      countInterview={count.interviewing}
       onClickInterview={{
         onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
-      countDisqualified={applications.disqualified.length}
+      countDisqualified={count.disqualified}
       onClickDisqualified={{
         onClick: () => handleSetSection(JobApplicationSections.DISQUALIFIED),
       }}
       isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
-      countQualified={applications.qualified.length}
+      countQualified={count.qualified}
       onClickQualified={{
         onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
       }}

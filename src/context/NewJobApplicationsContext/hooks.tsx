@@ -173,7 +173,7 @@ const useProviderJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const paginationLimit = 16;
+  const paginationLimit = 100;
 
   const initialJobApplicationDepth = Object.values(
     JobApplicationSections,
@@ -192,7 +192,6 @@ const useProviderJobApplicationActions = (
     },
     {},
   ) as ReadJobApplicationApi['request']['ranges'];
-
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
   const initialLoad = initialJobLoad && applications ? true : false;
@@ -202,7 +201,7 @@ const useProviderJobApplicationActions = (
     useState(false);
 
   const initialParameters: Parameters = {
-    sort: { parameter: 'first_name', condition: 'desc' },
+    sort: { parameter: 'first_name', condition: 'asc' },
     filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
     search: null,
   };

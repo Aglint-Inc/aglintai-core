@@ -6,8 +6,9 @@ import {
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
-import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+
+import { JobTypeDashboard } from '../JobsContext/types';
 
 export enum JobApplicationSections {
   NEW = 'new',
@@ -34,7 +35,7 @@ export type Parameters = {
 export type JobApplicationContext = {
   applications: JobApplicationsData;
   applicationDepth: { [key in JobApplicationSections]: number };
-  job: JobType;
+  job: JobTypeDashboard;
   updateTick: boolean;
   handleJobApplicationCreate: (
     inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &

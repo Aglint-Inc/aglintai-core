@@ -53,9 +53,9 @@ export const readNewJobApplicationDbAction = async (
     .from('job_applications')
     .select('*')
     .eq('job_id', job_id)
-    .eq('status', status)
-    .neq('email', '')
-    .neq('email', null);
+    .eq('status', status);
+  // .neq('email', '')
+  // .neq('email', null);
 
   if (apiStatus) {
     getApiStatus(apiStatus).map((s) => {
