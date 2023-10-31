@@ -225,6 +225,10 @@ export function JobDetails({
                           />
                         ) : null}
                       </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "cv-list-checkbox-ghost")}
+                        tag="div"
+                      />
                     </_Builtin.Block>
                     <_Builtin.Block
                       className={_utils.cx(_styles, "cv-list-row-main")}

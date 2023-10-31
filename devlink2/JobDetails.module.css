@@ -568,6 +568,24 @@
   z-index: 5;
 }
 
+.cv-list-checkbox-ghost {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  min-width: 16px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.cv-list-checkbox-ghost.hide {
+  display: none;
+}
+
 .cv-list-row-main {
   position: relative;
   z-index: 10;
