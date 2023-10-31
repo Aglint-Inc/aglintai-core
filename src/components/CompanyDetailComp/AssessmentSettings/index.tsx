@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Stack } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { AssesmentModal, AssesmentSetting, AvatarCard } from '@/devlink';
 import { avatar_list } from '@/src/utils/avatarlist';
