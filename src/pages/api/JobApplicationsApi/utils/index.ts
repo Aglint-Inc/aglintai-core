@@ -1,6 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-
-import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
+import {
+  ApiLogState,
+  FilterParameter,
+  SortParameter,
+} from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   JobApplicationSections,
@@ -39,6 +42,9 @@ export const readNewJobApplicationDbAction = async (
     start: number;
     end: number;
   } | null,
+  sort?: SortParameter,
+  filter?: FilterParameter[],
+  search?: string,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -51,10 +57,6 @@ export const readNewJobApplicationDbAction = async (
     .neq('email', '')
     .neq('email', null);
 
-  if (range) {
-    query = query.range(range.start, range.end);
-  }
-
   if (apiStatus) {
     getApiStatus(apiStatus).map((s) => {
       query = query.contains('api_logs', {
@@ -63,11 +65,70 @@ export const readNewJobApplicationDbAction = async (
     });
   }
 
+  if (sort) {
+    query = query.order(sort.parameter, {
+      ascending: sort.condition === 'asc',
+      nullsFirst: false,
+    });
+  }
+
+  if (filter && filter.length > 0) {
+    query = getFilteredQuery(query, filter);
+  }
+
+  if (search) {
+    query = query.or(
+      `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
+    );
+  }
+
+  if (range) {
+    query = query.range(range.start, range.end);
+  }
+
   query = query.abortSignal(controller.signal);
 
   const { data, error } = await query;
 
   return { data, error };
+};
+
+const getFilteredQuery = (query: any, filter: FilterParameter[]) => {
+  return filter.reduce((acc, curr) => {
+    switch (curr.condition) {
+      case 'eq':
+        {
+          acc = acc.eq(curr.parameter, curr.count);
+        }
+        break;
+      case 'neq':
+        {
+          acc = acc.neq(curr.parameter, curr.count);
+        }
+        break;
+      case 'gt':
+        {
+          acc = acc.gt(curr.parameter, curr.count);
+        }
+        break;
+      case 'gte':
+        {
+          acc = acc.gte(curr.parameter, curr.count);
+        }
+        break;
+      case 'lt':
+        {
+          acc = acc.lt(curr.parameter, curr.count);
+        }
+        break;
+      case 'lte':
+        {
+          acc = acc.lte(curr.parameter, curr.count);
+        }
+        break;
+    }
+    return acc;
+  }, query);
 };
 
 export const upsertNewJobApplicationDbAction = async (

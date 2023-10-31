@@ -2,7 +2,11 @@
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { ApiLogState } from '@/src/components/JobApplicationsDashboard/utils';
+import {
+  ApiLogState,
+  FilterParameter,
+  SortParameter,
+} from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   JobApplicationSections,
@@ -14,7 +18,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ReadJobApplicationApi['response']>,
 ) => {
-  const { job_id, ranges, apiStatus } =
+  const { job_id, ranges, apiStatus, sort, filter, search } =
     req.body as ReadJobApplicationApi['request'];
   if (
     !job_id ||
@@ -33,6 +37,9 @@ const handler = async (
     job_id,
     apiStatus ?? null,
     ranges ?? null,
+    sort ?? null,
+    filter ?? null,
+    search ?? null,
   );
   const responses = await Promise.allSettled([...promises]);
   const result = await handleMultiPromiseValidation(responses, ranges);
@@ -56,6 +63,9 @@ const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
   apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
   ranges?: ReadJobApplicationApi['request']['ranges'],
+  sort?: ReadJobApplicationApi['request']['sort'],
+  filter?: ReadJobApplicationApi['request']['filter'],
+  search?: ReadJobApplicationApi['request']['search'],
 ) => {
   return Object.entries(ranges).map(([key, value]) =>
     readNewJobApplicationDbAction(
@@ -63,6 +73,9 @@ const createMultiPromise = (
       key as JobApplicationSections,
       apiStatus,
       value ?? null,
+      sort,
+      filter,
+      search,
     ),
   );
 };
@@ -141,6 +154,9 @@ export type ReadJobApplicationApi = {
       };
     };
     apiStatus?: ApiLogState;
+    sort?: SortParameter;
+    filter?: FilterParameter[];
+    search?: string;
   };
   response: {
     data: {

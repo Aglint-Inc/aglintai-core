@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 
+import {
+  FilterParameter,
+  SortParameter,
+} from '@/src/components/JobApplicationsDashboard/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
@@ -20,6 +24,12 @@ export type JobApplication =
 export type InputData = Partial<
   Omit<JobApplication, 'id' | 'created_at' | 'job_id' | 'application_id'>
 >;
+
+export type Parameters = {
+  sort?: SortParameter;
+  filter?: FilterParameter[];
+  search?: string;
+};
 
 export type JobApplicationContext = {
   applications: JobApplicationsData;
@@ -54,6 +64,8 @@ export type JobApplicationContext = {
     applicationStatus: JobApplicationSections,
   ) => Promise<boolean>;
   handleJobApplicationError: (error: any) => void;
+  handleJobApplicationFilter: (parameters: Parameters) => Promise<void>;
+  searchParameters: Parameters;
   initialLoad: boolean;
   circularScoreAnimation: MutableRefObject<boolean>;
   openImportCandidates: boolean;

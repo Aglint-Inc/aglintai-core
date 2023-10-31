@@ -13,6 +13,7 @@ import {
   JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
+  Parameters,
 } from './types';
 import {
   bulkCreateJobApplicationDbAction,
@@ -200,6 +201,15 @@ const useProviderJobApplicationActions = (
   const [openManualImportCandidates, setOpenManualImportCandidates] =
     useState(false);
 
+  const initialParameters: Parameters = {
+    sort: { parameter: 'first_name', condition: 'desc' },
+    filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
+    search: null,
+  };
+  const [searchParameters, setSearchParameters] = useState({
+    ...initialParameters,
+  });
+
   const circularScoreAnimation = useRef(true);
   const updateTick = useRef(false);
 
@@ -303,6 +313,7 @@ const useProviderJobApplicationActions = (
         data: {
           job_id: jobId,
           ranges: ranges,
+          ...searchParameters,
         },
       });
       const { data, error }: ReadJobApplicationApi['response'] = axiosData;
@@ -341,6 +352,7 @@ const useProviderJobApplicationActions = (
         data: {
           job_id: jobId,
           ranges: ranges,
+          ...searchParameters,
         },
       });
       const { data, error }: ReadJobApplicationApi['response'] = axiosData;
@@ -457,12 +469,29 @@ const useProviderJobApplicationActions = (
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
 
+  const handleJobApplicationFilter = async (parameters: Parameters) => {
+    const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+    }, {}) as ReadJobApplicationApi['request']['ranges'];
+    const confirmation = await handleJobApplicationRead({
+      job_id: jobId,
+      ranges: ranges,
+      ...parameters,
+    });
+    if (confirmation) setSearchParameters({ ...parameters });
+  };
+
   useEffect(() => {
-    if (initialJobLoad)
-      handleJobApplicationRead({
-        job_id: jobId,
-        ranges: initialRanges,
+    if (initialJobLoad) {
+      setSearchParameters(() => {
+        handleJobApplicationRead({
+          job_id: jobId,
+          ranges: initialRanges,
+          ...initialParameters,
+        });
+        return { ...initialParameters };
       });
+    }
   }, [initialJobLoad]);
 
   const value = {
@@ -481,6 +510,8 @@ const useProviderJobApplicationActions = (
     handleJobApplicationDelete,
     handleJobApplicationError,
     handleUpdateJobStatus,
+    handleJobApplicationFilter,
+    searchParameters,
     initialLoad,
     circularScoreAnimation,
     openImportCandidates,

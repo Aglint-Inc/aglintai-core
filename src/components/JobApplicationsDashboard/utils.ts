@@ -46,7 +46,7 @@ const getResumeScore = (
 
 export type FilterParameter = {
   parameter: 'resume_score' | 'interview_score';
-  condition: 'eq' | 'neq' | 'lt' | 'le' | 'gt' | 'ge';
+  condition: 'eq' | 'neq' | 'lt' | 'lte' | 'gt' | 'gte';
   count: number;
 };
 
@@ -54,7 +54,7 @@ export type SortParameter = {
   parameter:
     | 'resume_score'
     | 'interview_score'
-    | 'name'
+    | 'first_name'
     | 'email'
     | 'applied_on';
   condition: 'asc' | 'desc';
@@ -96,7 +96,7 @@ export const getSortedApplications = (
         applications.sort((a, b) => a.email.localeCompare(b.email));
       }
       break;
-    case 'name':
+    case 'first_name':
       {
         applications.sort((a, b) =>
           `${a.first_name} ${a.last_name}`.localeCompare(
@@ -191,11 +191,11 @@ const handleFilterCondition = (
   switch (filterParameter.condition) {
     case 'eq':
       return score === filterParameter.count;
-    case 'ge':
+    case 'gte':
       return score >= filterParameter.count;
     case 'gt':
       return score > filterParameter.count;
-    case 'le':
+    case 'lte':
       return score <= filterParameter.count;
     case 'lt':
       return score < filterParameter.count;

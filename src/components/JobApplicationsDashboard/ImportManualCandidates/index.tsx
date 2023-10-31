@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-// import { useJobApplications } from '@context/NewJobApplicationsContext';
 import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -11,7 +10,6 @@ import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { palette } from '@/src/context/Theme/Theme';
 
 import useUploadCandidate from './hooks';
-// import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 

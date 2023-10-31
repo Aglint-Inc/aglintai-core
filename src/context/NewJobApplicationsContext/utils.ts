@@ -21,6 +21,8 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
   handleJobApplicationError: undefined,
+  handleJobApplicationFilter: undefined,
+  searchParameters: undefined,
   initialLoad: false,
   circularScoreAnimation: undefined,
   openImportCandidates: false,
