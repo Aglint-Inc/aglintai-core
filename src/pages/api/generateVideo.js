@@ -5,7 +5,7 @@ export default function handler(req, res) {
     background: '#ffffff',
     clips: [
       {
-        avatar_id: 'Daisy-inskirt-20220818',
+        avatar_id: 'Andrew_public_pro1_20230614',
         avatar_style: 'normal',
         input_text: req.body.text,
         offset: {
@@ -13,7 +13,7 @@ export default function handler(req, res) {
           y: 0,
         },
         scale: 1,
-        voice_id: '1bd001e7e50f421d891986aad5158bc8',
+        voice_id: 'b3150d405d374dd99e569282ee68fa21',
       },
     ],
     ratio: '16:9',
