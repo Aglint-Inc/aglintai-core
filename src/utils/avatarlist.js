@@ -2,10 +2,10 @@ export const avatar_list = [
   {
     video_url:
       'https://files.movio.la/avatar/v3/ed0577c3046545018aade5e35fc6e491_2750/preview_video_target.mp4',
-    voice_id: 'ec4aa6ac882147ffb679176d49f3e41f',
+    voice_id: 'b3150d405d374dd99e569282ee68fa21',
     normal_preview:
       'https://files.movio.la/avatar/v3/ed0577c3046545018aade5e35fc6e491_2750/preview_target.webp',
-    avatar_id: 1686756027,
+    avatar_id: 'Andrew_public_pro1_20230614',
     name: 'Alex',
     audio_url:
       'https://files.movio.la/avatar/default_voice/1ea493e901024034900422df18dbee1a.wav',
@@ -61,7 +61,7 @@ export const avatar_list = [
     voice_id: '1ae3be1e24894ccabdb4d8139399f721',
     normal_preview:
       'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_target.webp',
-    avatar_id: 1685681199,
+    avatar_id: 'Brian_public_lite1_20230601',
     name: 'Blake',
     audio_url:
       'https://files.movio.la/avatar/default_voice/da4e501e123e40838ba09046e32603d0.wav',
@@ -116,7 +116,7 @@ export const avatar_list = [
     voice_id: 'f5a3cb4edbfc4d37b5614ce118be7bc8',
     normal_preview:
       'https://files.movio.la/avatar/v3/15e5253e9ae94a08a720b3ba45522eb5_2606/preview_talk_1.webp',
-    avatar_id: 1685680932,
+    avatar_id: 'Eric_public_pro1_20230601',
     name: 'Edward',
     audio_url:
       'https://files.movio.la/avatar/default_voice/636527f370a148348f787b45df35a585.wav',
@@ -160,7 +160,7 @@ export const avatar_list = [
     voice_id: '',
     normal_preview:
       'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_target.webp',
-    avatar_id: 1689333460,
+    avatar_id: 'josh_lite3_20230714',
     name: 'Josh',
     audio_url: undefined,
   },
@@ -171,7 +171,7 @@ export const avatar_list = [
     voice_id: '1bd001e7e50f421d891986aad5158bc8',
     normal_preview:
       'https://files.movio.la/avatar/v3/b596c0849b7942778ad27f63c5995e33_2626/preview_talk_1.webp',
-    avatar_id: 1685681264,
+    avatar_id: 'Lily_public_lite1_20230601',
     name: 'Leah',
     audio_url:
       'https://files.movio.la/avatar/default_voice/c4b35a0a22c14fc5abea338d4e8617d9.wav',
@@ -228,7 +228,7 @@ export const avatar_list = [
     voice_id: '131a436c47064f708210df6628ef8f32',
     normal_preview:
       'https://files.movio.la/avatar/v3/dc4c9111fa61481c9c09aad80d697fb2_1053/preview_talk_4.webp',
-    avatar_id: 1661166377,
+    avatar_id: 'Angela-inblackskirt-20220820',
     name: 'Angela',
     audio_url:
       'https://files.movio.la/avatar/default_voice/7dd0a767d6a747e3a73a64a5a504eecc.wav',
@@ -273,7 +273,7 @@ export const avatar_list = [
     voice_id: '1ae3be1e24894ccabdb4d8139399f721',
     normal_preview:
       'https://files.movio.la/avatar/v3/49b25ad2cbfe4f8ea1259998f77cd54b_2633/preview_target.webp',
-    avatar_id: 1683546801,
+    avatar_id: 'Aurelien_public_pro4_20230601',
     name: 'Austin',
     audio_url:
       'https://files.movio.la/avatar/default_voice/06290b62fb7246fe8a18cd8ab41deba0.wav',
@@ -318,7 +318,7 @@ export const avatar_list = [
     voice_id: '1ae3be1e24894ccabdb4d8139399f721',
     normal_preview:
       'https://files.movio.la/avatar/v3/4ac4f5fc2d134073b090005f3331752c_1413/preview_talk_4.webp',
-    avatar_id: 1669694954,
+    avatar_id: 'Ben-pro-insuit-20221207',
     name: 'Bill',
     audio_url:
       'https://files.movio.la/avatar/default_voice/cc57d9cb0c034d118999e813f7089402.wav',
@@ -340,7 +340,7 @@ export const avatar_list = [
     voice_id: '2f72ee82b83d4b00af16c4771d611752',
     normal_preview:
       'https://files.movio.la/avatar/v3/d99ba541a2c9413b941fa7efe90a1130_1059/preview_target.webp',
-    avatar_id: 1660815129,
+    avatar_id: 'Daisy-insuit-20220818',
     name: 'Daisy',
     audio_url:
       'https://files.movio.la/avatar/default_voice/80db026894874c2cb262ad9e42e86ac3.wav',
@@ -396,7 +396,7 @@ export const avatar_list = [
     voice_id: 'f7658a75545d4b70b04d8784c07bd038',
     normal_preview:
       'https://files.movio.la/avatar/v3/44f9a21dcbba41dfa5eec508f7682da3_1075/preview_talk_2.webp',
-    avatar_id: 1660811777,
+    avatar_id: 'Derek-inshirt-200220816',
     name: 'Derek',
     audio_url:
       'https://files.movio.la/avatar/default_voice/8d4babc923a94030a42485ef1564389c.wav',
@@ -441,7 +441,7 @@ export const avatar_list = [
     voice_id: '2f72ee82b83d4b00af16c4771d611752',
     normal_preview:
       'https://files.movio.la/avatar/v3/0d2b8d5b1d5d4d18a9ae029acf642e06_1416/preview_target.webp',
-    avatar_id: 15,
+    avatar_id: 'Eva-black-20220601',
     name: 'Eva',
     audio_url:
       'https://files.movio.la/avatar/default_voice/903463fcd86b4d8fa75a9ff61684bc3f.wav',
@@ -496,7 +496,7 @@ export const avatar_list = [
     voice_id: 'ff465a8dab0d42c78f874a135b11d47d',
     normal_preview:
       'https://files.movio.la/avatar/v3/2fe505d2f4f546b7addd4fa083149284_1060/preview_talk_3.webp',
-    avatar_id: 1658380510,
+    avatar_id: 'Jake-inshirt-20220721',
     name: 'Jake',
     audio_url:
       'https://files.movio.la/avatar/default_voice/123d3a7177b64727b3d7a982441a2633.wav',
@@ -541,7 +541,7 @@ export const avatar_list = [
     voice_id: 'ec4aa6ac882147ffb679176d49f3e41f',
     normal_preview:
       'https://files.movio.la/avatar/v3/a43b84ae994d4776a64aba7dc40ad9c9_1126/preview_talk_6.webp',
-    avatar_id: 1658828334,
+    avatar_id: 'Jeff-incasualsuit-20220722',
     name: 'Jeff',
     audio_url:
       'https://files.movio.la/avatar/default_voice/8016f816e719414781f495dbd18cf872.wav',
@@ -586,7 +586,7 @@ export const avatar_list = [
     voice_id: '3fbd2cac3ddd4c109e17296e324845ec',
     normal_preview:
       'https://files.movio.la/avatar/v3/05c935f6bd9b48d696f75cfa7efb2714_1065/preview_talk_3.webp',
-    avatar_id: 1658826953,
+    avatar_id: 'Jerome-inwhiteTshirt-20220722',
     name: 'Jerome',
     audio_url:
       'https://files.movio.la/avatar/default_voice/6d58ceca4e9848509a4a6c70ee663707.wav',
@@ -631,7 +631,7 @@ export const avatar_list = [
     voice_id: 'beaa640abaa24c32bea33b280d2f5ea3',
     normal_preview:
       'https://files.movio.la/avatar/v3/f4712d6634514500b2cbcacd3aaef64b_1058/preview_talk_4.webp',
-    avatar_id: 1661171563,
+    avatar_id: 'Joon-inblackshirt-20220821',
     name: 'Joon',
     audio_url:
       'https://files.movio.la/avatar/default_voice/6a6e5c5bfec243ac989d900f8404f5cc.wav',
@@ -676,7 +676,7 @@ export const avatar_list = [
     voice_id: '2d5b0e6cf36f460aa7fc47e3eee4ba54',
     normal_preview:
       'https://files.movio.la/avatar/v3/bf83f0f830794d90b509ba6524962e05_1079/preview_talk_2.webp',
-    avatar_id: 1660829487,
+    avatar_id: 'Kayla-incasualsuit-20220818',
     name: 'Kayla',
     audio_url:
       'https://files.movio.la/avatar/default_voice/39beb20432a741b5a35340bb8d57d0d3.wav',
@@ -743,7 +743,7 @@ export const avatar_list = [
     voice_id: 'f5a3cb4edbfc4d37b5614ce118be7bc8',
     normal_preview:
       'https://files.movio.la/avatar/v3/f539d51cc23d462f84c68354064dc76d_1057/preview_talk_3.webp',
-    avatar_id: 1659495234,
+    avatar_id: 'Kent-inpolo-20220728',
     name: 'Kent',
     audio_url:
       'https://files.movio.la/avatar/default_voice/9a5d2b9182324fe09c755af3fb7e258d.wav',
@@ -788,7 +788,7 @@ export const avatar_list = [
     voice_id: '66a21dedf2c842b8a516cdb264360e0e',
     normal_preview:
       'https://files.movio.la/avatar/v3/8b7f5cf5c7c54bbe9276d9ce8cffd1e4_1461/preview_talk_1.webp',
-    avatar_id: 12,
+    avatar_id: 'Luna-Tshirt-20220601',
     name: 'Luna',
     audio_url:
       'https://files.movio.la/avatar/default_voice/0868a1239d9948d98490aec1191f7d43.wav',
@@ -833,7 +833,7 @@ export const avatar_list = [
     voice_id: '1ae3be1e24894ccabdb4d8139399f721',
     normal_preview:
       'https://files.movio.la/avatar/v3/ff904fb4c1fa463b95ed26b56e114ce6_1437/preview_target.webp',
-    avatar_id: 16,
+    avatar_id: 'Mark-blueshirt-20220601',
     name: 'Mark',
     audio_url:
       'https://files.movio.la/avatar/default_voice/c890562f20ce447aa6043275bff7fe58.wav',
@@ -878,7 +878,7 @@ export const avatar_list = [
     voice_id: 'ec4aa6ac882147ffb679176d49f3e41f',
     normal_preview:
       'https://files.movio.la/avatar/v3/5c304ab1e7534e2c887e2f795fbe6568_1354/preview_talk_1.webp',
-    avatar_id: 1669694956,
+    avatar_id: 'Mido-lite-20221128',
     name: 'Matthew',
     audio_url:
       'https://files.movio.la/avatar/default_voice/251413a389714f299555e1838be754db.wav',
@@ -934,7 +934,7 @@ export const avatar_list = [
     voice_id: '1bd001e7e50f421d891986aad5158bc8',
     normal_preview:
       'https://files.movio.la/avatar/v3/1c4fa9e9940848748af2cb79f577166d_1085/preview_talk_3.webp',
-    avatar_id: 1660891566,
+    avatar_id: 'Monica_inskirt_20220819',
     name: 'Monica',
     audio_url:
       'https://files.movio.la/avatar/default_voice/4ef99fdefec3406cafe7eb8182db8ac2.wav',
@@ -1214,7 +1214,7 @@ export const avatar_list = [
     voice_id: 'c2958d67f1e74403a0038e3445d93d50',
     normal_preview:
       'https://files.movio.la/avatar/v3/16fbaaae1c96473da8f5ec14df551994_1055/preview_talk_1.webp',
-    avatar_id: 1661166695,
+    avatar_id: 'Tina-inStripedshirt-20220821',
     name: 'Tina',
     audio_url:
       'https://files.movio.la/avatar/default_voice/d730a9efaed04b989c4e943b01a18d7e.wav',
