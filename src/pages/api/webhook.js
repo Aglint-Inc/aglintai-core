@@ -58,6 +58,12 @@ export default async function handler(req, res) {
 
       if (error) {
         console.log('Error uploading video:', error.message);
+        await supabase.from('ai_videos').insert({
+          video_id: video_id,
+          video_url: url,
+          file_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${uploadedData.path}`,
+          error: { error: 'Error uploading video' },
+        });
       } else {
         console.log(
           'Video uploaded successfully:',
