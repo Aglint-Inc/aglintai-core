@@ -47,7 +47,8 @@ export const readNewJobApplicationDbAction = async (
     .from('job_applications')
     .select('*')
     .eq('job_id', job_id)
-    .eq('status', status);
+    .eq('status', status)
+    .not('email', 'is', null);
 
   if (range) {
     query = query.range(range.start, range.end);
