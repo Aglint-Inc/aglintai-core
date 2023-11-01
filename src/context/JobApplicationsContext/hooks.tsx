@@ -143,12 +143,12 @@ const useProviderJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const paginationLimit = 100;
+  const paginationLimit = 10;
 
   const initialJobApplicationDepth = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
-    return { ...acc, [curr]: paginationLimit - 1 };
+    return { ...acc, [curr]: paginationLimit };
     // eslint-disable-next-line no-unused-vars
   }, {}) as { [key in JobApplicationSections]: number };
 
@@ -158,7 +158,7 @@ const useProviderJobApplicationActions = (
   );
   const initialRanges = Object.values(JobApplicationSections).reduce(
     (acc, curr) => {
-      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] - 1 } };
     },
     {},
   ) as ReadJobApplicationApi['request']['ranges'];
@@ -262,8 +262,8 @@ const useProviderJobApplicationActions = (
         return {
           ...acc,
           [curr]: {
-            start: applicationDepth[curr] + 1,
-            end: applicationDepth[curr] + paginationLimit + 1,
+            start: applicationDepth[curr],
+            end: applicationDepth[curr] + paginationLimit - 1,
           },
         };
       }, {});
@@ -286,7 +286,7 @@ const useProviderJobApplicationActions = (
         setApplicationDepth(
           sections.reduce(
             (acc, curr) => {
-              return { ...acc, [curr]: acc[curr] + paginationLimit + 1 };
+              return { ...acc, [curr]: ranges[curr]['end'] + 1 };
             },
             { ...applicationDepth },
           ),
@@ -304,7 +304,10 @@ const useProviderJobApplicationActions = (
   ) => {
     if (recruiter) {
       const ranges = sections.reduce((acc, curr) => {
-        return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+        return {
+          ...acc,
+          [curr]: { start: 0, end: applicationDepth[curr] - 1 },
+        };
       }, {});
       const { data: axiosData } = await axios({
         method: 'post',

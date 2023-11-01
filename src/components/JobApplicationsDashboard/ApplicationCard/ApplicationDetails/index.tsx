@@ -38,11 +38,11 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobType } from '@/src/types/data.types';
 // import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
@@ -289,7 +289,11 @@ const NewJobApplicationSideDrawer = ({
       }}
       slotCandidateImage={candidateImage}
       textName={capitalize(
-        applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
+        // applicationDetails?.first_name +
+        //   ' ' +
+        //   applicationDetails?.last_name +
+        //   ' ' +
+        applicationDetails.application_id,
       )}
       textMail={applicationDetails?.email ? applicationDetails.email : '--'}
       textOverviewDesc={

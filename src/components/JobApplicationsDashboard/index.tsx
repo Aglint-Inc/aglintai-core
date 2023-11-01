@@ -17,7 +17,7 @@ import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-} from '@/src/context/NewJobApplicationsContext/types';
+} from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -138,7 +138,7 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 60000, [
+  usePolling(async () => await handleAutoRefresh(), 600000, [
     ...Object.values(applicationDepth),
     section,
     refreshRef.current,
@@ -402,7 +402,9 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
-            ref={i === applicationDepth[section] ? lastApplicationRef : null}
+            ref={
+              i === applicationDepth[section] - 1 ? lastApplicationRef : null
+            }
             id={`job-application-stack-${i}`}
           >
             <ApplicationCard
