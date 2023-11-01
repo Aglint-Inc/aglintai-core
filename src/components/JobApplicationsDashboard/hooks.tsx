@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useKeyPress = (key: KeyboardEvent['key']) => {
   const [pressed, setPressed] = useState(false);
@@ -21,4 +21,38 @@ export const useKeyPress = (key: KeyboardEvent['key']) => {
     };
   }, [handleKeyUp]);
   return { pressed };
+};
+
+export const useOnline = () => {
+  const [isOnline, setIsOnline] = useState(!document.hidden);
+  const handChangeStatus = () => {
+    setIsOnline(!document.hidden);
+  };
+  useEffect(() => {
+    document.addEventListener('onlineStatus', handChangeStatus);
+    return () => {
+      document.removeEventListener('onlineStatus', handChangeStatus);
+    };
+  }, []);
+  return isOnline;
+};
+
+export const usePolling = (pollingCallback, interval, dependencies = []) => {
+  const timerRef = useRef(null);
+  const [isPolling, setIsPolling] = useState(true);
+  const startPolling = () => {
+    timerRef.current = setInterval(pollingCallback, interval);
+    setIsPolling(true);
+  };
+  const stopPolling = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+    setIsPolling(false);
+  };
+  useEffect(() => {
+    if (isPolling) startPolling();
+    else stopPolling();
+    return () => stopPolling();
+  }, [isPolling, ...dependencies]);
+  return { isPolling, stopPolling };
 };

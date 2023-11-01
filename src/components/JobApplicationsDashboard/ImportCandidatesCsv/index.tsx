@@ -6,8 +6,8 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -16,7 +16,7 @@ import AUIButton from '../../Common/AUIButton';
 function ImportCandidatesCSV() {
   const {
     setOpenImportCandidates,
-    applicationsData,
+    applications,
     handleJobApplicationBulkCreate,
   } = useJobApplications();
 
@@ -73,10 +73,10 @@ function ImportCandidatesCSV() {
   ];
 
   async function createCandidates(candidates) {
-    const _new = applicationsData.applications.new.list;
-    const interviewing = applicationsData.applications.interviewing.list;
-    const qualified = applicationsData.applications.qualified.list;
-    const disqualified = applicationsData.applications.disqualified.list;
+    const _new = applications['new'];
+    const interviewing = applications['interviewing'];
+    const qualified = applications['qualified'];
+    const disqualified = applications['disqualified'];
     const totalApplications = [
       ..._new,
       ...interviewing,

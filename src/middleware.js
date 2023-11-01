@@ -11,6 +11,7 @@ const whiteListedEndPoints = [
   '/api/lever/saveResume',
   '/api/lever/candidateSync',
   '/api/webhook',
+  '/api/JobApplicationsApi',
 ];
 
 export async function middleware(request) {
