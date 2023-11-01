@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { CandidateFilter } from "./CandidateFilter";
 import * as _utils from "./utils";
 import _styles from "./JobDetailsFilterBlock.module.css";
 
@@ -9,6 +10,7 @@ export function JobDetailsFilterBlock({
   filterCount = "1",
   slotSearch,
   onClickUpload = {},
+  slotFilter,
 }) {
   return (
     <_Component
@@ -16,87 +18,10 @@ export function JobDetailsFilterBlock({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "cv-tab-filter-left", "hide")}
+        className={_utils.cx(_styles, "cv-tab-filter-left")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jdet-filter-wrapper")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-filter-block")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-filter-trigger", "clickable")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "icon-block")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.95006%201.25702L2.85355%204.35352C2.65829%204.54878%202.34171%204.54878%202.14645%204.35352C1.95118%204.15826%201.95118%203.84168%202.14645%203.64641L5.24645%200.546414C5.64171%200.151152%206.25829%200.151152%206.6479%200.540847L9.8479%203.64085C10.0462%203.83299%2010.0513%204.14953%209.85912%204.34786C9.66698%204.5462%209.35044%204.55123%209.1521%204.35909L5.95006%201.25702ZM9.1521%207.64085C9.35044%207.44871%209.66698%207.45373%209.85912%207.65207C10.0513%207.85041%2010.0462%208.16695%209.8479%208.35909L6.65355%2011.4535C6.25829%2011.8488%205.64171%2011.8488%205.24645%2011.4535L2.14645%208.35352C1.95118%208.15826%201.95118%207.84168%202.14645%207.64641C2.34171%207.45115%202.65829%207.45115%202.85355%207.64641L5.95017%2010.743C5.95067%2010.7424%209.1521%207.64085%209.1521%207.64085Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">{"Sort by"}</_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jder-filter-content")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "jdet-filter-content-inner")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "jdet-filter-option")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-block")}
-                    tag="div"
-                  >
-                    {"This is some text inside of a div block."}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-sort-label")}
-            tag="div"
-          >
-            {textFilterInfo}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jdet-filter-wrapper")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-filter-trigger", "clickable")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "icon-block")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icon-embed")}
-                value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M4.4999%205.78034L0.74723%202.02768C0.532642%201.80879%200.471494%201.48632%200.589579%201.20751C0.707664%200.9287%200.981816%200.748241%201.28239%200.750013L10.7302%200.75005C11.0302%200.754265%2011.2989%200.936931%2011.4131%201.21441C11.5274%201.4919%2011.4653%201.81077%2011.2526%202.02768L7.4999%205.78034V9.93001C7.4999%2010.1841%207.37623%2010.4232%207.16755%2010.5573L5.66791%2011.5545C5.17055%2011.8861%204.4999%2011.5262%204.4999%2010.9275V5.78034ZM1.28038%201.5001L5.25008%205.46977V10.9276C5.25008%2010.9278%206.75729%209.92966%206.75729%209.92966C6.75064%209.93393%206.75008%205.46977%206.75008%205.46977L6.85991%205.35994L10.7198%201.50006L1.28038%201.5001Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">{"Filter"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-filter-count")}
-            tag="div"
-          >
-            {filterCount}
-          </_Builtin.Block>
-        </_Builtin.Block>
+        {slotFilter ?? <CandidateFilter filterCount={filterCount} />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-tab-filter-right")}
