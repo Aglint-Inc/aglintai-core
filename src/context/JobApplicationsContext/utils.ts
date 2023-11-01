@@ -4,20 +4,25 @@ import {
   InputData,
   JobApplication,
   JobApplicationContext,
-  JobApplicationSectionData,
+  JobApplicationsData,
   JobApplicationSections,
 } from './types';
 
 export const initialJobApplicationsContext: JobApplicationContext = {
-  applicationsData: undefined,
+  applications: undefined,
+  applicationDepth: undefined,
   job: undefined,
   handleJobApplicationCreate: undefined,
   handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
+  handleJobApplicationPaginatedRead: undefined,
+  handleJobApplicationPaginatedPolling: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
   handleJobApplicationError: undefined,
+  handleJobApplicationFilter: undefined,
+  searchParameters: undefined,
   initialLoad: false,
   circularScoreAnimation: undefined,
   openImportCandidates: false,
@@ -92,18 +97,15 @@ export const deleteJobApplicationDbAction = async (application_id: string) => {
 
 export const getUpdatedJobStatus = (
   applicationIdSet: Set<string>,
-  applications: JobApplicationSectionData,
+  applications: JobApplicationsData,
   sections: {
     source: JobApplicationSections;
     destination: JobApplicationSections;
   },
 ): JobApplication[] => {
-  return applications[sections.source].list.reduce(
-    (acc: JobApplication[], curr) => {
-      if (applicationIdSet.has(curr.application_id))
-        acc.push({ ...curr, status: sections.destination });
-      return acc;
-    },
-    [],
-  );
+  return applications[sections.source].reduce((acc: JobApplication[], curr) => {
+    if (applicationIdSet.has(curr.application_id))
+      acc.push({ ...curr, status: sections.destination });
+    return acc;
+  }, []);
 };

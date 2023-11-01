@@ -15,7 +15,7 @@ import {
 } from '@/devlink2';
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobs } from '@/src/context/JobsContext';
-import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { StatusJobs } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -382,8 +382,8 @@ const JobScheduleBody = ({
   flow,
   date,
   setDate, // time,
-  // setTime,
-}: {
+} // setTime,
+: {
   isStart: boolean;
   flow: Flow;
   date: string;

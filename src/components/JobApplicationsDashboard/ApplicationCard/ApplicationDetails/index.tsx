@@ -42,7 +42,7 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobType } from '@/src/types/data.types';
 // import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';

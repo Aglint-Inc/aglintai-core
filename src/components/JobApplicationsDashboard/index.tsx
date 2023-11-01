@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/NewJobApplicationsContext';
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -13,11 +12,12 @@ import {
   JobDetailsTabs,
   SelectActionBar,
 } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-} from '@/src/context/NewJobApplicationsContext/types';
+} from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';

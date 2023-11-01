@@ -5,8 +5,8 @@ import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { palette } from '@/src/context/Theme/Theme';
 
 import useUploadCandidate from './hooks';

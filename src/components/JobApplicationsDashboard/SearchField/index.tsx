@@ -1,9 +1,10 @@
-import { useJobApplications } from '@context/NewJobApplicationsContext';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse, InputAdornment, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useEffect, useState } from 'react';
+
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 
 import UITextField from '../../Common/UITextField';
 
