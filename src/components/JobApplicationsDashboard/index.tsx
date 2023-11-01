@@ -17,7 +17,7 @@ import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-} from '@/src/context/JobApplicationsContext/types';
+} from '@/src/context/NewJobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
