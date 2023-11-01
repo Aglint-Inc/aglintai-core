@@ -481,13 +481,15 @@
 
 .cv-list-column.checkbox {
   z-index: 10;
-  padding-right: 16px;
+  margin-right: 0px;
+  padding-right: 24px;
   padding-left: 16px;
 }
 
 .cv-list-column.name {
   width: 240px;
   min-width: 240px;
+  margin-left: 0px;
 }
 
 .cv-list-column.title {
@@ -553,6 +555,10 @@
   cursor: pointer;
 }
 
+.cv-list-checkbox.hide {
+  display: none;
+}
+
 .cli-check-image {
   position: absolute;
   left: 0%;
@@ -560,6 +566,24 @@
   right: 0%;
   bottom: 0%;
   z-index: 5;
+}
+
+.cv-list-checkbox-ghost {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  min-width: 16px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.cv-list-checkbox-ghost.hide {
+  display: none;
 }
 
 .cv-list-row-main {

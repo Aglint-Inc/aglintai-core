@@ -1,12 +1,12 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { palette } from '@/src/context/Theme/Theme';
 
 import useUploadCandidate from './hooks';
