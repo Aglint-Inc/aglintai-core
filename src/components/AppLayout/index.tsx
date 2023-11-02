@@ -81,7 +81,7 @@ export default function AppLayout({ children }) {
         >
           <Stack height={'calc(100vh - 44px)'}>
             <RecSideNavProfileBlock
-              companyName={`${companyName} ⠀`}
+              companyName={`${companyName}`}
               onclickCompany={{
                 onClick: () => router.push(pageRoutes.COMPANY),
               }}
