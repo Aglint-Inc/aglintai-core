@@ -93,14 +93,16 @@ export const getSortedApplications = (
       break;
     case 'email':
       {
-        applications.sort((a, b) => a.email.localeCompare(b.email));
+        applications.sort((a, b) =>
+          a.candidates.email.localeCompare(b.candidates.email),
+        );
       }
       break;
     case 'first_name':
       {
         applications.sort((a, b) =>
-          `${a.first_name} ${a.last_name}`.localeCompare(
-            `${b.first_name} ${b.last_name}`,
+          `${a.candidates.first_name} ${a.candidates.last_name}`.localeCompare(
+            `${b.candidates.first_name} ${b.candidates.last_name}`,
           ),
         );
       }

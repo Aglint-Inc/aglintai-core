@@ -334,8 +334,8 @@ export const templateObj: Record<string, any> = {
     trigger: 'Triggered when canditate moved to assessment state',
   },
   interview_resend: {
-    listing: 'Follow Up Assessment',
-    heading: 'Follow Up Assessment Email Settings',
+    listing: 'Follow Up Interview',
+    heading: 'Follow Up Interview Email Settings',
     triggerInfo: 'Triggerd for resending the interview invite.',
 
     description:
@@ -348,7 +348,7 @@ export const templateObj: Record<string, any> = {
     You're welcome to choose an interview time that suits your schedule.
     
     [interviewLink]`,
-    trigger: 'Triggered when you click resend assessment link',
+    trigger: 'Triggered when you click resend interview link',
   },
   rejection: {
     listing: 'Disqualified Email',

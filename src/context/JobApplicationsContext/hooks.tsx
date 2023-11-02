@@ -1,21 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
-import {
-  ApiLogState,
-  intactConditionFilter,
-} from '@/src/components/JobApplicationsDashboard/utils';
+import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import toast from '@/src/utils/toast';
 
 import {
-  InputData,
   JobApplication,
   JobApplicationContext,
   JobApplicationsData,
-  JobApplicationSectionData,
   JobApplicationSections,
+  NewJobApplications,
+  Parameters,
 } from './types';
 import {
   bulkCreateJobApplicationDbAction,
@@ -23,18 +21,18 @@ import {
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
   getUpdatedJobStatus,
-  readJobApplicationDbAction,
+  // readJobApplicationDbAction,
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
-  CREATE,
-  // eslint-disable-next-line no-unused-vars
-  BULK_CREATE,
-  // eslint-disable-next-line no-unused-vars
   READ,
+  // eslint-disable-next-line no-unused-vars
+  PAGINATED_READ,
+  // eslint-disable-next-line no-unused-vars
+  PAGINATED_UPDATE,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
   // eslint-disable-next-line no-unused-vars
@@ -45,21 +43,21 @@ enum ActionType {
 
 type Action =
   | {
-      type: ActionType.CREATE;
-      payload: {
-        applicationData: JobApplication;
-      };
-    }
-  | {
-      type: ActionType.BULK_CREATE;
-      payload: {
-        applicationData: JobApplication[];
-      };
-    }
-  | {
       type: ActionType.READ;
       payload: {
-        applicationData: JobApplication[];
+        applicationData: JobApplicationsData;
+      };
+    }
+  | {
+      type: ActionType.PAGINATED_READ;
+      payload: {
+        applicationData: JobApplicationsData;
+      };
+    }
+  | {
+      type: ActionType.PAGINATED_UPDATE;
+      payload: {
+        applicationData: JobApplicationsData;
       };
     }
   | {
@@ -78,108 +76,54 @@ type Action =
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
-    case ActionType.CREATE: {
-      const newState: JobApplicationsData = action.payload.applicationData
-        .json_resume
-        ? {
-            ...state,
-            applications: {
-              ...state.applications,
-              [action.payload.applicationData.status as JobApplicationSections]:
-                {
-                  list: [
-                    ...state.applications[
-                      action.payload.applicationData
-                        .status as JobApplicationSections
-                    ].list,
-                    action.payload.applicationData,
-                  ],
-                  count:
-                    state.applications[
-                      action.payload.applicationData
-                        .status as JobApplicationSections
-                    ].count + 1,
-                },
-            },
-          }
-        : {
-            ...state,
-            count: { ...state.count, processing: state.count.processing + 1 },
-          };
-      return newState;
-    }
-
-    case ActionType.BULK_CREATE: {
-      const { newApplications, count } = updateApplications(
-        state.applications,
-        action.payload.applicationData,
-      );
-      const newState: JobApplicationsData = {
-        ...state,
-        applications: newApplications,
-        count: count,
-      };
-      return newState;
-    }
-
     case ActionType.READ: {
-      const { segregatedApplications, count } = segregateApplications(
-        action.payload.applicationData,
-      );
       const newState: JobApplicationsData = {
-        applications: segregatedApplications,
-        count,
+        ...action.payload.applicationData,
       };
       return newState;
     }
-
-    case ActionType.UPDATE: {
-      const newApplications: JobApplicationSectionData = {
-        ...state.applications,
-        [action.payload.applicationData.status as JobApplicationSections]: {
-          ...state.applications[
-            action.payload.applicationData.status as JobApplicationSections
-          ],
-          list: state.applications[
-            action.payload.applicationData.status as JobApplicationSections
-          ].list.reduce((acc, curr) => {
-            if (
-              curr.application_id ===
-              action.payload.applicationData.application_id
-            )
-              acc.push(action.payload.applicationData);
-            else acc.push(curr);
-            return acc;
-          }, []),
+    case ActionType.PAGINATED_READ: {
+      const newState: JobApplicationsData = Object.entries(
+        action.payload.applicationData,
+      ).reduce(
+        (acc, [key, value]) => {
+          return { ...acc, [key]: [...state[key], ...value] };
         },
-      };
+        { ...state },
+      );
+      return newState;
+    }
+    case ActionType.PAGINATED_UPDATE: {
+      const newState: JobApplicationsData = Object.entries(
+        action.payload.applicationData,
+      ).reduce(
+        (acc, [key, value]) => {
+          return { ...acc, [key]: [...value] };
+        },
+        { ...state },
+      );
+      return newState;
+    }
+    case ActionType.UPDATE: {
       const newState: JobApplicationsData = {
         ...state,
-        applications: newApplications,
+        [action.payload.applicationData.status]: [
+          ...state[action.payload.applicationData.status],
+          action.payload.applicationData,
+        ],
       };
       return newState;
     }
 
     case ActionType.DELETE: {
-      const newApplications: JobApplicationSectionData = {
-        ...state.applications,
-        [action.payload.applicationStatus]: {
-          list: state.applications[
-            action.payload.applicationStatus
-          ].list.filter(
-            (application) =>
-              application.application_id !== action.payload.applicationId,
-          ),
-          count: state.applications[action.payload.applicationStatus].count - 1,
-        },
-      };
       const newState: JobApplicationsData = {
         ...state,
-        applications: newApplications,
-        count: {
-          ...state.count,
-          success: state.count.success - 1,
-        },
+        [action.payload.applicationStatus]: state[
+          action.payload.applicationStatus
+        ].filter(
+          (a: JobApplication) =>
+            a.application_id !== action.payload.applicationId,
+        ),
       };
       return newState;
     }
@@ -190,87 +134,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
   }
 };
 
-const segregateApplications = (applicationData: JobApplication[]) => {
-  let count = Object.assign(
-    {},
-    ...Object.values(ApiLogState).map((v) => {
-      return { [v]: 0 };
-    }),
-    // eslint-disable-next-line no-unused-vars
-  ) as { [key in ApiLogState]: number };
-  const segregatedApplications: JobApplicationSectionData =
-    applicationData.reduce(
-      (acc, curr) => {
-        switch (intactConditionFilter(curr)) {
-          case ApiLogState.SUCCESS: {
-            const status = curr.status as JobApplicationSections;
-            count.success += 1;
-            return {
-              ...acc,
-              [status]: {
-                ...acc[status],
-                list: [...acc[status].list, curr],
-                count: acc[status].count + 1,
-              },
-            };
-          }
-          case ApiLogState.FAILED: {
-            count.failed += 1;
-            return acc;
-          }
-          case ApiLogState.PROCESSING: {
-            count.processing += 1;
-            return acc;
-          }
-        }
-      },
-      Object.assign(
-        {},
-        ...Object.values(JobApplicationSections).map((val) => {
-          return {
-            [val]: {
-              list: [],
-              count: 0,
-            },
-          };
-        }),
-      ),
-    );
-  return { segregatedApplications, count };
-};
-
-const updateApplications = (
-  stateApplicationData: JobApplicationSectionData,
-  newApplicationData: JobApplication[],
-) => {
-  let count = Object.assign(
-    {},
-    ...Object.values(ApiLogState).map((v) => {
-      return { [v]: 0 };
-    }),
-    // eslint-disable-next-line no-unused-vars
-  ) as { [key in ApiLogState]: number };
-  const newApplications = newApplicationData.reduce((acc, curr) => {
-    switch (intactConditionFilter(curr)) {
-      case ApiLogState.SUCCESS: {
-        acc[curr.status as JobApplicationSections].list.push(curr);
-        acc[curr.status as JobApplicationSections].count += 1;
-        count.success += 1;
-        return acc;
-      }
-      case ApiLogState.PROCESSING: {
-        count.processing += 1;
-        return acc;
-      }
-      case ApiLogState.FAILED: {
-        count.failed += 1;
-      }
-    }
-  }, stateApplicationData);
-  return { newApplications, count };
-};
-
-const useJobApplicationActions = (
+const useProviderJobApplicationActions = (
   job_id: string = undefined,
 ): JobApplicationContext => {
   const { recruiter } = useAuthDetails();
@@ -279,15 +143,41 @@ const useJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const [applicationsData, dispatch] = useReducer(reducer, undefined);
+  const paginationLimit = 10;
 
+  const initialJobApplicationDepth = Object.values(
+    JobApplicationSections,
+  ).reduce((acc, curr) => {
+    return { ...acc, [curr]: paginationLimit };
+    // eslint-disable-next-line no-unused-vars
+  }, {}) as { [key in JobApplicationSections]: number };
+
+  const [applications, dispatch] = useReducer(reducer, undefined);
+  const [applicationDepth, setApplicationDepth] = useState(
+    initialJobApplicationDepth,
+  );
+  const initialRanges = Object.values(JobApplicationSections).reduce(
+    (acc, curr) => {
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] - 1 } };
+    },
+    {},
+  ) as ReadJobApplicationApi['request']['ranges'];
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
-  const initialLoad = initialJobLoad && applicationsData ? true : false;
+  const initialLoad = initialJobLoad && applications ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [openManualImportCandidates, setOpenManualImportCandidates] =
     useState(false);
+
+  const initialParameters: Parameters = {
+    sort: null, //{ parameter: 'first_name', condition: 'asc' },
+    filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
+    search: null,
+  };
+  const [searchParameters, setSearchParameters] = useState({
+    ...initialParameters,
+  });
 
   const circularScoreAnimation = useRef(true);
   const updateTick = useRef(false);
@@ -301,32 +191,25 @@ const useJobApplicationActions = (
     }
   }, [initialLoad]);
 
-  const handleJobApplicationCreate = async (
-    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData,
-  ) => {
+  const handleJobApplicationCreate = async (inputData: JobApplication) => {
     if (recruiter) {
       const { data, error } = await createJobApplicationDbAction(
         jobId,
         inputData,
       );
       if (data) {
-        const action: Action = {
-          type: ActionType.CREATE,
-          payload: { applicationData: data[0] },
-        };
-        dispatch(action);
-        updateTick.current = !updateTick.current;
-        return data[0];
+        await handleJobApplicationPaginatedPolling([
+          JobApplicationSections.NEW,
+        ]);
+        return true;
       }
       handleJobApplicationError(error);
-      return undefined;
+      return false;
     }
   };
 
   const handleJobApplicationBulkCreate = async (
-    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData)[],
+    inputData: JobApplication[],
   ) => {
     if (recruiter) {
       const { data, error } = await bulkCreateJobApplicationDbAction(
@@ -334,25 +217,26 @@ const useJobApplicationActions = (
         inputData,
       );
       if (data) {
-        toast.success(
-          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
-        );
-        const action: Action = {
-          type: ActionType.BULK_CREATE,
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        updateTick.current = !updateTick.current;
-        return data;
+        await handleJobApplicationPaginatedPolling([
+          JobApplicationSections.NEW,
+        ]);
+        return true;
       }
       handleJobApplicationError(error);
-      return undefined;
+      return false;
     }
   };
 
-  const handleJobApplicationRead = async () => {
+  const handleJobApplicationRead = async (
+    request: ReadJobApplicationApi['request'],
+  ) => {
     if (recruiter) {
-      const { data, error } = await readJobApplicationDbAction(jobId);
+      const { data: axiosData } = await axios({
+        method: 'post',
+        url: '/api/JobApplicationsApi/read',
+        data: request,
+      });
+      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
       if (data) {
         const action: Action = {
           type: ActionType.READ,
@@ -366,9 +250,88 @@ const useJobApplicationActions = (
     }
   };
 
+  const handleJobApplicationPaginatedRead = async (
+    sections: JobApplicationSections[],
+  ) => {
+    if (recruiter) {
+      const ranges = sections.reduce((acc, curr) => {
+        return {
+          ...acc,
+          [curr]: {
+            start: applicationDepth[curr],
+            end: applicationDepth[curr] + paginationLimit - 1,
+          },
+        };
+      }, {});
+      const { data: axiosData } = await axios({
+        method: 'post',
+        url: '/api/JobApplicationsApi/read',
+        data: {
+          job_id: jobId,
+          ranges: ranges,
+          ...searchParameters,
+        },
+      });
+      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
+      if (data) {
+        const action: Action = {
+          type: ActionType.PAGINATED_READ,
+          payload: { applicationData: data },
+        };
+        dispatch(action);
+        setApplicationDepth(
+          sections.reduce(
+            (acc, curr) => {
+              return { ...acc, [curr]: ranges[curr]['end'] + 1 };
+            },
+            { ...applicationDepth },
+          ),
+        );
+        updateTick.current = !updateTick.current;
+        return true;
+      }
+      handleJobApplicationError(error);
+      return false;
+    }
+  };
+
+  const handleJobApplicationPaginatedPolling = async (
+    sections: JobApplicationSections[],
+  ) => {
+    if (recruiter) {
+      const ranges = sections.reduce((acc, curr) => {
+        return {
+          ...acc,
+          [curr]: { start: 0, end: applicationDepth[curr] - 1 },
+        };
+      }, {});
+      const { data: axiosData } = await axios({
+        method: 'post',
+        url: '/api/JobApplicationsApi/read',
+        data: {
+          job_id: jobId,
+          ranges: ranges,
+          ...searchParameters,
+        },
+      });
+      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
+      if (data) {
+        const action: Action = {
+          type: ActionType.PAGINATED_UPDATE,
+          payload: { applicationData: data },
+        };
+        dispatch(action);
+        updateTick.current = !updateTick.current;
+        return true;
+      }
+      handleJobApplicationError(error);
+      return false;
+    }
+  };
+
   const handleJobApplicationUpdate = async (
     applicationId: string,
-    inputData: InputData,
+    inputData: NewJobApplications,
   ) => {
     if (recruiter) {
       const { data, error } = await updateJobApplicationDbAction(
@@ -406,13 +369,16 @@ const useJobApplicationActions = (
   };
 
   const handleJobApplicationBulkUpdate = async (
-    updatedApplicationData: JobApplication[],
+    updatedApplicationData: NewJobApplications[],
   ) => {
     const { data: d1, error: e1 } = await bulkUpdateJobApplicationDbAction(
       updatedApplicationData,
     );
     if (d1) {
-      const read = await handleJobApplicationRead();
+      const read = await handleJobApplicationRead({
+        job_id: jobId,
+        ranges: initialRanges,
+      });
       if (read) {
         updateTick.current = !updateTick.current;
         return true;
@@ -454,11 +420,7 @@ const useJobApplicationActions = (
     },
   ) => {
     return await handleJobApplicationBulkUpdate(
-      getUpdatedJobStatus(
-        applicationIdSet,
-        applicationsData.applications,
-        sections,
-      ),
+      getUpdatedJobStatus(applicationIdSet, applications, sections),
     );
   };
 
@@ -466,23 +428,49 @@ const useJobApplicationActions = (
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
 
+  const handleJobApplicationFilter = async (parameters: Parameters) => {
+    const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+    }, {}) as ReadJobApplicationApi['request']['ranges'];
+    const confirmation = await handleJobApplicationRead({
+      job_id: jobId,
+      ranges: ranges,
+      ...parameters,
+    });
+    if (confirmation) setSearchParameters({ ...parameters });
+  };
+
   useEffect(() => {
-    if (initialJobLoad) handleJobApplicationRead();
+    if (initialJobLoad) {
+      setSearchParameters(() => {
+        handleJobApplicationRead({
+          job_id: jobId,
+          ranges: initialRanges,
+          ...initialParameters,
+        });
+        return { ...initialParameters };
+      });
+    }
   }, [initialJobLoad]);
 
   const value = {
-    applicationsData,
+    applications,
+    applicationDepth,
     job,
     updateTick: updateTick.current,
     handleJobApplicationCreate,
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
+    handleJobApplicationPaginatedRead,
+    handleJobApplicationPaginatedPolling,
     handleJobApplicationUpdate,
     handleJobApplicationUIUpdate,
     handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,
     handleUpdateJobStatus,
+    handleJobApplicationFilter,
+    searchParameters,
     initialLoad,
     circularScoreAnimation,
     openImportCandidates,
@@ -494,4 +482,4 @@ const useJobApplicationActions = (
   return value;
 };
 
-export default useJobApplicationActions;
+export default useProviderJobApplicationActions;

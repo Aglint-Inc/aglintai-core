@@ -14,8 +14,8 @@ import {
   ToggleSelectDropdown,
 } from '@/devlink2';
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import { StatusJobs } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -23,7 +23,6 @@ import { capitalize } from '../utils';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import SpecializedDatePicker from '../../Common/SpecializedDatePicker';
-// import SpecializedTimePicker from '../../Common/SpecializedTimePicker';
 import UITextField from '../../Common/UITextField';
 
 const JobApplicationStatus = () => {

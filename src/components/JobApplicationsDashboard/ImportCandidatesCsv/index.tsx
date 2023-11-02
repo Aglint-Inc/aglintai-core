@@ -6,8 +6,8 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { useJobApplications } from '@/src/context/NewJobApplicationsContext';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -82,13 +82,18 @@ function ImportCandidatesCSV() {
       ...interviewing,
       ...qualified,
       ...disqualified,
-    ].map((ele) => ele.email);
+    ].map((ele) => ele.candidates.email);
     const filteredCandidates = candidates.filter(
       (ele: { email: string }) => !totalApplications.includes(ele.email),
     );
     setbulkImportdata([]);
     setIsLoading(true);
-    await handleJobApplicationBulkCreate(filteredCandidates);
+    const confirmation =
+      await handleJobApplicationBulkCreate(filteredCandidates);
+    if (confirmation)
+      toast.success(
+        'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+      );
     setOpenImportCandidates(false);
     setIsLoading(false);
   }

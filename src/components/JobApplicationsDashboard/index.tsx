@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/NewJobApplicationsContext';
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -8,16 +7,19 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ImportCandidates } from '@/devlink';
 import {
   ApplicantsListEmpty,
+  CandidateFilter,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
+  SortArrows,
 } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-} from '@/src/context/NewJobApplicationsContext/types';
+} from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -138,7 +140,7 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 60000, [
+  usePolling(async () => await handleAutoRefresh(), 600000, [
     ...Object.values(applicationDepth),
     section,
     refreshRef.current,
@@ -225,6 +227,9 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
+      slotInterviewSort={<SortArrows />}
+      slotNameSort={<SortArrows downArrow={true} />}
+      slotResumeSort={<SortArrows upArrow={true} />}
     />
   );
 };
@@ -255,6 +260,7 @@ const NewJobFilterBlock = () => {
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={<SearchField />}
+        slotFilter={<CandidateFilter filterCount={69} />}
       />
     </>
   );
@@ -402,7 +408,9 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
-            ref={i === applicationDepth[section] ? lastApplicationRef : null}
+            ref={
+              i === applicationDepth[section] - 1 ? lastApplicationRef : null
+            }
             id={`job-application-stack-${i}`}
           >
             <ApplicationCard

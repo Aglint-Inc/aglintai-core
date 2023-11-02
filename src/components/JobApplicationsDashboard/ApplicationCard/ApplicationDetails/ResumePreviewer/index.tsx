@@ -1,9 +1,9 @@
-function ResumePreviewer({ url }) {
+function ResumePreviewer({ url }: { url: string }) {
   return (
     <embed
       style={{
         height: '95vh',
-        border:'0'
+        border: '0',
       }}
       width='100%'
       src={url}

@@ -158,6 +158,10 @@
   background-color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
 }
 
+.div-block-374 {
+  position: relative;
+}
+
 .rs-header-profile-image {
   overflow: hidden;
   width: 30px;
@@ -172,4 +176,22 @@
 
 .bg-white {
   background-color: var(--white);
+}
+
+.rs-header-profile-tootip {
+  position: absolute;
+  left: 40px;
+  top: 0px;
+  z-index: 99;
+
+  padding: 4px;
+
+  border-radius: 4px;
+
+  background-color: var(--white);
+
+  box-shadow: 0 6px 30px 0 hsla(0, 0.00%, 0.00%, 0.10);
+
+  font-size: 12px;
+  white-space: nowrap;
 }

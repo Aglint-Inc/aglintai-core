@@ -51,17 +51,13 @@ export const readNewJobApplicationDbAction = async (
 
   let query = supabase
     .from('job_applications')
-    .select('*')
+    .select('*,candidates(*)')
     .eq('job_id', job_id)
     .eq('status', status);
-  // .neq('email', '')
-  // .neq('email', null);
 
   if (apiStatus) {
-    getApiStatus(apiStatus).map((s) => {
-      query = query.contains('api_logs', {
-        scoreStatus: s,
-      });
+    getApiStatus(apiStatus).map((status) => {
+      query = query.eq('api_status', status);
     });
   }
 

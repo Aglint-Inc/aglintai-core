@@ -7,7 +7,8 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import { useJobs } from '@/src/context/JobsContext';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -17,7 +18,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
   const router = useRouter();
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { jobsData, handleApplicationsRead } = useJobs();
+  const { handleJobApplicationPaginatedPolling } = useJobApplications();
 
   const InputChange = (files) => {
     // --For Multiple File Input
@@ -53,21 +54,28 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     for (const file of selectedfile) {
       let uploadUrl = await uploadResume(file);
       try {
+        // TODO: Error handling required and exisiting candidate handling
+        const { data } = await supabase
+          .from('candidates')
+          .insert({
+            first_name: null,
+            last_name: null,
+            email: null,
+            resume: uploadUrl,
+          })
+          .select();
         await supabase
           .from('job_applications')
           .insert({
-            first_name: '',
-            last_name: '',
-            email: '',
-            job_id: router.query.id as any,
-            resume: uploadUrl,
+            job_id: router.query.id as string,
+            candidate_id: data[0].id,
           })
           .select();
       } catch (error) {
         // Handle errors, if needed
       }
     }
-    await handleApplicationsRead(jobsData.jobs.map((job) => job.id));
+    await handleJobApplicationPaginatedPolling([JobApplicationSections.NEW]);
     setLoading(false);
     setSelectedFile([]);
     setOpenSidePanel(false);

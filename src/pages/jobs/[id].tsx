@@ -1,8 +1,8 @@
 import Seo from '@components/Common/Seo';
-import JobApplicationProvider from '@context/NewJobApplicationsContext';
 
 import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 
 const JobPage = () => {
   return (

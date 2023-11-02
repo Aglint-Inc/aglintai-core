@@ -1,21 +1,27 @@
-import { useJobApplications } from '@context/NewJobApplicationsContext';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Collapse, InputAdornment, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 
 import UITextField from '../../Common/UITextField';
 
 const SearchField = () => {
   const { searchParameters, handleJobApplicationFilter } = useJobApplications();
   const [value, setValue] = useState('');
+  const initialRef = useRef(true);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      await handleSearch(value);
-    }, 400);
-    return () => clearTimeout(timer);
+    if (initialRef.current) {
+      initialRef.current = false;
+    } else {
+      const timer = setTimeout(async () => {
+        await handleSearch(value);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
   }, [value]);
 
   const handleSearch = async (val: string) => {
