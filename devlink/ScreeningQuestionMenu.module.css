@@ -218,6 +218,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .radio-btn-wrappers-green {
   width: 6px;
   height: 6px;
@@ -249,6 +253,14 @@
 
 .color-grey-600.growth-stretch {
   flex: 0 0 auto;
+}
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }
 
 .active-question-active {

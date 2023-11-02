@@ -201,6 +201,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
@@ -301,10 +305,6 @@
   width: 49.91667175292969px;
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -315,4 +315,12 @@
 
 .color-grey-600.growth-stretch {
   flex: 0 0 auto;
+}
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }

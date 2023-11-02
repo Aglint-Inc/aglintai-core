@@ -139,10 +139,26 @@ function useAutoplay() {
 export function SliderMask({ className = "", children, ...props }) {
   const { setSlideAmount } = React.useContext(SliderContext);
   const [isHovered, setHovered] = React.useState(false);
+  const [slides, setSlides] = React.useState([]);
   const { resumeAutoplay, pauseAutoplay } = useAutoplay();
   React.useEffect(() => {
-    setSlideAmount(React.Children.count(children));
-  }, [children, setSlideAmount]);
+    const extractNonFragmentChildren = (_children) => {
+      const childrenList = React.Children.toArray(_children).filter((child) =>
+        React.isValidElement(child)
+      );
+      if (
+        childrenList.length == 1 &&
+        childrenList[0]?.type === React.Fragment
+      ) {
+        return extractNonFragmentChildren(childrenList[0].props.children);
+      } else {
+        return childrenList;
+      }
+    };
+    const _slides = extractNonFragmentChildren(children);
+    setSlideAmount(_slides.length);
+    setSlides(_slides);
+  }, [children]);
   return (
     <div
       {...props}
@@ -158,8 +174,7 @@ export function SliderMask({ className = "", children, ...props }) {
       onFocus={() => pauseAutoplay()}
       onBlur={() => resumeAutoplay()}
     >
-      {React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return null;
+      {slides.map((child, index) => {
         return React.cloneElement(child, {
           ...child.props,
           index,

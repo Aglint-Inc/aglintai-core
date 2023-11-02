@@ -51,3 +51,11 @@
 .color-grey-600.growth-stretch {
   flex: 0 0 auto;
 }
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}

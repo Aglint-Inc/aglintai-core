@@ -219,6 +219,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
@@ -319,10 +323,6 @@
   width: 49.91667175292969px;
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -402,6 +402,10 @@
 }
 
 .aui-button-wrap.mt-16 {
+  margin-top: 16px;
+}
+
+.mt-16 {
   margin-top: 16px;
 }
 

@@ -366,6 +366,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .ps-score-intro-wrapper {
   display: flex;
   max-width: 340px;

@@ -611,6 +611,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .company-list-link-wrappers {
   display: flex;
   margin-top: 20px;
@@ -632,6 +636,16 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 .div-block-467 {
@@ -741,6 +755,14 @@
   flex: 0 0 auto;
 }
 
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
 .div-block-443 {
   display: flex;
   justify-content: flex-start;
@@ -836,10 +858,6 @@
 
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-sm.text-first-capital {
