@@ -179,7 +179,7 @@ const StandardScreenSingle = ({
     ) as InterviewConfigType['questions'];
     const updatedQns: InterviewConfigType['questions'] = [
       ...existingQns,
-      { question: questionInput, id: nanoid() },
+      { question: questionInput, id: nanoid(), videoId: '', videoQn: '' },
     ];
     handleUpdateFormFields({
       path: `interviewConfig.[${paramKey}].questions`,
@@ -384,6 +384,8 @@ const InterviewQn = ({
           return {
             id: nanoid(),
             question: editingQn,
+            videoId: '',
+            videoQn: '',
           };
         }
         return p;

@@ -17,7 +17,7 @@ export default function handler(req, res) {
       },
     ],
     ratio: '16:9',
-    test: false,
+    test: true,
     version: 'v1alpha',
   };
 
