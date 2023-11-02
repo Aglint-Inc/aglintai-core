@@ -111,7 +111,7 @@ function Interview_home() {
         onClickSupport={{
           onClick: () => {
             window.open(
-              `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidateDetails.application_id}`,
             );
           },
         }}

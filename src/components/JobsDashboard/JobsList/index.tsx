@@ -9,10 +9,7 @@ import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
-import {
-  calculateTimeDifference,
-  StatusColor
-} from '../utils';
+import { calculateTimeDifference, StatusColor } from '../utils';
 import Icon from '../../Common/Icons/Icon';
 import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
@@ -62,15 +59,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 key={ind}
                 textJobRole={job.job_title}
                 textCompanyLocation={`${job.company}, ${job.location}`}
-                candidateCount={
-                  job.count.new +
-                  job.count.interviewing +
-                  job.count.qualified +
-                  job.count.disqualified
-                }
-                interviewingCount={job.count.interviewing}
-                selectedCount={job.count.qualified}
-                rejectedCount={job.count.disqualified}
+                newCount={job.count.new}
+                qualifiedCount={job.count.qualified}
+                assessmentCount={job.count.interviewing}
                 slotInterviewIcon={
                   !job.active_status.closed.isActive ? (
                     getStatusInfo(
@@ -190,8 +181,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         ? '/images/dashboard/active.svg'
                         : '/images/dashboard/closed.svg'
                     }
-                    width={10}
-                    height={10}
+                    width={14}
+                    height={14}
                     alt=''
                   />
                 }

@@ -135,16 +135,11 @@ export function JobDetails({
               {slotJobStatus ?? <JobStatus />}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "select-action-btn", "blue-500")}
+              className={_utils.cx(_styles, "select-action-btn", "outline")}
               tag="div"
               {...onClickEditJobs}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-color-white")}
-                tag="div"
-              >
-                {"Edit Job"}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"Edit Job"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(

@@ -244,6 +244,10 @@
   color: white;
 }
 
+.select-action-btn.outline {
+  border: 1px solid var(--blue-500);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -16,7 +16,6 @@ import {
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { StatusJobs } from '@/src/types/data.types';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -37,7 +36,7 @@ import {
 export function LeverModalComp({ state, handleClose, setState }) {
   const { recruiter, setRecruiter } = useAuthDetails();
   const router = useRouter();
-  const { handleUIJobUpdate, jobsData } = useJobs();
+  const { jobsData, handleJobRead } = useJobs();
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
   const [leverFilter, setLeverFilter] = useState('published');
@@ -103,18 +102,7 @@ export function LeverModalComp({ state, handleClose, setState }) {
           };
         });
         await createJobApplications(jobsObj, recruiter.lever_key);
-        newJobs.map((job) => {
-          handleUIJobUpdate({
-            ...job,
-            active_status: job.active_status as unknown as StatusJobs,
-            count: {
-              new: 0,
-              interviewing: 0,
-              qualified: 0,
-              disqualified: 0,
-            },
-          });
-        });
+        await handleJobRead();
         toast.success('Jobs Imported Successfully');
         router.push(`${pageRoutes.JOBS}?status=active`);
       } else {
@@ -211,13 +199,6 @@ export function LeverModalComp({ state, handleClose, setState }) {
             overflow={'hidden'}
           >
             <AtsJobs
-              slotLogo={
-                <Avatar
-                  variant='square'
-                  src='/images/ats/lever.png'
-                  sx={{ width: '100%', height: '30px' }}
-                />
-              }
               textNumberofJobs={
                 <Typography variant='body2'>
                   {selectedLeverPostings.length == 0

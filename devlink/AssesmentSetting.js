@@ -11,35 +11,22 @@ export function AssesmentSetting({
   onClickChangeAvatar = {},
   slotToggleButton,
   onClickToggle = {},
+  textChooseAvatar = "Choose your avatar, this avatar will be featured in AI-generated videos.By default an avatar is selected by aglint",
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "assessment-setting-wrap")}
       tag="div"
     >
-      <_Builtin.Block tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Choose your avatar"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600", "mt-10")}
-          tag="div"
-        >
-          {
-            "Choose your avatar, this avatar will be featured in AI-generated videos.By default an avatar is selected by aglint"
-          }
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotAvatarVideo}</_Builtin.Block>
-      <_Builtin.Block tag="div" {...onClickChangeAvatar}>
-        <ButtonOutlinedRegular textLabel="Change Avatar" />
-      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ai-assessment-setting-wrap")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"AI generated videos"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "mb-15")}
+          tag="div"
+        >
+          {"Avatar settings"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "color-grey-600")}
@@ -60,6 +47,24 @@ export function AssesmentSetting({
             {"Use AI generated videos for assesment"}
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "color-grey-600", "mt-10")}
+          tag="div"
+        >
+          {textChooseAvatar}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "mt-14")} tag="div">
+        {slotAvatarVideo}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "mt-16")}
+        tag="div"
+        {...onClickChangeAvatar}
+      >
+        <ButtonOutlinedRegular textLabel="Change Avatar" />
       </_Builtin.Block>
     </_Component>
   );

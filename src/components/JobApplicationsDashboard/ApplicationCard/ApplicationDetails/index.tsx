@@ -452,7 +452,7 @@ const NewInterviewStatus = ({
           onClick: () => {
             navigator.clipboard
               .writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.INTERVIEW}?id=${applicationDetails.application_id}`,
+                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
               )
               .then(() => {
                 toast.success('Interview link copied');

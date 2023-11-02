@@ -361,7 +361,7 @@ const InterviewPrepProvider = ({ children }) => {
     currentInterviewID = '';
     audioElement?.pause();
     audioElement = null;
-    router.push(pageRoutes.INTERVIEW);
+    router.push(pageRoutes.MOCKTEST);
   }
 
   async function letsBegin() {
@@ -872,7 +872,7 @@ const InterviewPrepProvider = ({ children }) => {
       // log recent activities
       update_log_activity(log_id, {
         log_message: `Completed mock interview for ${data[0].role} at ${data[0].company}`,
-        type: pageRoutes.INTERVIEW,
+        type: pageRoutes.MOCKTEST,
       });
     }
   }

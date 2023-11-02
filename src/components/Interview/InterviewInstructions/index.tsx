@@ -100,14 +100,14 @@ function InterviewInstructions() {
             onClickSupport={{
               onClick: () => {
                 window.open(
-                  `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidateDetails.application_id}`,
                 );
               },
             }}
             onClickAboutCompany={{
               onClick: () => {
                 window.open(
-                  `https://recruiter.aglinthq.com/job-post/${jobDetails?.id}`,
+                  `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${jobDetails?.id}`,
                 );
               },
             }}

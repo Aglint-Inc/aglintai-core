@@ -38,9 +38,16 @@
 }
 
 .cv-upload-icon-block {
+  display: flex;
   padding: 6px 10px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid var(--blue-500);
   border-radius: 4px;
-  background-color: var(--grey-200);
+
+  color: var(--blue-500);
 }
 
 .clickable {
@@ -50,6 +57,35 @@
 
 .clickable:hover {
   opacity: 0.8;
+}
+
+.icon-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-block.clickable.padding-4 {
+  padding: 4px;
+}
+
+.icon-block.clickable.padding-4.relative {
+  position: relative;
+}
+
+.icon-block.clickable.padding-4.relative.hide {
+  display: none;
+}
+
+.icon-block._8px {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+}
+
+.icon-block._8px.sort {
+  position: relative;
 }
 
 .icon-embed {

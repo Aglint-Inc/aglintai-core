@@ -8,4 +8,5 @@ declare function AssesmentSetting(props: {
   onClickChangeAvatar?: Types.Devlink.RuntimeProps;
   slotToggleButton?: Types.Devlink.Slot;
   onClickToggle?: Types.Devlink.RuntimeProps;
+  textChooseAvatar?: React.ReactNode;
 }): React.JSX.Element;

@@ -1229,14 +1229,14 @@ export function InterviewWelcome({
               <_Builtin.Block tag="div">
                 <_Builtin.Strong>{"Estimated Time :"}</_Builtin.Strong>
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{"30 minitues"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"30 minutues"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "color-grey-600")}
               tag="div"
             >
               {
-                "Please ensure you have sufficient time to complete it in one sitting."
+                "Please ensure you have sufficient time to complete it in one session."
               }
             </_Builtin.Block>
           </_Builtin.Block>

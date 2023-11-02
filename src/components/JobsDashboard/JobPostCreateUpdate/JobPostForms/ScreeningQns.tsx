@@ -70,7 +70,7 @@ const ScreeningQns = ({ setFormError }) => {
               }
             />
             <ScreeningQuestionMenu
-              textSkills={'Behaviour'}
+              textSkills={'Behavior'}
               isSkillMenuActive={activeCateg === 'behavior'}
               onClickSkill={{
                 onClick: () => {

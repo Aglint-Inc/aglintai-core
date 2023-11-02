@@ -269,7 +269,7 @@ const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
     pageRoutes.LOGIN,
     pageRoutes.SIGNUP,
-    pageRoutes.INTERVIEW,
+    pageRoutes.MOCKTEST,
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
