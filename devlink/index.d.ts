@@ -84,6 +84,7 @@ export * from "./CompanySetting";
 export * from "./ContactDetails";
 export * from "./ContactDetailsPop";
 export * from "./CreateBtn";
+export * from "./CreateJob";
 export * from "./CreateJobCheckItem";
 export * from "./CreateNewEmailCard";
 export * from "./CreateNewJob";
