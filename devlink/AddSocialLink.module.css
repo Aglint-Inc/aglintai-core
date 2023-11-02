@@ -65,3 +65,13 @@
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}

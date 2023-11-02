@@ -101,100 +101,6 @@ export function JobsListingCard({
         >
           {textPostedDate}
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "applicants-number-wrapper")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number", "text-grey-700")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-24")}
-            dyn={{
-              bind: {},
-            }}
-            tag="div"
-          >
-            {candidateCount}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "fw-semibold")}
-            tag="div"
-          >
-            {"Applicants"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number", "text-grey-700")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-24")}
-            dyn={{
-              bind: {},
-            }}
-            tag="div"
-          >
-            {interviewingCount}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "fw-semibold")}
-            tag="div"
-          >
-            {"Assessment"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number", "selected")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-24")}
-            dyn={{
-              bind: {},
-            }}
-            tag="div"
-          >
-            {selectedCount}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Qualified"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "applicants-number", "text-grey-500")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-24")}
-            dyn={{
-              bind: {},
-            }}
-            tag="div"
-          >
-            {rejectedCount}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "", "fw-semibold")}
-            tag="div"
-          >
-            {"Disqualified"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-370")}
-        id={_utils.cx(
-          _styles,
-          "w-node-ca45e366-fcfe-0176-2cef-1032591f3083-e4f6dd07"
-        )}
-        tag="div"
-      >
         <_Builtin.Block
           className={_utils.cx(_styles, "rd-status-badge")}
           dyn={{
@@ -225,49 +131,71 @@ export function JobsListingCard({
             {textJobsStatus}
           </_Builtin.Block>
         </_Builtin.Block>
-        {isSourcingInterviewVisible ? (
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "applicants-number-wrapper")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "applicants-number")}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-369")}
+            className={_utils.cx(_styles, "fw-semibold")}
+            dyn={{
+              bind: {},
+            }}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-368")}
-              tag="div"
-              {...textColorActivePropsSourcing}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "icons-slot-source")}
-                tag="div"
-              >
-                {slotSourcingIcon}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
-                tag="div"
-              >
-                {textSourcing}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-368")}
-              tag="div"
-              {...textColorActiveInterviewingProps}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "icons-slot-source")}
-                tag="div"
-              >
-                {slotInterviewIcon}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
-                tag="div"
-              >
-                {textInterview}
-              </_Builtin.Block>
-            </_Builtin.Block>
+            {candidateCount}
           </_Builtin.Block>
-        ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "", "color-grey-600")}
+            tag="div"
+          >
+            {"New"}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "applicants-number")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            dyn={{
+              bind: {},
+            }}
+            tag="div"
+          >
+            {interviewingCount}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "", "color-grey-600")}
+            tag="div"
+          >
+            {"Assessment"}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "applicants-number")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            dyn={{
+              bind: {},
+            }}
+            tag="div"
+          >
+            {selectedCount}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600")}
+            tag="div"
+          >
+            {"Qualified"}
+          </_Builtin.Block>
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

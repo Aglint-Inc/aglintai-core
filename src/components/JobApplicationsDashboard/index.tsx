@@ -157,7 +157,7 @@ const JobApplicationComponent = () => {
         },
       }}
       jobLink={{
-        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
+        href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
         target: '_blank',
       }}
       slotJobStatus={
@@ -709,8 +709,8 @@ export const emailHandler = async (
               last_name: candidate.last_name,
               job_title: candidate.job_title,
               company_name: candidate.company,
-              interview_link: `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
-              support_link: `https://recruiter.aglinthq.com/support/create?id=${candidate.application_id}`,
+              interview_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
+              support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidate.application_id}`,
             })
           : status === JobApplicationSections.DISQUALIFIED
           ? fillEmailTemplate(job?.email_template?.rejection?.body, {

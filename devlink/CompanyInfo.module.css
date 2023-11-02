@@ -559,6 +559,10 @@
   margin-bottom: 14px;
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .flex-vertical-left {
   display: flex;
   flex-direction: column;

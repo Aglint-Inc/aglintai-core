@@ -405,6 +405,10 @@
   margin-bottom: 14px;
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;

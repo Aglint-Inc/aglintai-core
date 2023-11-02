@@ -226,6 +226,14 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 #w-node-_51170ec6-82cc-9cdc-eb5c-1666d3a16dca-d3a16dca {
   grid-column-start: span 1;
   grid-column-end: span 1;

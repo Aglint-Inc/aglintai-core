@@ -57,6 +57,17 @@
   }
 }
 
+.icon-block._8px {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+}
+
+.icon-block._8px.sort {
+  position: relative;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -79,6 +90,16 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  color: var(--yellow-600);
 }
 
 .rs-brand-block {

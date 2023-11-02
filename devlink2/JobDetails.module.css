@@ -134,6 +134,17 @@
   display: none;
 }
 
+.icon-block._8px {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+}
+
+.icon-block._8px.sort {
+  position: relative;
+}
+
 .icon {
   display: flex;
   width: 100%;
@@ -359,6 +370,10 @@
   color: white;
 }
 
+.select-action-btn.outline {
+  border: 1px solid var(--blue-500);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -375,6 +390,16 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  color: var(--yellow-600);
 }
 
 .candidates-view-wrapper {
@@ -471,7 +496,7 @@
   height: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding: 8px;
+  padding: 8px 12px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
@@ -498,9 +523,9 @@
 }
 
 .cv-list-column.score {
-  width: 140px;
+  width: 180px;
   height: 36px;
-  min-width: 140px;
+  min-width: 180px;
   justify-content: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
@@ -517,8 +542,8 @@
 }
 
 .cv-list-column.phone {
-  width: 120px;
-  min-width: 120px;
+  width: 160px;
+  min-width: 160px;
 }
 
 .cv-list-column.phone.top-bar {
@@ -614,6 +639,10 @@
 
 .cv-list-row-main.item:hover {
   background-color: var(--grey-100);
+}
+
+.sortarrowswrapper {
+  margin-left: auto;
 }
 
 .cv-list-body {

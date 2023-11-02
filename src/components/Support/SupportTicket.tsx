@@ -345,7 +345,7 @@ function SupportTicketDetails({
           onClickAppliedViewJob={{
             onClick: () => {
               router.push(
-                ` https://recruiter.aglinthq.com/job-post/${ticket.job_id}`,
+                `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${ticket.job_id}`,
               );
             },
           }}
@@ -565,7 +565,7 @@ const AddNewMessage = ({ sendMessage }) => {
 };
 
 const getInterviewUrl = (application_id: string) => {
-  return `https://recruiter.aglinthq.com${pageRoutes.MOCKTEST}?id=${application_id}`;
+  return `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.MOCKTEST}?id=${application_id}`;
 };
 
 const sendEmail = ({

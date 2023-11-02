@@ -19,4 +19,7 @@ declare function JobDetails(props: {
   isListTopBarVisible?: Types.Visibility.VisibilityConditions;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   isAllChecked?: Types.Visibility.VisibilityConditions;
+  slotResumeSort?: Types.Devlink.Slot;
+  slotNameSort?: Types.Devlink.Slot;
+  slotInterviewSort?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -7,4 +7,5 @@ declare function JobDetailsFilterBlock(props: {
   filterCount?: React.ReactNode;
   slotSearch?: Types.Devlink.Slot;
   onClickUpload?: Types.Devlink.RuntimeProps;
+  slotFilter?: Types.Devlink.Slot;
 }): React.JSX.Element;

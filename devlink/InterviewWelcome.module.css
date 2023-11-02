@@ -462,6 +462,14 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .list-nxt-text {
   display: block;
   margin-top: 6px;
@@ -1356,10 +1364,6 @@
   width: 49.91667175292969px;
 }
 
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -1388,6 +1392,14 @@
 
 .color-grey-600.growth-stretch {
   flex: 0 0 auto;
+}
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }
 
 .interview-about-company {

@@ -4,8 +4,10 @@
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 22px;
+  grid-row-gap: 22px;
+
+  background-color: #f8f9f9;
 }
 
 @media screen and (max-width: 991px) {
@@ -53,7 +55,7 @@
   justify-content: space-between;
   align-items: center;
 
-  background-color: var(--gray100-3a86b552);
+  background-color: hsla(180, 0.00%, 100.00%, 1.00);
 }
 
 @media screen and (max-width: 991px) {
@@ -404,6 +406,14 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .div-block-371 {
   display: flex;
   align-items: center;
@@ -463,6 +473,10 @@
 }
 
 .aui-button-wrap.mt-16 {
+  margin-top: 16px;
+}
+
+.mt-16 {
   margin-top: 16px;
 }
 
@@ -791,8 +805,6 @@
   flex-direction: column;
   grid-column-gap: 40px;
   grid-row-gap: 40px;
-
-  background-color: var(--white-80449ce7);
 }
 
 @media screen and (min-width: 1920px) {
@@ -810,6 +822,8 @@
 
 .all-job-list {
   display: flex;
+  padding-right: 20px;
+  padding-left: 20px;
   flex-direction: column;
 }
 
