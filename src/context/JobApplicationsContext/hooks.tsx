@@ -191,9 +191,6 @@ const useProviderJobApplicationActions = (
     }
   }, [initialLoad]);
 
-  // eslint-disable-next-line no-console
-  console.log(applications, '🔥');
-
   const handleJobApplicationCreate = async (inputData: JobApplication) => {
     if (recruiter) {
       const { data, error } = await createJobApplicationDbAction(
@@ -372,7 +369,7 @@ const useProviderJobApplicationActions = (
   };
 
   const handleJobApplicationBulkUpdate = async (
-    updatedApplicationData: JobApplication[],
+    updatedApplicationData: NewJobApplications[],
   ) => {
     const { data: d1, error: e1 } = await bulkUpdateJobApplicationDbAction(
       updatedApplicationData,

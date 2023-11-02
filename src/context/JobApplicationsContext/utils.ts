@@ -1,7 +1,6 @@
 import { supabase } from '@/src/utils/supabaseClient';
 
 import {
-  JobApplication,
   JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
@@ -79,7 +78,7 @@ export const updateJobApplicationDbAction = async (
 };
 
 export const bulkUpdateJobApplicationDbAction = async (
-  inputData: JobApplication[],
+  inputData: NewJobApplications[],
 ) => {
   const { error } = await supabase.from('job_applications').upsert(inputData);
   return { data: error ? false : true, error };
@@ -100,10 +99,14 @@ export const getUpdatedJobStatus = (
     source: JobApplicationSections;
     destination: JobApplicationSections;
   },
-): JobApplication[] => {
-  return applications[sections.source].reduce((acc: JobApplication[], curr) => {
-    if (applicationIdSet.has(curr.application_id))
-      acc.push({ ...curr, status: sections.destination });
-    return acc;
-  }, []);
+): NewJobApplications[] => {
+  return applications[sections.source].reduce(
+    // eslint-disable-next-line no-unused-vars
+    (acc: NewJobApplications[], { candidates, ...curr }) => {
+      if (applicationIdSet.has(curr.application_id))
+        acc.push({ ...curr, status: sections.destination });
+      return acc;
+    },
+    [],
+  );
 };
