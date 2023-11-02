@@ -17,44 +17,61 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           linkedin: extractLinkedInURL(cand.links || []),
           phone: cand.phones[0]?.value,
           job_id: post.job_id,
-          application_id: uuidv4(),
-          id: cand.id,
+          application_id: uuidv4(), //our job application id
+          candidate_id: uuidv4(), //our candidate id
+          id: cand.id, //lever opportunity id
         };
       });
       // for creating lever job reference
 
-      const dbCandidates = allCandidates.map((cand) => {
+      const dbCandidates = refCandidates.map((cand) => {
         return {
-          first_name: splitFullName(cand.name).firstName,
-          last_name: splitFullName(cand.name).lastName,
-          email: cand.emails[0],
-          linkedin: extractLinkedInURL(cand.links || []),
-          phone: cand.phones[0]?.value,
-          job_id: post.job_id,
-          application_id: uuidv4(),
+          first_name: cand.first_name,
+          last_name: cand.last_name,
+          email: cand.email,
+          linkedin: cand.linkedin,
+          phone: cand.phone,
+          id: cand.candidate_id,
         };
       });
 
-      const { error } = await supabase
-        .from('job_applications')
+      const { data: newCandidates, error: errorCandidates } = await supabase
+        .from('candidates')
         .insert(dbCandidates)
         .select();
 
-      if (!error) {
-        const referenceObj = refCandidates.map((ref) => {
+      if (!errorCandidates) {
+        const dbApplications = newCandidates.map((cand) => {
           return {
-            application_id: ref.application_id,
-            posting_id: post.id,
-            opportunity_id: ref.id,
-            public_job_id: post.job_id,
+            candidate_id: cand.id,
+            job_id: post.job_id,
+            application_id: refCandidates.filter(
+              (ref) => ref.candidate_id === cand.id,
+            )[0].application_id,
           };
         });
 
-        await createLeverReference(referenceObj);
-      } else {
-        toast.error(
-          'Sorry unable to import. Please try again later or contact support.',
-        );
+        const { error } = await supabase
+          .from('job_applications')
+          .insert(dbApplications)
+          .select();
+
+        if (!error) {
+          const referenceObj = refCandidates.map((ref) => {
+            return {
+              application_id: ref.application_id,
+              posting_id: post.id,
+              opportunity_id: ref.id,
+              public_job_id: post.job_id,
+            };
+          });
+
+          await createLeverReference(referenceObj);
+        } else {
+          toast.error(
+            'Sorry unable to import. Please try again later or contact support.',
+          );
+        }
       }
     }),
   );
