@@ -194,7 +194,7 @@ export function CreateNewJob({
               className={_utils.cx(_styles, "fw-semibold", "relative")}
               tag="div"
             >
-              {"Screening Questions"}
+              {"Assessment Questions"}
             </_Builtin.Block>
             {isScreeningQuestionsActive ? (
               <_Builtin.Block

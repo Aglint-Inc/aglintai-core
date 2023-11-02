@@ -229,6 +229,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -360,10 +364,6 @@
 
 .text-sm.text-grey-500.width-ticket-d {
   width: 49.91667175292969px;
-}
-
-.color-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-sm.text-first-capital {

@@ -1,51 +1,25 @@
-.cv-tab-filter-wrapper {
-  display: flex;
-  padding-right: 10px;
-  padding-left: 16px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cv-tab-filter-left {
+.jdet-filter-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
 }
 
-.cv-tab-filter-left.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.cv-tab-filter-right {
+.jdet-filter-top {
   display: flex;
-  margin-left: auto;
-  justify-content: flex-end;
-  align-items: stretch;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
-.cv-upload-icon-block {
+.jdet-filter-trigger {
   display: flex;
-  padding: 6px 10px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
 
-  border: 1px solid var(--blue-500);
-  border-radius: 4px;
+.jdet-filter-trigger.clickable {
+  padding: 4px 12px;
 }
 
 .clickable {
@@ -73,6 +47,17 @@
 
 .icon-block.clickable.padding-4.relative.hide {
   display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icon-block._8px {
@@ -120,28 +105,43 @@
   color: var(--yellow-600);
 }
 
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+.cv-filter-count {
+  padding-right: 5px;
+  padding-left: 5px;
+  border-radius: 100px;
+  background-color: var(--blue-500);
+  color: var(--white);
 }
 
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
+.jdet-filter-content {
+  position: absolute;
+  top: 32px;
+  z-index: 99;
+
+  overflow: hidden;
+  width: 320px;
+
+  border-radius: 8px;
+
+  background-color: var(--white);
+
+  box-shadow: 0 6px 30px 0 hsla(0, 0.00%, 0.00%, 0.10);
 }
 
-.text-underline:hover {
-  opacity: 0.7;
+.jdet-filter-content-block {
+  display: flex;
+  padding: 8px 12px 12px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
-@media screen and (max-width: 991px) {
-  .text-blue-500.tablet-left-auto {
-    margin-left: auto;
-  }
+.jdet-filter-header-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@media screen and (max-width: 991px) {
-  .tablet-left-auto {
-    margin-left: auto;
-  }
+.jdet-filter-clear-block {
+  padding: 4px 8px;
 }

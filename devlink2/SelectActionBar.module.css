@@ -244,6 +244,10 @@
   color: white;
 }
 
+.select-action-btn.outline {
+  border: 1px solid var(--blue-500);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -260,6 +264,16 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  color: var(--yellow-600);
 }
 
 .text-blue-700 {

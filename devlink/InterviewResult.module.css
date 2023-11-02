@@ -196,6 +196,10 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;
@@ -221,6 +225,10 @@
 }
 
 .aui-button-wrap.mt-16 {
+  margin-top: 16px;
+}
+
+.mt-16 {
   margin-top: 16px;
 }
 

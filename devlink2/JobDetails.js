@@ -4,6 +4,7 @@ import * as _interactions from "./interactions";
 import { JobStatus } from "./JobStatus";
 import { JobDetailsTabs } from "./JobDetailsTabs";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
+import { SortArrows } from "./SortArrows";
 import { CandidateListItem } from "./CandidateListItem";
 import { ListItemSkeletalLoader } from "./ListItemSkeletalLoader";
 import { SelectActionBar } from "./SelectActionBar";
@@ -36,6 +37,9 @@ export function JobDetails({
   isListTopBarVisible = true,
   isInterviewVisible = false,
   isAllChecked = false,
+  slotResumeSort,
+  slotNameSort,
+  slotInterviewSort,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -131,16 +135,11 @@ export function JobDetails({
               {slotJobStatus ?? <JobStatus />}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "select-action-btn", "blue-500")}
+              className={_utils.cx(_styles, "select-action-btn", "outline")}
               tag="div"
               {...onClickEditJobs}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-color-white")}
-                tag="div"
-              >
-                {"Edit Job"}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"Edit Job"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(
@@ -207,11 +206,7 @@ export function JobDetails({
                       {...onclickSelectAll}
                     >
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-checkbox",
-                          "hide"
-                        )}
+                        className={_utils.cx(_styles, "cv-list-checkbox")}
                         tag="div"
                       >
                         {isAllChecked ? (
@@ -226,7 +221,11 @@ export function JobDetails({
                         ) : null}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "cv-list-checkbox-ghost")}
+                        className={_utils.cx(
+                          _styles,
+                          "cv-list-checkbox-ghost",
+                          "hide"
+                        )}
                         tag="div"
                       />
                     </_Builtin.Block>
@@ -253,6 +252,12 @@ export function JobDetails({
                           />
                         </_Builtin.Block>
                         <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "sortarrowswrapper")}
+                          tag="div"
+                        >
+                          {slotNameSort ?? <SortArrows />}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
                         className={_utils.cx(
@@ -297,6 +302,12 @@ export function JobDetails({
                         <_Builtin.Block tag="div">
                           {"Resume Score"}
                         </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "sortarrowswrapper")}
+                          tag="div"
+                        >
+                          {slotResumeSort ?? <SortArrows />}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                       {isInterviewVisible ? (
                         <_Builtin.Block
@@ -319,6 +330,12 @@ export function JobDetails({
                           </_Builtin.Block>
                           <_Builtin.Block tag="div">
                             {"Interview Score"}
+                          </_Builtin.Block>
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "sortarrowswrapper")}
+                            tag="div"
+                          >
+                            {slotInterviewSort ?? <SortArrows />}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       ) : null}
