@@ -2,8 +2,9 @@ import { Avatar } from '@mui/material';
 
 import { InterviewInterviewerScreen } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
+import interviewerList from '@/src/utils/interviewer_list';
 function InterviewerPanel() {
-  const { totalNumberOfQuestions, questionIndex, character } =
+  const { totalNumberOfQuestions, questionIndex, character, interviewerIndex } =
     useInterviewContext();
 
   return (
@@ -15,10 +16,13 @@ function InterviewerPanel() {
             sx={{
               width: '100%',
               height: '100%',
+              '& img': {
+                objectFit: 'contain',
+              },
             }}
             variant='rounded'
-            src={`https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/interview_prep/temp-used/female_interviewer.svg`}
-          ></Avatar>
+            src={interviewerList[Number(interviewerIndex)]?.image}
+          />
         }
         textQuestion={`Question: ${questionIndex + 1}/${
           totalNumberOfQuestions?.length
