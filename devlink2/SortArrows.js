@@ -7,11 +7,13 @@ export function SortArrows({
   as: _Component = _Builtin.Block,
   upArrow = false,
   downArrow = false,
+  onclickSort = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "sort-arrow-block", "clickable")}
       tag="div"
+      {...onclickSort}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "icon-block", "_8px", "sort")}

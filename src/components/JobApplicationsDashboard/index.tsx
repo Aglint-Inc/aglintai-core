@@ -7,10 +7,12 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ImportCandidates } from '@/devlink';
 import {
   ApplicantsListEmpty,
+  CandidateFilter,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
+  SortArrows,
 } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -225,6 +227,9 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
+      slotInterviewSort={<SortArrows />}
+      slotNameSort={<SortArrows downArrow={true} />}
+      slotResumeSort={<SortArrows upArrow={true} />}
     />
   );
 };
@@ -255,6 +260,7 @@ const NewJobFilterBlock = () => {
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={<SearchField />}
+        slotFilter={<CandidateFilter filterCount={69} />}
       />
     </>
   );
