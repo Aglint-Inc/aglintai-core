@@ -115,9 +115,10 @@
 
 .jdet-filter-content {
   position: absolute;
-  top: 32px;
+  top: 28px;
   z-index: 99;
 
+  display: none;
   overflow: hidden;
   width: 320px;
 
