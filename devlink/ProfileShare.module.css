@@ -490,6 +490,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .text-grey-600-3 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }

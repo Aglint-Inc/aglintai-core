@@ -370,6 +370,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .ps-score-intro-wrapper {
   display: flex;
   max-width: 340px;

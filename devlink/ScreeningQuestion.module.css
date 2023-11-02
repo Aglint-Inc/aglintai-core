@@ -1,32 +1,7 @@
-.pi-user-block {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.div-block-461 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.pi-user-image {
-  overflow: hidden;
-  width: 50px;
-  height: 50px;
-  min-height: 50px;
-  min-width: 50px;
-
-  border-radius: 125px;
-}
-
-.pi-user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+.new-screening-wrappers {
+  max-width: 820px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .fw-semibold {
@@ -218,38 +193,73 @@
   margin-bottom: 15px;
 }
 
-.max-width-500 {
-  max-width: 500px;
+.new-screening-upload {
+  margin-top: 8px;
 }
 
-.text-grey-600.width-90 {
-  width: 90%;
+.color-grey-600.max-width-350 {
+  max-width: 350px;
 }
 
-@media screen and (max-width: 991px) {
-  .text-grey-600.max-width-600 {
-    max-width: 500px;
-  }
+.color-grey-600.growth-stretch {
+  flex: 0 0 auto;
 }
 
-@media screen and (max-width: 767px) {
-  .text-grey-600.max-width-600 {
-    max-width: none;
-  }
+.color-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
-.max-width-600 {
-  max-width: 600px;
+.mt-10 {
+  margin-top: 10px;
 }
 
-.text-grey-600.mt-5 {
-  margin-top: 5px;
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
-.text-grey-600.mt-17 {
-  margin-top: 17px;
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.inline-text {
-  display: inline;
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.accessment-wrap {
+  margin-top: 50px;
+}
+
+.accessment-desc {
+  max-width: 553px;
+  margin-top: 8px;
+  color: #68737d;
+}
+
+.accessment-toggle-wrap {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.new-screen-welcome {
+  margin-top: 40px;
+}
+
+.new-screen-assememnt-question {
+  margin-top: 50px;
+}
+
+.div-block-542 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+}
+
+.skill-based-question-wrap {
+  margin-top: 30px;
 }

@@ -536,6 +536,10 @@
   margin-bottom: 14px;
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .white-active-bg {
   position: absolute;
   left: 0%;

@@ -245,6 +245,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .cj-share-copy-wrapper {
   display: flex;
   flex-direction: column;

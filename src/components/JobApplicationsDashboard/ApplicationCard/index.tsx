@@ -89,7 +89,7 @@ const ApplicationCard = ({
               showScore={true}
             />
           ) : (
-            <Tooltip title='Resume not parsable' placement='right' arrow>
+            <Tooltip title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again." placement='right' arrow>
               <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
             </Tooltip>
           )

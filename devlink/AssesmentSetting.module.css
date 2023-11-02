@@ -2,8 +2,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 17px;
-  grid-row-gap: 17px;
+}
+
+.ai-assessment-setting-wrap {
+  display: flex;
+  max-width: 678px;
+  margin-top: 15px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .fw-semibold {
@@ -191,6 +198,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -207,18 +218,18 @@
   margin-top: 10px;
 }
 
-.ai-assessment-setting-wrap {
+.toggle-ai-assesment {
   display: flex;
-  max-width: 678px;
   margin-top: 15px;
-  flex-direction: column;
+  align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
-.toggle-ai-assesment {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+.mt-14 {
+  margin-top: 14px;
+}
+
+.mt-16 {
+  margin-top: 16px;
 }

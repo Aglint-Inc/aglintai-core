@@ -458,6 +458,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .div-block-464 {
   display: flex;
   flex-direction: column;

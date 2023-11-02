@@ -256,6 +256,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .cv-tab-candidate-count {
   margin-left: auto;
   padding-right: 10px;

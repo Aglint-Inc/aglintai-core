@@ -196,6 +196,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
 .cvs-score-block {
   display: flex;
   flex-direction: column;
