@@ -81,10 +81,21 @@ export default async function handler(req, res) {
             const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
-              await supabase
+
+              const { data: application, error } = await supabase
                 .from('job_applications')
-                .update({ resume: fileLink, json_resume: jsonResume })
-                .eq('application_id', payload.application_id);
+                .eq('application_id', payload.application_id)
+                .select();
+
+              if (!error) {
+                await supabase
+                  .from('candidates')
+                  .update({ resume: fileLink, json_resume: jsonResume })
+                  .eq('id', application[0].candidate_id);
+              } else {
+                console.log('error while updating candidate');
+                res.status(400).send('error while updating candidate');
+              }
             }
 
             return res
