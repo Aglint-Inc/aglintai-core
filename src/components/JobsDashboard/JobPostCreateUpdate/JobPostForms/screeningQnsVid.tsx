@@ -177,6 +177,7 @@ const Category = ({
                 onClickAdd={{
                   onClick: handleAddnewQn,
                 }}
+                isVideoVisible={jobForm.formFields.videoAssessment}
               />
             )}
           </>

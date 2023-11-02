@@ -6,4 +6,5 @@ declare function AddScreeningQuestion(props: {
   slotInput?: Types.Devlink.Slot;
   onClickAdd?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
+  isVideoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

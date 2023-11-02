@@ -13,6 +13,7 @@ export function AddScreeningQuestion({
   slotInput,
   onClickAdd = {},
   onClickCancel = {},
+  isVideoVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -21,25 +22,27 @@ export function AddScreeningQuestion({
       className={_utils.cx(_styles, "new-screening-video-wrap", "grey-100")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "new-screen-intro-wrap")}
-        data-w-id="dc064296-d4e2-a081-3cf6-36f11be5417d"
-        tag="div"
-      >
+      {isVideoVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "slot-video-welcome")}
+          className={_utils.cx(_styles, "new-screen-intro-wrap")}
+          data-w-id="dc064296-d4e2-a081-3cf6-36f11be5417d"
           tag="div"
         >
-          <_Builtin.Image
-            className={_utils.cx(_styles, "empty-video-image")}
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6543935bed55bd03ed8b38f3_Rectangle%2029.svg"
-          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-video-welcome")}
+            tag="div"
+          >
+            <_Builtin.Image
+              className={_utils.cx(_styles, "empty-video-image")}
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6543935bed55bd03ed8b38f3_Rectangle%2029.svg"
+            />
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "div-block-548")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-input-new-screen")}
