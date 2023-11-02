@@ -34,10 +34,10 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           application_id: uuidv4(),
         };
       });
-
+      // TODO: FIX 'any'
       const { error } = await supabase
         .from('job_applications')
-        .insert(dbCandidates)
+        .insert(dbCandidates as any)
         .select();
 
       if (!error) {

@@ -82,7 +82,7 @@ function ImportCandidatesCSV() {
       ...interviewing,
       ...qualified,
       ...disqualified,
-    ].map((ele) => ele.email);
+    ].map((ele) => ele.candidates.email);
     const filteredCandidates = candidates.filter(
       (ele: { email: string }) => !totalApplications.includes(ele.email),
     );

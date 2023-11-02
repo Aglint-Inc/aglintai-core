@@ -59,11 +59,11 @@ const ApplicationCard = ({
       isChecked={checkList.has(application.application_id)}
       slotProfileImage={
         <MuiAvatar
-          level={application.first_name}
+          level={application.candidates.first_name}
           src={
-            !application.profile_image
-              ? getGravatar(application.email)
-              : application.profile_image
+            !application.candidates.profile_image
+              ? getGravatar(application.candidates.email)
+              : application.candidates.profile_image
           }
           variant='rounded'
           width='100%'
@@ -71,18 +71,22 @@ const ApplicationCard = ({
         />
       }
       name={
-        application.first_name
+        application.candidates.first_name
           ? capitalize(
-              application.first_name + ' ' + application?.last_name || '',
+              application.candidates.first_name +
+                ' ' +
+                application.candidates.last_name || '',
             )
           : '---'
       }
       jobTitle={
-        application.job_title ? capitalize(application.job_title) : '---'
+        application.candidates.job_title
+          ? capitalize(application.candidates.job_title)
+          : '---'
       }
       slotResumeScore={
         intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-          application.json_resume && application.jd_score ? (
+          application.candidates.json_resume && application.jd_score ? (
             <SmallCircularScore
               finalScore={resumeScore}
               scale={0.5}
@@ -101,8 +105,8 @@ const ApplicationCard = ({
           </Tooltip>
         )
       }
-      email={application.email || '---'}
-      phone={application.phone || '---'}
+      email={application.candidates.email || '---'}
+      phone={application.candidates.phone || '---'}
       isInterviewVisible={isInterview}
       slotInterviewScore={
         application?.feedback ? (

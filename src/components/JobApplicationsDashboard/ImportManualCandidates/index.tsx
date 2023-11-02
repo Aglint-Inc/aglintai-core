@@ -140,7 +140,6 @@ const ImportManualCandidates = () => {
           job_location: job.location,
           job_title: job.job_title,
           company: job.company,
-          status: applicant.status.value,
         },
         applicant.resume.value,
       );

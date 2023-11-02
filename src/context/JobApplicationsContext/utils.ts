@@ -1,11 +1,11 @@
 import { supabase } from '@/src/utils/supabaseClient';
 
 import {
-  InputData,
   JobApplication,
   JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
+  NewJobApplications,
 } from './types';
 
 export const initialJobApplicationsContext: JobApplicationContext = {
@@ -35,20 +35,18 @@ export const initialJobApplicationsContext: JobApplicationContext = {
 
 export const createJobApplicationDbAction = async (
   job_id: string,
-  inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-    InputData,
+  inputData: NewJobApplications,
 ) => {
   const { data, error } = await supabase
     .from('job_applications')
     .insert({ ...inputData, job_id })
-    .select();
+    .select('*,candidates(*)');
   return { data, error };
 };
 
 export const bulkCreateJobApplicationDbAction = async (
   job_id: string,
-  inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-    InputData)[],
+  inputData: NewJobApplications[],
 ) => {
   const applications = inputData.map((data) => {
     return { ...data, job_id };
@@ -70,13 +68,13 @@ export const readJobApplicationDbAction = async (job_id: string) => {
 
 export const updateJobApplicationDbAction = async (
   application_id: string,
-  inputData: InputData,
+  inputData: NewJobApplications,
 ) => {
   const { data, error } = await supabase
     .from('job_applications')
     .update(inputData)
     .eq('application_id', application_id)
-    .select();
+    .select('*,candidates(*)');
   return { data, error };
 };
 

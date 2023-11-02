@@ -54,14 +54,21 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     for (const file of selectedfile) {
       let uploadUrl = await uploadResume(file);
       try {
-        await supabase
-          .from('job_applications')
+        // TODO: Error handling required and exisiting candidate handling
+        const { data } = await supabase
+          .from('candidates')
           .insert({
             first_name: null,
             last_name: null,
             email: null,
-            job_id: router.query.id as any,
             resume: uploadUrl,
+          })
+          .select();
+        await supabase
+          .from('job_applications')
+          .insert({
+            job_id: router.query.id as string,
+            candidate_id: data[0].id,
           })
           .select();
       } catch (error) {

@@ -8,11 +8,11 @@ import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import toast from '@/src/utils/toast';
 
 import {
-  InputData,
   JobApplication,
   JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
+  NewJobApplications,
   Parameters,
 } from './types';
 import {
@@ -171,7 +171,7 @@ const useProviderJobApplicationActions = (
     useState(false);
 
   const initialParameters: Parameters = {
-    sort: { parameter: 'first_name', condition: 'asc' },
+    sort: null, //{ parameter: 'first_name', condition: 'asc' },
     filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
     search: null,
   };
@@ -191,10 +191,10 @@ const useProviderJobApplicationActions = (
     }
   }, [initialLoad]);
 
-  const handleJobApplicationCreate = async (
-    inputData: Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData,
-  ) => {
+  // eslint-disable-next-line no-console
+  console.log(applications, '🔥');
+
+  const handleJobApplicationCreate = async (inputData: JobApplication) => {
     if (recruiter) {
       const { data, error } = await createJobApplicationDbAction(
         jobId,
@@ -212,8 +212,7 @@ const useProviderJobApplicationActions = (
   };
 
   const handleJobApplicationBulkCreate = async (
-    inputData: (Pick<JobApplication, 'first_name' | 'last_name' | 'email'> &
-      InputData)[],
+    inputData: JobApplication[],
   ) => {
     if (recruiter) {
       const { data, error } = await bulkCreateJobApplicationDbAction(
@@ -335,7 +334,7 @@ const useProviderJobApplicationActions = (
 
   const handleJobApplicationUpdate = async (
     applicationId: string,
-    inputData: InputData,
+    inputData: NewJobApplications,
   ) => {
     if (recruiter) {
       const { data, error } = await updateJobApplicationDbAction(
