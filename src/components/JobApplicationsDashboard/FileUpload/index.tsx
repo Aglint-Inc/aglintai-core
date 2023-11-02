@@ -51,6 +51,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
 
   const FileUploadSubmit = async () => {
     setLoading(true);
+
     for (const file of selectedfile) {
       let uploadUrl = await uploadResume(file);
       try {
@@ -58,9 +59,9 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
         const { data } = await supabase
           .from('candidates')
           .insert({
-            first_name: null,
-            last_name: null,
-            email: null,
+            first_name: file.name,
+            last_name: '',
+            email: '',
             resume: uploadUrl,
           })
           .select();
