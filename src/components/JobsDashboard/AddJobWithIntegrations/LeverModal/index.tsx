@@ -33,7 +33,12 @@ import {
   POSTED_BY,
 } from '../utils';
 
-export function LeverModalComp({ state, handleClose, setState }) {
+export function LeverModalComp({
+  state,
+  handleClose,
+  setState,
+  setIsLeverOpen,
+}) {
   const { recruiter, setRecruiter } = useAuthDetails();
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
@@ -103,6 +108,7 @@ export function LeverModalComp({ state, handleClose, setState }) {
         });
         await createJobApplications(jobsObj, recruiter.lever_key);
         await handleJobRead();
+        setIsLeverOpen(false);
         toast.success('Jobs Imported Successfully');
         router.push(`${pageRoutes.JOBS}?status=active`);
       } else {

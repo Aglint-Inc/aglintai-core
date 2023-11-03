@@ -26,6 +26,7 @@ export default function EmptyJobDashboard({
           state={state}
           handleClose={handleClose}
           setState={setState}
+          setIsLeverOpen={setIsLeverOpen}
         />
       </Dialog>
 

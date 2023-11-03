@@ -81,11 +81,10 @@ export default async function handler(req, res) {
             const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
-
               const { data: application, error } = await supabase
                 .from('job_applications')
-                .eq('application_id', payload.application_id)
-                .select();
+                .select()
+                .eq('application_id', payload.application_id);
 
               if (!error) {
                 await supabase
