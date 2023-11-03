@@ -8,15 +8,12 @@ import { ImportCandidates } from '@/devlink';
 import {
   ApplicantsListEmpty,
   CandidateFilter,
-  CandidateFilter,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
   SortArrows,
-  SortArrows,
 } from '@/devlink2';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -138,7 +135,6 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 600000, [
   usePolling(async () => await handleAutoRefresh(), 600000, [
     ...Object.values(applicationDepth),
     section,
@@ -570,9 +566,6 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
-            ref={
-              i === applicationDepth[section] - 1 ? lastApplicationRef : null
-            }
             ref={
               i === applicationDepth[section] - 1 ? lastApplicationRef : null
             }
