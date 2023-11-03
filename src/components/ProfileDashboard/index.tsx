@@ -186,7 +186,7 @@ const ProfileDashboard = () => {
         slotSavePassword={
           <Stack style={{ pointerEvents: loading.password ? 'none' : 'auto' }}>
             <ButtonPrimaryOutlinedRegular
-              buttonText={'Save password'}
+              buttonText={'Update Password'}
               isDisabled={
                 !passwordChange ||
                 password.password.value === '' ||
