@@ -225,9 +225,11 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
-      slotInterviewSort={<ApplicationSort parameter='interview_score' />}
+      slotInterviewSort={
+        <></> /*<ApplicationSort parameter='interview_score' />*/
+      }
       slotNameSort={<ApplicationSort parameter='first_name' />}
-      slotResumeSort={<ApplicationSort parameter='resume_score' />}
+      slotResumeSort={<></> /*<ApplicationSort parameter='resume_score' />*/}
       slotEmailSort={<ApplicationSort parameter='email' />}
       slotDateSort={<ApplicationSort parameter='created_at' />}
     />
@@ -293,12 +295,13 @@ const NewJobFilterBlock = () => {
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={<SearchField />}
-        slotFilter={<ApplicationFilter />}
+        slotFilter={<></> /*<ApplicationFilter />*/}
       />
     </>
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 const ApplicationFilter = () => {
   const { searchParameters } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
