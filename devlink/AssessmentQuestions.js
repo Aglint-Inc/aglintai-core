@@ -15,7 +15,10 @@ export function AssessmentQuestions({
   return (
     <_Component className={_utils.cx(_styles, "div-block-543")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "mt-16")} tag="div">
-        <_Builtin.HtmlEmbed value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2218%22%20viewBox%3D%220%200%2010%2018%22%20fill%3D%22none%22%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%221.9221%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%221.9221%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%228.84495%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%2215.7688%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%228.84495%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%2215.7688%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%3C%2Fsvg%3E" />
+        <_Builtin.HtmlEmbed
+          className={_utils.cx(_styles, "hide")}
+          value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2218%22%20viewBox%3D%220%200%2010%2018%22%20fill%3D%22none%22%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%221.9221%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%221.9221%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%228.84495%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%221.92308%22%20cy%3D%2215.7688%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%228.84495%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.07737%22%20cy%3D%2215.7688%22%20r%3D%221.92308%22%20fill%3D%22%2387929D%22%2F%3E%0A%3C%2Fsvg%3E"
+        />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "skill-question-new-screen")}

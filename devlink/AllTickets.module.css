@@ -390,6 +390,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .il-list-block {
   width: 100%;
   max-height: 85vh;

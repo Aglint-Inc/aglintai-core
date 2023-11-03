@@ -1,12 +1,21 @@
 .div-block-543 {
   display: flex;
   align-items: flex-start;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }
 
 .mt-16 {
   margin-top: 16px;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .skill-question-new-screen {
@@ -79,6 +88,10 @@
   margin-right: 5px;
 }
 
+.fw-semibold.text-kale-800 {
+  color: #012b30;
+}
+
 .text-kale-800 {
   color: var(--kale800-682c1482);
 }
@@ -105,6 +118,10 @@
 
 .fw-semibold.pink-800 {
   color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.fw-semibold.text-green-800 {
+  color: #0b3b29;
 }
 
 .text-green-800 {
@@ -219,7 +236,25 @@
   margin-bottom: 15px;
 }
 
+.fw-semibold.text-kale-700 {
+  color: #03363d;
+}
+
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
+.fw-semibold.new-greenhouse {
+  color: #14413d;
+}
+
+.text-color-white {
+  color: white;
+}
+
 .div-block-544 {
+  display: flex;
+  margin-top: 16px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -288,6 +323,14 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
 }
 
 .ai-generate-new {

@@ -5,7 +5,6 @@
   width: 227px;
   height: 168px;
 
-  border: 1px solid #e9ebed;
   border-radius: 10px;
 
   cursor: pointer;
@@ -18,7 +17,7 @@
 .avatar-name-wrap {
   position: relative;
   bottom: 3px;
-  z-index: 1;
+  z-index: 4;
   padding: 8px 16px;
 }
 
@@ -40,8 +39,8 @@
 
 .div-block-545 {
   height: 34px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   background-color: #edf7ff;
 }
 
@@ -50,10 +49,11 @@
   left: 2px;
   top: 2px;
   right: 2px;
-  bottom: 2px;
+  bottom: 0px;
+  z-index: 3;
 
   display: none;
-  height: 132px;
+  height: 130px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -114,4 +114,23 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.div-block-553 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
 }

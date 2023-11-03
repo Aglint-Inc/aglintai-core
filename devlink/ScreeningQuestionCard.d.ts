@@ -14,7 +14,6 @@ declare function ScreeningQuestionCard(props: {
   onClickDelete?: Types.Devlink.RuntimeProps;
   isSaveButtonVisible?: Types.Visibility.VisibilityConditions;
   isGenerateVisible?: Types.Visibility.VisibilityConditions;
-  slotEmptyVideo?: Types.Devlink.Slot;
   onClickGenerateVideo?: Types.Devlink.RuntimeProps;
   isPauseButtonVisible?: Types.Visibility.VisibilityConditions;
   isPlayButtonVisible?: Types.Visibility.VisibilityConditions;
@@ -23,4 +22,10 @@ declare function ScreeningQuestionCard(props: {
   onClickSave?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
   isPlayPauseButtonVisible?: Types.Visibility.VisibilityConditions;
+  isVideoVisible?: Types.Visibility.VisibilityConditions;
+  onClickRetry?: Types.Devlink.RuntimeProps;
+  textError?: React.ReactNode;
+  textButtonError?: React.ReactNode;
+  isErrorVisible?: Types.Visibility.VisibilityConditions;
+  isActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

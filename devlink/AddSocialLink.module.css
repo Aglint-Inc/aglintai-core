@@ -62,6 +62,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }

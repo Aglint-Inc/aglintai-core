@@ -71,6 +71,10 @@ export function AvatarCard({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-553")}
+        tag="div"
+      />
     </_Component>
   );
 }

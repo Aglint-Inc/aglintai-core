@@ -248,6 +248,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .social-btn-wrappers-pop {
   display: flex;
   margin-top: 20px;
