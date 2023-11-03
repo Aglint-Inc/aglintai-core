@@ -31,8 +31,9 @@ import {
 } from '@/src/context/SupportContext/SupportContext';
 import { palette } from '@/src/context/Theme/Theme';
 import {
+  CandidateType,
   EmailTemplateType,
-  JobApplcationDB,
+  JobApplicationType,
   Public_jobsType,
   Support_ticketType,
   SupportEmailAPIType,
@@ -77,7 +78,9 @@ function SupportTicketDetails({
   const [ticket, setTicket] = useState<
     Support_ticketType & { jobsDetails: Public_jobsType }
   >(null);
-  const [application, setApplication] = useState<JobApplcationDB>(null);
+  const [application, setApplication] = useState<
+    JobApplicationType & CandidateType
+  >(null);
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplateType>(null);
 
   const sendMessage = (message: string) => {
@@ -142,7 +145,7 @@ function SupportTicketDetails({
           ?.emailTemplates,
       );
       ticketProp?.application_id &&
-        getJobApplicationDetails(ticketProp.application_id).then((data) => {
+        getApplicationDetails(ticketProp.application_id).then((data) => {
           return data && setApplication(data);
         });
     }
@@ -166,7 +169,11 @@ function SupportTicketDetails({
                 assignedTo?.employees[0] &&
                 `${assignedTo?.employees[0]?.first_name} ${assignedTo?.employees[0]?.last_name}`
               }
-              imageUrl={assignedTo?.employees[0]?assignedTo?.employees[0].profile_image:''}
+              imageUrl={
+                assignedTo?.employees[0]
+                  ? assignedTo?.employees[0].profile_image
+                  : ''
+              }
               recruiterId={ticket.jobsDetails.recruiter_id}
               setAssignedTo={(assign_to: string, support_group_id?: string) => {
                 // @ts-ignore
@@ -394,13 +401,23 @@ export default SupportTicketDetails;
 //   return [];
 // };
 
-const getJobApplicationDetails = async (application_id: string) => {
+const getApplicationDetails = async (id: string) => {
   const { data, error } = await supabase
     .from('job_applications')
     .select('*')
-    .eq('application_id', application_id);
+    .eq('application_id', id);
   if (!error && data.length) {
-    return data[0];
+    const {
+      data: [candidate],
+      error: candidateError,
+    } = await supabase
+      .from('candidates')
+      .select()
+      .eq('id', data[0].candidate_id);
+
+    const tempData =
+      !candidateError && candidate ? { ...data[0], ...candidate } : data[0];
+    return tempData as unknown as JobApplicationType & CandidateType;
   }
   return null;
 };
