@@ -8,4 +8,5 @@ declare function AssessmentQuestions(props: {
   slotQuestionVideo?: Types.Devlink.Slot;
   onClickAddManually?: Types.Devlink.RuntimeProps;
   onClickAddAi?: Types.Devlink.RuntimeProps;
+  isAddVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

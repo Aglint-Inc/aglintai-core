@@ -1,18 +1,11 @@
 import { Droppable } from 'react-beautiful-dnd';
 
-export const Drop = ({ id, ...props }) => {
+export const Drop = ({ id, type, ...props }) => {
   return (
-    <Droppable droppableId={id}>
-      {(provided, snapshot) => {
+    <Droppable droppableId={id} type={type}>
+      {(provided) => {
         return (
-          <div
-            ref={provided.innerRef}
-            className={
-              snapshot.isDraggingOver ? 'droppable dropping' : 'droppable'
-            }
-            {...provided.droppableProps}
-            {...props}
-          >
+          <div ref={provided.innerRef} {...provided.droppableProps} {...props}>
             {props.children}
             {provided.placeholder}
           </div>

@@ -1,13 +1,21 @@
 import { Stack } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
 export const Drag = ({ id, index, ...props }) => {
+  const [onHovered, setonHovered] = useState(false);
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => {
         return (
           <div
+            onMouseEnter={() => {
+              setonHovered(true);
+            }}
+            onMouseLeave={() => {
+              setonHovered(false);
+            }}
             ref={provided.innerRef}
             className={snapshot.isDragging ? 'draggable dragging' : 'draggable'}
             {...provided.draggableProps}
@@ -22,6 +30,7 @@ export const Drag = ({ id, index, ...props }) => {
                   position: 'absolute',
                   left: '2px',
                   zIndex: 2,
+                  display: onHovered || snapshot.isDragging ? 'block' : 'none',
                 }}
               >
                 <Image

@@ -214,6 +214,10 @@
   color: #14413d;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .new-screening-upload {
   margin-top: 8px;
 }
@@ -234,6 +238,10 @@
   margin-top: 10px;
 }
 
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
@@ -246,6 +254,10 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.div-block-555 {
+  margin-top: 16px;
 }
 
 .accessment-wrap {
@@ -285,6 +297,6 @@
   display: flex;
   margin-top: 30px;
   flex-direction: column;
-  grid-column-gap: 35px;
-  grid-row-gap: 35px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }

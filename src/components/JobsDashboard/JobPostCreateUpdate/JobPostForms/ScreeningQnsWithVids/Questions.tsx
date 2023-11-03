@@ -9,8 +9,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { Drag, DragAndDrop, Drop } from './dragDrop';
-import { reorder } from '../utils/reorder';
+import { Drag, Drop } from './dragDrop';
 import {
   InterviewConfigType,
   QuestionType,
@@ -21,10 +20,11 @@ import { supabaseWrap } from '../../utils';
 const Questions = ({
   questions,
   categIdx,
+  categId,
 }: {
   categIdx: number;
-  categ: string;
   questions: InterviewConfigType['questions'];
+  categId: string;
 }) => {
   const { handleUpdateFormFields } = useJobForm();
   const handleDeleteQn = (qnId) => {
@@ -35,46 +35,26 @@ const Questions = ({
     });
   };
 
-  const handleDragEnd = (result) => {
-    const { source, destination } = result;
-
-    if (!destination) {
-      return;
-    }
-
-    const reorderedItems = reorder(
-      [...questions],
-      source.index,
-      destination.index,
-    );
-    handleUpdateFormFields({
-      path: `interviewConfig[${categIdx}].questions`,
-      value: reorderedItems,
-    });
-  };
-
   return (
     <>
-      <DragAndDrop onDragEnd={handleDragEnd}>
-        <Drop id='questions'>
-          {questions.map((q, index) => {
-            return (
-              <>
-                {
-                  <Drag key={q.id} id={q.id} index={index}>
-                    <Question
-                      question={q}
-                      key={q.id}
-                      path={`interviewConfig[${categIdx}].questions[${index}]`}
-                      handleDeleteQn={handleDeleteQn}
-                    />
-                  </Drag>
-                }
-              </>
-            );
-          })}
-        </Drop>
-      </DragAndDrop>
+      <Drop id={categId} type='questions'>
+        {questions.map((q, index) => {
+          return (
+            <>
+              {
+                <Drag key={q.id} id={q.id} index={index}>
+                  <Question
+                    question={q}
+                    key={q.id}
+                    path={`interviewConfig[${categIdx}].questions[${index}]`}
+                    handleDeleteQn={handleDeleteQn}
+                  />
+                </Drag>
+              }
+            </>
+          );
+        })}
+      </Drop>
     </>
   );
 };
