@@ -171,7 +171,6 @@ export interface Database {
             foreignKeyName: "job_applications_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           }
@@ -207,14 +206,12 @@ export interface Database {
             foreignKeyName: "lever_job_reference_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "lever_job_reference_recruiter_id_fkey"
             columns: ["recruiter_id"]
-            isOneToOne: false
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
@@ -250,7 +247,6 @@ export interface Database {
           {
             foreignKeyName: "lever_reference_public_job_id_fkey"
             columns: ["public_job_id"]
-            isOneToOne: false
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
@@ -291,7 +287,9 @@ export interface Database {
           description: string | null
           email_template: Json
           embedding: string | null
+          end_video: Json | null
           id: string
+          intro_videos: Json | null
           is_campus: boolean
           jd_json: Json | null
           job_criteria: Json | null
@@ -308,7 +306,9 @@ export interface Database {
           screening_setting: Json | null
           skills: string[] | null
           slug: string
+          start_video: Json | null
           updated_at: string | null
+          video_assessment: boolean
           workplace_type: string | null
         }
         Insert: {
@@ -320,7 +320,9 @@ export interface Database {
           description?: string | null
           email_template?: Json
           embedding?: string | null
+          end_video?: Json | null
           id?: string
+          intro_videos?: Json | null
           is_campus?: boolean
           jd_json?: Json | null
           job_criteria?: Json | null
@@ -337,7 +339,9 @@ export interface Database {
           screening_setting?: Json | null
           skills?: string[] | null
           slug?: string
+          start_video?: Json | null
           updated_at?: string | null
+          video_assessment?: boolean
           workplace_type?: string | null
         }
         Update: {
@@ -349,7 +353,9 @@ export interface Database {
           description?: string | null
           email_template?: Json
           embedding?: string | null
+          end_video?: Json | null
           id?: string
+          intro_videos?: Json | null
           is_campus?: boolean
           jd_json?: Json | null
           job_criteria?: Json | null
@@ -366,14 +372,15 @@ export interface Database {
           screening_setting?: Json | null
           skills?: string[] | null
           slug?: string
+          start_video?: Json | null
           updated_at?: string | null
+          video_assessment?: boolean
           workplace_type?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "public_jobs_recruiter_id_fkey"
             columns: ["recruiter_id"]
-            isOneToOne: false
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
@@ -384,6 +391,7 @@ export interface Database {
         Row: {
           ai_avatar: Json | null
           application_process: string | null
+          audio_avatar_id: number
           available_roles: string[]
           benefits: string | null
           company_overview: string | null
@@ -409,11 +417,13 @@ export interface Database {
           roles: Json
           socials: Json | null
           technology_score: string[]
+          video_assessment: boolean | null
           workplace_type: Json
         }
         Insert: {
           ai_avatar?: Json | null
           application_process?: string | null
+          audio_avatar_id?: number
           available_roles?: string[]
           benefits?: string | null
           company_overview?: string | null
@@ -439,11 +449,13 @@ export interface Database {
           roles?: Json
           socials?: Json | null
           technology_score?: string[]
+          video_assessment?: boolean | null
           workplace_type?: Json
         }
         Update: {
           ai_avatar?: Json | null
           application_process?: string | null
+          audio_avatar_id?: number
           available_roles?: string[]
           benefits?: string | null
           company_overview?: string | null
@@ -469,6 +481,7 @@ export interface Database {
           roles?: Json
           socials?: Json | null
           technology_score?: string[]
+          video_assessment?: boolean | null
           workplace_type?: Json
         }
         Relationships: []
@@ -521,14 +534,12 @@ export interface Database {
             foreignKeyName: "recruiter_user_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -610,7 +621,6 @@ export interface Database {
             foreignKeyName: "support_groups_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           }
@@ -688,7 +698,6 @@ export interface Database {
             foreignKeyName: "support_ticket_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
@@ -696,14 +705,12 @@ export interface Database {
             foreignKeyName: "support_ticket_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
-            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "support_ticket_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -723,13 +730,11 @@ export interface Database {
         | {
             Args: {
               "": boolean
-              "": boolean
             }
             Returns: string
           }
         | {
             Args: {
-              "": string
               "": string
             }
             Returns: string

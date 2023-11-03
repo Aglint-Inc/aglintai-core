@@ -9,6 +9,7 @@
 
 .profile-block {
   display: flex;
+  margin-top: 40px;
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
@@ -235,6 +236,7 @@
 }
 
 .div-block-348.top-align {
+  padding-left: 20px;
   align-items: flex-start;
 }
 
@@ -453,6 +455,8 @@
 
 .profile-inputs-wrapper {
   display: flex;
+  padding-bottom: 0px;
+  padding-left: 20px;
   flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -469,6 +473,10 @@
 
 .cs-info-wrapper.margin-0 {
   margin-top: 0px;
+}
+
+.cs-info-wrapper.margin-0.pl-20 {
+  padding-left: 20px;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -579,13 +587,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .flex-vertical-left {
   display: flex;
   flex-direction: column;

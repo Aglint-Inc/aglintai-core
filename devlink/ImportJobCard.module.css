@@ -81,7 +81,6 @@
 }
 
 .cj-option-icon-block.asby {
-<<<<<<< HEAD
   padding: 0px;
 }
 
@@ -97,12 +96,6 @@
   min-width: 60px;
 }
 
-=======
-  overflow: hidden;
-  padding: 0px;
-}
-
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .cj-option-info {
   display: flex;
   flex-direction: column;
@@ -321,13 +314,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .max-width-500 {
   max-width: 500px;
 }

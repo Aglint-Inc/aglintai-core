@@ -582,13 +582,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .rd-email-temp-wrapper {
   display: grid;
   grid-auto-columns: 1fr;
@@ -1028,6 +1025,7 @@
 }
 
 .div-block-348.top-align {
+  padding-left: 20px;
   align-items: flex-start;
 }
 
@@ -1489,6 +1487,10 @@
 
 .text-blue-500-2.text-underline.inline-block {
   display: inline;
+}
+
+.text-blue-500-2.ml-12 {
+  margin-left: 8px;
 }
 
 .rd-email-edit-btn {

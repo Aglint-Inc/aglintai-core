@@ -55,6 +55,14 @@
   object-fit: contain;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -264,13 +272,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 #w-node-_5b99b463-1eb2-741e-96b1-9a81bc941679-bc941679 {
   grid-column-start: span 1;
   grid-column-end: span 1;

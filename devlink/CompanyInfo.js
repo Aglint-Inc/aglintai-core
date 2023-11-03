@@ -122,7 +122,7 @@ export function CompanyInfo({
           {slotAdditionalInfoForm}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -173,7 +173,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -224,7 +224,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -275,7 +275,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block

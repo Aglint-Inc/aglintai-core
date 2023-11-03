@@ -266,6 +266,14 @@
   object-fit: contain;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .text-yellow-800-4 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }

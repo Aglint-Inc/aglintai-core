@@ -464,6 +464,7 @@
 
 .profile-block {
   display: flex;
+  margin-top: 40px;
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
@@ -587,15 +588,14 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .profile-inputs-wrapper {
   display: flex;
+  padding-bottom: 0px;
+  padding-left: 20px;
   flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;

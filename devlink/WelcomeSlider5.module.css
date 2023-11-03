@@ -843,6 +843,10 @@
   opacity: 0.7;
 }
 
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
 .input-wrapper {
   position: relative;
 

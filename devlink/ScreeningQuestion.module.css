@@ -297,11 +297,6 @@
   display: flex;
   margin-top: 30px;
   flex-direction: column;
-<<<<<<< HEAD
-  grid-column-gap: 35px;
-  grid-row-gap: 35px;
-=======
   grid-column-gap: 0px;
   grid-row-gap: 0px;
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 }

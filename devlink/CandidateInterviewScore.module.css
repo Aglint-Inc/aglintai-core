@@ -220,13 +220,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .cvs-score-block {
   display: flex;
   flex-direction: column;
@@ -275,6 +272,14 @@
   object-fit: contain;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .cvs-score-info-block {
   display: flex;
   flex-direction: column;
@@ -316,6 +321,16 @@
 
 .text-blue-600-2 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 .cvs-score-details-wrapper {

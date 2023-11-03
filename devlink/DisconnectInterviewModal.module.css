@@ -231,13 +231,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .clickable {
   transition: all 300ms ease;
   cursor: pointer;
@@ -255,6 +252,14 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .int-disconnect-main-wrapper {

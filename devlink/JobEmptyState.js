@@ -18,22 +18,27 @@ export function JobEmptyState({
           height="auto"
           loading="lazy"
           alt=""
-          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890235_Exam_Flat.svg"
+          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544fa5b6dd00169fa44e84b_%EF%A1%AD.svg"
         />
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-grey-600", "fw-semibold")}
           tag="div"
         >
-          {"No jobs posted."}
+          {"No jobs found"}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
+          {"Click here to "}
           <_Builtin.Span
-            className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
+            className={_utils.cx(
+              _styles,
+              "text-blue-500",
+              "text-underline",
+              "cursor-pointer"
+            )}
             {...onClickHere}
           >
-            {"Click here"}
+            {"create a new job"}
           </_Builtin.Span>
-          {" to create a new job post"}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

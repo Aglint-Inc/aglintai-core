@@ -68,6 +68,7 @@ function AssessmentSettings() {
     updateRecruiter(recruiter?.id, value);
     setIsVideoAssessment(value);
   }
+
   return (
     <div>
       <MuiPopup

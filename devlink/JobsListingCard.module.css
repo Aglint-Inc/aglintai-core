@@ -311,13 +311,10 @@
 
 .fw-semibold.new-greenhouse {
   color: #14413d;
-<<<<<<< HEAD
 }
 
 .text-color-white {
   color: white;
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 }
 
 .tittle-company-location {
@@ -356,6 +353,10 @@
   margin-top: 10px;
 }
 
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
 .rd-status-badge {
   display: flex;
   padding: 4px 14px;
@@ -374,6 +375,8 @@
 
 .slot-status-icons {
   display: flex;
+  width: 16px;
+  height: 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;

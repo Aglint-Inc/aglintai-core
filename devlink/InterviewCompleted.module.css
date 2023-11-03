@@ -274,6 +274,10 @@
   display: inline;
 }
 
+.text-blue-500-2.ml-12 {
+  margin-left: 8px;
+}
+
 .int-completed-bottom {
   display: flex;
   width: 100%;
@@ -304,4 +308,12 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }

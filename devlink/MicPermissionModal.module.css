@@ -294,13 +294,10 @@
   color: #14413d;
 }
 
-<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
-=======
->>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -315,6 +312,10 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.color-grey-600.ml-20 {
+  margin-left: 20px;
 }
 
 #w-node-f94ff02a-6fc4-2aac-d979-e76ce8a0c605-e8a0c603 {
