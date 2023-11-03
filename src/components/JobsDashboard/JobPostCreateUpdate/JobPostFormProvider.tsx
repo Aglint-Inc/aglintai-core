@@ -14,6 +14,7 @@ export type QuestionType = {
   question: string;
   videoId: string;
   videoQn: string;
+  videoUrl: string;
 };
 
 export type InterviewParam =

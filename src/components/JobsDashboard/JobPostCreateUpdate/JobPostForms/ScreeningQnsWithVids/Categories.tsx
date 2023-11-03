@@ -113,6 +113,7 @@ const Category = ({
         question: q,
         videoId: '',
         videoQn: '',
+        videoUrl: '',
       }));
       handleUpdateFormFields({
         path: `interviewConfig[${categIdx}.questions`,
@@ -137,6 +138,7 @@ const Category = ({
           question: newQn,
           video_id: '',
           videoQn: '',
+          videoUrl: '',
         },
       ],
     });

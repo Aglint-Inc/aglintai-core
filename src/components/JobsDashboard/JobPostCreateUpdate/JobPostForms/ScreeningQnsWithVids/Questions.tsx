@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { get } from 'lodash';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -6,6 +7,8 @@ import { ScreeningQuestionCard } from '@/devlink';
 import ScreeningVideoGenerating from '@/src/components/Common/Lotties/ScreeningVideoGenerating';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { avatar_list } from '@/src/utils/avatarlist';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -73,7 +76,7 @@ const Question = ({
   const [showEdit, setShowEdit] = useState(false);
   const [editQn, setEditQn] = useState(question.question);
   const [playing, setPlaying] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('');
+  const { recruiter } = useAuthDetails();
   const [isQnHovered, setQnHovered] = useState(false);
   const videoRef = useRef(null);
 
@@ -87,7 +90,10 @@ const Question = ({
             .eq('video_id', question.videoId),
         );
         if (d) {
-          setVideoUrl(d.file_url);
+          handleUpdateFormFields({
+            path: `${path}.videoUrl`,
+            value: d.file_url,
+          });
         }
       } catch (err) {
         toast.error('Something went wrong. Please try again');
@@ -110,10 +116,14 @@ const Question = ({
       if (process.env.NODE_ENV === 'development') {
         videoInfo = { video_id: 'def5da2177c44b089ccf6fa597cc3c4d' };
       } else {
+        const avater = (recruiter.ai_avatar as any) || avatar_list[0];
+
         let {
           data: { data },
         } = await axios.post('/api/generateVideo', {
           text: question.question,
+          avatar_id: get(recruiter, 'ai_avatar.avatar_id', avater.avatar_id),
+          voice_id: get(recruiter, 'ai_avatar.voice_id', avater.voice_id),
         });
         videoInfo = data;
       }
@@ -132,7 +142,6 @@ const Question = ({
   };
 
   const handleRegenerate = () => {
-    setVideoUrl('');
     handleUpdateFormFields({
       path: `${path}.videoId`,
       value: '',
@@ -148,6 +157,8 @@ const Question = ({
     }
     setPlaying((pre) => !pre);
   };
+
+  const videoUrl = question.videoUrl;
 
   return (
     <>
