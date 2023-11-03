@@ -56,7 +56,7 @@ export type SortParameter = {
     | 'interview_score'
     | 'first_name'
     | 'email'
-    | 'applied_on';
+    | 'created_at';
   condition: 'asc' | 'desc';
 };
 
@@ -83,7 +83,7 @@ export const getSortedApplications = (
         );
       }
       break;
-    case 'applied_on':
+    case 'created_at':
       {
         applications.sort(
           (a, b) =>

@@ -62,10 +62,15 @@ export const readNewJobApplicationDbAction = async (
   }
 
   if (sort) {
-    query = query.order(sort.parameter, {
+    const params = {
       ascending: sort.condition === 'asc',
       nullsFirst: false,
-    });
+    };
+    if (sort.parameter === 'first_name' || sort.parameter === 'email') {
+      query = query.order(`candidates(${sort.parameter})`, params);
+    } else {
+      query = query.order(sort.parameter, params);
+    }
   }
 
   if (filter && filter.length > 0) {
@@ -75,6 +80,7 @@ export const readNewJobApplicationDbAction = async (
   if (search) {
     query = query.or(
       `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
+      { foreignTable: 'candidates' },
     );
   }
 

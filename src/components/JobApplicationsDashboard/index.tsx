@@ -34,18 +34,9 @@ import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
-import {
-  // ApiLogState,
-  capitalize,
-  // FilterParameter,
-  // getFilteredApplications,
-  // getIntactApplications,
-  // getSortedApplications,
-  // SortParameter,
-} from './utils';
+import { capitalize } from './utils';
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
-// import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -369,11 +360,6 @@ const ApplicantsList = ({
       }
     }
   };
-
-  // useEffect(() => {
-  //   if (refresh) setPaginationLoad(true);
-  //   else setPaginationLoad(false);
-  // }, [refresh]);
 
   const observer = useRef(undefined);
   const lastApplicationRef = async (node: any) => {

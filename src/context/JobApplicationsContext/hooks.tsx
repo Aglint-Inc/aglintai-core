@@ -178,7 +178,7 @@ const useProviderJobApplicationActions = (
     useState(false);
 
   const initialParameters: Parameters = {
-    sort: null, //{ parameter: 'first_name', condition: 'asc' },
+    sort: { parameter: 'first_name', condition: 'asc' },
     filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
     search: null,
   };
