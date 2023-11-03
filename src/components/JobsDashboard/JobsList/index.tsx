@@ -62,15 +62,15 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 key={ind}
                 textJobRole={job.job_title}
                 textCompanyLocation={`${job.company}, ${job.location}`}
-                candidateCount={
-                  job.count.new +
-                  job.count.interviewing +
-                  job.count.qualified +
-                  job.count.disqualified
-                }
-                interviewingCount={job.count.interviewing}
-                selectedCount={job.count.qualified}
-                rejectedCount={job.count.disqualified}
+                // candidateCount={
+                //   job.count.new +
+                //   job.count.interviewing +
+                //   job.count.qualified +
+                //   job.count.disqualified
+                // }
+                // interviewingCount={job.count.interviewing}
+                // selectedCount={job.count.qualified}
+                // rejectedCount={job.count.disqualified}
                 slotInterviewIcon={
                   !job.active_status.closed.isActive ? (
                     getStatusInfo(
