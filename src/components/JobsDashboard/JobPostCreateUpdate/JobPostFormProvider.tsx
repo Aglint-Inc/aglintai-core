@@ -9,10 +9,14 @@ import toast from '@/src/utils/toast';
 import { dbToClientjobPostForm, getSeedJobFormData } from './seedFormData';
 import { ScoreWheelParams } from '../../Common/ScoreWheel';
 
-type Question = {
+export type QuestionType = {
   id: string;
   question: string;
+  videoId: string;
+  videoQn: string;
+  videoUrl: string;
 };
+
 export type InterviewParam =
   | 'skill'
   | 'behavior'
@@ -21,9 +25,10 @@ export type InterviewParam =
   | 'education'
   | 'general';
 export type InterviewConfigType = {
+  category: InterviewParam;
   id: string;
   copy: string;
-  questions: Question[];
+  questions: QuestionType[];
 };
 
 type dropDownOption = {
@@ -54,7 +59,8 @@ export type FormJobType = {
   department: string;
   skills: string[];
   interviewType: 'ai-powered' | 'questions-preset';
-  interviewConfig: Record<InterviewParam, InterviewConfigType>;
+  interviewConfig: InterviewConfigType[];
+  videoAssessment: boolean;
   screeningEmail: {
     isImmediate: boolean;
     date: null | string;
@@ -85,6 +91,9 @@ export type FormJobType = {
   defaultJobType: dropDownOption[];
   defaultAddress: AutoCompleteType[];
   recruiterId: string;
+  introVideo: QuestionType | null;
+  startVideo: QuestionType | null;
+  endVideo: QuestionType | null;
 };
 
 export type JobFormState = {
@@ -389,11 +398,15 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       recruiter_id: jobForm.formFields.recruiterId,
       location: jobForm.formFields.jobLocation,
       email_template: jobForm.formFields.screeningEmail.emailTemplates,
-      screening_questions: [jobForm.formFields.interviewConfig],
+      screening_questions: jobForm.formFields.interviewConfig,
       new_screening_setting: {
         ...jobForm.formFields.newScreeningConfig,
       },
       parameter_weights: jobForm.formFields.resumeScoreSettings,
+      video_assessment: jobForm.formFields.videoAssessment,
+      intro_videos: jobForm.formFields.introVideo,
+      start_video: jobForm.formFields.startVideo,
+      end_video: jobForm.formFields.endVideo,
     })
     .select();
   if (error) throw new Error(error.message);

@@ -77,6 +77,7 @@
   display: none;
 }
 
+<<<<<<< HEAD
 .icons.db-star-icons {
   position: absolute;
   left: auto;
@@ -85,6 +86,8 @@
   bottom: auto;
 }
 
+=======
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .fw-semibold {
   font-weight: 600;
 }
@@ -283,8 +286,11 @@
 
 .fw-semibold.new-greenhouse {
   color: #14413d;
+<<<<<<< HEAD
 }
 
 .text-color-white {
   color: white;
+=======
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 }

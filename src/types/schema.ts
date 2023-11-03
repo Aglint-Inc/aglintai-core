@@ -171,6 +171,7 @@ export interface Database {
             foreignKeyName: "job_applications_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           }
@@ -206,12 +207,14 @@ export interface Database {
             foreignKeyName: "lever_job_reference_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "lever_job_reference_recruiter_id_fkey"
             columns: ["recruiter_id"]
+            isOneToOne: false
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
@@ -247,6 +250,7 @@ export interface Database {
           {
             foreignKeyName: "lever_reference_public_job_id_fkey"
             columns: ["public_job_id"]
+            isOneToOne: false
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
@@ -369,6 +373,7 @@ export interface Database {
           {
             foreignKeyName: "public_jobs_recruiter_id_fkey"
             columns: ["recruiter_id"]
+            isOneToOne: false
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
@@ -516,12 +521,14 @@ export interface Database {
             foreignKeyName: "recruiter_user_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: true
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -603,6 +610,7 @@ export interface Database {
             foreignKeyName: "support_groups_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           }
@@ -680,6 +688,7 @@ export interface Database {
             foreignKeyName: "support_ticket_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
@@ -687,12 +696,14 @@ export interface Database {
             foreignKeyName: "support_ticket_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "support_ticket_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -712,11 +723,13 @@ export interface Database {
         | {
             Args: {
               "": boolean
+              "": boolean
             }
             Returns: string
           }
         | {
             Args: {
+              "": string
               "": string
             }
             Returns: string

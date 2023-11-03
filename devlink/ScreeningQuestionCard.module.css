@@ -168,6 +168,10 @@
   color: var(--grey600-d5bebe21);
 }
 
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
 .text-sm.color-grey-400 {
   color: var(--grey400-863ed4b5);
 }
@@ -419,6 +423,13 @@
   margin-top: 10px;
 }
 
+<<<<<<< HEAD
+=======
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .active-screening-card {
   position: absolute;
   left: 0%;

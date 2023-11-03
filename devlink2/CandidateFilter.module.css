@@ -145,6 +145,7 @@
   top: 28px;
   z-index: 99;
 
+  display: none;
   overflow: hidden;
   width: 320px;
   padding-top: 24px;

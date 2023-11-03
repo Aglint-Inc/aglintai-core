@@ -34,39 +34,44 @@ export const getSeedJobFormData = (
       interviewType: 'questions-preset',
       defaultAddress: [],
       defaultDepartments: [],
-      interviewConfig: {
-        skill: {
-          id: nanoid(),
+      interviewConfig: [
+        {
+          category: 'skill',
           copy: 'Skill',
+          id: nanoid(),
           questions: [],
         },
-        behavior: {
-          id: nanoid(),
+        {
+          category: 'behavior',
           copy: 'Behavior',
-
+          id: nanoid(),
           questions: [],
         },
-        communication: {
+        {
+          category: 'communication',
+          copy: 'communication',
           id: nanoid(),
-          copy: 'Communication',
           questions: [],
         },
-        performance: {
-          id: nanoid(),
+        {
+          category: 'performance',
           copy: 'Performance',
+          id: nanoid(),
           questions: [],
         },
-        education: {
-          id: nanoid(),
+        {
+          category: 'education',
           copy: 'Education',
-          questions: [],
-        },
-        general: {
           id: nanoid(),
-          copy: 'General',
           questions: [],
         },
-      },
+        {
+          category: 'general',
+          copy: 'General',
+          id: nanoid(),
+          questions: [],
+        },
+      ],
       screeningEmail: {
         date: new Date().toISOString(),
         isImmediate: true,
@@ -95,6 +100,10 @@ export const getSeedJobFormData = (
         ...scoreWheelDependencies.initialScoreWheelWeights,
       },
       recruiterId: '',
+      videoAssessment: false,
+      introVideo: null,
+      startVideo: null,
+      endVideo: null,
     },
   };
 
@@ -107,6 +116,7 @@ export const getSeedJobFormData = (
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
+    seedFormState.formFields.videoAssessment = recruiter.video_assessment;
     seedFormState.formFields.defaultWorkPlaceTypes = Object.keys(
       recruiter.workplace_type,
     ).map((o) => {
@@ -202,38 +212,11 @@ export const dbToClientjobPostForm = (
       ...seedData.formFields,
       company: jobPost.company,
       workPlaceType: jobPost.workplace_type,
-      interviewConfig: {
-        skill: get(
-          jobPost,
-          'screening_questions[0].skill',
-          seedData.formFields.interviewConfig.skill,
-        ),
-        behavior: get(
-          jobPost,
-          'screening_questions[0].behavior',
-          seedData.formFields.interviewConfig.behavior,
-        ),
-        communication: get(
-          jobPost,
-          'screening_questions[0].communication',
-          seedData.formFields.interviewConfig.communication,
-        ),
-        performance: get(
-          jobPost,
-          'screening_questions[0].performance',
-          seedData.formFields.interviewConfig.performance,
-        ),
-        education: get(
-          jobPost,
-          'screening_questions[0].education',
-          seedData.formFields.interviewConfig.education,
-        ),
-        general: get(
-          jobPost,
-          'screening_questions[0].general',
-          seedData.formFields.interviewConfig.general,
-        ),
-      },
+      interviewConfig: get(
+        jobPost,
+        'screening_questions',
+        seedData.formFields.interviewConfig,
+      ) as any,
       interviewType: get(
         jobPost,
         'screening_setting.interviewType',
@@ -281,12 +264,15 @@ export const dbToClientjobPostForm = (
           seedData.formFields.newScreeningConfig.feedbackVisible,
         ) as boolean,
       },
-
       resumeScoreSettings: {
         ...(get(jobPost, 'parameter_weights', {
           ...scoreWheelDependencies.initialScoreWheelWeights,
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
+      videoAssessment: jobPost.video_assessment,
+      introVideo: jobPost.intro_videos as any,
+      startVideo: jobPost.start_video as any,
+      endVideo: jobPost.end_video as any,
     },
   };
 

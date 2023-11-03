@@ -308,10 +308,13 @@
   color: #14413d;
 }
 
+<<<<<<< HEAD
 .text-color-white {
   color: white;
 }
 
+=======
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .cj-option-block {
   position: relative;
 
@@ -422,6 +425,7 @@
 }
 
 .cj-option-icon-block.asby {
+<<<<<<< HEAD
   padding: 0px;
 }
 
@@ -437,6 +441,12 @@
   min-width: 60px;
 }
 
+=======
+  overflow: hidden;
+  padding: 0px;
+}
+
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 .vectors-wrapper-29 {
   display: flex;
   width: 23.75px;

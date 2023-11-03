@@ -238,6 +238,10 @@
   margin-top: 10px;
 }
 
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
@@ -293,6 +297,11 @@
   display: flex;
   margin-top: 30px;
   flex-direction: column;
+<<<<<<< HEAD
   grid-column-gap: 35px;
   grid-row-gap: 35px;
+=======
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 }

@@ -34,7 +34,7 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { updateFeedbackOnJobApplications } from './utils';
+import { getRecruiter, updateFeedbackOnJobApplications } from './utils';
 const useInterviewContext = () => useContext(InterviewContext);
 function InterviewContextProvider({ children }) {
   let {
@@ -45,7 +45,9 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
   const { jobDetails, candidateDetails } = useInterviewDetailsContext();
-
+  getRecruiter(jobDetails?.recruiter_id).then((data) => {
+    interviewerIndex = data?.audio_avatar_id;
+  });
   useEffect(() => {
     if (Object.keys(jobDetails).length) {
       const jsonData = jobDetails?.screening_questions[0];
@@ -156,9 +158,9 @@ function InterviewContextProvider({ children }) {
 
   async function startInterview() {
     audioElement = null;
-    interviewerIndex = null;
+    // interviewerIndex = null;
     // interviewerIndex = Math.floor(Math.random() * 10); // its generate the random index to pick the interviewer
-    interviewerIndex = 6;
+    // interviewerIndex = 6;
     const timeforMicPer = setTimeout(() => {
       setAllowMic(true);
       //   document.getElementById('open-mic').click();

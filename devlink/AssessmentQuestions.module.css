@@ -1,3 +1,9 @@
+.wrap-skill {
+  margin-bottom: 35px;
+  padding-left: 20px;
+  background-color: white;
+}
+
 .div-block-543 {
   display: flex;
   align-items: flex-start;
@@ -254,7 +260,11 @@
 
 .div-block-544 {
   display: flex;
+<<<<<<< HEAD
   margin-top: 16px;
+=======
+  padding-top: 16px;
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;

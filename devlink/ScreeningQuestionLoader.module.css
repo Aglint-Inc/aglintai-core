@@ -1,8 +1,13 @@
 .new-screening-video-wrap {
+<<<<<<< HEAD
   position: relative;
 
   display: flex;
   margin-top: 0px;
+=======
+  display: flex;
+  margin-top: 16px;
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
   padding: 10px 20px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -18,7 +23,10 @@
 
 .new-screen-intro-wrap {
   position: relative;
+<<<<<<< HEAD
   z-index: 1;
+=======
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
 
   overflow: hidden;
   width: 251px;
@@ -43,8 +51,11 @@
 }
 
 .div-block-548 {
+<<<<<<< HEAD
   position: relative;
   z-index: 1;
+=======
+>>>>>>> 93343c40fd4ec8c2c7ed3ae665ecc62da0695241
   width: 100%;
 }
 
