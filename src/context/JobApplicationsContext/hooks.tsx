@@ -150,7 +150,7 @@ const useProviderJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const paginationLimit = 10;
+  const paginationLimit = 100;
 
   const initialJobApplicationDepth = Object.values(
     JobApplicationSections,
