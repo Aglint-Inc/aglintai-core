@@ -93,12 +93,14 @@ const JobApplicationComponent = () => {
   };
 
   const handleSelectNextApplication = () => {
-    if (currentApplication < sectionApplications.length - 1)
-      setCurrentApplication((prev) => prev + 1);
+    if (currentApplication < sectionApplications.length)
+      setCurrentApplication((prev) => (prev + 1) % sectionApplications.length);
   };
 
   const handleSelectPrevApplication = () => {
     if (currentApplication > 0) setCurrentApplication((prev) => prev - 1);
+    else if (currentApplication === 0)
+      setCurrentApplication(sectionApplications.length - 1);
   };
 
   // eslint-disable-next-line no-unused-vars

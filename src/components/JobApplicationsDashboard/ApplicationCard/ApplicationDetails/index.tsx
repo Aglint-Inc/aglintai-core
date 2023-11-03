@@ -304,6 +304,11 @@ const NewJobApplicationSideDrawer = ({
               }, 1000);
             });
         },
+        style: {
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none',
+        },
       }}
       onClickClose={{
         onClick: () => onClose(),
