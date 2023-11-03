@@ -16,7 +16,7 @@ import { Checkbox } from '@/devlink';
 import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 import { palette } from '@/src/context/Theme/Theme';
 import {
-  EmployeeType,
+  CandidateType,
   JobApplicationType,
   PublicJobsType,
   SupportTicketType,
@@ -26,14 +26,15 @@ import { supabase } from '@/src/utils/supabaseClient';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-function Support({ userDetails }: { userDetails: EmployeeType }) {
+function Support() {
   const router = useRouter();
   const [applicationId, setApplicationId] = useState<string>(null);
   const [ticketId, setTicketId] = useState<string>(null);
   const [jobDetails, setJobDetails] = useState<
-    JobApplicationType & {
-      jobDetails: PublicJobsType;
-    }
+    JobApplicationType &
+      CandidateType & {
+        jobDetails: PublicJobsType;
+      }
   >(null);
   const [details, setDetails] = useState<{
     title: string;
@@ -74,16 +75,6 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
     setDetailsError(temp);
     return result;
   };
-
-  useEffect(() => {
-    if (userDetails) {
-      setDetails({
-        ...details,
-        email: userDetails.email,
-      });
-      userDetails;
-    }
-  }, [userDetails]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -151,7 +142,7 @@ function Support({ userDetails }: { userDetails: EmployeeType }) {
               ],
               job_id: jobDetails.job_id,
               title: details.title,
-              user_id: userDetails?.user_id || null,
+              user_id: null,
               user_name: `${jobDetails.first_name} ${jobDetails.last_name}`,
               application_id: applicationId,
               email_updates: details.email_update,
@@ -195,12 +186,22 @@ const getApplicationDetails = async (id: string) => {
     .select('*')
     .eq('application_id', id);
   if (!error && data.length) {
-    const tempData = data[0];
+    const {
+      data: [candidate],
+      error: candidateError,
+    } = await supabase
+      .from('candidates')
+      .select()
+      .eq('id', data[0].candidate_id);
+
+    const tempData =
+      !candidateError && candidate ? { ...data[0], ...candidate } : data[0];
     // @ts-ignore
     tempData.jobDetails = await getJobTitle(tempData.job_id);
-    return tempData as unknown as JobApplicationType & {
-      jobDetails: PublicJobsType;
-    };
+    return tempData as unknown as JobApplicationType &
+      CandidateType & {
+        jobDetails: PublicJobsType;
+      };
   }
   return null;
 };
