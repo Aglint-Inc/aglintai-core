@@ -213,7 +213,11 @@ export function JobDetails({
                       {...onclickSelectAll}
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "cv-list-checkbox")}
+                        className={_utils.cx(
+                          _styles,
+                          "cv-list-checkbox",
+                          "hide"
+                        )}
                         tag="div"
                       >
                         {isAllChecked ? (
@@ -228,11 +232,7 @@ export function JobDetails({
                         ) : null}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-checkbox-ghost",
-                          "hide"
-                        )}
+                        className={_utils.cx(_styles, "cv-list-checkbox-ghost")}
                         tag="div"
                       />
                     </_Builtin.Block>

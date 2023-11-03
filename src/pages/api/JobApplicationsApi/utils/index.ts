@@ -51,7 +51,7 @@ export const readNewJobApplicationDbAction = async (
 
   let query = supabase
     .from('job_applications')
-    .select('*,candidates(*)')
+    .select('*,candidates!inner(*)')
     .eq('job_id', job_id)
     .eq('status', status);
 
