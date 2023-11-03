@@ -72,29 +72,30 @@ function InterviewInstructions() {
         </Stack>
       ) : (
         <>
-          {video_Urls.length > 0 &&
+          {video_Urls?.length > 0 &&
             video_Urls.map((ele: any, i: number) => {
-              return (
-                <div
-                  key={i}
-                  style={{
-                    display: 'none',
-                  }}
-                >
-                  <video
-                    preload='auto'
+              if (ele)
+                return (
+                  <div
                     key={i}
-                    src={ele?.split('.mp4')[0] + '.mp4'}
+                    style={{
+                      display: 'none',
+                    }}
                   >
-                    <track
-                      kind='captions'
-                      srclang='en'
-                      label='English'
-                      default
-                    />
-                  </video>
-                </div>
-              );
+                    <video
+                      preload='auto'
+                      key={i}
+                      src={ele?.split('.mp4')[0] + '.mp4'}
+                    >
+                      <track
+                        kind='captions'
+                        srclang='en'
+                        label='English'
+                        default
+                      />
+                    </video>
+                  </div>
+                );
             })}
           <InterviewWelcome
             onClickSupport={{
