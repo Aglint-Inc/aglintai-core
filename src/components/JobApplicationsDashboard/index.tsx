@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack } from '@mui/material';
+import { Dialog, Slider, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
@@ -35,7 +35,7 @@ import ImportManualCandidates from './ImportManualCandidates';
 import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
-import { capitalize } from './utils';
+import { capitalize, FilterParameter } from './utils';
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
 
@@ -70,6 +70,7 @@ const JobApplicationComponent = () => {
     job,
     handleJobApplicationPaginatedPolling,
     applicationDepth,
+    applicationDisable,
     updateTick,
     searchParameters,
   } = useJobApplications();
@@ -161,7 +162,7 @@ const JobApplicationComponent = () => {
       slotJobStatus={
         <>
           <RefreshButton
-            isDisabled={refresh}
+            isDisabled={refresh || applicationDisable}
             text={'Refresh'}
             onClick={async () => await handleManualRefresh()}
           />
@@ -291,9 +292,135 @@ const NewJobFilterBlock = () => {
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={<SearchField />}
-        slotFilter={<CandidateFilter filterCount={69} />}
+        slotFilter={<ApplicationFilter />}
       />
     </>
+  );
+};
+
+const ApplicationFilter = () => {
+  const { searchParameters } = useJobApplications();
+  const [filterVisibility, setFilterVisibility] = useState(false);
+  const filters = searchParameters.filter;
+  return (
+    <CandidateFilter
+      filterCount={filters.length}
+      slotResumeSlider={<ApplicationFilterSlider parameter='resume_score' />}
+      slotInterviewSlider={
+        <ApplicationFilterSlider parameter='interview_score' />
+      }
+      filterHeaderProps={{
+        onClick: () => setFilterVisibility((prev) => !prev),
+      }}
+      onclickClose={{ onClick: () => setFilterVisibility(false) }}
+      isFilterBodyVisible={filterVisibility}
+      onclickOverlay={{ onClick: () => setFilterVisibility(false) }}
+    />
+  );
+};
+
+const ApplicationFilterSlider = ({
+  parameter,
+}: {
+  parameter: Parameters['filter'][0]['parameter'];
+}) => {
+  const { handleJobApplicationFilter, searchParameters } = useJobApplications();
+
+  const paramsObj = searchParameters.filter.reduce(
+    (acc, curr) => {
+      const filter = curr.parameter === parameter;
+      return filter
+        ? curr.condition === 'gte'
+          ? {
+              ...acc,
+              count: { ...acc.count, min: curr.count },
+            }
+          : {
+              ...acc,
+              count: { ...acc.count, max: curr.count },
+            }
+        : {
+            ...acc,
+            newParams: [...acc.newParams, curr],
+          };
+    },
+    {
+      newParams: [] as FilterParameter[],
+      count: { min: 0, max: 100 },
+    },
+  );
+  const [value, setValue] = useState([
+    paramsObj.count.min,
+    paramsObj.count.max,
+  ]);
+  const initialRef = useRef(true);
+  const min = 0;
+  const max = 100;
+  const step = 5;
+
+  const handleUpdate = async (newValue: number[]) => {
+    await handleJobApplicationFilter({
+      ...searchParameters,
+      filter: [
+        ...newValue.reduce(
+          (acc, curr, i) => {
+            if (curr > 0 && curr < 100)
+              acc.push({
+                parameter,
+                condition: i === 0 ? 'gte' : 'lte',
+                count: curr,
+              });
+            return acc;
+          },
+          [...paramsObj.newParams] as FilterParameter[],
+        ),
+      ],
+    });
+  };
+
+  const handleChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number,
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < step) {
+      if (activeThumb === min) {
+        const clamped = Math.min(newValue[0], max - step);
+        setValue([clamped, clamped + step]);
+      } else {
+        const clamped = Math.max(newValue[1], step);
+        setValue([clamped - step, clamped]);
+      }
+    } else {
+      setValue(newValue as number[]);
+    }
+  };
+
+  useEffect(() => {
+    if (initialRef.current) {
+      initialRef.current = false;
+    } else {
+      const timer = setTimeout(async () => {
+        await handleUpdate(value);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [...value]);
+
+  return (
+    <Slider
+      value={value}
+      min={min}
+      max={max}
+      step={step}
+      onChange={handleChange}
+      valueLabelDisplay='auto'
+      disableSwap
+    />
   );
 };
 

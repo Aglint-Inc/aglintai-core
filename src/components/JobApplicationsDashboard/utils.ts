@@ -152,10 +152,8 @@ export enum ApiLogState {
 }
 
 export const intactConditionFilter = (application: JobApplication) => {
-  const apiLogObj = application.api_logs as any;
-  if (!apiLogObj) return ApiLogState.PROCESSING;
-  switch (apiLogObj.scoreStatus) {
-    case 'Failed':
+  switch (application.api_status) {
+    case 'failed':
       return ApiLogState.FAILED;
     case 'success':
       return ApiLogState.SUCCESS;

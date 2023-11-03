@@ -4,6 +4,13 @@
   align-items: center;
 }
 
+.jdet-filter-block {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
 .jdet-filter-top {
   display: flex;
   align-items: center;
@@ -138,15 +145,27 @@
   top: 28px;
   z-index: 99;
 
-  display: none;
   overflow: hidden;
   width: 320px;
+  padding-top: 24px;
 
   border-radius: 8px;
 
   background-color: var(--white);
 
   box-shadow: 0 6px 30px 0 hsla(0, 0.00%, 0.00%, 0.10);
+}
+
+.jdet-filter-close {
+  position: absolute;
+  left: auto;
+  top: 6px;
+  right: 12px;
+  bottom: auto;
+
+  display: flex;
+  width: 16px;
+  height: 16px;
 }
 
 .jdet-filter-content-block {
@@ -165,4 +184,13 @@
 
 .jdet-filter-clear-block {
   padding: 4px 8px;
+}
+
+.jdet-filter-overlay {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
 }

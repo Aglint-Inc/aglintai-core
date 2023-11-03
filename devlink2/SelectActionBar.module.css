@@ -248,6 +248,10 @@
   border: 1px solid var(--blue-500);
 }
 
+.select-action-btn.small {
+  padding: 3px 4px;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

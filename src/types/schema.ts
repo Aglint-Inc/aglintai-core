@@ -53,6 +53,7 @@ export interface Database {
           profile_image: string | null
           recruiter_id: string | null
           resume: string | null
+          resume_text: string | null
         }
         Insert: {
           company?: string | null
@@ -70,6 +71,7 @@ export interface Database {
           profile_image?: string | null
           recruiter_id?: string | null
           resume?: string | null
+          resume_text?: string | null
         }
         Update: {
           company?: string | null
@@ -87,6 +89,7 @@ export interface Database {
           profile_image?: string | null
           recruiter_id?: string | null
           resume?: string | null
+          resume_text?: string | null
         }
         Relationships: [
           {
@@ -101,10 +104,9 @@ export interface Database {
       job_applications: {
         Row: {
           ai_interviewer_id: number | null
-          api_logs: Json
           api_status: string
           application_id: string
-          candidate_id: string
+          candidate_id: string | null
           conversation: Json[] | null
           created_at: string
           emails: Json | null
@@ -113,19 +115,17 @@ export interface Database {
           interview_score: number
           interviewing_date: string | null
           jd_score: Json | null
-          job_id: string
+          job_id: string | null
           last_updated_at: string | null
           resume_score: number
           resume_text: Json | null
           status: string | null
-          used_token: Json[]
         }
         Insert: {
           ai_interviewer_id?: number | null
-          api_logs?: Json
           api_status?: string
           application_id?: string
-          candidate_id: string
+          candidate_id?: string | null
           conversation?: Json[] | null
           created_at?: string
           emails?: Json | null
@@ -134,19 +134,17 @@ export interface Database {
           interview_score?: number
           interviewing_date?: string | null
           jd_score?: Json | null
-          job_id: string
+          job_id?: string | null
           last_updated_at?: string | null
           resume_score?: number
           resume_text?: Json | null
           status?: string | null
-          used_token?: Json[]
         }
         Update: {
           ai_interviewer_id?: number | null
-          api_logs?: Json
           api_status?: string
           application_id?: string
-          candidate_id?: string
+          candidate_id?: string | null
           conversation?: Json[] | null
           created_at?: string
           emails?: Json | null
@@ -155,12 +153,11 @@ export interface Database {
           interview_score?: number
           interviewing_date?: string | null
           jd_score?: Json | null
-          job_id?: string
+          job_id?: string | null
           last_updated_at?: string | null
           resume_score?: number
           resume_text?: Json | null
           status?: string | null
-          used_token?: Json[]
         }
         Relationships: [
           {
@@ -292,6 +289,7 @@ export interface Database {
           embedding: string | null
           id: string
           is_campus: boolean
+          jd_json: Json | null
           job_criteria: Json | null
           job_title: string | null
           job_type: string | null
@@ -320,6 +318,7 @@ export interface Database {
           embedding?: string | null
           id?: string
           is_campus?: boolean
+          jd_json?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: string | null
@@ -348,6 +347,7 @@ export interface Database {
           embedding?: string | null
           id?: string
           is_campus?: boolean
+          jd_json?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: string | null
@@ -527,6 +527,54 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      rp_logs: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: number
+          logs: Json
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: number
+          logs?: Json
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: number
+          logs?: Json
+        }
+        Relationships: []
+      }
+      rp_token_usage: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: number
+          task: string | null
+          token_used_json: Json | null
+          total_token_used: number | null
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: number
+          task?: string | null
+          token_used_json?: Json | null
+          total_token_used?: number | null
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: number
+          task?: string | null
+          token_used_json?: Json | null
+          total_token_used?: number | null
+        }
+        Relationships: []
       }
       support_groups: {
         Row: {
@@ -730,23 +778,6 @@ export interface Database {
       levercandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
-      }
-      match_job_applications: {
-        Args: {
-          query_embedding: string
-          match_threshold: number
-          match_count: number
-          recruiter_id: string
-        }
-        Returns: {
-          id: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume: string
-          similarity: number
-        }[]
       }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
