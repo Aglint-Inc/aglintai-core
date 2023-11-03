@@ -90,6 +90,9 @@ export type FormJobType = {
   defaultJobType: dropDownOption[];
   defaultAddress: AutoCompleteType[];
   recruiterId: string;
+  introVideo: QuestionType | null;
+  startVideo: QuestionType | null;
+  endVideo: QuestionType | null;
 };
 
 export type JobFormState = {
@@ -400,6 +403,9 @@ async function saveJobPostToDb(jobForm: JobFormState) {
       },
       parameter_weights: jobForm.formFields.resumeScoreSettings,
       video_assessment: jobForm.formFields.videoAssessment,
+      intro_videos: jobForm.formFields.introVideo,
+      start_video: jobForm.formFields.startVideo,
+      end_video: jobForm.formFields.endVideo,
     })
     .select();
   if (error) throw new Error(error.message);

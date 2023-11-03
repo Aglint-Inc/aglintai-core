@@ -101,6 +101,9 @@ export const getSeedJobFormData = (
       },
       recruiterId: '',
       videoAssessment: false,
+      introVideo: null,
+      startVideo: null,
+      endVideo: null,
     },
   };
 
@@ -267,6 +270,9 @@ export const dbToClientjobPostForm = (
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
       videoAssessment: jobPost.video_assessment,
+      introVideo: jobPost.intro_videos as any,
+      startVideo: jobPost.start_video as any,
+      endVideo: jobPost.end_video as any,
     },
   };
 
