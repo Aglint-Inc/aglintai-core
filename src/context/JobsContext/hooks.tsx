@@ -15,7 +15,6 @@ import {
 import {
   deleteJobDbAction,
   initialJobContext,
-  readJobApplicationsAction,
   readJobDbAction,
   updateJobDbAction,
 } from './utils';
@@ -170,23 +169,6 @@ const useJobActions = () => {
     }
   };
 
-  const handleApplicationsRead = async (jobIds: string[]) => {
-    if (recruiter) {
-      const { data, error } = await readJobApplicationsAction(jobIds);
-      if (data) {
-        const action: Action = {
-          type: ActionType.READAPPLICATION,
-          //TODO: type fix needed
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        return true;
-      }
-      handleJobError(error);
-      return false;
-    }
-  };
-
   const handleJobUpdate = async (
     jobId: string,
     newJob: Partial<JobTypeDashboard>,
@@ -268,7 +250,6 @@ const useJobActions = () => {
     handleJobError,
     handleGetJob,
     initialLoad,
-    handleApplicationsRead,
   };
 
   return value;
