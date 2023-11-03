@@ -6,7 +6,12 @@ import { useEffect, useReducer } from 'react';
 import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { ApplicationData, CountJobs, JobsData, JobTypeDashboard } from './types';
+import {
+  ApplicationData,
+  CountJobs,
+  JobsData,
+  JobTypeDashboard,
+} from './types';
 import {
   deleteJobDbAction,
   initialJobContext,
@@ -86,7 +91,7 @@ const reducer = (state: JobsData, action: Action) => {
     case ActionType.UPDATE: {
       const newJobs: JobTypeDashboard[] = state.jobs.reduce((jobs, job) => {
         if (job.id === action.payload.jobData.id)
-          jobs.push(action.payload.jobData);
+          jobs.push({ ...job, ...action.payload.jobData });
         else jobs.push(job);
         return jobs;
       }, []);
@@ -171,6 +176,7 @@ const useJobActions = () => {
       if (data) {
         const action: Action = {
           type: ActionType.READAPPLICATION,
+          //TODO: type fix needed
           payload: { applicationData: data },
         };
         dispatch(action);
@@ -181,7 +187,10 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobUpdate = async (jobId: string, newJob: Partial<JobTypeDashboard>) => {
+  const handleJobUpdate = async (
+    jobId: string,
+    newJob: Partial<JobTypeDashboard>,
+  ) => {
     if (recruiter) {
       const { data, error } = await updateJobDbAction({
         id: jobId,
