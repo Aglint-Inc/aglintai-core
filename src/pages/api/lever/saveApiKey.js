@@ -14,8 +14,11 @@ export default async function handler(req, res) {
   if (!apiKey) {
     res.status(400).send('apiKey or recruiterId is missing');
   }
+  console.log(apiKey);
 
   const encryptedApiKey = encrypt(apiKey, process.env.ENCRYPTION_KEY);
+
+  console.log(encryptedApiKey);
 
   const { data, error } = await supabase
     .from('recruiter')

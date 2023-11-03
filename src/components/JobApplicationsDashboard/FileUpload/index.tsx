@@ -6,12 +6,15 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 const ResumeUpload = ({ setOpenSidePanel }) => {
+  const { recruiter } = useAuthDetails();
+  const { job } = useJobApplications();
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
   const { handleJobApplicationPaginatedPolling } = useJobApplications();
@@ -52,15 +55,25 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
       let uploadUrl = await uploadResume(file);
       try {
         // TODO: Error handling required and exisiting candidate handling
-        await supabase
+        const { data, error } = await supabase
           .from('candidates')
           .insert({
             first_name: file.name,
             last_name: '',
             email: '',
             resume: uploadUrl,
+            recruiter_id: recruiter.id,
           })
           .select();
+        if (!error) {
+          await supabase
+            .from('job_applications')
+            .insert({
+              candidate_id: data[0].id,
+              job_id: job.id,
+            })
+            .select();
+        }
       } catch (error) {
         // Handle errors, if needed
       }
