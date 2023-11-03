@@ -32,8 +32,6 @@ export type JobContext = {
   handleJobError: (error: any) => void;
   // eslint-disable-next-line no-unused-vars
   handleGetJob: (jobId: string) => JobTypeDashboard;
-  // eslint-disable-next-line no-unused-vars
-  handleApplicationsRead: (jobIds: string[]) => void;
   initialLoad: boolean;
 };
 

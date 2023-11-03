@@ -11,7 +11,6 @@ export const initialJobContext: JobContext = {
   handleJobError: undefined,
   handleGetJob: undefined,
   initialLoad: false,
-  handleApplicationsRead: undefined,
 };
 
 export const readJobDbAction = async (recruiter_id: string) => {

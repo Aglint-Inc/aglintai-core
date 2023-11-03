@@ -6,11 +6,15 @@ import { useEffect, useReducer } from 'react';
 import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { ApplicationData, CountJobs, JobsData, JobTypeDashboard } from './types';
+import {
+  ApplicationData,
+  CountJobs,
+  JobsData,
+  JobTypeDashboard,
+} from './types';
 import {
   deleteJobDbAction,
   initialJobContext,
-  readJobApplicationsAction,
   readJobDbAction,
   updateJobDbAction,
 } from './utils';
@@ -165,23 +169,10 @@ const useJobActions = () => {
     }
   };
 
-  const handleApplicationsRead = async (jobIds: string[]) => {
-    if (recruiter) {
-      const { data, error } = await readJobApplicationsAction(jobIds);
-      if (data) {
-        const action: Action = {
-          type: ActionType.READAPPLICATION,
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        return true;
-      }
-      handleJobError(error);
-      return false;
-    }
-  };
-
-  const handleJobUpdate = async (jobId: string, newJob: Partial<JobTypeDashboard>) => {
+  const handleJobUpdate = async (
+    jobId: string,
+    newJob: Partial<JobTypeDashboard>,
+  ) => {
     if (recruiter) {
       const { data, error } = await updateJobDbAction({
         id: jobId,
@@ -259,7 +250,6 @@ const useJobActions = () => {
     handleJobError,
     handleGetJob,
     initialLoad,
-    handleApplicationsRead,
   };
 
   return value;
