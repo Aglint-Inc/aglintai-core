@@ -178,6 +178,7 @@ const Question = ({
       !isEmpty(question.videoQn) &&
       question.question !== question.videoQn) ||
     isApiError;
+  const isGenerateVisible = !isVideoError && !question.videoId;
 
   return (
     <>
@@ -272,7 +273,7 @@ const Question = ({
           isPlayButtonVisible={!playing}
           isPauseButtonVisible={playing}
           isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
-          isGenerateVisible={!question.videoId}
+          isGenerateVisible={isGenerateVisible}
           isGeneratingLoaderVisible={isVideoGenerating}
           isErrorVisible={isVideoError}
           onClickRetry={{
