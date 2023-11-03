@@ -2,7 +2,10 @@
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  JobApplication,
+  NewJobApplications,
+} from '@/src/context/JobApplicationsContext/types';
 
 import { upsertNewJobApplicationDbAction } from './utils';
 
@@ -19,5 +22,5 @@ export default handler;
 
 export type BulkCreateJobApplicationApi = {
   request: { inputData: Partial<JobApplication>[] };
-  response: { data: JobApplication[]; error: PostgrestError };
+  response: { data: NewJobApplications[]; error: PostgrestError };
 };
