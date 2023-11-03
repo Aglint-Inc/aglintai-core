@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-import { getRandomColor } from '@/src/components/CandidateDatabase';
 import {
   NotificationsEmailAPIType,
   Public_jobsType,
@@ -15,6 +14,7 @@ import {
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
+import { getRandomColor } from '@/src/utils/text/textUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 

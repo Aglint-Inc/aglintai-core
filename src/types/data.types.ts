@@ -14,8 +14,8 @@ export type SocialsType = {
 
 export type RecruiterType = Omit<
   Database['public']['Tables']['recruiter']['Row'],
-  'address' | 'socials'
-> & { address: AddressType | null; socials: SocialsType | null };
+  'socials'
+> & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 

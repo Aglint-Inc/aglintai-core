@@ -12,8 +12,6 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { fileTypes } from '../../CandidateDatabase/ImportDrawer/FileUpload';
-
 const ResumeUpload = ({ setOpenSidePanel }) => {
   const router = useRouter();
   const [selectedfile, setSelectedFile] = useState([]);
@@ -211,3 +209,5 @@ export const candidateDatabaseSampleJob = () => {
     is_campus: true,
   };
 };
+
+export const fileTypes = ['PDF', 'DOCX', 'TXT'];
