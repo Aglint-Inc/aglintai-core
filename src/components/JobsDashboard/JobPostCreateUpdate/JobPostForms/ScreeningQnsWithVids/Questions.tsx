@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -78,6 +78,7 @@ const Question = ({
   const [playing, setPlaying] = useState(false);
   const { recruiter } = useAuthDetails();
   const [isQnHovered, setQnHovered] = useState(false);
+  const [isApiError, setIsApiError] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -128,23 +129,34 @@ const Question = ({
         videoInfo = data;
       }
 
+      const updatedQn: QuestionType = {
+        ...question,
+        videoId: videoInfo.video_id,
+        videoQn: question.question,
+        videoUrl: '',
+      };
+
       handleUpdateFormFields({
         path: `${path}`,
         value: {
-          ...question,
-          videoId: videoInfo.video_id,
-          videoQn: question.question,
+          ...updatedQn,
         },
       });
     } catch (err) {
+      setIsApiError(true);
       toast.error('Something went wrong please try again');
     }
   };
 
-  const handleRegenerate = () => {
+  const handleRegenerate = async () => {
+    const updateQn: QuestionType = {
+      ...question,
+      videoId: '',
+      videoUrl: '',
+    };
     handleUpdateFormFields({
-      path: `${path}.videoId`,
-      value: '',
+      path: path,
+      value: { ...updateQn },
     });
     handleGenerateVideo();
   };
@@ -159,6 +171,13 @@ const Question = ({
   };
 
   const videoUrl = question.videoUrl;
+  const isVideoGenerating =
+    isEmpty(question.videoUrl) && !isEmpty(question.videoId);
+  const isVideoError =
+    (!isEmpty(question.question) &&
+      !isEmpty(question.videoQn) &&
+      question.question !== question.videoQn) ||
+    isApiError;
 
   return (
     <>
@@ -252,12 +271,10 @@ const Question = ({
           isVideoVisible={jobForm.formFields.videoAssessment}
           isPlayButtonVisible={!playing}
           isPauseButtonVisible={playing}
-          isPlayPauseButtonVisible={videoUrl.length !== 0}
+          isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
           isGenerateVisible={!question.videoId}
-          isGeneratingLoaderVisible={question.videoId && !videoUrl}
-          isErrorVisible={
-            question.videoQn && question.question !== question.videoQn
-          }
+          isGeneratingLoaderVisible={isVideoGenerating}
+          isErrorVisible={isVideoError}
           onClickRetry={{
             onClick: () => {
               handleRegenerate();
