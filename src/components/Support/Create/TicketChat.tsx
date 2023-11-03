@@ -9,7 +9,6 @@ import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { palette } from '@/src/context/Theme/Theme';
 import {
-  EmployeeType,
   PublicJobsType,
   SupportTicketType,
 } from '@/src/types/data.types';
@@ -27,7 +26,6 @@ dayjs.extend(relativeTime);
 function TicketChat({
   ticket: ticketDetails,
 }: {
-  userDetails: EmployeeType;
   ticket: SupportTicketType & {
     jobDetails: PublicJobsType;
   };

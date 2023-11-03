@@ -4,16 +4,11 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import TicketChat from '@/src/components/Support/Create/TicketChat';
-import {
-  EmployeeType,
-  PublicJobsType,
-  SupportTicketType,
-} from '@/src/types/data.types';
+import { PublicJobsType, SupportTicketType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 dayjs.extend(relativeTime);
 
 function SupportTicket() {
-  const [userDetails, setUserDetails] = useState<EmployeeType>(null);
   const router = useRouter();
   const [ticket, setTicket] = useState<
     SupportTicketType & { jobDetails: PublicJobsType }
@@ -23,23 +18,10 @@ function SupportTicket() {
     if (router.isReady) {
       const { id } = router.query as { id: string };
       getTicket(id).then((ticket) => setTicket(ticket));
-      supabase.auth.getSession().then(({ data }) => {
-        if (data.session?.user) {
-          supabase
-            .from('employee')
-            .select()
-            .eq('user_id', data.session.user.id)
-            .then(({ data, error }) => {
-              if (!error && data.length) {
-                setUserDetails(data[0]);
-              }
-            });
-        }
-      });
     }
   }, [router.isReady]);
 
-  return <>{ticket && <TicketChat {...{ ticket, userDetails }} />}</>;
+  return <>{ticket && <TicketChat {...{ ticket }} />}</>;
 }
 
 export default SupportTicket;
