@@ -70,7 +70,12 @@ export function CandidateListItem({
           >
             {slotProfileImage}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{name}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "line-clamp-1")}
+            tag="div"
+          >
+            {name}
+          </_Builtin.Block>
           {isHighlighted ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
@@ -120,7 +125,12 @@ export function CandidateListItem({
           className={_utils.cx(_styles, "cv-list-column", "email")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{email}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "line-clamp-1")}
+            tag="div"
+          >
+            {email}
+          </_Builtin.Block>
           {isHighlighted ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-item-highlight")}
@@ -153,6 +163,7 @@ export function CandidateListItem({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.line-clamp-1%20%7B%0Adisplay%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%201%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%20%20%0A%20%20overflow%3A%20hidden%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

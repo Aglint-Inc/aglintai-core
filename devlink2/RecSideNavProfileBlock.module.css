@@ -80,14 +80,14 @@
   display: none;
 }
 
-.icon-block._8px {
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  min-width: 8px;
+.icon-block._12px {
+  width: 12px;
+  height: 12px;
+  min-height: 12px;
+  min-width: 12px;
 }
 
-.icon-block._8px.sort {
+.icon-block._12px.sort {
   position: relative;
 }
 

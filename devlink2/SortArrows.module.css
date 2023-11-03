@@ -1,9 +1,9 @@
 .sort-arrow-block {
   display: flex;
   padding: 2px 8px;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
+  flex-direction: row;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 
   color: hsla(0, 0.00%, 100.00%, 1.00);
 }
@@ -46,14 +46,14 @@
   }
 }
 
-.icon-block._8px {
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  min-width: 8px;
+.icon-block._12px {
+  width: 12px;
+  height: 12px;
+  min-height: 12px;
+  min-width: 12px;
 }
 
-.icon-block._8px.sort {
+.icon-block._12px.sort {
   position: relative;
 }
 

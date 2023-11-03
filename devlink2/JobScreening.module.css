@@ -273,6 +273,10 @@
   }
 }
 
+.text-blue-500.ml-12 {
+  margin-left: 8px;
+}
+
 .jdet-edit-controls-wrapper {
   display: flex;
   align-items: center;

@@ -150,6 +150,7 @@ const JobApplicationComponent = () => {
 
   return (
     <JobDetails
+      onclickHeaderJobs={{ onClick: () => router.push(pageRoutes.JOBS) }}
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
       textApplicantsNumber={``}

@@ -22,4 +22,7 @@ declare function JobDetails(props: {
   slotResumeSort?: Types.Devlink.Slot;
   slotNameSort?: Types.Devlink.Slot;
   slotInterviewSort?: Types.Devlink.Slot;
+  slotEmailSort?: Types.Devlink.Slot;
+  slotDateSort?: Types.Devlink.Slot;
+  onclickHeaderJobs?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

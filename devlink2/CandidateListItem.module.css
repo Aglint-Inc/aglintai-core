@@ -76,12 +76,10 @@
 }
 
 .cv-list-column.score {
-  width: 180px;
+  width: 200px;
   height: 36px;
-  min-width: 180px;
+  min-width: 200px;
   justify-content: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
 }
 
 .cv-list-column.score.gap-4 {

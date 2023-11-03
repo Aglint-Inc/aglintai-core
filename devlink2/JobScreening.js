@@ -118,7 +118,7 @@ export function JobScreening({
                     className={_utils.cx(_styles, "text-blue-500")}
                     tag="div"
                   >
-                    {"Preview"}
+                    {"View Job"}
                   </_Builtin.Block>
                 </_Builtin.Link>
               ) : null}
