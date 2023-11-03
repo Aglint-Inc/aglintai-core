@@ -1,6 +1,8 @@
 .new-screening-video-wrap {
+  position: relative;
+
   display: flex;
-  margin-top: 16px;
+  margin-top: 0px;
   padding: 10px 20px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -16,6 +18,7 @@
 
 .new-screen-intro-wrap {
   position: relative;
+  z-index: 1;
 
   overflow: hidden;
   width: 251px;
@@ -366,6 +369,8 @@
 }
 
 .div-block-548 {
+  position: relative;
+  z-index: 1;
   width: 100%;
 }
 
@@ -404,4 +409,14 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.active-screening-card {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #f8f9f9;
 }

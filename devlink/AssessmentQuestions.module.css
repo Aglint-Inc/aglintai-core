@@ -248,7 +248,13 @@
   color: #14413d;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .div-block-544 {
+  display: flex;
+  margin-top: 16px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;

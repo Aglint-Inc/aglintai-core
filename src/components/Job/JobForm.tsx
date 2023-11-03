@@ -22,7 +22,7 @@ import BasicStepOne from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/Basi
 import BasicStepTwo from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepTwo';
 import Emails from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/EmailTemplates';
 import ScoreSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScoreSettings';
-import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/screeningQnsVid';
+import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningQnsWithVids';
 import ScreeningSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/SyncStatus';
 

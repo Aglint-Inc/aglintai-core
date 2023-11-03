@@ -27,4 +27,5 @@ declare function ScreeningQuestionCard(props: {
   textError?: React.ReactNode;
   textButtonError?: React.ReactNode;
   isErrorVisible?: Types.Visibility.VisibilityConditions;
+  isActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
