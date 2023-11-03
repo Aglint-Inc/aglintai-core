@@ -1,12 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
 import * as _utils from "./utils";
 import _styles from "./CandidateFilter.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-63":{"id":"e-63","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-33","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-64"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6530d26319fe0366b3c3a2a1|b6fccb41-a2a5-40e0-7ff3-72013663d9c2","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699005448685},"e-64":{"id":"e-64","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-34","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-63"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6530d26319fe0366b3c3a2a1|b6fccb41-a2a5-40e0-7ff3-72013663d9c2","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699005448685}},"actionLists":{"a-33":{"id":"a-33","title":"filter-[hover-in] 2","actionItemGroups":[{"actionItems":[{"id":"a-33-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".jdet-filter-content","selectorGuids":["1d6ffd8b-25bc-41be-5f7b-1a0196c67e6e"]},"value":"none"}}]},{"actionItems":[{"id":"a-33-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".jdet-filter-content","selectorGuids":["1d6ffd8b-25bc-41be-5f7b-1a0196c67e6e"]},"value":"block"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1698824193169},"a-34":{"id":"a-34","title":"filter-[hover-out] 2","actionItemGroups":[{"actionItems":[{"id":"a-34-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".jdet-filter-content","selectorGuids":["1d6ffd8b-25bc-41be-5f7b-1a0196c67e6e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698824250229}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function CandidateFilter({
   as: _Component = _Builtin.Block,
@@ -23,8 +18,6 @@ export function CandidateFilter({
   isCountVisible = false,
   onclickOverlay = {},
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component className={_utils.cx(_styles, "jdet-filter-wrapper")} tag="div">
       <_Builtin.Block

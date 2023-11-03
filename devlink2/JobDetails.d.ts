@@ -25,4 +25,5 @@ declare function JobDetails(props: {
   slotEmailSort?: Types.Devlink.Slot;
   slotDateSort?: Types.Devlink.Slot;
   onclickHeaderJobs?: Types.Devlink.RuntimeProps;
+  isFiltersVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
