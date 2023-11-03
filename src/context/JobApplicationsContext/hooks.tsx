@@ -107,10 +107,17 @@ const reducer = (state: JobApplicationsData, action: Action) => {
     case ActionType.UPDATE: {
       const newState: JobApplicationsData = {
         ...state,
-        [action.payload.applicationData.status]: [
-          ...state[action.payload.applicationData.status],
-          action.payload.applicationData,
-        ],
+        [action.payload.applicationData.status]: state[
+          action.payload.applicationData.status
+        ].reduce((acc: JobApplication[], curr: JobApplication) => {
+          if (
+            curr.application_id ===
+            action.payload.applicationData.application_id
+          )
+            acc.push(action.payload.applicationData);
+          else acc.push(curr);
+          return acc;
+        }, []),
       };
       return newState;
     }

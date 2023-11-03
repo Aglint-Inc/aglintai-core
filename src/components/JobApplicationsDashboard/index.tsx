@@ -465,11 +465,13 @@ const ActionBar = ({
   });
   const handleUpdateJobs = async (destination: JobApplicationSections) => {
     setJobUpdate(true);
-    await handleUpdateJobStatus(checkList, {
+    const confirmation = await handleUpdateJobStatus(checkList, {
       source: section,
       destination,
     });
-    setCheckList(new Set<string>());
+    if (confirmation) {
+      setCheckList(new Set<string>());
+    }
     setJobUpdate(false);
   };
 
