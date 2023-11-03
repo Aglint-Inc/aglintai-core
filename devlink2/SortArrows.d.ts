@@ -5,5 +5,6 @@ declare function SortArrows(props: {
   as?: React.ElementType;
   upArrow?: Types.Visibility.VisibilityConditions;
   downArrow?: Types.Visibility.VisibilityConditions;
-  onclickSort?: Types.Devlink.RuntimeProps;
+  onclickUp?: Types.Devlink.RuntimeProps;
+  onclickDown?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

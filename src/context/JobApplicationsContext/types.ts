@@ -39,6 +39,7 @@ export type Parameters = {
 export type JobApplicationContext = {
   applications: JobApplicationsData;
   applicationDepth: { [key in JobApplicationSections]: number };
+  applicationDisable: boolean;
   job: JobTypeDashboard;
   updateTick: boolean;
   handleJobApplicationCreate: (

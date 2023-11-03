@@ -576,6 +576,10 @@
   }
 }
 
+.text-blue-500.ml-12 {
+  margin-left: 8px;
+}
+
 .rd-email-edit-btn {
   display: flex;
   height: 32px;

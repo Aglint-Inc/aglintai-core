@@ -7,17 +7,15 @@ export function SortArrows({
   as: _Component = _Builtin.Block,
   upArrow = false,
   downArrow = false,
-  onclickSort = {},
+  onclickUp = {},
+  onclickDown = {},
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "sort-arrow-block", "clickable")}
-      tag="div"
-      {...onclickSort}
-    >
+    <_Component className={_utils.cx(_styles, "sort-arrow-block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "icon-block", "_8px", "sort")}
+        className={_utils.cx(_styles, "icon-block", "_12px", "sort")}
         tag="div"
+        {...onclickUp}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}
@@ -31,8 +29,9 @@ export function SortArrows({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "icon-block", "_8px", "sort")}
+        className={_utils.cx(_styles, "icon-block", "_12px", "sort")}
         tag="div"
+        {...onclickDown}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

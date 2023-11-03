@@ -19,6 +19,7 @@ import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
+  Parameters,
 } from '@/src/context/JobApplicationsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -137,6 +138,8 @@ const JobApplicationComponent = () => {
     refreshRef.current,
     updateTick,
     searchParameters.search,
+    searchParameters.sort.ascending,
+    searchParameters.sort.parameter,
   ]);
 
   return (
@@ -218,9 +221,44 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
-      slotInterviewSort={<SortArrows />}
-      slotNameSort={<SortArrows downArrow={true} />}
-      slotResumeSort={<SortArrows upArrow={true} />}
+      slotInterviewSort={<ApplicationSort parameter='interview_score' />}
+      slotNameSort={<ApplicationSort parameter='first_name' />}
+      slotResumeSort={<ApplicationSort parameter='resume_score' />}
+      slotEmailSort={<ApplicationSort parameter='email' />}
+      slotDateSort={<ApplicationSort parameter='created_at' />}
+    />
+  );
+};
+
+const ApplicationSort = ({
+  parameter,
+}: {
+  parameter: Parameters['sort']['parameter'];
+}) => {
+  const { searchParameters, handleJobApplicationFilter } = useJobApplications();
+  const [loading, setLoading] = useState(false);
+  const isCurrentParam = searchParameters.sort
+    ? searchParameters.sort.parameter === parameter
+    : false;
+  const isAsc = searchParameters.sort ? searchParameters.sort.ascending : false;
+  const handleToggleSort = async (up: boolean) => {
+    setLoading(true);
+    await handleJobApplicationFilter({
+      ...searchParameters,
+      sort: { parameter, ascending: up },
+    });
+    setLoading(false);
+  };
+  const style = { pointerEvents: loading ? 'none' : 'auto' };
+  return (
+    <SortArrows
+      upArrow={isCurrentParam && isAsc}
+      downArrow={isCurrentParam && !isAsc}
+      onclickUp={{ onClick: async () => await handleToggleSort(true), style }}
+      onclickDown={{
+        onClick: async () => await handleToggleSort(false),
+        style,
+      }}
     />
   );
 };
@@ -313,8 +351,11 @@ const ApplicantsList = ({
   currentApplication: number;
   refresh: boolean;
 }) => {
-  const { handleJobApplicationPaginatedRead, applicationDepth } =
-    useJobApplications();
+  const {
+    handleJobApplicationPaginatedRead,
+    applicationDepth,
+    applicationDisable,
+  } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
   const [paginationLoad, setPaginationLoad] = useState(false);
@@ -387,9 +428,10 @@ const ApplicantsList = ({
     <>
       {applications.map((application, i) => {
         const styles =
-          jobUpdate && checkList.has(application.application_id)
-            ? { opacity: 0.5, pointerEvent: 'none' }
-            : { opacity: 1, pointerEvent: 'auto' };
+          (jobUpdate && checkList.has(application.application_id)) ||
+          applicationDisable
+            ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
+            : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
         return (
           <Stack
             key={application.application_id}

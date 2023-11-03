@@ -36,15 +36,21 @@
   }
 }
 
-.icon-block._8px {
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  min-width: 8px;
+.icon-block._12px {
+  width: 12px;
+  height: 12px;
+  min-height: 12px;
+  min-width: 12px;
 }
 
-.icon-block._8px.sort {
+.icon-block._12px.sort {
   position: relative;
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icon-block._12px.sort:hover {
+  opacity: 0.8;
 }
 
 .icon-embed {
@@ -77,6 +83,12 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 99;
 
   color: var(--yellow-600);
+}
+
+.icon-embed.sort {
+  position: relative;
+  z-index: 5;
 }

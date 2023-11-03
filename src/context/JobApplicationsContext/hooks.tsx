@@ -178,13 +178,15 @@ const useProviderJobApplicationActions = (
     useState(false);
 
   const initialParameters: Parameters = {
-    sort: { parameter: 'first_name', condition: 'asc' },
+    sort: { parameter: 'first_name', ascending: true },
     filter: null, //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
     search: null,
   };
   const [searchParameters, setSearchParameters] = useState({
     ...initialParameters,
   });
+
+  const [applicationDisable, setApplicationDisable] = useState(false);
 
   const circularScoreAnimation = useRef(true);
   const updateTick = useRef(false);
@@ -436,6 +438,7 @@ const useProviderJobApplicationActions = (
   };
 
   const handleJobApplicationFilter = async (parameters: Parameters) => {
+    setApplicationDisable(true);
     const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
       return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
     }, {}) as ReadJobApplicationApi['request']['ranges'];
@@ -445,6 +448,7 @@ const useProviderJobApplicationActions = (
       ...parameters,
     });
     if (confirmation) setSearchParameters({ ...parameters });
+    setApplicationDisable(false);
   };
 
   useEffect(() => {
@@ -463,6 +467,7 @@ const useProviderJobApplicationActions = (
   const value = {
     applications,
     applicationDepth,
+    applicationDisable,
     job,
     updateTick: updateTick.current,
     handleJobApplicationCreate,

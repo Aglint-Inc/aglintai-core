@@ -57,7 +57,7 @@ export type SortParameter = {
     | 'first_name'
     | 'email'
     | 'created_at';
-  condition: 'asc' | 'desc';
+  ascending: boolean;
 };
 
 export const getSortedApplications = (
@@ -108,9 +108,7 @@ export const getSortedApplications = (
       }
       break;
   }
-  return sortParameters.condition === 'asc'
-    ? applications
-    : applications.reverse();
+  return sortParameters.ascending ? applications : applications.reverse();
 };
 
 export const getFilteredApplications = (

@@ -63,7 +63,7 @@ export const readNewJobApplicationDbAction = async (
 
   if (sort) {
     const params = {
-      ascending: sort.condition === 'asc',
+      ascending: sort.ascending,
       nullsFirst: false,
     };
     if (sort.parameter === 'first_name' || sort.parameter === 'email') {

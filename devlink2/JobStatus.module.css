@@ -157,8 +157,14 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 99;
 
   color: var(--yellow-600);
+}
+
+.icon-embed.sort {
+  position: relative;
+  z-index: 5;
 }
 
 .text-kale-800 {
