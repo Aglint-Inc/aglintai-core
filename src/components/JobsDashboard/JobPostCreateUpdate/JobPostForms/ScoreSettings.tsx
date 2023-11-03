@@ -47,7 +47,7 @@ const ScoreSettings = () => {
             />
             <ScoreWheel
               id={'ScoreWheelSetting'}
-              weights={jobForm.formFields.resumeScoreSettings}
+              parameter_weights={jobForm.formFields.resumeScoreSettings}
             />
           </Stack>
         </>

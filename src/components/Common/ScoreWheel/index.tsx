@@ -3,6 +3,12 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  getJdScore,
+  getOverallResumeScore,
+} from '@/src/utils/support/supportUtils';
+
 export const scoreWheelDependencies = {
   initialScoreWheelScores: {
     skills: 100,
@@ -38,22 +44,34 @@ export type ScoreWheelParams = {
 
 const ScoreWheel = ({
   id,
-  weights,
-  score,
+  jd_score,
+  parameter_weights,
   fontSize = 14,
 }: {
   id: string;
-  weights: any;
-  score?: any;
+  jd_score?: JobApplication['jd_score'];
+  parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {
-  const newScore = {
-    ...scoreWheelDependencies.initialScoreWheelScores,
-    ...score,
-  };
-  const isSettings = score === undefined;
+  const isSettings = jd_score === undefined;
   const [delay, setDelay] = useState(0);
   const [degree, setDegree] = useState(null);
+  const jdScore = !isSettings
+    ? getJdScore({
+        qualification: (jd_score as any).qualification,
+        skills_score: (jd_score as any).skills_score,
+      })
+    : null;
+  const newScore = {
+    ...scoreWheelDependencies.initialScoreWheelScores,
+    ...jdScore,
+  };
+  const { conicGradient, hoverKey, unused } = getStyles(
+    delay,
+    parameter_weights,
+    newScore,
+    degree,
+  );
   useEffect(() => {
     if (delay === 100) {
       return;
@@ -70,13 +88,10 @@ const ScoreWheel = ({
       return () => clearTimeout(timer);
     }
   }, [delay]);
-  const { conicGradient, hoverKey, unused } = getStyles(
-    delay,
-    weights,
-    newScore,
-    degree,
-  );
-  const overallScore = getOverallScore(weights, newScore);
+
+  const overallScore = !isSettings
+    ? getOverallResumeScore(jd_score, parameter_weights)
+    : 0;
   return (
     <>
       <Stack
@@ -125,13 +140,16 @@ const ScoreWheel = ({
             <Stack fontSize={'200%'} sx={{ fontWeight: 600 }}>
               {isSettings
                 ? hoverKey
-                  ? `${weights[hoverKey] ?? unused.count}%`
+                  ? `${parameter_weights[hoverKey] ?? unused.count}%`
                   : unused.isUnused
                   ? `${unused.count}%`
                   : '100%'
                 : `${
                     hoverKey
-                      ? Math.trunc((weights[hoverKey] * score[hoverKey]) / 100)
+                      ? Math.trunc(
+                          (parameter_weights[hoverKey] * jdScore[hoverKey]) /
+                            100,
+                        )
                       : overallScore
                   }`}
             </Stack>
@@ -239,51 +257,6 @@ const getCursorDegrees = (e: any, id: string) => {
   const degrees = 90 - radians * (180 / Math.PI);
   const correctedDegrees = degrees < 0 ? 360 + degrees : degrees;
   return correctedDegrees;
-};
-
-export const getOverallScore = (
-  weight: ScoreWheelParams,
-  score: ScoreWheelParams,
-) => {
-  return score
-    ? Math.trunc(
-        Object.keys(weight).reduce((acc, curr) => {
-          acc += (score[curr] * weight[curr]) / 100;
-          return acc;
-        }, 0),
-      )
-    : 0;
-};
-
-export const getResumeScore = (jd_score, parameter_weights) => {
-  const data = {
-    qualification: jd_score.qualification,
-    skills: jd_score.skills_score,
-  };
-  const relevanceScores = {
-    less: 10,
-    ok: 30,
-    more: 50,
-  };
-  const relatedScore = 50;
-  const detailedScores = {};
-  for (const key of Object.keys(data.qualification)) {
-    const value = data.qualification[key];
-    if (!value) {
-      continue;
-    }
-    detailedScores[key] = value.isRelated
-      ? relatedScore + relevanceScores[value.relevance] || 0
-      : 0;
-  }
-  const skillsScore: number = data.skills?.score || 0;
-  detailedScores['skills'] = skillsScore * 0.1;
-  return Math.trunc(
-    Object.keys(parameter_weights).reduce((acc, curr) => {
-      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
-      return acc;
-    }, 0),
-  );
 };
 
 export default ScoreWheel;

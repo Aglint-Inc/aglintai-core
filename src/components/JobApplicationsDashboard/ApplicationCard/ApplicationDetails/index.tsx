@@ -28,7 +28,6 @@ import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
-  getOverallScore,
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
@@ -42,7 +41,7 @@ import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { JobType } from '@/src/types/data.types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { calculateOverallScore } from '@/src/utils/support/supportUtils';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
@@ -578,28 +577,26 @@ export const NewResumeScoreDetails = ({
   setOpenResume,
 }: {
   applicationDetails: JobApplication;
-  job: JobType;
+  job: JobTypeDashboard;
   feedback: JobApplication['feedback'];
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const jdScoreObj = applicationDetails.jd_score as any;
 
-  const jdScore = calculateOverallScore({
-    qualification: jdScoreObj.qualification,
-    skills: jdScoreObj.skills_score,
-  });
+  const score = getOverallResumeScore(
+    applicationDetails.jd_score,
+    job.parameter_weights,
+  );
 
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
-      weights={job.parameter_weights as ScoreWheelParams}
-      score={jdScore}
+      jd_score={applicationDetails.jd_score}
+      parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
     />
   );
-  const feedbackObj = giveRateInWordToResume(
-    getOverallScore(job.parameter_weights as ScoreWheelParams, jdScore),
-  );
+  const feedbackObj = giveRateInWordToResume(score);
   return (
     <CandidateResumeScore
       textStyleProps={{

@@ -36,7 +36,6 @@ import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
-import { calculateOverallScore } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 function InterviewFeedbackPage() {
@@ -92,12 +91,6 @@ function InterviewFeedbackPage() {
     const jobDetails = applicationDetails as unknown as {
       jd_score: { summary: { feedback: undefined } };
     };
-    const jdScoreObj = applicationDetails.jd_score as any;
-
-    const jdScore = calculateOverallScore({
-      qualification: jdScoreObj.qualification,
-      skills: jdScoreObj.skills_score,
-    });
 
     resumeScoreWheel =
       jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
@@ -111,8 +104,8 @@ function InterviewFeedbackPage() {
         ) : (
           <ScoreWheel
             id={`ScoreWheelApplicationCard${Math.random()}`}
-            weights={job.parameter_weights as ScoreWheelParams}
-            score={jdScore}
+            parameter_weights={job.parameter_weights as ScoreWheelParams}
+            jd_score={applicationDetails.jd_score}
             fontSize={7}
           />
         )

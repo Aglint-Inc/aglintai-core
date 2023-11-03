@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
 const Priority = {
@@ -142,58 +144,66 @@ export const statusOrder = {
   reopened: 7,
 };
 
+export type QualificationRelevance =
+  | 'low match'
+  | 'average match'
+  | 'more match';
+
 type DataType = {
   qualification: {
     certifications: {
-      isRelated: boolean;
-      relevance: string;
+      isRelated: boolean[];
+      relevance: QualificationRelevance;
     };
     education: {
-      isRelated: boolean;
-      relevance: string;
+      isRelated: boolean[];
+      relevance: QualificationRelevance;
     };
     experience: {
-      isRelated: boolean;
-      relevance: string;
+      isRelated: boolean[];
+      relevance: QualificationRelevance;
     };
     project: {
-      isRelated: boolean;
-      relevance: string;
+      isRelated: boolean[];
+      relevance: QualificationRelevance;
     };
   };
-  skills: {
-    score: number;
-  };
+  skills_score: number;
 };
 
-export function calculateOverallScore(data: DataType): ScoreWheelParams {
-  const relevanceScores = {
-    less: 10,
-    ok: 30,
-    more: 50,
-  };
-  const relatedScore = 50;
-  const detailedScores = {};
-  for (const key of Object.keys(data.qualification)) {
-    const value = data.qualification[key];
-    if (!value) {
-      continue;
-    }
-    detailedScores[key] = value.isRelated
-      ? relatedScore + relevanceScores[value.relevance] || 0
-      : 0;
-  }
-  const skillsScore: number = data.skills?.score || 0;
-  detailedScores['skills'] = skillsScore;
-  return detailedScores as ScoreWheelParams;
+export function getJdScore(data: DataType): ScoreWheelParams {
+  return Object.entries(data.qualification).reduce(
+    (acc, [key, value]) => {
+      const relationScore =
+        (value.isRelated.reduce((acc, curr) => {
+          return curr ? acc + 1 : acc;
+        }, 0) %
+          5) *
+        10;
+      const relevanceScore =
+        value.relevance === 'low match'
+          ? 0
+          : value.relevance === 'average match'
+          ? 25
+          : 50;
+      return { ...acc, [key]: relationScore + relevanceScore };
+    },
+    {
+      skills: data.skills_score ? data.skills_score * 100 : 0,
+    } as ScoreWheelParams,
+  );
 }
 
-export const getOverallResumeScore = (jd_score, parameter_weights) => {
-  const data = {
-    qualification: jd_score.qualification,
-    skills: jd_score.skills_score,
+export const getOverallResumeScore = (
+  jd_score: JobApplication['jd_score'],
+  parameter_weights: JobTypeDashboard['parameter_weights'],
+) => {
+  const jdScoreObj = jd_score as any;
+  const data: DataType = {
+    qualification: jdScoreObj.qualification as DataType['qualification'],
+    skills_score: jdScoreObj.skills_score as DataType['skills_score'],
   };
-  const detailedScores = calculateOverallScore(data);
+  const detailedScores = getJdScore(data);
   return Math.trunc(
     Object.keys(parameter_weights).reduce((acc, curr) => {
       acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
