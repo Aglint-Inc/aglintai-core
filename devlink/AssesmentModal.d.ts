@@ -7,4 +7,5 @@ declare function AssesmentModal(props: {
   slotAvatarCard?: Types.Devlink.Slot;
   onClickChoose?: Types.Devlink.RuntimeProps;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
+  isButtonDisable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

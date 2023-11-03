@@ -14,8 +14,8 @@ export type SocialsType = {
 
 export type RecruiterType = Omit<
   Database['public']['Tables']['recruiter']['Row'],
-  'address' | 'socials'
-> & { address: AddressType | null; socials: SocialsType | null };
+  'socials'
+> & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 
@@ -148,10 +148,10 @@ export type RoleType = {
   view_candidates_profile: boolean;
 };
 
-export type EmployeeType = Database['public']['Tables']['employee']['Row'];
-
 export type JobApplicationType =
   Database['public']['Tables']['job_applications']['Row'];
+
+export type CandidateType = Database['public']['Tables']['candidates']['Row'];
 
 export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
 

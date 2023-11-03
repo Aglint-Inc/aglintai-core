@@ -42,7 +42,7 @@ export function ScreeningQuestion({
           </_Builtin.Span>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-555")} tag="div">
         {slotIntroductionVideo ?? <ScreeningQuestionCard />}
       </_Builtin.Block>
       <_Builtin.Block
@@ -83,7 +83,10 @@ export function ScreeningQuestion({
             "The candidate will be informed of this as the beginning of the assessment before the first question."
           }
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-555")}
+          tag="div"
+        >
           {slotWelcomeMessage ?? <ScreeningQuestionCard />}
         </_Builtin.Block>
       </_Builtin.Block>
@@ -100,7 +103,10 @@ export function ScreeningQuestion({
             "The candidate will see this once they have answered all the questions."
           }
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-555")}
+          tag="div"
+        >
           {slotEndingMessageVideo ?? <ScreeningQuestionCard />}
         </_Builtin.Block>
       </_Builtin.Block>

@@ -87,6 +87,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .div-block-485 {
   display: flex;
   margin-top: 14px;

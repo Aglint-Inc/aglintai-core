@@ -67,6 +67,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

@@ -53,6 +53,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 #w-node-a79fecd5-634e-0ac6-7d1c-48e52d7d03d9-2d7d03d9 {
   order: 9999;
 }

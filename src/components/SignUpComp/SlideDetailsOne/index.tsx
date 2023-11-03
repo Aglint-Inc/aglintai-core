@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { WelcomeSlider4 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { AddressType, SocialsType } from '@/src/types/data.types';
+import { SocialsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { stepObj } from '../SlideSignup/utils';
@@ -108,7 +108,6 @@ const SlideDetailsOne = () => {
             if (!error) {
               setRecruiter({
                 ...data[0],
-                address: data[0].address as AddressType,
                 socials: data[0].socials as SocialsType,
               });
               if (res.data.linkedIns[0]) {
@@ -133,7 +132,6 @@ const SlideDetailsOne = () => {
                       .select();
                     setRecruiter({
                       ...newData[0],
-                      address: newData[0].address as AddressType,
                       socials: newData[0].socials as SocialsType,
                     });
                     router.push(`?step=${stepObj.detailsTwo}`, undefined, {

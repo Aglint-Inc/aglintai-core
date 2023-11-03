@@ -235,6 +235,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .email-input-wrappers {
   display: flex;
   margin-top: 10px;

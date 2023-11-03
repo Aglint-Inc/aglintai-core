@@ -8,12 +8,15 @@ import { ImportCandidates } from '@/devlink';
 import {
   ApplicantsListEmpty,
   CandidateFilter,
+  CandidateFilter,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
   SortArrows,
+  SortArrows,
 } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -136,6 +139,7 @@ const JobApplicationComponent = () => {
   };
 
   usePolling(async () => await handleAutoRefresh(), 600000, [
+  usePolling(async () => await handleAutoRefresh(), 600000, [
     ...Object.values(applicationDepth),
     section,
     refreshRef.current,
@@ -147,6 +151,7 @@ const JobApplicationComponent = () => {
 
   return (
     <JobDetails
+      onclickHeaderJobs={{ onClick: () => router.push(pageRoutes.JOBS) }}
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
       textApplicantsNumber={``}
@@ -565,6 +570,9 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
+            ref={
+              i === applicationDepth[section] - 1 ? lastApplicationRef : null
+            }
             ref={
               i === applicationDepth[section] - 1 ? lastApplicationRef : null
             }

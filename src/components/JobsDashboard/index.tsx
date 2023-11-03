@@ -171,6 +171,7 @@ const DashboardComp = () => {
           state={state}
           handleClose={handleCloseLever}
           setState={setState}
+          setIsLeverOpen={setIsLeverOpen}
         />
       </Dialog>
       {!initialLoad ? (

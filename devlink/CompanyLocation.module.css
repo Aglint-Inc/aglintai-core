@@ -50,6 +50,14 @@
   display: none;
 }
 
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }

@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Paper, Stack, Tooltip, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
@@ -12,10 +11,7 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { fileTypes } from '../../CandidateDatabase/ImportDrawer/FileUpload';
-
 const ResumeUpload = ({ setOpenSidePanel }) => {
-  const router = useRouter();
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
   const { handleJobApplicationPaginatedPolling } = useJobApplications();
@@ -51,24 +47,18 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
 
   const FileUploadSubmit = async () => {
     setLoading(true);
+
     for (const file of selectedfile) {
       let uploadUrl = await uploadResume(file);
       try {
         // TODO: Error handling required and exisiting candidate handling
-        const { data } = await supabase
+        await supabase
           .from('candidates')
           .insert({
-            first_name: null,
-            last_name: null,
-            email: null,
+            first_name: file.name,
+            last_name: '',
+            email: '',
             resume: uploadUrl,
-          })
-          .select();
-        await supabase
-          .from('job_applications')
-          .insert({
-            job_id: router.query.id as string,
-            candidate_id: data[0].id,
           })
           .select();
       } catch (error) {
@@ -210,3 +200,5 @@ export const candidateDatabaseSampleJob = () => {
     is_campus: true,
   };
 };
+
+export const fileTypes = ['PDF', 'DOCX', 'TXT'];
