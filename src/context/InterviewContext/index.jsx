@@ -21,8 +21,8 @@ let tempTime = 0;
 //video
 
 const context = [];
-const totalNumberOfQuestions = [];
-const video_Ids = [];
+let totalNumberOfQuestions = [];
+let video_Ids = [];
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -45,43 +45,55 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
   const { jobDetails, candidateDetails } = useInterviewDetailsContext();
-  getRecruiter(jobDetails?.recruiter_id).then((data) => {
-    interviewerIndex = data?.audio_avatar_id;
-  });
   useEffect(() => {
-    if (Object.keys(jobDetails).length) {
-      const jsonData = jobDetails?.screening_questions[0];
-      // Extract and format the questions
+    getRecruiter(jobDetails?.recruiter_id).then((data) => {
+      // console.log(data.video_assessment);
+
+      interviewerIndex = data?.audio_avatar_id;
+
+      video_Ids = [];
+      totalNumberOfQuestions = [];
+
+      const firstQuestion = jobDetails?.start_video?.question;
+      totalNumberOfQuestions.push(firstQuestion);
+      const jsonData = jobDetails?.screening_questions;
       for (const category in jsonData) {
         // eslint-disable-next-line security/detect-object-injection
         const questions = jsonData[category].questions;
-        // const videoIds = jsonData[category].questions;
-        // console.log(videoIds, category);
-        for (const question of questions) {
-          if (question?.video_id) {
-            video_Ids.push(question?.video_id);
-          }
 
-          // console.log(question.video_id);
+        for (const question of questions) {
+          if (question?.videoId && jobDetails?.video_assessment) {
+            video_Ids.push(question?.videoId);
+          }
           totalNumberOfQuestions.push(question.question);
         }
       }
-    }
-    if (router?.query?.id && video_Ids.length === 0) {
-      setVideoAssessment(false);
-    } else {
-      setVideoAssessment(true);
-    }
 
-    video_Ids.forEach(async (ele) => {
-      const { data, error } = await supabase
-        .from('ai_videos')
-        .select()
-        .eq('video_id', ele);
-      if (!error) {
-        setVideo_Urls((pre) => [...pre, data[0]?.file_url + data[0]?.video_id]);
-        // console.log(data[0].file_url + data[0].video_id, ele);
+      const endQuestion = jobDetails?.end_video?.question;
+
+      totalNumberOfQuestions.push(endQuestion);
+      // console.log(totalNumberOfQuestions);
+
+      if (router?.query?.id && video_Ids.length === 0) {
+        setVideoAssessment(false);
+      } else {
+        setVideoAssessment(true);
       }
+
+      video_Ids.forEach(async (ele) => {
+        const { data, error } = await supabase
+          .from('ai_videos')
+          .select()
+          .eq('video_id', ele);
+        if (!error) {
+          setVideo_Urls((pre) => [
+            ...pre,
+            data[0]?.file_url + data[0]?.video_id,
+          ]);
+        }
+      });
+      // console.log(video_Ids);
+      // console.log(totalNumberOfQuestions);
     });
   }, [jobDetails]);
 
