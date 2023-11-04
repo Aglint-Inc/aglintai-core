@@ -45,6 +45,7 @@ export function CreateNewJob({
   slotDisclaimerWorkflow,
   isPreviewVisible = true,
   slotAtsBadge,
+  slotCloseJob,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -269,6 +270,7 @@ export function CreateNewJob({
       >
         {slotCreateJob}
       </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotCloseJob}</_Builtin.Block>
     </_Component>
   );
 }

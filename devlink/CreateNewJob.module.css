@@ -572,6 +572,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .white-active-bg {
   position: absolute;
   left: 0%;

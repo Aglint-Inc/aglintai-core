@@ -18,7 +18,6 @@ import { palette } from '@/src/context/Theme/Theme';
 import {
   CandidateType,
   JobApplicationType,
-  PublicJobsType,
   SupportTicketType,
 } from '@/src/types/data.types';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
@@ -239,7 +238,6 @@ const getCompanyDetails = async (id: string) => {
     .from('recruiter')
     .select('name,logo')
     .eq('id', id);
-  console.log({ id, data, error });
   if (!error && data.length) {
     return data[0] as {
       name: string;

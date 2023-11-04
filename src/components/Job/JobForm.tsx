@@ -1,12 +1,14 @@
 import { Popper, Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { get } from 'lodash';
+import { get, set } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { CreateNewJob } from '@/devlink';
+import { CloseJob, CreateNewJob } from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import UITypography from '../Common/UITypography';
@@ -25,6 +27,7 @@ import ScoreSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/Sco
 import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningQnsWithVids';
 import ScreeningSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/SyncStatus';
+import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export type JobFormErrorParams = {
   jobTitle: string;
@@ -50,6 +53,8 @@ type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
+  const { handleUIJobUpdate } = useJobs();
+
   const { jobForm, dispatch } = useJobForm();
   const router = useRouter();
 
@@ -215,6 +220,40 @@ function JobForm() {
       );
     }
   };
+
+  const handleCloseJob = async () => {
+    try {
+      const [publicJob] = supabaseWrap(
+        await supabase.from('public_jobs').select().eq('id', jobForm.jobPostId),
+      );
+      const newActiveStatus = publicJob.active_status;
+      set(newActiveStatus, 'closed.isActive', true);
+      const [job] = supabaseWrap(
+        await supabase
+          .from('public_jobs')
+          .update({
+            active_status: {
+              ...newActiveStatus,
+            },
+          })
+          .eq('id', jobForm.jobPostId)
+          .select(),
+      );
+      handleUIJobUpdate({
+        ...job,
+        count: {
+          new: 0,
+          interviewing: 0,
+          qualified: 0,
+          disqualified: 0,
+        },
+      });
+      router.replace('/jobs');
+    } catch (err) {
+      toast.error('Something went wrong, please try again');
+    }
+  };
+
   return (
     <>
       <CreateNewJob
@@ -327,6 +366,18 @@ function JobForm() {
               slidePath={'templates'}
               currSlideNo={6}
             />
+          </>
+        }
+        slotCloseJob={
+          <>
+            {jobForm.currSlide === 'templates' &&
+              jobForm.formType === 'edit' && (
+                <CloseJob
+                  onClickCloseJob={{
+                    onClick: handleCloseJob,
+                  }}
+                />
+              )}
           </>
         }
       />

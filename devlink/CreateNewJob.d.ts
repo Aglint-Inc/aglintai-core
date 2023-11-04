@@ -38,4 +38,5 @@ declare function CreateNewJob(props: {
   slotDisclaimerWorkflow?: Types.Devlink.Slot;
   isPreviewVisible?: Types.Visibility.VisibilityConditions;
   slotAtsBadge?: Types.Devlink.Slot;
+  slotCloseJob?: Types.Devlink.Slot;
 }): React.JSX.Element;
