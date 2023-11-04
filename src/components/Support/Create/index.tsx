@@ -100,7 +100,7 @@ function Support() {
       // });
     }
   }, [router.isReady]);
-  return (
+    return (
     <InboxContactSupport
       slotCheckbox={
         <Checkbox
@@ -212,7 +212,7 @@ const getApplicationDetails = async (id: string) => {
     // @ts-ignore
     if (tempData.jobDetails?.recruiter_id) {
       // @ts-ignore
-      tempData.copmpanyDetails = await getCompanyDetails(
+      tempData.companyDetails = await getCompanyDetails(
         // @ts-ignore
         tempData.jobDetails.recruiter_id,
       );
