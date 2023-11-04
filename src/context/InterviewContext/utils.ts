@@ -44,6 +44,7 @@ export async function updateFeedbackOnJobApplications(
         ? 'interviewing'
         : 'disqualified',
       interview_duration: interviewDuration,
+      interview_score: overAllScore,
     })
     .eq('application_id', candidateDetails?.application_id);
   if (!error) {

@@ -251,16 +251,19 @@ function InterviewContextProvider({ children }) {
         fetch(audioDataUrl)
           .then((response) => response.blob())
           .then(async (blob) => {
-            const { data, error } = await supabase.storage
-              .from('candidate_interview')
-              .upload(
-                `${candidateDetails?.email.split('@')[0]}_${
-                  candidateDetails?.application_id
-                }/${
-                  candidateDetails?.application_id
-                }/recorded_ai_voice_${new Date().getTime()}.mp3`,
-                blob,
-              );
+            // eslint-disable-next-line no-console
+            console.log(blob);
+            // const { data, error } = await supabase.storage
+            //   .from('candidate_interview')
+            //   .upload(
+            //     `${candidateDetails?.email.split('@')[0]}_${
+            //       candidateDetails?.application_id
+            //     }/${
+            //       candidateDetails?.application_id
+            //     }/recorded_ai_voice_${new Date().getTime()}.mp3`,
+            //     blob,
+            //   );
+            const error = null;
             if (!error) {
               setConversations((pre) => [
                 ...pre,
