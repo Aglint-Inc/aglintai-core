@@ -16,7 +16,11 @@ import { Drag, DragAndDrop, Drop } from './dragDrop';
 import DragCtxProvider, { useDragCtx } from './dragDrop/DragCtx';
 import Questions from './Questions';
 import { reorder } from '../utils/reorder';
-import { InterviewConfigType, useJobForm } from '../../JobPostFormProvider';
+import {
+  InterviewConfigType,
+  QuestionType,
+  useJobForm,
+} from '../../JobPostFormProvider';
 
 const Categories = () => {
   const { jobForm, handleUpdateFormFields } = useJobForm();
@@ -129,18 +133,16 @@ const Category = ({
   const handleAddnewQn = () => {
     if (!newQn) return;
 
+    const newQuestion: QuestionType = {
+      id: nanoid(),
+      question: newQn,
+      videoId: '',
+      videoQn: '',
+      videoUrl: '',
+    };
     handleUpdateFormFields({
       path: `interviewConfig[${categIdx}].questions`,
-      value: [
-        ...categ.questions,
-        {
-          id: nanoid(),
-          question: newQn,
-          video_id: '',
-          videoQn: '',
-          videoUrl: '',
-        },
-      ],
+      value: [...categ.questions, newQuestion],
     });
     setShowAddForm(false);
     setNewQn('');

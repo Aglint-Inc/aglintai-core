@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 
 import { InterviewInterviewerScreen } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
+import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
+import { supabase } from '@/src/utils/supabaseClient';
 
 function VideoInterviewerPanel() {
   const {
@@ -20,17 +22,49 @@ function VideoInterviewerPanel() {
     listening,
     handleVideoPause,
   } = useInterviewContext();
+
+  const { jobDetails } = useInterviewDetailsContext();
+
   const [videoUrl, setVideoUrl] = useState('');
   const [character, setCharacter] = useState('');
 
+  async function fetchVideo(id) {
+    const { data, error } = await supabase
+      .from('ai_videos')
+      .select()
+      .eq('video_id', id);
+    if (!error) {
+      setVideoUrl(data[0].file_url);
+      return data[0];
+    }
+  }
   useEffect(() => {
-    getVideoUrl();
+    if (questionIndex === 0) {
+      // console.log('video12345');
+
+      fetchVideo(jobDetails.start_video.videoId);
+      return;
+    }
+
+    if (questionIndex === totalNumberOfQuestions.length - 1) {
+      // console.log('video12345');
+
+      fetchVideo(jobDetails.end_video.videoId);
+      return;
+    }
+
+    if (
+      questionIndex !== 0 &&
+      questionIndex !== totalNumberOfQuestions.length - 1
+    ) {
+      getVideoUrl();
+    }
   }, [questionIndex]);
 
   async function getVideoUrl() {
     setVideoUrl(
       video_Urls
-        .filter((ele) => ele.includes(video_Ids[Number(questionIndex)]))[0]
+        .filter((ele) => ele.includes(video_Ids[Number(questionIndex - 1)]))[0]
         .split('.mp4')[0] + '.mp4',
     );
   }
