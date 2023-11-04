@@ -13,32 +13,32 @@ const interviewerList = [
       'https://cospfrxzkjrwleefgsgb.supabase.co/storage/v1/object/public/interview_prep/interviewer_avatar/male/a1.mp3',
   },
 
-  {
-    name: 'Robert',
-    gender: 'Male',
-    image:
-      'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_target.webp',
-    voice: {
-      languageCode: 'en-US',
-      name: 'en-US-Neural2-A',
-      // ssmlGender: 'MALE',
-    },
-    voice_file:
-      'https://cospfrxzkjrwleefgsgb.supabase.co/storage/v1/object/public/interview_prep/interviewer_avatar/male/a2.mp3',
-  },
-  {
-    name: 'James',
-    gender: 'Male',
-    image:
-      'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_target.webp',
-    voice: {
-      languageCode: 'en-US',
-      name: 'en-US-Neural2-D',
-      // ssmlGender: 'MALE',
-    },
-    voice_file:
-      'https://cospfrxzkjrwleefgsgb.supabase.co/storage/v1/object/public/interview_prep/interviewer_avatar/male/a3.mp3',
-  },
+  // {
+  //   name: 'Robert',
+  //   gender: 'Male',
+  //   image:
+  //     'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_target.webp',
+  //   voice: {
+  //     languageCode: 'en-US',
+  //     name: 'en-US-Neural2-A',
+  //     // ssmlGender: 'MALE',
+  //   },
+  //   voice_file:
+  //     'https://cospfrxzkjrwleefgsgb.supabase.co/storage/v1/object/public/interview_prep/interviewer_avatar/male/a2.mp3',
+  // },
+  // {
+  //   name: 'James',
+  //   gender: 'Male',
+  //   image:
+  //     'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_target.webp',
+  //   voice: {
+  //     languageCode: 'en-US',
+  //     name: 'en-US-Neural2-D',
+  //     // ssmlGender: 'MALE',
+  //   },
+  //   voice_file:
+  //     'https://cospfrxzkjrwleefgsgb.supabase.co/storage/v1/object/public/interview_prep/interviewer_avatar/male/a3.mp3',
+  // },
   {
     name: 'William',
     gender: 'Male',

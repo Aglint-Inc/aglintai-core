@@ -55,17 +55,17 @@ export const avatar_list = [
   //   audio_url:
   //     'https://files.movio.la/avatar/default_voice/da4e501e123e40838ba09046e32603d0.wav',
   // },
-  {
-    video_url:
-      'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_video_target.mp4',
-    voice_id: '1ae3be1e24894ccabdb4d8139399f721',
-    normal_preview:
-      'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_target.webp',
-    avatar_id: 'Brian_public_lite1_20230601',
-    name: 'Blake',
-    audio_url:
-      'https://files.movio.la/avatar/default_voice/da4e501e123e40838ba09046e32603d0.wav',
-  },
+  // {
+  //   video_url:
+  //     'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_video_target.mp4',
+  //   voice_id: '1ae3be1e24894ccabdb4d8139399f721',
+  //   normal_preview:
+  //     'https://files.movio.la/avatar/v3/3be86de8adfc430baa5902f77eb9e5b3_2625/preview_target.webp',
+  //   avatar_id: 'Brian_public_lite1_20230601',
+  //   name: 'Blake',
+  //   audio_url:
+  //     'https://files.movio.la/avatar/default_voice/da4e501e123e40838ba09046e32603d0.wav',
+  // },
   // {
   //   video_url:
   //     'https://files.movio.la/avatar/v3/48f7053c462f4701ad65d69f248bf46d_2660/preview_video_talk_1.mp4',
@@ -154,16 +154,16 @@ export const avatar_list = [
   //   name: 'Josh',
   //   audio_url: undefined,
   // },
-  {
-    video_url:
-      'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_video_target.mp4',
-    voice_id: '',
-    normal_preview:
-      'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_target.webp',
-    avatar_id: 'josh_lite3_20230714',
-    name: 'Josh',
-    audio_url: undefined,
-  },
+  // {
+  //   video_url:
+  //     'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_video_target.mp4',
+  //   voice_id: '',
+  //   normal_preview:
+  //     'https://files.movio.la/avatar/v3/2072d60780d042b0908b09ea4fc1c6b7_3011/preview_target.webp',
+  //   avatar_id: 'josh_lite3_20230714',
+  //   name: 'Josh',
+  //   audio_url: undefined,
+  // },
 
   {
     video_url:

@@ -31,6 +31,7 @@ export * from "./AssigneeSmall";
 export * from "./AtsBadge";
 export * from "./AtsCard";
 export * from "./AtsJobs";
+export * from "./AudioAvatarCard";
 export * from "./AuiNavigation";
 export * from "./AvatarCard";
 export * from "./BriefcaseIcon";

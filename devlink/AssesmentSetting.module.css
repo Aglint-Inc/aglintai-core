@@ -7,7 +7,7 @@
 .ai-assessment-setting-wrap {
   display: flex;
   max-width: 678px;
-  margin-top: 15px;
+  margin-top: 0px;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -226,6 +226,14 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -254,10 +262,17 @@
   grid-row-gap: 10px;
 }
 
-.mt-14 {
-  margin-top: 14px;
+.slot-toggle-screening {
+  width: 50px;
 }
 
-.mt-16 {
-  margin-top: 16px;
+.mt-26 {
+  display: grid;
+  width: 720px;
+  margin-top: 26px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
 }

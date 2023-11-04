@@ -9,4 +9,7 @@ declare function AvatarCard(props: {
   isPause?: Types.Visibility.VisibilityConditions;
   isPlay?: Types.Visibility.VisibilityConditions;
   onClickPlayPause?: Types.Devlink.RuntimeProps;
+  isVideoIconVisible?: Types.Visibility.VisibilityConditions;
+  onClickChecked?: Types.Devlink.RuntimeProps;
+  isChecked?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

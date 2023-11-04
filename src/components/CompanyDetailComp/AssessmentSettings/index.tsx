@@ -2,18 +2,15 @@
 import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
-import { AssesmentModal, AssesmentSetting, AvatarCard } from '@/devlink';
+import { AssesmentSetting, AudioAvatarCard, AvatarCard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateRecruiter } from '@/src/context/InterviewContext/utils';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import MuiPopup from '../../Common/MuiPopup';
 let tempObj = avatar_list[0];
-let audio_avatar_index = 0;
 function AssessmentSettings() {
-  const [openPopup, setPopup] = useState(false);
   const [index, setIndex] = useState(null);
   const { recruiter } = useAuthDetails();
 
@@ -21,28 +18,28 @@ function AssessmentSettings() {
     recruiter?.ai_avatar || avatar_list[0],
   );
 
-  function closePopup() {
-    setPopup(false);
-    setIndex(null);
-  }
-
-  async function handleChangeAvatar() {
+  async function handleChangeAvatar(avatar: {
+    video_url: string;
+    voice_id: string;
+    normal_preview: string;
+    avatar_id: string;
+    name: string;
+    audio_url: string;
+  }) {
     setSelectedAvatar(tempObj);
     const { data, error } = await supabase
       .from('recruiter')
       .update({
-        ai_avatar: tempObj,
+        ai_avatar: avatar,
       })
       .eq('id', recruiter.id)
       .select();
     if (!error) {
-      setPopup(false);
       return data[0];
     }
   }
 
-  async function handleAudioChangeAvatar() {
-    setAudioAvatarIndex(audio_avatar_index);
+  async function handleAudioChangeAvatar(audio_avatar_index: number) {
     const { data, error } = await supabase
       .from('recruiter')
       .update({
@@ -51,7 +48,6 @@ function AssessmentSettings() {
       .eq('id', recruiter.id)
       .select();
     if (!error) {
-      setPopup(false);
       return data[0];
     }
   }
@@ -71,86 +67,6 @@ function AssessmentSettings() {
 
   return (
     <div>
-      <MuiPopup
-        props={{
-          open: openPopup,
-          // fullWidth: true,
-          // maxWidth: 'md',
-          maxWidth: false,
-          onClose: closePopup,
-        }}
-      >
-        <Stack height={'100%'} overflow={'auto'} bgcolor={'white.700'}>
-          {isVideoAssessment ? (
-            <AssesmentModal
-              isWarningVisible={index !== null}
-              onClickClose={{
-                onClick: closePopup,
-              }}
-              slotAvatarCard={avatar_list.map((avatar, i) => {
-                return (
-                  <Stack
-                    onClick={() => {
-                      setIndex(i);
-                      tempObj = avatar;
-                    }}
-                    key={i}
-                  >
-                    <VideoAvatar
-                      selectedAvatar={avatar}
-                      isActive={
-                        index === i ||
-                        //@ts-expect-error
-                        (avatar.avatar_id === selectedAvatar.avatar_id &&
-                          index === null)
-                      }
-                    />
-                  </Stack>
-                );
-              })}
-              isButtonDisable={index === null}
-              onClickChoose={{
-                onClick: () => {
-                  handleChangeAvatar();
-                },
-              }}
-            />
-          ) : (
-            <AssesmentModal
-              isWarningVisible={index !== null}
-              onClickClose={{
-                onClick: closePopup,
-              }}
-              slotAvatarCard={interviewerList.map((avatar, i) => {
-                return (
-                  <Stack
-                    onClick={() => {
-                      setIndex(i);
-                      audio_avatar_index = i;
-                    }}
-                    key={i}
-                  >
-                    <AudioAvatar
-                      selectedAvatar={avatar}
-                      isActive={
-                        index === i ||
-                        (i === audioAvatarIndex && index === null)
-                      }
-                    />
-                  </Stack>
-                );
-              })}
-              isButtonDisable={index === null}
-              onClickChoose={{
-                onClick: () => {
-                  handleAudioChangeAvatar();
-                },
-              }}
-            />
-          )}
-        </Stack>
-      </MuiPopup>
-
       <AssesmentSetting
         textChooseAvatar={
           isVideoAssessment
@@ -166,22 +82,51 @@ function AssessmentSettings() {
         }
         textAvatarName={avatar_list[0].name}
         slotAvatarVideo={
-          <Stack>
-            {isVideoAssessment ? (
-              <VideoAvatar isActive={true} selectedAvatar={selectedAvatar} />
-            ) : (
-              <AudioAvatar
-                selectedAvatar={interviewerList[Number(audioAvatarIndex)]}
-                isActive={true}
-              />
-            )}
-          </Stack>
+          <>
+            {isVideoAssessment
+              ? avatar_list.map((avatar, i) => {
+                  return (
+                    <Stack
+                      onClick={() => {
+                        setIndex(i);
+                        tempObj = avatar;
+                        handleChangeAvatar(avatar);
+                      }}
+                      key={i}
+                    >
+                      <VideoAvatar
+                        selectedAvatar={avatar}
+                        isActive={
+                          index === i ||
+                          //@ts-expect-error
+                          (avatar.avatar_id === selectedAvatar.avatar_id &&
+                            index === null)
+                        }
+                      />
+                    </Stack>
+                  );
+                })
+              : interviewerList.map((avatar, i) => {
+                  return (
+                    <Stack
+                      onClick={() => {
+                        setIndex(i);
+                        handleAudioChangeAvatar(i);
+                      }}
+                      key={i}
+                    >
+                      <AudioAvatar
+                        selectedAvatar={avatar}
+                        isActive={
+                          index === i ||
+                          (i === audioAvatarIndex && index === null)
+                        }
+                      />
+                    </Stack>
+                  );
+                })}
+          </>
         }
-        onClickChangeAvatar={{
-          onClick: () => {
-            setPopup(true);
-          },
-        }}
       />
     </div>
   );
@@ -249,6 +194,7 @@ function VideoAvatar({ selectedAvatar, isActive }) {
   }
   return (
     <AvatarCard
+      isChecked={isActive}
       isActive={isActive}
       isPlay={!playing}
       isPause={playing}
@@ -277,7 +223,6 @@ function VideoAvatar({ selectedAvatar, isActive }) {
 
 function AudioAvatar({ selectedAvatar, isActive }) {
   const [playing, setPlaying] = useState(false);
-
   const audioRef = useRef(null);
 
   function onVideoPlay() {
@@ -299,17 +244,18 @@ function AudioAvatar({ selectedAvatar, isActive }) {
         ref={audioRef}
         src={selectedAvatar.voice_file}
       />
-      <AvatarCard
+      <AudioAvatarCard
         isActive={isActive}
-        isPlay={!playing}
-        isPause={playing}
+        isPauseButtonVisible={playing}
+        isPlayButtonVisible={!playing}
+        isChecked={isActive}
         onClickPlayPause={{
           onClick: (event) => {
             event.stopPropagation();
             onVideoPlay();
           },
         }}
-        slotAvatarVideo={
+        slotAvatar={
           <Avatar
             sx={{
               width: '100%',
@@ -322,7 +268,7 @@ function AudioAvatar({ selectedAvatar, isActive }) {
             src={selectedAvatar?.image}
           />
         }
-        textAvatarName={selectedAvatar.name}
+        textName={selectedAvatar.name}
       />
     </>
   );

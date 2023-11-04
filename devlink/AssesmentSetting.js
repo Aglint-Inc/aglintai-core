@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
+import { AvatarCard } from "./AvatarCard";
+import { AudioAvatarCard } from "./AudioAvatarCard";
 import * as _utils from "./utils";
 import _styles from "./AssesmentSetting.module.css";
 
@@ -40,7 +41,11 @@ export function AssesmentSetting({
           className={_utils.cx(_styles, "toggle-ai-assesment")}
           tag="div"
         >
-          <_Builtin.Block tag="div" {...onClickToggle}>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-toggle-screening")}
+            tag="div"
+            {...onClickToggle}
+          >
             {slotToggleButton}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
@@ -56,15 +61,13 @@ export function AssesmentSetting({
           {textChooseAvatar}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "mt-14")} tag="div">
-        {slotAvatarVideo}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "mt-16")}
-        tag="div"
-        {...onClickChangeAvatar}
-      >
-        <ButtonOutlinedRegular textLabel="Change Avatar" />
+      <_Builtin.Block className={_utils.cx(_styles, "mt-26")} tag="div">
+        {slotAvatarVideo ?? (
+          <>
+            <AvatarCard />
+            <AudioAvatarCard />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );
