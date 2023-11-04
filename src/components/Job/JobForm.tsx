@@ -370,14 +370,13 @@ function JobForm() {
         }
         slotCloseJob={
           <>
-            {jobForm.currSlide === 'templates' &&
-              jobForm.formType === 'edit' && (
-                <CloseJob
-                  onClickCloseJob={{
-                    onClick: handleCloseJob,
-                  }}
-                />
-              )}
+            {jobForm.formType === 'edit' && (
+              <CloseJob
+                onClickCloseJob={{
+                  onClick: handleCloseJob,
+                }}
+              />
+            )}
           </>
         }
       />
