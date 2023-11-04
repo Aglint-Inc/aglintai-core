@@ -155,7 +155,7 @@ const Category = ({
         textQuestionCount={`(${categ.questions.length} Questions)`}
         slotQuestionVideo={
           <>
-            <Stack px={2}>
+            <Stack>
               <Collapse in={!iscategDragging}>
                 <Questions
                   questions={categ.questions}

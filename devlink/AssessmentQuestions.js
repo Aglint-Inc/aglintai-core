@@ -32,7 +32,11 @@ export function AssessmentQuestions({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "first-text-capital"
+                )}
                 tag="div"
               >
                 {textQuestionHeader}

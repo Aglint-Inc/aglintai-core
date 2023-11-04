@@ -40,7 +40,7 @@ export function SignupSlider({
               navSpacing={3}
               navShadow={false}
               autoplay={true}
-              delay={4000}
+              delay={6000}
               iconArrows={true}
               animation="slide"
               navNumbers={true}
@@ -597,6 +597,10 @@ export function SignupSlider({
               </_Builtin.SliderArrow>
               <_Builtin.SliderNav className={_utils.cx(_styles, "hide")} />
             </_Builtin.SliderWrapper>
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "hide")}
+              value="%3Cstyle%3E%0A%5Bclass*%3D%22SignupSlider_signup-slider-arrow__%22%5D%7B%0Adisplay%3Aflex%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "auth-icon-block", "tab-logo")}

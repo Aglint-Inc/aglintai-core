@@ -258,6 +258,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .div-block-544 {
   display: flex;
   padding-top: 16px;

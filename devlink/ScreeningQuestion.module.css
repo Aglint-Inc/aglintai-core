@@ -218,6 +218,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .new-screening-upload {
   margin-top: 8px;
 }
@@ -274,8 +278,10 @@
   display: flex;
   margin-top: 20px;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+}
+
+.slot-toggle-screening {
+  width: 50px;
 }
 
 .new-screen-welcome {

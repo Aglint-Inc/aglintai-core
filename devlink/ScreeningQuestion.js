@@ -32,7 +32,7 @@ export function ScreeningQuestion({
           tag="div"
         >
           {
-            "This video vill be shown to the candidate before starting the interview.type in the text and click generate or "
+            "This video will be shown to the candidate before starting the interview.type in the text and click generate or "
           }
           <_Builtin.Span
             className={_utils.cx(_styles, "text-blue-600", "text-underline")}
@@ -64,7 +64,12 @@ export function ScreeningQuestion({
           className={_utils.cx(_styles, "accessment-toggle-wrap")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{slotToggleAssessment}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-toggle-screening")}
+            tag="div"
+          >
+            {slotToggleAssessment}
+          </_Builtin.Block>
           <_Builtin.Block tag="div">
             {"Use AI generated videos for assesment"}
           </_Builtin.Block>
@@ -74,7 +79,9 @@ export function ScreeningQuestion({
         className={_utils.cx(_styles, "new-screen-welcome")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Welcome Message"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Welcome Message"}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "color-grey-600", "mt-8")}
           tag="div"
@@ -94,7 +101,9 @@ export function ScreeningQuestion({
         className={_utils.cx(_styles, "new-screen-welcome")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Ending Message"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Ending Message"}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "color-grey-600", "mt-8")}
           tag="div"

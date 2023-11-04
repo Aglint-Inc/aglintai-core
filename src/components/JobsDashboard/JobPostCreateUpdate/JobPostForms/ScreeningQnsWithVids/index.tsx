@@ -229,6 +229,7 @@ function IntroVideo({ category }) {
             //   setEditQn(e.target.value);
             // }}
             ref={introRef}
+            
           />
         </>
       }
@@ -279,12 +280,13 @@ function IntroVideo({ category }) {
           />
         ) : (
           <Image
-            src={'/images/EmptyVideo.png'}
-            width={250}
-            height={145}
+            src={'/images/EmptyVideo.svg'}
+            width={256}
+            height={150}
             alt=''
             style={{
               objectFit: 'cover',
+              transform:'translate(0px, -5px)',
             }}
           />
         )

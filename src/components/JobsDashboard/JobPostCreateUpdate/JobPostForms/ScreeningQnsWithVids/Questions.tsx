@@ -204,7 +204,9 @@ const Question = ({
                   }}
                 />
               ) : (
-                <UITypography type='small'>{question.question}</UITypography>
+                <UITypography 
+                type='small'>{question.question}
+                </UITypography>
               )}
             </>
           }
@@ -259,12 +261,13 @@ const Question = ({
               />
             ) : (
               <Image
-                src={'/images/EmptyVideo.png'}
-                width={250}
-                height={145}
+                src={'/images/EmptyVideo.svg'}
+                width={256}
+                height={150}
                 alt=''
                 style={{
                   objectFit: 'cover',
+                  transform:'translate(0px, -5px)',
                 }}
               />
             )
