@@ -29,7 +29,6 @@ import {
   Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
-import JdFetching from '@/src/components/JobApplicationsDashboard/ApplicationCard/JdFetching';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
 import { palette } from '@/src/context/Theme/Theme';
@@ -55,13 +54,20 @@ function InterviewFeedbackPage() {
   }, [router]);
 
   async function getApplicationDetails(id) {
-    const { data, error } = await supabase
+    const { data: jobApp, error: errorJob } = await supabase
       .from('job_applications')
       .select()
       .eq('application_id', id);
-    if (!error) {
-      setApplicationDetails(data[0]);
-      getJobDetails(data[0]?.job_id);
+
+    if (!errorJob) {
+      const { data, error } = await supabase
+        .from('candidates')
+        .select()
+        .eq('id', jobApp[0]?.candidate_id);
+      if (!error) {
+        setApplicationDetails({ ...jobApp[0], candidates: data[0] });
+        getJobDetails(jobApp[0]?.job_id);
+      }
     }
   }
 
@@ -88,30 +94,15 @@ function InterviewFeedbackPage() {
 
   if (applicationDetails && job) {
     interviewScore = getInterviewScore(applicationDetails.feedback);
-    const jobDetails = applicationDetails as unknown as {
-      jd_score: { summary: { feedback: undefined } };
-    };
 
-    resumeScoreWheel =
-      jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
-      applicationDetails.resume &&
-      applicationDetails.jd_score !== null ? (
-        applicationDetails.jd_score === 'loading' ? (
-          <Stack justifyContent={'center'} alignItems={'center'}>
-            <JdFetching />
-            Calculating
-          </Stack>
-        ) : (
-          <ScoreWheel
-            id={`ScoreWheelApplicationCard${Math.random()}`}
-            parameter_weights={job.parameter_weights as ScoreWheelParams}
-            jd_score={applicationDetails.jd_score}
-            fontSize={7}
-          />
-        )
-      ) : (
-        <Stack>Not found</Stack>
-      );
+    resumeScoreWheel = (
+      <ScoreWheel
+        id={`ScoreWheelApplicationCard${Math.random()}`}
+        jd_score={applicationDetails.jd_score}
+        parameter_weights={job.parameter_weights as ScoreWheelParams}
+        fontSize={7}
+      />
+    );
   }
 
   if (loader) {
@@ -158,7 +149,9 @@ function InterviewFeedbackPage() {
         </SidePanelDrawer>
 
         <ProfileShare
-          isOverviewVisible={false}
+          isOverviewVisible={
+            !!applicationDetails?.candidates?.json_resume?.overview
+          }
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
@@ -313,22 +306,25 @@ function InterviewFeedbackPage() {
               />
             </Stack>
           }
-          textMail={applicationDetails?.email}
-          textPhone={applicationDetails?.phone || ''}
+          textMail={applicationDetails?.candidates?.email}
+          textPhone={applicationDetails?.candidates?.phone || ''}
           textName={
-            applicationDetails?.first_name + ' ' + applicationDetails?.last_name
+            applicationDetails?.candidates?.first_name +
+              ' ' +
+              applicationDetails?.candidates?.last_name || ''
           }
           isActivityVisible={false}
           slotProfileImage={
             <MuiAvatar
-              level={applicationDetails.first_name}
+              level={applicationDetails?.candidates?.first_name}
               src={
-                applicationDetails?.email && !applicationDetails?.profile_image
+                applicationDetails?.candidates?.email &&
+                !applicationDetails?.candidates?.profile_image
                   ? getGravatar(
-                      applicationDetails?.email,
-                      applicationDetails?.first_name,
+                      applicationDetails?.candidates?.email,
+                      applicationDetails?.candidates?.first_name,
                     )
-                  : applicationDetails?.profile_image
+                  : applicationDetails?.candidates?.profile_image
               }
               variant={'rounded'}
               width={'auto'}
@@ -336,6 +332,9 @@ function InterviewFeedbackPage() {
               fontSize={'28px'}
             />
           }
+          companyName={job?.company}
+          textOverview={applicationDetails?.candidates?.json_resume?.overview}
+          location={job?.location}
         />
       </>
     );
