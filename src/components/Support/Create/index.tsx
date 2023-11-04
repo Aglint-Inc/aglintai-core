@@ -33,7 +33,15 @@ function Support() {
   const [jobDetails, setJobDetails] = useState<
     JobApplicationType &
       CandidateType & {
-        jobDetails: PublicJobsType;
+        jobDetails: {
+          company: string;
+          job_title: string;
+          recruiter_id: string;
+        };
+        companyDetails: {
+          name: string;
+          logo: string;
+        };
       }
   >(null);
   const [details, setDetails] = useState<{
@@ -166,7 +174,11 @@ function Support() {
       slotLogo={
         <Avatar
           variant='rounded'
-          src={getCompanyIcon(jobDetails?.company) || ''}
+          src={
+            jobDetails?.companyDetails?.logo ||
+            getCompanyIcon(jobDetails?.company) ||
+            ''
+          }
           alt={capitalize(jobDetails?.company || '')}
           sx={{
             width: '100%',
@@ -198,10 +210,41 @@ const getApplicationDetails = async (id: string) => {
       !candidateError && candidate ? { ...data[0], ...candidate } : data[0];
     // @ts-ignore
     tempData.jobDetails = await getJobTitle(tempData.job_id);
+    // @ts-ignore
+    if (tempData.jobDetails?.recruiter_id) {
+      // @ts-ignore
+      tempData.copmpanyDetails = await getCompanyDetails(
+        // @ts-ignore
+        tempData.jobDetails.recruiter_id,
+      );
+    }
     return tempData as unknown as JobApplicationType &
       CandidateType & {
-        jobDetails: PublicJobsType;
+        jobDetails: {
+          company: string;
+          job_title: string;
+          recruiter_id: string;
+        };
+        companyDetails: {
+          name: string;
+          logo: string;
+        };
       };
+  }
+  return null;
+};
+
+const getCompanyDetails = async (id: string) => {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .select('name,logo')
+    .eq('id', id);
+  console.log({ id, data, error });
+  if (!error && data.length) {
+    return data[0] as {
+      name: string;
+      logo: string;
+    };
   }
   return null;
 };
@@ -215,6 +258,7 @@ const getJobTitle = async (jobId: string) => {
     return data[0] as {
       company: string;
       job_title: string;
+      recruiter_id: string;
     };
   }
   return null;
