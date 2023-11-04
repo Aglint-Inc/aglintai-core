@@ -44,7 +44,7 @@ export function AssesmentSetting({
             {slotToggleButton}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {"Use AI generated videos for assesment"}
+            {"Use AI generated videos for assessment"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -256,6 +256,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .social-btn-wrappers-pop {
   display: flex;
   margin-top: 20px;

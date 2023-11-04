@@ -18,6 +18,13 @@ export function InterviewWelcome({
   onClickSupport = {},
   textCompanyDescription = "Aglint is a San Francisco-based startup founded by successful founders who are passionate about making a difference in the talent development industry. Our team is in stealth mode, working hard to develop an all-in-one talent development platform that provides solutions to help companies develop, retain, and support their employees.",
   isAboutVisible = true,
+  slotWelcomeVideo,
+  isPlayPuaseVisible = false,
+  isPauseButtonVisible = false,
+  isPlayButtonVisible = true,
+  onClickPlay = {},
+  onClickPause = {},
+  isWelcomeVideoVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -99,6 +106,52 @@ export function InterviewWelcome({
           className={_utils.cx(_styles, "interview-start-left")}
           tag="div"
         >
+          {isWelcomeVideoVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "welcome-video-wrap")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-welcome-video")}
+                tag="div"
+              >
+                {slotWelcomeVideo}
+              </_Builtin.Block>
+              {isPlayPuaseVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "welcome-video-overlay")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {isPlayButtonVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "play-wrappers-wlcome")}
+                        tag="div"
+                        {...onClickPlay}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons", "ml-5")}
+                          value="%3Csvg%20width%3D%2220%22%20height%3D%2221%22%20viewBox%3D%220%200%2011%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.85689%205.076C10.523%205.46185%2010.5216%206.4241%209.85443%206.80805L1.71375%2011.4927C1.04654%2011.8766%200.213886%2011.3943%200.21498%2010.6245L0.228327%201.23216C0.229421%200.462363%201.06344%20-0.0175788%201.72956%200.368268L9.85689%205.076Z%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    ) : null}
+                    {isPauseButtonVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "play-wrappers-wlcome")}
+                        tag="div"
+                        {...onClickPause}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2218%22%20height%3D%2221%22%20viewBox%3D%220%200%208%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3Crect%20x%3D%225%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    ) : null}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "instruction-wrapper")}
             tag="div"

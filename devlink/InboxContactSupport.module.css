@@ -662,6 +662,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-413 {
   display: flex;
   margin-top: 30px;

@@ -294,6 +294,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-green-500 {
   color: var(--green500-287ff474);
 }
@@ -1025,7 +1029,6 @@
 }
 
 .div-block-348.top-align {
-  padding-left: 20px;
   align-items: flex-start;
 }
 
@@ -1035,6 +1038,10 @@
     grid-column-gap: 12px;
     grid-row-gap: 12px;
   }
+}
+
+.div-block-348.top-align.pl-20 {
+  padding-left: 20px;
 }
 
 .div-block-345 {

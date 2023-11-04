@@ -575,6 +575,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-423 {
   display: flex;
   justify-content: flex-end;

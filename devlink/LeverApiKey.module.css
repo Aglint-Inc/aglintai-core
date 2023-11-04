@@ -90,6 +90,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
 }

@@ -79,6 +79,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .checkbox-right-wrappers-text {
   position: relative;
   z-index: 1;

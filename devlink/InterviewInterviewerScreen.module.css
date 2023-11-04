@@ -159,6 +159,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-interviewer-wrappers {
   overflow: auto;
   width: 100%;

@@ -28,7 +28,7 @@ export function ScreeningQuestionCard({
   onClickPlay = {},
   onClickSave = {},
   onClickCancel = {},
-  isPlayPauseButtonVisible = false,
+  isPlayPauseButtonVisible = true,
   isVideoVisible = true,
   onClickRetry = {},
   textError = "Error generating video",

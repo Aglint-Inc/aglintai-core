@@ -242,6 +242,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .edit-icons-inbox {
   padding: 4px;
   border-radius: 100px;

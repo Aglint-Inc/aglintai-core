@@ -362,6 +362,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

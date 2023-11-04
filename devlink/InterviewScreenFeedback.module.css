@@ -812,6 +812,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

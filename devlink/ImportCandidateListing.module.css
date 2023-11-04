@@ -130,6 +130,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-506 {
   flex-direction: column;
 }
