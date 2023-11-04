@@ -32,6 +32,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           linkedin: cand.linkedin,
           phone: cand.phone,
           id: cand.candidate_id,
+          recruiter_id: post.recruiter_id,
         };
       });
 

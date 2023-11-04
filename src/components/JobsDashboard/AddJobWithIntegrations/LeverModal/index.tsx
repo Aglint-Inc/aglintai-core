@@ -104,6 +104,7 @@ export function LeverModalComp({
                 job.job_title == post.text &&
                 job.location == post.categories.location,
             )[0].id,
+            recruiter_id: recruiter.id,
           };
         });
         await createJobApplications(jobsObj, recruiter.lever_key);
