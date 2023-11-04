@@ -1,11 +1,12 @@
 /* eslint-disable no-inner-declarations */
 //@ts-nocheck
 import { Avatar, Stack } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { InterviewWelcome } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
+import { supabase } from '@/src/utils/supabaseClient';
 
 import Loader from '../../Common/Loader';
 function InterviewInstructions() {
@@ -63,6 +64,38 @@ function InterviewInstructions() {
       }
     }
   }
+  const [videoUrl, setVideoUrl] = useState('');
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  function onVideoPlay() {
+    if (!playing) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+    setPlaying((pre) => !pre);
+  }
+
+  useEffect(() => {
+    if (jobDetails?.intro_videos?.videoId)
+      getIntroVideo(jobDetails?.intro_videos?.videoId);
+  }, [jobDetails]);
+
+  async function getIntroVideo(id: any) {
+    const { data, error } = await supabase
+      .from('ai_videos')
+      .select()
+      .eq('video_id', id);
+
+    if (!error) {
+      setVideoUrl(data[0].file_url);
+      return data[0];
+    }
+  }
+
+  function handleVideoEnded() {
+    setPlaying(false);
+  }
 
   return (
     <div>
@@ -98,6 +131,29 @@ function InterviewInstructions() {
                 );
             })}
           <InterviewWelcome
+            slotWelcomeVideo={
+              // eslint-disable-next-line jsx-a11y/media-has-caption
+              <video
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                src={videoUrl}
+                ref={videoRef}
+                onEnded={handleVideoEnded}
+              />
+            }
+            onClickPause={{
+              onClick: onVideoPlay,
+            }}
+            onClickPlay={{
+              onClick: onVideoPlay,
+            }}
+            isPauseButtonVisible={playing}
+            isPlayButtonVisible={!playing}
+            isWelcomeVideoVisible={videoUrl}
+            isPlayPuaseVisible={true}
             onClickSupport={{
               onClick: () => {
                 window.open(

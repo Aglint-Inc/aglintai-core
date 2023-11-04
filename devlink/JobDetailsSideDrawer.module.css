@@ -283,6 +283,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;

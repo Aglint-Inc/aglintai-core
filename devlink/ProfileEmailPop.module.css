@@ -243,6 +243,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .email-input-wrappers {
   display: flex;
   margin-top: 10px;

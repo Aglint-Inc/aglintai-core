@@ -339,6 +339,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .ai-generate-new {
   cursor: pointer;
 }

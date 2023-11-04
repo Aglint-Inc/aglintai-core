@@ -267,6 +267,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .arrow-tooltips {
   position: absolute;
   left: -87%;

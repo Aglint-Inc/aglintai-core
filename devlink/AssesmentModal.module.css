@@ -262,6 +262,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .avatar-grid-wrap {
   display: grid;
   overflow: scroll;

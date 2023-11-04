@@ -70,6 +70,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }

@@ -421,6 +421,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .grey-disable-process-button {
   position: absolute;
   left: 0%;

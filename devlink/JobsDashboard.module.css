@@ -755,6 +755,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-md {
   font-size: 14px;
   line-height: 20px;

@@ -464,7 +464,6 @@
 
 .profile-block {
   display: flex;
-  margin-top: 40px;
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
@@ -472,6 +471,10 @@
 
 .profile-block.hide {
   display: none;
+}
+
+.profile-block.mt-40 {
+  margin-top: 40px;
 }
 
 .profile-header-wrappers {
@@ -594,11 +597,14 @@
 
 .profile-inputs-wrapper {
   display: flex;
-  padding-bottom: 0px;
-  padding-left: 20px;
   flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+}
+
+.profile-inputs-wrapper.pl-20 {
+  padding-bottom: 0px;
+  padding-left: 20px;
 }
 
 .flex-hor-left {

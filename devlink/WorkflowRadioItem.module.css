@@ -75,6 +75,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

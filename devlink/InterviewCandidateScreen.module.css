@@ -186,6 +186,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .interview-edit-done-wrapper {
   display: none;
   width: 40px;

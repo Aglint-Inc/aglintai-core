@@ -172,6 +172,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;

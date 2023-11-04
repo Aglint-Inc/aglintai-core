@@ -95,6 +95,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-485 {
   display: flex;
   margin-top: 14px;

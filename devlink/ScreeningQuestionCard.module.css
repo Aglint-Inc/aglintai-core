@@ -375,6 +375,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-554 {
   display: flex;
   flex-direction: column;

@@ -359,6 +359,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-red-600 {
   color: var(--red600-953350ec);
 }

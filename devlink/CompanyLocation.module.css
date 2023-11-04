@@ -58,6 +58,10 @@
   bottom: auto;
 }
 
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
