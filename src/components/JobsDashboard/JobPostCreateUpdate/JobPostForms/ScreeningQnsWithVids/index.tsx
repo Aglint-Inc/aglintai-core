@@ -1,19 +1,22 @@
 import axios from 'axios';
-import { nanoid } from 'nanoid';
+import { get, isEmpty } from 'lodash';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import { ScreeningQuestion, ScreeningQuestionCard } from '@/devlink';
+import AUIButton from '@/src/components/Common/AUIButton';
 import ScreeningVideoGenerating from '@/src/components/Common/Lotties/ScreeningVideoGenerating';
 import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { avatar_list } from '@/src/utils/avatarlist';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import Categories from './Categories';
 import ToggleBtn from '../utils/UIToggle';
-import { useJobForm } from '../../JobPostFormProvider';
-import { getVideo } from '../../utils';
+import { QuestionType, useJobForm } from '../../JobPostFormProvider';
+import { supabaseWrap } from '../../utils';
 
 const ScreeningQns = () => {
   const { jobForm, handleUpdateFormFields } = useJobForm();
@@ -25,9 +28,9 @@ const ScreeningQns = () => {
   return (
     <>
       <ScreeningQuestion
-        slotIntroductionVideo={<IntroVideo category={'introVideo'} />}
-        slotWelcomeMessage={<IntroVideo category={'startVideo'} />}
-        slotEndingMessageVideo={<IntroVideo category={'endVideo'} />}
+        slotIntroductionVideo={<Intro path={'introVideo'} />}
+        slotWelcomeMessage={<Intro path={'startVideo'} />}
+        slotEndingMessageVideo={<Intro path={'endVideo'} />}
         textQuestionCount={totalQns}
         slotAssessmentQuestion={
           <>
@@ -54,137 +57,129 @@ export default ScreeningQns;
 
 // intro video
 
-function IntroVideo({ category }) {
-  const { handleUpdateFormFields, jobForm } = useJobForm();
-  const { recruiter } = useAuthDetails();
-  const avatar = recruiter.ai_avatar || (avatar_list[0] as any);
-  const introRef = useRef(null);
-  const videoRef = useRef(null);
-  const [isVideoGenerating, setIsVideoGenerating] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('');
+function Intro({ path }) {
+  const { jobForm, handleUpdateFormFields } = useJobForm();
+
+  const question = get(jobForm, `formFields.${path}`) as QuestionType | null;
+
+  const handleAddQn = () => {
+    const defaultQn: QuestionType = {
+      id: '',
+      question: '',
+      videoId: '',
+      videoQn: '',
+      videoUrl: '',
+    };
+    handleUpdateFormFields({
+      path: path,
+      value: defaultQn,
+    });
+  };
+
+  return (
+    <>
+      {!question && (
+        <AUIButton
+          variant='outlined'
+          size='small'
+          onClick={() => {
+            handleAddQn();
+          }}
+        >
+          Add
+        </AUIButton>
+      )}
+      {question && <Video path={path} />}
+    </>
+  );
+}
+
+const Video = ({ path }) => {
+  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const question = get(jobForm, `formFields.${path}`) as QuestionType;
+
+  const [showEdit, setShowEdit] = useState(false);
+  const [editQn, setEditQn] = useState(question.question);
   const [playing, setPlaying] = useState(false);
-  const question =
-    category === 'introVideo'
-      ? jobForm.formFields.introVideo
-      : category === 'startVideo'
-      ? jobForm.formFields.startVideo
-      : jobForm.formFields.endVideo;
-  async function handleGenerateVideo() {
-    if (introRef.current.value === '') {
-      toast.warning('Please provide intro!');
-      return;
-    }
-    if (introRef.current.value.trim() === question?.question?.trim()) {
-      toast.warning('Edit message to before changes!');
+  const { recruiter } = useAuthDetails();
+  const [isQnHovered, setQnHovered] = useState(false);
+  const [isApiError, setIsApiError] = useState(false);
+  const videoRef = useRef(null);
 
-      return;
-    }
-    if (introRef.current.value.split(' ').length < 10) {
-      toast.warning('Your intro text should have at least 10 words!');
-      return;
-    }
+  useEffect(() => {
+    (async () => {
+      try {
+        const [d] = supabaseWrap(
+          await supabase
+            .from('ai_videos')
+            .select()
+            .eq('video_id', question.videoId),
+        );
+        if (d) {
+          handleUpdateFormFields({
+            path: `${path}.videoUrl`,
+            value: d.file_url,
+          });
+        }
+      } catch (err) {
+        toast.error('Something went wrong. Please try again');
+      }
+    })();
+  }, []);
 
-    if (jobForm.formFields.videoAssessment) {
-      setVideoUrl('');
-      setIsVideoGenerating(true);
-      await axios
-        .post('/api/generateVideo', {
-          text: introRef.current.value,
-          avatar_id: avatar.avatar_id,
-          voice_id: avatar.voice_id,
-        })
-        .then(({ data }) => {
-          const {
-            data: { video_id },
-          } = data;
+  const handleSave = () => {
+    if (!editQn) return;
+    handleUpdateFormFields({
+      path: `${path}.question`,
+      value: editQn,
+    });
+    setShowEdit(false);
+  };
 
-          if (category === 'introVideo') {
-            handleUpdateFormFields({
-              path: 'introVideo',
-              value: {
-                id: nanoid(),
-                question: introRef.current.value,
-                videoId: video_id,
-              },
-            });
-          }
+  const handleDeleteQn = () => {
+    handleUpdateFormFields({
+      path: `${path}`,
+      value: null,
+    });
+  };
 
-          if (category === 'startVideo') {
-            handleUpdateFormFields({
-              path: 'startVideo',
-              value: {
-                id: nanoid(),
-                question: introRef.current.value,
-                videoId: video_id,
-              },
-            });
-          }
-          if (category === 'endVideo') {
-            handleUpdateFormFields({
-              path: 'endVideo',
-              value: {
-                id: nanoid(),
-                question: introRef.current.value,
-                videoId: video_id,
-              },
-            });
-          }
-          setIsVideoGenerating(false);
+  const handleGenerateVideo = async () => {
+    try {
+      let videoInfo;
+      if (process.env.NODE_ENV === 'development') {
+        videoInfo = { video_id: 'def5da2177c44b089ccf6fa597cc3c4d' };
+      } else {
+        const avater = (recruiter.ai_avatar as any) || avatar_list[0];
+
+        let {
+          data: { data },
+        } = await axios.post('/api/generateVideo', {
+          text: question.question,
+          avatar_id: get(recruiter, 'ai_avatar.avatar_id', avater.avatar_id),
+          voice_id: get(recruiter, 'ai_avatar.voice_id', avater.voice_id),
         });
-
-      // const data = {
-      //   event_type: 'avatar_video.success',
-      //   event_data: {
-      //     video_id: '4b87b06344d84a7bb60a984f5358915f',
-      //     url: 'https://files.movio.la/aws_pacific/avatar_tmp/0e3424a56e5b47eba6a60cb326bb0c15/cc346b61-7ace-467c-b6a6-dda6bc174f5b.mp4?Expires=1699337550&Signature=VAaPtebxmZtT5PCOpK12YspME~mBOuMjK1wASRKXknClE9cSyAp-b7GYWe2NjXnOm2qWGYBGP9I4fX551LYjOp3xc78w80PaXR71iysRRPGA54UT6nXqFmVUIbLg2KWtwHZmkRhx5hg0JOTMz9Pkbnbik9aPVSmqndQVPwLVdKBW4tOtHgUXfZFxI1UE6td0RxdNU4EMi5HUXKy34feRPq~ErECve-pImGpmZMfa~b9lKVDVWphX9JUAOJwWjnbKhXDX4A8zUVlHMeGMFF8D3QgcsuzRhWhTebjJxZgYjjoFUtbvWHyeQcVx54r-qfYwaGFVEFZqlq7qNVJic~oLow__&Key-Pair-Id=K49TZTO9GZI6K',
-      //     callback_id: null,
-      //   },
-      // };
-      // const video_id = data.event_data.video_id;
-      // handleUpdateFormFields({
-      //   path: 'introVideo',
-      //   value: {
-      //     id: nanoid(),
-      //     question: introRef.current.value,
-      //     videoId: video_id,
-      //   },
-      // });
-      setIsVideoGenerating(false);
-    } else {
-      if (category === 'introVideo') {
-        handleUpdateFormFields({
-          path: 'introVideo',
-          value: {
-            id: nanoid(),
-            question: introRef.current.value,
-            videoId: '',
-          },
-        });
+        videoInfo = data;
       }
 
-      if (category === 'startVideo') {
-        handleUpdateFormFields({
-          path: 'startVideo',
-          value: {
-            id: nanoid(),
-            question: introRef.current.value,
-            videoId: '',
-          },
-        });
-      }
-      if (category === 'endVideo') {
-        handleUpdateFormFields({
-          path: 'endVideo',
-          value: {
-            id: nanoid(),
-            question: introRef.current.value,
-            videoId: '',
-          },
-        });
-      }
-      toast.success('Successfully created');
+      const updatedQn: QuestionType = {
+        ...question,
+        videoId: videoInfo.video_id,
+        videoQn: question.question,
+        videoUrl: '',
+      };
+
+      handleUpdateFormFields({
+        path: `${path}`,
+        value: {
+          ...updatedQn,
+        },
+      });
+    } catch (err) {
+      setIsApiError(true);
+      toast.error('Something went wrong please try again');
     }
-  }
+  };
+
   const handleVideoPlay = () => {
     if (!playing) {
       videoRef.current.play();
@@ -194,126 +189,140 @@ function IntroVideo({ category }) {
     setPlaying((pre) => !pre);
   };
 
-  useEffect(() => {
-    if (category === 'introVideo' && jobForm.formFields.introVideo?.videoId)
-      getVideoIntroVideo(jobForm.formFields.introVideo?.videoId);
-    if (category === 'startVideo' && jobForm.formFields.startVideo?.videoId)
-      getVideoIntroVideo(jobForm.formFields.startVideo?.videoId);
-    if (category === 'endVideo' && jobForm.formFields.endVideo?.videoId)
-      getVideoIntroVideo(jobForm.formFields.endVideo?.videoId);
-  }, [jobForm.formFields]);
+  const handleRegenerate = async () => {
+    const updateQn: QuestionType = {
+      ...question,
+      videoId: '',
+      videoUrl: '',
+    };
+    handleUpdateFormFields({
+      path: path,
+      value: { ...updateQn },
+    });
+    handleGenerateVideo();
+  };
 
-  async function getVideoIntroVideo(id) {
-    const questionObj = await getVideo(id);
-    setVideoUrl(questionObj?.file_url || '');
-  }
+  const isVideoGenerating =
+    isEmpty(question.videoUrl) && !isEmpty(question.videoId);
+  const isVideoError =
+    (!isEmpty(question.question) &&
+      !isEmpty(question.videoQn) &&
+      question.question !== question.videoQn) ||
+    isApiError;
+  const isGenerateVisible =
+    question.question && !isVideoError && !question.videoId;
+  const videoUrl = question.videoUrl;
 
-  // const handleRegenerate = () => {
-  //   setVideoUrl('');
-  //   handleUpdateFormFields({
-  //     path: `introVideo`,
-  //     value: '',
-  //   });
-  //   handleGenerateVideo();
-  // };
+  const editMode = showEdit || isEmpty(question.question);
   return (
-    <ScreeningQuestionCard
-      slotInput={
-        <>
-          <UITextField
-            multiline
-            fullWidth
-            defaultValue={question?.question}
-            // value={editQn}
-            // onChange={(e) => {
-            //   setEditQn(e.target.value);
-            // }}
-            ref={introRef}
-            
-          />
-        </>
-      }
-      // onClickEdit={{
-      //   onClick: () => {
-      //     setShowEdit(true);
-      //   },
-      // }}
-      // onClickDelete={{
-      //   onClick: () => {
-      //     setShowEdit(true);
-      //   },
-      // }}
-      // onClickCancel={{
-      //   onClick: () => {
-      //     setShowEdit(false);
-      //   },
-      // }}
-      // onClickSave={{
-      //   onClick: handleSave,
-      // }}
-      // slotEmptyVideo={}
-      onClickGenerate={{
-        onClick: () => {
-          handleGenerateVideo();
-        },
-      }}
-      onClickPlay={{
-        onClick: handleVideoPlay,
-      }}
-      onClickPause={{
-        onClick: handleVideoPlay,
-      }}
-      slotVideo={
-        videoUrl ? (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video
-            src={videoUrl}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-            ref={videoRef}
-            onEnded={() => {
-              setPlaying(false);
-            }}
-          />
-        ) : (
-          <Image
-            src={'/images/EmptyVideo.svg'}
-            width={256}
-            height={150}
-            alt=''
-            style={{
-              objectFit: 'cover',
-              transform:'translate(0px, -5px)',
-            }}
-          />
-        )
-      }
-      isVideoVisible={jobForm.formFields.videoAssessment}
-      // isEditButtonVisible={!showEdit}
-      slotGeneratingLottie={<ScreeningVideoGenerating />}
-      isGeneratingLoaderVisible={
-        isVideoGenerating || (!videoUrl && question?.videoId ? true : false)
-      }
-      isGenerateButtonVisible={true}
-      isPlayPauseButtonVisible={videoUrl.length > 0}
-      // isSaveButtonVisible={showEdit}
-
-      isPlayButtonVisible={!playing}
-      isPauseButtonVisible={playing}
-      isGenerateVisible={false}
-      // isErrorVisible={
-      //   question.videoQn && question.question !== question.videoQn
-      // }
-      // onClickRetry={{
-      //   onClick: () => {
-      //     handleRegenerate();
-      //   },
-      // }}
-      textButtonError={'Regenerate'}
-      textError={`Changed question click 'Regenerate'`}
-    />
+    <>
+      <div
+        onMouseEnter={() => {
+          setQnHovered(true);
+        }}
+        onMouseLeave={() => {
+          setQnHovered(false);
+        }}
+      >
+        <ScreeningQuestionCard
+          slotVideo={
+            videoUrl ? (
+              // eslint-disable-next-line jsx-a11y/media-has-caption
+              <video
+                src={videoUrl}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                ref={videoRef}
+                onEnded={() => {
+                  setPlaying(false);
+                }}
+              />
+            ) : (
+              <Image
+                src={'/images/EmptyVideo.svg'}
+                width={256}
+                height={150}
+                alt=''
+                style={{
+                  objectFit: 'cover',
+                  transform: 'translate(0px, -5px)',
+                }}
+              />
+            )
+          }
+          slotInput={
+            <>
+              {showEdit || isEmpty(question.question) ? (
+                <UITextField
+                  multiline
+                  fullWidth
+                  defaultValue={question.question}
+                  value={editQn}
+                  onChange={(e) => {
+                    setEditQn(e.target.value);
+                  }}
+                  placeholder='Introduction'
+                />
+              ) : (
+                <UITypography type='small'>{question.question}</UITypography>
+              )}
+            </>
+          }
+          onClickEdit={{
+            onClick: () => {
+              setEditQn(question.question);
+              setShowEdit(true);
+            },
+          }}
+          onClickDelete={{
+            onClick: () => {
+              handleDeleteQn();
+            },
+          }}
+          onClickCancel={{
+            onClick: () => {
+              isEmpty(question.question) && handleDeleteQn();
+              setShowEdit(false);
+            },
+          }}
+          onClickSave={{
+            onClick: handleSave,
+          }}
+          onClickRetry={{
+            onClick: () => {
+              handleRegenerate();
+            },
+          }}
+          onClickGenerateVideo={{
+            onClick: () => {
+              handleGenerateVideo();
+            },
+          }}
+          onClickPlay={{
+            onClick: handleVideoPlay,
+          }}
+          onClickPause={{
+            onClick: handleVideoPlay,
+          }}
+          slotGeneratingLottie={<ScreeningVideoGenerating />}
+          isEditButtonVisible={!showEdit && !isEmpty(question.question)}
+          isGenerateButtonVisible={false}
+          isSaveButtonVisible={editMode}
+          isVideoVisible={jobForm.formFields.videoAssessment}
+          isPlayButtonVisible={!playing}
+          isPauseButtonVisible={playing}
+          isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
+          isGenerateVisible={isGenerateVisible}
+          isGeneratingLoaderVisible={isVideoGenerating && !isVideoError}
+          isErrorVisible={isVideoError}
+          textButtonError={'Regenerate'}
+          textError={`Changed question click 'Regenrate'`}
+          isActive={isQnHovered}
+        />
+      </div>
+    </>
   );
-}
+};

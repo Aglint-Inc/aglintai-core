@@ -3,7 +3,7 @@ import { get, isEmpty } from 'lodash';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { ScreeningQuestionCard } from '@/devlink';
+import { CategoriesEmptyState, ScreeningQuestionCard } from '@/devlink';
 import ScreeningVideoGenerating from '@/src/components/Common/Lotties/ScreeningVideoGenerating';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
@@ -57,6 +57,7 @@ const Questions = ({
             </>
           );
         })}
+        {questions.length === 0 && <CategoriesEmptyState />}
       </Drop>
     </>
   );
@@ -204,9 +205,7 @@ const Question = ({
                   }}
                 />
               ) : (
-                <UITypography 
-                type='small'>{question.question}
-                </UITypography>
+                <UITypography type='small'>{question.question}</UITypography>
               )}
             </>
           }
@@ -267,7 +266,7 @@ const Question = ({
                 alt=''
                 style={{
                   objectFit: 'cover',
-                  transform:'translate(0px, -5px)',
+                  transform: 'translate(0px, -5px)',
                 }}
               />
             )
@@ -277,7 +276,7 @@ const Question = ({
           isPauseButtonVisible={playing}
           isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
           isGenerateVisible={isGenerateVisible}
-          isGeneratingLoaderVisible={isVideoGenerating}
+          isGeneratingLoaderVisible={isVideoGenerating && !isVideoError}
           isErrorVisible={isVideoError}
           onClickRetry={{
             onClick: () => {

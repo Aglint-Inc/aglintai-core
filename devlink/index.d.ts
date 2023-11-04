@@ -77,6 +77,7 @@ export * from "./CandidatesData";
 export * from "./CandidateSideDrawer";
 export * from "./CandidateSkill";
 export * from "./CandidateSkillPills";
+export * from "./CategoriesEmptyState";
 export * from "./CddProfileInfo";
 export * from "./Checkbox";
 export * from "./CjCheckbox";
