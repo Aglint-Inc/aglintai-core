@@ -34,7 +34,12 @@ export function NewJobStep2({
           className={_utils.cx(_styles, "cj-input-wrapper", "pb-80")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Job Description"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Job Description"}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cj-richtext-editor-wrapper")}
             tag="div"
@@ -46,7 +51,12 @@ export function NewJobStep2({
               className={_utils.cx(_styles, "cj-add-skill-wrapper")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Required Skills"}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Required Skills"}
+              </_Builtin.Block>
               <_Builtin.Block tag="div">
                 {slotRequiredSKill ??
                   (isAddSkillVisible ? (
@@ -74,7 +84,10 @@ export function NewJobStep2({
                   className={_utils.cx(_styles, "cj-suggested-skills-header")}
                   tag="div"
                 >
-                  <_Builtin.Block tag="div">
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
                     {"Suggested skills"}
                   </_Builtin.Block>
                   <_Builtin.Image

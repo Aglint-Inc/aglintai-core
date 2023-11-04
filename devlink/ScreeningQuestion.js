@@ -32,7 +32,7 @@ export function ScreeningQuestion({
           tag="div"
         >
           {
-            "This video will be shown to the candidate before starting the interview.type in the text and click generate or "
+            "This video will be shown to the candidate before starting the assessment. type in the text and click generate or "
           }
           <_Builtin.Span
             className={_utils.cx(_styles, "text-blue-600", "text-underline")}
@@ -50,7 +50,7 @@ export function ScreeningQuestion({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Assesment Process"}
+          {"Assessment Process"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "accessment-desc")}
@@ -71,7 +71,7 @@ export function ScreeningQuestion({
             {slotToggleAssessment}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {"Use AI generated videos for assesment"}
+            {"Use AI generated videos for assessment"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -98,28 +98,6 @@ export function ScreeningQuestion({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "new-screen-welcome")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Ending Message"}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600", "mt-8")}
-          tag="div"
-        >
-          {
-            "The candidate will see this once they have answered all the questions."
-          }
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-555")}
-          tag="div"
-        >
-          {slotEndingMessageVideo ?? <ScreeningQuestionCard />}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
         className={_utils.cx(_styles, "new-screen-assememnt-question")}
         tag="div"
       >
@@ -127,7 +105,12 @@ export function ScreeningQuestion({
           className={_utils.cx(_styles, "div-block-542")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Assessment Questions -"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Assessment Questions -"}
+          </_Builtin.Block>
           <_Builtin.Block tag="div">{"Total Questions :"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-yellow-500")}
@@ -147,6 +130,28 @@ export function ScreeningQuestion({
           tag="div"
         >
           {slotAssessmentQuestion ?? <AssessmentQuestions />}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "new-screen-welcome")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Ending Message"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "color-grey-600", "mt-8")}
+          tag="div"
+        >
+          {
+            "The candidate will see this once they have answered all the questions."
+          }
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-555")}
+          tag="div"
+        >
+          {slotEndingMessageVideo ?? <ScreeningQuestionCard />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

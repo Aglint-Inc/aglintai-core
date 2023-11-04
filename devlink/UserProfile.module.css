@@ -595,6 +595,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .profile-inputs-wrapper {
   display: flex;
   flex-direction: column;

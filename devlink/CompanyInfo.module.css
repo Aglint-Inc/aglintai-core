@@ -600,6 +600,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .flex-vertical-left {
   display: flex;
   flex-direction: column;

@@ -590,6 +590,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .rd-email-temp-wrapper {
   display: grid;
   grid-auto-columns: 1fr;

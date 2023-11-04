@@ -1,5 +1,5 @@
 .new-screening-wrappers {
-  max-width: 800px;
+  max-width: 830px;
   margin-right: auto;
   margin-left: auto;
   padding-bottom: 60px;
@@ -220,6 +220,10 @@
 
 .fw-semibold.first-text-capital {
   text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
 }
 
 .new-screening-upload {
