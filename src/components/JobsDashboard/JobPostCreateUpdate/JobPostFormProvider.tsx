@@ -254,7 +254,7 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleUIJobUpdate } = useJobs();
+  const { handleUIJobReplace } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     try {
       dispatch({
@@ -264,7 +264,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         },
       });
       const updatedJobDb = await saveJobPostToDb(currState);
-      handleUIJobUpdate({
+      handleUIJobReplace({
         ...updatedJobDb,
         active_status: updatedJobDb.active_status as unknown as StatusJobs,
         count: {

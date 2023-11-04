@@ -1,16 +1,20 @@
+/* eslint-disable security/detect-object-injection */
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobContext } from './types';
+import { JobApplicationSections } from '../JobApplicationsContext/types';
 
 export const initialJobContext: JobContext = {
   jobsData: { applications: undefined, jobs: undefined },
   handleJobRead: undefined,
   handleJobUpdate: undefined,
-  handleUIJobUpdate: undefined,
+  handleUIJobReplace: undefined,
   handleJobDelete: undefined,
   handleJobError: undefined,
   handleGetJob: undefined,
   initialLoad: false,
+  handleUpdateJobCount: undefined,
+  handleUIJobUpdate: undefined,
 };
 
 export const readJobDbAction = async (recruiter_id: string) => {
@@ -60,12 +64,29 @@ export const readJobDbAction = async (recruiter_id: string) => {
   return { data: jobsWithCount, error };
 };
 
-export const readJobApplicationsAction = async (jobIds: string[]) => {
-  const { data, error } = await supabase
-    .from('job_applications')
-    .select('job_id,status,email')
-    .in('job_id', jobIds);
-  return { data, error };
+export const jobApplicationCountDbAction = async (ids: string[]) => {
+  const { data, error } = await supabase.rpc('getjobapplications', { ids });
+
+  return {
+    data: data
+      ? data.reduce((acc, curr) => {
+          return {
+            ...acc,
+            [curr.job_id]: {
+              ...Object.assign(
+                {},
+                ...Object.values(JobApplicationSections).map((j) => {
+                  return { [j]: 0 };
+                }),
+              ),
+              ...acc[curr.job_id],
+              [curr.status]: curr.count,
+            },
+          };
+        }, {})
+      : null,
+    error,
+  };
 };
 
 export const updateJobDbAction = async (inputData) => {

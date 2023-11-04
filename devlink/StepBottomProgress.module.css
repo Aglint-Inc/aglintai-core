@@ -318,3 +318,11 @@
 .text-color-white {
   color: white;
 }
+
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}

@@ -402,6 +402,14 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .ps-score-intro-wrapper {
   display: flex;
   max-width: 340px;

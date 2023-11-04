@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import toast from '@utils/toast';
 import { get } from 'lodash';
@@ -15,9 +16,11 @@ import {
 import {
   deleteJobDbAction,
   initialJobContext,
+  jobApplicationCountDbAction,
   readJobDbAction,
   updateJobDbAction,
 } from './utils';
+import { JobApplicationSections } from '../JobApplicationsContext/types';
 
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
@@ -31,6 +34,8 @@ enum ActionType {
   UPDATE,
   // eslint-disable-next-line no-unused-vars
   UI_UPDATE,
+  // eslint-disable-next-line no-unused-vars
+  UI_REPLACE,
   // eslint-disable-next-line no-unused-vars
   DELETE,
 }
@@ -55,9 +60,18 @@ type Action =
       };
     }
   | {
-      type: ActionType.UI_UPDATE;
+      type: ActionType.UI_REPLACE;
       payload: {
         newJob: JobTypeDashboard;
+      };
+    }
+  | {
+      type: ActionType.UI_UPDATE;
+      payload: {
+        jobId: string;
+        newJob?: JobTypeDashboard;
+        // eslint-disable-next-line no-unused-vars
+        count?: { [key in JobApplicationSections]: number };
       };
     }
   | {
@@ -102,6 +116,24 @@ const reducer = (state: JobsData, action: Action) => {
     }
 
     case ActionType.UI_UPDATE: {
+      const newJobs: JobTypeDashboard[] = state.jobs.reduce((jobs, job) => {
+        if (job.id === action.payload.jobId)
+          jobs.push({
+            ...job,
+            ...action.payload.newJob,
+            count: { ...action.payload.count },
+          });
+        else jobs.push(job);
+        return jobs;
+      }, []);
+      const newState: JobsData = {
+        ...state,
+        jobs: newJobs,
+      };
+      return newState;
+    }
+
+    case ActionType.UI_REPLACE: {
       const { newJob } = action.payload;
       const newState: JobsData = {
         ...state,
@@ -194,13 +226,30 @@ const useJobActions = () => {
     }
   };
 
-  const handleUIJobUpdate = (newJob: JobTypeDashboard) => {
+  const handleUIJobReplace = (newJob: JobTypeDashboard) => {
+    if (recruiter) {
+      if (newJob) {
+        const action: Action = {
+          type: ActionType.UI_REPLACE,
+          payload: {
+            newJob: newJob,
+          },
+        };
+        dispatch(action);
+        return true;
+      }
+      return false;
+    }
+  };
+
+  const handleUIJobUpdate = (jobId: string, newJob?: JobTypeDashboard) => {
     if (recruiter) {
       if (newJob) {
         const action: Action = {
           type: ActionType.UI_UPDATE,
           payload: {
-            newJob: newJob,
+            jobId,
+            newJob,
           },
         };
         dispatch(action);
@@ -232,6 +281,26 @@ const useJobActions = () => {
     return jobsData.jobs.find((job) => job.id === jobId);
   };
 
+  const handleUpdateJobCount = async (jobIds: string[]) => {
+    if (recruiter) {
+      const { data, error } = await jobApplicationCountDbAction(jobIds);
+      if (data) {
+        jobIds.map((jobId) => {
+          const action: Action = {
+            type: ActionType.UI_UPDATE,
+            payload: {
+              jobId,
+              count: data[jobId],
+            },
+          };
+          dispatch(action);
+        });
+        return true;
+      } else handleJobError(error);
+    }
+    return false;
+  };
+
   const handleJobError = (error) => {
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
@@ -246,6 +315,8 @@ const useJobActions = () => {
     handleJobRead,
     handleJobUpdate,
     handleUIJobUpdate,
+    handleUpdateJobCount,
+    handleUIJobReplace,
     handleJobDelete,
     handleJobError,
     handleGetJob,

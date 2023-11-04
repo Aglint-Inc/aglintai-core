@@ -147,7 +147,7 @@ const useProviderJobApplicationActions = (
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
-  const { jobsData, initialLoad: jobLoad } = useJobs();
+  const { jobsData, initialLoad: jobLoad, handleUpdateJobCount } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
   const paginationLimit = 100;
@@ -387,6 +387,7 @@ const useProviderJobApplicationActions = (
       const read = await handleJobApplicationRead({
         job_id: jobId,
         ranges: initialRanges,
+        ...searchParameters,
       });
       if (read) {
         updateTick.current = !updateTick.current;
@@ -463,6 +464,15 @@ const useProviderJobApplicationActions = (
       });
     }
   }, [initialJobLoad]);
+
+  useEffect(() => {
+    if (initialLoad) {
+      const timer = setTimeout(async () => {
+        await handleUpdateJobCount([job.id]);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [initialLoad, updateTick.current]);
 
   const value = {
     applications,

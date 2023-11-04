@@ -538,6 +538,7 @@
 }
 
 .cv-list-column.title {
+  display: none;
   width: 240px;
   min-width: 240px;
 }

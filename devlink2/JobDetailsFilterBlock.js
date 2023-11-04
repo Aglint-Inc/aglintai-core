@@ -21,7 +21,7 @@ export function JobDetailsFilterBlock({
         className={_utils.cx(_styles, "cv-tab-filter-left")}
         tag="div"
       >
-        {slotFilter ?? <CandidateFilter />}
+        {slotFilter ?? <CandidateFilter isFilterBodyVisible={false} />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-tab-filter-right")}

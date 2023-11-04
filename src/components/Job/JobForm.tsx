@@ -53,7 +53,7 @@ type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
-  const { handleUIJobUpdate } = useJobs();
+  const { handleUIJobReplace } = useJobs();
 
   const { jobForm, dispatch } = useJobForm();
   const router = useRouter();
@@ -239,7 +239,7 @@ function JobForm() {
           .eq('id', jobForm.jobPostId)
           .select(),
       );
-      handleUIJobUpdate({
+      handleUIJobReplace({
         ...job,
         count: {
           new: 0,

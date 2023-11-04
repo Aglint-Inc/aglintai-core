@@ -433,6 +433,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .frame-1018 {
   display: flex;
   justify-content: flex-start;

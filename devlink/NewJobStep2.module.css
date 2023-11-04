@@ -340,6 +340,10 @@
   text-transform: capitalize;
 }
 
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .cj-richtext-editor-wrapper {
   width: 100%;
   border: 1px solid var(--grey300-03a46dba);

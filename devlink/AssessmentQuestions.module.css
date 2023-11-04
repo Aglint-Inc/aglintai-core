@@ -262,6 +262,10 @@
   text-transform: capitalize;
 }
 
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .div-block-544 {
   display: flex;
   padding-top: 16px;

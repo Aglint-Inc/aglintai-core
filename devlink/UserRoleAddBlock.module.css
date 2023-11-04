@@ -276,6 +276,14 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 #w-node-_5b99b463-1eb2-741e-96b1-9a81bc941679-bc941679 {
   grid-column-start: span 1;
   grid-column-end: span 1;

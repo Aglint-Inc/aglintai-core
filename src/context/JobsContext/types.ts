@@ -25,13 +25,17 @@ export type JobContext = {
     inputData: Partial<JobTypeDashboard>,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
-  handleUIJobUpdate: (newJob: JobTypeDashboard) => boolean;
+  handleUIJobReplace: (newJob: JobTypeDashboard) => boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleUIJobUpdate: (jobId: string, newJob?: JobTypeDashboard) => boolean;
   // eslint-disable-next-line no-unused-vars
   handleJobDelete: (jobId: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleJobError: (error: any) => void;
   // eslint-disable-next-line no-unused-vars
   handleGetJob: (jobId: string) => JobTypeDashboard;
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateJobCount: (jobIds: string[]) => Promise<boolean>;
   initialLoad: boolean;
 };
 

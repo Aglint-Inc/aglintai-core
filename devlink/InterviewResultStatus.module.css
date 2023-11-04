@@ -221,6 +221,14 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .interview-status-tag {
   padding: 3px 10px;
   border-radius: 100px;
@@ -256,10 +264,6 @@
 
 .text-grey-300 {
   color: var(--grey300-03a46dba);
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
 }
 
 .text-capitalize {

@@ -224,6 +224,14 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .cvs-score-block {
   display: flex;
   flex-direction: column;
@@ -273,7 +281,7 @@
   padding-left: 14px;
 }
 
-.cvs-download-res-btn {
+.cvs-view-res-btn {
   display: flex;
   padding: 2px 12px;
   align-items: center;
@@ -283,11 +291,7 @@
   border-radius: 4px;
 }
 
-.cvs-download-res-btn.clickable {
-  text-decoration: none;
-}
-
-.cvs-download-res-btn.clickable:hover {
+.cvs-view-res-btn.clickable:hover {
   background-color: #f8f9f9;
 }
 
@@ -330,20 +334,6 @@
 
 .text-underline:hover {
   opacity: 0.7;
-}
-
-.cvs-view-res-btn {
-  display: flex;
-  padding: 2px 12px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-}
-
-.cvs-view-res-btn.clickable:hover {
-  background-color: #f8f9f9;
 }
 
 .cvs-score-details-wrapper {

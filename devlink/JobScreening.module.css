@@ -772,6 +772,10 @@
   color: white;
 }
 
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;

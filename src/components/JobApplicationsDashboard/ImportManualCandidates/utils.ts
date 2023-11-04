@@ -32,8 +32,9 @@ export const checkDuplicateJobApplicationDbAction = async (
 ) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select()
-    .match({ email, job_id: jobId });
+    .select('*,candidates!inner(*)')
+    .match({ job_id: jobId })
+    .or(`email.eq.${email}`, { foreignTable: 'candidates' });
   if (data) {
     if (data.length !== 0) return { data: true, error: null };
     else return { data: false, error: null };

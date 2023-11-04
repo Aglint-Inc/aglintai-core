@@ -147,7 +147,9 @@ const JobApplicationComponent = () => {
 
   return (
     <JobDetails
-      onclickHeaderJobs={{ onClick: () => router.push(pageRoutes.JOBS) }}
+      onclickHeaderJobs={{
+        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.JOBS}?status=active`,
+      }}
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
       textApplicantsNumber={``}
@@ -157,7 +159,7 @@ const JobApplicationComponent = () => {
         },
       }}
       jobLink={{
-        href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
+        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/job-post/${job.id}`,
         target: '_blank',
       }}
       slotJobStatus={

@@ -128,8 +128,8 @@ export const customPhoneStyle = {
   },
   '& .country-list': {
     width: 'fit-content !important',
-    minWidth: '180px',
-    position: 'fixed !important',
+    minWidth: '200px',
+    // position: 'fixed !important',
   },
   '& .react-tel-input .form-control.invalid-number , & .react-tel-input .flag-dropdown.invalid-number':
     {

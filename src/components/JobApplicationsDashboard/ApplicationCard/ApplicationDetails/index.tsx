@@ -1,4 +1,6 @@
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Dialog, Stack } from '@mui/material';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
@@ -286,6 +288,8 @@ const NewJobApplicationSideDrawer = ({
       }
     }
   }, [leftShift, rightShift]);
+  const overview =
+    (applicationDetails.candidates?.json_resume as any)?.overview ?? null;
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
@@ -323,16 +327,14 @@ const NewJobApplicationSideDrawer = ({
           ? applicationDetails.candidates.email
           : '--'
       }
-      textOverviewDesc={
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-      }
+      textOverviewDesc={overview}
       slotCandidateDetails={
         <NewCandidateDetails
           applicationDetails={applicationDetails}
           setOpenFeedback={setOpenFeedback}
         />
       }
-      isOverviewVisible={false}
+      isOverviewVisible={overview}
       isLinkedInVisible={applicationDetails.candidates.linkedin !== null}
       isCopiedMessageVisible={copy}
     />
@@ -379,7 +381,7 @@ const NewCandidateDetails = ({
               ) : (
                 <></>
               )}
-              {resume.work && resume.length !== 0 ? (
+              {resume.work && resume.work.length !== 0 ? (
                 <NewExperienceDetails work={resume.work} />
               ) : (
                 <></>
@@ -528,22 +530,30 @@ const NewResumeSection = ({
           <ResumePreviewer url={applicationDetails.candidates.resume} />
         </Stack>
       </Dialog>
-      {applicationValidity(applicationDetails) ? (
-        <NewResumeScoreDetails
-          applicationDetails={applicationDetails}
-          job={job}
-          feedback={false}
-          setOpenResume={setOpenResume}
-        />
+      {applicationDetails.candidates.json_resume ||
+      applicationDetails.candidates.resume ? (
+        applicationValidity(applicationDetails) ? (
+          <NewResumeScoreDetails
+            applicationDetails={applicationDetails}
+            job={job}
+            feedback={false}
+            setOpenResume={setOpenResume}
+          />
+        ) : (
+          <UnableFetchResume
+            propsLink={{ href: applicationDetails.candidates.resume }}
+            onClickViewResume={{
+              onClick: () => {
+                setOpenResume(true);
+              },
+            }}
+            slotDownload={
+              <DownloadButton2 applicationDetails={applicationDetails} />
+            }
+          />
+        )
       ) : (
-        <UnableFetchResume
-          // propsLink={{ href: applicationDetails.resume }}
-          onClickViewResume={{
-            onClick: () => {
-              setOpenResume(true);
-            },
-          }}
-        />
+        <></>
       )}
     </>
   );
@@ -612,12 +622,16 @@ export const NewResumeScoreDetails = ({
           setOpenResume(true);
         },
       }}
-      // propsLink={{ href: applicationDetails.resume }}
+      slotDownload={<DownloadButton1 applicationDetails={applicationDetails} />}
+      propsLink={{ href: applicationDetails.candidates.resume }}
       slotFeedbackScore={
         <>
           <ResumeFeedbackScore
             textFeedback={'Skills'}
-            textScoreState={jdScoreObj.skills_score.score ?? '--'}
+            textScoreState={
+              (applicationDetails.candidates?.json_resume as any)?.skills
+                ?.length ?? '--'
+            }
           />
           <ResumeFeedbackParams feedbackParamsObj={jdScoreObj.qualification} />
         </>
@@ -632,11 +646,11 @@ export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
   );
   const getCustomText = (e) => {
     switch (e) {
-      case 'more':
+      case 'more match':
         return 'High';
-      case 'ok':
+      case 'average match':
         return 'Medium';
-      case 'less':
+      case 'less match':
         return 'Low';
     }
     return '--';
@@ -656,6 +670,129 @@ export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
         );
       })}
     </>
+  );
+};
+
+const DownloadButton1 = ({
+  applicationDetails,
+}: {
+  applicationDetails: JobApplication;
+}) => {
+  const [hover, setHover] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const fetchFile = async () => {
+    if (!loading) {
+      setLoading(true);
+      await axios({
+        url: applicationDetails?.candidates?.resume ?? '#',
+        method: 'GET',
+        responseType: 'blob',
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute(
+          'download',
+          `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
+        );
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.parentNode.removeChild(link);
+      });
+      setLoading(false);
+    }
+  };
+
+  const style = {
+    color: hover ? 'rgb(76,143,197)' : 'rgb(31,115,183)',
+    backgroundColor: hover ? 'rgb(249,250,250)' : 'white',
+    cursor: hover ? 'pointer' : 'auto',
+  };
+
+  return (
+    <Stack
+      onClick={async () => await fetchFile()}
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+      style={{ ...style }}
+      fontSize={'14px'}
+      direction={'row'}
+      alignItems={'center'}
+      justifyContent={'space-evenly'}
+      py={'2px'}
+      borderRadius={'4px'}
+    >
+      <Stack pl={'12px'} pr={'8px'}>
+        <ArrowDownwardIcon
+          style={{ fontSize: '12px', transform: 'translateY(1px)' }}
+        />
+      </Stack>
+      <Stack pr={'12px'}>Download Resume</Stack>
+    </Stack>
+  );
+};
+
+const DownloadButton2 = ({
+  applicationDetails,
+}: {
+  applicationDetails: JobApplication;
+}) => {
+  const [hover, setHover] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const fetchFile = async () => {
+    if (!loading) {
+      setLoading(true);
+      await axios({
+        url: applicationDetails?.candidates?.resume ?? '#',
+        method: 'GET',
+        responseType: 'blob',
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute(
+          'download',
+          `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
+        );
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.parentNode.removeChild(link);
+      });
+      setLoading(false);
+    }
+  };
+
+  const style = {
+    color: hover ? 'rgb(76,143,197)' : 'rgb(31,115,183)',
+    backgroundColor: hover ? 'rgb(249,250,250)' : 'white',
+    cursor: hover ? 'pointer' : 'auto',
+  };
+
+  return (
+    <Stack
+      onClick={async () => await fetchFile()}
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+      style={{ ...style }}
+      fontSize={'14px'}
+      direction={'row'}
+      alignItems={'center'}
+      justifyContent={'space-evenly'}
+      py={'7px'}
+      borderRadius={'4px'}
+      border={`1px solid ${style.color}`}
+    >
+      <Stack pl={'12px'} pr={'6px'}>
+        <ArrowDownwardIcon style={{ fontSize: '12px' }} />
+      </Stack>
+      <Stack pr={'12px'} style={{ transform: 'translateY(-1px)' }}>
+        Download Resume
+      </Stack>
+    </Stack>
   );
 };
 

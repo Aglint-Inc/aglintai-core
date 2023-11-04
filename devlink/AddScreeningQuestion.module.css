@@ -49,6 +49,7 @@
 }
 
 .slot-input-new-screen {
+  min-height: 100px;
   margin-bottom: 13px;
 }
 

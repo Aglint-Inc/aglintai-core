@@ -85,23 +85,33 @@ const ApplicationCard = ({
           : '---'
       }
       slotResumeScore={
-        intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-          application.candidates.json_resume && application.jd_score ? (
-            <SmallCircularScore
-              finalScore={resumeScore}
-              scale={0.5}
-              showScore={true}
-            />
+        application.candidates.json_resume || application.candidates.resume ? (
+          intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
+            application.jd_score ? (
+              <SmallCircularScore
+                finalScore={resumeScore}
+                scale={0.5}
+                showScore={true}
+              />
+            ) : (
+              <Tooltip
+                title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."
+                placement='right'
+                arrow
+              >
+                <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+              </Tooltip>
+            )
           ) : (
-            <Tooltip title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again." placement='right' arrow>
-              <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+            <Tooltip title='Ongoing scoring' placement='right' arrow>
+              <Stack style={{ scale: '0.3' }}>
+                <Calculating />
+              </Stack>
             </Tooltip>
           )
         ) : (
-          <Tooltip title='Ongoing scoring' placement='right' arrow>
-            <Stack style={{ scale: '0.3' }}>
-              <Calculating />
-            </Stack>
+          <Tooltip title='No resume available.' placement='right' arrow>
+            <Stack>---</Stack>
           </Tooltip>
         )
       }
