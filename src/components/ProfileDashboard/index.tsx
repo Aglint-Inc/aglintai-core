@@ -117,7 +117,7 @@ const ProfileDashboard = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Password',
+      label: 'New password',
     },
     confirmPassword: {
       ...initialFormValues,

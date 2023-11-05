@@ -6,7 +6,7 @@ import _styles from "./SoonBadge.module.css";
 export function SoonBadge({ as: _Component = _Builtin.Block }) {
   return (
     <_Component className={_utils.cx(_styles, "soon-nav-badge")} tag="div">
-      <_Builtin.Block tag="div">{"soon"}</_Builtin.Block>
+      <_Builtin.Block tag="div">{"request access"}</_Builtin.Block>
     </_Component>
   );
 }

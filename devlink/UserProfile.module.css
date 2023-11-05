@@ -477,6 +477,11 @@
   margin-top: 40px;
 }
 
+.profile-block.emial {
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
 .profile-header-wrappers {
   display: flex;
   justify-content: space-between;
@@ -623,6 +628,10 @@
 .flex-hor-left.center-align.gap-6 {
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.flex-hor-left.emial {
+  margin-top: -12px;
 }
 
 .div-block-387 {

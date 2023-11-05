@@ -1,12 +1,8 @@
 .edit-close-job {
   padding-top: 47px;
-  padding-bottom: 67px;
+  padding-bottom: 47px;
   padding-left: 178px;
   border-top: 1px solid #e9ebed;
-}
-
-@media screen and (min-width: 1280px) {
-
 }
 
 .div-block-556 {
@@ -16,10 +12,6 @@
   align-items: flex-start;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-@media screen and (min-width: 1280px) {
-
 }
 
 .fw-semibold {
@@ -278,14 +270,6 @@
   transition: all 250ms ease;
 
   cursor: pointer;
-}
-
-@media screen and (min-width: 1280px) {
-
-}
-
-@media screen and (min-width: 1280px) {
-
 }
 
 .close-job-btn:hover {
