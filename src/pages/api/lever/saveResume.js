@@ -61,11 +61,24 @@ export default async function handler(req, res) {
 
             let extension = responseUrl.headers['content-type'];
             // Upload the file to Supabase Storage
+            const { data: application, error: errorApp } = await supabase
+              .from('job_applications')
+              .select()
+              .eq('application_id', payload.application_id);
+            if (errorApp) {
+              console.log('no application found');
+              res.status(400).send('no application found');
+              return;
+            }
+            const { data: cand } = await supabase
+              .from('candidates')
+              .select()
+              .eq('id', application[0].candidate_id);
             const { data, error: uploadError } = await supabase.storage
               .from(bucketName)
               .upload(
-                `public/${
-                  payload.application_id + response.data.data[0].file.ext
+                `public/${cand[0].id}/${
+                  application[0].job_id + response.data.data[0].file.ext
                 }`,
                 responseUrl.data,
                 {
@@ -81,19 +94,15 @@ export default async function handler(req, res) {
             const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
-              const { data: application, error } = await supabase
-                .from('job_applications')
-                .select()
-                .eq('application_id', payload.application_id);
 
-              if (!error) {
-                await supabase
-                  .from('candidates')
-                  .update({ resume: fileLink, json_resume: jsonResume })
-                  .eq('id', application[0].candidate_id);
-              } else {
+              const { error } = await supabase
+                .from('candidates')
+                .update({ resume: fileLink, json_resume: jsonResume })
+                .eq('id', application[0].candidate_id);
+              if (error) {
                 console.log('error while updating candidate');
                 res.status(400).send('error while updating candidate');
+                return;
               }
             }
 

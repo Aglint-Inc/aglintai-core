@@ -1,7 +1,6 @@
 .create-job-wrap-onclick {
   display: flex;
   width: 297px;
-  height: 140px;
   padding: 20px 20px 20px 24px;
   flex-direction: column;
   justify-content: center;

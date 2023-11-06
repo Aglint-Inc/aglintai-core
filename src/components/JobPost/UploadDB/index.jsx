@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
@@ -18,7 +19,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { jobOpenings } from '..';
-import Icon from '../../Common/Icons/Icon'; 
+import Icon from '../../Common/Icons/Icon';
 
 const initialError = () => {
   return {
@@ -179,42 +180,97 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
 
   const submitHandler = async () => {
     if (checked && validate()) {
-      let jobId = post.id;
-      let id = `${profile.email}-${jobId}`;
-
-      let uploadUrl = null;
-      if (file) {
-        const { data } = await supabase.storage
-          .from('resume-job-post')
-          .upload(`public/${id.toLowerCase()}`, file, {
-            cacheControl: '3600',
-            // Overwrite file if it exist
-            upsert: true,
-          });
-        uploadUrl = `${
-          process.env.NEXT_PUBLIC_SUPABASE_URL
-        }/storage/v1/object/public/resume-job-post/${
-          data?.path
-        }?t=${new Date().toISOString()}`;
-      }
-
       const { data: checkCand, error: errorCheck } = await supabase
         .from('candidates')
         .select()
         .match({ email: profile.email });
 
+      let candidateId;
+
+      let uploadUrl = null;
+
       if (!errorCheck && checkCand.length == 0) {
-        await insertCandidate(uploadUrl, jobId);
+        candidateId = uuidv4();
+        if (file) {
+          const { data } = await supabase.storage
+            .from('resume-job-post')
+            .upload(
+              `public/${candidateId}/${post.id}.${
+                file.type.includes('pdf')
+                  ? 'pdf'
+                  : file.type.includes('doc')
+                  ? 'docx'
+                  : 'txt'
+              }`,
+              file,
+              {
+                cacheControl: '3600',
+                // Overwrite file if it exist
+                upsert: true,
+              },
+            );
+          uploadUrl = `${
+            process.env.NEXT_PUBLIC_SUPABASE_URL
+          }/storage/v1/object/public/resume-job-post/${
+            data?.path
+          }?t=${new Date().toISOString()}`;
+        }
+        await insertCandidate(uploadUrl, post.id);
       } else {
-        const ids = checkCand.map((e) => e.id);
         const { data: checkApplication, error: errorCheck } = await supabase
           .from('job_applications')
           .select()
-          .in('candidate_id', ids)
-          .eq('job_id', jobId);
+          .eq('candidate_id', checkCand[0].id)
+          .eq('job_id', post.id);
 
         if (!errorCheck && checkApplication.length == 0) {
-          await insertCandidate(uploadUrl, jobId);
+          if (file) {
+            const { data } = await supabase.storage
+              .from('resume-job-post')
+              .upload(
+                `public/${checkCand[0].id}/${post.id}.${
+                  file.type.includes('pdf')
+                    ? 'pdf'
+                    : file.type.includes('doc')
+                    ? 'docx'
+                    : 'txt'
+                }`,
+                file,
+                {
+                  cacheControl: '3600',
+                  // Overwrite file if it exist
+                  upsert: true,
+                },
+              );
+
+            uploadUrl = `${
+              process.env.NEXT_PUBLIC_SUPABASE_URL
+            }/storage/v1/object/public/resume-job-post/${
+              data?.path
+            }?t=${new Date().toISOString()}`;
+          }
+
+          const { data: newApplication } = await supabase
+            .from('job_applications')
+            .insert({
+              candidate_id: checkCand[0].id,
+              job_id: post.id,
+              status: 'new',
+              resume: uploadUrl,
+            })
+            .select();
+          setApplication(newApplication[0]);
+          await mailHandler(newApplication[0].application_id);
+          setProfile({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            resume: '',
+            linkedin: '',
+          });
+          setLoading(false);
+          setThank(true);
         } else {
           setLoading(false);
           isSubmitRef.current = false;
@@ -233,10 +289,6 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
         email: profile.email,
         phone: profile.phoneNumber,
         linkedin: profile.linkedin,
-        resume: uploadUrl,
-        job_location: post?.location,
-        job_title: !post?.is_campus ? post?.job_title : profile.role,
-        company: post?.company,
       })
       .select();
 
@@ -247,6 +299,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           candidate_id: newCandidate[0].id,
           job_id: jobId,
           status: 'new',
+          resume: uploadUrl,
         })
         .select();
 
@@ -259,11 +312,6 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
         phoneNumber: '',
         resume: '',
         linkedin: '',
-        usn: '',
-        college_name: '',
-        branch: '',
-        cgpa: '',
-        role: '',
       });
       setLoading(false);
       setThank(true);
@@ -304,12 +352,12 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           email: profile?.email,
           subject: fillEmailTemplate(
             post.email_template.application_recieved.subject,
-            email
+            email,
           ),
           text: fillEmailTemplate(
             post.email_template.application_recieved.body,
             email,
-            application_id
+            application_id,
           ),
         })
         .then((res) => {
@@ -627,13 +675,9 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
             isDisabled={isSubmitRef.current}
             onClickButton={{
               onClick: () => {
-                if (post.active_status.sourcing.isActive) {
-                  if (!isSubmitRef.current) {
-                    isSubmitRef.current = true;
-                    submitHandler();
-                  }
-                } else {
-                  toast.error('Suorcing is not active');
+                if (!isSubmitRef.current) {
+                  isSubmitRef.current = true;
+                  submitHandler();
                 }
               },
             }}

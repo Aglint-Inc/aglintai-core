@@ -32,6 +32,7 @@ export default function EmptyJobDashboard({
 
       <JobDashboardEmpty
         isAtsOptionVisible={true}
+        isConnectedVisible={recruiter?.lever_key ? true : false}
         textHeader={heading}
         isOldTitleVisible={showMsg}
         onClickAddJob={{
