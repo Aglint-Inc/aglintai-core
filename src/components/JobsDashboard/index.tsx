@@ -30,7 +30,7 @@ const DashboardComp = () => {
   useEffect(() => {
     if (router.isReady) {
       if (!router.query.status) {
-        router.push(`?status=active`, undefined, {
+        router.push(`?status=published`, undefined, {
           shallow: true,
         });
       }
@@ -43,30 +43,16 @@ const DashboardComp = () => {
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
       setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
-    } else if (router.query.status == 'active') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          (job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'published') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
-    } else if (router.query.status == 'close') {
+    } else if (router.query.status == 'closed') {
       const filter = jobsData.jobs.filter((job) => {
-        return !job.is_campus && job.active_status.closed.isActive;
+        job.status == 'closed';
       });
       setFilteredJobs(filter);
-    } else if (router.query.status == 'inactive') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          !(
-            job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive
-          ) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'draft') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs(filter);
     } else {
       setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
@@ -81,30 +67,16 @@ const DashboardComp = () => {
           e.target.value,
         ),
       ]);
-    } else if (router.query.status == 'active') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          (job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'published') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'close') {
+    } else if (router.query.status == 'closed') {
       const filter = jobsData.jobs.filter(
         (job) => !job.is_campus && job.active_status.closed.isActive,
       );
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'inactive') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          !(
-            job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive
-          ) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'draft') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     }
   };

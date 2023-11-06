@@ -80,6 +80,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
               )[0].id,
               job_id: post.job_id,
               application_id: ref.application_id,
+              // resume_text: 'Lever',
             };
           });
 
@@ -242,20 +243,7 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
           : 'offsite',
       company: recruiter.name,
       skills: [],
-      active_status: {
-        closed: {
-          isActive: false,
-          timeStamp: null,
-        },
-        sourcing: {
-          isActive: false,
-          timeStamp: null,
-        },
-        interviewing: {
-          isActive: true,
-          timeStamp: null,
-        },
-      },
+      status: 'published',
     };
   });
   return dbJobs;

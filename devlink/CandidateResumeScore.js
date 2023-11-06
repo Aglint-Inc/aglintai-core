@@ -59,7 +59,26 @@ export function CandidateResumeScore({
                 {textScoreState}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotDownload}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-view-res-btn", "clickable")}
+                tag="div"
+                {...onClickDownloadResume}
+              >
+                <_Builtin.Block tag="div">
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icon-embed")}
+                    value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%208.19509L9.04645%205.64864C9.24171%205.45338%209.55829%205.45338%209.75355%205.64864C9.94882%205.84391%209.94882%206.16049%209.75355%206.35575L6.65355%209.45575C6.25829%209.85101%205.64171%209.85101%205.24645%209.45575L2.14645%206.35575C1.95118%206.16049%201.95118%205.84391%202.14645%205.64864C2.34171%205.45338%202.65829%205.45338%202.85355%205.64864L5.5%208.29509V1.0022C5.5%200.726055%205.72386%200.502197%206%200.502197C6.27614%200.502197%206.5%200.726055%206.5%201.0022V8.19509ZM1.5%2012.5022C1.22386%2012.5022%201%2012.2783%201%2012.0022C1%2011.7261%201.22386%2011.5022%201.5%2011.5022H10.5C10.7761%2011.5022%2011%2011.7261%2011%2012.0022C11%2012.2783%2010.7761%2012.5022%2010.5%2012.5022H1.5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-600-2")}
+                  tag="div"
+                >
+                  {"Download Resume"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "cvs-view-res-btn", "clickable")}
               tag="div"

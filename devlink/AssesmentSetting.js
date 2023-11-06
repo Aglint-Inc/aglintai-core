@@ -24,7 +24,7 @@ export function AssesmentSetting({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "mb-15")}
+          className={_utils.cx(_styles, "text-lg", "fw-semibold", "mb-15")}
           tag="div"
         >
           {"Avatar settings"}
