@@ -3,6 +3,7 @@ import { Paper, Stack, Tooltip, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -52,23 +53,25 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     setLoading(true);
 
     for (const file of selectedfile) {
-      let uploadUrl = await uploadResume(file);
+      let candidateId = uuidv4();
+      let uploadUrl = await uploadResume(file, candidateId, job.id);
       try {
         // TODO: Error handling required and exisiting candidate handling
         const { data, error } = await supabase
           .from('candidates')
           .insert({
-            first_name: file.name,
+            first_name: file.name.toLowerCase().trim(),
             last_name: '',
-            email: '',
-            resume: uploadUrl,
+            email: `temp-${candidateId}@gmail.com`,
             recruiter_id: recruiter.id,
+            id: candidateId,
           })
           .select();
         if (!error) {
           await supabase
             .from('job_applications')
             .insert({
+              resume: uploadUrl,
               candidate_id: data[0].id,
               job_id: job.id,
             })
@@ -87,18 +90,14 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     );
   };
 
-  const uploadResume = async (file) => {
+  const uploadResume = async (file, candidate_id, job_id) => {
     const { data } = await supabase.storage
       .from('resume-job-post')
-      .upload(
-        `public/${new Date().toISOString().trim() + file.name.toLowerCase()}`,
-        file,
-        {
-          cacheControl: '3600',
-          // Overwrite file if it exist
-          upsert: true,
-        },
-      );
+      .upload(`public/${candidate_id}/${job_id}`, file, {
+        cacheControl: '3600',
+        // Overwrite file if it exist
+        upsert: true,
+      });
     let uploadUrl = `${
       process.env.NEXT_PUBLIC_SUPABASE_URL
     }/storage/v1/object/public/resume-job-post/${data?.path}?t=${new Date().toISOString()}`;
