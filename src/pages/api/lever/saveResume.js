@@ -96,9 +96,9 @@ export default async function handler(req, res) {
               // Get the link to the uploaded file
 
               const { error } = await supabase
-                .from('candidates')
+                .from('job_applications')
                 .update({ resume: fileLink, json_resume: jsonResume })
-                .eq('id', application[0].candidate_id);
+                .eq('application_id', payload.application_id);
               if (error) {
                 console.log('error while updating candidate');
                 res.status(400).send('error while updating candidate');
