@@ -52,11 +52,18 @@
 }
 
 .div-block-344 {
+  position: sticky;
+  top: 0px;
+  z-index: 4;
+
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  background-color: hsla(180, 7.69%, 97.45%, 0.50);
+
+  border-bottom: 1px solid #e9ebed;
+
+  background-color: white;
 }
 
 .rd-jobs-header-wrapper {
@@ -1577,6 +1584,7 @@
   padding-right: 24px;
   padding-bottom: 8px;
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 @media screen and (max-width: 767px) {

@@ -22,10 +22,14 @@
 
 .slot-avatar-audio {
   z-index: 5;
+
   overflow: hidden;
   width: 96px;
   height: 96px;
+
   border-radius: 100px;
+
+  background-color: #f8f9f9;
 }
 
 .div-overlay-audio {
@@ -145,7 +149,7 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px solid #e9ebed;
+  border: 2px solid #e9ebed;
   border-radius: 10px;
 }
 
@@ -155,7 +159,7 @@
   top: 10px;
   right: auto;
   bottom: auto;
-  z-index: 2;
+  z-index: 3;
 
   display: flex;
   width: 28px;
@@ -176,7 +180,7 @@
   top: 10px;
   right: 10px;
   bottom: auto;
-  z-index: 2;
+  z-index: 3;
 
   display: flex;
   width: 16px;
@@ -187,4 +191,6 @@
 
   border: 2px solid var(--grey-200);
   border-radius: 4px;
+
+  background-color: white;
 }

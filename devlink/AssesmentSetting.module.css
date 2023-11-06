@@ -258,8 +258,6 @@
   display: flex;
   margin-top: 15px;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }
 
 .slot-toggle-screening {

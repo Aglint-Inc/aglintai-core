@@ -35,7 +35,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
       <NewJobStep1
         slotForm={
           <>
-            <Stack p={1} rowGap={2} component={'form'}>
+            <Stack rowGap={2} component={'form'}>
               <Grid container spacing={2}>
                 <Grid item spacing={2} sm={6}>
                   <UITextField

@@ -114,7 +114,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <UITextField
                   labelSize='small'
                   fullWidth
-                  label='Industry Type'
+                  label='Industry'
                   placeholder='Ex. Healthcare'
                   value={recruiter?.industry}
                   onChange={(e) => {
