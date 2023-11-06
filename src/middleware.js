@@ -47,7 +47,7 @@ export async function middleware(request) {
 async function verify(token, secret) {
   try {
     await jwtVerify(token, new TextEncoder().encode(secret), {
-      maxTokenAge: 60 * 60,
+      maxTokenAge: 86400, //one day in supabase
     });
     return true;
   } catch (e) {
