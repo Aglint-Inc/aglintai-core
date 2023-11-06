@@ -9,7 +9,7 @@
   position: sticky;
   top: 0px;
   z-index: 10;
-  background-color: var(--grey-100);
+  background-color: #f8f9f9;
 }
 
 .cv-list-row.item {

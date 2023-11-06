@@ -20,7 +20,7 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--grey-200);
+  border-bottom: 1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
 .job-details-header-block {
@@ -494,7 +494,7 @@
   position: sticky;
   top: 0px;
   z-index: 10;
-  background-color: var(--grey-100);
+  background-color: #f8f9f9;
 }
 
 .cv-list-row.item {
