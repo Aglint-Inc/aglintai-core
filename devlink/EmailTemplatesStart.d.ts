@@ -12,4 +12,7 @@ declare function EmailTemplatesStart(props: {
   onClickProceed?: Types.Devlink.RuntimeProps;
   isAddJob?: Types.Visibility.VisibilityConditions;
   onClickDone?: Types.Devlink.RuntimeProps;
+  onClickSaveDraft?: Types.Devlink.RuntimeProps;
+  slotButtonPrimaryRegular?: Types.Devlink.Slot;
+  slotBasicButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

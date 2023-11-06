@@ -1,33 +1,27 @@
-import { Popper, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { get, set } from 'lodash';
+import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { CloseJob, CreateNewJob } from '@/devlink';
-import { useJobs } from '@/src/context/JobsContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import Loader from '@/src/components/Common/Loader';
 import toast from '@/src/utils/toast';
 
-import UITypography from '../Common/UITypography';
-import { templateObj } from '../CompanyDetailComp/EmailTemplate';
-import {
-  FormJobType,
-  InterviewParam,
-  JobFormState,
-  useJobForm,
-} from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import ApplyForm from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ApplyForm';
-import BasicStepOne from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepOne';
-import BasicStepTwo from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/BasicStepTwo';
-import Emails from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/EmailTemplates';
-import ScoreSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScoreSettings';
-import ScreeningQns from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningQnsWithVids';
-import ScreeningSettings from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/ScreeningSettings';
-import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostForms/SyncStatus';
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import CloseJobPopup from './CloseJobPopup';
+import JobPublishButton from './PublishButton';
+import SectionWarning from './SectionWarnings';
+import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
+import ApplyForm from '../JobPostFormSlides/ApplyForm';
+import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
+import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
+import Emails from '../JobPostFormSlides/EmailTemplates';
+import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
+import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
+import ScreeningSettings from '../JobPostFormSlides/ScreeningSettings';
+import SyncStatus from '../JobPostFormSlides/SyncStatus';
+import MuiPopup from '../../../Common/MuiPopup';
 
 export type JobFormErrorParams = {
   jobTitle: string;
@@ -37,14 +31,14 @@ export type JobFormErrorParams = {
   aiQnGen: number;
 };
 
-type slideName =
+export type slideName =
   | 'details'
   | 'templates'
   | 'screening'
   | 'workflow'
   | 'resumeScore';
 
-type FormErrorParams = Record<
+export type FormErrorParams = Record<
   slideName,
   {
     title: string;
@@ -53,11 +47,10 @@ type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
-  const { handleUIJobReplace } = useJobs();
-
-  const { jobForm, dispatch } = useJobForm();
+  const { jobForm, dispatch, formWarnings } = useJobForm();
   const router = useRouter();
-
+  // const [is]
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
     company: '',
@@ -69,7 +62,13 @@ function JobForm() {
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
   let formSlide = <></>;
   const { currSlide } = jobForm;
-  if (currSlide === 'details') {
+  if (jobForm.isJobPostReverting) {
+    formSlide = (
+      <Stack alignItems={'center'} justifyItems={'center'} height={'300px'}>
+        <Loader />
+      </Stack>
+    );
+  } else if (currSlide === 'details') {
     formSlide = (
       <>
         <BasicStepOne formError={formError} setFormError={setFormError} />
@@ -206,7 +205,7 @@ function JobForm() {
       jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
     }`;
   }
-  const warning = findDisclaimers(jobForm.formFields);
+  const warning = formWarnings;
 
   const handleUpdateMaxVisitedSlideNo = (slideNo: number) => {
     if (jobForm.formType === 'edit') return;
@@ -218,39 +217,6 @@ function JobForm() {
         `MaxVisitedSlideNo-${jobForm.jobPostId}`,
         String(slideNo),
       );
-    }
-  };
-
-  const handleCloseJob = async () => {
-    try {
-      const [publicJob] = supabaseWrap(
-        await supabase.from('public_jobs').select().eq('id', jobForm.jobPostId),
-      );
-      const newActiveStatus = publicJob.active_status;
-      set(newActiveStatus, 'closed.isActive', true);
-      const [job] = supabaseWrap(
-        await supabase
-          .from('public_jobs')
-          .update({
-            active_status: {
-              ...newActiveStatus,
-            },
-          })
-          .eq('id', jobForm.jobPostId)
-          .select(),
-      );
-      handleUIJobReplace({
-        ...job,
-        count: {
-          new: 0,
-          interviewing: 0,
-          qualified: 0,
-          disqualified: 0,
-        },
-      });
-      router.replace('/jobs');
-    } catch (err) {
-      toast.error('Something went wrong, please try again');
     }
   };
 
@@ -290,7 +256,7 @@ function JobForm() {
         }}
         onClickBack={{
           onClick: () => {
-            router.push('/jobs');
+            router.back();
           },
         }}
         isApplyFormActive={currSlide === 'applyForm'}
@@ -300,7 +266,9 @@ function JobForm() {
         isScoreSettingActive={currSlide === 'resumeScore'}
         isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
-        slotPublishButton={<></>}
+        slotPublishButton={
+          <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
+        }
         slotSavedChanges={
           <>
             <SyncStatus status={jobForm.syncStatus} />
@@ -313,7 +281,7 @@ function JobForm() {
                 jobForm,
                 'jobPostId',
                 '',
-              )}`,
+              )}&preview=true`,
               '_blank',
             );
           },
@@ -373,200 +341,49 @@ function JobForm() {
             {jobForm.formType === 'edit' && (
               <CloseJob
                 onClickCloseJob={{
-                  onClick: handleCloseJob,
+                  onClick: () => setIsDeletePopupOpen(true),
                 }}
               />
             )}
           </>
         }
+        isPreviewChangesVisible={
+          jobForm.formType === 'edit' && !jobForm.isDraftPublished
+        }
+        onClickPreviewChanges={{
+          onClick: () => {
+            window.open(
+              `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
+                jobForm,
+                'jobPostId',
+                '',
+              )}&preview=true`,
+              '_blank',
+            );
+          },
+        }}
       />
+      <MuiPopup
+        props={{
+          onClose: () => {
+            setIsDeletePopupOpen(false);
+          },
+          open: isDeletePopupOpen,
+        }}
+      >
+        <Paper>
+          <CloseJobPopup
+            onClose={() => {
+              setIsDeletePopupOpen(false);
+            }}
+          />
+        </Paper>
+      </MuiPopup>
     </>
   );
 }
 
 export default JobForm;
-
-const SectionWarning = ({
-  warnings,
-  slidePath,
-  currSlideNo,
-}: {
-  warnings: FormErrorParams;
-  slidePath: slideName;
-  currSlideNo: number;
-}) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const {
-    jobForm: { formType, jobPostId },
-  } = useJobForm();
-  const handleMouseEnter = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMouseLeave = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-
-  const isShowWarn =
-    (formType === 'edit' && warnings[String(slidePath)].err.length > 0) ||
-    (formType === 'new' &&
-      currSlideNo <=
-        Number(localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1) &&
-      warnings[String(slidePath)].err.length > 0);
-
-  return (
-    <>
-      {isShowWarn && (
-        <Stack onMouseOver={handleMouseEnter} onMouseOut={handleMouseLeave}>
-          <Image
-            alt='info'
-            height={16}
-            width={16}
-            src={'/images/svg/info.svg'}
-          />
-        </Stack>
-      )}
-      <Popper
-        open={open}
-        anchorEl={anchorEl}
-        sx={{
-          zIndex: 1,
-          borderRadius: 2,
-        }}
-      >
-        <Paper sx={{ p: 1, mt: 4.5, width: '320px', borderRadius: '10px' }}>
-          <Stack gap={2} borderRadius={4}>
-            <Stack direction={'row'} gap={0.5} alignItems={'center'}>
-              <Image
-                alt='info'
-                height={14}
-                width={14}
-                src={'/images/svg/info.svg'}
-              />
-              <UITypography fontBold='normal' type='small'>
-                Warnings
-              </UITypography>
-            </Stack>
-            <Stack>
-              <ul>
-                {warnings[String(slidePath)].err.map((msg, idx) => (
-                  <li key={idx}>{msg}</li>
-                ))}
-              </ul>
-            </Stack>
-          </Stack>
-        </Paper>
-      </Popper>
-    </>
-  );
-};
-
-const findDisclaimers = (jobForm: FormJobType) => {
-  let warnings: FormErrorParams = {
-    details: {
-      err: [],
-      title: '',
-    },
-    screening: {
-      err: [],
-      title: '',
-    },
-    templates: {
-      err: [],
-      title: '',
-    },
-    workflow: {
-      err: [],
-      title: '',
-    },
-    resumeScore: {
-      err: [],
-      title: '',
-    },
-  };
-
-  if (isEmpty(jobForm.jobTitle.trim())) {
-    warnings.details.err.push('Missing job title');
-  }
-
-  if (isEmpty(jobForm.company.trim())) {
-    warnings.details.err.push('Missing company name');
-  }
-
-  if (isEmpty(jobForm.jobLocation.trim())) {
-    warnings.details.err.push('Missing job location');
-  }
-
-  if (isEmpty(get(jobForm, 'jobDescription', ''))) {
-    warnings.details.err.push('Missing job description');
-  }
-
-  if (isEmpty(get(jobForm, 'skills', []))) {
-    warnings.details.err.push('Missing skills');
-  }
-  if (isEmpty(jobForm.department.trim())) {
-    warnings.details.err.push('Missing department');
-  }
-
-  // screening qns
-  const totalQns = Object.keys(jobForm.interviewConfig)
-    .map((key: InterviewParam) => {
-      return jobForm.interviewConfig[String(key)].questions;
-    })
-    .reduce((prev, curr) => {
-      return prev + curr.length;
-    }, 0);
-
-  if (totalQns < 5) {
-    warnings.screening.err.push('Please provide minimum 5 screening questions');
-  }
-  if (totalQns > 20) {
-    warnings.screening.err.push(
-      'Please provide maximum 20 screening questions',
-    );
-  }
-
-  Object.keys(get(jobForm, 'screeningEmail.emailTemplates', {})).map(
-    (emailPath) => {
-      const template = jobForm.screeningEmail.emailTemplates[String(emailPath)];
-
-      if (isEmpty(template.fromName.trim())) {
-        warnings.templates.err.push(
-          `Please provide From name template ${
-            templateObj[String(emailPath)].listing
-          }`,
-        );
-      }
-
-      if (isEmpty(template.subject.trim())) {
-        warnings.templates.err.push(
-          `Please provide Subject template ${
-            templateObj[String(emailPath)].listing
-          }`,
-        );
-      }
-
-      if (isEmpty(template.body.trim())) {
-        warnings.templates.err.push(
-          `Please provide email body for template ${
-            templateObj[String(emailPath)].listing
-          }`,
-        );
-      }
-    },
-  );
-
-  const totalResScore = Object.values(jobForm.resumeScoreSettings).reduce(
-    (acc, curr) => acc + curr,
-    0,
-  );
-  if (totalResScore !== 100) {
-    warnings.resumeScore.err.push('Total sections score should be 100');
-  }
-  return warnings;
-};
 
 const slidePathToNum: Record<JobFormState['currSlide'], number> = {
   details: 1,

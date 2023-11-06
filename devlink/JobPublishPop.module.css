@@ -34,6 +34,8 @@
 }
 
 .copy-publish-wrappers {
+  position: relative;
+
   display: flex;
   width: 38px;
   height: 38px;
@@ -99,6 +101,27 @@
   margin-left: 5px;
 }
 
+.copy-tool-tip-wrap {
+  position: absolute;
+  left: -11px;
+  top: -25px;
+  right: 0px;
+  bottom: auto;
+
+  display: none;
+  width: 60px;
+  padding: 5px;
+  justify-content: center;
+
+  border-radius: 100px;
+
+  background-color: #49545c;
+
+  color: white;
+  font-size: 10px;
+  line-height: 12px;
+}
+
 .div-block-485 {
   display: flex;
   margin-top: 14px;
@@ -111,4 +134,18 @@
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }

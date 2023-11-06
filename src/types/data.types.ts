@@ -28,6 +28,8 @@ export type JobType = Omit<JobTypeDB, 'active_status'> & {
   active_status: StatusJobs | null;
 };
 
+export type JobPostStatusType = 'closed' | 'draft' | 'published';
+
 export type StatusJobs = {
   sourcing: {
     isActive: boolean;

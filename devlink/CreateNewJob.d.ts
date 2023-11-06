@@ -39,4 +39,6 @@ declare function CreateNewJob(props: {
   isPreviewVisible?: Types.Visibility.VisibilityConditions;
   slotAtsBadge?: Types.Devlink.Slot;
   slotCloseJob?: Types.Devlink.Slot;
+  onClickPreviewChanges?: Types.Devlink.RuntimeProps;
+  isPreviewChangesVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

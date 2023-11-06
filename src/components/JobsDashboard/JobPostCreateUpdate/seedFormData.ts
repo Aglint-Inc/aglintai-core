@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, isNull, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -105,6 +105,8 @@ export const getSeedJobFormData = (
       startVideo: null,
       endVideo: null,
     },
+    isDraftPublished: false,
+    isJobPostReverting: false,
   };
 
   if (recruiter) {
@@ -197,21 +199,23 @@ export const getSeedJobFormData = (
 };
 
 export const dbToClientjobPostForm = (
-  jobPost: JobTypeDB,
+  jobPost: Partial<JobTypeDB>,
   recruiter: Database['public']['Tables']['recruiter']['Row'],
 ) => {
   const seedData = getSeedJobFormData(recruiter);
+
   const jp: JobFormState = {
     ...seedData,
     createdAt: jobPost.created_at,
     formType: 'edit',
     jobPostId: jobPost.id,
     currSlide: 'details',
-    updatedAt: '',
+    updatedAt: jobPost.updated_at || new Date().toUTCString(),
     formFields: {
       ...seedData.formFields,
-      company: jobPost.company,
-      workPlaceType: jobPost.workplace_type,
+      company: jobPost.company || seedData.formFields.company,
+      workPlaceType:
+        jobPost.workplace_type || seedData.formFields.workPlaceType,
       interviewConfig: get(
         jobPost,
         'screening_questions',
@@ -222,13 +226,13 @@ export const dbToClientjobPostForm = (
         'screening_setting.interviewType',
         'questions-preset',
       ),
-      department: jobPost.department,
-      jobDescription: jobPost.description,
-      jobLocation: jobPost.location,
-      logo: jobPost.logo,
-      skills: get(jobPost, 'skills', []),
-      jobTitle: jobPost.job_title,
-      jobType: jobPost.job_type,
+      department: jobPost.department || seedData.formFields.department,
+      jobDescription: jobPost.description || '',
+      jobLocation: jobPost.location || seedData.formFields.jobLocation,
+      logo: jobPost.logo || seedData.formFields.logo,
+      skills: get(jobPost, 'skills', []) || [],
+      jobTitle: jobPost.job_title || '',
+      jobType: jobPost.job_type || seedData.formFields.jobType,
       newScreeningConfig: {
         screening: {
           ...(get(
@@ -274,6 +278,7 @@ export const dbToClientjobPostForm = (
       startVideo: jobPost.start_video as any,
       endVideo: jobPost.end_video as any,
     },
+    isDraftPublished: !isUndefined(jobPost.draft) && isNull(jobPost.draft),
   };
 
   return jp;

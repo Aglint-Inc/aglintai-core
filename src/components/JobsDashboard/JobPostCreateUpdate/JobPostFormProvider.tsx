@@ -1,12 +1,18 @@
-import { cloneDeep, debounce, get, set } from 'lodash';
+import { cloneDeep, debounce, get, isNull, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
-import { JobTypeDB, RecruiterDB, StatusJobs } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import {
+  JobTypeDB,
+  PublicJobsType,
+  RecruiterDB,
+  StatusJobs,
+} from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
+import { FormErrorParams } from './JobForm/JobForm';
 import { dbToClientjobPostForm, getSeedJobFormData } from './seedFormData';
+import { findDisclaimers, saveJobPostToDb } from './utils';
 import { ScoreWheelParams } from '../../Common/ScoreWheel';
 
 export type QuestionType = {
@@ -111,6 +117,8 @@ export type JobFormState = {
     | 'resumeScore'
     | 'applyForm';
   syncStatus: 'saving' | 'saved' | '';
+  isDraftPublished: boolean;
+  isJobPostReverting: boolean;
 };
 
 const initialState: JobFormState = {
@@ -122,6 +130,8 @@ const initialState: JobFormState = {
   isFormOpen: false,
   syncStatus: '',
   currSlide: 'details',
+  isDraftPublished: false,
+  isJobPostReverting: false,
 };
 
 // Define action types
@@ -162,6 +172,18 @@ type JobsAction =
         status: JobFormState['syncStatus'];
       };
     }
+  | {
+      type: 'updateRevertStatus';
+      payload: {
+        status: boolean;
+      };
+    }
+  | {
+      type: 'updatePublishStatus';
+      payload: {
+        status: boolean;
+      };
+    }
   | null;
 
 const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
@@ -170,6 +192,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       const newState: JobFormState = cloneDeep(state);
       const { path, value } = action.payload;
       set(newState.formFields, path, value);
+      set(newState, 'isDraftPublished', false);
       set(newState, 'updatedAt', new Date().toISOString());
       return newState;
     }
@@ -204,6 +227,18 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       set(newState, 'syncStatus', status);
       return newState;
     }
+    case 'updateRevertStatus': {
+      const { status } = action.payload;
+      const newState = cloneDeep(state);
+      set(newState, 'isJobPostReverting', status);
+      return newState;
+    }
+    case 'updatePublishStatus': {
+      const { status } = action.payload;
+      const newState = cloneDeep(state);
+      set(newState, 'isDraftPublished', status);
+      return newState;
+    }
     default:
       return state;
   }
@@ -231,6 +266,9 @@ export type JobsContextType = {
     currSlide?: JobFormState['currSlide'];
   }) => void;
   handleFormClose?: () => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateRevertStatus: (status: boolean) => void;
+  formWarnings: FormErrorParams;
 };
 
 const initialContextValue: JobsContextType = {
@@ -238,6 +276,30 @@ const initialContextValue: JobsContextType = {
   dispatch: () => {},
   handleUpdateFormFields: null,
   handleInitializeForm: () => {},
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateRevertStatus: (s) => {},
+  formWarnings: {
+    details: {
+      err: [],
+      title: '',
+    },
+    screening: {
+      err: [],
+      title: '',
+    },
+    templates: {
+      err: [],
+      title: '',
+    },
+    workflow: {
+      err: [],
+      title: '',
+    },
+    resumeScore: {
+      err: [],
+      title: '',
+    },
+  },
 };
 
 const JobsCtx = createContext<JobsContextType>(initialContextValue);
@@ -341,7 +403,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         dispatch({
           type: 'initForm',
           payload: {
-            seedData: dbToClientjobPostForm(job, recruiter),
+            seedData: dbToClientjobPostForm(
+              isNull(job.draft) ? job : (job.draft as PublicJobsType),
+              recruiter,
+            ),
             currSlide,
           },
         });
@@ -357,6 +422,16 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     });
   };
 
+  const handleUpdateRevertStatus = async (status: boolean) => {
+    dispatch({
+      type: 'updateRevertStatus',
+      payload: {
+        status,
+      },
+    });
+  };
+  const warning = state.formFields && findDisclaimers(state.formFields);
+
   return (
     <JobsCtx.Provider
       value={{
@@ -365,6 +440,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         handleUpdateFormFields,
         handleInitializeForm,
         handleFormClose,
+        handleUpdateRevertStatus,
+        formWarnings: warning,
       }}
     >
       {children}
@@ -373,68 +450,3 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
 };
 
 export default JobPostFormProvider;
-
-async function saveJobPostToDb(jobForm: JobFormState) {
-  const { data, error } = await supabase
-    .from('public_jobs')
-    .upsert({
-      id: jobForm.jobPostId,
-      logo: jobForm.formFields.logo,
-      company: jobForm.formFields.company,
-      description: jobForm.formFields.jobDescription,
-      job_title: jobForm.formFields.jobTitle,
-      job_type: jobForm.formFields.jobType,
-      workplace_type: jobForm.formFields.workPlaceType,
-      skills: jobForm.formFields.skills,
-      department: jobForm.formFields.department,
-      slug: jobForm.createdAt
-        ? undefined
-        : getjobPostSlug(
-            jobForm.jobPostId,
-            jobForm.formFields.jobTitle,
-            jobForm.formFields.company,
-            jobForm.formFields.jobLocation,
-          ),
-      recruiter_id: jobForm.formFields.recruiterId,
-      location: jobForm.formFields.jobLocation,
-      email_template: jobForm.formFields.screeningEmail.emailTemplates,
-      screening_questions: jobForm.formFields.interviewConfig,
-      new_screening_setting: {
-        ...jobForm.formFields.newScreeningConfig,
-      },
-      parameter_weights: jobForm.formFields.resumeScoreSettings,
-      video_assessment: jobForm.formFields.videoAssessment,
-      intro_videos: jobForm.formFields.introVideo,
-      start_video: jobForm.formFields.startVideo,
-      end_video: jobForm.formFields.endVideo,
-    })
-    .select();
-  if (error) throw new Error(error.message);
-  return data[0] as JobTypeDB;
-}
-
-const getjobPostSlug = (
-  jobId: string,
-  jobTitle: string,
-  company: string,
-  location: string,
-) => {
-  if (!jobId || !jobTitle || !company || !location) return '';
-
-  const convertedJobTitle = jobTitle
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '')
-    .replace(/\//g, '-')
-    .replace(/[()]/g, '');
-  const convertedCompany = company
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  const convertedJobLocation = location
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  let slug = `${convertedJobTitle}-at-${convertedCompany}-${convertedJobLocation}-${jobId}`;
-  return slug;
-};

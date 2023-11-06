@@ -427,6 +427,46 @@
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
+.create-job-preview-wrap {
+  display: flex;
+  width: 607px;
+  margin-right: auto;
+  margin-bottom: 28px;
+  margin-left: auto;
+  padding: 16px 20px;
+  justify-content: space-between;
+
+  border-radius: 10px;
+
+  background-color: var(--yellow-100);
+}
+
+.left-wrap-create-job-preview {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+}
+
+.cursor-pointer.grow-job-wishlist {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 0 auto;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
 .create-new-job-menu-wrappers {
   z-index: 4;
 
