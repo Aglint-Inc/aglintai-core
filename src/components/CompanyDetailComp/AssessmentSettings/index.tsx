@@ -263,6 +263,7 @@ function AudioAvatar({ selectedAvatar, isActive }) {
               '& img': {
                 objectFit: 'contain',
               },
+              bgcolor: 'grey.100',
             }}
             variant='rounded'
             src={selectedAvatar?.image}
