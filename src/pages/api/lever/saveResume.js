@@ -100,6 +100,7 @@ export default async function handler(req, res) {
                 .update({
                   resume: fileLink,
                   json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
+                  resume_text: jsonResume?.work?.length > 0 ? 'Lever' : null,
                 })
                 .eq('application_id', payload.application_id);
               if (error) {
@@ -109,12 +110,10 @@ export default async function handler(req, res) {
               }
             }
 
-            return res
-              .status(200)
-              .json({
-                resume: fileLink,
-                json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
-              });
+            return res.status(200).json({
+              resume: fileLink,
+              json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
+            });
           } else {
             console.log('no resume url from lever');
             res.status(400).send('no resume url from lever');
