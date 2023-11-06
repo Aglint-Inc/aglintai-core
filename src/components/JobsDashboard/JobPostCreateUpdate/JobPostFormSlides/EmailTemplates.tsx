@@ -17,6 +17,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -31,6 +32,7 @@ import {
 } from '../utils';
 
 const Emails = () => {
+  const { handleUIJobUpdate } = useJobs();
   const { jobForm, dispatch, formWarnings } = useJobForm();
   const router = useRouter();
   const [isPublishing, setIsPublishing] = useState(false);
@@ -48,7 +50,7 @@ const Emails = () => {
     try {
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
-      supabaseWrap(
+      const [pubJob] = supabaseWrap(
         await supabase
           .from('public_jobs')
           .update({
@@ -56,7 +58,8 @@ const Emails = () => {
             status: 'published',
             draft: null,
           })
-          .eq('id', jobForm.jobPostId),
+          .eq('id', jobForm.jobPostId)
+          .select(),
       );
       dispatch({
         type: 'updatePublishStatus',
@@ -64,7 +67,9 @@ const Emails = () => {
           status: true,
         },
       });
+      handleUIJobUpdate(pubJob);
       toast.success('Job Published SuccessFully');
+      router.push(`/jobs/${jobForm.jobPostId}`);
     } catch (err) {
       toast.error(API_FAIL_MSG);
     } finally {
@@ -100,11 +105,11 @@ const Emails = () => {
         }
         isAddJob={jobForm.formType == 'new'}
         isProceedDisable={false}
-        onClickDone={{
-          onClick: () => {
-            router.replace('/jobs');
-          },
-        }}
+        // onClickDone={{
+        //   onClick: () => {
+        //     router.replace('/jobs');
+        //   },
+        // }}
         slotButtonPrimaryRegular={
           <>
             <AUIButton

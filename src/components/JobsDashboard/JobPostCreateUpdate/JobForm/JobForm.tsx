@@ -267,7 +267,11 @@ function JobForm() {
         isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
         slotPublishButton={
-          <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
+          <>
+            {jobForm.formType === 'edit' && !jobForm.isDraftPublished && (
+              <JobPublishButton />
+            )}
+          </>
         }
         slotSavedChanges={
           <>
