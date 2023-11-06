@@ -212,7 +212,9 @@ export function JobDashboardEmpty({
                         className={_utils.cx(_styles, "coming-soon-badges")}
                         tag="div"
                       >
-                        <_Builtin.Block tag="div">{"Soon"}</_Builtin.Block>
+                        <_Builtin.Block tag="div">
+                          {"Request access"}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
                     <_Builtin.Block
@@ -260,7 +262,9 @@ export function JobDashboardEmpty({
                         className={_utils.cx(_styles, "coming-soon-badges")}
                         tag="div"
                       >
-                        <_Builtin.Block tag="div">{"Soon"}</_Builtin.Block>
+                        <_Builtin.Block tag="div">
+                          {"Request access"}
+                        </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>

@@ -26,7 +26,7 @@ export function ImportCandidatesCsv({
             className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
             tag="div"
           >
-            {"Drag CSV file to start importing"}
+            {"Drag and drop CSV file to start importing"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
