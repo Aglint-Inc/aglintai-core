@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+// import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -21,41 +21,20 @@ function ImportCandidatesCSV() {
   } = useJobApplications();
 
   const [bulkImportdata, setbulkImportdata] = useState([]);
-  const headers = [
-    'first_name',
-    'last_name',
-    'email',
-    'phone',
-    'job_title',
-    'company',
-    'status',
-    'score',
-    'profile_image',
-    'resume',
-  ];
+  const headers = ['first_name', 'last_name', 'email', 'phone', 'resume'];
   const [isLoading, setIsLoading] = useState(false);
 
+  //   "first_name","last_name","email","phone","resumeurl"
+  // "xyz","abc","xyzabc@gmail.com","1234567890","https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+  // "abc","d","abcd@gmail.com","9876543210","https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+
   const csvData = [
-    [
-      'first_name',
-      'last_name',
-      'email',
-      'phone',
-      'job_title',
-      'company',
-      'status',
-      'profile_image',
-      'resume',
-    ],
+    ['first_name', 'last_name', 'email', 'phone', 'resume'],
     [
       'xyz',
       'abc',
       'xyzabc@gmail.com',
       '1234567890',
-      'sales manager',
-      'xyz',
-      JobApplicationSections.NEW,
-      'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
 
@@ -64,15 +43,11 @@ function ImportCandidatesCSV() {
       'd',
       'abcd@gmail.com',
       '9876543210',
-      'designer',
-      'hireDumb',
-      JobApplicationSections.NEW,
-      '',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
   ];
 
-  async function createCandidates(candidates) {
+  async function createCandidates(candidates: any[]) {
     const _new = applications['new'];
     const interviewing = applications['interviewing'];
     const qualified = applications['qualified'];
