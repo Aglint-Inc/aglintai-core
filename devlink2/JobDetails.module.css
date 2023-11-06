@@ -259,6 +259,10 @@
   opacity: 0.7;
 }
 
+.tablet-left-auto.no-underline {
+  text-decoration: none;
+}
+
 @media screen and (max-width: 991px) {
   .text-blue-500.tablet-left-auto {
     margin-left: auto;
@@ -267,6 +271,10 @@
 
 .text-blue-500.ml-12 {
   margin-left: 8px;
+}
+
+.text-blue-500.text-deco-none {
+  text-decoration: none;
 }
 
 .div-block-371 {
@@ -329,7 +337,7 @@
 }
 
 .select-action-btn:hover {
-  background-color: hsla(180, 0.00%, 92.52%, 1.00);
+  background-color: #edf7ff;
 }
 
 .select-action-btn.blue-100:hover {

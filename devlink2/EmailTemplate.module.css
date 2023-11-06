@@ -580,6 +580,10 @@
   margin-left: 8px;
 }
 
+.text-blue-500.text-deco-none {
+  text-decoration: none;
+}
+
 .rd-email-edit-btn {
   display: flex;
   height: 32px;

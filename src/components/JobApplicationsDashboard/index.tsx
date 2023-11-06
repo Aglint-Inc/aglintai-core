@@ -295,7 +295,7 @@ const NewJobFilterBlock = () => {
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
         slotSearch={<SearchField />}
-        slotFilter={<></> /*<ApplicationFilter />*/}
+        slotFilter={<ApplicationFilter />}
       />
     </>
   );
@@ -303,33 +303,70 @@ const NewJobFilterBlock = () => {
 
 // eslint-disable-next-line no-unused-vars
 const ApplicationFilter = () => {
-  const { searchParameters } = useJobApplications();
+  const { searchParameters, handleJobApplicationFilter, applicationDisable } =
+    useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
+  const [updateTick, setUpdateTick] = useState([false, false]);
   const filters = searchParameters.filter;
+  const count = filters.reduce((acc, curr) => {
+    if (!acc.has(curr.parameter)) acc.add(curr.parameter);
+    return acc;
+  }, new Set<Parameters['filter'][0]['parameter']>());
   return (
     <CandidateFilter
-      filterCount={filters.length}
-      slotResumeSlider={<ApplicationFilterSlider parameter='resume_score' />}
-      slotInterviewSlider={
-        <ApplicationFilterSlider parameter='interview_score' />
-      }
-      filterHeaderProps={{
-        onClick: () => setFilterVisibility((prev) => !prev),
+      onclickReset={{
+        onClick: async () => {
+          if (!applicationDisable)
+            await handleJobApplicationFilter({
+              ...searchParameters,
+              filter: [],
+            });
+        },
       }}
-      onclickClose={{ onClick: () => setFilterVisibility(false) }}
+      isResetVisible={count.size > 0}
+      filterCount={count.size}
+      isCountVisible={count.size > 0}
+      slotResumeSlider={
+        <ApplicationFilterSlider
+          parameter='resume_score'
+          updateTick={updateTick[0]}
+        />
+      }
+      isResumeClear={count.has('resume_score')}
+      isInterviewClear={count.has('interview_score')}
+      slotInterviewSlider={
+        <ApplicationFilterSlider
+          parameter='interview_score'
+          updateTick={updateTick[1]}
+        />
+      }
+      onclickResumeClear={{
+        onClick: () => setUpdateTick((prev) => [!prev[0], prev[1]]),
+      }}
+      onclickInterviewClear={{
+        onClick: () => setUpdateTick((prev) => [prev[0], !prev[1]]),
+      }}
+      filterHeaderProps={{
+        onMouseOver: () => setFilterVisibility(true),
+        onMouseOut: () => setFilterVisibility(false),
+      }}
       isFilterBodyVisible={filterVisibility}
-      onclickOverlay={{ onClick: () => setFilterVisibility(false) }}
+      dropdownBodyProps={{
+        onMouseOver: () => setFilterVisibility(true),
+        onMouseOut: () => setFilterVisibility(false),
+      }}
     />
   );
 };
 
 const ApplicationFilterSlider = ({
   parameter,
+  updateTick,
 }: {
   parameter: Parameters['filter'][0]['parameter'];
+  updateTick: boolean;
 }) => {
   const { handleJobApplicationFilter, searchParameters } = useJobApplications();
-
   const paramsObj = searchParameters.filter.reduce(
     (acc, curr) => {
       const filter = curr.parameter === parameter;
@@ -382,6 +419,12 @@ const ApplicationFilterSlider = ({
     });
   };
 
+  useEffect(() => {
+    if (value[0] !== 0 || value[1] !== 100) {
+      setValue([0, 100]);
+    }
+  }, [updateTick]);
+
   const handleChange = (
     event: Event,
     newValue: number | number[],
@@ -424,6 +467,7 @@ const ApplicationFilterSlider = ({
       onChange={handleChange}
       valueLabelDisplay='auto'
       disableSwap
+      sx={{ color: '#1F73B7' }}
     />
   );
 };

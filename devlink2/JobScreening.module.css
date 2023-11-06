@@ -277,6 +277,10 @@
   margin-left: 8px;
 }
 
+.text-blue-500.text-deco-none {
+  text-decoration: none;
+}
+
 .jdet-edit-controls-wrapper {
   display: flex;
   align-items: center;
@@ -329,7 +333,7 @@
 }
 
 .select-action-btn:hover {
-  background-color: hsla(180, 0.00%, 92.52%, 1.00);
+  background-color: #edf7ff;
 }
 
 .select-action-btn.blue-100:hover {

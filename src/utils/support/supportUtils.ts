@@ -175,11 +175,9 @@ export function getJdScore(data: DataType): ScoreWheelParams {
   return Object.entries(data.qualification).reduce(
     (acc, [key, value]) => {
       const relationScore =
-        (value.isRelated.reduce((acc, curr) => {
-          return curr ? acc + 1 : acc;
-        }, 0) %
-          5) *
-        10;
+        value.isRelated.reduce((acc, curr) => {
+          return curr && acc !== 5 ? acc + 1 : acc;
+        }, 0) * 10;
       const relevanceScore =
         value.relevance === 'less match'
           ? 0

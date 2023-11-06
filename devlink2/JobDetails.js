@@ -116,7 +116,12 @@ export function JobDetails({
             </_Builtin.Block>
             {isPreviewVisible ? (
               <_Builtin.Link
-                className={_utils.cx(_styles, "tablet-left-auto")}
+                className={_utils.cx(
+                  _styles,
+                  "tablet-left-auto",
+                  "no-underline",
+                  "clickable"
+                )}
                 button={false}
                 options={jobLink}
               >

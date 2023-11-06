@@ -1,4 +1,3 @@
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -26,8 +25,10 @@ import {
   ResumeFeedbackScore,
   UnableFetchResume,
 } from '@/devlink';
+import { ResumeErrorBlock } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
+import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   scoreWheelDependencies,
@@ -52,7 +53,12 @@ import { applicationValidity } from '../utils';
 import { emailHandler } from '../..';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
-import { capitalize, getInterviewScore } from '../../utils';
+import {
+  ApiLogState,
+  capitalize,
+  getInterviewScore,
+  intactConditionFilter,
+} from '../../utils';
 
 const ApplicationDetails = ({
   open,
@@ -333,8 +339,15 @@ const NewJobApplicationSideDrawer = ({
         />
       }
       isOverviewVisible={overview}
-      isLinkedInVisible={applicationDetails.candidates.linkedin !== null}
+      isLinkedInVisible={
+        applicationDetails.candidates.linkedin !== null &&
+        applicationDetails.candidates.linkedin !== ''
+      }
       isCopiedMessageVisible={copy}
+      linkedinLink={{
+        href: applicationDetails.candidates.linkedin,
+        target: '_blank',
+      }}
     />
   );
 };
@@ -507,6 +520,14 @@ const NewResumeSection = ({
   job: JobTypeDashboard;
 }) => {
   const [openResume, setOpenResume] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (!downloading) {
+      setDownloading(true);
+      await fetchFile(applicationDetails);
+      setDownloading(false);
+    }
+  };
   return (
     <>
       <Dialog
@@ -529,24 +550,31 @@ const NewResumeSection = ({
         </Stack>
       </Dialog>
       {applicationDetails.json_resume || applicationDetails.resume ? (
-        applicationValidity(applicationDetails) ? (
-          <NewResumeScoreDetails
-            applicationDetails={applicationDetails}
-            job={job}
-            feedback={false}
-            setOpenResume={setOpenResume}
-          />
+        intactConditionFilter(applicationDetails) !== ApiLogState.PROCESSING ? (
+          applicationDetails.jd_score ? (
+            <NewResumeScoreDetails
+              applicationDetails={applicationDetails}
+              job={job}
+              feedback={false}
+              setOpenResume={setOpenResume}
+            />
+          ) : (
+            <UnableFetchResume
+              propsLink={{ href: applicationDetails.resume }}
+              onClickViewResume={{
+                onClick: () => {
+                  setOpenResume(true);
+                },
+              }}
+              onClickDownloadResume={{
+                onClick: async () => await handleDownload(),
+              }}
+            />
+          )
         ) : (
-          <UnableFetchResume
-            propsLink={{ href: applicationDetails.resume }}
-            onClickViewResume={{
-              onClick: () => {
-                setOpenResume(true);
-              },
-            }}
-            slotDownload={
-              <DownloadButton2 applicationDetails={applicationDetails} />
-            }
+          <ResumeErrorBlock
+            slotLottie={<ResumeWait />}
+            onclickView={{ onClick: () => setOpenResume(true) }}
           />
         )
       ) : (
@@ -590,7 +618,14 @@ export const NewResumeScoreDetails = ({
 }) => {
   const jdScoreObj = applicationDetails.jd_score as any;
   const score = applicationDetails.resume_score;
-
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (!downloading) {
+      setDownloading(true);
+      await fetchFile(applicationDetails);
+      setDownloading(false);
+    }
+  };
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
@@ -616,7 +651,9 @@ export const NewResumeScoreDetails = ({
           setOpenResume(true);
         },
       }}
-      slotDownload={<DownloadButton1 applicationDetails={applicationDetails} />}
+      onClickDownloadResume={{
+        onClick: async () => await handleDownload(),
+      }}
       propsLink={{ href: applicationDetails.resume }}
       slotFeedbackScore={
         <>
@@ -666,127 +703,24 @@ export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
   );
 };
 
-const DownloadButton1 = ({
-  applicationDetails,
-}: {
-  applicationDetails: JobApplication;
-}) => {
-  const [hover, setHover] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const fetchFile = async () => {
-    if (!loading) {
-      setLoading(true);
-      await axios({
-        url: applicationDetails?.resume ?? '#',
-        method: 'GET',
-        responseType: 'blob',
-      }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute(
-          'download',
-          `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
-        );
-        document.body.appendChild(link);
-        link.click();
-        window.URL.revokeObjectURL(url);
-        link.parentNode.removeChild(link);
-      });
-      setLoading(false);
-    }
-  };
-
-  const style = {
-    color: hover ? 'rgb(76,143,197)' : 'rgb(31,115,183)',
-    backgroundColor: hover ? 'rgb(249,250,250)' : 'white',
-    cursor: hover ? 'pointer' : 'auto',
-  };
-
-  return (
-    <Stack
-      onClick={async () => await fetchFile()}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-      style={{ ...style }}
-      fontSize={'14px'}
-      direction={'row'}
-      alignItems={'center'}
-      justifyContent={'space-evenly'}
-      py={'2px'}
-      borderRadius={'4px'}
-    >
-      <Stack pl={'12px'} pr={'8px'}>
-        <ArrowDownwardIcon
-          style={{ fontSize: '12px', transform: 'translateY(1px)' }}
-        />
-      </Stack>
-      <Stack pr={'12px'}>Download Resume</Stack>
-    </Stack>
-  );
-};
-
-const DownloadButton2 = ({
-  applicationDetails,
-}: {
-  applicationDetails: JobApplication;
-}) => {
-  const [hover, setHover] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const fetchFile = async () => {
-    if (!loading) {
-      setLoading(true);
-      await axios({
-        url: applicationDetails?.resume ?? '#',
-        method: 'GET',
-        responseType: 'blob',
-      }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute(
-          'download',
-          `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
-        );
-        document.body.appendChild(link);
-        link.click();
-        window.URL.revokeObjectURL(url);
-        link.parentNode.removeChild(link);
-      });
-      setLoading(false);
-    }
-  };
-
-  const style = {
-    color: hover ? 'rgb(76,143,197)' : 'rgb(31,115,183)',
-    backgroundColor: hover ? 'rgb(249,250,250)' : 'white',
-    cursor: hover ? 'pointer' : 'auto',
-  };
-
-  return (
-    <Stack
-      onClick={async () => await fetchFile()}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-      style={{ ...style }}
-      fontSize={'14px'}
-      direction={'row'}
-      alignItems={'center'}
-      justifyContent={'space-evenly'}
-      py={'7px'}
-      borderRadius={'4px'}
-      border={`1px solid ${style.color}`}
-    >
-      <Stack pl={'12px'} pr={'6px'}>
-        <ArrowDownwardIcon style={{ fontSize: '12px' }} />
-      </Stack>
-      <Stack pr={'12px'} style={{ transform: 'translateY(-1px)' }}>
-        Download Resume
-      </Stack>
-    </Stack>
-  );
+const fetchFile = async (applicationDetails: JobApplication) => {
+  await axios({
+    url: applicationDetails?.resume ?? '#',
+    method: 'GET',
+    responseType: 'blob',
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+      'download',
+      `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
+    );
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    link.parentNode.removeChild(link);
+  });
 };
 
 const NewEducationDetails = ({ education }) => {

@@ -12,7 +12,8 @@ declare function CandidateFilter(props: {
   slotInterviewSlider?: Types.Devlink.Slot;
   filterHeaderProps?: Types.Devlink.RuntimeProps;
   isFilterBodyVisible?: Types.Visibility.VisibilityConditions;
-  onclickClose?: Types.Devlink.RuntimeProps;
   isCountVisible?: Types.Visibility.VisibilityConditions;
-  onclickOverlay?: Types.Devlink.RuntimeProps;
+  dropdownBodyProps?: Types.Devlink.RuntimeProps;
+  onclickReset?: Types.Devlink.RuntimeProps;
+  isResetVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

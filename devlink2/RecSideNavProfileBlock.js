@@ -7,7 +7,7 @@ export function RecSideNavProfileBlock({
   as: _Component = _Builtin.Block,
   onclickCompany = {},
   slotCompanyLogo,
-  companyName = "Charlie Health fhhodfhoefdfo",
+  companyName = "Unknown Company",
   isNotCountVisible = false,
   onclickNotification = {},
   notificationCount = "9",

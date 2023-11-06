@@ -29,6 +29,7 @@ export * from "./NavProfileBlock";
 export * from "./RecPrimaryBtn";
 export * from "./RecSideNavProfileBlock";
 export * from "./RefreshButton";
+export * from "./ResumeErrorBlock";
 export * from "./RsnDatabaseIcon";
 export * from "./RsnIntegrationsIcon";
 export * from "./RsnJobsIcon";

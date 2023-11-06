@@ -5,7 +5,7 @@ import * as _utils from "./utils";
 import _styles from "./NavProfileBlock.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-67":{"id":"e-67","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-28","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-68"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"40f94ac9-adce-e1e8-9baa-78c5ced7ee4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699268094764},"e-68":{"id":"e-68","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-67"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"40f94ac9-adce-e1e8-9baa-78c5ced7ee4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699268094765}},"actionLists":{"a-28":{"id":"a-28","title":"profile-tooltip-[hover-in]","actionItemGroups":[{"actionItems":[{"id":"a-28-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]}}}]},{"actionItems":[{"id":"a-28-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698920262492},"a-29":{"id":"a-29","title":"profile-tooltip-[hover-out]","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698920342906}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-67":{"id":"e-67","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-28","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-68"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"bf40e1c7-1518-9a34-7e4f-5ee973b6b404"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699278048816},"e-68":{"id":"e-68","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-67"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"bf40e1c7-1518-9a34-7e4f-5ee973b6b404"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699278048817},"e-69":{"id":"e-69","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-28","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-70"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"a58d1b9f-d05d-f76f-7ad5-728e246dbdb4"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699278298212},"e-70":{"id":"e-70","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-69"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"a58d1b9f-d05d-f76f-7ad5-728e246dbdb4"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1699278298213}},"actionLists":{"a-28":{"id":"a-28","title":"profile-tooltip-[hover-in]","actionItemGroups":[{"actionItems":[{"id":"a-28-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".rec-profile-tooltip","selectorGuids":["bed5430b-b8f8-5693-c256-5ce55b140246"]}}}]},{"actionItems":[{"id":"a-28-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".rec-profile-tooltip","selectorGuids":["bed5430b-b8f8-5693-c256-5ce55b140246"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698920262492},"a-29":{"id":"a-29","title":"profile-tooltip-[hover-out]","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".rec-profile-tooltip","selectorGuids":["bed5430b-b8f8-5693-c256-5ce55b140246"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698920342906}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function NavProfileBlock({
@@ -25,8 +25,10 @@ export function NavProfileBlock({
       />
       <_Builtin.Block className={_utils.cx(_styles, "div-block-374")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-378")}
+          className={_utils.cx(_styles, "div-block-378", "clickable")}
+          data-w-id="bf40e1c7-1518-9a34-7e4f-5ee973b6b404"
           tag="div"
+          {...onclickProfile}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-377")}
@@ -40,62 +42,37 @@ export function NavProfileBlock({
           >
             {profileName}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "rec-profile-tooltip")}
+            tag="div"
+          >
+            {"View Profile"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-379")}
-          data-w-id="40f94ac9-adce-e1e8-9baa-78c5ced7ee4b"
+          className={_utils.cx(_styles, "div-block-380")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "rs-profile-arrow-block")}
+            className={_utils.cx(
+              _styles,
+              "rs-profile-logout-block",
+              "text-red-400",
+              "clickable"
+            )}
+            data-w-id="a58d1b9f-d05d-f76f-7ad5-728e246dbdb4"
             tag="div"
+            {...onclickLogout}
           >
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icon-embed")}
-              value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.62796%206.96134C8.48332%207.10597%208.2588%207.12204%208.09641%207.00955L8.03871%206.96134L5%203.92254L1.9613%206.96134C1.81666%207.10597%201.59214%207.12204%201.42975%207.00955L1.37204%206.96134C1.2274%206.8167%201.21133%206.59218%201.32383%206.42979L1.37204%206.37208L4.70537%203.03875C4.85001%202.89411%205.07453%202.87804%205.23692%202.99053L5.29463%203.03875L8.62796%206.37208C8.79068%206.5348%208.79068%206.79862%208.62796%206.96134Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+              value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75002%200.549999V6.15C5.73544%206.36875%205.61877%206.48542%205.40002%206.5C5.18127%206.48542%205.06461%206.36875%205.05002%206.15V0.549999C5.06461%200.331249%205.18127%200.214583%205.40002%200.199999C5.61877%200.214583%205.73544%200.331249%205.75002%200.549999ZM3.38752%201.90625C2.67294%202.28542%202.10419%202.81771%201.68127%203.50312C1.25836%204.17396%201.03961%204.93958%201.02502%205.8C1.05419%207.03958%201.4844%208.06771%202.31565%208.88437C3.13232%209.71562%204.16044%2010.1458%205.40002%2010.175C6.63961%2010.1458%207.66773%209.71562%208.4844%208.88437C9.31565%208.06771%209.74586%207.03958%209.77502%205.8C9.76044%204.93958%209.54169%204.17396%209.11877%203.50312C8.69586%202.81771%208.12711%202.28542%207.41252%201.90625C7.22294%201.78958%207.1719%201.63646%207.2594%201.44687C7.37607%201.25729%207.52919%201.20625%207.71877%201.29375C8.55002%201.73125%209.21357%202.34375%209.7094%203.13125C10.2052%203.91875%2010.4604%204.80833%2010.475%205.8C10.4604%206.74792%2010.2271%207.60104%209.77502%208.35937C9.32294%209.11771%208.71773%209.72292%207.9594%2010.175C7.20107%2010.6271%206.34794%2010.8604%205.40002%2010.875C4.45211%2010.8604%203.59898%2010.6271%202.84065%2010.175C2.08232%209.72292%201.47711%209.11771%201.02502%208.35937C0.572941%207.60104%200.339607%206.74792%200.325024%205.8C0.339607%204.80833%200.594816%203.91875%201.09065%203.13125C1.58648%202.34375%202.25002%201.73125%203.08127%201.29375C3.27086%201.20625%203.42398%201.25729%203.54065%201.44687C3.62815%201.63646%203.57711%201.78958%203.38752%201.90625Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
             />
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rs-header-profile-tootip")}
-            tag="div"
-          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "rs-profile-link-block")}
+              className={_utils.cx(_styles, "rec-profile-tooltip", "logout")}
               tag="div"
-              {...onclickProfile}
             >
-              <_Builtin.Block tag="div">
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.50015%203C7.50015%202.62083%207.40535%202.27083%207.21577%201.95C7.02619%201.62917%206.77098%201.37396%206.45015%201.18437C6.11473%200.994791%205.76473%200.899999%205.40015%200.899999C5.03556%200.899999%204.68556%200.994791%204.35015%201.18437C4.02931%201.37396%203.7741%201.62917%203.58452%201.95C3.39494%202.27083%203.30015%202.62083%203.30015%203C3.30015%203.37917%203.39494%203.72917%203.58452%204.05C3.7741%204.37083%204.02931%204.62604%204.35015%204.81562C4.68556%205.00521%205.03556%205.1%205.40015%205.1C5.76473%205.1%206.11473%205.00521%206.45015%204.81562C6.77098%204.62604%207.02619%204.37083%207.21577%204.05C7.40535%203.72917%207.50015%203.37917%207.50015%203ZM2.60015%203C2.60015%202.48958%202.7241%202.02292%202.97202%201.6C3.21994%201.17708%203.56265%200.834374%204.00015%200.571874C4.43765%200.323958%204.90431%200.199999%205.40015%200.199999C5.89598%200.199999%206.36265%200.323958%206.80015%200.571874C7.23765%200.834374%207.58035%201.17708%207.82827%201.6C8.07619%202.02292%208.20015%202.48958%208.20015%203C8.20015%203.51042%208.07619%203.97708%207.82827%204.4C7.58035%204.82292%207.23765%205.16562%206.80015%205.42812C6.36265%205.67604%205.89598%205.8%205.40015%205.8C4.90431%205.8%204.43765%205.67604%204.00015%205.42812C3.56265%205.16562%203.21994%204.82292%202.97202%204.4C2.7241%203.97708%202.60015%203.51042%202.60015%203ZM1.20015%2010.7H9.60015C9.57098%209.81042%209.25015%209.06667%208.63765%208.46875C8.03973%207.88542%207.29598%207.57917%206.4064%207.55H4.3939C3.50431%207.57917%202.76056%207.88542%202.16265%208.46875C1.55015%209.06667%201.22931%209.81042%201.20015%2010.7ZM0.500146%2010.7438C0.529313%209.65%200.908479%208.73125%201.63765%207.9875C2.3814%207.25833%203.30015%206.87917%204.3939%206.85H6.4064C7.50015%206.87917%208.4189%207.25833%209.16265%207.9875C9.89181%208.73125%2010.271%209.65%2010.3001%2010.7438C10.3001%2010.9333%2010.2345%2011.0865%2010.1033%2011.2031C9.9866%2011.3344%209.83348%2011.4%209.6439%2011.4H1.1564C0.966813%2011.4%200.813688%2011.3344%200.697021%2011.2031C0.565771%2011.0865%200.500146%2010.9333%200.500146%2010.7438Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-color-white")}
-                tag="div"
-              >
-                {"View profile"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "rs-profile-link-block",
-                "text-red-400"
-              )}
-              tag="div"
-              {...onclickLogout}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "icon-block")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75002%200.549999V6.15C5.73544%206.36875%205.61877%206.48542%205.40002%206.5C5.18127%206.48542%205.06461%206.36875%205.05002%206.15V0.549999C5.06461%200.331249%205.18127%200.214583%205.40002%200.199999C5.61877%200.214583%205.73544%200.331249%205.75002%200.549999ZM3.38752%201.90625C2.67294%202.28542%202.10419%202.81771%201.68127%203.50312C1.25836%204.17396%201.03961%204.93958%201.02502%205.8C1.05419%207.03958%201.4844%208.06771%202.31565%208.88437C3.13232%209.71562%204.16044%2010.1458%205.40002%2010.175C6.63961%2010.1458%207.66773%209.71562%208.4844%208.88437C9.31565%208.06771%209.74586%207.03958%209.77502%205.8C9.76044%204.93958%209.54169%204.17396%209.11877%203.50312C8.69586%202.81771%208.12711%202.28542%207.41252%201.90625C7.22294%201.78958%207.1719%201.63646%207.2594%201.44687C7.37607%201.25729%207.52919%201.20625%207.71877%201.29375C8.55002%201.73125%209.21357%202.34375%209.7094%203.13125C10.2052%203.91875%2010.4604%204.80833%2010.475%205.8C10.4604%206.74792%2010.2271%207.60104%209.77502%208.35937C9.32294%209.11771%208.71773%209.72292%207.9594%2010.175C7.20107%2010.6271%206.34794%2010.8604%205.40002%2010.875C4.45211%2010.8604%203.59898%2010.6271%202.84065%2010.175C2.08232%209.72292%201.47711%209.11771%201.02502%208.35937C0.572941%207.60104%200.339607%206.74792%200.325024%205.8C0.339607%204.80833%200.594816%203.91875%201.09065%203.13125C1.58648%202.34375%202.25002%201.73125%203.08127%201.29375C3.27086%201.20625%203.42398%201.25729%203.54065%201.44687C3.62815%201.63646%203.57711%201.78958%203.38752%201.90625Z%22%20fill%3DcurrentColor%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">{"Logout"}</_Builtin.Block>
+              {"Logout"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
