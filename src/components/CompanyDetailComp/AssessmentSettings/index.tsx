@@ -2,15 +2,22 @@
 import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
-import { AssesmentSetting, AudioAvatarCard, AvatarCard } from '@/devlink';
+import {
+  AssesmentSetting,
+  AudioAvatarCard,
+  AvatarCard,
+  AvatarModal,
+} from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateRecruiter } from '@/src/context/InterviewContext/utils';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 
+import MuiPopup from '../../Common/MuiPopup';
+
 let tempObj = avatar_list[0];
-function AssessmentSettings() {
+function AssessmentSettings({ setIsSaving }) {
   const [index, setIndex] = useState(null);
   const { recruiter } = useAuthDetails();
 
@@ -26,6 +33,7 @@ function AssessmentSettings() {
     name: string;
     audio_url: string;
   }) {
+    handleChange();
     setSelectedAvatar(tempObj);
     const { data, error } = await supabase
       .from('recruiter')
@@ -38,8 +46,15 @@ function AssessmentSettings() {
       return data[0];
     }
   }
-
+  const handleChange = async () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 1000);
+  };
   async function handleAudioChangeAvatar(audio_avatar_index: number) {
+    handleChange();
+
     const { data, error } = await supabase
       .from('recruiter')
       .update({
@@ -180,8 +195,10 @@ function ToggleBtn({ isVideoAssessment, handleCheck }) {
 function VideoAvatar({ selectedAvatar, isActive }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [openPopUp, setOpenPopUP] = useState(false);
   function onVideoPlay() {
     if (!playing) {
+      setOpenPopUP(true);
       videoRef.current.play();
     } else {
       videoRef.current.pause();
@@ -190,34 +207,85 @@ function VideoAvatar({ selectedAvatar, isActive }) {
   }
 
   function handleVideoEnd() {
-    setPlaying((pre) => !pre);
+    setOpenPopUP(false);
+    setPlaying(false);
   }
+
   return (
-    <AvatarCard
-      isChecked={isActive}
-      isActive={isActive}
-      isPlay={!playing}
-      isPause={playing}
-      onClickPlayPause={{
-        onClick: (event) => {
+    <>
+      <Stack
+        onClick={(event) => {
           event.stopPropagation();
-          onVideoPlay();
-        },
-      }}
-      slotAvatarVideo={
-        <video
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+        }}
+      >
+        <MuiPopup
+          props={{
+            open: openPopUp,
+            // onClose: handleVideoEnd,
+            maxWidth: 'md',
           }}
-          src={selectedAvatar.video_url}
-          ref={videoRef}
-          onEnded={handleVideoEnd}
-        />
-      }
-      textAvatarName={selectedAvatar.name}
-    />
+        >
+          <AvatarModal
+            isPauseIconVisible={playing}
+            isPlayIconVisible={!playing}
+            onClickPlayPause={{
+              onClick: (event) => {
+                event.stopPropagation();
+                onVideoPlay();
+              },
+            }}
+            onClickClose={{
+              onClick: (event) => {
+                event.stopPropagation();
+                handleVideoEnd();
+              },
+            }}
+            textName={selectedAvatar.name}
+            slotVideo={
+              <video
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                src={selectedAvatar.video_url}
+                ref={videoRef}
+                onEnded={handleVideoEnd}
+                autoPlay
+              />
+            }
+          />
+        </MuiPopup>
+      </Stack>
+
+      <AvatarCard
+        isChecked={isActive}
+        isActive={isActive}
+        isPlay={!playing}
+        isPause={playing}
+        onClickPlayPause={{
+          onClick: (event) => {
+            event.stopPropagation();
+            setOpenPopUP(true);
+            setPlaying(true);
+          },
+        }}
+        slotAvatarVideo={
+          <Avatar
+            sx={{
+              width: '100%',
+              height: '100%',
+              '& img': {
+                objectFit: 'contain',
+              },
+            }}
+            src={selectedAvatar.normal_preview}
+            variant='rounded'
+          />
+        }
+        textAvatarName={selectedAvatar.name}
+      />
+    </>
   );
 }
 

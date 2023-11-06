@@ -45,7 +45,9 @@ const CompanyDetailComp = () => {
           slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
           slotEmailTemplate={<EmailTemplate />}
           slotTeam={<TeamManagement />}
-          slotAssesmentSetting={<AssessmentSettings />}
+          slotAssesmentSetting={
+            <AssessmentSettings setIsSaving={setIsSaving} />
+          }
         />
       </YTransform>
     </>
