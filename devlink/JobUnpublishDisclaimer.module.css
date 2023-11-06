@@ -1,0 +1,110 @@
+.create-job-preview-wrap {
+  display: flex;
+  width: 700px;
+  margin-right: auto;
+  margin-bottom: 28px;
+  margin-left: auto;
+  padding: 8px 20px;
+  justify-content: space-between;
+
+  border-radius: 10px;
+
+  background-color: var(--yellow-100);
+}
+
+.left-wrap-create-job-preview {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.text-yellow-800 {
+  color: var(--yellow800-b1e3bc9b);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.div-block-558 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.cursor-pointer.grow-job-wishlist {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 0 auto;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}

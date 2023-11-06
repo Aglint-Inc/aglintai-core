@@ -10,13 +10,13 @@ import Loader from '@/src/components/Common/Loader';
 import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
-import JobPublishButton from './PublishButton';
 import SectionWarning from './SectionWarnings';
 import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
 import ApplyForm from '../JobPostFormSlides/ApplyForm';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
 import Emails from '../JobPostFormSlides/EmailTemplates';
+import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
 import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import ScreeningSettings from '../JobPostFormSlides/ScreeningSettings';
@@ -266,13 +266,7 @@ function JobForm() {
         isScoreSettingActive={currSlide === 'resumeScore'}
         isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
-        slotPublishButton={
-          <>
-            {jobForm.formType === 'edit' && !jobForm.isDraftPublished && (
-              <JobPublishButton />
-            )}
-          </>
-        }
+        //
         slotSavedChanges={
           <>
             <SyncStatus status={jobForm.syncStatus} />
@@ -351,8 +345,12 @@ function JobForm() {
             )}
           </>
         }
-        isPreviewChangesVisible={
-          jobForm.formType === 'edit' && !jobForm.isDraftPublished
+        slotUnpublishDisclaimer={
+          <>
+            {jobForm.formType === 'edit' && !jobForm.isDraftPublished && (
+              <PublishDesclaimer />
+            )}
+          </>
         }
         onClickPreviewChanges={{
           onClick: () => {

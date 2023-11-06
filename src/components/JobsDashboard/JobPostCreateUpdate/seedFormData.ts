@@ -115,6 +115,7 @@ export const getSeedJobFormData = (
       value: [s.city, s.region, s.country].filter(Boolean).join(', '),
     }));
 
+    seedFormState.formFields.jobTitle = `${recruiter.name}'s First Job`;
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
