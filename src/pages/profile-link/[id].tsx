@@ -246,8 +246,10 @@ function InterviewFeedbackPage() {
               />
             ),
           )}
-          isExperienceVisible={applicationDetails?.json_resume?.work.length > 0}
-          slotCandidateExperienceCard={applicationDetails?.json_resume?.work.map(
+          isExperienceVisible={
+            applicationDetails?.candidates?.json_resume?.work.length > 0
+          }
+          slotCandidateExperienceCard={applicationDetails?.candidates?.json_resume?.work.map(
             (w, i) => (
               <CandidateExperienceCard
                 key={i}
@@ -262,10 +264,12 @@ function InterviewFeedbackPage() {
               />
             ),
           )}
-          isSkillVisible={applicationDetails?.json_resume?.skills.length > 0}
-          slotSkill={applicationDetails?.json_resume?.skills.map((s, i) => (
-            <CandidateSkillPills key={i} textSkill={s.name} />
-          ))}
+          isSkillVisible={
+            applicationDetails?.candidates?.json_resume?.skills.length > 0
+          }
+          slotSkill={applicationDetails?.candidates?.json_resume?.skills.map(
+            (s, i) => <CandidateSkillPills key={i} textSkill={s.name} />,
+          )}
           onClickCopyProfile={{
             onClick: () => {
               navigator.clipboard
@@ -299,10 +303,30 @@ function InterviewFeedbackPage() {
           }
           slotResume={
             <Stack maxWidth={'400px'}>
+              <Dialog
+                sx={{
+                  '& .MuiDialog-paper': {
+                    borderRadius: '0px !important',
+                    border: 'none !important',
+                  },
+                  '.MuiDialog-container': {
+                    height: 'auto',
+                  },
+                }}
+                fullWidth
+                maxWidth={'lg'}
+                open={openResume}
+                onClose={() => setOpenResume(false)}
+              >
+                <Stack direction={'row'} justifyContent={'center'}>
+                  <ResumePreviewer url={applicationDetails.candidates.resume} />
+                </Stack>
+              </Dialog>
               <NewResumeScoreDetails
                 applicationDetails={applicationDetails}
                 job={job as any}
                 feedback={true}
+                setOpenResume={setOpenResume}
               />
             </Stack>
           }
