@@ -357,6 +357,7 @@
   padding-right: 24px;
   padding-bottom: 8px;
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 @media screen and (max-width: 767px) {

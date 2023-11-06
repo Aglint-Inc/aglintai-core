@@ -33,6 +33,11 @@
   margin-top: 40px;
 }
 
+.profile-block.emial {
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
 .cs-info-header {
   display: flex;
   flex-direction: column;

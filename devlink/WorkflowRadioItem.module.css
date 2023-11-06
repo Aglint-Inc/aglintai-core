@@ -20,6 +20,10 @@
   grid-row-gap: 6px;
 }
 
+.flex-hor-left.emial {
+  margin-top: -12px;
+}
+
 .radio-wrapper {
   display: flex;
   width: 16px;

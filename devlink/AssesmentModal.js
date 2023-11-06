@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { AvatarCard } from "./AvatarCard";
+import { AudioAvatarCard } from "./AudioAvatarCard";
 import * as _utils from "./utils";
 import _styles from "./AssesmentModal.module.css";
 
@@ -47,7 +48,17 @@ export function AssesmentModal({
         className={_utils.cx(_styles, "avatar-grid-wrap")}
         tag="div"
       >
-        {slotAvatarCard ?? <AvatarCard />}
+        {slotAvatarCard ?? (
+          <>
+            <AvatarCard />
+            <AudioAvatarCard
+              id={_utils.cx(
+                _styles,
+                "w-node-d27e29ba-45bb-4c38-8ea0-244097b0c195-9eec2e71"
+              )}
+            />
+          </>
+        )}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "choose-btn-wrap")}

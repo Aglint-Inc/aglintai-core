@@ -346,7 +346,7 @@ export function NewJobStep4({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "pd-200")} tag="div" />
+      <_Builtin.Block className={_utils.cx(_styles, "pd-100")} tag="div" />
     </_Component>
   );
 }

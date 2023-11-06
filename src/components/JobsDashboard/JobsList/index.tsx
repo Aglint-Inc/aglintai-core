@@ -10,8 +10,6 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import { calculateTimeDifference, StatusColor } from '../utils';
-import Icon from '../../Common/Icons/Icon';
-import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
 
 interface JobsListProps {
   jobs: JobTypeDashboard[];
@@ -37,6 +35,13 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   return (
     <>
       {jobs?.map((job, ind) => {
+        let jobDetails;
+        if (job.status == 'draft') {
+          jobDetails = job.draft;
+        } else {
+          jobDetails = job;
+        }
+
         return (
           <>
             <ScrollList uniqueKey={ind}>
@@ -57,127 +62,28 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   )
                 }
                 key={ind}
-                textJobRole={job.job_title}
-                textCompanyLocation={`${job.company}, ${job.location}`}
-                newCount={job.count.new}
-                qualifiedCount={job.count.qualified}
-                assessmentCount={job.count.interviewing}
-                slotInterviewIcon={
-                  !job.active_status.closed.isActive ? (
-                    getStatusInfo(
-                      job.active_status.interviewing,
-                      'interviewing',
-                    ).scheduled ? (
-                      <Icon variant='ClockHistory' height='12' width='12' />
-                    ) : (
-                      <Icon variant='DoubleTick' height='16' width='16' />
-                    )
-                  ) : (
-                    ''
-                  )
-                }
-                slotSourcingIcon={
-                  !job.active_status.closed.isActive ? (
-                    getStatusInfo(job.active_status.sourcing, 'sourcing')
-                      .scheduled ? (
-                      <Icon variant='ClockHistory' height='12' width='12' />
-                    ) : (
-                      <Icon variant='DoubleTick' height='16' width='16' />
-                    )
-                  ) : (
-                    ''
-                  )
-                }
-                textSourcing={
-                  !job.active_status.closed.isActive
-                    ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .scheduled
-                      ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                          .primaryStatus
-                      : 'Sourcing'
-                    : ''
-                }
-                textInterview={
-                  !job.active_status.closed.isActive
-                    ? getStatusInfo(
-                        job.active_status.interviewing,
-                        'interviewing',
-                      ).scheduled
-                      ? getStatusInfo(
-                          job.active_status.interviewing,
-                          'interviewing',
-                        ).primaryStatus
-                      : 'Interviewing'
-                    : ''
-                }
+                textJobRole={jobDetails.job_title}
+                textCompanyLocation={`${jobDetails.company}, ${jobDetails.location}`}
+                newCount={job?.count?.new}
+                qualifiedCount={job?.count?.qualified}
+                assessmentCount={job?.count?.interviewing}
                 bgColorProps={{
                   style: {
                     backgroundColor:
-                      !(
-                        job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive
-                      ) && !job.active_status.closed.isActive
+                      job.status == 'draft'
                         ? StatusColor['inactive']
-                        : (job.active_status.interviewing.isActive ||
-                            job.active_status.sourcing.isActive) &&
-                          !job.active_status.closed.isActive
+                        : job.status == 'published'
                         ? StatusColor['active']
                         : StatusColor['closed'],
                   },
                 }}
-                textJobsStatus={
-                  !(
-                    job.active_status.interviewing.isActive ||
-                    job.active_status.sourcing.isActive
-                  ) && !job.active_status.closed.isActive
-                    ? 'Inactive'
-                    : (job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive) &&
-                      !job.active_status.closed.isActive
-                    ? 'Active'
-                    : 'Closed'
-                }
-                textColorActiveInterviewingProps={{
-                  style: {
-                    color:
-                      !job.active_status.closed.isActive &&
-                      getStatusInfo(
-                        job.active_status.interviewing,
-                        'interviewing',
-                      ).scheduled
-                        ? '#daa520'
-                        : getStatusInfo(
-                            job.active_status.interviewing,
-                            'interviewing',
-                          ).active
-                        ? '#228F67'
-                        : '#C2C8CC',
-                  },
-                }}
-                textColorActivePropsSourcing={{
-                  style: {
-                    color:
-                      !job.active_status.closed.isActive &&
-                      getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .scheduled
-                        ? '#daa520'
-                        : getStatusInfo(job.active_status.sourcing, 'sourcing')
-                            .active
-                        ? '#228F67'
-                        : '#C2C8CC',
-                  },
-                }}
+                textJobsStatus={job.status}
                 slotStatusIcon={
                   <Image
                     src={
-                      !(
-                        job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive
-                      ) && !job.active_status.closed.isActive
+                      job.status == 'draft'
                         ? '/images/dashboard/inactive.svg'
-                        : (job.active_status.interviewing.isActive ||
-                            job.active_status.sourcing.isActive) &&
-                          !job.active_status.closed.isActive
+                        : job.status == 'published'
                         ? '/images/dashboard/active.svg'
                         : '/images/dashboard/closed.svg'
                     }

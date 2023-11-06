@@ -50,6 +50,7 @@ export function ProfileShare({
   isOverviewVisible = true,
   companyName = "Company Name",
   location = "Location",
+  onClickLinkedin = {},
 }) {
   return (
     <_Component
@@ -174,6 +175,7 @@ export function ProfileShare({
                     <_Builtin.Block
                       className={_utils.cx(_styles, "clickable")}
                       tag="div"
+                      {...onClickLinkedin}
                     >
                       <_Builtin.HtmlEmbed
                         className={_utils.cx(_styles, "icon-embed")}

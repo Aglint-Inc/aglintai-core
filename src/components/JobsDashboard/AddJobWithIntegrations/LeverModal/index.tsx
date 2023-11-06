@@ -111,7 +111,7 @@ export function LeverModalComp({
         await handleJobRead();
         setIsLeverOpen(false);
         toast.success('Jobs Imported Successfully');
-        router.push(`${pageRoutes.JOBS}?status=active`);
+        router.push(`${pageRoutes.JOBS}?status=published`);
       } else {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',

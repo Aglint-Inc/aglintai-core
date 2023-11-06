@@ -141,7 +141,7 @@ function JobSubNavbar() {
               ? 'rgba(255,255,255,0.1)'
               : 'transparent',
         },
-        onClick: () => router.push(`${pageRoutes.JOBS}?status=active`),
+        onClick: () => router.push(`${pageRoutes.JOBS}?status=published`),
       }}
       onClickJobInactive={{
         style: {
@@ -151,7 +151,7 @@ function JobSubNavbar() {
               ? 'rgba(255,255,255,0.1)'
               : 'transparent',
         },
-        onClick: () => router.push(`${pageRoutes.JOBS}?status=inactive`),
+        onClick: () => router.push(`${pageRoutes.JOBS}?status=draft`),
       }}
       onClickJobClosed={{
         style: {
@@ -161,44 +161,22 @@ function JobSubNavbar() {
               ? 'rgba(255,255,255,0.1)'
               : 'transparent',
         },
-        onClick: () => router.push(`${pageRoutes.JOBS}?status=close`),
+        onClick: () => router.push(`${pageRoutes.JOBS}?status=closed`),
       }}
-      isJobAll={
-        router.query.status === 'all' ||
-        (router.pathname === pageRoutes.JOBS &&
-          router.query.status !== 'active' &&
-          router.query.status !== 'inactive' &&
-          router.query.status !== 'close')
-      }
+      isJobAll={router.query.status === 'all'}
       activeCount={
-        jobsData?.jobs?.filter(
-          (job) =>
-            !job.is_campus &&
-            (job.active_status.interviewing.isActive ||
-              job.active_status.sourcing.isActive) &&
-            !job.active_status.closed.isActive,
-        ).length || 0
+        jobsData?.jobs?.filter((job) => job.status == 'published').length || 0
       }
-      allCount={jobsData?.jobs?.filter((job) => !job.is_campus).length || 0}
+      allCount={jobsData?.jobs?.length || 0}
       inActiveCount={
-        jobsData?.jobs?.filter(
-          (job) =>
-            !job.is_campus &&
-            !(
-              job.active_status.interviewing.isActive ||
-              job.active_status.sourcing.isActive
-            ) &&
-            !job.active_status.closed.isActive,
-        ).length || 0
+        jobsData?.jobs?.filter((job) => job.status == 'draft').length || 0
       }
       closedCount={
-        jobsData?.jobs?.filter(
-          (job) => !job.is_campus && job.active_status.closed.isActive,
-        ).length || 0
+        jobsData?.jobs?.filter((job) => job.status == 'closed').length || 0
       }
-      isJobActive={router.query.status === 'active'}
-      isJobInactive={router.query.status === 'inactive'}
-      isJobClosed={router.query.status === 'close'}
+      isJobActive={router.query.status === 'published'}
+      isJobInactive={router.query.status === 'draft'}
+      isJobClosed={router.query.status === 'closed'}
     />
   );
 }
