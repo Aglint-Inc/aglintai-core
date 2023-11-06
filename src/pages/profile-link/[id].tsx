@@ -103,7 +103,7 @@ function InterviewFeedbackPage() {
         resume_score={applicationDetails.resume_score}
         jd_score={applicationDetails.jd_score}
         parameter_weights={job.parameter_weights as ScoreWheelParams}
-        fontSize={7}
+        fontSize={10}
       />
     );
   }
