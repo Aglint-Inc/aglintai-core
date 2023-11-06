@@ -5,7 +5,7 @@ import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { RecSideNavBottomBlock, RecSideNavProfileBlock } from '@/devlink2';
+import { NavProfileBlock, RecSideNavProfileBlock } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
@@ -22,6 +22,7 @@ export default function AppLayout({ children }) {
   const [loadingProgress, setLoadingProgress] = useState(false);
   const companyName = recruiter?.name;
   const logo = recruiter?.logo;
+  const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
   const profileImage = recruiterUser?.profile_image;
 
   useEffect(() => {
@@ -85,26 +86,9 @@ export default function AppLayout({ children }) {
               onclickCompany={{
                 onClick: () => router.push(pageRoutes.COMPANY),
               }}
-              onclickProfileImage={{
-                onClick: () => router.push(pageRoutes.PROFILE),
-              }}
               slotCompanyLogo={
                 <Avatar
                   src={logo}
-                  variant='rounded'
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    background: '#fff',
-                    '& .MuiAvatar-img ': {
-                      objectFit: 'contain',
-                    },
-                  }}
-                />
-              }
-              slotProfileImage={
-                <Avatar
-                  src={profileImage}
                   variant='rounded'
                   sx={{
                     width: '100%',
@@ -122,12 +106,30 @@ export default function AppLayout({ children }) {
                 <SideNavbar />
               </Stack>
             </Stack>
-            <RecSideNavBottomBlock
+            <NavProfileBlock
+              onclickProfile={{
+                onClick: () => router.push(pageRoutes.PROFILE),
+              }}
               onclickLogout={{
                 onClick: () => {
                   handleLogout();
                 },
               }}
+              profileName={profileName}
+              slotProfileImage={
+                <Avatar
+                  src={profileImage}
+                  variant='rounded'
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#fff',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
+                    },
+                  }}
+                />
+              }
             />
           </Stack>
         </Stack>
@@ -204,26 +206,9 @@ export default function AppLayout({ children }) {
                 onclickCompany={{
                   onClick: () => router.push(pageRoutes.COMPANY),
                 }}
-                onclickProfileImage={{
-                  onClick: () => router.push(pageRoutes.PROFILE),
-                }}
                 slotCompanyLogo={
                   <Avatar
                     src={logo}
-                    variant='rounded'
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#fff',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
-                      },
-                    }}
-                  />
-                }
-                slotProfileImage={
-                  <Avatar
-                    src={profileImage}
                     variant='rounded'
                     sx={{
                       width: '100%',
@@ -264,12 +249,30 @@ export default function AppLayout({ children }) {
                   <SideNavbar />
                 </Stack>
               </Stack>
-              <RecSideNavBottomBlock
+              <NavProfileBlock
+                onclickProfile={{
+                  onClick: () => router.push(pageRoutes.PROFILE),
+                }}
                 onclickLogout={{
                   onClick: () => {
                     handleLogout();
                   },
                 }}
+                profileName={profileName}
+                slotProfileImage={
+                  <Avatar
+                    src={profileImage}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
               />
             </Drawer>
             <Stack

@@ -336,7 +336,7 @@ export function JobDetails({
                             />
                           </_Builtin.Block>
                           <_Builtin.Block tag="div">
-                            {"Interview Score"}
+                            {"Assessment Score"}
                           </_Builtin.Block>
                           <_Builtin.Block
                             className={_utils.cx(

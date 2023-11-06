@@ -145,7 +145,7 @@ export const statusOrder = {
 };
 
 export type QualificationRelevance =
-  | 'low match'
+  | 'less match'
   | 'average match'
   | 'more match';
 
@@ -181,7 +181,7 @@ export function getJdScore(data: DataType): ScoreWheelParams {
           5) *
         10;
       const relevanceScore =
-        value.relevance === 'low match'
+        value.relevance === 'less match'
           ? 0
           : value.relevance === 'average match'
           ? 25

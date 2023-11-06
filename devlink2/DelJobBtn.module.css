@@ -47,7 +47,7 @@
   bottom: 0%;
   z-index: 99;
 
-  color: var(--yellow-600);
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .icon-embed.sort {

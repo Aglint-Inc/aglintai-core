@@ -46,14 +46,11 @@ export interface Database {
           id: string
           job_location: string | null
           job_title: string | null
-          json_resume: Json | null
           last_name: string
           linkedin: string | null
           phone: string | null
           profile_image: string | null
           recruiter_id: string | null
-          resume: string | null
-          resume_text: string | null
         }
         Insert: {
           company?: string | null
@@ -64,14 +61,11 @@ export interface Database {
           id?: string
           job_location?: string | null
           job_title?: string | null
-          json_resume?: Json | null
           last_name: string
           linkedin?: string | null
           phone?: string | null
           profile_image?: string | null
           recruiter_id?: string | null
-          resume?: string | null
-          resume_text?: string | null
         }
         Update: {
           company?: string | null
@@ -82,14 +76,11 @@ export interface Database {
           id?: string
           job_location?: string | null
           job_title?: string | null
-          json_resume?: Json | null
           last_name?: string
           linkedin?: string | null
           phone?: string | null
           profile_image?: string | null
           recruiter_id?: string | null
-          resume?: string | null
-          resume_text?: string | null
         }
         Relationships: [
           {
@@ -116,7 +107,9 @@ export interface Database {
           interviewing_date: string | null
           jd_score: Json | null
           job_id: string | null
+          json_resume: Json | null
           last_updated_at: string | null
+          resume: string | null
           resume_score: number
           resume_text: Json | null
           status: string | null
@@ -135,7 +128,9 @@ export interface Database {
           interviewing_date?: string | null
           jd_score?: Json | null
           job_id?: string | null
+          json_resume?: Json | null
           last_updated_at?: string | null
+          resume?: string | null
           resume_score?: number
           resume_text?: Json | null
           status?: string | null
@@ -154,7 +149,9 @@ export interface Database {
           interviewing_date?: string | null
           jd_score?: Json | null
           job_id?: string | null
+          json_resume?: Json | null
           last_updated_at?: string | null
+          resume?: string | null
           resume_score?: number
           resume_text?: Json | null
           status?: string | null
@@ -285,6 +282,7 @@ export interface Database {
           created_at: string
           department: string | null
           description: string | null
+          draft: Json | null
           email_template: Json
           embedding: string | null
           end_video: Json | null
@@ -307,6 +305,7 @@ export interface Database {
           skills: string[] | null
           slug: string
           start_video: Json | null
+          status: string
           updated_at: string | null
           video_assessment: boolean
           workplace_type: string | null
@@ -318,6 +317,7 @@ export interface Database {
           created_at?: string
           department?: string | null
           description?: string | null
+          draft?: Json | null
           email_template?: Json
           embedding?: string | null
           end_video?: Json | null
@@ -340,6 +340,7 @@ export interface Database {
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
+          status?: string
           updated_at?: string | null
           video_assessment?: boolean
           workplace_type?: string | null
@@ -351,6 +352,7 @@ export interface Database {
           created_at?: string
           department?: string | null
           description?: string | null
+          draft?: Json | null
           email_template?: Json
           embedding?: string | null
           end_video?: Json | null
@@ -373,6 +375,7 @@ export interface Database {
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
+          status?: string
           updated_at?: string | null
           video_assessment?: boolean
           workplace_type?: string | null
@@ -774,6 +777,13 @@ export interface Database {
           "": string
         }
         Returns: string
+      }
+      get_combined_resume_score: {
+        Args: {
+          jd_data: Json
+          parameter_weights: Json
+        }
+        Returns: number
       }
       get_present_scheduled_jobs: {
         Args: Record<PropertyKey, never>

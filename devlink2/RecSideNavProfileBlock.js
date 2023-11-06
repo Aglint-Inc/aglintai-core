@@ -1,12 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
 import * as _utils from "./utils";
 import _styles from "./RecSideNavProfileBlock.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-55":{"id":"e-55","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-28","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-56"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2883b22a-86c3-adf3-97c3-6e0f9ba15840","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2883b22a-86c3-adf3-97c3-6e0f9ba15840","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1698920257479},"e-56":{"id":"e-56","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-55"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2883b22a-86c3-adf3-97c3-6e0f9ba15840","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2883b22a-86c3-adf3-97c3-6e0f9ba15840","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1698920257479}},"actionLists":{"a-28":{"id":"a-28","title":"profile-tooltip-[hover-in]","actionItemGroups":[{"actionItems":[{"id":"a-28-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":"none"}},{"id":"a-28-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-28-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":"block"}}]},{"actionItems":[{"id":"a-28-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":200,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1698920262492},"a-29":{"id":"a-29","title":"profile-tooltip-[hover-out]","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":200,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-29-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".rs-header-profile-tootip","selectorGuids":["b52be49a-29c3-5d3b-f302-7671e2a14d1e"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1698920342906}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function RecSideNavProfileBlock({
   as: _Component = _Builtin.Block,
@@ -14,14 +9,10 @@ export function RecSideNavProfileBlock({
   slotCompanyLogo,
   companyName = "Charlie Health fhhodfhoefdfo",
   isNotCountVisible = false,
-  slotProfileImage,
   onclickNotification = {},
-  onclickProfileImage = {},
   notificationCount = "9",
   companyNameProps = {},
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component className={_utils.cx(_styles, "rs-header-block")} tag="div">
       <_Builtin.HtmlEmbed
@@ -80,29 +71,6 @@ export function RecSideNavProfileBlock({
               {notificationCount}
             </_Builtin.Block>
           ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-374")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "rs-header-profile-image",
-              "clickable"
-            )}
-            data-w-id="2883b22a-86c3-adf3-97c3-6e0f9ba15840"
-            tag="div"
-            {...onclickProfileImage}
-          >
-            {slotProfileImage}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "rs-header-profile-tootip")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"View profile"}</_Builtin.Block>
-          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

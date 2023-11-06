@@ -43,7 +43,6 @@ import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { JobType } from '@/src/types/data.types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
@@ -288,8 +287,7 @@ const NewJobApplicationSideDrawer = ({
       }
     }
   }, [leftShift, rightShift]);
-  const overview =
-    (applicationDetails.candidates?.json_resume as any)?.overview ?? null;
+  const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
@@ -349,7 +347,7 @@ const NewCandidateDetails = ({
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { job } = useJobApplications();
-  const resume = applicationDetails.candidates.json_resume as any;
+  const resume = applicationDetails.json_resume as any;
   return (
     <CandidateDetails
       slotInterviewScore={
@@ -527,11 +525,10 @@ const NewResumeSection = ({
         onClose={() => setOpenResume(false)}
       >
         <Stack direction={'row'} justifyContent={'center'}>
-          <ResumePreviewer url={applicationDetails.candidates.resume} />
+          <ResumePreviewer url={applicationDetails.resume} />
         </Stack>
       </Dialog>
-      {applicationDetails.candidates.json_resume ||
-      applicationDetails.candidates.resume ? (
+      {applicationDetails.json_resume || applicationDetails.resume ? (
         applicationValidity(applicationDetails) ? (
           <NewResumeScoreDetails
             applicationDetails={applicationDetails}
@@ -541,7 +538,7 @@ const NewResumeSection = ({
           />
         ) : (
           <UnableFetchResume
-            propsLink={{ href: applicationDetails.candidates.resume }}
+            propsLink={{ href: applicationDetails.resume }}
             onClickViewResume={{
               onClick: () => {
                 setOpenResume(true);
@@ -592,15 +589,12 @@ export const NewResumeScoreDetails = ({
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const jdScoreObj = applicationDetails.jd_score as any;
-
-  const score = getOverallResumeScore(
-    applicationDetails.jd_score,
-    job.parameter_weights,
-  );
+  const score = applicationDetails.resume_score;
 
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
+      resume_score={applicationDetails.resume_score}
       jd_score={applicationDetails.jd_score}
       parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
@@ -623,14 +617,13 @@ export const NewResumeScoreDetails = ({
         },
       }}
       slotDownload={<DownloadButton1 applicationDetails={applicationDetails} />}
-      propsLink={{ href: applicationDetails.candidates.resume }}
+      propsLink={{ href: applicationDetails.resume }}
       slotFeedbackScore={
         <>
           <ResumeFeedbackScore
             textFeedback={'Skills'}
             textScoreState={
-              (applicationDetails.candidates?.json_resume as any)?.skills
-                ?.length ?? '--'
+              (applicationDetails?.json_resume as any)?.skills?.length ?? '--'
             }
           />
           <ResumeFeedbackParams feedbackParamsObj={jdScoreObj.qualification} />
@@ -685,7 +678,7 @@ const DownloadButton1 = ({
     if (!loading) {
       setLoading(true);
       await axios({
-        url: applicationDetails?.candidates?.resume ?? '#',
+        url: applicationDetails?.resume ?? '#',
         method: 'GET',
         responseType: 'blob',
       }).then((response) => {
@@ -746,7 +739,7 @@ const DownloadButton2 = ({
     if (!loading) {
       setLoading(true);
       await axios({
-        url: applicationDetails?.candidates?.resume ?? '#',
+        url: applicationDetails?.resume ?? '#',
         method: 'GET',
         responseType: 'blob',
       }).then((response) => {

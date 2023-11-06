@@ -1,13 +1,14 @@
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import {
+  deleteCandidateDbAction,
+  deleteResumeDbAction,
+  insertCandidateDbAction,
+  updateCandidateDbAction,
+  uploadResumeDbAction,
+} from '@/src/context/JobApplicationsContext/utils';
 import { JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
-
-import {
-  checkDuplicateJobApplicationDbAction,
-  uploadResumeDbAction,
-} from './utils';
 
 const useUploadCandidate = () => {
   const { handleJobApplicationCreate, handleJobApplicationError } =
@@ -18,46 +19,46 @@ const useUploadCandidate = () => {
     candidate: Partial<Database['public']['Tables']['candidates']['Row']>,
     file: any,
   ) => {
-    const { data: duplicate, error: e1 } =
-      await checkDuplicateJobApplicationDbAction(candidate.email, job.id);
-    if (!e1) {
-      if (!duplicate) {
-        const { data, error } = await uploadResumeDbAction(job.id, file);
-        if (data) {
-          // TODO: Error handling required and exisiting candidate handling
-          const { data: candidateData } = await supabase
-            .from('candidates')
-            .insert({
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              email: candidate.email,
-              resume: data,
-            })
-            .select();
+    const { data: d1, error: e1 } = await insertCandidateDbAction({
+      first_name: candidate.first_name,
+      last_name: candidate.last_name,
+      email: candidate.email,
+    });
+    if (d1) {
+      const { data: d2, error: e2 } = await uploadResumeDbAction(
+        d1[0].id,
+        job.id,
+        file,
+      );
+      if (d2) {
+        const { data: d3, error: e3 } = await updateCandidateDbAction({
+          id: d1[0].id,
+          resume: d2,
+        } as any);
+        if (d3) {
           const confirmation = await handleJobApplicationCreate({
-            candidate_id: candidateData[0].id,
+            candidate_id: d3[0].id,
             job_id: job.id,
           });
           if (confirmation) {
             toast.success(
-              'Job application uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+              'Job application created successfully. Processing will take some time.',
             );
             return true;
           }
         } else {
-          handleJobApplicationError(error);
-          return false;
+          await deleteResumeDbAction(d1[0].id, job.id, file);
+          await deleteCandidateDbAction(d1[0].id);
+          handleJobApplicationError(e3);
         }
       } else {
-        handleJobApplicationError({
-          message: 'Another application with the same details exist',
-        });
-        return false;
+        await deleteCandidateDbAction(d1[0].id);
+        handleJobApplicationError(e2);
       }
     } else {
       handleJobApplicationError(e1);
-      return false;
     }
+    return false;
   };
 
   return { handleUploadCandidate };

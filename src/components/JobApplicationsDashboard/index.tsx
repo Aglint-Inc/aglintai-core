@@ -32,7 +32,7 @@ import ResumeUpload from './FileUpload';
 import { useKeyPress, usePolling } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
-import JobApplicationStatus from './JobStatus';
+// import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, FilterParameter } from './utils';
@@ -169,7 +169,7 @@ const JobApplicationComponent = () => {
             text={'Refresh'}
             onClick={async () => await handleManualRefresh()}
           />
-          <JobApplicationStatus />
+          {/* <JobApplicationStatus /> */}
         </>
       }
       slotBottomBar={
@@ -227,11 +227,9 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
-      slotInterviewSort={
-        <></> /*<ApplicationSort parameter='interview_score' />*/
-      }
+      slotInterviewSort={<ApplicationSort parameter='interview_score' />}
       slotNameSort={<ApplicationSort parameter='first_name' />}
-      slotResumeSort={<></> /*<ApplicationSort parameter='resume_score' />*/}
+      slotResumeSort={<ApplicationSort parameter='resume_score' />}
       slotEmailSort={<ApplicationSort parameter='email' />}
       slotDateSort={<ApplicationSort parameter='created_at' />}
     />

@@ -13,7 +13,7 @@ export function SortArrows({
   return (
     <_Component className={_utils.cx(_styles, "sort-arrow-block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "icon-block", "_12px", "sort")}
+        className={_utils.cx(_styles, "icon-block", "_10px", "sort")}
         tag="div"
         {...onclickUp}
       >
@@ -29,7 +29,7 @@ export function SortArrows({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "icon-block", "_12px", "sort")}
+        className={_utils.cx(_styles, "icon-block", "_10px", "sort")}
         tag="div"
         {...onclickDown}
       >

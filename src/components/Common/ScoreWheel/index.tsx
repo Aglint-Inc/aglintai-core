@@ -45,11 +45,13 @@ export type ScoreWheelParams = {
 const ScoreWheel = ({
   id,
   jd_score,
+  resume_score,
   parameter_weights,
   fontSize = 14,
 }: {
   id: string;
   jd_score?: JobApplication['jd_score'];
+  resume_score?: number;
   parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {
@@ -90,7 +92,7 @@ const ScoreWheel = ({
   }, [delay]);
 
   const overallScore = !isSettings
-    ? getOverallResumeScore(jd_score, parameter_weights)
+    ? resume_score ?? getOverallResumeScore(jd_score, parameter_weights)
     : 0;
   return (
     <>

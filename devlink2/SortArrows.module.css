@@ -46,20 +46,20 @@
   }
 }
 
-.icon-block._12px {
-  width: 12px;
-  height: 12px;
-  min-height: 12px;
-  min-width: 12px;
+.icon-block._10px {
+  width: 10px;
+  height: 10px;
+  min-height: 10px;
+  min-width: 10px;
 }
 
-.icon-block._12px.sort {
+.icon-block._10px.sort {
   position: relative;
   transition: all 250ms ease;
   cursor: pointer;
 }
 
-.icon-block._12px.sort:hover {
+.icon-block._10px.sort:hover {
   opacity: 0.8;
 }
 
@@ -95,7 +95,7 @@
   bottom: 0%;
   z-index: 99;
 
-  color: var(--yellow-600);
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 .icon-embed.sort {

@@ -21,7 +21,6 @@ import {
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
   getUpdatedJobStatus,
-  // readJobApplicationDbAction,
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
@@ -466,7 +465,7 @@ const useProviderJobApplicationActions = (
   }, [initialJobLoad]);
 
   useEffect(() => {
-    if (initialLoad) {
+    if (initialLoad && job) {
       const timer = setTimeout(async () => {
         await handleUpdateJobCount([job.id]);
       }, 100);

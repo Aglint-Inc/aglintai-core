@@ -26,37 +26,20 @@ export const readJobDbAction = async (recruiter_id: string) => {
 
   const ids = data.map((job) => job.id);
 
-  const { data: dataCount, error: errorCount } = await supabase.rpc(
-    'getjobapplications',
-    {
-      ids,
-    },
-  );
+  const { data: d1, error: e1 } = await jobApplicationCountDbAction(ids);
 
-  if (errorCount) {
-    return { data: undefined, error: errorCount };
+  if (e1) {
+    return { data: undefined, error: e1 };
   }
 
   const jobsWithCount = data.map((job) => {
     return {
       ...job,
       count: {
-        new:
-          dataCount.filter(
-            (data) => data.job_id === job.id && data.status === 'new',
-          )[0]?.count || 0,
-        interviewing:
-          dataCount.filter(
-            (data) => data.job_id === job.id && data.status === 'interviewing',
-          )[0]?.count || 0,
-        qualified:
-          dataCount.filter(
-            (data) => data.job_id === job.id && data.status === 'qualified',
-          )[0]?.count || 0,
-        disqualified:
-          dataCount.filter(
-            (data) => data.job_id === job.id && data.status === 'disqualified',
-          )[0]?.count || 0,
+        new: d1[job.id]['new'],
+        interviewing: d1[job.id]['interviewing'],
+        qualified: d1[job.id]['qualified'],
+        disqualified: d1[job.id]['disqualified'],
       },
     };
   });
@@ -69,21 +52,41 @@ export const jobApplicationCountDbAction = async (ids: string[]) => {
 
   return {
     data: data
-      ? data.reduce((acc, curr) => {
-          return {
-            ...acc,
-            [curr.job_id]: {
-              ...Object.assign(
-                {},
-                ...Object.values(JobApplicationSections).map((j) => {
-                  return { [j]: 0 };
-                }),
-              ),
-              ...acc[curr.job_id],
-              [curr.status]: curr.count,
-            },
-          };
-        }, {})
+      ? data.reduce(
+          (acc, curr) => {
+            return {
+              ...acc,
+              [curr.job_id]: {
+                ...acc[curr.job_id],
+                [curr.status]: curr.count,
+              },
+            };
+          },
+          {
+            ...ids.reduce(
+              (acc, curr) => {
+                return {
+                  ...acc,
+                  [curr]: {
+                    ...Object.assign(
+                      {},
+                      ...Object.values(JobApplicationSections).map((j) => {
+                        return { [j]: 0 };
+                      }),
+                    ),
+                  },
+                };
+              },
+              {} as {
+                // eslint-disable-next-line no-unused-vars
+                [id: string]: { [key in JobApplicationSections]: number };
+              },
+            ),
+          } as {
+            // eslint-disable-next-line no-unused-vars
+            [id: string]: { [key in JobApplicationSections]: number };
+          },
+        )
       : null,
     error,
   };

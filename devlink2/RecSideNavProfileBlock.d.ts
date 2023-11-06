@@ -7,9 +7,7 @@ declare function RecSideNavProfileBlock(props: {
   slotCompanyLogo?: Types.Devlink.Slot;
   companyName?: React.ReactNode;
   isNotCountVisible?: Types.Visibility.VisibilityConditions;
-  slotProfileImage?: Types.Devlink.Slot;
   onclickNotification?: Types.Devlink.RuntimeProps;
-  onclickProfileImage?: Types.Devlink.RuntimeProps;
   notificationCount?: React.ReactNode;
   companyNameProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -3,9 +3,7 @@ import { Stack, Tooltip } from '@mui/material';
 import md5 from 'blueimp-md5';
 
 import { CandidateListItem } from '@/devlink2';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
 import {
   ApiLogState,
@@ -37,7 +35,7 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  const { job } = useJobApplications();
+  // const { job } = useJobApplications();
 
   const interviewScore = application?.feedback
     ? getInterviewScore(application.feedback)
@@ -48,10 +46,7 @@ const ApplicationCard = ({
   const handleCheck = () => {
     handleSelect(index);
   };
-
-  const resumeScore = application.jd_score
-    ? getOverallResumeScore(application.jd_score, job.parameter_weights)
-    : 0;
+  const resumeScore = application.resume_score;
 
   return (
     <CandidateListItem
@@ -85,7 +80,7 @@ const ApplicationCard = ({
           : '---'
       }
       slotResumeScore={
-        application.candidates.json_resume || application.candidates.resume ? (
+        application.json_resume || application.resume ? (
           intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
             application.jd_score ? (
               <SmallCircularScore
