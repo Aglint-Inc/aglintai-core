@@ -6,17 +6,29 @@ import { JobPublishPop, RevertChangesModal } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../JobPostFormProvider';
-import { API_FAIL_MSG, getjobformToDbcolumns, supabaseWrap } from '../utils';
+import {
+  API_FAIL_MSG,
+  getjobformToDbcolumns,
+  isWarningsCleared,
+  supabaseWrap,
+} from '../utils';
 
 const JobPublishButton = () => {
+  const { handleUIJobUpdate } = useJobs();
   const [anchorEl, setAnchorEl] = useState(null);
-  const { jobForm, handleInitializeForm, handleUpdateRevertStatus, dispatch } =
-    useJobForm();
+  const {
+    jobForm,
+    handleInitializeForm,
+    handleUpdateRevertStatus,
+    dispatch,
+    formWarnings,
+  } = useJobForm();
   const [isPublishing, setIsPublishing] = useState(false);
   const [revertPopUpPopup, setRevertPopUpPopup] = useState(false);
   const jobPostLnk = `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
@@ -31,7 +43,7 @@ const JobPublishButton = () => {
       setAnchorEl(null);
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
-      supabaseWrap(
+      const [pubJob] = supabaseWrap(
         await supabase
           .from('public_jobs')
           .update({
@@ -39,8 +51,10 @@ const JobPublishButton = () => {
             status: 'published',
             draft: null,
           })
-          .eq('id', jobForm.jobPostId),
+          .eq('id', jobForm.jobPostId)
+          .select(),
       );
+      handleUIJobUpdate(pubJob);
       dispatch({
         type: 'updatePublishStatus',
         payload: {
@@ -96,6 +110,7 @@ const JobPublishButton = () => {
         onClick={(e) => {
           setAnchorEl(e.currentTarget);
         }}
+        disabled={!isWarningsCleared(formWarnings)}
         startIcon={
           isPublishing && (
             <CircularProgress
@@ -106,7 +121,7 @@ const JobPublishButton = () => {
           )
         }
       >
-        Publish
+        {jobForm.isDraftPublished ? 'Published' : 'Publish'}
       </AUIButton>
       <Popover
         open={Boolean(anchorEl)}
