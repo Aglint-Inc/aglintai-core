@@ -7,9 +7,9 @@ import toast from '@/src/utils/toast';
 export const createJobApplications = async (selectedLeverPostings, apiKey) => {
   const applications = await Promise.all(
     selectedLeverPostings.map(async (post) => {
-      const allCandidates = await fetchAllCandidates(post.id, apiKey);
+      const fetchedCandidates = await fetchAllCandidates(post.id, apiKey);
       // for creating lever job reference
-      const refCandidates = allCandidates.map((cand) => {
+      const refCandidates = fetchedCandidates.map((cand) => {
         return {
           first_name: splitFullName(cand.name).firstName,
           last_name: splitFullName(cand.name).lastName,
@@ -18,61 +18,94 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           phone: cand.phones[0]?.value,
           job_id: post.job_id,
           application_id: uuidv4(), //our job application id
-          candidate_id: uuidv4(), //our candidate id
           id: cand.id, //lever opportunity id
         };
       });
       // for creating lever job reference
 
-      const dbCandidates = refCandidates.map((cand) => {
-        return {
-          first_name: cand.first_name,
-          last_name: cand.last_name,
-          email: cand.email,
-          linkedin: cand.linkedin,
-          phone: cand.phone,
-          id: cand.candidate_id,
-          recruiter_id: post.recruiter_id,
-        };
-      });
+      const emails = [
+        ...new Set(
+          refCandidates.map((cand) => {
+            return cand.email;
+          }),
+        ),
+      ];
 
-      const { data: newCandidates, error: errorCandidates } = await supabase
+      const { data: checkCandidates, error: errorCheck } = await supabase
         .from('candidates')
-        .insert(dbCandidates)
-        .select();
+        .select()
+        .in('email', [emails]);
 
-      if (!errorCandidates) {
-        const dbApplications = newCandidates.map((cand) => {
+      if (!errorCheck) {
+        //new candidates insert flow
+        const uniqueRefCandidates = refCandidates.filter((cand) => {
+          return !checkCandidates.some((checkCand) => {
+            return checkCand.email === cand.email;
+          });
+        });
+
+        const insertableCandidates = uniqueRefCandidates.map((cand) => {
           return {
-            candidate_id: cand.id,
-            job_id: post.job_id,
-            application_id: refCandidates.filter(
-              (ref) => ref.candidate_id === cand.id,
-            )[0].application_id,
+            first_name: cand.first_name,
+            last_name: cand.last_name,
+            email: cand.email,
+            linkedin: cand.linkedin,
+            phone: cand.phone,
+            id: uuidv4(),
+            recruiter_id: post.recruiter_id,
           };
         });
 
-        const { error } = await supabase
-          .from('job_applications')
-          .insert(dbApplications)
+        const dbCandidates = insertableCandidates.filter(
+          (cand, index, self) => {
+            // Use the Array.findIndex() method to check if the current email address
+            // exists in the array at a previous index.
+            const isUnique =
+              self.findIndex((c) => c.email === cand.email) === index;
+            return isUnique;
+          },
+        );
+
+        const { data: newCandidates, error: errorCandidates } = await supabase
+          .from('candidates')
+          .insert(dbCandidates)
           .select();
 
-        if (!error) {
-          const referenceObj = refCandidates.map((ref) => {
+        if (!errorCandidates) {
+          const allCandidates = [...newCandidates, ...checkCandidates];
+          const dbApplications = refCandidates.map((ref) => {
             return {
+              candidate_id: allCandidates.filter(
+                (cand) => cand.email === ref.email,
+              )[0].id,
+              job_id: post.job_id,
               application_id: ref.application_id,
-              posting_id: post.id,
-              opportunity_id: ref.id,
-              public_job_id: post.job_id,
             };
           });
 
-          await createLeverReference(referenceObj);
-        } else {
-          toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
-          );
+          const { error } = await supabase
+            .from('job_applications')
+            .insert(dbApplications)
+            .select();
+
+          if (!error) {
+            const referenceObj = refCandidates.map((ref) => {
+              return {
+                application_id: ref.application_id,
+                posting_id: post.id,
+                opportunity_id: ref.id,
+                public_job_id: post.job_id,
+              };
+            });
+
+            await createLeverReference(referenceObj);
+          } else {
+            toast.error(
+              'Sorry unable to import. Please try again later or contact support.',
+            );
+          }
         }
+        //new candidates insert flow
       }
     }),
   );
