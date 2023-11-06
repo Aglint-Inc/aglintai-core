@@ -64,6 +64,11 @@
   }
 }
 
+.cvs-header-nav-icon.clickable.bg-white {
+  position: relative;
+  background-color: white;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -80,6 +85,30 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.arrow-tooltips-drawer {
+  position: absolute;
+  left: -70%;
+  top: auto;
+  right: 0%;
+  bottom: -105%;
+
+  display: none;
+  min-width: 60px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  border-radius: 4px;
+
+  background-color: #2f3941;
+
+  opacity: 1;
+
+  color: white;
+  font-size: 10px;
 }
 
 .cvs-header-copy-block {
@@ -173,12 +202,14 @@
 .cvs-header-close-button {
   display: flex;
   margin-left: auto;
-  padding: 4px 8px;
+  padding: 5px;
   justify-content: center;
   align-items: center;
 
-  border-radius: 4px;
+  border-radius: 100px;
+}
 
+.cvs-header-close-button:hover {
   background-color: white;
 }
 

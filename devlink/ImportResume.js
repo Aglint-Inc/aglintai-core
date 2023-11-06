@@ -25,7 +25,7 @@ export function ImportResume({
             className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
             tag="div"
           >
-            {"Drag candidates resume"}
+            {"Drag and drop candidates resume"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600-3", "regular")}
