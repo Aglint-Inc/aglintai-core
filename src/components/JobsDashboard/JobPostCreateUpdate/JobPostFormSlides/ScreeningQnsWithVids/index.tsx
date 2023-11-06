@@ -3,9 +3,14 @@ import { get, isEmpty } from 'lodash';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-import { ScreeningQuestion, ScreeningQuestionCard } from '@/devlink';
+import {
+  AvatarModal,
+  ScreeningQuestion,
+  ScreeningQuestionCard,
+} from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ScreeningVideoGenerating from '@/src/components/Common/Lotties/ScreeningVideoGenerating';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -143,20 +148,19 @@ const Video = ({ path }) => {
     });
   };
 
+  const avatar = (recruiter.ai_avatar as any) || avatar_list[0];
   const handleGenerateVideo = async () => {
     try {
       let videoInfo;
       if (process.env.NODE_ENV === 'development') {
         videoInfo = { video_id: 'def5da2177c44b089ccf6fa597cc3c4d' };
       } else {
-        const avater = (recruiter.ai_avatar as any) || avatar_list[0];
-
         let {
           data: { data },
         } = await axios.post('/api/generateVideo', {
           text: question.question,
-          avatar_id: get(recruiter, 'ai_avatar.avatar_id', avater.avatar_id),
-          voice_id: get(recruiter, 'ai_avatar.voice_id', avater.voice_id),
+          avatar_id: get(recruiter, 'ai_avatar.avatar_id', avatar.avatar_id),
+          voice_id: get(recruiter, 'ai_avatar.voice_id', avatar.voice_id),
         });
         videoInfo = data;
       }
@@ -212,10 +216,55 @@ const Video = ({ path }) => {
   const isGenerateVisible =
     question.question && !isVideoError && !question.videoId;
   const videoUrl = question.videoUrl;
+  const [openPopUp, setOpenPopUP] = useState(false);
 
   const editMode = showEdit || isEmpty(question.question);
   return (
     <>
+      <MuiPopup
+        props={{
+          open: openPopUp,
+          // onClose: handleVideoEnd,
+          maxWidth: 'md',
+        }}
+      >
+        <AvatarModal
+          textName={avatar.name}
+          isPauseIconVisible={playing}
+          isPlayIconVisible={!playing}
+          onClickPlayPause={{
+            onClick: (event: { stopPropagation: () => void }) => {
+              event.stopPropagation();
+              handleVideoPlay();
+            },
+          }}
+          onClickClose={{
+            onClick: (event: { stopPropagation: () => void }) => {
+              event.stopPropagation();
+              setPlaying(false);
+              setOpenPopUP(false);
+            },
+          }}
+          // textName={l.name}
+          slotVideo={
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video
+              src={videoUrl}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+              ref={videoRef}
+              onEnded={() => {
+                setPlaying(false);
+              }}
+              autoPlay
+            />
+          }
+        />
+      </MuiPopup>
+
       <div
         onMouseEnter={() => {
           setQnHovered(true);
@@ -303,7 +352,10 @@ const Video = ({ path }) => {
             },
           }}
           onClickPlay={{
-            onClick: handleVideoPlay,
+            onClick: () => {
+              setOpenPopUP(true);
+              setPlaying(true);
+            },
           }}
           onClickPause={{
             onClick: handleVideoPlay,

@@ -3,6 +3,7 @@
 
   display: flex;
   margin-top: 0px;
+  margin-bottom: 12px;
   padding: 10px 20px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -400,7 +401,6 @@
 }
 
 .slot-input-new-screen {
-  min-height: 100px;
   margin-bottom: 13px;
 }
 
