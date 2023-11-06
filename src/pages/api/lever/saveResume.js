@@ -97,7 +97,10 @@ export default async function handler(req, res) {
 
               const { error } = await supabase
                 .from('job_applications')
-                .update({ resume: fileLink, json_resume: jsonResume })
+                .update({
+                  resume: fileLink,
+                  json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
+                })
                 .eq('application_id', payload.application_id);
               if (error) {
                 console.log('error while updating candidate');
@@ -108,7 +111,10 @@ export default async function handler(req, res) {
 
             return res
               .status(200)
-              .json({ resume: fileLink, json_resume: jsonResume });
+              .json({
+                resume: fileLink,
+                json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
+              });
           } else {
             console.log('no resume url from lever');
             res.status(400).send('no resume url from lever');
