@@ -3,7 +3,7 @@ const interviewerList = [
     name: 'Jessica',
     gender: 'Female',
     image:
-      'https://files.movio.la/avatar/v3/1c4fa9e9940848748af2cb79f577166d_1085/preview_talk_3.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Jessica.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Neural2-C',
@@ -16,7 +16,7 @@ const interviewerList = [
     name: 'Emily',
     gender: 'Female',
     image:
-      'https://files.movio.la/avatar/v3/16fbaaae1c96473da8f5ec14df551994_1055/preview_talk_1.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Emily.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Neural2-E',
@@ -29,7 +29,7 @@ const interviewerList = [
     name: 'Sarah',
     gender: 'Female',
     image:
-      'https://files.movio.la/avatar/v3/bf83f0f830794d90b509ba6524962e05_1079/preview_talk_2.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Sarah.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Neural2-F',
@@ -95,7 +95,7 @@ const interviewerList = [
     name: 'John',
     gender: 'Male',
     image:
-      'https://files.movio.la/avatar/v3/2fe505d2f4f546b7addd4fa083149284_1060/preview_talk_3.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/John.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Neural2-J',
@@ -108,7 +108,7 @@ const interviewerList = [
     name: 'William',
     gender: 'Male',
     image:
-      'https://files.movio.la/avatar/v3/2fe505d2f4f546b7addd4fa083149284_1060/preview_talk_3.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/William.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Neural2-I',
@@ -121,7 +121,7 @@ const interviewerList = [
     name: 'Michael',
     gender: 'Male',
     image:
-      'https://files.movio.la/avatar/v3/f539d51cc23d462f84c68354064dc76d_1057/preview_talk_3.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Michael.png',
     voice: {
       languageCode: 'en-US',
       name: 'en-US-Polyglot-1',

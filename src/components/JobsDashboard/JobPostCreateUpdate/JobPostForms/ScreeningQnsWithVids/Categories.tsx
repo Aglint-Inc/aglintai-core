@@ -179,6 +179,8 @@ const Category = ({
                         onChange={(e) => {
                           setNewQn(e.target.value);
                         }}
+                        placeholder='Type the question'
+                        InputProps={{ autoFocus: true }}
                       />
                     }
                     onClickCancel={{

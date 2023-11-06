@@ -265,6 +265,7 @@ const Video = ({ path }) => {
                     setEditQn(e.target.value);
                   }}
                   placeholder='Introduction'
+                  InputProps={{ autoFocus: true }}
                 />
               ) : (
                 <UITypography type='small'>{question.question}</UITypography>

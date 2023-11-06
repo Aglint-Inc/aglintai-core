@@ -11,7 +11,7 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  color: var(--white);
+  color: white;
 }
 
 .rs-logout-btn.clickable:hover {

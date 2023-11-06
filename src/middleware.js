@@ -12,6 +12,7 @@ const whiteListedEndPoints = [
   '/api/lever/candidateSync',
   '/api/webhook',
   '/api/JobApplicationsApi',
+  '/api/interview', // need this publicly access for interview feedback.
 ];
 
 export async function middleware(request) {
