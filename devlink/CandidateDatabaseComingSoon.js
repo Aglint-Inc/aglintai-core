@@ -27,7 +27,7 @@ export function CandidateDatabaseComingSoon({
             className={_utils.cx(_styles, "text-xsm-3")}
             tag="div"
           >
-            {"Request access"}
+            {"Request Access"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

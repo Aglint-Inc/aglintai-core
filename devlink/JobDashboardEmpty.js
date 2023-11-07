@@ -213,7 +213,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         <_Builtin.Block tag="div">
-                          {"Request access"}
+                          {"Request Access"}
                         </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
@@ -263,7 +263,7 @@ export function JobDashboardEmpty({
                         tag="div"
                       >
                         <_Builtin.Block tag="div">
-                          {"Request access"}
+                          {"Request Access"}
                         </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>

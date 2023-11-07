@@ -86,7 +86,7 @@ export function ImportCandidates({
         >
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 1">
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-import")}
+              className={_utils.cx(_styles, "slot-import" )}
               tag="div"
             >
               {slotImportResume ?? <ImportResume />}
@@ -107,7 +107,7 @@ export function ImportCandidates({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-import", "height-350")}
+              className={_utils.cx(_styles, "slot-import", "height-350" )}
               tag="div"
             >
               {slotImportCsv ?? <ImportCandidatesCsv />}

@@ -78,6 +78,10 @@
   opacity: 0.7;
 }
 
+.text-underline.ml-5 {
+  margin-left: 5px;
+}
+
 .div-block-558 {
   display: flex;
   align-items: center;

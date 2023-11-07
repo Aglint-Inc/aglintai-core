@@ -9,6 +9,7 @@ export function JobUnpublishDisclaimer({
   onClickPreview = {},
   onClickDiscardChanges = {},
   slotButtonPrimaryRegular,
+  isDiscardVisible = true,
 }) {
   return (
     <_Component
@@ -29,7 +30,7 @@ export function JobUnpublishDisclaimer({
         >
           {"You have unpublished chaneges."}
           <_Builtin.Span
-            className={_utils.cx(_styles, "text-underline")}
+            className={_utils.cx(_styles, "text-underline", "ml-5")}
             {...onClickPreview}
           >
             {"Preview"}
@@ -37,18 +38,20 @@ export function JobUnpublishDisclaimer({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-558")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cursor-pointer")}
-          tag="div"
-          {...onClickDiscardChanges}
-        >
+        {isDiscardVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-600")}
+            className={_utils.cx(_styles, "cursor-pointer")}
             tag="div"
+            {...onClickDiscardChanges}
           >
-            {"Discard Changes"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-blue-600")}
+              tag="div"
+            >
+              {"Discard Changes"}
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block tag="div">
           {slotButtonPrimaryRegular ?? (
             <ButtonPrimaryRegular textLabel="Publish" />

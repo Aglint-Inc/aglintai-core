@@ -278,12 +278,12 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.grey[600],
+                borderColor: palette.blue[300],
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: '#fff',
+                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
               }}
               direction='row'
               spacing={'8px'}
