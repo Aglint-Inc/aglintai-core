@@ -100,6 +100,7 @@ export type FormJobType = {
   introVideo: QuestionType | null;
   startVideo: QuestionType | null;
   endVideo: QuestionType | null;
+  isDraftCleared: boolean;
 };
 
 export type JobFormState = {
@@ -117,7 +118,7 @@ export type JobFormState = {
     | 'resumeScore'
     | 'applyForm';
   syncStatus: 'saving' | 'saved' | '';
-  isDraftPublished: boolean;
+  jobPostStatus: 'published' | 'draft' | 'closed';
   isJobPostReverting: boolean;
 };
 
@@ -130,8 +131,8 @@ const initialState: JobFormState = {
   isFormOpen: false,
   syncStatus: '',
   currSlide: 'details',
-  isDraftPublished: false,
   isJobPostReverting: false,
+  jobPostStatus: 'draft',
 };
 
 // Define action types
@@ -179,9 +180,9 @@ type JobsAction =
       };
     }
   | {
-      type: 'updatePublishStatus';
+      type: 'updateJobPublishstatus';
       payload: {
-        status: boolean;
+        status: JobFormState['jobPostStatus'];
       };
     }
   | null;
@@ -192,7 +193,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       const newState: JobFormState = cloneDeep(state);
       const { path, value } = action.payload;
       set(newState.formFields, path, value);
-      set(newState, 'isDraftPublished', false);
+      set(newState, 'formFields.isDraftCleared', false);
       set(newState, 'updatedAt', new Date().toISOString());
       return newState;
     }
@@ -233,10 +234,14 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       set(newState, 'isJobPostReverting', status);
       return newState;
     }
-    case 'updatePublishStatus': {
+    case 'updateJobPublishstatus': {
       const { status } = action.payload;
       const newState = cloneDeep(state);
-      set(newState, 'isDraftPublished', status);
+
+      set(newState, 'jobPostStatus', status);
+      if (status === 'published') {
+        set(newState.formFields, 'isDraftCleared', true);
+      }
       return newState;
     }
     default:
@@ -406,6 +411,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
             seedData: dbToClientjobPostForm(
               isNull(job.draft) ? job : (job.draft as PublicJobsType),
               recruiter,
+              job.status,
             ),
             currSlide,
           },

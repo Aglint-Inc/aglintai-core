@@ -100,6 +100,7 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     intro_videos: jobForm.formFields.introVideo,
     start_video: jobForm.formFields.startVideo,
     end_video: jobForm.formFields.endVideo,
+    status: jobForm.jobPostStatus,
   };
 
   return updateJobData;
@@ -163,8 +164,8 @@ export const findDisclaimers = (jobForm: FormJobType) => {
       return prev + curr.length;
     }, 0);
 
-  if (totalQns < 5) {
-    warnings.screening.err.push('Please provide minimum 5 screening questions');
+  if (totalQns < 1) {
+    warnings.screening.err.push('Please provide minimum 1 screening questions');
   }
   if (totalQns > 20) {
     warnings.screening.err.push(

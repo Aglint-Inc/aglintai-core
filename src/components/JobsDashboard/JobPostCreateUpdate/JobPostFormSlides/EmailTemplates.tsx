@@ -62,9 +62,9 @@ const Emails = () => {
           .select(),
       );
       dispatch({
-        type: 'updatePublishStatus',
+        type: 'updateJobPublishstatus',
         payload: {
-          status: true,
+          status: 'published',
         },
       });
       handleUIJobUpdate(pubJob);
@@ -125,7 +125,9 @@ const Emails = () => {
                 )
               }
             >
-              {jobForm.isDraftPublished ? 'Published' : 'Publish Job'}
+              {jobForm.jobPostStatus === 'published'
+                ? 'Published'
+                : 'Publish Job'}
             </AUIButton>
           </>
         }

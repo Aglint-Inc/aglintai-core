@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import { ResumeScoreSetting } from '@/devlink';
 import ScoreWheel, {
@@ -11,16 +11,20 @@ import { useJobForm } from '../JobPostFormProvider';
 
 const ScoreSettings = () => {
   const { jobForm, handleUpdateFormFields, dispatch } = useJobForm();
-  const [weights, setWeights] = useState(
-    jobForm.formFields.resumeScoreSettings,
-  );
 
-  useEffect(() => {
+  const setWeights = (p) => {
+    let weights;
+    const prevWeights = jobForm.formFields.resumeScoreSettings;
+    if (typeof p === 'function') {
+      weights = p();
+    } else {
+      weights = p;
+    }
     handleUpdateFormFields({
       path: 'resumeScoreSettings',
-      value: weights,
+      value: { ...prevWeights, ...weights },
     });
-  }, [weights]);
+  };
 
   return (
     <ResumeScoreSetting

@@ -48,9 +48,9 @@ function PublishDesclaimer() {
       );
       handleUIJobUpdate(pubJob);
       dispatch({
-        type: 'updatePublishStatus',
+        type: 'updateJobPublishstatus',
         payload: {
-          status: true,
+          status: 'published',
         },
       });
       toast.success('Job Published SuccessFully');
@@ -88,13 +88,13 @@ function PublishDesclaimer() {
       //
     }
   };
-
   return (
     <>
       <JobUnpublishDisclaimer
         onClickDiscardChanges={{
           onClick: handleRevertChanges,
         }}
+        isDiscardVisible={jobForm.jobPostStatus === 'published'}
         onClickPreview={{
           onClick: () => {
             window.open(

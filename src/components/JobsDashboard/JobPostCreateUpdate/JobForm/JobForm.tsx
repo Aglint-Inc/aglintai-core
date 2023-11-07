@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import { CloseJob, CreateNewJob } from '@/devlink';
 import Loader from '@/src/components/Common/Loader';
+import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
@@ -21,6 +22,7 @@ import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import ScreeningSettings from '../JobPostFormSlides/ScreeningSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
+import { API_FAIL_MSG } from '../utils';
 import MuiPopup from '../../../Common/MuiPopup';
 
 export type JobFormErrorParams = {
@@ -47,9 +49,9 @@ export type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
+  const { handleJobDelete } = useJobs();
   const { jobForm, dispatch, formWarnings } = useJobForm();
   const router = useRouter();
-  // const [is]
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [formError, setFormError] = useState<JobFormErrorParams>({
     jobTitle: '',
@@ -220,6 +222,20 @@ function JobForm() {
     }
   };
 
+  const handleDeleteJob = async () => {
+    try {
+      const isDeleted = await handleJobDelete(jobForm.jobPostId);
+      if (!isDeleted) throw new Error('Job delete fail');
+      router.replace('/jobs');
+      toast.error('Deleted Draft job SuccessFully');
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    }
+  };
+
+  const isShowChangesWarn =
+    jobForm.formType === 'edit' && !jobForm.formFields.isDraftCleared;
+
   return (
     <>
       <CreateNewJob
@@ -336,21 +352,30 @@ function JobForm() {
         }
         slotCloseJob={
           <>
-            {jobForm.formType === 'edit' && (
+            {jobForm.formType === 'edit' &&
+              jobForm.jobPostStatus === 'draft' && (
+                <CloseJob
+                  onClickCloseJob={{
+                    onClick: () => handleDeleteJob(),
+                  }}
+                  isCloseJob={false}
+                  isDeleteJob={true}
+                  isTextVisible={false}
+                />
+              )}
+
+            {jobForm.jobPostStatus === 'published' && (
               <CloseJob
                 onClickCloseJob={{
                   onClick: () => setIsDeletePopupOpen(true),
                 }}
+                isCloseJob={true}
               />
             )}
           </>
         }
         slotUnpublishDisclaimer={
-          <>
-            {jobForm.formType === 'edit' && !jobForm.isDraftPublished && (
-              <PublishDesclaimer />
-            )}
-          </>
+          <>{isShowChangesWarn && <PublishDesclaimer />}</>
         }
         onClickPreviewChanges={{
           onClick: () => {

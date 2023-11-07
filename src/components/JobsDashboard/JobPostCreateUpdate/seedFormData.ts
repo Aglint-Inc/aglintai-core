@@ -1,4 +1,4 @@
-import { get, isNull, isUndefined } from 'lodash';
+import { get, isEmpty, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -104,9 +104,10 @@ export const getSeedJobFormData = (
       introVideo: null,
       startVideo: null,
       endVideo: null,
+      isDraftCleared: false,
     },
-    isDraftPublished: false,
     isJobPostReverting: false,
+    jobPostStatus: 'draft',
   };
 
   if (recruiter) {
@@ -202,9 +203,9 @@ export const getSeedJobFormData = (
 export const dbToClientjobPostForm = (
   jobPost: Partial<JobTypeDB>,
   recruiter: Database['public']['Tables']['recruiter']['Row'],
+  jobPostStatus: string,
 ) => {
   const seedData = getSeedJobFormData(recruiter);
-
   const jp: JobFormState = {
     ...seedData,
     createdAt: jobPost.created_at,
@@ -278,8 +279,11 @@ export const dbToClientjobPostForm = (
       introVideo: jobPost.intro_videos as any,
       startVideo: jobPost.start_video as any,
       endVideo: jobPost.end_video as any,
+      isDraftCleared: isUndefined(jobPost.draft)
+        ? false
+        : isEmpty(jobPost.draft),
     },
-    isDraftPublished: !isUndefined(jobPost.draft) && isNull(jobPost.draft),
+    jobPostStatus: jobPostStatus as any,
   };
 
   return jp;
