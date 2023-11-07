@@ -35,7 +35,7 @@ export function JobDetails({
   slotCandidatesList,
   onclickSelectAll = {},
   isListTopBarVisible = true,
-  isInterviewVisible = false,
+  isInterviewVisible = true,
   isAllChecked = false,
   slotResumeSort,
   slotNameSort,

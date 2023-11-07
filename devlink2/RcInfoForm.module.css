@@ -1,0 +1,130 @@
+.sl-company-info-wrapper {
+  display: flex;
+  padding-right: 42px;
+  padding-left: 42px;
+  flex-direction: column;
+  grid-column-gap: 36px;
+  grid-row-gap: 36px;
+}
+
+.sl-company-title-block {
+  display: flex;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
+.sl-company-image-block {
+  overflow: hidden;
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
+  min-width: 80px;
+  padding: 10px;
+
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
+  border-radius: 6px;
+}
+
+.sl-com-title-info-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+}
+
+.sl-button {
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+
+  border-radius: 4px;
+
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+
+  transition: opacity 300ms ease;
+
+  text-align: center;
+
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1280px) {
+  .sl-button {
+    align-items: center;
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+  }
+}
+
+.sl-button:hover {
+  background-color: hsla(206.8421052631579, 68.54%, 47.47%, 1.00);
+}
+
+.sl-button.basic {
+  background-color: hsla(206.8421052631579, 0.00%, 100.00%, 1.00);
+}
+
+.sl-button.basic:hover {
+  background-color: hsla(206.8421052631579, 0.00%, 93.33%, 1.00);
+}
+
+.sl-button.basic.ml--14 {
+  margin-left: -14px;
+}
+
+.text-blue-600 {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.sl-button.simple {
+  padding: 0px;
+  background-color: hsla(206.8421052631579, 0.00%, 100.00%, 1.00);
+  color: var(--blue-600);
+}
+
+@media screen and (min-width: 1280px) {
+
+}
+
+@media screen and (min-width: 1280px) {
+  .sl-button.simple:hover {
+    color: hsla(206.8421052631579, 77.86%, 51.81%, 1.00);
+  }
+}
+
+.sl-button.simple:hover {
+  color: hsla(206.8421052631579, 78.72%, 53.00%, 1.00);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.text-grey-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600.no-wrap {
+  white-space: nowrap;
+}

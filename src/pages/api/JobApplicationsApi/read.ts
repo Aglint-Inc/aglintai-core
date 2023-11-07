@@ -20,15 +20,7 @@ const handler = async (
 ) => {
   const { job_id, ranges, apiStatus, sort, filter, search } =
     req.body as ReadJobApplicationApi['request'];
-  if (
-    !job_id ||
-    // (range &&
-    //   (typeof range.start !== 'number' ||
-    //     range.start < 0 ||
-    //     typeof range.end !== 'number' ||
-    //     range.end < range.start)) ||
-    (apiStatus && !Object.values(ApiLogState).includes(apiStatus))
-  )
+  if (!job_id || (apiStatus && !Object.values(ApiLogState).includes(apiStatus)))
     res.status(400).send({
       data: null,
       error: { message: 'Invalid parameters' },
@@ -47,17 +39,6 @@ const handler = async (
 };
 
 export default handler;
-
-// const createSinglePromise = (
-//   job_id: ReadJobApplicationApi['request']['job_id'],
-//   status: JobApplicationSections,
-//   apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
-//   range?: ReadJobApplicationApi['request']['range'],
-// ) => {
-//   return [
-//     readNewJobApplicationDbAction(job_id, status, apiStatus, range ?? null),
-//   ];
-// };
 
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],

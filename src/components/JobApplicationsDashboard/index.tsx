@@ -8,12 +8,14 @@ import { ImportCandidates } from '@/devlink';
 import {
   ApplicantsListEmpty,
   CandidateFilter,
+  CandidateSelectionPopup,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
   SortArrows,
 } from '@/devlink2';
+import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -27,7 +29,6 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
-import InfoDialog from './Common/InfoDialog';
 import ResumeUpload from './FileUpload';
 import { useKeyPress, usePolling } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
@@ -227,27 +228,45 @@ const JobApplicationComponent = () => {
       isListTopBarVisible={sectionApplications.length !== 0}
       isInterviewVisible={section !== JobApplicationSections.NEW}
       isAllChecked={checkList.size === sectionApplications.length}
-      slotInterviewSort={<ApplicationSort parameter='interview_score' />}
-      slotNameSort={<ApplicationSort parameter='first_name' />}
-      slotResumeSort={<ApplicationSort parameter='resume_score' />}
-      slotEmailSort={<ApplicationSort parameter='email' />}
-      slotDateSort={<ApplicationSort parameter='created_at' />}
+      slotInterviewSort={
+        <ApplicationSort parameter='interview_score' section={section} />
+      }
+      slotNameSort={
+        <ApplicationSort parameter='first_name' section={section} />
+      }
+      slotResumeSort={
+        <ApplicationSort parameter='resume_score' section={section} />
+      }
+      slotEmailSort={<ApplicationSort parameter='email' section={section} />}
+      slotDateSort={
+        <ApplicationSort parameter='created_at' section={section} />
+      }
     />
   );
 };
 
 const ApplicationSort = ({
   parameter,
+  section,
 }: {
   parameter: Parameters['sort']['parameter'];
+  section: JobApplicationSections;
 }) => {
   const { searchParameters, handleJobApplicationFilter } = useJobApplications();
   const [loading, setLoading] = useState(false);
   const isCurrentParam = searchParameters.sort
-    ? searchParameters.sort.parameter === parameter
+    ? searchParameters.sort.parameter === parameter ||
+      (section === JobApplicationSections.NEW &&
+        searchParameters.sort.parameter === 'interview_score' &&
+        parameter === 'resume_score')
     : false;
   const isAsc = searchParameters.sort ? searchParameters.sort.ascending : false;
   const handleToggleSort = async (up: boolean) => {
+    if (
+      searchParameters.sort.parameter === parameter &&
+      searchParameters.sort.ascending === up
+    )
+      return;
     setLoading(true);
     await handleJobApplicationFilter({
       ...searchParameters,
@@ -659,7 +678,8 @@ const ActionBar = ({
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
   const [dialogInfo, setDialogInfo] = useState({
-    heading: ``,
+    header: ``,
+    description: ``,
     subHeading: '',
     primaryAction: (checkEmail: boolean) => {
       checkEmail;
@@ -695,10 +715,13 @@ const ActionBar = ({
   const checkListCount = checkList.size;
   const DialogInfo = {
     interviewing: {
-      heading: `Are you sure that you want to start the assessment process for ${checkListCount} candidate${
+      header: 'Move to Assessment',
+      description: `Move ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      } to Assessment Stage`,
+      subHeading: `Proceed to send an assessment email to the candidate${
         checkListCount !== 1 ? 's' : ''
       }`,
-      subHeading: 'Send assessment email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
         if (checkEmail) {
@@ -711,14 +734,15 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Qualify for Assessment',
+      primaryText: 'Move to Assessment',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     selected: {
-      heading: `Are you sure that you want to qualify ${checkListCount} candidate${
+      header: 'Move to Qualified',
+      description: `Move ${checkListCount} candidate${
         checkListCount !== 1 ? 's' : ''
-      }`,
+      } to Qualified Stage`,
       subHeading: undefined,
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.QUALIFIED);
@@ -732,15 +756,18 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Qualify',
+      primaryText: 'Move to Qualified',
       secondaryText: 'Cancel',
-      variant: 'ai',
+      variant: 'primary',
     },
     rejected: {
-      heading: `Are you sure that you want to disqualifiy ${checkListCount} candidate${
+      header: 'Move to Disqualified',
+      description: `Move ${checkListCount} candidate${
+        checkListCount !== 1 ? 's' : ''
+      } to Disqualified Stage`,
+      subHeading: `Proceed to send a rejection email to the candidate${
         checkListCount !== 1 ? 's' : ''
       }`,
-      subHeading: 'Send rejection email',
       primaryAction: async (checkEmail: any) => {
         await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
         if (checkEmail) {
@@ -753,12 +780,13 @@ const ActionBar = ({
           );
         }
       },
-      primaryText: 'Disqualify',
+      primaryText: 'Move to Disqualified',
       secondaryText: 'Cancel',
       variant: 'primary',
     },
     applied: {
-      heading: `Are you sure that you want to move ${checkListCount} candidate${
+      header: 'Move to New',
+      description: `Move ${checkListCount} candidate${
         checkListCount !== 1 ? 's' : ''
       } to New`,
       subHeading: undefined,
@@ -772,23 +800,48 @@ const ActionBar = ({
       variant: 'dark',
     },
   };
+  const isCheckVisible =
+    dialogInfo.header !== 'Move to Qualified' &&
+    dialogInfo.header !== 'Move to New';
   return (
     <>
-      <InfoDialog
-        heading={dialogInfo.heading}
-        subHeading={dialogInfo.subHeading}
-        openInfoDialog={openInfoDialog}
-        onClose={() => {
-          setOpenInfoDialog(false);
-        }}
-        secondaryText={dialogInfo.secondaryText}
-        primaryAction={dialogInfo.primaryAction}
-        primaryText={dialogInfo.primaryText}
-        variant={dialogInfo.variant}
-        checkEmail={checkEmail}
-        setCheckEmail={setCheckEmail}
-        warningMessage={undefined}
-      />
+      <Dialog open={openInfoDialog} onClose={() => setOpenInfoDialog(false)}>
+        <CandidateSelectionPopup
+          isCheckVisible={isCheckVisible}
+          textHeader={dialogInfo.header}
+          textDescription={dialogInfo.description}
+          isChecked={checkEmail}
+          textCheck={dialogInfo.subHeading}
+          onclickCheck={{ onClick: () => setCheckEmail((prev) => !prev) }}
+          onclickClose={{ onClick: () => setOpenInfoDialog(false) }}
+          slotButtons={
+            <Stack
+              spacing={'10px'}
+              mt={'10px'}
+              direction={'row'}
+              alignItems={'center'}
+            >
+              <AUIButton
+                onClick={() => setOpenInfoDialog(false)}
+                variant='text'
+              >
+                {dialogInfo.secondaryText}
+              </AUIButton>
+              <AUIButton
+                onClick={() => {
+                  dialogInfo.primaryAction(checkEmail);
+                  setOpenInfoDialog(false);
+                }}
+                variant={dialogInfo.variant as any}
+              >
+                {checkEmail && isCheckVisible
+                  ? 'Send Email & Move'
+                  : dialogInfo.primaryText}
+              </AUIButton>
+            </Stack>
+          }
+        />
+      </Dialog>
       <SelectActionBar
         isInterview={showInterview}
         onClickInterview={{

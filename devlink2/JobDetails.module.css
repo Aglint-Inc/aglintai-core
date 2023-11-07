@@ -552,9 +552,9 @@
 }
 
 .cv-list-column.score {
-  width: 200px;
+  width: 220px;
   height: 36px;
-  min-width: 200px;
+  min-width: 220px;
   justify-content: center;
 }
 

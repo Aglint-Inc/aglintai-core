@@ -1,6 +1,6 @@
+import { filteredInsertCandidateDbAction } from '@/src/context/CandidatesContext/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
-  checkInsertCandidateDbAction,
   deleteCandidateDbAction,
   deleteResumeDbAction,
   uploadResumeDbAction,
@@ -22,7 +22,7 @@ const useUploadCandidate = () => {
       data: d1,
       error: e1,
       isNew,
-    } = await checkInsertCandidateDbAction({
+    } = await filteredInsertCandidateDbAction({
       first_name: candidate.first_name,
       last_name: candidate.last_name,
       email: candidate.email,

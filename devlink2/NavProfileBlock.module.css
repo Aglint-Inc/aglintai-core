@@ -39,7 +39,15 @@
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 
-  color: white;
+  transition: all 250ms ease;
+
+  color: hsla(0, 0.00%, 62.00%, 1.00);
+
+  cursor: pointer;
+}
+
+.div-block-378:hover {
+  color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
 .clickable {
@@ -59,30 +67,6 @@
   min-width: 30px;
 
   border-radius: 100px;
-}
-
-.rec-profile-tooltip {
-  position: absolute;
-  left: 36px;
-  bottom: 32px;
-  z-index: 99;
-
-  display: none;
-  padding: 4px 16px;
-
-  border-radius: 100px;
-
-  background-color: hsla(0, 0.00%, 100.00%, 0.10);
-
-  color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.rec-profile-tooltip.logout {
-  left: auto;
-  right: 0px;
-  bottom: 36px;
 }
 
 .div-block-380 {

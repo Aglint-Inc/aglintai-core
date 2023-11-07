@@ -1,8 +1,7 @@
-import WarningIcon from '@mui/icons-material/Warning';
 import { Stack, Tooltip } from '@mui/material';
 import md5 from 'blueimp-md5';
 
-import { CandidateListItem } from '@/devlink2';
+import { CandidateListItem, ScoreErrorIcon } from '@/devlink2';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import {
@@ -94,7 +93,7 @@ const ApplicationCard = ({
                 placement='right'
                 arrow
               >
-                <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+                <ScoreErrorIcon />
               </Tooltip>
             )
           ) : (
@@ -122,7 +121,7 @@ const ApplicationCard = ({
           />
         ) : (
           <Tooltip title='Yet to be interviewed' placement='right' arrow>
-            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
+            <ScoreErrorIcon />
           </Tooltip>
         )
       }
@@ -143,7 +142,7 @@ export default ApplicationCard;
 export function getGravatar(email, first_name = '') {
   let imgUrl = `https://www.gravatar.com/avatar/${md5(
     email ? email.trim().toLowerCase() : '',
-  )}?d=blank&s=240&r=g`;
+  )}?d=basic&s=240&r=g`;
 
   return imgUrl;
 }

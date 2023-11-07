@@ -1,6 +1,8 @@
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { palette } from '@/src/context/Theme/Theme';
+
 export const SmallCircularScore = ({
   finalScore,
   triggerAnimation = false,
@@ -20,7 +22,7 @@ export const SmallCircularScore = ({
   };
   const yellow = {
     score: '#703815',
-    border: '#F79A3E',
+    border: palette.yellow[700],
     background: '#FFF7ED',
   };
   const red = {

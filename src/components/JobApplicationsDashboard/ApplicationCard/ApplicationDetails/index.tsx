@@ -25,7 +25,7 @@ import {
   ResumeFeedbackScore,
   UnableFetchResume,
 } from '@/devlink';
-import { ResumeErrorBlock } from '@/devlink2';
+import { ResAbsentError, ResumeErrorBlock } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
@@ -578,7 +578,7 @@ const NewResumeSection = ({
           />
         )
       ) : (
-        <></>
+        <ResAbsentError />
       )}
     </>
   );
@@ -655,45 +655,34 @@ export const NewResumeScoreDetails = ({
       }}
       propsLink={{ href: applicationDetails.resume }}
       slotFeedbackScore={
-        <>
-          <ResumeFeedbackScore
-            textFeedback={'Skills'}
-            textScoreState={
-              (applicationDetails?.json_resume as any)?.skills?.length ?? '--'
-            }
-          />
-          <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
-        </>
+        <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
       }
     />
   );
 };
 
 export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
-  const feedbackParams = scoreWheelDependencies.parameterOrder.filter(
-    (p) => p !== 'skills',
-  );
-  const getCustomText = (e) => {
-    switch (e) {
-      case 'more match':
-        return 'High';
-      case 'average match':
-        return 'Medium';
-      case 'less match':
-        return 'Low';
-    }
-    return '--';
+  const getCustomText = (e: number) => {
+    return e === 100
+      ? 'Perfect'
+      : e >= 75
+      ? 'High'
+      : e >= 50
+      ? 'Average'
+      : e >= 25
+      ? 'Low'
+      : 'Poor';
   };
   return (
     <>
-      {feedbackParams.map((key, i) => {
+      {scoreWheelDependencies.parameterOrder.map((key, i) => {
         return (
           <ResumeFeedbackScore
             key={i}
             textFeedback={capitalize(key)}
             textScoreState={
               // eslint-disable-next-line security/detect-object-injection
-              getCustomText(feedbackParamsObj[key].relevance) ?? '--'
+              getCustomText(feedbackParamsObj[key]) ?? '--'
             }
           />
         );
@@ -728,15 +717,17 @@ const fetchFile = async (applicationDetails: JobApplication) => {
 };
 
 const NewEducationDetails = ({ education }) => {
-  const educationList = education.map((e, i) => (
-    <CandidateEducationCard
-      key={i}
-      textUniversityName={e.institution}
-      textDate={`${e.startDate} ${
-        e.endDate && `${e.startDate && '-'} ${e.endDate}`
-      }`}
-    />
-  ));
+  const educationList = education
+    .filter((e) => e.institution !== null && e.institution !== '')
+    .map((e, i) => (
+      <CandidateEducationCard
+        key={i}
+        textUniversityName={e.institution}
+        textDate={`${e.startDate} ${
+          e.endDate && `${e.startDate && '-'} ${e.endDate}`
+        }`}
+      />
+    ));
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
 };
 
@@ -763,9 +754,9 @@ const NewExperienceDetails = ({ work }) => {
 };
 
 const NewSkillDetails = ({ skills }) => {
-  const skillList = skills.map((s, i) => (
-    <CandidateSkillPills key={i} textSkill={s.name} />
-  ));
+  const skillList = skills
+    .filter((s) => s.name !== null && s.name !== '')
+    .map((s, i) => <CandidateSkillPills key={i} textSkill={s.name} />);
   return <CandidateSkill slotCandidateSkill={<>{skillList}</>} />;
 };
 

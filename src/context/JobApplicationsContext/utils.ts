@@ -75,52 +75,6 @@ export const deleteResumeDbAction = async (
   return { data: error ? false : true, error };
 };
 
-export const insertCandidateDbAction = async (
-  candidate: Database['public']['Tables']['candidates']['Insert'],
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('candidates')
-    .insert({ ...candidate })
-    .select()
-    .abortSignal(signal)
-    .abortSignal(timerSignal.signal);
-  clearTimeout(timeout);
-  return { data, error };
-};
-
-export const checkDuplicateCandidateDbAction = async (
-  email: string,
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('candidates')
-    .select()
-    .eq('email', email)
-    .abortSignal(signal)
-    .abortSignal(timerSignal.signal);
-  clearTimeout(timeout);
-  return { data, error };
-};
-
-export const checkInsertCandidateDbAction = async (
-  candidate: Database['public']['Tables']['candidates']['Insert'],
-) => {
-  const { data: d1, error: e1 } = await checkDuplicateCandidateDbAction(
-    candidate.email,
-  );
-  if (!e1 && d1 && d1.length !== 0)
-    return { data: d1, error: null, isNew: false };
-  else {
-    const { data, error } = await insertCandidateDbAction(candidate);
-    return { data, error, isNew: true };
-  }
-};
-
 export const updateCandidateDbAction = async (
   candidate: Database['public']['Tables']['candidates']['Update'],
   signal?: AbortSignal,
@@ -151,28 +105,6 @@ export const deleteCandidateDbAction = async (
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   return { data: error ? false : true, error };
-};
-
-export const checkDuplicateJobApplicationDbAction = async (
-  email: string,
-  jobId: string,
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('job_applications')
-    .select('*,candidates!inner(*)')
-    .match({ job_id: jobId })
-    .or(`email.eq.${email}`, { foreignTable: 'candidates' })
-    .abortSignal(signal);
-  return () => {
-    clearTimeout(timeout);
-    if (data) {
-      if (data.length !== 0) return { data: true, error: null };
-      else return { data: false, error: null };
-    } else return { data: undefined, error };
-  };
 };
 
 export const createJobApplicationDbAction = async (

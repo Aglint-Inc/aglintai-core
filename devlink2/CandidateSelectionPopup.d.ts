@@ -9,4 +9,6 @@ declare function CandidateSelectionPopup(props: {
   slotButtons?: Types.Devlink.Slot;
   onclickClose?: Types.Devlink.RuntimeProps;
   textCheck?: React.ReactNode;
+  onclickCheck?: Types.Devlink.RuntimeProps;
+  isCheckVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

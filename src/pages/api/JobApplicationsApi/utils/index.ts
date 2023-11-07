@@ -69,7 +69,10 @@ export const readNewJobApplicationDbAction = async (
     if (sort.parameter === 'first_name' || sort.parameter === 'email') {
       query = query.order(`candidates(${sort.parameter})`, params);
     } else {
-      query = query.order(sort.parameter, params);
+      query = query.order(
+        status === JobApplicationSections.NEW ? 'resume_score' : sort.parameter,
+        params,
+      );
     }
   }
 

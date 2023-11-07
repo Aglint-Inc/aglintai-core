@@ -11,6 +11,8 @@ export function CandidateSelectionPopup({
   slotButtons,
   onclickClose = {},
   textCheck = "Proceed to send an assessment invitation email to the candidate.",
+  onclickCheck = {},
+  isCheckVisible = true,
 }) {
   return (
     <_Component
@@ -40,27 +42,30 @@ export function CandidateSelectionPopup({
         tag="div"
       >
         <_Builtin.Block tag="div">{textDescription}</_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cansel-popup-check")}
-          tag="div"
-        >
+        {isCheckVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "cansel-pop-checkbox-block")}
+            className={_utils.cx(_styles, "cansel-popup-check")}
             tag="div"
           >
-            {isChecked ? (
-              <_Builtin.Image
-                className={_utils.cx(_styles, "cansel-checkbox-image")}
-                loading="lazy"
-                width="auto"
-                height="auto"
-                alt=""
-                src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
-              />
-            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cansel-pop-checkbox-block")}
+              tag="div"
+              {...onclickCheck}
+            >
+              {isChecked ? (
+                <_Builtin.Image
+                  className={_utils.cx(_styles, "cansel-checkbox-image")}
+                  loading="lazy"
+                  width="auto"
+                  height="auto"
+                  alt=""
+                  src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
+                />
+              ) : null}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{textCheck}</_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textCheck}</_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cansel-buttons-wrapper")}
           tag="div"

@@ -6,20 +6,27 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
+import { CandidateInsert } from '@/src/context/CandidatesContext/types';
+import { bulkCreateCandidateDbAction } from '@/src/context/CandidatesContext/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { NewJobApplicationsInsert } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
 import AUIButton from '../../Common/AUIButton';
 
+interface BulkImportData extends CandidateInsert {
+  resume: string;
+}
+
 function ImportCandidatesCSV() {
   const {
     setOpenImportCandidates,
-    applications,
+    handleJobApplicationError,
     handleJobApplicationBulkCreate,
   } = useJobApplications();
 
-  const [bulkImportdata, setbulkImportdata] = useState([]);
+  const [bulkImportdata, setbulkImportdata] = useState<BulkImportData[]>([]);
   const headers = [
     'first_name',
     'last_name',
@@ -51,28 +58,36 @@ function ImportCandidatesCSV() {
     ],
   ];
 
-  async function createCandidates(candidates: any[]) {
-    const _new = applications['new'];
-    const interviewing = applications['interviewing'];
-    const qualified = applications['qualified'];
-    const disqualified = applications['disqualified'];
-    const totalApplications = [
-      ..._new,
-      ...interviewing,
-      ...qualified,
-      ...disqualified,
-    ].map((ele) => ele.candidates.email);
-    const filteredCandidates = candidates.filter(
-      (ele: { email: string }) => !totalApplications.includes(ele.email),
-    );
+  async function createCandidates(candidates: BulkImportData[]) {
     setbulkImportdata([]);
     setIsLoading(true);
-    const confirmation =
-      await handleJobApplicationBulkCreate(filteredCandidates);
-    if (confirmation)
-      toast.success(
-        'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+    const {
+      data,
+      error,
+      confirmation: c1,
+    } = await bulkCreateCandidateDbAction(
+      candidates.map((b) => {
+        // eslint-disable-next-line no-unused-vars
+        const { resume, ...candidate } = b;
+        return candidate;
+      }),
+    );
+    if (c1) {
+      const newJobApplications: NewJobApplicationsInsert[] = data.map(
+        ({ id }, i) => {
+          // eslint-disable-next-line security/detect-object-injection
+          return { resume: candidates[i].resume, candidate_id: id };
+        },
       );
+      const confirmation =
+        await handleJobApplicationBulkCreate(newJobApplications);
+      if (confirmation)
+        toast.success(
+          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+        );
+    } else {
+      handleJobApplicationError(error);
+    }
     setOpenImportCandidates(false);
     setIsLoading(false);
   }
@@ -103,7 +118,9 @@ function ImportCandidatesCSV() {
           // eslint-disable-next-line security/detect-object-injection
           const ws = wb.Sheets[wsname];
           /* Convert array of arrays */
-          const data = XLSX.utils.sheet_to_json(ws);
+          const data = XLSX.utils.sheet_to_json(
+            ws,
+          ) as unknown as BulkImportData[];
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {

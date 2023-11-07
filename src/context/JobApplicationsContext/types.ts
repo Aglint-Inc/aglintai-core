@@ -8,6 +8,7 @@ import {
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import { Database } from '@/src/types/schema';
 
+import { Candidate } from '../CandidatesContext/types';
 import { JobTypeDashboard } from '../JobsContext/types';
 
 export enum JobApplicationSections {
@@ -21,14 +22,14 @@ export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
 export type NewJobApplications =
   Database['public']['Tables']['job_applications']['Row'];
+export type NewJobApplicationsInsert =
+  Database['public']['Tables']['job_applications']['Insert'];
+export type NewJobApplicationsUpdate =
+  Database['public']['Tables']['job_applications']['Update'];
 
 export interface JobApplication extends NewJobApplications {
-  candidates: Database['public']['Tables']['candidates']['Row'];
+  candidates: Candidate;
 }
-
-export type InputData = Partial<
-  Omit<JobApplication, 'id' | 'created_at' | 'job_id' | 'application_id'>
->;
 
 export type Parameters = {
   sort?: SortParameter;
@@ -43,10 +44,10 @@ export type JobApplicationContext = {
   job: JobTypeDashboard;
   updateTick: boolean;
   handleJobApplicationCreate: (
-    inputData: Partial<JobApplication>,
+    inputData: NewJobApplicationsInsert,
   ) => Promise<boolean>;
   handleJobApplicationBulkCreate: (
-    inputData: Partial<JobApplication>[],
+    inputData: NewJobApplicationsInsert[],
   ) => Promise<boolean>;
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
@@ -60,7 +61,7 @@ export type JobApplicationContext = {
   handleJobApplicationUpdate: (
     applicationId: string,
 
-    inputData: InputData,
+    inputData: NewJobApplicationsUpdate,
   ) => Promise<boolean>;
   handleJobApplicationUIUpdate: (
     jobApplication: Partial<JobApplication>,
