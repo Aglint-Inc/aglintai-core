@@ -161,10 +161,10 @@ const Video = ({ path }) => {
           text: question.question,
           avatar_id: get(recruiter, 'ai_avatar.avatar_id', avatar.avatar_id),
           voice_id: get(recruiter, 'ai_avatar.voice_id', avatar.voice_id),
+          test: recruiter.email == 'ravi+test@aglinthq.com' ? false : true,
         });
         videoInfo = data;
       }
-
       const updatedQn: QuestionType = {
         ...question,
         videoId: videoInfo.video_id,
