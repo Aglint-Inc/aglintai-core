@@ -244,6 +244,13 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
       company: recruiter.name,
       skills: [],
       status: 'published',
+      parameter_weights: {
+        skills: 30,
+        project: 10,
+        education: 10,
+        experience: 50,
+        certifications: 0,
+      },
     };
   });
   return dbJobs;
