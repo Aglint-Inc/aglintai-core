@@ -4,10 +4,7 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import {
-  getJdScore,
-  getOverallResumeScore,
-} from '@/src/utils/support/supportUtils';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
 export const scoreWheelDependencies = {
   initialScoreWheelScores: {
@@ -45,25 +42,18 @@ export type ScoreWheelParams = {
 const ScoreWheel = ({
   id,
   jd_score,
-  resume_score,
   parameter_weights,
   fontSize = 14,
 }: {
   id: string;
   jd_score?: JobApplication['jd_score'];
-  resume_score?: number;
   parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {
   const isSettings = jd_score === undefined;
   const [delay, setDelay] = useState(0);
   const [degree, setDegree] = useState(null);
-  const jdScore = !isSettings
-    ? getJdScore({
-        qualification: (jd_score as any).qualification,
-        skills_score: (jd_score as any).skills_score,
-      })
-    : null;
+  const jdScore = !isSettings ? (jd_score as ScoreWheelParams) : null;
   const newScore = {
     ...scoreWheelDependencies.initialScoreWheelScores,
     ...jdScore,
@@ -92,7 +82,7 @@ const ScoreWheel = ({
   }, [delay]);
 
   const overallScore = !isSettings
-    ? resume_score ?? getOverallResumeScore(jd_score, parameter_weights)
+    ? getOverallResumeScore(jd_score, parameter_weights)
     : 0;
   return (
     <>

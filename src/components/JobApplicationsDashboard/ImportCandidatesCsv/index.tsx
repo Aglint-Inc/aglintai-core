@@ -7,7 +7,6 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-// import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -21,20 +20,24 @@ function ImportCandidatesCSV() {
   } = useJobApplications();
 
   const [bulkImportdata, setbulkImportdata] = useState([]);
-  const headers = ['first_name', 'last_name', 'email', 'phone', 'resume'];
+  const headers = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone',
+    'linkedin',
+    'resume',
+  ];
   const [isLoading, setIsLoading] = useState(false);
 
-  //   "first_name","last_name","email","phone","resumeurl"
-  // "xyz","abc","xyzabc@gmail.com","1234567890","https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-  // "abc","d","abcd@gmail.com","9876543210","https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-
   const csvData = [
-    ['first_name', 'last_name', 'email', 'phone', 'resume'],
+    [...headers],
     [
       'xyz',
       'abc',
       'xyzabc@gmail.com',
       '1234567890',
+      'https://www.linkedin.com',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
 
@@ -43,6 +46,7 @@ function ImportCandidatesCSV() {
       'd',
       'abcd@gmail.com',
       '9876543210',
+      'https://www.linkedin.com',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
   ];

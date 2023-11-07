@@ -137,9 +137,6 @@ const ImportManualCandidates = () => {
           email: applicant.email.value,
           phone: applicant.phone.value,
           linkedin: applicant.linkedin.value,
-          job_location: job.location,
-          job_title: job.job_title,
-          company: job.company,
         },
         applicant.resume.value,
       );

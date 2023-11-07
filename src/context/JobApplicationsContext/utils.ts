@@ -42,18 +42,13 @@ export const uploadResumeDbAction = async (
   data: string;
   error: any;
 }> => {
+  const ext = file.name.slice(file.name.lastIndexOf('.'));
   const { data, error } = await supabase.storage
     .from('resume-job-post')
-    .upload(
-      `public/${candidateId}/${jobId}.${
-        file.name.split(file.name.lastIndexOf('.'))[1]
-      }`,
-      file,
-      {
-        cacheControl: '3600',
-        contentType: file.type,
-      },
-    );
+    .upload(`public/${candidateId}/${jobId}${ext ?? '.pdf'}`, file, {
+      cacheControl: '3600',
+      contentType: file.type,
+    });
   if (data)
     return {
       data: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resume-job-post/${data?.path}`,
@@ -88,7 +83,7 @@ export const insertCandidateDbAction = async (
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
     .from('candidates')
-    .upsert({ ...candidate })
+    .insert({ ...candidate })
     .select()
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -110,6 +105,20 @@ export const checkDuplicateCandidateDbAction = async (
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   return { data, error };
+};
+
+export const checkInsertCandidateDbAction = async (
+  candidate: Database['public']['Tables']['candidates']['Insert'],
+) => {
+  const { data: d1, error: e1 } = await checkDuplicateCandidateDbAction(
+    candidate.email,
+  );
+  if (!e1 && d1 && d1.length !== 0)
+    return { data: d1, error: null, isNew: false };
+  else {
+    const { data, error } = await insertCandidateDbAction(candidate);
+    return { data, error, isNew: true };
+  }
 };
 
 export const updateCandidateDbAction = async (

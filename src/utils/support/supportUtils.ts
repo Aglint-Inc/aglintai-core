@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
@@ -149,62 +148,13 @@ export type QualificationRelevance =
   | 'average match'
   | 'more match';
 
-type DataType = {
-  qualification: {
-    certifications: {
-      isRelated: boolean[];
-      relevance: QualificationRelevance;
-    };
-    education: {
-      isRelated: boolean[];
-      relevance: QualificationRelevance;
-    };
-    experience: {
-      isRelated: boolean[];
-      relevance: QualificationRelevance;
-    };
-    project: {
-      isRelated: boolean[];
-      relevance: QualificationRelevance;
-    };
-  };
-  skills_score: number;
-};
-
-export function getJdScore(data: DataType): ScoreWheelParams {
-  return Object.entries(data.qualification).reduce(
-    (acc, [key, value]) => {
-      const relationScore =
-        value.isRelated.reduce((acc, curr) => {
-          return curr && acc !== 5 ? acc + 1 : acc;
-        }, 0) * 10;
-      const relevanceScore =
-        value.relevance === 'less match'
-          ? 0
-          : value.relevance === 'average match'
-          ? 25
-          : 50;
-      return { ...acc, [key]: relationScore + relevanceScore };
-    },
-    {
-      skills: data.skills_score ? data.skills_score * 100 : 0,
-    } as ScoreWheelParams,
-  );
-}
-
 export const getOverallResumeScore = (
   jd_score: JobApplication['jd_score'],
   parameter_weights: JobTypeDashboard['parameter_weights'],
 ) => {
-  const jdScoreObj = jd_score as any;
-  const data: DataType = {
-    qualification: jdScoreObj.qualification as DataType['qualification'],
-    skills_score: jdScoreObj.skills_score as DataType['skills_score'],
-  };
-  const detailedScores = getJdScore(data);
   return Math.trunc(
     Object.keys(parameter_weights).reduce((acc, curr) => {
-      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
+      acc += (jd_score[curr] * parameter_weights[curr]) / 100;
       return acc;
     }, 0),
   );

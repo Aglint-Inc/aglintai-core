@@ -629,7 +629,6 @@ export const NewResumeScoreDetails = ({
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
-      resume_score={applicationDetails.resume_score}
       jd_score={applicationDetails.jd_score}
       parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
@@ -663,7 +662,7 @@ export const NewResumeScoreDetails = ({
               (applicationDetails?.json_resume as any)?.skills?.length ?? '--'
             }
           />
-          <ResumeFeedbackParams feedbackParamsObj={jdScoreObj.qualification} />
+          <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
         </>
       }
     />
@@ -712,9 +711,14 @@ const fetchFile = async (applicationDetails: JobApplication) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
+    const ext = applicationDetails.resume.slice(
+      applicationDetails.resume.lastIndexOf('.'),
+    );
     link.setAttribute(
       'download',
-      `${applicationDetails.candidates.first_name}_${applicationDetails.candidates.last_name}_Resume.pdf`,
+      `${applicationDetails.candidates.first_name}_${
+        applicationDetails.candidates.last_name
+      }_Resume${ext ?? '.pdf'}`,
     );
     document.body.appendChild(link);
     link.click();
