@@ -46,7 +46,7 @@ export interface Database {
           id: string
           job_location: string | null
           job_title: string | null
-          last_name: string
+          last_name: string | null
           linkedin: string | null
           phone: string | null
           profile_image: string | null
@@ -61,7 +61,7 @@ export interface Database {
           id?: string
           job_location?: string | null
           job_title?: string | null
-          last_name: string
+          last_name?: string | null
           linkedin?: string | null
           phone?: string | null
           profile_image?: string | null
@@ -76,7 +76,7 @@ export interface Database {
           id?: string
           job_location?: string | null
           job_title?: string | null
-          last_name?: string
+          last_name?: string | null
           linkedin?: string | null
           phone?: string | null
           profile_image?: string | null
@@ -106,12 +106,12 @@ export interface Database {
           interview_score: number
           interviewing_date: string | null
           jd_score: Json | null
-          job_id: string | null
+          job_id: string
           json_resume: Json | null
           last_updated_at: string | null
           resume: string | null
           resume_score: number
-          resume_text: Json | null
+          resume_text: string | null
           status: string | null
         }
         Insert: {
@@ -127,12 +127,12 @@ export interface Database {
           interview_score?: number
           interviewing_date?: string | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id: string
           json_resume?: Json | null
           last_updated_at?: string | null
           resume?: string | null
           resume_score?: number
-          resume_text?: Json | null
+          resume_text?: string | null
           status?: string | null
         }
         Update: {
@@ -148,12 +148,12 @@ export interface Database {
           interview_score?: number
           interviewing_date?: string | null
           jd_score?: Json | null
-          job_id?: string | null
+          job_id?: string
           json_resume?: Json | null
           last_updated_at?: string | null
           resume?: string | null
           resume_score?: number
-          resume_text?: Json | null
+          resume_text?: string | null
           status?: string | null
         }
         Relationships: [
@@ -810,6 +810,12 @@ export interface Database {
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      update_resume_score: {
+        Args: {
+          job_id: string
+        }
+        Returns: boolean
       }
     }
     Enums: {

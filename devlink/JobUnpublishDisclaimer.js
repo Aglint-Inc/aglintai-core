@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./JobUnpublishDisclaimer.module.css";
 
@@ -52,11 +51,6 @@ export function JobUnpublishDisclaimer({
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
-        <_Builtin.Block tag="div">
-          {slotButtonPrimaryRegular ?? (
-            <ButtonPrimaryRegular textLabel="Publish" />
-          )}
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

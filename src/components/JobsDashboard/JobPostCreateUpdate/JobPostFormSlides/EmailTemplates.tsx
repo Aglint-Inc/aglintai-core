@@ -1,6 +1,5 @@
 import { Drawer } from '@mui/material';
 import { Collapse } from '@mui/material';
-import { CircularProgress } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -17,25 +16,16 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { supabase } from '@/src/utils/supabaseClient';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
+import JobPublishButton from '../JobForm/PublishButton';
 import { EmailDetails, useJobForm } from '../JobPostFormProvider';
-import {
-  API_FAIL_MSG,
-  getjobformToDbcolumns,
-  isWarningsCleared,
-  supabaseWrap,
-} from '../utils';
 
 const Emails = () => {
-  const { handleUIJobUpdate } = useJobs();
-  const { jobForm, dispatch, formWarnings } = useJobForm();
+  const { jobForm } = useJobForm();
   const router = useRouter();
-  const [isPublishing, setIsPublishing] = useState(false);
 
   const [editTemplate, setEditTemplate] = useState('');
   const emails: EmailTemplateParams[] = Object.keys(
@@ -45,37 +35,6 @@ const Emails = () => {
     excerpt: '',
     path: email,
   }));
-
-  const handlePublish = async () => {
-    try {
-      setIsPublishing(true);
-      const jobFormData = getjobformToDbcolumns(jobForm);
-      const [pubJob] = supabaseWrap(
-        await supabase
-          .from('public_jobs')
-          .update({
-            ...jobFormData,
-            status: 'published',
-            draft: null,
-          })
-          .eq('id', jobForm.jobPostId)
-          .select(),
-      );
-      dispatch({
-        type: 'updateJobPublishstatus',
-        payload: {
-          status: 'published',
-        },
-      });
-      handleUIJobUpdate(pubJob);
-      toast.success('Job Published SuccessFully');
-      router.push(`/jobs/${jobForm.jobPostId}`);
-    } catch (err) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsPublishing(false);
-    }
-  };
 
   return (
     <>
@@ -111,25 +70,7 @@ const Emails = () => {
         //   },
         // }}
         slotButtonPrimaryRegular={
-          <>
-            <AUIButton
-              disabled={!isWarningsCleared(formWarnings)}
-              onClick={handlePublish}
-              startIcon={
-                isPublishing && (
-                  <CircularProgress
-                    color='inherit'
-                    size={'15px'}
-                    sx={{ color: palette.grey[400] }}
-                  />
-                )
-              }
-            >
-              {jobForm.jobPostStatus === 'published'
-                ? 'Published'
-                : 'Publish Job'}
-            </AUIButton>
-          </>
+          <>{jobForm.formType === 'new' && <JobPublishButton />}</>
         }
         slotBasicButton={
           <>

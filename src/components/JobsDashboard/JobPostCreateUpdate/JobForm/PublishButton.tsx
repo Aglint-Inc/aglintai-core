@@ -1,34 +1,27 @@
-import { CircularProgress, Paper, Popover } from '@mui/material';
-import { get } from 'lodash';
+import { CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { JobPublishPop, RevertChangesModal } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../JobPostFormProvider';
-import { API_FAIL_MSG, getjobformToDbcolumns, supabaseWrap } from '../utils';
+import {
+  API_FAIL_MSG,
+  getjobformToDbcolumns,
+  isWarningsCleared,
+  supabaseWrap,
+} from '../utils';
 
 const JobPublishButton = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const { jobForm, handleInitializeForm, handleUpdateRevertStatus, dispatch } =
-    useJobForm();
+  const { jobForm, dispatch, formWarnings } = useJobForm();
   const [isPublishing, setIsPublishing] = useState(false);
-  const [revertPopUpPopup, setRevertPopUpPopup] = useState(false);
-  const jobPostLnk = `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
-    jobForm,
-    'jobPostId',
-    '',
-  )}`;
-  const { recruiter } = useAuthDetails();
+  const router = useRouter();
 
   const handlePublish = async () => {
     try {
-      setAnchorEl(null);
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
       supabaseWrap(
@@ -47,6 +40,10 @@ const JobPublishButton = () => {
           status: 'published',
         },
       });
+      if (jobForm.formType === 'new') {
+        router.replace(`/jobs/${jobForm.jobPostId}`);
+      }
+      await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       toast.success('Job Published SuccessFully');
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -55,47 +52,15 @@ const JobPublishButton = () => {
     }
   };
 
-  const handleRevertChanges = async () => {
-    try {
-      setRevertPopUpPopup(false);
-      handleUpdateRevertStatus(true);
-      const [publishedJobPost] = supabaseWrap(
-        await supabase.from('public_jobs').select().eq('id', jobForm.jobPostId),
-      );
-      const [jobPost] = supabaseWrap(
-        await supabase
-          .from('public_jobs')
-          .update({
-            draft: {
-              ...publishedJobPost,
-            },
-          })
-          .eq('id', jobForm.jobPostId)
-          .select(),
-      );
-      handleInitializeForm({
-        type: 'edit',
-        currSlide: jobForm.currSlide,
-        job: jobPost,
-        recruiter,
-      });
-      setRevertPopUpPopup(false);
-      toast.success('Reverted SucessFully');
-    } catch (err) {
-      // console.log(err);
-      toast.error(API_FAIL_MSG);
-    } finally {
-      // handleUpdateRevertStatus(false);
-      //
-    }
-  };
+  const isJobPublished = jobForm.formFields.isDraftCleared;
 
   return (
     <>
       <AUIButton
-        onClick={(e) => {
-          setAnchorEl(e.currentTarget);
+        onClick={() => {
+          handlePublish();
         }}
+        disabled={isJobPublished || !isWarningsCleared(formWarnings)}
         startIcon={
           isPublishing && (
             <CircularProgress
@@ -106,65 +71,8 @@ const JobPublishButton = () => {
           )
         }
       >
-        Publish
+        {isJobPublished ? 'Published' : 'Publish'}
       </AUIButton>
-      <Popover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={() => {
-          setAnchorEl(null);
-        }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        sx={{
-          '& .MuiPopover-paper': {
-            border: 0,
-          },
-        }}
-      >
-        <div style={{ marginTop: '5px' }}>
-          <JobPublishPop
-            onClickCopy={{
-              onClick: () => {
-                navigator.clipboard.writeText(jobPostLnk);
-              },
-            }}
-            onClickPublish={{
-              onClick: handlePublish,
-            }}
-            onClickRevertChanges={{
-              onClick: () => {
-                setAnchorEl(false);
-                setRevertPopUpPopup(true);
-              },
-            }}
-            textLink={jobPostLnk}
-          />
-        </div>
-      </Popover>
-      <MuiPopup
-        props={{
-          open: revertPopUpPopup,
-          onClose: () => {
-            setRevertPopUpPopup(false);
-          },
-        }}
-      >
-        <Paper>
-          <RevertChangesModal
-            onClickCancel={{
-              onClick: () => {
-                setRevertPopUpPopup(false);
-              },
-            }}
-            onClickRevertChanges={{
-              onClick: handleRevertChanges,
-            }}
-          />
-        </Paper>
-      </MuiPopup>
     </>
   );
 };

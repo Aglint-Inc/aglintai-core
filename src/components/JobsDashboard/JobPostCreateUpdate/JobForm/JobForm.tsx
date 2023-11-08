@@ -11,6 +11,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
+import JobPublishButton from './PublishButton';
 import SectionWarning from './SectionWarnings';
 import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
 import ApplyForm from '../JobPostFormSlides/ApplyForm';
@@ -234,7 +235,9 @@ function JobForm() {
   };
 
   const isShowChangesWarn =
-    jobForm.formType === 'edit' && !jobForm.formFields.isDraftCleared;
+    jobForm.formType === 'edit' &&
+    !jobForm.formFields.isDraftCleared &&
+    jobForm.jobPostStatus === 'published';
 
   return (
     <>
@@ -389,6 +392,9 @@ function JobForm() {
             );
           },
         }}
+        slotPublishButton={
+          <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
+        }
       />
       <MuiPopup
         props={{
