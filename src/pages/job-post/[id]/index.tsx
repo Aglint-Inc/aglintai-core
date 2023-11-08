@@ -141,7 +141,7 @@ function JobPost() {
         >
           <LoaderSvg />
         </Stack>
-      ) : !valid ? (
+      ) : valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
         <Stack width={'100%'} alignItems={'center'} p={'100px'}>
