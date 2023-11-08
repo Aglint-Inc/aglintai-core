@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME,
   eslint: {
     dirs: ['src'],
   },
