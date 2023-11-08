@@ -78,7 +78,7 @@ function ImportCandidatesCSV() {
           // eslint-disable-next-line security/detect-object-injection
           return { resume: candidates[i].resume, candidate_id: id };
         },
-      );
+      ) as any;
       const confirmation =
         await handleJobApplicationBulkCreate(newJobApplications);
       if (confirmation)
