@@ -47,9 +47,7 @@ const DashboardComp = () => {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
     } else if (router.query.status == 'closed') {
-      const filter = jobsData.jobs.filter((job) => {
-        job.status == 'closed';
-      });
+      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
       setFilteredJobs(filter);
     } else if (router.query.status == 'draft') {
       const filter = jobsData.jobs.filter((job) => job.status == 'draft');

@@ -26,7 +26,11 @@ function JobPost() {
         .or(query)
         .then(({ data, error }) => {
           if (!error && data?.length > 0) {
-            setValid(true);
+            if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
+              setValid(false);
+            } else {
+              setValid(true);
+            }
             setPost(data[0]);
             setLoading(false);
             supabase
@@ -137,7 +141,7 @@ function JobPost() {
         >
           <LoaderSvg />
         </Stack>
-      ) : valid ? (
+      ) : !valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
         <Stack width={'100%'} alignItems={'center'} p={'100px'}>
