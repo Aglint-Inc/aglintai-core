@@ -5,23 +5,24 @@ import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { NavProfileBlock, RecSideNavProfileBlock } from '@/devlink2';
+import { CompanyProfileHeader, NavProfileBlock } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
+import CompanyList from './CompanyList';
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { /*recruiter,*/ recruiterUser } = useAuthDetails();
+  const { recruiter, recruiterUser, userDetails } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
-  // const companyName = recruiter?.name;
-  // const logo = recruiter?.logo;
+  const companyName = recruiter?.name;
+  const logo = recruiter?.logo;
   const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
   const profileImage = recruiterUser?.profile_image;
 
@@ -81,26 +82,27 @@ export default function AppLayout({ children }) {
           width={'260px'}
         >
           <Stack height={'calc(100vh - 44px)'}>
-            <RecSideNavProfileBlock
-            // companyName={`${companyName}`}
-            // onclickCompany={{
-            //   onClick: () => router.push(pageRoutes.COMPANY),
-            // }}
-            // slotCompanyLogo={
-            //   <Avatar
-            //     src={logo}
-            //     variant='rounded'
-            //     sx={{
-            //       width: '100%',
-            //       height: '100%',
-            //       background: '#fff',
-            //       '& .MuiAvatar-img ': {
-            //         objectFit: 'contain',
-            //       },
-            //     }}
-            //   />
-            // }
-            />
+            {userDetails.user.user_metadata.role === 'recruiter' ? (
+              <CompanyProfileHeader
+                companyName={companyName}
+                slotLogo={
+                  <Avatar
+                    src={logo}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
+              />
+            ) : (
+              <CompanyList />
+            )}
             <Stack height={'100%'} justifyContent={'space-between'} pt={'26px'}>
               <Stack spacing={'10px'}>
                 <SideNavbar />
@@ -123,7 +125,6 @@ export default function AppLayout({ children }) {
                   sx={{
                     width: '100%',
                     height: '100%',
-                    background: '#1f1f1f',
                     '& .MuiAvatar-img ': {
                       objectFit: 'contain',
                     },
@@ -201,25 +202,25 @@ export default function AppLayout({ children }) {
               top={'17px'}
               left={'60px'}
             >
-              <RecSideNavProfileBlock
-              // companyName={companyName}
-              // onclickCompany={{
-              //   onClick: () => router.push(pageRoutes.COMPANY),
-              // }}
-              // slotCompanyLogo={
-              //   <Avatar
-              //     src={logo}
-              //     variant='rounded'
-              //     sx={{
-              //       width: '100%',
-              //       height: '100%',
-              //       background: '#fff',
-              //       '& .MuiAvatar-img ': {
-              //         objectFit: 'contain',
-              //       },
-              //     }}
-              //   />
-              // }
+              <CompanyProfileHeader
+                onclickCompany={{
+                  onClick: () => router.push(pageRoutes.COMPANY),
+                }}
+                companyName={companyName}
+                slotLogo={
+                  <Avatar
+                    src={logo}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
               />
             </Stack>
           </Stack>

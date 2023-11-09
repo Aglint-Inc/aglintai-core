@@ -139,7 +139,12 @@ const SignUpComp = () => {
             />
           </YTransform>
         ) : (
-          <Stack>
+          <Stack
+            justifyContent={'center'}
+            alignItems={'center'}
+            height={'100vh'}
+            width={'100vw'}
+          >
             <Loader />
           </Stack>
         )}

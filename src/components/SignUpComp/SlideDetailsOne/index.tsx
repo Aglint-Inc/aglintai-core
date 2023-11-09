@@ -33,6 +33,47 @@ interface ErrorField {
 }
 
 const SlideDetailsOne = () => {
+  return (
+    <>
+      <RecCompanyDetails
+       slotMain={<FetchCompanyDetails />} />
+    </>
+  );
+};
+
+export default SlideDetailsOne;
+
+export function validateURL(url) {
+  // Check if the URL starts with 'http://' or 'https://'
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    // If not, prepend 'https://' to the URL
+    url = 'https://' + url;
+  }
+
+  try {
+    // Try creating a new URL object; this will throw an exception if the URL is invalid
+    new URL(url);
+    return true;
+  } catch (error) {
+    // The URL is invalid
+    return false;
+  }
+}
+
+export interface Error1 {
+  phone: ErrorField;
+  logo: ErrorField;
+  name: ErrorField;
+}
+
+type phone = {
+  countryCode: string;
+  dialCode: string;
+  format: string;
+  name: string;
+};
+
+export function FetchCompanyDetails() {
   const router = useRouter();
 
   const { recruiter, setRecruiter, userDetails } = useAuthDetails();
@@ -187,127 +228,91 @@ const SlideDetailsOne = () => {
 
     return userURL;
   }
-
   return (
-    <>
-      <RecCompanyDetails
-        slotMain={
-          <RcInfoStep1
-            slotInput={
-              <>
-                <Stack
-                  width={'100%'}
-                  direction={'row'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  spacing={'10px'}
-                >
-                  <TextField
-                    margin='none'
-                    required
-                    fullWidth
-                    id='name'
-                    label='Company Website'
-                    placeholder='https://companydomain.com'
-                    value={details?.website}
-                    onChange={(e) => {
-                      setDetails({ ...details, website: e.target.value });
-                    }}
-                    error={error.website.error}
-                    helperText={error.website.error ? error.website.msg : ''}
-                    inputProps={{
-                      autoCapitalize: 'true',
-                      style: {
-                        fontSize: '14px',
-                      },
-                    }}
-                  />
-                  <AUIButton
-                    disabled={loading}
-                    onClick={submitHandler}
-                    variant='outlined'
-                  >
-                    Continue
-                  </AUIButton>
-                </Stack>
-              </>
-            }
-            slotDetails={
-              <>
-                {loading ? (
-                  <Stack
-                    direction={'row'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    flexDirection={'column'}
-                  >
-                    <Loader />
-                    <UITypography color='grey.600'>
-                      Fetching company info from the website
-                    </UITypography>
-                  </Stack>
-                ) : recruiter.company_website ? (
-                  <CompanyDetails />
-                ) : userDetails.user.user_metadata.role !== 'recruiter' ? (
-                  <Stack
-                    alignItems={'center'}
-                    direction={'row'}
-                    justifyContent={'center'}
-                  >
-                    <AUIButton
-                      variant='text'
-                      onClick={() => {
-                        router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                          shallow: true,
-                        });
-                        setStep(stepObj.atsSystem);
-                      }}
-                    >
-                      Skip this step
-                    </AUIButton>
-                  </Stack>
-                ) : null}
-              </>
-            }
-          />
-        }
-      />
-    </>
+    <RcInfoStep1
+
+      slotInput={
+        <>
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            spacing={'10px'}
+          >
+            <TextField
+              margin='none'
+              required
+              fullWidth
+              id='name'
+              label='Company Website'
+              placeholder='https://companydomain.com'
+              value={details?.website}
+              onChange={(e) => {
+                setDetails({ ...details, website: e.target.value });
+              }}
+              error={error.website.error}
+              helperText={error.website.error ? error.website.msg : ''}
+              inputProps={{
+                autoCapitalize: 'true',
+                style: {
+                  fontSize: '14px',
+                },
+              }}
+            />
+            <AUIButton
+              disabled={loading}
+              onClick={submitHandler}
+              variant='outlined'
+            >
+              Continue
+            </AUIButton>
+          </Stack>
+        </>
+      }
+
+      slotDetails={
+        <>
+          {loading ? (
+            <Stack
+              direction={'row'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              flexDirection={'column'}
+            >
+              <Loader />
+              <UITypography color='grey.600'>
+                Fetching company info from the website
+              </UITypography>
+            </Stack>
+          ) : recruiter.company_website ? (
+            <CompanyDetails />
+          ) : userDetails.user.user_metadata.role !== 'recruiter' ? (
+            <Stack
+              alignItems={'center'}
+              direction={'row'}
+              justifyContent={'center'}
+            >
+              <AUIButton
+                variant='text'
+                onClick={() => {
+                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                    shallow: true,
+                  });
+                  setStep(stepObj.atsSystem);
+                }}
+              >
+                Skip this step
+              </AUIButton>
+            </Stack>
+          ) : null}
+        </>
+      }
+    />
   );
-};
-
-export default SlideDetailsOne;
-
-export function validateURL(url) {
-  // Check if the URL starts with 'http://' or 'https://'
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    // If not, prepend 'https://' to the URL
-    url = 'https://' + url;
-  }
-
-  try {
-    // Try creating a new URL object; this will throw an exception if the URL is invalid
-    new URL(url);
-    return true;
-  } catch (error) {
-    // The URL is invalid
-    return false;
-  }
 }
 
-interface Error1 {
-  phone: ErrorField;
-  logo: ErrorField;
-  name: ErrorField;
-}
-
-type phone = {
-  countryCode: string;
-  dialCode: string;
-  format: string;
-  name: string;
-};
-function CompanyDetails() {
+export function CompanyDetails() {
   const router = useRouter();
   const { setStep } = useSignupDetails();
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -424,6 +429,7 @@ function CompanyDetails() {
   };
   return (
     <RcInfoForm
+
       slotLogo={
         <ImageUpload
           image={logo}

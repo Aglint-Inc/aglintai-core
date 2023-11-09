@@ -10,6 +10,7 @@ export function AddCompany({
   onclickChangeButton = {},
   slotCompanyDetails,
   slotLogo,
+  isCompanyLogo = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-sidebar-wrapper")} tag="div">
@@ -68,41 +69,43 @@ export function AddCompany({
         className={_utils.cx(_styles, "cs-sidebar-company-info")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cs-sidebar-company-top")}
-          tag="div"
-        >
+        {isCompanyLogo ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Company Logo"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "sl-company-title-block")}
+            className={_utils.cx(_styles, "cs-sidebar-company-top")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "sl-company-image-block")}
+              className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {slotLogo}
+              {"Company Logo"}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "sl-com-title-info-block")}
+              className={_utils.cx(_styles, "sl-company-title-block")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-600")}
+                className={_utils.cx(_styles, "sl-company-image-block")}
                 tag="div"
               >
-                {
-                  "Please upload your logo in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
-                }
+                {slotLogo}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "sl-com-title-info-block")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-grey-600")}
+                  tag="div"
+                >
+                  {
+                    "Please upload your logo in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
+                  }
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cs-sidebar-company-form")}
           tag="div"

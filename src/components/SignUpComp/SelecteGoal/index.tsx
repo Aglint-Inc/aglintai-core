@@ -14,7 +14,8 @@ function SelectGoal() {
   const { setStep } = useSignupDetails();
   const [selectedObject, setSelectedObject] = useState([]);
   useEffect(() => {
-    setSelectedObject(recruiter.use_of_purpose as any);
+    if (recruiter.use_of_purpose)
+      setSelectedObject(recruiter.use_of_purpose as any);
   }, [recruiter]);
   const router = useRouter();
   async function handleContinue(ang) {

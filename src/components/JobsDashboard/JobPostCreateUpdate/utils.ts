@@ -136,7 +136,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.details.err.push('Missing job title');
   }
 
-  if (isEmpty(jobForm.company.trim())) {
+  if (isEmpty(jobForm.company?.trim())) {
     warnings.details.err.push('Missing company name');
   }
 

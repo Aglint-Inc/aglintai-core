@@ -126,12 +126,13 @@ const SlideTwoSignUp = () => {
           .insert({
             email: details.email,
             recruiter_type: flow,
+            recruiter_active: true,
           })
           .select();
         if (!error) {
           setRecruiter(data[0] as RecruiterType);
           await createSampleJobCandidate(data[0].id);
-          const { error: erroruser } = await supabase
+          const { data: recruiterUser, error: erroruser } = await supabase
             .from('recruiter_user')
             .insert({
               user_id: authdata.data.user.id,
@@ -142,6 +143,10 @@ const SlideTwoSignUp = () => {
             })
             .select();
           if (!erroruser) {
+            await supabase
+              .from('recruiter')
+              .update({ recruiter_user_id: recruiterUser[0].user_id })
+              .eq('id', data[0].id);
             router.push(`?step=${stepObj.detailsOne}`, undefined, {
               shallow: true,
             });
