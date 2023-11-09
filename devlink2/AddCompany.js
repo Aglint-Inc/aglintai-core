@@ -9,6 +9,7 @@ export function AddCompany({
   slotWebsiteInput,
   onclickChangeButton = {},
   slotCompanyDetails,
+  slotLogo,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-sidebar-wrapper")} tag="div">
@@ -84,7 +85,9 @@ export function AddCompany({
             <_Builtin.Block
               className={_utils.cx(_styles, "sl-company-image-block")}
               tag="div"
-            />
+            >
+              {slotLogo}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "sl-com-title-info-block")}
               tag="div"

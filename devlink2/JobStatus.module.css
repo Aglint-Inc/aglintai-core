@@ -140,8 +140,6 @@
   justify-content: center;
   align-items: center;
 
-  color: var(--grey-600);
-
   object-fit: contain;
 }
 

@@ -9,7 +9,7 @@ const RefreshBtn = ({ text, isDisabled, onClick }) => {
       text={isDisabled ? 'Loading' : text}
       iconProps={{
         className: isDisabled ? 'rotating' : null,
-        styles: { ...style },
+        style: { ...style },
       }}
       buttonProps={{
         onClick: async () => await onClick(),

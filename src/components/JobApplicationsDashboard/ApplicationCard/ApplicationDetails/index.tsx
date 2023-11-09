@@ -750,8 +750,8 @@ const NewExperienceDetails = ({ work }) => {
 
 const NewSkillDetails = ({ skills }) => {
   const skillList = skills
-    .filter((s) => s.name !== null && s.name !== '')
-    .map((s, i) => <CandidateSkillPills key={i} textSkill={s.name} />);
+    .filter((s) => s !== null && s !== '')
+    .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
   return <CandidateSkill slotCandidateSkill={<>{skillList}</>} />;
 };
 

@@ -15,13 +15,13 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { /*recruiter,*/ recruiterUser } = useAuthDetails();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(false);
-  const companyName = recruiter?.name;
-  const logo = recruiter?.logo;
+  // const companyName = recruiter?.name;
+  // const logo = recruiter?.logo;
   const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
   const profileImage = recruiterUser?.profile_image;
 
@@ -82,24 +82,24 @@ export default function AppLayout({ children }) {
         >
           <Stack height={'calc(100vh - 44px)'}>
             <RecSideNavProfileBlock
-              companyName={`${companyName}`}
-              onclickCompany={{
-                onClick: () => router.push(pageRoutes.COMPANY),
-              }}
-              slotCompanyLogo={
-                <Avatar
-                  src={logo}
-                  variant='rounded'
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    background: '#fff',
-                    '& .MuiAvatar-img ': {
-                      objectFit: 'contain',
-                    },
-                  }}
-                />
-              }
+            // companyName={`${companyName}`}
+            // onclickCompany={{
+            //   onClick: () => router.push(pageRoutes.COMPANY),
+            // }}
+            // slotCompanyLogo={
+            //   <Avatar
+            //     src={logo}
+            //     variant='rounded'
+            //     sx={{
+            //       width: '100%',
+            //       height: '100%',
+            //       background: '#fff',
+            //       '& .MuiAvatar-img ': {
+            //         objectFit: 'contain',
+            //       },
+            //     }}
+            //   />
+            // }
             />
             <Stack height={'100%'} justifyContent={'space-between'} pt={'26px'}>
               <Stack spacing={'10px'}>
@@ -123,7 +123,7 @@ export default function AppLayout({ children }) {
                   sx={{
                     width: '100%',
                     height: '100%',
-                    background: '#fff',
+                    background: '#1f1f1f',
                     '& .MuiAvatar-img ': {
                       objectFit: 'contain',
                     },
@@ -202,24 +202,24 @@ export default function AppLayout({ children }) {
               left={'60px'}
             >
               <RecSideNavProfileBlock
-                companyName={companyName}
-                onclickCompany={{
-                  onClick: () => router.push(pageRoutes.COMPANY),
-                }}
-                slotCompanyLogo={
-                  <Avatar
-                    src={logo}
-                    variant='rounded'
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#fff',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
-                      },
-                    }}
-                  />
-                }
+              // companyName={companyName}
+              // onclickCompany={{
+              //   onClick: () => router.push(pageRoutes.COMPANY),
+              // }}
+              // slotCompanyLogo={
+              //   <Avatar
+              //     src={logo}
+              //     variant='rounded'
+              //     sx={{
+              //       width: '100%',
+              //       height: '100%',
+              //       background: '#fff',
+              //       '& .MuiAvatar-img ': {
+              //         objectFit: 'contain',
+              //       },
+              //     }}
+              //   />
+              // }
               />
             </Stack>
           </Stack>
@@ -266,7 +266,7 @@ export default function AppLayout({ children }) {
                     sx={{
                       width: '100%',
                       height: '100%',
-                      background: '#fff',
+                      background: '#1f1f1f',
                       '& .MuiAvatar-img ': {
                         objectFit: 'contain',
                       },

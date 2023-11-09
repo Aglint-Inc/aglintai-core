@@ -7,4 +7,5 @@ declare function AddCompany(props: {
   slotWebsiteInput?: Types.Devlink.Slot;
   onclickChangeButton?: Types.Devlink.RuntimeProps;
   slotCompanyDetails?: Types.Devlink.Slot;
+  slotLogo?: Types.Devlink.Slot;
 }): React.JSX.Element;
