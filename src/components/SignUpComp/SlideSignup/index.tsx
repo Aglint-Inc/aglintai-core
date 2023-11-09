@@ -190,8 +190,6 @@ const SlideTwoSignUp = () => {
       }
   };
 
- 
-
   return (
     <>
       <WelcomeSlider3
@@ -227,6 +225,7 @@ const SlideTwoSignUp = () => {
         isTermsChecked={checked}
         onClickSignIn={{
           onClick: () => {
+            router.push(pageRoutes.LOGIN);
             setStep(stepObj.signin);
           },
         }}
