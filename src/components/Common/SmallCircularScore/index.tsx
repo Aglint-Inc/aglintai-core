@@ -1,20 +1,16 @@
 import { Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
 
 export const SmallCircularScore = ({
-  finalScore,
-  triggerAnimation = false,
+  score,
   scale = 1,
   showScore = false,
 }: {
-  finalScore: number;
-  triggerAnimation?: boolean;
+  score: number;
   scale?: number;
   showScore?: boolean;
 }) => {
-  const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
   const green = {
     score: '#0B3B29',
     border: '#228F67',
@@ -32,22 +28,6 @@ export const SmallCircularScore = ({
   };
   const color = score > 33 ? (score > 66 ? green : yellow) : red;
 
-  useEffect(() => {
-    if (score === finalScore) {
-      return;
-    }
-    if (score > finalScore) {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev - 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev + 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [score, finalScore]);
   return (
     <Stack flexDirection={'row'} alignItems={'center'}>
       <Stack
@@ -87,14 +67,7 @@ export const SmallCircularScore = ({
   );
 };
 
-export const SmallCircularScore2 = ({
-  finalScore,
-  triggerAnimation = false,
-}: {
-  finalScore: number;
-  triggerAnimation?: boolean;
-}) => {
-  const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
+export const SmallCircularScore2 = ({ score }: { score: number }) => {
   const green = {
     score: '#0B3B29',
     border: '#228F67',
@@ -112,22 +85,6 @@ export const SmallCircularScore2 = ({
   };
   const color = score > 33 ? (score > 66 ? green : yellow) : red;
 
-  useEffect(() => {
-    if (score === finalScore) {
-      return;
-    }
-    if (score > finalScore) {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev - 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev + 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [score, finalScore]);
   return (
     <Stack>
       <Stack

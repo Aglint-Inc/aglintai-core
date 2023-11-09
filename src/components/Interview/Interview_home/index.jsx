@@ -15,7 +15,6 @@ import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import { getGravatar } from '../../JobApplicationsDashboard/ApplicationCard';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
@@ -44,14 +43,8 @@ function Interview_home() {
           <Transcript
             conversations={conversations}
             setOpenPanelDrawer={setOpenPanelDrawer}
-            interviewerImage={getGravatar(
-              candidateDetails?.email,
-              candidateDetails?.first_name,
-            )}
-            candidateImage={getGravatar(
-              candidateDetails?.email,
-              candidateDetails?.first_name,
-            )}
+            interviewerImage={candidateDetails.profile_image}
+            candidateImage={candidateDetails.profile_image}
           />
         </Stack>
       </SidePanelDrawer>

@@ -1,6 +1,6 @@
 .job-dashboard-empty-landing-wrappers {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   padding-bottom: 20px;
 }
 
@@ -309,6 +309,10 @@
   align-items: flex-start;
   grid-column-gap: 22px;
   grid-row-gap: 22px;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .cursor-pointer {
@@ -859,6 +863,10 @@
 
 .color-grey-600.ml-20 {
   margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
 }
 
 .req-acess-badge {

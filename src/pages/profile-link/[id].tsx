@@ -19,7 +19,7 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
-import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
+import { getName } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import {
   DetailedInterviewFeedbackParams,
   giveColorForInterviewScore,
@@ -213,16 +213,11 @@ function InterviewFeedbackPage() {
                     textCandidateScript={con.userContent}
                     slotCandidateImage={
                       <MuiAvatar
-                        level={applicationDetails.candidates.first_name}
-                        src={
-                          applicationDetails?.candidates.email &&
-                          !applicationDetails?.candidates.profile_image
-                            ? getGravatar(
-                                applicationDetails?.candidates.email,
-                                applicationDetails?.candidates.first_name,
-                              )
-                            : applicationDetails?.candidates.profile_image
-                        }
+                        level={getName(
+                          applicationDetails.candidates.first_name,
+                          applicationDetails.candidates.last_name,
+                        )}
+                        src={applicationDetails?.candidates.profile_image}
                         variant={'rounded'}
                         width={'auto'}
                         height={'auto'}
@@ -342,16 +337,11 @@ function InterviewFeedbackPage() {
           isActivityVisible={false}
           slotProfileImage={
             <MuiAvatar
-              level={applicationDetails?.candidates?.first_name}
-              src={
-                applicationDetails?.candidates?.email &&
-                !applicationDetails?.candidates?.profile_image
-                  ? getGravatar(
-                      applicationDetails?.candidates?.email,
-                      applicationDetails?.candidates?.first_name,
-                    )
-                  : applicationDetails?.candidates?.profile_image
-              }
+              level={getName(
+                applicationDetails.candidates.first_name,
+                applicationDetails.candidates.last_name,
+              )}
+              src={applicationDetails?.candidates.profile_image}
               variant={'rounded'}
               width={'auto'}
               height={'auto'}

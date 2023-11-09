@@ -77,7 +77,6 @@ const JobApplicationComponent = () => {
   } = useJobApplications();
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
-
   const sectionApplications = applications[section];
 
   const [checkList, setCheckList] = useState(new Set<string>());
@@ -149,7 +148,7 @@ const JobApplicationComponent = () => {
   return (
     <JobDetails
       onclickHeaderJobs={{
-        href: `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.JOBS}?status=active`,
+        href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}?status=active`,
       }}
       textJobStatus={null}
       textRole={capitalize(job.job_title)}
@@ -211,7 +210,7 @@ const JobApplicationComponent = () => {
           handleSetSection={handleSetSection}
         />
       }
-      slotFilterBlock={<NewJobFilterBlock />}
+      slotFilterBlock={<NewJobFilterBlock section={section} />}
       slotCandidatesList={
         <ApplicantsList
           applications={sectionApplications}
@@ -288,33 +287,42 @@ const ApplicationSort = ({
   );
 };
 
-const NewJobFilterBlock = () => {
-  const { setOpenImportCandidates, openImportCandidates } =
+const NewJobFilterBlock = ({
+  section,
+}: {
+  section: JobApplicationSections;
+}) => {
+  const { setOpenImportCandidates, openImportCandidates, job } =
     useJobApplications();
   return (
     <>
-      <Dialog
-        open={openImportCandidates}
-        onClose={() => setOpenImportCandidates(false)}
-        maxWidth='md'
-      >
-        <ImportCandidates
-          slotAddManually={<ImportManualCandidates />}
-          slotImportCsv={<ImportCandidatesCSV />}
-          onClickClose={{
-            onClick: () => {
-              setOpenImportCandidates(false);
-            },
-          }}
-          slotImportResume={
-            <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
-          }
-        />
-      </Dialog>
+      {section === JobApplicationSections.NEW ? (
+        <Dialog
+          open={openImportCandidates}
+          onClose={() => setOpenImportCandidates(false)}
+          maxWidth='md'
+        >
+          <ImportCandidates
+            slotAddManually={<ImportManualCandidates />}
+            slotImportCsv={<ImportCandidatesCSV />}
+            onClickClose={{
+              onClick: () => {
+                setOpenImportCandidates(false);
+              },
+            }}
+            slotImportResume={
+              <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+            }
+          />
+        </Dialog>
+      ) : (
+        <></>
+      )}
       <JobDetailsFilterBlock
         onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
-        slotSearch={<SearchField />}
-        slotFilter={<ApplicationFilter />}
+        slotSearch={job.count[section] !== 0 ? <SearchField /> : <></>}
+        slotFilter={job.count[section] !== 0 ? <ApplicationFilter /> : <></>}
+        isAddCandidatesVisible={section === JobApplicationSections.NEW}
       />
     </>
   );

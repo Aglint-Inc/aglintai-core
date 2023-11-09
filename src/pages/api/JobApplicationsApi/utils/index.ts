@@ -67,12 +67,18 @@ export const readNewJobApplicationDbAction = async (
       nullsFirst: false,
     };
     if (sort.parameter === 'first_name' || sort.parameter === 'email') {
-      query = query.order(`candidates(${sort.parameter})`, params);
+      query = query
+        .order(`candidates(${sort.parameter})`, params)
+        .order('application_id', { ascending: true, nullsFirst: false });
     } else {
-      query = query.order(
-        status === JobApplicationSections.NEW ? 'resume_score' : sort.parameter,
-        params,
-      );
+      query = query
+        .order(
+          status === JobApplicationSections.NEW
+            ? 'resume_score'
+            : sort.parameter,
+          params,
+        )
+        .order('application_id', { ascending: true, nullsFirst: false });
     }
   }
 

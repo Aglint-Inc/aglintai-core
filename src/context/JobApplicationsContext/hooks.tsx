@@ -177,7 +177,7 @@ const useProviderJobApplicationActions = (
     useState(false);
 
   const initialParameters: Parameters = {
-    sort: { parameter: 'first_name', ascending: true },
+    sort: { parameter: 'resume_score', ascending: false },
     filter: [], //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
     search: null,
   };
@@ -440,7 +440,7 @@ const useProviderJobApplicationActions = (
   const handleJobApplicationFilter = async (parameters: Parameters) => {
     setApplicationDisable(true);
     const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
-      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] } };
+      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] - 1 } };
     }, {}) as ReadJobApplicationApi['request']['ranges'];
     const confirmation = await handleJobApplicationRead({
       job_id: jobId,

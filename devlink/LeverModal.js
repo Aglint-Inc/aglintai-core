@@ -10,6 +10,7 @@ export function LeverModal({
   onClickContinue = {},
   slotSearch,
   slotApiKey,
+  slotLogo,
 }) {
   return (
     <_Component
@@ -21,13 +22,15 @@ export function LeverModal({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          <_Builtin.Image
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4250bbd9309fc9bb0b62_lever_rgb_logo_standard%201.svg"
-          />
+          {slotLogo ?? (
+            <_Builtin.Image
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/653a4250bbd9309fc9bb0b62_lever_rgb_logo_standard%201.svg"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "lever-close-button")}

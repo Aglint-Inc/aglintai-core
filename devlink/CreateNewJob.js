@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { JobUnpublishDisclaimer } from "./JobUnpublishDisclaimer";
+import { ScreeningQuestion } from "./ScreeningQuestion";
 import * as _utils from "./utils";
 import _styles from "./CreateNewJob.module.css";
 
@@ -175,7 +176,7 @@ export function CreateNewJob({
                 className={_utils.cx(_styles, "fw-semibold", "relative")}
                 tag="div"
               >
-                {"Score Settings"}
+                {"Profile Score"}
               </_Builtin.Block>
               {isScoreSettingActive ? (
                 <_Builtin.Block
@@ -199,7 +200,7 @@ export function CreateNewJob({
                 className={_utils.cx(_styles, "fw-semibold", "relative")}
                 tag="div"
               >
-                {"Assessment Questions"}
+                {"Assessment"}
               </_Builtin.Block>
               {isScreeningQuestionsActive ? (
                 <_Builtin.Block
@@ -272,7 +273,7 @@ export function CreateNewJob({
           className={_utils.cx(_styles, "slot-create-job-new-wrapper")}
           tag="div"
         >
-          {slotCreateJob}
+          {slotCreateJob ?? <ScreeningQuestion />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotCloseJob}</_Builtin.Block>

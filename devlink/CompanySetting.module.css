@@ -485,6 +485,10 @@
   grid-row-gap: 22px;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold.cursor-pointer.capitialize {
   text-transform: capitalize;
 }

@@ -45,6 +45,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -301,6 +305,10 @@
 
 .color-grey-600.ml-20 {
   margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
 }
 
 .active-question-active {

@@ -249,6 +249,10 @@
   bottom: 0%;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;

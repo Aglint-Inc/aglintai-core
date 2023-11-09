@@ -6,6 +6,7 @@ export * from "./interactions";
 export * from "./utils";
 export * from "./devlink";
 export * from "./AddCandidateDropdown";
+export * from "./AddCompany";
 export * from "./ApplicantsListEmpty";
 export * from "./CandidateFilter";
 export * from "./CandidateListItem";

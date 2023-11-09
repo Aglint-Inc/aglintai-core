@@ -12,7 +12,7 @@
   z-index: 4;
 
   display: flex;
-  padding: 15px 20px 15px 15px;
+  padding: 15px 20px;
   justify-content: space-between;
   align-items: center;
 
@@ -423,6 +423,7 @@
 
   padding-top: 35px;
   padding-bottom: 10px;
+  padding-left: 20px;
 
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
@@ -431,9 +432,7 @@
   z-index: 4;
 
   display: flex;
-  max-width: 720px;
-  margin-right: auto;
-  margin-left: auto;
+  max-width: 630px;
   padding: 6px;
   justify-content: space-between;
 
@@ -462,6 +461,10 @@
   .create-job-menu-wrap {
     flex: 0 0 auto;
   }
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -607,10 +610,7 @@
 }
 
 .slot-create-job-new-wrapper {
-  max-width: 1200px;
   margin-top: 40px;
-  margin-right: auto;
-  margin-left: auto;
   padding-right: 20px;
   padding-left: 20px;
 }

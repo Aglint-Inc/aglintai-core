@@ -56,6 +56,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }

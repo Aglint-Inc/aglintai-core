@@ -1,5 +1,4 @@
 import { Stack, Tooltip } from '@mui/material';
-import md5 from 'blueimp-md5';
 
 import { CandidateListItem, ScoreErrorIcon } from '@/devlink2';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
@@ -53,26 +52,21 @@ const ApplicationCard = ({
       isChecked={checkList.has(application.application_id)}
       slotProfileImage={
         <MuiAvatar
-          level={application.candidates.first_name}
-          src={
-            !application.candidates.profile_image
-              ? getGravatar(application.candidates.email)
-              : application.candidates.profile_image
-          }
-          variant='rounded'
-          width='100%'
-          height='100%'
+          level={getName(
+            application.candidates.first_name,
+            application.candidates.last_name,
+          )}
+          src={application.candidates.profile_image}
+          variant={'rounded'}
+          width={'100%'}
+          height={'100%'}
+          fontSize={'12px'}
         />
       }
-      name={
-        application.candidates.first_name
-          ? capitalize(
-              application.candidates.first_name +
-                ' ' +
-                application.candidates.last_name || '',
-            )
-          : '---'
-      }
+      name={getName(
+        application.candidates.first_name,
+        application.candidates.last_name,
+      )}
       jobTitle={
         application.candidates.job_title
           ? capitalize(application.candidates.job_title)
@@ -83,7 +77,7 @@ const ApplicationCard = ({
           intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
             application.jd_score ? (
               <SmallCircularScore
-                finalScore={resumeScore}
+                score={resumeScore}
                 scale={0.5}
                 showScore={true}
               />
@@ -91,20 +85,22 @@ const ApplicationCard = ({
               <Tooltip
                 title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."
                 placement='right'
-                arrow
+                arrow={true}
               >
-                <ScoreErrorIcon />
+                <Stack>
+                  <ScoreErrorIcon />
+                </Stack>
               </Tooltip>
             )
           ) : (
-            <Tooltip title='Ongoing scoring' placement='right' arrow>
+            <Tooltip title='Ongoing scoring' placement='right' arrow={true}>
               <Stack style={{ scale: '0.3' }}>
                 <Calculating />
               </Stack>
             </Tooltip>
           )
         ) : (
-          <Tooltip title='No resume available.' placement='right' arrow>
+          <Tooltip title='No resume available.' placement='right' arrow={true}>
             <Stack>---</Stack>
           </Tooltip>
         )
@@ -115,13 +111,15 @@ const ApplicationCard = ({
       slotInterviewScore={
         application?.feedback ? (
           <SmallCircularScore
-            finalScore={interviewScore}
+            score={interviewScore}
             scale={0.5}
             showScore={true}
           />
         ) : (
-          <Tooltip title='Yet to be interviewed' placement='right' arrow>
-            <ScoreErrorIcon />
+          <Tooltip title='Yet to be interviewed' placement='right' arrow={true}>
+            <Stack>
+              <ScoreErrorIcon />
+            </Stack>
           </Tooltip>
         )
       }
@@ -138,11 +136,8 @@ const ApplicationCard = ({
 
 export default ApplicationCard;
 
-// eslint-disable-next-line no-unused-vars
-export function getGravatar(email, first_name = '') {
-  let imgUrl = `https://www.gravatar.com/avatar/${md5(
-    email ? email.trim().toLowerCase() : '',
-  )}?d=basic&s=240&r=g`;
-
-  return imgUrl;
-}
+export const getName = (first_name: string, last_name: string) => {
+  return first_name || last_name
+    ? capitalize(first_name || '' + ' ' + last_name || '')
+    : '---';
+};

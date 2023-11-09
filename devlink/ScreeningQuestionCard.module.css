@@ -56,6 +56,12 @@
   right: 0%;
   bottom: 0%;
   z-index: 3;
+
+  background-color: #2f3941;
+}
+
+.generate-overaly.bg-grey-800 {
+  background-color: #2f3941;
 }
 
 .div-block-541 {
@@ -394,6 +400,26 @@
   grid-row-gap: 5px;
 }
 
+.video-icon-wrapper {
+  position: absolute;
+  left: 11px;
+  top: 11px;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+
+  background-color: #68737d;
+}
+
 .div-block-548 {
   position: relative;
   z-index: 1;
@@ -439,6 +465,10 @@
 
 .color-grey-600.ml-20 {
   margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
 }
 
 .active-screening-card {

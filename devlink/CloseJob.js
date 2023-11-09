@@ -53,7 +53,7 @@ export function CloseJob({
               className={_utils.cx(_styles, "fw-semibold", "text-red-500")}
               tag="div"
             >
-              {"Delete job"}
+              {"Delete draft"}
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

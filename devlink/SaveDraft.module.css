@@ -35,6 +35,10 @@
   cursor: pointer;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

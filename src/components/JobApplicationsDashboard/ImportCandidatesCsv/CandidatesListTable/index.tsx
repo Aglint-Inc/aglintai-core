@@ -5,7 +5,6 @@ import { IconCandidate, IconMail, IconPhone } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import { getGravatar } from '../../ApplicationCard';
 function CandidatesListTable({ importedCandidate }) {
   // eslint-disable-next-line no-console
   console.log('importedCandidate', importedCandidate);
@@ -31,6 +30,7 @@ function CandidatesListTable({ importedCandidate }) {
                 name={ele.first_name + ' ' + ele.last_name}
                 email={ele.email}
                 phone={ele.phone}
+                profile_image={ele.profile_image}
               />
             </YTransform>
           );
@@ -84,7 +84,7 @@ function TableHeader() {
   );
 }
 
-function TableRow({ name, email, phone }) {
+function TableRow({ name, email, phone, profile_image }) {
   return (
     <Stack
       p={'3px'}
@@ -102,7 +102,7 @@ function TableRow({ name, email, phone }) {
         <MuiAvatar
           width={'20px'}
           height={'20px'}
-          src={getGravatar(name, email)}
+          src={profile_image}
           fontSize={'20px'}
           level={name}
           variant={'circular'}

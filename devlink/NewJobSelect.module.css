@@ -28,8 +28,6 @@
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -105,6 +103,10 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .text-grey-600 {

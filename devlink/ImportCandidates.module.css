@@ -94,6 +94,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -319,10 +323,6 @@
 
 .slot-import.height-350 {
   height: 350px;
-}
-
-.slot-import.color-blue-100 {
-  background-color: #adcce4;
 }
 
 .div-block-524 {

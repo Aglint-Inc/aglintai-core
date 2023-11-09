@@ -431,6 +431,10 @@
   padding-left: 20px;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold.cursor-pointer.capitialize {
   text-transform: capitalize;
 }
@@ -1489,6 +1493,10 @@
 
 .color-grey-600.ml-20 {
   margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
 }
 
 .interview-about-company {

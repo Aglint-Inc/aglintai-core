@@ -28,8 +28,6 @@
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -89,8 +87,6 @@
   width: 100%;
   height: 100%;
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;

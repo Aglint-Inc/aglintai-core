@@ -15,6 +15,11 @@
   outline-width: 1px;
 }
 
+.ic-import-body-wrapper.ptb-35 {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
 .ic-import-body-block {
   display: flex;
   max-width: 355px;
@@ -43,6 +48,10 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .text-grey-600 {

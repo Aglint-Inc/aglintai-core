@@ -343,6 +343,10 @@
   cursor: pointer;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .sort-prio {
   display: flex;
   align-items: center;

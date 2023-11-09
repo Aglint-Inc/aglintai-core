@@ -7,4 +7,5 @@ declare function LeverModal(props: {
   onClickContinue?: Types.Devlink.RuntimeProps;
   slotSearch?: Types.Devlink.Slot;
   slotApiKey?: Types.Devlink.Slot;
+  slotLogo?: Types.Devlink.Slot;
 }): React.JSX.Element;

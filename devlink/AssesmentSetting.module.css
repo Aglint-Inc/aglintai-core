@@ -212,6 +212,10 @@
   margin-left: 20px;
 }
 
+.color-grey-600.mt-12 {
+  margin-top: 12px;
+}
+
 .toggle-ai-assesment {
   display: flex;
   margin-top: 15px;

@@ -68,6 +68,10 @@
   cursor: pointer;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .loading-generate {
   z-index: 2;
 

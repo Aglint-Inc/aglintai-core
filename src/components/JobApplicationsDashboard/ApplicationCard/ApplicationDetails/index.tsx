@@ -48,7 +48,7 @@ import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
-import { getGravatar } from '..';
+import { getName } from '..';
 import { applicationValidity } from '../utils';
 import { emailHandler } from '../..';
 import CompanyLogo from '../../Common/CompanyLogo';
@@ -78,15 +78,11 @@ const ApplicationDetails = ({
 
   const candidateImage = applicationDetails ? (
     <MuiAvatar
-      level={applicationDetails.candidates.first_name}
-      src={
-        !applicationDetails.candidates.profile_image
-          ? getGravatar(
-              applicationDetails.candidates.email,
-              applicationDetails?.candidates.first_name,
-            )
-          : applicationDetails.candidates.profile_image
-      }
+      level={getName(
+        applicationDetails.candidates.first_name,
+        applicationDetails.candidates.last_name,
+      )}
+      src={applicationDetails.candidates.profile_image}
       variant={'rounded'}
       width={'100%'}
       height={'100%'}
@@ -171,10 +167,9 @@ const NewDetailedFeedback = ({
         },
       }}
       slotCandidateImage={candidateImage}
-      textName={capitalize(
-        applicationDetails.candidates.first_name +
-          ' ' +
-          applicationDetails.candidates.last_name,
+      textName={getName(
+        applicationDetails.candidates.first_name,
+        applicationDetails.candidates.last_name,
       )}
       textMail={
         applicationDetails.candidates.email
@@ -245,7 +240,7 @@ export const DetailedInterviewFeedbackParams = ({
       f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     const circularScore = (
       <Stack style={{ transform: 'scale(0.3)' }}>
-        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 score={f.rating} />
       </Stack>
     );
     return (
@@ -344,9 +339,9 @@ const NewJobApplicationSideDrawer = ({
         applicationDetails.candidates.linkedin !== ''
       }
       isCopiedMessageVisible={copy}
-      linkedinLink={{
-        href: applicationDetails.candidates.linkedin,
-        target: '_blank',
+      onClickLinkedin={{
+        onClick: () =>
+          window.open(applicationDetails.candidates.linkedin, '_blank'),
       }}
     />
   );
@@ -588,7 +583,7 @@ export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
       <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
-        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 score={f.rating} />
       </Stack>
     );
     const color =
@@ -788,10 +783,7 @@ export function Transcript({
                 {ele.userContent && (
                   <ConversationCard
                     cardFor={undefined}
-                    roleImage={getGravatar(
-                      applicationDetails.candidates.email,
-                      applicationDetails.candidates.first_name,
-                    )}
+                    roleImage={applicationDetails.candidates.profile_image}
                     roleName={applicationDetails.candidates.first_name}
                     textForSpeech={ele.userContent}
                     src={ele.userVoice}

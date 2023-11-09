@@ -1,7 +1,7 @@
 .edit-close-job {
   padding-top: 47px;
   padding-bottom: 47px;
-  padding-left: 178px;
+  padding-left: 20px;
   border-top: 1px solid #e9ebed;
 }
 
@@ -20,6 +20,10 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .text-grey-600 {
@@ -253,6 +257,10 @@
 
 .color-grey-600.ml-20 {
   margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
 }
 
 .close-job-btn {

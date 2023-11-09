@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 function CameraHolder() {
@@ -43,10 +42,7 @@ function CameraHolder() {
     <>
       {cameraFailed ? (
         <MuiAvatar
-          src={getGravatar(
-            candidateDetails?.email,
-            candidateDetails?.first_name,
-          )}
+          src={candidateDetails.profile_image}
           // src={undefined}
           fontSize={'200px'}
           height={'calc(100% - 245px)'}

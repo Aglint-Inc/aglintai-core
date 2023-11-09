@@ -337,6 +337,10 @@
   grid-row-gap: 10px;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;

@@ -269,6 +269,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -455,6 +459,10 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .text-grey-600-3 {

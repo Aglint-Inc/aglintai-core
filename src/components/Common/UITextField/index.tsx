@@ -115,7 +115,7 @@ const UITextField = React.forwardRef(
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
-          inputProps={{ maxLength: contentLimit || false }}
+          inputProps={{ maxLength: contentLimit || 48 }}
           onChange={onChange}
           onKeyDown={(e: ReturnType<typeof onkeydown>) => {
             checkMaxLength(e.target.value);

@@ -13,6 +13,10 @@
   grid-row-gap: 24px;
 }
 
+.sl-company-title-block.align-center {
+  align-items: center;
+}
+
 .sl-company-image-block {
   display: flex;
   overflow: hidden;
