@@ -156,7 +156,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      router.push('/signup');
+      router.push(pageRoutes.LOGIN);
     }
   };
 

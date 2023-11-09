@@ -8,4 +8,6 @@ declare function RecLoginPage(props: {
   contactLink?: Types.Basic.Link;
   onclickGoogle?: Types.Devlink.RuntimeProps;
   onclickLinkedIn?: Types.Devlink.RuntimeProps;
+  onclickSignup?: Types.Devlink.RuntimeProps;
+  onclickForgotPassword?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

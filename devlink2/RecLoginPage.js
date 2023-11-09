@@ -14,6 +14,8 @@ export function RecLoginPage({
 
   onclickGoogle = {},
   onclickLinkedIn = {},
+  onclickSignup = {},
+  onclickForgotPassword = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-main-wrapper")} tag="div">
@@ -105,6 +107,43 @@ export function RecLoginPage({
                 tag="div"
               >
                 {"Login"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-390")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "sl-inline-block")}
+                  tag="div"
+                >
+                  {"Don’t have an account?"}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "sl-inline-block",
+                    "sign-up-link"
+                  )}
+                  tag="div"
+                  {...onclickSignup}
+                >
+                  {"Sign up now"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "sl-inline-block",
+                    "sign-up-link"
+                  )}
+                  tag="div"
+                  {...onclickForgotPassword}
+                >
+                  {"Forgot Password?"}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

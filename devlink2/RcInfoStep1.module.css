@@ -9,10 +9,6 @@
   grid-row-gap: 56px;
 }
 
-@media screen and (min-width: 1280px) {
-
-}
-
 .sl-company-details-wrapper.gap-30 {
   grid-column-gap: 30px;
   grid-row-gap: 30px;

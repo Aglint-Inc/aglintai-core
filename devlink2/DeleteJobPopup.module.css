@@ -60,6 +60,8 @@
   justify-content: center;
   align-items: center;
 
+  color: var(--grey-600);
+
   object-fit: contain;
 }
 
@@ -85,12 +87,16 @@
   bottom: 0%;
   z-index: 99;
 
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .icon-embed.sort {
   position: relative;
   z-index: 5;
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .text-lg {
@@ -203,10 +209,6 @@
 
 .text-kale-500 {
   color: hsla(181.11111111111111, 27.84%, 38.04%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .text-grey-400 {

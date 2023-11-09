@@ -403,6 +403,8 @@
   justify-content: center;
   align-items: center;
 
+  color: var(--grey-600);
+
   object-fit: contain;
 }
 
@@ -422,7 +424,7 @@
   bottom: 0%;
   z-index: 99;
 
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .icon-embed.sort {
@@ -556,6 +558,8 @@
   height: 36px;
   min-width: 220px;
   justify-content: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
 .cv-list-column.score.gap-4 {
@@ -578,9 +582,9 @@
 }
 
 .cv-list-column.date {
-  width: 260px;
-  min-width: 260px;
-  justify-content: flex-end;
+  width: 220px;
+  min-width: 220px;
+  margin-right: 0px;
   text-align: right;
 }
 
@@ -666,10 +670,6 @@
 
 .cv-list-row-main.item:hover {
   background-color: var(--grey-100);
-}
-
-.sort-arrows-wrapper {
-  margin-left: auto;
 }
 
 .sort-arrows-wrapper.ml-8 {

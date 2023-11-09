@@ -7,5 +7,5 @@ declare function RcFormRadio(props: {
   isClicked?: Types.Visibility.VisibilityConditions;
   name?: React.ReactNode;
   isImageAvailabe?: Types.Visibility.VisibilityConditions;
-  image?: Types.Asset.Image;
+  slotImage?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -59,6 +59,8 @@ export const stepObj = {
   signin: 'signin',
   detailsOne: 'details-one',
   detailsTwo: 'details-two',
+  atsSystem: 'select-ats-system',
+  useGoal: 'use-goal',
   allSet: 'all-set',
 };
 

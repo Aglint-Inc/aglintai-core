@@ -4,7 +4,11 @@ import { RcCheckbox } from "./RcCheckbox";
 import * as _utils from "./utils";
 import _styles from "./RcGoalsBlock.module.css";
 
-export function RcGoalsBlock({ as: _Component = _Builtin.Block, slotButtons }) {
+export function RcGoalsBlock({
+  as: _Component = _Builtin.Block,
+  slotButtons,
+  slotCheckboxes,
+}) {
   return (
     <_Component className={_utils.cx(_styles, "sl-goal-wrapper")} tag="div">
       <_Builtin.Block
@@ -28,10 +32,7 @@ export function RcGoalsBlock({ as: _Component = _Builtin.Block, slotButtons }) {
         className={_utils.cx(_styles, "sl-goal-check-wrapper")}
         tag="div"
       >
-        <RcCheckbox text="Sourcing new candidates" />
-        <RcCheckbox text="Filtering candidates" />
-        <RcCheckbox text="AI-based candidate screening" />
-        <RcCheckbox text="All of the above" />
+        {slotCheckboxes ?? <RcCheckbox text="Sourcing new candidates" />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sl-goal-buttons-wrapper")}

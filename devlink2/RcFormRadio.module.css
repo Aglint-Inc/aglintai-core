@@ -7,10 +7,13 @@
 
 .sl-radio-btn {
   position: relative;
+
   width: 16px;
   height: 16px;
   min-height: 16px;
   min-width: 16px;
+
+  cursor: pointer;
 }
 
 .sl-radio-btn-inner {

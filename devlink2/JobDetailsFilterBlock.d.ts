@@ -8,4 +8,5 @@ declare function JobDetailsFilterBlock(props: {
   slotSearch?: Types.Devlink.Slot;
   onClickUpload?: Types.Devlink.RuntimeProps;
   slotFilter?: Types.Devlink.Slot;
+  isAddCandidatesVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

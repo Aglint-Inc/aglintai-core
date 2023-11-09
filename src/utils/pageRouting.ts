@@ -1,5 +1,5 @@
 export const pageRoutes = Object.freeze({
-  LOGIN: '/signup?step=signin',
+  LOGIN: '/login',
   SIGNUP: '/signup',
   FORGOT_PASSWORD: '/forgot-password',
   RESETPASSWORD: '/reset-password',

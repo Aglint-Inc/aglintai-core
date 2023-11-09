@@ -7,10 +7,15 @@ export function RcCheckbox({
   as: _Component = _Builtin.Block,
   isChecked = false,
   text = "This is some text inside of a div block.",
+  onclickCheck = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-checkbox-block")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "sl-checkbox")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "sl-checkbox")}
+        tag="div"
+        {...onclickCheck}
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "sl-checkbox-inner")}
           tag="div"
