@@ -410,8 +410,11 @@ function CompanyDetails() {
           email_template: getInitialEmailTemplate(recruiter.name),
         })
         .eq('id', recruiter.id);
-
-      if (!e1) {
+      const { error: e2 } = await supabase
+        .from('recruiter_user')
+        .update({ phone: phone })
+        .eq('recruiter_id', recruiter.id);
+      if (!(e1 && e2)) {
         router.push(`?step=${stepObj.atsSystem}`, undefined, {
           shallow: true,
         });
