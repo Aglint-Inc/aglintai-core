@@ -243,6 +243,7 @@
 .sl-link {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .sl-link:hover {

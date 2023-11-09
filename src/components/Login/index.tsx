@@ -157,7 +157,7 @@ function Login() {
           },
         }}
         contactLink={{
-          href: 'mailto:someone@example.com',
+          href: 'mailto:admin@aglinthq.com',
         }}
         onclickGoogle={{
           onClick: () => {

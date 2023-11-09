@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { RcCheckbox, RcGoalsBlock, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -12,16 +12,16 @@ import AUIButton from '../../Common/AUIButton';
 function SelectGoal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setStep } = useSignupDetails();
-  const [selectedObject, setSelectedObject] = useState(
-    recruiter?.use_of_purpose,
-  );
-
+  const [selectedObject, setSelectedObject] = useState([]);
+  useEffect(() => {
+    setSelectedObject(recruiter.use_of_purpose as any);
+  }, [recruiter]);
   const router = useRouter();
-  async function handleContinue() {
+  async function handleContinue(ang) {
     const { data, error } = await supabase
       .from('recruiter')
       .update({
-        use_of_purpose: selectedObject,
+        use_of_purpose: ang === 'skip' ? [] : selectedObject,
       })
       .eq('id', recruiter.id)
       .select();
@@ -43,10 +43,27 @@ function SelectGoal() {
                 <RcCheckbox
                   onclickCheck={{
                     onClick: () => {
-                      setSelectedObject(ele);
+                      if (ele === 'All of the above') {
+                        if (selectedObject.some((e) => e === ele)) {
+                          setSelectedObject([]);
+                          return;
+                        }
+                        setSelectedObject(objectData);
+                        return;
+                      }
+                      setSelectedObject((pre) => {
+                        if (pre.some((e) => e === 'All of the above')) {
+                          setSelectedObject([ele]);
+                        }
+                        if (pre.some((e) => e === ele)) {
+                          const filtered = pre.filter((data) => data != ele);
+                          return [...filtered];
+                        }
+                        return [...pre, ele];
+                      });
                     },
                   }}
-                  isChecked={selectedObject === ele}
+                  isChecked={selectedObject.some((e) => e === ele)}
                   text={ele}
                   key={i}
                 />
@@ -56,11 +73,16 @@ function SelectGoal() {
               <>
                 <AUIButton
                   disabled={selectedObject === null}
-                  onClick={handleContinue}
+                  onClick={() => handleContinue('continue')}
                 >
                   Continue
                 </AUIButton>
-                <AUIButton variant='text'> Skip</AUIButton>
+                <AUIButton
+                  onClick={() => handleContinue('skip')}
+                  variant='text'
+                >
+                  Skip
+                </AUIButton>
               </>
             }
           />

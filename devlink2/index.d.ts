@@ -12,6 +12,7 @@ export * from "./CandidateListItem";
 export * from "./CandidateSelectionPopup";
 export * from "./CandidateStatusDropdown";
 export * from "./CloseJobBtn";
+export * from "./CompanyProfileHeader";
 export * from "./DeleteJobPopup";
 export * from "./DelJobBtn";
 export * from "./EmailTemplate";

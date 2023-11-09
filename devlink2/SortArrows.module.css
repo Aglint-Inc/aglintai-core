@@ -63,6 +63,18 @@
   opacity: 0.8;
 }
 
+.icon-block._30px {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+}
+
+.icon-block._30px.rs-add {
+  border-radius: 6px;
+  background-color: hsla(0, 0.00%, 33.73%, 1.00);
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
