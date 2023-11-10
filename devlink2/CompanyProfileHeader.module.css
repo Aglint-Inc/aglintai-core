@@ -1,23 +1,13 @@
 .rs-header-block-left {
   display: flex;
-  overflow: hidden;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
 
-.rs-header-block-left.clickable {
+.rs-header-block-left.profile-info {
   margin-top: 6px;
   margin-bottom: 6px;
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
 }
 
 .hide {

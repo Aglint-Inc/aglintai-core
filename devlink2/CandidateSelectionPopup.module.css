@@ -165,6 +165,14 @@
   z-index: 5;
 }
 
+.grey-600 {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-red-300 {
+  color: hsla(355.3125, 76.19%, 83.53%, 1.00);
+}
+
 .cansel-popup-body {
   display: flex;
   padding: 22px 28px;

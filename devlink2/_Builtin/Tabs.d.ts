@@ -42,6 +42,7 @@ type TabsLinkProps = Props<
 >;
 export declare function TabsLink({
   className,
+  children,
   ...props
 }: TabsLinkProps): React.JSX.Element;
 type TabsContentProps = {

@@ -62,7 +62,9 @@ export const EASING_FUNCTIONS = {
   "ease-in-out-back": "cubic-bezier(0.68, -0.6, 0.32, 1.6)",
 };
 export const isServer = typeof window === "undefined";
-export const useLayoutEffect = isServer ? () => {} : React.useLayoutEffect;
+export const useLayoutEffect = isServer
+  ? () => undefined
+  : React.useLayoutEffect;
 export function useResizeObserver(ref, fn, options) {
   const [prevWidth, setPrevWidth] = React.useState(
     ref.current?.clientWidth || 0
@@ -186,8 +188,8 @@ export function useClickOut(ref, action) {
 }
 export function extractElement(elements, type) {
   let extracted;
-  function removeElementByType(elements) {
-    return elements.map((element) => {
+  function removeElementByType(_elements) {
+    return _elements.map((element) => {
       if (!React.isValidElement(element)) {
         return element;
       }

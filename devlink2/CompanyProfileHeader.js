@@ -11,7 +11,7 @@ export function CompanyProfileHeader({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "rs-header-block-left", "clickable")}
+      className={_utils.cx(_styles, "rs-header-block-left", "profile-info")}
       tag="div"
       {...onclickCompany}
     >

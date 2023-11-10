@@ -182,13 +182,16 @@ export function JobDetails({
           className={_utils.cx(_styles, "candidates-view-main")}
           tag="div"
         >
-          <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
-            {slotTabs ?? <JobDetailsTabs />}
-          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-tab-content-wrapper")}
             tag="div"
           >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "jdet-tabs")}
+              tag="div"
+            >
+              {slotTabs ?? <JobDetailsTabs />}
+            </_Builtin.Block>
             {isFiltersVisible ? (
               <_Builtin.Block tag="div">
                 {slotFilterBlock ?? <JobDetailsFilterBlock />}

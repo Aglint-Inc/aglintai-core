@@ -728,7 +728,7 @@ const NewEducationDetails = ({ education }) => {
 
 const NewExperienceDetails = ({ work }) => {
   const workList = work.reduce((acc, w, i) => {
-    if (w.name && w.position) {
+    if (w.name) {
       acc.push(
         <CandidateExperienceCard
           key={i}
@@ -739,13 +739,19 @@ const NewExperienceDetails = ({ work }) => {
           }
           textRole={w.position}
           textCompany={w.name}
-          textDate={`${w.startDate} - ${w.endDate}`}
+          textDate={`${w.startDate} ${w.startDate && w.endDate ? '-' : ''} ${
+            w.endDate
+          }`}
         />,
       );
     }
     return acc;
   }, []);
-  return <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />;
+  return workList.length !== 0 ? (
+    <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />
+  ) : (
+    <></>
+  );
 };
 
 const NewSkillDetails = ({ skills }) => {

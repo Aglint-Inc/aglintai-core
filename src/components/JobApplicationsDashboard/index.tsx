@@ -2,7 +2,14 @@
 import { Dialog, Slider, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { ImportCandidates } from '@/devlink';
 import {
@@ -447,7 +454,7 @@ const ApplicationFilterSlider = ({
   };
 
   useEffect(() => {
-    if (value[0] !== 0 || value[1] !== 100) {
+    if (!initialRef.current && (value[0] !== 0 || value[1] !== 100)) {
       setValue([0, 100]);
     }
   }, [updateTick]);
@@ -619,15 +626,20 @@ const ApplicantsList = ({
     if (node) observer.current.observe(node);
   };
 
+  const scrollToRef = useRef(undefined);
+  useEffect(() => {
+    if (currentApplication > -1)
+      scrollToRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+  }, [currentApplication]);
+
+  const emptyList = useMemo(() => <EmptyList section={section} />, [section]);
+
   return applications.length === 0 ? (
-    <Stack height={'50vh'} justifyContent={'center'}>
-      <Stack>
-        <ApplicantsListEmpty
-          textEmpty={section}
-          slotLottie={<NoApplicants />}
-        />
-      </Stack>
-    </Stack>
+    emptyList
   ) : (
     <>
       {applications.map((application, i) => {
@@ -645,15 +657,17 @@ const ApplicantsList = ({
             }
             id={`job-application-stack-${i}`}
           >
-            <ApplicationCard
-              application={application}
-              index={i}
-              checkList={checkList}
-              handleSelect={handleSelect}
-              isInterview={section !== JobApplicationSections.NEW}
-              handleOpenDetails={() => handleSelectCurrentApplication(i)}
-              isSelected={currentApplication === i}
-            />
+            <Stack ref={currentApplication === i ? scrollToRef : null}>
+              <ApplicationCard
+                application={application}
+                index={i}
+                checkList={checkList}
+                handleSelect={handleSelect}
+                isInterview={section !== JobApplicationSections.NEW}
+                handleOpenDetails={() => handleSelectCurrentApplication(i)}
+                isSelected={currentApplication === i}
+              />
+            </Stack>
           </Stack>
         );
       })}
@@ -663,6 +677,23 @@ const ApplicantsList = ({
         </Stack>
       )}
     </>
+  );
+};
+
+const EmptyList = ({ section }: { section: JobApplicationSections }) => {
+  return (
+    <Stack height={'50vh'} justifyContent={'center'}>
+      <Stack>
+        <ApplicantsListEmpty
+          textEmpty={
+            section === JobApplicationSections.INTERVIEWING
+              ? 'assessment'
+              : section
+          }
+          slotLottie={<NoApplicants />}
+        />
+      </Stack>
+    </Stack>
   );
 };
 
