@@ -19,14 +19,16 @@ function ImageUpload({
   size,
   table,
   handleUpdateProfile = null,
-  dynamic=false,
-  }: {
+  dynamic = false,
+  changeCallback,
+}: {
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
   size: number;
   table: 'company-logo' | 'recruiter-user';
   handleUpdateProfile?: any;
-  dynamic?:boolean;
+  dynamic?: boolean;
+  changeCallback?: any;
 }) {
   const router = useRouter();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
@@ -58,6 +60,13 @@ function ImageUpload({
             process.env.NEXT_PUBLIC_SUPABASE_URL
           }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
         );
+      changeCallback &&
+        changeCallback(
+          `${
+            process.env.NEXT_PUBLIC_SUPABASE_URL
+          }/storage/v1/object/public/${table}/${data?.path}?t=${new Date().toISOString()}`,
+        );
+
       if (handleUpdateProfile) {
         await handleUpdateProfile({
           profile_image: `${
@@ -87,8 +96,8 @@ function ImageUpload({
             <Avatar
               src={image}
               sx={{
-                width: dynamic?'100%':size,
-                height: dynamic?'100%': size,
+                width: dynamic ? '100%' : size,
+                height: dynamic ? '100%' : size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
                   objectFit: 'contain',

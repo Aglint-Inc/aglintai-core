@@ -103,7 +103,7 @@ function JobForm() {
         setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
       }
 
-      if (isEmpty(company.trim())) {
+      if (isEmpty(company?.trim())) {
         flag = false;
         setFormError((p) => ({ ...p, company: 'Please Enter Company Name' }));
       }

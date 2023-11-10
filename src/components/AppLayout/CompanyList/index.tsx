@@ -12,7 +12,8 @@ import AddNewCompany from './AddNewCompany';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 function CompanyList() {
   const router = useRouter();
-  const { recruiterUser, userDetails, setRecruiter } = useAuthDetails();
+  const { recruiterUser, userDetails, recruiter, setRecruiter } =
+    useAuthDetails();
   const [allCompanies, setAllCompanies] = useState([]);
   async function getCompanies() {
     const { data, error } = await supabase
@@ -34,7 +35,7 @@ function CompanyList() {
 
       getCompanies();
     }
-  }, [userDetails]);
+  }, [userDetails, recruiter]);
 
   const [openSideBar, setOpenSideBar] = useState(false);
 
