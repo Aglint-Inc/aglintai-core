@@ -13,7 +13,6 @@ import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';
 import {
-  createSampleJobCandidate,
   handleEmail,
   handlePassword,
   stepObj,
@@ -131,7 +130,6 @@ const SlideTwoSignUp = () => {
           .select();
         if (!error) {
           setRecruiter(data[0] as RecruiterType);
-          await createSampleJobCandidate(data[0].id);
           const { data: recruiterUser, error: erroruser } = await supabase
             .from('recruiter_user')
             .insert({

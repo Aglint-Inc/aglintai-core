@@ -7,7 +7,6 @@ import React, { useEffect } from 'react';
 import { LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
 import {
-  createSampleJobCandidate,
   handleEmail,
   stepObj,
 } from '@/src/components/SignUpComp/SlideSignup/utils';
@@ -95,7 +94,6 @@ export default function Loading() {
                   })
                   .select();
               if (!errorRecruiter) {
-                await createSampleJobCandidate(dataRecruiter[0].id);
                 const { error: erroruser } = await supabase
                   .from('recruiter_user')
                   .insert({

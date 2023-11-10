@@ -82,7 +82,8 @@ export default function AppLayout({ children }) {
           width={'260px'}
         >
           <Stack height={'calc(100vh - 44px)'}>
-            {userDetails.user.user_metadata.role === 'recruiter' ? (
+            {userDetails.user.user_metadata.role.toLowerCase() ===
+            'recruiter' ? (
               <CompanyProfileHeader
                 companyName={companyName}
                 slotLogo={

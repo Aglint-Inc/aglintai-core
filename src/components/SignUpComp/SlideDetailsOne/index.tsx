@@ -10,8 +10,8 @@ import { SocialsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import Loader from '../Loader/Index';
-import { getInitialEmailTemplate } from '../SlideDetailsTwo';
 import { stepObj } from '../SlideSignup/utils';
+import { getInitialEmailTemplate } from '../../AppLayout/utils';
 import AUIButton from '../../Common/AUIButton';
 import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
@@ -35,8 +35,7 @@ interface ErrorField {
 const SlideDetailsOne = () => {
   return (
     <>
-      <RecCompanyDetails
-       slotMain={<FetchCompanyDetails />} />
+      <RecCompanyDetails slotMain={<FetchCompanyDetails />} />
     </>
   );
 };
@@ -230,7 +229,6 @@ export function FetchCompanyDetails() {
   }
   return (
     <RcInfoStep1
-
       slotInput={
         <>
           <Stack
@@ -270,7 +268,6 @@ export function FetchCompanyDetails() {
           </Stack>
         </>
       }
-
       slotDetails={
         <>
           {loading ? (
@@ -429,7 +426,6 @@ export function CompanyDetails() {
   };
   return (
     <RcInfoForm
-
       slotLogo={
         <ImageUpload
           image={logo}

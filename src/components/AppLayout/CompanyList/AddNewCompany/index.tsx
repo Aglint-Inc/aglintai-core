@@ -11,9 +11,10 @@ import UITypography from '@/src/components/Common/UITypography';
 import { sizes } from '@/src/components/CompanyDetailComp/CompanyInfoComp';
 import Loader from '@/src/components/SignUpComp/Loader/Index';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
-import { getInitialEmailTemplate } from '@/src/components/SignUpComp/SlideDetailsTwo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
+
+import { getInitialEmailTemplate } from '../../utils';
 
 interface Error {
   website: ErrorField;
