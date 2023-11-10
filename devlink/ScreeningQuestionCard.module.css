@@ -35,6 +35,7 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  background-color: var(--gray-100);
 }
 
 .generate-overaly {
@@ -452,7 +453,7 @@
 
 .cursor-pointer-audio-indi {
   position: absolute;
-  left: 45px;
+  left: 11px;
   top: 11px;
   right: auto;
   bottom: auto;
@@ -560,20 +561,15 @@
   margin-top: 10px;
 }
 
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
+}
+
 .color-grey-600.ml-20 {
   margin-left: 20px;
 }
 
 .color-grey-600.mt-12 {
   margin-top: 12px;
-}
-
-.active-screening-card {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: #f8f9f9;
 }
