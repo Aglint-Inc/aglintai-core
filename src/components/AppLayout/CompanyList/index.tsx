@@ -12,8 +12,7 @@ import AddNewCompany from './AddNewCompany';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 function CompanyList() {
   const router = useRouter();
-  const { recruiterUser, userDetails, recruiter, setRecruiter } =
-    useAuthDetails();
+  const { recruiterUser, userDetails, setRecruiter } = useAuthDetails();
   const [allCompanies, setAllCompanies] = useState([]);
   async function getCompanies() {
     const { data, error } = await supabase
@@ -31,11 +30,9 @@ function CompanyList() {
   }
   useEffect(() => {
     if (userDetails.user.user_metadata.role !== 'recruiter') {
-      // get all recruiter companies
-
       getCompanies();
     }
-  }, [userDetails, recruiter]);
+  }, [userDetails]);
 
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -52,8 +49,10 @@ function CompanyList() {
       .update({ recruiter_active: status })
       .eq('id', id)
       .select()
-      .then(() => {
-        getCompanies();
+      .then(({ data }) => {
+        if (data[0]?.recruiter_active) {
+          getCompanies();
+        }
       });
   }
 
@@ -102,6 +101,9 @@ function CompanyList() {
                   onclickCompany={{
                     onClick: () => {
                       if (i === 0) {
+                        document
+                          .getElementById('company-switch-arrows')
+                          .click();
                         router.push(pageRoutes.COMPANY);
                       } else {
                         handleClick(ele);

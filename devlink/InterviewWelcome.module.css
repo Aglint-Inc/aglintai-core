@@ -1,5 +1,6 @@
 .interview-start-wrapper {
   overflow: auto;
+  height: 100vh;
   min-height: 100dvh;
   padding: 50px 20px;
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
@@ -1493,6 +1494,11 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
 }
 
 .color-grey-600.ml-20 {

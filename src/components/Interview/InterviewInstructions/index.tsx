@@ -8,7 +8,7 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import Loader from '../../Common/Loader';
+import Loader from '../../SignUpComp/Loader/Index';
 function InterviewInstructions() {
   const { initialLoading, jobDetails, candidateDetails } =
     useInterviewDetailsContext();
@@ -67,6 +67,7 @@ function InterviewInstructions() {
   const [videoUrl, setVideoUrl] = useState('');
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
   function onVideoPlay() {
     if (!playing) {
       videoRef.current.play();
@@ -77,19 +78,34 @@ function InterviewInstructions() {
   }
 
   useEffect(() => {
-    if (jobDetails?.intro_videos?.videoId)
-      getIntroVideo(jobDetails?.intro_videos?.videoId);
+    setLoading(false);
+    if (
+      !jobDetails?.intro_videos?.isVideoAiGenerated &&
+      jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl
+    )
+      setVideoUrl(jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl);
+    if (
+      jobDetails?.intro_videos?.isVideoAiGenerated &&
+      jobDetails?.intro_videos?.aiGeneratedVideoInfo?.videoId
+    )
+      getIntroVideo(jobDetails?.intro_videos?.aiGeneratedVideoInfo?.videoId);
+    setLoading(false);
   }, [jobDetails]);
 
   async function getIntroVideo(id: any) {
-    const { data, error } = await supabase
-      .from('ai_videos')
-      .select()
-      .eq('video_id', id);
+    if (!jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl && id) {
+      const { data, error } = await supabase
+        .from('ai_videos')
+        .select()
+        .eq('video_id', id);
 
-    if (!error) {
-      setVideoUrl(data[0].file_url);
-      return data[0];
+      if (data && !error) {
+        setVideoUrl(data[0].file_url);
+        return data[0];
+      }
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   }
 
@@ -98,9 +114,15 @@ function InterviewInstructions() {
   }
 
   return (
-    <div>
+    <>
       {initialLoading ? (
-        <Stack width={'100%'} height={'100vh'}>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          width={'100vw'}
+          height={'100vh'}
+        >
           <Loader />
         </Stack>
       ) : (
@@ -131,18 +153,37 @@ function InterviewInstructions() {
                 );
             })}
           <InterviewWelcome
-            slotWelcomeVideo={
-              // eslint-disable-next-line jsx-a11y/media-has-caption
-              <video
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
+            slotAssessmentInstruction={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: jobDetails?.interview_instructions,
                 }}
-                src={videoUrl}
-                ref={videoRef}
-                onEnded={handleVideoEnded}
               />
+            }
+            slotWelcomeVideo={
+              loading ? (
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  width={'100%'}
+                  height={'100%'}
+                >
+                  <Loader />
+                </Stack>
+              ) : (
+                // eslint-disable-next-line jsx-a11y/media-has-caption
+                <video
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                  src={videoUrl}
+                  ref={videoRef}
+                  onEnded={handleVideoEnded}
+                />
+              )
             }
             onClickPause={{
               onClick: onVideoPlay,
@@ -152,7 +193,9 @@ function InterviewInstructions() {
             }}
             isPauseButtonVisible={playing}
             isPlayButtonVisible={!playing}
-            isWelcomeVideoVisible={videoUrl}
+            isWelcomeVideoVisible={
+              jobDetails?.intro_videos?.showInstructionVideo && videoUrl
+            }
             isPlayPuaseVisible={true}
             onClickSupport={{
               onClick: () => {
@@ -191,7 +234,7 @@ function InterviewInstructions() {
           />
         </>
       )}
-    </div>
+    </>
   );
 }
 

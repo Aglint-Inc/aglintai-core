@@ -25,6 +25,7 @@ export function InterviewWelcome({
   onClickPlay = {},
   onClickPause = {},
   isWelcomeVideoVisible = true,
+  slotAssessmentInstruction,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -156,113 +157,119 @@ export function InterviewWelcome({
             className={_utils.cx(_styles, "instruction-wrapper")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-lg",
-                "fw-semibold",
-                "color-grey-600"
-              )}
-              tag="div"
-            >
-              {"Assessment Instructions"}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              <_Builtin.List
-                className={_utils.cx(_styles, "instruction")}
-                tag="ul"
-                unstyled={false}
-              >
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
+            {slotAssessmentInstruction ?? (
+              <>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-lg",
+                    "fw-semibold",
+                    "color-grey-600"
+                  )}
+                  tag="div"
                 >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Quiet Environment"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
+                  {"Assessment Instructions"}
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  <_Builtin.List
+                    className={_utils.cx(_styles, "instruction")}
+                    tag="ul"
+                    unstyled={false}
                   >
-                    {
-                      "Choose a quiet place to take the assessment where you will not be interrupted."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Interruptions"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "If the assessment is stopped for any reason, you will need to start over from the beginning."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Question Types"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "You will be asked questions based on the job requirements. Prepare yourself accordingly."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Answer Submission"}
-                    <br />
-                  </_Builtin.Span>
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "You have the option to submit your answers via voice or by typing them out."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Timing"}
-                    <br />
-                  </_Builtin.Span>
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-              </_Builtin.List>
-            </_Builtin.Block>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Quiet Environment"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "Choose a quiet place to take the assessment where you will not be interrupted."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Interruptions"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "If the assessment is stopped for any reason, you will need to start over from the beginning."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Question Types"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "You will be asked questions based on the job requirements. Prepare yourself accordingly."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Answer Submission"}
+                        <br />
+                      </_Builtin.Span>
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "You have the option to submit your answers via voice or by typing them out."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Timing"}
+                        <br />
+                      </_Builtin.Span>
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                  </_Builtin.List>
+                </_Builtin.Block>
+              </>
+            )}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "start-interview-wrappers")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {
-                'Please take a moment to go through the tour before starting your assessment. Once you\'re ready, click the "Start Assessment" button. Good luck!'
-              }
-            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-471")}
               tag="div"
