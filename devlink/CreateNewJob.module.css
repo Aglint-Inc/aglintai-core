@@ -7,8 +7,6 @@
 }
 
 .new-create-job-header {
-  position: sticky;
-  top: 0px;
   z-index: 4;
 
   display: flex;
@@ -421,14 +419,10 @@
 }
 
 .div-block-503 {
-  position: sticky;
-  top: 55px;
   z-index: 4;
-
   padding-top: 35px;
   padding-bottom: 10px;
   padding-left: 20px;
-
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
@@ -611,6 +605,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.height-scroll {
+  display: flex;
+  overflow: scroll;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .slot-create-job-new-wrapper {

@@ -3,8 +3,8 @@ import { triggerIXEvent } from "../interactions";
 import { cj, debounce, EASING_FUNCTIONS, useLayoutEffect } from "../utils";
 const tabsContext = React.createContext({
   current: "",
-  onTabClick: () => {},
-  onLinkKeyDown: () => {},
+  onTabClick: () => undefined,
+  onLinkKeyDown: () => undefined,
 });
 export function TabsWrapper({
   className = "",
@@ -99,7 +99,7 @@ export function TabsMenu({ tag = "div", className = "", ...props }) {
     role: "tablist",
   });
 }
-export function TabsLink({ className = "", ...props }) {
+export function TabsLink({ className = "", children, ...props }) {
   const { current, onTabClick, onLinkKeyDown } = React.useContext(tabsContext);
   const isCurrent = current === props["data-w-tab"];
   const ref = React.useCallback(
@@ -124,7 +124,9 @@ export function TabsLink({ className = "", ...props }) {
       tabIndex={isCurrent ? 0 : -1}
       aria-selected={isCurrent}
       aria-controls={props["data-w-tab"]}
-    />
+    >
+      {children}
+    </a>
   );
 }
 export function TabsContent({ tag = "div", className = "", ...props }) {

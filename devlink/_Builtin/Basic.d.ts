@@ -36,6 +36,7 @@ export declare const Link: ({
   options,
   className,
   button,
+  children,
   ...props
 }: LinkProps) => React.JSX.Element;
 type ListProps = Props<
@@ -66,7 +67,7 @@ type ImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
 >;
-export declare function Image(props: ImageProps): React.JSX.Element;
+export declare function Image({ alt, ...props }: ImageProps): React.JSX.Element;
 export declare function Section({
   tag,
   ...props
@@ -553,7 +554,7 @@ export declare function Column({
 type RowProps = Props<
   "div",
   {
-    children: React.ReactElement<typeof Column>[];
+    children: React.ReactElement<ColumnProps>[];
     tag: React.ElementType;
     columns: {
       [key: string]: string;

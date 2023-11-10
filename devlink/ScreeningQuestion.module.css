@@ -10,6 +10,15 @@
   padding-bottom: 60px;
 }
 
+.relative {
+  position: relative;
+}
+
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .instruction-wrap {
   display: flex;
   flex-direction: column;
@@ -318,10 +327,6 @@
   z-index: 2;
 }
 
-.relative {
-  position: relative;
-}
-
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -481,6 +486,17 @@
   margin-bottom: 76px;
   border: 1px solid #e9ebed;
   border-radius: 10px;
+}
+
+.fake-div-trigger {
+  position: absolute;
+  left: 0%;
+  top: -33%;
+  right: auto;
+  bottom: auto;
+
+  width: 0px;
+  height: 0px;
 }
 
 .accessment-wrap {

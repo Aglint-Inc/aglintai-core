@@ -34,10 +34,9 @@ export function AssessmentScrollMenu({
           className={_utils.cx(_styles, "scroll-btn-menu")}
           tag="div"
         >
-          <_Builtin.Link
+          <_Builtin.Block
             className={_utils.cx(_styles, "div-block-563")}
-            button={false}
-            options={linkInstruction}
+            tag="div"
             {...onClickInstructions}
           >
             <_Builtin.Block
@@ -46,7 +45,7 @@ export function AssessmentScrollMenu({
             >
               {"Instructions"}
             </_Builtin.Block>
-          </_Builtin.Link>
+          </_Builtin.Block>
           {isInstructionActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active-blue-bg")}
@@ -65,10 +64,9 @@ export function AssessmentScrollMenu({
           className={_utils.cx(_styles, "scroll-btn-menu")}
           tag="div"
         >
-          <_Builtin.Link
+          <_Builtin.Block
             className={_utils.cx(_styles, "div-block-563")}
-            button={false}
-            options={linkMode}
+            tag="div"
             {...onClickAssessmentMode}
           >
             <_Builtin.Block
@@ -77,7 +75,7 @@ export function AssessmentScrollMenu({
             >
               {"Assessment Mode"}
             </_Builtin.Block>
-          </_Builtin.Link>
+          </_Builtin.Block>
           {isAssessmentActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active-blue-bg")}
@@ -135,7 +133,7 @@ export function AssessmentScrollMenu({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"AssessmentQuestions"}
+              {"Assessment Questions"}
             </_Builtin.Block>
           </_Builtin.Block>
           {isAssessmentQuestionActive ? (

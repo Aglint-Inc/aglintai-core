@@ -2,6 +2,7 @@ import { pageRoutes } from '@utils/pageRouting';
 import { get } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   AssessmentScrollMenu,
@@ -134,13 +135,9 @@ const ScreeningQns = () => {
           />
         }
         slotRightScrollMenu={
-          <AssessmentScrollMenu
-            onClickPreview={{
-              onClick: () => {
-                window.open(`/assessment`, '_blank');
-              },
-            }}
-          />
+          <>
+            <SectionTabs />
+          </>
         }
         slotToggleAssessment={
           <ToggleBtn
@@ -219,6 +216,98 @@ function Intro({ path }) {
         path={path}
         question={question}
         componentType='welcome'
+      />
+    </>
+  );
+}
+
+const sectionIds = [
+  'instruction',
+  'assessment_mode',
+  'welcome',
+  'assessment_question',
+  'epilogue',
+  'validity',
+];
+
+function SectionTabs() {
+  const [isSectionInview, setIsSectionInView] = useState(Array(6).fill(false));
+  const sectionRefs = useRef(null);
+
+  useEffect(() => {
+    sectionRefs.current = sectionIds.map((sectionId) =>
+      document.getElementById(sectionId),
+    );
+
+    const observers = sectionRefs.current.map((ref, idx) => {
+      return new IntersectionObserver(
+        ([entry]) => {
+          // Update state based on whether the section is in view or not
+
+          if (entry.isIntersecting) {
+            setIsSectionInView(() => {
+              const newState = Array(5).fill(false);
+              newState[Number(idx)] = true;
+              return newState;
+            });
+          }
+        },
+        {
+          root: null, // Use the viewport as the root
+          rootMargin: '0px', // No margin
+          threshold: 0.2, // Trigger when 50% of the section is in view
+        },
+      );
+    });
+
+    sectionRefs.current.forEach((ref, index) => {
+      if (ref) {
+        observers[Number(index)].observe(ref);
+      }
+    });
+
+    return () => {
+      observers.forEach((observer, index) => {
+        if (sectionRefs.current[Number(index)].current) {
+          observer.unobserve(sectionRefs.current[Number(index)].current);
+        }
+      });
+    };
+  }, []);
+
+  const handleClickTab = (sectionidx: number) => {
+    const section = document.getElementById(sectionIds[Number(sectionidx)]);
+    if (!section) return;
+    section.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  };
+
+  return (
+    <>
+      <AssessmentScrollMenu
+        isInstructionActive={isSectionInview[0]}
+        isAssessmentActive={isSectionInview[1]}
+        isWelcomeActive={isSectionInview[2]}
+        isAssessmentQuestionActive={isSectionInview[3]}
+        isEpilogueActive={isSectionInview[4]}
+        isValidityVisible={isSectionInview[5]}
+        onClickInstructions={{
+          onClick: () => handleClickTab(0),
+        }}
+        onClickAssessmentMode={{
+          onClick: () => handleClickTab(1),
+        }}
+        onClickWelcome={{
+          onClick: () => handleClickTab(2),
+        }}
+        onClickAssessmentQuestions={{
+          onClick: () => handleClickTab(3),
+        }}
+        onClickEpilogue={{
+          onClick: () => handleClickTab(4),
+        }}
+        onClickValidity={{
+          onClick: () => handleClickTab(5),
+        }}
       />
     </>
   );

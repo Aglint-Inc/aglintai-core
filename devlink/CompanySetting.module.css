@@ -43,6 +43,13 @@
   height: 100vh;
 }
 
+.height-scroll {
+  display: flex;
+  overflow: scroll;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .rd-main-wrapper.grey-100 {
   background-color: #f8f9f9;
 }

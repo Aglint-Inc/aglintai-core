@@ -110,20 +110,20 @@ export const getSeedJobFormData = (
       },
       startVideo: {
         id: '',
-        question: '',
+        question: "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences.Let's get started.",
         videoId: '',
         videoQn: '',
         videoUrl: '',
       },
       endVideo: {
         id: '',
-        question: '',
+        question: "Thank you,for your time and sharing your insights with us today. If you have any further questions or need more information from us, please don't hesitate to reach out. Wishing you a great day ahead",
         videoId: '',
         videoQn: '',
         videoUrl: '',
       },
       isDraftCleared: false,
-      interviewInstrctions: '',
+      interviewInstrctions: `<p><strong>Assessment Instructions</strong></p><ul><li><p><strong><span>Quiet Environment</span></strong><br><span>Choose a quiet place to take the assessment where you will not be interrupted.</span></p></li><li><p><strong><span>Interruptions</span></strong><br><span>If the assessment is stopped for any reason, you will need to start over from the beginning.</span></p></li><li><p><strong><span>Question Types</span></strong><br><span>You will be asked questions based on the job requirements. Prepare yourself accordingly.</span></p></li><li><p><strong><span>Answer Submission<br></span></strong><span>You have the option to submit your answers via voice or by typing them out.</span></p></li><li><p><strong><span>Timing<br></span></strong><span>Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed.</span></p></li></ul><p></p><p><strong> Please take a moment to go through the tour before starting your assessment. Once you're ready, click the "Start Assessment" button. Good luck!</strong></p>`,
       interviewSetting: {
         assessmentValidity: {
           candidateRetry: 5,

@@ -21,13 +21,13 @@ const DEFAULT_SLIDER_CONFIG = {
 export const SliderContext = React.createContext({
   ...DEFAULT_SLIDER_CONFIG,
   slideAmount: 0,
-  setSlideAmount: () => {},
-  setCurrentSlide: () => {},
-  goToNextSlide: () => {},
-  goToPreviousSlide: () => {},
+  setSlideAmount: () => undefined,
+  setCurrentSlide: () => undefined,
+  goToNextSlide: () => undefined,
+  goToPreviousSlide: () => undefined,
   slide: { current: 0, previous: 0 },
   isAutoplayPaused: false,
-  setAutoplayPause: () => {},
+  setAutoplayPause: () => undefined,
 });
 function useSwipe({ onSwipeLeft, onSwipeRight, config }) {
   const SWIPE_DELTA = 150;
@@ -147,7 +147,7 @@ export function SliderMask({ className = "", children, ...props }) {
         React.isValidElement(child)
       );
       if (
-        childrenList.length == 1 &&
+        childrenList.length === 1 &&
         childrenList[0]?.type === React.Fragment
       ) {
         return extractNonFragmentChildren(childrenList[0].props.children);
@@ -205,7 +205,7 @@ export function SliderSlide({
   const isSlideActive = current === index;
   const isSlidePrevious = previous === index;
   const animationStyle = React.useMemo(() => {
-    let base = {
+    const base = {
       transform: `translateX(-${current * 100}%)`,
       transition: `transform ${duration}ms ${EASING_FUNCTIONS[easing]} 0s`,
     };
@@ -408,7 +408,7 @@ function SliderDot({ index, focusedDot, handleFocus, setFocusedDot }) {
       ref.current?.focus();
     }
   }, [focusedDot, index]);
-  const isSlideActive = selectedSlide == index;
+  const isSlideActive = selectedSlide === index;
   const label = navNumbers ? index + 1 : "";
   return (
     <div

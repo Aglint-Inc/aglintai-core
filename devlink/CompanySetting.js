@@ -3395,7 +3395,7 @@ export function CompanySetting({
       <_Builtin.Block className={_utils.cx(_styles, "div-block-353")} tag="div">
         <_Builtin.TabsWrapper
           className={_utils.cx(_styles, "company-settings-tabs")}
-          current="Tab 4"
+          current="Tab 1"
           easing="ease"
           fadeIn={300}
           fadeOut={100}

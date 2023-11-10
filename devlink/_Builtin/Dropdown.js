@@ -9,8 +9,8 @@ function getLinksList(root) {
 const DropdownContext = React.createContext({
   root: undefined,
   isOpen: false,
-  toggleOpen: () => {},
-  setFocusedLink: () => {},
+  toggleOpen: () => undefined,
+  setFocusedLink: () => undefined,
   hover: false,
 });
 const INITIAL_DROPDOWN_STATE = {
