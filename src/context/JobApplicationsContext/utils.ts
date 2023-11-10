@@ -6,6 +6,7 @@ import {
   JobApplicationsData,
   JobApplicationSections,
   NewJobApplications,
+  NewJobApplicationsInsert,
 } from './types';
 
 export const initialJobApplicationsContext: JobApplicationContext = {
@@ -126,7 +127,7 @@ export const createJobApplicationDbAction = async (
 
 export const bulkCreateJobApplicationDbAction = async (
   job_id: string,
-  inputData: NewJobApplications[],
+  inputData: NewJobApplicationsInsert[],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();

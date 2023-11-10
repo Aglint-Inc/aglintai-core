@@ -7,15 +7,14 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { CandidateInsert } from '@/src/context/CandidatesContext/types';
-import { bulkCreateCandidateDbAction } from '@/src/context/CandidatesContext/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { NewJobApplicationsInsert } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
+import { handleUploadCandidates } from './utils';
 import AUIButton from '../../Common/AUIButton';
 
-interface BulkImportData extends CandidateInsert {
+export interface BulkImportCandidateCsv extends CandidateInsert {
   resume: string;
 }
 
@@ -24,9 +23,12 @@ function ImportCandidatesCSV() {
     setOpenImportCandidates,
     handleJobApplicationError,
     handleJobApplicationBulkCreate,
+    job,
   } = useJobApplications();
 
-  const [bulkImportdata, setbulkImportdata] = useState<BulkImportData[]>([]);
+  const [bulkImportdata, setbulkImportdata] = useState<
+    BulkImportCandidateCsv[]
+  >([]);
   const headers = [
     'first_name',
     'last_name',
@@ -58,34 +60,19 @@ function ImportCandidatesCSV() {
     ],
   ];
 
-  async function createCandidates(candidates: BulkImportData[]) {
+  async function createCandidates(candidates: BulkImportCandidateCsv[]) {
     setbulkImportdata([]);
     setIsLoading(true);
-    const {
-      data,
-      error,
-      confirmation: c1,
-    } = await bulkCreateCandidateDbAction(
-      candidates.map((b) => {
-        // eslint-disable-next-line no-unused-vars
-        const { resume, ...candidate } = b;
-        return candidate;
-      }),
-    );
-    if (c1) {
-      const newJobApplications: NewJobApplicationsInsert[] = data.map(
-        ({ id }, i) => {
-          // eslint-disable-next-line security/detect-object-injection
-          return { resume: candidates[i].resume, candidate_id: id };
-        },
-      ) as any;
-      const confirmation =
-        await handleJobApplicationBulkCreate(newJobApplications);
+    const { data, error } = await handleUploadCandidates(candidates, job.id);
+    if (data && data.finalPayload && data.finalPayload.length !== 0) {
+      const confirmation = await handleJobApplicationBulkCreate(
+        data.finalPayload,
+      );
       if (confirmation)
         toast.success(
           'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
         );
-    } else {
+    } else if (error) {
       handleJobApplicationError(error);
     }
     setOpenImportCandidates(false);
@@ -120,7 +107,7 @@ function ImportCandidatesCSV() {
           /* Convert array of arrays */
           const data = XLSX.utils.sheet_to_json(
             ws,
-          ) as unknown as BulkImportData[];
+          ) as unknown as BulkImportCandidateCsv[];
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {
@@ -192,8 +179,8 @@ function ImportCandidatesCSV() {
             <CandidatesListTable importedCandidate={bulkImportdata} />{' '}
             <Stack direction={'row'} justifyContent={'flex-end'}>
               <AUIButton
-                onClick={() => {
-                  createCandidates(bulkImportdata);
+                onClick={async () => {
+                  await createCandidates(bulkImportdata);
                 }}
               >
                 Import

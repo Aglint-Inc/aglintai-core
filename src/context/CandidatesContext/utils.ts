@@ -45,16 +45,19 @@ export const bulkCreateCandidateDbAction = async (
   candidates: CandidateBulkCreateAction['inputData'],
   signal?: CandidateBulkCreateAction['signal'],
 ) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('candidates')
-    .insert(candidates)
-    .select()
-    .abortSignal(signal)
-    .abortSignal(timerSignal.signal);
-  clearTimeout(timeout);
-  return { data, error, confirmation: getConfirmation(error) };
+  if (candidates && candidates.length !== 0) {
+    const timerSignal = new AbortController();
+    const timeout = setTimeout(() => timerSignal.abort(), 60000);
+    const { data, error } = await supabase
+      .from('candidates')
+      .insert(candidates)
+      .select()
+      .abortSignal(signal)
+      .abortSignal(timerSignal.signal);
+    clearTimeout(timeout);
+    return { data, error, confirmation: getConfirmation(error) };
+  }
+  return { data: [], error: null, confirmation: true };
 };
 
 export const readCandidatesDbAction = async (
