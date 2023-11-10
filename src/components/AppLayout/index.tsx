@@ -95,7 +95,7 @@ export default function AppLayout({ children }) {
                       height: '100%',
                       background: '#fff',
                       '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
+                        objectFit: 'cover',
                       },
                     }}
                   />
@@ -127,7 +127,7 @@ export default function AppLayout({ children }) {
                     width: '100%',
                     height: '100%',
                     '& .MuiAvatar-img ': {
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                     },
                   }}
                 />
@@ -217,7 +217,7 @@ export default function AppLayout({ children }) {
                       height: '100%',
                       background: '#fff',
                       '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
+                        objectFit: 'cover',
                       },
                     }}
                   />
@@ -270,7 +270,7 @@ export default function AppLayout({ children }) {
                       height: '100%',
                       background: '#1f1f1f',
                       '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
+                        objectFit: 'cover',
                       },
                     }}
                   />

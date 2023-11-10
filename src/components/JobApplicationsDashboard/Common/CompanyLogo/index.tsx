@@ -16,6 +16,9 @@ const CompanyLogo = ({
         bgcolor: 'white.700',
         width: '100%',
         height: '100%',
+        '& .MuiAvatar-img ': {
+          objectFit: 'contain',
+        },
       }}
       style={{ color: 'black' }}
       src={
@@ -35,6 +38,9 @@ const CompanyLogo = ({
         bgcolor: 'white.700',
         width: '100%',
         height: '100%',
+        '& .MuiAvatar-img ': {
+          objectFit: 'contain',
+        },
       }}
       style={{ color: 'black' }}
     >
