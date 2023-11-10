@@ -308,6 +308,11 @@ function SectionTabs() {
         onClickValidity={{
           onClick: () => handleClickTab(5),
         }}
+        onClickPreview={{
+          onClick: () => {
+            window.open(`/assessment?id=1`, 'blank');
+          },
+        }}
       />
     </>
   );

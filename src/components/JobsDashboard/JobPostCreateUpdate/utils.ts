@@ -156,6 +156,16 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.details.err.push('Missing department');
   }
 
+  if (isEmpty(jobForm.interviewInstrctions)) {
+    warnings.screening.err.push('Please Provide Assessment Instructions');
+  }
+  if (
+    jobForm.interviewSetting.showInstructionVideo &&
+    isEmpty(jobForm.interviewSetting.aiGeneratedVideoInfo.videoUrl) &&
+    isEmpty(jobForm.interviewSetting.uploadedVideoInfo.videoUrl)
+  ) {
+    warnings.screening.err.push('Please add instruction video');
+  }
   // screening qns
   const totalQns = Object.keys(jobForm.interviewConfig)
     .map((key: InterviewParam) => {

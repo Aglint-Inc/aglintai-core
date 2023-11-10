@@ -120,7 +120,6 @@ export const Question = ({
   const avatar = (recruiter.ai_avatar as any) || avatar_list[0];
   const handleGenerateVideo = async () => {
     try {
-      handlePlayAudio();
       if (!question.question) return;
       let videoInfo;
       if (process.env.NODE_ENV === 'development') {
