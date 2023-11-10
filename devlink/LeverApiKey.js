@@ -96,7 +96,10 @@ export function LeverApiKey({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          {"To generate lever API navigate to"}
+          {"To generate lever API navigate to "}
+          <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+            {"Settings > Integrations and API > API Credentials."}
+          </_Builtin.Span>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "lever-api-image-wraps")}

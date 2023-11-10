@@ -116,6 +116,10 @@
   display: none;
 }
 
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
 .icons.db-star-icons {
   position: absolute;
   left: auto;

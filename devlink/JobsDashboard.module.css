@@ -488,6 +488,11 @@
   }
 }
 
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;
@@ -757,6 +762,10 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
 }
 
 .icons.db-star-icons {

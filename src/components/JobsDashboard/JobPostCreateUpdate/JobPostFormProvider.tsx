@@ -97,10 +97,21 @@ export type FormJobType = {
   defaultJobType: dropDownOption[];
   defaultAddress: AutoCompleteType[];
   recruiterId: string;
-  introVideo: QuestionType | null;
-  startVideo: QuestionType | null;
-  endVideo: QuestionType | null;
+  introVideo: QuestionType;
+  startVideo: QuestionType;
+  endVideo: QuestionType;
+  interviewSetting: {
+    showInstructionVideo: boolean;
+    isVideoAiGenerated: boolean;
+    uploadedVideoInfo: QuestionType;
+    aiGeneratedVideoInfo: QuestionType;
+    assessmentValidity: {
+      expirationDuration: number;
+      candidateRetry: number;
+    };
+  };
   isDraftCleared: boolean;
+  interviewInstrctions: string;
 };
 
 export type JobFormState = {

@@ -11,8 +11,8 @@ import {
 } from './JobPostFormProvider';
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 
-export const supabaseWrap = ({ data, error }: any) => {
-  if (error) throw new Error(error);
+export const supabaseWrap = ({ data, error }: { data: any; error: any }) => {
+  if (error) throw new Error(error.message);
   return data;
 };
 
@@ -97,10 +97,11 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     },
     parameter_weights: jobForm.formFields.resumeScoreSettings,
     video_assessment: jobForm.formFields.videoAssessment,
-    intro_videos: jobForm.formFields.introVideo,
+    intro_videos: jobForm.formFields.interviewSetting,
     start_video: jobForm.formFields.startVideo,
     end_video: jobForm.formFields.endVideo,
     status: jobForm.jobPostStatus,
+    interview_instructions: jobForm.formFields.interviewInstrctions,
   };
 
   return updateJobData;

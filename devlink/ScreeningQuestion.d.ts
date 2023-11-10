@@ -3,10 +3,8 @@ import * as Types from "./types";
 
 declare function ScreeningQuestion(props: {
   as?: React.ElementType;
-  onClickUploadVideo?: Types.Devlink.RuntimeProps;
   slotToggleAssessment?: Types.Devlink.Slot;
   slotWelcomeMessage?: Types.Devlink.Slot;
-  slotIntroductionVideo?: Types.Devlink.Slot;
   slotEndingMessageVideo?: Types.Devlink.Slot;
   slotAssessmentQuestion?: Types.Devlink.Slot;
   textQuestionCount?: React.ReactNode;
@@ -19,4 +17,7 @@ declare function ScreeningQuestion(props: {
   isUploadChecked?: Types.Visibility.VisibilityConditions;
   slotToggleInstructionVideo?: Types.Devlink.Slot;
   isUploadVisible?: Types.Visibility.VisibilityConditions;
+  slotExpirationInput?: Types.Devlink.Slot;
+  slotRetrysCount?: Types.Devlink.Slot;
+  slotSwitchAudioVideo?: Types.Devlink.Slot;
 }): React.JSX.Element;

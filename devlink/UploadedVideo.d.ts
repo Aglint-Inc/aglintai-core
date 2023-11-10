@@ -7,4 +7,7 @@ declare function UploadedVideo(props: {
   onClickReupload?: Types.Devlink.RuntimeProps;
   onClickClear?: Types.Devlink.RuntimeProps;
   slotButton?: Types.Devlink.Slot;
+  isPlayIconVisible?: Types.Visibility.VisibilityConditions;
+  isPauseIconVisible?: Types.Visibility.VisibilityConditions;
+  onClickPlayPause?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

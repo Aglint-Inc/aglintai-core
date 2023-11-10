@@ -384,6 +384,10 @@
   display: none;
 }
 
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
 .icons.db-star-icons {
   position: absolute;
   left: auto;
@@ -595,6 +599,11 @@
   border-radius: 6px;
 
   background-color: #144a75;
+}
+
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .db-req-text-wrap {

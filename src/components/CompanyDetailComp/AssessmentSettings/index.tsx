@@ -192,7 +192,7 @@ function ToggleBtn({ isVideoAssessment, handleCheck }) {
   );
 }
 
-function VideoAvatar({ selectedAvatar, isActive }) {
+export function VideoAvatar({ selectedAvatar, isActive }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [openPopUp, setOpenPopUP] = useState(false);
@@ -289,7 +289,7 @@ function VideoAvatar({ selectedAvatar, isActive }) {
   );
 }
 
-function AudioAvatar({ selectedAvatar, isActive }) {
+export function AudioAvatar({ selectedAvatar, isActive }) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef(null);
 

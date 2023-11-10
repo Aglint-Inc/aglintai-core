@@ -956,6 +956,10 @@
   margin-top: 40px;
 }
 
+.mt-60 {
+  margin-top: 60px;
+}
+
 .cdd-tab-content-wrapper {
   display: flex;
   flex-direction: column;

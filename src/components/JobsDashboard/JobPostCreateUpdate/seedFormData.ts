@@ -101,10 +101,51 @@ export const getSeedJobFormData = (
       },
       recruiterId: '',
       videoAssessment: false,
-      introVideo: null,
-      startVideo: null,
-      endVideo: null,
+      introVideo: {
+        id: '',
+        question: '',
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
+      startVideo: {
+        id: '',
+        question: '',
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
+      endVideo: {
+        id: '',
+        question: '',
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
       isDraftCleared: false,
+      interviewInstrctions: '',
+      interviewSetting: {
+        assessmentValidity: {
+          candidateRetry: 5,
+          expirationDuration: 7,
+        },
+        isVideoAiGenerated: false,
+        showInstructionVideo: true,
+        aiGeneratedVideoInfo: {
+          id: '',
+          question: '',
+          videoId: '',
+          videoQn: '',
+          videoUrl: '',
+        },
+        uploadedVideoInfo: {
+          id: '',
+          question: '',
+          videoId: '',
+          videoQn: '',
+          videoUrl: '',
+        },
+      },
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -276,12 +317,15 @@ export const dbToClientjobPostForm = (
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
       videoAssessment: jobPost.video_assessment,
-      introVideo: jobPost.intro_videos as any,
-      startVideo: jobPost.start_video as any,
-      endVideo: jobPost.end_video as any,
+      startVideo:
+        jobPost.start_video || (seedData.formFields.startVideo as any),
+      endVideo: jobPost.end_video || (seedData.formFields.endVideo as any),
+      interviewInstrctions: jobPost.interview_instructions,
       isDraftCleared: isUndefined(jobPost.draft)
         ? false
         : isEmpty(jobPost.draft),
+      interviewSetting:
+        jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
     },
     jobPostStatus: jobPostStatus as any,
   };

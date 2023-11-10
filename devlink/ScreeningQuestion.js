@@ -1,19 +1,17 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { UploadVideo } from "./UploadVideo";
+import { VideoSwitcherCard } from "./VideoSwitcherCard";
 import { ScreeningQuestionCard } from "./ScreeningQuestionCard";
 import { AssessmentQuestions } from "./AssessmentQuestions";
-import { ScreeningQuestionAudio } from "./ScreeningQuestionAudio";
 import { AssessmentScrollMenu } from "./AssessmentScrollMenu";
 import * as _utils from "./utils";
 import _styles from "./ScreeningQuestion.module.css";
 
 export function ScreeningQuestion({
   as: _Component = _Builtin.Block,
-  onClickUploadVideo = {},
   slotToggleAssessment,
   slotWelcomeMessage,
-  slotIntroductionVideo,
   slotEndingMessageVideo,
   slotAssessmentQuestion,
   textQuestionCount = "06",
@@ -26,6 +24,9 @@ export function ScreeningQuestion({
   isUploadChecked = false,
   slotToggleInstructionVideo,
   isUploadVisible = true,
+  slotExpirationInput,
+  slotRetrysCount,
+  slotSwitchAudioVideo,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-562")} tag="div">
@@ -160,7 +161,7 @@ export function ScreeningQuestion({
           id="assessment_mode"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
             {"Assessment Mode"}
@@ -187,37 +188,8 @@ export function ScreeningQuestion({
               {"Use AI generated videos for assessment"}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "avatar-default-wrap")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-561")}
-              tag="div"
-            />
-            <_Builtin.Block tag="div">
-              <_Builtin.Block
-                className={_utils.cx(_styles, "color-grey-600")}
-                tag="div"
-              >
-                {"This avatar will be used to generate audio."}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "color-grey-600")}
-                tag="div"
-              >
-                {"To change the avatar go to "}
-                <_Builtin.Span
-                  className={_utils.cx(
-                    _styles,
-                    "text-blue-500",
-                    "text-underline"
-                  )}
-                >
-                  {"company settings."}
-                </_Builtin.Span>
-              </_Builtin.Block>
-            </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotSwitchAudioVideo ?? <VideoSwitcherCard />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -226,7 +198,7 @@ export function ScreeningQuestion({
           id="welcome"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
             {"Welcome Message"}
@@ -288,7 +260,7 @@ export function ScreeningQuestion({
           id="epilogue"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
             {"Epilogue"}
@@ -305,12 +277,91 @@ export function ScreeningQuestion({
             className={_utils.cx(_styles, "div-block-555")}
             tag="div"
           >
-            {slotEndingMessageVideo ?? (
-              <>
-                <ScreeningQuestionCard />
-                <ScreeningQuestionAudio />
-              </>
-            )}
+            {slotEndingMessageVideo ?? <ScreeningQuestionCard />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "mt-60")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            tag="div"
+          >
+            {"Assessment Validity"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600", "mt-8")}
+            tag="div"
+          >
+            {
+              "Set the assessment link’s expiration time and the maximum retry threshold for candidates."
+            }
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "expiration-duration-wrap", "mt-17")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "width-210", "flex-expiration")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Expiration duration"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {":"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-575")}
+              tag="div"
+            >
+              {slotExpirationInput}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {"Days after sending the invite"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "expiration-duration-wrap", "mt-7")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "width-210", "flex-expiration")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"No of retrys per candidate"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {":"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-576")}
+              tag="div"
+            >
+              {slotRetrysCount}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {"Times excluding the first try"}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

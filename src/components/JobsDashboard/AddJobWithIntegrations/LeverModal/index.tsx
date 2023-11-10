@@ -6,9 +6,9 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AtsCard,
   AtsJobs,
+  IntegrationModal,
   LeverApiKey,
   LeverFetching,
-  LeverModal,
   LoadingJobsAts,
   NoResultAts,
   SkeletonLoaderAtsCard,
@@ -158,7 +158,7 @@ export function LeverModalComp({
   };
 
   return (
-    <LeverModal
+    <IntegrationModal
       slotApiKey={
         state === STATE_LEVER_DIALOG.API ||
         state === STATE_LEVER_DIALOG.ERROR ? (

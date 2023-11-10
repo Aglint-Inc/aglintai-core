@@ -38,7 +38,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-  z-index: 1;
+  z-index: 3;
 
   display: none;
   flex-direction: column;
@@ -99,6 +99,10 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
 }
 
 .icons.db-star-icons {

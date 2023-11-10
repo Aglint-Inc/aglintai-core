@@ -29,4 +29,11 @@ declare function ScreeningQuestionCard(props: {
   isErrorVisible?: Types.Visibility.VisibilityConditions;
   isActive?: Types.Visibility.VisibilityConditions;
   isVideoIconVisible?: Types.Visibility.VisibilityConditions;
+  isDeleteVisible?: Types.Visibility.VisibilityConditions;
+  isMicVisible?: Types.Visibility.VisibilityConditions;
+  slotAudioAvatar?: Types.Devlink.Slot;
+  isAudioVisible?: Types.Visibility.VisibilityConditions;
+  onClickAudioPlayPause?: Types.Devlink.RuntimeProps;
+  isAudioPlayVisible?: Types.Visibility.VisibilityConditions;
+  isAudioPauseVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

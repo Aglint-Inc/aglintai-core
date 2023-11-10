@@ -3,27 +3,25 @@ import { get, isEmpty } from 'lodash';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  AvatarModal,
-  CategoriesEmptyState,
-  ScreeningQuestionCard,
-} from '@/devlink';
+import { CategoriesEmptyState, ScreeningQuestionCard } from '@/devlink';
 import ScreeningVideoGenerating from '@/src/components/Common/Lotties/ScreeningVideoGenerating';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { avatar_list } from '@/src/utils/avatarlist';
+import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Drag, Drop } from './dragDrop';
+import QuestionVideoPlayer from './QuestionVideoPlayer';
 import {
   InterviewConfigType,
   QuestionType,
   useJobForm,
 } from '../../JobPostFormProvider';
-import { supabaseWrap } from '../../utils';
+import { API_FAIL_MSG, supabaseWrap } from '../../utils';
 
 const Questions = ({
   questions,
@@ -68,25 +66,26 @@ const Questions = ({
   );
 };
 
-const Question = ({
+export const Question = ({
   question,
   path,
   handleDeleteQn,
+  componentType = 'question',
 }: {
   question: QuestionType;
   path: string;
   // eslint-disable-next-line no-unused-vars
   handleDeleteQn: (qnId: any) => void;
+  componentType?: 'question' | 'intro' | 'welcome' | 'end';
 }) => {
   const { jobForm, handleUpdateFormFields } = useJobForm();
   const [showEdit, setShowEdit] = useState(false);
   const [editQn, setEditQn] = useState(question.question);
-  const [playing, setPlaying] = useState(false);
   const { recruiter } = useAuthDetails();
-  const [isQnHovered, setQnHovered] = useState(false);
   const [isApiError, setIsApiError] = useState(false);
   const videoRef = useRef(null);
-
+  const [isAudioPlaying, setIsAudioplaying] = useState(false);
+  const audioRef = useRef(new Audio());
   useEffect(() => {
     (async () => {
       try {
@@ -108,6 +107,7 @@ const Question = ({
     })();
   }, []);
 
+  const qninfo = get(jobForm.formFields, path) as QuestionType;
   const handleSave = () => {
     if (!editQn) return;
     handleUpdateFormFields({
@@ -120,6 +120,8 @@ const Question = ({
   const avatar = (recruiter.ai_avatar as any) || avatar_list[0];
   const handleGenerateVideo = async () => {
     try {
+      handlePlayAudio();
+      if (!question.question) return;
       let videoInfo;
       if (process.env.NODE_ENV === 'development') {
         videoInfo = { video_id: 'def5da2177c44b089ccf6fa597cc3c4d' };
@@ -167,15 +169,6 @@ const Question = ({
     handleGenerateVideo();
   };
 
-  const handleVideoPlay = () => {
-    if (!playing) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-    setPlaying((pre) => !pre);
-  };
-
   const videoUrl = question.videoUrl;
   const isVideoGenerating =
     isEmpty(question.videoUrl) && !isEmpty(question.videoId);
@@ -186,6 +179,58 @@ const Question = ({
     isApiError;
   const isGenerateVisible = !isVideoError && !question.videoId;
   const [openPopUp, setOpenPopUp] = useState(false);
+  const isSaveBtnVisible = showEdit || isEmpty(question.question);
+  const isVideoEnable =
+    componentType === 'intro' ? true : jobForm.formFields.videoAssessment;
+
+  const handlePlayAudio = async () => {
+    try {
+      if (isAudioPlaying) {
+        audioRef.current.pause();
+        setIsAudioplaying(false);
+        return;
+      }
+      const voice = interviewerList[recruiter.audio_avatar_id].voice;
+      const resp = await fetch(
+        'https://us-west1-aglint-cloud-381414.cloudfunctions.net/text-to-speech',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'gzip',
+          },
+          body: JSON.stringify({
+            data: {
+              audioConfig: {
+                audioEncoding: 'LINEAR16',
+
+                pitch: 0,
+                speakingRate: 0.9,
+              },
+              input: {
+                text: qninfo.question,
+              },
+              voice: voice,
+            },
+          }),
+        },
+      );
+      const data = await resp.json();
+      const audioContent = data.audioContent;
+      const audioDataUrl = `data:audio/mp3;base64,${audioContent}`;
+      audioRef.current.src = audioDataUrl;
+      setIsAudioplaying(true);
+      audioRef.current.play();
+      audioRef.current.addEventListener('ended', () => {
+        setIsAudioplaying(false);
+      });
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      //
+    }
+  };
+
   return (
     <>
       <MuiPopup
@@ -195,25 +240,73 @@ const Question = ({
           maxWidth: 'md',
         }}
       >
-        <AvatarModal
-          textName={avatar.name}
-          isPauseIconVisible={playing}
-          isPlayIconVisible={!playing}
-          onClickPlayPause={{
-            onClick: (event: { stopPropagation: () => void }) => {
-              event.stopPropagation();
-              handleVideoPlay();
-            },
-          }}
-          onClickClose={{
-            onClick: (event: { stopPropagation: () => void }) => {
-              event.stopPropagation();
-              setPlaying(false);
-              setOpenPopUp(false);
-            },
-          }}
-          // textName={l.name}
-          slotVideo={
+        <QuestionVideoPlayer
+          avatarName={avatar.name}
+          setOpenPopUp={setOpenPopUp}
+          videoUrl={videoUrl}
+        />
+      </MuiPopup>
+
+      <ScreeningQuestionCard
+        slotInput={
+          <>
+            {showEdit || isEmpty(question.question) ? (
+              <UITextField
+                multiline
+                fullWidth
+                defaultValue={question.question}
+                value={editQn}
+                onChange={(e) => {
+                  setEditQn(e.target.value);
+                }}
+                InputProps={{
+                  autoFocus: true,
+                }}
+              />
+            ) : (
+              <UITypography type='small'>{question.question}</UITypography>
+            )}
+          </>
+        }
+        isDeleteVisible={componentType === 'question'}
+        isEditButtonVisible={!isSaveBtnVisible}
+        isGenerateButtonVisible={false}
+        isSaveButtonVisible={isSaveBtnVisible}
+        onClickEdit={{
+          onClick: () => {
+            setEditQn(question.question);
+            setShowEdit(true);
+          },
+        }}
+        onClickDelete={{
+          onClick: () => {
+            setEditQn('');
+            handleDeleteQn(question.id);
+          },
+        }}
+        onClickCancel={{
+          onClick: () => {
+            setEditQn('');
+            setShowEdit(false);
+          },
+        }}
+        onClickSave={{
+          onClick: handleSave,
+        }}
+        // slotEmptyVideo={}
+        onClickGenerateVideo={{
+          onClick: () => {
+            handleGenerateVideo();
+          },
+        }}
+        onClickPlay={{
+          onClick: () => {
+            setOpenPopUp(true);
+          },
+        }}
+        slotGeneratingLottie={<ScreeningVideoGenerating />}
+        slotVideo={
+          videoUrl ? (
             // eslint-disable-next-line jsx-a11y/media-has-caption
             <video
               src={videoUrl}
@@ -223,122 +316,57 @@ const Question = ({
                 objectFit: 'cover',
               }}
               ref={videoRef}
-              onEnded={() => {
-                setPlaying(false);
-              }}
-              autoPlay
             />
-          }
-        />
-      </MuiPopup>
-      <div
-        onMouseEnter={() => {
-          setQnHovered(true);
+          ) : (
+            <Image
+              src={'/images/EmptyVideo.svg'}
+              width={256}
+              height={150}
+              alt=''
+              style={{
+                objectFit: 'cover',
+                transform: 'translate(0px, -5px)',
+              }}
+            />
+          )
+        }
+        isVideoVisible={isVideoEnable}
+        isPlayButtonVisible={true}
+        isPauseButtonVisible={false}
+        isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
+        isGenerateVisible={isGenerateVisible}
+        isGeneratingLoaderVisible={isVideoGenerating && !isVideoError}
+        isErrorVisible={isVideoError}
+        onClickRetry={{
+          onClick: () => {
+            handleRegenerate();
+          },
         }}
-        onMouseLeave={() => {
-          setQnHovered(false);
-        }}
-      >
-        <ScreeningQuestionCard
-          slotInput={
-            <>
-              {showEdit ? (
-                <UITextField
-                  multiline
-                  fullWidth
-                  defaultValue={question.question}
-                  value={editQn}
-                  onChange={(e) => {
-                    setEditQn(e.target.value);
-                  }}
+        textButtonError={'Regenerate'}
+        textError={`Changed question click 'Regenrate'`}
+        isActive={componentType === 'question'}
+        isAudioVisible={!isVideoEnable}
+        isMicVisible={!isVideoEnable}
+        slotAudioAvatar={
+          <>
+            {!isVideoEnable && (
+              <>
+                <Image
+                  src={`${interviewerList[recruiter.audio_avatar_id].image}`}
+                  width={80}
+                  height={80}
+                  alt=''
                 />
-              ) : (
-                <UITypography type='small'>{question.question}</UITypography>
-              )}
-            </>
-          }
-          isEditButtonVisible={!showEdit}
-          isGenerateButtonVisible={false}
-          isSaveButtonVisible={showEdit}
-          onClickEdit={{
-            onClick: () => {
-              setShowEdit(true);
-            },
-          }}
-          onClickDelete={{
-            onClick: () => {
-              handleDeleteQn(question.id);
-            },
-          }}
-          onClickCancel={{
-            onClick: () => {
-              setShowEdit(false);
-            },
-          }}
-          onClickSave={{
-            onClick: handleSave,
-          }}
-          // slotEmptyVideo={}
-          onClickGenerateVideo={{
-            onClick: () => {
-              handleGenerateVideo();
-            },
-          }}
-          onClickPlay={{
-            onClick: () => {
-              setOpenPopUp(true);
-              setPlaying(true);
-            },
-          }}
-          onClickPause={{
-            onClick: handleVideoPlay,
-          }}
-          slotGeneratingLottie={<ScreeningVideoGenerating />}
-          slotVideo={
-            videoUrl ? (
-              // eslint-disable-next-line jsx-a11y/media-has-caption
-              <video
-                src={videoUrl}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-                ref={videoRef}
-                onEnded={() => {
-                  setPlaying(false);
-                }}
-              />
-            ) : (
-              <Image
-                src={'/images/EmptyVideo.svg'}
-                width={256}
-                height={150}
-                alt=''
-                style={{
-                  objectFit: 'cover',
-                  transform: 'translate(0px, -5px)',
-                }}
-              />
-            )
-          }
-          isVideoVisible={jobForm.formFields.videoAssessment}
-          isPlayButtonVisible={!playing}
-          isPauseButtonVisible={playing}
-          isPlayPauseButtonVisible={!isVideoError && videoUrl.length !== 0}
-          isGenerateVisible={isGenerateVisible}
-          isGeneratingLoaderVisible={isVideoGenerating && !isVideoError}
-          isErrorVisible={isVideoError}
-          onClickRetry={{
-            onClick: () => {
-              handleRegenerate();
-            },
-          }}
-          textButtonError={'Regenerate'}
-          textError={`Changed question click 'Regenrate'`}
-          isActive={isQnHovered}
-        />
-      </div>
+              </>
+            )}
+          </>
+        }
+        isAudioPauseVisible={isAudioPlaying}
+        onClickAudioPlayPause={{
+          onClick: handlePlayAudio,
+        }}
+        isAudioPlayVisible={!isAudioPlaying}
+      />
     </>
   );
 };

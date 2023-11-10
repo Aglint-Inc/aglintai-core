@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function LeverModal(props: {
+declare function IntegrationModal(props: {
   as?: React.ElementType;
   onClickClose?: Types.Devlink.RuntimeProps;
   onClickContinue?: Types.Devlink.RuntimeProps;

@@ -2,9 +2,9 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { LoadingJobsAts } from "./LoadingJobsAts";
 import * as _utils from "./utils";
-import _styles from "./LeverModal.module.css";
+import _styles from "./IntegrationModal.module.css";
 
-export function LeverModal({
+export function IntegrationModal({
   as: _Component = _Builtin.Block,
   onClickClose = {},
   onClickContinue = {},

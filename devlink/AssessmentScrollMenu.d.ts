@@ -14,4 +14,8 @@ declare function AssessmentScrollMenu(props: {
   onClickAssessmentQuestions?: Types.Devlink.RuntimeProps;
   onClickEpilogue?: Types.Devlink.RuntimeProps;
   onClickPreview?: Types.Devlink.RuntimeProps;
+  isValidityVisible?: Types.Visibility.VisibilityConditions;
+  onClickValidity?: Types.Devlink.RuntimeProps;
+  linkMode?: Types.Basic.Link;
+  linkInstruction?: Types.Basic.Link;
 }): React.JSX.Element;

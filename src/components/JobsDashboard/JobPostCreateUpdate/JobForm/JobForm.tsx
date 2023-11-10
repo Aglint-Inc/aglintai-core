@@ -242,7 +242,7 @@ function JobForm() {
   return (
     <>
       <CreateNewJob
-        slotCreateJob={<Stack alignItems={'center'}>{formSlide}</Stack>}
+        slotCreateJob={<>{formSlide}</>}
         onClickApplyForm={{
           onClick: () => {
             changeSlide('applyForm');

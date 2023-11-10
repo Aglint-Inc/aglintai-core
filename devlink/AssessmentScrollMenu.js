@@ -16,6 +16,16 @@ export function AssessmentScrollMenu({
   onClickAssessmentQuestions = {},
   onClickEpilogue = {},
   onClickPreview = {},
+  isValidityVisible = false,
+  onClickValidity = {},
+
+  linkMode = {
+    href: "#",
+  },
+
+  linkInstruction = {
+    href: "#",
+  },
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-566")} tag="div">
@@ -24,9 +34,10 @@ export function AssessmentScrollMenu({
           className={_utils.cx(_styles, "scroll-btn-menu")}
           tag="div"
         >
-          <_Builtin.Block
+          <_Builtin.Link
             className={_utils.cx(_styles, "div-block-563")}
-            tag="div"
+            button={false}
+            options={linkInstruction}
             {...onClickInstructions}
           >
             <_Builtin.Block
@@ -35,7 +46,7 @@ export function AssessmentScrollMenu({
             >
               {"Instructions"}
             </_Builtin.Block>
-          </_Builtin.Block>
+          </_Builtin.Link>
           {isInstructionActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active-blue-bg")}
@@ -54,9 +65,10 @@ export function AssessmentScrollMenu({
           className={_utils.cx(_styles, "scroll-btn-menu")}
           tag="div"
         >
-          <_Builtin.Block
+          <_Builtin.Link
             className={_utils.cx(_styles, "div-block-563")}
-            tag="div"
+            button={false}
+            options={linkMode}
             {...onClickAssessmentMode}
           >
             <_Builtin.Block
@@ -65,7 +77,7 @@ export function AssessmentScrollMenu({
             >
               {"Assessment Mode"}
             </_Builtin.Block>
-          </_Builtin.Block>
+          </_Builtin.Link>
           {isAssessmentActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "active-blue-bg")}
@@ -166,6 +178,36 @@ export function AssessmentScrollMenu({
                 tag="div"
               >
                 {"Epilogue"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "scroll-btn-menu")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-563")}
+            tag="div"
+            {...onClickValidity}
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Assessment Validity"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          {isValidityVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "active-blue-bg")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Assessment Validity"}
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
