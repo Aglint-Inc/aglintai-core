@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('prompts missing in request body');
 
     const chatCompletion = await openai.chat.completions.create({
-      messages: prompts,
+      messages: prompts as any,
       model: 'gpt-3.5-turbo',
       temperature: 1,
     });
