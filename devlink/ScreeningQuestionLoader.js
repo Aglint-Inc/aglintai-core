@@ -28,16 +28,7 @@ export function ScreeningQuestionLoader({
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-video-welcome")}
             tag="div"
-          >
-            <_Builtin.Image
-              className={_utils.cx(_styles, "empty-video-image")}
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6543935bed55bd03ed8b38f3_Rectangle%2029.svg"
-            />
-          </_Builtin.Block>
+          />
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "div-block-548")} tag="div">
