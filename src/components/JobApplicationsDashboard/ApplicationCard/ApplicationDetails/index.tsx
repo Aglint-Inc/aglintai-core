@@ -115,10 +115,11 @@ const ApplicationDetails = ({
   return (
     <Stack
       style={{
-        display: applicationDetails ? 'flex' : 'none',
+        display: open && applicationDetails ? 'flex' : 'none',
         transition: '0.4s',
         width: drawerOpen ? '420px' : '0px',
         pointerEvents: drawerOpen ? 'auto' : 'none',
+        overflow: drawerOpen ? 'hidden' : 'auto',
       }}
     >
       {applicationDetails ? (
