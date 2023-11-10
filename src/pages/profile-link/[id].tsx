@@ -96,15 +96,16 @@ function InterviewFeedbackPage() {
 
   if (applicationDetails && job) {
     interviewScore = getInterviewScore(applicationDetails.feedback);
-
-    resumeScoreWheel = (
-      <ScoreWheel
-        id={`ScoreWheelApplicationCard${Math.random()}`}
-        jd_score={applicationDetails.jd_score}
-        parameter_weights={job.parameter_weights as ScoreWheelParams}
-        fontSize={10}
-      />
-    );
+    if (applicationDetails.jd_score) {
+      resumeScoreWheel = (
+        <ScoreWheel
+          id={`ScoreWheelApplicationCard${Math.random()}`}
+          jd_score={applicationDetails.jd_score}
+          parameter_weights={job.parameter_weights as ScoreWheelParams}
+          fontSize={10}
+        />
+      );
+    }
   }
 
   if (loader) {
@@ -115,7 +116,7 @@ function InterviewFeedbackPage() {
     );
   } else
     return (
-      <>
+      <Stack height={'100vh'} overflow={'scroll'}>
         <Dialog
           sx={{
             '& .MuiDialog-paper': {
@@ -262,10 +263,10 @@ function InterviewFeedbackPage() {
             />
           ))}
           isSkillVisible={
-            (applicationDetails?.json_resume as any)?.skills.length > 0
+            (applicationDetails?.json_resume as any)?.skills?.length > 0
           }
-          slotSkill={(applicationDetails?.json_resume as any)?.skills.map(
-            (s, i) => <CandidateSkillPills key={i} textSkill={s.name} />,
+          slotSkill={(applicationDetails?.json_resume as any)?.skills?.map(
+            (s, i) => <CandidateSkillPills key={i} textSkill={s} />,
           )}
           onClickCopyProfile={{
             onClick: () => {
@@ -319,12 +320,14 @@ function InterviewFeedbackPage() {
                   <ResumePreviewer url={applicationDetails.resume} />
                 </Stack>
               </Dialog>
-              <NewResumeScoreDetails
-                applicationDetails={applicationDetails}
-                job={job as any}
-                feedback={true}
-                setOpenResume={setOpenResume}
-              />
+              {applicationDetails?.jd_score && (
+                <NewResumeScoreDetails
+                  applicationDetails={applicationDetails}
+                  job={job as any}
+                  feedback={true}
+                  setOpenResume={setOpenResume}
+                />
+              )}
             </Stack>
           }
           textMail={applicationDetails?.candidates?.email}
@@ -343,8 +346,8 @@ function InterviewFeedbackPage() {
               )}
               src={applicationDetails?.candidates.profile_image}
               variant={'rounded'}
-              width={'auto'}
-              height={'auto'}
+              width={'100%'}
+              height={'100%'}
               fontSize={'28px'}
             />
           }
@@ -352,7 +355,7 @@ function InterviewFeedbackPage() {
           textOverview={(applicationDetails?.json_resume as any)?.overview}
           location={job?.location}
         />
-      </>
+      </Stack>
     );
 }
 
