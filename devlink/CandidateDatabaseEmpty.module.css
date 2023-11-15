@@ -846,6 +846,10 @@
   border-radius: 10px;
 }
 
+.relative.zindex-3 {
+  z-index: 3;
+}
+
 .db-req-text-wrap {
   display: flex;
   margin-top: 10px;

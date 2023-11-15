@@ -25,7 +25,7 @@ export function InboxContactSupport({
 
   return (
     <_Component
-      className={_utils.cx(_styles, "contact-support-wrappers")}
+      className={_utils.cx(_styles, "contact-support-wrappers-inbox")}
       tag="div"
     >
       <_Builtin.Block tag="div">

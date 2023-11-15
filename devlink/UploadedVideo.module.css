@@ -15,6 +15,10 @@
   border-radius: 10px;
 }
 
+.relative.zindex-3 {
+  z-index: 3;
+}
+
 .video-slot-edit-assessment {
   overflow: hidden;
   width: 251px;

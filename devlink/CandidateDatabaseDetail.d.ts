@@ -19,4 +19,6 @@ declare function CandidateDatabaseDetail(props: {
   slotAddtoJob?: Types.Devlink.Slot;
   slotCandidateDialog?: Types.Devlink.Slot;
   onClickCandidateDatabase?: Types.Devlink.RuntimeProps;
+  onClickDownloadBookmarked?: Types.Devlink.RuntimeProps;
+  onClickDowloadAllCandidate?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

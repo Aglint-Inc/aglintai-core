@@ -216,7 +216,7 @@ export function AssessmentScrollMenu({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          {"Preview how candidates are taking interview"}
+          {"Preview how candidates are taking assessment"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "button-border-icon")}

@@ -1,8 +1,9 @@
-.contact-support-wrappers {
+.contact-support-wrappers-inbox {
   position: relative;
 
   display: flex;
-  min-height: 100vh;
+  overflow: scroll;
+  height: 100vh;
   padding-top: 56px;
   flex-direction: column;
   justify-content: flex-start;

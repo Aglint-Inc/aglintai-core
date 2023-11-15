@@ -505,6 +505,10 @@
   border-radius: 10px;
 }
 
+.relative.zindex-3 {
+  z-index: 3;
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;

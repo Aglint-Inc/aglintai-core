@@ -275,6 +275,8 @@ export function GreenhouseModal() {
                   postings.filter((job) => {
                     if (greenhouseFilter == 'live') {
                       return job.live;
+                    } else if (greenhouseFilter == 'closed') {
+                      return !job.active;
                     } else if (greenhouseFilter == 'active') {
                       return job.active;
                     } else {
