@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import AUIButton from '@/src/components/Common/AUIButton';
+import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -17,6 +18,7 @@ import {
 
 const JobPublishButton = () => {
   const { jobForm, dispatch, formWarnings } = useJobForm();
+  const { handleUIJobUpdate } = useJobs();
   const [isPublishing, setIsPublishing] = useState(false);
   const router = useRouter();
 
@@ -24,7 +26,7 @@ const JobPublishButton = () => {
     try {
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
-      supabaseWrap(
+      const [job] = supabaseWrap(
         await supabase
           .from('public_jobs')
           .update({
@@ -32,7 +34,8 @@ const JobPublishButton = () => {
             status: 'published',
             draft: null,
           })
-          .eq('id', jobForm.jobPostId),
+          .eq('id', jobForm.jobPostId)
+          .select(),
       );
       dispatch({
         type: 'updateJobPublishstatus',
@@ -44,6 +47,7 @@ const JobPublishButton = () => {
         router.replace(`/jobs/${jobForm.jobPostId}`);
       }
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
+      await handleUIJobUpdate(job.id, job);
       toast.success('Job Published SuccessFully');
     } catch (err) {
       toast.error(API_FAIL_MSG);

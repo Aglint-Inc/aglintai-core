@@ -1,6 +1,12 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
-import { InputBaseComponentProps, Stack, Typography } from '@mui/material';
+import {
+  FilledInputProps,
+  InputProps,
+  OutlinedInputProps,
+  Stack,
+  Typography,
+} from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
 import React, { useState } from 'react';
@@ -26,7 +32,10 @@ type Props = {
   onSelect?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  InputProps?: InputBaseComponentProps;
+  InputProps?:
+    | Partial<FilledInputProps>
+    | Partial<OutlinedInputProps>
+    | Partial<InputProps>;
   defaultValue?: string | number;
   children?: any;
   height?: string;
@@ -115,7 +124,7 @@ const UITextField = React.forwardRef(
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
-          inputProps={{ maxLength: contentLimit || 48 }}
+          inputProps={{ maxLength: contentLimit || undefined }}
           onChange={onChange}
           onKeyDown={(e: ReturnType<typeof onkeydown>) => {
             checkMaxLength(e.target.value);
@@ -130,7 +139,9 @@ const UITextField = React.forwardRef(
           multiline={multiline}
           minRows={minRows}
           maxRows={maxRows}
-          InputProps={InputProps}
+          InputProps={{
+            ...InputProps,
+          }}
           onFocus={() => {
             setfocus(true);
             if (onFocus) onFocus();

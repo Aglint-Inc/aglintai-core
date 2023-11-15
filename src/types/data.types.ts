@@ -159,3 +159,6 @@ export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
 
 export type SupportTicketType =
   Database['public']['Tables']['support_ticket']['Row'];
+
+export type SearchHistoryType =
+  Database['public']['Tables']['candidate_search_history']['Row'];

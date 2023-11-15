@@ -2,8 +2,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 .jdet-filter-block {
@@ -27,7 +27,7 @@
 }
 
 .jdet-filter-trigger.clickable {
-  padding: 4px 12px;
+  padding: 4px 8px;
 }
 
 .clickable {
@@ -231,7 +231,7 @@
   z-index: 101;
 
   display: flex;
-  padding: 4px 12px;
+  padding: 4px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;

@@ -72,12 +72,6 @@ export function TopCandidateListItem({
             className={_utils.cx(_styles, "top-can-info")}
             tag="div"
           >
-            {slotScores}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-info")}
-            tag="div"
-          >
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-profile-image")}
               tag="div"
@@ -90,6 +84,12 @@ export function TopCandidateListItem({
             >
               {name}
             </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "top-can-info")}
+            tag="div"
+          >
+            {slotScores}
           </_Builtin.Block>
         </_Builtin.Block>
         {isHighlighted ? (
