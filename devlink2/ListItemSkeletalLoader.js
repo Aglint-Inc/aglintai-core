@@ -16,12 +16,11 @@ export function ListItemSkeletalLoader({
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
-  return isListTopBarVisible ? (
+  return (
     <_Component className={_utils.cx(_styles, "cv-list-row")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-list-column", "checkbox")}
         tag="div"
-        {...onclickSelectAll}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-skeletal-block")}
@@ -127,5 +126,5 @@ export function ListItemSkeletalLoader({
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
-  ) : null;
+  );
 }

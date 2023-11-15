@@ -9,7 +9,6 @@ import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -18,7 +17,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
   const { job } = useJobApplications();
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { handleJobApplicationPaginatedPolling } = useJobApplications();
+  const { handleJobApplicationRefresh } = useJobApplications();
 
   const InputChange = (files) => {
     // --For Multiple File Input
@@ -81,7 +80,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
         // Handle errors, if needed
       }
     }
-    await handleJobApplicationPaginatedPolling([JobApplicationSections.NEW]);
+    await handleJobApplicationRefresh();
     setLoading(false);
     setSelectedFile([]);
     setOpenSidePanel(false);

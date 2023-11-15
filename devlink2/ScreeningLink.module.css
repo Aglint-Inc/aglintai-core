@@ -36,17 +36,6 @@
   object-fit: contain;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -124,26 +113,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
-}
-
-.text-yellow-500 {
-  color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
-}
-
-.text-kale-500 {
-  color: hsla(181.11111111111111, 27.84%, 38.04%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .text-grey-400 {

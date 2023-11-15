@@ -29,12 +29,6 @@
   object-fit: contain;
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .icon-embed.absolute {
   position: absolute;
   left: 0%;
@@ -54,23 +48,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.icon-embed.sort {
-  position: relative;
-  z-index: 5;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.grey-600 {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-red-300 {
-  color: hsla(355.3125, 76.19%, 83.53%, 1.00);
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -85,6 +62,12 @@
 
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .text-color-black {
@@ -142,22 +125,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
-}
-
-.text-yellow-500 {
-  color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
-}
-
-.text-kale-500 {
-  color: hsla(181.11111111111111, 27.84%, 38.04%, 1.00);
 }
 
 .text-grey-400 {

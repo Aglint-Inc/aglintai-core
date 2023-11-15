@@ -39,10 +39,11 @@ export type Parameters = {
 
 export type JobApplicationContext = {
   applications: JobApplicationsData;
-  applicationDepth: { [key in JobApplicationSections]: number };
+  paginationLimit: number;
   applicationDisable: boolean;
   job: JobTypeDashboard;
   updateTick: boolean;
+  pageNumber: { [key in JobApplicationSections]: number };
   handleJobApplicationCreate: (
     inputData: NewJobApplicationsInsert,
   ) => Promise<boolean>;
@@ -52,11 +53,10 @@ export type JobApplicationContext = {
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
   ) => Promise<boolean>;
-  handleJobApplicationPaginatedRead: ([
-    section,
-  ]: JobApplicationSections[]) => Promise<boolean>;
-  handleJobApplicationPaginatedPolling: (
-    sections: JobApplicationSections[],
+  handleJobApplicationRefresh: () => Promise<boolean>;
+  handleJobApplicationPaginate: (
+    pageNumber: number,
+    section: JobApplicationSections,
   ) => Promise<boolean>;
   handleJobApplicationUpdate: (
     applicationId: string,
@@ -74,7 +74,6 @@ export type JobApplicationContext = {
   handleJobApplicationFilter: (parameters: Parameters) => Promise<void>;
   searchParameters: Parameters;
   initialLoad: boolean;
-  circularScoreAnimation: MutableRefObject<boolean>;
   openImportCandidates: boolean;
   setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
   openManualImportCandidates: boolean;

@@ -1,0 +1,97 @@
+.jdet-filter-option {
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.jdet-filter-option.flex-h {
+  padding-top: 12px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.jdet-filter-header-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jdet-sort-icons-wrapper {
+  display: flex;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.sort-option-icon-block {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 3px;
+
+  background-color: #edf7ff;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.sort-option-icon-block:hover {
+  opacity: 0.8;
+}
+
+.sort-option-icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  min-width: 24px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 3px;
+}
+
+.sort-option-icon.selected {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: var(--blue-600);
+
+  color: hsla(0, 0.00%, 100.00%, 1.00);
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}

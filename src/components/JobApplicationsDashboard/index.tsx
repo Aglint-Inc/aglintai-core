@@ -13,14 +13,17 @@ import {
 
 import { ImportCandidates } from '@/devlink';
 import {
+  AllApplicantsTable,
   ApplicantsListEmpty,
   CandidateFilter,
   CandidateSelectionPopup,
+  CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
-  SortArrows,
+  // SortArrows,
+  TopApplicantsTable,
 } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -76,11 +79,12 @@ const JobApplicationComponent = () => {
   const {
     applications,
     job,
-    handleJobApplicationPaginatedPolling,
-    applicationDepth,
+    pageNumber,
     applicationDisable,
     updateTick,
     searchParameters,
+    setOpenImportCandidates,
+    handleJobApplicationRefresh,
   } = useJobApplications();
   const router = useRouter();
   const [section, setSection] = useState(JobApplicationSections.NEW);
@@ -90,6 +94,7 @@ const JobApplicationComponent = () => {
   const [currentApplication, setCurrentApplication] = useState(-1);
 
   const [jobUpdate, setJobUpdate] = useState(false);
+  const [detailedView, setDetailedView] = useState(true);
 
   const handleSetSection = (section) => {
     setSection(section);
@@ -111,8 +116,135 @@ const JobApplicationComponent = () => {
       setCurrentApplication(sectionApplications.length - 1);
   };
 
+  const [refresh, setRefresh] = useState(false);
+  const refreshRef = useRef(true);
+
+  const handleAutoRefresh = async () => {
+    setRefresh(true);
+    await handleJobApplicationRefresh();
+    setRefresh(false);
+  };
+
+  const handleManualRefresh = async () => {
+    refreshRef.current = !refreshRef.current;
+    await handleAutoRefresh();
+  };
+
+  usePolling(async () => await handleAutoRefresh(), 600000, [
+    ...Object.values(pageNumber),
+    section,
+    refreshRef.current,
+    updateTick,
+    searchParameters.search,
+    searchParameters.sort.ascending,
+    searchParameters.sort.parameter,
+  ]);
+
+  return (
+    <>
+      <JobDetails
+        textJobStatus={null}
+        textRole={capitalize(job.job_title)}
+        textApplicantsNumber={``}
+        onClickEditJobs={{
+          onClick: () => {
+            router.push(`/jobs/edit?job_id=${job.id}`);
+          },
+        }}
+        isPreviewVisible={true}
+        jobLink={{
+          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
+          target: '_blank',
+        }}
+        slotSidebar={
+          <ApplicationDetails
+            open={currentApplication !== -1}
+            onClose={() => handleSelectCurrentApplication(-1)}
+            handleSelectNextApplication={() => handleSelectNextApplication()}
+            handleSelectPrevApplication={() => handleSelectPrevApplication()}
+            applicationDetails={
+              sectionApplications[
+                currentApplication === -1 ? 0 : currentApplication
+              ]
+            }
+          />
+        }
+        slotTabs={
+          <NewJobDetailsTabs
+            section={section}
+            handleSetSection={handleSetSection}
+          />
+        }
+        slotFilters={
+          <NewJobFilterBlock
+            section={section}
+            detailedView={detailedView}
+            setDetailedView={setDetailedView}
+            checkList={checkList}
+            setCheckList={setCheckList}
+            jobUpdate={jobUpdate}
+            setJobUpdate={setJobUpdate}
+          />
+        }
+        onclickHeaderJobs={{
+          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}?status=active`,
+        }}
+        onclickAddCandidates={{ onClick: () => setOpenImportCandidates(true) }}
+        slotTable={
+          <ApplicationTable
+            detailedView={detailedView}
+            section={section}
+            sectionApplications={sectionApplications}
+            checkList={checkList}
+            setCheckList={setCheckList}
+            jobUpdate={jobUpdate}
+            handleSelectCurrentApplication={handleSelectCurrentApplication}
+            currentApplication={currentApplication}
+            refresh={refresh}
+          />
+        }
+        slotRefresh={
+          <RefreshButton
+            isDisabled={refresh || applicationDisable}
+            text={'Refresh'}
+            onClick={async () => await handleManualRefresh()}
+          />
+        }
+        slotPagination={
+          <ApplicationPagination
+            size={sectionApplications.length}
+            section={section}
+          />
+        }
+      />
+      <AddCandidates section={section} />
+    </>
+  );
+};
+
+const ApplicationTable = ({
+  detailedView,
+  section,
+  sectionApplications,
+  checkList,
+  setCheckList,
+  jobUpdate,
+  handleSelectCurrentApplication,
+  currentApplication,
+  refresh,
+}: {
+  detailedView: boolean;
+  section: JobApplicationSections;
+  sectionApplications: JobApplication[];
+  checkList: Set<string>;
+  setCheckList: Dispatch<SetStateAction<Set<string>>>;
+  jobUpdate: boolean;
   // eslint-disable-next-line no-unused-vars
-  const handleSelectAll = () => {
+  handleSelectCurrentApplication: (id: number) => void;
+  currentApplication: number;
+  refresh: boolean;
+}) => {
+  const handleSelectAllMin = () => {
     if (checkList.size === sectionApplications.length)
       setCheckList(new Set<string>());
     else
@@ -125,213 +257,219 @@ const JobApplicationComponent = () => {
         ),
       );
   };
-
-  const [refresh, setRefresh] = useState(false);
-  const refreshRef = useRef(true);
-
-  const handleAutoRefresh = async () => {
-    setRefresh(true);
-    await handleJobApplicationPaginatedPolling(
-      Object.values(JobApplicationSections),
-    );
-    setRefresh(false);
-  };
-
-  const handleManualRefresh = async () => {
-    refreshRef.current = !refreshRef.current;
-    await handleAutoRefresh();
-  };
-
-  usePolling(async () => await handleAutoRefresh(), 600000, [
-    ...Object.values(applicationDepth),
-    section,
-    refreshRef.current,
-    updateTick,
-    searchParameters.search,
-    searchParameters.sort.ascending,
-    searchParameters.sort.parameter,
-  ]);
-
-  return (
-    <JobDetails
-      onclickHeaderJobs={{
-        href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}?status=active`,
-      }}
-      textJobStatus={null}
-      textRole={capitalize(job.job_title)}
-      textApplicantsNumber={``}
-      onClickEditJobs={{
-        onClick: () => {
-          router.push(`/jobs/edit?job_id=${job.id}`);
-        },
-      }}
-      jobLink={{
-        href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
-        target: '_blank',
-      }}
-      slotJobStatus={
-        <>
-          <RefreshButton
-            isDisabled={refresh || applicationDisable}
-            text={'Refresh'}
-            onClick={async () => await handleManualRefresh()}
-          />
-          {/* <JobApplicationStatus /> */}
-        </>
-      }
-      slotBottomBar={
-        <Stack style={{ backgroundColor: 'white' }}>
-          <Stack
-            style={{
-              opacity: jobUpdate ? 0.5 : 1,
-              pointerEvents: jobUpdate ? 'none' : 'auto',
-            }}
-          >
-            {checkList.size > 0 && (
-              <ActionBar
-                section={section}
-                checkList={checkList}
-                setCheckList={setCheckList}
-                setJobUpdate={setJobUpdate}
-              />
-            )}
-          </Stack>
-        </Stack>
-      }
-      slotSidebar={
-        <ApplicationDetails
-          open={currentApplication !== -1}
-          onClose={() => handleSelectCurrentApplication(-1)}
-          handleSelectNextApplication={() => handleSelectNextApplication()}
-          handleSelectPrevApplication={() => handleSelectPrevApplication()}
-          applicationDetails={
-            sectionApplications[
-              currentApplication === -1 ? 0 : currentApplication
-            ]
-          }
-        />
-      }
-      slotTabs={
-        <NewJobDetailsTabs
-          section={section}
-          handleSetSection={handleSetSection}
-        />
-      }
-      slotFilterBlock={<NewJobFilterBlock section={section} />}
-      slotCandidatesList={
-        <ApplicantsList
-          applications={sectionApplications}
-          checkList={checkList}
-          setCheckList={setCheckList}
-          jobUpdate={jobUpdate}
-          section={section}
-          handleSelectCurrentApplication={handleSelectCurrentApplication}
-          currentApplication={currentApplication}
-          refresh={refresh}
-        />
-      }
-      // onclickSelectAll={{ onClick: () => handleSelectAll() }}
-      isListTopBarVisible={sectionApplications.length !== 0}
+  const applicantsList = (
+    <ApplicantsList
+      detailedView={detailedView}
+      applications={sectionApplications}
+      checkList={checkList}
+      setCheckList={setCheckList}
+      jobUpdate={jobUpdate}
+      section={section}
+      handleSelectCurrentApplication={handleSelectCurrentApplication}
+      currentApplication={currentApplication}
+      refresh={refresh}
+    />
+  );
+  const isAllChecked = checkList.size === sectionApplications.length;
+  const emptyList = useMemo(() => <EmptyList section={section} />, [section]);
+  return sectionApplications.length === 0 ? (
+    emptyList
+  ) : detailedView ? (
+    <AllApplicantsTable
+      onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
+      isAllChecked={isAllChecked}
       isInterviewVisible={section !== JobApplicationSections.NEW}
-      isAllChecked={checkList.size === sectionApplications.length}
-      slotInterviewSort={
-        <ApplicationSort parameter='interview_score' section={section} />
-      }
-      slotNameSort={
-        <ApplicationSort parameter='first_name' section={section} />
-      }
-      slotResumeSort={
-        <ApplicationSort parameter='resume_score' section={section} />
-      }
-      slotEmailSort={<ApplicationSort parameter='email' section={section} />}
-      slotDateSort={
-        <ApplicationSort parameter='created_at' section={section} />
-      }
+      slotCandidatesList={applicantsList}
+    />
+  ) : (
+    <TopApplicantsTable
+      onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
+      isAllSelected={isAllChecked}
+      slotList={applicantsList}
     />
   );
 };
 
-const ApplicationSort = ({
-  parameter,
+const ApplicationPagination = ({
+  size,
   section,
 }: {
-  parameter: Parameters['sort']['parameter'];
+  size: number;
   section: JobApplicationSections;
 }) => {
-  const { searchParameters, handleJobApplicationFilter } = useJobApplications();
-  const [loading, setLoading] = useState(false);
-  const isCurrentParam = searchParameters.sort
-    ? searchParameters.sort.parameter === parameter ||
-      (section === JobApplicationSections.NEW &&
-        searchParameters.sort.parameter === 'interview_score' &&
-        parameter === 'resume_score')
-    : false;
-  const isAsc = searchParameters.sort ? searchParameters.sort.ascending : false;
-  const handleToggleSort = async (up: boolean) => {
-    if (
-      searchParameters.sort.parameter === parameter &&
-      searchParameters.sort.ascending === up
-    )
-      return;
-    setLoading(true);
-    await handleJobApplicationFilter({
-      ...searchParameters,
-      sort: { parameter, ascending: up },
-    });
-    setLoading(false);
+  const {
+    paginationLimit,
+    pageNumber,
+    handleJobApplicationPaginate,
+    job,
+    applicationDisable,
+  } = useJobApplications();
+  const totalCandidatesCount = job.count[section];
+  const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
+  const handleNext = async () => {
+    if (!applicationDisable) {
+      const newPageNum = (pageNumber[section] + 1) % totalPageCount;
+      await handleJobApplicationPaginate(
+        newPageNum === 0 ? totalPageCount : newPageNum,
+        section,
+      );
+    }
   };
-  const style = { pointerEvents: loading ? 'none' : 'auto' };
-  return (
-    <SortArrows
-      upArrow={isCurrentParam && isAsc}
-      downArrow={isCurrentParam && !isAsc}
-      onclickUp={{ onClick: async () => await handleToggleSort(true), style }}
-      onclickDown={{
-        onClick: async () => await handleToggleSort(false),
-        style,
-      }}
+  const handlePrevious = async () => {
+    if (!applicationDisable) {
+      const newPageNum = pageNumber[section] - 1;
+      await handleJobApplicationPaginate(
+        newPageNum === 0 ? totalPageCount : newPageNum,
+        section,
+      );
+    }
+  };
+  return totalCandidatesCount !== 0 ? (
+    <CandidatesListPagination
+      onclickNext={{ onClick: async () => await handleNext() }}
+      onclickPrevious={{ onClick: async () => await handlePrevious() }}
+      currentPageCount={pageNumber[section]}
+      totalPageCount={totalPageCount}
+      currentCandidatesCount={size}
+      totalCandidatesCount={totalCandidatesCount}
     />
+  ) : (
+    <></>
   );
 };
+
+// const ApplicationSort = ({
+//   parameter,
+//   section,
+// }: {
+//   parameter: Parameters['sort']['parameter'];
+//   section: JobApplicationSections;
+// }) => {
+//   const { searchParameters, handleJobApplicationFilter } = useJobApplications();
+//   const [loading, setLoading] = useState(false);
+//   const isCurrentParam = searchParameters.sort
+//     ? searchParameters.sort.parameter === parameter ||
+//       (section === JobApplicationSections.NEW &&
+//         searchParameters.sort.parameter === 'interview_score' &&
+//         parameter === 'resume_score')
+//     : false;
+//   const isAsc = searchParameters.sort ? searchParameters.sort.ascending : false;
+//   const handleToggleSort = async (up: boolean) => {
+//     if (
+//       searchParameters.sort.parameter === parameter &&
+//       searchParameters.sort.ascending === up
+//     )
+//       return;
+//     setLoading(true);
+//     await handleJobApplicationFilter({
+//       ...searchParameters,
+//       sort: { parameter, ascending: up },
+//     });
+//     setLoading(false);
+//   };
+//   const style = { pointerEvents: loading ? 'none' : 'auto' };
+//   return (
+//     <SortArrows
+//       upArrow={isCurrentParam && isAsc}
+//       downArrow={isCurrentParam && !isAsc}
+//       onclickUp={{ onClick: async () => await handleToggleSort(true), style }}
+//       onclickDown={{
+//         onClick: async () => await handleToggleSort(false),
+//         style,
+//       }}
+//     />
+//   );
+// };
 
 const NewJobFilterBlock = ({
   section,
+  detailedView,
+  setDetailedView,
+  checkList,
+  setCheckList,
+  jobUpdate,
+  setJobUpdate,
 }: {
   section: JobApplicationSections;
+  detailedView: boolean;
+  setDetailedView: Dispatch<SetStateAction<boolean>>;
+  checkList: Set<string>;
+  setCheckList: Dispatch<SetStateAction<Set<string>>>;
+  jobUpdate: boolean;
+  setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { setOpenImportCandidates, openImportCandidates, job } =
-    useJobApplications();
+  const { job } = useJobApplications();
   return (
-    <>
-      {section === JobApplicationSections.NEW ? (
-        <Dialog
-          open={openImportCandidates}
-          onClose={() => setOpenImportCandidates(false)}
-          maxWidth='md'
-        >
-          <ImportCandidates
-            slotAddManually={<ImportManualCandidates />}
-            slotImportCsv={<ImportCandidatesCSV />}
-            onClickClose={{
-              onClick: () => {
-                setOpenImportCandidates(false);
-              },
-            }}
-            slotImportResume={
-              <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+    <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
+      <YTransform uniqueKey={checkList.size > 0}>
+        {checkList.size > 0 ? (
+          <Stack style={{ backgroundColor: 'white' }}>
+            <Stack
+              style={{
+                opacity: jobUpdate ? 0.5 : 1,
+                pointerEvents: jobUpdate ? 'none' : 'auto',
+              }}
+            >
+              {checkList.size > 0 && (
+                <ActionBar
+                  section={section}
+                  checkList={checkList}
+                  setCheckList={setCheckList}
+                  setJobUpdate={setJobUpdate}
+                />
+              )}
+            </Stack>
+          </Stack>
+        ) : (
+          <></>
+        )}
+      </YTransform>
+      <YTransform uniqueKey={checkList.size === 0}>
+        {checkList.size === 0 ? (
+          <JobDetailsFilterBlock
+            onclickAllApplicants={{ onClick: () => setDetailedView(true) }}
+            onclickTopApplicants={{ onClick: () => setDetailedView(false) }}
+            isAllApplicants={detailedView}
+            isTopApplicants={!detailedView}
+            slotFilter={
+              <>
+                <ApplicationFilter />
+                <SearchField />
+              </>
             }
           />
-        </Dialog>
-      ) : (
-        <></>
-      )}
-      <JobDetailsFilterBlock
-        onClickUpload={{ onClick: () => setOpenImportCandidates(true) }}
-        slotSearch={job.count[section] !== 0 ? <SearchField /> : <></>}
-        slotFilter={job.count[section] !== 0 ? <ApplicationFilter /> : <></>}
-        isAddCandidatesVisible={section === JobApplicationSections.NEW}
+        ) : (
+          <></>
+        )}
+      </YTransform>
+    </Stack>
+  );
+};
+
+const AddCandidates = ({ section }: { section: JobApplicationSections }) => {
+  const { setOpenImportCandidates, openImportCandidates } =
+    useJobApplications();
+  return section === JobApplicationSections.NEW ? (
+    <Dialog
+      open={openImportCandidates}
+      onClose={() => setOpenImportCandidates(false)}
+      maxWidth='md'
+    >
+      <ImportCandidates
+        slotAddManually={<ImportManualCandidates />}
+        slotImportCsv={<ImportCandidatesCSV />}
+        onClickClose={{
+          onClick: () => {
+            setOpenImportCandidates(false);
+          },
+        }}
+        slotImportResume={
+          <ResumeUpload setOpenSidePanel={setOpenImportCandidates} />
+        }
       />
-    </>
+    </Dialog>
+  ) : (
+    <></>
   );
 };
 
@@ -543,6 +681,7 @@ const NewJobDetailsTabs = ({
 };
 
 const ApplicantsList = ({
+  detailedView,
   applications,
   checkList,
   setCheckList,
@@ -550,8 +689,8 @@ const ApplicantsList = ({
   section,
   handleSelectCurrentApplication,
   currentApplication,
-  refresh,
 }: {
+  detailedView: boolean;
   applications: JobApplication[];
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
@@ -562,14 +701,9 @@ const ApplicantsList = ({
   currentApplication: number;
   refresh: boolean;
 }) => {
-  const {
-    handleJobApplicationPaginatedRead,
-    applicationDepth,
-    applicationDisable,
-  } = useJobApplications();
+  const { applicationDisable } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
-  const [paginationLoad, setPaginationLoad] = useState(false);
 
   useEffect(() => {
     if (checkList.size === 0 || checkList.size === applications.length)
@@ -613,35 +747,18 @@ const ApplicantsList = ({
     }
   };
 
-  const observer = useRef(undefined);
-  const lastApplicationRef = async (node: any) => {
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(async (entries) => {
-      if (entries[0].isIntersecting && !paginationLoad && !refresh) {
-        setPaginationLoad(true);
-        await handleJobApplicationPaginatedRead([section]);
-        setPaginationLoad(false);
-      }
-    });
-    if (node) observer.current.observe(node);
-  };
-
   const scrollToRef = useRef(undefined);
   useEffect(() => {
     if (currentApplication > -1)
       scrollToRef.current.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'instant',
         block: 'center',
         inline: 'nearest',
       });
   }, [currentApplication]);
 
-  const emptyList = useMemo(() => <EmptyList section={section} />, [section]);
-
-  return applications.length === 0 ? (
-    emptyList
-  ) : (
-    <>
+  return (
+    <Stack>
       {applications.map((application, i) => {
         const styles =
           (jobUpdate && checkList.has(application.application_id)) ||
@@ -652,31 +769,24 @@ const ApplicantsList = ({
           <Stack
             key={application.application_id}
             style={styles}
-            ref={
-              i === applicationDepth[section] - 1 ? lastApplicationRef : null
-            }
             id={`job-application-stack-${i}`}
+            ref={currentApplication === i ? scrollToRef : null}
           >
-            <Stack ref={currentApplication === i ? scrollToRef : null}>
-              <ApplicationCard
-                application={application}
-                index={i}
-                checkList={checkList}
-                handleSelect={handleSelect}
-                isInterview={section !== JobApplicationSections.NEW}
-                handleOpenDetails={() => handleSelectCurrentApplication(i)}
-                isSelected={currentApplication === i}
-              />
-            </Stack>
+            <ApplicationCard
+              section={section}
+              detailedView={detailedView}
+              application={application}
+              index={i}
+              checkList={checkList}
+              handleSelect={handleSelect}
+              isInterview={section !== JobApplicationSections.NEW}
+              handleOpenDetails={() => handleSelectCurrentApplication(i)}
+              isSelected={currentApplication === i}
+            />
           </Stack>
         );
       })}
-      {paginationLoad && (
-        <Stack>
-          <Loader />
-        </Stack>
-      )}
-    </>
+    </Stack>
   );
 };
 

@@ -20,6 +20,7 @@ import {
   bulkUpdateJobApplicationDbAction,
   createJobApplicationDbAction,
   deleteJobApplicationDbAction,
+  getRange,
   getUpdatedJobStatus,
   updateJobApplicationDbAction,
 } from './utils';
@@ -149,27 +150,28 @@ const useProviderJobApplicationActions = (
   const { jobsData, initialLoad: jobLoad, handleUpdateJobCount } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
-  const paginationLimit = 100;
+  const [applications, dispatch] = useReducer(reducer, undefined);
 
-  const initialJobApplicationDepth = Object.values(
+  const paginationLimit = 100;
+  const initialJobApplicationPageNumbers = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
-    return { ...acc, [curr]: paginationLimit };
+    return { ...acc, [curr]: 1 };
     // eslint-disable-next-line no-unused-vars
   }, {}) as { [key in JobApplicationSections]: number };
-
-  const [applications, dispatch] = useReducer(reducer, undefined);
-  const [applicationDepth, setApplicationDepth] = useState(
-    initialJobApplicationDepth,
+  const [pageNumber, setPageNumber] = useState(
+    initialJobApplicationPageNumbers,
   );
-  const initialRanges = Object.values(JobApplicationSections).reduce(
-    (acc, curr) => {
-      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] - 1 } };
-    },
-    {},
-  ) as ReadJobApplicationApi['request']['ranges'];
+  const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr]: getRange(pageNumber[curr], paginationLimit),
+    };
+  }, {}) as ReadJobApplicationApi['request']['ranges'];
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
-  const job = initialJobLoad && jobsData.jobs.find((job) => job.id === jobId);
+  const job = initialJobLoad
+    ? jobsData.jobs.find((job) => job.id === jobId)
+    : undefined;
   const initialLoad = initialJobLoad && applications ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
@@ -178,7 +180,7 @@ const useProviderJobApplicationActions = (
 
   const initialParameters: Parameters = {
     sort: { parameter: 'resume_score', ascending: false },
-    filter: [], //[{ parameter: 'resume_score', condition: 'gte', count: 0 }],
+    filter: [],
     search: null,
   };
   const [searchParameters, setSearchParameters] = useState({
@@ -187,17 +189,7 @@ const useProviderJobApplicationActions = (
 
   const [applicationDisable, setApplicationDisable] = useState(false);
 
-  const circularScoreAnimation = useRef(true);
   const updateTick = useRef(false);
-
-  useEffect(() => {
-    if (initialLoad && circularScoreAnimation) {
-      const timer = setTimeout(() => {
-        circularScoreAnimation.current = false;
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [initialLoad]);
 
   const handleJobApplicationCreate = async (inputData: JobApplication) => {
     if (recruiter) {
@@ -206,9 +198,7 @@ const useProviderJobApplicationActions = (
         inputData,
       );
       if (data) {
-        await handleJobApplicationPaginatedPolling([
-          JobApplicationSections.NEW,
-        ]);
+        await handleJobApplicationRefresh();
         return true;
       }
       handleJobApplicationError(error);
@@ -225,9 +215,7 @@ const useProviderJobApplicationActions = (
         inputData,
       );
       if (data) {
-        await handleJobApplicationPaginatedPolling([
-          JobApplicationSections.NEW,
-        ]);
+        await handleJobApplicationRefresh();
         return true;
       }
       handleJobApplicationError(error);
@@ -258,83 +246,43 @@ const useProviderJobApplicationActions = (
     }
   };
 
-  const handleJobApplicationPaginatedRead = async (
-    sections: JobApplicationSections[],
-  ) => {
+  const handleJobApplicationRefresh = async () => {
     if (recruiter) {
-      const ranges = sections.reduce((acc, curr) => {
-        return {
-          ...acc,
-          [curr]: {
-            start: applicationDepth[curr],
-            end: applicationDepth[curr] + paginationLimit - 1,
-          },
-        };
-      }, {});
-      const { data: axiosData } = await axios({
-        method: 'post',
-        url: '/api/JobApplicationsApi/read',
-        data: {
-          job_id: jobId,
-          ranges: ranges,
-          ...searchParameters,
-        },
-      });
-      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
-      if (data) {
-        const action: Action = {
-          type: ActionType.PAGINATED_READ,
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        setApplicationDepth(
-          sections.reduce(
-            (acc, curr) => {
-              return { ...acc, [curr]: ranges[curr]['end'] + 1 };
-            },
-            { ...applicationDepth },
-          ),
-        );
-        updateTick.current = !updateTick.current;
-        return true;
-      }
-      handleJobApplicationError(error);
-      return false;
+      const request = {
+        job_id: jobId,
+        ranges: ranges,
+        ...searchParameters,
+      };
+      const confirmation = await handleJobApplicationRead(request);
+      if (confirmation) return true;
     }
+    return false;
   };
 
-  const handleJobApplicationPaginatedPolling = async (
-    sections: JobApplicationSections[],
+  const handleJobApplicationPaginate = async (
+    pageNumber: number,
+    section: JobApplicationSections,
   ) => {
     if (recruiter) {
-      const ranges = sections.reduce((acc, curr) => {
-        return {
-          ...acc,
-          [curr]: { start: 0, end: applicationDepth[curr] - 1 },
-        };
-      }, {});
-      const { data: axiosData } = await axios({
-        method: 'post',
-        url: '/api/JobApplicationsApi/read',
-        data: {
-          job_id: jobId,
-          ranges: ranges,
-          ...searchParameters,
-        },
+      setApplicationDisable(true);
+      const newRanges = {
+        ...ranges,
+        [section]: getRange(pageNumber, paginationLimit),
+      } as ReadJobApplicationApi['request']['ranges'];
+      const confirmation = await handleJobApplicationRead({
+        job_id: jobId,
+        ranges: newRanges,
+        ...searchParameters,
       });
-      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
-      if (data) {
-        const action: Action = {
-          type: ActionType.PAGINATED_UPDATE,
-          payload: { applicationData: data },
-        };
-        dispatch(action);
-        updateTick.current = !updateTick.current;
+      setApplicationDisable(false);
+      if (confirmation) {
+        setPageNumber((prev) => {
+          return { ...prev, [section]: pageNumber };
+        });
         return true;
       }
-      handleJobApplicationError(error);
-      return false;
     }
+    return false;
   };
 
   const handleJobApplicationUpdate = async (
@@ -385,7 +333,7 @@ const useProviderJobApplicationActions = (
     if (d1) {
       const read = await handleJobApplicationRead({
         job_id: jobId,
-        ranges: initialRanges,
+        ranges: ranges,
         ...searchParameters,
       });
       if (read) {
@@ -439,9 +387,6 @@ const useProviderJobApplicationActions = (
 
   const handleJobApplicationFilter = async (parameters: Parameters) => {
     setApplicationDisable(true);
-    const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
-      return { ...acc, [curr]: { start: 0, end: applicationDepth[curr] - 1 } };
-    }, {}) as ReadJobApplicationApi['request']['ranges'];
     const confirmation = await handleJobApplicationRead({
       job_id: jobId,
       ranges: ranges,
@@ -453,14 +398,7 @@ const useProviderJobApplicationActions = (
 
   useEffect(() => {
     if (initialJobLoad) {
-      setSearchParameters(() => {
-        handleJobApplicationRead({
-          job_id: jobId,
-          ranges: initialRanges,
-          ...initialParameters,
-        });
-        return { ...initialParameters };
-      });
+      handleJobApplicationRefresh();
     }
   }, [initialJobLoad]);
 
@@ -475,17 +413,18 @@ const useProviderJobApplicationActions = (
 
   const value = {
     applications,
-    applicationDepth,
     applicationDisable,
+    paginationLimit,
     job,
     updateTick: updateTick.current,
+    pageNumber,
     handleJobApplicationCreate,
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
-    handleJobApplicationPaginatedRead,
-    handleJobApplicationPaginatedPolling,
+    handleJobApplicationPaginate,
     handleJobApplicationUpdate,
     handleJobApplicationUIUpdate,
+    handleJobApplicationRefresh,
     handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,
     handleJobApplicationError,
@@ -493,7 +432,6 @@ const useProviderJobApplicationActions = (
     handleJobApplicationFilter,
     searchParameters,
     initialLoad,
-    circularScoreAnimation,
     openImportCandidates,
     setOpenImportCandidates,
     openManualImportCandidates,

@@ -122,14 +122,6 @@
   background-color: hsla(206.8421052631579, 0.00%, 93.33%, 1.00);
 }
 
-.sl-button.basic.ml--14 {
-  margin-left: -14px;
-}
-
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
 .sl-button.simple {
   padding: 0px;
   grid-column-gap: 8px;
@@ -175,23 +167,6 @@
   z-index: 99;
 
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.icon-embed.sort {
-  position: relative;
-  z-index: 5;
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.grey-600 {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-red-300 {
-  color: hsla(355.3125, 76.19%, 83.53%, 1.00);
 }
 
 .sl-goal-buttons-wrapper {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function CandidateListItem(props: {
+declare function AllCandidateListItem(props: {
   as?: React.ElementType;
   onclickSelect?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;

@@ -675,7 +675,7 @@ export function JobScreening({
       </_Builtin.Block>
       {bottomBarVisibility ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "job-details-selection-bar")}
+          className={_utils.cx(_styles, "job-page-nav-bar")}
           tag="div"
         >
           {slotSelectActionBar ?? <SelectActionBar />}

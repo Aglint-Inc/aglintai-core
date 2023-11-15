@@ -90,26 +90,6 @@
   }
 }
 
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
-}
-
-.text-yellow-500 {
-  color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
-}
-
-.text-kale-500 {
-  color: hsla(181.11111111111111, 27.84%, 38.04%, 1.00);
-}
-
-.text-blue-500 {
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
 .text-grey-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
@@ -131,25 +111,6 @@
 
 .icon-block.clickable.padding-4 {
   padding: 4px;
-}
-
-.icon-block.clickable.padding-4.relative {
-  position: relative;
-}
-
-.icon-block.clickable.padding-4.relative.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .icon-block._10px {
@@ -181,6 +142,14 @@
   background-color: hsla(0, 0.00%, 33.73%, 1.00);
 }
 
+.position-relative {
+  position: relative;
+}
+
+.icon-block.position-relative.z-10 {
+  z-index: 10;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;
@@ -208,19 +177,6 @@
   z-index: 99;
 
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.icon-embed.sort {
-  position: relative;
-  z-index: 5;
-}
-
-.grey-600 {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-red-300 {
-  color: hsla(355.3125, 76.19%, 83.53%, 1.00);
 }
 
 .cs-sidebar-website-wrapper {
@@ -277,10 +233,6 @@
   display: flex;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
-}
-
-.sl-company-title-block.align-center {
-  align-items: center;
 }
 
 .sl-company-image-block {

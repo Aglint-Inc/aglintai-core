@@ -29,7 +29,6 @@ import { ResAbsentError, ResumeErrorBlock } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
@@ -48,14 +47,15 @@ import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
-import { getName } from '..';
 import { applicationValidity } from '../utils';
 import { emailHandler } from '../..';
+import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
 import {
   ApiLogState,
   capitalize,
+  getCandidateName,
   getInterviewScore,
   intactConditionFilter,
 } from '../../utils';
@@ -77,17 +77,7 @@ const ApplicationDetails = ({
   const [openFeedback, setOpenFeedback] = useState(false);
 
   const candidateImage = applicationDetails ? (
-    <MuiAvatar
-      level={getName(
-        applicationDetails.candidates.first_name,
-        applicationDetails.candidates.last_name,
-      )}
-      src={applicationDetails.candidates.profile_image}
-      variant={'rounded'}
-      width={'100%'}
-      height={'100%'}
-      fontSize={'28px'}
-    />
+    <CandidateAvatar application={applicationDetails} />
   ) : (
     <></>
   );
@@ -168,7 +158,7 @@ const NewDetailedFeedback = ({
         },
       }}
       slotCandidateImage={candidateImage}
-      textName={getName(
+      textName={getCandidateName(
         applicationDetails.candidates.first_name,
         applicationDetails.candidates.last_name,
       )}
@@ -280,6 +270,22 @@ const NewJobApplicationSideDrawer = ({
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
+  const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+      )
+      .then(() => {
+        setCopy(true);
+        setTimeout(() => {
+          setCopy(false);
+        }, 1000);
+      });
+  };
+  const handleRedirect = () => {
+    window.open(applicationDetails.candidates.linkedin, '_blank');
+  };
   useEffect(() => {
     if (open) {
       if (leftShift) {
@@ -289,24 +295,12 @@ const NewJobApplicationSideDrawer = ({
       }
     }
   }, [leftShift, rightShift]);
-  const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
       onClickNext={{ onClick: () => handleSelectNextApplication() }}
       onClickCopyProfile={{
-        onClick: () => {
-          navigator.clipboard
-            .writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
-            )
-            .then(() => {
-              setCopy(true);
-              setTimeout(() => {
-                setCopy(false);
-              }, 1000);
-            });
-        },
+        onClick: () => handleCopy(),
         style: {
           WebkitUserSelect: 'none',
           MozUserSelect: 'none',
@@ -341,8 +335,7 @@ const NewJobApplicationSideDrawer = ({
       }
       isCopiedMessageVisible={copy}
       onClickLinkedin={{
-        onClick: () =>
-          window.open(applicationDetails.candidates.linkedin, '_blank'),
+        onClick: () => handleRedirect(),
       }}
     />
   );

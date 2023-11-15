@@ -1,20 +1,18 @@
-import { Stack, Tooltip } from '@mui/material';
-
-import { CandidateListItem, ScoreErrorIcon } from '@/devlink2';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-
+import { AllCandidateListItem } from '@/devlink2';
+import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import {
-  ApiLogState,
-  capitalize,
-  formatTimeStamp,
-  getInterviewScore,
-  intactConditionFilter,
-} from '../utils';
-import Calculating from '../../Common/Calculating';
-import MuiAvatar from '../../Common/MuiAvatar';
-import { SmallCircularScore } from '../../Common/SmallCircularScore';
+  JobApplication,
+  JobApplicationSections,
+} from '@/src/context/JobApplicationsContext/types';
+
+import CandidateAvatar from '../Common/CandidateAvatar';
+import InterviewScore from '../Common/InterviewScore';
+import ResumeScore from '../Common/ResumeScore';
+import { capitalize, formatTimeStamp, getCandidateName } from '../utils';
 
 const ApplicationCard = ({
+  section,
+  detailedView,
   application,
   index,
   checkList,
@@ -23,6 +21,8 @@ const ApplicationCard = ({
   handleOpenDetails,
   isSelected = false,
 }: {
+  section: JobApplicationSections;
+  detailedView: boolean;
   application: JobApplication;
   index: number;
   checkList: Set<string>;
@@ -33,96 +33,42 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  // const { job } = useJobApplications();
-
-  const interviewScore = application?.feedback
-    ? getInterviewScore(application.feedback)
-    : 0;
-
   const creationDate = formatTimeStamp(application.created_at);
-
   const handleCheck = () => {
     handleSelect(index);
   };
-  const resumeScore = application.resume_score;
-
-  return (
-    <CandidateListItem
+  const profile = <CandidateAvatar application={application} fontSize={12} />;
+  const resumeScore = <ResumeScore application={application} />;
+  const interviewScore =
+    section === JobApplicationSections.NEW ? (
+      <></>
+    ) : (
+      <InterviewScore application={application} />
+    );
+  const isChecked = checkList.has(application.application_id);
+  const name = getCandidateName(
+    application.candidates.first_name,
+    application.candidates.last_name,
+  );
+  const summary = (application?.json_resume as any)?.overview ?? '---';
+  const strength = (application?.json_resume as any)?.strength ?? '---';
+  const weakness = (application?.json_resume as any)?.weakness ?? '---';
+  return detailedView ? (
+    <AllCandidateListItem
       onclickSelect={{ onClick: handleCheck }}
-      isChecked={checkList.has(application.application_id)}
-      slotProfileImage={
-        <MuiAvatar
-          level={getName(
-            application.candidates.first_name,
-            application.candidates.last_name,
-          )}
-          src={application.candidates.profile_image}
-          variant={'rounded'}
-          width={'100%'}
-          height={'100%'}
-          fontSize={'12px'}
-        />
-      }
-      name={getName(
-        application.candidates.first_name,
-        application.candidates.last_name,
-      )}
+      isChecked={isChecked}
+      slotProfileImage={profile}
+      name={name}
       jobTitle={
         application.candidates.job_title
           ? capitalize(application.candidates.job_title)
           : '---'
       }
-      slotResumeScore={
-        application.json_resume || application.resume ? (
-          intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-            application.jd_score ? (
-              <SmallCircularScore
-                score={resumeScore}
-                scale={0.5}
-                showScore={true}
-              />
-            ) : (
-              <Tooltip
-                title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."
-                placement='right'
-                arrow={true}
-              >
-                <Stack>
-                  <ScoreErrorIcon />
-                </Stack>
-              </Tooltip>
-            )
-          ) : (
-            <Tooltip title='Ongoing scoring' placement='right' arrow={true}>
-              <Stack style={{ scale: '0.3' }}>
-                <Calculating />
-              </Stack>
-            </Tooltip>
-          )
-        ) : (
-          <Tooltip title='No resume available.' placement='right' arrow={true}>
-            <Stack>---</Stack>
-          </Tooltip>
-        )
-      }
+      slotResumeScore={resumeScore}
       email={application.candidates.email || '---'}
       phone={application.candidates.phone || '---'}
       isInterviewVisible={isInterview}
-      slotInterviewScore={
-        application?.feedback ? (
-          <SmallCircularScore
-            score={interviewScore}
-            scale={0.5}
-            showScore={true}
-          />
-        ) : (
-          <Tooltip title='Yet to be interviewed' placement='right' arrow={true}>
-            <Stack>
-              <ScoreErrorIcon />
-            </Stack>
-          </Tooltip>
-        )
-      }
+      slotInterviewScore={interviewScore}
       appliedDate={creationDate}
       onclickCandidate={{
         onClick: () => {
@@ -131,13 +77,29 @@ const ApplicationCard = ({
       }}
       isHighlighted={isSelected}
     />
+  ) : (
+    <TopCandidateListItem
+      onclickSelect={{ onClick: handleCheck }}
+      name={name}
+      isChecked={isChecked}
+      isHighlighted={isSelected}
+      slotProfileImage={profile}
+      slotScores={
+        <>
+          {resumeScore}
+          {interviewScore}
+        </>
+      }
+      summary={summary}
+      strength={strength}
+      weakness={weakness}
+      onclickCandidate={{
+        onClick: () => {
+          handleOpenDetails();
+        },
+      }}
+    />
   );
 };
 
 export default ApplicationCard;
-
-export const getName = (first_name: string, last_name: string) => {
-  return first_name || last_name
-    ? capitalize(first_name || '' + ' ' + last_name || '')
-    : '---';
-};

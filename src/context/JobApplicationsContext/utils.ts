@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -11,14 +12,15 @@ import {
 
 export const initialJobApplicationsContext: JobApplicationContext = {
   applications: undefined,
-  applicationDepth: undefined,
   applicationDisable: undefined,
+  paginationLimit: undefined,
   job: undefined,
+  pageNumber: undefined,
   handleJobApplicationCreate: undefined,
   handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
-  handleJobApplicationPaginatedRead: undefined,
-  handleJobApplicationPaginatedPolling: undefined,
+  handleJobApplicationRefresh: undefined,
+  handleJobApplicationPaginate: undefined,
   handleJobApplicationUpdate: undefined,
   handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
@@ -26,7 +28,6 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   handleJobApplicationFilter: undefined,
   searchParameters: undefined,
   initialLoad: false,
-  circularScoreAnimation: undefined,
   openImportCandidates: false,
   setOpenImportCandidates: undefined,
   openManualImportCandidates: undefined,
@@ -223,4 +224,14 @@ export const getUpdatedJobStatus = (
     },
     [],
   );
+};
+
+export const getRange = (
+  pageNumber: number,
+  paginationLimit: JobApplicationContext['paginationLimit'],
+) => {
+  return {
+    start: (pageNumber - 1) * paginationLimit,
+    end: pageNumber * paginationLimit - 1,
+  };
 };
