@@ -279,7 +279,12 @@ export function CreateNewJob({
           >
             {slotCreateJob ?? <ScreeningQuestion />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotCloseJob}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "relative", "zindex-3")}
+            tag="div"
+          >
+            {slotCloseJob}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
