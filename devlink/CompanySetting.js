@@ -32,7 +32,7 @@ export function CompanySetting({
 
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-main-wrapper", "height-scroll")}
+      className={_utils.cx(_styles, "rd-main-wrapper", "height-scroll-company")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-344")} tag="div">

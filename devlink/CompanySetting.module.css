@@ -58,6 +58,11 @@
   background-color: var(--gray100-3a86b552);
 }
 
+.rd-main-wrapper.height-scroll-company {
+  overflow: auto;
+  height: 100vh;
+}
+
 .div-block-344 {
   position: sticky;
   top: 0px;
