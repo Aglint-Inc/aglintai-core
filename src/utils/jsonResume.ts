@@ -12,7 +12,7 @@ export function getLocationString(location) {
   return locationString;
 }
 
-export const getFullName = ({ firstName, lastName }) => {
+export const getFullName = (firstName, lastName) => {
   return [firstName, lastName]
     .map((s) => s.trim())
     .filter(Boolean)

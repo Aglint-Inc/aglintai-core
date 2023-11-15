@@ -30,7 +30,6 @@ import toast from '@/src/utils/toast';
 import AUIButton from '../../Common/AUIButton';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
-import { getName } from '../../JobApplicationsDashboard/ApplicationCard';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import {
   API_FAIL_MSG,
@@ -170,7 +169,7 @@ const CandidatesSearch = () => {
                   onClickCheck={{}}
                   slotAvatar={
                     <MuiAvatar
-                      level={getName(c.first_name, c.last_name)}
+                      level={getFullName(c.first_name, c.last_name)}
                       src={c.profile_image}
                       variant={'rounded'}
                       width={'100%'}
@@ -271,7 +270,7 @@ const SelectedCandidate = ({
       slotAvatar={
         <>
           <MuiAvatar
-            level={getName(candidate.first_name, candidate.last_name)}
+            level={getFullName(candidate.first_name, candidate.last_name)}
             src={candidate.profile_image}
             variant={'rounded'}
             width={'100%'}
@@ -280,10 +279,10 @@ const SelectedCandidate = ({
           />
         </>
       }
-      textName={getFullName({
-        firstName: candidate.json_resume.basics.firstName,
-        lastName: candidate.json_resume.basics.lastName,
-      })}
+      textName={getFullName(
+        candidate.json_resume.basics.firstName,
+        candidate.json_resume.basics.lastName,
+      )}
       slotDetails={
         <>
           <CandidateEducation
