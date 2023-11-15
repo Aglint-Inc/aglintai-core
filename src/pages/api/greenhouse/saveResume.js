@@ -71,7 +71,6 @@ export default async function handler(req, res) {
             .select();
 
           if (!errorApp) {
-            console.log(app[0].resume);
             await supabase
               .from('greenhouse_reference')
               .update({ resume_saved: true })
