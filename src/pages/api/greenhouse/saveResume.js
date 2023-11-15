@@ -62,13 +62,14 @@ export default async function handler(req, res) {
             },
           );
         const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
-
         if (!uploadError) {
+          console.log(fileLink);
           const { data: app, error: errorApp } = await supabase
             .from('job_applications')
             .update({ resume: fileLink })
             .eq('application_id', payload.application_id)
             .select();
+
           if (errorApp) {
             await supabase
               .from('greenhouse_reference')
@@ -80,6 +81,7 @@ export default async function handler(req, res) {
             res.status(200).json(app[0]);
           }
         } else {
+          console.log(uploadError);
           res.status(200).json(uploadError);
         }
 
