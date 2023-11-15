@@ -19,7 +19,6 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
-import { getCandidateName } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import {
   DetailedInterviewFeedbackParams,
   giveColorForInterviewScore,
@@ -214,10 +213,7 @@ function InterviewFeedbackPage() {
                     textCandidateScript={con.userContent}
                     slotCandidateImage={
                       <MuiAvatar
-                        level={getCandidateName(
-                          applicationDetails.candidates.first_name,
-                          applicationDetails.candidates.last_name,
-                        )}
+                        level={applicationDetails.candidates.first_name}
                         src={applicationDetails?.candidates.profile_image}
                         variant={'rounded'}
                         width={'auto'}
@@ -340,10 +336,7 @@ function InterviewFeedbackPage() {
           isActivityVisible={false}
           slotProfileImage={
             <MuiAvatar
-              level={getCandidateName(
-                applicationDetails.candidates.first_name,
-                applicationDetails.candidates.last_name,
-              )}
+              level={applicationDetails.candidates.first_name}
               src={applicationDetails?.candidates.profile_image}
               variant={'rounded'}
               width={'100%'}
