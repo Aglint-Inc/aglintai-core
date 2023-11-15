@@ -22,6 +22,10 @@ export function RecSideNavProfileBlock({
         className={_utils.cx(_styles, "rs-header-block")}
         tag="div"
       >
+        <_Builtin.HtmlEmbed
+          className={_utils.cx(_styles, "hide")}
+          value="%3Cstyle%3E%0A.rs-header-backdrop%20%7B%0A%09width%3A%20calc(100%25%20%2B%2016px)%3B%0A%09height%3A%20calc(100%25%20%2B%2032px)%3B%0A%7D%0A%3C%2Fstyle%3E"
+        />
         <_Builtin.Block
           className={_utils.cx(_styles, "rs-header-top")}
           tag="div"
