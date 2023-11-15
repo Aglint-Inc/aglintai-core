@@ -70,15 +70,17 @@ export default async function handler(req, res) {
             .eq('application_id', payload.application_id)
             .select();
 
-          if (errorApp) {
+          if (!errorApp) {
+            console.log(app[0].resume);
             await supabase
               .from('greenhouse_reference')
               .update({ resume_saved: true })
               .eq('application_id', payload.application_id)
               .select();
-            res.status(200).json(errorApp);
-          } else {
             res.status(200).json(app[0]);
+          } else {
+            console.log(errorApp);
+            res.status(200).json(errorApp);
           }
         } else {
           console.log(uploadError);
