@@ -92,6 +92,47 @@ export interface Database {
           }
         ]
       }
+      greenhouse_reference: {
+        Row: {
+          application_id: string
+          created_at: string
+          greenhouse_id: string
+          id: number
+          posting_id: string
+          public_job_id: string
+          resume: string | null
+          resume_saved: boolean
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          greenhouse_id: string
+          id?: number
+          posting_id: string
+          public_job_id: string
+          resume?: string | null
+          resume_saved?: boolean
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          greenhouse_id?: string
+          id?: number
+          posting_id?: string
+          public_job_id?: string
+          resume?: string | null
+          resume_saved?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "greenhouse_reference_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "job_applications"
+            referencedColumns: ["application_id"]
+          }
+        ]
+      }
       job_applications: {
         Row: {
           ai_interviewer_id: number | null
@@ -109,9 +150,12 @@ export interface Database {
           job_id: string | null
           json_resume: Json | null
           last_updated_at: string | null
+          processed_at: string | null
           resume: string | null
+          resume_embedding: string | null
           resume_score: number
           resume_text: string | null
+          retry: number
           status: string | null
         }
         Insert: {
@@ -130,9 +174,12 @@ export interface Database {
           job_id?: string | null
           json_resume?: Json | null
           last_updated_at?: string | null
+          processed_at?: string | null
           resume?: string | null
+          resume_embedding?: string | null
           resume_score?: number
           resume_text?: string | null
+          retry?: number
           status?: string | null
         }
         Update: {
@@ -151,9 +198,12 @@ export interface Database {
           job_id?: string | null
           json_resume?: Json | null
           last_updated_at?: string | null
+          processed_at?: string | null
           resume?: string | null
+          resume_embedding?: string | null
           resume_score?: number
           resume_text?: string | null
+          retry?: number
           status?: string | null
         }
         Relationships: [
@@ -744,6 +794,21 @@ export interface Database {
           }
         ]
       }
+      weight_record: {
+        Row: {
+          jd_score: Json | null
+          parameter_weights: Json | null
+        }
+        Insert: {
+          jd_score?: Json | null
+          parameter_weights?: Json | null
+        }
+        Update: {
+          jd_score?: Json | null
+          parameter_weights?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -752,6 +817,13 @@ export interface Database {
       batchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      calculate_resume_score: {
+        Args: {
+          score_json: Json
+          app_id: string
+        }
+        Returns: boolean
       }
       citext:
         | {
@@ -831,9 +903,30 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      match_job_applications: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+          job_ids: string[]
+        }
+        Returns: {
+          application_id: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          json_resume: Json
+          similarity: number
+        }[]
+      }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      retrybatchcalcresumejdscore: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       update_resume_score: {
         Args: {

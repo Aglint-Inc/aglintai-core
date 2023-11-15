@@ -70,6 +70,11 @@ export default async function handler(req, res) {
             .eq('application_id', payload.application_id)
             .select();
           if (errorApp) {
+            await supabase
+              .from('greehouse_reference')
+              .update({ resume_saved: true })
+              .eq('application_id', payload.application_id)
+              .select();
             res.status(200).json(errorApp);
           } else {
             res.status(200).json(app[0]);
