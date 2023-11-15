@@ -1,8 +1,9 @@
 import { Dialog } from '@mui/material';
-import { useState } from 'react';
 
 import { JobDashboardEmpty } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
+import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 
 import { LeverModalComp } from './LeverModal';
 
@@ -11,23 +12,17 @@ export default function EmptyJobDashboard({
   handleClickAddJob,
   showMsg = true,
 }) {
+  const { handleClose, integration, setIntegration } = useIntegration();
   const { recruiter } = useAuthDetails();
-  const [state, setState] = useState(STATE_LEVER_DIALOG.INITIAL);
-  const [isLeverOpen, setIsLeverOpen] = useState(false);
-
-  const handleClose = () => {
-    setIsLeverOpen(false);
-  };
 
   return (
     <>
-      <Dialog open={isLeverOpen} onClose={handleClose} maxWidth={'lg'}>
-        <LeverModalComp
-          state={state}
-          handleClose={handleClose}
-          setState={setState}
-          setIsLeverOpen={setIsLeverOpen}
-        />
+      <Dialog
+        open={integration.lever.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <LeverModalComp />
       </Dialog>
 
       <JobDashboardEmpty
@@ -96,11 +91,15 @@ Thank you,
         onClickLever={{
           onClick: () => {
             if (!recruiter.lever_key) {
-              setState(STATE_LEVER_DIALOG.API);
-              setIsLeverOpen(true);
+              setIntegration((prev) => ({
+                ...prev,
+                lever: { open: true, step: STATE_LEVER_DIALOG.API },
+              }));
             } else {
-              setState(STATE_LEVER_DIALOG.LISTJOBS);
-              setIsLeverOpen(true);
+              setIntegration((prev) => ({
+                ...prev,
+                lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+              }));
             }
           },
         }}
@@ -108,12 +107,3 @@ Thank you,
     </>
   );
 }
-
-export const STATE_LEVER_DIALOG = {
-  INITIAL: 'INITIAL',
-  FETCHING: 'FETCHING',
-  API: 'API',
-  LISTJOBS: 'LISTJOBS',
-  IMPORTING: 'IMPORTING',
-  ERROR: 'ERROR',
-};

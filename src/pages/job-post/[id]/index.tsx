@@ -1,10 +1,11 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { InvalidJob, LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
+import InvalidJobPostLottie from '@/src/components/JobPost/InvalidJobPostLottie';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -144,9 +145,7 @@ function JobPost() {
       ) : valid ? (
         <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
       ) : (
-        <Stack width={'100%'} alignItems={'center'} p={'100px'}>
-          <Typography variant='h3'>Invalid Job Post</Typography>
-        </Stack>
+        <InvalidJob slotLottie={<InvalidJobPostLottie />} />
       )}
     </Stack>
   );

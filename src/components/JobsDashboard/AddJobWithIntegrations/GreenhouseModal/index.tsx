@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   AtsCard,
-  AtsJobs,
+  GreenhouseApiKey,
+  GreenhouseAts,
   IntegrationModal,
   LeverApiKey,
   LeverFetching,
@@ -17,7 +18,7 @@ import {
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
+import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -25,18 +26,20 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import FetchingJobsLever from './Loader';
-import { createJobApplications, createJobObject, createLeverJobReference, fetchAllJobs, getLeverStatusColor } from './utils';
+import { createJobApplications, createJobObject, fetchAllJobs } from './utils';
 import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
 
-export function LeverModalComp() {
+export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
-  const [leverPostings, setLeverPostings] = useState([]);
-  const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
-  const [leverFilter, setLeverFilter] = useState('published');
+  const [postings, setPostings] = useState([]);
+  const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState(
+    [],
+  );
+  const [greenhouseFilter, setGreenhouseFilter] = useState('live');
   const [initialFetch, setInitialFetch] = useState(true);
   const apiRef = useRef(null);
 
@@ -47,15 +50,16 @@ export function LeverModalComp() {
   }, [jobsData.jobs]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(recruiter.lever_key);
-    setLeverPostings(
+    const allJobs = await fetchAllJobs(recruiter.greenhouse_key);
+
+    setPostings(
       allJobs.filter((post) => {
         if (
           jobsData.jobs?.filter(
             (job) =>
-              job.posted_by === POSTED_BY.LEVER &&
-              job.job_title === post.text &&
-              job.location == post.categories.location,
+              job.posted_by === POSTED_BY.GREENHOUSE &&
+              job.job_title === post.title &&
+              job.location == post.location.name,
           ).length == 0
         ) {
           return true;
@@ -67,47 +71,51 @@ export function LeverModalComp() {
     setInitialFetch(false);
   };
 
-  const importLever = async () => {
+  const importGreenhouse = async () => {
     try {
       setIntegration((prev) => ({
         ...prev,
-        lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
+        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       }));
 
-      const dbJobs = await createJobObject(selectedLeverPostings, recruiter);
+      const dbJobs = await createJobObject(
+        selectedGreenhousePostings,
+        recruiter,
+      );
+
       const { data: newJobs, error } = await supabase
         .from('public_jobs')
         .insert(dbJobs)
         .select();
       if (!error) {
-        selectedLeverPostings.map(async (post) => {
-          await createLeverJobReference({
-            posting_id: post.id,
-            recruiter_id: recruiter.id,
-            job_id: newJobs.filter(
-              (job) =>
-                job.job_title == post.text &&
-                job.location == post.categories.location,
-            )[0].id,
-          });
-        });
+        // selectedGreenhousePostings.map(async (post) => {
+        //   await createLeverJobReference({
+        //     posting_id: post.id,
+        //     recruiter_id: recruiter.id,
+        //     job_id: newJobs.filter(
+        //       (job) =>
+        //         job.job_title == post.text &&
+        //         job.location == post.categories.location,
+        //     )[0].id,
+        //   });
+        // });
 
-        const jobsObj = selectedLeverPostings.map((post) => {
+        const jobsObj = selectedGreenhousePostings.map((post) => {
           return {
             ...post,
-            job_id: newJobs.filter(
+            public_job_id: newJobs.filter(
               (job) =>
-                job.job_title == post.text &&
-                job.location == post.categories.location,
+                job.job_title == post.title &&
+                job.location == post.location.name,
             )[0].id,
             recruiter_id: recruiter.id,
           };
         });
-        await createJobApplications(jobsObj, recruiter.lever_key);
+        await createJobApplications(jobsObj, recruiter.greenhouse_key);
         await handleJobRead();
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
+          greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
 
         toast.success('Jobs Imported Successfully');
@@ -128,42 +136,46 @@ export function LeverModalComp() {
 
   const submitApiKey = async () => {
     try {
-      const response = await axios.post('/api/lever/getPostings', {
+      const response = await axios.post('/api/greenhouse/getPostings', {
         offset: 0,
         apiKey: apiRef.current.value,
         isInitial: true,
       });
-      if (response.status === 200 && response.data.data) {
+
+      if (response.status === 200 && response.data.length > 0) {
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: true, step: STATE_LEVER_DIALOG.FETCHING },
+          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.FETCHING },
         }));
-        const responseRec = await axios.post('/api/lever/saveApiKey', {
+        const responseRec = await axios.post('/api/greenhouse/saveApiKey', {
           recruiterId: recruiter.id,
           apiKey: apiRef.current.value,
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
           setRecruiter(responseRec.data[0]);
-          setLeverPostings(response.data.data);
+          setPostings(response.data);
           setInitialFetch(false);
           setTimeout(() => {
             setIntegration((prev) => ({
               ...prev,
-              lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+              greenhouse: {
+                open: true,
+                step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+              },
             }));
           }, 1000);
         }
       } else {
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
+          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
         }));
       }
     } catch (error) {
       setIntegration((prev) => ({
         ...prev,
-        lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
+        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
       }));
     }
   };
@@ -172,23 +184,19 @@ export function LeverModalComp() {
     <IntegrationModal
       slotLogo={
         <>
-          <Image src={'/images/ats/lever.png'} width={120} height={34} alt='' />
+          <Image
+            src={'/images/ats/greenhouse.svg'}
+            width={120}
+            height={34}
+            alt=''
+          />
         </>
       }
       slotApiKey={
-        integration.lever.step === STATE_LEVER_DIALOG.API ||
-        integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
-          <LeverApiKey
-            onClickSupport={{
-              onClick: () => {
-                window.open(
-                  'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
-                  '_blank',
-                );
-              },
-            }}
-            isApiWrong={integration.lever.step === STATE_LEVER_DIALOG.ERROR}
-            slotSearch={
+        integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.API ||
+        integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR ? (
+          <GreenhouseApiKey
+            slotInput={
               <UITextField
                 ref={apiRef}
                 labelSize='small'
@@ -197,13 +205,16 @@ export function LeverModalComp() {
                 type='password'
               />
             }
+            isApiWrong={
+              integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR
+            }
             onClickContinue={{
               onClick: () => {
                 submitApiKey();
               },
             }}
           />
-        ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
+        ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.FETCHING ? (
           <LeverFetching
             slotLottie={
               <Stack
@@ -215,63 +226,63 @@ export function LeverModalComp() {
               </Stack>
             }
           />
-        ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+        ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.LISTJOBS ? (
           <Stack
             justifyContent={'flex-start'}
             height={'100%'}
             overflow={'hidden'}
           >
-            <AtsJobs
+            <GreenhouseAts
               textNumberofJobs={
                 <Typography variant='body2'>
-                  {selectedLeverPostings.length == 0
-                    ? `Showing ${leverPostings.length} Jobs from lever`
-                    : `${selectedLeverPostings.length} Jobs selected`}
+                  {selectedGreenhousePostings.length == 0
+                    ? `Showing ${postings.length} Jobs from greenhouse`
+                    : `${selectedGreenhousePostings.length} Jobs selected`}
                 </Typography>
               }
               onClickImport={{
                 onClick: () => {
-                  importLever();
+                  importGreenhouse();
                 },
               }}
-              isImportDisable={selectedLeverPostings.length === 0}
-              isAllActive={leverFilter == 'all'}
-              isClosedActive={leverFilter == 'closed'}
-              isInternalActive={leverFilter == 'internal'}
-              isPublishedActive={leverFilter == 'published'}
+              isImportDisable={selectedGreenhousePostings.length === 0}
+              isAllActive={greenhouseFilter == 'all'}
+              isClosedActive={greenhouseFilter == 'closed'}
+              isOpenActive={greenhouseFilter == 'open'}
               onClickClosed={{
                 onClick: () => {
-                  setLeverFilter('closed');
+                  setGreenhouseFilter('closed');
                 },
               }}
-              onClickPublished={{
+              onClickOpen={{
                 onClick: () => {
-                  setLeverFilter('published');
-                },
-              }}
-              onClickInternal={{
-                onClick: () => {
-                  setLeverFilter('internal');
+                  setGreenhouseFilter('open');
                 },
               }}
               onClickAll={{
                 onClick: () => {
-                  setLeverFilter('all');
+                  setGreenhouseFilter('all');
                 },
               }}
               slotAtsCard={
                 !initialFetch ? (
-                  leverPostings.filter((job) => {
-                    if (leverFilter !== 'all') {
-                      return job.state === leverFilter;
+                  postings.filter((job) => {
+                    if (greenhouseFilter == 'live') {
+                      return job.live;
+                    } else if (greenhouseFilter == 'active') {
+                      //
                     } else {
                       return true;
                     }
                   }).length > 0 ? (
-                    leverPostings
+                    postings
                       .filter((job) => {
-                        if (leverFilter !== 'all') {
-                          return job.state === leverFilter;
+                        if (greenhouseFilter == 'live') {
+                          return job.live;
+                        } else if (greenhouseFilter == 'closed') {
+                          return !job.active;
+                        } else if (greenhouseFilter == 'active') {
+                          return job.active;
                         } else {
                           return true;
                         }
@@ -281,25 +292,25 @@ export function LeverModalComp() {
                           <ScrollList uniqueKey={ind} key={ind}>
                             <AtsCard
                               isChecked={
-                                selectedLeverPostings?.filter(
+                                selectedGreenhousePostings?.filter(
                                   (p) => p.id === post.id,
                                 )?.length > 0
                               }
                               onClickCheck={{
                                 onClick: () => {
-                                  if (selectedLeverPostings.length < 5) {
+                                  if (selectedGreenhousePostings.length < 5) {
                                     if (
-                                      selectedLeverPostings?.some(
+                                      selectedGreenhousePostings?.some(
                                         (p) => p.id === post.id,
                                       )
                                     ) {
                                       // If the object is already in the array, remove it
-                                      setSelectedLeverPostings((prev) =>
+                                      setSelectedGreenhousePostings((prev) =>
                                         prev.filter((p) => p.id !== post.id),
                                       );
                                     } else {
                                       // If the object is not in the array, add it
-                                      setSelectedLeverPostings((prev) => [
+                                      setSelectedGreenhousePostings((prev) => [
                                         ...prev,
                                         post,
                                       ]);
@@ -311,14 +322,20 @@ export function LeverModalComp() {
                                   }
                                 },
                               }}
-                              propsTextColor={{
-                                style: {
-                                  color: getLeverStatusColor(post.state),
-                                },
-                              }}
-                              textRole={post.text}
-                              textStatus={post.state}
-                              textWorktypeLocation={post.categories.location}
+                              // propsTextColor={{
+                              //   style: {
+                              //     color: getLeverStatusColor(post.state),
+                              //   },
+                              // }}
+                              textRole={post.title}
+                              textStatus={
+                                post.live
+                                  ? 'Live'
+                                  : post.active
+                                  ? 'Active'
+                                  : 'Closed'
+                              }
+                              textWorktypeLocation={post.location.name}
                             />
                           </ScrollList>
                         );
@@ -336,13 +353,14 @@ export function LeverModalComp() {
               }
             />
           </Stack>
-        ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
+        ) : integration.greenhouse.step ===
+          STATE_GREENHOUSE_DIALOG.IMPORTING ? (
           <LoadingJobsAts
             textAtsCompany={'Lever'}
             textJobCount={
-              selectedLeverPostings.length < 1
-                ? `${selectedLeverPostings.length} Job`
-                : `${selectedLeverPostings.length} Jobs`
+              selectedGreenhousePostings.length < 1
+                ? `${selectedGreenhousePostings.length} Job`
+                : `${selectedGreenhousePostings.length} Jobs`
             }
             slotLottie={<LoaderLever />}
           />

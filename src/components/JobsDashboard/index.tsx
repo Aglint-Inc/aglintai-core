@@ -4,12 +4,16 @@ import { useEffect, useState } from 'react';
 
 import { CreateJob, JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
+import {
+  STATE_GREENHOUSE_DIALOG,
+  STATE_LEVER_DIALOG,
+} from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
-import EmptyJobDashboard, {
-  STATE_LEVER_DIALOG,
-} from './AddJobWithIntegrations/EmptyJobDashboard';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import { GreenhouseModal } from './AddJobWithIntegrations/GreenhouseModal';
 import { LeverModalComp } from './AddJobWithIntegrations/LeverModal';
 import JobsList from './JobsList';
 import { searchJobs } from './utils';
@@ -19,13 +23,13 @@ import UITextField from '../Common/UITextField';
 
 const DashboardComp = () => {
   const { recruiter } = useAuthDetails();
+  const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
     jobsData.jobs?.filter((job) => !job.is_campus),
   );
-  const [isLeverOpen, setIsLeverOpen] = useState(false);
-  const [state, setState] = useState(STATE_LEVER_DIALOG.INITIAL);
 
   useEffect(() => {
     if (router.isReady) {
@@ -79,21 +83,15 @@ const DashboardComp = () => {
     }
   };
 
-  const handleCloseLever = () => {
-    setIsLeverOpen(false);
-  };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
+  //popover Add Job
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const handleClose = () => {
+  const handleClosePop = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
+  //popover Add Job
 
   return (
     <Stack height={'100%'} width={'100%'}>
@@ -101,7 +99,7 @@ const DashboardComp = () => {
         id='add-job'
         open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
+        onClose={handleClosePop}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -118,6 +116,28 @@ const DashboardComp = () => {
         }}
       >
         <CreateJob
+          isGreenhouseVisible={true}
+          onClickGreenhouse={{
+            onClick: () => {
+              if (!recruiter.greenhouse_key) {
+                setIntegration((prev) => ({
+                  ...prev,
+                  greenhouse: {
+                    open: true,
+                    step: STATE_GREENHOUSE_DIALOG.API,
+                  },
+                }));
+              } else {
+                setIntegration((prev) => ({
+                  ...prev,
+                  greenhouse: {
+                    open: true,
+                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+                  },
+                }));
+              }
+            },
+          }}
           onClickCreateNewJob={{
             onClick: () => {
               router.push('/jobs/new?flow=manual');
@@ -126,23 +146,33 @@ const DashboardComp = () => {
           onClickLeverImport={{
             onClick: () => {
               if (!recruiter.lever_key) {
-                setState(STATE_LEVER_DIALOG.API);
-                setIsLeverOpen(true);
+                setIntegration((prev) => ({
+                  ...prev,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
+                }));
               } else {
-                setState(STATE_LEVER_DIALOG.LISTJOBS);
-                setIsLeverOpen(true);
+                setIntegration((prev) => ({
+                  ...prev,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                }));
               }
             },
           }}
         />
       </Popover>
-      <Dialog open={isLeverOpen} onClose={handleClose} maxWidth={'lg'}>
-        <LeverModalComp
-          state={state}
-          handleClose={handleCloseLever}
-          setState={setState}
-          setIsLeverOpen={setIsLeverOpen}
-        />
+      <Dialog
+        open={integration.lever.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <LeverModalComp />
+      </Dialog>
+      <Dialog
+        open={integration.greenhouse.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <GreenhouseModal />
       </Dialog>
       {!initialLoad ? (
         <Loader />

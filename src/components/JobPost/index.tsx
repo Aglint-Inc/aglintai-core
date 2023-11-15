@@ -415,7 +415,13 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           }
           onClickViewMore={{
             onClick: () => {
-              router.push(pageRoutes.COMPANY + recruiter.id);
+              router.push(
+                process.env.NEXT_PUBLIC_WEBSITE +
+                  '/' +
+                  pageRoutes.COMPANY +
+                  '/' +
+                  recruiter.id,
+              );
             },
           }}
           slotInputForm={
