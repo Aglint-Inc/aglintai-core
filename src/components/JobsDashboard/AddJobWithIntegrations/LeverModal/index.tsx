@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AtsCard,
   AtsJobs,
+  IntegrationFetching,
   IntegrationModal,
   LeverApiKey,
-  LeverFetching,
   LoadingJobsAts,
   NoResultAts,
   SkeletonLoaderAtsCard,
@@ -25,7 +25,13 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import FetchingJobsLever from './Loader';
-import { createJobApplications, createJobObject, createLeverJobReference, fetchAllJobs, getLeverStatusColor } from './utils';
+import {
+  createJobApplications,
+  createJobObject,
+  createLeverJobReference,
+  fetchAllJobs,
+  getLeverStatusColor,
+} from './utils';
 import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
 
@@ -204,7 +210,16 @@ export function LeverModalComp() {
             }}
           />
         ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
-          <LeverFetching
+          <IntegrationFetching
+            slotIntegrationLogo={
+              <Image
+                src={'/images/ats/leverbig.svg'}
+                width={50}
+                height={50}
+                alt=''
+              />
+            }
+            textCompany={'Lever'}
             slotLottie={
               <Stack
                 height={'100px'}

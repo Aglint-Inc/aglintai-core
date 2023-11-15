@@ -8,9 +8,9 @@ import {
   AtsCard,
   GreenhouseApiKey,
   GreenhouseAts,
+  IntegrationFetching,
   IntegrationModal,
   LeverApiKey,
-  LeverFetching,
   LoadingJobsAts,
   NoResultAts,
   SkeletonLoaderAtsCard,
@@ -215,7 +215,16 @@ export function GreenhouseModal() {
             }}
           />
         ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.FETCHING ? (
-          <LeverFetching
+          <IntegrationFetching
+            textCompany={'Greenhouse'}
+            slotIntegrationLogo={
+              <Image
+                src={'/images/ats/greenhousebig.svg'}
+                width={50}
+                height={50}
+                alt=''
+              />
+            }
             slotLottie={
               <Stack
                 height={'100px'}
@@ -364,7 +373,7 @@ export function GreenhouseModal() {
         ) : integration.greenhouse.step ===
           STATE_GREENHOUSE_DIALOG.IMPORTING ? (
           <LoadingJobsAts
-            textAtsCompany={'Lever'}
+            textAtsCompany={'Greenhouse'}
             textJobCount={
               selectedGreenhousePostings.length < 1
                 ? `${selectedGreenhousePostings.length} Job`

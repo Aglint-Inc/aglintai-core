@@ -152,6 +152,7 @@ export * from "./ImportResume";
 export * from "./InboxContactSupport";
 export * from "./InboxTickets";
 export * from "./InputText";
+export * from "./IntegrationFetching";
 export * from "./IntegrationModal";
 export * from "./InterviewAiTranscriptCard";
 export * from "./InterviewCandidateCard";
