@@ -137,7 +137,7 @@ export function GreenhouseModal() {
   const submitApiKey = async () => {
     try {
       const response = await axios.post('/api/greenhouse/getPostings', {
-        offset: 0,
+        page: 1,
         apiKey: apiRef.current.value,
         isInitial: true,
       });
@@ -248,15 +248,21 @@ export function GreenhouseModal() {
               isImportDisable={selectedGreenhousePostings.length === 0}
               isAllActive={greenhouseFilter == 'all'}
               isClosedActive={greenhouseFilter == 'closed'}
-              isOpenActive={greenhouseFilter == 'open'}
+              isActiveActive={greenhouseFilter == 'active'}
+              isLiveActive={greenhouseFilter == 'live'}
               onClickClosed={{
                 onClick: () => {
                   setGreenhouseFilter('closed');
                 },
               }}
-              onClickOpen={{
+              onClickActive={{
                 onClick: () => {
-                  setGreenhouseFilter('open');
+                  setGreenhouseFilter('active');
+                },
+              }}
+              onClickLive={{
+                onClick: () => {
+                  setGreenhouseFilter('live');
                 },
               }}
               onClickAll={{
@@ -270,7 +276,7 @@ export function GreenhouseModal() {
                     if (greenhouseFilter == 'live') {
                       return job.live;
                     } else if (greenhouseFilter == 'active') {
-                      //
+                      return job.active;
                     } else {
                       return true;
                     }

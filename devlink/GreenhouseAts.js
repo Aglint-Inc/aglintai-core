@@ -12,18 +12,19 @@ const _interactionsData = JSON.parse(
 export function GreenhouseAts({
   as: _Component = _Builtin.Block,
   onClickAll = {},
-  onClickOpen = {},
+  onClickActive = {},
   onClickClosed = {},
   slotSearch,
   textNumberofJobs = "This is some text inside of a div block.",
   onClickImport = {},
   isImportDisable = false,
   isAllActive = false,
-  isOpenActive = false,
-  isClosedActive = false,
+  isActiveActive = false,
+  isLiveActive = false,
   slotAtsCard,
   isSelected = false,
-  onClickDraft = {},
+  onClickLive = {},
+  isClosedActive = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -108,15 +109,15 @@ export function GreenhouseAts({
           <_Builtin.Block
             className={_utils.cx(_styles, "ats-tab-menu")}
             tag="div"
-            {...onClickOpen}
+            {...onClickActive}
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "text-relative", "zindex-1")}
               tag="div"
             >
-              {"Open"}
+              {"Active"}
             </_Builtin.Block>
-            {isOpenActive ? (
+            {isActiveActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "ats-tab-menu-active")}
                 tag="div"
@@ -126,15 +127,15 @@ export function GreenhouseAts({
           <_Builtin.Block
             className={_utils.cx(_styles, "ats-tab-menu")}
             tag="div"
-            {...onClickDraft}
+            {...onClickLive}
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "text-relative", "zindex-1")}
               tag="div"
             >
-              {"Draft"}
+              {"Live"}
             </_Builtin.Block>
-            {isClosedActive ? (
+            {isLiveActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "ats-tab-menu-active")}
                 tag="div"
