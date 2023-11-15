@@ -213,6 +213,11 @@
   margin-top: 10px;
 }
 
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
+}
+
 .color-grey-600.ml-20 {
   margin-left: 20px;
 }
@@ -227,6 +232,8 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+
+  display: flex;
 
   background-color: #f8f9f9;
 }

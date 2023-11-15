@@ -93,7 +93,7 @@ function InterviewInstructions() {
   }, [jobDetails]);
 
   async function getIntroVideo(id: any) {
-    if (!jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl && id) {
+    if (id) {
       const { data, error } = await supabase
         .from('ai_videos')
         .select()

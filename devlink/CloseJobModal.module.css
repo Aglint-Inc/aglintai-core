@@ -360,6 +360,11 @@
   margin-top: 10px;
 }
 
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
+}
+
 .color-grey-600.ml-20 {
   margin-left: 20px;
 }

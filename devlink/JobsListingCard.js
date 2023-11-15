@@ -56,7 +56,7 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 dyn={{
                   bind: {},
                 }}

@@ -35,6 +35,7 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  background-color: var(--gray-100);
 }
 
 .empty-video-image {
@@ -106,6 +107,11 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
 }
 
 .color-grey-600.ml-20 {

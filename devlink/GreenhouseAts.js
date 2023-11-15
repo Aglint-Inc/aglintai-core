@@ -23,6 +23,7 @@ export function GreenhouseAts({
   isClosedActive = false,
   slotAtsCard,
   isSelected = false,
+  onClickDraft = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -116,6 +117,24 @@ export function GreenhouseAts({
               {"Open"}
             </_Builtin.Block>
             {isOpenActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ats-tab-menu-active")}
+                tag="div"
+              />
+            ) : null}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ats-tab-menu")}
+            tag="div"
+            {...onClickDraft}
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              tag="div"
+            >
+              {"Draft"}
+            </_Builtin.Block>
+            {isClosedActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "ats-tab-menu-active")}
                 tag="div"

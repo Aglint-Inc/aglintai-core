@@ -15,4 +15,5 @@ declare function GreenhouseAts(props: {
   isClosedActive?: Types.Visibility.VisibilityConditions;
   slotAtsCard?: Types.Devlink.Slot;
   isSelected?: Types.Visibility.VisibilityConditions;
+  onClickDraft?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
