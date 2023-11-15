@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const chatCompletion = await openai.chat.completions.create({
       messages: prompts as any,
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-3.5-turbo-1106',
       temperature: 1,
     });
 
