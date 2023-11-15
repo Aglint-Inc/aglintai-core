@@ -18,6 +18,17 @@
   flex: 1;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .rs-header-top {
   position: relative;
   z-index: 5;
@@ -161,9 +172,6 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
-
-  width: 106%;
-  height: 110%;
 
   border-radius: 10px;
 

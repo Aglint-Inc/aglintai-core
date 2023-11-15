@@ -2,7 +2,10 @@
   overflow: hidden;
   width: 100%;
   max-width: 510px;
-  border-radius: 10px;
+  min-width: 420px;
+
+  border-radius: 20px;
+
   background-color: white;
 }
 
