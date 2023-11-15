@@ -71,7 +71,7 @@ export default async function handler(req, res) {
             .select();
           if (errorApp) {
             await supabase
-              .from('greehouse_reference')
+              .from('greenhouse_reference')
               .update({ resume_saved: true })
               .eq('application_id', payload.application_id)
               .select();
