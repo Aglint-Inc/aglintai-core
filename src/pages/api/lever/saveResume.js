@@ -129,6 +129,9 @@ export default async function handler(req, res) {
                         .from('job_applications')
                         .update({
                           json_resume: { ...jsonResume, ...response },
+                          resume: fileLink,
+                          resume_text:
+                            jsonResume?.work?.length > 0 ? 'Lever' : null,
                         })
                         .eq('application_id', payload.application_id);
 
