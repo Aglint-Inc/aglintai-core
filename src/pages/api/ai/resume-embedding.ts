@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.body.application_id && req.body.resume_json) {
       const resume_text = convertJsonToText(req.body.resume_json);
-
+      // res.status(200).send(resume_text);
       const response = await openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: resume_text,
@@ -28,19 +28,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('application_id', req.body.application_id);
 
       if (error) {
-        console.log(error);
+        console.log(error, req.body.application_id);
         res.status(400).send(error.message);
       } else {
-        console.log('embedding updated');
+        console.log('embedding updated', req.body.application_id);
         res.status(200).send('embedding updated');
         // return res.status(200).json(response.data[0].embedding);
       }
     } else {
-      console.log('missing parameters');
+      console.log('missing parameters', req.body.application_id);
       res.status(400).send('No text provided');
     }
   } catch (error) {
-    console.log(error);
+    console.log(error, req.body.application_id);
     res.status(500).send(error.message);
   }
 };
@@ -59,8 +59,8 @@ function convertJsonToText(resume_json: any) {
           rec.endDate ? rec.endDate : ''
         } ${rec.summary ? rec.summary : ''} ${
           rec.description ? rec.description : ''
-        } ${rec.highlights ? rec.highlights.join(' ') : ''} ${
-          rec.skills_used ? rec.skills_used.join(' ') : ''
+        } ${Array.isArray(rec.highlights) ? rec.highlights.join(' ') : ''} ${
+          Array.isArray(rec.skills_used) ? rec.skills_used.join(' ') : ''
         }`;
       })
       .join(' ');
@@ -92,27 +92,32 @@ function convertJsonToText(resume_json: any) {
       })
       .join(' ');
 
-  let basics = `${resume_json.basics.email ? resume_json.basics.email : ''} ${
-    resume_json.basics.phone ? resume_json.basics.phone : ''
-  } ${resume_json.basics.lastName ? resume_json.basics.lastName : ''} ${
-    resume_json.basics.firstName ? resume_json.basics.firstName : ''
-  } ${
-    resume_json.basics.location.city ? resume_json.basics.location.city : ''
-  } ${
-    resume_json.basics.location.region ? resume_json.basics.location.region : ''
-  } ${
-    resume_json.basics.location.address
-      ? resume_json.basics.location.address
-      : ''
-  } ${
-    resume_json.basics.location.country
-      ? resume_json.basics.location.country
-      : ''
-  } ${
-    resume_json.basics.location.postalCode
-      ? resume_json.basics.location.postalCode
-      : ''
-  }`;
+  let basics = '';
+  if (resume_json.basics) {
+    basics = `${resume_json.basics.email ? resume_json.basics.email : ''} ${
+      resume_json.basics.phone ? resume_json.basics.phone : ''
+    } ${resume_json.basics.lastName ? resume_json.basics.lastName : ''} ${
+      resume_json.basics.firstName ? resume_json.basics.firstName : ''
+    } ${
+      resume_json.basics.location.city ? resume_json.basics.location.city : ''
+    } ${
+      resume_json.basics.location.region
+        ? resume_json.basics.location.region
+        : ''
+    } ${
+      resume_json.basics.location.address
+        ? resume_json.basics.location.address
+        : ''
+    } ${
+      resume_json.basics.location.country
+        ? resume_json.basics.location.country
+        : ''
+    } ${
+      resume_json.basics.location.postalCode
+        ? resume_json.basics.location.postalCode
+        : ''
+    }`;
+  }
 
   let languages =
     resume_json.languages &&
@@ -129,7 +134,7 @@ function convertJsonToText(resume_json: any) {
     resume_json.projects
       .map((rec) => {
         return `${rec.name ? rec.name : ''} ${
-          rec.highlights.join(' ') ? rec.highlights.join(' ') : ''
+          Array.isArray(rec.highlights) ? rec.highlights.join(' ') : ''
         } ${rec.description ? rec.description : ''} `;
       })
       .join(' ');
