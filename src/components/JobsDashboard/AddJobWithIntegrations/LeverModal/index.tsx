@@ -33,7 +33,7 @@ import {
   getLeverStatusColor,
 } from './utils';
 import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
+import { generateEmbedding,POSTED_BY } from '../utils';
 
 export function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -85,7 +85,11 @@ export function LeverModalComp() {
         .from('public_jobs')
         .insert(dbJobs)
         .select();
+
       if (!error) {
+        newJobs.map((job) => {
+          generateEmbedding(job.description, job.id);
+        });
         selectedLeverPostings.map(async (post) => {
           await createLeverJobReference({
             posting_id: post.id,

@@ -1,4 +1,6 @@
 import { CircularProgress } from '@mui/material';
+import axios from 'axios';
+import { htmlToText } from 'html-to-text';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -26,6 +28,10 @@ const JobPublishButton = () => {
     try {
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
+      const embedding = await generateEmbedding(
+        jobForm.formFields.jobDescription,
+      );
+
       const [job] = supabaseWrap(
         await supabase
           .from('public_jobs')
@@ -33,6 +39,7 @@ const JobPublishButton = () => {
             ...jobFormData,
             status: 'published',
             draft: null,
+            embedding: embedding,
           })
           .eq('id', jobForm.jobPostId)
           .select(),
@@ -54,6 +61,17 @@ const JobPublishButton = () => {
     } finally {
       setIsPublishing(false);
     }
+  };
+
+  const generateEmbedding = async (des) => {
+    const jd_text = htmlToText(des);
+
+    const { data: emb } = await axios.post('/api/ai/create-embeddings', {
+      text: jd_text,
+    });
+
+    const embedding = emb.data[0].embedding;
+    return embedding;
   };
 
   const isJobPublished = jobForm.formFields.isDraftCleared;
