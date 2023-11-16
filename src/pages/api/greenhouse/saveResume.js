@@ -91,6 +91,13 @@ export default async function handler(req, res) {
         console.log(error);
         return res.status(400).json({ error });
       }
+    } else {
+      await supabase
+        .from('greenhouse_reference')
+        .update({ resume_saved: true })
+        .eq('application_id', payload.application_id)
+        .select();
+      res.status(200).json('Invalid file format');
     }
   } else {
     res.status(400).json('opportunity_id or application_id is missing');
