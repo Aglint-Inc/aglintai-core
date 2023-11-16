@@ -1,25 +1,32 @@
-import { useRouter } from 'next/router';
+import { InputAdornment } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 
 import { CandidateDatabaseSearch, CandidateHistoryCard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { useCandidateSearchCtx } from '../context/CandidateSearchProvider';
+import { candidateSearchByQuery } from '../utils';
 import UITextField from '../../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
-function CandidateSearch() {
+function CandidateSearchHistory({ handleSetPopup }) {
   const { recruiter } = useAuthDetails();
   const [searchQuery, setSearchQuery] = useState('');
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
-  const router = useRouter();
+  const [isSearching, setIsSearching] = useState(false);
+  const { jobsData } = useJobs();
 
+  const { updatenewSearchRes, candidateSearchState } = useCandidateSearchCtx();
   useEffect(() => {
     getHistory();
   }, [recruiter]);
@@ -57,8 +64,23 @@ function CandidateSearch() {
   //   }
   // };
 
-  const handleSearchQuery = () => {
-    router.push(`/candidates/search?query=${searchQuery}`);
+  const handleSearchQuery = async () => {
+    try {
+      if (!searchQuery) return;
+      setIsSearching(true);
+      const newSearchState = await candidateSearchByQuery(
+        searchQuery,
+        jobsData.jobs.map((j) => j.id),
+        recruiter.id,
+        candidateSearchState.maxProfiles,
+      );
+
+      updatenewSearchRes(newSearchState);
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const getHistory = async () => {
@@ -121,6 +143,15 @@ function CandidateSearch() {
                     handleSearchQuery();
                   }
                 },
+                endAdornment: isSearching && (
+                  <InputAdornment position='end'>
+                    <CircularProgress
+                      color='inherit'
+                      size={'15px'}
+                      sx={{ color: palette.grey[400] }}
+                    />
+                  </InputAdornment>
+                ),
               }}
             />
           </>
@@ -132,31 +163,42 @@ function CandidateSearch() {
         }}
         slotCandidateHistoryCard={
           <>
-            {history.map((hist, index) => {
-              let diffrence = getTimeDifference(
-                hist.created_at,
-                new Date().toISOString(),
-              );
-              return (
-                <CandidateHistoryCard
-                  key={index}
-                  isSearchByJobVisible={false}
-                  isSearchByTypeVisible={false}
-                  onClickDelete={{
-                    onClick: () => {
-                      handleDeleteHistory(hist.id);
-                    },
-                  }}
-                  textHeader={hist.search_query}
-                  textPosted={diffrence}
-                />
-              );
-            })}
+            {history
+              .sort((h1, h2) => {
+                const d1 = new Date(h1.created_at);
+                const d2 = new Date(h2.created_at);
+                return d2.getTime() - d1.getTime();
+              })
+              .map((hist, index) => {
+                let diffrence = getTimeDifference(
+                  hist.created_at,
+                  new Date().toISOString(),
+                );
+                return (
+                  <CandidateHistoryCard
+                    key={index}
+                    isSearchByJobVisible={hist.is_search_jd}
+                    isSearchByTypeVisible={false}
+                    onClickDelete={{
+                      onClick: () => {
+                        handleDeleteHistory(hist.id);
+                      },
+                    }}
+                    textHeader={hist.search_query}
+                    textPosted={diffrence}
+                  />
+                );
+              })}
           </>
         }
+        onClickSearchJobDescription={{
+          onClick: () => {
+            handleSetPopup(true);
+          },
+        }}
       />
     </>
   );
 }
 
-export default CandidateSearch;
+export default CandidateSearchHistory;

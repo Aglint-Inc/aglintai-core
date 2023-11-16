@@ -1,8 +1,10 @@
 import { Collapse } from '@mui/material';
+import { Paper } from '@mui/material';
+import { DialogContent, Slider } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios';
-import { get } from 'lodash';
-import { useRouter } from 'next/router';
+import { cloneDeep, get, isNumber, set } from 'lodash';
+import { useRouter } from 'next/dist/client/router';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -12,7 +14,9 @@ import {
   CandidateEducation,
   CandidateEducationCard,
   CandidateExperienceCard,
+  CandidateFilter,
   CandidateSkills,
+  JobPills,
 } from '@/devlink';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -24,17 +28,21 @@ import {
   getFullName,
   getLocationString,
 } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import {
+  CandidateSearchState,
+  initialState,
+  useCandidateSearchCtx,
+} from '../context/CandidateSearchProvider';
+import { candidateSearchByQuery, getqueriedCandidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import MuiAvatar from '../../Common/MuiAvatar';
+import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;
@@ -47,51 +55,39 @@ export interface CandidateSearchRes {
   profile_image?: string;
 }
 
-const CandidatesSearch = () => {
+const CandidatesSearch = ({ handleSetJdPopUp }) => {
   const { jobsData } = useJobs();
   const { recruiter } = useAuthDetails();
-
-  const [searchQuery, setSearchQuery] = useState('');
+  const { candidateSearchState, updatenewSearchRes, updateState } =
+    useCandidateSearchCtx();
+  const searchInfo = candidateSearchState.searchInfo;
+  const [isfilterOpen, setIsFilterOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(searchInfo.searchText);
   const [activeCandidate, setActiveCandidate] = useState<number>(-1);
   const [isSearching, setIsSearching] = useState(false);
-  const [candidates, setCandidates] = useState<CandidateSearchRes[]>([]);
   const router = useRouter();
 
+  const candidates = candidateSearchState.candidates;
   useEffect(() => {
     const { query } = router.query;
     if (typeof query === 'string') {
       setSearchQuery(query);
-      handleSearchCandidate(query);
     }
+    return () => {
+      updatenewSearchRes(initialState);
+    };
   }, [router.isReady, router.query]);
 
   const handleSearchCandidate = async (searchQry) => {
     try {
       setIsSearching(true);
-      //   console.log('fqwnlkfnekwjn');
-      //   const resp = await searchQueryToJson(searchQuery);
-      //   console.log(resp);
-      const { data: emb } = await axios.post('/api/ai/create-embeddings', {
-        text: searchQry,
-      });
-      const jobIds = jobsData.jobs.map((j) => j.id);
-      const embedding = emb.data[0].embedding;
-      const result = supabaseWrap(
-        await supabase.rpc('match_job_applications', {
-          job_ids: jobIds,
-          match_count: 100,
-          match_threshold: 0.5,
-          query_embedding: embedding,
-        }),
-      ) as CandidateSearchRes[];
-      setCandidates(result);
-      supabaseWrap(
-        await supabase.from('candidate_search_history').insert({
-          recruiter_id: recruiter.id,
-          is_search_jd: false,
-          search_query: searchQry,
-        }),
+      const newSearchState = await candidateSearchByQuery(
+        searchQry,
+        jobsData.jobs.map((j) => j.id),
+        recruiter.id,
+        candidateSearchState.maxProfiles,
       );
+      updatenewSearchRes(newSearchState);
     } catch (err) {
       toast.error(API_FAIL_MSG);
     } finally {
@@ -102,10 +98,8 @@ const CandidatesSearch = () => {
   return (
     <>
       <CandidateDatabaseDetail
-        // isAllActive={true}
-        // isBookMarkedActive={true}
-        // isSelected={false}
         isSelected={false}
+        textSelectedCount={0}
         onClickAll={
           {
             //   onClick: handleOnClickAll,
@@ -113,35 +107,39 @@ const CandidatesSearch = () => {
         }
         slotSearchInput={
           <>
-            <UITextField
-              value={searchQuery}
-              placeholder='Type your requirement here and press enter'
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-              }}
-              fullWidth
-              InputProps={{
-                onKeyDown: (e) => {
-                  if (e.code === 'Enter') {
-                    handleSearchCandidate(searchQuery);
+            {searchInfo.searchType === 'query' && (
+              <>
+                <UITextField
+                  value={searchQuery}
+                  placeholder='Type your requirement here and press enter'
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                  }}
+                  fullWidth
+                  InputProps={{
+                    onKeyDown: (e) => {
+                      if (e.code === 'Enter') {
+                        handleSearchCandidate(searchQuery);
+                      }
+                    },
+                  }}
+                />
+                <AUIButton
+                  onClick={() => handleSearchCandidate(searchQuery)}
+                  endIcon={
+                    isSearching && (
+                      <CircularProgress
+                        color='inherit'
+                        size={'15px'}
+                        sx={{ color: palette.grey[400] }}
+                      />
+                    )
                   }
-                },
-              }}
-            />
-            <AUIButton
-              onClick={() => handleSearchCandidate(searchQuery)}
-              endIcon={
-                isSearching && (
-                  <CircularProgress
-                    color='inherit'
-                    size={'15px'}
-                    sx={{ color: palette.grey[400] }}
-                  />
-                )
-              }
-            >
-              Search
-            </AUIButton>
+                >
+                  Search
+                </AUIButton>
+              </>
+            )}
           </>
         }
         slotCandidateDetailsCard={
@@ -192,7 +190,9 @@ const CandidatesSearch = () => {
         }
         // textSelectedCount={12}
         onClickViewJobDescription={{
-          onClick: () => {},
+          onClick: () => {
+            handleSetJdPopUp();
+          },
         }}
         slotCandidateDialog={
           <>
@@ -220,16 +220,41 @@ const CandidatesSearch = () => {
         }
         onClickCandidateDatabase={{
           onClick: () => {
-            //
+            updateState({
+              path: 'componentinView',
+              value: 'history',
+            });
           },
         }}
-
-        // onClickCandidateDatabase={{
-        //   onClick: () => {
-        //     console.log('fnkewjn');
-        //   },
-        // }}
+        isViewJdVisible={searchInfo.searchType === 'jd'}
+        onClickFilter={{
+          onClick: () => {
+            setIsFilterOpen(true);
+          },
+        }}
       />
+      <MuiPopup
+        props={{
+          open: isfilterOpen,
+          fullWidth: true,
+          maxWidth: 'md',
+          onClose: () => {
+            setIsFilterOpen(false);
+          },
+        }}
+      >
+        <Paper>
+          <DialogContent>
+            {
+              <SearchFilter
+                handleDialogClose={() => {
+                  setIsFilterOpen(false);
+                }}
+              />
+            }
+          </DialogContent>
+        </Paper>
+      </MuiPopup>
     </>
   );
 };
@@ -325,6 +350,340 @@ const SelectedCandidate = ({
           />
         </>
       }
+    />
+  );
+};
+
+type FilterType = {
+  profileLimit: number;
+} & CandidateSearchState['queryJson'];
+
+const SearchFilter = ({ handleDialogClose }) => {
+  const { jobsData } = useJobs();
+  const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
+  const [filters, setFilters] = useState<FilterType>({
+    ...candidateSearchState.queryJson,
+    profileLimit: candidateSearchState.maxProfiles,
+  });
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
+
+  const handleUpdate = (path, value) => {
+    setFilters((p) => {
+      const updated = cloneDeep(p);
+      set(updated, path, value);
+      return updated;
+    });
+  };
+
+  const handlePillRemove = (path, index) => {
+    setFilters((p) => {
+      const updated = cloneDeep(p);
+      updated[String(path)] = filters[String(path)].filter(
+        (s, idx) => idx !== index,
+      );
+      return updated;
+    });
+  };
+
+  const handleResetFilter = () => {
+    setFilters({
+      ...candidateSearchState.queryJson,
+      profileLimit: candidateSearchState.maxProfiles,
+    });
+  };
+
+  const handleApplyFilters = async () => {
+    try {
+      setIsFilterLoading(true);
+      // eslint-disable-next-line no-unused-vars
+      const newQueryJson = (({ profileLimit, ...o }) => o)(filters); // remove profileLimit
+      const { result, summary } = await getqueriedCandidates(
+        newQueryJson,
+        jobsData.jobs.map((j) => j.id),
+        filters.profileLimit,
+      );
+      updatenewSearchRes({
+        ...candidateSearchState,
+        candidates: result,
+        maxProfiles: filters.profileLimit,
+        queryJson: newQueryJson,
+        searchInfo: {
+          searchText: summary,
+          searchType: candidateSearchState.searchInfo.searchType,
+        },
+      });
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsFilterLoading(false);
+      handleDialogClose();
+    }
+  };
+
+  return (
+    <CandidateFilter
+      slotProfileInput={
+        <>
+          <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+            <Slider
+              size='small'
+              defaultValue={50}
+              value={filters.profileLimit}
+              aria-label='Default'
+              valueLabelDisplay='auto'
+              sx={{
+                mr: 3,
+              }}
+              onChange={(e: any) => {
+                handleUpdate('profileLimit', e.target.value);
+              }}
+            />
+            <UITypography fontBold='normal' type='small'>
+              {filters.profileLimit}
+            </UITypography>
+          </div>
+        </>
+      }
+      slotCurrentJobInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('jobTitles', [...filters.jobTitles, s]);
+            }}
+          />
+        </>
+      }
+      slotButtonPrimarySmall={
+        <>
+          <AUIButton
+            variant='primary'
+            size='small'
+            onClick={() => {
+              handleApplyFilters();
+            }}
+            endIcon={
+              isFilterLoading && (
+                <CircularProgress
+                  color='inherit'
+                  size={'15px'}
+                  sx={{ color: palette.grey[400] }}
+                />
+              )
+            }
+          >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Image
+                width={12}
+                height={12}
+                alt=''
+                src={'/images/svg/graphUp.svg'}
+                style={{ marginRight: '10px' }}
+              />
+              <p>Apply Filters</p>
+            </div>
+          </AUIButton>
+        </>
+      }
+      slotMinExperienceInput={
+        <>
+          <UITextField
+            value={filters.minExp}
+            onChange={(e) => {
+              handleUpdate('minExp', e.target.value);
+            }}
+            type='number'
+          />
+        </>
+      }
+      slotMaxExperienceInput={
+        <>
+          <UITextField
+            value={filters.maxExp}
+            onChange={(e) => {
+              handleUpdate('maxExp', e.target.value);
+            }}
+            type='number'
+          />
+        </>
+      }
+      slotJobRole={
+        <>
+          {filters.jobTitles.map((title, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('jobTitles', index);
+                  },
+                }}
+                textJob={title}
+              />
+            );
+          })}
+        </>
+      }
+      slotLanguageInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('languages', [...filters.languages, s]);
+            }}
+          />
+        </>
+      }
+      slotLocationInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('location', [...filters.location, s]);
+            }}
+          />
+        </>
+      }
+      slotUniversityInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('universities', [...filters.universities, s]);
+            }}
+          />
+        </>
+      }
+      slotExcludedCompanyInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('excludedCompanies', [
+                ...filters.excludedCompanies,
+                s,
+              ]);
+            }}
+          />
+        </>
+      }
+      slotPreferredCompanyInput={
+        <>
+          <FilterInput
+            handleAdd={(s) => {
+              handleUpdate('prefferedCompanies', [
+                ...filters.prefferedCompanies,
+                s,
+              ]);
+            }}
+          />
+        </>
+      }
+      slotLanguageSuggestion={
+        <>
+          {filters.languages.map((lang, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('languages', index);
+                  },
+                }}
+                textJob={lang}
+              />
+            );
+          })}
+        </>
+      }
+      slotLocationSuggestion={
+        <>
+          {filters.location.map((str, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('location', index);
+                  },
+                }}
+                textJob={str}
+              />
+            );
+          })}
+        </>
+      }
+      slotUniversitySuggestion={filters.universities.map((str, index) => {
+        return (
+          <JobPills
+            key={index}
+            onClickDelete={{
+              onClick: () => {
+                handlePillRemove('universities', index);
+              },
+            }}
+            textJob={str}
+          />
+        );
+      })}
+      slotExcludedSuggestion={filters.excludedCompanies.map((str, index) => {
+        return (
+          <JobPills
+            key={index}
+            onClickDelete={{
+              onClick: () => {
+                handlePillRemove('excludedCompanies', index);
+              },
+            }}
+            textJob={str}
+          />
+        );
+      })}
+      slotPreferredSuggestion={filters.prefferedCompanies.map((str, index) => {
+        return (
+          <JobPills
+            key={index}
+            onClickDelete={{
+              onClick: () => {
+                handlePillRemove('prefferedCompanies', index);
+              },
+            }}
+            textJob={str}
+          />
+        );
+      })}
+      onClickResetFilter={{
+        onClick: handleResetFilter,
+      }}
+    />
+  );
+};
+
+const FilterInput = ({
+  type = 'string',
+  handleAdd,
+}: {
+  type?: 'string' | 'number';
+  // eslint-disable-next-line no-unused-vars
+  handleAdd: (s: any) => void;
+}) => {
+  const [input, setInput] = useState<string | number>();
+  return (
+    <UITextField
+      value={input}
+      onChange={(e) => {
+        if (type === 'number' && isNumber(e.target.value)) {
+          setInput(Number(e.target.value));
+        } else {
+          setInput(e.target.value);
+        }
+      }}
+      placeholder='Type and press enter to add'
+      type={type}
+      InputProps={{
+        onKeyDown: (e) => {
+          if (e.code === 'Enter') {
+            handleAdd(input);
+            type === 'string' && setInput('');
+            type === 'number' && setInput(0);
+          }
+        },
+      }}
     />
   );
 };

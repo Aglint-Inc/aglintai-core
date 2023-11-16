@@ -14,6 +14,7 @@ export function getLocationString(location) {
 
 export const getFullName = (firstName, lastName) => {
   return [firstName, lastName]
+    .filter(Boolean)
     .map((s) => s.trim())
     .filter(Boolean)
     .join(',');

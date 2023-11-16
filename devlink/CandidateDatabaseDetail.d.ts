@@ -21,4 +21,6 @@ declare function CandidateDatabaseDetail(props: {
   onClickCandidateDatabase?: Types.Devlink.RuntimeProps;
   onClickDownloadBookmarked?: Types.Devlink.RuntimeProps;
   onClickDowloadAllCandidate?: Types.Devlink.RuntimeProps;
+  isViewJdVisible?: Types.Visibility.VisibilityConditions;
+  onClickFilter?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

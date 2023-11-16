@@ -1,6 +1,5 @@
 .candidate-job-modal {
   position: relative;
-  width: 640px;
   padding: 28px 32px 30px;
   border-radius: 10px;
   background-color: white;
@@ -232,6 +231,8 @@
 }
 
 .slot-input-job-description {
+  width: 520px;
+  height: 260px;
   margin-top: 26px;
 }
 
@@ -299,4 +300,8 @@
 
 .icons.ml-5 {
   margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
 }
