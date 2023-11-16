@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import OpenAI from 'openai';
 
 import { splitFullName } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 
@@ -9,6 +10,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const TIMEOUT_MS = 30000; //timeout for openai calls
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_KEY,
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -95,21 +100,72 @@ export default async function handler(req, res) {
             if (!uploadError) {
               // Get the link to the uploaded file
 
-              const { error } = await supabase
-                .from('job_applications')
-                .update({
-                  resume: fileLink,
-                  json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
-                  resume_text: jsonResume?.work?.length > 0 ? 'Lever' : null,
-                })
-                .eq('application_id', payload.application_id);
-              if (error) {
-                console.log('error while updating candidate');
-                res.status(400).send('error while updating candidate');
-                return;
+              //first we save previous and then go for openai calls. if there are work experience in resume then only generate resume skills overview etc and add to json_resume
+              if (jsonResume?.work?.length > 0) {
+                const { data: job, error: errorJob } = await supabase
+                  .from('public_jobs')
+                  .select()
+                  .eq('id', application[0].job_id);
+
+                if (!errorJob) {
+                  const jd_json = {
+                    job_title: job[0].job_title,
+                    description: job[0].description,
+                    skills: job[0].skills,
+                  };
+
+                  try {
+                    const responsePromise = generateResume(jsonResume, jd_json);
+                    const response = await Promise.race([
+                      responsePromise,
+                      new Promise((_, reject) =>
+                        setTimeout(() => reject('Timeout'), TIMEOUT_MS),
+                      ),
+                    ]);
+
+                    if (response && response !== 'Timeout') {
+                      // Update json_resume with the response by spreading
+                      await supabase
+                        .from('job_applications')
+                        .update({
+                          json_resume: { ...jsonResume, ...response },
+                        })
+                        .eq('application_id', payload.application_id);
+
+                      return res.status(200).json({
+                        resume: fileLink,
+                        json_resume: { ...jsonResume, ...response },
+                      });
+                    } else {
+                      //update json_resume with only resume_json if openai call fails
+                      await updatedJobApplication(
+                        {
+                          resume: fileLink,
+                          json_resume:
+                            jsonResume?.work?.length > 0 ? jsonResume : null,
+                          resume_text:
+                            jsonResume?.work?.length > 0 ? 'Lever' : null,
+                        },
+                        payload.application_id,
+                      );
+                    }
+                  } catch (error) {
+                    //update json_resume with only resume_json if any error in openai call
+                    await updatedJobApplication(
+                      {
+                        resume: fileLink,
+                        json_resume:
+                          jsonResume?.work?.length > 0 ? jsonResume : null,
+                        resume_text:
+                          jsonResume?.work?.length > 0 ? 'Lever' : null,
+                      },
+                      payload.application_id,
+                    );
+                  }
+                  //we need to update json_resume with response by spreading
+                }
               }
             }
-
             return res.status(200).json({
               resume: fileLink,
               json_resume: jsonResume?.work?.length > 0 ? jsonResume : null,
@@ -133,6 +189,18 @@ export default async function handler(req, res) {
     res.status(400).json('opportunity_id or application_id is missing');
   }
 }
+
+const updatedJobApplication = async (payload, application_id) => {
+  const { data, error } = await supabase
+    .from('job_applications')
+    .update(payload)
+    .eq('application_id', application_id);
+  if (!error) {
+    return { data: data, error: null };
+  } else {
+    return { data: null, error: error };
+  }
+};
 
 async function transformers(jsonData, opportunity_id) {
   // Initialize the output structure
@@ -244,3 +312,41 @@ function getMonthName(monthNumber) {
     return '';
   }
 }
+
+const generateResume = async (resume, jd_json) => {
+  const response = openai.chat.completions.create({
+    model: 'gpt-3.5-turbo-1106',
+    messages: [
+      {
+        role: 'system',
+        content: `your a resume and job describtion analyzer and generate result in given format :
+          {
+            "skills": string[] ("analyse only resume_json and extract skills from his previous work experience in resume_json),
+            "overview": string ("generate a 2 line overview by analysing the resume_json"),
+            "strengths": string[] ("compare resume_json and job_description_json and give a list of strengths for the resume provided assuming resume_json applied for the job provided."),
+            "weakness": string[] ("compare the resume_json and job_description_json and give a list of weaknesses for the resume provided assuming resume_json applied for the job provided."),
+          }
+          dont add any placeholder data in result`,
+      },
+      {
+        role: 'user',
+        content: `here's the resume_json: ${JSON.stringify(
+          resume,
+        )} and job_description_json: ${JSON.stringify(jd_json)}`,
+      },
+    ],
+    temperature: 0.8,
+    top_p: 1,
+    seed: 87654321,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    response_format: {
+      type: 'json_object',
+    },
+  });
+  const responseB = await response;
+
+  const result = JSON.parse(responseB.choices[0].message.content || '{}');
+
+  return result;
+};
