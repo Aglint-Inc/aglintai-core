@@ -93,7 +93,6 @@ export default async function handler(req, res) {
       }
     }
   } else {
-    console.log('opportunity_id is missing');
     res.status(400).json('opportunity_id or application_id is missing');
   }
 }

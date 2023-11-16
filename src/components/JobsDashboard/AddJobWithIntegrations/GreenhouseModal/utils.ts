@@ -26,7 +26,8 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
                 cand.website_addresses[0]?.value || '',
               ),
               phone: cand.phone_numbers[0]?.value,
-              resume: cand.attachments[0]?.url,
+              resume: cand.attachments.filter((res) => res.type == 'resume')[0]
+                ?.url,
               job_id: post.public_job_id,
               application_id: uuidv4(), //our job application id
               id: cand.id, //greenhouse candidate id
