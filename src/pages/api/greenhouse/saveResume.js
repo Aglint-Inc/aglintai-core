@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       .select()
       .eq('application_id', payload.application_id);
 
-    let fileUrl = req.body.resume;
+    let fileUrl = payload.resume;
     let bucketName = 'resume-job-post';
 
     if (
