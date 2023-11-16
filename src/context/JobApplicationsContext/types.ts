@@ -52,7 +52,15 @@ export type JobApplicationContext = {
   ) => Promise<boolean>;
   handleJobApplicationRead: (
     request: ReadJobApplicationApi['request'],
-  ) => Promise<boolean>;
+  ) => Promise<{
+    confirmation: boolean;
+    count: {
+      new?: number;
+      qualified?: number;
+      disqualified?: number;
+      interviewing?: number;
+    };
+  }>;
   handleJobApplicationRefresh: () => Promise<boolean>;
   handleJobApplicationPaginate: (
     pageNumber: number,
@@ -63,15 +71,20 @@ export type JobApplicationContext = {
 
     inputData: NewJobApplicationsUpdate,
   ) => Promise<boolean>;
-  handleJobApplicationUIUpdate: (
-    jobApplication: Partial<JobApplication>,
-  ) => boolean;
   handleJobApplicationDelete: (
     applicationId: string,
     applicationStatus: JobApplicationSections,
   ) => Promise<boolean>;
   handleJobApplicationError: (error: any) => void;
-  handleJobApplicationFilter: (parameters: Parameters) => Promise<void>;
+  handleJobApplicationFilter: (parameters: Parameters) => Promise<{
+    confirmation: boolean;
+    count: {
+      new?: number;
+      qualified?: number;
+      disqualified?: number;
+      interviewing?: number;
+    };
+  }>;
   searchParameters: Parameters;
   initialLoad: boolean;
   openImportCandidates: boolean;
@@ -79,10 +92,11 @@ export type JobApplicationContext = {
   openManualImportCandidates: boolean;
   setOpenManualImportCandidates: Dispatch<SetStateAction<boolean>>;
   handleUpdateJobStatus: (
-    applicationIdSet: Set<string>,
     sections: {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
+    applicationIdSet?: Set<string>,
+    updateAll?: boolean,
   ) => Promise<boolean>;
 };

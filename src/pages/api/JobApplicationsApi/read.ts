@@ -66,6 +66,7 @@ const handleSinglePromiseValidation = (
   responses: PromiseSettledResult<{
     data: JobApplication[];
     error: PostgrestError;
+    count: number;
   }>,
   status: JobApplicationSections,
 ) => {
@@ -73,8 +74,9 @@ const handleSinglePromiseValidation = (
     return {
       data: { [status]: responses.value.data },
       error: null,
+      count: { [status]: responses.value.count },
     };
-  return { data: null, error: { [status]: responses.reason } };
+  return { data: null, error: { [status]: responses.reason }, count: null };
 };
 
 const handleMultiPromiseValidation = (
@@ -82,12 +84,13 @@ const handleMultiPromiseValidation = (
   responses: PromiseSettledResult<{
     data: JobApplication[];
     error: PostgrestError;
+    count: number;
   }>[],
   ranges: ReadJobApplicationApi['request']['ranges'],
 ) => {
   return Object.keys(ranges).reduce(
     (acc, curr, i) => {
-      const { data, error } = handleSinglePromiseValidation(
+      const { data, error, count } = handleSinglePromiseValidation(
         responses[i],
         curr as JobApplicationSections,
       );
@@ -97,6 +100,10 @@ const handleMultiPromiseValidation = (
           data: {
             ...acc.data,
             ...data,
+          },
+          count: {
+            ...acc.count,
+            ...count,
           },
         };
       } else if (error) {
@@ -112,6 +119,7 @@ const handleMultiPromiseValidation = (
     {
       data: null,
       error: null,
+      count: null,
     },
   ) as {
     data: {
@@ -121,6 +129,12 @@ const handleMultiPromiseValidation = (
       [JobApplicationSections.INTERVIEWING]: JobApplication[];
     };
     error: PostgrestError;
+    count: {
+      [JobApplicationSections.NEW]: number;
+      [JobApplicationSections.QUALIFIED]: number;
+      [JobApplicationSections.DISQUALIFIED]: number;
+      [JobApplicationSections.INTERVIEWING]: number;
+    };
   };
 };
 
@@ -147,5 +161,11 @@ export type ReadJobApplicationApi = {
       [JobApplicationSections.DISQUALIFIED]?: JobApplication[];
     };
     error: PostgrestError;
+    count: {
+      [JobApplicationSections.NEW]?: number;
+      [JobApplicationSections.QUALIFIED]?: number;
+      [JobApplicationSections.DISQUALIFIED]?: number;
+      [JobApplicationSections.INTERVIEWING]?: number;
+    };
   };
 };

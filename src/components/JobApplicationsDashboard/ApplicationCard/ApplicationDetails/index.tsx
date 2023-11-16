@@ -376,18 +376,24 @@ const NewCandidateDetails = ({
           </>
           {applicationValidity(applicationDetails) ? (
             <>
-              {resume.education && resume.education.length !== 0 ? (
+              {resume.education &&
+              resume.education instanceof Array &&
+              resume.education.length !== 0 ? (
                 <NewEducationDetails education={resume.education} />
               ) : (
                 <></>
               )}
-              {resume.work && resume.work.length !== 0 ? (
+              {resume.work &&
+              resume.work instanceof Array &&
+              resume.work.length !== 0 ? (
                 <NewExperienceDetails work={resume.work} />
               ) : (
                 <></>
               )}
 
-              {resume.skills && resume.skills.length !== 0 ? (
+              {resume.skills &&
+              resume.skills instanceof Array &&
+              resume.skills.length !== 0 ? (
                 <NewSkillDetails skills={resume.skills} />
               ) : (
                 <></>

@@ -3,9 +3,10 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { RefreshButton } from "./RefreshButton";
 import { JobDetailsTabs } from "./JobDetailsTabs";
+import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
-import { TopApplicantsTable } from "./TopApplicantsTable";
 import { AllApplicantsTable } from "./AllApplicantsTable";
+import { TopApplicantsTable } from "./TopApplicantsTable";
 import { CandidatesListPagination } from "./CandidatesListPagination";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
@@ -184,7 +185,12 @@ export function JobDetails({
               className={_utils.cx(_styles, "jdet-actions-bar")}
               tag="div"
             >
-              {slotFilters ?? <JobDetailsFilterBlock />}
+              {slotFilters ?? (
+                <>
+                  <SelectActionBar />
+                  <JobDetailsFilterBlock />
+                </>
+              )}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "jdet-table")}
@@ -192,8 +198,8 @@ export function JobDetails({
             >
               {slotTable ?? (
                 <>
-                  <TopApplicantsTable />
                   <AllApplicantsTable />
+                  <TopApplicantsTable />
                 </>
               )}
             </_Builtin.Block>

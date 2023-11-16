@@ -45,8 +45,8 @@ export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
 };
 
 export type CountJobs = {
-  new: number;
-  interviewing: number;
-  qualified: number;
-  disqualified: number;
+  new?: number;
+  interviewing?: number;
+  qualified?: number;
+  disqualified?: number;
 };

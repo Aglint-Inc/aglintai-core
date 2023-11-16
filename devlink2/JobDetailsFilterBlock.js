@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { CandidateFilter } from "./CandidateFilter";
 import * as _utils from "./utils";
 import _styles from "./JobDetailsFilterBlock.module.css";
 
@@ -83,7 +82,7 @@ export function JobDetailsFilterBlock({
         className={_utils.cx(_styles, "cv-tab-filter-right")}
         tag="div"
       >
-        {slotFilter ?? <CandidateFilter />}
+        {slotFilter}
       </_Builtin.Block>
     </_Component>
   );

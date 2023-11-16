@@ -56,7 +56,7 @@ export function CandidateFilter({
         </_Builtin.Block>
         {isFilterBodyVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-filter-content")}
+            className={_utils.cx(_styles, "cl-filter-content")}
             tag="div"
             {...dropdownBodyProps}
           >

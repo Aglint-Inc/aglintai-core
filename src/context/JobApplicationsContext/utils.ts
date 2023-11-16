@@ -22,7 +22,6 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   handleJobApplicationRefresh: undefined,
   handleJobApplicationPaginate: undefined,
   handleJobApplicationUpdate: undefined,
-  handleJobApplicationUIUpdate: undefined,
   handleJobApplicationDelete: undefined,
   handleJobApplicationError: undefined,
   handleJobApplicationFilter: undefined,
@@ -234,4 +233,24 @@ export const getRange = (
     start: (pageNumber - 1) * paginationLimit,
     end: pageNumber * paginationLimit - 1,
   };
+};
+
+export const updateAllJobStatusDbAction = async (
+  jobId: string,
+  sections: {
+    source: JobApplicationSections;
+    destination: JobApplicationSections;
+  },
+  signal?: AbortSignal,
+) => {
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 60000);
+  const { error } = await supabase
+    .from('job_applications')
+    .update({ status: sections.destination })
+    .eq('job_id', jobId)
+    .eq('status', sections.source)
+    .abortSignal(signal);
+  clearTimeout(timeout);
+  return { data: error ? false : true, error };
 };

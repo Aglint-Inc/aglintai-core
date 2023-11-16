@@ -51,7 +51,7 @@ export const readNewJobApplicationDbAction = async (
 
   let query = supabase
     .from('job_applications')
-    .select('*,candidates!inner(*)')
+    .select('*,candidates!inner(*)', { count: 'exact' })
     .eq('job_id', job_id)
     .eq('status', status);
 
@@ -99,9 +99,9 @@ export const readNewJobApplicationDbAction = async (
 
   query = query.abortSignal(controller.signal);
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
 
-  return { data, error };
+  return { data, error, count };
 };
 
 const getFilteredQuery = (query: any, filter: FilterParameter[]) => {

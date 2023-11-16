@@ -11,6 +11,7 @@ export * from "./AllApplicantsTable";
 export * from "./AllCandidateListItem";
 export * from "./ApplicantsListEmpty";
 export * from "./CandidateFilter";
+export * from "./CandidateFilterOption";
 export * from "./CandidateSelectionPopup";
 export * from "./CandidatesListPagination";
 export * from "./CandidateStatusDropdown";

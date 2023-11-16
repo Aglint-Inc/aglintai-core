@@ -22,9 +22,11 @@ import {
   deleteJobApplicationDbAction,
   getRange,
   getUpdatedJobStatus,
+  updateAllJobStatusDbAction,
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
+import { CountJobs } from '../JobsContext/types';
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
@@ -191,6 +193,7 @@ const useProviderJobApplicationActions = (
 
   const updateTick = useRef(false);
 
+  //SECONDARY
   const handleJobApplicationCreate = async (inputData: JobApplication) => {
     if (recruiter) {
       const { data, error } = await createJobApplicationDbAction(
@@ -206,6 +209,7 @@ const useProviderJobApplicationActions = (
     }
   };
 
+  //SECONDARY
   const handleJobApplicationBulkCreate = async (
     inputData: JobApplication[],
   ) => {
@@ -223,6 +227,7 @@ const useProviderJobApplicationActions = (
     }
   };
 
+  //PRIMARY
   const handleJobApplicationRead = async (
     request: ReadJobApplicationApi['request'],
   ) => {
@@ -232,20 +237,24 @@ const useProviderJobApplicationActions = (
         url: '/api/JobApplicationsApi/read',
         data: request,
       });
-      const { data, error }: ReadJobApplicationApi['response'] = axiosData;
+      const { data, error, count }: ReadJobApplicationApi['response'] =
+        axiosData;
       if (data) {
         const action: Action = {
           type: ActionType.READ,
           payload: { applicationData: data },
         };
+        await handleUpdateJobCount([job.id]);
         dispatch(action);
-        return true;
+        updateTick.current = !updateTick.current;
+        return { confirmation: true, count: count };
       }
       handleJobApplicationError(error);
-      return false;
+      return { confirmation: false, count: null as CountJobs };
     }
   };
 
+  //SECONDARY
   const handleJobApplicationRefresh = async () => {
     if (recruiter) {
       const request = {
@@ -253,12 +262,13 @@ const useProviderJobApplicationActions = (
         ranges: ranges,
         ...searchParameters,
       };
-      const confirmation = await handleJobApplicationRead(request);
+      const { confirmation } = await handleJobApplicationRead(request);
       if (confirmation) return true;
     }
     return false;
   };
 
+  //SECONDARY
   const handleJobApplicationPaginate = async (
     pageNumber: number,
     section: JobApplicationSections,
@@ -269,7 +279,7 @@ const useProviderJobApplicationActions = (
         ...ranges,
         [section]: getRange(pageNumber, paginationLimit),
       } as ReadJobApplicationApi['request']['ranges'];
-      const confirmation = await handleJobApplicationRead({
+      const { confirmation } = await handleJobApplicationRead({
         job_id: jobId,
         ranges: newRanges,
         ...searchParameters,
@@ -285,6 +295,7 @@ const useProviderJobApplicationActions = (
     return false;
   };
 
+  //PRIMARY
   const handleJobApplicationUpdate = async (
     applicationId: string,
     inputData: NewJobApplications,
@@ -301,6 +312,7 @@ const useProviderJobApplicationActions = (
             applicationData: data[0],
           },
         };
+        await handleUpdateJobCount([job.id]);
         dispatch(action);
         updateTick.current = !updateTick.current;
         return true;
@@ -310,20 +322,7 @@ const useProviderJobApplicationActions = (
     }
   };
 
-  const handleJobApplicationUIUpdate = (jobApplication: JobApplication) => {
-    if (recruiter) {
-      const action: Action = {
-        type: ActionType.UPDATE,
-        payload: {
-          applicationData: jobApplication,
-        },
-      };
-      dispatch(action);
-      updateTick.current = !updateTick.current;
-      return true;
-    }
-  };
-
+  //SECONDARY
   const handleJobApplicationBulkUpdate = async (
     updatedApplicationData: NewJobApplications[],
   ) => {
@@ -331,13 +330,12 @@ const useProviderJobApplicationActions = (
       updatedApplicationData,
     );
     if (d1) {
-      const read = await handleJobApplicationRead({
+      const { confirmation } = await handleJobApplicationRead({
         job_id: jobId,
         ranges: ranges,
         ...searchParameters,
       });
-      if (read) {
-        updateTick.current = !updateTick.current;
+      if (confirmation) {
         return true;
       } else {
         handleJobApplicationError(null);
@@ -349,6 +347,7 @@ const useProviderJobApplicationActions = (
     }
   };
 
+  //PRIMARY
   const handleJobApplicationDelete = async (
     applicationId: string,
     applicationStatus: JobApplicationSections,
@@ -360,6 +359,7 @@ const useProviderJobApplicationActions = (
           type: ActionType.DELETE,
           payload: { applicationId, applicationStatus },
         };
+        await handleUpdateJobCount([job.id]);
         dispatch(action);
         updateTick.current = !updateTick.current;
         return true;
@@ -369,31 +369,57 @@ const useProviderJobApplicationActions = (
     }
   };
 
+  //SECONDARY
   const handleUpdateJobStatus = async (
-    applicationIdSet: Set<string>,
     sections: {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
+    applicationIdSet?: Set<string>,
+    updateAll: boolean = false,
   ) => {
-    return await handleJobApplicationBulkUpdate(
-      getUpdatedJobStatus(applicationIdSet, applications, sections),
-    );
+    if (updateAll) {
+      const { data, error } = await updateAllJobStatusDbAction(
+        job.id,
+        sections,
+      );
+      if (data) {
+        await handleJobApplicationRefresh();
+        return true;
+      } else {
+        handleJobApplicationError(error);
+        return false;
+      }
+    } else {
+      return await handleJobApplicationBulkUpdate(
+        getUpdatedJobStatus(applicationIdSet, applications, sections),
+      );
+    }
   };
 
+  //TERTIARY
   const handleJobApplicationError = (error) => {
     toast.error(`Oops! Something went wrong.\n (${error?.message})`);
   };
 
+  //SECONDARY
   const handleJobApplicationFilter = async (parameters: Parameters) => {
     setApplicationDisable(true);
-    const confirmation = await handleJobApplicationRead({
+    const { confirmation, count } = await handleJobApplicationRead({
       job_id: jobId,
       ranges: ranges,
       ...parameters,
     });
-    if (confirmation) setSearchParameters({ ...parameters });
     setApplicationDisable(false);
+    if (confirmation) {
+      setSearchParameters({ ...parameters });
+      return { confirmation: true, count: count };
+    }
+    return {
+      confirmation: false,
+      // eslint-disable-next-line no-unused-vars
+      count: null as CountJobs,
+    };
   };
 
   useEffect(() => {
@@ -401,15 +427,6 @@ const useProviderJobApplicationActions = (
       handleJobApplicationRefresh();
     }
   }, [initialJobLoad]);
-
-  useEffect(() => {
-    if (initialLoad && job) {
-      const timer = setTimeout(async () => {
-        await handleUpdateJobCount([job.id]);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [initialLoad, updateTick.current]);
 
   const value = {
     applications,
@@ -423,7 +440,6 @@ const useProviderJobApplicationActions = (
     handleJobApplicationRead,
     handleJobApplicationPaginate,
     handleJobApplicationUpdate,
-    handleJobApplicationUIUpdate,
     handleJobApplicationRefresh,
     handleJobApplicationBulkUpdate,
     handleJobApplicationDelete,

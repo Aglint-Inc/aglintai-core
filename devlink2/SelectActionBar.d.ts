@@ -13,4 +13,7 @@ declare function SelectActionBar(props: {
   isMoveNew?: Types.Visibility.VisibilityConditions;
   onClickClear?: Types.Devlink.RuntimeProps;
   textSelected?: React.ReactNode;
+  selectAllText?: React.ReactNode;
+  isSelectAllVisible?: Types.Visibility.VisibilityConditions;
+  onclickSelectAll?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

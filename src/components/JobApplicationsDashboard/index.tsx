@@ -33,6 +33,7 @@ import {
   JobApplicationSections,
   Parameters,
 } from '@/src/context/JobApplicationsContext/types';
+import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -95,6 +96,12 @@ const JobApplicationComponent = () => {
 
   const [jobUpdate, setJobUpdate] = useState(false);
   const [detailedView, setDetailedView] = useState(true);
+
+  const [applicationLimit, setApplicationLimit] = useState(job.count);
+
+  useEffect(() => {
+    setApplicationLimit(job.count);
+  }, [...Object.values(job.count)]);
 
   const handleSetSection = (section) => {
     setSection(section);
@@ -184,6 +191,8 @@ const JobApplicationComponent = () => {
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
             setJobUpdate={setJobUpdate}
+            applicationLimit={applicationLimit}
+            setApplicationLimit={setApplicationLimit}
           />
         }
         onclickHeaderJobs={{
@@ -214,6 +223,7 @@ const JobApplicationComponent = () => {
           <ApplicationPagination
             size={sectionApplications.length}
             section={section}
+            limits={applicationLimit}
           />
         }
       />
@@ -244,18 +254,21 @@ const ApplicationTable = ({
   currentApplication: number;
   refresh: boolean;
 }) => {
+  const { applicationDisable } = useJobApplications();
   const handleSelectAllMin = () => {
-    if (checkList.size === sectionApplications.length)
-      setCheckList(new Set<string>());
-    else
-      setCheckList(
-        new Set(
-          sectionApplications.reduce((acc, curr) => {
-            acc.push(curr.application_id);
-            return acc;
-          }, []),
-        ),
-      );
+    if (!applicationDisable) {
+      if (checkList.size === sectionApplications.length)
+        setCheckList(new Set<string>());
+      else
+        setCheckList(
+          new Set(
+            sectionApplications.reduce((acc, curr) => {
+              acc.push(curr.application_id);
+              return acc;
+            }, []),
+          ),
+        );
+    }
   };
   const applicantsList = (
     <ApplicantsList
@@ -293,21 +306,22 @@ const ApplicationTable = ({
 const ApplicationPagination = ({
   size,
   section,
+  limits,
 }: {
   size: number;
   section: JobApplicationSections;
+  limits: CountJobs;
 }) => {
   const {
     paginationLimit,
     pageNumber,
     handleJobApplicationPaginate,
-    job,
     applicationDisable,
   } = useJobApplications();
-  const totalCandidatesCount = job.count[section];
+  const totalCandidatesCount = limits[section];
   const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
   const handleNext = async () => {
-    if (!applicationDisable) {
+    if (!applicationDisable && totalPageCount > 1) {
       const newPageNum = (pageNumber[section] + 1) % totalPageCount;
       await handleJobApplicationPaginate(
         newPageNum === 0 ? totalPageCount : newPageNum,
@@ -316,7 +330,7 @@ const ApplicationPagination = ({
     }
   };
   const handlePrevious = async () => {
-    if (!applicationDisable) {
+    if (!applicationDisable && totalPageCount > 1) {
       const newPageNum = pageNumber[section] - 1;
       await handleJobApplicationPaginate(
         newPageNum === 0 ? totalPageCount : newPageNum,
@@ -389,6 +403,8 @@ const NewJobFilterBlock = ({
   setCheckList,
   jobUpdate,
   setJobUpdate,
+  applicationLimit,
+  setApplicationLimit,
 }: {
   section: JobApplicationSections;
   detailedView: boolean;
@@ -397,8 +413,19 @@ const NewJobFilterBlock = ({
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
+  applicationLimit: CountJobs;
+  setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { job } = useJobApplications();
+  const { job, searchParameters, handleJobApplicationFilter } =
+    useJobApplications();
+  const handleSearch = async (val: string) => {
+    const value = val.trim().toLowerCase();
+    const { confirmation, count } = await handleJobApplicationFilter({
+      ...searchParameters,
+      search: value,
+    });
+    if (confirmation) setApplicationLimit(count);
+  };
   return (
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
       <YTransform uniqueKey={checkList.size > 0}>
@@ -416,6 +443,7 @@ const NewJobFilterBlock = ({
                   checkList={checkList}
                   setCheckList={setCheckList}
                   setJobUpdate={setJobUpdate}
+                  applicationLimit={applicationLimit}
                 />
               )}
             </Stack>
@@ -433,8 +461,11 @@ const NewJobFilterBlock = ({
             isTopApplicants={!detailedView}
             slotFilter={
               <>
-                <ApplicationFilter />
-                <SearchField />
+                <ApplicationFilter setApplicationLimit={setApplicationLimit} />
+                <SearchField
+                  val={searchParameters.search}
+                  handleSearch={handleSearch}
+                />
               </>
             }
           />
@@ -474,7 +505,11 @@ const AddCandidates = ({ section }: { section: JobApplicationSections }) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const ApplicationFilter = () => {
+const ApplicationFilter = ({
+  setApplicationLimit,
+}: {
+  setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
+}) => {
   const { searchParameters, handleJobApplicationFilter, applicationDisable } =
     useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
@@ -488,11 +523,13 @@ const ApplicationFilter = () => {
     <CandidateFilter
       onclickReset={{
         onClick: async () => {
-          if (!applicationDisable)
-            await handleJobApplicationFilter({
+          if (!applicationDisable) {
+            const { confirmation, count } = await handleJobApplicationFilter({
               ...searchParameters,
               filter: [],
             });
+            if (confirmation) setApplicationLimit(count);
+          }
         },
       }}
       isResetVisible={count.size > 0}
@@ -502,6 +539,7 @@ const ApplicationFilter = () => {
         <ApplicationFilterSlider
           parameter='resume_score'
           updateTick={updateTick[0]}
+          setApplicationLimit={setApplicationLimit}
         />
       }
       isResumeClear={count.has('resume_score')}
@@ -510,6 +548,7 @@ const ApplicationFilter = () => {
         <ApplicationFilterSlider
           parameter='interview_score'
           updateTick={updateTick[1]}
+          setApplicationLimit={setApplicationLimit}
         />
       }
       onclickResumeClear={{
@@ -534,9 +573,11 @@ const ApplicationFilter = () => {
 const ApplicationFilterSlider = ({
   parameter,
   updateTick,
+  setApplicationLimit,
 }: {
   parameter: Parameters['filter'][0]['parameter'];
   updateTick: boolean;
+  setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
   const { handleJobApplicationFilter, searchParameters } = useJobApplications();
   const paramsObj = searchParameters.filter.reduce(
@@ -572,7 +613,7 @@ const ApplicationFilterSlider = ({
   const step = 5;
 
   const handleUpdate = async (newValue: number[]) => {
-    await handleJobApplicationFilter({
+    const { confirmation, count } = await handleJobApplicationFilter({
       ...searchParameters,
       filter: [
         ...newValue.reduce(
@@ -589,6 +630,7 @@ const ApplicationFilterSlider = ({
         ),
       ],
     });
+    if (confirmation) setApplicationLimit(count);
   };
 
   useEffect(() => {
@@ -812,20 +854,24 @@ const ActionBar = ({
   checkList,
   setCheckList,
   setJobUpdate,
+  applicationLimit,
 }: {
   section: JobApplicationSections;
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
+  applicationLimit: CountJobs;
 }) => {
   const {
     handleUpdateJobStatus,
     applications,
     handleJobApplicationUpdate,
     job,
+    paginationLimit,
   } = useJobApplications();
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
+  const [selectAll, setSelectAll] = useState(false);
   const [dialogInfo, setDialogInfo] = useState({
     header: ``,
     description: ``,
@@ -839,15 +885,29 @@ const ActionBar = ({
   });
   const handleUpdateJobs = async (destination: JobApplicationSections) => {
     setJobUpdate(true);
-    const confirmation = await handleUpdateJobStatus(checkList, {
-      source: section,
-      destination,
-    });
+    const confirmation = await handleUpdateJobStatus(
+      {
+        source: section,
+        destination,
+      },
+      checkList,
+      selectAll,
+    );
     if (confirmation) {
       setCheckList(new Set<string>());
+      setSelectAll(false);
     }
     setJobUpdate(false);
   };
+
+  const handleSelectAll = () => {
+    setCheckList(new Set(applications[section].map((a) => a.application_id)));
+    setSelectAll(true);
+  };
+
+  useEffect(() => {
+    if (checkList.size !== applications[section].length) setSelectAll(false);
+  }, [checkList.size]);
 
   const isChecked = checkList.size !== 0;
   const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
@@ -861,7 +921,7 @@ const ActionBar = ({
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.QUALIFIED);
-  const checkListCount = checkList.size;
+  const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
   const DialogInfo = {
     interviewing: {
       header: 'Move to Assessment',
@@ -1019,13 +1079,18 @@ const ActionBar = ({
             setOpenInfoDialog(true);
           },
         }}
+        isMoveNew={showNew}
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
         }}
         textSelected={`${checkListCount} candidate${
           checkListCount !== 1 ? 's' : ''
         } selected`}
-        isMoveNew={showNew}
+        selectAllText={`Select all ${applicationLimit[section]} candidates`}
+        isSelectAllVisible={
+          !selectAll && applicationLimit[section] > paginationLimit
+        }
+        onclickSelectAll={{ onClick: () => handleSelectAll() }}
       />
     </>
   );
