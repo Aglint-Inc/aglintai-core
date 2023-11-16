@@ -25,7 +25,7 @@ import { QuestionType, useJobForm } from '../../JobPostFormProvider';
 
 const ScreeningQns = () => {
   const { recruiter } = useAuthDetails();
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { jobForm, handleUpdateFormFields,dispatch } = useJobForm();
   const totalQns = jobForm.formFields.interviewConfig.reduce((agg, curr) => {
     return agg + curr.questions.length;
   }, 0);
@@ -38,6 +38,17 @@ const ScreeningQns = () => {
   return (
     <>
       <ScreeningQuestion
+      isAddJob={jobForm.formType==='new'
+    }
+    onClickProceed={{
+      onClick: () => {
+      dispatch({
+        type: 'moveToSlide',
+        payload: {
+          nextSlide: 'workflow',
+        },
+      });
+    },}}
         onClickUpload={{
           onClick: () => {
             handleUpdateFormFields({

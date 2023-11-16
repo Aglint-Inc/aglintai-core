@@ -55,7 +55,7 @@ export function EmailTemplatesStart({
       </_Builtin.Block>
       {isAddJob ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-522")}
+          className={_utils.cx(_styles, "publish-email-wrap")}
           tag="div"
         >
           <_Builtin.Block tag="div" {...onClickDone}>

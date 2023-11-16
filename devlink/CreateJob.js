@@ -132,9 +132,12 @@ export function CreateJob({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
+      <_Builtin.Link
         className={_utils.cx(_styles, "request-wrap")}
-        tag="div"
+        button={false}
+        options={{
+          href: "mailto:admin@aglinthq.com?subject=Request%20Integration",
+        }}
         {...onClickRequestIntegration}
       >
         <_Builtin.Block
@@ -143,7 +146,7 @@ export function CreateJob({
         >
           {"Request Integration"}
         </_Builtin.Block>
-      </_Builtin.Block>
+      </_Builtin.Link>
     </_Component>
   );
 }

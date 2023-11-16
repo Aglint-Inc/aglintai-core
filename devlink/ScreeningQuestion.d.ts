@@ -20,4 +20,7 @@ declare function ScreeningQuestion(props: {
   slotExpirationInput?: Types.Devlink.Slot;
   slotRetrysCount?: Types.Devlink.Slot;
   slotSwitchAudioVideo?: Types.Devlink.Slot;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isAddJob?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

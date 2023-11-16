@@ -280,13 +280,13 @@
   grid-template-rows: auto;
 }
 
-.div-block-522 {
+.publish-email-wrap {
   display: flex;
   margin-top: 40px;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {
