@@ -323,7 +323,7 @@ const generateResume = async (resume, jd_json) => {
           {
             "skills": string[] ("analyse only resume_json and extract skills from his previous work experience in resume_json),
             "overview": string ("generate a 2 line overview by analysing the resume_json"),
-            "strengths": string ("compare resume_json and job_description_json and generate strengths for the resume provided assuming resume_json applied for the job provided."),
+            "strength": string ("compare resume_json and job_description_json and generate strengths for the resume provided assuming resume_json applied for the job provided."),
             "weakness": string ("compare the resume_json and job_description_json and generate weaknesses for the resume provided assuming resume_json applied for the job provided."),
           }
           dont add any placeholder data in result`,

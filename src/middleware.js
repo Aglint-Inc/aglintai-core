@@ -13,6 +13,7 @@ const whiteListedEndPoints = [
   '/api/lever/candidateSync',
   '/api/webhook',
   '/api/JobApplicationsApi',
+  '/api/ai/resume-embedding',
   '/api/interview', // need this publicly access for interview feedback.
 ];
 
