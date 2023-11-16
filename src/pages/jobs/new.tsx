@@ -8,11 +8,14 @@ import JobPostFormProvider, {
   useJobForm,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
 
 function Hoc() {
   return (
     <JobPostFormProvider>
-      <New />
+      <IntegrationProvider>
+        <New />
+      </IntegrationProvider>
     </JobPostFormProvider>
   );
 }

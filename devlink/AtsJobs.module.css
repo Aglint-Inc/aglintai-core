@@ -426,7 +426,7 @@
 .slot-ats-cards-wrappers {
   display: flex;
   overflow: scroll;
-  max-height: 420px;
+  max-height: 380px;
   margin-top: 34px;
   flex-direction: column;
 }

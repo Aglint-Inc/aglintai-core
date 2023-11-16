@@ -3,8 +3,12 @@ import { Dialog } from '@mui/material';
 import { JobDashboardEmpty } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
+import {
+  STATE_GREENHOUSE_DIALOG,
+  STATE_LEVER_DIALOG,
+} from '@/src/context/IntegrationProvider/utils';
 
+import { GreenhouseModal } from './GreenhouseModal';
 import { LeverModalComp } from './LeverModal';
 
 export default function EmptyJobDashboard({
@@ -25,9 +29,18 @@ export default function EmptyJobDashboard({
         <LeverModalComp />
       </Dialog>
 
+      <Dialog
+        open={integration.greenhouse.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <GreenhouseModal />
+      </Dialog>
+
       <JobDashboardEmpty
         isAtsOptionVisible={true}
         isConnectedVisible={recruiter?.lever_key ? true : false}
+        isGreenhouseConnected={recruiter?.greenhouse_key ? true : false}
         textHeader={heading}
         isOldTitleVisible={showMsg}
         onClickAddJob={{
@@ -54,20 +67,20 @@ Thank you,
         }}
         onClickGreenHouse={{
           onClick: () => {
-            window.open(
-              `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
-                `Aglint: Request Integration with Greenhouse`,
-              )}&body=${encodeURIComponent(
-                `
-Hello,
-
-Requesting integration of Greenhouse into Aglint
-
-Thank you,
-[Your Name]
-                  `,
-              )}`,
-            );
+            if (!recruiter.greenhouse_key) {
+              setIntegration((prev) => ({
+                ...prev,
+                greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.API },
+              }));
+            } else {
+              setIntegration((prev) => ({
+                ...prev,
+                greenhouse: {
+                  open: true,
+                  step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+                },
+              }));
+            }
           },
         }}
         onClickAshby={{

@@ -836,6 +836,18 @@
   display: block;
 }
 
+.asby-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transform: scale(1);
+}
+
+.asby-image.large {
+  width: 60px;
+  height: 60px;
+}
+
 .coming-soon-badges {
   position: absolute;
   left: auto;
@@ -871,18 +883,6 @@
   border-radius: 5px;
 }
 
-.asby-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  transform: scale(1);
-}
-
-.asby-image.large {
-  width: 60px;
-  height: 60px;
-}
-
 .max-width-500 {
   max-width: 500px;
 }
@@ -908,6 +908,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

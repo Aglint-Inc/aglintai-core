@@ -98,9 +98,7 @@ export function GreenhouseApiKey({
           <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
             {"Data Flow > API Management"}
           </_Builtin.Span>
-          {" from the left panel."}
-          <br />
-          {"On the "}
+          {" from the left panel. On the "}
           <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
             {"API Management"}
           </_Builtin.Span>

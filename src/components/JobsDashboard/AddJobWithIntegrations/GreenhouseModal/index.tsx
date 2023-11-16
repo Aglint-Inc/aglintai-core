@@ -245,7 +245,19 @@ export function GreenhouseModal() {
               textNumberofJobs={
                 <Typography variant='body2'>
                   {selectedGreenhousePostings.length == 0
-                    ? `Showing ${postings.length} Jobs from greenhouse`
+                    ? `Showing ${
+                        postings.filter((job) => {
+                          if (greenhouseFilter == 'live') {
+                            return job.live;
+                          } else if (greenhouseFilter == 'closed') {
+                            return !job.active;
+                          } else if (greenhouseFilter == 'active') {
+                            return job.active;
+                          } else {
+                            return true;
+                          }
+                        }).length
+                      } Jobs from greenhouse`
                     : `${selectedGreenhousePostings.length} Jobs selected`}
                 </Typography>
               }
