@@ -57,6 +57,16 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         />
                       }
                     />
+                  ) : job.posted_by == POSTED_BY.GREENHOUSE ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/greenhouse.svg'
+                          sx={{ width: '100%', height: '18px', pt: '4px' }}
+                        />
+                      }
+                    />
                   ) : (
                     ''
                   )
