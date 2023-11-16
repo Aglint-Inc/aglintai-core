@@ -12,24 +12,30 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
       const fetchedCandidates = await fetchAllCandidates(post.job_id, apiKey);
 
       // for creating lever job reference
-      const refCandidates = fetchedCandidates.map((cand) => {
-        return {
-          first_name: cand.first_name,
-          last_name: cand.last_name,
-          email: cand.email_addresses[0]?.value,
-          job_title: cand.title,
-          company: cand.company,
-          profile_image: cand.photo_url,
-          linkedin: extractLinkedInURLGreenhouse(
-            cand.website_addresses[0]?.value || '',
-          ),
-          phone: cand.phone_numbers[0]?.value,
-          resume: cand.attachments[0]?.url,
-          job_id: post.public_job_id,
-          application_id: uuidv4(), //our job application id
-          id: cand.id, //greenhouse candidate id
-        };
-      });
+      const refCandidates = fetchedCandidates
+        .map((cand) => {
+          if (cand.email_addresses[0]?.value) {
+            return {
+              first_name: cand.first_name,
+              last_name: cand.last_name,
+              email: cand.email_addresses[0]?.value,
+              job_title: cand.title,
+              company: cand.company,
+              profile_image: cand.photo_url,
+              linkedin: extractLinkedInURLGreenhouse(
+                cand.website_addresses[0]?.value || '',
+              ),
+              phone: cand.phone_numbers[0]?.value,
+              resume: cand.attachments[0]?.url,
+              job_id: post.public_job_id,
+              application_id: uuidv4(), //our job application id
+              id: cand.id, //greenhouse candidate id
+            };
+          } else {
+            return null;
+          }
+        })
+        .filter(Boolean); // Remove null entries;
 
       // // for creating lever job reference
 
@@ -63,12 +69,15 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           recruiter_id: post.recruiter_id,
         };
       });
+
       //in that check duplicate email are their or not
       const dbCandidates = insertableCandidates.filter((cand, index, self) => {
         // Use the Array.findIndex() method to check if the current email address
         // exists in the array at a previous index.
         const isUnique =
-          self.findIndex((c) => c.email === cand.email) === index;
+          cand.email && self.findIndex((c) => c.email === cand.email) === index;
+
+        // Return true if the email is unique and not null, otherwise false.
         return isUnique;
       });
 
@@ -79,14 +88,21 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
 
       if (!errorCandidates) {
         const allCandidates = [...newCandidates, ...checkCandidates];
+
         const dbApplications = refCandidates.map((ref) => {
-          return {
-            candidate_id: allCandidates.filter(
-              (cand) => cand.email === ref.email,
-            )[0].id,
-            job_id: post.public_job_id,
-            application_id: ref.application_id,
-          };
+          const matchingCandidate = allCandidates.find(
+            (cand) => cand.email === ref.email,
+          );
+
+          if (matchingCandidate && matchingCandidate.id) {
+            return {
+              candidate_id: matchingCandidate.id,
+              job_id: post.public_job_id,
+              application_id: ref.application_id,
+            };
+          } else {
+            return null;
+          }
         });
 
         const { error } = await supabase
