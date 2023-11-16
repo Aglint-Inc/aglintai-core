@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.body.application_id && req.body.resume_json) {
       const resume_text = convertJsonToText(req.body.resume_json);
+
       const response = await openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: resume_text,
@@ -31,12 +32,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(400).send(error.message);
       } else {
         console.log('embedding updated');
-        return res.status(200).json(response.data[0].embedding);
+        res.status(200).send('embedding updated');
+        // return res.status(200).json(response.data[0].embedding);
       }
     } else {
+      console.log('missing parameters');
       res.status(400).send('No text provided');
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send(error.message);
   }
 };
@@ -45,6 +49,7 @@ export default handler;
 
 function convertJsonToText(resume_json: any) {
   let work =
+    resume_json.work &&
     Array.isArray(resume_json.work) &&
     resume_json.work
       .map((rec) => {
@@ -53,12 +58,15 @@ function convertJsonToText(resume_json: any) {
         } ${rec.startDate ? rec.startDate : ''} ${
           rec.endDate ? rec.endDate : ''
         } ${rec.summary ? rec.summary : ''} ${
-          rec.highlights ? rec.highlights.join(' ') : ''
-        } ${rec.skills_used ? rec.skills_used.join(' ') : ''}`;
+          rec.description ? rec.description : ''
+        } ${rec.highlights ? rec.highlights.join(' ') : ''} ${
+          rec.skills_used ? rec.skills_used.join(' ') : ''
+        }`;
       })
       .join(' ');
 
   let education =
+    resume_json.education &&
     Array.isArray(resume_json.education) &&
     resume_json.education
       .map((rec) => {
@@ -73,7 +81,9 @@ function convertJsonToText(resume_json: any) {
   let strength = resume_json.strength ? resume_json.strength : '';
   let weakness = resume_json.weakness ? resume_json.weakness : '';
   let overview = resume_json.overview ? resume_json.overview : '';
-  let skills = resume_json.skills.join(' ');
+  let skills = Array.isArray(resume_json.skills)
+    ? resume_json.skills.join(' ')
+    : '';
   let certificates =
     Array.isArray(resume_json.certificates) &&
     resume_json.certificates
@@ -105,6 +115,7 @@ function convertJsonToText(resume_json: any) {
   }`;
 
   let languages =
+    resume_json.languages &&
     Array.isArray(resume_json.languages) &&
     resume_json.languages
       .map((rec) => {
@@ -113,6 +124,7 @@ function convertJsonToText(resume_json: any) {
       .join(' ');
 
   let projects =
+    resume_json.projects &&
     Array.isArray(resume_json.projects) &&
     resume_json.projects
       .map((rec) => {
@@ -123,15 +135,8 @@ function convertJsonToText(resume_json: any) {
       .join(' ');
 
   return [
-    basics +
-      work +
-      education +
-      strength +
-      weakness +
-      overview +
-      skills +
-      certificates +
-      projects +
-      languages,
+    basics + work + education,
+    strength + weakness + overview,
+    skills + certificates + projects + languages,
   ].join(' ');
 }
