@@ -148,11 +148,7 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
               return (
                 <CandidateDetailsCard
                   key={index}
-                  textName={
-                    get(c.json_resume, 'basics.firstName') +
-                    ' ' +
-                    get(c.json_resume, 'basics.lastName')
-                  }
+                  textName={getFullName(c.first_name, c.last_name)}
                   slotSkill={get(c.json_resume, 'skills', []).map(
                     (s, index) => (
                       <CandidateSkills key={index} textSkill={s} />
@@ -161,7 +157,7 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
                   textLocation={getLocationString(
                     c.json_resume.basics.location,
                   )}
-                  textOverview={c.json_resume.basics.summary}
+                  textOverview={c.json_resume.overview}
                   textJobRoleAtCompany={c.json_resume.basics.label}
                   onClickStar={{}}
                   onClickCheck={{}}
@@ -277,7 +273,7 @@ const SelectedCandidate = ({
       textJobRoleAtCompany={candidate.json_resume.basics.label}
       textMail={candidate.json_resume.basics.email}
       // isOverviewVisible={}
-      textOverview={candidate.json_resume.basics.summary}
+      textOverview={candidate.json_resume.overview}
       textLocation={getLocationString(candidate.json_resume.basics.location)}
       isOverviewVisible
       slotAddtoJob={<></>}
@@ -304,10 +300,7 @@ const SelectedCandidate = ({
           />
         </>
       }
-      textName={getFullName(
-        candidate.json_resume.basics.firstName,
-        candidate.json_resume.basics.lastName,
-      )}
+      textName={getFullName(candidate.first_name, candidate.last_name)}
       slotDetails={
         <>
           <CandidateEducation
