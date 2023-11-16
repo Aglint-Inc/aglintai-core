@@ -23,7 +23,12 @@ export function NewJobStep2({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-2")}
+      className={_utils.cx(
+        _styles,
+        "job-sidebar-main-block",
+        "cj-step-2",
+        "height-auto"
+      )}
       tag="div"
     >
       <_Builtin.Block
