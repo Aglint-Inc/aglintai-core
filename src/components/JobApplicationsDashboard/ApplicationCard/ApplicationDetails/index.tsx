@@ -706,17 +706,19 @@ const fetchFile = async (applicationDetails: JobApplication) => {
 };
 
 const NewEducationDetails = ({ education }) => {
-  const educationList = education
-    .filter((e) => e.institution !== null && e.institution !== '')
-    .map((e, i) => (
-      <CandidateEducationCard
-        key={i}
-        textUniversityName={e.institution}
-        textDate={`${e.startDate} ${
-          e.endDate && `${e.startDate && '-'} ${e.endDate}`
-        }`}
-      />
-    ));
+  const educationList =
+    Array.isArray(education) &&
+    education
+      .filter((e) => e.institution !== null && e.institution !== '')
+      .map((e, i) => (
+        <CandidateEducationCard
+          key={i}
+          textUniversityName={e.institution}
+          textDate={`${e.startDate} ${
+            e.endDate && `${e.startDate && '-'} ${e.endDate}`
+          }`}
+        />
+      ));
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
 };
 
