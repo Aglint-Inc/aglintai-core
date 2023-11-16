@@ -44,7 +44,7 @@ export function GreenhouseModal() {
   const apiRef = useRef(null);
 
   useEffect(() => {
-    if (jobsData.jobs && recruiter.lever_key) {
+    if (jobsData.jobs && recruiter.greenhouse_key) {
       fetchJobs();
     }
   }, [jobsData.jobs]);
