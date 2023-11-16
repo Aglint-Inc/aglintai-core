@@ -44,35 +44,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 function convertJsonToText(resume_json: any) {
-  let work = resume_json.work
-    .map((rec) => {
-      return `${rec.name ? rec.name : ''} ${rec.position ? rec.position : ''} ${
-        rec.startDate ? rec.startDate : ''
-      } ${rec.endDate ? rec.endDate : ''} ${rec.summary ? rec.summary : ''} ${
-        rec.highlights ? rec.highlights.join(' ') : ''
-      } ${rec.skills_used ? rec.skills_used.join(' ') : ''}`;
-    })
-    .join(' ');
+  let work =
+    Array.isArray(resume_json.work) &&
+    resume_json.work
+      .map((rec) => {
+        return `${rec.name ? rec.name : ''} ${
+          rec.position ? rec.position : ''
+        } ${rec.startDate ? rec.startDate : ''} ${
+          rec.endDate ? rec.endDate : ''
+        } ${rec.summary ? rec.summary : ''} ${
+          rec.highlights ? rec.highlights.join(' ') : ''
+        } ${rec.skills_used ? rec.skills_used.join(' ') : ''}`;
+      })
+      .join(' ');
 
-  let education = resume_json.education
-    .map((rec) => {
-      return `${rec.institution ? rec.institution : ''} ${
-        rec.studyType ? rec.studyType : ''
-      } ${rec.startDate ? rec.startDate : ''} ${
-        rec.endDate ? rec.endDate : ''
-      } ${rec.area ? rec.area : ''}`;
-    })
-    .join(' ');
+  let education =
+    Array.isArray(resume_json.education) &&
+    resume_json.education
+      .map((rec) => {
+        return `${rec.institution ? rec.institution : ''} ${
+          rec.studyType ? rec.studyType : ''
+        } ${rec.startDate ? rec.startDate : ''} ${
+          rec.endDate ? rec.endDate : ''
+        } ${rec.area ? rec.area : ''}`;
+      })
+      .join(' ');
 
   let strength = resume_json.strength ? resume_json.strength : '';
   let weakness = resume_json.weakness ? resume_json.weakness : '';
   let overview = resume_json.overview ? resume_json.overview : '';
   let skills = resume_json.skills.join(' ');
-  let certificates = resume_json.certificates
-    .map((rec) => {
-      return `${rec.name ? rec.name : ''} ${rec.issuer ? rec.issuer : ''}`;
-    })
-    .join(' ');
+  let certificates =
+    Array.isArray(resume_json.certificates) &&
+    resume_json.certificates
+      .map((rec) => {
+        return `${rec.name ? rec.name : ''} ${rec.issuer ? rec.issuer : ''}`;
+      })
+      .join(' ');
 
   let basics = `${resume_json.basics.email ? resume_json.basics.email : ''} ${
     resume_json.basics.phone ? resume_json.basics.phone : ''
@@ -96,19 +104,23 @@ function convertJsonToText(resume_json: any) {
       : ''
   }`;
 
-  let languages = resume_json.languages
-    .map((rec) => {
-      return `${rec.language}`;
-    })
-    .join(' ');
+  let languages =
+    Array.isArray(resume_json.languages) &&
+    resume_json.languages
+      .map((rec) => {
+        return `${rec.language}`;
+      })
+      .join(' ');
 
-  let projects = resume_json.projects
-    .map((rec) => {
-      return `${rec.name ? rec.name : ''} ${
-        rec.highlights.join(' ') ? rec.highlights.join(' ') : ''
-      } ${rec.description ? rec.description : ''} `;
-    })
-    .join(' ');
+  let projects =
+    Array.isArray(resume_json.projects) &&
+    resume_json.projects
+      .map((rec) => {
+        return `${rec.name ? rec.name : ''} ${
+          rec.highlights.join(' ') ? rec.highlights.join(' ') : ''
+        } ${rec.description ? rec.description : ''} `;
+      })
+      .join(' ');
 
   return [
     basics +
