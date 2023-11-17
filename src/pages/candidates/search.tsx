@@ -1,5 +1,5 @@
-import CandidateDatabasePage from '@/src/components/CandidateDatabase/CandidateDatabase';
 import CandidateSearchProvider from '@/src/components/CandidateDatabase/context/CandidateSearchProvider';
+import CandidatesSearch from '@/src/components/CandidateDatabase/Search/Search';
 import Seo from '@/src/components/Common/Seo';
 
 function CandidatesPage() {
@@ -10,7 +10,7 @@ function CandidatesPage() {
         description='Find Your Ideal Candidate with AI-Powered Matching!'
       />
       <CandidateSearchProvider>
-        <CandidateDatabasePage />
+        <CandidatesSearch />
       </CandidateSearchProvider>
     </>
   );

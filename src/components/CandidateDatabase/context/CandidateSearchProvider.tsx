@@ -19,7 +19,7 @@ export type CandidateSearchState = {
   searchInfo: {
     searchType: 'jd' | 'query';
     searchText: string;
-  } | null;
+  };
   queryJson: {
     jobTitles: string[];
     location: string[];
@@ -32,7 +32,6 @@ export type CandidateSearchState = {
     // companies: string[];
   };
   candidates: CandidateSearchRes[];
-  componentinView: 'history' | 'search';
   maxProfiles: number;
 };
 export type CandidateSearchCtxType = {
@@ -76,7 +75,10 @@ const reducer = (state: CandidateSearchState, action: ActionType) => {
 };
 
 export const initialState: CandidateSearchState = {
-  searchInfo: null,
+  searchInfo: {
+    searchText: '',
+    searchType: 'query',
+  },
   candidates: [],
   queryJson: {
     jobTitles: [],
@@ -88,7 +90,6 @@ export const initialState: CandidateSearchState = {
     excludedCompanies: [],
     prefferedCompanies: [],
   },
-  componentinView: 'history',
   maxProfiles: 25,
 };
 

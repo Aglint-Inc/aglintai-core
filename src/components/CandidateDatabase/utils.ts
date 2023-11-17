@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { isEmpty } from 'lodash';
 
-import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { searchQueryToJson } from '@/src/utils/prompts/candidateDb/searchToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -61,6 +61,7 @@ export const candidateSearchByQuery = async (
     newQueryJson,
     jobIds,
     profileLimit,
+    searchQry,
   );
 
   supabaseWrap(
@@ -73,7 +74,6 @@ export const candidateSearchByQuery = async (
 
   const newSearchState: CandidateSearchState = {
     candidates: result,
-    componentinView: 'search',
     queryJson: newQueryJson,
     searchInfo: {
       searchText: searchQry,
@@ -91,19 +91,20 @@ export const candidateSearchByJD = async (
   recruiterId: string,
   profileLimit: number,
 ) => {
-  const resp = await searchJdToJson(jdText);
+  const resp = await searchQueryToJson(jdText);
+
   const newQueryJson: CandidateSearchState['queryJson'] = {
-    jobTitles: [resp.jobTitle],
-    languages: [...resp.spokenLanguagesMentioned],
-    location: [resp.jobLocation],
+    jobTitles: [...resp.jobTitles],
+    languages: [...resp.spokenLanguages],
+    location: [...resp.locations],
     maxExp: resp.maxExperienceInYears,
     minExp: resp.minExperienceInYears,
-    universities: [...resp.university],
+    universities: [...resp.universities],
     excludedCompanies: [],
     prefferedCompanies: [],
   };
 
-  const { result, summary } = await getqueriedCandidates(
+  const { result } = await getqueriedCandidates(
     newQueryJson,
     jobIds,
     profileLimit,
@@ -111,10 +112,9 @@ export const candidateSearchByJD = async (
 
   const newSearchState: CandidateSearchState = {
     candidates: result,
-    componentinView: 'search',
     queryJson: newQueryJson,
     searchInfo: {
-      searchText: summary,
+      searchText: jdText,
       searchType: 'jd',
     },
     maxProfiles: profileLimit,
@@ -123,7 +123,7 @@ export const candidateSearchByJD = async (
     await supabase.from('candidate_search_history').insert({
       recruiter_id: recruiterId,
       is_search_jd: true,
-      search_query: summary,
+      search_query: jdText,
     }),
   );
   return newSearchState;
@@ -133,10 +133,11 @@ export const getqueriedCandidates = async (
   queryJson: CandidateSearchState['queryJson'],
   jobIds,
   profileLimit,
+  queryText = '',
 ) => {
   const summary = createJobSummary(queryJson);
   const { data: emb } = await axios.post('/api/ai/create-embeddings', {
-    text: summary,
+    text: isEmpty(queryText) ? summary : queryText,
   });
   const embedding = emb.data[0].embedding;
   const result = supabaseWrap(

@@ -1,7 +1,13 @@
 import React from 'react';
 
+import CandidateSearchHistory from '@/src/components/CandidateDatabase/Search/History';
+
 const history = () => {
-  return <div>history</div>;
+  return (
+    <>
+      <CandidateSearchHistory />
+    </>
+  );
 };
 
 export default history;

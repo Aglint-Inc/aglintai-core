@@ -1,32 +1,28 @@
-import { InputAdornment } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Paper } from '@mui/material';
+import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
 import { CandidateDatabaseSearch, CandidateHistoryCard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { useCandidateSearchCtx } from '../context/CandidateSearchProvider';
-import { candidateSearchByQuery } from '../utils';
+import { JDSearchModal } from '../JDSearchModal';
+import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
-function CandidateSearchHistory({ handleSetPopup }) {
+function CandidateSearchHistory() {
   const { recruiter } = useAuthDetails();
   const [searchQuery, setSearchQuery] = useState('');
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const { jobsData } = useJobs();
-
-  const { updatenewSearchRes, candidateSearchState } = useCandidateSearchCtx();
+  const router = useRouter();
+  const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
   useEffect(() => {
     getHistory();
   }, [recruiter]);
@@ -63,26 +59,6 @@ function CandidateSearchHistory({ handleSetPopup }) {
   //     toast.error(API_FAIL_MSG);
   //   }
   // };
-
-  const handleSearchQuery = async () => {
-    try {
-      if (!searchQuery) return;
-      setIsSearching(true);
-      const newSearchState = await candidateSearchByQuery(
-        searchQuery,
-        jobsData.jobs.map((j) => j.id),
-        recruiter.id,
-        candidateSearchState.maxProfiles,
-      );
-
-      updatenewSearchRes(newSearchState);
-    } catch (err) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsSearching(false);
-    }
-  };
-
   const getHistory = async () => {
     try {
       const history = supabaseWrap(
@@ -140,18 +116,9 @@ function CandidateSearchHistory({ handleSetPopup }) {
               InputProps={{
                 onKeyDown: (e) => {
                   if (e.code === 'Enter') {
-                    handleSearchQuery();
+                    router.push(`/candidates/search?query=${searchQuery}`);
                   }
                 },
-                endAdornment: isSearching && (
-                  <InputAdornment position='end'>
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: palette.grey[400] }}
-                    />
-                  </InputAdornment>
-                ),
               }}
             />
           </>
@@ -180,12 +147,22 @@ function CandidateSearchHistory({ handleSetPopup }) {
                     isSearchByJobVisible={hist.is_search_jd}
                     isSearchByTypeVisible={false}
                     onClickDelete={{
-                      onClick: () => {
-                        handleDeleteHistory(hist.id);
-                      },
+                      onClick: () => handleDeleteHistory(hist.id),
                     }}
                     textHeader={hist.search_query}
                     textPosted={diffrence}
+                    onClickCard={{
+                      onClick: () => {
+                        if (hist.is_search_jd) {
+                          localStorage.setItem(`jd`, hist.search_query);
+                          router.push(`/candidates/search?isJDSearch=${true}`);
+                        } else {
+                          router.push(
+                            `/candidates/search?query=${hist.search_query}`,
+                          );
+                        }
+                      },
+                    }}
                   />
                 );
               })}
@@ -193,10 +170,33 @@ function CandidateSearchHistory({ handleSetPopup }) {
         }
         onClickSearchJobDescription={{
           onClick: () => {
-            handleSetPopup(true);
+            setIsJdPopUPopOpen(true);
+          },
+        }}
+        onClickSearch={{
+          onClick: () => {
+            router.push(`/candidates/search?query=${searchQuery}`);
           },
         }}
       />
+      <MuiPopup
+        props={{
+          open: isJdPopUpOpen,
+          onClose: () => {
+            setIsJdPopUPopOpen(false);
+          },
+        }}
+      >
+        <Paper>
+          <JDSearchModal
+            setJdPopup={setIsJdPopUPopOpen}
+            onClickSubmit={(str) => {
+              localStorage.setItem(`jd`, str);
+              router.push(`/candidates/search?isJDSearch=${true}`);
+            }}
+          />
+        </Paper>
+      </MuiPopup>
     </>
   );
 }

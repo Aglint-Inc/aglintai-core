@@ -33,6 +33,7 @@ export function CandidateDatabaseDetail({
   onClickDowloadAllCandidate = {},
   isViewJdVisible = true,
   onClickFilter = {},
+  textRole = "Software Developer",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -82,13 +83,13 @@ export function CandidateDatabaseDetail({
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
               dyn={{
                 bind: {},
               }}
               tag="div"
             >
-              {"Software Developer"}
+              {textRole}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(

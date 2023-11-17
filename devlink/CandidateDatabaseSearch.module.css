@@ -300,8 +300,36 @@
   grid-row-gap: 14px;
 }
 
+.div-block-597 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .input-search-candidate {
   width: 100%;
+}
+
+.candidate-search-btn {
+  padding: 15px 25px;
+
+  border-radius: 10px;
+
+  background-color: #1f73b7;
+
+  transition: all 250ms ease;
+
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.candidate-search-btn:hover {
+  background-color: #144a75;
 }
 
 .search-job-desc {
@@ -398,6 +426,10 @@
 
 .icons.ml-5 {
   margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
 }
 
 .fw-semibold.text-grey-600 {

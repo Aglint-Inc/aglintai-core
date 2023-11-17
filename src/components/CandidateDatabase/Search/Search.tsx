@@ -2,7 +2,7 @@ import { Collapse } from '@mui/material';
 import { Paper } from '@mui/material';
 import { DialogContent, Slider } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { cloneDeep, get, isNumber, set } from 'lodash';
+import { cloneDeep, get, isEmpty, isNumber, set } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -35,8 +35,14 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
-import { candidateSearchByQuery, getqueriedCandidates } from '../utils';
+import { JDSearchModal } from '../JDSearchModal';
+import {
+  candidateSearchByJD,
+  candidateSearchByQuery,
+  getqueriedCandidates,
+} from '../utils';
 import AUIButton from '../../Common/AUIButton';
+import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
@@ -55,31 +61,50 @@ export interface CandidateSearchRes {
   profile_image?: string;
 }
 
-const CandidatesSearch = ({ handleSetJdPopUp }) => {
+const CandidatesSearch = () => {
   const { jobsData } = useJobs();
   const { recruiter } = useAuthDetails();
   const { candidateSearchState, updatenewSearchRes, updateState } =
     useCandidateSearchCtx();
-  const searchInfo = candidateSearchState.searchInfo;
+  const router = useRouter();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(searchInfo.searchText);
+  const [searchQuery, setSearchQuery] = useState(router.query.query || '');
   const [activeCandidate, setActiveCandidate] = useState<number>(-1);
   const [isSearching, setIsSearching] = useState(false);
-  const router = useRouter();
+  const [isJDModalOpen, setIsJDModalOpen] = useState(false);
 
-  const candidates = candidateSearchState.candidates;
   useEffect(() => {
-    const { query } = router.query;
-    if (typeof query === 'string') {
-      setSearchQuery(query);
+    const { isJDSearch, query } = router.query;
+    if (isEmpty(query) && isEmpty(localStorage.getItem('jd'))) {
+      router.replace('/candidates/history');
+      return;
     }
-    return () => {
-      updatenewSearchRes(initialState);
-    };
+
+    if (isJDSearch) {
+      const jd = localStorage.getItem('jd');
+      updateState({
+        path: 'searchInfo',
+        value: {
+          searchText: jd,
+          searchType: 'jd',
+        },
+      });
+      handleSearchByJd(jd);
+    } else if (query) {
+      updateState({
+        path: 'searchInfo',
+        value: {
+          searchText: query,
+          searchType: 'query',
+        },
+      });
+      handleSearchCandidate(query);
+    }
   }, [router.isReady, router.query]);
 
   const handleSearchCandidate = async (searchQry) => {
     try {
+      updatenewSearchRes(initialState);
       setIsSearching(true);
       const newSearchState = await candidateSearchByQuery(
         searchQry,
@@ -95,6 +120,28 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
     }
   };
 
+  const handleSearchByJd = async (jdText) => {
+    try {
+      setIsJDModalOpen(false);
+      updatenewSearchRes(initialState);
+      setIsSearching(true);
+      const newSearchState = await candidateSearchByJD(
+        jdText,
+        jobsData.jobs.map((j) => j.id),
+        recruiter.id,
+        candidateSearchState.maxProfiles,
+      );
+      updatenewSearchRes(newSearchState);
+    } catch (err) {
+      // console.log(err);
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const candidates = candidateSearchState.candidates;
+
   return (
     <>
       <CandidateDatabaseDetail
@@ -107,10 +154,10 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
         }
         slotSearchInput={
           <>
-            {searchInfo.searchType === 'query' && (
+            {!router.query.isJDSearch && (
               <>
                 <UITextField
-                  value={searchQuery}
+                  value={searchQuery as string}
                   placeholder='Type your requirement here and press enter'
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -119,75 +166,68 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
                   InputProps={{
                     onKeyDown: (e) => {
                       if (e.code === 'Enter') {
-                        handleSearchCandidate(searchQuery);
+                        router.push(`/candidates/search?query=${searchQuery}`);
+                        // handleSearchCandidate(searchQuery);
                       }
                     },
                   }}
                 />
-                <AUIButton
-                  onClick={() => handleSearchCandidate(searchQuery)}
-                  endIcon={
-                    isSearching && (
-                      <CircularProgress
-                        color='inherit'
-                        size={'15px'}
-                        sx={{ color: palette.grey[400] }}
-                      />
-                    )
-                  }
-                >
+                <AUIButton onClick={() => handleSearchCandidate(searchQuery)}>
                   Search
                 </AUIButton>
               </>
             )}
           </>
         }
+        textRole={router.query.query || ''}
         slotCandidateDetailsCard={
           <>
-            {candidates.map((c, index) => {
-              return (
-                <CandidateDetailsCard
-                  key={index}
-                  textName={getFullName(c.first_name, c.last_name)}
-                  slotSkill={get(c.json_resume, 'skills', []).map(
-                    (s, index) => (
-                      <CandidateSkills key={index} textSkill={s} />
-                    ),
-                  )}
-                  textLocation={getLocationString(
-                    c.json_resume.basics.location,
-                  )}
-                  textOverview={c.json_resume.overview}
-                  textJobRoleAtCompany={c.json_resume.basics.label}
-                  onClickStar={{}}
-                  onClickCheck={{}}
-                  slotAvatar={
-                    <MuiAvatar
-                      level={getFullName(c.first_name, c.last_name)}
-                      src={c.profile_image}
-                      variant={'rounded'}
-                      width={'100%'}
-                      height={'100%'}
-                      fontSize={'12px'}
-                    />
-                  }
-                  // isChecked={true}
-                  isOverviewVisible={true}
-                  // isStarActive={true}
-                  onClickCard={{
-                    onClick: () => {
-                      setActiveCandidate(index);
-                    },
-                  }}
-                />
-              );
-            })}
+            {isSearching && <Loader />}
+            {!isSearching &&
+              candidates.map((c, index) => {
+                return (
+                  <CandidateDetailsCard
+                    key={index}
+                    textName={getFullName(c.first_name, c.last_name)}
+                    slotSkill={get(c.json_resume, 'skills', []).map(
+                      (s, index) => (
+                        <CandidateSkills key={index} textSkill={s} />
+                      ),
+                    )}
+                    textLocation={getLocationString(
+                      c.json_resume.basics.location,
+                    )}
+                    textOverview={c.json_resume.overview}
+                    textJobRoleAtCompany={c.json_resume.basics.label}
+                    onClickStar={{}}
+                    onClickCheck={{}}
+                    slotAvatar={
+                      <MuiAvatar
+                        level={getFullName(c.first_name, c.last_name)}
+                        src={c.profile_image}
+                        variant={'rounded'}
+                        width={'100%'}
+                        height={'100%'}
+                        fontSize={'12px'}
+                      />
+                    }
+                    // isChecked={true}
+                    isOverviewVisible={true}
+                    // isStarActive={true}
+                    onClickCard={{
+                      onClick: () => {
+                        setActiveCandidate(index);
+                      },
+                    }}
+                  />
+                );
+              })}
           </>
         }
         // textSelectedCount={12}
         onClickViewJobDescription={{
           onClick: () => {
-            handleSetJdPopUp();
+            setIsJDModalOpen(true);
           },
         }}
         slotCandidateDialog={
@@ -216,13 +256,10 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
         }
         onClickCandidateDatabase={{
           onClick: () => {
-            updateState({
-              path: 'componentinView',
-              value: 'history',
-            });
+            router.push('/candidates/history');
           },
         }}
-        isViewJdVisible={searchInfo.searchType === 'jd'}
+        isViewJdVisible={Boolean(router.query.isJDSearch) as any}
         onClickFilter={{
           onClick: () => {
             setIsFilterOpen(true);
@@ -249,6 +286,25 @@ const CandidatesSearch = ({ handleSetJdPopUp }) => {
               />
             }
           </DialogContent>
+        </Paper>
+      </MuiPopup>
+      <MuiPopup
+        props={{
+          open: isJDModalOpen,
+          fullWidth: true,
+          onClose: () => {
+            setIsJDModalOpen(false);
+          },
+        }}
+      >
+        <Paper>
+          <JDSearchModal
+            setJdPopup={setIsJDModalOpen}
+            onClickSubmit={(str) => {
+              localStorage.setItem(`jd`, str);
+              handleSearchByJd(str);
+            }}
+          />
         </Paper>
       </MuiPopup>
     </>

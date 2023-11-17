@@ -10,4 +10,5 @@ declare function CandidateDatabaseSearch(props: {
   isClearHistoryVisible?: Types.Visibility.VisibilityConditions;
   onClickClearHistory?: Types.Devlink.RuntimeProps;
   slotCandidateHistoryCard?: Types.Devlink.Slot;
+  onClickSearch?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -1,4 +1,4 @@
-import { getAIResponse } from '../addNewJob';
+import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
 import { requestJson } from '../utils';
 
@@ -10,6 +10,8 @@ type CandidateFilter = {
   universities: string[];
   minExperienceInYears: number;
   maxExperienceInYears: number;
+  skills: string[];
+  degrees: string[];
 };
 
 export const searchQueryToJson = async (searchQuery: string) => {
@@ -18,31 +20,35 @@ export const searchQueryToJson = async (searchQuery: string) => {
     locations: ['sample data 1', 'sample data 2'],
     spokenLanguages: ['sample data 1 ', 'sample data 2 '],
     companies: ['sample data 1', 'sample data 2'],
-    universities: ['sample data 1', 'sample data 2'],
-    minExperienceInYears: 3,
-    maxExperienceInYears: 5,
+    universities: [],
+    skills: ['skill 1'],
+    degrees: [],
+    minExperienceInYears: 1,
+    maxExperienceInYears: 3,
   };
 
   const prompt = [
     {
       role: 'system',
-      content: requestJson(
-        `
-        * Your given a Search string and a JSON Schema. 
-        * your job is to extract the details from the given according to the given schema.
+      content: `
+       * Your given a job description summary and  a sample JSon. 
+       * your job is to extract the fields from jdSummary and respond with same json structure used in sample json.
+       * if the values are not in the given summary, respond appropriately.
       `,
-        schema,
-      ),
+    },
+    {
+      role: 'user',
+      content: requestJson(`here is the sample json`, schema),
     },
     {
       role: 'user',
       content: `
       Here is the search Query : 
-      """ ${searchQuery} """.
+      """ ${searchQuery}  """
       `,
     },
   ] as MessageType[];
 
-  const resp = await getAIResponse(prompt);
+  const resp = await extractJson(prompt);
   return JSON.parse(resp) as CandidateFilter;
 };

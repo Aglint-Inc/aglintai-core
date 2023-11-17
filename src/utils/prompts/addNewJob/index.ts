@@ -9,3 +9,11 @@ export const getAIResponse = async (prompts: MessageType[]) => {
 
   return data;
 };
+
+export const extractJson = async (prompts: MessageType[]) => {
+  const { data } = await axios.post('/api/ai/queryToJson', {
+    prompts,
+  });
+
+  return data;
+};
