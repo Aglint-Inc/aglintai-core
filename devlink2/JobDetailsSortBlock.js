@@ -9,9 +9,9 @@ export function JobDetailsSortBlock({
   onclickApply = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "jdet-filter-wrapper")} tag="div">
+    <_Component className={_utils.cx(_styles, "cl-filters")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "jdet-filter-block")}
+        className={_utils.cx(_styles, "cl-filters-wrapper")}
         tag="div"
       >
         <_Builtin.Block
@@ -19,7 +19,7 @@ export function JobDetailsSortBlock({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-filter-trigger", "clickable")}
+            className={_utils.cx(_styles, "cl-filters-trigger", "clickable")}
             tag="div"
           >
             <_Builtin.Block

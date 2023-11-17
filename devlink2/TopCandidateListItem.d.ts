@@ -6,7 +6,6 @@ declare function TopCandidateListItem(props: {
   onclickSelect?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
   slotScores?: Types.Devlink.Slot;
-  slotProfileImage?: Types.Devlink.Slot;
   name?: React.ReactNode;
   strength?: React.ReactNode;
   weakness?: React.ReactNode;

@@ -1,6 +1,7 @@
 .select-action-bar {
   display: flex;
   width: 100%;
+  justify-content: space-between;
   align-items: center;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
@@ -76,10 +77,6 @@
 
 .text-green-700 {
   color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
-}
-
-.text-red-700 {
-  color: hsla(354.8571428571429, 60.00%, 34.31%, 1.00);
 }
 
 .text-red-500 {

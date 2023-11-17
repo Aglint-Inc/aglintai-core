@@ -5,4 +5,5 @@ declare function RecSideNavProfileBlock(props: {
   as?: React.ElementType;
   slotCompanyList?: Types.Devlink.Slot;
   onclickAdd?: Types.Devlink.RuntimeProps;
+  backdropProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

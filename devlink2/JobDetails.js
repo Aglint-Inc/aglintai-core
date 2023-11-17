@@ -5,8 +5,8 @@ import { RefreshButton } from "./RefreshButton";
 import { JobDetailsTabs } from "./JobDetailsTabs";
 import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
-import { AllApplicantsTable } from "./AllApplicantsTable";
 import { TopApplicantsTable } from "./TopApplicantsTable";
+import { AllApplicantsTable } from "./AllApplicantsTable";
 import { CandidatesListPagination } from "./CandidatesListPagination";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
@@ -198,8 +198,8 @@ export function JobDetails({
             >
               {slotTable ?? (
                 <>
-                  <AllApplicantsTable />
                   <TopApplicantsTable />
+                  <AllApplicantsTable />
                 </>
               )}
             </_Builtin.Block>

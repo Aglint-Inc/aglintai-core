@@ -13,7 +13,6 @@ export function TopCandidateListItem({
   onclickSelect = {},
   isChecked = false,
   slotScores,
-  slotProfileImage,
   name = "Dianne Russell",
   strength = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   weakness = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
@@ -72,12 +71,6 @@ export function TopCandidateListItem({
             className={_utils.cx(_styles, "top-can-info")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-profile-image")}
-              tag="div"
-            >
-              {slotProfileImage}
-            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"

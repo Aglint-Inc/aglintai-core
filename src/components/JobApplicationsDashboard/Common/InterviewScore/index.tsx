@@ -13,7 +13,7 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
   return application?.feedback ? (
     <SmallCircularScore score={interviewScore} scale={0.5} showScore={true} />
   ) : (
-    <Tooltip title='Yet to be interviewed' placement='right' arrow={true}>
+    <Tooltip title='Yet to be assessed' placement='right' arrow={true}>
       <Stack>
         <ScoreErrorIcon />
       </Stack>

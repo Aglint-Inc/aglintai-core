@@ -1,37 +1,32 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { CandidateFilterBody } from "./CandidateFilterBody";
 import * as _utils from "./utils";
 import _styles from "./CandidateFilter.module.css";
 
 export function CandidateFilter({
   as: _Component = _Builtin.Block,
   filterCount = "1",
-  onclickResumeClear = {},
-  isResumeClear = false,
-  slotResumeSlider,
-  onclickInterviewClear = {},
-  isInterviewClear = false,
-  slotInterviewSlider,
   filterHeaderProps = {},
-  isFilterBodyVisible = true,
+  isFilterBodyVisible = false,
   isCountVisible = false,
-  dropdownBodyProps = {},
   onclickReset = {},
   isResetVisible = false,
+  slotBody,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "jdet-filter-wrapper")} tag="div">
+    <_Component className={_utils.cx(_styles, "cl-filters")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "jdet-filter-block")}
+        className={_utils.cx(_styles, "cl-filters-wrapper")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "jdet-filter-top")}
+          className={_utils.cx(_styles, "cl-filters-top")}
           tag="div"
           {...filterHeaderProps}
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-filter-trigger", "clickable")}
+            className={_utils.cx(_styles, "cl-filters-trigger", "clickable")}
             tag="div"
           >
             <_Builtin.Block
@@ -47,7 +42,7 @@ export function CandidateFilter({
           </_Builtin.Block>
           {isCountVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-filter-count")}
+              className={_utils.cx(_styles, "cl-filters-count")}
               tag="div"
             >
               {filterCount}
@@ -56,75 +51,10 @@ export function CandidateFilter({
         </_Builtin.Block>
         {isFilterBodyVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "cl-filter-content")}
+            className={_utils.cx(_styles, "cl-filters-content")}
             tag="div"
-            {...dropdownBodyProps}
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-filter-options")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "jdet-filter-option")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "jdet-filter-header-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div">{"Resume Score"}</_Builtin.Block>
-                  {isResumeClear ? (
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "jdet-filter-clear-block",
-                        "clickable"
-                      )}
-                      tag="div"
-                      {...onclickResumeClear}
-                    >
-                      <_Builtin.Block tag="div">{"Clear"}</_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "jdet-filter-slider-block")}
-                  tag="div"
-                >
-                  {slotResumeSlider}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "jdet-filter-option")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "jdet-filter-header-block")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div">{"Interview Score"}</_Builtin.Block>
-                  {isInterviewClear ? (
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "jdet-filter-clear-block",
-                        "clickable"
-                      )}
-                      tag="div"
-                      {...onclickInterviewClear}
-                    >
-                      <_Builtin.Block tag="div">{"Clear"}</_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "jdet-filter-slider-block")}
-                  tag="div"
-                >
-                  {slotInterviewSlider}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
+            {slotBody ?? <CandidateFilterBody />}
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

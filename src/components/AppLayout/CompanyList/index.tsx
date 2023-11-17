@@ -114,11 +114,17 @@ function CompanyList() {
                 />
               );
           })}
-        onclickAdd={{
-          onClick: () => {
-            setOpenSideBar(true);
-          },
-        }}
+          onclickAdd={{
+            onClick: () => {
+              setOpenSideBar(true);
+            },
+          }}
+          backdropProps={{
+            style:{
+              'height': 'calc(100% + 32px)',
+              'width':'calc(100% + 16px)',
+            }
+          }}
       />
     </>
   );

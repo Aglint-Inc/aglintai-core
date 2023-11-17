@@ -172,18 +172,6 @@
   grid-row-gap: 12px;
 }
 
-.cv-list-profile-image {
-  overflow: hidden;
-  width: 18px;
-  height: 18px;
-  min-height: 18px;
-  min-width: 18px;
-
-  border-radius: 100px;
-
-  object-fit: cover;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
