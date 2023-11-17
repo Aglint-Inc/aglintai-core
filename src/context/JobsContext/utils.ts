@@ -24,7 +24,7 @@ export const readJobDbAction = async (recruiter_id: string) => {
     .order('created_at', { ascending: false })
     .eq('recruiter_id', recruiter_id);
 
-  const ids = data.map((job) => job.id);
+  const ids = data?.map((job) => job.id);
 
   const { data: d1, error: e1 } = await jobApplicationCountDbAction(ids);
 

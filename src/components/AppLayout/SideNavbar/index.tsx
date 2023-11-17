@@ -15,7 +15,7 @@ import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const [subNabOpen, setSubNavOpen] = useState(true);
 
   function openCloseSubNav(route: string) {
@@ -27,12 +27,14 @@ function SideNavbar() {
   }
 
   const newNaveList = useMemo(() => {
-    const tempList = navList;
+    let tempList = navList;
     if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
-      return tempList.filter((x) => x.route === '/support');
+      tempList = tempList.filter((x) => x.route === pageRoutes.SUPPORT);
     }
+    if (recruiterUser.role.toLowerCase() !== 'admin')
+      tempList = tempList.filter((x) => x.text !== 'Company Settings');
     return tempList;
-  }, [recruiter]);
+  }, [recruiter, recruiterUser]);
 
   return (
     <Stack>
