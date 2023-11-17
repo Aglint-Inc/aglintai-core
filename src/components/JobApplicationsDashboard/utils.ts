@@ -32,9 +32,25 @@ export const formatTimeStamp = (timeStamp: string) => {
 
 export type FilterParameter = {
   parameter: 'resume_score' | 'interview_score';
-  condition: 'eq' | 'neq' | 'lt' | 'lte' | 'gt' | 'gte';
+  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
   count: number;
 };
+
+export const CANDIDATE_FILTERS: {
+  parameters: FilterParameter['parameter'][];
+  conditions: FilterParameter['condition'][];
+} = {
+  parameters: ['resume_score', 'interview_score'],
+  conditions: ['=', '<>', '>', '<', '>=', '<='],
+};
+
+export const CANDIDATE_SORT: SortParameter['parameter'][] = [
+  'resume_score',
+  'interview_score',
+  'first_name',
+  'email',
+  'created_at',
+];
 
 export type SortParameter = {
   parameter:

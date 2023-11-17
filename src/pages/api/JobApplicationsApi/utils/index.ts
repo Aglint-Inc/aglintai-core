@@ -107,32 +107,32 @@ export const readNewJobApplicationDbAction = async (
 const getFilteredQuery = (query: any, filter: FilterParameter[]) => {
   return filter.reduce((acc, curr) => {
     switch (curr.condition) {
-      case 'eq':
+      case '=':
         {
           acc = acc.eq(curr.parameter, curr.count);
         }
         break;
-      case 'neq':
+      case '<>':
         {
           acc = acc.neq(curr.parameter, curr.count);
         }
         break;
-      case 'gt':
+      case '>':
         {
           acc = acc.gt(curr.parameter, curr.count);
         }
         break;
-      case 'gte':
+      case '>=':
         {
           acc = acc.gte(curr.parameter, curr.count);
         }
         break;
-      case 'lt':
+      case '<':
         {
           acc = acc.lt(curr.parameter, curr.count);
         }
         break;
-      case 'lte':
+      case '<=':
         {
           acc = acc.lte(curr.parameter, curr.count);
         }

@@ -38,7 +38,13 @@ const ApplicationCard = ({
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
-  const resumeScore = <ResumeScore application={application} />;
+  const resumeScore = (
+    <ResumeScore
+      application={application}
+      scale={detailedView ? 0.5 : 0.7}
+      fontSize={detailedView ? 14 : 18}
+    />
+  );
   const interviewScore =
     section === JobApplicationSections.NEW ? (
       <></>
@@ -83,7 +89,6 @@ const ApplicationCard = ({
       name={name}
       isChecked={isChecked}
       isHighlighted={isSelected}
-      slotProfileImage={profile}
       slotScores={
         <>
           {resumeScore}

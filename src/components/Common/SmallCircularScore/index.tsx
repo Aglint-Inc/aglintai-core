@@ -5,10 +5,12 @@ import { palette } from '@/src/context/Theme/Theme';
 export const SmallCircularScore = ({
   score,
   scale = 1,
+  fontSize = 14,
   showScore = false,
 }: {
   score: number;
   scale?: number;
+  fontSize?: number;
   showScore?: boolean;
 }) => {
   const green = {
@@ -60,6 +62,7 @@ export const SmallCircularScore = ({
       {showScore && (
         <Stack
           fontWeight={600}
+          fontSize={`${fontSize}px`}
           style={{ color: color.border }}
         >{`${score}%`}</Stack>
       )}

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Slider, Stack } from '@mui/material';
+import { Dialog, /*Slider,*/ Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import {
@@ -15,7 +15,6 @@ import { ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
   ApplicantsListEmpty,
-  CandidateFilter,
   CandidateSelectionPopup,
   CandidatesListPagination,
   JobDetails,
@@ -31,7 +30,7 @@ import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-  Parameters,
+  // Parameters,
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
@@ -40,6 +39,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
+import FilterJobApplications from './Common/FilterJobApplications';
+import SortJobApplications from './Common/SortJobApplications';
 import ResumeUpload from './FileUpload';
 import { useKeyPress, usePolling } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
@@ -47,7 +48,7 @@ import ImportManualCandidates from './ImportManualCandidates';
 // import JobApplicationStatus from './JobStatus';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
-import { capitalize, FilterParameter } from './utils';
+import { capitalize } from './utils';
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
 
@@ -419,7 +420,7 @@ const NewJobFilterBlock = ({
   const { job, searchParameters, handleJobApplicationFilter } =
     useJobApplications();
   const handleSearch = async (val: string) => {
-    const value = val.trim().toLowerCase();
+    const value = val ? val.trim().toLowerCase() : null;
     const { confirmation, count } = await handleJobApplicationFilter({
       ...searchParameters,
       search: value,
@@ -460,13 +461,18 @@ const NewJobFilterBlock = ({
             isAllApplicants={detailedView}
             isTopApplicants={!detailedView}
             slotFilter={
-              <>
-                <ApplicationFilter setApplicationLimit={setApplicationLimit} />
+              <Stack flexDirection={'row'} alignItems={'center'} gap={2}>
+                <SortJobApplications
+                  setApplicationLimit={setApplicationLimit}
+                />
+                <FilterJobApplications
+                  setApplicationLimit={setApplicationLimit}
+                />
                 <SearchField
                   val={searchParameters.search}
                   handleSearch={handleSearch}
                 />
-              </>
+              </Stack>
             }
           />
         ) : (
@@ -504,187 +510,121 @@ const AddCandidates = ({ section }: { section: JobApplicationSections }) => {
   );
 };
 
-// eslint-disable-next-line no-unused-vars
-const ApplicationFilter = ({
-  setApplicationLimit,
-}: {
-  setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
-}) => {
-  const { searchParameters, handleJobApplicationFilter, applicationDisable } =
-    useJobApplications();
-  const [filterVisibility, setFilterVisibility] = useState(false);
-  const [updateTick, setUpdateTick] = useState([false, false]);
-  const filters = searchParameters.filter;
-  const count = filters.reduce((acc, curr) => {
-    if (!acc.has(curr.parameter)) acc.add(curr.parameter);
-    return acc;
-  }, new Set<Parameters['filter'][0]['parameter']>());
-  return (
-    <CandidateFilter
-      onclickReset={{
-        onClick: async () => {
-          if (!applicationDisable) {
-            const { confirmation, count } = await handleJobApplicationFilter({
-              ...searchParameters,
-              filter: [],
-            });
-            if (confirmation) setApplicationLimit(count);
-          }
-        },
-      }}
-      isResetVisible={count.size > 0}
-      filterCount={count.size}
-      isCountVisible={count.size > 0}
-      slotResumeSlider={
-        <ApplicationFilterSlider
-          parameter='resume_score'
-          updateTick={updateTick[0]}
-          setApplicationLimit={setApplicationLimit}
-        />
-      }
-      isResumeClear={count.has('resume_score')}
-      isInterviewClear={count.has('interview_score')}
-      slotInterviewSlider={
-        <ApplicationFilterSlider
-          parameter='interview_score'
-          updateTick={updateTick[1]}
-          setApplicationLimit={setApplicationLimit}
-        />
-      }
-      onclickResumeClear={{
-        onClick: () => setUpdateTick((prev) => [!prev[0], prev[1]]),
-      }}
-      onclickInterviewClear={{
-        onClick: () => setUpdateTick((prev) => [prev[0], !prev[1]]),
-      }}
-      filterHeaderProps={{
-        onMouseOver: () => setFilterVisibility(true),
-        onMouseOut: () => setFilterVisibility(false),
-      }}
-      isFilterBodyVisible={filterVisibility}
-      dropdownBodyProps={{
-        onMouseOver: () => setFilterVisibility(true),
-        onMouseOut: () => setFilterVisibility(false),
-      }}
-    />
-  );
-};
+// const ApplicationFilterSlider = ({
+//   parameter,
+//   updateTick,
+//   setApplicationLimit,
+// }: {
+//   parameter: Parameters['filter'][0]['parameter'];
+//   updateTick: boolean;
+//   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
+// }) => {
+//   const { handleJobApplicationFilter, searchParameters } = useJobApplications();
+//   const paramsObj = searchParameters.filter.reduce(
+//     (acc, curr) => {
+//       const filter = curr.parameter === parameter;
+//       return filter
+//         ? curr.condition === '>='
+//           ? {
+//               ...acc,
+//               count: { ...acc.count, min: curr.count },
+//             }
+//           : {
+//               ...acc,
+//               count: { ...acc.count, max: curr.count },
+//             }
+//         : {
+//             ...acc,
+//             newParams: [...acc.newParams, curr],
+//           };
+//     },
+//     {
+//       newParams: [] as FilterParameter[],
+//       count: { min: 0, max: 100 },
+//     },
+//   );
+//   const [value, setValue] = useState([
+//     paramsObj.count.min,
+//     paramsObj.count.max,
+//   ]);
+//   const initialRef = useRef(true);
+//   const min = 0;
+//   const max = 100;
+//   const step = 5;
 
-const ApplicationFilterSlider = ({
-  parameter,
-  updateTick,
-  setApplicationLimit,
-}: {
-  parameter: Parameters['filter'][0]['parameter'];
-  updateTick: boolean;
-  setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
-}) => {
-  const { handleJobApplicationFilter, searchParameters } = useJobApplications();
-  const paramsObj = searchParameters.filter.reduce(
-    (acc, curr) => {
-      const filter = curr.parameter === parameter;
-      return filter
-        ? curr.condition === 'gte'
-          ? {
-              ...acc,
-              count: { ...acc.count, min: curr.count },
-            }
-          : {
-              ...acc,
-              count: { ...acc.count, max: curr.count },
-            }
-        : {
-            ...acc,
-            newParams: [...acc.newParams, curr],
-          };
-    },
-    {
-      newParams: [] as FilterParameter[],
-      count: { min: 0, max: 100 },
-    },
-  );
-  const [value, setValue] = useState([
-    paramsObj.count.min,
-    paramsObj.count.max,
-  ]);
-  const initialRef = useRef(true);
-  const min = 0;
-  const max = 100;
-  const step = 5;
+// const handleUpdate = async (newValue: number[]) => {
+//   const { confirmation, count } = await handleJobApplicationFilter({
+//     ...searchParameters,
+//     filter: [
+//       ...newValue.reduce(
+//         (acc, curr, i) => {
+//           if (curr > 0 && curr < 100)
+//             acc.push({
+//               parameter,
+//               condition: i === 0 ? '>=' : '<=',
+//               count: curr,
+//             });
+//           return acc;
+//         },
+//         [...paramsObj.newParams] as FilterParameter[],
+//       ),
+//     ],
+//   });
+//   if (confirmation) setApplicationLimit(count);
+// };
 
-  const handleUpdate = async (newValue: number[]) => {
-    const { confirmation, count } = await handleJobApplicationFilter({
-      ...searchParameters,
-      filter: [
-        ...newValue.reduce(
-          (acc, curr, i) => {
-            if (curr > 0 && curr < 100)
-              acc.push({
-                parameter,
-                condition: i === 0 ? 'gte' : 'lte',
-                count: curr,
-              });
-            return acc;
-          },
-          [...paramsObj.newParams] as FilterParameter[],
-        ),
-      ],
-    });
-    if (confirmation) setApplicationLimit(count);
-  };
+//   useEffect(() => {
+//     if (!initialRef.current && (value[0] !== 0 || value[1] !== 100)) {
+//       setValue([0, 100]);
+//     }
+//   }, [updateTick]);
 
-  useEffect(() => {
-    if (!initialRef.current && (value[0] !== 0 || value[1] !== 100)) {
-      setValue([0, 100]);
-    }
-  }, [updateTick]);
+//   const handleChange = (
+//     event: Event,
+//     newValue: number | number[],
+//     activeThumb: number,
+//   ) => {
+//     if (!Array.isArray(newValue)) {
+//       return;
+//     }
 
-  const handleChange = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number,
-  ) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
+//     if (newValue[1] - newValue[0] < step) {
+//       if (activeThumb === min) {
+//         const clamped = Math.min(newValue[0], max - step);
+//         setValue([clamped, clamped + step]);
+//       } else {
+//         const clamped = Math.max(newValue[1], step);
+//         setValue([clamped - step, clamped]);
+//       }
+//     } else {
+//       setValue(newValue as number[]);
+//     }
+//   };
 
-    if (newValue[1] - newValue[0] < step) {
-      if (activeThumb === min) {
-        const clamped = Math.min(newValue[0], max - step);
-        setValue([clamped, clamped + step]);
-      } else {
-        const clamped = Math.max(newValue[1], step);
-        setValue([clamped - step, clamped]);
-      }
-    } else {
-      setValue(newValue as number[]);
-    }
-  };
+//   useEffect(() => {
+//     if (initialRef.current) {
+//       initialRef.current = false;
+//     } else {
+//       const timer = setTimeout(async () => {
+//         await handleUpdate(value);
+//       }, 400);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [...value]);
 
-  useEffect(() => {
-    if (initialRef.current) {
-      initialRef.current = false;
-    } else {
-      const timer = setTimeout(async () => {
-        await handleUpdate(value);
-      }, 400);
-      return () => clearTimeout(timer);
-    }
-  }, [...value]);
-
-  return (
-    <Slider
-      value={value}
-      min={min}
-      max={max}
-      step={step}
-      onChange={handleChange}
-      valueLabelDisplay='auto'
-      disableSwap
-      sx={{ color: '#1F73B7' }}
-    />
-  );
-};
+//   return (
+//     <Slider
+//       value={value}
+//       min={min}
+//       max={max}
+//       step={step}
+//       onChange={handleChange}
+//       valueLabelDisplay='auto'
+//       disableSwap
+//       sx={{ color: '#1F73B7' }}
+//     />
+//   );
+// };
 
 const NewJobDetailsTabs = ({
   section,

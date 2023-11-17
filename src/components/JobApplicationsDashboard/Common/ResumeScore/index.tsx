@@ -7,13 +7,22 @@ import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import { ApiLogState, intactConditionFilter } from '../../utils';
 
-const ResumeScore = ({ application }: { application: JobApplication }) => {
+const ResumeScore = ({
+  application,
+  scale = 0.5,
+  fontSize = 14,
+}: {
+  application: JobApplication;
+  scale?: number;
+  fontSize?: number;
+}) => {
   return application.json_resume || application.resume ? (
     intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
       application.jd_score ? (
         <SmallCircularScore
           score={application.resume_score}
-          scale={0.5}
+          fontSize={fontSize}
+          scale={scale}
           showScore={true}
         />
       ) : (

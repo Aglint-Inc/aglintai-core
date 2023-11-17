@@ -43,15 +43,21 @@ const SearchField = ({
               position={'absolute'}
               style={{ transform: 'translateX(-12px)' }}
             >
-              <Collapse in={value !== ''} sx={{ position: 'relative' }}>
+              <Collapse
+                in={!(value === '' || value === null)}
+                sx={{ position: 'relative' }}
+              >
                 <IconButton
-                  onClick={() => setValue('')}
+                  onClick={() => setValue(null)}
                   style={{ transform: 'translateX(-4px)' }}
                 >
                   <CloseIcon sx={{ opacity: 0.5 }} />
                 </IconButton>
               </Collapse>
-              <Collapse in={value === ''} sx={{ position: 'relative' }}>
+              <Collapse
+                in={value === '' || value === null}
+                sx={{ position: 'relative' }}
+              >
                 <SearchIcon
                   sx={{ opacity: 0.5 }}
                   style={{ transform: 'translateY(2px)' }}
