@@ -141,7 +141,6 @@ const CandidatesSearch = () => {
   };
 
   const candidates = candidateSearchState.candidates;
-
   return (
     <>
       <CandidateDatabaseDetail

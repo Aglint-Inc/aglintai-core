@@ -47,12 +47,12 @@ export const candidateSearchByQuery = async (
   const resp = await searchQueryToJson(searchQry);
 
   const newQueryJson: CandidateSearchState['queryJson'] = {
-    jobTitles: [...resp.jobTitles],
-    languages: [...resp.spokenLanguages],
-    location: [...resp.locations],
-    maxExp: resp.maxExperienceInYears,
-    minExp: resp.minExperienceInYears,
-    universities: [...resp.universities],
+    jobTitles: [...(resp.jobTitles || [])],
+    languages: [...(resp.spokenLanguages || [])],
+    location: [...(resp.locations || [])],
+    maxExp: resp.maxExperienceInYears || 0,
+    minExp: resp.minExperienceInYears || 0,
+    universities: [...(resp.universities || [])],
     excludedCompanies: [],
     prefferedCompanies: [],
   };
@@ -149,5 +149,10 @@ export const getqueriedCandidates = async (
     }),
   ) as CandidateSearchRes[];
 
-  return { result, summary };
+  const filteredres = result.filter(
+    (r) =>
+      Boolean(r.json_resume) && typeof r.json_resume.education !== 'object',
+  );
+
+  return { result: filteredres, summary };
 };
