@@ -376,17 +376,17 @@ const NewCandidateDetails = ({
           </>
           {applicationValidity(applicationDetails) ? (
             <>
-              {resume.education &&
-              resume.education instanceof Array &&
-              resume.education.length !== 0 ? (
-                <NewEducationDetails education={resume.education} />
+              {resume.schools &&
+              resume.schools instanceof Array &&
+              resume.schools.length !== 0 ? (
+                <NewEducationDetails schools={resume.schools} />
               ) : (
                 <></>
               )}
-              {resume.work &&
-              resume.work instanceof Array &&
-              resume.work.length !== 0 ? (
-                <NewExperienceDetails work={resume.work} />
+              {resume.positions &&
+              resume.positions instanceof Array &&
+              resume.positions.length !== 0 ? (
+                <NewExperienceDetails positions={resume.positions} />
               ) : (
                 <></>
               )}
@@ -711,39 +711,41 @@ const fetchFile = async (applicationDetails: JobApplication) => {
   });
 };
 
-const NewEducationDetails = ({ education }) => {
+const NewEducationDetails = ({ schools }) => {
   const educationList =
-    Array.isArray(education) &&
-    education
+    Array.isArray(schools) &&
+    schools
       .filter((e) => e.institution !== null && e.institution !== '')
-      .map((e, i) => (
-        <CandidateEducationCard
-          key={i}
-          textUniversityName={e.institution}
-          textDate={`${e.startDate} ${
-            e.endDate && `${e.startDate && '-'} ${e.endDate}`
-          }`}
-        />
-      ));
+      .map((e, i) => {
+        const startDate = timeFormat(e.start);
+        const endDate = timeFormat(e.end);
+        return (
+          <CandidateEducationCard
+            key={i}
+            textUniversityName={e.institution}
+            textDate={timeRange(startDate, endDate)}
+          />
+        );
+      });
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
 };
 
-const NewExperienceDetails = ({ work }) => {
-  const workList = work.reduce((acc, w, i) => {
-    if (w.name) {
+const NewExperienceDetails = ({ positions }) => {
+  const workList = positions.reduce((acc, w, i) => {
+    const startDate = timeFormat(w.start);
+    const endDate = timeFormat(w.end);
+    if (w.title) {
       acc.push(
         <CandidateExperienceCard
           key={i}
           slotLogo={
             <CompanyLogo
-              companyName={w.name ? w.name.trim().toLowerCase() : null}
+              companyName={w.org ? w.org.trim().toLowerCase() : null}
             />
           }
-          textRole={w.position}
-          textCompany={w.name}
-          textDate={`${w.startDate} ${w.startDate && w.endDate ? '-' : ''} ${
-            w.endDate
-          }`}
+          textRole={w.title}
+          textCompany={w.org}
+          textDate={timeRange(startDate, endDate)}
         />,
       );
     }
@@ -754,6 +756,29 @@ const NewExperienceDetails = ({ work }) => {
   ) : (
     <></>
   );
+};
+
+const timeFormat = (
+  obj: { year: number; month: number },
+  isEndDate: boolean = false,
+) => {
+  if (obj) {
+    if (obj.month) {
+      const date = new Date();
+      date.setMonth(obj.month - 1);
+      return `${date.toLocaleString('en-US', { month: 'long' })}${
+        obj.year ? ` ${obj.year}` : null
+      }`;
+    } else if (obj.year) return `${obj.year}`;
+    else return null;
+  } else if (isEndDate) return 'Present';
+  else return null;
+};
+
+const timeRange = (startDate: string, endDate: string) => {
+  return `${startDate ?? ''} ${startDate && endDate ? '-' : ''} ${
+    endDate ?? ''
+  }`;
 };
 
 const NewSkillDetails = ({ skills }) => {
