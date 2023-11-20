@@ -55,7 +55,6 @@ export default async function handler(req, res) {
                 `Failed to fetch file from URL: ${responseUrl.statusText}`,
               );
             }
-
             // if resume is processed then only transform it
             if (response?.data?.data[0]?.file?.status == 'processed') {
               jsonResume = await transformers(
@@ -122,7 +121,6 @@ export default async function handler(req, res) {
                         setTimeout(() => reject('Timeout'), TIMEOUT_MS),
                       ),
                     ]);
-
                     if (response && response !== 'Timeout') {
                       // Update json_resume with the response by spreading
                       await supabase
@@ -208,53 +206,49 @@ const updatedJobApplication = async (payload, application_id) => {
 async function transformers(jsonData, opportunity_id) {
   // Initialize the output structure
   const outputData = {
-    work: [],
+    positions: [],
     basics: {
-      url: '',
       email: '',
-      image: '',
-      label: '',
+      currentJobtitle: '',
       phone: '',
-      summary: '',
       lastName: '',
-      location: {
-        city: '',
-        region: '',
-        address: '',
-        country: '',
-        postalCode: '',
-      },
-      profiles: [],
+      location: '',
+      social: [],
       firstName: '',
+      currentCompany: '',
     },
-    education: [],
+    schools: [],
   };
 
   // Transform work experience data
   outputData.work = jsonData?.positions?.map((position) => ({
-    url: '',
-    name: position.org,
-    skills: [],
-    endDate: position?.end
-      ? `${getMonthName(position?.end?.month)} ${position?.end?.year}`
-      : 'Present',
-    description: position.summary,
-    position: position.title,
-    startDate: position?.start
-      ? `${getMonthName(position.start.month)} ${position.start.year}`
-      : '',
-    highlights: [],
+    end: {
+      year: position?.end?.year || null,
+      month: position?.end?.month || null,
+    },
+    org: position.org,
+    start: {
+      year: position.start.year || null,
+      month: position.start.month || null,
+    },
+    title: position.title,
+    summary: position.summary,
+    location: position.location,
   }));
 
-  outputData.education = jsonData?.schools?.map((school) => ({
-    url: '',
-    area: school?.field,
-    score: '',
-    courses: [],
-    endDate: '',
-    startDate: '',
-    studyType: school?.degree,
+  outputData.schools = jsonData?.schools?.map((school) => ({
     institution: school?.org,
+    end: {
+      year: school?.end?.year || null,
+      month: school?.end?.month || null,
+    },
+    gpa: school?.gpa,
+    field: school?.field,
+    start: {
+      year: school?.start?.year || null,
+      month: school?.start?.month || null,
+    },
+    degree: school?.degree,
   }));
 
   //get candidate basic details from lever api
@@ -270,50 +264,18 @@ async function transformers(jsonData, opportunity_id) {
   let basics = basicResponse.data.data;
 
   outputData.basics = {
-    url: '',
+    currentJobTitle: jsonData?.positions[0]?.title,
     email: basics?.emails[0],
-    image: '',
-    label: '',
     phone: basics?.phones[0].value || '',
-    summary: '',
     lastName: splitFullName(basics?.name).lastName,
     currentCompany: basics.headline || '',
-    fulllocation: basics.location || '',
-    location: {
-      city: '',
-      region: '',
-      address: '',
-      country: '',
-      postalCode: '',
-    },
-    profiles: [],
+    location: basics.location || '',
+    social: [],
     firstName: splitFullName(basics?.name).firstName,
   };
 
   // Output the transformed data
   return outputData;
-}
-
-function getMonthName(monthNumber) {
-  if (monthNumber) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return months[monthNumber - 1];
-  } else {
-    return '';
-  }
 }
 
 const generateResume = async (resume, jd_json) => {

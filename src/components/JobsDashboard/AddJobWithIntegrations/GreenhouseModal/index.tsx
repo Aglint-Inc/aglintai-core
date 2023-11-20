@@ -28,7 +28,7 @@ import toast from '@/src/utils/toast';
 import FetchingJobsLever from './Loader';
 import { createJobApplications, createJobObject, fetchAllJobs } from './utils';
 import LoaderLever from '../Loader';
-import { generateEmbedding,POSTED_BY } from '../utils';
+import { generateEmbedding, POSTED_BY } from '../utils';
 
 export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -89,7 +89,9 @@ export function GreenhouseModal() {
         .select();
       if (!error) {
         newJobs.map((job) => {
-          generateEmbedding(job.description, job.id);
+          if (job.description) {
+            generateEmbedding(job.description, job.id);
+          }
         });
         // selectedGreenhousePostings.map(async (post) => {
         //   await createLeverJobReference({
