@@ -241,11 +241,7 @@ export function ProfileShare({
                     {textInterviewScore}
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "text-grey-600-3",
-                      "mobile-12"
-                    )}
+                    className={_utils.cx(_styles, "text-grey-200")}
                     tag="div"
                   >
                     {"Interview Score"}
