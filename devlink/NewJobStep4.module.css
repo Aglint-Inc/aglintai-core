@@ -25,6 +25,10 @@
   }
 }
 
+.job-sidebar-main-block.cj-step-2.height-auto {
+  height: auto;
+}
+
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;
@@ -595,6 +599,10 @@
 
 .icons.ml-5 {
   margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
 }
 
 .grey-disable-process-button {

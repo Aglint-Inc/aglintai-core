@@ -590,6 +590,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .grey-disable-process-button {
   position: absolute;
   left: 0%;

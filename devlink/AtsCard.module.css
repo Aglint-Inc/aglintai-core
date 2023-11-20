@@ -87,6 +87,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .checkbox-right-wrappers-text {
   position: relative;
   z-index: 1;

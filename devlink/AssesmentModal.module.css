@@ -282,6 +282,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .avatar-grid-wrap {
   display: grid;
   overflow: scroll;

@@ -60,6 +60,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .div-block-419 {
   width: 53px;
   height: 24px;

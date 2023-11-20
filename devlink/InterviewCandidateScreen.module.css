@@ -194,6 +194,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .interview-edit-done-wrapper {
   display: none;
   width: 40px;

@@ -416,3 +416,7 @@
 .icons.ml-5 {
   margin-left: 5px;
 }
+
+.icons.close {
+  display: none;
+}

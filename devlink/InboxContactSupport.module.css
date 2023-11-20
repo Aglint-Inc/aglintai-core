@@ -683,6 +683,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .div-block-413 {
   display: flex;
   margin-top: 30px;

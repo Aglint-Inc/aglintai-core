@@ -321,6 +321,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-green-500 {
   color: var(--green500-287ff474);
 }
@@ -1448,6 +1452,10 @@
 }
 
 .text-grey-600-3.mt-13 {
+  margin-top: 13px;
+}
+
+.mt-13 {
   margin-top: 13px;
 }
 

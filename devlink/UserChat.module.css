@@ -1,0 +1,76 @@
+.sender-wrap {
+  display: flex;
+  margin-top: 18px;
+  justify-content: flex-end;
+}
+
+.sender-sub-wrap {
+  max-width: 296px;
+  padding: 16px 19px;
+  border-radius: 10px;
+  background-color: #17494d;
+  color: white;
+}
+
+.sender-sub-wrap.withicon {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.text-block-28 {
+  white-space: pre-wrap;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
+}

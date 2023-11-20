@@ -371,6 +371,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-red-600 {
   color: var(--red600-953350ec);
 }

@@ -250,6 +250,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .edit-icons-inbox {
   padding: 4px;
   border-radius: 100px;

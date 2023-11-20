@@ -210,6 +210,10 @@
   margin-top: 5px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-grey-600.mt-17 {
   margin-top: 17px;
 }
@@ -303,4 +307,8 @@
 
 .icons.ml-5 {
   margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
 }

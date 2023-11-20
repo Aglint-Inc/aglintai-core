@@ -276,6 +276,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .instruction-wrapper {
   margin-top: 20px;
 }

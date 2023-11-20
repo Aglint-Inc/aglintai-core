@@ -257,6 +257,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .avatar-play-puase-wrap {
   position: absolute;
   left: auto;

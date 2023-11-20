@@ -71,6 +71,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .fw-semibold {
   font-weight: 600;
 }

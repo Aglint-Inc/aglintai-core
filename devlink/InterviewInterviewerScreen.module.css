@@ -168,6 +168,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-interviewer-wrappers {
   overflow: auto;
   width: 100%;

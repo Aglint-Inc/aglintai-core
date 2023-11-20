@@ -587,6 +587,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .cj-option-info {
   display: flex;
   flex-direction: column;

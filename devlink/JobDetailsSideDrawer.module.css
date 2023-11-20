@@ -291,6 +291,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;
@@ -326,6 +330,10 @@
   .job-sidebar-main-block.cj-step-2 {
     display: flex;
   }
+}
+
+.job-sidebar-main-block.cj-step-2.height-auto {
+  height: auto;
 }
 
 .job-sidebar-main-block.cj-step-1 {
@@ -466,6 +474,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

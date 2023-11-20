@@ -596,6 +596,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .div-block-423 {
   display: flex;
   justify-content: flex-end;

@@ -553,11 +553,19 @@
   margin-top: 13px;
 }
 
+.mt-13 {
+  margin-top: 13px;
+}
+
 .text-grey-600-3.personalized {
   padding-left: 20px;
 }
 
 .text-grey-600-3.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 
@@ -676,4 +684,8 @@
 
 .icons.ml-5 {
   margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
 }

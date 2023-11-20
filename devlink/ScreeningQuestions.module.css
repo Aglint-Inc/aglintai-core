@@ -331,6 +331,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .job-details-button-wrappers {
   display: flex;
   margin-top: 50px;

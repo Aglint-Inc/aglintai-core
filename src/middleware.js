@@ -15,6 +15,12 @@ const whiteListedEndPoints = [
   '/api/JobApplicationsApi',
   '/api/ai/resume-embedding',
   '/api/interview', // need this publicly access for interview feedback.
+  '/api/assistant/listAssistant',
+  '/api/assistant/listMessages',
+  '/api/assistant/createMessage',
+  '/api/assistant/createThread',
+  '/api/assistant/createRun',
+  '/api/assistant/createAssistant',
 ];
 
 export async function middleware(request) {

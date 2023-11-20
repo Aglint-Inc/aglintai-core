@@ -1,0 +1,224 @@
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { Chip, Stack, TextField } from '@mui/material';
+import { useState } from 'react';
+
+import {
+  AssistantChat,
+  ChatBox,
+  ChatIcon,
+  ChatWelcome,
+  UserChat,
+} from '@/devlink';
+import { useJobAssistantContext } from '@/src/context/JobAssistant';
+
+import ChatMessageLoader from './ChatMessageLoader';
+import MuiAvatar from '../Common/MuiAvatar';
+const totalCharacter = 250;
+function ChatMessages() {
+  const {
+    jobDetails,
+    messages,
+    createNewMessage,
+    inputRef,
+    selectedFile,
+    setSelectedFile,
+  } = useJobAssistantContext();
+  const [openChat, setOpenChat] = useState(false);
+
+  const handleFileRemove = () => {
+    setSelectedFile(null);
+  };
+
+  return (
+    <Stack
+      sx={{
+        background:
+          'linear-gradient(0deg, rgba(1,0,14,1) 0%, rgba(14,9,83,1) 86%)',
+      }}
+      position={'relative'}
+      width={'100%'}
+      height={'100vh'}
+    >
+      <FileUpload />
+
+      <Stack position={'absolute'} bottom={10} right={10}>
+        <Stack
+          sx={{
+            transform: !openChat ? 'translateY(50px)' : 'none',
+            height: openChat ? '100%' : 0,
+            opacity: openChat ? 1 : 0,
+            transition: `transform ${openChat ? '0.4s' : '0.2s'},  opacity ${
+              openChat ? '0.4s' : '0.2s'
+            }`,
+          }}
+          pr={'30px'}
+        >
+          <ChatBox
+            textCompanyName={jobDetails.company}
+            slotLogo={
+              <MuiAvatar height='30px' width='30px' src={jobDetails?.logo} />
+            }
+            slotChat={<ChatConversation />}
+            slotTypeInput={
+              <Stack>
+                <Stack alignItems={'center'} direction={'row'}>
+                  <TextField
+                    variant='standard'
+                    onKeyDownCapture={(e) => {
+                      if (e.ctrlKey && e.key === 'Enter') {
+                        createNewMessage();
+                      }
+                    }}
+                    inputProps={{ maxLength: totalCharacter }}
+                    inputRef={inputRef}
+                    fullWidth
+                    multiline
+                    minRows={1}
+                    maxRows={2}
+                    placeholder='Enter your message here (cmd+enter)'
+                  />
+                </Stack>
+                {selectedFile && (
+                  <Stack
+                    height={'40px'}
+                    alignItems={'center'}
+                    direction={'row'}
+                  >
+                    <Chip
+                      sx={{
+                        maxWidth: '200px',
+                        '& span': {
+                          // display: `-webkit-box !important`,
+                          overflow: 'hidden',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical',
+                        },
+                      }}
+                      variant='filled'
+                      label={selectedFile.name}
+                      onDelete={handleFileRemove}
+                    />
+                  </Stack>
+                )}
+              </Stack>
+            }
+            onClickAttach={{
+              onClick: () => {
+                document.getElementById('chat-file').click();
+              },
+            }}
+            onClickSend={{
+              onClick: () => {
+                createNewMessage();
+              },
+            }}
+            isSlotTypingVisible={messages.length}
+          />
+        </Stack>
+        <Stack alignItems={'end'}>
+          <ChatIcon
+            onClickChat={{
+              onClick: () => {
+                setOpenChat((pre) => !pre);
+              },
+            }}
+          />
+        </Stack>
+      </Stack>
+    </Stack>
+  );
+}
+
+export default ChatMessages;
+
+function ChatConversation() {
+  const { jobDetails, messages, setMessages, createNewMessage } =
+    useJobAssistantContext();
+
+  function startNewChat() {
+    setMessages((pre) => [
+      {
+        role: 'user',
+        value: 'Yes, please',
+        metadata: {},
+      },
+      {
+        role: 'assistant',
+        value: `Hi there! I'm the AI assistant for ${jobDetails.company}. Can I assist you in finding a suitable job opportunity today?`,
+        metadata: {},
+      },
+      ...pre,
+    ]);
+    createNewMessage();
+  }
+  return (
+    <>
+      {messages.length ? (
+        <>
+          {messages.map((message, i) => {
+            return (
+              <>
+                {message.role === 'assistant' && (
+                  <AssistantChat
+                    isLoadingChatVisible={
+                      message.value === 'loading' || message.value === ''
+                    }
+                    isMessageVisible={
+                      message.value !== 'loading' && message.value
+                    }
+                    slotLottieLoadingChat={<ChatMessageLoader />}
+                    textMessage={message.value}
+                    slotLogo={
+                      <MuiAvatar
+                        height='30px'
+                        width='30px'
+                        src={jobDetails?.logo}
+                      />
+                    }
+                    key={i}
+                  />
+                )}
+                {message.role === 'user' && message?.metadata?.file_name && (
+                  <Stack direction={'row'} justifyContent={'end'}>
+                    <Chip
+                      icon={<PictureAsPdfIcon />}
+                      variant='filled'
+                      label={message?.metadata?.file_name}
+                    />
+                  </Stack>
+                )}
+                {message.role === 'user' && (
+                  <UserChat textMessage={message.value} key={i} />
+                )}
+              </>
+            );
+          })}
+        </>
+      ) : (
+        <ChatWelcome
+          textCompanyName={jobDetails?.company}
+          onClickYesPlease={{ onClick: startNewChat }}
+        />
+      )}
+    </>
+  );
+}
+
+const FileUpload = () => {
+  const { setSelectedFile } = useJobAssistantContext();
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  return (
+    <div style={{ display: 'none' }}>
+      <input
+        // accept='.pdf,.csv'
+        id='chat-file'
+        type='file'
+        onChange={handleFileChange}
+      />
+    </div>
+  );
+};

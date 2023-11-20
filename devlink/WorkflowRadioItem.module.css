@@ -87,6 +87,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

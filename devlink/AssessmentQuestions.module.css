@@ -360,6 +360,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .add-tool-tip-wrap {
   position: absolute;
   left: -30px;

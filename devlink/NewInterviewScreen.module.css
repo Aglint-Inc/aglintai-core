@@ -133,6 +133,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .new-end-interview-btn {
   display: flex;
   padding: 10px 20px;

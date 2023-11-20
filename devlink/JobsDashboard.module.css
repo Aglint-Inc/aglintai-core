@@ -796,6 +796,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-md {
   font-size: 14px;
   line-height: 20px;

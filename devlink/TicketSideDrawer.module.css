@@ -275,6 +275,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .arrow-tooltips {
   position: absolute;
   left: -87%;
@@ -594,6 +598,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

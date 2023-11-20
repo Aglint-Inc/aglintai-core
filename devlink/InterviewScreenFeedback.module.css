@@ -832,6 +832,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -857,6 +861,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

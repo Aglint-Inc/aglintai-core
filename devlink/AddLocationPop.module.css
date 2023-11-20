@@ -264,6 +264,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .social-btn-wrappers-pop {
   display: flex;
   margin-top: 20px;

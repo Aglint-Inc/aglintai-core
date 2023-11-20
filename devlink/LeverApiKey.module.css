@@ -98,6 +98,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
 }

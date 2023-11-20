@@ -138,6 +138,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .video-icon-wrapper {
   position: absolute;
   left: 11px;

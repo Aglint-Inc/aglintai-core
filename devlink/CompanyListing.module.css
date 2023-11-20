@@ -94,6 +94,10 @@
   }
 }
 
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
 .fw-bold {
   font-weight: 700;
 }
@@ -180,6 +184,10 @@
   margin-left: 5px;
 }
 
+.icons.close {
+  display: none;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -250,10 +258,6 @@
   .hide {
     display: none;
   }
-}
-
-.text-grey-500 {
-  color: var(--grey500-0d508ad8);
 }
 
 .text-color-black {
