@@ -30,6 +30,7 @@ export * from "./AssessmentQuestions";
 export * from "./AssessmentScrollMenu";
 export * from "./Assignee";
 export * from "./AssigneeSmall";
+export * from "./AssisstantSettings";
 export * from "./AssistantChat";
 export * from "./AtsBadge";
 export * from "./AtsCard";

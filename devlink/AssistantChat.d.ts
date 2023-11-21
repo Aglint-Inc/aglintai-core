@@ -8,4 +8,5 @@ declare function AssistantChat(props: {
   slotLottieLoadingChat?: Types.Devlink.Slot;
   isLoadingChatVisible?: Types.Visibility.VisibilityConditions;
   isMessageVisible?: Types.Visibility.VisibilityConditions;
+  isLogoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

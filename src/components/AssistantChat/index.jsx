@@ -16,7 +16,7 @@ import MuiAvatar from '../Common/MuiAvatar';
 const totalCharacter = 250;
 function ChatMessages() {
   const {
-    jobDetails,
+    companyDetails,
     messages,
     createNewMessage,
     inputRef,
@@ -54,9 +54,13 @@ function ChatMessages() {
           pr={'30px'}
         >
           <ChatBox
-            textCompanyName={jobDetails.company}
+            textCompanyName={companyDetails?.name}
             slotLogo={
-              <MuiAvatar height='30px' width='30px' src={jobDetails?.logo} />
+              <MuiAvatar
+                height='30px'
+                width='30px'
+                src={companyDetails?.logo}
+              />
             }
             slotChat={<ChatConversation />}
             slotTypeInput={
@@ -131,8 +135,8 @@ function ChatMessages() {
 
 export default ChatMessages;
 
-function ChatConversation() {
-  const { jobDetails, messages, setMessages, createNewMessage } =
+export function ChatConversation() {
+  const { companyDetails, messages, setMessages, createNewMessage } =
     useJobAssistantContext();
 
   function startNewChat() {
@@ -144,7 +148,7 @@ function ChatConversation() {
       },
       {
         role: 'assistant',
-        value: `Hi there! I'm the AI assistant for ${jobDetails.company}. Can I assist you in finding a suitable job opportunity today?`,
+        value: `Hi there! I'm the AI assistant for ${companyDetails.name}. Can I assist you in finding a suitable job opportunity today?`,
         metadata: {},
       },
       ...pre,
@@ -172,7 +176,7 @@ function ChatConversation() {
                       <MuiAvatar
                         height='30px'
                         width='30px'
-                        src={jobDetails?.logo}
+                        src={companyDetails?.logo}
                       />
                     }
                     key={i}
@@ -196,7 +200,7 @@ function ChatConversation() {
         </>
       ) : (
         <ChatWelcome
-          textCompanyName={jobDetails?.company}
+          textCompanyName={companyDetails?.name}
           onClickYesPlease={{ onClick: startNewChat }}
         />
       )}

@@ -22,17 +22,20 @@ export function AssistantChat({
   slotLottieLoadingChat,
   isLoadingChatVisible = false,
   isMessageVisible = true,
+  isLogoVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "assisstant-chat")} tag="div">
-      <_Builtin.Block tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "assissatant-logo-wrap")}
-          tag="div"
-        >
-          {slotLogo}
+      {isLogoVisible ? (
+        <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "assissatant-logo-wrap")}
+            tag="div"
+          >
+            {slotLogo}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "div-block-591")} tag="div">
         {isMessageVisible ? (
           <_Builtin.Block
