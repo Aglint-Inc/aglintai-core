@@ -91,6 +91,14 @@ export function GreenhouseModal() {
         newJobs.map((job) => {
           if (job.description) {
             generateEmbedding(job.description, job.id);
+            axios.post('/api/publishJob', {
+              data: {
+                job_title: job.job_title,
+                job_description: job.description,
+                skills: [],
+                job_id: job.id,
+              },
+            });
           }
         });
         // selectedGreenhousePostings.map(async (post) => {

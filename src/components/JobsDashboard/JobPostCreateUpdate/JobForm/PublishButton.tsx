@@ -32,6 +32,7 @@ const JobPublishButton = () => {
         jobForm.formFields.jobDescription,
       );
 
+      saveJson(jobFormData);
       const [job] = supabaseWrap(
         await supabase
           .from('public_jobs')
@@ -72,6 +73,17 @@ const JobPublishButton = () => {
 
     const embedding = emb.data[0].embedding;
     return embedding;
+  };
+
+  const saveJson = (jobFormData) => {
+    axios.post('/api/publishJob', {
+      data: {
+        job_title: jobFormData.job_title,
+        job_description: jobFormData.description,
+        skills: jobFormData.skills,
+        job_id: jobFormData.id,
+      },
+    });
   };
 
   const isJobPublished = jobForm.formFields.isDraftCleared;

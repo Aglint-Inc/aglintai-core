@@ -228,8 +228,8 @@ async function transformers(jsonData, opportunity_id) {
     },
     org: position.org,
     start: {
-      year: position.start.year || null,
-      month: position.start.month || null,
+      year: position?.start?.year || null,
+      month: position?.start?.month || null,
     },
     title: position.title,
     summary: position.summary,
