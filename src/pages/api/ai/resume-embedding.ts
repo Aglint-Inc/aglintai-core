@@ -16,6 +16,13 @@ const openai = new OpenAI({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.body.application_id && req.body.resume_json) {
+      await supabase
+        .from('job_applications')
+        .update({
+          is_embedding: true,
+        })
+        .eq('application_id', req.body.application_id);
+
       const resumeSections = convertJsonToText(req.body.resume_json);
 
       // Create embeddings for each section
@@ -48,7 +55,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           experience_embedding: embeddings.filter(
             (emb) => emb.section == 'experience',
           )[0].embedding,
-          is_embedding: true,
         })
         .eq('application_id', req.body.application_id);
 
