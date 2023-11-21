@@ -108,8 +108,6 @@ function convertJsonToText(resume_json: any) {
     ? resume_json.skills.join(' ')
     : '';
 
-  console.log(skills);
-
   let certificates =
     Array.isArray(resume_json.certificates) &&
     resume_json.certificates
