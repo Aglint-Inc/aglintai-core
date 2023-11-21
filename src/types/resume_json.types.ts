@@ -1,72 +1,46 @@
-interface WorkExperience {
-  url: string;
-  name: string;
-  endDate: string;
-  summary: string;
-  position: string;
-  startDate: string;
-  highlights: string[];
-  skills_used: string[];
-}
+// Define a type for date information
+export type DateInfoType = {
+  year: number;
+  month: number;
+};
 
-interface Basics {
-  url: string;
-  email: string;
-  image: string;
-  label: string;
-  phone: string;
-  summary: string;
-  lastName: string;
-  location: {
-    city: string;
-    region: string;
-    address: string;
-    country: string;
-    postalCode: string;
-  };
-  profiles: {
-    url: string;
-    network: string;
-    username: string;
-  }[];
-  firstName: string;
-}
-
-interface Project {
-  url: string;
-  name: string;
-  endDate: string;
-  startDate: string;
-  highlights: string[];
-}
-
-interface Education {
-  url: string;
-  area: string;
-  endDate: string;
-  startDate: string;
-  studyType: string;
+// Define a type for school information
+type School = {
+  start: DateInfoType;
+  end: DateInfoType;
+  field: string;
+  degree: string;
   institution: string;
-}
+  gpa: number | null;
+};
 
-interface Language {
-  fluency: string;
-  language: string;
-}
+// Define a type for positions
+type Position = {
+  start: DateInfoType;
+  end: DateInfoType | null;
+  org: string;
+  title: string;
+  summary: string;
+  location: string;
+};
 
-interface Certificate {
-  url: string;
-  date: string;
-  name: string;
-  issuer: string;
-}
-export interface JsonResume {
-  work: WorkExperience[];
-  basics: Basics;
+// Define the main type for the entire structure
+export type JsonResume = {
+  basics: {
+    email: string;
+    phone: string;
+    lastName: string;
+    linkedIn: string;
+    location: string;
+    firstName: string;
+    currentCompany: string;
+    currentJobTitle: string;
+  };
   skills: string[];
+  schools: School[];
   overview: string;
-  projects: Project[];
-  education: Education[];
-  languages: Language[];
-  certificates: Certificate[];
-}
+  projects: any[]; // Adjust the type as needed
+  languages: any[]; // Adjust the type as needed
+  positions: Position[];
+  certificates: any[]; // Adjust the type as needed
+};

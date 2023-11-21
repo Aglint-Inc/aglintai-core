@@ -1,57 +1,41 @@
 import { Collapse } from '@mui/material';
 import { Paper } from '@mui/material';
-import { DialogContent, Slider } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
-import { cloneDeep, get, isEmpty, isNumber, set } from 'lodash';
+import { DialogContent, Stack } from '@mui/material';
+import { get, isArray } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   CandidateDatabaseDetail,
   CandidateDetailsCard,
-  CandidateDialog,
-  CandidateEducation,
-  CandidateEducationCard,
-  CandidateExperienceCard,
-  CandidateFilter,
   CandidateSkills,
-  JobPills,
 } from '@/devlink';
-import { CandidateExperience } from '@/devlink/CandidateExperience';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { JsonResume } from '@/src/types/resume_json.types';
-import {
-  getformatedDate,
-  getFullName,
-  getLocationString,
-} from '@/src/utils/jsonResume';
+import { getFullName } from '@/src/utils/jsonResume';
+import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
+import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
+// import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import toast from '@/src/utils/toast';
 
+import SearchFilter from './SearchFilter';
+import SelectedCandidate from './SelectedCandidate';
 import {
   CandidateSearchState,
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
-import { JDSearchModal } from '../JDSearchModal';
-import {
-  candidateSearchByJD,
-  candidateSearchByQuery,
-  getqueriedCandidates,
-} from '../utils';
+import { getRelevantCndidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
-import UITypography from '../../Common/UITypography';
-import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;
+  created_at: string;
   first_name: string;
   last_name: string;
   job_title: null;
@@ -63,84 +47,70 @@ export interface CandidateSearchRes {
 
 const CandidatesSearch = () => {
   const { jobsData } = useJobs();
-  const { recruiter } = useAuthDetails();
-  const { candidateSearchState, updatenewSearchRes, updateState } =
-    useCandidateSearchCtx();
+  const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
   const router = useRouter();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(router.query.query || '');
+  const [searchQuery, setSearchQuery] = useState('');
   const [activeCandidate, setActiveCandidate] = useState<number>(-1);
   const [isSearching, setIsSearching] = useState(false);
   const [isJDModalOpen, setIsJDModalOpen] = useState(false);
-
-  useEffect(() => {
-    const { isJDSearch, query } = router.query;
-    if (isEmpty(query) && isEmpty(localStorage.getItem('jd'))) {
-      router.replace('/candidates/history');
-      return;
-    }
-
-    if (isJDSearch) {
-      const jd = localStorage.getItem('jd');
-      updateState({
-        path: 'searchInfo',
-        value: {
-          searchText: jd,
-          searchType: 'jd',
-        },
-      });
-      handleSearchByJd(jd);
-    } else if (query) {
-      updateState({
-        path: 'searchInfo',
-        value: {
-          searchText: query,
-          searchType: 'query',
-        },
-      });
-      handleSearchCandidate(query);
-    }
-  }, [router.isReady, router.query]);
-
-  const handleSearchCandidate = async (searchQry) => {
+  const [hideSearch, setHideSearch] = useState(false);
+  const buildQuery = async () => {
     try {
-      updatenewSearchRes(initialState);
       setIsSearching(true);
-      const newSearchState = await candidateSearchByQuery(
-        searchQry,
-        jobsData.jobs.map((j) => j.id),
-        recruiter.id,
-        candidateSearchState.maxProfiles,
-      );
-      updatenewSearchRes(newSearchState);
-    } catch (err) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsSearching(false);
-    }
-  };
+      const resp = await searchJdToJson(searchQuery);
+      const p: CandidateSearchState['queryJson'] = {
+        jobTitles: [...resp.jobRoles],
+        universities: [...resp.university],
+        prefferedCompanies: [...resp.requiredPreviousCompanies],
+        excludedCompanies: [],
+        languages: [...resp.spokenLanguagesMentioned],
+        location: [...resp.locations],
+        maxExp: resp.maxExperienceInYears,
+        minExp: resp.minExperienceInYears,
+        skills: [...resp.skills],
+        degrees: [...resp.degrees],
+      };
 
-  const handleSearchByJd = async (jdText) => {
-    try {
-      setIsJDModalOpen(false);
-      updatenewSearchRes(initialState);
-      setIsSearching(true);
-      const newSearchState = await candidateSearchByJD(
-        jdText,
+      if (p.jobTitles.length > 0 && p.jobTitles.length < 5) {
+        const j = await similarJobs(p.jobTitles);
+        p.jobTitles = [...p.jobTitles, ...j.related_jobs];
+      }
+
+      // if (p.skills.length > 0 && p.skills.length < 5) {
+      //   const d = await similarSkills(p.skills);
+      //   p.skills = [...p.skills, ...d.related_skills];
+      // }
+
+      Object.keys(p).forEach((k) => {
+        if (isArray(p[String(k)])) {
+          p[String(k)] = p[String(k)].filter((s) => Boolean(s.trim()));
+        }
+      });
+
+      const cndates = (await getRelevantCndidates(
+        p,
         jobsData.jobs.map((j) => j.id),
-        recruiter.id,
-        candidateSearchState.maxProfiles,
-      );
-      updatenewSearchRes(newSearchState);
+      )) as any;
+
+      updatenewSearchRes({
+        ...initialState,
+        candidates: cndates,
+        queryJson: p,
+      });
+
+      setHideSearch(true);
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
+      //
     } finally {
       setIsSearching(false);
     }
   };
 
   const candidates = candidateSearchState.candidates;
+
   return (
     <>
       <CandidateDatabaseDetail
@@ -148,37 +118,52 @@ const CandidatesSearch = () => {
         textSelectedCount={0}
         onClickAll={
           {
-            //   onClick: handleOnClickAll,
+            // onClick: createEmbeddings,
           }
         }
         slotSearchInput={
           <>
-            {!router.query.isJDSearch && (
+            {
               <>
-                <UITextField
-                  value={searchQuery as string}
-                  placeholder='Type your requirement here and press enter'
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                  }}
-                  fullWidth
-                  InputProps={{
-                    onKeyDown: (e) => {
-                      if (e.code === 'Enter') {
-                        router.push(`/candidates/search?query=${searchQuery}`);
-                        // handleSearchCandidate(searchQuery);
-                      }
-                    },
-                  }}
-                />
-                <AUIButton onClick={() => handleSearchCandidate(searchQuery)}>
-                  Search
-                </AUIButton>
+                {!hideSearch && (
+                  <Stack gap={1} direction={'row'} width={'100%'}>
+                    <Stack width={'50%'}>
+                      <UITextField
+                        value={searchQuery as string}
+                        placeholder='Type your requirement here and press enter'
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                        }}
+                        fullWidth
+                        InputProps={{
+                          onKeyDown: (e) => {
+                            if (e.code === 'Enter') {
+                              buildQuery();
+                            }
+                          },
+                        }}
+                      />
+                    </Stack>
+
+                    <AUIButton
+                      onClick={() => buildQuery()}
+                      // endIcon={
+                      //   <CircularProgress
+                      //     color='inherit'
+                      //     size={'15px'}
+                      //     sx={{ color: palette.grey[400] }}
+                      //   />
+                      // }
+                    >
+                      <p>Search</p>
+                    </AUIButton>
+                  </Stack>
+                )}
               </>
-            )}
+            }
           </>
         }
-        textRole={router.query.query || ''}
+        textRole={candidateSearchState.queryJson.jobTitles.join(', ')}
         slotCandidateDetailsCard={
           <>
             {isSearching && <Loader />}
@@ -193,11 +178,9 @@ const CandidatesSearch = () => {
                         <CandidateSkills key={index} textSkill={s} />
                       ),
                     )}
-                    textLocation={getLocationString(
-                      c.json_resume.basics.location,
-                    )}
-                    textOverview={c.json_resume.overview}
-                    textJobRoleAtCompany={c.json_resume.basics.label}
+                    textLocation={''}
+                    textOverview={c.json_resume?.overview}
+                    textJobRoleAtCompany={c.job_title}
                     onClickStar={{}}
                     onClickCheck={{}}
                     slotAvatar={
@@ -297,13 +280,13 @@ const CandidatesSearch = () => {
         }}
       >
         <Paper>
-          <JDSearchModal
+          {/* <JDSearchModal
             setJdPopup={setIsJDModalOpen}
-            onClickSubmit={(str) => {
-              localStorage.setItem(`jd`, str);
-              handleSearchByJd(str);
-            }}
-          />
+            // onClickSubmit={(str) => {
+            //   // localStorage.setItem(`jd`, str);
+            //   // handleSearchByJd(str);
+            // }}
+          /> */}
         </Paper>
       </MuiPopup>
     </>
@@ -311,427 +294,3 @@ const CandidatesSearch = () => {
 };
 
 export default CandidatesSearch;
-
-const SelectedCandidate = ({
-  candidate,
-  onClickClose,
-  onClickNext,
-  onClickPrev,
-}: {
-  candidate: CandidateSearchRes;
-  onClickNext: () => void;
-  onClickPrev: () => void;
-  onClickClose: () => void;
-}) => {
-  return (
-    <CandidateDialog
-      textJobRoleAtCompany={candidate.json_resume.basics.label}
-      textMail={candidate.json_resume.basics.email}
-      // isOverviewVisible={}
-      textOverview={candidate.json_resume.overview}
-      textLocation={getLocationString(candidate.json_resume.basics.location)}
-      isOverviewVisible
-      slotAddtoJob={<></>}
-      onClickClose={{
-        onClick: onClickClose,
-      }}
-      //   onClickCopy={{}}
-      //   onClickLinkedin={{}}
-      onClickNext={{
-        onClick: onClickNext,
-      }}
-      onClickPrev={{
-        onClick: onClickPrev,
-      }}
-      slotAvatar={
-        <>
-          <MuiAvatar
-            level={getFullName(candidate.first_name, candidate.last_name)}
-            src={candidate.profile_image}
-            variant={'rounded'}
-            width={'100%'}
-            height={'100%'}
-            fontSize={'12px'}
-          />
-        </>
-      }
-      textName={getFullName(candidate.first_name, candidate.last_name)}
-      slotDetails={
-        <>
-          <CandidateEducation
-            slotEducationCard={
-              <>
-                {candidate.json_resume.education.map((ed, index) => {
-                  return (
-                    <CandidateEducationCard
-                      key={index}
-                      slotEducationLogo={<></>}
-                      textUniversityName={ed.institution}
-                      textDate={getformatedDate(ed.startDate, ed.endDate)}
-                    />
-                  );
-                })}
-              </>
-            }
-          />
-          <CandidateExperience
-            slotCandidateExperienceCard={
-              <>
-                {candidate.json_resume.work.map((exp, index) => {
-                  return (
-                    <CandidateExperienceCard
-                      key={index}
-                      textCompany={exp.name}
-                      textRole={exp.position}
-                      slotLogo={
-                        <CompanyLogo
-                          companyName={
-                            exp.name ? exp.name.trim().toLowerCase() : null
-                          }
-                        />
-                      }
-                    />
-                  );
-                })}
-              </>
-            }
-          />
-        </>
-      }
-    />
-  );
-};
-
-type FilterType = {
-  profileLimit: number;
-} & CandidateSearchState['queryJson'];
-
-const SearchFilter = ({ handleDialogClose }) => {
-  const { jobsData } = useJobs();
-  const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
-  const [filters, setFilters] = useState<FilterType>({
-    ...candidateSearchState.queryJson,
-    profileLimit: candidateSearchState.maxProfiles,
-  });
-  const [isFilterLoading, setIsFilterLoading] = useState(false);
-
-  const handleUpdate = (path, value) => {
-    setFilters((p) => {
-      const updated = cloneDeep(p);
-      set(updated, path, value);
-      return updated;
-    });
-  };
-
-  const handlePillRemove = (path, index) => {
-    setFilters((p) => {
-      const updated = cloneDeep(p);
-      updated[String(path)] = filters[String(path)].filter(
-        (s, idx) => idx !== index,
-      );
-      return updated;
-    });
-  };
-
-  const handleResetFilter = () => {
-    setFilters({
-      ...candidateSearchState.queryJson,
-      profileLimit: candidateSearchState.maxProfiles,
-    });
-  };
-
-  const handleApplyFilters = async () => {
-    try {
-      setIsFilterLoading(true);
-      // eslint-disable-next-line no-unused-vars
-      const newQueryJson = (({ profileLimit, ...o }) => o)(filters); // remove profileLimit
-      const { result, summary } = await getqueriedCandidates(
-        newQueryJson,
-        jobsData.jobs.map((j) => j.id),
-        filters.profileLimit,
-      );
-      updatenewSearchRes({
-        ...candidateSearchState,
-        candidates: result,
-        maxProfiles: filters.profileLimit,
-        queryJson: newQueryJson,
-        searchInfo: {
-          searchText: summary,
-          searchType: candidateSearchState.searchInfo.searchType,
-        },
-      });
-    } catch (err) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsFilterLoading(false);
-      handleDialogClose();
-    }
-  };
-
-  return (
-    <CandidateFilter
-      slotProfileInput={
-        <>
-          <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-            <Slider
-              size='small'
-              defaultValue={50}
-              value={filters.profileLimit}
-              aria-label='Default'
-              valueLabelDisplay='auto'
-              sx={{
-                mr: 3,
-              }}
-              onChange={(e: any) => {
-                handleUpdate('profileLimit', e.target.value);
-              }}
-            />
-            <UITypography fontBold='normal' type='small'>
-              {filters.profileLimit}
-            </UITypography>
-          </div>
-        </>
-      }
-      slotCurrentJobInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('jobTitles', [...filters.jobTitles, s]);
-            }}
-          />
-        </>
-      }
-      slotButtonPrimarySmall={
-        <>
-          <AUIButton
-            variant='primary'
-            size='small'
-            onClick={() => {
-              handleApplyFilters();
-            }}
-            endIcon={
-              isFilterLoading && (
-                <CircularProgress
-                  color='inherit'
-                  size={'15px'}
-                  sx={{ color: palette.grey[400] }}
-                />
-              )
-            }
-          >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Image
-                width={12}
-                height={12}
-                alt=''
-                src={'/images/svg/graphUp.svg'}
-                style={{ marginRight: '10px' }}
-              />
-              <p>Apply Filters</p>
-            </div>
-          </AUIButton>
-        </>
-      }
-      slotMinExperienceInput={
-        <>
-          <UITextField
-            value={filters.minExp}
-            onChange={(e) => {
-              handleUpdate('minExp', e.target.value);
-            }}
-            type='number'
-          />
-        </>
-      }
-      slotMaxExperienceInput={
-        <>
-          <UITextField
-            value={filters.maxExp}
-            onChange={(e) => {
-              handleUpdate('maxExp', e.target.value);
-            }}
-            type='number'
-          />
-        </>
-      }
-      slotJobRole={
-        <>
-          {filters.jobTitles.map((title, index) => {
-            return (
-              <JobPills
-                key={index}
-                onClickDelete={{
-                  onClick: () => {
-                    handlePillRemove('jobTitles', index);
-                  },
-                }}
-                textJob={title}
-              />
-            );
-          })}
-        </>
-      }
-      slotLanguageInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('languages', [...filters.languages, s]);
-            }}
-          />
-        </>
-      }
-      slotLocationInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('location', [...filters.location, s]);
-            }}
-          />
-        </>
-      }
-      slotUniversityInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('universities', [...filters.universities, s]);
-            }}
-          />
-        </>
-      }
-      slotExcludedCompanyInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('excludedCompanies', [
-                ...filters.excludedCompanies,
-                s,
-              ]);
-            }}
-          />
-        </>
-      }
-      slotPreferredCompanyInput={
-        <>
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdate('prefferedCompanies', [
-                ...filters.prefferedCompanies,
-                s,
-              ]);
-            }}
-          />
-        </>
-      }
-      slotLanguageSuggestion={
-        <>
-          {filters.languages.map((lang, index) => {
-            return (
-              <JobPills
-                key={index}
-                onClickDelete={{
-                  onClick: () => {
-                    handlePillRemove('languages', index);
-                  },
-                }}
-                textJob={lang}
-              />
-            );
-          })}
-        </>
-      }
-      slotLocationSuggestion={
-        <>
-          {filters.location.map((str, index) => {
-            return (
-              <JobPills
-                key={index}
-                onClickDelete={{
-                  onClick: () => {
-                    handlePillRemove('location', index);
-                  },
-                }}
-                textJob={str}
-              />
-            );
-          })}
-        </>
-      }
-      slotUniversitySuggestion={filters.universities.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('universities', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
-      slotExcludedSuggestion={filters.excludedCompanies.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('excludedCompanies', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
-      slotPreferredSuggestion={filters.prefferedCompanies.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('prefferedCompanies', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
-      onClickResetFilter={{
-        onClick: handleResetFilter,
-      }}
-    />
-  );
-};
-
-const FilterInput = ({
-  type = 'string',
-  handleAdd,
-}: {
-  type?: 'string' | 'number';
-  // eslint-disable-next-line no-unused-vars
-  handleAdd: (s: any) => void;
-}) => {
-  const [input, setInput] = useState<string | number>();
-  return (
-    <UITextField
-      value={input}
-      onChange={(e) => {
-        if (type === 'number' && isNumber(e.target.value)) {
-          setInput(Number(e.target.value));
-        } else {
-          setInput(e.target.value);
-        }
-      }}
-      placeholder='Type and press enter to add'
-      type={type}
-      InputProps={{
-        onKeyDown: (e) => {
-          if (e.code === 'Enter') {
-            handleAdd(input);
-            type === 'string' && setInput('');
-            type === 'number' && setInput(0);
-          }
-        },
-      }}
-    />
-  );
-};

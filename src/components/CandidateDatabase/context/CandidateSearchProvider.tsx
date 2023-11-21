@@ -8,7 +8,7 @@ export interface CandidateSearchRes {
   application_id: string;
   first_name: string;
   last_name: string;
-  job_title: null;
+  job_title: string;
   email: string;
   json_resume: JsonResume;
   similarity: number;
@@ -16,10 +16,6 @@ export interface CandidateSearchRes {
 }
 
 export type CandidateSearchState = {
-  searchInfo: {
-    searchType: 'jd' | 'query';
-    searchText: string;
-  };
   queryJson: {
     jobTitles: string[];
     location: string[];
@@ -29,7 +25,8 @@ export type CandidateSearchState = {
     universities: string[];
     prefferedCompanies: string[];
     excludedCompanies: string[];
-    // companies: string[];
+    skills: string[];
+    degrees: string[];
   };
   candidates: CandidateSearchRes[];
   maxProfiles: number;
@@ -75,10 +72,6 @@ const reducer = (state: CandidateSearchState, action: ActionType) => {
 };
 
 export const initialState: CandidateSearchState = {
-  searchInfo: {
-    searchText: '',
-    searchType: 'query',
-  },
   candidates: [],
   queryJson: {
     jobTitles: [],
@@ -89,6 +82,8 @@ export const initialState: CandidateSearchState = {
     universities: [],
     excludedCompanies: [],
     prefferedCompanies: [],
+    skills: [],
+    degrees: [],
   },
   maxProfiles: 25,
 };

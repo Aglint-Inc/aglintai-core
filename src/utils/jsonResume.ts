@@ -1,16 +1,4 @@
-export function getLocationString(location) {
-  const { city, region, address, country, postalCode } = location;
-
-  // Create an array with non-empty properties
-  const locationArray = [address, city, region, postalCode, country].filter(
-    Boolean,
-  );
-
-  // Create the formatted location string
-  const locationString = locationArray.join(', ');
-
-  return locationString;
-}
+import { DateInfoType } from '../types/resume_json.types';
 
 export const getFullName = (firstName, lastName) => {
   return [firstName, lastName]
@@ -20,11 +8,10 @@ export const getFullName = (firstName, lastName) => {
     .join(',');
 };
 
-export const getformatedDate = (start: string, end: string) => {
-  return [start, end]
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .join('-');
+export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {
+  const startDate = [start?.month, start?.year].filter(Boolean).join('/');
+  const endDate = [end?.month, end?.year].filter(Boolean).join('/');
+  return [startDate, endDate].filter(Boolean).join(' - ');
 };
 
 export function getTimeDifference(date1: string, date2: string) {

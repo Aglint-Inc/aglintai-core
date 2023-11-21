@@ -79,6 +79,7 @@ export * from "./CandidateDetailsCard";
 export * from "./CandidateDialog";
 export * from "./CandidateEducation";
 export * from "./CandidateEducationCard";
+export * from "./CandidateEmpty";
 export * from "./CandidateExperience";
 export * from "./CandidateExperienceCard";
 export * from "./CandidateFilter";
