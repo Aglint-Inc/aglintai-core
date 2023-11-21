@@ -16,4 +16,5 @@ export const pageRoutes = Object.freeze({
   COMPANYPOSTINGS: '/company-postings/',
   SUPPORT: '/support',
   CREATEJOB: '/jobs/new',
+  ASSISTANT: '/assistant',
 });

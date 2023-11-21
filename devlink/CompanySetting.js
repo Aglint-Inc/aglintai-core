@@ -5,6 +5,7 @@ import { CompanyInfo } from "./CompanyInfo";
 import { EmailTemplateCards } from "./EmailTemplateCards";
 import { CreateNewEmailCard } from "./CreateNewEmailCard";
 import { AssesmentSetting } from "./AssesmentSetting";
+import { AssisstantSettings } from "./AssisstantSettings";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -27,6 +28,9 @@ export function CompanySetting({
   onClickTeam = {},
   isTeamVisible = true,
   slotAssesmentSetting,
+  onclickAssessment = {},
+  onclickAssisstant = {},
+  slotAssisstantSettings,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -3457,12 +3461,25 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 5"
+              {...onclickAssessment}
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
                 {"Assessment Settings"}
+              </_Builtin.Block>
+            </_Builtin.TabsLink>
+            <_Builtin.TabsLink
+              className={_utils.cx(_styles, "company-tab-link")}
+              data-w-tab="Tab 6"
+              {...onclickAssisstant}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Assisstant"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
@@ -3563,6 +3580,11 @@ export function CompanySetting({
             <_Builtin.TabsPane tag="div" data-w-tab="Tab 5">
               <_Builtin.Block tag="div">
                 {slotAssesmentSetting ?? <AssesmentSetting />}
+              </_Builtin.Block>
+            </_Builtin.TabsPane>
+            <_Builtin.TabsPane tag="div" data-w-tab="Tab 6">
+              <_Builtin.Block tag="div">
+                {slotAssisstantSettings ?? <AssisstantSettings />}
               </_Builtin.Block>
             </_Builtin.TabsPane>
           </_Builtin.TabsContent>

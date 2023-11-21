@@ -11,31 +11,23 @@ import React, {
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 let intervalId;
-let setTime;
+// let setTime;
 
 const JobAssistantContext = createContext();
 const useJobAssistantContext = () => useContext(JobAssistantContext);
 const firstMessage = 'Yes, please';
 function JobAssistantProvider({ children }) {
-  const [jobDetails, setJobDetails] = useState({});
+  // const {recruiter}
+  const [companyDetails, setCompanyDetails] = useState({});
   const [messages, setMessages] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (router.query?.job_id) {
-      getJobDetails();
+    if (router.query?.company_id) {
+      getCompanyDetails();
 
-      // check before creating thread
-      if (localStorage.getItem('thread_id')) {
-        listMessages();
-      } else {
-        createThreat();
-      }
-      // create thread on reload
-      // createThreat();
-      // get assistants list
       getAssistants();
     }
   }, [router.isReady]);
@@ -59,7 +51,6 @@ function JobAssistantProvider({ children }) {
       ? inputRef?.current?.value
       : firstMessage;
     if (textMessage) {
-      clearInterval(intervalId);
       // set first message
       if (textMessage != firstMessage) {
         setMessages((pre) => [
@@ -127,24 +118,70 @@ function JobAssistantProvider({ children }) {
   async function createRun() {
     const { data } = await axios.post('/api/assistant/createRun', {
       thread_id: localStorage.getItem('thread_id'),
-      assistant_id: router.query.assistant_id,
+      assistant_id: companyDetails?.assistant_id,
     });
     if (!data) {
       toast.error('something went wrong!');
       listMessages();
     } else {
-      intervalId = setInterval(listMessages, 2000);
-      clearTimeout(setTime);
+      // intervalId = setInterval(listMessages, 2000);
 
-      setTime = setTimeout(() => {
-        clearInterval(intervalId);
-      }, 60000);
+      getRun(data);
     }
   }
+
+  async function getRun(data) {
+    const { data: run } = await axios.post('/api/assistant/getRun', {
+      thread_id: localStorage.getItem('thread_id'),
+      run_id: data.id,
+    });
+    if (run.status === 'in_progress' || run.status === 'queued') {
+      getRun(run);
+      return;
+    }
+
+    if (run?.required_action) {
+      const output =
+        run?.required_action.submit_tool_outputs.tool_calls[0].function
+          .arguments;
+
+      const { data: updatedThread } = await supabase
+        .from('threads')
+        .update(JSON.parse(output))
+        .eq('thread_id', localStorage.getItem('thread_id'))
+        .select();
+
+      if (updatedThread) {
+        const { data: submitRun } = await axios.post(
+          '/api/assistant/submitRun',
+          {
+            thread_id: localStorage.getItem('thread_id'),
+            run_id: data.id,
+            call_id: run?.required_action.submit_tool_outputs.tool_calls[0].id,
+            output: output,
+          },
+        );
+        if (submitRun) {
+          intervalId = setInterval(listMessages, 3000);
+        }
+      }
+    } else {
+      listMessages();
+    }
+  }
+
   ///////////////////////////////////////////////////////////
-  async function createThreat() {
+  async function createThreat(assistant) {
     const { data } = await axios.post('/api/assistant/createThread');
     localStorage.setItem('thread_id', data.id);
+
+    await supabase
+      .from('threads')
+      .insert({
+        thread_id: data.id,
+        assistant_id: assistant?.assistant_id,
+      })
+      .select();
   }
 
   //////////////////////////////////////////////////////////
@@ -163,12 +200,9 @@ function JobAssistantProvider({ children }) {
       metadata: item.metadata,
     }));
 
-    // if (data.length && data[0].content[0].text.value) {
-    //   clearInterval(intervalId);
-    // }
-    // if (data.length && data[0].content[0].text.value === '' && !intervalId) {
-    //   intervalId = setInterval(listMessages, 2000);
-    // }
+    if (data.length && data[0].content[0].text.value) {
+      clearInterval(intervalId);
+    }
 
     // console.log('messages', messages);
     if (messages.length) {
@@ -176,26 +210,37 @@ function JobAssistantProvider({ children }) {
         ...messages,
         {
           role: 'assistant',
-          value: `Hi there! I'm the AI assistant for ${jobDetails.company}. Can I assist you in finding a suitable job opportunity today?`,
+          value: `Hi there! I'm the AI assistant for ${companyDetails.name}. Can I assist you in finding a suitable job opportunity today?`,
           metadata: {},
         },
       ]);
     }
   }
   /////////////////////////////////////////////////////////
-  async function getJobDetails() {
+  async function getCompanyDetails() {
     const { data: job } = await supabase
-      .from('public_jobs')
+      .from('recruiter')
       .select()
-      .eq('id', router.query.job_id);
+      .eq('id', router.query.company_id);
     if (job) {
-      setJobDetails(job[0]);
+      setCompanyDetails(job[0]);
+      // check before creating thread
+      if (localStorage.getItem('thread_id')) {
+        listMessages();
+      } else {
+        createThreat(job[0]);
+      }
+      // create thread on reload
+      // createThreat();
+      // get assistants list
+    } else {
+      return null;
     }
   }
   return (
     <JobAssistantContext.Provider
       value={{
-        jobDetails,
+        companyDetails,
         messages,
         setMessages,
         inputRef,

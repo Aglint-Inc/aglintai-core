@@ -5,6 +5,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AssessmentSettings from './AssessmentSettings';
+import Assistant from './Assistant';
 import CompanyInfoComp from './CompanyInfoComp';
 import CompanyJdComp from './CompanyJdComp';
 import EmailTemplate from './EmailTemplate';
@@ -48,6 +49,7 @@ const CompanyDetailComp = () => {
           slotAssesmentSetting={
             <AssessmentSettings setIsSaving={setIsSaving} />
           }
+          slotAssisstantSettings={<Assistant />}
         />
       </YTransform>
     </>

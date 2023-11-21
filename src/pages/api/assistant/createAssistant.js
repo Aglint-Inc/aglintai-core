@@ -11,16 +11,40 @@ export default async function handler(req, res) {
     const assistant = await openai.beta.assistants.create({
       instructions: details.instructions,
       name: details.name,
-      tools: [{ type: 'code_interpreter' }],
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'getEmail',
+            parameters: {
+              type: 'object',
+              properties: {
+                user_name: {
+                  type: 'string',
+                  description: 'User name',
+                },
+                user_email: {
+                  type: 'string',
+                  description: 'User email',
+                },
+                user_phone: {
+                  type: 'number',
+                  description: 'User number',
+                },
+              },
+              required: ['user_email'],
+            },
+            description: 'Get the user name',
+          },
+        },
+      ],
       model: details.module,
     });
 
-    const assData = assistant.data;
-
-    res.status(200).send(assData);
+    res.status(200).send(assistant);
   } catch (error) {
     // console.log(error);
-    return error
+    return error;
   }
 }
 

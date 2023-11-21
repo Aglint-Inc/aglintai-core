@@ -16,4 +16,7 @@ declare function CompanySetting(props: {
   onClickTeam?: Types.Devlink.RuntimeProps;
   isTeamVisible?: Types.Visibility.VisibilityConditions;
   slotAssesmentSetting?: Types.Devlink.Slot;
+  onclickAssessment?: Types.Devlink.RuntimeProps;
+  onclickAssisstant?: Types.Devlink.RuntimeProps;
+  slotAssisstantSettings?: Types.Devlink.Slot;
 }): React.JSX.Element;
