@@ -48,6 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           experience_embedding: embeddings.filter(
             (emb) => emb.section == 'experience',
           )[0].embedding,
+          is_embedding: true,
         })
         .eq('application_id', req.body.application_id);
 
