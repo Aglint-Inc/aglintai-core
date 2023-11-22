@@ -1,158 +1,92 @@
 import axios from 'axios';
-import { isEmpty } from 'lodash';
 
-import { searchQueryToJson } from '@/src/utils/prompts/candidateDb/searchToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import {
-  CandidateSearchRes,
-  CandidateSearchState,
-} from './context/CandidateSearchProvider';
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { CandidateSearchState } from './context/CandidateSearchProvider';
 
-export function createJobSummary(queryJson: CandidateSearchState['queryJson']) {
-  let summary = '';
-
-  if (queryJson.jobTitles && queryJson.jobTitles.length > 0) {
-    summary += `Titles: ${queryJson.jobTitles.join(', ')} `;
-  }
-
-  if (queryJson.location && queryJson.location.length > 0) {
-    summary += `Location: ${queryJson.location.join(', ')} `;
-  }
-
-  if (queryJson.languages && queryJson.languages.length > 0) {
-    summary += `Languages: ${queryJson.languages.join(', ')} `;
-  }
-
-  if (queryJson.minExp || queryJson.maxExp) {
-    summary += `Experience: ${queryJson.minExp || 0} - ${
-      queryJson.maxExp || 'N/A'
-    } years `;
-  }
-
-  if (queryJson.universities && queryJson.universities.length > 0) {
-    summary += `Universities: ${queryJson.universities.join(', ')} `;
-  }
-
-  return summary;
-}
-
-export const candidateSearchByQuery = async (
-  searchQry: string,
-  jobIds: string[],
-  recruiterId: string,
-  profileLimit: number,
+export const getRelevantCndidates = async (
+  newQueryJson: CandidateSearchState['queryJson'],
+  job_ids: string[],
 ) => {
-  const resp = await searchQueryToJson(searchQry);
-
-  const newQueryJson: CandidateSearchState['queryJson'] = {
-    jobTitles: [...(resp.jobTitles || [])],
-    languages: [...(resp.spokenLanguages || [])],
-    location: [...(resp.locations || [])],
-    maxExp: resp.maxExperienceInYears || 0,
-    minExp: resp.minExperienceInYears || 0,
-    universities: [...(resp.universities || [])],
-    excludedCompanies: [],
-    prefferedCompanies: [],
+  let embeddings = {
+    skills: null,
+    education: null,
+    experience: null,
+    resume: null,
   };
 
-  const { result } = await getqueriedCandidates(
-    newQueryJson,
-    jobIds,
-    profileLimit,
-    searchQry,
-  );
+  const preqs = [
+    (async () => await getEmbedding(newQueryJson.skills.join(' ').trim()))(),
+    (async () =>
+      await getEmbedding(
+        [...newQueryJson.degrees, ...newQueryJson.universities]
+          .join(' ')
+          .trim(),
+      ))(),
+    (async () =>
+      await getEmbedding(
+        [
+          [newQueryJson.minExp, newQueryJson.maxExp]
+            .filter(Boolean)
+            .join(' years'),
+          ...newQueryJson.prefferedCompanies,
+        ].join(' '),
+      ))(),
+    (async () =>
+      await getEmbedding(
+        [
+          ...newQueryJson.jobTitles,
+          ...newQueryJson.languages,
+          ...newQueryJson.prefferedCompanies,
+          ...newQueryJson.location,
+        ]
+          .join(' ')
+          .trim(),
+      ))(),
+  ];
 
-  supabaseWrap(
-    await supabase.from('candidate_search_history').insert({
-      recruiter_id: recruiterId,
-      is_search_jd: false,
-      search_query: searchQry,
-    }),
-  );
+  const resp = await Promise.allSettled(preqs);
 
-  const newSearchState: CandidateSearchState = {
-    candidates: result,
-    queryJson: newQueryJson,
-    searchInfo: {
-      searchText: searchQry,
-      searchType: 'query',
-    },
-    maxProfiles: profileLimit,
-  };
+  embeddings.skills =
+    resp[0].status === 'fulfilled' &&
+    resp[0].value &&
+    resp[0].value.data[0].embedding;
 
-  return newSearchState;
-};
+  embeddings.education =
+    resp[1].status === 'fulfilled' &&
+    resp[1].value &&
+    resp[1].value.data[0].embedding;
 
-export const candidateSearchByJD = async (
-  jdText: string,
-  jobIds: string[],
-  recruiterId: string,
-  profileLimit: number,
-) => {
-  const resp = await searchQueryToJson(jdText);
+  embeddings.experience =
+    resp[2].status === 'fulfilled' &&
+    resp[2].value &&
+    resp[2].value.data[0].embedding;
 
-  const newQueryJson: CandidateSearchState['queryJson'] = {
-    jobTitles: [...resp.jobTitles],
-    languages: [...resp.spokenLanguages],
-    location: [...resp.locations],
-    maxExp: resp.maxExperienceInYears,
-    minExp: resp.minExperienceInYears,
-    universities: [...resp.universities],
-    excludedCompanies: [],
-    prefferedCompanies: [],
-  };
+  embeddings.resume =
+    resp[3].status === 'fulfilled' &&
+    resp[3].value &&
+    resp[3].value.data[0].embedding;
 
-  const { result } = await getqueriedCandidates(
-    newQueryJson,
-    jobIds,
-    profileLimit,
-  );
-
-  const newSearchState: CandidateSearchState = {
-    candidates: result,
-    queryJson: newQueryJson,
-    searchInfo: {
-      searchText: jdText,
-      searchType: 'jd',
-    },
-    maxProfiles: profileLimit,
-  };
-  supabaseWrap(
-    await supabase.from('candidate_search_history').insert({
-      recruiter_id: recruiterId,
-      is_search_jd: true,
-      search_query: jdText,
-    }),
-  );
-  return newSearchState;
-};
-
-export const getqueriedCandidates = async (
-  queryJson: CandidateSearchState['queryJson'],
-  jobIds,
-  profileLimit,
-  queryText = '',
-) => {
-  const summary = createJobSummary(queryJson);
-  const { data: emb } = await axios.post('/api/ai/create-embeddings', {
-    text: isEmpty(queryText) ? summary : queryText,
+  const { data: cands, error } = await supabase.rpc('calc_sim_score', {
+    edu_qry_emb: embeddings.education,
+    skill_qry_emb: embeddings.skills,
+    exp_qry_emb: embeddings.experience,
+    resume_qry_emb: embeddings.resume,
+    job_ids,
   });
-  const embedding = emb.data[0].embedding;
-  const result = supabaseWrap(
-    await supabase.rpc('match_job_applications', {
-      job_ids: jobIds,
-      match_count: profileLimit,
-      match_threshold: 0.5,
-      query_embedding: embedding,
-    }),
-  ) as CandidateSearchRes[];
 
-  const filteredres = result.filter(
-    (r) =>
-      Boolean(r.json_resume) && typeof r.json_resume.education !== 'object',
-  );
+  if (error) {
+    throw new Error(error.message);
+  }
 
-  return { result: filteredres, summary };
+  return cands.slice(0, 20);
+};
+
+const getEmbedding = async (str: string) => {
+  if (!str) return null;
+  const { data } = await axios.post('/api/ai/create-embeddings', {
+    text: str,
+  });
+
+  return data;
 };

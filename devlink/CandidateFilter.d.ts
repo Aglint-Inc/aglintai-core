@@ -20,4 +20,8 @@ declare function CandidateFilter(props: {
   slotUniversitySuggestion?: Types.Devlink.Slot;
   slotPreferredSuggestion?: Types.Devlink.Slot;
   slotExcludedSuggestion?: Types.Devlink.Slot;
+  slotSkillInput?: Types.Devlink.Slot;
+  slotSkillSuggestion?: Types.Devlink.Slot;
+  slotDegreeInput?: Types.Devlink.Slot;
+  slotDegreeSuggestion?: Types.Devlink.Slot;
 }): React.JSX.Element;

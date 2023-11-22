@@ -28,6 +28,10 @@ export function CandidateFilter({
   slotUniversitySuggestion,
   slotPreferredSuggestion,
   slotExcludedSuggestion,
+  slotSkillInput,
+  slotSkillSuggestion,
+  slotDegreeInput,
+  slotDegreeSuggestion,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -98,6 +102,19 @@ export function CandidateFilter({
               tag="div"
             >
               {slotJobRole ?? <JobPills />}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "filter-outer-wrappers")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{"Skill"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{slotSkillInput}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-583")}
+              tag="div"
+            >
+              {slotSkillSuggestion}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -222,6 +239,19 @@ export function CandidateFilter({
               tag="div"
             >
               {slotUniversitySuggestion ?? <JobPills />}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "filter-outer-wrappers")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{"Degree"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{slotDegreeInput}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-583")}
+              tag="div"
+            >
+              {slotDegreeSuggestion ?? <JobPills />}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

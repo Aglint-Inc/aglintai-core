@@ -1,49 +1,46 @@
-import { getAIResponse } from '../addNewJob';
+import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
-import { requestJson } from '../utils';
 
 interface JobDetails {
-  jobTitle: string;
-  jobLocation: string;
+  jobRoles: string[];
+  locations: string[];
+  skills: string[];
   spokenLanguagesMentioned: string[];
   requiredPreviousCompanies: string[];
   university: string[];
   minExperienceInYears: number;
   maxExperienceInYears: number;
+  degrees: string[];
 }
 
 export const searchJdToJson = async (searchQuery: string) => {
-  const schema: JobDetails = {
-    jobTitle: 'sample JobTitle',
-    jobLocation: 'sample Location',
-    spokenLanguagesMentioned: ['spanish ', 'hindi '],
-    requiredPreviousCompanies: ['Facebook', 'Mercedes'],
-    university: ['Harward', 'MIT'],
-    minExperienceInYears: 3,
-    maxExperienceInYears: 5,
-  };
-
   const prompt = [
     {
       role: 'system',
-      content: requestJson(
-        `
-        * Your given a job description detail. 
-        * your job is to extract the information from the JD.
-        * if the input is not valid return with empty values.
+      content: `extract from the given text and respond in json format:{
+        jobRoles: string [],
+        locations: string [],
+        skills: string [],
+        degrees: string [],
+        spokenLanguagesMentioned: string [],
+        requiredPreviousCompanies: string [],
+        university: string [],
+        minExperienceInYears: number,
+        maxExperienceInYears: number   
+      }.
+      
+      dont add any place holder state     
       `,
-        schema,
-      ),
     },
     {
       role: 'user',
       content: `
-      Here is the JD : 
+      text : 
       """ ${searchQuery} """.
       `,
     },
   ] as MessageType[];
 
-  const resp = await getAIResponse(prompt);
+  const resp = await extractJson(prompt);
   return JSON.parse(resp) as JobDetails;
 };

@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 
 import { JobDescriptionModal } from '@/devlink';
 
-import { useCandidateSearchCtx } from './context/CandidateSearchProvider';
+// import { useCandidateSearchCtx } from './context/CandidateSearchProvider';
 import AUIButton from '../Common/AUIButton';
 
 export const JDSearchModal = ({ setJdPopup, onClickSubmit }) => {
-  const { candidateSearchState } = useCandidateSearchCtx();
-  const defaultValue =
-    candidateSearchState.searchInfo.searchType === 'jd'
-      ? candidateSearchState.searchInfo.searchText
-      : '';
+  // const { candidateSearchState } = useCandidateSearchCtx();
+  const defaultValue = '';
+  // candidateSearchState.searchInfo.searchType === 'jd'
+  //   ? candidateSearchState.searchInfo.searchText
+  //   : '';
   const [jdText, setJdText] = useState(defaultValue);
 
   return (
