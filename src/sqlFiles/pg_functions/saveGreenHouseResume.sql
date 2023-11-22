@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.batchcalcresumejdscore()
+CREATE OR REPLACE FUNCTION public.saveGreenHouseResume()
  RETURNS jsonb
  LANGUAGE plpgsql
 AS $function$
@@ -13,18 +13,11 @@ BEGIN
     -- Loop through the selected application data
     FOR app_data IN (
        SELECT
-           ja.application_id AS application_id,
-           ja.candidate_id AS candidate_id,
-           ja.jd_score AS jd_score,
-           ja.resume AS resume,
-           ja.json_resume AS json_resume,
-           ja.resume_text AS resume_text,
-           jsonb_build_object('description', pj.description, 'skills', pj.skills, 'job_title', pj.job_title) AS jd_json,
-           0 as retry
-       FROM job_applications ja
-       JOIN public_jobs pj ON ja.job_id = pj.id
-       WHERE ja.api_status = 'not started' AND ja.resume IS NOT NULL
-       ORDER BY ja.created_at ASC
+           application_id AS application_id,
+           resume AS resume
+       FROM greenhouse_reference
+       WHERE resume_saved = false and resume is not null
+       ORDER BY created_at ASC
        LIMIT 50
     )
     LOOP
@@ -34,12 +27,12 @@ BEGIN
         -- Make the HTTP request for each application data
         SELECT
             net.http_post(
-                url := 'https://northamerica-northeast2-aglint-cloud-381414.cloudfunctions.net/process_resume_and_jd_v1',
+                url := 'https://preprod.aglinthq.com/api/greenhouse/saveResume',
                 body := request_results
             ) INTO request_results;
 
-        -- UPDATE job_applications
-        -- SET api_status = 'processing',processed_at = current_timestamp
+        -- UPDATE greenhouse_reference
+        -- SET resume_saved = true
         -- WHERE application_id = app_data.application_id;
         
         -- Append the request result to the result array
@@ -52,3 +45,5 @@ BEGIN
 END;
 $function$
 ;
+
+
