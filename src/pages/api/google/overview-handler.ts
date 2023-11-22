@@ -11,11 +11,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       console.log(req.body.length, 'applications length');
 
       const applications = req.body;
-      applications.map((application) => {
-        axios.post(`${url}`, {
-          application: application,
-        });
-      });
+      await Promise.all(
+        applications.map(async (application) => {
+          try {
+            await axios.post(`${url}`, {
+              application: application,
+            });
+            console.log(
+              'Request successful for application:',
+              application.application_id,
+            );
+          } catch (error) {
+            console.error(
+              'Error for application:',
+              application.application_id,
+              error.message,
+            );
+            // You might want to handle errors here
+          }
+        }),
+      );
       return res.status(200).send('success');
     } else {
       console.log('missing req body');
