@@ -20,6 +20,7 @@ export function CandidateDatabaseSearch({
   onClickClearHistory = {},
   slotCandidateHistoryCard,
   onClickSearch = {},
+  slotLottieSearch,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -71,6 +72,12 @@ export function CandidateDatabaseSearch({
                   {...onClickSearch}
                 >
                   <_Builtin.Block tag="div">{"Search"}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "icons")}
+                    tag="div"
+                  >
+                    {slotLottieSearch}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
