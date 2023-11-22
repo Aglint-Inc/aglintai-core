@@ -2,7 +2,11 @@ import { CircularProgress, Paper } from '@mui/material';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
-import { CandidateDatabaseSearch, CandidateHistoryCard } from '@/devlink';
+import {
+  CandidateDatabaseSearch,
+  CandidateHistoryCard,
+  ClearHistory,
+} from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
@@ -27,6 +31,7 @@ function CandidateSearchHistory() {
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isQrySearching, setIsQrySearching] = useState(false);
+  const [showDeletepopUp, setShowDeletePopup] = useState(false);
   const { jobsData } = useJobs();
   const router = useRouter();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
@@ -74,6 +79,8 @@ function CandidateSearchHistory() {
       setHistory([]);
     } catch (err) {
       toast.error(API_FAIL_MSG);
+    } finally {
+      setShowDeletePopup(false);
     }
   };
 
@@ -176,7 +183,7 @@ function CandidateSearchHistory() {
         }
         onClickClearHistory={{
           onClick: () => {
-            deleteAllHistory();
+            history.length > 0 && setShowDeletePopup(true);
           },
         }}
         onClickSearchJobDescription={{
@@ -200,6 +207,27 @@ function CandidateSearchHistory() {
       >
         <Paper>
           <JDSearchModal setJdPopup={setIsJdPopUPopOpen} />
+        </Paper>
+      </MuiPopup>
+      <MuiPopup
+        props={{
+          open: showDeletepopUp,
+          onClose: () => {
+            setShowDeletePopup(false);
+          },
+        }}
+      >
+        <Paper>
+          <ClearHistory
+            onClickCancel={{
+              onClick: () => {
+                setShowDeletePopup(false);
+              },
+            }}
+            onClickClearHistory={{
+              onClick: deleteAllHistory,
+            }}
+          />
         </Paper>
       </MuiPopup>
     </>
