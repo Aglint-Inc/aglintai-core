@@ -1,6 +1,6 @@
-import { Paper, Slider, Stack } from '@mui/material';
+import { Slider } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { cloneDeep, isNumber, set } from 'lodash';
+import { cloneDeep, set } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -11,6 +11,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import FilterInput from './FilterInput';
 import {
   CandidateSearchState,
   initialState,
@@ -464,71 +465,6 @@ const SearchFilter = ({ handleDialogClose }) => {
         onClick: handleResetFilter,
       }}
     />
-  );
-};
-
-const FilterInput = ({
-  type = 'string',
-  handleAdd,
-  path,
-}: {
-  type?: 'string' | 'number';
-  // eslint-disable-next-line no-unused-vars
-  handleAdd: (s: any) => void;
-  path: string;
-}) => {
-  const [input, setInput] = useState<string | number>(
-    type == 'number' ? 0 : '',
-  );
-
-  const handleSubmit = () => {
-    if (String(input).length === 0) return;
-    handleAdd(input);
-    type === 'string' && setInput('');
-    type === 'number' && setInput(0);
-  };
-  return (
-    <>
-      <div style={{ position: 'relative' }}>
-        <UITextField
-          value={input ?? ''}
-          onChange={(e) => {
-            if (type === 'number' && isNumber(e.target.value)) {
-              setInput(Number(e.target.value));
-            } else {
-              setInput(e.target.value);
-            }
-          }}
-          placeholder={dialogFormContent[String(path)]?.placeholder}
-          type={type}
-          InputProps={{
-            onKeyDown: (e) => {
-              if (e.code === 'Enter') {
-                handleSubmit();
-              }
-            },
-          }}
-        />
-        {String(input).length > 0 && (
-          <Paper
-            sx={{
-              mt: 0.5,
-              px: 1,
-              py: 0.5,
-              position: 'absolute',
-              width: '100%',
-            }}
-          >
-            <Stack gap={1} onClick={() => handleSubmit()} width={'100%'}>
-              <UITypography type='small' fontBold='normal'>
-                Press Enter to add
-              </UITypography>
-              <UITypography> {input}</UITypography>
-            </Stack>
-          </Paper>
-        )}
-      </div>
-    </>
   );
 };
 

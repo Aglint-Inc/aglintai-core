@@ -8,6 +8,7 @@ export * from "./devlink";
 export * from "./ActivityFlowCard";
 export * from "./AddDepartmentPop";
 export * from "./AddLocationPop";
+export * from "./AddPreference";
 export * from "./AddRolesPop";
 export * from "./AddScreeningQuestion";
 export * from "./AddSocialLink";

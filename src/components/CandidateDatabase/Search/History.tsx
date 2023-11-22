@@ -133,15 +133,6 @@ function CandidateSearchHistory() {
                     getMatchingCandsFromQry();
                   }
                 },
-                endAdornment: isQrySearching && (
-                  <>
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: palette.grey[400] }}
-                    />
-                  </>
-                ),
               }}
             />
           </>
@@ -165,7 +156,11 @@ function CandidateSearchHistory() {
                     isSearchByJobVisible={hist.is_search_jd}
                     isSearchByTypeVisible={false}
                     onClickDelete={{
-                      onClick: () => handleDeleteHistory(hist.id),
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleDeleteHistory(hist.id);
+                      },
                     }}
                     textHeader={queryJsonToTitle(hist.query_json as any)}
                     textPosted={diffrence}
@@ -196,6 +191,17 @@ function CandidateSearchHistory() {
             getMatchingCandsFromQry();
           },
         }}
+        slotLottieSearch={
+          isQrySearching && (
+            <>
+              <CircularProgress
+                color='inherit'
+                size={'15px'}
+                sx={{ color: palette.grey[400] }}
+              />
+            </>
+          )
+        }
       />
       <MuiPopup
         props={{
