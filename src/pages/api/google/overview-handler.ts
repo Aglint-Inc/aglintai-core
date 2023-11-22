@@ -12,10 +12,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const applications = req.body;
       applications.map((application) => {
-        axios.post(`${url}/api/overview/overview-palm`, {
+        axios.post(`${url}`, {
           application: application,
         });
       });
+      return res.status(200).send('success');
     } else {
       console.log('missing req body');
       return res.status(400).send('missing req body');
