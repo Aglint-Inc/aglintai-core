@@ -21,22 +21,16 @@ function JobAssistantProvider({ children }) {
   const [companyDetails, setCompanyDetails] = useState({});
   const [messages, setMessages] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [closeChat, setCloseChat] = useState(false);
   const router = useRouter();
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (router.query?.company_id) {
       getCompanyDetails();
-
-      getAssistants();
     }
   }, [router.isReady]);
 
-  async function getAssistants() {
-    const { data } = await axios.post('api/assistant/listAssistant');
-    // eslint-disable-next-line no-console
-    console.log('assistants', data);
-  }
   /////////////////////////////////////////////////////////////
   // const handleUpload = async () => {
 
@@ -145,25 +139,29 @@ function JobAssistantProvider({ children }) {
         run?.required_action.submit_tool_outputs.tool_calls[0].function
           .arguments;
 
-      const { data: updatedThread } = await supabase
+      await supabase
         .from('threads')
         .update(JSON.parse(output))
         .eq('thread_id', localStorage.getItem('thread_id'))
         .select();
 
-      if (updatedThread) {
-        const { data: submitRun } = await axios.post(
-          '/api/assistant/submitRun',
-          {
-            thread_id: localStorage.getItem('thread_id'),
-            run_id: data.id,
-            call_id: run?.required_action.submit_tool_outputs.tool_calls[0].id,
-            output: output,
-          },
-        );
-        if (submitRun) {
-          intervalId = setInterval(listMessages, 3000);
+      const { data: submitRun } = await axios.post('/api/assistant/submitRun', {
+        thread_id: localStorage.getItem('thread_id'),
+        run_id: data.id,
+        call_id: run?.required_action.submit_tool_outputs.tool_calls[0].id,
+        output: output,
+      });
+      if (submitRun) {
+        if (JSON.parse(output).chat_end) {
+          setCloseChat(JSON.parse(output).chat_end);
+          localStorage.removeItem('thread_id');
+          setMessages((pre) => {
+            pre[0].value = 'Your application has been submitted successfully!';
+            return [...pre];
+          });
+          return;
         }
+        intervalId = setInterval(listMessages, 3000);
       }
     } else {
       listMessages();
@@ -247,6 +245,7 @@ function JobAssistantProvider({ children }) {
         createNewMessage,
         selectedFile,
         setSelectedFile,
+        closeChat,
       }}
     >
       {children}

@@ -97,6 +97,7 @@ export * from "./CddProfileInfo";
 export * from "./ChatBot";
 export * from "./ChatBox";
 export * from "./ChatIcon";
+export * from "./ChatInput";
 export * from "./ChatWelcome";
 export * from "./Checkbox";
 export * from "./CjCheckbox";

@@ -86,6 +86,7 @@ function CandidateSearchHistory() {
       const cndates = (await getRelevantCndidates(
         p,
         jobsData.jobs.map((j) => j.id),
+        25,
       )) as any;
       const [history] = supabaseWrap(
         await supabase

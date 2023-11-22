@@ -104,8 +104,20 @@
 
 .cb-chat-body-main-wrapper {
   display: flex;
+  overflow: scroll;
   max-width: 700px;
   margin-right: auto;
   margin-left: auto;
   flex-direction: column-reverse;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
