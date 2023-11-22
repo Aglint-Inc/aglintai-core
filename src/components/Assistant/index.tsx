@@ -62,9 +62,9 @@ function Assistant() {
       metadata: item.metadata,
     }));
     setSelectedObj({
-      name: thread.user_name,
-      email: thread.user_email,
-      phone: thread.user_phone,
+      name: thread.candidate_name,
+      email: thread.candidate_email,
+      phone: thread.candidate_phone,
       time: dayjs(thread.created_at).format('DD MMM, YYYY'),
       messages: messages,
     });
@@ -113,23 +113,23 @@ function Assistant() {
       slotCandidateList={listOfThreads
         .filter((ele) =>
           selectedName
-            ? ele.user_name &&
-              ele.user_name.toLowerCase().includes(selectedName.toLowerCase())
+            ? ele.candidate_name &&
+              ele.candidate_name.toLowerCase().includes(selectedName.toLowerCase())
             : ele,
         )
         .map((thread, i) => {
-          if (thread.user_email)
+          if (thread.candidate_email)
             return (
               <ChatboxCandidateListItem
-                isSelected={selectedObj.email === thread.user_email}
+                isSelected={selectedObj.email === thread.candidate_email}
                 onclickProps={{
                   onClick: () => {
                     handleCardClick(thread);
                   },
                 }}
                 key={i}
-                name={capitalize(thread.user_name)}
-                email={thread.user_email}
+                name={capitalize(thread.candidate_name)}
+                email={thread.candidate_email}
                 date={dayjs(thread.created_at).format('DD MMM, YYYY')}
               />
             );

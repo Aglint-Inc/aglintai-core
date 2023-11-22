@@ -1,15 +1,20 @@
-import { Paper } from '@mui/material';
+import { CircularProgress, Paper } from '@mui/material';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
 import { CandidateDatabaseSearch, CandidateHistoryCard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
+import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { CandidateSearchState } from '../context/CandidateSearchProvider';
 import { JDSearchModal } from '../JDSearchModal';
+import { getRelevantCndidates } from '../utils';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
 import {
@@ -19,46 +24,16 @@ import {
 
 function CandidateSearchHistory() {
   const { recruiter } = useAuthDetails();
-  const [searchQuery, setSearchQuery] = useState('');
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isQrySearching, setIsQrySearching] = useState(false);
+  const { jobsData } = useJobs();
   const router = useRouter();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
   useEffect(() => {
     getHistory();
   }, [recruiter]);
 
-  // const createCandidateEmbedding = async (candidate: JobApplcationDB) => {
-  //   const { data: emb } = await axios.post('/api/ai/create-embeddings', {
-  //     text: candidate.resume_text,
-  //   });
-  //   const embedding = emb.data[0].embedding;
-  //   supabaseWrap(
-  //     await supabase
-  //       .from('job_applications')
-  //       .update({
-  //         resume_embedding: embedding,
-  //       })
-  //       .eq('application_id', candidate.application_id),
-  //   );
-  // };
-
-  // const createEmbeddings = async (jobId: string) => {
-  //   try {
-  //     const candidates = supabaseWrap(
-  //       await supabase
-  //         .from('job_applications')
-  //         .select()
-  //         .eq('job_id', jobId)
-  //         .not('resume_text', 'is', null),
-  //     ) as JobApplcationDB[];
-
-  //     for (let cand of candidates) {
-  //       await createCandidateEmbedding(cand);
-  //     }
-  //   } catch (err) {
-  //     toast.error(API_FAIL_MSG);
-  //   }
-  // };
   const getHistory = async () => {
     try {
       const history = supabaseWrap(
@@ -102,6 +77,38 @@ function CandidateSearchHistory() {
     }
   };
 
+  const getMatchingCandsFromQry = async () => {
+    try {
+      if (isQrySearching) return;
+      setIsQrySearching(true);
+      const p = await searchJdToJson(searchQuery);
+
+      const cndates = (await getRelevantCndidates(
+        p,
+        jobsData.jobs.map((j) => j.id),
+        25,
+      )) as any;
+      const [history] = supabaseWrap(
+        await supabase
+          .from('candidate_search_history')
+          .insert({
+            recruiter_id: recruiter.id,
+            is_search_jd: false,
+            query_json: p,
+            search_results: cndates,
+          })
+          .select(),
+      );
+      router.push(`/candidates/search?searchQryId=${history.id}`);
+    } catch (err) {
+      // console.log(err);
+      toast.error(API_FAIL_MSG);
+      //
+    } finally {
+      setIsQrySearching(false);
+    }
+  };
+
   return (
     <>
       <CandidateDatabaseSearch
@@ -116,18 +123,22 @@ function CandidateSearchHistory() {
               InputProps={{
                 onKeyDown: (e) => {
                   if (e.code === 'Enter') {
-                    router.push(`/candidates/search?query=${searchQuery}`);
+                    getMatchingCandsFromQry();
                   }
                 },
+                endAdornment: isQrySearching && (
+                  <>
+                    <CircularProgress
+                      color='inherit'
+                      size={'15px'}
+                      sx={{ color: palette.grey[400] }}
+                    />
+                  </>
+                ),
               }}
             />
           </>
         }
-        onClickClearHistory={{
-          onClick: () => {
-            deleteAllHistory();
-          },
-        }}
         slotCandidateHistoryCard={
           <>
             {history
@@ -149,18 +160,13 @@ function CandidateSearchHistory() {
                     onClickDelete={{
                       onClick: () => handleDeleteHistory(hist.id),
                     }}
-                    textHeader={hist.search_query}
+                    textHeader={queryJsonToTitle(hist.query_json as any)}
                     textPosted={diffrence}
                     onClickCard={{
                       onClick: () => {
-                        if (hist.is_search_jd) {
-                          localStorage.setItem(`jd`, hist.search_query);
-                          router.push(`/candidates/search?isJDSearch=${true}`);
-                        } else {
-                          router.push(
-                            `/candidates/search?query=${hist.search_query}`,
-                          );
-                        }
+                        router.push(
+                          `/candidates/search?searchQryId=${hist.id}`,
+                        );
                       },
                     }}
                   />
@@ -168,6 +174,11 @@ function CandidateSearchHistory() {
               })}
           </>
         }
+        onClickClearHistory={{
+          onClick: () => {
+            deleteAllHistory();
+          },
+        }}
         onClickSearchJobDescription={{
           onClick: () => {
             setIsJdPopUPopOpen(true);
@@ -175,7 +186,7 @@ function CandidateSearchHistory() {
         }}
         onClickSearch={{
           onClick: () => {
-            router.push(`/candidates/search?query=${searchQuery}`);
+            getMatchingCandsFromQry();
           },
         }}
       />
@@ -188,13 +199,7 @@ function CandidateSearchHistory() {
         }}
       >
         <Paper>
-          <JDSearchModal
-            setJdPopup={setIsJdPopUPopOpen}
-            onClickSubmit={(str) => {
-              localStorage.setItem(`jd`, str);
-              router.push(`/candidates/search?isJDSearch=${true}`);
-            }}
-          />
+          <JDSearchModal setJdPopup={setIsJdPopUPopOpen} />
         </Paper>
       </MuiPopup>
     </>
@@ -202,3 +207,7 @@ function CandidateSearchHistory() {
 }
 
 export default CandidateSearchHistory;
+
+const queryJsonToTitle = (queryJson: CandidateSearchState['queryJson']) => {
+  return queryJson.jobTitles.join(', ') + queryJson.skills.join(', ');
+};

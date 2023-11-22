@@ -1,3 +1,7 @@
+import { isArray } from 'lodash';
+
+import { CandidateSearchState } from '@/src/components/CandidateDatabase/context/CandidateSearchProvider';
+
 import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
 
@@ -41,6 +45,31 @@ export const searchJdToJson = async (searchQuery: string) => {
     },
   ] as MessageType[];
 
-  const resp = await extractJson(prompt);
-  return JSON.parse(resp) as JobDetails;
+  const resp = JSON.parse(await extractJson(prompt)) as JobDetails;
+
+  const p: CandidateSearchState['queryJson'] = {
+    jobTitles: [...resp.jobRoles],
+    universities: [...resp.university],
+    prefferedCompanies: [...resp.requiredPreviousCompanies],
+    excludedCompanies: [],
+    languages: [...resp.spokenLanguagesMentioned],
+    location: [...resp.locations],
+    maxExp: resp.maxExperienceInYears,
+    minExp: resp.minExperienceInYears,
+    skills: [...resp.skills],
+    degrees: [...resp.degrees],
+  };
+
+  // if (p.jobTitles.length > 0 && p.jobTitles.length < 5) {
+  //   const j = await similarJobs(p.jobTitles);
+  //   p.jobTitles = [...p.jobTitles, ...j.related_jobs];
+  // }
+
+  Object.keys(p).forEach((k) => {
+    if (isArray(p[String(k)])) {
+      p[String(k)] = p[String(k)].filter((s) => Boolean(s.trim()));
+    }
+  });
+
+  return p;
 };

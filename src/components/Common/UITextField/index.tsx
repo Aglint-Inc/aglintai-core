@@ -30,7 +30,8 @@ type Props = {
   fullWidth?: boolean;
   rest?: any;
   onSelect?: () => void;
-  onFocus?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onFocus?: (e: any) => void;
   onBlur?: () => void;
   InputProps?:
     | Partial<FilledInputProps>
@@ -142,9 +143,9 @@ const UITextField = React.forwardRef(
           InputProps={{
             ...InputProps,
           }}
-          onFocus={() => {
+          onFocus={(e) => {
             setfocus(true);
-            if (onFocus) onFocus();
+            if (onFocus) onFocus(e.currentTarget);
           }}
           onBlur={() => {
             setfocus(false);

@@ -24,6 +24,7 @@ const SelectedCandidate = ({
   onClickPrev: () => void;
   onClickClose: () => void;
 }) => {
+  if (!candidate) return <></>;
   let location = '';
   if (typeof candidate.json_resume.basics.location === 'string') {
     location = candidate.json_resume.basics.location;

@@ -1,11 +1,12 @@
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Chip, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Alert, Chip, Stack, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import {
   AssistantChat,
   ChatBox,
   ChatIcon,
+  ChatInput,
   ChatWelcome,
   UserChat,
 } from '@/devlink';
@@ -22,13 +23,17 @@ function ChatMessages() {
     inputRef,
     selectedFile,
     setSelectedFile,
+    closeChat,
   } = useJobAssistantContext();
   const [openChat, setOpenChat] = useState(false);
 
   const handleFileRemove = () => {
     setSelectedFile(null);
   };
-
+  useEffect(() => {
+    const TypoElement = document.getElementById('chat_scroll');
+    TypoElement.scrollTop = TypoElement.scrollHeight;
+  }, [messages]);
   return (
     <Stack
       sx={{
@@ -54,69 +59,87 @@ function ChatMessages() {
           pr={'30px'}
         >
           <ChatBox
+            onClickScroll={{
+              id: 'chat_scroll',
+            }}
             textCompanyName={companyDetails?.name}
             slotLogo={
               <MuiAvatar
-                height='30px'
-                width='30px'
+                height='40px'
+                width='40px'
                 src={companyDetails?.logo}
               />
             }
             slotChat={<ChatConversation />}
-            slotTypeInput={
-              <Stack>
-                <Stack alignItems={'center'} direction={'row'}>
-                  <TextField
-                    variant='standard'
-                    onKeyDownCapture={(e) => {
-                      if (e.ctrlKey && e.key === 'Enter') {
-                        createNewMessage();
-                      }
+            slotChatInput={
+              <>
+                {closeChat ? (
+                  <>
+                    <Alert severity='success'>
+                      Application submitted successfully!
+                    </Alert>
+                  </>
+                ) : (
+                  <ChatInput
+                    isSlotTypingVisible={messages.length}
+                    onClickAttach={{
+                      onClick: () => {
+                        document.getElementById('chat-file').click();
+                      },
                     }}
-                    inputProps={{ maxLength: totalCharacter }}
-                    inputRef={inputRef}
-                    fullWidth
-                    multiline
-                    minRows={1}
-                    maxRows={2}
-                    placeholder='Enter your message here (cmd+enter)'
+                    onClickSend={{
+                      onClick: () => {
+                        createNewMessage();
+                      },
+                    }}
+                    slotTypeInput={
+                      <Stack>
+                        <Stack alignItems={'center'} direction={'row'}>
+                          <TextField
+                            variant='standard'
+                            onKeyDownCapture={(e) => {
+                              if (e.ctrlKey && e.key === 'Enter') {
+                                createNewMessage();
+                              }
+                            }}
+                            inputProps={{ maxLength: totalCharacter }}
+                            inputRef={inputRef}
+                            fullWidth
+                            multiline
+                            minRows={1}
+                            maxRows={2}
+                            placeholder='Enter your message here (cmd+enter)'
+                          />
+                        </Stack>
+
+                        {selectedFile && (
+                          <Stack
+                            height={'40px'}
+                            alignItems={'center'}
+                            direction={'row'}
+                          >
+                            <Chip
+                              sx={{
+                                maxWidth: '200px',
+                                '& span': {
+                                  // display: `-webkit-box !important`,
+                                  overflow: 'hidden',
+                                  WebkitLineClamp: 1,
+                                  WebkitBoxOrient: 'vertical',
+                                },
+                              }}
+                              variant='filled'
+                              label={selectedFile.name}
+                              onDelete={handleFileRemove}
+                            />
+                          </Stack>
+                        )}
+                      </Stack>
+                    }
                   />
-                </Stack>
-                {selectedFile && (
-                  <Stack
-                    height={'40px'}
-                    alignItems={'center'}
-                    direction={'row'}
-                  >
-                    <Chip
-                      sx={{
-                        maxWidth: '200px',
-                        '& span': {
-                          // display: `-webkit-box !important`,
-                          overflow: 'hidden',
-                          WebkitLineClamp: 1,
-                          WebkitBoxOrient: 'vertical',
-                        },
-                      }}
-                      variant='filled'
-                      label={selectedFile.name}
-                      onDelete={handleFileRemove}
-                    />
-                  </Stack>
                 )}
-              </Stack>
+              </>
             }
-            onClickAttach={{
-              onClick: () => {
-                document.getElementById('chat-file').click();
-              },
-            }}
-            onClickSend={{
-              onClick: () => {
-                createNewMessage();
-              },
-            }}
-            isSlotTypingVisible={messages.length}
           />
         </Stack>
         <Stack alignItems={'end'}>

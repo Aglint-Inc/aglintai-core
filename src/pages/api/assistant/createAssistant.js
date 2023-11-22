@@ -15,27 +15,41 @@ export default async function handler(req, res) {
         {
           type: 'function',
           function: {
-            name: 'getEmail',
+            name: 'getDetails',
             parameters: {
               type: 'object',
               properties: {
-                user_name: {
+                candidate_name: {
                   type: 'string',
-                  description: 'User name',
+                  description: 'Candidate name',
                 },
-                user_email: {
+                candidate_email: {
                   type: 'string',
-                  description: 'User email',
+                  description: 'Candidate email',
                 },
-                user_phone: {
-                  type: 'number',
-                  description: 'User number',
+                candidate_phone: {
+                  type: 'string',
+                  description: 'Candidate number',
                 },
               },
-              required: ['user_email'],
+              required: ['candidate_email'],
             },
-            description: 'Get the user name',
+            description: 'Get the candidate details',
           },
+        },
+        {
+          name: 'chatEnd',
+          parameters: {
+            type: 'object',
+            properties: {
+              chat_end: {
+                type: 'boolean',
+                description: 'true',
+              },
+            },
+            required: ['chat_end'],
+          },
+          description: 'Close conversation',
         },
       ],
       model: details.module,
