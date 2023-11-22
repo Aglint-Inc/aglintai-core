@@ -21,7 +21,9 @@ const whiteListedEndPoints = [
   '/api/assistant/createThread',
   '/api/assistant/createRun',
   '/api/assistant/createAssistant',
-  '/api/ai/overview-palm',
+  '/api/google/overview',
+  '/api/google/resume',
+  '/api/google/overview-handler',
 ];
 
 export async function middleware(request) {
