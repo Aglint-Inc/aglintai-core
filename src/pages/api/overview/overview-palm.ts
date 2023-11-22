@@ -12,7 +12,7 @@ const client = new TextServiceClient({
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const resume_json = req.body.resume_json;
+    const resume_json = req.body.application.json_resume;
 
     const input = `Here is resume_json : ${JSON.stringify(resume_json)} .
                     Generate a 2 line overview of this resume provide above. Try to mention current job title, years of experience and some skills`;
@@ -49,6 +49,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       })
       .then((result) => {
+        // eslint-disable-next-line no-console
+        console.log(result[0].candidates[0].output);
         res.status(200).json(result[0].candidates[0].output);
       });
   } catch (error) {
