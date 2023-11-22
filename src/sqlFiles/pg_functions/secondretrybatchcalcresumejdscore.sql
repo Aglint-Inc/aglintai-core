@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.batchcalcresumejdscore()
+CREATE OR REPLACE FUNCTION public.secondretrybatchcalcresumejdscore()
  RETURNS jsonb
  LANGUAGE plpgsql
 AS $function$
@@ -20,12 +20,12 @@ BEGIN
            ja.json_resume AS json_resume,
            ja.resume_text AS resume_text,
            jsonb_build_object('description', pj.description, 'skills', pj.skills, 'job_title', pj.job_title) AS jd_json,
-           0 as retry
+           2 as retry
        FROM job_applications ja
        JOIN public_jobs pj ON ja.job_id = pj.id
-       WHERE ja.api_status = 'not started' AND ja.resume IS NOT NULL
+       WHERE ja.api_status in ('failed','processing')  and retry >= 1 and retry < 2
        ORDER BY ja.created_at ASC
-       LIMIT 50
+       LIMIT 10
     )
     LOOP
         -- Convert the row to JSON
@@ -38,9 +38,11 @@ BEGIN
                 body := request_results
             ) INTO request_results;
 
-        -- UPDATE job_applications
-        -- SET api_status = 'processing',processed_at = current_timestamp
-        -- WHERE application_id = app_data.application_id;
+        UPDATE job_applications
+            SET 
+                processed_at = CURRENT_TIMESTAMP,
+                retry = 2
+            WHERE application_id = app_data.application_id;
         
         -- Append the request result to the result array
         result := result || jsonb_build_object('request_result', request_results);
@@ -52,3 +54,7 @@ BEGIN
 END;
 $function$
 ;
+
+
+
+

@@ -3,6 +3,8 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/google/overview`;
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.body && Array.isArray(req.body)) {
@@ -10,10 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const applications = req.body;
       applications.map((application) => {
-        axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/overview/overview-palm`,
-          { application: application },
-        );
+        axios.post(`${url}/api/overview/overview-palm`, {
+          application: application,
+        });
       });
     } else {
       console.log('missing req body');
