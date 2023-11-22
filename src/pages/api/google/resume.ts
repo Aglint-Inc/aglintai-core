@@ -2,7 +2,24 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const { TextServiceClient } = require('@google-ai/generativelanguage');
 const MODEL_NAME = 'tunedModels/parser-imv5crzkxdlm';
-const client = new TextServiceClient();
+
+const { GoogleAuth } = require('google-auth-library');
+
+const serviceAccountKey = {
+  client_id:
+    '183413559779-u49tu5gl0pu5b6q3djtg1cit13ujrvlv.apps.googleusercontent.com',
+  client_secret: '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',
+  refresh_token:
+    '1//0gkMz6ajEWbW2CgYIARAAGBASNwF-L9IrOavGOes5yNEIsk61W_xM-O7dRDEyN9a2J5vsK8Fp-yEdpRAOTAtEIJIgvNWkrs2L6oI',
+  type: 'authorized_user',
+};
+
+const client = new TextServiceClient({
+  authClient: new GoogleAuth({
+    credentials: serviceAccountKey,
+    scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+  }),
+});
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
