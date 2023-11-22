@@ -13,6 +13,7 @@ export interface CandidateSearchRes {
   json_resume: JsonResume;
   similarity: number;
   profile_image?: string;
+  resume_link: string;
 }
 
 export type CandidateSearchState = {
