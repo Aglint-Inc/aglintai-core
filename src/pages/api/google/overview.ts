@@ -52,11 +52,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       .then(async (result) => {
         // eslint-disable-next-line no-console
-        const overview = result[0].candidates[0].output;
-        await supabase
-          .from('job_applications')
-          .update({ json_resume: { ...resume_json, overview: overview } });
-        return res.status(200).json(result[0].candidates[0].output);
+        if (result[0]?.candidates[0]?.output) {
+          const overview = result[0].candidates[0].output;
+          const { error } = await supabase
+            .from('job_applications')
+            .update({ json_resume: { ...resume_json, overview: overview } })
+            .eq('application_id', req.body.application.application_id);
+          if (!error) {
+            console.log(
+              result[0].candidates[0].output,
+              req.body.application.application_id,
+            );
+            return res.status(200).json(result[0].candidates[0].output);
+          } else {
+            console.log(error, req.body.application.application_id);
+            return res.status(200).send(error.message);
+          }
+        }
       });
   } catch (error) {
     res.status(500).send(error.message);
