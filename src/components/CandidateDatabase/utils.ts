@@ -27,6 +27,7 @@ export const getRelevantCndidates = async (
     (async () =>
       await getEmbedding(
         [
+          ...newQueryJson.jobTitles,
           [newQueryJson.minExp, newQueryJson.maxExp]
             .filter(Boolean)
             .join(' years'),
