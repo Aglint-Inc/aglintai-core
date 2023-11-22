@@ -1,23 +1,29 @@
-import { Slider } from '@mui/material';
+import { Paper, Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, isNumber, set } from 'lodash';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { CandidateFilter, JobPills } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import {
   CandidateSearchState,
+  initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
 import { getRelevantCndidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 type FilterType = {
   profileLimit: number;
@@ -25,17 +31,21 @@ type FilterType = {
 
 const SearchFilter = ({ handleDialogClose }) => {
   const { jobsData } = useJobs();
-  const { candidateSearchState, updateState } = useCandidateSearchCtx();
+  const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
   const [filters, setFilters] = useState<FilterType>({
     ...candidateSearchState.queryJson,
     profileLimit: candidateSearchState.maxProfiles,
   });
+  const router = useRouter();
+
   const [isFilterLoading, setIsFilterLoading] = useState(false);
 
-  const handleUpdate = (path, value) => {
+  const handleUpdatePillInput = (path: string, inputText: string) => {
+    if (!inputText) return;
+    const inputVals = inputText.split(',').filter((s) => Boolean(s.trim()));
     setFilters((p) => {
       const updated = cloneDeep(p);
-      set(updated, path, value);
+      set(updated, path, [...filters[String(path)], ...inputVals]);
       return updated;
     });
   };
@@ -63,15 +73,28 @@ const SearchFilter = ({ handleDialogClose }) => {
       // eslint-disable-next-line no-unused-vars
       const newQueryJson = (({ profileLimit, ...o }) => o)(filters); // remove profileLimit
       // eslint-disable-next-line no-undef
-      const cands = await getRelevantCndidates(
+      const cands = (await getRelevantCndidates(
         newQueryJson,
         jobsData.jobs.map((j) => j.id),
-      );
+        filters.profileLimit,
+      )) as any;
 
-      updateState({
-        path: 'candidates',
-        value: cands,
+      updatenewSearchRes({
+        ...initialState,
+        candidates: cands,
+        maxProfiles: filters.profileLimit,
+        queryJson: newQueryJson,
       });
+      supabaseWrap(
+        await supabase
+          .from('candidate_search_history')
+          .update({
+            query_json: newQueryJson,
+            search_results: cands,
+          })
+          .eq('id', router.query.searchQryId)
+          .select(),
+      );
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
@@ -89,6 +112,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             <Slider
               size='small'
               defaultValue={50}
+              min={1}
               value={filters.profileLimit}
               aria-label='Default'
               valueLabelDisplay='auto'
@@ -96,7 +120,10 @@ const SearchFilter = ({ handleDialogClose }) => {
                 mr: 3,
               }}
               onChange={(e: any) => {
-                handleUpdate('profileLimit', e.target.value);
+                setFilters((p) => ({
+                  ...p,
+                  profileLimit: e.target.value,
+                }));
               }}
             />
             <UITypography fontBold='normal' type='small'>
@@ -109,7 +136,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('jobTitles', [...filters.jobTitles, s]);
+              handleUpdatePillInput('jobTitles', s);
             }}
           />
         </>
@@ -150,7 +177,8 @@ const SearchFilter = ({ handleDialogClose }) => {
           <UITextField
             value={filters.minExp}
             onChange={(e) => {
-              handleUpdate('minExp', e.target.value);
+              if (Number(e.target.value) < 0) return;
+              setFilters((p) => ({ ...p, minExp: Number(e.target.value) }));
             }}
             type='number'
           />
@@ -161,7 +189,8 @@ const SearchFilter = ({ handleDialogClose }) => {
           <UITextField
             value={filters.maxExp}
             onChange={(e) => {
-              handleUpdate('maxExp', e.target.value);
+              if (Number(e.target.value) < 0) return;
+              setFilters((p) => ({ ...p, maxExp: Number(e.target.value) }));
             }}
             type='number'
           />
@@ -188,7 +217,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('languages', [...filters.languages, s]);
+              handleUpdatePillInput('languages', s);
             }}
           />
         </>
@@ -197,7 +226,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('location', [...filters.location, s]);
+              handleUpdatePillInput('location', s);
             }}
           />
         </>
@@ -206,7 +235,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('universities', [...filters.universities, s]);
+              handleUpdatePillInput('universities', s);
             }}
           />
         </>
@@ -215,7 +244,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('universities', [...filters.degrees, s]);
+              handleUpdatePillInput('degrees', s);
             }}
           />
         </>
@@ -237,10 +266,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('excludedCompanies', [
-                ...filters.excludedCompanies,
-                s,
-              ]);
+              handleUpdatePillInput('excludedCompanies', s);
             }}
           />
         </>
@@ -249,10 +275,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('prefferedCompanies', [
-                ...filters.prefferedCompanies,
-                s,
-              ]);
+              handleUpdatePillInput('prefferedCompanies', s);
             }}
           />
         </>
@@ -334,7 +357,7 @@ const SearchFilter = ({ handleDialogClose }) => {
         <>
           <FilterInput
             handleAdd={(s) => {
-              handleUpdate('skills', [...filters.skills, s]);
+              handleUpdatePillInput('skills', s);
             }}
           />
         </>
@@ -371,29 +394,49 @@ const FilterInput = ({
   // eslint-disable-next-line no-unused-vars
   handleAdd: (s: any) => void;
 }) => {
-  const [input, setInput] = useState<string | number>();
+  const [input, setInput] = useState<string | number>(
+    type == 'number' ? 0 : '',
+  );
+
+  const handleSubmit = () => {
+    if (String(input).length === 0) return;
+    handleAdd(input);
+    type === 'string' && setInput('');
+    type === 'number' && setInput(0);
+  };
+
   return (
-    <UITextField
-      value={input}
-      onChange={(e) => {
-        if (type === 'number' && isNumber(e.target.value)) {
-          setInput(Number(e.target.value));
-        } else {
-          setInput(e.target.value);
-        }
-      }}
-      placeholder='Type and press enter to add'
-      type={type}
-      InputProps={{
-        onKeyDown: (e) => {
-          if (e.code === 'Enter') {
-            handleAdd(input);
-            type === 'string' && setInput('');
-            type === 'number' && setInput(0);
+    <>
+      <UITextField
+        value={input ?? ''}
+        onChange={(e) => {
+          if (type === 'number' && isNumber(e.target.value)) {
+            setInput(Number(e.target.value));
+          } else {
+            setInput(e.target.value);
           }
-        },
-      }}
-    />
+        }}
+        placeholder='Type and press enter to add'
+        type={type}
+        InputProps={{
+          onKeyDown: (e) => {
+            if (e.code === 'Enter') {
+              handleSubmit();
+            }
+          },
+        }}
+      />
+      {String(input).length > 0 && (
+        <Paper sx={{ mt: 0.5, px: 1, py: 0.5 }}>
+          <Stack gap={1} onClick={() => handleSubmit()} width={'100%'}>
+            <UITypography type='small' fontBold='normal'>
+              Press Enter to add
+            </UITypography>
+            <UITypography> {input}</UITypography>
+          </Stack>
+        </Paper>
+      )}
+    </>
   );
 };
 

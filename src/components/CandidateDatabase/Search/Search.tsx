@@ -1,37 +1,34 @@
 import { Collapse } from '@mui/material';
 import { Paper } from '@mui/material';
-import { DialogContent, Stack } from '@mui/material';
-import { get, isArray } from 'lodash';
+import { DialogContent } from '@mui/material';
+import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   CandidateDatabaseDetail,
   CandidateDetailsCard,
   CandidateSkills,
 } from '@/devlink';
-import { useJobs } from '@/src/context/JobsContext';
 import { JsonResume } from '@/src/types/resume_json.types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
+import { supabase } from '@/src/utils/supabaseClient';
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import toast from '@/src/utils/toast';
 
 import SearchFilter from './SearchFilter';
 import SelectedCandidate from './SelectedCandidate';
 import {
-  CandidateSearchState,
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
-import { getRelevantCndidates } from '../utils';
-import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
-import UITextField from '../../Common/UITextField';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;
@@ -46,71 +43,44 @@ export interface CandidateSearchRes {
 }
 
 const CandidatesSearch = () => {
-  const { jobsData } = useJobs();
   const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
   const router = useRouter();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [activeCandidate, setActiveCandidate] = useState<number>(-1);
   const [isSearching, setIsSearching] = useState(false);
   const [isJDModalOpen, setIsJDModalOpen] = useState(false);
-  const [hideSearch, setHideSearch] = useState(false);
-  const buildQuery = async () => {
-    try {
-      setIsSearching(true);
-      const resp = await searchJdToJson(searchQuery);
-      const p: CandidateSearchState['queryJson'] = {
-        jobTitles: [...resp.jobRoles],
-        universities: [...resp.university],
-        prefferedCompanies: [...resp.requiredPreviousCompanies],
-        excludedCompanies: [],
-        languages: [...resp.spokenLanguagesMentioned],
-        location: [...resp.locations],
-        maxExp: resp.maxExperienceInYears,
-        minExp: resp.minExperienceInYears,
-        skills: [...resp.skills],
-        degrees: [...resp.degrees],
-      };
 
-      if (p.jobTitles.length > 0 && p.jobTitles.length < 5) {
-        const j = await similarJobs(p.jobTitles);
-        p.jobTitles = [...p.jobTitles, ...j.related_jobs];
-      }
-
-      // if (p.skills.length > 0 && p.skills.length < 5) {
-      //   const d = await similarSkills(p.skills);
-      //   p.skills = [...p.skills, ...d.related_skills];
-      // }
-
-      Object.keys(p).forEach((k) => {
-        if (isArray(p[String(k)])) {
-          p[String(k)] = p[String(k)].filter((s) => Boolean(s.trim()));
-        }
-      });
-
-      const cndates = (await getRelevantCndidates(
-        p,
-        jobsData.jobs.map((j) => j.id),
-      )) as any;
-
-      updatenewSearchRes({
-        ...initialState,
-        candidates: cndates,
-        queryJson: p,
-      });
-
-      setHideSearch(true);
-    } catch (err) {
-      // console.log(err);
-      toast.error(API_FAIL_MSG);
-      //
-    } finally {
-      setIsSearching(false);
+  useEffect(() => {
+    const { searchQryId } = router.query;
+    if (!router.isReady) return;
+    if (!searchQryId) {
+      router.replace('/candidates/history');
     }
-  };
+    (async () => {
+      try {
+        setIsSearching(true);
+        const [searchRec] = supabaseWrap(
+          await supabase
+            .from('candidate_search_history')
+            .select()
+            .eq('id', searchQryId),
+        ) as any;
+        const searchResults = searchRec.search_results;
+
+        updatenewSearchRes({
+          ...initialState,
+          candidates: searchResults,
+          queryJson: searchRec.query_json,
+        });
+      } catch (err) {
+        toast.error(API_FAIL_MSG);
+      } finally {
+        setIsSearching(false);
+      }
+    })();
+  }, [router.isReady, router.query]);
 
   const candidates = candidateSearchState.candidates;
-
   return (
     <>
       <CandidateDatabaseDetail
@@ -120,48 +90,6 @@ const CandidatesSearch = () => {
           {
             // onClick: createEmbeddings,
           }
-        }
-        slotSearchInput={
-          <>
-            {
-              <>
-                {!hideSearch && (
-                  <Stack gap={1} direction={'row'} width={'100%'}>
-                    <Stack width={'50%'}>
-                      <UITextField
-                        value={searchQuery as string}
-                        placeholder='Type your requirement here and press enter'
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
-                        }}
-                        fullWidth
-                        InputProps={{
-                          onKeyDown: (e) => {
-                            if (e.code === 'Enter') {
-                              buildQuery();
-                            }
-                          },
-                        }}
-                      />
-                    </Stack>
-
-                    <AUIButton
-                      onClick={() => buildQuery()}
-                      // endIcon={
-                      //   <CircularProgress
-                      //     color='inherit'
-                      //     size={'15px'}
-                      //     sx={{ color: palette.grey[400] }}
-                      //   />
-                      // }
-                    >
-                      <p>Search</p>
-                    </AUIButton>
-                  </Stack>
-                )}
-              </>
-            }
-          </>
         }
         textRole={candidateSearchState.queryJson.jobTitles.join(', ')}
         slotCandidateDetailsCard={

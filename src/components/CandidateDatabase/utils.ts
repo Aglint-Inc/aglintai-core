@@ -7,6 +7,7 @@ import { CandidateSearchState } from './context/CandidateSearchProvider';
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],
   job_ids: string[],
+  max_records: number,
 ) => {
   let embeddings = {
     skills: null,
@@ -73,13 +74,14 @@ export const getRelevantCndidates = async (
     exp_qry_emb: embeddings.experience,
     resume_qry_emb: embeddings.resume,
     job_ids,
+    max_records: max_records,
   });
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return cands.slice(0, 20);
+  return cands.filter((c) => c.similarity >= 0.6);
 };
 
 const getEmbedding = async (str: string) => {
