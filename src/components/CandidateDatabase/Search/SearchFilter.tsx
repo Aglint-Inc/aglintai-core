@@ -16,6 +16,7 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
+import { dialogFormContent } from '../data';
 import { getRelevantCndidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
@@ -138,6 +139,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('jobTitles', s);
             }}
+            path='jobTitles'
           />
         </>
       }
@@ -211,6 +213,13 @@ const SearchFilter = ({ handleDialogClose }) => {
               />
             );
           })}
+          {filters.jobTitles.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.jobTitles.emptyMsg}
+              </UITypography>
+            </>
+          )}
         </>
       }
       slotLanguageInput={
@@ -219,6 +228,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('languages', s);
             }}
+            path='languages'
           />
         </>
       }
@@ -228,6 +238,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('location', s);
             }}
+            path='location'
           />
         </>
       }
@@ -237,6 +248,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('universities', s);
             }}
+            path='universities'
           />
         </>
       }
@@ -246,28 +258,41 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('degrees', s);
             }}
+            path='degrees'
           />
         </>
       }
-      slotDegreeSuggestion={filters.degrees.map((lang, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('degrees', index);
-              },
-            }}
-            textJob={lang}
-          />
-        );
-      })}
+      slotDegreeSuggestion={
+        <>
+          {filters.degrees.map((lang, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('degrees', index);
+                  },
+                }}
+                textJob={lang}
+              />
+            );
+          })}
+          {filters.degrees.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.degrees.emptyMsg}
+              </UITypography>
+            </>
+          )}
+        </>
+      }
       slotExcludedCompanyInput={
         <>
           <FilterInput
             handleAdd={(s) => {
               handleUpdatePillInput('excludedCompanies', s);
             }}
+            path='excludedCompanies'
           />
         </>
       }
@@ -277,6 +302,7 @@ const SearchFilter = ({ handleDialogClose }) => {
             handleAdd={(s) => {
               handleUpdatePillInput('prefferedCompanies', s);
             }}
+            path='prefferedCompanies'
           />
         </>
       }
@@ -295,6 +321,13 @@ const SearchFilter = ({ handleDialogClose }) => {
               />
             );
           })}
+          {filters.languages.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.languages.emptyMsg}
+              </UITypography>
+            </>
+          )}
         </>
       }
       slotLocationSuggestion={
@@ -312,53 +345,94 @@ const SearchFilter = ({ handleDialogClose }) => {
               />
             );
           })}
+          {filters.location.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.location.emptyMsg}
+              </UITypography>
+            </>
+          )}
         </>
       }
-      slotUniversitySuggestion={filters.universities.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('universities', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
-      slotExcludedSuggestion={filters.excludedCompanies.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('excludedCompanies', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
-      slotPreferredSuggestion={filters.prefferedCompanies.map((str, index) => {
-        return (
-          <JobPills
-            key={index}
-            onClickDelete={{
-              onClick: () => {
-                handlePillRemove('prefferedCompanies', index);
-              },
-            }}
-            textJob={str}
-          />
-        );
-      })}
+      slotUniversitySuggestion={
+        <>
+          {filters.universities.map((str, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('universities', index);
+                  },
+                }}
+                textJob={str}
+              />
+            );
+          })}
+          {filters.universities.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.universities.emptyMsg}
+              </UITypography>
+            </>
+          )}
+        </>
+      }
+      slotExcludedSuggestion={
+        <>
+          {filters.excludedCompanies.map((str, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('excludedCompanies', index);
+                  },
+                }}
+                textJob={str}
+              />
+            );
+          })}
+          {filters.excludedCompanies.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.excludedCompanies.emptyMsg}
+              </UITypography>
+            </>
+          )}
+        </>
+      }
+      slotPreferredSuggestion={
+        <>
+          {filters.prefferedCompanies.map((str, index) => {
+            return (
+              <JobPills
+                key={index}
+                onClickDelete={{
+                  onClick: () => {
+                    handlePillRemove('prefferedCompanies', index);
+                  },
+                }}
+                textJob={str}
+              />
+            );
+          })}
+          {filters.prefferedCompanies.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.prefferedCompanies.emptyMsg}
+              </UITypography>
+            </>
+          )}
+        </>
+      }
       slotSkillInput={
         <>
           <FilterInput
             handleAdd={(s) => {
               handleUpdatePillInput('skills', s);
             }}
+            path='skills'
           />
         </>
       }
@@ -377,6 +451,13 @@ const SearchFilter = ({ handleDialogClose }) => {
               />
             );
           })}
+          {filters.skills.length === 0 && (
+            <>
+              <UITypography type='small' color={palette.grey[500]}>
+                {dialogFormContent.skills.emptyMsg}
+              </UITypography>
+            </>
+          )}
         </>
       }
       onClickResetFilter={{
@@ -389,10 +470,12 @@ const SearchFilter = ({ handleDialogClose }) => {
 const FilterInput = ({
   type = 'string',
   handleAdd,
+  path,
 }: {
   type?: 'string' | 'number';
   // eslint-disable-next-line no-unused-vars
   handleAdd: (s: any) => void;
+  path: string;
 }) => {
   const [input, setInput] = useState<string | number>(
     type == 'number' ? 0 : '',
@@ -404,38 +487,47 @@ const FilterInput = ({
     type === 'string' && setInput('');
     type === 'number' && setInput(0);
   };
-
   return (
     <>
-      <UITextField
-        value={input ?? ''}
-        onChange={(e) => {
-          if (type === 'number' && isNumber(e.target.value)) {
-            setInput(Number(e.target.value));
-          } else {
-            setInput(e.target.value);
-          }
-        }}
-        placeholder='Type and press enter to add'
-        type={type}
-        InputProps={{
-          onKeyDown: (e) => {
-            if (e.code === 'Enter') {
-              handleSubmit();
+      <div style={{ position: 'relative' }}>
+        <UITextField
+          value={input ?? ''}
+          onChange={(e) => {
+            if (type === 'number' && isNumber(e.target.value)) {
+              setInput(Number(e.target.value));
+            } else {
+              setInput(e.target.value);
             }
-          },
-        }}
-      />
-      {String(input).length > 0 && (
-        <Paper sx={{ mt: 0.5, px: 1, py: 0.5 }}>
-          <Stack gap={1} onClick={() => handleSubmit()} width={'100%'}>
-            <UITypography type='small' fontBold='normal'>
-              Press Enter to add
-            </UITypography>
-            <UITypography> {input}</UITypography>
-          </Stack>
-        </Paper>
-      )}
+          }}
+          placeholder={dialogFormContent[String(path)]?.placeholder}
+          type={type}
+          InputProps={{
+            onKeyDown: (e) => {
+              if (e.code === 'Enter') {
+                handleSubmit();
+              }
+            },
+          }}
+        />
+        {String(input).length > 0 && (
+          <Paper
+            sx={{
+              mt: 0.5,
+              px: 1,
+              py: 0.5,
+              position: 'absolute',
+              width: '100%',
+            }}
+          >
+            <Stack gap={1} onClick={() => handleSubmit()} width={'100%'}>
+              <UITypography type='small' fontBold='normal'>
+                Press Enter to add
+              </UITypography>
+              <UITypography> {input}</UITypography>
+            </Stack>
+          </Paper>
+        )}
+      </div>
     </>
   );
 };

@@ -81,7 +81,7 @@ export const getRelevantCndidates = async (
     throw new Error(error.message);
   }
 
-  return cands.filter((c) => c.similarity >= 0.6);
+  return cands;
 };
 
 const getEmbedding = async (str: string) => {
