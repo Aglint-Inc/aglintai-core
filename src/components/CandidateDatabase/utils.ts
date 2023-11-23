@@ -30,6 +30,14 @@ export const getRelevantCndidates = async (
     ...newQueryJson,
   };
 
+  Object.keys(modifyQryJson).forEach((k) => {
+    if (isArray(modifyQryJson[String(k)])) {
+      modifyQryJson[String(k)] = modifyQryJson[String(k)].filter((s) =>
+        Boolean(s.trim()),
+      );
+    }
+  });
+
   if (r[0].status === 'fulfilled' && r[0].value) {
     modifyQryJson.jobTitles = [
       ...modifyQryJson.jobTitles,
@@ -47,14 +55,6 @@ export const getRelevantCndidates = async (
       ...r[1].value.related_skills,
     ];
   }
-
-  Object.keys(modifyQryJson).forEach((k) => {
-    if (isArray(modifyQryJson[String(k)])) {
-      modifyQryJson[String(k)] = modifyQryJson[String(k)].filter((s) =>
-        Boolean(s.trim()),
-      );
-    }
-  });
 
   const preqs = [
     (async () => await getEmbedding(modifyQryJson.skills.join(' ').trim()))(),
@@ -123,6 +123,7 @@ export const getRelevantCndidates = async (
     job_ids,
     max_records: max_records,
     ts_query: getFtsearchQry(modifyQryJson.jobTitles),
+    filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies),
   });
 
   if (error) {
@@ -143,4 +144,11 @@ const getEmbedding = async (str: string) => {
 
 const getFtsearchQry = (jobTitles: string[]) => {
   return jobTitles.map((j) => j.split(' ').join(' & ')).join(' | ');
+};
+
+const getFilterSearchQry = (companies: string[]) => {
+  return companies
+    .map((c) => c.split(' ').join('&'))
+    .map((c) => `!${c}`)
+    .join('|');
 };
