@@ -341,7 +341,7 @@ function InterviewFeedbackPage() {
               variant={'rounded'}
               width={'100%'}
               height={'100%'}
-              fontSize={'28px'}
+              fontSize={'48px'}
             />
           }
           companyName={job?.company}

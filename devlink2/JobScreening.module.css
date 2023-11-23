@@ -126,6 +126,14 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
 .div-block-283 {
   display: flex;
   justify-content: center;
@@ -168,20 +176,12 @@
   }
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
 }
 
 .text-kale-600 {
