@@ -30,11 +30,15 @@ export const getRelevantCndidates = async (
       );
     }
   });
-
   const seedJobsSkills = [
     (async () => await similarJobs(modifyQryJson.jobTitles))(),
-    (async () => await similarSkills(modifyQryJson.skills))(),
   ];
+
+  if (modifyQryJson.skills.length > 0) {
+    seedJobsSkills.push(
+      (async () => await similarSkills(modifyQryJson.skills))(),
+    );
+  }
 
   const r = await Promise.allSettled(seedJobsSkills);
 
@@ -152,5 +156,5 @@ const getFilterSearchQry = (companies: string[]) => {
   return companies
     .map((c) => c.split(' ').join('&').toLowerCase())
     .map((c) => `!${c}`)
-    .join('|');
+    .join(' & ');
 };

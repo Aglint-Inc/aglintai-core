@@ -157,7 +157,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
             variant='primary'
             size='small'
             onClick={() => {
-              handleApplyFilters();
+              !isFilterLoading && handleApplyFilters();
             }}
             endIcon={
               isFilterLoading && (
