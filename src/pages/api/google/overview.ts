@@ -52,19 +52,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       })
       .then(async (result) => {
+        const overview = result[0].candidates[0].output;
         // eslint-disable-next-line no-console
-        if (result[0]?.candidates[0]?.output) {
-          const overview = result[0].candidates[0].output;
+        if (overview) {
           const { error } = await supabase
             .from('job_applications')
             .update({ json_resume: { ...resume_json, overview: overview } })
             .eq('application_id', req.body.application.application_id);
           if (!error) {
-            console.log(
-              result[0].candidates[0].output,
-              req.body.application.application_id,
-            );
-            return res.status(200).json(result[0].candidates[0].output);
+            console.log(overview, req.body.application.application_id);
+            return res.status(200).json(overview);
           } else {
             console.log(error, req.body.application.application_id);
             return res.status(200).send(error.message);

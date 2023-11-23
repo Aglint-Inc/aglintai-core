@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const { TextServiceClient } = require('@google-ai/generativelanguage');
-const MODEL_NAME = 'tunedModels/parser-imv5crzkxdlm';
+const MODEL_NAME = 'tunedModels/texttojsonresumeparser-cbhnog7q7swe';
 
 const { GoogleAuth } = require('google-auth-library');
 
@@ -102,12 +102,6 @@ const Schema = {
       },
       degree: '',
       institution: '',
-    },
-  ],
-  overview: '',
-  projects: [
-    {
-      title: '',
     },
   ],
   languages: [],
