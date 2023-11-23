@@ -193,6 +193,7 @@ const CandidatesSearch = () => {
                 handleDialogClose={() => {
                   setIsFilterOpen(false);
                 }}
+                setActiveCandidate={setActiveCandidate}
               />
             }
           </DialogContent>

@@ -1,5 +1,8 @@
 import axios from 'axios';
+import { isArray } from 'lodash';
 
+import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
+import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { CandidateSearchState } from './context/CandidateSearchProvider';
@@ -16,37 +19,74 @@ export const getRelevantCndidates = async (
     resume: null,
   };
 
+  const seedJobsSkills = [
+    (async () => await similarJobs(newQueryJson.jobTitles))(),
+    (async () => await similarSkills(newQueryJson.skills))(),
+  ];
+
+  const r = await Promise.allSettled(seedJobsSkills);
+
+  const modifyQryJson = {
+    ...newQueryJson,
+  };
+
+  if (r[0].status === 'fulfilled' && r[0].value) {
+    modifyQryJson.jobTitles = [
+      ...modifyQryJson.jobTitles,
+      ...r[0].value.related_jobs,
+    ];
+  }
+
+  if (
+    modifyQryJson.skills.length > 0 &&
+    r[1].status === 'fulfilled' &&
+    r[1].value
+  ) {
+    modifyQryJson.skills = [
+      ...modifyQryJson.skills,
+      ...r[1].value.related_skills,
+    ];
+  }
+
+  Object.keys(modifyQryJson).forEach((k) => {
+    if (isArray(modifyQryJson[String(k)])) {
+      modifyQryJson[String(k)] = modifyQryJson[String(k)].filter((s) =>
+        Boolean(s.trim()),
+      );
+    }
+  });
+
   const preqs = [
-    (async () => await getEmbedding(newQueryJson.skills.join(' ').trim()))(),
+    (async () => await getEmbedding(modifyQryJson.skills.join(' ').trim()))(),
     (async () =>
       await getEmbedding(
-        [...newQueryJson.degrees, ...newQueryJson.universities]
+        [...modifyQryJson.degrees, ...modifyQryJson.universities]
           .join(' ')
           .trim(),
       ))(),
     (async () =>
       await getEmbedding(
         [
-          ...newQueryJson.jobTitles,
-          [newQueryJson.minExp, newQueryJson.maxExp]
+          ...modifyQryJson.jobTitles,
+          [modifyQryJson.minExp, modifyQryJson.maxExp]
             .filter(Boolean)
             .join(' years'),
-          ...newQueryJson.prefferedCompanies,
+          ...modifyQryJson.prefferedCompanies,
         ].join(' '),
       ))(),
     (async () =>
       await getEmbedding(
         [
-          ...newQueryJson.skills,
-          ...newQueryJson.jobTitles,
-          ...newQueryJson.languages,
-          ...newQueryJson.prefferedCompanies,
-          ...newQueryJson.location,
-          [newQueryJson.minExp, newQueryJson.maxExp]
+          ...modifyQryJson.skills,
+          ...modifyQryJson.jobTitles,
+          ...modifyQryJson.languages,
+          ...modifyQryJson.prefferedCompanies,
+          ...modifyQryJson.location,
+          [modifyQryJson.minExp, modifyQryJson.maxExp]
             .filter(Boolean)
             .join(' years'),
-          ...newQueryJson.degrees,
-          ...newQueryJson.universities,
+          ...modifyQryJson.degrees,
+          ...modifyQryJson.universities,
         ]
           .join(' ')
           .trim(),

@@ -31,9 +31,10 @@ type FilterType = {
   profileLimit: number;
 } & CandidateSearchState['queryJson'];
 
-const SearchFilter = ({ handleDialogClose }) => {
+const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
   const { jobsData } = useJobs();
-  const { candidateSearchState, updatenewSearchRes } = useCandidateSearchCtx();
+  const { candidateSearchState, updatenewSearchRes, updateState } =
+    useCandidateSearchCtx();
   const [filters, setFilters] = useState<FilterType>({
     ...candidateSearchState.queryJson,
     profileLimit: candidateSearchState.maxProfiles,
@@ -71,6 +72,12 @@ const SearchFilter = ({ handleDialogClose }) => {
 
   const handleApplyFilters = async () => {
     try {
+      if (isFilterLoading) return;
+      updateState({
+        path: 'candidates',
+        value: [],
+      });
+      setActiveCandidate(0);
       setIsFilterLoading(true);
       // eslint-disable-next-line no-unused-vars
       const newQueryJson = (({ profileLimit, ...o }) => o)(filters); // remove profileLimit

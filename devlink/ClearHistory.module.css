@@ -19,6 +19,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
@@ -325,4 +329,8 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
 }

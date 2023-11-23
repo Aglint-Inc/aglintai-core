@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import { CandidateHistoryCard } from "./CandidateHistoryCard";
 import * as _utils from "./utils";
 import _styles from "./CandidateDatabaseSearch.module.css";
@@ -52,7 +51,10 @@ export function CandidateDatabaseSearch({
             className={_utils.cx(_styles, "search-candidate-wrap")}
             tag="div"
           >
-            <_Builtin.Block tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
               {"Search candidates by typing in your requirement"}
             </_Builtin.Block>
             <_Builtin.Block
@@ -83,6 +85,25 @@ export function CandidateDatabaseSearch({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
+            className={_utils.cx(_styles, "or-separator")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-600")}
+              tag="div"
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "or-wrappers")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"OR"}</_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-600")}
+              tag="div"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(_styles, "search-job-desc")}
             tag="div"
           >
@@ -90,19 +111,33 @@ export function CandidateDatabaseSearch({
               className={_utils.cx(_styles, "div-block-375")}
               tag="div"
             >
-              <_Builtin.Block tag="div">
-                {"Or search candidates by uploading the job description"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Search candidates by uploading the job description"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "color-grey-600", "width-588")}
+                tag="div"
+              >
+                {
+                  "Discover potential candidates by simply uploading the job description. Effortlessly find the right matches for your requirements through this streamlined process."
+                }
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block tag="div" {...onClickSearchJobDescription}>
-              <ButtonOutlinedRegular
-                textLabel={
-                  <>
-                    {"Search with job description"}
-                    <br />
-                  </>
-                }
-              />
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "text-blue-600",
+                  "text-underline",
+                  "cursor-pointer"
+                )}
+                tag="div"
+              >
+                {"Search with job description"}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

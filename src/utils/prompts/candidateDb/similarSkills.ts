@@ -1,6 +1,5 @@
 import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
-import { requestJson } from '../utils';
 
 export const similarSkills = async (skills: string[]) => {
   const prompt = [
@@ -8,11 +7,15 @@ export const similarSkills = async (skills: string[]) => {
       role: 'system',
       content: `
        * your given a set skills your job is to generate additional 5 skills closely related to the given.
+       * only repond in the json format following the schema
+        {
+          related_skills: string[],
+        }
        `,
     },
     {
       role: 'user',
-      content: requestJson(`here is the skills`, { related_skills: skills }),
+      content: `here are the skills : ${skills.join(' ')}`,
     },
   ] as MessageType[];
 

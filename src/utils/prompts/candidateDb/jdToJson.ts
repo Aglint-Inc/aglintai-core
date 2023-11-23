@@ -1,8 +1,5 @@
-import { isArray } from 'lodash';
-
 import { CandidateSearchState } from '@/src/components/CandidateDatabase/context/CandidateSearchProvider';
 
-import { similarJobs } from './similarJobs';
 import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
 
@@ -60,17 +57,6 @@ export const searchJdToJson = async (searchQuery: string) => {
     skills: [...resp.skills],
     degrees: [...resp.degrees],
   };
-
-  if (p.jobTitles.length > 0 && p.jobTitles.length < 5) {
-    const j = await similarJobs(p.jobTitles);
-    p.jobTitles = [...p.jobTitles, ...j.related_jobs];
-  }
-
-  Object.keys(p).forEach((k) => {
-    if (isArray(p[String(k)])) {
-      p[String(k)] = p[String(k)].filter((s) => Boolean(s.trim()));
-    }
-  });
 
   return p;
 };
