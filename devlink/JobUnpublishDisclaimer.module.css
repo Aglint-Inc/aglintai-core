@@ -7,7 +7,7 @@
 
   border-radius: 10px;
 
-  background-color: var(--yellow-100);
+  background-color: #fff7ed;
 }
 
 .left-wrap-create-job-preview {
@@ -117,4 +117,8 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
 }

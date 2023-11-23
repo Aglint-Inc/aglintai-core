@@ -34,7 +34,7 @@ export function JobUnpublishDisclaimer({
           className={_utils.cx(_styles, "text-yellow-800")}
           tag="div"
         >
-          {"You have unpublished chaneges."}
+          {"You have unpublished changes."}
           <_Builtin.Span
             className={_utils.cx(_styles, "text-underline", "ml-5")}
             {...onClickPreview}
