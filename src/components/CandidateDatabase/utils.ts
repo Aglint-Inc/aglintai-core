@@ -122,6 +122,7 @@ export const getRelevantCndidates = async (
     resume_qry_emb: embeddings.resume,
     job_ids,
     max_records: max_records,
+    ts_query: getFtsearchQry(modifyQryJson.jobTitles),
   });
 
   if (error) {
@@ -138,4 +139,8 @@ const getEmbedding = async (str: string) => {
   });
 
   return data;
+};
+
+const getFtsearchQry = (jobTitles: string[]) => {
+  return jobTitles.map((j) => j.split(' ').join(' & ')).join(' | ');
 };

@@ -963,6 +963,7 @@ export interface Database {
           exp_qry_emb: string
           resume_qry_emb: string
           max_records?: number
+          ts_query?: string
         }
         Returns: {
           application_id: string
