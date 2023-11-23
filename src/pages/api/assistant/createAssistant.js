@@ -38,18 +38,21 @@ export default async function handler(req, res) {
           },
         },
         {
-          name: 'chatEnd',
-          parameters: {
-            type: 'object',
-            properties: {
-              chat_end: {
-                type: 'boolean',
-                description: 'true',
+          type: 'function',
+          function: {
+            name: 'chatEnd',
+            parameters: {
+              type: 'object',
+              properties: {
+                chat_end: {
+                  type: 'boolean',
+                  description: 'true',
+                },
               },
+              required: ['chat_end'],
             },
-            required: ['chat_end'],
+            description: 'Close conversation',
           },
-          description: 'Close conversation',
         },
       ],
       model: details.module,

@@ -27,6 +27,7 @@ export const getRelevantCndidates = async (
     (async () =>
       await getEmbedding(
         [
+          ...newQueryJson.jobTitles,
           [newQueryJson.minExp, newQueryJson.maxExp]
             .filter(Boolean)
             .join(' years'),
@@ -36,10 +37,16 @@ export const getRelevantCndidates = async (
     (async () =>
       await getEmbedding(
         [
+          ...newQueryJson.skills,
           ...newQueryJson.jobTitles,
           ...newQueryJson.languages,
           ...newQueryJson.prefferedCompanies,
           ...newQueryJson.location,
+          [newQueryJson.minExp, newQueryJson.maxExp]
+            .filter(Boolean)
+            .join(' years'),
+          ...newQueryJson.degrees,
+          ...newQueryJson.universities,
         ]
           .join(' ')
           .trim(),
