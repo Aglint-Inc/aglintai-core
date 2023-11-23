@@ -1,5 +1,6 @@
 import { UploadCandidateAPi } from '../uploadCandidates';
 import { supabase } from '../../invite_user';
+import { selectJobApplicationQuery } from '../../JobApplicationsApi/utils';
 
 export const getExisitingCandidates = async (
   emails: UploadCandidateAPi['request']['candidates'][0]['email'][],
@@ -13,7 +14,7 @@ export const getExisitingJobApplications = async (
 ) => {
   return await supabase
     .from('job_applications')
-    .select('*,candidates(*)')
+    .select(`${selectJobApplicationQuery},candidates(*)`)
     .eq('job_id', jobId)
     .in('candidate_id', candidateIds);
 };

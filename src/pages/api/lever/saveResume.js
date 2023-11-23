@@ -2,6 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
+import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
+
 const apiKey = 'wjISASRrEo75ixrodaAS5eT8iV4Bv2T2RhNZ3iIUziYsIAC8';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
@@ -52,7 +54,7 @@ export default async function handler(req, res) {
             // Upload the file to Supabase Storage
             const { data: application, error: errorApp } = await supabase
               .from('job_applications')
-              .select()
+              .select(`${selectJobApplicationQuery}`)
               .eq('application_id', payload.application_id);
             if (errorApp) {
               console.log('no application found');

@@ -2,6 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
+import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
@@ -19,7 +21,7 @@ export default async function handler(req, res) {
 
     const { data: job } = await supabase
       .from('job_applications')
-      .select()
+      .select(`${selectJobApplicationQuery}`)
       .eq('application_id', payload.application_id);
 
     let fileUrl = payload.resume;
@@ -68,7 +70,7 @@ export default async function handler(req, res) {
             .from('job_applications')
             .update({ resume: fileLink })
             .eq('application_id', payload.application_id)
-            .select();
+            .select(`${selectJobApplicationQuery}`);
 
           if (!errorApp) {
             await supabase

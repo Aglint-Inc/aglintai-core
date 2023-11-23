@@ -6,6 +6,8 @@ import {
   extractLinkedInURL,
   splitFullName,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+
+import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
 const crypto = require('crypto');
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -83,7 +85,7 @@ export default async function handler(req, res) {
         const { data: newCandidates, error } = await supabase
           .from('job_applications')
           .insert(dbCandidates)
-          .select();
+          .select(`${selectJobApplicationQuery}`);
 
         if (!error) {
           const referenceObj = newCandidates.map((app) => {

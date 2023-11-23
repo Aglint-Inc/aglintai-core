@@ -112,8 +112,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
 
         const { error } = await supabase
           .from('job_applications')
-          .insert(dbApplications)
-          .select();
+          .insert(dbApplications);
 
         if (!error) {
           const referenceObj = refCandidates.map((ref) => {

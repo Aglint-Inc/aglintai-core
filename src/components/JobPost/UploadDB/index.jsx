@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -219,7 +220,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
       } else {
         const { data: checkApplication, error: errorCheck } = await supabase
           .from('job_applications')
-          .select()
+          .select(`${selectJobApplicationQuery}`)
           .eq('candidate_id', checkCand[0].id)
           .eq('job_id', post.id);
 
@@ -258,7 +259,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
               status: 'new',
               resume: uploadUrl,
             })
-            .select();
+            .select(`${selectJobApplicationQuery}`);
           setApplication(newApplication[0]);
           await mailHandler(newApplication[0].application_id);
           setProfile({
@@ -301,7 +302,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           status: 'new',
           resume: uploadUrl,
         })
-        .select();
+        .select(`${selectJobApplicationQuery}`);
 
       setApplication(newApplication[0]);
       await mailHandler(newApplication[0].application_id);

@@ -10,6 +10,9 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
 
+export const selectJobApplicationQuery =
+  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails';
+
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
 ) => {
@@ -51,7 +54,9 @@ export const readNewJobApplicationDbAction = async (
 
   let query = supabase
     .from('job_applications')
-    .select('*,candidates!inner(*)', { count: 'exact' })
+    .select(`${selectJobApplicationQuery},candidates!inner(*)`, {
+      count: 'exact',
+    })
     .eq('job_id', job_id)
     .eq('status', status);
 
@@ -150,7 +155,7 @@ export const upsertNewJobApplicationDbAction = async (
   const { data, error } = await supabase
     .from('job_applications')
     .upsert(inputData as JobApplication[])
-    .select()
+    .select(`${selectJobApplicationQuery}`)
     .abortSignal(controller.signal);
   return { data, error };
 };

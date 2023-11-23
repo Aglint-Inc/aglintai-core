@@ -37,10 +37,12 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { selectJobApplicationQuery } from '../api/JobApplicationsApi/utils';
+
 function InterviewFeedbackPage() {
   const router = useRouter();
   const [applicationDetails, setApplicationDetails] =
-    useState<JobApplication>();
+    useState<JobApplication>(undefined);
   const [job, setJob] = useState<JobTypeDB>();
   const [recruiter, setRecruiter] = useState<RecruiterDB>();
   const [openTranscript, setOpenTranscript] = useState(false);
@@ -57,7 +59,7 @@ function InterviewFeedbackPage() {
   async function getApplicationDetails(id) {
     const { data: jobApp, error: errorJob } = await supabase
       .from('job_applications')
-      .select()
+      .select(`${selectJobApplicationQuery}`)
       .eq('application_id', id);
 
     if (!errorJob) {
@@ -66,7 +68,10 @@ function InterviewFeedbackPage() {
         .select()
         .eq('id', jobApp[0]?.candidate_id);
       if (!error) {
-        setApplicationDetails({ ...jobApp[0], candidates: data[0] });
+        setApplicationDetails({
+          ...jobApp[0],
+          candidates: data[0],
+        });
         getJobDetails(jobApp[0]?.job_id);
       }
     }

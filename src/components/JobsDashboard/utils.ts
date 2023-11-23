@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { JobApplcationDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -30,7 +31,7 @@ export function filterJobsByStatus(
 export const fetchApplications = (jobIds) => {
   return supabase
     .from('job_applications')
-    .select()
+    .select(`${selectJobApplicationQuery}`)
     .in('job_id', jobIds)
     .then(({ data, error }) => {
       if (!error) {

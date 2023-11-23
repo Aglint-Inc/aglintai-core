@@ -30,6 +30,7 @@ import {
   useSupportContext,
 } from '@/src/context/SupportContext/SupportContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import {
   CandidateType,
   EmailTemplateType,
@@ -404,7 +405,7 @@ export default SupportTicketDetails;
 const getApplicationDetails = async (id: string) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*')
+    .select(`${selectJobApplicationQuery}`)
     .eq('application_id', id);
   if (!error && data.length) {
     const {

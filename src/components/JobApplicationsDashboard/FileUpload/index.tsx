@@ -67,14 +67,11 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
           })
           .select();
         if (!error) {
-          await supabase
-            .from('job_applications')
-            .insert({
-              resume: uploadUrl,
-              candidate_id: data[0].id,
-              job_id: job.id,
-            })
-            .select();
+          await supabase.from('job_applications').insert({
+            resume: uploadUrl,
+            candidate_id: data[0].id,
+            job_id: job.id,
+          });
         }
       } catch (error) {
         // Handle errors, if needed

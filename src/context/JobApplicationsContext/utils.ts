@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -85,7 +86,7 @@ export const updateCandidateDbAction = async (
   const { data, error } = await supabase
     .from('candidates')
     .update({ ...candidate })
-    .select()
+    .select(`${selectJobApplicationQuery}`)
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
@@ -118,7 +119,7 @@ export const createJobApplicationDbAction = async (
   const { data, error } = await supabase
     .from('job_applications')
     .insert({ ...inputData, job_id })
-    .select('*,candidates(*)')
+    .select(`${selectJobApplicationQuery}, candidates(*)`)
     .abortSignal(timerSignal.signal)
     .abortSignal(signal);
   clearTimeout(timeout);
@@ -138,7 +139,7 @@ export const bulkCreateJobApplicationDbAction = async (
   const { data, error } = await supabase
     .from('job_applications')
     .insert(applications)
-    .select()
+    .select(`${selectJobApplicationQuery}`)
     .abortSignal(signal);
   clearTimeout(timeout);
   return { data, error };
@@ -152,7 +153,7 @@ export const readJobApplicationDbAction = async (
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*')
+    .select(`${selectJobApplicationQuery}`)
     .eq('job_id', job_id)
     .abortSignal(signal);
   clearTimeout(timeout);
@@ -170,7 +171,7 @@ export const updateJobApplicationDbAction = async (
     .from('job_applications')
     .update(inputData)
     .eq('application_id', application_id)
-    .select('*,candidates(*)')
+    .select(`${selectJobApplicationQuery},candidates(*)`)
     .abortSignal(signal);
   clearTimeout(timeout);
   return { data, error };

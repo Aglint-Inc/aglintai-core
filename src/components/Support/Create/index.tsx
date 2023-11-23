@@ -15,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 import { palette } from '@/src/context/Theme/Theme';
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import {
   CandidateType,
   JobApplicationType,
@@ -100,7 +101,7 @@ function Support() {
       // });
     }
   }, [router.isReady]);
-    return (
+  return (
     <InboxContactSupport
       slotCheckbox={
         <Checkbox
@@ -194,7 +195,7 @@ export default Support;
 const getApplicationDetails = async (id: string) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select('*')
+    .select(`${selectJobApplicationQuery}`)
     .eq('application_id', id);
   if (!error && data.length) {
     const {

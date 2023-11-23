@@ -20,8 +20,23 @@ export enum JobApplicationSections {
 
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
-export type NewJobApplications =
-  Database['public']['Tables']['job_applications']['Row'];
+export type NewJobApplications = Pick<
+  Database['public']['Tables']['job_applications']['Row'],
+  | 'application_id'
+  | 'created_at'
+  | 'resume_score'
+  | 'feedback'
+  | 'conversation'
+  | 'status'
+  | 'jd_score'
+  | 'job_id'
+  | 'interview_score'
+  | 'api_status'
+  | 'json_resume'
+  | 'resume'
+  | 'candidate_id'
+  | 'emails'
+>;
 export type NewJobApplicationsInsert =
   Database['public']['Tables']['job_applications']['Insert'];
 export type NewJobApplicationsUpdate =
