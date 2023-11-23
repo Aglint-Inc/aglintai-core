@@ -19,13 +19,6 @@ export const getRelevantCndidates = async (
     resume: null,
   };
 
-  const seedJobsSkills = [
-    (async () => await similarJobs(newQueryJson.jobTitles))(),
-    (async () => await similarSkills(newQueryJson.skills))(),
-  ];
-
-  const r = await Promise.allSettled(seedJobsSkills);
-
   const modifyQryJson = {
     ...newQueryJson,
   };
@@ -37,6 +30,13 @@ export const getRelevantCndidates = async (
       );
     }
   });
+
+  const seedJobsSkills = [
+    (async () => await similarJobs(modifyQryJson.jobTitles))(),
+    (async () => await similarSkills(modifyQryJson.skills))(),
+  ];
+
+  const r = await Promise.allSettled(seedJobsSkills);
 
   if (r[0].status === 'fulfilled' && r[0].value) {
     modifyQryJson.jobTitles = [
