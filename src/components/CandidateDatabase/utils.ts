@@ -143,12 +143,14 @@ const getEmbedding = async (str: string) => {
 };
 
 const getFtsearchQry = (jobTitles: string[]) => {
-  return jobTitles.map((j) => j.split(' ').join(' & ')).join(' | ');
+  return jobTitles
+    .map((j) => j.split(' ').join(' & ').toLowerCase())
+    .join(' | ');
 };
 
 const getFilterSearchQry = (companies: string[]) => {
   return companies
-    .map((c) => c.split(' ').join('&'))
+    .map((c) => c.split(' ').join('&').toLowerCase())
     .map((c) => `!${c}`)
     .join('|');
 };
