@@ -1,5 +1,4 @@
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Chip, Stack, TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import {
@@ -8,7 +7,9 @@ import {
   ChatIcon,
   ChatInput,
   ChatWelcome,
+  PdfSelected,
   UserChat,
+  UserChatIcon,
 } from '@/devlink';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 
@@ -109,8 +110,9 @@ function ChatMessages() {
                             fullWidth
                             multiline
                             minRows={1}
-                            maxRows={2}
+                            maxRows={8}
                             placeholder='Enter your message here (cmd+enter)'
+                            margin={'none'}
                           />
                         </Stack>
 
@@ -120,19 +122,9 @@ function ChatMessages() {
                             alignItems={'center'}
                             direction={'row'}
                           >
-                            <Chip
-                              sx={{
-                                maxWidth: '200px',
-                                '& span': {
-                                  // display: `-webkit-box !important`,
-                                  overflow: 'hidden',
-                                  WebkitLineClamp: 1,
-                                  WebkitBoxOrient: 'vertical',
-                                },
-                              }}
-                              variant='filled'
-                              label={selectedFile.name}
-                              onDelete={handleFileRemove}
+                            <PdfSelected
+                              textName={selectedFile.name}
+                              onClickClose={{ onClick: handleFileRemove }}
                             />
                           </Stack>
                         )}
@@ -208,12 +200,8 @@ export function ChatConversation() {
                   />
                 )}
                 {message.role === 'user' && message?.metadata?.file_name && (
-                  <Stack direction={'row'} justifyContent={'end'}>
-                    <Chip
-                      icon={<PictureAsPdfIcon />}
-                      variant='filled'
-                      label={message?.metadata?.file_name}
-                    />
+                  <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
+                    <UserChatIcon textChat={message?.metadata?.file_name} />
                   </Stack>
                 )}
                 {message.role === 'user' && (
@@ -243,7 +231,7 @@ const FileUpload = () => {
   return (
     <div style={{ display: 'none' }}>
       <input
-        // accept='.pdf,.csv'
+        accept='.pdf,.csv'
         id='chat-file'
         type='file'
         onChange={handleFileChange}
