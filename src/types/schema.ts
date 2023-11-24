@@ -50,6 +50,7 @@ export interface Database {
       }
       candidate_search_history: {
         Row: {
+          bookmarked_candidates: string[] | null
           created_at: string
           id: number
           is_search_jd: boolean | null
@@ -58,6 +59,7 @@ export interface Database {
           search_results: Json[] | null
         }
         Insert: {
+          bookmarked_candidates?: string[] | null
           created_at?: string
           id?: number
           is_search_jd?: boolean | null
@@ -66,6 +68,7 @@ export interface Database {
           search_results?: Json[] | null
         }
         Update: {
+          bookmarked_candidates?: string[] | null
           created_at?: string
           id?: number
           is_search_jd?: boolean | null
@@ -891,6 +894,7 @@ export interface Database {
       }
       threads: {
         Row: {
+          applied: boolean | null
           assistant_id: string | null
           candidate_email: string | null
           candidate_name: string | null
@@ -898,9 +902,11 @@ export interface Database {
           chat_end: boolean | null
           created_at: string
           id: number
+          linkedin_url: string | null
           thread_id: string | null
         }
         Insert: {
+          applied?: boolean | null
           assistant_id?: string | null
           candidate_email?: string | null
           candidate_name?: string | null
@@ -908,9 +914,11 @@ export interface Database {
           chat_end?: boolean | null
           created_at?: string
           id?: number
+          linkedin_url?: string | null
           thread_id?: string | null
         }
         Update: {
+          applied?: boolean | null
           assistant_id?: string | null
           candidate_email?: string | null
           candidate_name?: string | null
@@ -918,6 +926,7 @@ export interface Database {
           chat_end?: boolean | null
           created_at?: string
           id?: number
+          linkedin_url?: string | null
           thread_id?: string | null
         }
         Relationships: []
@@ -944,7 +953,7 @@ export interface Database {
     Functions: {
       batchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: Json
+        Returns: unknown
       }
       calc_cosine_sim: {
         Args: {
@@ -976,6 +985,7 @@ export interface Database {
           resume_link: string
           json_resume: Json
           profile_image: string
+          candidate_id: string
           similarity: number
           sim_exp: number
           sim_res: number
