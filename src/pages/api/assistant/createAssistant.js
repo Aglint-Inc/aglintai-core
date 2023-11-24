@@ -11,7 +11,10 @@ export default async function handler(req, res) {
     const assistant = await openai.beta.assistants.create({
       instructions: details.instructions,
       name: details.name,
+      file_ids: ['file-Ofwl364mPJRw0aWb1QgZCtwm'],
       tools: [
+        { type: 'code_interpreter' },
+        { type: 'retrieval' },
         {
           type: 'function',
           function: {
@@ -32,7 +35,7 @@ export default async function handler(req, res) {
                   description: 'Candidate number',
                 },
               },
-              required: ['candidate_email'],
+              required: ['candidate_email', 'candidate_name'],
             },
             description: 'Get the candidate details',
           },
@@ -48,10 +51,32 @@ export default async function handler(req, res) {
                   type: 'boolean',
                   description: 'true',
                 },
+                applied: {
+                  type: 'boolean',
+                  description:
+                    'if candidate is agree to apply name true or false ',
+                },
               },
-              required: ['chat_end'],
+              required: ['chat_end', 'applied'],
             },
             description: 'Close conversation',
+          },
+        },
+        {
+          type: 'function',
+          function: {
+            name: 'getLinkedinDetails',
+            description: 'Linkedin url in given',
+            parameters: {
+              type: 'object',
+              properties: {
+                linkedin_url: {
+                  type: 'string',
+                  description: 'true',
+                },
+              },
+              required: ['linkedin_url'],
+            },
           },
         },
       ],
