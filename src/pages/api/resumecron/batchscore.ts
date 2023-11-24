@@ -34,10 +34,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               await axios.post(`${url}`, {
                 ...application,
               });
-              console.log(
-                'Request successful for application:',
-                application.application_id,
-              );
             } catch (error) {
               console.error(
                 'Error for application:',
@@ -48,6 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
           }),
         );
+        console.log('Request successful');
         return res.status(200).send('success');
       } else {
         console.log('no applications');
