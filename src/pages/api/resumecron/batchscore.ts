@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: applications, error } = (await supabase.rpc(
       'batchcalcresumejdscore',
     )) as BatchCalcResumeJDScoreResponse;
+
     if (error) {
       throw new Error(error.message);
     } else {
@@ -25,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           applications.map(async (application) => {
             try {
               await axios.post(`${url}`, {
-                application,
+                ...application,
               });
               console.log(
                 'Request successful for application:',
