@@ -14,6 +14,7 @@ export default async function handler(req, res) {
       file_ids: ['file-Ofwl364mPJRw0aWb1QgZCtwm'],
       tools: [
         { type: 'code_interpreter' },
+        { type: 'retrieval' },
         {
           type: 'function',
           function: {
