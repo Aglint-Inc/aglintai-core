@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
   } catch (error) {
-    console.log(error, req.body.application_id);
+    console.log(error);
     return res.status(500).send(error.message);
   }
 };
