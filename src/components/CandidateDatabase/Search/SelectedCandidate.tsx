@@ -21,11 +21,13 @@ const SelectedCandidate = ({
   onClickClose,
   onClickNext,
   onClickPrev,
+  toggleBookMark,
 }: {
   candidate: CandidateSearchRes;
   onClickNext: () => void;
   onClickPrev: () => void;
   onClickClose: () => void;
+  toggleBookMark: () => any;
 }) => {
   const [resume, setResume] = useState(false);
 
@@ -50,22 +52,19 @@ const SelectedCandidate = ({
       <CandidateDialog
         textJobRoleAtCompany={candidate.json_resume.basics.currentJobTitle}
         textMail={candidate.json_resume.basics.email}
-        // isOverviewVisible={}
         textOverview={candidate.json_resume.overview}
         textLocation={location}
         isOverviewVisible={Boolean(candidate.json_resume.overview)}
+        isStarActive={candidate.is_bookmarked}
+        onClickStar={{
+          onClick: () => {
+            toggleBookMark();
+          },
+        }}
         slotAddtoJob={<></>}
         onClickClose={{
           onClick: onClickClose,
         }}
-        // onClickStar={{
-        //   onClick: () => {
-        //     handleOpenResume();
-        //     // setResume(true);
-        //   },
-        // }}
-        //   onClickCopy={{}}
-        //   onClickLinkedin={{}}
         onClickNext={{
           onClick: onClickNext,
         }}

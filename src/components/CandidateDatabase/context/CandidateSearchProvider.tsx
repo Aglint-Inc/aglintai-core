@@ -131,17 +131,33 @@ const CandidateSearchProvider = ({ children }) => {
   const bookMarkCandidate = async (application_id: string | string[]) => {
     try {
       let bookMarkAppIds = [];
+      const isBulkBookMark = isArray(application_id);
       if (isArray(application_id)) {
         bookMarkAppIds = [...application_id];
       } else {
         bookMarkAppIds = [application_id];
       }
-      const updatedCands = state.candidates.map((cand) => {
-        if (bookMarkAppIds.includes(cand.application_id)) {
-          cand.is_bookmarked = !cand.is_bookmarked;
-        }
-        return cand;
-      });
+      let updatedCands = [];
+
+      if (isBulkBookMark) {
+        updatedCands = state.candidates.map((cand) => {
+          if (
+            !cand.is_bookmarked &&
+            bookMarkAppIds.includes(cand.application_id)
+          ) {
+            cand.is_bookmarked = !cand.is_bookmarked;
+          }
+          return cand;
+        });
+      } else {
+        updatedCands = state.candidates.map((cand) => {
+          if (bookMarkAppIds.includes(cand.application_id)) {
+            cand.is_bookmarked = !cand.is_bookmarked;
+          }
+          return cand;
+        });
+      }
+
       updateState({
         path: 'candidates',
         value: updatedCands,

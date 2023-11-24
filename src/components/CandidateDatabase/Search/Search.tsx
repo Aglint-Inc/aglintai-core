@@ -166,6 +166,11 @@ const CandidatesSearch = () => {
                       setActiveCandidate((p) => p - 1);
                     }
                   }}
+                  toggleBookMark={() => {
+                    bookMarkCandidate(
+                      candidates[Number(activeCandidate)].application_id,
+                    );
+                  }}
                 />
               )}
             </Collapse>
