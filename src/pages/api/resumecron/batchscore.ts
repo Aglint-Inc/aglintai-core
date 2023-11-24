@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: applications, error } = (await supabase.rpc(
       rpcfunction == 'first'
         ? 'batchcalcresumejdscore'
-        : rpcfunction == 'first'
+        : rpcfunction == 'second'
         ? 'retrybatchcalcresumejdscore'
         : 'secondretrybatchcalcresumejdscore',
     )) as BatchCalcResumeJDScoreResponse;
