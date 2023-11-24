@@ -955,6 +955,14 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: unknown
       }
+      batchsavegreenhouse: {
+        Args: Record<PropertyKey, never>
+        Returns: unknown
+      }
+      batchscorecron: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       calc_cosine_sim: {
         Args: {
           emb1: string
@@ -986,6 +994,7 @@ export interface Database {
           json_resume: Json
           profile_image: string
           candidate_id: string
+          job_id: string
           similarity: number
           sim_exp: number
           sim_res: number

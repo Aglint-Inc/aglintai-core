@@ -5,9 +5,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabase } from '@/src/utils/supabaseClient';
 
-const url = `https://northamerica-northeast2-aglint-cloud-381414.cloudfunctions.net/process_resume_and_jd_v1`;
+const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/greenhouse/saveResume`;
 
-interface BatchCalcResumeJDScoreResponse {
+interface BatchSaveResponse {
   data: Array<Record<string, unknown>>; // Adjust this based on the actual structure of the returned JSONB objects
   error?: any; // Adjust this based on the expected error structure
 }
@@ -15,8 +15,8 @@ interface BatchCalcResumeJDScoreResponse {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { data: applications, error } = (await supabase.rpc(
-      'batchcalcresumejdscore',
-    )) as BatchCalcResumeJDScoreResponse;
+      'batchsavegreenhouse',
+    )) as BatchSaveResponse;
 
     if (error) {
       throw new Error(error.message);

@@ -25,6 +25,7 @@ const whiteListedEndPoints = [
   '/api/google/resume',
   '/api/google/overview-handler',
   '/api/resumecron/batchscore',
+  '/api/greenhouse/batchsave',
 ];
 
 export async function middleware(request) {
