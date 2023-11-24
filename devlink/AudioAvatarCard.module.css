@@ -84,6 +84,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -117,8 +125,12 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .avatar-name-wrap-audio {

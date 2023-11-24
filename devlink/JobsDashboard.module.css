@@ -58,6 +58,11 @@
   background-color: var(--gray100-3a86b552);
 }
 
+.rd-main-wrapper.grey-100.height-scroll-auto {
+  overflow: scroll;
+  height: 100vh;
+}
+
 .rd-main-wrapper.height-scroll-company {
   overflow: auto;
   height: 100vh;
@@ -299,6 +304,10 @@
   border-radius: 100px;
 
   background-color: var(--grey200-9ba653f1);
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -763,6 +772,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -796,8 +813,12 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .text-md {

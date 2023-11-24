@@ -65,6 +65,10 @@
   margin-top: 12px;
 }
 
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

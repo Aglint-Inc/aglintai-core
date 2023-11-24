@@ -221,6 +221,10 @@
   margin-top: 12px;
 }
 
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
 .toggle-ai-assesment {
   display: flex;
   margin-top: 15px;

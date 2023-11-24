@@ -264,9 +264,7 @@
 
 @media screen and (max-width: 479px) {
   .jdet-main-action-menu {
-    flex-wrap: wrap;
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
+    font-size: 3vw;
   }
 }
 
@@ -464,11 +462,29 @@
   padding: 9px 12px;
 }
 
+@media screen and (max-width: 767px) {
+  .jdet-actions-bar {
+    display: none;
+  }
+}
+
 .jdet-table {
   position: relative;
   overflow: hidden;
   height: 100%;
   margin-top: 6px;
+}
+
+@media screen and (max-width: 991px) {
+  .jdet-table {
+    margin-top: 64px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .jdet-table {
+    margin-top: 10px;
+  }
 }
 
 .job-page-nav-bar {
@@ -622,10 +638,6 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
-}
-
-.text-grey-600.no-wrap {
-  white-space: nowrap;
 }
 
 .cvs-intro-overview-block {

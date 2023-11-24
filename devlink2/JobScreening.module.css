@@ -840,11 +840,6 @@
   }
 }
 
-.cli-checkbox.padding-large {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 .cli-checkbox.top {
   padding-left: 20px;
 }
@@ -938,10 +933,6 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
-}
-
-.text-grey-600.no-wrap {
-  white-space: nowrap;
 }
 
 .cdd-content-main {

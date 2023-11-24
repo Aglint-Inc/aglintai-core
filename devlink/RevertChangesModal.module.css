@@ -19,6 +19,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
@@ -284,6 +288,10 @@
   opacity: 0.7;
 }
 
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
 .close-revert-modal {
   position: absolute;
   left: auto;
@@ -309,6 +317,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
 }
 
 .icons.curser-hover-pointer {
@@ -344,6 +360,10 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }

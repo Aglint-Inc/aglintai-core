@@ -29,7 +29,7 @@ export function ViewMoreSkills({
           className={_utils.cx(_styles, "view-less-text")}
           tag="div"
         >
-          {"View less.."}
+          {"View less"}
         </_Builtin.Block>
       ) : null}
     </_Component>

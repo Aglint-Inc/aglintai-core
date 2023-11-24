@@ -11,6 +11,13 @@
   border-radius: 8px;
 }
 
+@media screen and (max-width: 479px) {
+  .toggle-dropdown {
+    width: 100%;
+    max-width: 356px;
+  }
+}
+
 .toggle-dropdown-toggle-top {
   display: flex;
   padding-top: 10px;

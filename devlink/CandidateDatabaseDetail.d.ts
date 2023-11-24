@@ -20,4 +20,6 @@ declare function CandidateDatabaseDetail(props: {
   onClickFilter?: Types.Devlink.RuntimeProps;
   textRole?: React.ReactNode;
   onClickBookmarked?: Types.Devlink.RuntimeProps;
+  textAllCount?: React.ReactNode;
+  textBookmarkCount?: React.ReactNode;
 }): React.JSX.Element;

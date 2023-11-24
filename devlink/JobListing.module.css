@@ -484,6 +484,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -517,8 +525,16 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -710,6 +726,10 @@
   opacity: 0.7;
 }
 
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
 .div-block-467 {
   position: relative;
 
@@ -836,6 +856,10 @@
 
 .color-grey-600.mt-12 {
   margin-top: 12px;
+}
+
+.color-grey-600.width-588 {
+  max-width: 588px;
 }
 
 .div-block-443 {

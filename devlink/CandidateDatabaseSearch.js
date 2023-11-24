@@ -270,7 +270,7 @@ export function CandidateDatabaseSearch({
                   tag="div"
                 >
                   {
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis."
+                    "Gain access to Aglint's candidate database, featuring over 1000+ diverse job roles and a wide range of candidate profiles"
                   }
                 </_Builtin.Block>
               </_Builtin.Block>

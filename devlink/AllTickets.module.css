@@ -375,6 +375,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -408,8 +416,8 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .il-list-block {

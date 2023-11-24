@@ -167,6 +167,7 @@
 .top-can-info {
   display: flex;
   max-height: 24px;
+  margin-left: -5px;
   align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;

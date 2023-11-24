@@ -30,6 +30,8 @@ export function CandidateDialog({
   onClickStar = {},
   onClickViewResume = {},
   slotAddJob,
+  arrowtooltiphide = false,
+  isLinkedinVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -61,12 +63,14 @@ export function CandidateDialog({
               className={_utils.cx(_styles, "icon-embed")}
               value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.242188%206.41406C0.169271%206.30469%200.169271%206.19531%200.242188%206.08594L6.14844%200.179688C6.25781%200.106771%206.36719%200.106771%206.47656%200.179688C6.54948%200.289062%206.54948%200.398438%206.47656%200.507812L0.707031%206.25L6.47656%2011.9922C6.54948%2012.1016%206.54948%2012.2109%206.47656%2012.3203C6.36719%2012.3932%206.25781%2012.3932%206.14844%2012.3203L0.242188%206.41406Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
             />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Shift + ←"}</_Builtin.Block>
-            </_Builtin.Block>
+            {arrowtooltiphide ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "arrow-tooltips-drawer")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Shift + ←"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(
@@ -83,12 +87,14 @@ export function CandidateDialog({
               className={_utils.cx(_styles, "icon-embed")}
               value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
             />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Shift + →"}</_Builtin.Block>
-            </_Builtin.Block>
+            {arrowtooltiphide ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "arrow-tooltips-drawer")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Shift + →"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -165,16 +171,18 @@ export function CandidateDialog({
                   >
                     {textName}
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "pointer")}
-                    tag="div"
-                    {...onClickLinkedin}
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icon-embed")}
-                      value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2218%22%20viewBox%3D%220%200%2012%2014%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M11.1429%201H0.854464C0.383036%201%200%201.3884%200%201.86519V12.1349C0%2012.6117%200.383036%2013.0001%200.854464%2013.0001H11.1429C11.6143%2013.0001%2012%2012.6117%2012%2012.1349V1.86519C12%201.3884%2011.6143%201%2011.1429%201ZM3.62679%2011.2858H1.84821V5.55897H3.62946V11.2858H3.62679ZM2.7375%204.77682C2.16696%204.77682%201.70625%204.31342%201.70625%203.74556C1.70625%203.1777%202.16696%202.7143%202.7375%202.7143C3.30536%202.7143%203.76875%203.1777%203.76875%203.74556C3.76875%204.3161%203.30804%204.77682%202.7375%204.77682ZM10.2937%2011.2858H8.51518V8.50007C8.51518%207.83578%208.50179%206.98131%207.59107%206.98131C6.66429%206.98131%206.52232%207.70453%206.52232%208.45186V11.2858H4.74375V5.55897H6.45V6.34112H6.47411C6.7125%205.89112%207.29375%205.41701%208.15893%205.41701C9.95893%205.41701%2010.2937%206.60362%2010.2937%208.1465V11.2858Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
+                  {isLinkedinVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "pointer")}
+                      tag="div"
+                      {...onClickLinkedin}
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icon-embed")}
+                        value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2218%22%20viewBox%3D%220%200%2012%2014%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M11.1429%201H0.854464C0.383036%201%200%201.3884%200%201.86519V12.1349C0%2012.6117%200.383036%2013.0001%200.854464%2013.0001H11.1429C11.6143%2013.0001%2012%2012.6117%2012%2012.1349V1.86519C12%201.3884%2011.6143%201%2011.1429%201ZM3.62679%2011.2858H1.84821V5.55897H3.62946V11.2858H3.62679ZM2.7375%204.77682C2.16696%204.77682%201.70625%204.31342%201.70625%203.74556C1.70625%203.1777%202.16696%202.7143%202.7375%202.7143C3.30536%202.7143%203.76875%203.1777%203.76875%203.74556C3.76875%204.3161%203.30804%204.77682%202.7375%204.77682ZM10.2937%2011.2858H8.51518V8.50007C8.51518%207.83578%208.50179%206.98131%207.59107%206.98131C6.66429%206.98131%206.52232%207.70453%206.52232%208.45186V11.2858H4.74375V5.55897H6.45V6.34112H6.47411C6.7125%205.89112%207.29375%205.41701%208.15893%205.41701C9.95893%205.41701%2010.2937%206.60362%2010.2937%208.1465V11.2858Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "text-grey-600-3")}

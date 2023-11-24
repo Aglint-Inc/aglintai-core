@@ -16,4 +16,5 @@ declare function CandidateDetailsCard(props: {
   onClickStar?: Types.Devlink.RuntimeProps;
   onClickCard?: Types.Devlink.RuntimeProps;
   isBorderActive?: Types.Visibility.VisibilityConditions;
+  isLocationVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

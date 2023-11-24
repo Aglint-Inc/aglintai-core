@@ -102,6 +102,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
