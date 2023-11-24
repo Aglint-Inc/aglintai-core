@@ -163,6 +163,39 @@ export interface Database {
         }
         Relationships: []
       }
+      env: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+          value: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          value?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          value?: string | null
+        }
+        Relationships: []
+      }
+      function: {
+        Row: {
+          value: string | null
+        }
+        Insert: {
+          value?: string | null
+        }
+        Update: {
+          value?: string | null
+        }
+        Relationships: []
+      }
       greenhouse_reference: {
         Row: {
           application_id: string
@@ -959,7 +992,18 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: unknown
       }
-      batchscorecron: {
+      batchscorecron:
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: Json
+          }
+        | {
+            Args: {
+              function_value: string
+            }
+            Returns: Json
+          }
+      batchtriggergreenhouse: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
@@ -1145,15 +1189,11 @@ export interface Database {
       }
       retrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      savegreenhouseresume: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
+        Returns: unknown
       }
       secondretrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: Json
+        Returns: unknown
       }
       update_resume_score: {
         Args: {

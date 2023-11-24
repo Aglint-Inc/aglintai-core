@@ -14,8 +14,14 @@ interface BatchCalcResumeJDScoreResponse {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const rpcfunction = req.body.function;
+    console.log('rpcfunction', rpcfunction);
     const { data: applications, error } = (await supabase.rpc(
-      'batchcalcresumejdscore',
+      rpcfunction == 'first'
+        ? 'batchcalcresumejdscore'
+        : rpcfunction == 'first'
+        ? 'retrybatchcalcresumejdscore'
+        : 'secondretrybatchcalcresumejdscore',
     )) as BatchCalcResumeJDScoreResponse;
 
     if (error) {
