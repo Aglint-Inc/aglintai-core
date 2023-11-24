@@ -1,5 +1,5 @@
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Alert, Chip, Stack, TextField } from '@mui/material';
+import { Chip, Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import {
@@ -73,11 +73,13 @@ function ChatMessages() {
             slotChat={<ChatConversation />}
             slotChatInput={
               <>
-                {closeChat ? (
+                {closeChat.chat_end ? (
                   <>
-                    <Alert severity='success'>
-                      Application submitted successfully!
-                    </Alert>
+                    {/* <Alert severity={closeChat.applied ? 'success' : ''}>
+                      {closeChat.applied
+                        ? 'Application submitted successfully!'
+                        : 'Thanks or your time'}
+                    </Alert> */}
                   </>
                 ) : (
                   <ChatInput

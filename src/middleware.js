@@ -24,6 +24,7 @@ const whiteListedEndPoints = [
   '/api/google/overview',
   '/api/google/resume',
   '/api/google/overview-handler',
+  '/api/getLinkedin',
   '/api/resumecron/batchscore',
 ];
 

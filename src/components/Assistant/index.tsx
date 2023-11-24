@@ -114,13 +114,16 @@ function Assistant() {
         .filter((ele) =>
           selectedName
             ? ele.candidate_name &&
-              ele.candidate_name.toLowerCase().includes(selectedName.toLowerCase())
+              ele.candidate_name
+                .toLowerCase()
+                .includes(selectedName.toLowerCase())
             : ele,
         )
         .map((thread, i) => {
           if (thread.candidate_email)
             return (
               <ChatboxCandidateListItem
+                isApplied={thread.applied}
                 isSelected={selectedObj.email === thread.candidate_email}
                 onclickProps={{
                   onClick: () => {

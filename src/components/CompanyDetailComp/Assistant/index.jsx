@@ -24,7 +24,7 @@ function Assistant() {
       const { data } = await axios.post('/api/assistant/createAssistant', {
         instructions: instructionRef.current.value,
         name: nameRef.current.value,
-        module: 'gpt-4',
+        module: 'gpt-4-1106-preview',
       });
       createAssistant(data);
     }
@@ -90,9 +90,24 @@ function Assistant() {
           </Stack>
         }
         slotButtons={
-          <Stack direction={'row'} justifyContent={'start'}>
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            justifyContent={'space-between'}
+          >
             <AUIButton disabled={btnhide} onClick={handleClick}>
               Save Changes
+            </AUIButton>
+            <AUIButton
+              onClick={() => {
+                window.open(
+                  `/job-assistant?company_id=${recruiter.id}`,
+                  'blank',
+                );
+              }}
+              variant='text'
+            >
+              {''}
             </AUIButton>
           </Stack>
         }

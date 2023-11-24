@@ -10,7 +10,7 @@ import React, {
 
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
-let intervalId;
+let intervalId = null;
 // let setTime;
 
 const JobAssistantContext = createContext();
@@ -45,6 +45,12 @@ function JobAssistantProvider({ children }) {
       ? inputRef?.current?.value
       : firstMessage;
     if (textMessage) {
+      // if (textMessage.includes('https://www.linkedin.com/in')) {
+      //   const data = await axios.post('/api/getLinkedin', {
+      //     linkedInURL: textMessage,
+      //   });
+      //   console.log(data);
+      // }
       // set first message
       if (textMessage != firstMessage) {
         setMessages((pre) => [
@@ -129,13 +135,14 @@ function JobAssistantProvider({ children }) {
       thread_id: localStorage.getItem('thread_id'),
       run_id: data.id,
     });
+
     if (run.status === 'in_progress' || run.status === 'queued') {
       getRun(run);
       return;
     }
 
     if (run?.required_action) {
-      const output =
+      let output =
         run?.required_action.submit_tool_outputs.tool_calls[0].function
           .arguments;
 
@@ -145,6 +152,67 @@ function JobAssistantProvider({ children }) {
         .eq('thread_id', localStorage.getItem('thread_id'))
         .select();
 
+      if (JSON.parse(output).candidate_email) {
+        supabase
+          .from('candidates')
+          .insert({
+            first_name: JSON.parse(output)?.candidate_name,
+            email: JSON.parse(output)?.candidate_email,
+            phone: JSON.parse(output)?.candidate_phone,
+            recruiter_id: companyDetails.id,
+          })
+          .select()
+          .then(({ data }) => {
+            if (data) {
+              localStorage.setItem('candidate_id', data[0].id);
+              supabase
+                .from('job_applications')
+                .insert({
+                  job_id: companyDetails.job_id,
+                })
+                .select()
+                .then((job) => {
+                  localStorage.setItem(
+                    'application_id',
+                    job.data[0].application_id,
+                  );
+                });
+            }
+          });
+      }
+
+      if (JSON.parse(output).chat_end) {
+        setCloseChat(JSON.parse(output));
+        localStorage.removeItem('thread_id');
+        setMessages((pre) => {
+          pre[0].value = JSON.parse(output).applied
+            ? 'Your application has been submitted successfully!'
+            : 'Thank you for your time';
+          return [...pre];
+        });
+        if (JSON.parse(output).applied) {
+          supabase
+            .from('job_applications')
+            .update({
+              candidate_id: localStorage.getItem('candidate_id'),
+            })
+            .eq('application_id', localStorage.getItem('application_id'))
+            .select()
+            .then((job) => {
+              localStorage.removeItem('candidate_id');
+              localStorage.removeItem('application_id');
+              return job.data;
+            });
+        }
+        return;
+      }
+
+      if (JSON.parse(output).linkedin_url) {
+        const { data: resumeData } = await axios.post('/api/getLinkedin', {
+          linkedInURL: JSON.parse(output).linkedin_url,
+        });
+        output = JSON.stringify(resumeData);
+      }
       const { data: submitRun } = await axios.post('/api/assistant/submitRun', {
         thread_id: localStorage.getItem('thread_id'),
         run_id: data.id,
@@ -152,19 +220,10 @@ function JobAssistantProvider({ children }) {
         output: output,
       });
       if (submitRun) {
-        if (JSON.parse(output).chat_end) {
-          setCloseChat(JSON.parse(output).chat_end);
-          localStorage.removeItem('thread_id');
-          setMessages((pre) => {
-            pre[0].value = 'Your application has been submitted successfully!';
-            return [...pre];
-          });
-          return;
-        }
-        intervalId = setInterval(listMessages, 3000);
+        intervalId = setInterval(() => listMessages(run.status), 5000);
       }
     } else {
-      listMessages();
+      listMessages(run.status);
     }
   }
 
@@ -183,7 +242,7 @@ function JobAssistantProvider({ children }) {
   }
 
   //////////////////////////////////////////////////////////
-  async function listMessages() {
+  async function listMessages(status) {
     const { data } = await axios.post('/api/assistant/listMessages', {
       thread_id: localStorage.getItem('thread_id'),
     });
@@ -198,7 +257,11 @@ function JobAssistantProvider({ children }) {
       metadata: item.metadata,
     }));
 
-    if (data.length && data[0].content[0].text.value) {
+    if (
+      data.length &&
+      data[0].content[0].text.value &&
+      status === 'requires_action'
+    ) {
       clearInterval(intervalId);
     }
 
@@ -213,20 +276,37 @@ function JobAssistantProvider({ children }) {
         },
       ]);
     }
+
+    if (
+      status === 'in_progress' ||
+      status === 'queued' ||
+      status === 'requires_action'
+    ) {
+      return;
+    } else {
+      clearInterval(intervalId);
+    }
   }
   /////////////////////////////////////////////////////////
   async function getCompanyDetails() {
-    const { data: job } = await supabase
+    const { data: company } = await supabase
       .from('recruiter')
       .select()
       .eq('id', router.query.company_id);
-    if (job) {
-      setCompanyDetails(job[0]);
+    if (company) {
+      const { data: job } = await supabase
+        .from('public_jobs')
+        .select()
+        .eq('recruiter_id', router.query.company_id);
+      let companyObj = company;
+      let jobObj = { job_id: job[0]?.id };
+      // console.log({ ...companyObj[0], ...jobObj });
+      setCompanyDetails({ ...companyObj[0], ...jobObj });
       // check before creating thread
       if (localStorage.getItem('thread_id')) {
-        listMessages();
+        listMessages('');
       } else {
-        createThreat(job[0]);
+        createThreat(company[0]);
       }
       // create thread on reload
       // createThreat();
