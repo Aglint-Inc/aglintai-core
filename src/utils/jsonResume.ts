@@ -5,7 +5,7 @@ export const getFullName = (firstName, lastName) => {
     .filter(Boolean)
     .map((s) => s.trim())
     .filter(Boolean)
-    .join(',');
+    .join(', ');
 };
 
 export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {

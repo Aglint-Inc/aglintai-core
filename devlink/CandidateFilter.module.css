@@ -10,11 +10,17 @@
 }
 
 .filter-wrap-header {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+
   display: flex;
   padding-top: 16px;
   padding-bottom: 20px;
   justify-content: space-between;
   align-items: center;
+
+  background-color: #f8f9f9;
 }
 
 .div-block-580 {
@@ -22,59 +28,6 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.icons.close {
-  display: none;
 }
 
 .fw-semibold {
@@ -85,12 +38,25 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
 
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -314,6 +280,10 @@
   opacity: 0.7;
 }
 
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
 .div-block-581 {
   display: grid;
   grid-auto-columns: 1fr;
@@ -346,6 +316,61 @@
 .filter-outer-wrappers.py-20 {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.wrap-flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.icons.close {
+  display: none;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .max-width-500 {
@@ -398,6 +423,10 @@
   grid-row-gap: 6px;
 }
 
+.slot-current-job {
+  margin-top: 20px;
+}
+
 .div-block-584 {
   display: flex;
   padding: 2px 8px;
@@ -408,6 +437,8 @@
   border-radius: 4px;
 
   background-color: #edf7ff;
+
+  cursor: pointer;
 }
 
 .div-block-585 {

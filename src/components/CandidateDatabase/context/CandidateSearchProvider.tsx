@@ -1,8 +1,17 @@
+import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
+import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { JsonResume } from '@/src/types/resume_json.types';
+import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
+
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;
@@ -14,6 +23,8 @@ export interface CandidateSearchRes {
   similarity: number;
   profile_image?: string;
   resume_link: string;
+  is_bookmarked: boolean;
+  is_checked: boolean;
 }
 
 export type CandidateSearchState = {
@@ -38,6 +49,8 @@ export type CandidateSearchCtxType = {
   updateState: ({ path, value }: { path: string; value: any }) => void;
   // eslint-disable-next-line no-unused-vars
   updatenewSearchRes: (newState: CandidateSearchState) => void;
+  // eslint-disable-next-line no-unused-vars
+  bookMarkCandidate: (application_id: string | string[]) => Promise<void>;
 };
 
 type ActionType =
@@ -95,6 +108,8 @@ const CandidateSearchCtx = createContext<CandidateSearchCtxType>({
   updateState: ({ path = '', value = '' }) => {},
   // eslint-disable-next-line no-unused-vars
   updatenewSearchRes: (newState: CandidateSearchState) => {},
+  // eslint-disable-next-line no-unused-vars
+  bookMarkCandidate: async (id) => {},
 });
 
 const CandidateSearchProvider = ({ children }) => {
@@ -113,12 +128,49 @@ const CandidateSearchProvider = ({ children }) => {
     });
   };
 
+  const bookMarkCandidate = async (application_id: string | string[]) => {
+    try {
+      let bookMarkAppIds = [];
+      if (isArray(application_id)) {
+        bookMarkAppIds = [...application_id];
+      } else {
+        bookMarkAppIds = [application_id];
+      }
+      const updatedCands = state.candidates.map((cand) => {
+        if (bookMarkAppIds.includes(cand.application_id)) {
+          cand.is_bookmarked = !cand.is_bookmarked;
+        }
+        return cand;
+      });
+      updateState({
+        path: 'candidates',
+        value: updatedCands,
+      });
+
+      supabaseWrap(
+        await supabase
+          .from('candidate_search_history')
+          .update({
+            bookmarked_candidates: updatedCands
+              .filter((c) => c.is_bookmarked)
+              .map((c) => c.application_id),
+          })
+          .eq('id', router.query.searchQryId),
+      );
+    } catch {
+      toast.error(API_FAIL_MSG);
+    }
+
+    // const r =
+  };
+
   return (
     <CandidateSearchCtx.Provider
       value={{
         candidateSearchState: state,
         updateState,
         updatenewSearchRes,
+        bookMarkCandidate,
       }}
     >
       {children}

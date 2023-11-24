@@ -1,5 +1,4 @@
 .search-wrap-candidate {
-  height: 100vh;
   padding-bottom: 20px;
 }
 
@@ -190,6 +189,8 @@
 }
 
 .candidate-empty-landing-wrappers {
+  position: relative;
+
   display: flex;
   width: 100%;
   margin-top: 40px;
@@ -668,8 +669,6 @@
 
 .slot-candidate-history-card {
   display: flex;
-  overflow: scroll;
-  height: 50vh;
   margin-top: 18px;
   flex-direction: column;
   grid-column-gap: 14px;
@@ -682,6 +681,23 @@
   padding-right: 35px;
   flex-direction: column;
   flex: 0 0 auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.db-rquest-wrap.sticky {
+  position: sticky;
+  top: 0px;
+}
+
+.sticky-top-90 {
+  position: sticky;
+  top: 100px;
+}
+
+.sticky-top-90.gap-20 {
+  display: flex;
+  flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }

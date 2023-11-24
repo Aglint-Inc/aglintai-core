@@ -1,16 +1,19 @@
 import axios from 'axios';
 import { isArray } from 'lodash';
 
-import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
-import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { CandidateSearchState } from './context/CandidateSearchProvider';
+import {
+  CandidateSearchRes,
+  CandidateSearchState,
+} from './context/CandidateSearchProvider';
+import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],
   job_ids: string[],
   max_records: number,
+  bookmarked_cands: string[] = [],
 ) => {
   let embeddings = {
     skills: null,
@@ -30,35 +33,6 @@ export const getRelevantCndidates = async (
       );
     }
   });
-  const seedJobsSkills = [
-    (async () => await similarJobs(modifyQryJson.jobTitles))(),
-  ];
-
-  if (modifyQryJson.skills.length > 0) {
-    seedJobsSkills.push(
-      (async () => await similarSkills(modifyQryJson.skills))(),
-    );
-  }
-
-  const r = await Promise.allSettled(seedJobsSkills);
-
-  if (r[0].status === 'fulfilled' && r[0].value) {
-    modifyQryJson.jobTitles = [
-      ...modifyQryJson.jobTitles,
-      ...r[0].value.related_jobs,
-    ];
-  }
-
-  if (
-    modifyQryJson.skills.length > 0 &&
-    r[1].status === 'fulfilled' &&
-    r[1].value
-  ) {
-    modifyQryJson.skills = [
-      ...modifyQryJson.skills,
-      ...r[1].value.related_skills,
-    ];
-  }
 
   const preqs = [
     (async () => await getEmbedding(modifyQryJson.skills.join(' ').trim()))(),
@@ -119,22 +93,24 @@ export const getRelevantCndidates = async (
     resp[3].value &&
     resp[3].value.data[0].embedding;
 
-  const { data: cands, error } = await supabase.rpc('calc_sim_score', {
-    edu_qry_emb: embeddings.education,
-    skill_qry_emb: embeddings.skills,
-    exp_qry_emb: embeddings.experience,
-    resume_qry_emb: embeddings.resume,
-    job_ids,
-    max_records: max_records,
-    ts_query: getFtsearchQry(modifyQryJson.jobTitles),
-    filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies),
-  });
+  const cands = supabaseWrap(
+    await supabase.rpc('calc_sim_score', {
+      edu_qry_emb: embeddings.education,
+      skill_qry_emb: embeddings.skills,
+      exp_qry_emb: embeddings.experience,
+      resume_qry_emb: embeddings.resume,
+      job_ids,
+      max_records: max_records,
+      ts_query: getFtsearchQry(modifyQryJson.jobTitles),
+      filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies),
+    }),
+  ) as Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[];
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return cands;
+  const canididatesDto: CandidateSearchRes[] = joinSearchResultWithBookMark(
+    cands,
+    bookmarked_cands,
+  );
+  return canididatesDto;
 };
 
 const getEmbedding = async (str: string) => {
@@ -157,4 +133,16 @@ const getFilterSearchQry = (companies: string[]) => {
     .map((c) => c.split(' ').join('&').toLowerCase())
     .map((c) => `!${c}`)
     .join(' & ');
+};
+
+export const joinSearchResultWithBookMark = (
+  candidates: Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[],
+  bookmarkedCands: string[],
+) => {
+  const canididatesDto: CandidateSearchRes[] = candidates.map((c) => ({
+    ...c,
+    is_bookmarked: bookmarkedCands.includes(c.application_id),
+    is_checked: false,
+  }));
+  return canididatesDto;
 };

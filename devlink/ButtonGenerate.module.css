@@ -1,19 +1,18 @@
-.div-block-584 {
+.generate-btn-cd {
   display: flex;
-  padding: 2px 8px;
+  padding: 8px 12px;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
 
+  border: 1px solid #daeded;
   border-radius: 4px;
 
-  background-color: #edf7ff;
+  background-color: #f5fcfc;
+
+  color: #012b30;
 
   cursor: pointer;
-}
-
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
 }
 
 .icons {

@@ -1,13 +1,22 @@
-import { Slider } from '@mui/material';
+import { Slider, Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { cloneDeep, set } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { CandidateFilter, JobPills } from '@/devlink';
+import {
+  AddSkillPIll,
+  AiIcon,
+  ButtonGenerate,
+  CandidateFilter,
+  JobPills,
+  SkillsGenerate,
+} from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
+import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -39,6 +48,11 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
     ...candidateSearchState.queryJson,
     profileLimit: candidateSearchState.maxProfiles,
   });
+  const [isSkillGenerating, setIsSkillGenerating] = useState(false);
+  const [isjobRolesGenerating, setIsjobRolesGenerating] = useState(false);
+  const [suggestedJobs, setSuggestedJobs] = useState<string[]>([]);
+  const [suggestedSkills, setSuggestedSkills] = useState<string[]>([]);
+
   const router = useRouter();
 
   const [isFilterLoading, setIsFilterLoading] = useState(false);
@@ -68,6 +82,30 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       ...candidateSearchState.queryJson,
       profileLimit: candidateSearchState.maxProfiles,
     });
+  };
+
+  const handleGenSimJobRoles = async () => {
+    try {
+      setIsjobRolesGenerating(true);
+      const resp = await similarJobs(filters.jobTitles);
+      setSuggestedJobs(resp.related_jobs);
+    } catch (err) {
+      //
+    } finally {
+      setIsjobRolesGenerating(false);
+    }
+  };
+
+  const handleGenSimSkills = async () => {
+    try {
+      setIsSkillGenerating(true);
+      const resp = await similarSkills(filters.skills);
+      setSuggestedSkills(resp.related_skills);
+    } catch (err) {
+      //
+    } finally {
+      setIsSkillGenerating(false);
+    }
   };
 
   const handleApplyFilters = async () => {
@@ -159,6 +197,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
             onClick={() => {
               !isFilterLoading && handleApplyFilters();
             }}
+            disabled={filters.jobTitles.length == 0}
             endIcon={
               isFilterLoading && (
                 <CircularProgress
@@ -177,7 +216,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                 src={'/images/svg/graphUp.svg'}
                 style={{ marginRight: '10px' }}
               />
-              <p>Apply Filters</p>
+              <p> Apply </p>
             </div>
           </AUIButton>
         </>
@@ -471,6 +510,110 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       onClickResetFilter={{
         onClick: handleResetFilter,
       }}
+      slotGenerate={
+        <SkillsGenerate
+          textDescription={`Click on 'Generate' button to get suggested job titles`}
+          slotGenerateSkill={
+            <>
+              {suggestedSkills.length === 0 && (
+                <ButtonGenerate
+                  onClickGenerate={{
+                    onClick: handleGenSimSkills,
+                  }}
+                  slotIcon={
+                    <>
+                      {isSkillGenerating ? (
+                        <CircularProgress
+                          color='inherit'
+                          size={'15px'}
+                          sx={{ color: palette.grey[400] }}
+                        />
+                      ) : (
+                        <AiIcon />
+                      )}
+                    </>
+                  }
+                />
+              )}
+              <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
+                {suggestedSkills.map((s, index) => {
+                  return (
+                    <AddSkillPIll
+                      key={index}
+                      onClickAdd={{
+                        onClick: () => {
+                          setFilters((pre) => {
+                            const upd = cloneDeep(pre);
+                            set(upd, 'skills', [...upd.skills, s]);
+                            return upd;
+                          });
+                          setSuggestedSkills((prev) =>
+                            prev.filter((sk) => sk !== s),
+                          );
+                        },
+                      }}
+                      textSKill={s}
+                    />
+                  );
+                })}
+              </Stack>
+            </>
+          }
+        />
+      }
+      slotCurrentJobSuggestion={
+        <>
+          <SkillsGenerate
+            textDescription={`Click on 'Generate' button to get suggested job titles`}
+            slotGenerateSkill={
+              <>
+                {suggestedJobs.length === 0 && (
+                  <ButtonGenerate
+                    onClickGenerate={{
+                      onClick: handleGenSimJobRoles,
+                    }}
+                    slotIcon={
+                      <>
+                        {isjobRolesGenerating ? (
+                          <CircularProgress
+                            color='inherit'
+                            size={'15px'}
+                            sx={{ color: palette.grey[400] }}
+                          />
+                        ) : (
+                          <AiIcon />
+                        )}
+                      </>
+                    }
+                  />
+                )}
+                <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
+                  {suggestedJobs.map((s, index) => {
+                    return (
+                      <AddSkillPIll
+                        key={index}
+                        onClickAdd={{
+                          onClick: () => {
+                            setFilters((pre) => {
+                              const upd = cloneDeep(pre);
+                              set(upd, 'jobTitles', [...upd.jobTitles, s]);
+                              return upd;
+                            });
+                            setSuggestedJobs((prev) =>
+                              prev.filter((sk) => sk !== s),
+                            );
+                          },
+                        }}
+                        textSKill={s}
+                      />
+                    );
+                  })}
+                </Stack>
+              </>
+            }
+          />
+        </>
+      }
     />
   );
 };

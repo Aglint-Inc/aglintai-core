@@ -1,19 +1,22 @@
-.div-block-584 {
+.add-job-list {
   display: flex;
-  padding: 2px 8px;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border-radius: 4px;
-
-  background-color: #edf7ff;
-
-  cursor: pointer;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
-.text-blue-800 {
-  color: var(--blue800-09c1dfbf);
+.final-check-box {
+  display: flex;
+  width: 17px;
+  height: 17px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid var(--grey300-03a46dba);
+  border-radius: 4px;
+
+  cursor: pointer;
 }
 
 .icons {
@@ -30,6 +33,14 @@
 
 .cursor-pointer:hover {
   opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
 }
 
 .icons.curser-hover-pointer {
@@ -65,10 +76,10 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
-}
-
 .pointer {
   cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }

@@ -30,10 +30,7 @@ const SelectedCandidate = ({
   const [resume, setResume] = useState(false);
 
   if (!candidate) return <></>;
-  let location = '';
-  if (typeof candidate.json_resume.basics.location === 'string') {
-    location = candidate.json_resume.basics.location;
-  }
+  let location = candidate.json_resume.basics.location;
 
   const handleOpenResume = async () => {
     if (isEmpty(candidate.resume_link)) return;
@@ -56,7 +53,7 @@ const SelectedCandidate = ({
         // isOverviewVisible={}
         textOverview={candidate.json_resume.overview}
         textLocation={location}
-        isOverviewVisible
+        isOverviewVisible={Boolean(candidate.json_resume.overview)}
         slotAddtoJob={<></>}
         onClickClose={{
           onClick: onClickClose,

@@ -1,4 +1,4 @@
-import { CircularProgress, Paper } from '@mui/material';
+import { CircularProgress, Paper, Stack } from '@mui/material';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
@@ -13,12 +13,15 @@ import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
+import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
+import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { CandidateSearchState } from '../context/CandidateSearchProvider';
 import { JDSearchModal } from '../JDSearchModal';
 import { getRelevantCndidates } from '../utils';
+import Loader from '../../Common/Loader';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
 import {
@@ -29,6 +32,7 @@ import {
 function CandidateSearchHistory() {
   const { recruiter } = useAuthDetails();
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isQrySearching, setIsQrySearching] = useState(false);
   const [showDeletepopUp, setShowDeletePopup] = useState(false);
@@ -41,6 +45,7 @@ function CandidateSearchHistory() {
 
   const getHistory = async () => {
     try {
+      setIsHistoryLoading(true);
       const history = supabaseWrap(
         await supabase
           .from('candidate_search_history')
@@ -50,6 +55,8 @@ function CandidateSearchHistory() {
       setHistory(history);
     } catch (err) {
       toast.error(API_FAIL_MSG);
+    } finally {
+      setIsHistoryLoading(false);
     }
   };
 
@@ -86,12 +93,36 @@ function CandidateSearchHistory() {
 
   const getMatchingCandsFromQry = async () => {
     try {
-      if (isQrySearching) return;
+      if (searchQuery.length === 0 || isQrySearching) return;
       setIsQrySearching(true);
-      const p = await searchJdToJson(searchQuery);
+      const queryJson = await searchJdToJson(searchQuery);
 
+      const seedJobsSkills = [
+        (async () => await similarJobs(queryJson.jobTitles))(),
+      ];
+
+      if (queryJson.skills.length > 0) {
+        seedJobsSkills.push(
+          (async () => await similarSkills(queryJson.skills))(),
+        );
+      }
+      const r = await Promise.allSettled(seedJobsSkills);
+      if (r[0].status === 'fulfilled' && r[0].value) {
+        queryJson.jobTitles = [
+          ...queryJson.jobTitles,
+          ...r[0].value.related_jobs,
+        ];
+      }
+
+      if (
+        queryJson.skills.length > 0 &&
+        r[1].status === 'fulfilled' &&
+        r[1].value
+      ) {
+        queryJson.skills = [...queryJson.skills, ...r[1].value.related_skills];
+      }
       const cndates = (await getRelevantCndidates(
-        p,
+        queryJson,
         jobsData.jobs.map((j) => j.id),
         25,
       )) as any;
@@ -101,7 +132,7 @@ function CandidateSearchHistory() {
           .insert({
             recruiter_id: recruiter.id,
             is_search_jd: false,
-            query_json: p,
+            query_json: queryJson,
             search_results: cndates,
           })
           .select(),
@@ -174,6 +205,13 @@ function CandidateSearchHistory() {
                   />
                 );
               })}
+            {isHistoryLoading && (
+              <>
+                <Stack>
+                  <Loader />
+                </Stack>
+              </>
+            )}
           </>
         }
         onClickClearHistory={{
@@ -243,5 +281,5 @@ function CandidateSearchHistory() {
 export default CandidateSearchHistory;
 
 const queryJsonToTitle = (queryJson: CandidateSearchState['queryJson']) => {
-  return queryJson.jobTitles.join(', ') + queryJson.skills.join(', ');
+  return queryJson.jobTitles.join(', ');
 };

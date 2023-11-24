@@ -20,4 +20,5 @@ declare function CandidateDialog(props: {
   isStarActive?: Types.Visibility.VisibilityConditions;
   onClickStar?: Types.Devlink.RuntimeProps;
   onClickViewResume?: Types.Devlink.RuntimeProps;
+  slotAddJob?: Types.Devlink.Slot;
 }): React.JSX.Element;

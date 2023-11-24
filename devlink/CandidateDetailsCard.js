@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { CandidateSkills } from "./CandidateSkills";
+import { ViewMoreSkills } from "./ViewMoreSkills";
 import * as _utils from "./utils";
 import _styles from "./CandidateDetailsCard.module.css";
 
@@ -18,6 +19,7 @@ export function CandidateDetailsCard({
   isStarActive = false,
   onClickStar = {},
   onClickCard = {},
+  isBorderActive = false,
 }) {
   return (
     <_Component
@@ -175,11 +177,23 @@ export function CandidateDetailsCard({
         <_Builtin.Block
           className={_utils.cx(_styles, "cdb-card-tags-wrapper")}
           tag="div"
+          id="content"
         >
-          {slotSkill ?? <CandidateSkills />}
+          {slotSkill ?? (
+            <>
+              <CandidateSkills />
+              <ViewMoreSkills />
+              <CandidateSkills textSkill="Entry to Senior-Level Prof" />
+              <CandidateSkills />
+            </>
+          )}
         </_Builtin.Block>
+        <_Builtin.HtmlEmbed
+          className={_utils.cx(_styles, "hide")}
+          value="%3Cscript%3E%0Adocument.getElementById('viewmore').addEventListener('click'%2C%20function()%20%7B%0A%20%20var%20content%20%3D%20document.getElementById('content')%3B%0A%0A%20%20%2F%2F%20Toggle%20between%20'58px'%20and%20'none'%20for%20max-height%0A%20%20content.style.maxHeight%20%3D%20content.style.maxHeight%20%3D%3D%3D%20'58px'%20%3F%20content.scrollHeight%20%2B%20'px'%20%3A%20'58px'%3B%0A%7D)%3B%0A%3C%2Fscript%3E"
+        />
       </_Builtin.Block>
-      {isChecked ? (
+      {isBorderActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "border-active-blue")}
           tag="div"

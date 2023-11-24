@@ -11,6 +11,8 @@
   border-radius: 10px;
 
   background-color: hsla(206.66666666666666, 100.00%, 96.47%, 0.10);
+
+  cursor: pointer;
 }
 
 .cdb-card-header {
@@ -42,6 +44,21 @@
 
   border: 1px solid #d8dcde;
   border-radius: 4px;
+}
+
+.cdb-card-checkmark.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .checkbox-image {
@@ -79,6 +96,10 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -379,6 +400,7 @@
 
 .cdb-star-block {
   position: relative;
+  z-index: 4;
 }
 
 .cdb-card-body {
@@ -418,7 +440,12 @@
 }
 
 .cdb-card-tags-wrapper {
+  position: relative;
+  z-index: 4;
+
   display: flex;
+  overflow: hidden;
+  width: 100%;
   flex-wrap: wrap;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
