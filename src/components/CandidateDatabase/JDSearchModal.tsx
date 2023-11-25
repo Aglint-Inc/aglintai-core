@@ -1,4 +1,5 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
+import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
@@ -10,6 +11,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
+import UITextField from '../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
@@ -19,15 +21,22 @@ export const JDSearchModal = ({ setJdPopup }) => {
   const defaultValue = '';
   const { recruiter } = useAuthDetails();
   const [isJdSearching, setIsJdSearching] = useState(false);
-
+  const [jobRole, setJobRole] = useState('');
   const [jdText, setJdText] = useState(defaultValue);
 
   const getMatchingCandsFromJd = async () => {
     try {
+      if (isEmpty(jobRole) || isEmpty(jdText)) return;
       if (isJdSearching) return;
       setIsJdSearching(true);
-      const p = await searchJdToJson(jdText);
+      const fullJd = `
+job role ${jobRole}
 
+job description 
+
+${jdText}
+`;
+      const p = await searchJdToJson(fullJd);
       const [history] = supabaseWrap(
         await supabase
           .from('candidate_search_history')
@@ -48,24 +57,37 @@ export const JDSearchModal = ({ setJdPopup }) => {
     }
   };
 
+  const disabled = isEmpty(jobRole) || isEmpty(jdText);
+
   return (
     <JobDescriptionModal
       slotJobDescription={
         <>
-          <textarea
-            style={{
-              resize: 'vertical',
-              borderRadius: '5px',
-              width: '100%',
-              height: '100%',
-              padding: '5px',
-              outline: 'none',
-            }}
-            value={jdText}
-            onChange={(e) => {
-              setJdText(e.target.value);
-            }}
-          />
+          <Stack gap={2}>
+            <UITextField
+              onChange={(e) => {
+                setJobRole(e.target.value);
+              }}
+              value={jobRole}
+              placeholder='Enter job title'
+            />
+            <textarea
+              style={{
+                resize: 'vertical',
+                borderRadius: '5px',
+                width: '100%',
+                height: '200px',
+                padding: '5px',
+                outline: 'none',
+                borderColor: palette.grey[300],
+              }}
+              placeholder='Enter job description'
+              value={jdText}
+              onChange={(e) => {
+                setJdText(e.target.value);
+              }}
+            />
+          </Stack>
         </>
       }
       onClickClose={{
@@ -80,6 +102,7 @@ export const JDSearchModal = ({ setJdPopup }) => {
           onClick={() => {
             getMatchingCandsFromJd();
           }}
+          disabled={disabled}
           endIcon={
             isJdSearching && (
               <CircularProgress

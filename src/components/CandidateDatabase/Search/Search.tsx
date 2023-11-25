@@ -21,7 +21,7 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
-import { joinSearchResultWithBookMark } from '../utils';
+import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
@@ -55,7 +55,7 @@ const CandidatesSearch = () => {
         ) as SearchHistoryType[];
         const searchResults = searchRec.search_results as any;
         const bookmarked_cands = searchRec.bookmarked_candidates || [];
-        const canididatesDto = joinSearchResultWithBookMark(
+        const canididatesDto = await joinSearchResultWithBookMarkAndJobApplied(
           searchResults,
           bookmarked_cands,
         );
@@ -84,6 +84,8 @@ const CandidatesSearch = () => {
       <CandidateDatabaseDetail
         isSelected={checkedCands.filter((c) => c).length > 0}
         textSelectedCount={checkedCands.filter((c) => c).length}
+        textAllCount={candidates.length}
+        textBookmarkCount={candidates.filter((c) => c.is_bookmarked).length}
         isBookMarkedActive={showBookmarked}
         isAllActive={!showBookmarked}
         onClickBookmarked={{

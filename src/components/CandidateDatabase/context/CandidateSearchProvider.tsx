@@ -15,6 +15,7 @@ import {
 
 export interface CandidateSearchRes {
   application_id: string;
+  candidate_id: string;
   first_name: string;
   last_name: string;
   job_title: string;
@@ -25,7 +26,13 @@ export interface CandidateSearchRes {
   resume_link: string;
   is_bookmarked: boolean;
   is_checked: boolean;
+  applied_job_posts: CandJobPost[];
 }
+
+export type CandJobPost = {
+  job_id: string;
+  job_title: string;
+};
 
 export type CandidateSearchState = {
   queryJson: {
@@ -43,6 +50,7 @@ export type CandidateSearchState = {
   candidates: CandidateSearchRes[];
   maxProfiles: number;
 };
+
 export type CandidateSearchCtxType = {
   candidateSearchState: CandidateSearchState;
   // eslint-disable-next-line no-unused-vars
