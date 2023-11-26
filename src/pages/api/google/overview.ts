@@ -17,7 +17,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const resume_json = req.body.application.json_resume;
 
-    const input = `Here is resume_json : ${JSON.stringify(resume_json)} .
+    const parsedResume = {
+      basics: resume_json.basices,
+      positions: resume_json.positions,
+      skills: resume_json.skills,
+    };
+    if (
+      !parsedResume.basics ||
+      !parsedResume.positions ||
+      !parsedResume.skills
+    ) {
+      return res.status(200).send('required fields missing');
+    }
+
+    const input = `Here is resume_json : ${JSON.stringify(parsedResume)} .
                     Generate a 2 line overview of this resume provide above. Try to mention current job title, years of experience and some skills`;
     const promptString = `${input}`;
     const stopSequences = [];
