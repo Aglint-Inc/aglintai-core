@@ -303,7 +303,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 dangerouslySetInnerHTML={{ __html: post?.description }}
               />
 
-              {post?.skills.length > 0 && (
+              {post?.skills?.length > 0 && (
                 <>
                   <Typography
                     variant='h5'

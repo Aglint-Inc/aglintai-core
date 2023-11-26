@@ -30,9 +30,14 @@ function JobPost() {
             if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
               setValid(false);
             } else {
+              if (data[0]?.status == 'draft') {
+                setPost(data[0].draft as JobTypeDB);
+              } else {
+                setPost(data[0]);
+              }
+              setPost(data[0]);
               setValid(true);
             }
-            setPost(data[0]);
             setLoading(false);
             supabase
               .from('recruiter')

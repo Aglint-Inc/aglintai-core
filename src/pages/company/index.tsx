@@ -26,3 +26,7 @@ function CompanyPage() {
 }
 
 export default CompanyPage;
+
+CompanyPage .getLayout = (page) => {
+  return <>{page}</>;
+};
