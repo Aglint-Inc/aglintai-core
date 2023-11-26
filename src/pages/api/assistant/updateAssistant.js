@@ -13,8 +13,6 @@ export default async function handler(req, res) {
       {
         instructions: details.instructions,
         name: details.name,
-        tools: [{ type: 'code_interpreter' }],
-        model: details.module,
       },
     );
 

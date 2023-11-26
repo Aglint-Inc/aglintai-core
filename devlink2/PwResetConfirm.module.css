@@ -134,10 +134,6 @@
   }
 }
 
-.text-grey-600.no-wrap {
-  white-space: nowrap;
-}
-
 .sl-login-form {
   display: flex;
   flex-direction: column;

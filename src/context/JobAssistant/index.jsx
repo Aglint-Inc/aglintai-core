@@ -92,6 +92,7 @@ function JobAssistantProvider({ children }) {
             },
           );
 
+          uploadResume(attachedFile);
           // console.log('File uploaded successfully:', data);
           fileDetails = data;
         } catch (error) {
@@ -112,6 +113,26 @@ function JobAssistantProvider({ children }) {
       }
     } else {
       toast.warning('Please enter your message!');
+    }
+  }
+
+  async function uploadResume(attachedFile) {
+    const { data, error } = await supabase.storage
+      .from('resume-job-post')
+      .upload(
+        `assistant_candi/chat-resume_${new Date().getTime()}.pdf`,
+        attachedFile,
+        {
+          cacheControl: '3600',
+          upsert: false,
+        },
+      );
+
+    if (!error) {
+      localStorage.setItem(
+        'candi_resume',
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resume-job-post/${data.path}`,
+      );
     }
   }
 
@@ -195,12 +216,14 @@ function JobAssistantProvider({ children }) {
             .from('job_applications')
             .update({
               candidate_id: localStorage.getItem('candidate_id'),
+              resume: localStorage.getItem('candi_resume'),
             })
             .eq('application_id', localStorage.getItem('application_id'))
             .select()
             .then((job) => {
               localStorage.removeItem('candidate_id');
               localStorage.removeItem('application_id');
+              localStorage.removeItem('candi_resume');
               return job.data;
             });
         }

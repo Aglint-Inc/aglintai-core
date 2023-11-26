@@ -91,7 +91,7 @@
   padding-bottom: 0px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
@@ -109,6 +109,10 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -334,7 +338,7 @@
   height: 18px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }
@@ -375,6 +379,10 @@
 
 .color-grey-600.mt-12 {
   margin-top: 12px;
+}
+
+.color-grey-600.width-588 {
+  max-width: 588px;
 }
 
 .rd-status-badge {

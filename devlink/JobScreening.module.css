@@ -58,6 +58,11 @@
   background-color: var(--gray100-3a86b552);
 }
 
+.rd-main-wrapper.grey-100.height-scroll-auto {
+  overflow: scroll;
+  height: 100vh;
+}
+
 .rd-main-wrapper.height-scroll-company {
   overflow: auto;
   height: 100vh;
@@ -667,9 +672,13 @@
   padding-bottom: 0px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -798,7 +807,7 @@
   height: 18px;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }

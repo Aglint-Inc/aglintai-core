@@ -24,4 +24,6 @@ declare function CandidateFilter(props: {
   slotSkillSuggestion?: Types.Devlink.Slot;
   slotDegreeInput?: Types.Devlink.Slot;
   slotDegreeSuggestion?: Types.Devlink.Slot;
+  slotGenerate?: Types.Devlink.Slot;
+  slotCurrentJobSuggestion?: Types.Devlink.Slot;
 }): React.JSX.Element;

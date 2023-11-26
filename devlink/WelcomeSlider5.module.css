@@ -856,6 +856,10 @@
   margin-top: 12px;
 }
 
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
 .input-wrapper {
   position: relative;
 

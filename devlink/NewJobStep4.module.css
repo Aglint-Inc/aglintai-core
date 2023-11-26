@@ -124,6 +124,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
@@ -370,6 +374,10 @@
   margin-top: 12px;
 }
 
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
 ._wf-screening-block {
   display: flex;
   padding-top: 14px;
@@ -568,6 +576,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -601,8 +617,12 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .grey-disable-process-button {

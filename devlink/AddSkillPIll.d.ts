@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function NewJobStep5(props: {
+declare function AddSkillPIll(props: {
   as?: React.ElementType;
-  slotShareVia?: Types.Devlink.Slot;
+  textSKill?: React.ReactNode;
+  onClickAdd?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

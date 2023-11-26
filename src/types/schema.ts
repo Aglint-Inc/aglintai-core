@@ -1117,6 +1117,16 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
+      getjobapplicationcountforcandidates: {
+        Args: {
+          candidate_ids: string[]
+        }
+        Returns: {
+          candidate_id: string
+          job_ids: string[]
+          job_titles: string[]
+        }[]
+      }
       getjobapplications: {
         Args: {
           ids: string[]

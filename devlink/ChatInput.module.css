@@ -83,12 +83,12 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
-}
-
 .pointer {
   cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .attach-tooltip {

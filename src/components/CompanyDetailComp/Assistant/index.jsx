@@ -45,7 +45,6 @@ function Assistant() {
     await axios.post('/api/assistant/updateAssistant', {
       instructions: instructionRef.current.value,
       name: nameRef.current.value,
-      module: 'gpt-3.5-turbo-16k',
       assistant_id: recruiter.assistant_id,
     });
   }

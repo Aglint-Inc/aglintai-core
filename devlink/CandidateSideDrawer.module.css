@@ -269,6 +269,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
@@ -540,4 +544,13 @@
 
 .text-kale-600-2 {
   color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.slot-candidate-details.cd-details {
+  display: flex;
+  margin-top: 30px;
+  padding-bottom: 20px;
+  flex-direction: column;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
 }

@@ -151,3 +151,7 @@
 .color-grey-600.mt-12 {
   margin-top: 12px;
 }
+
+.color-grey-600.width-588 {
+  max-width: 588px;
+}

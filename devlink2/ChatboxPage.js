@@ -65,10 +65,15 @@ export function ChatboxPage({
             {slotChatHeader ?? <ChatboxBodyHeader />}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cb-chat-body-main-wrapper")}
+            className={_utils.cx(_styles, "chat-body-main")}
             tag="div"
           >
-            {slotChatBody}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cb-chat-body-main-block")}
+              tag="div"
+            >
+              {slotChatBody}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "hide")}

@@ -1,0 +1,15 @@
+.cd-view-more-wrap {
+  position: relative;
+  z-index: 5;
+
+  padding: 2px 8px;
+  order: 1;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+}
+
+.view-less-text {
+  display: block;
+}

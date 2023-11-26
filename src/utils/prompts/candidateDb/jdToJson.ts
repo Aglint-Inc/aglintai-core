@@ -9,7 +9,7 @@ interface JobDetails {
   skills: string[];
   spokenLanguagesMentioned: string[];
   requiredPreviousCompanies: string[];
-  university: string[];
+  universities: string[];
   minExperienceInYears: number;
   maxExperienceInYears: number;
   degrees: string[];
@@ -20,13 +20,13 @@ export const searchJdToJson = async (searchQuery: string) => {
     {
       role: 'system',
       content: `extract from the given text and respond in json format:{
-        jobRoles: string [],
-        locations: string [],
-        skills: string [],
-        degrees: string [],
-        spokenLanguagesMentioned: string [],
-        requiredPreviousCompanies: string [],
-        university: string [],
+        jobRoles: string[],
+        locations: string[],
+        skills: string[],
+        degrees: string[],
+        spokenLanguagesMentioned: string[],
+        requiredPreviousCompanies: string[],
+        universities: string[],
         minExperienceInYears: number,
         maxExperienceInYears: number   
       }.
@@ -47,7 +47,7 @@ export const searchJdToJson = async (searchQuery: string) => {
 
   const p: CandidateSearchState['queryJson'] = {
     jobTitles: [...resp.jobRoles],
-    universities: [...resp.university],
+    universities: [...resp.universities],
     prefferedCompanies: [...resp.requiredPreviousCompanies],
     excludedCompanies: [],
     languages: [...resp.spokenLanguagesMentioned],

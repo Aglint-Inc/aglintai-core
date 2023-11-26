@@ -6,7 +6,7 @@
 .cv-sidebar-header-wrap {
   position: sticky;
   top: 0px;
-  z-index: 2;
+  z-index: 6;
 
   display: flex;
   padding: 12px 12px 12px 16px;
@@ -148,6 +148,8 @@
   background-color: white;
 
   transition: all 250ms ease;
+
+  cursor: pointer;
 }
 
 .cvs-header-copy-candi:hover {
@@ -156,67 +158,6 @@
 
 .cdb-select-dropdown {
   position: relative;
-}
-
-.cdb-select-btn {
-  display: flex;
-  padding: 8px 20px;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-  border-radius: 4px;
-}
-
-.cdb-select-btn.clickable.py-5 {
-  padding: 5px 10px;
-  background-color: white;
-}
-
-.cdb-select-dropdown-body {
-  position: absolute;
-  right: 0px;
-  bottom: 38px;
-
-  overflow: hidden;
-  width: 270px;
-
-  border-radius: 10px;
-
-  background-color: white;
-
-  box-shadow: 0 6px 30px 0 hsla(0, 0.00%, 0.00%, 0.10);
-}
-
-.cdb-select-dropdown-body.dropdown-body {
-  display: none;
-}
-
-.cdb-select-dropdown-body.dropdown-body-candi {
-  bottom: -363px;
-  display: none;
-}
-
-.cdb-select-dropdown-inner {
-  display: flex;
-  overflow: auto;
-  max-height: 360px;
-  padding-top: 14px;
-  padding-bottom: 20px;
-  flex-direction: column;
-}
-
-.cdb-select-dropdown-option {
-  padding: 3px 20px 3px 16px;
-  transition: opacity 300ms ease;
-  cursor: pointer;
-}
-
-.cdb-select-dropdown-option:hover {
-  background-color: #f8f9f9;
 }
 
 .toss-copied {
@@ -601,12 +542,12 @@
 
 .cdb-star-block {
   position: relative;
+  z-index: 4;
 }
 
 .cvs-intro-overview-candi {
   display: flex;
   margin-top: 18px;
-  margin-bottom: 20px;
   padding: 14px 36px 17px 15px;
   flex-direction: column;
   grid-column-gap: 14px;
@@ -641,6 +582,7 @@
 
 .div-block-599 {
   display: flex;
+  margin-top: 20px;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -661,6 +603,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
 }
 
 .icons.curser-hover-pointer {
@@ -696,8 +646,8 @@
   margin-left: 5px;
 }
 
-.icons.close {
-  display: none;
+.icons.ml-20 {
+  margin-left: 20px;
 }
 
 .cd-view-resume {
@@ -725,4 +675,13 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.slot-candidate-details.cd-details {
+  display: flex;
+  margin-top: 30px;
+  padding-bottom: 20px;
+  flex-direction: column;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
 }

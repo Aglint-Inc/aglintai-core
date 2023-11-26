@@ -28,6 +28,10 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 662px;
+}
+
 .fw-semibold.text-grey-600 {
   color: #68737d;
 }
@@ -372,4 +376,8 @@
 
 .color-grey-600.mt-12 {
   margin-top: 12px;
+}
+
+.color-grey-600.width-588 {
+  max-width: 588px;
 }

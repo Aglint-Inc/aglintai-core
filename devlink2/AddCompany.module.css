@@ -208,10 +208,6 @@
   }
 }
 
-.text-grey-600.no-wrap {
-  white-space: nowrap;
-}
-
 .cs-sidebar-website-input {
   display: flex;
   flex-direction: column;

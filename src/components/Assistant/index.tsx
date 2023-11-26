@@ -1,11 +1,10 @@
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Chip, IconButton, Stack, TextField } from '@mui/material';
+import { IconButton, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
-import { AssistantChat, UserChat } from '@/devlink';
+import { AssistantChat, UserChat, UserChatIcon } from '@/devlink';
 import {
   ChatboxBodyHeader,
   ChatboxCandidateListItem,
@@ -173,12 +172,8 @@ function Conversation({ messages }) {
                 />
               )}
               {message.role === 'user' && message?.metadata?.file_name && (
-                <Stack direction={'row'} justifyContent={'end'}>
-                  <Chip
-                    icon={<PictureAsPdfIcon />}
-                    variant='filled'
-                    label={message?.metadata?.file_name}
-                  />
+                <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
+                  <UserChatIcon textChat={message?.metadata?.file_name} />
                 </Stack>
               )}
               {message.role === 'user' && (

@@ -94,6 +94,8 @@
 }
 
 .cb-chat-wrapper {
+  position: relative;
+  overflow: hidden;
   height: 100%;
   flex: 1;
 }
@@ -102,12 +104,17 @@
   background-color: #f8f9f9;
 }
 
-.cb-chat-body-main-wrapper {
+.chat-body-main {
+  overflow: auto;
+  height: 100%;
+}
+
+.cb-chat-body-main-block {
   display: flex;
-  overflow: scroll;
   max-width: 700px;
   margin-right: auto;
   margin-left: auto;
+  padding-bottom: 170px;
   flex-direction: column-reverse;
 }
 

@@ -2,8 +2,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
 .cl-filters-wrapper {
@@ -185,10 +185,6 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
-}
-
-.text-grey-600.no-wrap {
-  white-space: nowrap;
 }
 
 .jdet-sort-options {
