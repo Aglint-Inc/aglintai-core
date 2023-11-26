@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       })
       .then(async (result) => {
-        const overview = result[0].candidates[0].output;
+        const overview = result[0]?.candidates[0]?.output;
         // eslint-disable-next-line no-console
         if (overview) {
           const { error } = await supabase
@@ -66,9 +66,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             console.log(error, req.body.application.application_id);
             return res.status(200).send(error.message);
           }
+        } else {
+          console.log(
+            'No overview generated',
+            req.body.application.application_id,
+          );
+          return res.status(200).send('No overview generated');
         }
       });
   } catch (error) {
+    console.log(error.message);
     res.status(500).send(error.message);
   }
 };
