@@ -418,7 +418,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               router.push(
                 process.env.NEXT_PUBLIC_WEBSITE +
                   '/' +
-                  pageRoutes.COMPANY +
+                  pageRoutes.COMPANYPOSTINGS +
                   '/' +
                   recruiter.id,
               );
