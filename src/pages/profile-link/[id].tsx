@@ -232,25 +232,23 @@ function InterviewFeedbackPage() {
             },
           )}
           isEducationVisible={
-            (applicationDetails?.json_resume as any)?.education.length > 0
+            (applicationDetails?.json_resume as any)?.schools.length > 0
           }
           slotCandidateEducationCard={(
             applicationDetails?.json_resume as any
-          )?.education.map((e, i) => (
+          )?.schools?.map((e, i) => (
             <CandidateEducationCard
               key={i}
               textUniversityName={e.institution}
-              textDate={`${e.startDate} ${
-                e.endDate && `${e.startDate && '-'} ${e.endDate}`
-              }`}
+              textDate={`${e.start.year || '--'} - ${e.start.end || '--'}`}
             />
           ))}
           isExperienceVisible={
-            (applicationDetails?.json_resume as any)?.work.length > 0
+            (applicationDetails?.json_resume as any)?.positions?.length > 0
           }
           slotCandidateExperienceCard={(
             applicationDetails?.json_resume as any
-          )?.work.map((w, i) => (
+          )?.positions?.map((w, i) => (
             <CandidateExperienceCard
               key={i}
               slotLogo={
@@ -258,9 +256,9 @@ function InterviewFeedbackPage() {
                   companyName={w.name ? w.name.trim().toLowerCase() : null}
                 />
               }
-              textRole={w.position}
-              textCompany={w.name}
-              textDate={`${w.startDate} - ${w.endDate}`}
+              textRole={w.title}
+              textCompany={w.org}
+              textDate={`${w.end.year || '--'} - ${w.end.year || '--'}`}
             />
           ))}
           isSkillVisible={
@@ -301,7 +299,7 @@ function InterviewFeedbackPage() {
             </Avatar>
           }
           slotResume={
-            <Stack maxWidth={'400px'}>
+            <Stack maxWidth={'400px'} pt={'80px'}>
               <Dialog
                 sx={{
                   '& .MuiDialog-paper': {
