@@ -1,31 +1,32 @@
 /* eslint-disable security/detect-object-injection */
 import OpenAI from 'openai';
 
-import { getPositionSimilarityPrompts } from '../positionSimilarity';
-import { getRelevantSchoolsPrompts } from '../relevantSchools';
+import { getPrompts } from './prompts';
+import { openai } from '../config';
 import { JobJson, Prompt, PromptBuilderResponse, ResumeJson } from '../types';
 import { rejectAfterDelay } from '../utils';
+// import { rejectAfterDelay } from "../utils";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
-});
-
-const TIMEOUT = 20000;
+const TIMEOUT = 20000; // 20 sec
 const RETRY_LIMIT = 3;
 
 export const promptBuilder = async (
   jobJson: JobJson,
   resumeJson: ResumeJson,
-): Promise<PromptBuilderResponse> => {
-  const prompts = [
-    ...getPositionSimilarityPrompts(jobJson, resumeJson),
-    ...getRelevantSchoolsPrompts(jobJson, resumeJson),
-  ];
-  const result = await promptLoop(prompts);
+): Promise<PromptBuilderResponse | null> => {
+  const prompts = getPrompts(jobJson, resumeJson, [
+    'positions',
+    'schools',
+    'skills',
+  ]);
+  const result = prompts.length !== 0 ? await promptLoop(prompts) : null;
   return result;
 };
 
-const promptLoop = async (prompts: Prompt[], retry: number = 1) => {
+const promptLoop = async (
+  prompts: Prompt[],
+  retry: number = 1,
+): Promise<PromptBuilderResponse> => {
   if (retry > RETRY_LIMIT) {
     return prompts.map((p) => {
       return {
@@ -38,7 +39,7 @@ const promptLoop = async (prompts: Prompt[], retry: number = 1) => {
         },
         error: { message: 'Max retries attempted', prevError: p.prevError },
       };
-    }) as unknown as PromptBuilderResponse[];
+    }) as unknown as PromptBuilderResponse;
   }
   const promises = prompts.map((prompt) => {
     return Promise.race([
@@ -50,7 +51,7 @@ const promptLoop = async (prompts: Prompt[], retry: number = 1) => {
         temperature: prompt.temperature,
         response_format: { type: 'json_object' },
       }),
-      rejectAfterDelay(TIMEOUT * retry),
+      rejectAfterDelay(TIMEOUT),
     ]);
   });
   const responses = await Promise.allSettled([...promises]);
@@ -89,6 +90,7 @@ const promptLoop = async (prompts: Prompt[], retry: number = 1) => {
       rejected: [],
     } as ReducerObj,
   );
+
   const { fulfilled, retries } = resultRefactor(results, retry);
   const retriedResult =
     fulfilled.length === prompts.length
@@ -102,11 +104,11 @@ const resultRefactor = (results: ReducerObj, tries: number) => {
     const value = f.response as OpenAI.Chat.Completions.ChatCompletion;
     return {
       data: {
-        response: JSON.parse(value.choices[0].message.content),
+        response: JSON.parse(value.choices[0].message.content || '{}'),
         index: f.prompt.index,
         tag: f.prompt.tag,
         tries: tries,
-        tokens: value.usage.total_tokens,
+        tokens: value.usage,
       },
       error: null,
     };

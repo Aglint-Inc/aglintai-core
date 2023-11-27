@@ -1,3 +1,5 @@
+import OpenAI from 'openai';
+
 export type Prompt = {
   messages: {
     role: string;
@@ -5,7 +7,7 @@ export type Prompt = {
   }[];
   temperature: number;
   prevError: any;
-  tag: 'positions' | 'schools';
+  tag: 'positions' | 'schools' | 'skills';
   index: number;
 };
 
@@ -81,7 +83,7 @@ export type PromptBuilderResponse = {
     index: number;
     tag: Prompt['tag'];
     tries: number;
-    tokens: number;
+    tokens: OpenAI.Completions.CompletionUsage | undefined;
   };
   error: any;
 }[];
@@ -91,5 +93,9 @@ export type PromptEnum = 'low' | 'medium' | 'high';
 export type PromptResponse = {
   rating: PromptEnum;
   reason: string;
-  tokens: number;
+  tokens: any;
+};
+
+export type PromptSkillResponse = {
+  [key: string]: PromptEnum;
 };

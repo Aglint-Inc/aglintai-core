@@ -106,7 +106,7 @@ export const readNewJobApplicationDbAction = async (
 
   const { data, error, count } = await query;
 
-  return { data, error, count };
+  return { data: emailValidation(data), error, count };
 };
 
 const getFilteredQuery = (query: any, filter: FilterParameter[]) => {
@@ -158,4 +158,12 @@ export const upsertNewJobApplicationDbAction = async (
     .select(`${selectJobApplicationQuery}`)
     .abortSignal(controller.signal);
   return { data, error };
+};
+
+const emailValidation = (data: JobApplication[]) => {
+  return data.map((d) => {
+    if (d.candidates.email === `temp-${d.candidate_id}@gmail.com`)
+      return { ...d, candidates: { ...d.candidates, email: '---' } };
+    return d;
+  });
 };

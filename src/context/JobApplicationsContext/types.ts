@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Dispatch, MutableRefObject, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   FilterParameter,

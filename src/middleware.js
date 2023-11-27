@@ -27,6 +27,7 @@ const whiteListedEndPoints = [
   '/api/getLinkedin',
   '/api/resumecron/batchscore',
   '/api/greenhouse/batchsave',
+  '/api/resumeScoring',
 ];
 
 export async function middleware(request) {

@@ -264,26 +264,19 @@ const NewJobApplicationSideDrawer = ({
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
 }) => {
-  const [copy, setCopy] = useState(false);
   const { pressed: shift } = useKeyPress('Shift');
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
   const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
-      )
-      .then(() => {
-        setCopy(true);
-        setTimeout(() => {
-          setCopy(false);
-        }, 1000);
-      });
+  const handleProfileRedirect = () => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+      '_blank',
+    );
   };
-  const handleRedirect = () => {
+  const handleLinkedInRedirect = () => {
     window.open(applicationDetails.candidates.linkedin, '_blank');
   };
   useEffect(() => {
@@ -300,7 +293,7 @@ const NewJobApplicationSideDrawer = ({
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
       onClickNext={{ onClick: () => handleSelectNextApplication() }}
       onClickCopyProfile={{
-        onClick: () => handleCopy(),
+        onClick: () => handleProfileRedirect(),
         style: {
           WebkitUserSelect: 'none',
           MozUserSelect: 'none',
@@ -314,7 +307,7 @@ const NewJobApplicationSideDrawer = ({
       textName={capitalize(
         applicationDetails.candidates.first_name +
           ' ' +
-          applicationDetails.candidates.last_name,
+          `${applicationDetails.candidates.last_name || ''}`,
       )}
       textMail={
         applicationDetails.candidates.email
@@ -333,9 +326,8 @@ const NewJobApplicationSideDrawer = ({
         applicationDetails.candidates.linkedin !== null &&
         applicationDetails.candidates.linkedin !== ''
       }
-      isCopiedMessageVisible={copy}
       onClickLinkedin={{
-        onClick: () => handleRedirect(),
+        onClick: () => handleLinkedInRedirect(),
       }}
     />
   );

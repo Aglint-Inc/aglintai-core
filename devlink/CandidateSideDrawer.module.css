@@ -154,6 +154,10 @@
   color: white;
 }
 
+.toss-copied.hide {
+  display: none;
+}
+
 .text-xsm {
   font-size: 10px;
   line-height: 12px;
@@ -164,7 +168,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-xsm.color-grey-600.inline-text {
@@ -270,7 +274,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {

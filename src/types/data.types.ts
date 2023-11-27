@@ -18,6 +18,7 @@ export type RecruiterType = Omit<
 > & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
+//TODO: Draft?
 
 export type JobApplcationDB =
   Database['public']['Tables']['job_applications']['Row'];
