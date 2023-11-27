@@ -224,9 +224,10 @@ export function ChatConversation() {
 }
 
 const FileUpload = () => {
-  const { setSelectedFile } = useJobAssistantContext();
+  const { setSelectedFile, inputRef } = useJobAssistantContext();
 
   const handleFileChange = (e) => {
+    inputRef.current.value = 'Resume';
     setSelectedFile(e.target.files[0]);
   };
 

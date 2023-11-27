@@ -45,13 +45,6 @@ function JobAssistantProvider({ children }) {
       ? inputRef?.current?.value
       : firstMessage;
     if (textMessage) {
-      // if (textMessage.includes('https://www.linkedin.com/in')) {
-      //   const data = await axios.post('/api/getLinkedin', {
-      //     linkedInURL: textMessage,
-      //   });
-      //   console.log(data);
-      // }
-      // set first message
       if (textMessage != firstMessage) {
         setMessages((pre) => [
           { role: 'assistant', value: 'loading', metadata: {} },
@@ -92,23 +85,24 @@ function JobAssistantProvider({ children }) {
             },
           );
 
-          uploadResume(attachedFile);
           // console.log('File uploaded successfully:', data);
           fileDetails = data;
+          uploadResume(attachedFile, textMessage, fileDetails);
         } catch (error) {
           toast.error('Error uploading file:', error.message);
         }
-      }
+      } else {
+        if (textMessage) {
+          const { data } = await axios.post('/api/assistant/createMessage', {
+            message: textMessage,
+            thread_id: localStorage.getItem('thread_id'),
+            file_details: fileDetails,
+            resume_file: '',
+          });
 
-      if (textMessage) {
-        const { data } = await axios.post('/api/assistant/createMessage', {
-          message: textMessage,
-          thread_id: localStorage.getItem('thread_id'),
-          file_details: fileDetails,
-        });
-
-        if (data) {
-          createRun();
+          if (data) {
+            createRun();
+          }
         }
       }
     } else {
@@ -116,7 +110,7 @@ function JobAssistantProvider({ children }) {
     }
   }
 
-  async function uploadResume(attachedFile) {
+  async function uploadResume(attachedFile, textMessage, fileDetails) {
     const { data, error } = await supabase.storage
       .from('resume-job-post')
       .upload(
@@ -133,6 +127,22 @@ function JobAssistantProvider({ children }) {
         'candi_resume',
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resume-job-post/${data.path}`,
       );
+
+      if (textMessage) {
+        const { data: messageCreated } = await axios.post(
+          '/api/assistant/createMessage',
+          {
+            message: textMessage,
+            thread_id: localStorage.getItem('thread_id'),
+            file_details: fileDetails,
+            resume_file: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resume-job-post/${data.path}`,
+          },
+        );
+
+        if (messageCreated) {
+          createRun();
+        }
+      }
     }
   }
 
@@ -186,18 +196,6 @@ function JobAssistantProvider({ children }) {
           .then(({ data }) => {
             if (data) {
               localStorage.setItem('candidate_id', data[0].id);
-              supabase
-                .from('job_applications')
-                .insert({
-                  job_id: companyDetails.job_id,
-                })
-                .select()
-                .then((job) => {
-                  localStorage.setItem(
-                    'application_id',
-                    job.data[0].application_id,
-                  );
-                });
             }
           });
       }
@@ -214,18 +212,25 @@ function JobAssistantProvider({ children }) {
         if (JSON.parse(output).applied) {
           supabase
             .from('job_applications')
-            .update({
+            .insert({
               candidate_id: localStorage.getItem('candidate_id'),
+              job_id: companyDetails.job_id,
               resume: localStorage.getItem('candi_resume'),
             })
-            .eq('application_id', localStorage.getItem('application_id'))
             .select()
             .then((job) => {
               localStorage.removeItem('candidate_id');
-              localStorage.removeItem('application_id');
               localStorage.removeItem('candi_resume');
               return job.data;
             });
+        } else {
+          await supabase
+            .from('candidates')
+            .delete()
+            .eq('id', localStorage.getItem('candidate_id'))
+            .select();
+          localStorage.removeItem('candidate_id');
+          localStorage.removeItem('candi_resume');
         }
         return;
       }

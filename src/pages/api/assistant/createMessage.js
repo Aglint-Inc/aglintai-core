@@ -18,6 +18,7 @@ export default async function handler(req, res) {
           metadata: {
             file_name: details.file_details.filename,
             file_id: details.file_details.id,
+            file_path: details.resume_file,
           },
         },
       );
