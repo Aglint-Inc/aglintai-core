@@ -23,6 +23,13 @@
   border-top: 1px solid #e9ebed;
 }
 
+.div-block-603 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
 .color-grey-600 {
   color: var(--grey600-d5bebe21);
 }

@@ -12,7 +12,7 @@ const _interactionsData = JSON.parse(
 export function AddJob({
   as: _Component = _Builtin.Block,
   slotAddJobList,
-  textJobSelected = "0 job selected",
+  textJobSelected = "0",
   onClickCancel = "Cancel",
   slotAddButton,
 }) {
@@ -33,10 +33,21 @@ export function AddJob({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600")}
+          className={_utils.cx(_styles, "div-block-603")}
           tag="div"
         >
-          {textJobSelected}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600")}
+            tag="div"
+          >
+            {textJobSelected}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600")}
+            tag="div"
+          >
+            {"job selected"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-602")}

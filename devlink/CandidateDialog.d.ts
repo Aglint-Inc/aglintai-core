@@ -23,4 +23,5 @@ declare function CandidateDialog(props: {
   slotAddJob?: Types.Devlink.Slot;
   arrowtooltiphide?: Types.Visibility.VisibilityConditions;
   isLinkedinVisible?: Types.Visibility.VisibilityConditions;
+  isLocationVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

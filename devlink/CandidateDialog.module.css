@@ -543,6 +543,7 @@
 .cdb-star-block {
   position: relative;
   z-index: 4;
+  cursor: pointer;
 }
 
 .cvs-intro-overview-candi {

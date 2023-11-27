@@ -90,7 +90,11 @@ export function CandidateDetailsCard({
                     />
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "text-grey-600-3")}
+                    className={_utils.cx(
+                      _styles,
+                      "text-grey-600-3",
+                      "one-line-clamp"
+                    )}
                     tag="div"
                   >
                     {textJobRoleAtCompany}
@@ -114,7 +118,11 @@ export function CandidateDetailsCard({
                       />
                     </_Builtin.Block>
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-grey-600-3")}
+                      className={_utils.cx(
+                        _styles,
+                        "text-grey-600-3",
+                        "one-line-clamp"
+                      )}
                       tag="div"
                     >
                       {textLocation}

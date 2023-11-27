@@ -401,6 +401,7 @@
 .cdb-star-block {
   position: relative;
   z-index: 4;
+  cursor: pointer;
 }
 
 .cdb-card-body {
