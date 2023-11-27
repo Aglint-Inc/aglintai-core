@@ -92,17 +92,20 @@ function CandidateSearchHistory() {
       setIsQrySearching(true);
       const queryJson = await searchJdToJson(searchQuery);
 
-      const seedJobsSkills = [
-        (async () => await similarJobs(queryJson.jobTitles))(),
-      ];
+      const seedJobsSkills = [];
 
+      if (queryJson.jobTitles.length > 0) {
+        seedJobsSkills.push(
+          (async () => await similarJobs(queryJson.jobTitles))(),
+        );
+      }
       if (queryJson.skills.length > 0) {
         seedJobsSkills.push(
           (async () => await similarSkills(queryJson.skills))(),
         );
       }
       const r = await Promise.allSettled(seedJobsSkills);
-      if (r[0].status === 'fulfilled' && r[0].value) {
+      if (r.length > 0 && r[0].status === 'fulfilled' && r[0].value) {
         queryJson.jobTitles = [
           ...queryJson.jobTitles,
           ...r[0].value.related_jobs,
@@ -110,6 +113,7 @@ function CandidateSearchHistory() {
       }
 
       if (
+        r.length > 0 &&
         queryJson.skills.length > 0 &&
         r[1].status === 'fulfilled' &&
         r[1].value
@@ -136,7 +140,6 @@ function CandidateSearchHistory() {
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
-      //
     } finally {
       setIsQrySearching(false);
     }
