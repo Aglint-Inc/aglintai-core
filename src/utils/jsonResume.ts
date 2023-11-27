@@ -9,10 +9,10 @@ export const getFullName = (firstName, lastName) => {
 };
 
 export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {
-  const startDate = [monthIndexToString(start?.month), start?.year]
+  const startDate = [monthIndexToString(start?.month - 1), start?.year]
     .filter(Boolean)
     .join(' ');
-  const endDate = [monthIndexToString(end?.month), end?.year]
+  const endDate = [monthIndexToString(end?.month - 1), end?.year]
     .filter(Boolean)
     .join(' ');
   return [startDate, endDate].filter(Boolean).join(' - ');

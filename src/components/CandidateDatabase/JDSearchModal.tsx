@@ -77,7 +77,7 @@ ${jdText}
                 borderRadius: '5px',
                 width: '100%',
                 height: '200px',
-                padding: '5px',
+                padding: '12px',
                 outline: 'none',
                 borderColor: palette.grey[300],
               }}
