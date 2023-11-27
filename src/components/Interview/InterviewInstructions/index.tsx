@@ -77,19 +77,19 @@ function InterviewInstructions() {
     }
     setPlaying((pre) => !pre);
   }
-
+  let intro = jobDetails?.intro_videos ? jobDetails : jobDetails.draft;
   useEffect(() => {
     setLoading(false);
     if (
-      !jobDetails?.intro_videos?.isVideoAiGenerated &&
-      jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl
+      !intro?.intro_videos?.isVideoAiGenerated &&
+      intro?.intro_videos?.uploadedVideoInfo?.videoUrl
     )
-      setVideoUrl(jobDetails.intro_videos?.uploadedVideoInfo?.videoUrl);
+      setVideoUrl(intro?.intro_videos?.uploadedVideoInfo?.videoUrl);
     if (
-      jobDetails?.intro_videos?.isVideoAiGenerated &&
-      jobDetails?.intro_videos?.aiGeneratedVideoInfo?.videoId
+      intro?.intro_videos?.isVideoAiGenerated &&
+      intro?.intro_videos?.aiGeneratedVideoInfo?.videoId
     )
-      getIntroVideo(jobDetails?.intro_videos?.aiGeneratedVideoInfo?.videoId);
+      getIntroVideo(intro?.intro_videos?.aiGeneratedVideoInfo?.videoId);
     setLoading(false);
   }, [jobDetails]);
 
@@ -154,10 +154,11 @@ function InterviewInstructions() {
                 );
             })}
           <InterviewWelcome
+            isPreviewWarningVisible={router.query?.mode === 'preview'}
             slotAssessmentInstruction={
               <div
                 dangerouslySetInnerHTML={{
-                  __html: jobDetails?.interview_instructions,
+                  __html: intro?.interview_instructions,
                 }}
               />
             }
@@ -195,7 +196,7 @@ function InterviewInstructions() {
             isPauseButtonVisible={playing}
             isPlayButtonVisible={!playing}
             isWelcomeVideoVisible={
-              jobDetails?.intro_videos?.showInstructionVideo && videoUrl
+              intro?.intro_videos?.showInstructionVideo && videoUrl
             }
             isPlayPuaseVisible={true}
             onClickSupport={{
@@ -215,17 +216,17 @@ function InterviewInstructions() {
             slotLogo={
               <Avatar
                 variant='circular'
-                src={jobDetails?.logo}
+                src={intro?.logo}
                 sx={{
                   width: '50px',
                   height: '50px',
                 }}
               />
             }
-            textCompany={jobDetails?.company}
-            textRole={jobDetails?.job_title}
-            isAboutVisible={jobDetails?.company_details}
-            textCompanyDescription={jobDetails?.company_details}
+            textCompany={intro?.company}
+            textRole={intro?.job_title}
+            isAboutVisible={intro?.company_details}
+            textCompanyDescription={intro?.company_details}
             onClickStart={{
               onClick: () => {
                 if (router.query.job_id) {

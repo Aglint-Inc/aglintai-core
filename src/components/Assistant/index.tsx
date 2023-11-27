@@ -1,4 +1,4 @@
-import { IconButton, Stack, TextField } from '@mui/material';
+import { Dialog, IconButton, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -15,6 +15,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 
 import ChatMessageLoader from '../AssistantChat/ChatMessageLoader';
 import UITypography from '../Common/UITypography';
+import ResumePreviewer from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import { formatTimeStamp } from '../JobApplicationsDashboard/utils';
 import Loader from '../SignUpComp/Loader/Index';
 
@@ -263,6 +264,7 @@ function FilterButtons({ status, setStatus }) {
 }
 
 function Conversation({ messages }) {
+  const [resume, setResume] = useState(false);
   return (
     <>
       {messages.length ? (
@@ -283,7 +285,34 @@ function Conversation({ messages }) {
               )}
               {message.role === 'user' && message?.metadata?.file_name && (
                 <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
-                  <UserChatIcon textChat={message?.metadata?.file_name} />
+                  <UserChatIcon
+                    isViewResumeVisible={true}
+                    onClickViewResume={{
+                      onClick: () => {
+                        setResume(true);
+                      },
+                    }}
+                    textChat={message?.metadata?.file_name}
+                  />
+                  <Dialog
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        borderRadius: '0px !important',
+                        border: 'none !important',
+                      },
+                      '.MuiDialog-container': {
+                        height: 'auto',
+                      },
+                    }}
+                    fullWidth
+                    maxWidth={'lg'}
+                    open={resume}
+                    onClose={() => setResume(false)}
+                  >
+                    <Stack direction={'row'} justifyContent={'center'}>
+                      <ResumePreviewer url={message?.metadata?.file_path} />
+                    </Stack>
+                  </Dialog>
                 </Stack>
               )}
               {message.role === 'user' && (
