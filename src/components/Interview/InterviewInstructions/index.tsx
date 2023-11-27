@@ -1,6 +1,7 @@
 /* eslint-disable no-inner-declarations */
 //@ts-nocheck
 import { Avatar, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { InterviewWelcome } from '@/devlink';
@@ -112,7 +113,7 @@ function InterviewInstructions() {
   function handleVideoEnded() {
     setPlaying(false);
   }
-
+  const router = useRouter();
   return (
     <>
       {initialLoading ? (
@@ -227,6 +228,10 @@ function InterviewInstructions() {
             textCompanyDescription={jobDetails?.company_details}
             onClickStart={{
               onClick: () => {
+                if (router.query.job_id) {
+                  window.alert('You are in preview mode');
+                  return;
+                }
                 if (videoAssessment) startVideoInterview();
                 else startInterview();
               },
