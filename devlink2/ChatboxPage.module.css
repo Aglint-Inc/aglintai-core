@@ -88,9 +88,11 @@
 .cb-candidates-list {
   display: flex;
   padding-right: 18px;
-  padding-bottom: 150px;
-  padding-left: 18px;
+  padding-bottom: 180px;
+  padding-left: 4px;
   flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .cb-chat-wrapper {
