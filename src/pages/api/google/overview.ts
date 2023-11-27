@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resume_json = req.body.application.json_resume;
 
     const parsedResume = {
-      basics: resume_json.basices,
+      basics: resume_json.basics,
       positions: resume_json.positions,
       skills: resume_json.skills,
     };
@@ -27,6 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !parsedResume.positions ||
       !parsedResume.skills
     ) {
+      console.log('required fields missing');
+
       return res.status(200).send('required fields missing');
     }
 
