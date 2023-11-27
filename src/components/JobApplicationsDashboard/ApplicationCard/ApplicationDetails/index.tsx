@@ -532,7 +532,7 @@ const NewResumeSection = ({
         open={openResume}
         onClose={() => setOpenResume(false)}
       >
-        <Stack direction={'row'} justifyContent={'center'}>
+        <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
           <ResumePreviewer url={applicationDetails.resume} />
         </Stack>
       </Dialog>

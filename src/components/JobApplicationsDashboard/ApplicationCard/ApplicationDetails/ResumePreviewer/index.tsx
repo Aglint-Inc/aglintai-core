@@ -9,7 +9,7 @@ function ResumePreviewer({ url }: { url: string }) {
       }
       title='resume'
       width='100%'
-      height='1000px'
+      height='100'
     />
   );
 }

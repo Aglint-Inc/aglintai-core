@@ -223,7 +223,7 @@ const SelectedCandidate = ({
         open={resume}
         onClose={() => setResume(false)}
       >
-        <Stack direction={'row'} justifyContent={'center'}>
+        <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
           <ResumePreviewer url={candidate.resume_link} />
         </Stack>
       </Dialog>

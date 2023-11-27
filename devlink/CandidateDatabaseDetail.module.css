@@ -758,7 +758,7 @@
   display: flex;
   overflow: auto;
   padding-right: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 80px;
   padding-left: 22px;
   flex-direction: column;
   flex: 1;
@@ -803,6 +803,12 @@
 .cdb-select-left-block {
   display: flex;
   align-items: center;
+}
+
+.div-block-613 {
+  display: flex;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
 }
 
 .cdb-select-clear-btn {
