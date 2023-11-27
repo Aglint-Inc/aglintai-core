@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !parsedResume.skills
     ) {
       console.log('required fields missing');
-
       return res.status(200).send('required fields missing');
     }
 
