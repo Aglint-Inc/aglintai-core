@@ -131,7 +131,11 @@ const SelectedCandidate = ({
           </>
         }
         textJobCount={candidate.applied_job_posts.length}
-        textJobCountwithJob={121}
+        textJobCountwithJob={
+          candidate.applied_job_posts.length > 1
+            ? `${candidate.applied_job_posts.length} jobs`
+            : `${candidate.applied_job_posts.length} job`
+        }
         isAddedToJobVisible={candidate.applied_job_posts.length > 0}
         onClickClose={{
           onClick: onClickClose,
@@ -187,6 +191,7 @@ const SelectedCandidate = ({
                         key={index}
                         textCompany={exp.org}
                         textRole={exp.title}
+                        textDate={getformatedDate(exp.start, exp.end)}
                         slotLogo={
                           <CompanyLogo
                             companyName={

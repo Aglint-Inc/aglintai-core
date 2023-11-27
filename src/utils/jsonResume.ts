@@ -56,6 +56,7 @@ export function getTimeDifference(date1: string, date2: string) {
 }
 
 function monthIndexToString(monthIndex) {
+  if (!monthIndex) return '';
   const months = [
     'January',
     'February',
@@ -73,8 +74,8 @@ function monthIndexToString(monthIndex) {
 
   // Check if the month index is within a valid range
   if (monthIndex >= 0 && monthIndex <= 11) {
-    return months[monthIndex];
+    return months[Number(monthIndex)];
   } else {
-    return 'Invalid month index';
+    return ' ';
   }
 }

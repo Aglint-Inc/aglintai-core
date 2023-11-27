@@ -149,7 +149,9 @@ const CandidatesSearch = () => {
     <>
       <CandidateDatabaseDetail
         isSelected={selectedCandsCnt > 0}
-        textSelectedCount={selectedCandsCnt}
+        textSelectedCount={`${selectedCandsCnt} ${
+          selectedCandsCnt > 1 ? 'Candidates' : 'Candidate'
+        } selected`}
         textAllCount={candidates.length}
         textBookmarkCount={candidates.filter((c) => c.is_bookmarked).length}
         isBookMarkedActive={showBookmarked}
