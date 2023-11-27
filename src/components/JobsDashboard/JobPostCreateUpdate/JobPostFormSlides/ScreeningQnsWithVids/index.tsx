@@ -25,7 +25,7 @@ import { QuestionType, useJobForm } from '../../JobPostFormProvider';
 
 const ScreeningQns = () => {
   const { recruiter } = useAuthDetails();
-  const { jobForm, handleUpdateFormFields,dispatch } = useJobForm();
+  const { jobForm, handleUpdateFormFields, dispatch } = useJobForm();
   const totalQns = jobForm.formFields.interviewConfig.reduce((agg, curr) => {
     return agg + curr.questions.length;
   }, 0);
@@ -38,17 +38,17 @@ const ScreeningQns = () => {
   return (
     <>
       <ScreeningQuestion
-      isAddJob={jobForm.formType==='new'
-    }
-    onClickProceed={{
-      onClick: () => {
-      dispatch({
-        type: 'moveToSlide',
-        payload: {
-          nextSlide: 'workflow',
-        },
-      });
-    },}}
+        isAddJob={jobForm.formType === 'new'}
+        onClickProceed={{
+          onClick: () => {
+            dispatch({
+              type: 'moveToSlide',
+              payload: {
+                nextSlide: 'workflow',
+              },
+            });
+          },
+        }}
         onClickUpload={{
           onClick: () => {
             handleUpdateFormFields({
@@ -244,7 +244,7 @@ const sectionIds = [
 function SectionTabs() {
   const [isSectionInview, setIsSectionInView] = useState(Array(6).fill(false));
   const sectionRefs = useRef(null);
-
+  const router = useRouter();
   useEffect(() => {
     sectionRefs.current = sectionIds.map((sectionId) =>
       document.getElementById(sectionId),
@@ -321,7 +321,10 @@ function SectionTabs() {
         }}
         onClickPreview={{
           onClick: () => {
-            window.open(`/assessment?id=1`, 'blank');
+            window.open(
+              `/assessment?job_id=${router.query.job_id}&mode=preview`,
+              'blank',
+            );
           },
         }}
       />
