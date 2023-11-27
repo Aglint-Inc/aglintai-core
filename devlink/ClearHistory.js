@@ -16,7 +16,7 @@ export function ClearHistory({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Clear history"}
+          {"Delete Search"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cursor-pointer")}
@@ -34,7 +34,9 @@ export function ClearHistory({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          {"Are you sure you want to clear the history"}
+          {
+            "Are you sure you want to delete this search? It will delete any bookmarks within this result."
+          }
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "clear-btn-wrap")}
@@ -48,7 +50,7 @@ export function ClearHistory({
             {"Cancel"}
           </_Builtin.Block>
           <_Builtin.Block tag="div" {...onClickClearHistory}>
-            <ButtonDangerRegular textLabel="Clear history" />
+            <ButtonDangerRegular textLabel="Delete" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

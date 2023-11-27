@@ -4,6 +4,7 @@ import set from 'lodash/set';
 import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
+import { JobApplcationDB } from '@/src/types/data.types';
 import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -59,6 +60,15 @@ export type CandidateSearchCtxType = {
   updatenewSearchRes: (newState: CandidateSearchState) => void;
   // eslint-disable-next-line no-unused-vars
   bookMarkCandidate: (application_id: string | string[]) => Promise<void>;
+  handleAddCandidatesTojob: (
+    // eslint-disable-next-line no-unused-vars
+    jobAppIds: string[],
+    // eslint-disable-next-line no-unused-vars
+    job_ids: {
+      job_id: string;
+      job_title: string;
+    }[],
+  ) => Promise<void>;
 };
 
 type ActionType =
@@ -118,6 +128,12 @@ const CandidateSearchCtx = createContext<CandidateSearchCtxType>({
   updatenewSearchRes: (newState: CandidateSearchState) => {},
   // eslint-disable-next-line no-unused-vars
   bookMarkCandidate: async (id) => {},
+  handleAddCandidatesTojob: async (
+    // eslint-disable-next-line no-unused-vars
+    jobAppIds: string[],
+    // eslint-disable-next-line no-unused-vars
+    job_ids: [],
+  ) => {},
 });
 
 const CandidateSearchProvider = ({ children }) => {
@@ -188,6 +204,57 @@ const CandidateSearchProvider = ({ children }) => {
     // const r =
   };
 
+  const handleAddCandidatesTojob = async (
+    jobAppIds: string[],
+    job_ids: { job_id: string; job_title: string }[],
+  ) => {
+    try {
+      let updaCandState = [...state.candidates];
+      const candsjobApps = supabaseWrap(
+        await supabase
+          .from('job_applications')
+          .select()
+          .or(jobAppIds.map((j) => `application_id.eq.${j}`).join(',')),
+      ) as JobApplcationDB[];
+
+      let newJobApps: Partial<JobApplcationDB>[] = [];
+
+      for (const candJobApp of candsjobApps) {
+        let newCandApps = job_ids.map((j) => ({
+          candidate_id: candJobApp.candidate_id,
+          resume: candJobApp.resume,
+          resume_text: candJobApp.resume_text,
+          resume_embedding: candJobApp.resume_embedding,
+          education_embedding: candJobApp.education_embedding,
+          experience_embedding: candJobApp.experience_embedding,
+          is_embedding: candJobApp.is_embedding,
+          job_id: j.job_id,
+          json_resume: candJobApp.json_resume,
+          skills_embedding: candJobApp.skills_embedding,
+        }));
+        newJobApps = [...newJobApps, ...newCandApps];
+
+        updaCandState = updaCandState.map((cand) => {
+          if (cand.candidate_id === candJobApp.candidate_id) {
+            cand.applied_job_posts = [...cand.applied_job_posts, ...job_ids];
+          }
+          return cand;
+        });
+      }
+      updateState({
+        path: 'candidates',
+        value: updaCandState,
+      });
+      supabaseWrap(
+        await supabase.from('job_applications').insert([...newJobApps]),
+      );
+      toast.success('Applied to job/s sucessfully');
+    } catch (er) {
+      toast.error(API_FAIL_MSG);
+      // console.log(er);
+    }
+  };
+
   return (
     <CandidateSearchCtx.Provider
       value={{
@@ -195,6 +262,7 @@ const CandidateSearchProvider = ({ children }) => {
         updateState,
         updatenewSearchRes,
         bookMarkCandidate,
+        handleAddCandidatesTojob,
       }}
     >
       {children}

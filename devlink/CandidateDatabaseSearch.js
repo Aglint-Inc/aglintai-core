@@ -20,6 +20,7 @@ export function CandidateDatabaseSearch({
   slotCandidateHistoryCard,
   onClickSearch = {},
   slotLottieSearch,
+  textCandidateCount = "10344",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -165,7 +166,12 @@ export function CandidateDatabaseSearch({
               </_Builtin.Block>
               {isClearHistoryVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "history-wrap-candidate")}
+                  className={_utils.cx(
+                    _styles,
+                    "history-wrap-candidate",
+                    "cursor-pointer",
+                    "hide"
+                  )}
                   tag="div"
                   {...onClickClearHistory}
                 >
@@ -217,10 +223,21 @@ export function CandidateDatabaseSearch({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
+                  className={_utils.cx(_styles, "div-block-604")}
                   tag="div"
                 >
-                  {"All Candidates - 10344"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"All Candidates -"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {textCandidateCount}
+                  </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "color-grey-600")}

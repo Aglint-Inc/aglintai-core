@@ -230,7 +230,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -478,7 +478,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {

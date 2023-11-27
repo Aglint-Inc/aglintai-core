@@ -13,10 +13,11 @@ export function AddJob({
   as: _Component = _Builtin.Block,
   slotAddJobList,
   textJobSelected = "0",
-  onClickCancel = "Cancel",
   slotAddButton,
+  onClickCancel = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "add-job-cd-list-wrap")}
@@ -56,8 +57,9 @@ export function AddJob({
           <_Builtin.Block
             className={_utils.cx(_styles, "text-sm", "cursor-pointer")}
             tag="div"
+            {...onClickCancel}
           >
-            {onClickCancel}
+            {"Cancel"}
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
         </_Builtin.Block>

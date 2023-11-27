@@ -3,7 +3,6 @@ import * as Types from "./types";
 
 declare function CandidateDialog(props: {
   as?: React.ElementType;
-  slotAddtoJob?: Types.Devlink.Slot;
   onClickPrev?: Types.Devlink.RuntimeProps;
   onClickNext?: Types.Devlink.RuntimeProps;
   onClickCopy?: Types.Devlink.RuntimeProps;
@@ -24,4 +23,9 @@ declare function CandidateDialog(props: {
   arrowtooltiphide?: Types.Visibility.VisibilityConditions;
   isLinkedinVisible?: Types.Visibility.VisibilityConditions;
   isLocationVisible?: Types.Visibility.VisibilityConditions;
+  slotAddedJobList?: Types.Devlink.Slot;
+  textJobCountwithJob?: React.ReactNode;
+  textJobCount?: React.ReactNode;
+  isAddedToJobVisible?: Types.Visibility.VisibilityConditions;
+  onClickDownloadResume?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

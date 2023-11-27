@@ -18,6 +18,10 @@
   border-radius: 6px;
 }
 
+.sender-sub-wrap.withicon.after {
+  position: relative;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -81,4 +85,29 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.text-grey-300 {
+  color: var(--grey300-03a46dba);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.after-chat-clic {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  cursor: pointer;
 }

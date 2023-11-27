@@ -5,6 +5,6 @@ declare function AddJob(props: {
   as?: React.ElementType;
   slotAddJobList?: Types.Devlink.Slot;
   textJobSelected?: React.ReactNode;
-  onClickCancel?: React.ReactNode;
   slotAddButton?: Types.Devlink.Slot;
+  onClickCancel?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

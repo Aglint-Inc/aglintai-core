@@ -2,17 +2,22 @@ import { Collapse, Dialog } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 import {
+  BookmarkEmpty,
   CandidateDatabaseDetail,
   CandidateDetailsCard,
+  CandidateEmpty,
   CandidateSkills,
   ViewMoreSkills,
 } from '@/devlink';
+import { useJobs } from '@/src/context/JobsContext';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 
+import AddToJobOptions from './CandAddToJobMenu';
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';
 import SelectedCandidate from './SelectedCandidate';
@@ -21,23 +26,33 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
+import InCompleteLottie from '../IncompleteLottie';
 import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
+export type newCandJob = {
+  title: string;
+  id: string;
+};
+
 const CandidatesSearch = () => {
-  const { candidateSearchState, updatenewSearchRes, bookMarkCandidate } =
-    useCandidateSearchCtx();
+  const {
+    candidateSearchState,
+    updateState,
+    updatenewSearchRes,
+    bookMarkCandidate,
+    handleAddCandidatesTojob,
+  } = useCandidateSearchCtx();
   const router = useRouter();
+  const { jobsData } = useJobs();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
   const [activeCandidate, setActiveCandidate] = useState<number>(0);
   const [isSearching, setIsSearching] = useState(false);
-  const [checkedCands, setCheckedCands] = useState<boolean[]>(
-    Array(candidateSearchState.candidates.length).fill(false),
-  );
   const [showBookmarked, setShowBookmarked] = useState(false);
-
+  const [newJobsForCand, setNewJobsForCand] = useState<newCandJob[]>([]);
+  const [isaddingTOJob, setIsAddingToJob] = useState(false);
   useEffect(() => {
     const { searchQryId } = router.query;
     if (!router.isReady) return;
@@ -73,17 +88,68 @@ const CandidatesSearch = () => {
     })();
   }, [router.isReady, router.query]);
 
-  const candidates = candidateSearchState.candidates;
+  useEffect(() => {
+    if (!jobsData.jobs) return;
+    const candidates = candidateSearchState.candidates;
+    const publishedJobs = jobsData.jobs.filter((j) => j.status === 'published');
+    let candJobSet = new Set();
+    for (let candJob of candidates.filter((cand) => cand.is_checked)) {
+      for (let appliedJob of candJob.applied_job_posts) {
+        candJobSet.add(appliedJob.job_id);
+      }
+    }
+    const remainJobs: newCandJob[] = [];
+    for (let job of publishedJobs) {
+      if (!candJobSet.has(job.id)) {
+        remainJobs.push({
+          id: job.id,
+          title: job.job_title,
+        });
+      }
+    }
+    setNewJobsForCand(remainJobs);
+  }, [jobsData, candidateSearchState.candidates]);
 
   const resetActiveCards = () => {
-    setCheckedCands(Array(candidateSearchState.candidates.length).fill(false));
+    updateState({
+      path: 'candidates',
+      value: candidateSearchState.candidates.map((cand) => {
+        cand.is_checked = false;
+        return cand;
+      }),
+    });
+  };
+
+  const candidates = candidateSearchState.candidates;
+
+  const selectedCandsCnt = useMemo(() => {
+    return candidates.filter((cand) => cand.is_checked).length;
+  }, [candidates]);
+
+  const handleAddApplications = async (checkedJobIds: newCandJob[]) => {
+    try {
+      setIsAddingToJob(true);
+      handleAddCandidatesTojob(
+        candidates
+          .filter((cand) => cand.is_checked)
+          .map((cand) => cand.application_id),
+        checkedJobIds.map((cjob) => ({
+          job_id: cjob.id,
+          job_title: cjob.title,
+        })),
+      );
+    } catch (err) {
+      //
+    } finally {
+      setIsAddingToJob(false);
+    }
   };
 
   return (
     <>
       <CandidateDatabaseDetail
-        isSelected={checkedCands.filter((c) => c).length > 0}
-        textSelectedCount={checkedCands.filter((c) => c).length}
+        isSelected={selectedCandsCnt > 0}
+        textSelectedCount={selectedCandsCnt}
         textAllCount={candidates.length}
         textBookmarkCount={candidates.filter((c) => c.is_bookmarked).length}
         isBookMarkedActive={showBookmarked}
@@ -95,9 +161,7 @@ const CandidatesSearch = () => {
         }}
         onClickClearSelection={{
           onClick: () => {
-            setCheckedCands(
-              Array(candidateSearchState.candidates.length).fill(false),
-            );
+            resetActiveCards();
           },
         }}
         onClickAll={{
@@ -108,7 +172,7 @@ const CandidatesSearch = () => {
         onClickBookmarkSelection={{
           onClick: () => {
             const checkedCandIds = candidates
-              .filter((_, index) => checkedCands[Number(index)])
+              .filter((cand) => cand.is_checked)
               .map((c) => c.application_id);
             bookMarkCandidate(checkedCandIds);
             resetActiveCards();
@@ -131,18 +195,30 @@ const CandidatesSearch = () => {
                         setIsActive={() => {
                           setActiveCandidate(index);
                         }}
-                        isChecked={checkedCands[Number(index)]}
+                        isChecked={c.is_checked}
                         toggleChecked={() => {
-                          setCheckedCands((prev) => {
-                            let updated = [...prev];
-                            updated[Number(index)] = !updated[Number(index)];
-                            return updated;
+                          updateState({
+                            path: `candidates`,
+                            value: candidates.map((cand) => {
+                              if (cand.application_id === c.application_id) {
+                                cand.is_checked = !cand.is_checked;
+                              }
+                              return cand;
+                            }),
                           });
                         }}
                       />
                     </>
                   );
                 })}
+            {!isSearching && !showBookmarked && candidates.length == 0 && (
+              <CandidateEmpty slotLottie={<InCompleteLottie />} />
+            )}
+            {!isSearching &&
+              showBookmarked &&
+              candidates.filter((c) => c.is_bookmarked).length == 0 && (
+                <BookmarkEmpty />
+              )}
           </>
         }
         slotCandidateDialog={
@@ -188,6 +264,15 @@ const CandidatesSearch = () => {
             setIsFilterOpen(true);
           },
         }}
+        slotAddtoJob={
+          <>
+            <AddToJobOptions
+              handleClickSubmit={handleAddApplications}
+              isAdding={isaddingTOJob}
+              selectedJobIds={newJobsForCand}
+            />
+          </>
+        }
       />
       <Dialog
         open={isfilterOpen}
@@ -227,10 +312,14 @@ const CandidateDetailCard = ({
 }) => {
   const { bookMarkCandidate } = useCandidateSearchCtx();
   const [showMore, setShowMore] = useState(false);
+  const location = candidate.json_resume.basics.location;
 
   return (
     <CandidateDetailsCard
+      isLocationVisible={Boolean(location)}
       textName={getFullName(candidate.first_name, candidate.last_name)}
+      textJobAddedCount={candidate.applied_job_posts.length}
+      isJobAddedVisible={candidate.applied_job_posts.length > 0}
       slotSkill={
         <>
           {!showMore &&

@@ -401,9 +401,7 @@ export function CandidateDatabaseDetail({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "cdb-sidebar")} tag="div">
-          {slotCandidateDialog ?? (
-            <CandidateDialog slotAddtoJob={slotAddtoJob} />
-          )}
+          {slotCandidateDialog ?? <CandidateDialog />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
