@@ -45,7 +45,7 @@ const SelectedCandidate = ({
     useCandidateSearchCtx();
 
   useEffect(() => {
-    if (!jobsData.jobs) return;
+    if (!jobsData.jobs || !candidate) return;
     const candJobIds = candidate.applied_job_posts.map((c) => c.job_id);
     const eligiJobs: newCandJob[] = jobsData.jobs
       .filter((j) => j.status === 'published' && !candJobIds.includes(j.id))
