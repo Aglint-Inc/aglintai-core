@@ -240,7 +240,7 @@ function InterviewFeedbackPage() {
             <CandidateEducationCard
               key={i}
               textUniversityName={e.institution}
-              textDate={`${e.start.year || '--'} - ${e.start.end || '--'}`}
+              textDate={`${e?.start?.year || '--'} - ${e?.start?.end || '--'}`}
             />
           ))}
           isExperienceVisible={
@@ -258,7 +258,7 @@ function InterviewFeedbackPage() {
               }
               textRole={w.title}
               textCompany={w.org}
-              textDate={`${w.end.year || '--'} - ${w.end.year || '--'}`}
+              textDate={`${w?.end?.year || '--'} - ${w?.end?.year || '--'}`}
             />
           ))}
           isSkillVisible={
