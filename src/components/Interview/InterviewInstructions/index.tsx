@@ -154,7 +154,6 @@ function InterviewInstructions() {
                 );
             })}
           <InterviewWelcome
-            isPreviewWarningVisible={router.query?.mode === 'preview'}
             slotAssessmentInstruction={
               <div
                 dangerouslySetInnerHTML={{

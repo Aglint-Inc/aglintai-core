@@ -43,25 +43,6 @@ export function InterviewWelcome({
         className={_utils.cx(_styles, "interview-welcome-header-wrappers")}
         tag="div"
       >
-        {isPreviewWarningVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "preview-interview-wrap")}
-            tag="div"
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M9.375%2020C4.2%2020%200%2015.8%200%2010.625C0%205.45%204.2%201.25%209.375%201.25C14.55%201.25%2018.75%205.45%2018.75%2010.625C18.75%2015.8%2014.55%2020%209.375%2020ZM8.75%2015.625C8.75%2015.975%209.025%2016.25%209.375%2016.25C9.725%2016.25%2010%2015.975%2010%2015.625V10C10%209.65%209.725%209.375%209.375%209.375C9.025%209.375%208.75%209.65%208.75%2010V15.625ZM9.375%205C8.6875%205%208.125%205.5625%208.125%206.25C8.125%206.9375%208.6875%207.5%209.375%207.5C10.0625%207.5%2010.625%206.9375%2010.625%206.25C10.625%205.5625%2010.0625%205%209.375%205Z%22%20fill%3D%22%23ED8F1C%22%20style%3D%22fill%3A%23ED8F1C%3Bfill%3Acolor(display-p3%200.9294%200.5608%200.1098)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-white")}
-              tag="div"
-            >
-              {
-                "This is just a sample interview to demonstrate how the candidate will be approching the assesment"
-              }
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-company-logo-interview-welcome")}
           tag="div"
