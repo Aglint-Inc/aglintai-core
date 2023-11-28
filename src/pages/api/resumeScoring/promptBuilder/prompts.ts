@@ -40,8 +40,6 @@ Provide a response as the JSON format provided:
 -----
 {
     rating: enum(low, medium, high), # These are the levels of alignment.
-    isBachelors: boolean, # True if this is a bachelor's degree, false if not.
-    duration: number, # An estimation of the duration spent to finish this study, in months.
 } 
 -----`,
     user: `-----
