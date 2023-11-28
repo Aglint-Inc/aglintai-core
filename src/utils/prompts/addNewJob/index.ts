@@ -11,9 +11,15 @@ export const getAIResponse = async (prompts: MessageType[]) => {
 };
 
 export const extractJson = async (prompts: MessageType[]) => {
-  const { data } = await axios.post('/api/ai/queryToJson', {
-    prompts,
-  });
+  const { data } = await axios.post(
+    '/api/ai/queryToJson',
+    {
+      prompts,
+    },
+    {
+      timeout: 10000,
+    },
+  );
 
   return data;
 };

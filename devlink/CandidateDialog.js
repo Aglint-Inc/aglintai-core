@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { AddJobButton } from "./AddJobButton";
+import { AddedJobList } from "./AddedJobList";
 import { CandidateDetails } from "./CandidateDetails";
 import * as _utils from "./utils";
 import _styles from "./CandidateDialog.module.css";
@@ -12,7 +13,6 @@ const _interactionsData = JSON.parse(
 
 export function CandidateDialog({
   as: _Component = _Builtin.Block,
-  slotAddtoJob,
   onClickPrev = {},
   onClickNext = {},
   onClickCopy = {},
@@ -33,6 +33,11 @@ export function CandidateDialog({
   arrowtooltiphide = false,
   isLinkedinVisible = true,
   isLocationVisible = true,
+  slotAddedJobList,
+  textJobCountwithJob = "1 job ",
+  textJobCount = "1",
+  isAddedToJobVisible = false,
+  onClickDownloadResume = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -214,6 +219,51 @@ export function CandidateDialog({
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
+            {isAddedToJobVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cd-added-job-list")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-605")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cd-job-count-wrap")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "color-grey-600")}
+                      tag="div"
+                    >
+                      {"Candidate added to"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "color-grey-600")}
+                      tag="div"
+                    >
+                      {textJobCountwithJob}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "job-icon-count-wrap")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icons")}
+                      value="%3Csvg%20width%3D%2213%22%20height%3D%2212%22%20viewBox%3D%220%200%2013%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.05937%201.18099C4.94878%201.19678%204.88559%201.25998%204.86979%201.37057V2.31849H8.66146V1.37057C8.64566%201.25998%208.58247%201.19678%208.47188%201.18099H5.05937ZM3.73229%201.37057C3.74809%200.991402%203.87448%200.675429%204.11146%200.422652C4.36424%200.185672%204.68021%200.0592833%205.05937%200.0434847H8.47188C8.85104%200.0592833%209.16701%200.185672%209.41979%200.422652C9.65677%200.675429%209.78316%200.991402%209.79896%201.37057V2.31849H11.3156C11.7422%202.33428%2012.0977%202.48437%2012.382%202.76875C12.6664%203.05312%2012.8165%203.40859%2012.8323%203.83515V6.11015H8.28229H5.24896H0.698956V3.83515C0.714754%203.40859%200.864841%203.05312%201.14922%202.76875C1.43359%202.48437%201.78906%202.33428%202.21562%202.31849H3.73229V1.37057ZM12.8323%206.86849V9.90182C12.8165%2010.3284%2012.6664%2010.6839%2012.382%2010.9682C12.0977%2011.2526%2011.7422%2011.4027%2011.3156%2011.4185H2.21562C1.78906%2011.4027%201.43359%2011.2526%201.14922%2010.9682C0.864841%2010.6839%200.714754%2010.3284%200.698956%209.90182V6.86849H5.24896V7.62682C5.24896%207.848%205.32005%208.02969%205.46224%208.17187C5.60443%208.31406%205.78611%208.38516%206.00729%208.38516H7.52396C7.74514%208.38516%207.92682%208.31406%208.06901%208.17187C8.2112%208.02969%208.28229%207.848%208.28229%207.62682V6.86849H12.8323Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block tag="div">{textJobCount}</_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-606")}
+                  tag="div"
+                >
+                  {slotAddedJobList ?? <AddedJobList />}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
             {isOverviewVisible ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "cvs-intro-overview-candi")}
@@ -294,6 +344,30 @@ export function CandidateDialog({
                   tag="div"
                 >
                   {"View Resume"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "cd-download-resume",
+                    "cursor-pointer"
+                  )}
+                  tag="div"
+                  {...onClickDownloadResume}
+                >
+                  <_Builtin.Block tag="div">
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icon-embed")}
+                      value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%208.19509L9.04645%205.64864C9.24171%205.45338%209.55829%205.45338%209.75355%205.64864C9.94882%205.84391%209.94882%206.16049%209.75355%206.35575L6.65355%209.45575C6.25829%209.85101%205.64171%209.85101%205.24645%209.45575L2.14645%206.35575C1.95118%206.16049%201.95118%205.84391%202.14645%205.64864C2.34171%205.45338%202.65829%205.45338%202.85355%205.64864L5.5%208.29509V1.0022C5.5%200.726055%205.72386%200.502197%206%200.502197C6.27614%200.502197%206.5%200.726055%206.5%201.0022V8.19509ZM1.5%2012.5022C1.22386%2012.5022%201%2012.2783%201%2012.0022C1%2011.7261%201.22386%2011.5022%201.5%2011.5022H10.5C10.7761%2011.5022%2011%2011.7261%2011%2012.0022C11%2012.2783%2010.7761%2012.5022%2010.5%2012.5022H1.5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-blue-600-2")}
+                    tag="div"
+                  >
+                    {"Download Resume"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>

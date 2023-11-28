@@ -3,7 +3,10 @@
   height: 100vh;
   min-height: 100dvh;
   padding: 50px 20px;
+
   background-color: hsla(206.66666666666666, 0.00%, 100.00%, 1.00);
+
+  font-style: normal;
 }
 
 .hide {
@@ -386,7 +389,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -457,7 +460,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {

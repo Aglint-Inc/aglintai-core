@@ -114,7 +114,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     setFormError((p) => ({ ...p, department: '' }));
                     handleUpdateFormFields({
                       path: 'department',
-                      value: get(newValue, 'value'),
+                      value: get(newValue, 'value', event.target.value),
                     });
                   }}
                   renderInput={(params) => (
@@ -149,7 +149,7 @@ const BasicStepOne = ({ formError, setFormError }) => {
                     setFormError((p) => ({ ...p, location: '' }));
                     handleUpdateFormFields({
                       path: 'jobLocation',
-                      value: get(newValue, 'value'),
+                      value: get(newValue, 'value', event.target.value),
                     });
                   }}
                   renderInput={(params) => (

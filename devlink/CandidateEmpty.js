@@ -13,8 +13,13 @@ export function CandidateEmpty({
         className={_utils.cx(_styles, "database-subempty")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotLottie}</_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "mt-15")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-607")}
+          tag="div"
+        >
+          {slotLottie}
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">
           {"No Matching Candidate found. Try modifying filter."}
         </_Builtin.Block>
       </_Builtin.Block>

@@ -164,7 +164,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -180,7 +180,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .fw-semibold.color-grey-600.margin-top-10 {
@@ -758,7 +758,7 @@
   display: flex;
   overflow: auto;
   padding-right: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 80px;
   padding-left: 22px;
   flex-direction: column;
   flex: 1;
@@ -803,6 +803,12 @@
 .cdb-select-left-block {
   display: flex;
   align-items: center;
+}
+
+.div-block-613 {
+  display: flex;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
 }
 
 .cdb-select-clear-btn {

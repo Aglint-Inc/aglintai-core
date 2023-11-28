@@ -12,4 +12,5 @@ declare function CandidateDatabaseSearch(props: {
   slotCandidateHistoryCard?: Types.Devlink.Slot;
   onClickSearch?: Types.Devlink.RuntimeProps;
   slotLottieSearch?: Types.Devlink.Slot;
+  textCandidateCount?: React.ReactNode;
 }): React.JSX.Element;

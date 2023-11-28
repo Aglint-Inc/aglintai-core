@@ -24,6 +24,10 @@
   border-radius: 6px;
 }
 
+.sender-sub-wrap.withicon.after {
+  position: relative;
+}
+
 .text-block-28 {
   white-space: pre-wrap;
 }

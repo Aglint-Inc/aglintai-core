@@ -127,7 +127,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -302,7 +302,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -669,14 +669,10 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-
-  transition: all 250ms ease;
-
-  cursor: pointer;
 }
 
-.history-wrap-candidate:hover {
-  opacity: 0.7;
+.history-wrap-candidate.cursor-pointer.hide {
+  display: none;
 }
 
 .slot-candidate-history-card {
@@ -754,6 +750,13 @@
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.div-block-604 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
 }
 
 .db-req-icon-wrap {

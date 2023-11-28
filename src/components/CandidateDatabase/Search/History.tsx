@@ -35,7 +35,8 @@ function CandidateSearchHistory() {
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isQrySearching, setIsQrySearching] = useState(false);
-  const [showDeletepopUp, setShowDeletePopup] = useState(false);
+  const [candidatesCount, setCandidatesCount] = useState(0);
+  const [deleteHistoryId, setDeleteHistoryId] = useState(-1);
   const { jobsData } = useJobs();
   const router = useRouter();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
@@ -52,6 +53,14 @@ function CandidateSearchHistory() {
           .select()
           .eq('recruiter_id', recruiter.id),
       ) as SearchHistoryType[];
+      const candidates = supabaseWrap(
+        await supabase
+          .from('candidates')
+          .select()
+          .eq('recruiter_id', recruiter.id),
+      );
+
+      setCandidatesCount(candidates.length);
       setHistory(history);
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -60,34 +69,20 @@ function CandidateSearchHistory() {
     }
   };
 
-  const handleDeleteHistory = async (historyId) => {
+  const handleDeleteHistory = async () => {
     try {
-      setHistory((p) => p.filter((p) => p.id !== historyId));
+      setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
       supabaseWrap(
         await supabase
           .from('candidate_search_history')
           .delete()
-          .eq('id', historyId),
+          .eq('id', deleteHistoryId),
       ) as SearchHistoryType[];
     } catch (err) {
-      setHistory((p) => p.filter((p) => p.id !== historyId));
-      toast.error(API_FAIL_MSG);
-    }
-  };
-
-  const deleteAllHistory = async () => {
-    try {
-      supabaseWrap(
-        await supabase
-          .from('candidate_search_history')
-          .delete()
-          .eq('recruiter_id', recruiter.id),
-      );
-      setHistory([]);
-    } catch (err) {
+      setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
       toast.error(API_FAIL_MSG);
     } finally {
-      setShowDeletePopup(false);
+      setDeleteHistoryId(-1);
     }
   };
 
@@ -97,17 +92,20 @@ function CandidateSearchHistory() {
       setIsQrySearching(true);
       const queryJson = await searchJdToJson(searchQuery);
 
-      const seedJobsSkills = [
-        (async () => await similarJobs(queryJson.jobTitles))(),
-      ];
+      const seedJobsSkills = [];
 
+      if (queryJson.jobTitles.length > 0) {
+        seedJobsSkills.push(
+          (async () => await similarJobs(queryJson.jobTitles))(),
+        );
+      }
       if (queryJson.skills.length > 0) {
         seedJobsSkills.push(
           (async () => await similarSkills(queryJson.skills))(),
         );
       }
       const r = await Promise.allSettled(seedJobsSkills);
-      if (r[0].status === 'fulfilled' && r[0].value) {
+      if (r.length > 0 && r[0].status === 'fulfilled' && r[0].value) {
         queryJson.jobTitles = [
           ...queryJson.jobTitles,
           ...r[0].value.related_jobs,
@@ -115,6 +113,7 @@ function CandidateSearchHistory() {
       }
 
       if (
+        r.length > 0 &&
         queryJson.skills.length > 0 &&
         r[1].status === 'fulfilled' &&
         r[1].value
@@ -141,7 +140,6 @@ function CandidateSearchHistory() {
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
-      //
     } finally {
       setIsQrySearching(false);
     }
@@ -150,6 +148,7 @@ function CandidateSearchHistory() {
   return (
     <>
       <CandidateDatabaseSearch
+        textCandidateCount={candidatesCount}
         slotInputSearch={
           <>
             <UITextField
@@ -190,7 +189,7 @@ function CandidateSearchHistory() {
                       onClick: (e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleDeleteHistory(hist.id);
+                        setDeleteHistoryId(hist.id);
                       },
                     }}
                     textHeader={queryJsonToTitle(hist.query_json as any)}
@@ -214,11 +213,6 @@ function CandidateSearchHistory() {
             )}
           </>
         }
-        onClickClearHistory={{
-          onClick: () => {
-            history.length > 0 && setShowDeletePopup(true);
-          },
-        }}
         onClickSearchJobDescription={{
           onClick: () => {
             setIsJdPopUPopOpen(true);
@@ -229,6 +223,7 @@ function CandidateSearchHistory() {
             getMatchingCandsFromQry();
           },
         }}
+        isClearHistoryVisible={history.length > 0}
         slotLottieSearch={
           isQrySearching && (
             <>
@@ -240,6 +235,29 @@ function CandidateSearchHistory() {
             </>
           )
         }
+        onClickDbRequest={{
+          onClick: () => {
+            window.open(
+              `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
+                'Aglint : Request Aglint Candidate Database',
+              )}&body=${encodeURIComponent(
+                ` 
+Hello,
+
+I would like for Aglint Candidate Database.
+
+Thank you,
+[Your Name]
+`,
+              )}`,
+            );
+          },
+        }}
+        onClickAllCandidate={{
+          onClick: () => {
+            //
+          },
+        }}
       />
       <MuiPopup
         props={{
@@ -255,9 +273,9 @@ function CandidateSearchHistory() {
       </MuiPopup>
       <MuiPopup
         props={{
-          open: showDeletepopUp,
+          open: Boolean(deleteHistoryId !== -1),
           onClose: () => {
-            setShowDeletePopup(false);
+            setDeleteHistoryId(-1);
           },
         }}
       >
@@ -265,11 +283,13 @@ function CandidateSearchHistory() {
           <ClearHistory
             onClickCancel={{
               onClick: () => {
-                setShowDeletePopup(false);
+                setDeleteHistoryId(-1);
               },
             }}
             onClickClearHistory={{
-              onClick: deleteAllHistory,
+              onClick: () => {
+                handleDeleteHistory();
+              },
             }}
           />
         </Paper>

@@ -11,11 +11,13 @@
 
 .database-subempty {
   display: flex;
+  margin-bottom: 150px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.mt-15 {
-  margin-top: 15px;
+.div-block-607 {
+  width: 100px;
+  height: 100px;
 }

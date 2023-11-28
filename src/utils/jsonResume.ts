@@ -9,8 +9,12 @@ export const getFullName = (firstName, lastName) => {
 };
 
 export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {
-  const startDate = [start?.month, start?.year].filter(Boolean).join('/');
-  const endDate = [end?.month, end?.year].filter(Boolean).join('/');
+  const startDate = [monthIndexToString(start?.month - 1), start?.year]
+    .filter(Boolean)
+    .join(' ');
+  const endDate = [monthIndexToString(end?.month - 1), end?.year]
+    .filter(Boolean)
+    .join(' ');
   return [startDate, endDate].filter(Boolean).join(' - ');
 };
 
@@ -49,4 +53,29 @@ export function getTimeDifference(date1: string, date2: string) {
   }
 
   return timeComponents[0] + ' ago';
+}
+
+function monthIndexToString(monthIndex) {
+  if (!monthIndex) return '';
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  // Check if the month index is within a valid range
+  if (monthIndex >= 0 && monthIndex <= 11) {
+    return months[Number(monthIndex)];
+  } else {
+    return ' ';
+  }
 }

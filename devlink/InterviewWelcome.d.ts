@@ -19,4 +19,5 @@ declare function InterviewWelcome(props: {
   onClickPause?: Types.Devlink.RuntimeProps;
   isWelcomeVideoVisible?: Types.Visibility.VisibilityConditions;
   slotAssessmentInstruction?: Types.Devlink.Slot;
+  isPreviewWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

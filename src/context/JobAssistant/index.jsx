@@ -317,6 +317,10 @@ function JobAssistantProvider({ children }) {
   }
   /////////////////////////////////////////////////////////
   async function getCompanyDetails() {
+    if (router.query.new !== undefined) {
+      localStorage.removeItem('thread_id');
+      router.push(`/job-assistant/${router.query.company_id}`);
+    }
     const { data: company } = await supabase
       .from('recruiter')
       .select()

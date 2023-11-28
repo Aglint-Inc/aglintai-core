@@ -18,6 +18,10 @@
   border-radius: 6px;
 }
 
+.sender-sub-wrap.withicon.after {
+  position: relative;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -92,7 +96,7 @@
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
-  max-width: 662px;
+  max-width: 612px;
 }
 
 .fw-semibold.text-grey-600 {
@@ -108,7 +112,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .fw-semibold.color-grey-600.margin-top-10 {

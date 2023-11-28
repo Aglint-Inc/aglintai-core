@@ -1,36 +1,28 @@
-import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
+import axios from 'axios';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import {
-  AddJob,
-  AddJobButton,
+  AddedJobList,
   CandidateDialog,
   CandidateEducation,
   CandidateEducationCard,
   CandidateExperienceCard,
 } from '@/devlink';
-import { AddJobList } from '@/devlink/AddJobList';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { palette } from '@/src/context/Theme/Theme';
-import { JobApplcationDB, PublicJobsType } from '@/src/types/data.types';
+import { useJobs } from '@/src/context/JobsContext';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
-import toast from '@/src/utils/toast';
 
+import AddToJobOptions from './CandAddToJobMenu';
+import { newCandJob } from './Search';
 import {
   CandidateSearchRes,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
-import AUIButton from '../../Common/AUIButton';
 import MuiAvatar from '../../Common/MuiAvatar';
 import ResumePreviewer from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const SelectedCandidate = ({
   candidate,
@@ -45,22 +37,23 @@ const SelectedCandidate = ({
   onClickClose: () => void;
   toggleBookMark: () => any;
 }) => {
-  const { updateState, candidateSearchState } = useCandidateSearchCtx();
-  const { recruiter } = useAuthDetails();
+  // const { updateState, candidateSearchState } = useCandidateSearchCtx();
   const [resume, setResume] = useState(false);
-  const [anchorlEl, setAnchorEl] = useState(null);
-  const [isAdding, setIsAdding] = useState(false);
-  const [selectedJobIds, setSelectedJobIds] = useState([]);
+  const { jobsData } = useJobs();
+  const [eligibleJobs, setElegebleJobs] = useState<newCandJob[]>([]);
+  const { handleAddCandidatesTojob, candidateSearchState } =
+    useCandidateSearchCtx();
 
   useEffect(() => {
-    if (!candidate) return;
-    (async () => {
-      resetDropDown(candidate);
-    })();
-  }, [candidate]);
-  if (!candidate) return <></>;
-  let location = candidate.json_resume.basics.location;
+    if (!jobsData.jobs || !candidate) return;
+    const candJobIds = candidate.applied_job_posts.map((c) => c.job_id);
+    const eligiJobs: newCandJob[] = jobsData.jobs
+      .filter((j) => j.status === 'published' && !candJobIds.includes(j.id))
+      .map((j) => ({ id: j.id, title: j.job_title }));
+    setElegebleJobs(eligiJobs);
+  }, [jobsData, candidate, candidateSearchState.candidates]);
 
+  if (!candidate) return <></>;
   const handleOpenResume = async () => {
     if (isEmpty(candidate.resume_link)) return;
     if (candidate.resume_link.includes('.pdf')) {
@@ -73,74 +66,38 @@ const SelectedCandidate = ({
       link.click();
     }
   };
-
-  const addToJobList = async () => {
+  const handleAddApplications = async (checkedJobIds: newCandJob[]) => {
     try {
-      setIsAdding(true);
-      const [job_app] = supabaseWrap(
-        await supabase
-          .from('job_applications')
-          .select()
-          .eq('candidate_id', candidate.candidate_id),
-      ) as JobApplcationDB[];
-
-      updateState({
-        path: 'candidates',
-        value: candidateSearchState.candidates.map((cand) => {
-          if (cand.candidate_id === candidate.candidate_id) {
-            cand.applied_job_posts = [
-              ...cand.applied_job_posts,
-              ...selectedJobIds
-                .filter((s) => s.isSelected)
-                .map((sj) => ({
-                  job_id: sj.id,
-                  job_title: sj.title,
-                })),
-            ];
-          }
-          return cand;
-        }),
-      });
-
-      const newJobApps: Partial<JobApplcationDB>[] = selectedJobIds
-        .filter((s) => s.isSelected)
-        .map((j) => ({
-          candidate_id: candidate.candidate_id,
-          resume: job_app.resume,
-          resume_text: job_app.resume_text,
-          resume_embedding: job_app.resume_embedding,
-          education_embedding: job_app.education_embedding,
-          experience_embedding: job_app.experience_embedding,
-          is_embedding: job_app.is_embedding,
-          job_id: j.id,
-          json_resume: job_app.json_resume,
-          skills_embedding: job_app.skills_embedding,
-        }));
-
-      supabaseWrap(await supabase.from('job_applications').insert(newJobApps));
-      toast.success('Added to job sucessfully');
+      handleAddCandidatesTojob(
+        [candidate.application_id],
+        checkedJobIds.map((cjob) => ({
+          job_id: cjob.id,
+          job_title: cjob.title,
+        })),
+      );
     } catch (err) {
-      toast.error(API_FAIL_MSG);
+      //
     } finally {
-      setAnchorEl(null);
-      setIsAdding(false);
+      //
     }
   };
-
-  const resetDropDown = async (candidate) => {
-    const jobs = supabaseWrap(
-      await supabase
-        .from('public_jobs')
-        .select()
-        .eq('recruiter_id', recruiter.id)
-        .eq('status', 'published'),
-    ) as PublicJobsType[];
-    setSelectedJobIds(getSelectedJobs(jobs, candidate));
-  };
-
+  let location = candidate.json_resume.basics.location;
+  const linkedin = candidate.json_resume.basics.linkedIn;
   return (
     <>
       <CandidateDialog
+        onClickDownloadResume={{
+          onClick: () => {
+            fetchFile(candidate);
+          },
+        }}
+        onClickLinkedin={{
+          onClick: () => {
+            window.open(ensureHttps(linkedin), '_blank');
+          },
+        }}
+        isLinkedinVisible={Boolean(linkedin)}
+        isLocationVisible={Boolean(location)}
         textJobRoleAtCompany={candidate.json_resume.basics.currentJobTitle}
         textMail={candidate.json_resume.basics.email}
         textOverview={candidate.json_resume.overview}
@@ -154,82 +111,32 @@ const SelectedCandidate = ({
         }}
         slotAddJob={
           <>
-            {selectedJobIds.length > 0 && (
-              <AddJobButton
-                onClickAddJob={{
-                  onClick: (e) => {
-                    setAnchorEl(e.currentTarget);
-                  },
-                }}
+            {eligibleJobs.length > 0 && (
+              <AddToJobOptions
+                handleClickSubmit={handleAddApplications}
+                isAdding={false}
+                selectedJobIds={eligibleJobs}
+                isPopupCandidate={true}
               />
             )}
-            <Popover
-              open={Boolean(anchorlEl)}
-              anchorEl={anchorlEl}
-              sx={{ top: 35 }}
-              onClose={() => {
-                setAnchorEl(null);
-                resetDropDown(candidate);
-              }}
-              keepMounted={false}
-            >
-              <Stack>
-                <AddJob
-                  slotAddJobList={
-                    <>
-                      {selectedJobIds?.map((r, index) => {
-                        return (
-                          <>
-                            <AddJobList
-                              key={r.id}
-                              textJob={r.title}
-                              isChecked={r.isSelected}
-                              onClickCheck={{
-                                onClick: () => {
-                                  setSelectedJobIds((p) => {
-                                    const curr = [...p];
-                                    curr[Number(index)].isSelected =
-                                      !curr[Number(index)].isSelected;
-                                    return curr;
-                                  });
-                                },
-                              }}
-                            />
-                          </>
-                        );
-                      })}
-                    </>
-                  }
-                  slotAddButton={
-                    <>
-                      <AUIButton
-                        variant='outlined'
-                        size='small'
-                        onClick={() => {
-                          addToJobList();
-                        }}
-                        endIcon={
-                          isAdding && (
-                            <CircularProgress
-                              color='inherit'
-                              size={'15px'}
-                              sx={{ color: palette.grey[400] }}
-                            />
-                          )
-                        }
-                      >
-                        Add
-                      </AUIButton>
-                    </>
-                  }
-                  textJobSelected={
-                    selectedJobIds.filter((s) => s.isSelected).length
-                  }
-                />
-              </Stack>
-            </Popover>
           </>
         }
+        slotAddedJobList={
+          <>
+            {candidate.applied_job_posts.map((sjobs) => {
+              return (
+                <AddedJobList textJob={sjobs.job_title} key={sjobs.job_id} />
+              );
+            })}
+          </>
+        }
+        textJobCount={candidate.applied_job_posts.length}
+        textJobCountwithJob={
+          candidate.applied_job_posts.length > 1
+            ? `${candidate.applied_job_posts.length} jobs`
+            : `${candidate.applied_job_posts.length} job`
+        }
+        isAddedToJobVisible={candidate.applied_job_posts.length > 0}
         onClickClose={{
           onClick: onClickClose,
         }}
@@ -284,6 +191,7 @@ const SelectedCandidate = ({
                         key={index}
                         textCompany={exp.org}
                         textRole={exp.title}
+                        textDate={getformatedDate(exp.start, exp.end)}
                         slotLogo={
                           <CompanyLogo
                             companyName={
@@ -315,7 +223,7 @@ const SelectedCandidate = ({
         open={resume}
         onClose={() => setResume(false)}
       >
-        <Stack direction={'row'} justifyContent={'center'}>
+        <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
           <ResumePreviewer url={candidate.resume_link} />
         </Stack>
       </Dialog>
@@ -325,15 +233,40 @@ const SelectedCandidate = ({
 
 export default SelectedCandidate;
 
-const getSelectedJobs = (jobs: any, candidate: any) => {
-  return jobs
-    .filter((j) => j.status === 'published')
-    .map((j) => ({
-      title: j.job_title,
-      id: j.id,
-      isSelected:
-        candidate.applied_job_posts.findIndex((ap) => ap.job_id === j.id) !==
-        -1,
-    }))
-    .filter((j) => !j.isSelected);
+function ensureHttps(url) {
+  // Check if the URL starts with "http://"
+  if (url.startsWith('http://')) {
+    // Replace "http://" with "https://"
+    return url.replace('http://', 'https://');
+  } else if (!url.startsWith('https://')) {
+    // If the URL doesn't start with "http://" or "https://", add "https://"
+    return 'https://' + url;
+  }
+
+  // If the URL already starts with "https://", no change is needed
+  return url;
+}
+const fetchFile = async (applicationDetails: CandidateSearchRes) => {
+  const { data } = await axios({
+    url: applicationDetails?.resume_link ?? '#',
+    method: 'GET',
+    responseType: 'blob',
+  });
+
+  const url = window.URL.createObjectURL(new Blob([data]));
+  const link = document.createElement('a');
+  link.href = url;
+  const ext = applicationDetails.resume_link.slice(
+    applicationDetails.resume_link.lastIndexOf('.'),
+  );
+  link.setAttribute(
+    'download',
+    `${applicationDetails.first_name}_${applicationDetails.last_name}_Resume${
+      ext ?? ''
+    }`,
+  );
+  document.body.appendChild(link);
+  link.click();
+  window.URL.revokeObjectURL(url);
+  link.parentNode.removeChild(link);
 };

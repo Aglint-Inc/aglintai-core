@@ -26,13 +26,14 @@ export function InterviewWelcome({
   onClickPause = {},
   isWelcomeVideoVisible = true,
   slotAssessmentInstruction,
+  isPreviewWarningVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component
       className={_utils.cx(_styles, "interview-start-wrapper")}
-      tag="div"
+      tag="address"
     >
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}

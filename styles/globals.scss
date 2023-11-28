@@ -151,3 +151,7 @@ input[type='number'] {
   -o-animation: rotating 2s linear infinite;
   animation: rotating 2s linear infinite;
 }
+
+textarea::placeholder {
+  color: #c2c8cc;
+}
