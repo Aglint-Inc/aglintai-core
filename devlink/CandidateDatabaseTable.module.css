@@ -660,6 +660,10 @@
   object-fit: cover;
 }
 
+.div-block-620 {
+  height: 100%;
+}
+
 .job-page-nav-bar {
   position: sticky;
   left: 0%;

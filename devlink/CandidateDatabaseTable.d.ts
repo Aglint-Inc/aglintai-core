@@ -16,4 +16,5 @@ declare function CandidateDatabaseTable(props: {
   onClickFilter?: Types.Devlink.RuntimeProps;
   textFilterCount?: React.ReactNode;
   isNotificationVisible?: Types.Visibility.VisibilityConditions;
+  propsOpacity?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
