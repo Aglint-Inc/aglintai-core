@@ -100,7 +100,7 @@ function Assistant() {
             <AUIButton
               onClick={() => {
                 window.open(
-                  `/job-assistant?company_id=${recruiter.id}`,
+                  `/job-assistant/company_id=${recruiter.id}`,
                   'blank',
                 );
               }}
