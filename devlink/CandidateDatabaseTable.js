@@ -4,6 +4,7 @@ import * as _interactions from "./interactions";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import { CandidateDatabaseRow } from "./CandidateDatabaseRow";
+import { Pagination } from "./Pagination";
 import * as _utils from "./utils";
 import _styles from "./CandidateDatabaseTable.module.css";
 
@@ -19,6 +20,8 @@ export function CandidateDatabaseTable({
   slotCandidateRows,
   onClickCheck = {},
   isChecked = false,
+  slotCandidateDetails,
+  slotPagination,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -130,7 +133,7 @@ export function CandidateDatabaseTable({
                   className={_utils.cx(_styles, "line-clamp-1")}
                   tag="div"
                 >
-                  {"Dianne Russell"}
+                  {"Candidate"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -162,7 +165,7 @@ export function CandidateDatabaseTable({
                   className={_utils.cx(_styles, "line-clamp-1")}
                   tag="div"
                 >
-                  {"Applied Job"}
+                  {"Current Job Title"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -186,7 +189,12 @@ export function CandidateDatabaseTable({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column-2", "locations")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-2",
+                  "locations",
+                  "bg-grey-100"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -206,7 +214,12 @@ export function CandidateDatabaseTable({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column-2", "date")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-2",
+                  "date",
+                  "bg-grey-100"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -226,6 +239,18 @@ export function CandidateDatabaseTable({
           <_Builtin.Block tag="div">
             {slotCandidateRows ?? <CandidateDatabaseRow />}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "job-page-nav-bar")}
+            tag="div"
+          >
+            {slotPagination ?? <Pagination />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-616")}
+          tag="div"
+        >
+          {slotCandidateDetails}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

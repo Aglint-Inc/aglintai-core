@@ -11,4 +11,5 @@ declare function CandidateDatabaseRow(props: {
   textEmail?: React.ReactNode;
   textLocation?: React.ReactNode;
   textPhone?: React.ReactNode;
+  onClickList?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

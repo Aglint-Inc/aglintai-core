@@ -15,9 +15,18 @@ type newCandJob = {
 
 const AddToJobOptions = ({
   isAdding,
-  selectedJobIds,
   handleClickSubmit,
   isPopupCandidate = false,
+  selectedJobIds,
+}: {
+  isAdding: boolean;
+  selectedJobIds: {
+    id: string;
+    title: string;
+  }[];
+  // eslint-disable-next-line no-unused-vars
+  handleClickSubmit: (t: newCandJob[]) => Promise<any>;
+  isPopupCandidate?: boolean;
 }) => {
   const [checkBox, setcheckBox] = useState<newCandJob[]>([]);
   const [anchorlEl, setAnchorEl] = useState(null);

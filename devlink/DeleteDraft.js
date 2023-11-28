@@ -21,6 +21,7 @@ export function DeleteDraft({
         <_Builtin.Block
           className={_utils.cx(_styles, "cursor-pointer")}
           tag="div"
+          {...onClickCancel}
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}

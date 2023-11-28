@@ -9,4 +9,6 @@ declare function CandidateDatabaseTable(props: {
   slotCandidateRows?: Types.Devlink.Slot;
   onClickCheck?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
+  slotCandidateDetails?: Types.Devlink.Slot;
+  slotPagination?: Types.Devlink.Slot;
 }): React.JSX.Element;

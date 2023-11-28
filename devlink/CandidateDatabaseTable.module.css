@@ -7,6 +7,7 @@
 .candidate-database-main-header {
   position: sticky;
   top: 0px;
+  z-index: 11;
 
   display: flex;
   padding: 12px 20px;
@@ -294,7 +295,7 @@
 }
 
 .cdcard-wrap {
-  position: relative;
+  display: flex;
   overflow: hidden;
   height: 100%;
 }
@@ -322,6 +323,21 @@
 }
 
 .cv-list-row-2.item:hover {
+  background-color: #f8f9f9;
+}
+
+.cv-list-row-2.top {
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+}
+
+.cv-list-row-2.top.bg-white {
+  background-color: white;
+}
+
+.cv-list-row-2.top.bg-grey-100 {
   background-color: #f8f9f9;
 }
 
@@ -417,6 +433,10 @@
   text-align: right;
 }
 
+.cv-list-column-2.date.bg-grey-100 {
+  background-color: #f8f9f9;
+}
+
 .cv-list-column-2.email {
   width: 250px;
   min-width: 250px;
@@ -453,8 +473,13 @@
   min-width: 240px;
 }
 
+.cv-list-column-2.locations.bg-grey-100 {
+  background-color: #f8f9f9;
+}
+
 .cv-list-checkbox-2 {
   position: relative;
+  z-index: 2;
 
   display: flex;
   overflow: hidden;
@@ -564,4 +589,24 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.job-page-nav-bar {
+  position: sticky;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0px;
+  z-index: 5;
+
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.div-block-616 {
+  overflow: scroll;
+  height: 100%;
 }

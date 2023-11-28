@@ -1094,6 +1094,14 @@ export interface Database {
         }
         Returns: string
       }
+      count_candidates: {
+        Args: {
+          job_ids: string[]
+        }
+        Returns: {
+          total_records: number
+        }[]
+      }
       embeddingresume: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -1102,6 +1110,7 @@ export interface Database {
         Args: {
           job_ids: string[]
           max_records?: number
+          offset_records?: number
         }
         Returns: {
           application_id: string
