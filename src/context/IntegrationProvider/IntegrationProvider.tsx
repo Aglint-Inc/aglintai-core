@@ -31,7 +31,8 @@ type JobPostFormProviderParams = {
 };
 
 const IntegrationProvider = ({ children }: JobPostFormProviderParams) => {
-  const [integration, setIntegration] = useState(initialState);
+  const [integration, setIntegration] =
+    useState<IntegrationStateType>(initialState);
 
   const handleClose = () => {
     setIntegration(initialState);

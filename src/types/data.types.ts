@@ -163,3 +163,11 @@ export type SupportTicketType =
 
 export type SearchHistoryType =
   Database['public']['Tables']['candidate_search_history']['Row'];
+
+export type GreenhouseRefDbType =
+  Database['public']['Tables']['greenhouse_reference']['Row'];
+
+export type GreenhouseType = Pick<
+  Database['public']['Tables']['greenhouse_reference']['Row'],
+  'posting_id' | 'application_id' | 'greenhouse_id' | 'public_job_id' | 'resume'
+>;

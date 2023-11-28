@@ -1,17 +1,32 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import {
+  CandidateType,
+  GreenhouseRefDbType,
+  GreenhouseType,
+  JobApplcationDB,
+  RecruiterDB,
+} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import {
+  ExtendedJobGreenhouse,
+  GreenhouseApplication,
+  JobGreenhouse,
+} from './types';
 import { POSTED_BY } from '../utils';
 
-export const createJobApplications = async (selectedLeverPostings, apiKey) => {
-  const applications = await Promise.all(
+export const createJobApplications = async (
+  selectedLeverPostings: ExtendedJobGreenhouse[],
+  apiKey: string,
+) => {
+  await Promise.all(
     selectedLeverPostings.map(async (post) => {
       const fetchedCandidates = await fetchAllCandidates(post.job_id, apiKey);
 
-      // for creating lever job reference
+      // for creating greenhouse job reference
       const refCandidates = fetchedCandidates
         .map((cand) => {
           if (cand.email_addresses[0]?.value) {
@@ -42,7 +57,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         })
         .filter(Boolean); // Remove null entries;
 
-      // // for creating lever job reference
+      //for creating greenhouse job reference
 
       const emails = [
         ...new Set(
@@ -60,6 +75,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           return checkCand.email === cand.email;
         });
       });
+
       //email which are not their in candidates table we are inserting them
       const insertableCandidates = uniqueRefCandidates.map((cand) => {
         return {
@@ -94,21 +110,23 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
       if (!errorCandidates) {
         const allCandidates = [...newCandidates, ...checkCandidates];
 
-        const dbApplications = refCandidates.map((ref) => {
-          const matchingCandidate = allCandidates.find(
-            (cand) => cand.email === ref.email,
-          );
+        const dbApplications = refCandidates
+          .map((ref) => {
+            const matchingCandidate = allCandidates.find(
+              (cand) => cand.email === ref.email,
+            );
 
-          if (matchingCandidate && matchingCandidate.id) {
-            return {
-              candidate_id: matchingCandidate.id,
-              job_id: post.public_job_id,
-              application_id: ref.application_id,
-            };
-          } else {
-            return null;
-          }
-        });
+            if (matchingCandidate && matchingCandidate.id) {
+              return {
+                candidate_id: matchingCandidate.id,
+                job_id: post.public_job_id,
+                application_id: ref.application_id,
+              };
+            } else {
+              return null;
+            }
+          })
+          .filter(Boolean);
 
         const { error } = await supabase
           .from('job_applications')
@@ -123,7 +141,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
               public_job_id: post.public_job_id,
               resume: ref.resume,
             };
-          });
+          }) as unknown as GreenhouseType[];
           await createReference(referenceObj);
         } else {
           toast.error(
@@ -134,10 +152,12 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
       //new candidates insert flow
     }),
   );
-  return applications;
 };
 
-const fetchAllCandidates = async (post_id, apiKey) => {
+const fetchAllCandidates = async (
+  post_id: string,
+  apiKey: string,
+): Promise<GreenhouseApplication[]> => {
   let allCandidates = [];
   let hasMore = true;
   let page = 1;
@@ -169,7 +189,9 @@ const fetchAllCandidates = async (post_id, apiKey) => {
   return allCandidates;
 };
 
-export const fetchAllJobs = async (apiKey) => {
+export const fetchAllJobs = async (
+  apiKey: string,
+): Promise<JobGreenhouse[]> => {
   //pagination need to done
   let allJobs = [];
   let hasMore = true;
@@ -202,14 +224,16 @@ export const fetchAllJobs = async (apiKey) => {
   return allJobs;
 };
 
-export const createJobObject = async (selectedLeverPostings, recruiter) => {
-  const dbJobs = selectedLeverPostings.map((post) => {
+export const createJobObject = async (
+  selectedPostings: JobGreenhouse[],
+  recruiter: RecruiterDB,
+): Promise<Partial<JobApplcationDB> & { recruiter_id: string }[]> => {
+  const dbJobs = selectedPostings.map((post) => {
     return {
       location: post.location.name,
       job_title: post.title,
       description: post.content,
       email_template: recruiter.email_template,
-      // department: post.categories.department || '',
       recruiter_id: recruiter.id,
       posted_by: POSTED_BY.GREENHOUSE,
       job_type: 'fulltime',
@@ -229,7 +253,7 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
   return dbJobs;
 };
 
-export function getLeverStatusColor(state) {
+export function getLeverStatusColor(state: string): string {
   return state == 'published'
     ? '#228F67'
     : state == 'closed'
@@ -239,7 +263,7 @@ export function getLeverStatusColor(state) {
     : '#d93f4c';
 }
 
-function extractLinkedInURLGreenhouse(item) {
+function extractLinkedInURLGreenhouse(item: string): string {
   // Check if the item starts with "http://linkedin.com" or "https://linkedin.com"
   if (
     item.startsWith('http://linkedin.com') ||
@@ -251,7 +275,9 @@ function extractLinkedInURLGreenhouse(item) {
   }
 }
 
-export const createReference = async (reference) => {
+export const createReference = async (
+  reference: GreenhouseType[],
+): Promise<GreenhouseRefDbType[] | undefined> => {
   const { data, error } = await supabase
     .from('greenhouse_reference')
     .insert(reference)
@@ -261,6 +287,7 @@ export const createReference = async (reference) => {
     toast.error(
       'Sorry unable to import. Please try again later or contact support.',
     );
+    return undefined;
   } else {
     return data;
   }
@@ -268,7 +295,9 @@ export const createReference = async (reference) => {
 
 const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requirements
 
-const processBatch = async (emailBatch) => {
+const processBatch = async (
+  emailBatch: string[],
+): Promise<CandidateType[] | undefined> => {
   const { data: checkCandidates, error: errorCheck } = await supabase
     .from('candidates')
     .select()
@@ -276,10 +305,14 @@ const processBatch = async (emailBatch) => {
 
   if (!errorCheck) {
     return checkCandidates;
+  } else {
+    return [];
   }
 };
 
-const processEmailsInBatches = async (emails) => {
+const processEmailsInBatches = async (
+  emails: string[],
+): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
@@ -288,3 +321,30 @@ const processEmailsInBatches = async (emails) => {
   }
   return allCandidates;
 };
+
+export const filterJobs = (jobs: JobGreenhouse[], filter: string) => {
+  const filJobs = jobs.filter((job) => {
+    if (filter == 'live') {
+      return job.live;
+    } else if (filter == 'closed') {
+      return !job.active;
+    } else if (filter == 'active') {
+      return job.active;
+    } else {
+      return true;
+    }
+  });
+  return filJobs;
+};
+
+export function getGreenhouseStatusColor(job: JobGreenhouse) {
+  if (job.live) {
+    return '#228F67';
+  } else if (!job.active) {
+    return '#D93F4C';
+  } else if (job.active) {
+    return '#ED8F1C';
+  } else {
+    return '#d93f4c';
+  }
+}

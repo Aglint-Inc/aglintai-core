@@ -26,21 +26,30 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import FetchingJobsLever from './Loader';
-import { createJobApplications, createJobObject, fetchAllJobs } from './utils';
+import { ExtendedJobGreenhouse, JobGreenhouse } from './types';
+import {
+  createJobApplications,
+  createJobObject,
+  fetchAllJobs,
+  filterJobs,
+  getGreenhouseStatusColor,
+} from './utils';
 import LoaderLever from '../Loader';
-import { generateEmbedding, POSTED_BY } from '../utils';
+import { POSTED_BY } from '../utils';
 
 export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
-  const [postings, setPostings] = useState([]);
-  const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState(
-    [],
-  );
-  const [greenhouseFilter, setGreenhouseFilter] = useState('live');
-  const [initialFetch, setInitialFetch] = useState(true);
+  const [postings, setPostings] = useState<JobGreenhouse[]>([]);
+  const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
+    JobGreenhouse[]
+  >([]);
+  const [greenhouseFilter, setGreenhouseFilter] = useState<
+    'live' | 'active' | 'closed' | 'all'
+  >('live');
+  const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const apiRef = useRef(null);
 
   useEffect(() => {
@@ -51,7 +60,6 @@ export function GreenhouseModal() {
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(recruiter.greenhouse_key);
-
     setPostings(
       allJobs.filter((post) => {
         if (
@@ -77,7 +85,7 @@ export function GreenhouseModal() {
         ...prev,
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       }));
-
+      //converting greenhouse jobs to db jobs
       const dbJobs = await createJobObject(
         selectedGreenhousePostings,
         recruiter,
@@ -87,10 +95,11 @@ export function GreenhouseModal() {
         .from('public_jobs')
         .insert(dbJobs)
         .select();
+
       if (!error) {
         newJobs.map((job) => {
           if (job.description) {
-            generateEmbedding(job.description, job.id);
+            //this will jd_json required for scoring
             axios.post('/api/publishJob', {
               data: {
                 job_title: job.job_title,
@@ -101,18 +110,8 @@ export function GreenhouseModal() {
             });
           }
         });
-        // selectedGreenhousePostings.map(async (post) => {
-        //   await createLeverJobReference({
-        //     posting_id: post.id,
-        //     recruiter_id: recruiter.id,
-        //     job_id: newJobs.filter(
-        //       (job) =>
-        //         job.job_title == post.text &&
-        //         job.location == post.categories.location,
-        //     )[0].id,
-        //   });
-        // });
 
+        //now creating jobsObj for creating candidates and job_applications
         const jobsObj = selectedGreenhousePostings.map((post) => {
           return {
             ...post,
@@ -123,14 +122,16 @@ export function GreenhouseModal() {
             )[0].id,
             recruiter_id: recruiter.id,
           };
-        });
+        }) as unknown as ExtendedJobGreenhouse[];
+        //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
+        //updating jobsData
         await handleJobRead();
+        //closing modal once done
         setIntegration((prev) => ({
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-
         toast.success('Jobs Imported Successfully');
         router.push(`${pageRoutes.JOBS}?status=published`);
       } else {
@@ -306,82 +307,60 @@ export function GreenhouseModal() {
               }}
               slotAtsCard={
                 !initialFetch ? (
-                  postings.filter((job) => {
-                    if (greenhouseFilter == 'live') {
-                      return job.live;
-                    } else if (greenhouseFilter == 'closed') {
-                      return !job.active;
-                    } else if (greenhouseFilter == 'active') {
-                      return job.active;
-                    } else {
-                      return true;
-                    }
-                  }).length > 0 ? (
-                    postings
-                      .filter((job) => {
-                        if (greenhouseFilter == 'live') {
-                          return job.live;
-                        } else if (greenhouseFilter == 'closed') {
-                          return !job.active;
-                        } else if (greenhouseFilter == 'active') {
-                          return job.active;
-                        } else {
-                          return true;
-                        }
-                      })
-                      .map((post, ind) => {
-                        return (
-                          <ScrollList uniqueKey={ind} key={ind}>
-                            <AtsCard
-                              isChecked={
-                                selectedGreenhousePostings?.filter(
-                                  (p) => p.id === post.id,
-                                )?.length > 0
-                              }
-                              onClickCheck={{
-                                onClick: () => {
-                                  if (selectedGreenhousePostings.length < 5) {
-                                    if (
-                                      selectedGreenhousePostings?.some(
-                                        (p) => p.id === post.id,
-                                      )
-                                    ) {
-                                      // If the object is already in the array, remove it
-                                      setSelectedGreenhousePostings((prev) =>
-                                        prev.filter((p) => p.id !== post.id),
-                                      );
-                                    } else {
-                                      // If the object is not in the array, add it
-                                      setSelectedGreenhousePostings((prev) => [
-                                        ...prev,
-                                        post,
-                                      ]);
-                                    }
-                                  } else {
-                                    toast.error(
-                                      'You can select maximum 5 jobs at a time',
+                  filterJobs(postings, greenhouseFilter).length > 0 ? (
+                    filterJobs(postings, greenhouseFilter).map((post, ind) => {
+                      return (
+                        <ScrollList uniqueKey={ind} key={ind}>
+                          <AtsCard
+                            isChecked={
+                              selectedGreenhousePostings?.filter(
+                                (p) => p.id === post.id,
+                              )?.length > 0
+                            }
+                            onClickCheck={{
+                              onClick: () => {
+                                if (selectedGreenhousePostings.length < 5) {
+                                  if (
+                                    selectedGreenhousePostings?.some(
+                                      (p) => p.id === post.id,
+                                    )
+                                  ) {
+                                    // If the object is already in the array, remove it
+                                    setSelectedGreenhousePostings((prev) =>
+                                      prev.filter((p) => p.id !== post.id),
                                     );
+                                  } else {
+                                    // If the object is not in the array, add it
+                                    setSelectedGreenhousePostings((prev) => [
+                                      ...prev,
+                                      post,
+                                    ]);
                                   }
-                                },
-                              }}
-                              // propsTextColor={{
-                              //   style: {
-                              //     color: getLeverStatusColor(post.state),
-                              //   },
-                              // }}
-                              textRole={post.title}
-                              textStatus={
-                                post.live
-                                  ? 'Live'
-                                  : post.active
-                                  ? 'Active'
-                                  : 'Closed'
-                              }
-                              textWorktypeLocation={post.location.name}
-                            />
-                          </ScrollList>
-                        );
-                      })
+                                } else {
+                                  toast.error(
+                                    'You can select maximum 5 jobs at a time',
+                                  );
+                                }
+                              },
+                            }}
+                            propsTextColor={{
+                              style: {
+                                color: getGreenhouseStatusColor(post),
+                              },
+                            }}
+                            textRole={post.title}
+                            textStatus={
+                              post.live
+                                ? 'Live'
+                                : post.active
+                                ? 'Active'
+                                : 'Closed'
+                            }
+                            textWorktypeLocation={post.location.name}
+                          />
+                        </ScrollList>
+                      );
+                    })
                   ) : (
                     <NoResultAts />
                   )
@@ -418,3 +397,5 @@ export function GreenhouseModal() {
     />
   );
 }
+
+

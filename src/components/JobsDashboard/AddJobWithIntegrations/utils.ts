@@ -1,8 +1,3 @@
-import axios from 'axios';
-import { htmlToText } from 'html-to-text';
-
-import { supabase } from '@/src/utils/supabaseClient';
-
 export function extractLinkedInURL(arr) {
   for (const item of arr) {
     // Check if the item starts with "http://linkedin.com" or "https://linkedin.com"
@@ -42,20 +37,4 @@ export const POSTED_BY = {
   LEVER: 'Lever',
   AGLINT: 'Aglint',
   GREENHOUSE: 'Greenhouse',
-};
-
-export const generateEmbedding = async (des, job_id) => {
-  const jd_text = htmlToText(des);
-
-  const { data: emb } = await axios.post('/api/ai/create-embeddings', {
-    text: jd_text,
-  });
-
-  const embedding = emb.data[0].embedding;
-  await supabase
-    .from('public_jobs')
-    .update({ embedding: embedding })
-    .eq('id', job_id);
-
-  return embedding;
 };

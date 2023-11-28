@@ -33,7 +33,7 @@ import {
   getLeverStatusColor,
 } from './utils';
 import LoaderLever from '../Loader';
-import { generateEmbedding, POSTED_BY } from '../utils';
+import { POSTED_BY } from '../utils';
 
 export function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -89,7 +89,6 @@ export function LeverModalComp() {
       if (!error) {
         newJobs.map((job) => {
           if (job.description) {
-            generateEmbedding(job.description, job.id);
             axios.post('/api/publishJob', {
               data: {
                 job_title: job.job_title,

@@ -23,6 +23,7 @@ const whiteListedEndPoints = [
   '/api/assistant/createAssistant',
   '/api/google/overview',
   '/api/google/resume',
+  '/api/google/jdparser',
   '/api/google/overview-handler',
   '/api/getLinkedin',
   '/api/resumecron/batchscore',

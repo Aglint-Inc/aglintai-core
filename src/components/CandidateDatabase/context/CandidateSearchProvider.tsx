@@ -217,7 +217,8 @@ const CandidateSearchProvider = ({ children }) => {
           .or(jobAppIds.map((j) => `application_id.eq.${j}`).join(',')),
       ) as JobApplcationDB[];
 
-      let newJobApps: Partial<JobApplcationDB>[] = [];
+      let newJobApps: Partial<JobApplcationDB> & { candidate_id: string }[] =
+        [];
 
       for (const candJobApp of candsjobApps) {
         let newCandApps = job_ids.map((j) => ({

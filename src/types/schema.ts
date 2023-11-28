@@ -242,7 +242,7 @@ export interface Database {
           ai_interviewer_id: number | null
           api_status: string
           application_id: string
-          candidate_id: string | null
+          candidate_id: string
           conversation: Json[] | null
           created_at: string
           education_embedding: string | null
@@ -270,7 +270,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
-          candidate_id?: string | null
+          candidate_id: string
           conversation?: Json[] | null
           created_at?: string
           education_embedding?: string | null
@@ -298,7 +298,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
-          candidate_id?: string | null
+          candidate_id?: string
           conversation?: Json[] | null
           created_at?: string
           education_embedding?: string | null
@@ -456,7 +456,6 @@ export interface Database {
           description: string | null
           draft: Json | null
           email_template: Json
-          embedding: string | null
           end_video: Json | null
           id: string
           interview_instructions: string | null
@@ -492,7 +491,6 @@ export interface Database {
           description?: string | null
           draft?: Json | null
           email_template?: Json
-          embedding?: string | null
           end_video?: Json | null
           id?: string
           interview_instructions?: string | null
@@ -528,7 +526,6 @@ export interface Database {
           description?: string | null
           draft?: Json | null
           email_template?: Json
-          embedding?: string | null
           end_video?: Json | null
           id?: string
           interview_instructions?: string | null
@@ -992,17 +989,12 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: unknown
       }
-      batchscorecron:
-        | {
-            Args: Record<PropertyKey, never>
-            Returns: Json
-          }
-        | {
-            Args: {
-              function_value: string
-            }
-            Returns: Json
-          }
+      batchscorecron: {
+        Args: {
+          function_value: string
+        }
+        Returns: Json
+      }
       batchtriggergreenhouse: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -1105,6 +1097,25 @@ export interface Database {
       embeddingresume: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      filter_candidates: {
+        Args: {
+          job_ids: string[]
+          max_records?: number
+        }
+        Returns: {
+          application_id: string
+          created_at: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          resume_link: string
+          json_resume: Json
+          profile_image: string
+          candidate_id: string
+          job_id: string
+        }[]
       }
       get_combined_resume_score: {
         Args: {
