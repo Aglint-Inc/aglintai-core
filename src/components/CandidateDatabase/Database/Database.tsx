@@ -1,5 +1,4 @@
 import { Collapse } from '@mui/material';
-import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -19,7 +18,6 @@ import SelectedCandidate from './SelectedCandidate';
 import { getFilteredCands } from './utils';
 import AddToJobOptions from '../Search/CandAddToJobMenu';
 import { newCandJob } from '../Search/Search';
-import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import {
   API_FAIL_MSG,
@@ -100,9 +98,9 @@ const CandDatabase = () => {
 
   const candidates = candState.candidates;
   const counts =
-    candidates.length.toString() +
+    candsCount.toString() +
     ' ' +
-    (candidates.length === 1 ? 'candidate' : 'candidates');
+    (candsCount === 1 ? 'candidate' : 'candidates');
   const isAnyRowSelected =
     candidates.findIndex((cand) => cand.is_checked) !== -1;
 
@@ -141,47 +139,60 @@ const CandDatabase = () => {
         textCandidateCount={counts}
         slotCandidateRows={
           <>
-            {isLoading && (
-              <Stack sx={{ width: '100%', height: '50vh' }}>
-                <Loader />
-              </Stack>
-            )}
-            {!isLoading &&
-              candidates.map((detail, index) => {
-                return (
-                  <CandidateDatabaseRow
+            {candidates.map((detail, index) => {
+              return (
+                <>
+                  <div
                     key={detail.candidate_id}
-                    slotNameAvatar={
-                      <MuiAvatar
-                        level={getFullName(detail.first_name, detail.last_name)}
-                        src={detail.profile_image}
-                        fontSize={'12px'}
-                        variant={'rounded'}
-                        width={'100%'}
-                        height={'100%'}
-                      />
-                    }
-                    textName={getFullName(detail.first_name, detail.last_name)}
-                    textAppliedJob={detail.job_title}
-                    textEmail={detail.email}
-                    textLocation={detail.json_resume.basics.location}
-                    textPhone={detail.json_resume.basics.phone}
-                    onClickCheck={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        checkCandidates(detail.candidate_id);
-                      },
+                    style={{
+                      opacity: isLoading ? 0.5 : 1,
+                      transition: 'all 0.5s ease 0s',
                     }}
-                    isChecked={detail.is_checked}
-                    onClickList={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        setSelectedCand(index);
-                      },
-                    }}
-                  />
-                );
-              })}
+                  >
+                    <CandidateDatabaseRow
+                      slotNameAvatar={
+                        <MuiAvatar
+                          level={getFullName(
+                            detail.first_name,
+                            detail.last_name,
+                          )}
+                          src={detail.profile_image}
+                          fontSize={'12px'}
+                          variant={'rounded'}
+                          width={'100%'}
+                          height={'100%'}
+                        />
+                      }
+                      textName={getFullName(
+                        detail.first_name,
+                        detail.last_name,
+                      )}
+                      textAppliedJob={detail.job_title}
+                      textEmail={
+                        detail.email.startsWith('temp-')
+                          ? '--'
+                          : detail.email || '--'
+                      }
+                      textLocation={detail.json_resume.basics.location || '--'}
+                      textPhone={detail.json_resume.basics.phone || '--'}
+                      onClickCheck={{
+                        onClick: (e) => {
+                          e.stopPropagation();
+                          checkCandidates(detail.candidate_id);
+                        },
+                      }}
+                      isChecked={detail.is_checked}
+                      onClickList={{
+                        onClick: (e) => {
+                          e.stopPropagation();
+                          setSelectedCand(index);
+                        },
+                      }}
+                    />
+                  </div>
+                </>
+              );
+            })}
           </>
         }
         onClickCheck={{
@@ -229,7 +240,7 @@ const CandDatabase = () => {
         }
         slotPagination={
           <>
-            {candidates.length !== 0 && !isLoading && (
+            {
               <Pagination
                 textCurrentPageCount={currPageNo}
                 textCurrentCandidateCount={candidates.length}
@@ -261,7 +272,7 @@ const CandDatabase = () => {
                   </>
                 }
               />
-            )}
+            }
           </>
         }
       />
