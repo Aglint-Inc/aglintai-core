@@ -180,7 +180,7 @@ export const Question = ({
   const [openPopUp, setOpenPopUp] = useState(false);
   const isSaveBtnVisible = showEdit || isEmpty(question.question);
   const isVideoEnable =
-    componentType === 'welcome' ? true : jobForm.formFields.videoAssessment;
+    componentType === 'intro' ? true : jobForm.formFields.videoAssessment;
 
   const handlePlayAudio = async () => {
     try {

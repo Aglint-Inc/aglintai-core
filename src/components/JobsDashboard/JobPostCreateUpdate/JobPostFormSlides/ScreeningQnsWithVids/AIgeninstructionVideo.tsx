@@ -27,7 +27,7 @@ function AIgeninstructionVideo() {
           }}
           question={videoInfo}
           path={`interviewSetting.aiGeneratedVideoInfo`}
-          componentType='welcome'
+          componentType='intro'
         />
       </Stack>
     </>

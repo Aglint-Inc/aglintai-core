@@ -6,6 +6,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 
 import { CloseJob, CreateNewJob } from '@/devlink';
+import { DeleteDraft } from '@/devlink/DeleteDraft';
 import Loader from '@/src/components/Common/Loader';
 import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
@@ -61,6 +62,7 @@ function JobForm() {
     department: '',
     aiQnGen: 0,
   });
+  const [showDraftPopup, setShowDraftPopup] = useState(false);
 
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
   let formSlide = <></>;
@@ -359,7 +361,7 @@ function JobForm() {
               jobForm.jobPostStatus === 'draft' && (
                 <CloseJob
                   onClickCloseJob={{
-                    onClick: () => handleDeleteJob(),
+                    onClick: () => setShowDraftPopup(true),
                   }}
                   isCloseJob={false}
                   isDeleteJob={true}
@@ -408,6 +410,29 @@ function JobForm() {
           <CloseJobPopup
             onClose={() => {
               setIsDeletePopupOpen(false);
+            }}
+          />
+        </Paper>
+      </MuiPopup>
+      <MuiPopup
+        props={{
+          onClose: () => {
+            setShowDraftPopup(false);
+          },
+          open: showDraftPopup,
+        }}
+      >
+        <Paper>
+          <DeleteDraft
+            onClickCancel={{
+              onClick: () => {
+                setShowDraftPopup(false);
+              },
+            }}
+            onClickClear={{
+              onClick: () => {
+                handleDeleteJob();
+              },
             }}
           />
         </Paper>
