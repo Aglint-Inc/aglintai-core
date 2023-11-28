@@ -9,4 +9,5 @@ declare function Pagination(props: {
   textTotalPageCount?: React.ReactNode;
   textCurrentCandidateCount?: React.ReactNode;
   textTotalCandidateCount?: React.ReactNode;
+  slotAddToJob?: Types.Devlink.Slot;
 }): React.JSX.Element;

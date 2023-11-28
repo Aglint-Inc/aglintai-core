@@ -28,4 +28,5 @@ declare function CandidateDialog(props: {
   textJobCount?: React.ReactNode;
   isAddedToJobVisible?: Types.Visibility.VisibilityConditions;
   onClickDownloadResume?: Types.Devlink.RuntimeProps;
+  isBookmarkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

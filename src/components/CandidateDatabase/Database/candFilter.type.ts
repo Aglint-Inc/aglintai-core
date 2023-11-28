@@ -4,6 +4,7 @@ import { CandJobPost } from '../context/CandidateSearchProvider';
 
 export interface Candidate {
   candidate_id: string;
+  application_id: string;
   first_name: string;
   last_name: string;
   job_title: string;
@@ -19,6 +20,15 @@ export type candDbContextType = {
   candState: CandidateStateType;
   // eslint-disable-next-line no-unused-vars
   updateState: ({ path, value }: { path: string; value: any }) => void;
+  handleAddCandidatesTojob: (
+    // eslint-disable-next-line no-unused-vars
+    jobAppIds: string[],
+    // eslint-disable-next-line no-unused-vars
+    job_ids: {
+      job_id: string;
+      job_title: string;
+    }[],
+  ) => Promise<void>;
 };
 
 export type CandidateStateType = {

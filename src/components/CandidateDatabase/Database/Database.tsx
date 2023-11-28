@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import {
-  ButtonOutlinedRegular,
-  ButtonPrimaryRegular,
   CandidateDatabaseRow,
   CandidateDatabaseTable,
   Pagination,
@@ -17,8 +15,10 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { useCandFilter } from './CandDbProvider';
+import SelectedCandidate from './SelectedCandidate';
 import { getFilteredCands } from './utils';
-import CandidateDrawer from '../CandidateDetailsDrawer';
+import AddToJobOptions from '../Search/CandAddToJobMenu';
+import { newCandJob } from '../Search/Search';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import {
@@ -32,7 +32,9 @@ const CandDatabase = () => {
   const [selectedCandidate, setSelectedCand] = useState(-1);
   const { recruiter } = useAuthDetails();
   const [candsCount, setCandsCount] = useState(0);
-  const { updateState, candState } = useCandFilter();
+  const { updateState, candState, handleAddCandidatesTojob } = useCandFilter();
+  const [newJobsForCand, setNewJobsForCand] = useState<newCandJob[]>([]);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -74,6 +76,28 @@ const CandDatabase = () => {
     }
   }, [jobsData.jobs, router.isReady, router.query]);
 
+  useEffect(() => {
+    if (!jobsData.jobs) return;
+    const candidates = candState.candidates;
+    const publishedJobs = jobsData.jobs.filter((j) => j.status === 'published');
+    let candJobSet = new Set();
+    for (let candJob of candidates.filter((cand) => cand.is_checked)) {
+      for (let appliedJob of candJob.applied_job_posts) {
+        candJobSet.add(appliedJob.job_id);
+      }
+    }
+    const remainJobs: newCandJob[] = [];
+    for (let job of publishedJobs) {
+      if (!candJobSet.has(job.id)) {
+        remainJobs.push({
+          id: job.id,
+          title: job.job_title,
+        });
+      }
+    }
+    setNewJobsForCand(remainJobs);
+  }, [jobsData, candState.candidates]);
+
   const candidates = candState.candidates;
   const counts =
     candidates.length.toString() +
@@ -94,6 +118,18 @@ const CandDatabase = () => {
       path: 'candidates',
       value: updatedCands,
     });
+  };
+
+  const handleAddApplications = async (checkedJobIds: newCandJob[]) => {
+    handleAddCandidatesTojob(
+      candidates
+        .filter((cand) => cand.is_checked)
+        .map((cand) => cand.application_id),
+      checkedJobIds.map((cjob) => ({
+        job_id: cjob.id,
+        job_title: cjob.title,
+      })),
+    );
   };
 
   const totalPageCount = Math.ceil(candsCount / 100);
@@ -159,40 +195,22 @@ const CandDatabase = () => {
             });
           },
         }}
-        slotButtonOutlinedPrimary={
-          <ButtonOutlinedRegular
-            onClickButton={{ onClick: () => {} }}
-            textLabel={'Import Candidates'}
-          />
-        }
-        slotButtonPrimaryRegular={
-          <ButtonPrimaryRegular
-            onClickButton={{
-              onClick: () => {
-                router.push('/candidates/history');
-              },
-            }}
-            textLabel={'Search'}
-          />
-        }
+        onClickAiSearch={{
+          onClick: () => {
+            router.push('/candidates/history');
+          },
+        }}
         slotCandidateDetails={
           <>
             <Collapse
               in={selectedCandidate !== -1 && !isLoading}
               unmountOnExit
               translate='yes'
+              orientation='vertical'
             >
               {selectedCandidate !== -1 && (
-                <CandidateDrawer
-                  candidate={{
-                    ...candidates[Number(selectedCandidate)],
-                    is_bookmarked: false,
-                  }}
-                  eligibleJobs={[]}
-                  handleAddApplications={() => {}}
-                  onClickClose={() => {
-                    setSelectedCand(-1);
-                  }}
+                <SelectedCandidate
+                  onClickClose={() => setSelectedCand(-1)}
                   onClickNext={() => {
                     if (candidates.length - 1 > selectedCandidate) {
                       setSelectedCand((p) => p + 1);
@@ -203,7 +221,7 @@ const CandDatabase = () => {
                       setSelectedCand((p) => p + 1);
                     }
                   }}
-                  toggleBookMark={() => {}}
+                  path={`[${selectedCandidate}]`}
                 />
               )}
             </Collapse>
@@ -231,6 +249,17 @@ const CandDatabase = () => {
                     }
                   },
                 }}
+                slotAddToJob={
+                  <>
+                    {isAnyRowSelected && (
+                      <AddToJobOptions
+                        handleClickSubmit={handleAddApplications}
+                        isAdding={false}
+                        selectedJobIds={newJobsForCand}
+                      />
+                    )}
+                  </>
+                }
               />
             )}
           </>

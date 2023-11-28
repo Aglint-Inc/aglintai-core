@@ -27,6 +27,7 @@ const CandidateDrawer = ({
   toggleBookMark,
   eligibleJobs,
   handleAddApplications,
+  showBookmark = true,
 }: {
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
@@ -35,6 +36,7 @@ const CandidateDrawer = ({
   toggleBookMark: () => any;
   eligibleJobs: any;
   handleAddApplications: any;
+  showBookmark?: boolean;
 }) => {
   const [resume, setResume] = useState(false);
 
@@ -60,6 +62,7 @@ const CandidateDrawer = ({
             fetchFile(candidate);
           },
         }}
+        isBookmarkVisible={showBookmark}
         onClickLinkedin={{
           onClick: () => {
             window.open(ensureHttps(linkedin), '_blank');
