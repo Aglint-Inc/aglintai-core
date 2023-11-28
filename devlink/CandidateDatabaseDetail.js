@@ -349,12 +349,6 @@ export function CandidateDatabaseDetail({
                         >
                           {textSelectedCount}
                         </_Builtin.Block>
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "fw-semibold")}
-                          tag="div"
-                        >
-                          {"Candidate Selected"}
-                        </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
                         className={_utils.cx(_styles, "cdb-select-clear-btn")}

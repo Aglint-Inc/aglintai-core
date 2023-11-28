@@ -3479,7 +3479,7 @@ export function CompanySetting({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"Assisstant"}
+                {"Assistant"}
               </_Builtin.Block>
             </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
