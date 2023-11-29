@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { Dispatch, SetStateAction } from 'react';
 
+import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
+import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { Database } from '@/src/types/schema';
 
 import { Candidate } from '../CandidatesContext/types';
@@ -114,4 +116,21 @@ export type JobApplicationContext = {
     applicationIdSet?: Set<string>,
     updateAll?: boolean,
   ) => Promise<boolean>;
+};
+
+export type JdScore = {
+  scores: ScoreWheelParams;
+  badges: {
+    skills: number;
+    schools: number;
+    positions: number;
+    leadership: number;
+    jobStability: number;
+    careerGrowth: number;
+  };
+  relevance: {
+    skills: { [key: string]: PromptEnum };
+    schools: { [key: string]: PromptEnum };
+    positions: { [key: string]: PromptEnum };
+  };
 };

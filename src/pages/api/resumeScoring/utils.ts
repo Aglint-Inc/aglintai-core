@@ -10,55 +10,65 @@ export const rejectAfterDelay = (ms) =>
   });
 
 export const getScore = (promptResponse: PromptResponse[]) => {
-  const count = promptResponse.length;
-  return Math.round(
-    getFinalScore(
-      promptResponse.reduce((acc, curr) => {
-        switch (curr.rating) {
-          case 'low':
-            acc += 0;
-            break;
-          case 'medium':
-            acc += 50;
-            break;
-          case 'high':
-            acc += 100;
-            break;
-        }
-        return acc;
-      }, 0) / count,
-      count,
-    ),
-  );
+  if (promptResponse) {
+    const count = promptResponse.length;
+    if (count === 0) return 0;
+    return Math.round(
+      getFinalScore(
+        promptResponse.reduce((acc, curr) => {
+          switch (curr.rating) {
+            case 'low':
+              acc += 0;
+              break;
+            case 'medium':
+              acc += 50;
+              break;
+            case 'high':
+              acc += 100;
+              break;
+          }
+          return acc;
+        }, 0) / count,
+        count,
+      ),
+    );
+  }
+  return 0;
 };
 
 export const getSkillScore = (promptResponse: PromptSkillResponse) => {
-  const count = Object.keys(promptResponse).length;
-  return Math.round(
-    getFinalScore(
-      Object.values(promptResponse).reduce((acc, curr) => {
-        switch (curr) {
-          case 'low':
-            acc += 0;
-            break;
-          case 'medium':
-            acc += 50;
-            break;
-          case 'high':
-            acc += 100;
-            break;
-        }
-        return acc;
-      }, 0) / count,
-      count,
-    ),
-  );
+  if (promptResponse) {
+    const count = Object.keys(promptResponse).length;
+    if (count === 0) return 0;
+    return Math.round(
+      getFinalScore(
+        Object.values(promptResponse).reduce((acc, curr) => {
+          switch (curr) {
+            case 'low':
+              acc += 0;
+              break;
+            case 'medium':
+              acc += 50;
+              break;
+            case 'high':
+              acc += 100;
+              break;
+          }
+          return acc;
+        }, 0) / count,
+        count,
+      ),
+    );
+  }
+  return 0;
 };
 
-const r = 0.25; //Inversely proportional to effectiveness of count
-
-const getFinalScore = (score: number, count: number) => {
-  return getCappedFactor(count) * getLogarithmicScore(score);
+export const getFinalScore = (
+  score: number,
+  count: number,
+  rFactor: number = 0.25, //Inversely proportional to effectiveness of count
+) => {
+  return getCappedFactor(count, rFactor) * getLogarithmicScore(score);
 };
 
 const getLogarithmicScore = (score: number) => {
@@ -66,6 +76,6 @@ const getLogarithmicScore = (score: number) => {
   return 100 * (Math.log(score) / Math.log(100));
 };
 
-const getCappedFactor = (count: number) => {
-  return 1 - r ** count;
+const getCappedFactor = (count: number, rFactor: number) => {
+  return 1 - rFactor ** count;
 };

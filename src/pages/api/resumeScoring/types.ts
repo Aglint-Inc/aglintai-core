@@ -37,6 +37,7 @@ export type ResumeJson = {
     firstName: string;
     currentCompany: string;
     currentJobTitle: string;
+    experience: number;
   };
   skills: string[];
   schools: {
@@ -65,7 +66,7 @@ export type ResumeJson = {
       month: number;
     };
     org: string;
-    level: string;
+    level: PositionLevel;
     start: {
       year: number;
       month: number;
@@ -89,11 +90,18 @@ export type PromptBuilderResponse = {
 }[];
 
 export type PromptEnum = 'low' | 'medium' | 'high';
+export type PositionLevel =
+  | 'Fresher-level'
+  | 'Associate-level'
+  | 'Mid-level'
+  | 'Senior-level'
+  | 'Executive-level';
 
 export type PromptResponse = {
   rating: PromptEnum;
   reason: string;
   tokens: any;
+  index: number;
 };
 
 export type PromptSkillResponse = {

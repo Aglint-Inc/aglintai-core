@@ -17,10 +17,10 @@ import { SearchHistoryType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import AddToJobOptions from '../CandAddToJobMenu';
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';
 import SelectedCandidate from './SelectedCandidate';
+import AddToJobOptions from '../CandAddToJobMenu';
 import {
   CandidateSearchRes,
   initialState,

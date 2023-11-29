@@ -36,6 +36,7 @@ import ScoreWheel, {
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
+  JdScore,
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
@@ -603,7 +604,7 @@ export const NewResumeScoreDetails = ({
   feedback: JobApplication['feedback'];
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const jdScoreObj = applicationDetails.jd_score as any;
+  const jdScoreObj = (applicationDetails.jd_score as JdScore)?.scores;
   const score = applicationDetails.resume_score;
   const [downloading, setDownloading] = useState(false);
   const handleDownload = async () => {
@@ -616,7 +617,7 @@ export const NewResumeScoreDetails = ({
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
-      jd_score={applicationDetails.jd_score}
+      scores={(applicationDetails.jd_score as JdScore)?.scores}
       parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
     />
@@ -648,7 +649,11 @@ export const NewResumeScoreDetails = ({
   );
 };
 
-export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
+export const ResumeFeedbackParams = ({
+  feedbackParamsObj,
+}: {
+  feedbackParamsObj: ScoreWheelParams;
+}) => {
   const getCustomText = (e: number) => {
     return e === 100
       ? 'Perfect'

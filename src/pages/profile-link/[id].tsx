@@ -30,7 +30,10 @@ import {
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  JdScore,
+  JobApplication,
+} from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -71,7 +74,7 @@ function InterviewFeedbackPage() {
         setApplicationDetails({
           ...jobApp[0],
           candidates: data[0],
-        });
+        } as JobApplication);
         getJobDetails(jobApp[0]?.job_id);
       }
     }
@@ -104,7 +107,7 @@ function InterviewFeedbackPage() {
       resumeScoreWheel = (
         <ScoreWheel
           id={`ScoreWheelApplicationCard${Math.random()}`}
-          jd_score={applicationDetails.jd_score}
+          scores={(applicationDetails.jd_score as JdScore)?.scores}
           parameter_weights={job.parameter_weights as ScoreWheelParams}
           fontSize={10}
         />
@@ -315,7 +318,11 @@ function InterviewFeedbackPage() {
                 open={openResume}
                 onClose={() => setOpenResume(false)}
               >
-                <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
+                <Stack
+                  direction={'row'}
+                  justifyContent={'center'}
+                  height={'90vh'}
+                >
                   <ResumePreviewer url={applicationDetails.resume} />
                 </Stack>
               </Dialog>
