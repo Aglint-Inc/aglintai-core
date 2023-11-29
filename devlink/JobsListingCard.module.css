@@ -385,6 +385,15 @@
   max-width: 588px;
 }
 
+.div-block-530 {
+  display: flex;
+  width: 80px;
+  padding-bottom: 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .rd-status-badge {
   display: flex;
   padding: 4px 14px;

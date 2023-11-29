@@ -255,7 +255,7 @@ Thank you,
         }}
         onClickAllCandidate={{
           onClick: () => {
-            //
+            router.push('/candidates?page_no=1');
           },
         }}
       />

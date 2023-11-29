@@ -9,4 +9,12 @@ declare function CandidateDatabaseTable(props: {
   slotCandidateRows?: Types.Devlink.Slot;
   onClickCheck?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
+  slotCandidateDetails?: Types.Devlink.Slot;
+  slotPagination?: Types.Devlink.Slot;
+  onClickAiSearch?: Types.Devlink.RuntimeProps;
+  onClickSortby?: Types.Devlink.RuntimeProps;
+  onClickFilter?: Types.Devlink.RuntimeProps;
+  textFilterCount?: React.ReactNode;
+  isNotificationVisible?: Types.Visibility.VisibilityConditions;
+  propsOpacity?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

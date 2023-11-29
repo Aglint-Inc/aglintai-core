@@ -21,4 +21,9 @@ declare function InterviewCandidateScreen(props: {
   isSpeakingVisible?: Types.Visibility.VisibilityConditions;
   isAllButtonDisable?: Types.Visibility.VisibilityConditions;
   isMicSubmitButtonDisable?: Types.Visibility.VisibilityConditions;
+  isInputVisible?: Types.Visibility.VisibilityConditions;
+  isInterviewStartVisible?: Types.Visibility.VisibilityConditions;
+  onClickStart?: Types.Devlink.RuntimeProps;
+  textheader?: React.ReactNode;
+  textButton?: React.ReactNode;
 }): React.JSX.Element;

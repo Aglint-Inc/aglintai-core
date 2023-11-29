@@ -359,6 +359,49 @@
   }
 }
 
+.interview-screen-start-wrap {
+  display: flex;
+  height: 220px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-615 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
+.text-start-inteview {
+  color: rgba(255, 255, 255, 0.29);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.div-block-614 {
+  padding: 10px 20px;
+  border-radius: 100px;
+  background-color: #228f67;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.div-block-614:hover {
+  background-color: #038153;
+}
+
+.text-color-white {
+  color: white;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
 .time-wrappers-interview-new {
   position: absolute;
   left: auto;

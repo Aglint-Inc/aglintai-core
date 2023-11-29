@@ -18,6 +18,7 @@ export function CandidateDatabaseRow({
   textEmail = "sara.cruz@example.com",
   textLocation = "Berlin, Germany",
   textPhone = "(704) 555-0127",
+  onClickList = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -25,6 +26,7 @@ export function CandidateDatabaseRow({
     <_Component
       className={_utils.cx(_styles, "cv-list-row-2", "item")}
       tag="div"
+      {...onClickList}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-list-column-2", "checkbox")}

@@ -55,7 +55,7 @@ function CameraHolder() {
           style={{
             width: '100%',
             // height: '100%',
-            height: 'calc(100% - 245px)',
+            // height: 'calc(100% - 245px)',
 
             // borderRadius: '50%',
             objectFit: 'cover',

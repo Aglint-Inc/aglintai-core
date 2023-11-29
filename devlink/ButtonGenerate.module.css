@@ -15,6 +15,15 @@
   cursor: pointer;
 }
 
+.generate-btn-cd.kale-200 {
+  border-color: #bdd9d7;
+  background-color: #daeded;
+}
+
+.kale-200 {
+  background-color: var(--kale200-273a01c6);
+}
+
 .icons {
   display: flex;
   flex-direction: column;

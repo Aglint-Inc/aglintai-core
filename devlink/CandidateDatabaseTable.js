@@ -2,8 +2,9 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
+import { AiIcon } from "./AiIcon";
 import { CandidateDatabaseRow } from "./CandidateDatabaseRow";
+import { Pagination } from "./Pagination";
 import * as _utils from "./utils";
 import _styles from "./CandidateDatabaseTable.module.css";
 
@@ -19,6 +20,14 @@ export function CandidateDatabaseTable({
   slotCandidateRows,
   onClickCheck = {},
   isChecked = false,
+  slotCandidateDetails,
+  slotPagination,
+  onClickAiSearch = {},
+  onClickSortby = {},
+  onClickFilter = {},
+  textFilterCount = "1",
+  isNotificationVisible = true,
+  propsOpacity = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -58,15 +67,56 @@ export function CandidateDatabaseTable({
           className={_utils.cx(_styles, "cd-right-wrap-btn")}
           tag="div"
         >
-          <_Builtin.Block tag="div">
+          <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
             {slotButtonOutlinedPrimary ?? (
               <ButtonOutlinedRegular textLabel="Import Candidate" />
             )}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotButtonPrimaryRegular ?? (
-              <ButtonPrimaryRegular textLabel="Search" />
-            )}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-617", "cursor-pointer")}
+            tag="div"
+            {...onClickSortby}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.95006%201.25677L2.85355%204.35328C2.65829%204.54854%202.34171%204.54854%202.14645%204.35328C1.95118%204.15801%201.95118%203.84143%202.14645%203.64617L5.24645%200.54617C5.64171%200.150907%206.25829%200.150907%206.6479%200.540603L9.8479%203.6406C10.0462%203.83274%2010.0513%204.14928%209.85912%204.34762C9.66698%204.54596%209.35044%204.55098%209.1521%204.35884L5.95006%201.25677ZM9.1521%207.6406C9.35044%207.44846%209.66698%207.45349%209.85912%207.65183C10.0513%207.85016%2010.0462%208.1667%209.8479%208.35884L6.65355%2011.4533C6.25829%2011.8485%205.64171%2011.8485%205.24645%2011.4533L2.14645%208.35328C1.95118%208.15801%201.95118%207.84143%202.14645%207.64617C2.34171%207.45091%202.65829%207.45091%202.85355%207.64617L5.95017%2010.7428C5.95067%2010.7421%209.1521%207.6406%209.1521%207.6406Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">{"Sort by"}</_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-617")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-618", "cursor-pointer")}
+              tag="div"
+              {...onClickFilter}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M4.50087%205.78034L0.748206%202.02768C0.533618%201.80879%200.47247%201.48632%200.590555%201.20751C0.70864%200.9287%200.982793%200.748241%201.28337%200.750013L10.7311%200.75005C11.0312%200.754265%2011.2999%200.936931%2011.4141%201.21441C11.5284%201.4919%2011.4662%201.81077%2011.2535%202.02768L7.50087%205.78034V9.93001C7.50087%2010.1841%207.37721%2010.4232%207.16852%2010.5573L5.66888%2011.5545C5.17153%2011.8861%204.50087%2011.5262%204.50087%2010.9275V5.78034ZM1.28085%201.49973L5.25055%205.46941V10.9272C5.25055%2010.9274%206.75777%209.92929%206.75777%209.92929C6.75112%209.93357%206.75055%205.46941%206.75055%205.46941L6.86039%205.35957L10.7203%201.4997L1.28085%201.49973Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block tag="div">{"Filter"}</_Builtin.Block>
+            </_Builtin.Block>
+            {isNotificationVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "number-text")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{textFilterCount}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div" {...onClickAiSearch}>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "generate-btn-cd", "kale-200")}
+              tag="div"
+            >
+              <_Builtin.Block className={_utils.cx(_styles, "icons")} tag="div">
+                <AiIcon />
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"AI Search"}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -130,7 +180,7 @@ export function CandidateDatabaseTable({
                   className={_utils.cx(_styles, "line-clamp-1")}
                   tag="div"
                 >
-                  {"Dianne Russell"}
+                  {"Candidate"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -162,7 +212,7 @@ export function CandidateDatabaseTable({
                   className={_utils.cx(_styles, "line-clamp-1")}
                   tag="div"
                 >
-                  {"Applied Job"}
+                  {"Current Job Title"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -186,7 +236,12 @@ export function CandidateDatabaseTable({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column-2", "locations")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-2",
+                  "locations",
+                  "bg-grey-100"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -206,7 +261,12 @@ export function CandidateDatabaseTable({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column-2", "date")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-2",
+                  "date",
+                  "bg-grey-100"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -223,9 +283,25 @@ export function CandidateDatabaseTable({
             </_Builtin.Block>
             <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.line-clamp-1%20%7B%0Adisplay%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%201%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%20%20%0A%20%20overflow%3A%20hidden%3B%0A%7D%0A%3C%2Fstyle%3E" />
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-620")}
+            tag="div"
+            {...propsOpacity}
+          >
             {slotCandidateRows ?? <CandidateDatabaseRow />}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "job-page-nav-bar")}
+            tag="div"
+          >
+            {slotPagination ?? <Pagination />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-616")}
+          tag="div"
+        >
+          {slotCandidateDetails}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
