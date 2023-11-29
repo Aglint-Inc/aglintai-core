@@ -166,7 +166,7 @@ export function GreenhouseModal() {
           apiKey: apiRef.current.value,
         });
 
-        if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
+        if (responseRec.status === 200 && responseRec.data[0]?.greenhouse_key) {
           setRecruiter(responseRec.data[0]);
           setPostings(response.data);
           setInitialFetch(false);
@@ -397,5 +397,3 @@ export function GreenhouseModal() {
     />
   );
 }
-
-
