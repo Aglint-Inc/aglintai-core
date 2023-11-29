@@ -5,7 +5,7 @@ import { AddJob, AddJobButton } from '@/devlink';
 import { AddJobList } from '@/devlink/AddJobList';
 import { palette } from '@/src/context/Theme/Theme';
 
-import AUIButton from '../../Common/AUIButton';
+import AUIButton from '../Common/AUIButton';
 
 type newCandJob = {
   title: string;

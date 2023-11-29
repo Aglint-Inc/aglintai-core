@@ -1,4 +1,4 @@
-import { Collapse } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -6,30 +6,30 @@ import {
   CandidateDatabaseRow,
   CandidateDatabaseTable,
   Pagination,
+  SortButton,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { useCandFilter } from './CandDbProvider';
+import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
 import { getFilteredCands } from './utils';
-import AddToJobOptions from '../Search/CandAddToJobMenu';
+import AddToJobOptions from '../CandAddToJobMenu';
 import { newCandJob } from '../Search/Search';
+import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import UITypography from '../../Common/UITypography';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const CandDatabase = () => {
   const { jobsData } = useJobs();
-  const [isLoading, setLoading] = useState(false);
-  const [selectedCandidate, setSelectedCand] = useState(-1);
   const { recruiter } = useAuthDetails();
-  const [candsCount, setCandsCount] = useState(0);
+  const [isLoading, setLoading] = useState(true);
+  const [selectedCandidate, setSelectedCand] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
   const { updateState, candState, handleAddCandidatesTojob } = useCandFilter();
   const [newJobsForCand, setNewJobsForCand] = useState<newCandJob[]>([]);
 
@@ -39,33 +39,28 @@ const CandDatabase = () => {
     if (!jobsData.jobs) return;
 
     if (router.isReady) {
-      const { page_no } = router.query;
-      if (typeof page_no !== 'string') {
+      const { page_no, location, name, job_role } = router.query;
+
+      if (!page_no) {
         router.replace('/candidates?page_no=1');
-        return;
       }
 
       (async () => {
         try {
           setLoading(true);
-          const candidates = await getFilteredCands(
-            jobsData.jobs.map((j) => j.id),
-            Number(page_no),
-          );
-          const allCands = supabaseWrap(
-            await supabase
-              .from('candidates')
-              .select('id')
-              .eq('recruiter_id', recruiter.id),
-          ) as string[];
-
-          setCandsCount(allCands.length);
+          const { filteredCands, total_results } = await getFilteredCands({
+            recruiter_id: recruiter.id,
+            currPage: Number(page_no),
+            location_filter: location as string,
+            name_filter: name as string,
+            job_role: job_role as string,
+          });
+          setTotalResults(total_results);
           updateState({
             path: 'candidates',
-            value: candidates,
+            value: filteredCands,
           });
         } catch (err) {
-          // console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
           setLoading(false);
@@ -74,6 +69,7 @@ const CandDatabase = () => {
     }
   }, [jobsData.jobs, router.isReady, router.query]);
 
+  //for apply jobs
   useEffect(() => {
     if (!jobsData.jobs) return;
     const candidates = candState.candidates;
@@ -94,13 +90,16 @@ const CandDatabase = () => {
       }
     }
     setNewJobsForCand(remainJobs);
-  }, [jobsData, candState.candidates]);
+  }, [recruiter, candState.candidates]);
 
   const candidates = candState.candidates;
+  const checkedCands = `Selected ${
+    candState.candidates.filter((c) => c.is_checked).length
+  } Candidate`;
   const counts =
-    candsCount.toString() +
+    totalResults.toString() +
     ' ' +
-    (candsCount === 1 ? 'candidate' : 'candidates');
+    (totalResults === 1 ? 'candidate' : 'candidates');
   const isAnyRowSelected =
     candidates.findIndex((cand) => cand.is_checked) !== -1;
 
@@ -130,15 +129,41 @@ const CandDatabase = () => {
     );
   };
 
-  const totalPageCount = Math.ceil(candsCount / 100);
+  const totalPageCount = Math.ceil(totalResults / 100);
   const currPageNo = Number(router.query.page_no);
   return (
     <>
       <CandidateDatabaseTable
         isChecked={isAnyRowSelected}
         textCandidateCount={counts}
+        slotAddtoJob={
+          <>
+            {isAnyRowSelected && (
+              <Stack direction={'row'} alignItems={'center'} gap={2}>
+                <UITypography fontBold='normal' type='small'>
+                  {checkedCands}
+                </UITypography>
+                <AddToJobOptions
+                  handleClickSubmit={handleAddApplications}
+                  isAdding={false}
+                  selectedJobIds={newJobsForCand}
+                />
+              </Stack>
+            )}
+          </>
+        }
         slotCandidateRows={
           <>
+            {candidates.length === 0 && isLoading && (
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                height={'500px'}
+                width={'100%'}
+              >
+                <Loader />
+              </Stack>
+            )}
             {candidates.map((detail, index) => {
               return (
                 <>
@@ -169,10 +194,12 @@ const CandDatabase = () => {
                       )}
                       textAppliedJob={detail.job_title}
                       textEmail={
-                        detail.email.startsWith('temp-')
+                        detail.json_resume.basics.email ??
+                        (detail.email.startsWith('temp-')
                           ? '--'
-                          : detail.email || '--'
+                          : detail.email || '--')
                       }
+                      isSelected={selectedCandidate === index}
                       textLocation={detail.json_resume.basics.location || '--'}
                       textPhone={detail.json_resume.basics.phone || '--'}
                       onClickCheck={{
@@ -193,6 +220,16 @@ const CandDatabase = () => {
                 </>
               );
             })}
+          </>
+        }
+        slotFilter={
+          <>
+            <FilterComp />
+          </>
+        }
+        slotSort={
+          <>
+            <SortButton />
           </>
         }
         onClickCheck={{
@@ -229,7 +266,7 @@ const CandDatabase = () => {
                   }}
                   onClickPrev={() => {
                     if (selectedCandidate > 0) {
-                      setSelectedCand((p) => p + 1);
+                      setSelectedCand((p) => p - 1);
                     }
                   }}
                   path={`[${selectedCandidate}]`}
@@ -245,32 +282,23 @@ const CandDatabase = () => {
                 textCurrentPageCount={currPageNo}
                 textCurrentCandidateCount={candidates.length}
                 textTotalPageCount={totalPageCount}
-                textTotalCandidateCount={candsCount}
+                textTotalCandidateCount={totalResults}
                 onClickNext={{
                   onClick: () => {
                     if (currPageNo < totalPageCount) {
-                      router.push(`/candidates?page_no=${currPageNo + 1}`);
+                      router.query.page_no = `${currPageNo + 1}`;
+                      router.push(router);
                     }
                   },
                 }}
                 onClickPrev={{
                   onClick: () => {
                     if (currPageNo > 1) {
-                      router.push(`/candidates?page_no=${currPageNo - 1}`);
+                      router.query.page_no = `${currPageNo - 1}`;
+                      router.push(router);
                     }
                   },
                 }}
-                slotAddToJob={
-                  <>
-                    {isAnyRowSelected && (
-                      <AddToJobOptions
-                        handleClickSubmit={handleAddApplications}
-                        isAdding={false}
-                        selectedJobIds={newJobsForCand}
-                      />
-                    )}
-                  </>
-                }
               />
             }
           </>

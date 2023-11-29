@@ -98,7 +98,6 @@ export function Pagination({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotAddToJob}</_Builtin.Block>
     </_Component>
   );
 }

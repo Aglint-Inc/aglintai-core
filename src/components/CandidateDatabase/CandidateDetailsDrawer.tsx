@@ -14,7 +14,7 @@ import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 
 import { CandidateSearchRes } from './context/CandidateSearchProvider';
-import AddToJobOptions from './Search/CandAddToJobMenu';
+import AddToJobOptions from './CandAddToJobMenu';
 import MuiAvatar from '../Common/MuiAvatar';
 import ResumePreviewer from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '../JobApplicationsDashboard/Common/CompanyLogo';

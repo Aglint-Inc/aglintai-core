@@ -305,12 +305,30 @@
   }
 }
 
-.div-block-617 {
+.generate-btn-cd {
   display: flex;
+  padding: 8px 12px;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
+
+  border: 1px solid #daeded;
+  border-radius: 4px;
+
+  background-color: #f5fcfc;
+
+  color: #012b30;
+
   cursor: pointer;
+}
+
+.generate-btn-cd.kale-200 {
+  border-color: #bdd9d7;
+  background-color: #daeded;
+}
+
+.kale-200 {
+  background-color: var(--kale200-273a01c6);
 }
 
 .icons {
@@ -369,56 +387,8 @@
   margin-left: 20px;
 }
 
-.div-block-618 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.number-text {
-  display: flex;
-  width: 16px;
-  height: 16px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 100px;
-
-  background-color: #337fbd;
-
-  color: white;
-  font-size: 10px;
-}
-
-.generate-btn-cd {
-  display: flex;
-  padding: 8px 12px;
-  align-items: center;
-  grid-column-gap: 7px;
-  grid-row-gap: 7px;
-
-  border: 1px solid #daeded;
-  border-radius: 4px;
-
-  background-color: #f5fcfc;
-
-  color: #012b30;
-
-  cursor: pointer;
-}
-
-.generate-btn-cd.kale-200 {
-  border-color: #bdd9d7;
-  background-color: #daeded;
-}
-
-.kale-200 {
-  background-color: var(--kale200-273a01c6);
-}
-
 .cdcard-wrap {
+  position: relative;
   display: flex;
   overflow: hidden;
   width: 100%;
@@ -426,11 +396,25 @@
 }
 
 .cdcard-sub-wrap {
-  position: relative;
+  display: flex;
   overflow: auto;
   width: 100%;
   height: 100%;
   flex-direction: column;
+}
+
+.cd-header-top {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+
+  display: flex;
+  padding: 4px 40px 7px;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  background-color: #f8f9f9;
 }
 
 .cv-list-row-2 {
@@ -489,6 +473,7 @@
   bottom: 0%;
   z-index: -1;
 
+  display: block;
   width: 100%;
   height: 100%;
 
@@ -602,6 +587,17 @@
   background-color: #f8f9f9;
 }
 
+.cv-list-column-2.phone-num {
+  width: 220px;
+  min-width: 220px;
+  margin-right: 0px;
+  text-align: left;
+}
+
+.cv-list-column-2.phone-num.bg-grey-100 {
+  background-color: #f8f9f9;
+}
+
 .cv-list-checkbox-2 {
   position: relative;
   z-index: 2;
@@ -665,12 +661,12 @@
 }
 
 .job-page-nav-bar {
-  position: sticky;
-  left: 0%;
+  position: fixed;
+  left: 260px;
   top: auto;
   right: 0%;
-  bottom: 0px;
-  z-index: 5;
+  bottom: 0%;
+  z-index: 1;
 
   width: 100%;
   justify-content: flex-start;
@@ -680,7 +676,14 @@
 }
 
 .div-block-616 {
+  position: relative;
+  z-index: 10;
+
   overflow: scroll;
   height: 100%;
   flex: 0 0 auto;
+
+  border-left: 1px solid #e9ebed;
+
+  background-color: white;
 }

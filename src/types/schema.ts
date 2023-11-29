@@ -242,6 +242,7 @@ export interface Database {
           ai_interviewer_id: number | null
           api_status: string
           application_id: string
+          badges: Json
           candidate_id: string
           conversation: Json[] | null
           created_at: string
@@ -270,6 +271,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
+          badges?: Json
           candidate_id: string
           conversation?: Json[] | null
           created_at?: string
@@ -298,6 +300,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
+          badges?: Json
           candidate_id?: string
           conversation?: Json[] | null
           created_at?: string
@@ -566,6 +569,7 @@ export interface Database {
         Row: {
           ai_avatar: Json | null
           application_process: string | null
+          ashby_key: string | null
           assistant_id: string | null
           ats_familiar: string | null
           audio_avatar_id: number
@@ -604,6 +608,7 @@ export interface Database {
         Insert: {
           ai_avatar?: Json | null
           application_process?: string | null
+          ashby_key?: string | null
           assistant_id?: string | null
           ats_familiar?: string | null
           audio_avatar_id?: number
@@ -642,6 +647,7 @@ export interface Database {
         Update: {
           ai_avatar?: Json | null
           application_process?: string | null
+          ashby_key?: string | null
           assistant_id?: string | null
           ats_familiar?: string | null
           audio_avatar_id?: number
@@ -1042,6 +1048,8 @@ export interface Database {
         Args: {
           score_json: Json
           app_id: string
+          in_json_resume: Json
+          in_badges: Json
         }
         Returns: boolean
       }
@@ -1111,6 +1119,9 @@ export interface Database {
           job_ids: string[]
           max_records?: number
           offset_records?: number
+          location_filter?: string
+          name_filter?: string
+          job_title_filter?: string
         }
         Returns: {
           application_id: string
@@ -1124,6 +1135,30 @@ export interface Database {
           profile_image: string
           candidate_id: string
           job_id: string
+        }[]
+      }
+      filter_candidates2: {
+        Args: {
+          rec_id: string
+          max_records?: number
+          offset_records?: number
+          location_filter?: string
+          name_filter?: string
+          job_title_filter?: string
+        }
+        Returns: {
+          application_id: string
+          created_at: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          resume_link: string
+          json_resume: Json
+          profile_image: string
+          candidate_id: string
+          job_id: string
+          total_results: number
         }[]
       }
       get_combined_resume_score: {

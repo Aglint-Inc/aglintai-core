@@ -19,6 +19,7 @@ export function CandidateDatabaseRow({
   textLocation = "Berlin, Germany",
   textPhone = "(704) 555-0127",
   onClickList = {},
+  isSelected = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -28,6 +29,12 @@ export function CandidateDatabaseRow({
       tag="div"
       {...onClickList}
     >
+      {isSelected ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-list-item-highlight")}
+          tag="div"
+        />
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-list-column-2", "checkbox")}
         tag="div"
@@ -112,7 +119,7 @@ export function CandidateDatabaseRow({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-2", "date")}
+          className={_utils.cx(_styles, "cv-list-column-2", "phone-num")}
           tag="div"
         >
           <_Builtin.Block tag="div">{textPhone}</_Builtin.Block>
