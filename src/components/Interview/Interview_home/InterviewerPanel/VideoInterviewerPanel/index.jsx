@@ -21,6 +21,7 @@ function VideoInterviewerPanel() {
     speaking,
     listening,
     handleVideoPause,
+    showStartCard,
   } = useInterviewContext();
 
   const { jobDetails } = useInterviewDetailsContext();
@@ -97,6 +98,9 @@ function VideoInterviewerPanel() {
   return (
     <>
       <InterviewInterviewerScreen
+        isQuestionPillVisible={
+          showStartCard && questionIndex <= totalNumberOfQuestions?.length - 2
+        }
         isPlayPauseVisible={true}
         isPauseButtonVisible={speaking}
         isPlayButtonVisible={!listening && !speaking}
@@ -139,8 +143,8 @@ function VideoInterviewerPanel() {
             </Stack>
           </>
         }
-        textQuestion={`Question: ${questionIndex + 1}/${
-          totalNumberOfQuestions?.length
+        textQuestion={`Question: ${questionIndex}/${
+          totalNumberOfQuestions?.length - 2
         }`}
         textAi={
           !videoLoad

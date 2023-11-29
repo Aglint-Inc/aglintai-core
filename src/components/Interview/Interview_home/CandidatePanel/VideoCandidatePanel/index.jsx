@@ -17,16 +17,26 @@ function VideoCandidatePanel() {
     listening,
     speaking,
     stopListening,
+    showStartCard,
+
+    setCharacter,
+    setShowStartCard,
+    startVideoInterview,
+    setQuestionIndex,
+    setConversations,
+    totalNumberOfQuestions,
+    questionIndex,
+    context,
   } = useInterviewContext();
 
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
-    if (transcript) {
+    if (transcript && senderRef.current) {
       senderRef.current.value = transcript;
     }
     const stackElement = senderRef.current;
-    stackElement.scrollTop = stackElement.scrollHeight;
+    if (stackElement) stackElement.scrollTop = stackElement.scrollHeight;
     // const TypoElement = typoRef.current;
     // console.log(TypoElement.scrollHeight, stackElement.scrollHeight);
     // TypoElement.scrollTop = TypoElement.scrollHeight;
@@ -34,6 +44,32 @@ function VideoCandidatePanel() {
   return (
     <>
       <InterviewCandidateScreen
+        isInputVisible={showStartCard}
+        isInterviewStartVisible={!showStartCard}
+        onClickStart={{
+          onClick: () => {
+            setQuestionIndex((pre) => pre + 1);
+            setCharacter('');
+            context.push({
+              role: 'assistant',
+              content: totalNumberOfQuestions[Number(questionIndex + 1)],
+            });
+            setConversations((pre) => [
+              ...pre,
+              {
+                role: 'assistant',
+                content: totalNumberOfQuestions[Number(questionIndex + 1)],
+                userRole: '',
+                userContent: '',
+                userVoice: '',
+                aiAnswer: '',
+                aiVoice: ``,
+              },
+            ]);
+            setShowStartCard(true);
+            startVideoInterview();
+          },
+        }}
         textTimer={`${getminutes < 10 && '0'}
               ${getminutes} : ${getSecond < 10 ? '0' : ''} ${getSecond}`}
         isTimerVisible={false}
