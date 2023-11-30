@@ -13,8 +13,6 @@ import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
-import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -92,34 +90,6 @@ function CandidateSearchHistory() {
       setIsQrySearching(true);
       const queryJson = await searchJdToJson(searchQuery);
 
-      const seedJobsSkills = [];
-
-      if (queryJson.jobTitles.length > 0) {
-        seedJobsSkills.push(
-          (async () => await similarJobs(queryJson.jobTitles))(),
-        );
-      }
-      if (queryJson.skills.length > 0) {
-        seedJobsSkills.push(
-          (async () => await similarSkills(queryJson.skills))(),
-        );
-      }
-      const r = await Promise.allSettled(seedJobsSkills);
-      if (r.length > 0 && r[0].status === 'fulfilled' && r[0].value) {
-        queryJson.jobTitles = [
-          ...queryJson.jobTitles,
-          ...r[0].value.related_jobs,
-        ];
-      }
-
-      if (
-        r.length > 0 &&
-        queryJson.skills.length > 0 &&
-        r[1].status === 'fulfilled' &&
-        r[1].value
-      ) {
-        queryJson.skills = [...queryJson.skills, ...r[1].value.related_skills];
-      }
       const cndates = (await getRelevantCndidates(
         queryJson,
         jobsData.jobs.map((j) => j.id),

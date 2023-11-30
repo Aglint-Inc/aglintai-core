@@ -2,6 +2,8 @@ import { get } from 'lodash';
 
 import { CandidateSearchState } from '@/src/components/CandidateDatabase/context/CandidateSearchProvider';
 
+import { similarJobs } from './similarJobs';
+import { similarSkills } from './similarSkills';
 import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
 
@@ -46,7 +48,7 @@ export const searchJdToJson = async (searchQuery: string) => {
   ] as MessageType[];
 
   const resp = JSON.parse(await extractJson(prompt)) as JobDetails;
-  const p: CandidateSearchState['queryJson'] = {
+  const queryJson: CandidateSearchState['queryJson'] = {
     jobTitles: [...(get(resp, 'jobRoles') || [])],
     universities: [...(get(resp, 'universities') || [])],
     prefferedCompanies: [...(get(resp, 'requiredPreviousCompanies') || [])],
@@ -59,5 +61,27 @@ export const searchJdToJson = async (searchQuery: string) => {
     degrees: [...(get(resp, 'degrees', []) || [])],
   };
 
-  return p;
+  const seedJobsSkills = [];
+
+  if (queryJson.jobTitles.length > 0) {
+    seedJobsSkills.push((async () => await similarJobs(queryJson.jobTitles))());
+  }
+  if (queryJson.skills.length > 0) {
+    seedJobsSkills.push((async () => await similarSkills(queryJson.skills))());
+  }
+  const r = await Promise.allSettled(seedJobsSkills);
+  if (r.length > 0 && r[0].status === 'fulfilled' && r[0].value) {
+    queryJson.jobTitles = [...queryJson.jobTitles, ...r[0].value.related_jobs];
+  }
+
+  if (
+    r.length > 0 &&
+    queryJson.skills.length > 0 &&
+    r[1].status === 'fulfilled' &&
+    r[1].value
+  ) {
+    queryJson.skills = [...queryJson.skills, ...r[1].value.related_skills];
+  }
+
+  return queryJson;
 };

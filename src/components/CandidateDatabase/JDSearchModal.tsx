@@ -5,11 +5,13 @@ import React, { useState } from 'react';
 
 import { JobDescriptionModal } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { getRelevantCndidates } from './utils';
 import AUIButton from '../Common/AUIButton';
 import UITextField from '../Common/UITextField';
 import {
@@ -20,6 +22,7 @@ import {
 export const JDSearchModal = ({ setJdPopup }) => {
   const defaultValue = '';
   const { recruiter } = useAuthDetails();
+  const { jobsData } = useJobs();
   const [isJdSearching, setIsJdSearching] = useState(false);
   const [jobRole, setJobRole] = useState('');
   const [jdText, setJdText] = useState(defaultValue);
@@ -36,14 +39,20 @@ job description
 
 ${jdText}
 `;
-      const p = await searchJdToJson(fullJd);
+      const queryJson = await searchJdToJson(fullJd);
+      const cndates = (await getRelevantCndidates(
+        queryJson,
+        jobsData.jobs.map((j) => j.id),
+        25,
+      )) as any;
       const [history] = supabaseWrap(
         await supabase
           .from('candidate_search_history')
           .insert({
             recruiter_id: recruiter.id,
             is_search_jd: false,
-            query_json: p,
+            query_json: queryJson,
+            search_results: cndates,
           })
           .select(),
       );
