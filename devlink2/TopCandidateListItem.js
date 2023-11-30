@@ -14,29 +14,28 @@ export function TopCandidateListItem({
   summary = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   onclickCandidate = {},
   isHighlighted = false,
+  slotInsights,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "cv-list-row", "item", "stretch")}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "cv-list-row")} tag="div">
+      {isHighlighted ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "top-can-highlight")}
+          tag="div"
+        />
+      ) : null}
       <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "top-can-row-block",
-          "border-r",
-          "border-b"
-        )}
+        className={_utils.cx(_styles, "cv-list-column-wrapper", "width-auto")}
         tag="div"
       >
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "top-can-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column",
-            "checkbox",
-            "top-can",
-            "ml-0"
-          )}
+          className={_utils.cx(_styles, "cv-list-column")}
           tag="div"
           {...onclickSelect}
         >
@@ -55,99 +54,99 @@ export function TopCandidateListItem({
             ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "cv-list-row-main", "pointer")}
+        tag="div"
+        {...onclickCandidate}
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column", "name", "top-can")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper")}
           tag="div"
-          {...onclickCandidate}
         >
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-info")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column",
+              "name",
+              "top-can",
+              "overflow-none"
+            )}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "top-can-info")}
               tag="div"
             >
-              {name}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-list-profile-image")}
+                tag="div"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {name}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-info")}
+              tag="div"
+            >
+              {slotScores}
             </_Builtin.Block>
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          tag="div"
+        >
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-info")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column",
+              "insights",
+              "overflow-none"
+            )}
             tag="div"
           >
-            {slotScores}
+            {slotInsights}
           </_Builtin.Block>
         </_Builtin.Block>
-        {isHighlighted ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-highlight")}
-            tag="div"
-          />
-        ) : null}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "top-can-row-block",
-          "border-r",
-          "border-b"
-        )}
-        tag="div"
-        {...onclickCandidate}
-      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column", "overview")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{strength}</_Builtin.Block>
-        </_Builtin.Block>
-        {isHighlighted ? (
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-highlight")}
+            className={_utils.cx(_styles, "cv-list-column", "summary")}
             tag="div"
-          />
-        ) : null}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "top-can-row-block",
-          "border-r",
-          "border-b"
-        )}
-        tag="div"
-        {...onclickCandidate}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column", "overview")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{weakness}</_Builtin.Block>
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {summary}
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-        {isHighlighted ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-highlight")}
-            tag="div"
-          />
-        ) : null}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "top-can-row-block", "border-b")}
-        tag="div"
-        {...onclickCandidate}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column", "overview")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{summary}</_Builtin.Block>
-        </_Builtin.Block>
-        {isHighlighted ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "top-can-highlight")}
-            tag="div"
-          />
-        ) : null}
       </_Builtin.Block>
     </_Component>
   );

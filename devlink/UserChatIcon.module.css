@@ -87,6 +87,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-grey-300 {
   color: var(--grey300-03a46dba);
 }

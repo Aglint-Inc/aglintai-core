@@ -103,6 +103,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

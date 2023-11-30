@@ -21,6 +21,10 @@
   padding-top: 2px;
 }
 
+.relative-1.text-color-grey-600 {
+  color: #68737d;
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;
@@ -403,6 +407,17 @@
   background-color: #e9ebed;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-relative {
   position: relative;
 }
@@ -433,15 +448,4 @@
 
 .pagination-wrappers {
   margin-top: 70px;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }

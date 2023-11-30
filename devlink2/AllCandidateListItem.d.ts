@@ -12,8 +12,10 @@ declare function AllCandidateListItem(props: {
   phone?: React.ReactNode;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   slotResumeScore?: Types.Devlink.Slot;
-  slotInterviewScore?: Types.Devlink.Slot;
+  slotAssessmentScore?: Types.Devlink.Slot;
   isHighlighted?: Types.Visibility.VisibilityConditions;
   appliedDate?: React.ReactNode;
   onclickCandidate?: Types.Devlink.RuntimeProps;
+  experience?: React.ReactNode;
+  location?: React.ReactNode;
 }): React.JSX.Element;

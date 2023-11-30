@@ -347,6 +347,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .signin-icons-wrapper {
   display: flex;
   grid-column-gap: 20px;

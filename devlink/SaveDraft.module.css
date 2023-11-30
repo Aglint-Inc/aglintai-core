@@ -222,6 +222,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .save-draft-load {
   position: relative;
   left: 0%;

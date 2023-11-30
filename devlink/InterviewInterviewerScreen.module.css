@@ -184,6 +184,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-interviewer-wrappers {
   overflow: auto;
   width: 100%;

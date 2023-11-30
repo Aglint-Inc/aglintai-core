@@ -82,6 +82,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }

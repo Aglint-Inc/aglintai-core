@@ -80,3 +80,8 @@
 .icons.ml-20 {
   margin-left: 20px;
 }
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}

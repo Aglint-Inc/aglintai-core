@@ -420,6 +420,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -615,6 +619,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .cj-option-info {
   display: flex;
   flex-direction: column;
@@ -767,6 +776,10 @@
   z-index: 2;
 
   display: block;
+}
+
+.click-fake-div.hide {
+  display: none;
 }
 
 .coming-soon-badges {
@@ -922,6 +935,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .req-acess-badge {

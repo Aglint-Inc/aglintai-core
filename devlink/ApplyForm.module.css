@@ -272,6 +272,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .edit-icons-inbox {
   padding: 4px;
   border-radius: 100px;
@@ -419,6 +424,10 @@
 
 .relative {
   position: relative;
+}
+
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
 }
 
 .color-white {

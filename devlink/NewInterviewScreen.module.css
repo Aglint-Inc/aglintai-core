@@ -149,6 +149,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .new-end-interview-btn {
   display: flex;
   padding: 10px 20px;
@@ -313,6 +318,10 @@
 
 .relative {
   position: relative;
+}
+
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
 }
 
 .color-white {

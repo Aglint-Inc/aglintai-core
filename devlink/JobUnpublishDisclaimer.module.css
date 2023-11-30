@@ -82,6 +82,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
 }

@@ -26,8 +26,12 @@
 .cv-rec-tab-link {
   position: relative;
 
-  overflow: hidden;
-  padding: 8px 10px;
+  display: flex;
+  height: 30px;
+  min-height: 30px;
+  padding-right: 10px;
+  padding-left: 10px;
+  align-items: center;
 
   border-radius: 6px;
 
@@ -139,6 +143,20 @@
   color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
 }
 
+.cv-rec-tab-link-bg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 4px;
+
+  background-color: var(--white);
+
+  box-shadow: 0 2px 8px 0 hsla(0, 0.00%, 0.00%, 0.10);
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -220,16 +238,6 @@
 
 .text-grey-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
-.cv-rec-tab-link-bg {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: var(--white);
 }
 
 .cv-tab-filter-right {

@@ -121,6 +121,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .copy-tool-tip-wrap {
   position: absolute;
   left: -11px;

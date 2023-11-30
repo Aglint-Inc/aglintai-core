@@ -253,6 +253,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .ratings-details-dropdown-arrow {
   display: flex;
   width: 12.800000190734863px;

@@ -231,6 +231,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .toggle-ai-assesment {
   display: flex;
   margin-top: 15px;

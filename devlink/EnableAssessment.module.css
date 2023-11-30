@@ -81,6 +81,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -336,6 +341,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .enable-assessment-button-wrap {

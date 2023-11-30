@@ -393,6 +393,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-red-600 {
   color: var(--red600-953350ec);
 }

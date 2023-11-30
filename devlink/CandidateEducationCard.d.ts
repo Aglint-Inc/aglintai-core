@@ -6,4 +6,5 @@ declare function CandidateEducationCard(props: {
   slotEducationLogo?: Types.Devlink.Slot;
   textUniversityName?: React.ReactNode;
   textDate?: React.ReactNode;
+  isBadgeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

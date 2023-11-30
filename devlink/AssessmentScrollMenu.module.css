@@ -367,6 +367,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .disable-assessment {
   display: flex;
   max-width: 208px;

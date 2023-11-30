@@ -29,6 +29,7 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationsData,
+  JobApplicationSectionData,
   JobApplicationSections,
   // Parameters,
 } from '@/src/context/JobApplicationsContext/types';

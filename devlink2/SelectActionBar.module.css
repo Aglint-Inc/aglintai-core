@@ -26,9 +26,9 @@
 
 .selection-clear-btn {
   display: flex;
-  width: 36px;
-  height: 36px;
-  padding: 8px 12px;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
   justify-content: center;
   align-items: center;
   align-self: center;
@@ -88,12 +88,6 @@
 
 .text-blue-700 {
   color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
-}
-
-.div-block-402 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .fw-semibold {
@@ -195,105 +189,4 @@
 
 .text-blue-500.ml-12 {
   margin-left: 8px;
-}
-
-.select-action-right-block {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .select-action-right-block {
-    overflow: auto;
-    width: 100%;
-    padding-bottom: 10px;
-    justify-content: flex-start;
-  }
-}
-
-.select-action-btn {
-  display: flex;
-  padding: 8px 12px;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border-radius: 6px;
-
-  transition: all 300ms ease;
-
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-  white-space: nowrap;
-
-  cursor: pointer;
-}
-
-.select-action-btn:hover {
-  background-color: #edf7ff;
-}
-
-.select-action-btn.blue-100:hover {
-  background-color: hsla(206.66666666666666, 100.00%, 88.22%, 1.00);
-}
-
-.blue-100 {
-  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
-}
-
-.select-action-btn.green-100:hover {
-  background-color: #d1e8df;
-}
-
-.green-100 {
-  background-color: hsla(158.18181818181827, 44.00%, 95.10%, 1.00);
-}
-
-.select-action-btn.red-100:hover {
-  background-color: hsla(356, 100.00%, 93.33%, 1.00);
-}
-
-.red-100 {
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
-}
-
-.select-action-btn.grey-100:hover {
-  background-color: hsla(180, 0.00%, 91.03%, 1.00);
-}
-
-.grey-100 {
-  background-color: hsla(180, 7.69%, 97.45%, 1.00);
-}
-
-.select-action-btn.blue-500:hover {
-  background-color: var(--blue700-44d5e20c);
-}
-
-.blue-500 {
-  background-color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.select-action-btn.blue-500.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.select-action-btn.outline {
-  border: 1px solid var(--blue-500);
-}
-
-.select-action-btn.small {
-  padding: 3px 4px;
 }

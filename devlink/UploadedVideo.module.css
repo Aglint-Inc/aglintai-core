@@ -109,6 +109,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .div-block-567 {
   display: flex;
   margin-top: 18px;

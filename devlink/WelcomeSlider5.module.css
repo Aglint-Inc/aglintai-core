@@ -866,6 +866,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .input-wrapper {
   position: relative;
 

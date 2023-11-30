@@ -80,6 +80,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .color-grey-600 {
   color: #68737d;
 }
@@ -119,6 +124,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .mt-20 {

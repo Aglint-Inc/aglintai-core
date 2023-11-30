@@ -285,6 +285,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .aui_nav_sublink_active-drop {
   position: absolute;
   left: 0%;

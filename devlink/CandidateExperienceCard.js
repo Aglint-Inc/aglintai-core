@@ -10,6 +10,7 @@ export function CandidateExperienceCard({
   textCompany = "Google",
   textDate = "May 2017",
   textLocations = "New York, New York, United States",
+  isBadgeVisible = false,
 }) {
   return (
     <_Component
@@ -45,6 +46,17 @@ export function CandidateExperienceCard({
           {textDate}
         </_Builtin.Block>
       </_Builtin.Block>
+      {isBadgeVisible ? (
+        <_Builtin.Block className={_utils.cx(_styles, "book-badge")} tag="div">
+          <_Builtin.Image
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65688607b7bfaa9734b192a5_%F0%9F%92%BC.svg"
+          />
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

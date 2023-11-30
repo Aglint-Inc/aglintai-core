@@ -70,6 +70,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .search-by-wrappers {
   display: flex;
   flex-direction: column;
@@ -250,6 +254,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .search-by-typing {
   padding: 6px 20px;
   border-radius: 100px;
@@ -320,4 +328,9 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }

@@ -24,6 +24,10 @@
   padding-top: 2px;
 }
 
+.relative-1.text-color-grey-600 {
+  color: #68737d;
+}
+
 .final-check-box {
   display: flex;
   width: 17px;
@@ -264,6 +268,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -471,6 +479,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .overlay-blue-checked {

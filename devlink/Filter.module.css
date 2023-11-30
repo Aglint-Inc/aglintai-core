@@ -87,6 +87,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
@@ -137,6 +142,19 @@
   color: #c2c8cc;
 
   cursor: auto;
+}
+
+.div-block-622.disable.sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-622.sort {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .text-sm {

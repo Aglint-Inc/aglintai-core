@@ -158,6 +158,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -381,6 +385,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .confirm-close-job-wrap {
   display: flex;
   margin-top: 10px;
@@ -510,4 +518,9 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }

@@ -80,6 +80,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .div-block-602 {
   display: flex;
   align-items: center;
@@ -253,4 +257,8 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.text-color-white {
+  color: white;
 }

@@ -238,6 +238,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -345,6 +349,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 #w-node-f94ff02a-6fc4-2aac-d979-e76ce8a0c605-e8a0c603 {

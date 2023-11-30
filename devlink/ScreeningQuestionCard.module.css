@@ -276,6 +276,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .button-white-ai {
   display: flex;
   padding: 6px 10px;
@@ -421,6 +425,11 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .div-block-554 {
@@ -592,4 +601,8 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }

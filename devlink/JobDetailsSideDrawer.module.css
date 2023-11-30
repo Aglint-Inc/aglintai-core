@@ -313,6 +313,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;

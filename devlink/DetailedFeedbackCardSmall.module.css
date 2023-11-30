@@ -249,6 +249,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

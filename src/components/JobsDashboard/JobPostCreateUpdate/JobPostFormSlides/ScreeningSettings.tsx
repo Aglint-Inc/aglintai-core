@@ -179,7 +179,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
               handleChoice('automate');
             },
           }}
-          radioText={`Move all new applicants to the interviewing state.`}
+          radioText={`Move all new applicants to the assessment state.`}
         />
       )}
       <WorkflowRadioItem
@@ -201,7 +201,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         }}
         isChecked={workflowObj.qualificationRange !== null}
         radioText={`Use ${
-          flow === 'screening' ? 'application' : 'interview'
+          flow === 'screening' ? 'application' : 'assessment'
         } score criteria for applicant progression`}
         slotScore={
           <Collapse in={workflowObj.qualificationRange !== null}>
@@ -287,7 +287,7 @@ const EmailSchedule = ({
         }
         onClick={{ onClick: () => handleChoice('automate') }}
         radioText={`Immediately after moving to the ${
-          flow === 'interviewMail' ? 'interviewing' : 'disqualified'
+          flow === 'interviewMail' ? 'assessment' : 'disqualified'
         } stage.`}
       />
       <WorkflowRadioItem

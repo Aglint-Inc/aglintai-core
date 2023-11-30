@@ -78,6 +78,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .number-text {
   display: flex;
   width: 16px;

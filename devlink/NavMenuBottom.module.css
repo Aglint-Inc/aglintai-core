@@ -404,3 +404,7 @@
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
+
+.text-color-white {
+  color: white;
+}

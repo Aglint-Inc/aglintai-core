@@ -12,4 +12,5 @@ declare function TopCandidateListItem(props: {
   summary?: React.ReactNode;
   onclickCandidate?: Types.Devlink.RuntimeProps;
   isHighlighted?: Types.Visibility.VisibilityConditions;
+  slotInsights?: Types.Devlink.Slot;
 }): React.JSX.Element;

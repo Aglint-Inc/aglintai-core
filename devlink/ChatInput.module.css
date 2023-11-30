@@ -91,6 +91,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .attach-tooltip {
   position: absolute;
   left: -131%;
@@ -286,6 +291,10 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.text-color-white {
+  color: white;
 }
 
 .div-block-593 {

@@ -249,6 +249,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .aglint-powered-footer-invalid {
   position: fixed;
   left: 0%;
@@ -419,4 +423,8 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.text-color-white {
+  color: white;
 }

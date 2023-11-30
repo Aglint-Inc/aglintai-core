@@ -539,6 +539,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .fw-semibold.one-line-clamp.mx-width-662 {
   max-width: 612px;
 }
@@ -629,6 +634,10 @@
 
 .relative {
   position: relative;
+}
+
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
 }
 
 .color-white {

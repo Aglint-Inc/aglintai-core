@@ -348,6 +348,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-green-500 {
   color: var(--green500-287ff474);
 }
@@ -496,6 +501,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .rd-jobs-wrapper-2 {
   display: flex;
   width: 100%;
@@ -608,6 +617,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .fw-semibold.grow-line {
   flex: 0 0 auto;
 }
@@ -642,10 +655,6 @@
 
 .fw-semibold.new-greenhouse {
   color: #14413d;
-}
-
-.text-color-white {
-  color: white;
 }
 
 .fw-semibold.first-text-capital {

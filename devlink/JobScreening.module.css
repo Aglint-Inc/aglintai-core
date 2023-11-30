@@ -497,6 +497,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .cdd-submission-status {
   display: flex;
   padding: 3px 8px;
@@ -763,6 +767,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .fw-semibold.grow-line {
   flex: 0 0 auto;
 }
@@ -797,10 +805,6 @@
 
 .fw-semibold.new-greenhouse {
   color: #14413d;
-}
-
-.text-color-white {
-  color: white;
 }
 
 .fw-semibold.first-text-capital {

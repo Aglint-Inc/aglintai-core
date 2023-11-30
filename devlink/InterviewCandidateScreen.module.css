@@ -210,6 +210,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .interview-edit-done-wrapper {
   display: none;
   width: 40px;

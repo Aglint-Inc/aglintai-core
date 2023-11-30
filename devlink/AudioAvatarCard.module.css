@@ -133,6 +133,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .avatar-name-wrap-audio {
   position: absolute;
   left: 0%;

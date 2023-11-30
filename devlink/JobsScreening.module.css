@@ -512,6 +512,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .input {
   display: flex;
   justify-content: space-between;

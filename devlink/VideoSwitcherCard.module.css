@@ -69,6 +69,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

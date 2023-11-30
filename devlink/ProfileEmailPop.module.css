@@ -273,6 +273,11 @@
   margin-left: 20px;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .email-input-wrappers {
   display: flex;
   margin-top: 10px;

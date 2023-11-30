@@ -1,0 +1,14 @@
+.resume-match-tag {
+  display: flex;
+  height: 30px;
+  padding-right: 16px;
+  padding-left: 16px;
+  align-items: center;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  border-radius: 100px;
+
+  background-color: #f8f9f9;
+}

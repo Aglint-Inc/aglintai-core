@@ -248,6 +248,10 @@
   max-width: 588px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .accessment-toggle-wrap {
   display: flex;
   margin-top: 20px;
@@ -348,6 +352,10 @@
 
 .fw-semibold.relative {
   z-index: 2;
+}
+
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
 }
 
 .color-white {
@@ -505,6 +513,11 @@
 
 .icons.ml-20 {
   margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .slot-drag-drop-video {

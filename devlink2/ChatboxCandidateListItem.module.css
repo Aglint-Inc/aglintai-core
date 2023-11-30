@@ -15,7 +15,7 @@
 }
 
 .cb-candidate-list-item:hover {
-  background-color: hsla(180, 0.00%, 98.00%, 1.00);
+  background-color: hsla(180, 0.00%, 98.00%, 0.70);
 }
 
 .cb-cli-main {

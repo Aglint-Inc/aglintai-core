@@ -263,6 +263,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .low-arrow-icon {
   display: flex;
   width: 12px;

@@ -369,6 +369,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .cdd-content-main {
   display: grid;
   grid-auto-columns: 1fr;
