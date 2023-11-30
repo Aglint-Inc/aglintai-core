@@ -17,6 +17,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { CandidateSearchState } from '../context/CandidateSearchProvider';
+import { getFilteredCands } from '../Database/utils';
 import { JDSearchModal } from '../JDSearchModal';
 import { getRelevantCndidates } from '../utils';
 import Loader from '../../Common/Loader';
@@ -51,14 +52,18 @@ function CandidateSearchHistory() {
           .select()
           .eq('recruiter_id', recruiter.id),
       ) as SearchHistoryType[];
-      const candidates = supabaseWrap(
-        await supabase
-          .from('candidates')
-          .select()
-          .eq('recruiter_id', recruiter.id),
-      );
+      const { total_results } = await getFilteredCands({
+        recruiter_id: recruiter.id,
+        currPage: 1,
+        location_filter: '',
+        name_filter: '',
+        job_role: '',
+        sort_param: 'first_name',
+        is_sort_desc: false,
+      });
 
-      setCandidatesCount(candidates.length);
+      setCandidatesCount(total_results);
+
       setHistory(history);
     } catch (err) {
       toast.error(API_FAIL_MSG);
