@@ -1,6 +1,16 @@
-import { AllCandidateListItem } from '@/devlink2';
+/* eslint-disable security/detect-object-injection */
+import {
+  AllCandidateListItem,
+  // InsightTagAmbitious,
+  InsightTagExperienced,
+  InsightTagKnowledgeable,
+  InsightTagLeader,
+  // InsightTagReliable,
+  InsightTagSkilled,
+} from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import {
+  JdScore,
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
@@ -38,13 +48,7 @@ const ApplicationCard = ({
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
-  const resumeScore = (
-    <ResumeScore
-      application={application}
-      scale={detailedView ? 0.5 : 0.7}
-      fontSize={detailedView ? 14 : 18}
-    />
-  );
+  const resumeScore = <ResumeScore application={application} />;
   const interviewScore =
     section === JobApplicationSections.NEW ? (
       <></>
@@ -57,24 +61,27 @@ const ApplicationCard = ({
     application.candidates.last_name,
   );
   const summary = (application?.json_resume as any)?.overview ?? '---';
-  const strength = (application?.json_resume as any)?.strength ?? '---';
-  const weakness = (application?.json_resume as any)?.weakness ?? '---';
-  return detailedView ? (
+  return !detailedView ? (
     <AllCandidateListItem
       onclickSelect={{ onClick: handleCheck }}
       isChecked={isChecked}
       slotProfileImage={profile}
       name={name}
       jobTitle={
-        application.candidates.job_title
-          ? capitalize(application.candidates.job_title)
+        (application.json_resume as any)?.basics?.currentJobTitle
+          ? capitalize((application.json_resume as any).basics.currentJobTitle)
+          : '---'
+      }
+      location={
+        (application.json_resume as any)?.basics?.location
+          ? capitalize((application.json_resume as any).basics.location)
           : '---'
       }
       slotResumeScore={resumeScore}
       email={application.candidates.email || '---'}
       phone={application.candidates.phone || '---'}
       isInterviewVisible={isInterview}
-      slotInterviewScore={interviewScore}
+      slotAssessmentScore={interviewScore}
       appliedDate={creationDate}
       onclickCandidate={{
         onClick: () => {
@@ -82,6 +89,9 @@ const ApplicationCard = ({
         },
       }}
       isHighlighted={isSelected}
+      experience={getExperienceCount(
+        (application.json_resume as any)?.basics?.totalExperience,
+      )}
     />
   ) : (
     <TopCandidateListItem
@@ -96,15 +106,55 @@ const ApplicationCard = ({
         </>
       }
       summary={summary}
-      strength={strength}
-      weakness={weakness}
       onclickCandidate={{
         onClick: () => {
           handleOpenDetails();
         },
       }}
+      slotInsights={<Insights jdScore={application.jd_score as JdScore} />}
     />
   );
+};
+
+const getExperienceCount = (months: number) => {
+  return months ? Math.trunc(months / 12) : '---';
+};
+
+const Insights = ({ jdScore }: { jdScore: JdScore }) => {
+  if (jdScore?.badges) {
+    const badgeList = badgePriority.reduce((acc, curr) => {
+      if (jdScore.badges[curr]) acc.push(getBadge(curr, jdScore.badges[curr]));
+      return acc;
+    }, []);
+    return <>{badgeList}</>;
+  }
+  return <></>;
+};
+
+const badgePriority = [
+  'leadership',
+  'jobStability',
+  'careerGrowth',
+  'positions',
+  'skills',
+  'schools',
+];
+
+const getBadge = (key: string, count: number) => {
+  switch (key) {
+    case 'skills':
+      return <InsightTagSkilled experience={count} />;
+    case 'schools':
+      return <InsightTagKnowledgeable experience={count} />;
+    case 'positions':
+      return <InsightTagExperienced experience={count} />;
+    case 'leadership':
+      return count >= 70 ? <InsightTagLeader /> : <></>;
+    case 'jobStability':
+      return <></>; //<InsightTagReliable />
+    case 'careerGrowth':
+      return <></>; //<InsightTagAmbitious />
+  }
 };
 
 export default ApplicationCard;

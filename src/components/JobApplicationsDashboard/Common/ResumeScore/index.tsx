@@ -2,29 +2,16 @@ import { Stack, Tooltip } from '@mui/material';
 
 import { ScoreErrorIcon } from '@/devlink2';
 import Calculating from '@/src/components/Common/Calculating';
-import { SmallCircularScore } from '@/src/components/Common/SmallCircularScore';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
+import { ResumeScoreTag } from '../../ResumeScoreTag';
 import { ApiLogState, intactConditionFilter } from '../../utils';
 
-const ResumeScore = ({
-  application,
-  scale = 0.5,
-  fontSize = 14,
-}: {
-  application: JobApplication;
-  scale?: number;
-  fontSize?: number;
-}) => {
+const ResumeScore = ({ application }: { application: JobApplication }) => {
   return application.json_resume || application.resume ? (
     intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
       application.jd_score ? (
-        <SmallCircularScore
-          score={application.resume_score}
-          fontSize={fontSize}
-          scale={scale}
-          showScore={true}
-        />
+        <ResumeScoreTag score={application.resume_score} />
       ) : (
         <Tooltip
           title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."

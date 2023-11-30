@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -372,14 +373,25 @@ const NewCandidateDetails = ({
               {resume.schools &&
               resume.schools instanceof Array &&
               resume.schools.length !== 0 ? (
-                <NewEducationDetails schools={resume.schools} />
+                <NewEducationDetails
+                  schools={resume.schools}
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance?.schools
+                  }
+                />
               ) : (
                 <></>
               )}
               {resume.positions &&
               resume.positions instanceof Array &&
               resume.positions.length !== 0 ? (
-                <NewExperienceDetails positions={resume.positions} />
+                <NewExperienceDetails
+                  positions={resume.positions}
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance
+                      ?.positions
+                  }
+                />
               ) : (
                 <></>
               )}
@@ -387,7 +399,12 @@ const NewCandidateDetails = ({
               {resume.skills &&
               resume.skills instanceof Array &&
               resume.skills.length !== 0 ? (
-                <NewSkillDetails skills={resume.skills} />
+                <NewSkillDetails
+                  skills={resume.skills}
+                  // relevance={
+                  //   (applicationDetails.jd_score as JdScore)?.relevance?.skills
+                  // }
+                />
               ) : (
                 <></>
               )}
@@ -708,7 +725,13 @@ const fetchFile = async (applicationDetails: JobApplication) => {
   });
 };
 
-const NewEducationDetails = ({ schools }) => {
+const NewEducationDetails = ({
+  schools,
+  relevance,
+}: {
+  schools;
+  relevance: JdScore['relevance']['schools'];
+}) => {
   const educationList =
     Array.isArray(schools) &&
     schools
@@ -721,13 +744,22 @@ const NewEducationDetails = ({ schools }) => {
             key={i}
             textUniversityName={e.institution}
             textDate={timeRange(startDate, endDate)}
+            isBadgeVisible={
+              relevance && relevance[i] && relevance[i] === 'high'
+            }
           />
         );
       });
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
 };
 
-const NewExperienceDetails = ({ positions }) => {
+const NewExperienceDetails = ({
+  positions,
+  relevance,
+}: {
+  positions;
+  relevance: JdScore['relevance']['positions'];
+}) => {
   const workList = positions.reduce((acc, w, i) => {
     const startDate = timeFormat(w.start);
     const endDate = timeFormat(w.end);
@@ -743,6 +775,7 @@ const NewExperienceDetails = ({ positions }) => {
           textRole={w.title}
           textCompany={w.org}
           textDate={timeRange(startDate, endDate)}
+          isBadgeVisible={relevance && relevance[i] && relevance[i] === 'high'}
         />,
       );
     }
@@ -778,7 +811,7 @@ const timeRange = (startDate: string, endDate: string) => {
   }`;
 };
 
-const NewSkillDetails = ({ skills }) => {
+const NewSkillDetails = ({ skills }: { skills }) => {
   const skillList = skills
     .filter((s) => s !== null && s !== '')
     .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);

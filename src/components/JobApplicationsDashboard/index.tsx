@@ -21,6 +21,7 @@ import {
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
+  SelectActionsDropdown,
   // SortArrows,
   TopApplicantsTable,
 } from '@/devlink2';
@@ -29,7 +30,6 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationsData,
-  JobApplicationSectionData,
   JobApplicationSections,
   // Parameters,
 } from '@/src/context/JobApplicationsContext/types';
@@ -96,7 +96,7 @@ const JobApplicationComponent = () => {
   const [currentApplication, setCurrentApplication] = useState(-1);
 
   const [jobUpdate, setJobUpdate] = useState(false);
-  const [detailedView, setDetailedView] = useState(true);
+  const [detailedView, setDetailedView] = useState(false);
 
   const [applicationLimit, setApplicationLimit] = useState(job.count);
 
@@ -288,7 +288,7 @@ const ApplicationTable = ({
   const emptyList = useMemo(() => <EmptyList section={section} />, [section]);
   return sectionApplications.length === 0 ? (
     emptyList
-  ) : detailedView ? (
+  ) : !detailedView ? (
     <AllApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
       isAllChecked={isAllChecked}
@@ -833,34 +833,6 @@ const ActionBar = ({
         />
       </Dialog>
       <SelectActionBar
-        isInterview={showInterview}
-        onClickInterview={{
-          onClick: async () => {
-            setDialogInfo(DialogInfo.interviewing);
-            setOpenInfoDialog(true);
-          },
-        }}
-        isQualified={showSelected}
-        onClickQualified={{
-          onClick: async () => {
-            setDialogInfo(DialogInfo.selected);
-            setOpenInfoDialog(true);
-          },
-        }}
-        isDisqualified={showReject}
-        onClickDisqualified={{
-          onClick: async () => {
-            setDialogInfo(DialogInfo.rejected);
-            setOpenInfoDialog(true);
-          },
-        }}
-        onClickMoveNew={{
-          onClick: async () => {
-            setDialogInfo(DialogInfo.applied);
-            setOpenInfoDialog(true);
-          },
-        }}
-        isMoveNew={showNew}
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
         }}
@@ -872,6 +844,38 @@ const ActionBar = ({
           !selectAll && applicationLimit[section] > paginationLimit
         }
         onclickSelectAll={{ onClick: () => handleSelectAll() }}
+        slotDropdown={
+          <SelectActionsDropdown
+            isInterview={showInterview}
+            onClickInterview={{
+              onClick: async () => {
+                setDialogInfo(DialogInfo.interviewing);
+                setOpenInfoDialog(true);
+              },
+            }}
+            isQualified={showSelected}
+            onClickQualified={{
+              onClick: async () => {
+                setDialogInfo(DialogInfo.selected);
+                setOpenInfoDialog(true);
+              },
+            }}
+            isDisqualified={showReject}
+            onClickDisqualified={{
+              onClick: async () => {
+                setDialogInfo(DialogInfo.rejected);
+                setOpenInfoDialog(true);
+              },
+            }}
+            onClickMoveNew={{
+              onClick: async () => {
+                setDialogInfo(DialogInfo.applied);
+                setOpenInfoDialog(true);
+              },
+            }}
+            isMoveNew={showNew}
+          />
+        }
       />
     </>
   );
