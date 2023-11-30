@@ -6,7 +6,6 @@ import {
   CandidateDatabaseRow,
   CandidateDatabaseTable,
   Pagination,
-  SortButton,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -16,6 +15,7 @@ import toast from '@/src/utils/toast';
 import { useCandFilter } from './CandDbProvider';
 import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
+import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
 import AddToJobOptions from '../CandAddToJobMenu';
 import { newCandJob } from '../Search/Search';
@@ -243,7 +243,7 @@ const CandDatabase = () => {
         }
         slotSort={
           <>
-            <SortButton />
+            <SortComp/>
           </>
         }
         onClickCheck={{
