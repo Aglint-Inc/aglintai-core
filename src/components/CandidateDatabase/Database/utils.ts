@@ -95,8 +95,7 @@ export const getFilteredCands = async ({
 
   return {
     filteredCands: canididatesDto,
-    total_results:
-      filteredCands.length > 0 ? filteredCands[0].total_results : 0,
+    total_results: candidates.length > 0 ? candidates[0].total_results : 0,
   };
 };
 
