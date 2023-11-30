@@ -206,9 +206,9 @@ const CandDatabase = () => {
                         detail.first_name,
                         detail.last_name,
                       )}
-                      textAppliedJob={detail.job_title}
+                      textAppliedJob={detail.job_title || '--'}
                       textEmail={
-                        detail.json_resume.basics.email ??
+                        detail.json_resume.basics?.email ??
                         (detail.email.startsWith('temp-')
                           ? '--'
                           : detail.email || '--')
@@ -243,7 +243,7 @@ const CandDatabase = () => {
         }
         slotSort={
           <>
-            <SortComp/>
+            <SortComp />
           </>
         }
         onClickCheck={{

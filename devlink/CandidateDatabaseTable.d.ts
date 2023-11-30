@@ -15,4 +15,5 @@ declare function CandidateDatabaseTable(props: {
   slotAddtoJob?: Types.Devlink.Slot;
   slotFilter?: Types.Devlink.Slot;
   slotSort?: Types.Devlink.Slot;
+  onClickReset?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

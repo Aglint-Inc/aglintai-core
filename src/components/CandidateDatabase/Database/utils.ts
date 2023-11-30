@@ -52,11 +52,7 @@ export const getFilteredCands = async ({
   ) as CandidateSearchType[];
 
   //NOTE: filter cands old json
-  const filteredCands = candidates.filter(
-    (c) =>
-      (c.json_resume && typeof c.json_resume.basics.location === 'string') ||
-      null,
-  );
+  const filteredCands = candidates;
 
   const candjobs = await supabaseWrap(
     await supabase.rpc('getjobapplicationcountforcandidates', {

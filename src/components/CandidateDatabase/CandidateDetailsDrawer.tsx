@@ -1,7 +1,7 @@
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   AddedJobList,
@@ -39,7 +39,7 @@ const CandidateDrawer = ({
   showBookmark?: boolean;
 }) => {
   const [resume, setResume] = useState(false);
-
+  const keyPressedRef = useRef({});
   let location = candidate.json_resume.basics.location;
   const linkedin = candidate.json_resume.basics.linkedIn;
   const handleOpenResume = async () => {
@@ -54,6 +54,44 @@ const CandidateDrawer = ({
       link.click();
     }
   };
+
+  useEffect(() => {
+    const checkKeyCombination = () => {
+      const key1 = 'Shift';
+      const key2 = 'ArrowRight';
+      const key3 = 'ArrowLeft';
+      if (
+        keyPressedRef.current[String(key1)] &&
+        keyPressedRef.current[String(key2)]
+      ) {
+        onClickNext();
+      }
+
+      if (
+        keyPressedRef.current[String(key1)] &&
+        keyPressedRef.current[String(key3)]
+      ) {
+        onClickPrev();
+      }
+    };
+
+    const onkeyUp = (e) => {
+      keyPressedRef.current[String(e.key)] = false;
+      checkKeyCombination();
+    };
+    const onKeyDown = (e) => {
+      keyPressedRef.current[String(e.key)] = true;
+      checkKeyCombination();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onkeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onkeyUp);
+    };
+  }, [onClickNext, onClickPrev]);
+
   return (
     <>
       <CandidateDialog

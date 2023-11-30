@@ -1,17 +1,31 @@
 import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Sort, SortButton } from '@/devlink';
 
 import UISelect from '../../Common/Uiselect';
-
+const sortdisplay = [
+  { name: 'Name', value: 'first_name' },
+  { name: 'Location', value: 'location' },
+  { name: 'Current job title', value: 'job_title' },
+];
 const SortComp = () => {
   const [anchorlEl, setAnchorEl] = useState(null);
   const [sortType, setSortType] = useState('first_name');
   const [sortActive, setSortActive] = useState(true);
   const isDisabled = sortType.length === 0;
   const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const isDesc = router.query.sort_type === 'desc';
+    if (isDesc) {
+      setSortActive(false);
+    } else {
+      setSortActive(true);
+    }
+  }, [router.isReady, router.query]);
   const applySort = () => {
     router.query.sort_type = sortActive ? 'asc' : 'desc';
     router.query.sort_by_param = sortType;
@@ -19,9 +33,16 @@ const SortComp = () => {
     setAnchorEl(null);
   };
 
+  const sortName = sortdisplay.filter(
+    (s) => s.value === router.query.sort_by_param,
+  )[0].name;
+
   return (
     <>
       <SortButton
+        textSort={`${sortName} ${
+          router.query.sort_type === 'asc' ? ' Asc' : ' Desc'
+        }`}
         onClickSortby={{
           onClick: (e) => {
             setAnchorEl(e.currentTarget);
@@ -52,11 +73,7 @@ const SortComp = () => {
           slotSortDrop={
             <UISelect
               defaultValue={'first_name'}
-              menuOptions={[
-                { name: 'Name', value: 'first_name' },
-                { name: 'Location', value: 'location' },
-                { name: 'Current job title', value: 'job_title' },
-              ]}
+              menuOptions={sortdisplay}
               value={sortType}
               onChange={(e) => {
                 if (e.target.value === '') return;
