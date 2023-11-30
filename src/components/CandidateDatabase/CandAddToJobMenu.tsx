@@ -68,7 +68,7 @@ const AddToJobOptions = ({
         anchorOrigin={
           isPopupCandidate
             ? {
-                horizontal: 'center',
+                horizontal: 'left',
                 vertical: 'bottom',
               }
             : undefined

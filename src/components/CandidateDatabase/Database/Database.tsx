@@ -160,6 +160,7 @@ const CandDatabase = () => {
                   handleClickSubmit={handleAddApplications}
                   isAdding={false}
                   selectedJobIds={newJobsForCand}
+                  isPopupCandidate={true}
                 />
               </Stack>
             )}
