@@ -39,10 +39,21 @@ const CandDatabase = () => {
     if (!jobsData.jobs) return;
 
     if (router.isReady) {
-      const { page_no, location, name, job_role } = router.query;
+      const { page_no, location, name, job_role, sort_by_param, sort_type } =
+        router.query as Record<string, string>;
 
-      if (!page_no) {
-        router.replace('/candidates?page_no=1');
+      if (!page_no || !sort_by_param || !sort_type) {
+        if (!page_no) {
+          router.query.page_no = '1';
+        }
+        if (!sort_by_param) {
+          router.query.sort_by_param = 'first_name';
+        }
+        if (!sort_type) {
+          router.query.sort_type = 'asc';
+        }
+        router.replace(router);
+        return;
       }
 
       (async () => {
@@ -51,9 +62,11 @@ const CandDatabase = () => {
           const { filteredCands, total_results } = await getFilteredCands({
             recruiter_id: recruiter.id,
             currPage: Number(page_no),
-            location_filter: location as string,
-            name_filter: name as string,
-            job_role: job_role as string,
+            location_filter: location,
+            name_filter: name,
+            job_role: job_role,
+            sort_param: sort_by_param as any,
+            is_sort_desc: sort_type === 'desc',
           });
           setTotalResults(total_results);
           updateState({

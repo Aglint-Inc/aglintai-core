@@ -452,6 +452,7 @@ export interface Database {
       public_jobs: {
         Row: {
           active_status: Json
+          assessment: boolean | null
           company: string | null
           company_details: string | null
           created_at: string
@@ -487,6 +488,7 @@ export interface Database {
         }
         Insert: {
           active_status?: Json
+          assessment?: boolean | null
           company?: string | null
           company_details?: string | null
           created_at?: string
@@ -522,6 +524,7 @@ export interface Database {
         }
         Update: {
           active_status?: Json
+          assessment?: boolean | null
           company?: string | null
           company_details?: string | null
           created_at?: string
@@ -1048,8 +1051,6 @@ export interface Database {
         Args: {
           score_json: Json
           app_id: string
-          in_json_resume: Json
-          in_badges: Json
         }
         Returns: boolean
       }
@@ -1114,29 +1115,6 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      filter_candidates: {
-        Args: {
-          job_ids: string[]
-          max_records?: number
-          offset_records?: number
-          location_filter?: string
-          name_filter?: string
-          job_title_filter?: string
-        }
-        Returns: {
-          application_id: string
-          created_at: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume_link: string
-          json_resume: Json
-          profile_image: string
-          candidate_id: string
-          job_id: string
-        }[]
-      }
       filter_candidates2: {
         Args: {
           rec_id: string
@@ -1145,6 +1123,9 @@ export interface Database {
           location_filter?: string
           name_filter?: string
           job_title_filter?: string
+          is_location_desc?: boolean
+          is_name_desc?: boolean
+          is_job_title_desc?: boolean
         }
         Returns: {
           application_id: string
@@ -1259,6 +1240,55 @@ export interface Database {
       secondretrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
         Returns: unknown
+      }
+      test_filter: {
+        Args: {
+          rec_id: string
+          location_filter: string
+          name_filter: string
+          job_title_filter: string
+        }
+        Returns: {
+          application_id: string
+          created_at: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          resume_link: string
+          json_resume: Json
+          profile_image: string
+          candidate_id: string
+          job_id: string
+        }[]
+      }
+      test_filter2: {
+        Args: {
+          rec_id: string
+          location_filter: string
+          name_filter: string
+          job_title_filter: string
+          page_size: number
+          page_number: number
+          sort_param?: string
+          is_name_sort_desc?: boolean
+          is_location_sort_desc?: boolean
+          is_job_title_sort_desc?: boolean
+        }
+        Returns: {
+          application_id: string
+          created_at: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          resume_link: string
+          json_resume: Json
+          profile_image: string
+          candidate_id: string
+          job_id: string
+          total_results: number
+        }[]
       }
       update_resume_score: {
         Args: {

@@ -25,18 +25,26 @@ export const getFilteredCands = async ({
   name_filter,
   recruiter_id,
   job_role,
+  is_sort_desc,
+  sort_param,
 }: {
   recruiter_id: string;
   currPage: number;
   name_filter: string;
   location_filter: string;
   job_role: string;
+  sort_param: 'first_name' | 'location' | 'job_title';
+  is_sort_desc: boolean;
 }) => {
   const candidates = supabaseWrap(
-    await supabase.rpc('filter_candidates2', {
+    await supabase.rpc('test_filter2', {
       rec_id: recruiter_id,
-      max_records: 100,
-      offset_records: (currPage - 1) * 100,
+      page_size: 100,
+      page_number: currPage,
+      sort_param: sort_param,
+      is_job_title_sort_desc: is_sort_desc,
+      is_location_sort_desc: is_sort_desc,
+      is_name_sort_desc: is_sort_desc,
       name_filter: filterSqlQryfromString(name_filter),
       location_filter: filterSqlQryfromString(location_filter),
       job_title_filter: filterSqlQryfromString(job_role),

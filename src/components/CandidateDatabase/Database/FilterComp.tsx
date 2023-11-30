@@ -67,12 +67,13 @@ const FilterComp = () => {
   }, [router.isReady, router.query]);
 
   const handleApply = () => {
-    if (filters.length === 0) return;
-    router.push(
-      `/candidates?page_no=1&${filters
-        .map((f) => `${f.type}=${f.filterVal}`)
-        .join('&')}`,
-    );
+    if (filters.length == 0) router.push('/candidates?page_no=1');
+    else
+      router.push(
+        `/candidates?page_no=1&${filters
+          .map((f) => `${f.type}=${f.filterVal}`)
+          .join('&')}`,
+      );
     setAnchorEl(null);
   };
 
