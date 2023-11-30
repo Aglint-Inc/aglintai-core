@@ -240,7 +240,7 @@ export function CreateNewJob({
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "text-sm")}
+                    className={_utils.cx(_styles, "text-xsm")}
                     tag="div"
                   >
                     {"Beta"}

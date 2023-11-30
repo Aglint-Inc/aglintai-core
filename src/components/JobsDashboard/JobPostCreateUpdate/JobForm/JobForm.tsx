@@ -244,6 +244,7 @@ function JobForm() {
   return (
     <>
       <CreateNewJob
+      
         slotCreateJob={<>{formSlide}</>}
         onClickApplyForm={{
           onClick: () => {

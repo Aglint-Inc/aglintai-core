@@ -40,6 +40,18 @@ const ScreeningQns = () => {
     <>
       {!isAssessmentOn ? (
         <EnableAssessment
+          onClickProceed={{
+            onClick: () => {
+              dispatch({
+                type: 'moveToSlide',
+                payload: {
+                  nextSlide: 'workflow',
+                },
+              });
+            },
+          }}
+          isProceedDisable={false}
+          isAddJob={jobForm.formType !== 'edit'}
           onClickEnableAssessment={{
             onClick: () => {
               handleUpdateFormFields({

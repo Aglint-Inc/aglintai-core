@@ -12,6 +12,8 @@ function ScreeningSettings() {
 
   return (
     <NewJobStep4
+      isAssessmentScoringVisible={jobForm.formFields.assessment}
+      isEmailScheduleVisible={jobForm.formFields.assessment}
       slotApplicationWorkflow={<WorkFlow flow='screening' />}
       slotInterviewWorkflow={<WorkFlow flow='interview' />}
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}

@@ -652,7 +652,11 @@
 }
 
 .beta-wrap {
-  position: relative;
+  position: absolute;
+  left: auto;
+  top: -10px;
+  right: -25px;
+  bottom: auto;
   z-index: 6;
 
   display: flex;
@@ -667,6 +671,15 @@
   background-color: #228f67;
 
   color: white;
+}
+
+.text-xsm {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.text-xsm.color-grey-600.inline-text {
+  display: inline-block;
 }
 
 .height-scroll {

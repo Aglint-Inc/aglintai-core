@@ -350,3 +350,58 @@
 .enable-assessment-button-wrap {
   margin-top: 16px;
 }
+
+.job-details-button-wrappers {
+  display: flex;
+  margin-top: 50px;
+}
+
+.job-details-button-wrappers.remove-bottom {
+  margin-top: 0px;
+}
+
+.proceed-to-apply {
+  position: relative;
+}
+
+.blue-process-button {
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #1f73b7;
+
+  transition: all 250ms ease;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.blue-process-button:hover {
+  opacity: 0.8;
+}
+
+.grey-disable-process-button {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
+}
