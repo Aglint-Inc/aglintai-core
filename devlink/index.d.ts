@@ -143,6 +143,8 @@ export * from "./EmailTemplateCard";
 export * from "./EmailTemplateCards";
 export * from "./EmailTemplates";
 export * from "./EmailTemplatesStart";
+export * from "./EnableAssessment";
+export * from "./EnableAssessmentPop";
 export * from "./FeedbackScore";
 export * from "./Filter";
 export * from "./FilterButton";

@@ -433,6 +433,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .create-job-header-right {
   display: flex;
   align-items: center;
@@ -455,6 +459,7 @@
   max-width: 630px;
   padding: 6px;
   justify-content: space-between;
+  align-items: center;
 
   border-radius: 10px;
 
@@ -481,6 +486,13 @@
   .create-job-menu-wrap {
     flex: 0 0 auto;
   }
+}
+
+.create-job-menu-wrap.assessment {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
@@ -563,6 +575,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .fw-semibold.grow-line {
   flex: 0 0 auto;
 }
@@ -599,10 +615,6 @@
   color: #14413d;
 }
 
-.text-color-white {
-  color: white;
-}
-
 .fw-semibold.first-text-capital {
   text-transform: capitalize;
 }
@@ -613,6 +625,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 4;
 
   border-radius: 10px;
 
@@ -631,6 +644,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.beta-wrap {
+  position: relative;
+  z-index: 6;
+
+  display: flex;
+  width: 44px;
+  padding: 4px 9px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #228f67;
+
+  color: white;
 }
 
 .height-scroll {

@@ -358,7 +358,8 @@ function JobForm() {
         slotCloseJob={
           <>
             {jobForm.formType === 'edit' &&
-              jobForm.jobPostStatus === 'draft' && (
+              jobForm.jobPostStatus === 'draft' &&
+              jobForm.formFields.assessment && (
                 <CloseJob
                   onClickCloseJob={{
                     onClick: () => setShowDraftPopup(true),

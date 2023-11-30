@@ -112,6 +112,7 @@ export type FormJobType = {
   };
   isDraftCleared: boolean;
   interviewInstrctions: string;
+  assessment: boolean;
 };
 
 export type JobFormState = {

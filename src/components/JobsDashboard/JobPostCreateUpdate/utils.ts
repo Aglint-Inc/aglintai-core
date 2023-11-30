@@ -102,6 +102,7 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     end_video: jobForm.formFields.endVideo,
     status: jobForm.jobPostStatus,
     interview_instructions: jobForm.formFields.interviewInstrctions,
+    assessment: jobForm.formFields.assessment,
   };
 
   return updateJobData;
@@ -155,11 +156,11 @@ export const findDisclaimers = (jobForm: FormJobType) => {
   if (isEmpty(jobForm.department.trim())) {
     warnings.details.err.push('Missing department');
   }
-
-  if (isEmpty(jobForm.interviewInstrctions)) {
+  if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
     warnings.screening.err.push('Please Provide Assessment Instructions');
   }
   if (
+    jobForm.assessment &&
     jobForm.interviewSetting.showInstructionVideo &&
     isEmpty(jobForm.interviewSetting.aiGeneratedVideoInfo.videoUrl) &&
     isEmpty(jobForm.interviewSetting.uploadedVideoInfo.videoUrl)
@@ -175,10 +176,10 @@ export const findDisclaimers = (jobForm: FormJobType) => {
       return prev + curr.length;
     }, 0);
 
-  if (totalQns < 1) {
+  if (jobForm.assessment && totalQns < 1) {
     warnings.screening.err.push('Please provide minimum 1 screening questions');
   }
-  if (totalQns > 20) {
+  if (jobForm.assessment && totalQns > 20) {
     warnings.screening.err.push(
       'Please provide maximum 20 screening questions',
     );

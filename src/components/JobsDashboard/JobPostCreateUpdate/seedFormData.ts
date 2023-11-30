@@ -110,14 +110,16 @@ export const getSeedJobFormData = (
       },
       startVideo: {
         id: '',
-        question: "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences.Let's get started.",
+        question:
+          "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences.Let's get started.",
         videoId: '',
         videoQn: '',
         videoUrl: '',
       },
       endVideo: {
         id: '',
-        question: "Thank you,for your time and sharing your insights with us today. If you have any further questions or need more information from us, please don't hesitate to reach out. Wishing you a great day ahead",
+        question:
+          "Thank you,for your time and sharing your insights with us today. If you have any further questions or need more information from us, please don't hesitate to reach out. Wishing you a great day ahead",
         videoId: '',
         videoQn: '',
         videoUrl: '',
@@ -146,6 +148,7 @@ export const getSeedJobFormData = (
           videoUrl: '',
         },
       },
+      assessment: false,
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -326,6 +329,7 @@ export const dbToClientjobPostForm = (
         : isEmpty(jobPost.draft),
       interviewSetting:
         jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
+      assessment: jobPost.assessment || false,
     },
     jobPostStatus: jobPostStatus as any,
   };

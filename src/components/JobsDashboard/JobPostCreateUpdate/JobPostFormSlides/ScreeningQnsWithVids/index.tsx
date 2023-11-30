@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AssessmentScrollMenu,
   AudioSwitcherCard,
+  EnableAssessment,
   ScreeningQuestion,
   VideoSwitcherCard,
 } from '@/devlink';
@@ -34,179 +35,192 @@ const ScreeningQns = () => {
   const router = useRouter();
 
   const videAvatar = recruiter.ai_avatar as any;
-
+  const isAssessmentOn = jobForm.formFields.assessment;
   return (
     <>
-      <ScreeningQuestion
-        isAddJob={jobForm.formType === 'new'}
-        onClickProceed={{
-          onClick: () => {
-            dispatch({
-              type: 'moveToSlide',
-              payload: {
-                nextSlide: 'workflow',
-              },
-            });
-          },
-        }}
-        onClickUpload={{
-          onClick: () => {
-            handleUpdateFormFields({
-              path: 'interviewSetting.isVideoAiGenerated',
-              value: false,
-            });
-          },
-        }}
-        onClickGenerateAi={{
-          onClick: () => {
-            handleUpdateFormFields({
-              path: 'interviewSetting.isVideoAiGenerated',
-              value: true,
-            });
-          },
-        }}
-        isUploadChecked={!interviewSetting.isVideoAiGenerated}
-        isGenerateWithAiChecked={interviewSetting.isVideoAiGenerated}
-        slotUpload={
-          <>
-            {!interviewSetting.isVideoAiGenerated ? (
-              <UploadInstructionVideo />
-            ) : (
-              <AIgeninstructionVideo />
-            )}
-          </>
-        }
-        slotToggleInstructionVideo={
-          <ToggleBtn
-            handleChange={() => {
+      {!isAssessmentOn ? (
+        <EnableAssessment
+          onClickEnableAssessment={{
+            onClick: () => {
               handleUpdateFormFields({
-                path: 'interviewSetting.showInstructionVideo',
-                value:
-                  !jobForm.formFields.interviewSetting.showInstructionVideo,
+                path: 'assessment',
+                value: true,
               });
-            }}
-            isChecked={interviewSetting.showInstructionVideo}
-          />
-        }
-        isUploadVisible={interviewSetting.showInstructionVideo}
-        slotInstructionsBrief={
-          <>
-            <TipTapAIEditor
-              initialValue={jobForm.formFields.interviewInstrctions}
-              handleChange={(s) => {
+            },
+          }}
+        />
+      ) : (
+        <ScreeningQuestion
+          isAddJob={jobForm.formType === 'new'}
+          onClickProceed={{
+            onClick: () => {
+              dispatch({
+                type: 'moveToSlide',
+                payload: {
+                  nextSlide: 'workflow',
+                },
+              });
+            },
+          }}
+          onClickUpload={{
+            onClick: () => {
+              handleUpdateFormFields({
+                path: 'interviewSetting.isVideoAiGenerated',
+                value: false,
+              });
+            },
+          }}
+          onClickGenerateAi={{
+            onClick: () => {
+              handleUpdateFormFields({
+                path: 'interviewSetting.isVideoAiGenerated',
+                value: true,
+              });
+            },
+          }}
+          isUploadChecked={!interviewSetting.isVideoAiGenerated}
+          isGenerateWithAiChecked={interviewSetting.isVideoAiGenerated}
+          slotUpload={
+            <>
+              {!interviewSetting.isVideoAiGenerated ? (
+                <UploadInstructionVideo />
+              ) : (
+                <AIgeninstructionVideo />
+              )}
+            </>
+          }
+          slotToggleInstructionVideo={
+            <ToggleBtn
+              handleChange={() => {
                 handleUpdateFormFields({
-                  path: 'interviewInstrctions',
-                  value: s,
+                  path: 'interviewSetting.showInstructionVideo',
+                  value:
+                    !jobForm.formFields.interviewSetting.showInstructionVideo,
                 });
               }}
-              placeholder='Type here'
+              isChecked={interviewSetting.showInstructionVideo}
             />
-          </>
-        }
-        slotWelcomeMessage={
-          <>
-            <Intro path={'startVideo'} />
-          </>
-        }
-        slotEndingMessageVideo={<Intro path={'endVideo'} />}
-        textQuestionCount={totalQns}
-        slotAssessmentQuestion={
-          <>
-            <Categories />
-          </>
-        }
-        slotExpirationInput={
-          <UITextField
-            type='number'
-            value={
-              jobForm.formFields.interviewSetting.assessmentValidity
-                .expirationDuration
-            }
-            onChange={(e) => {
-              handleUpdateFormFields({
-                path: 'interviewSetting.assessmentValidity.expirationDuration',
-                value: e.target.value,
-              });
-            }}
-          />
-        }
-        slotRetrysCount={
-          <UITextField
-            type='number'
-            value={
-              jobForm.formFields.interviewSetting.assessmentValidity
-                .candidateRetry
-            }
-            onChange={(e) => {
-              handleUpdateFormFields({
-                path: 'interviewSetting.assessmentValidity.candidateRetry',
-                value: e.target.value,
-              });
-            }}
-          />
-        }
-        slotRightScrollMenu={
-          <>
-            <SectionTabs />
-          </>
-        }
-        slotToggleAssessment={
-          <ToggleBtn
-            handleChange={(newVal) => {
-              handleUpdateFormFields({
-                path: 'videoAssessment',
-                value: newVal,
-              });
-            }}
-            isChecked={jobForm.formFields.videoAssessment}
-          />
-        }
-        slotSwitchAudioVideo={
-          <>
-            {!jobForm.formFields.videoAssessment ? (
-              <AudioSwitcherCard
-                slotAvatar={
-                  <Image
-                    src={interviewerList[recruiter.audio_avatar_id].image}
-                    width={40}
-                    height={40}
-                    alt=''
-                    style={{
-                      objectFit: 'cover',
-                    }}
-                  />
-                }
-                onClickCompanySetting={{
-                  onClick: () => router.replace(pageRoutes.COMPANY),
+          }
+          isUploadVisible={interviewSetting.showInstructionVideo}
+          slotInstructionsBrief={
+            <>
+              <TipTapAIEditor
+                initialValue={jobForm.formFields.interviewInstrctions}
+                handleChange={(s) => {
+                  handleUpdateFormFields({
+                    path: 'interviewInstrctions',
+                    value: s,
+                  });
                 }}
+                placeholder='Type here'
               />
-            ) : (
-              <VideoSwitcherCard
-                slotAvatar={
-                  <>
+            </>
+          }
+          slotWelcomeMessage={
+            <>
+              <Intro path={'startVideo'} />
+            </>
+          }
+          slotEndingMessageVideo={<Intro path={'endVideo'} />}
+          textQuestionCount={totalQns}
+          slotAssessmentQuestion={
+            <>
+              <Categories />
+            </>
+          }
+          slotExpirationInput={
+            <UITextField
+              type='number'
+              value={
+                jobForm.formFields.interviewSetting.assessmentValidity
+                  .expirationDuration
+              }
+              onChange={(e) => {
+                handleUpdateFormFields({
+                  path: 'interviewSetting.assessmentValidity.expirationDuration',
+                  value: e.target.value,
+                });
+              }}
+            />
+          }
+          slotRetrysCount={
+            <UITextField
+              type='number'
+              value={
+                jobForm.formFields.interviewSetting.assessmentValidity
+                  .candidateRetry
+              }
+              onChange={(e) => {
+                handleUpdateFormFields({
+                  path: 'interviewSetting.assessmentValidity.candidateRetry',
+                  value: e.target.value,
+                });
+              }}
+            />
+          }
+          slotRightScrollMenu={
+            <>
+              <SectionTabs />
+            </>
+          }
+          slotToggleAssessment={
+            <ToggleBtn
+              handleChange={(newVal) => {
+                handleUpdateFormFields({
+                  path: 'videoAssessment',
+                  value: newVal,
+                });
+              }}
+              isChecked={jobForm.formFields.videoAssessment}
+            />
+          }
+          slotSwitchAudioVideo={
+            <>
+              {!jobForm.formFields.videoAssessment ? (
+                <AudioSwitcherCard
+                  slotAvatar={
                     <Image
-                      src={
-                        avatar_list.find(
-                          (a) => a.avatar_id === videAvatar?.avatar_id,
-                        )?.normal_preview
-                      }
-                      width={80}
+                      src={interviewerList[recruiter.audio_avatar_id].image}
+                      width={40}
                       height={40}
                       alt=''
                       style={{
-                        objectFit: 'contain',
+                        objectFit: 'cover',
                       }}
                     />
-                  </>
-                }
-                onClickCompanySetting={{
-                  onClick: () => router.replace(pageRoutes.COMPANY),
-                }}
-              />
-            )}
-          </>
-        }
-      />
+                  }
+                  onClickCompanySetting={{
+                    onClick: () => router.replace(pageRoutes.COMPANY),
+                  }}
+                />
+              ) : (
+                <VideoSwitcherCard
+                  slotAvatar={
+                    <>
+                      <Image
+                        src={
+                          avatar_list.find(
+                            (a) => a.avatar_id === videAvatar?.avatar_id,
+                          )?.normal_preview
+                        }
+                        width={80}
+                        height={40}
+                        alt=''
+                        style={{
+                          objectFit: 'contain',
+                        }}
+                      />
+                    </>
+                  }
+                  onClickCompanySetting={{
+                    onClick: () => router.replace(pageRoutes.COMPANY),
+                  }}
+                />
+              )}
+            </>
+          }
+        />
+      )}
     </>
   );
 };
@@ -242,6 +256,8 @@ const sectionIds = [
 ];
 
 function SectionTabs() {
+  const { handleUpdateFormFields } = useJobForm();
+
   const [isSectionInview, setIsSectionInView] = useState(Array(6).fill(false));
   const sectionRefs = useRef(null);
   const router = useRouter();
@@ -295,6 +311,14 @@ function SectionTabs() {
   return (
     <>
       <AssessmentScrollMenu
+        onClickDisable={{
+          onClick: () => {
+            handleUpdateFormFields({
+              path: 'assessment',
+              value: false,
+            });
+          },
+        }}
         isInstructionActive={isSectionInview[0]}
         isAssessmentActive={isSectionInview[1]}
         isWelcomeActive={isSectionInview[2]}

@@ -41,6 +41,7 @@ export function CreateNewJob({
   slotCloseJob,
   onClickPreviewChanges = {},
   slotUnpublishDisclaimer,
+  isBetaVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -125,7 +126,12 @@ export function CreateNewJob({
               {...onClickDetails}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "relative",
+                  "zindex-6"
+                )}
                 tag="div"
               >
                 {"Details"}
@@ -173,7 +179,12 @@ export function CreateNewJob({
               {...onClickScoreSetting}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "relative",
+                  "zindex-6"
+                )}
                 tag="div"
               >
                 {"Profile Score"}
@@ -192,12 +203,21 @@ export function CreateNewJob({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "create-job-menu-wrap")}
+              className={_utils.cx(
+                _styles,
+                "create-job-menu-wrap",
+                "assessment"
+              )}
               tag="div"
               {...onClickScreeningQuestions}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "relative",
+                  "zindex-6"
+                )}
                 tag="div"
               >
                 {"Assessment"}
@@ -214,6 +234,19 @@ export function CreateNewJob({
               >
                 {slotDisclaimerScreening}
               </_Builtin.Block>
+              {isBetaVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "beta-wrap")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-sm")}
+                    tag="div"
+                  >
+                    {"Beta"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "create-job-menu-wrap")}
@@ -221,7 +254,12 @@ export function CreateNewJob({
               {...onClickWorkflows}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "relative",
+                  "zindex-6"
+                )}
                 tag="div"
               >
                 {"Workflows"}
@@ -245,7 +283,12 @@ export function CreateNewJob({
               {...onClickEmailTemplates}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                className={_utils.cx(
+                  _styles,
+                  "fw-semibold",
+                  "relative",
+                  "zindex-6"
+                )}
                 tag="div"
               >
                 {"Email Templates"}
