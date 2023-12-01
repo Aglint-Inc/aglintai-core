@@ -6,9 +6,14 @@ import _styles from "./AssessmentScore.module.css";
 export function AssessmentScore({
   as: _Component = _Builtin.Block,
   textScore = "--",
+  props = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "assessment-score")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "assessment-score")}
+      tag="div"
+      {...props}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "icon-block")} tag="div">
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "html-embed")}

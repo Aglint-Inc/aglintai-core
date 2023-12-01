@@ -109,29 +109,6 @@ export function ListItemSkeletalLoader({
             className={_utils.cx(
               _styles,
               "cv-list-column",
-              "experience",
-              "skeletal"
-            )}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-skeletal-block")}
-              tag="div"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-skeletal-block", "overlay")}
-              tag="div"
-            />
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column",
               "location",
               "skeletal"
             )}

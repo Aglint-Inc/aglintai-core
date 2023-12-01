@@ -301,10 +301,10 @@
 
 .cvs-intro-profile-image {
   overflow: hidden;
-  width: 62px;
-  height: 62px;
-  min-height: 62px;
-  min-width: 62px;
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  min-width: 20px;
 
   border-radius: 8px;
 }
@@ -312,8 +312,8 @@
 .cvs-intro-profile-info {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
 }
 
 .div-block-490 {

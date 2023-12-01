@@ -103,6 +103,8 @@
 
 .flex-h {
   display: flex;
+  grid-column-gap: 32px;
+  grid-row-gap: 32px;
 }
 
 .flex-h.align-end {

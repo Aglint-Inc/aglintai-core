@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { InsightTagEmpty } from "./InsightTagEmpty";
 import * as _utils from "./utils";
 import _styles from "./TopCandidateListItem.module.css";
 
@@ -11,13 +12,16 @@ export function TopCandidateListItem({
   name = "Dianne Russell",
   strength = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   weakness = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
-  summary = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
+  summary = "--",
   onclickCandidate = {},
   isHighlighted = false,
   slotInsights,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "cv-list-row")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "cv-list-row", "top-can")}
+      tag="div"
+    >
       {isHighlighted ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "top-can-highlight")}
@@ -89,7 +93,7 @@ export function TopCandidateListItem({
                 tag="div"
               />
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold", "line-clamp-1")}
                 tag="div"
               >
                 {name}
@@ -104,7 +108,7 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "z-10")}
           tag="div"
         >
           {isHighlighted ? (
@@ -114,15 +118,10 @@ export function TopCandidateListItem({
             />
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column",
-              "insights",
-              "overflow-none"
-            )}
+            className={_utils.cx(_styles, "cv-list-column", "insights")}
             tag="div"
           >
-            {slotInsights}
+            {slotInsights ?? <InsightTagEmpty />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

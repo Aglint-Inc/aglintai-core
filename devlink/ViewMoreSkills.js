@@ -8,6 +8,7 @@ export function ViewMoreSkills({
   isViewLessVisible = false,
   isViewMoreVisible = true,
   onClickViewMore = {},
+  textMore = "View more..",
 }) {
   return (
     <_Component
@@ -21,7 +22,7 @@ export function ViewMoreSkills({
           className={_utils.cx(_styles, "view-more-text")}
           tag="div"
         >
-          {"View more.."}
+          {textMore}
         </_Builtin.Block>
       ) : null}
       {isViewLessVisible ? (

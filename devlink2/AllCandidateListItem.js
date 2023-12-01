@@ -83,7 +83,7 @@ export function AllCandidateListItem({
               {slotProfileImage}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "line-clamp-1")}
+              className={_utils.cx(_styles, "fw-semibold", "line-clamp-1")}
               tag="div"
             >
               {name}
@@ -118,6 +118,12 @@ export function AllCandidateListItem({
                 tag="div"
               />
             ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-column", "assessment")}
+              tag="div"
+            >
+              {slotAssessmentScore ?? <AssessmentScore />}
+            </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block

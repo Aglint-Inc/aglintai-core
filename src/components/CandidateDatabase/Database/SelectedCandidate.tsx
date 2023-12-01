@@ -33,6 +33,7 @@ const SelectedCandidate = ({
   return (
     <>
       <CandidateDrawer
+      showClose={false}
         showBookmark={false}
         candidate={{
           ...candidate,

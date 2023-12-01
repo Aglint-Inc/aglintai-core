@@ -14,16 +14,32 @@ export function Filter({
   onClickApplyFilter = {},
   slotFilter,
   isApplyFilterDisable = true,
+  isFilterEmpty = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component className={_utils.cx(_styles, "add-filter-wrap")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-add-filter")}
-        tag="div"
-      >
-        {slotFilter}
+      <_Builtin.Block className={_utils.cx(_styles, "relative")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-add-filter")}
+          tag="div"
+        >
+          {slotFilter}
+        </_Builtin.Block>
+        {isFilterEmpty ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "empty-filter-wrap")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+              tag="div"
+            >
+              {"No filters have been added. Click 'add filter' to add one."}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "filter-wraps-add")}
