@@ -61,14 +61,12 @@ const ScoreWheelControls = ({
     setWeights(newWeights);
   };
   return (
-    <Stack gap={2}>
+    <Stack gap={2} display={'flex'} alignItems={'flex-start'}>
       {sliders}
-      <Stack width={'100px'}>
-        <ButtonPrimaryOutlinedRegular
-          buttonText={'Reset'}
-          buttonProps={{ onClick: () => handleEqualise() }}
-        />
-      </Stack>
+      <ButtonPrimaryOutlinedRegular
+        buttonText={'Reset'}
+        buttonProps={{ onClick: () => handleEqualise() }}
+      />
     </Stack>
   );
 };

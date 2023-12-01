@@ -5,7 +5,7 @@ export default function handler(req, res) {
     background: '#ffffff',
     clips: [
       {
-        avatar_id: 'Angela-inblackskirt-20220820',
+        avatar_id: req.body.avatar_id,
         avatar_style: 'normal',
         input_text: req.body.text,
         offset: {
@@ -13,11 +13,11 @@ export default function handler(req, res) {
           y: 0,
         },
         scale: 1,
-        voice_id: '1bd001e7e50f421d891986aad5158bc8',
+        voice_id: req.body.voice_id,
       },
     ],
     ratio: '16:9',
-    test: true,
+    test: req.body.test,
     version: 'v1alpha',
   };
 

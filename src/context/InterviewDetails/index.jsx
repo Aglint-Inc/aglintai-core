@@ -17,10 +17,20 @@ function InterviewDetailsContextProvider({ children }) {
 
   useEffect(() => {
     const application_id = router.query.id;
+    const job_id = router.query.job_id;
     if (application_id) {
       fetchingDetails(application_id);
     }
+    if (job_id) {
+      getJob(job_id);
+    }
   }, [router]);
+
+  async function getJob(job_id) {
+    const job_Details = await getJobDetails(job_id);
+    setJobDetails(job_Details || {});
+    setInitialLoading(false);
+  }
 
   function fetchingDetails(application_id) {
     getCandidateDetails(application_id).then(async (candidate_details) => {

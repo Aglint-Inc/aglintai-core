@@ -5,7 +5,7 @@ import * as _utils from "./utils";
 import _styles from "./SignupSlider.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-826":{"id":"e-826","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-345","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-827"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".ju-redirect-link.sign-in","originalId":"650c129b14ba3ec43088ffe0|0eceb87e-fa39-97e0-b799-497146b03323","appliesTo":"CLASS"},"targets":[{"selector":".ju-redirect-link.sign-in","originalId":"650c129b14ba3ec43088ffe0|0eceb87e-fa39-97e0-b799-497146b03323","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1694684648206},"e-1352":{"id":"e-1352","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1353"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365602},"e-1353":{"id":"e-1353","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1352"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365605},"e-1382":{"id":"e-1382","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-489","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1383"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1383":{"id":"e-1383","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-490","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1382"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1386":{"id":"e-1386","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1387"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976388},"e-1387":{"id":"e-1387","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1386"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976390}},"actionLists":{"a-345":{"id":"a-345","title":"login-[open]","actionItemGroups":[{"actionItems":[{"id":"a-345-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"PARENT","selector":".auth-right-block","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-345-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"PARENT","selector":".auth-right-block","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba"]},"value":"none"}},{"id":"a-345-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".auth-right-block.login","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba","9b76f671-e79b-6a67-4574-de8fce2fd55a"]},"value":"flex"}}]},{"actionItems":[{"id":"a-345-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"selector":".auth-right-block.login","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba","9b76f671-e79b-6a67-4574-de8fce2fd55a"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1694684755830},"a-471":{"id":"a-471","title":"Email Interaction Hover In","actionItemGroups":[{"actionItems":[{"id":"a-471-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-471-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-471-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-471-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-471-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-471-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-472":{"id":"a-472","title":"Email Interaction Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-472-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-472-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-472-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-489":{"id":"a-489","title":"Email Interaction Hover In 2","actionItemGroups":[{"actionItems":[{"id":"a-489-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-489-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-489-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-489-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-489-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-489-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-490":{"id":"a-490","title":"Email Interaction Hover Out 2","actionItemGroups":[{"actionItems":[{"id":"a-490-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-490-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-490-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-826":{"id":"e-826","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-345","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-827"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".ju-redirect-link.sign-in","originalId":"650c129b14ba3ec43088ffe0|0eceb87e-fa39-97e0-b799-497146b03323","appliesTo":"CLASS"},"targets":[{"selector":".ju-redirect-link.sign-in","originalId":"650c129b14ba3ec43088ffe0|0eceb87e-fa39-97e0-b799-497146b03323","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1694684648206}},"actionLists":{"a-345":{"id":"a-345","title":"login-[open]","actionItemGroups":[{"actionItems":[{"id":"a-345-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"PARENT","selector":".auth-right-block","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-345-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"PARENT","selector":".auth-right-block","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba"]},"value":"none"}},{"id":"a-345-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".auth-right-block.login","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba","9b76f671-e79b-6a67-4574-de8fce2fd55a"]},"value":"flex"}}]},{"actionItems":[{"id":"a-345-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"selector":".auth-right-block.login","selectorGuids":["af16ed69-91dd-c067-20ac-a3d59c51ebba","9b76f671-e79b-6a67-4574-de8fce2fd55a"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1694684755830}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function SignupSlider({
@@ -40,7 +40,7 @@ export function SignupSlider({
               navSpacing={3}
               navShadow={false}
               autoplay={true}
-              delay={4000}
+              delay={6000}
               iconArrows={true}
               animation="slide"
               navNumbers={true}
@@ -106,7 +106,7 @@ export function SignupSlider({
                           width="auto"
                           height="auto"
                           alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9ff9c9162baa53bb5d_jennifer-mayers.jpeg"
                         />
                         <_Builtin.Block
                           className={_utils.cx(_styles, "div-block-255")}
@@ -116,17 +116,13 @@ export function SignupSlider({
                             className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Sarah Lee"}
+                            {"Jennifer Mayers"}
                           </_Builtin.Block>
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-md",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Recruiter, EliteRecruit Agency"}
+                            {"Hiring Manager"}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -137,197 +133,7 @@ export function SignupSlider({
                       width="auto"
                       height="auto"
                       alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890202_9b293bfefab6eb73a37b2d3b8de37b30.jpg"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "bg-image-overlay")}
-                      tag="div"
-                    />
-                  </_Builtin.Block>
-                </_Builtin.SliderSlide>
-                <_Builtin.SliderSlide tag="div">
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "auth-left-block")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "auth-quote-block")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "flex-vertical-left",
-                          "gap-32"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "quote-icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "embed-icon")}
-                            value="%3Csvg%20width%3D%2244%22%20height%3D%2235%22%20viewbox%3D%220%200%2044%2035%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M37.7734%200.181918C39.7266%200.181918%2040.7031%200.572543%2040.7031%201.35379C40.7031%201.68861%2040.3962%201.96763%2039.7824%202.19085C34.6484%204.25558%2032.0815%208.27344%2032.0815%2014.2444C32.8627%2014.1328%2033.4208%2014.077%2033.7556%2014.077C40.452%2014.077%2043.8002%2017.4252%2043.8002%2024.1217C43.8002%2030.7623%2040.452%2034.0826%2033.7556%2034.0826C25.9989%2034.0826%2022.1205%2029.8136%2022.1205%2021.2757C22.1205%2012.0681%2025.8315%205.45536%2033.2533%201.4375C34.8158%200.600445%2036.3225%200.181918%2037.7734%200.181918ZM15.9263%200.433034C17.8795%200.433034%2018.856%200.823659%2018.856%201.60491C18.856%201.93973%2018.5491%202.21875%2017.9353%202.44196C12.8013%204.50669%2010.2344%208.52455%2010.2344%2014.4955C11.0156%2014.3839%2011.5737%2014.3281%2011.9085%2014.3281C18.6049%2014.3281%2021.9531%2017.6763%2021.9531%2024.3728C21.9531%2031.0134%2018.6049%2034.3337%2011.9085%2034.3337C4.15179%2034.3337%200.273438%2030.0647%200.273438%2021.5268C0.273438%2012.3192%203.98438%205.70647%2011.4063%201.68861C12.9688%200.851561%2014.4754%200.433034%2015.9263%200.433034Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Paragraph
-                          className={_utils.cx(
-                            _styles,
-                            "text-xl",
-                            "fw-semibold",
-                            "text-white"
-                          )}
-                        >
-                          {
-                            "With Aglint, we've cut our candidate screening time by 50% while boosting the caliber of applicants. An indispensable tool for HR efficiency!"
-                          }
-                        </_Builtin.Paragraph>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ju-profile-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Image
-                          className={_utils.cx(
-                            _styles,
-                            "join-us-profile-image"
-                          )}
-                          loading="lazy"
-                          width="auto"
-                          height="auto"
-                          alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "div-block-255")}
-                          tag="div"
-                        >
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
-                            tag="div"
-                          >
-                            {"Sarah Lee"}
-                          </_Builtin.Block>
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
-                            tag="div"
-                          >
-                            {"Recruiter, EliteRecruit Agency"}
-                          </_Builtin.Block>
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Image
-                      className={_utils.cx(_styles, "bg-image")}
-                      loading="lazy"
-                      width="auto"
-                      height="auto"
-                      alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890205_5cc2627731d6bb27a233e9d1e4fc90f7.jpg"
-                    />
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "bg-image-overlay")}
-                      tag="div"
-                    />
-                  </_Builtin.Block>
-                </_Builtin.SliderSlide>
-                <_Builtin.SliderSlide tag="div">
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "auth-left-block")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "auth-quote-block")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "flex-vertical-left",
-                          "gap-32"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "quote-icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "embed-icon")}
-                            value="%3Csvg%20width%3D%2244%22%20height%3D%2235%22%20viewbox%3D%220%200%2044%2035%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M37.7734%200.181918C39.7266%200.181918%2040.7031%200.572543%2040.7031%201.35379C40.7031%201.68861%2040.3962%201.96763%2039.7824%202.19085C34.6484%204.25558%2032.0815%208.27344%2032.0815%2014.2444C32.8627%2014.1328%2033.4208%2014.077%2033.7556%2014.077C40.452%2014.077%2043.8002%2017.4252%2043.8002%2024.1217C43.8002%2030.7623%2040.452%2034.0826%2033.7556%2034.0826C25.9989%2034.0826%2022.1205%2029.8136%2022.1205%2021.2757C22.1205%2012.0681%2025.8315%205.45536%2033.2533%201.4375C34.8158%200.600445%2036.3225%200.181918%2037.7734%200.181918ZM15.9263%200.433034C17.8795%200.433034%2018.856%200.823659%2018.856%201.60491C18.856%201.93973%2018.5491%202.21875%2017.9353%202.44196C12.8013%204.50669%2010.2344%208.52455%2010.2344%2014.4955C11.0156%2014.3839%2011.5737%2014.3281%2011.9085%2014.3281C18.6049%2014.3281%2021.9531%2017.6763%2021.9531%2024.3728C21.9531%2031.0134%2018.6049%2034.3337%2011.9085%2034.3337C4.15179%2034.3337%200.273438%2030.0647%200.273438%2021.5268C0.273438%2012.3192%203.98438%205.70647%2011.4063%201.68861C12.9688%200.851561%2014.4754%200.433034%2015.9263%200.433034Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Paragraph
-                          className={_utils.cx(
-                            _styles,
-                            "text-xl",
-                            "fw-semibold",
-                            "text-white"
-                          )}
-                        >
-                          {
-                            "Aglint delivers where it matters: saving time without sacrificing quality. Our team couldn't be happier with the high-caliber candidates."
-                          }
-                        </_Builtin.Paragraph>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "ju-profile-block")}
-                        tag="div"
-                      >
-                        <_Builtin.Image
-                          className={_utils.cx(
-                            _styles,
-                            "join-us-profile-image"
-                          )}
-                          loading="lazy"
-                          width="auto"
-                          height="auto"
-                          alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "div-block-255")}
-                          tag="div"
-                        >
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
-                            tag="div"
-                          >
-                            {"Sarah Lee"}
-                          </_Builtin.Block>
-                          <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
-                            tag="div"
-                          >
-                            {"Recruiter, EliteRecruit Agency"}
-                          </_Builtin.Block>
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Image
-                      className={_utils.cx(_styles, "bg-image")}
-                      loading="lazy"
-                      width="auto"
-                      height="auto"
-                      alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020d_33bc4fe49822f82b171f0daf6928f26e-min.jpg"
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec85da25bd5ee87fa8d0_jennifer-mayers-cover-min.jpeg"
                     />
                     <_Builtin.Block
                       className={_utils.cx(_styles, "bg-image-overlay")}
@@ -387,31 +193,23 @@ export function SignupSlider({
                           width="auto"
                           height="auto"
                           alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9fb3b211dc1973f5b1_john-williams.jpeg"
                         />
                         <_Builtin.Block
                           className={_utils.cx(_styles, "div-block-255")}
                           tag="div"
                         >
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Raj Patel"}
+                            {"John Williams"}
                           </_Builtin.Block>
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Hiring Manager, GreenWorld Renewables"}
+                            {"Talent Acquisition Specialist"}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -422,7 +220,7 @@ export function SignupSlider({
                       width="auto"
                       height="auto"
                       alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020c_76f9501969c1f1d3f67bfa5f8cb9acc8-min.jpg"
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec85c1fddfcf7a340c48_john-williams-cover-min.jpeg"
                     />
                     <_Builtin.Block
                       className={_utils.cx(_styles, "bg-image-overlay")}
@@ -465,7 +263,7 @@ export function SignupSlider({
                           )}
                         >
                           {
-                            "Streamlined and effective, Aglint makes candidate screening a breeze, freeing up our time without compromising on quality."
+                            "Aglint's candidate screening tool revolutionized the way we hire. It made our process efficient, and we're now able to focus on the most promising candidates."
                           }
                         </_Builtin.Paragraph>
                       </_Builtin.Block>
@@ -482,31 +280,23 @@ export function SignupSlider({
                           width="auto"
                           height="auto"
                           alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f2e76a4125ddfc9ca_emily-rodriguez.jpeg"
                         />
                         <_Builtin.Block
                           className={_utils.cx(_styles, "div-block-255")}
                           tag="div"
                         >
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Raj Patel"}
+                            {"Emily Rodriguez"}
                           </_Builtin.Block>
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Hiring Manager, GreenWorld Renewables"}
+                            {"Recruitment Lead"}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -517,7 +307,7 @@ export function SignupSlider({
                       width="auto"
                       height="auto"
                       alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec43089020c_76f9501969c1f1d3f67bfa5f8cb9acc8-min.jpg"
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec8549f3b050c1645270_emily-rodriguez-cover-min.jpeg"
                     />
                     <_Builtin.Block
                       className={_utils.cx(_styles, "bg-image-overlay")}
@@ -560,7 +350,7 @@ export function SignupSlider({
                           )}
                         >
                           {
-                            "Morem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
+                            "Aglint delivers where it matters: saving time without sacrificing quality. Our team couldn't be happier with the high-caliber candidates."
                           }
                         </_Builtin.Paragraph>
                       </_Builtin.Block>
@@ -577,31 +367,23 @@ export function SignupSlider({
                           width="auto"
                           height="auto"
                           alt=""
-                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890204_Rectangle%20344.png"
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
                         />
                         <_Builtin.Block
                           className={_utils.cx(_styles, "div-block-255")}
                           tag="div"
                         >
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Raj Patel"}
+                            {"Michael Turner"}
                           </_Builtin.Block>
                           <_Builtin.Block
-                            className={_utils.cx(
-                              _styles,
-                              "text-sm",
-                              "fw-semibold"
-                            )}
+                            className={_utils.cx(_styles, "fw-semibold")}
                             tag="div"
                           >
-                            {"Hiring Manager, GreenWorld Renewables"}
+                            {"HR Director"}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -612,7 +394,181 @@ export function SignupSlider({
                       width="auto"
                       height="auto"
                       alt=""
-                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/650c129b14ba3ec430890207_8c1682abd5555cad7cc95b890ef191e3-min.jpg"
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec8573412410fc8ea77f_michael-turner-cover-min.jpeg"
+                    />
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "bg-image-overlay")}
+                      tag="div"
+                    />
+                  </_Builtin.Block>
+                </_Builtin.SliderSlide>
+                <_Builtin.SliderSlide tag="div">
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "auth-left-block")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "auth-quote-block")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "flex-vertical-left",
+                          "gap-32"
+                        )}
+                        tag="div"
+                      >
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "quote-icon-block")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "embed-icon")}
+                            value="%3Csvg%20width%3D%2244%22%20height%3D%2235%22%20viewbox%3D%220%200%2044%2035%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M37.7734%200.181918C39.7266%200.181918%2040.7031%200.572543%2040.7031%201.35379C40.7031%201.68861%2040.3962%201.96763%2039.7824%202.19085C34.6484%204.25558%2032.0815%208.27344%2032.0815%2014.2444C32.8627%2014.1328%2033.4208%2014.077%2033.7556%2014.077C40.452%2014.077%2043.8002%2017.4252%2043.8002%2024.1217C43.8002%2030.7623%2040.452%2034.0826%2033.7556%2034.0826C25.9989%2034.0826%2022.1205%2029.8136%2022.1205%2021.2757C22.1205%2012.0681%2025.8315%205.45536%2033.2533%201.4375C34.8158%200.600445%2036.3225%200.181918%2037.7734%200.181918ZM15.9263%200.433034C17.8795%200.433034%2018.856%200.823659%2018.856%201.60491C18.856%201.93973%2018.5491%202.21875%2017.9353%202.44196C12.8013%204.50669%2010.2344%208.52455%2010.2344%2014.4955C11.0156%2014.3839%2011.5737%2014.3281%2011.9085%2014.3281C18.6049%2014.3281%2021.9531%2017.6763%2021.9531%2024.3728C21.9531%2031.0134%2018.6049%2034.3337%2011.9085%2034.3337C4.15179%2034.3337%200.273438%2030.0647%200.273438%2021.5268C0.273438%2012.3192%203.98438%205.70647%2011.4063%201.68861C12.9688%200.851561%2014.4754%200.433034%2015.9263%200.433034Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        </_Builtin.Block>
+                        <_Builtin.Paragraph
+                          className={_utils.cx(
+                            _styles,
+                            "text-xl",
+                            "fw-semibold",
+                            "text-white"
+                          )}
+                        >
+                          {
+                            "Aglint is a game-changer for our recruitment team. It streamlines our workflow, allowing us to spend more time with top-notch candidates. Highly recommended!"
+                          }
+                        </_Builtin.Paragraph>
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "ju-profile-block")}
+                        tag="div"
+                      >
+                        <_Builtin.Image
+                          className={_utils.cx(
+                            _styles,
+                            "join-us-profile-image"
+                          )}
+                          loading="lazy"
+                          width="auto"
+                          height="auto"
+                          alt=""
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f1bd974b59b176aea_sarah-johanson.jpeg"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-255")}
+                          tag="div"
+                        >
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "fw-semibold")}
+                            tag="div"
+                          >
+                            {"Sarah Johnson"}
+                          </_Builtin.Block>
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "fw-semibold")}
+                            tag="div"
+                          >
+                            {"Recruitment Coordinator"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Image
+                      className={_utils.cx(_styles, "bg-image")}
+                      loading="lazy"
+                      width="auto"
+                      height="auto"
+                      alt=""
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec85bee71495711b52e4_sarah-johanson-cover-min.jpeg"
+                    />
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "bg-image-overlay")}
+                      tag="div"
+                    />
+                  </_Builtin.Block>
+                </_Builtin.SliderSlide>
+                <_Builtin.SliderSlide tag="div">
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "auth-left-block")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "auth-quote-block")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "flex-vertical-left",
+                          "gap-32"
+                        )}
+                        tag="div"
+                      >
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "quote-icon-block")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "embed-icon")}
+                            value="%3Csvg%20width%3D%2244%22%20height%3D%2235%22%20viewbox%3D%220%200%2044%2035%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M37.7734%200.181918C39.7266%200.181918%2040.7031%200.572543%2040.7031%201.35379C40.7031%201.68861%2040.3962%201.96763%2039.7824%202.19085C34.6484%204.25558%2032.0815%208.27344%2032.0815%2014.2444C32.8627%2014.1328%2033.4208%2014.077%2033.7556%2014.077C40.452%2014.077%2043.8002%2017.4252%2043.8002%2024.1217C43.8002%2030.7623%2040.452%2034.0826%2033.7556%2034.0826C25.9989%2034.0826%2022.1205%2029.8136%2022.1205%2021.2757C22.1205%2012.0681%2025.8315%205.45536%2033.2533%201.4375C34.8158%200.600445%2036.3225%200.181918%2037.7734%200.181918ZM15.9263%200.433034C17.8795%200.433034%2018.856%200.823659%2018.856%201.60491C18.856%201.93973%2018.5491%202.21875%2017.9353%202.44196C12.8013%204.50669%2010.2344%208.52455%2010.2344%2014.4955C11.0156%2014.3839%2011.5737%2014.3281%2011.9085%2014.3281C18.6049%2014.3281%2021.9531%2017.6763%2021.9531%2024.3728C21.9531%2031.0134%2018.6049%2034.3337%2011.9085%2034.3337C4.15179%2034.3337%200.273438%2030.0647%200.273438%2021.5268C0.273438%2012.3192%203.98438%205.70647%2011.4063%201.68861C12.9688%200.851561%2014.4754%200.433034%2015.9263%200.433034Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        </_Builtin.Block>
+                        <_Builtin.Paragraph
+                          className={_utils.cx(
+                            _styles,
+                            "text-xl",
+                            "fw-semibold",
+                            "text-white"
+                          )}
+                        >
+                          {
+                            "Thanks to Aglint, our hiring process is now faster and more accurate. It's a tool that every HR professional should have in their arsenal."
+                          }
+                        </_Builtin.Paragraph>
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "ju-profile-block")}
+                        tag="div"
+                      >
+                        <_Builtin.Image
+                          className={_utils.cx(
+                            _styles,
+                            "join-us-profile-image"
+                          )}
+                          loading="lazy"
+                          width="auto"
+                          height="auto"
+                          alt=""
+                          src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544eaa04e499de1d6d51aa1_amanda-martinez.jpeg"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-255")}
+                          tag="div"
+                        >
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "fw-semibold")}
+                            tag="div"
+                          >
+                            {"Amanda Martinez"}
+                          </_Builtin.Block>
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "fw-semibold")}
+                            tag="div"
+                          >
+                            {"Talent Acquisition Manager"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Image
+                      className={_utils.cx(_styles, "bg-image")}
+                      loading="lazy"
+                      width="auto"
+                      height="auto"
+                      alt=""
+                      src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ec8540e8723d781ae51a_amanda-martinez-cover-min.jpeg"
                     />
                     <_Builtin.Block
                       className={_utils.cx(_styles, "bg-image-overlay")}
@@ -622,29 +578,29 @@ export function SignupSlider({
                 </_Builtin.SliderSlide>
               </_Builtin.SliderMask>
               <_Builtin.SliderArrow
-                className={_utils.cx(_styles, "hide")}
+                className={_utils.cx(_styles, "signup-slider-arrow", "left")}
                 dir="left"
               >
-                <_Builtin.Icon
-                  widget={{
-                    type: "icon",
-                    icon: "slider-left",
-                  }}
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed-icon")}
+                  value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2222%22%20viewBox%3D%220%200%2014%2022%22%20fill%3D%22none%22%3E%0A%20%20%3Cg%20clip-path%3D%22url(%23clip0_4574_144672)%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0.975774%2011.9039C0.475774%2011.4039%200.475774%2010.5919%200.975774%2010.0919L8.65577%202.41189C9.15577%201.91189%209.96777%201.91189%2010.4678%202.41189C10.9678%202.91189%2010.9678%203.72389%2010.4678%204.22389L3.69177%2010.9999L10.4638%2017.7759C10.9638%2018.2759%2010.9638%2019.0879%2010.4638%2019.5879C9.96377%2020.0879%209.15177%2020.0879%208.65177%2019.5879L0.971773%2011.9079L0.975774%2011.9039Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3CclipPath%20id%3D%22clip0_4574_144672%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%2212.8%22%20height%3D%2220.48%22%20fill%3D%22white%22%20transform%3D%22matrix(-1%200%200%20-1%2013.3999%2021.2402)%22%2F%3E%0A%20%20%20%20%3C%2FclipPath%3E%0A%20%20%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
                 />
               </_Builtin.SliderArrow>
               <_Builtin.SliderArrow
-                className={_utils.cx(_styles, "hide")}
+                className={_utils.cx(_styles, "signup-slider-arrow", "right")}
                 dir="right"
               >
-                <_Builtin.Icon
-                  widget={{
-                    type: "icon",
-                    icon: "slider-right",
-                  }}
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed-icon")}
+                  value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2222%22%20viewBox%3D%220%200%2014%2022%22%20fill%3D%22none%22%3E%0A%20%20%3Cg%20clip-path%3D%22url(%23clip0_4574_144669)%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M13.0242%2010.0961C13.5242%2010.5961%2013.5242%2011.4081%2013.0242%2011.9081L5.34423%2019.5881C4.84423%2020.0881%204.03223%2020.0881%203.53223%2019.5881C3.03223%2019.0881%203.03223%2018.2761%203.53223%2017.7761L10.3082%2011.0001L3.53623%204.22411C3.03623%203.72411%203.03623%202.91211%203.53623%202.41211C4.03623%201.91211%204.84823%201.91211%205.34823%202.41211L13.0282%2010.0921L13.0242%2010.0961Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3CclipPath%20id%3D%22clip0_4574_144669%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%2212.8%22%20height%3D%2220.48%22%20fill%3D%22white%22%20transform%3D%22translate(0.600098%200.759766)%22%2F%3E%0A%20%20%20%20%3C%2FclipPath%3E%0A%20%20%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
                 />
               </_Builtin.SliderArrow>
               <_Builtin.SliderNav className={_utils.cx(_styles, "hide")} />
             </_Builtin.SliderWrapper>
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "hide")}
+              value="%3Cstyle%3E%0A%5Bclass*%3D%22SignupSlider_signup-slider-arrow__%22%5D%7B%0Adisplay%3Aflex%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "auth-icon-block", "tab-logo")}

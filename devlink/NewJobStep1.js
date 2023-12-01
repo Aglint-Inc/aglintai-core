@@ -13,7 +13,12 @@ export function NewJobStep1({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-1")}
+      className={_utils.cx(
+        _styles,
+        "job-sidebar-main-block",
+        "cj-step-1",
+        "height-auto"
+      )}
       tag="div"
     >
       {isAddJob ? (
@@ -38,7 +43,7 @@ export function NewJobStep1({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "cj-main-wrapper")}
+        className={_utils.cx(_styles, "cj-main-wrapper", "height-auto")}
         tag="div"
       >
         <_Builtin.Block

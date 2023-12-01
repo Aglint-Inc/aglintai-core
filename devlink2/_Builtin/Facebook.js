@@ -17,8 +17,8 @@ export function Facebook({
   }
   const params = {
     href: url,
-    layout: layout,
-    locale: locale,
+    layout,
+    locale,
     action: "like",
     show_faces: "false",
     share: "false",

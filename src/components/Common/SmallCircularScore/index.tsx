@@ -1,18 +1,18 @@
 import { Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+
+import { palette } from '@/src/context/Theme/Theme';
 
 export const SmallCircularScore = ({
-  finalScore,
-  triggerAnimation = false,
+  score,
   scale = 1,
+  fontSize = 14,
   showScore = false,
 }: {
-  finalScore: number;
-  triggerAnimation?: boolean;
+  score: number;
   scale?: number;
+  fontSize?: number;
   showScore?: boolean;
 }) => {
-  const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
   const green = {
     score: '#0B3B29',
     border: '#228F67',
@@ -20,7 +20,7 @@ export const SmallCircularScore = ({
   };
   const yellow = {
     score: '#703815',
-    border: '#F79A3E',
+    border: palette.yellow[700],
     background: '#FFF7ED',
   };
   const red = {
@@ -30,22 +30,6 @@ export const SmallCircularScore = ({
   };
   const color = score > 33 ? (score > 66 ? green : yellow) : red;
 
-  useEffect(() => {
-    if (score === finalScore) {
-      return;
-    }
-    if (score > finalScore) {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev - 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev + 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [score, finalScore]);
   return (
     <Stack flexDirection={'row'} alignItems={'center'}>
       <Stack
@@ -78,6 +62,7 @@ export const SmallCircularScore = ({
       {showScore && (
         <Stack
           fontWeight={600}
+          fontSize={`${fontSize}px`}
           style={{ color: color.border }}
         >{`${score}%`}</Stack>
       )}
@@ -85,14 +70,7 @@ export const SmallCircularScore = ({
   );
 };
 
-export const SmallCircularScore2 = ({
-  finalScore,
-  triggerAnimation = false,
-}: {
-  finalScore: number;
-  triggerAnimation?: boolean;
-}) => {
-  const [score, setScore] = useState(triggerAnimation ? 0 : finalScore);
+export const SmallCircularScore2 = ({ score }: { score: number }) => {
   const green = {
     score: '#0B3B29',
     border: '#228F67',
@@ -110,22 +88,6 @@ export const SmallCircularScore2 = ({
   };
   const color = score > 33 ? (score > 66 ? green : yellow) : red;
 
-  useEffect(() => {
-    if (score === finalScore) {
-      return;
-    }
-    if (score > finalScore) {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev - 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setScore((prev) => prev + 1);
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [score, finalScore]);
   return (
     <Stack>
       <Stack

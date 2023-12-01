@@ -47,7 +47,11 @@ export function ProfileInterviewScore({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cvs-score-overview-block")}
+          className={_utils.cx(
+            _styles,
+            "cvs-score-overview-block",
+            "no-margin"
+          )}
           tag="div"
         >
           <_Builtin.Block

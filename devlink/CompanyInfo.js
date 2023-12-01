@@ -53,7 +53,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-348", "top-align")}
+          className={_utils.cx(_styles, "div-block-348", "top-align", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -90,12 +90,15 @@ export function CompanyInfo({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "profile-inputs-wrapper")}
+        className={_utils.cx(_styles, "profile-inputs-wrapper", "pl-20")}
         tag="div"
       >
         {slotBasicForm}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "profile-block", "mt-40")}
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "cs-info-header")}
           tag="div"
@@ -122,7 +125,7 @@ export function CompanyInfo({
           {slotAdditionalInfoForm}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -173,7 +176,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -224,7 +227,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block
@@ -275,7 +278,7 @@ export function CompanyInfo({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0", "pl-20")}
           tag="div"
         >
           <_Builtin.Block

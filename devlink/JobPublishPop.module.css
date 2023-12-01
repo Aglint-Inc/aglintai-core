@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: stretch;
 
-  border: 1px solid var(--grey-200);
+  border: 1px solid #e9ebed;
   border-radius: 10px;
 
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
@@ -34,6 +34,8 @@
 }
 
 .copy-publish-wrappers {
+  position: relative;
+
   display: flex;
   width: 38px;
   height: 38px;
@@ -70,6 +72,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -87,6 +97,56 @@
   display: none;
 }
 
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.copy-tool-tip-wrap {
+  position: absolute;
+  left: -11px;
+  top: -25px;
+  right: 0px;
+  bottom: auto;
+
+  display: none;
+  width: 60px;
+  padding: 5px;
+  justify-content: center;
+
+  border-radius: 100px;
+
+  background-color: #49545c;
+
+  color: white;
+  font-size: 10px;
+  line-height: 12px;
+}
+
 .div-block-485 {
   display: flex;
   margin-top: 14px;
@@ -99,4 +159,18 @@
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }

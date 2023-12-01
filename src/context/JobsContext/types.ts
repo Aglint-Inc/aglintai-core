@@ -1,30 +1,52 @@
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
 
 export type JobsData = {
-  jobs: JobType[] | undefined;
-  applications: JobApplcationDB[] | undefined;
+  jobs: JobTypeDashboard[] | undefined;
+  applications: ApplicationData[] | undefined;
 };
 
-export type InputData = Partial<Omit<JobType, 'created_at' | 'recruiter_id'>>;
+export type ApplicationData = {
+  job_id: string;
+  status: string;
+  email: string;
+};
+
+export type InputData = Partial<
+  Omit<JobTypeDashboard, 'created_at' | 'recruiter_id'>
+>;
 
 export type JobContext = {
   jobsData: JobsData;
-  handleJobRead: () => Promise<JobType[] | undefined>;
+  handleJobRead: () => Promise<JobTypeDashboard[] | undefined>;
   handleJobUpdate: (
     // eslint-disable-next-line no-unused-vars
     jobId: string,
     // eslint-disable-next-line no-unused-vars
-    inputData: Partial<JobType>,
+    inputData: Partial<JobTypeDashboard>,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
-  handleUIJobUpdate: (newJob: JobType) => boolean;
+  handleUIJobReplace: (newJob: JobTypeDashboard) => boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleUIJobUpdate: (jobId: string, newJob?: JobTypeDashboard) => boolean;
   // eslint-disable-next-line no-unused-vars
   handleJobDelete: (jobId: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleJobError: (error: any) => void;
   // eslint-disable-next-line no-unused-vars
-  handleGetJob: (jobId: string) => JobType;
+  handleGetJob: (jobId: string) => JobTypeDashboard;
   // eslint-disable-next-line no-unused-vars
-  handleApplicationsRead: (jobIds: string[]) => void;
+  handleUpdateJobCount: (jobIds: string[]) => Promise<boolean>;
   initialLoad: boolean;
+};
+
+export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
+  active_status: StatusJobs | null;
+  count: CountJobs;
+};
+
+export type CountJobs = {
+  new?: number;
+  interviewing?: number;
+  qualified?: number;
+  disqualified?: number;
 };

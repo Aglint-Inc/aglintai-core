@@ -1,0 +1,76 @@
+.cl-filter-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
+}
+
+.cl-filter-inputs-wrapper {
+  display: flex;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
+}
+
+.cl-filter-option-close {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  border-radius: 4px;
+
+  background-color: #f8f9f9;
+
+  transition: opacity 250ms ease;
+
+  cursor: pointer;
+}
+
+.cl-filter-option-close:hover {
+  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-700 {
+  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-blue-700 {
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}

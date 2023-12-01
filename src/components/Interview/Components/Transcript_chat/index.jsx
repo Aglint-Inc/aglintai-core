@@ -8,7 +8,6 @@ import { AiCardScript } from '@/Interview_devlink/AiCardScript';
 import { InterviewerCardScript } from '@/Interview_devlink/InterviewerCardScript';
 import { TranscriptBlock } from '@/Interview_devlink/TranscriptBlock';
 import { UserCardScript } from '@/Interview_devlink/UserCardScript';
-import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import PlayStop from '../PlayStop';
@@ -41,10 +40,7 @@ function Transcript_chat() {
                     roleName={conv.userRole}
                     textForSpeach={conv.userContent}
                     src={conv.userVoice}
-                    roleImage={getGravatar(
-                      candidateDetails?.email,
-                      candidateDetails?.name,
-                    )}
+                    roleImage={candidateDetails.profile_image}
                     index={index}
                     wrapperStyle={{
                       direction: 'row',

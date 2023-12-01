@@ -22,6 +22,10 @@
   margin-top: 13px;
 }
 
+.mt-13 {
+  margin-top: 13px;
+}
+
 .text-grey-600-3.personalized {
   padding-left: 20px;
 }
@@ -30,8 +34,18 @@
   margin-top: 5px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-grey-600-3.inline-block {
   display: inline;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 @media screen and (max-width: 767px) {

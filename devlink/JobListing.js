@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { CompanyListingLinks } from "./CompanyListingLinks";
 import { ButtonPrimarySmall } from "./ButtonPrimarySmall";
 import * as _utils from "./utils";
 import _styles from "./JobListing.module.css";
@@ -180,7 +181,7 @@ export function JobListing({
                   className={_utils.cx(_styles, "company-list-link-wrappers")}
                   tag="div"
                 >
-                  {slotLinks}
+                  {slotLinks ?? <CompanyListingLinks />}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-444")}

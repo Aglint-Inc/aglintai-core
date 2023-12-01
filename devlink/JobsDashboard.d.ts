@@ -9,4 +9,6 @@ declare function JobsDashboard(props: {
   jobCount?: React.ReactNode;
   textJobsHeader?: React.ReactNode;
   isJobCountTagVisible?: Types.Visibility.VisibilityConditions;
+  onClickLeverImport?: Types.Devlink.RuntimeProps;
+  onClickAddJob?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

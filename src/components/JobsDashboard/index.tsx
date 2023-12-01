@@ -1,12 +1,20 @@
-import { InputAdornment, Stack } from '@mui/material';
+import { Dialog, InputAdornment, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { JobsDashboard } from '@/devlink';
+import { CreateJob, JobsDashboard } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
+import {
+  STATE_GREENHOUSE_DIALOG,
+  STATE_LEVER_DIALOG,
+} from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
-import { JobType } from '@/src/types/data.types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
-import EmptyJobDashboard from './EmptyJobDashboard';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import { GreenhouseModal } from './AddJobWithIntegrations/GreenhouseModal';
+import { LeverModalComp } from './AddJobWithIntegrations/LeverModal';
 import JobsList from './JobsList';
 import { searchJobs } from './utils';
 import Icon from '../Common/Icons/Icon';
@@ -14,16 +22,19 @@ import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 
 const DashboardComp = () => {
+  const { recruiter } = useAuthDetails();
+  const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
-  const [filteredJobs, setFilteredJobs] = useState<JobType[]>(
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
     jobsData.jobs?.filter((job) => !job.is_campus),
   );
 
   useEffect(() => {
     if (router.isReady) {
       if (!router.query.status) {
-        router.push(`?status=active`, undefined, {
+        router.push(`?status=published`, undefined, {
           shallow: true,
         });
       }
@@ -36,30 +47,14 @@ const DashboardComp = () => {
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
       setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
-    } else if (router.query.status == 'active') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          (job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'published') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
-    } else if (router.query.status == 'close') {
-      const filter = jobsData.jobs.filter((job) => {
-        return !job.is_campus && job.active_status.closed.isActive;
-      });
+    } else if (router.query.status == 'closed') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
       setFilteredJobs(filter);
-    } else if (router.query.status == 'inactive') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          !(
-            job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive
-          ) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'draft') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs(filter);
     } else {
       setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
@@ -74,36 +69,111 @@ const DashboardComp = () => {
           e.target.value,
         ),
       ]);
-    } else if (router.query.status == 'active') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          (job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'published') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'close') {
+    } else if (router.query.status == 'closed') {
       const filter = jobsData.jobs.filter(
         (job) => !job.is_campus && job.active_status.closed.isActive,
       );
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
-    } else if (router.query.status == 'inactive') {
-      const filter = jobsData.jobs.filter(
-        (job) =>
-          !job.is_campus &&
-          !(
-            job.active_status.interviewing.isActive ||
-            job.active_status.sourcing.isActive
-          ) &&
-          !job.active_status.closed.isActive,
-      );
+    } else if (router.query.status == 'draft') {
+      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     }
   };
 
+  //popover Add Job
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClosePop = () => {
+    setAnchorEl(null);
+  };
+  //popover Add Job
+
   return (
     <Stack height={'100%'} width={'100%'}>
+      <Popover
+        id='add-job'
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClosePop}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{ vertical: -14, horizontal: 0 }}
+        slotProps={{
+          paper: {
+            style: {
+              border: 'none',
+              borderRadius: 'none',
+              boxShadow: '0px 4px 8px 0px #04444D26',
+            },
+          },
+        }}
+      >
+        <CreateJob
+          isGreenhouseVisible={true}
+          onClickGreenhouse={{
+            onClick: () => {
+              if (!recruiter.greenhouse_key) {
+                setIntegration((prev) => ({
+                  ...prev,
+                  greenhouse: {
+                    open: true,
+                    step: STATE_GREENHOUSE_DIALOG.API,
+                  },
+                }));
+              } else {
+                setIntegration((prev) => ({
+                  ...prev,
+                  greenhouse: {
+                    open: true,
+                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+                  },
+                }));
+              }
+            },
+          }}
+          onClickCreateNewJob={{
+            onClick: () => {
+              router.push('/jobs/new?flow=manual');
+            },
+          }}
+          onClickLeverImport={{
+            onClick: () => {
+              if (!recruiter.lever_key) {
+                setIntegration((prev) => ({
+                  ...prev,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
+                }));
+              } else {
+                setIntegration((prev) => ({
+                  ...prev,
+                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                }));
+              }
+            },
+          }}
+        />
+      </Popover>
+      <Dialog
+        open={integration.lever.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <LeverModalComp />
+      </Dialog>
+      <Dialog
+        open={integration.greenhouse.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <GreenhouseModal />
+      </Dialog>
       {!initialLoad ? (
         <Loader />
       ) : (
@@ -117,12 +187,8 @@ const DashboardComp = () => {
             />
           ) : (
             <JobsDashboard
-              slotAllJobs={
-                <JobsList
-                  jobs={filteredJobs}
-                  applications={jobsData?.applications}
-                />
-              }
+              onClickAddJob={{ onClick: handleClick }}
+              slotAllJobs={<JobsList jobs={filteredJobs} />}
               slotSearchInputJob={
                 <Stack maxWidth={'260px'} width={'100%'}>
                   <UITextField
@@ -153,11 +219,6 @@ const DashboardComp = () => {
                   ? 'Active Jobs'
                   : 'All Jobs'
               }
-              onClickCreateNewJob={{
-                onClick: () => {
-                  router.push('/jobs/new');
-                },
-              }}
             />
           )}
         </>

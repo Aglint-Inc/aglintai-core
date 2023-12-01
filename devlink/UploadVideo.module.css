@@ -1,0 +1,140 @@
+.ic-import-body-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 60px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 0.50);
+
+  outline-color: hsla(206.1818181818182, 50.46%, 78.63%, 1.00);
+  outline-style: dashed;
+  outline-width: 1px;
+}
+
+.ic-import-body-wrapper.ptb-35 {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
+.ic-import-body-block {
+  display: flex;
+  max-width: 355px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ic-text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 9px;
+  grid-row-gap: 9px;
+
+  text-align: center;
+}
+
+.ic-text-content.gap-5 {
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.ic-divider-block {
+  display: flex;
+  width: 100%;
+  max-width: 180px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  opacity: 0.3;
+}
+
+.ic-divider-block._2 {
+  margin-top: 24px;
+}
+
+.ic-hr-line {
+  height: 1px;
+  flex: 1;
+  background-color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.text-blue-700-2 {
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}

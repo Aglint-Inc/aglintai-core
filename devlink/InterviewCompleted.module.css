@@ -26,7 +26,6 @@
 
 .int-completed-logo-block {
   max-height: 120px;
-  max-width: 120px;
 }
 
 .int-completed-main-block {
@@ -148,6 +147,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -161,7 +166,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -230,11 +235,19 @@
   margin-top: 13px;
 }
 
+.mt-13 {
+  margin-top: 13px;
+}
+
 .text-grey-600-3.personalized {
   padding-left: 20px;
 }
 
 .text-grey-600-3.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 
@@ -274,6 +287,10 @@
   display: inline;
 }
 
+.text-blue-500-2.ml-12 {
+  margin-left: 8px;
+}
+
 .int-completed-bottom {
   display: flex;
   width: 100%;
@@ -304,4 +321,12 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }

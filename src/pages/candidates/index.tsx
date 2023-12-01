@@ -1,17 +1,21 @@
-import { CandidateDatabaseComingSoon } from '@/devlink';
+import React from 'react';
+
+import CandDbProvider from '@/src/components/CandidateDatabase/Database/CandDbProvider';
+import CandDatabase from '@/src/components/CandidateDatabase/Database/Database';
 import Seo from '@/src/components/Common/Seo';
 
-function CandidatesPage() {
+const candidates = () => {
   return (
     <>
-    <Seo
+      <Seo
         title='Aglint | Candidate Search'
         description='Find Your Ideal Candidate with AI-Powered Matching!'
       />
-      <CandidateDatabaseComingSoon />
-      {/* <CandidateDatabaseComp /> */}
+      <CandDbProvider>
+        <CandDatabase />
+      </CandDbProvider>
     </>
   );
-}
+};
 
-export default CandidatesPage;
+export default candidates;

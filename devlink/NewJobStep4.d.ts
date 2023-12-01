@@ -10,4 +10,6 @@ declare function NewJobStep4(props: {
   isProceedDisable?: Types.Visibility.VisibilityConditions;
   onClickProcced?: Types.Devlink.RuntimeProps;
   isJobAdd?: Types.Visibility.VisibilityConditions;
+  isAssessmentScoringVisible?: Types.Visibility.VisibilityConditions;
+  isEmailScheduleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

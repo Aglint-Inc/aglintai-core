@@ -14,7 +14,8 @@ declare function CandidateSideDrawer(props: {
   textOverviewDesc?: React.ReactNode;
   slotCandidateDetails?: Types.Devlink.Slot;
   isOverviewVisible?: Types.Visibility.VisibilityConditions;
-  onClickLinkedIn?: Types.Devlink.RuntimeProps;
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   isCopiedMessageVisible?: Types.Visibility.VisibilityConditions;
+  linkedinLink?: Types.Basic.Link;
+  onClickLinkedin?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

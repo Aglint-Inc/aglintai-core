@@ -7,19 +7,19 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
-import { htmlToText } from 'html-to-text';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Checkbox } from '@/devlink';
+import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { jobOpenings } from '..';
-import AUIButton from '../../Common/AUIButton';
 import Icon from '../../Common/Icons/Icon';
 
 const initialError = () => {
@@ -67,7 +67,7 @@ const initialError = () => {
   };
 };
 
-function UploadDB({ post, setThank, setLoading }) {
+function UploadDB({ post, setThank, setLoading, setApplication }) {
   const isSubmitRef = useRef(false);
   const [profile, setProfile] = useState({
     firstName: null,
@@ -181,145 +181,141 @@ function UploadDB({ post, setThank, setLoading }) {
 
   const submitHandler = async () => {
     if (checked && validate()) {
-      let jobId = post.id;
-      let id = `${profile.firstName}-${profile.lastName}-${jobId}`;
+      const { data: checkCand, error: errorCheck } = await supabase
+        .from('candidates')
+        .select()
+        .match({ email: profile.email });
+
+      let candidateId;
 
       let uploadUrl = null;
-      if (file) {
-        const { data } = await supabase.storage
-          .from('resume-job-post')
-          .upload(`public/${id.toLowerCase()}`, file, {
-            cacheControl: '3600',
-            // Overwrite file if it exist
-            upsert: true,
-          });
-        uploadUrl = `${
-          process.env.NEXT_PUBLIC_SUPABASE_URL
-        }/storage/v1/object/public/resume-job-post/${
-          data?.path
-        }?t=${new Date().toISOString()}`;
-      }
 
-      if (router.query.application_id) {
-        setLoading(true);
-        supabase
-          .from('job_applications')
-          .update({
-            first_name: profile.firstName,
-            last_name: profile.lastName,
-            email: profile.email,
-            job_id: jobId,
-            phone: profile.phoneNumber,
-            linkedin: profile.linkedin,
-            resume: uploadUrl,
-            job_location: post?.location,
-            job_title: !post?.is_campus ? post?.job_title : profile.role,
-            company: post?.company,
-            usn: profile.usn,
-            college_name: profile.college_name,
-            branch: profile.branch,
-            cgpa: profile.cgpa,
-            utm_source: router.query.utm_source || null,
-          })
-          .eq('application_id', router.query.application_id)
-          .select()
-          .then(async ({ error }) => {
-            if (!error) {
-              await mailHandler();
-              setProfile({
-                firstName: null,
-                lastName: null,
-                email: null,
-                phoneNumber: null,
-                resume: null,
-                linkedin: null,
-                usn: null,
-                college_name: null,
-                branch: null,
-                cgpa: null,
-                role: null,
-              });
-              setLoading(false);
-              setThank(true);
-              toast.success('Applied Successfully');
-            }
-          });
+      if (!errorCheck && checkCand.length == 0) {
+        candidateId = uuidv4();
+        if (file) {
+          const { data } = await supabase.storage
+            .from('resume-job-post')
+            .upload(
+              `public/${candidateId}/${post.id}.${
+                file.type.includes('pdf')
+                  ? 'pdf'
+                  : file.type.includes('doc')
+                  ? 'docx'
+                  : 'txt'
+              }`,
+              file,
+              {
+                cacheControl: '3600',
+                // Overwrite file if it exist
+                upsert: true,
+              },
+            );
+          uploadUrl = `${
+            process.env.NEXT_PUBLIC_SUPABASE_URL
+          }/storage/v1/object/public/resume-job-post/${
+            data?.path
+          }?t=${new Date().toISOString()}`;
+        }
+        await insertCandidate(uploadUrl, post.id);
       } else {
-        supabase
+        const { data: checkApplication, error: errorCheck } = await supabase
           .from('job_applications')
-          .select()
-          .match({ email: profile.email, job_id: jobId })
-          .then(async ({ data: checkApplied, error }) => {
-            if (!error && checkApplied.length == 0) {
-              setLoading(true);
-              supabase
-                .from('job_applications')
-                .insert({
-                  first_name: profile.firstName,
-                  last_name: profile.lastName || '',
-                  email: profile.email,
-                  job_id: jobId,
-                  phone: profile.phoneNumber,
-                  linkedin: profile.linkedin,
-                  resume: uploadUrl,
-                  job_location: post?.location,
-                  job_title: !post?.is_campus ? post?.job_title : profile.role,
-                  company: post?.company,
-                  usn: profile.usn,
-                  college_name: profile.college_name,
-                  branch: profile.branch,
-                  cgpa: profile.cgpa,
-                  utm_source: router.query.utm_source || null,
-                  status: 'new',
-                })
-                .select()
-                .then(async ({ data, error }) => {
-                  if (!error) {
-                    await mailHandler(data[0].application_id);
-                    if (!post?.is_campus) {
-                      try {
-                        axios.post(
-                          'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-                          {
-                            pdfUrl: data[0].resume,
-                            application_id: data[0].application_id,
-                            description: htmlToText(
-                              post.description ||
-                                post.responsibilities.join(','),
-                            ),
-                            job_title: post.job_title,
-                            skills: post.skills || [],
-                            company_name: post?.company,
-                          },
-                        );
-                      } catch (err) {
-                        //
-                      }
-                    }
-                    setProfile({
-                      firstName: '',
-                      lastName: '',
-                      email: '',
-                      phoneNumber: '',
-                      resume: '',
-                      linkedin: '',
-                      usn: '',
-                      college_name: '',
-                      branch: '',
-                      cgpa: '',
-                      role: '',
-                    });
-                    setLoading(false);
-                    setThank(true);
-                  }
-                });
-            } else {
-              setLoading(false);
-              isSubmitRef.current = false;
-              toast.error('You have already applied for this job');
-            }
+          .select(`${selectJobApplicationQuery}`)
+          .eq('candidate_id', checkCand[0].id)
+          .eq('job_id', post.id);
+
+        if (!errorCheck && checkApplication.length == 0) {
+          if (file) {
+            const { data } = await supabase.storage
+              .from('resume-job-post')
+              .upload(
+                `public/${checkCand[0].id}/${post.id}.${
+                  file.type.includes('pdf')
+                    ? 'pdf'
+                    : file.type.includes('doc')
+                    ? 'docx'
+                    : 'txt'
+                }`,
+                file,
+                {
+                  cacheControl: '3600',
+                  // Overwrite file if it exist
+                  upsert: true,
+                },
+              );
+
+            uploadUrl = `${
+              process.env.NEXT_PUBLIC_SUPABASE_URL
+            }/storage/v1/object/public/resume-job-post/${
+              data?.path
+            }?t=${new Date().toISOString()}`;
+          }
+
+          const { data: newApplication } = await supabase
+            .from('job_applications')
+            .insert({
+              candidate_id: checkCand[0].id,
+              job_id: post.id,
+              status: 'new',
+              resume: uploadUrl,
+            })
+            .select(`${selectJobApplicationQuery}`);
+          setApplication(newApplication[0]);
+          await mailHandler(newApplication[0].application_id);
+          setProfile({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            resume: '',
+            linkedin: '',
           });
+          setLoading(false);
+          setThank(true);
+        } else {
+          setLoading(false);
+          isSubmitRef.current = false;
+          toast.error('You have already applied for this job');
+        }
       }
+    }
+  };
+
+  const insertCandidate = async (uploadUrl, jobId) => {
+    const { data: newCandidate, error: errorCandidate } = await supabase
+      .from('candidates')
+      .insert({
+        first_name: profile.firstName,
+        last_name: profile.lastName || '',
+        email: profile.email,
+        phone: profile.phoneNumber,
+        linkedin: profile.linkedin,
+      })
+      .select();
+
+    if (!errorCandidate) {
+      const { data: newApplication } = await supabase
+        .from('job_applications')
+        .insert({
+          candidate_id: newCandidate[0].id,
+          job_id: jobId,
+          status: 'new',
+          resume: uploadUrl,
+        })
+        .select(`${selectJobApplicationQuery}`);
+
+      setApplication(newApplication[0]);
+      await mailHandler(newApplication[0].application_id);
+      setProfile({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        resume: '',
+        linkedin: '',
+      });
+      setLoading(false);
+      setThank(true);
     }
   };
 
@@ -347,7 +343,7 @@ function UploadDB({ post, setThank, setLoading }) {
         last_name: profile.lastName,
         job_title: post.job_title,
         company_name: post.company,
-        support_link: `https://recruiter.aglinthq.com/support/create?id=${application_id}`,
+        support_link: `${process.env.NEXT_PUBLIC_RECRUITER_APP}?id=${application_id}`,
       };
       await axios
         .post('/api/sendgrid', {
@@ -462,6 +458,7 @@ function UploadDB({ post, setThank, setLoading }) {
                 error={error.usn.error}
                 helperText={error.usn.error ? error.usn.msg : null}
                 onChange={(e) => {
+                  isSubmitRef.current = false;
                   setProfile({ ...profile, usn: e.target.value });
                 }}
               />
@@ -480,6 +477,7 @@ function UploadDB({ post, setThank, setLoading }) {
                   error.college_name.error ? error.college_name.msg : null
                 }
                 onChange={(e) => {
+                  isSubmitRef.current = false;
                   setProfile({ ...profile, college_name: e.target.value });
                 }}
               />
@@ -496,6 +494,7 @@ function UploadDB({ post, setThank, setLoading }) {
                 error={error.branch.error}
                 helperText={error.branch.error ? error.branch.msg : null}
                 onChange={(e) => {
+                  isSubmitRef.current = false;
                   setProfile({ ...profile, branch: e.target.value });
                 }}
               />
@@ -513,6 +512,7 @@ function UploadDB({ post, setThank, setLoading }) {
                 error={error.cgpa.error}
                 helperText={error.cgpa.error ? error.cgpa.msg : null}
                 onChange={(e) => {
+                  isSubmitRef.current = false;
                   setProfile({ ...profile, cgpa: e.target.value });
                 }}
               />
@@ -527,6 +527,7 @@ function UploadDB({ post, setThank, setLoading }) {
                 label={'Job Role'}
                 value={profile?.role || jobOpenings[0]}
                 onChange={(e) => {
+                  isSubmitRef.current = false;
                   setProfile({ ...profile, role: e.target.value });
                 }}
               >
@@ -671,20 +672,18 @@ function UploadDB({ post, setThank, setLoading }) {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <AUIButton
-            onClick={() => {
-              if (post.active_status.sourcing.isActive) {
+          <ButtonPrimaryRegular
+            isDisabled={isSubmitRef.current}
+            onClickButton={{
+              onClick: () => {
                 if (!isSubmitRef.current) {
                   isSubmitRef.current = true;
                   submitHandler();
                 }
-              } else {
-                toast.error('Suorcing is not active');
-              }
+              },
             }}
-          >
-            Apply Now
-          </AUIButton>
+            textLabel='Apply Now'
+          />
         </Grid>
       </Grid>
     </Stack>

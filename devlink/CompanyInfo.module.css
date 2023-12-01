@@ -29,6 +29,15 @@
   }
 }
 
+.profile-block.mt-40 {
+  margin-top: 40px;
+}
+
+.profile-block.emial {
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
 .cs-info-header {
   display: flex;
   flex-direction: column;
@@ -125,6 +134,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -138,7 +153,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -223,6 +238,10 @@
   margin-top: 5px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-grey-600.mt-17 {
   margin-top: 17px;
 }
@@ -244,6 +263,10 @@
     grid-column-gap: 12px;
     grid-row-gap: 12px;
   }
+}
+
+.div-block-348.top-align.pl-20 {
+  padding-left: 20px;
 }
 
 .company-details-profile {
@@ -451,11 +474,20 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .profile-inputs-wrapper {
   display: flex;
   flex-direction: column;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+}
+
+.profile-inputs-wrapper.pl-20 {
+  padding-bottom: 0px;
+  padding-left: 20px;
 }
 
 .cs-info-wrapper {
@@ -469,6 +501,18 @@
 
 .cs-info-wrapper.margin-0 {
   margin-top: 0px;
+}
+
+.cs-info-wrapper.margin-0.pl-20 {
+  padding-left: 20px;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 612px;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
 }
 
 .fw-semibold.cursor-pointer.capitialize {
@@ -487,6 +531,10 @@
   margin-right: 5px;
 }
 
+.fw-semibold.text-kale-800 {
+  color: #012b30;
+}
+
 .text-grey-100 {
   color: var(--gray100-3a86b552);
 }
@@ -497,6 +545,10 @@
 
 .fw-semibold.pink-800 {
   color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.fw-semibold.text-green-800 {
+  color: #0b3b29;
 }
 
 .fw-semibold.indeed {
@@ -535,6 +587,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .fw-semibold.grow-line {
   flex: 0 0 auto;
 }
@@ -557,6 +613,22 @@
 
 .fw-semibold.mb-14 {
   margin-bottom: 14px;
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
+.fw-semibold.text-kale-700 {
+  color: #03363d;
+}
+
+.fw-semibold.new-greenhouse {
+  color: #14413d;
+}
+
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
 }
 
 .flex-vertical-left {

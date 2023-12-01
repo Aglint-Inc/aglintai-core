@@ -7,11 +7,16 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';
-import { createSampleJobCandidate, handleEmail, handlePassword, stepObj } from './utils';
+import {
+  handleEmail,
+  handlePassword,
+  stepObj,
+} from './utils';
 import Icon from '../../Common/Icons/Icon';
 
 const SlideTwoSignUp = () => {
@@ -103,65 +108,70 @@ const SlideTwoSignUp = () => {
 
   const handelSignUp = async () => {
     if (!(await formValidation())) return null;
-
-    const authdata = await supabase.auth.signUp({
-      email: details.email,
-      password: details.password,
-      options: {
-        data: {
-          role: 'Recruiter',
+    if (router.query.category) {
+      const authdata = await supabase.auth.signUp({
+        email: details.email,
+        password: details.password,
+        options: {
+          data: {
+            role: router.query.category,
+          },
         },
-      },
-    });
-    if (!authdata.error) {
-      setUserDetails(authdata.data.session);
-      const { data, error } = await supabase
-        .from('recruiter')
-        .insert({
-          email: details.email,
-          recruiter_type: flow,
-        })
-        .select();
-      if (!error) {
-        setRecruiter(data[0] as RecruiterType);
-        await createSampleJobCandidate(data[0].id);
-        const { error: erroruser } = await supabase
-          .from('recruiter_user')
+      });
+      if (!authdata.error) {
+        setUserDetails(authdata.data.session);
+        const { data, error } = await supabase
+          .from('recruiter')
           .insert({
-            user_id: authdata.data.user.id,
-            recruiter_id: data[0].id,
             email: details.email,
-            first_name: details.first_name,
-            last_name: details.last_name || '',
+            recruiter_type: flow,
+            recruiter_active: true,
           })
           .select();
-        if (!erroruser) {
-          router.push(`?step=${stepObj.detailsOne}`, undefined, {
-            shallow: true,
-          });
-          setStep(stepObj.detailsOne);
+        if (!error) {
+          setRecruiter(data[0] as RecruiterType);
+          const { data: recruiterUser, error: erroruser } = await supabase
+            .from('recruiter_user')
+            .insert({
+              user_id: authdata.data.user.id,
+              recruiter_id: data[0].id,
+              email: details.email,
+              first_name: details.first_name,
+              last_name: details.last_name || '',
+            })
+            .select();
+          if (!erroruser) {
+            await supabase
+              .from('recruiter')
+              .update({ recruiter_user_id: recruiterUser[0].user_id })
+              .eq('id', data[0].id);
+            router.push(`?step=${stepObj.detailsOne}`, undefined, {
+              shallow: true,
+            });
+            setStep(stepObj.detailsOne);
+          }
         }
-      }
-    } else {
-      if (
-        authdata.error.message === errorMessages.passwordRequired ||
-        authdata.error.message === 'Signup requires a valid password'
-      ) {
-        setSignUpError({
-          ...signUpError,
-          password: {
-            error: false,
-            msg: 'Signup requires a valid password',
-          },
-        });
-      } else if (authdata.error.message === errorMessages.userRegistered) {
-        setSignUpError({
-          ...signUpError,
-          email: {
-            error: true,
-            msg: authdata.error.message,
-          },
-        });
+      } else {
+        if (
+          authdata.error.message === errorMessages.passwordRequired ||
+          authdata.error.message === 'Signup requires a valid password'
+        ) {
+          setSignUpError({
+            ...signUpError,
+            password: {
+              error: false,
+              msg: 'Signup requires a valid password',
+            },
+          });
+        } else if (authdata.error.message === errorMessages.userRegistered) {
+          setSignUpError({
+            ...signUpError,
+            email: {
+              error: true,
+              msg: authdata.error.message,
+            },
+          });
+        }
       }
     }
   };
@@ -183,8 +193,6 @@ const SlideTwoSignUp = () => {
       }
   };
 
- 
-
   return (
     <>
       <WelcomeSlider3
@@ -203,6 +211,7 @@ const SlideTwoSignUp = () => {
         }}
         onClickBack={{
           onClick: () => {
+            router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
             setStep(stepObj.type);
           },
         }}
@@ -219,6 +228,7 @@ const SlideTwoSignUp = () => {
         isTermsChecked={checked}
         onClickSignIn={{
           onClick: () => {
+            router.push(pageRoutes.LOGIN);
             setStep(stepObj.signin);
           },
         }}
@@ -295,7 +305,7 @@ const SlideTwoSignUp = () => {
               fullWidth
               name='password'
               type={showPassword ? 'text' : 'password'}
-              label={'Password'}
+              label={'Create password'}
               autoComplete='current-password'
               id='password'
               error={

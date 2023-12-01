@@ -168,7 +168,11 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-sm.color-grey-400 {
@@ -245,6 +249,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -270,6 +278,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

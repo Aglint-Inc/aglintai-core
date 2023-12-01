@@ -30,7 +30,7 @@ export function SideNavMenu({
           className={_utils.cx(_styles, "soon-nav-badge")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Soon"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Request Access"}</_Builtin.Block>
         </_Builtin.Block>
         {isMyCandidateDatabase ? (
           <_Builtin.Block

@@ -44,9 +44,32 @@ export async function updateFeedbackOnJobApplications(
         ? 'interviewing'
         : 'disqualified',
       interview_duration: interviewDuration,
+      interview_score: overAllScore,
     })
     .eq('application_id', candidateDetails?.application_id);
   if (!error) {
     return true;
+  }
+}
+
+export async function getRecruiter(id: any) {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .select()
+    .eq('id', id);
+
+  if (!error) {
+    return data[0];
+  }
+}
+
+export async function updateRecruiter(id: string, value: boolean) {
+  const { data, error } = await supabase
+    .from('recruiter')
+    .update({ video_assessment: value })
+    .eq('id', id)
+    .select();
+  if (!error) {
+    return data[0];
   }
 }

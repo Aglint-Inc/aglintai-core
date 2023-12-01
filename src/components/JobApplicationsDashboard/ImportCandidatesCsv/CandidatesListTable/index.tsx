@@ -1,11 +1,10 @@
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { IconBriefCase, IconCandidate, IconMail, IconPhone } from '@/devlink';
+import { IconCandidate, IconMail, IconPhone } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import { getGravatar } from '../../ApplicationCard';
 function CandidatesListTable({ importedCandidate }) {
   // eslint-disable-next-line no-console
   console.log('importedCandidate', importedCandidate);
@@ -29,9 +28,9 @@ function CandidatesListTable({ importedCandidate }) {
               <TableRow
                 key={i}
                 name={ele.first_name + ' ' + ele.last_name}
-                role={ele.job_title}
                 email={ele.email}
-                status={ele.status}
+                phone={ele.phone}
+                profile_image={ele.profile_image}
               />
             </YTransform>
           );
@@ -69,15 +68,6 @@ function TableHeader() {
         alignItems={'center'}
         spacing={'5px'}
       >
-        <IconBriefCase />
-        <Typography variant='subtitle2'>Job Title</Typography>
-      </Stack>
-      <Stack
-        width={`${100 / 3}%`}
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'5px'}
-      >
         <IconMail />
         <Typography variant='subtitle2'>Email</Typography>
       </Stack>
@@ -88,13 +78,13 @@ function TableHeader() {
         spacing={'5px'}
       >
         <IconPhone />
-        <Typography variant='subtitle2'>Status</Typography>
+        <Typography variant='subtitle2'>Phone</Typography>
       </Stack>
     </Stack>
   );
 }
 
-function TableRow({ name, email, role, status }) {
+function TableRow({ name, email, phone, profile_image }) {
   return (
     <Stack
       p={'3px'}
@@ -112,7 +102,7 @@ function TableRow({ name, email, role, status }) {
         <MuiAvatar
           width={'20px'}
           height={'20px'}
-          src={getGravatar(name, email)}
+          src={profile_image}
           fontSize={'20px'}
           level={name}
           variant={'circular'}
@@ -127,22 +117,14 @@ function TableRow({ name, email, role, status }) {
         className='one-line-clamp'
         width={`${100 / 3}%`}
       >
-        {role}
-      </Typography>
-      <Typography
-        variant='body2'
-        className='one-line-clamp'
-        width={`${100 / 3}%`}
-      >
         {email}
       </Typography>
       <Typography
         variant='body2'
         className='one-line-clamp'
         width={`${100 / 5}%`}
-        textAlign={'center'}
       >
-        {status}
+        {phone}
       </Typography>
     </Stack>
   );

@@ -38,18 +38,35 @@
   object-fit: contain;
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .icon-embed.absolute {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-700 {
+  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-blue-700 {
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
 }
 
 .selected-popup-main {

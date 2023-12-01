@@ -1,6 +1,12 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
-import { InputBaseComponentProps, Stack, Typography } from '@mui/material';
+import {
+  FilledInputProps,
+  InputProps,
+  OutlinedInputProps,
+  Stack,
+  Typography,
+} from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
 import React, { useState } from 'react';
@@ -24,9 +30,13 @@ type Props = {
   fullWidth?: boolean;
   rest?: any;
   onSelect?: () => void;
-  onFocus?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onFocus?: (e: any) => void;
   onBlur?: () => void;
-  InputProps?: InputBaseComponentProps;
+  InputProps?:
+    | Partial<FilledInputProps>
+    | Partial<OutlinedInputProps>
+    | Partial<InputProps>;
   defaultValue?: string | number;
   children?: any;
   height?: string;
@@ -53,8 +63,8 @@ const UITextField = React.forwardRef(
       value,
       fullWidth = false,
       multiline = false,
-      minRows = 3,
-      maxRows = 3,
+      minRows = 4.7,
+      maxRows = 4.7,
       rest = undefined,
       onFocus = () => {},
       onBlur = () => {},
@@ -115,7 +125,7 @@ const UITextField = React.forwardRef(
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
-          inputProps={{ maxLength: contentLimit || false }}
+          inputProps={{ maxLength: contentLimit || undefined }}
           onChange={onChange}
           onKeyDown={(e: ReturnType<typeof onkeydown>) => {
             checkMaxLength(e.target.value);
@@ -130,10 +140,12 @@ const UITextField = React.forwardRef(
           multiline={multiline}
           minRows={minRows}
           maxRows={maxRows}
-          InputProps={InputProps}
-          onFocus={() => {
+          InputProps={{
+            ...InputProps,
+          }}
+          onFocus={(e) => {
             setfocus(true);
-            if (onFocus) onFocus();
+            if (onFocus) onFocus(e.currentTarget);
           }}
           onBlur={() => {
             setfocus(false);

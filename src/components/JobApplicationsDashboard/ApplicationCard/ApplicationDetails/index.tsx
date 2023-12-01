@@ -1,4 +1,6 @@
+/* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
@@ -21,44 +23,44 @@ import {
   InterviewCandidateCard,
   InterviewDetailedFeedback,
   InterviewResultStatus,
-  // InterviewResult,
-  // InterviewResultStatus,
-  // JobDetailsSideDrawer,
   ResumeFeedbackScore,
   UnableFetchResume,
-  // ResumeResult,
 } from '@/devlink';
+import { ResAbsentError, ResumeErrorBlock } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
-// import AUIButton from '@/src/components/Common/AUIButton';
 import CustomProgress from '@/src/components/Common/CustomProgress';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import ScoreWheel, {
-  getOverallScore,
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
+  JdScore,
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { JobType } from '@/src/types/data.types';
-// import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { calculateOverallScore } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
-import { getGravatar } from '..';
+import { applicationValidity } from '../utils';
 import { emailHandler } from '../..';
+import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
-// import { sendEmails } from '../..';
-// import InterviewScoreCard from '../../Common/InreviewScoreCard';
-import { capitalize, getInterviewScore } from '../../utils';
+import {
+  ApiLogState,
+  capitalize,
+  getCandidateName,
+  getInterviewScore,
+  intactConditionFilter,
+} from '../../utils';
 
 const ApplicationDetails = ({
   open,
@@ -77,21 +79,7 @@ const ApplicationDetails = ({
   const [openFeedback, setOpenFeedback] = useState(false);
 
   const candidateImage = applicationDetails ? (
-    <MuiAvatar
-      level={applicationDetails.first_name}
-      src={
-        !applicationDetails.profile_image
-          ? getGravatar(
-              applicationDetails.email,
-              applicationDetails?.first_name,
-            )
-          : applicationDetails.profile_image
-      }
-      variant={'rounded'}
-      width={'100%'}
-      height={'100%'}
-      fontSize={'28px'}
-    />
+    <CandidateAvatar application={applicationDetails} />
   ) : (
     <></>
   );
@@ -119,10 +107,11 @@ const ApplicationDetails = ({
   return (
     <Stack
       style={{
-        display: applicationDetails ? 'flex' : 'none',
+        display: open && applicationDetails ? 'flex' : 'none',
         transition: '0.4s',
         width: drawerOpen ? '420px' : '0px',
         pointerEvents: drawerOpen ? 'auto' : 'none',
+        overflow: drawerOpen ? 'hidden' : 'auto',
       }}
     >
       {applicationDetails ? (
@@ -158,6 +147,10 @@ const NewDetailedFeedback = ({
   applicationDetails,
   candidateImage,
   onClose,
+}: {
+  applicationDetails: JobApplication;
+  candidateImage: React.JSX.Element;
+  onClose: () => void;
 }) => {
   return (
     <InterviewDetailedFeedback
@@ -167,10 +160,15 @@ const NewDetailedFeedback = ({
         },
       }}
       slotCandidateImage={candidateImage}
-      textName={capitalize(
-        applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
+      textName={getCandidateName(
+        applicationDetails.candidates.first_name,
+        applicationDetails.candidates.last_name,
       )}
-      textMail={applicationDetails.email ? applicationDetails.email : '--'}
+      textMail={
+        applicationDetails.candidates.email
+          ? applicationDetails.candidates.email
+          : '--'
+      }
       slotDetailedFeedback={
         <DetailedInterviewFeedbackParams
           feedbackParamsObj={applicationDetails.feedback}
@@ -186,7 +184,13 @@ const NewDetailedFeedback = ({
   );
 };
 
-const TranscriptParams = ({ feedbackParams, candidateImage }) => {
+const TranscriptParams = ({
+  feedbackParams,
+  candidateImage,
+}: {
+  feedbackParams: any;
+  candidateImage: React.JSX.Element;
+}) => {
   return feedbackParams.map((con, i) => {
     return (
       <>
@@ -219,13 +223,17 @@ const TranscriptParams = ({ feedbackParams, candidateImage }) => {
   });
 };
 
-export const DetailedInterviewFeedbackParams = ({ feedbackParamsObj }) => {
+export const DetailedInterviewFeedbackParams = ({
+  feedbackParamsObj,
+}: {
+  feedbackParamsObj: any;
+}) => {
   return feedbackParamsObj.map((f, i) => {
     const color =
       f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     const circularScore = (
       <Stack style={{ transform: 'scale(0.3)' }}>
-        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 score={f.rating} />
       </Stack>
     );
     return (
@@ -249,13 +257,30 @@ const NewJobApplicationSideDrawer = ({
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+}: {
+  open: boolean;
+  applicationDetails: JobApplication;
+  onClose: () => void;
+  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+  candidateImage: React.JSX.Element;
+  handleSelectNextApplication: () => void;
+  handleSelectPrevApplication: () => void;
 }) => {
-  const [copy, setCopy] = useState(false);
   const { pressed: shift } = useKeyPress('Shift');
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
+  const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
+  const handleProfileRedirect = () => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+      '_blank',
+    );
+  };
+  const handleLinkedInRedirect = () => {
+    window.open(applicationDetails.candidates.linkedin, '_blank');
+  };
   useEffect(() => {
     if (open) {
       if (leftShift) {
@@ -270,17 +295,11 @@ const NewJobApplicationSideDrawer = ({
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
       onClickNext={{ onClick: () => handleSelectNextApplication() }}
       onClickCopyProfile={{
-        onClick: () => {
-          navigator.clipboard
-            .writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
-            )
-            .then(() => {
-              setCopy(true);
-              setTimeout(() => {
-                setCopy(false);
-              }, 1000);
-            });
+        onClick: () => handleProfileRedirect(),
+        style: {
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none',
         },
       }}
       onClickClose={{
@@ -288,27 +307,43 @@ const NewJobApplicationSideDrawer = ({
       }}
       slotCandidateImage={candidateImage}
       textName={capitalize(
-        applicationDetails?.first_name + ' ' + applicationDetails?.last_name,
+        applicationDetails.candidates.first_name +
+          ' ' +
+          `${applicationDetails.candidates.last_name || ''}`,
       )}
-      textMail={applicationDetails?.email ? applicationDetails.email : '--'}
-      textOverviewDesc={
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      textMail={
+        applicationDetails.candidates.email
+          ? applicationDetails.candidates.email
+          : '--'
       }
+      textOverviewDesc={overview}
       slotCandidateDetails={
         <NewCandidateDetails
           applicationDetails={applicationDetails}
           setOpenFeedback={setOpenFeedback}
         />
       }
-      isOverviewVisible={false}
-      isLinkedInVisible={applicationDetails.linkedin !== null}
-      isCopiedMessageVisible={copy}
+      isOverviewVisible={overview}
+      isLinkedInVisible={
+        applicationDetails.candidates.linkedin !== null &&
+        applicationDetails.candidates.linkedin !== ''
+      }
+      onClickLinkedin={{
+        onClick: () => handleLinkedInRedirect(),
+      }}
     />
   );
 };
 
-const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
+const NewCandidateDetails = ({
+  applicationDetails,
+  setOpenFeedback,
+}: {
+  applicationDetails: JobApplication;
+  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { job } = useJobApplications();
+  const resume = applicationDetails.json_resume as any;
   return (
     <CandidateDetails
       slotInterviewScore={
@@ -333,29 +368,42 @@ const NewCandidateDetails = ({ applicationDetails, setOpenFeedback }) => {
               job={job}
             />
           </>
-          {applicationDetails.json_resume ? (
+          {applicationValidity(applicationDetails) ? (
             <>
-              {applicationDetails.json_resume.education &&
-              applicationDetails.json_resume.education.length !== 0 ? (
+              {resume.schools &&
+              resume.schools instanceof Array &&
+              resume.schools.length !== 0 ? (
                 <NewEducationDetails
-                  education={applicationDetails.json_resume.education}
+                  schools={resume.schools}
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance?.schools
+                  }
                 />
               ) : (
                 <></>
               )}
-              {applicationDetails.json_resume.work &&
-              applicationDetails.json_resume.work.length !== 0 ? (
+              {resume.positions &&
+              resume.positions instanceof Array &&
+              resume.positions.length !== 0 ? (
                 <NewExperienceDetails
-                  work={applicationDetails.json_resume.work}
+                  positions={resume.positions}
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance
+                      ?.positions
+                  }
                 />
               ) : (
                 <></>
               )}
 
-              {applicationDetails.json_resume.skills &&
-              applicationDetails.json_resume.skills.length !== 0 ? (
+              {resume.skills &&
+              resume.skills instanceof Array &&
+              resume.skills.length !== 0 ? (
                 <NewSkillDetails
-                  skills={applicationDetails.json_resume.skills}
+                  skills={resume.skills}
+                  // relevance={
+                  //   (applicationDetails.jd_score as JdScore)?.relevance?.skills
+                  // }
                 />
               ) : (
                 <></>
@@ -393,9 +441,9 @@ const NewInterviewStatus = ({
     setLoading(true);
     const confirmation = await emailHandler(
       {
-        email: applicationDetails.email,
-        first_name: applicationDetails.first_name,
-        last_name: applicationDetails.last_name,
+        email: applicationDetails.candidates.email,
+        first_name: applicationDetails.candidates.first_name,
+        last_name: applicationDetails.candidates.last_name,
         job_title: job.job_title,
         company: job.company,
         application_id: applicationDetails.application_id,
@@ -426,7 +474,7 @@ const NewInterviewStatus = ({
           onClick: () => {
             navigator.clipboard
               .writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.INTERVIEW}?id=${applicationDetails.application_id}`,
+                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
               )
               .then(() => {
                 toast.success('Interview link copied');
@@ -467,11 +515,24 @@ const NewInterviewScoreDetails = ({ applicationDetails, setOpenFeedback }) => {
       }
     />
   );
-  // return circularScore;
 };
 
-const NewResumeSection = ({ applicationDetails, job }) => {
+const NewResumeSection = ({
+  applicationDetails,
+  job,
+}: {
+  applicationDetails: JobApplication;
+  job: JobTypeDashboard;
+}) => {
   const [openResume, setOpenResume] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (!downloading) {
+      setDownloading(true);
+      await fetchFile(applicationDetails);
+      setDownloading(false);
+    }
+  };
   return (
     <>
       <Dialog
@@ -489,26 +550,40 @@ const NewResumeSection = ({ applicationDetails, job }) => {
         open={openResume}
         onClose={() => setOpenResume(false)}
       >
-        <Stack direction={'row'} justifyContent={'center'}>
-          <ResumePreviewer url={applicationDetails?.resume} />
+        <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
+          <ResumePreviewer url={applicationDetails.resume} />
         </Stack>
       </Dialog>
-      {applicationDetails.json_resume ? (
-        <NewResumeScoreDetails
-          applicationDetails={applicationDetails}
-          job={job}
-          feedback={false}
-          setOpenResume={setOpenResume}
-        />
+      {applicationDetails.json_resume || applicationDetails.resume ? (
+        intactConditionFilter(applicationDetails) !== ApiLogState.PROCESSING ? (
+          applicationDetails.jd_score ? (
+            <NewResumeScoreDetails
+              applicationDetails={applicationDetails}
+              job={job}
+              feedback={false}
+              setOpenResume={setOpenResume}
+            />
+          ) : (
+            <UnableFetchResume
+              propsLink={{ href: applicationDetails.resume }}
+              onClickViewResume={{
+                onClick: () => {
+                  setOpenResume(true);
+                },
+              }}
+              onClickDownloadResume={{
+                onClick: async () => await handleDownload(),
+              }}
+            />
+          )
+        ) : (
+          <ResumeErrorBlock
+            slotLottie={<ResumeWait />}
+            onclickView={{ onClick: () => setOpenResume(true) }}
+          />
+        )
       ) : (
-        <UnableFetchResume
-          propsLink={{ href: applicationDetails.resume }}
-          onClickViewResume={{
-            onClick: () => {
-              setOpenResume(true);
-            },
-          }}
-        />
+        <ResAbsentError />
       )}
     </>
   );
@@ -518,7 +593,7 @@ export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
   return feedbackParamsObj.map((f, i) => {
     const circularScore = (
       <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
-        <SmallCircularScore2 finalScore={f.rating} triggerAnimation={false} />
+        <SmallCircularScore2 score={f.rating} />
       </Stack>
     );
     const color =
@@ -542,28 +617,29 @@ export const NewResumeScoreDetails = ({
   setOpenResume,
 }: {
   applicationDetails: JobApplication;
-  job: JobType;
+  job: JobTypeDashboard;
   feedback: JobApplication['feedback'];
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const jdScoreObj = applicationDetails.jd_score as any;
-
-  const jdScore = calculateOverallScore({
-    qualification: jdScoreObj.qualification,
-    skills: jdScoreObj.skills_score,
-  });
-
+  const jdScoreObj = (applicationDetails.jd_score as JdScore)?.scores;
+  const score = applicationDetails.resume_score;
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (!downloading) {
+      setDownloading(true);
+      await fetchFile(applicationDetails);
+      setDownloading(false);
+    }
+  };
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
-      weights={job.parameter_weights as ScoreWheelParams}
-      score={jdScore}
+      scores={(applicationDetails.jd_score as JdScore)?.scores}
+      parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
     />
   );
-  const feedbackObj = giveRateInWordToResume(
-    getOverallScore(job.parameter_weights as ScoreWheelParams, jdScore),
-  );
+  const feedbackObj = giveRateInWordToResume(score);
   return (
     <CandidateResumeScore
       textStyleProps={{
@@ -579,45 +655,43 @@ export const NewResumeScoreDetails = ({
           setOpenResume(true);
         },
       }}
+      onClickDownloadResume={{
+        onClick: async () => await handleDownload(),
+      }}
       propsLink={{ href: applicationDetails.resume }}
       slotFeedbackScore={
-        <>
-          <ResumeFeedbackScore
-            textFeedback={'Skills'}
-            textScoreState={jdScoreObj.skills_score.score ?? '--'}
-          />
-          <ResumeFeedbackParams feedbackParamsObj={jdScoreObj.qualification} />
-        </>
+        <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
       }
     />
   );
 };
 
-export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
-  const feedbackParams = scoreWheelDependencies.parameterOrder.filter(
-    (p) => p !== 'skills',
-  );
-  const getCustomText = (e) => {
-    switch (e) {
-      case 'more':
-        return 'High';
-      case 'ok':
-        return 'Medium';
-      case 'less':
-        return 'Low';
-    }
-    return '--';
+export const ResumeFeedbackParams = ({
+  feedbackParamsObj,
+}: {
+  feedbackParamsObj: ScoreWheelParams;
+}) => {
+  const getCustomText = (e: number) => {
+    return e === 100
+      ? 'Perfect'
+      : e >= 75
+      ? 'High'
+      : e >= 50
+      ? 'Average'
+      : e >= 25
+      ? 'Low'
+      : 'Poor';
   };
   return (
     <>
-      {feedbackParams.map((key, i) => {
+      {scoreWheelDependencies.parameterOrder.map((key, i) => {
         return (
           <ResumeFeedbackScore
             key={i}
             textFeedback={capitalize(key)}
             textScoreState={
               // eslint-disable-next-line security/detect-object-injection
-              getCustomText(feedbackParamsObj[key].relevance) ?? '--'
+              getCustomText(feedbackParamsObj[key]) ?? '--'
             }
           />
         );
@@ -626,45 +700,121 @@ export const ResumeFeedbackParams = ({ feedbackParamsObj }) => {
   );
 };
 
-const NewEducationDetails = ({ education }) => {
-  const educationList = education.map((e, i) => (
-    <CandidateEducationCard
-      key={i}
-      textUniversityName={e.institution}
-      textDate={`${e.startDate} ${
-        e.endDate && `${e.startDate && '-'} ${e.endDate}`
-      }`}
-    />
-  ));
+const fetchFile = async (applicationDetails: JobApplication) => {
+  await axios({
+    url: applicationDetails?.resume ?? '#',
+    method: 'GET',
+    responseType: 'blob',
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    const ext = applicationDetails.resume.slice(
+      applicationDetails.resume.lastIndexOf('.'),
+    );
+    link.setAttribute(
+      'download',
+      `${applicationDetails.candidates.first_name}_${
+        applicationDetails.candidates.last_name
+      }_Resume${ext ?? '.pdf'}`,
+    );
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    link.parentNode.removeChild(link);
+  });
+};
+
+const NewEducationDetails = ({
+  schools,
+  relevance,
+}: {
+  schools;
+  relevance: JdScore['relevance']['schools'];
+}) => {
+  const educationList =
+    Array.isArray(schools) &&
+    schools
+      .filter((e) => e.institution !== null && e.institution !== '')
+      .map((e, i) => {
+        const startDate = timeFormat(e.start);
+        const endDate = timeFormat(e.end);
+        return (
+          <CandidateEducationCard
+            key={i}
+            textUniversityName={e.institution}
+            textDate={timeRange(startDate, endDate)}
+            isBadgeVisible={
+              relevance && relevance[i] && relevance[i] === 'high'
+            }
+          />
+        );
+      });
   return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
 };
 
-const NewExperienceDetails = ({ work }) => {
-  const workList = work.reduce((acc, w, i) => {
-    if (w.name && w.position) {
+const NewExperienceDetails = ({
+  positions,
+  relevance,
+}: {
+  positions;
+  relevance: JdScore['relevance']['positions'];
+}) => {
+  const workList = positions.reduce((acc, w, i) => {
+    const startDate = timeFormat(w.start);
+    const endDate = timeFormat(w.end);
+    if (w.title) {
       acc.push(
         <CandidateExperienceCard
           key={i}
           slotLogo={
             <CompanyLogo
-              companyName={w.name ? w.name.trim().toLowerCase() : null}
+              companyName={w.org ? w.org.trim().toLowerCase() : null}
             />
           }
-          textRole={w.position}
-          textCompany={w.name}
-          textDate={`${w.startDate} - ${w.endDate}`}
+          textRole={w.title}
+          textCompany={w.org}
+          textDate={timeRange(startDate, endDate)}
+          isBadgeVisible={relevance && relevance[i] && relevance[i] === 'high'}
         />,
       );
     }
     return acc;
   }, []);
-  return <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />;
+  return workList.length !== 0 ? (
+    <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />
+  ) : (
+    <></>
+  );
 };
 
-const NewSkillDetails = ({ skills }) => {
-  const skillList = skills.map((s, i) => (
-    <CandidateSkillPills key={i} textSkill={s.name} />
-  ));
+const timeFormat = (
+  obj: { year: number; month: number },
+  isEndDate: boolean = false,
+) => {
+  if (obj) {
+    if (obj.month) {
+      const date = new Date();
+      date.setMonth(obj.month - 1);
+      return `${date.toLocaleString('en-US', { month: 'long' })}${
+        obj.year ? ` ${obj.year}` : null
+      }`;
+    } else if (obj.year) return `${obj.year}`;
+    else return null;
+  } else if (isEndDate) return 'Present';
+  else return null;
+};
+
+const timeRange = (startDate: string, endDate: string) => {
+  return `${startDate ?? ''} ${startDate && endDate ? '-' : ''} ${
+    endDate ?? ''
+  }`;
+};
+
+const NewSkillDetails = ({ skills }: { skills }) => {
+  const skillList = skills
+    .filter((s) => s !== null && s !== '')
+    .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
   return <CandidateSkill slotCandidateSkill={<>{skillList}</>} />;
 };
 
@@ -672,12 +822,17 @@ export function Transcript({
   applicationDetails,
   setOpenDetailedFeedback,
   hideFeedback,
+}: {
+  applicationDetails: JobApplication;
+  setOpenDetailedFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+  hideFeedback: boolean;
 }) {
+  const feedback = applicationDetails.feedback as any[];
   return (
     <DetailedFeedback
       slotTranscript={
         <>
-          {applicationDetails.conversation?.map((ele, i) => {
+          {applicationDetails.conversation?.map((ele: any, i) => {
             return (
               <>
                 <ConversationCard
@@ -691,11 +846,8 @@ export function Transcript({
                 {ele.userContent && (
                   <ConversationCard
                     cardFor={undefined}
-                    roleImage={getGravatar(
-                      applicationDetails.email,
-                      applicationDetails.first_name,
-                    )}
-                    roleName={applicationDetails.first_name}
+                    roleImage={applicationDetails.candidates.profile_image}
+                    roleName={applicationDetails.candidates.first_name}
                     textForSpeech={ele.userContent}
                     src={ele.userVoice}
                     index={i}
@@ -709,7 +861,7 @@ export function Transcript({
       slotDetailedFeedback={
         <>
           {!hideFeedback &&
-            applicationDetails?.feedback?.map((ele, i) => {
+            feedback.map((ele, i) => {
               let rating = Number(
                 String(ele.rating).includes('/')
                   ? ele.rating.split('/')[0]

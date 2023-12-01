@@ -1,8 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
-
-import { ScoreWheelParams } from '../Common/ScoreWheel';
 
 export const capitalize = (str: string) => {
   if (str) {
@@ -33,112 +30,36 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-const getResumeScore = (
-  application: JobApplication,
-  parameter_weights: ScoreWheelParams,
-) => {
-  const jdScoreObj = application.jd_score as any;
-  const jdScore = jdScoreObj
-    ? getOverallResumeScore(application.jd_score, parameter_weights)
-    : 0;
-  return jdScore;
-};
-
 export type FilterParameter = {
   parameter: 'resume_score' | 'interview_score';
-  condition: 'eq' | 'neq' | 'lt' | 'le' | 'gt' | 'ge';
+  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
   count: number;
 };
+
+export const CANDIDATE_FILTERS: {
+  parameters: FilterParameter['parameter'][];
+  conditions: FilterParameter['condition'][];
+} = {
+  parameters: ['resume_score', 'interview_score'],
+  conditions: ['=', '<>', '>', '<', '>=', '<='],
+};
+
+export const CANDIDATE_SORT: SortParameter['parameter'][] = [
+  'resume_score',
+  'interview_score',
+  'first_name',
+  'email',
+  'created_at',
+];
 
 export type SortParameter = {
   parameter:
     | 'resume_score'
     | 'interview_score'
-    | 'name'
+    | 'first_name'
     | 'email'
-    | 'applied_on';
-  condition: 'asc' | 'desc';
-};
-
-export const getSortedApplications = (
-  applications: JobApplication[],
-  sortParameters: SortParameter,
-  parameter_weights: ScoreWheelParams,
-) => {
-  switch (sortParameters.parameter) {
-    case 'resume_score':
-      {
-        applications.sort(
-          (a, b) =>
-            getResumeScore(a, parameter_weights) -
-            getResumeScore(b, parameter_weights),
-        );
-      }
-      break;
-    case 'interview_score':
-      {
-        applications.sort(
-          (a, b) =>
-            getInterviewScore(a.feedback) - getInterviewScore(b.feedback),
-        );
-      }
-      break;
-    case 'applied_on':
-      {
-        applications.sort(
-          (a, b) =>
-            (new Date(a.created_at) as any) - (new Date(b.created_at) as any),
-        );
-      }
-      break;
-    case 'email':
-      {
-        applications.sort((a, b) => a.email.localeCompare(b.email));
-      }
-      break;
-    case 'name':
-      {
-        applications.sort((a, b) =>
-          `${a.first_name} ${a.last_name}`.localeCompare(
-            `${b.first_name} ${b.last_name}`,
-          ),
-        );
-      }
-      break;
-  }
-  return sortParameters.condition === 'asc'
-    ? applications
-    : applications.reverse();
-};
-
-export const getFilteredApplications = (
-  applications: JobApplication[],
-  parameter_weights: ScoreWheelParams,
-  filterParameters: FilterParameter[],
-) => {
-  return applications.reduce((acc, curr) => {
-    const valid = filterParameters.reduce((validity, filter) => {
-      if (validity && handleFilterParameter(filter, curr, parameter_weights))
-        return true;
-      else return false;
-    }, true);
-    if (valid) acc.push(curr);
-    return acc;
-  }, []);
-};
-
-export const getIntactApplications = (applications: JobApplication[]) => {
-  return applications.reduce(
-    (acc, curr) => {
-      const key = intactConditionFilter(curr);
-      return { ...acc, [key]: [...acc[key], curr] };
-    },
-    {
-      [ApiLogState.FAILED]: [],
-      [ApiLogState.SUCCESS]: [],
-      [ApiLogState.PROCESSING]: [],
-    },
-  );
+    | 'created_at';
+  ascending: boolean;
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -152,55 +73,13 @@ export enum ApiLogState {
 }
 
 export const intactConditionFilter = (application: JobApplication) => {
-  const apiLogObj = application.api_logs as any;
-  if (!apiLogObj) return ApiLogState.PROCESSING;
-  switch (apiLogObj.scoreStatus) {
-    case 'Failed':
+  switch (application.api_status) {
+    case 'failed':
       return ApiLogState.FAILED;
     case 'success':
       return ApiLogState.SUCCESS;
     default:
       return ApiLogState.PROCESSING;
-  }
-};
-
-const handleFilterParameter = (
-  filterParameter: FilterParameter,
-  application: JobApplication,
-  parameter_weights: ScoreWheelParams,
-) => {
-  switch (filterParameter.parameter) {
-    case 'resume_score':
-      return handleFilterCondition(
-        filterParameter,
-        getResumeScore(application, parameter_weights),
-      );
-
-    case 'interview_score':
-      return handleFilterCondition(
-        filterParameter,
-        getInterviewScore(application.feedback),
-      );
-  }
-};
-
-const handleFilterCondition = (
-  filterParameter: FilterParameter,
-  score: number,
-) => {
-  switch (filterParameter.condition) {
-    case 'eq':
-      return score === filterParameter.count;
-    case 'ge':
-      return score >= filterParameter.count;
-    case 'gt':
-      return score > filterParameter.count;
-    case 'le':
-      return score <= filterParameter.count;
-    case 'lt':
-      return score < filterParameter.count;
-    case 'neq':
-      return score !== filterParameter.count;
   }
 };
 
@@ -223,3 +102,9 @@ export function getInterviewScore(feedback) {
     : 0;
   return overAllScore;
 }
+
+export const getCandidateName = (first_name: string, last_name: string) => {
+  return first_name || last_name
+    ? capitalize(first_name || '' + ' ' + last_name || '')
+    : '---';
+};

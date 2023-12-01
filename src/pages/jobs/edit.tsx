@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import JobForm from '@/src/components/Job/JobForm';
+import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
   useJobForm,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';

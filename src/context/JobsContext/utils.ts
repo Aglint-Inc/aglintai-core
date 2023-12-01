@@ -1,17 +1,20 @@
+/* eslint-disable security/detect-object-injection */
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { JobContext } from './types';
+import { JobApplicationSections } from '../JobApplicationsContext/types';
 
 export const initialJobContext: JobContext = {
   jobsData: { applications: undefined, jobs: undefined },
   handleJobRead: undefined,
   handleJobUpdate: undefined,
-  handleUIJobUpdate: undefined,
+  handleUIJobReplace: undefined,
   handleJobDelete: undefined,
   handleJobError: undefined,
   handleGetJob: undefined,
   initialLoad: false,
-  handleApplicationsRead: undefined,
+  handleUpdateJobCount: undefined,
+  handleUIJobUpdate: undefined,
 };
 
 export const readJobDbAction = async (recruiter_id: string) => {
@@ -20,15 +23,73 @@ export const readJobDbAction = async (recruiter_id: string) => {
     .select('*')
     .order('created_at', { ascending: false })
     .eq('recruiter_id', recruiter_id);
-  return { data, error };
+
+  const ids = data?.map((job) => job.id);
+
+  const { data: d1, error: e1 } = await jobApplicationCountDbAction(ids);
+
+  if (e1) {
+    return { data: undefined, error: e1 };
+  }
+
+  const jobsWithCount = data.map((job) => {
+    return {
+      ...job,
+      count: {
+        new: d1[job.id]['new'],
+        interviewing: d1[job.id]['interviewing'],
+        qualified: d1[job.id]['qualified'],
+        disqualified: d1[job.id]['disqualified'],
+      },
+    };
+  });
+
+  return { data: jobsWithCount, error };
 };
 
-export const readJobApplicationsAction = async (jobIds: string[]) => {
-  const { data, error } = await supabase
-    .from('job_applications')
-    .select('*')
-    .in('job_id', jobIds);
-  return { data, error };
+export const jobApplicationCountDbAction = async (ids: string[]) => {
+  const { data, error } = await supabase.rpc('getjobapplications', { ids });
+
+  return {
+    data: data
+      ? data.reduce(
+          (acc, curr) => {
+            return {
+              ...acc,
+              [curr.job_id]: {
+                ...acc[curr.job_id],
+                [curr.status]: curr.count,
+              },
+            };
+          },
+          {
+            ...ids.reduce(
+              (acc, curr) => {
+                return {
+                  ...acc,
+                  [curr]: {
+                    ...Object.assign(
+                      {},
+                      ...Object.values(JobApplicationSections).map((j) => {
+                        return { [j]: 0 };
+                      }),
+                    ),
+                  },
+                };
+              },
+              {} as {
+                // eslint-disable-next-line no-unused-vars
+                [id: string]: { [key in JobApplicationSections]: number };
+              },
+            ),
+          } as {
+            // eslint-disable-next-line no-unused-vars
+            [id: string]: { [key in JobApplicationSections]: number };
+          },
+        )
+      : null,
+    error,
+  };
 };
 
 export const updateJobDbAction = async (inputData) => {

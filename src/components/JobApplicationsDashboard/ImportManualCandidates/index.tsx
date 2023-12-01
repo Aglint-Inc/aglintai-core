@@ -1,11 +1,11 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@context/JobApplicationsContext';
 import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
@@ -137,10 +137,6 @@ const ImportManualCandidates = () => {
           email: applicant.email.value,
           phone: applicant.phone.value,
           linkedin: applicant.linkedin.value,
-          job_location: job.location,
-          job_title: job.job_title,
-          company: job.company,
-          status: applicant.status.value,
         },
         applicant.resume.value,
       );
@@ -279,12 +275,12 @@ const FormBody = ({
             <Stack
               sx={{
                 border: '1px dashed',
-                borderColor: palette.grey[600],
+                borderColor: palette.blue[300],
                 borderRadius: 1,
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: '#fff',
+                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
               }}
               direction='row'
               spacing={'8px'}

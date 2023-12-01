@@ -3,57 +3,55 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
+import { JdScore } from '@/src/context/JobApplicationsContext/types';
+import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
+
 export const scoreWheelDependencies = {
   initialScoreWheelScores: {
     skills: 100,
     experience: 100,
-    project: 100,
     education: 100,
-    certifications: 100,
   } as ScoreWheelParams,
   initialScoreWheelWeights: {
-    skills: 20,
-    experience: 20,
-    project: 20,
-    education: 20,
-    certifications: 20,
+    skills: 33,
+    experience: 34,
+    education: 33,
   } as ScoreWheelParams,
   wheelColors: ['#E8A838', '#F1E15B', '#F47560', '#E8C1A0', '#97E3D5'],
-  parameterOrder: [
-    'skills',
-    'experience',
-    'project',
-    'education',
-    'certifications',
-  ],
+  parameterOrder: ['skills', 'experience', 'education'],
 };
 
 export type ScoreWheelParams = {
   skills: number;
   experience: number;
-  project: number;
   education: number;
-  certifications: number;
 };
 
 const ScoreWheel = ({
   id,
-  weights,
-  score,
+  scores,
+  parameter_weights,
   fontSize = 14,
 }: {
   id: string;
-  weights: any;
-  score?: any;
+  scores?: JdScore['scores'];
+  parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {
-  const newScore = {
-    ...scoreWheelDependencies.initialScoreWheelScores,
-    ...score,
-  };
-  const isSettings = score === undefined;
+  const isSettings = scores === undefined;
   const [delay, setDelay] = useState(0);
   const [degree, setDegree] = useState(null);
+  const jdScore = !isSettings ? (scores as ScoreWheelParams) : null;
+  const newScore = {
+    ...scoreWheelDependencies.initialScoreWheelScores,
+    ...jdScore,
+  };
+  const { conicGradient, hoverKey, unused } = getStyles(
+    delay,
+    parameter_weights,
+    newScore,
+    degree,
+  );
   useEffect(() => {
     if (delay === 100) {
       return;
@@ -70,13 +68,10 @@ const ScoreWheel = ({
       return () => clearTimeout(timer);
     }
   }, [delay]);
-  const { conicGradient, hoverKey, unused } = getStyles(
-    delay,
-    weights,
-    newScore,
-    degree,
-  );
-  const overallScore = getOverallScore(weights, newScore);
+
+  const overallScore = !isSettings
+    ? getOverallResumeScore(scores, parameter_weights)
+    : 0;
   return (
     <>
       <Stack
@@ -125,13 +120,16 @@ const ScoreWheel = ({
             <Stack fontSize={'200%'} sx={{ fontWeight: 600 }}>
               {isSettings
                 ? hoverKey
-                  ? `${weights[hoverKey] ?? unused.count}%`
+                  ? `${parameter_weights[hoverKey] ?? unused.count}%`
                   : unused.isUnused
                   ? `${unused.count}%`
                   : '100%'
                 : `${
                     hoverKey
-                      ? Math.trunc((weights[hoverKey] * score[hoverKey]) / 100)
+                      ? Math.trunc(
+                          (parameter_weights[hoverKey] * jdScore[hoverKey]) /
+                            100,
+                        )
                       : overallScore
                   }`}
             </Stack>
@@ -239,51 +237,6 @@ const getCursorDegrees = (e: any, id: string) => {
   const degrees = 90 - radians * (180 / Math.PI);
   const correctedDegrees = degrees < 0 ? 360 + degrees : degrees;
   return correctedDegrees;
-};
-
-export const getOverallScore = (
-  weight: ScoreWheelParams,
-  score: ScoreWheelParams,
-) => {
-  return score
-    ? Math.trunc(
-        Object.keys(weight).reduce((acc, curr) => {
-          acc += (score[curr] * weight[curr]) / 100;
-          return acc;
-        }, 0),
-      )
-    : 0;
-};
-
-export const getResumeScore = (jd_score, parameter_weights) => {
-  const data = {
-    qualification: jd_score.qualification,
-    skills: jd_score.skills_score,
-  };
-  const relevanceScores = {
-    less: 10,
-    ok: 30,
-    more: 50,
-  };
-  const relatedScore = 50;
-  const detailedScores = {};
-  for (const key of Object.keys(data.qualification)) {
-    const value = data.qualification[key];
-    if (!value) {
-      continue;
-    }
-    detailedScores[key] = value.isRelated
-      ? relatedScore + relevanceScores[value.relevance] || 0
-      : 0;
-  }
-  const skillsScore: number = data.skills?.score || 0;
-  detailedScores['skills'] = skillsScore * 0.1;
-  return Math.trunc(
-    Object.keys(parameter_weights).reduce((acc, curr) => {
-      acc += (detailedScores[curr] * parameter_weights[curr]) / 100;
-      return acc;
-    }, 0),
-  );
 };
 
 export default ScoreWheel;

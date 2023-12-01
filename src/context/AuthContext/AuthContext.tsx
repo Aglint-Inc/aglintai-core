@@ -13,12 +13,11 @@ import {
 
 import { LoaderSvg } from '@/devlink';
 import {
-  AddressType,
   RecruiterDB,
   RecruiterType,
   RecruiterUserType,
   RoleType,
-  SocialsType,
+  SocialsType
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -137,7 +136,6 @@ const AuthProvider = ({ children }) => {
           if (!error && recruiter.length > 0) {
             setRecruiter({
               ...recruiter[0],
-              address: recruiter[0]?.address as unknown as AddressType,
               socials: recruiter[0]?.socials as unknown as SocialsType,
             });
             const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
@@ -158,7 +156,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      router.push('/signup');
+      router.push(pageRoutes.LOGIN);
     }
   };
 
@@ -269,7 +267,7 @@ const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
     pageRoutes.LOGIN,
     pageRoutes.SIGNUP,
-    pageRoutes.INTERVIEW,
+    pageRoutes.MOCKTEST,
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) return true;
@@ -287,7 +285,6 @@ const updateRecruiterInDb = async (
     .select();
   if (!error && data.length) {
     delete data[0].socials;
-    delete data[0].address;
     return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
   }
   return null;

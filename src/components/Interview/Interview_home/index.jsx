@@ -7,13 +7,14 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import CandidatePanel from './CandidatePanel';
+import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
+import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
 import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import { getGravatar } from '../../JobApplicationsDashboard/ApplicationCard';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
@@ -28,6 +29,7 @@ function Interview_home() {
     openEndInterview,
     setOpenEndInterview,
     disconnecting,
+    videoAssessment,
   } = useInterviewContext();
   const { candidateDetails, jobDetails } = useInterviewDetailsContext();
 
@@ -41,14 +43,8 @@ function Interview_home() {
           <Transcript
             conversations={conversations}
             setOpenPanelDrawer={setOpenPanelDrawer}
-            interviewerImage={getGravatar(
-              candidateDetails?.email,
-              candidateDetails?.first_name,
-            )}
-            candidateImage={getGravatar(
-              candidateDetails?.email,
-              candidateDetails?.first_name,
-            )}
+            interviewerImage={candidateDetails.profile_image}
+            candidateImage={candidateDetails.profile_image}
           />
         </Stack>
       </SidePanelDrawer>
@@ -108,7 +104,7 @@ function Interview_home() {
         onClickSupport={{
           onClick: () => {
             window.open(
-              `https://recruiter.aglinthq.com/support/create?id=${candidateDetails.application_id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidateDetails.application_id}`,
             );
           },
         }}
@@ -118,8 +114,12 @@ function Interview_home() {
             setOpenPanelDrawer(true);
           },
         }}
-        slotInterviewRight={<InterviewerPanel />}
-        slotInterviewLeft={<CandidatePanel />}
+        slotInterviewRight={
+          videoAssessment ? <VideoInterviewerPanel /> : <InterviewerPanel />
+        }
+        slotInterviewLeft={
+          videoAssessment ? <VideoCandidatePanel /> : <CandidatePanel />
+        }
       />
     </Stack>
   );

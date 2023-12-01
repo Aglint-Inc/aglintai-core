@@ -4,6 +4,8 @@ import * as _interactions from "./interactions";
 import { CompanyInfo } from "./CompanyInfo";
 import { EmailTemplateCards } from "./EmailTemplateCards";
 import { CreateNewEmailCard } from "./CreateNewEmailCard";
+import { AssesmentSetting } from "./AssesmentSetting";
+import { AssisstantSettings } from "./AssisstantSettings";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -25,12 +27,16 @@ export function CompanySetting({
   slotTeam,
   onClickTeam = {},
   isTeamVisible = true,
+  slotAssesmentSetting,
+  onclickAssessment = {},
+  onclickAssisstant = {},
+  slotAssisstantSettings,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-main-wrapper", "height-scroll")}
+      className={_utils.cx(_styles, "rd-main-wrapper", "height-scroll-company")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-344")} tag="div">
@@ -3440,7 +3446,7 @@ export function CompanySetting({
             </_Builtin.TabsLink>
             {isTeamVisible ? (
               <_Builtin.TabsLink
-                className={_utils.cx(_styles, "company-tab-link", "hide")}
+                className={_utils.cx(_styles, "company-tab-link")}
                 data-w-tab="Tab 4"
                 {...onClickTeam}
               >
@@ -3452,6 +3458,30 @@ export function CompanySetting({
                 </_Builtin.Block>
               </_Builtin.TabsLink>
             ) : null}
+            <_Builtin.TabsLink
+              className={_utils.cx(_styles, "company-tab-link")}
+              data-w-tab="Tab 5"
+              {...onclickAssessment}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Assessment Settings"}
+              </_Builtin.Block>
+            </_Builtin.TabsLink>
+            <_Builtin.TabsLink
+              className={_utils.cx(_styles, "company-tab-link")}
+              data-w-tab="Tab 6"
+              {...onclickAssisstant}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Assistant"}
+              </_Builtin.Block>
+            </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
           <_Builtin.TabsContent
             className={_utils.cx(_styles, "cs-tab-content")}
@@ -3545,6 +3575,16 @@ export function CompanySetting({
                 tag="div"
               >
                 {slotTeam}
+              </_Builtin.Block>
+            </_Builtin.TabsPane>
+            <_Builtin.TabsPane tag="div" data-w-tab="Tab 5">
+              <_Builtin.Block tag="div">
+                {slotAssesmentSetting ?? <AssesmentSetting />}
+              </_Builtin.Block>
+            </_Builtin.TabsPane>
+            <_Builtin.TabsPane tag="div" data-w-tab="Tab 6">
+              <_Builtin.Block tag="div">
+                {slotAssisstantSettings ?? <AssisstantSettings />}
               </_Builtin.Block>
             </_Builtin.TabsPane>
           </_Builtin.TabsContent>

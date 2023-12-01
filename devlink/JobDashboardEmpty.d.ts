@@ -15,4 +15,7 @@ declare function JobDashboardEmpty(props: {
   isSelectTitleVisible?: Types.Visibility.VisibilityConditions;
   slotAts?: Types.Devlink.Slot;
   isAtsOptionVisible?: Types.Visibility.VisibilityConditions;
+  isConnectedVisible?: Types.Visibility.VisibilityConditions;
+  isGreenhouseConnected?: Types.Visibility.VisibilityConditions;
+  isAshbyConnected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

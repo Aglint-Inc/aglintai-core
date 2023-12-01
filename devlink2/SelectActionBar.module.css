@@ -1,13 +1,10 @@
 .select-action-bar {
   display: flex;
   width: 100%;
-  padding: 22px 32px;
   justify-content: space-between;
   align-items: center;
-
-  background-color: var(--white-c31c6fe9);
-
-  box-shadow: 0 -2px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
 }
 
 @media screen and (max-width: 991px) {
@@ -23,6 +20,74 @@
 .select-action-left-block {
   display: flex;
   align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.selection-clear-btn {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  border-radius: 3px;
+
+  background-color: #f8f9f9;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.selection-clear-btn:hover {
+  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-700 {
+  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-blue-700 {
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
 }
 
 .fw-semibold {
@@ -104,13 +169,12 @@
   }
 }
 
-.select-clear-btn {
-  padding: 8px 12px;
-  cursor: pointer;
+.text-grey-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .text-underline {
@@ -123,129 +187,6 @@
   opacity: 0.7;
 }
 
-.select-action-right-block {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-@media screen and (max-width: 479px) {
-  .select-action-right-block {
-    overflow: auto;
-    width: 100%;
-    padding-bottom: 10px;
-    justify-content: flex-start;
-  }
-}
-
-.select-action-btn {
-  display: flex;
-  padding: 8px 12px;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border-radius: 6px;
-
-  transition: all 300ms ease;
-
-  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-  white-space: nowrap;
-
-  cursor: pointer;
-}
-
-.select-action-btn:hover {
-  background-color: hsla(180, 0.00%, 92.52%, 1.00);
-}
-
-.select-action-btn.blue-100:hover {
-  background-color: hsla(206.66666666666666, 100.00%, 88.22%, 1.00);
-}
-
-.blue-100 {
-  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
-}
-
-.select-action-btn.green-100:hover {
-  background-color: #d1e8df;
-}
-
-.green-100 {
-  background-color: hsla(158.18181818181827, 44.00%, 95.10%, 1.00);
-}
-
-.select-action-btn.red-100:hover {
-  background-color: hsla(356, 100.00%, 93.33%, 1.00);
-}
-
-.red-100 {
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
-}
-
-.select-action-btn.grey-100:hover {
-  background-color: hsla(180, 0.00%, 91.03%, 1.00);
-}
-
-.grey-100 {
-  background-color: hsla(180, 7.69%, 97.45%, 1.00);
-}
-
-.select-action-btn.blue-500:hover {
-  background-color: var(--blue700-44d5e20c);
-}
-
-.blue-500 {
-  background-color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
-}
-
-.select-action-btn.blue-500.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
-.text-color-white {
-  color: white;
-}
-
-.icon-embed {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-
-  object-fit: contain;
-}
-
-.icon-embed.absolute {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
-.text-blue-700 {
-  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
-}
-
-.text-green-700 {
-  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
-}
-
-.text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+.text-blue-500.ml-12 {
+  margin-left: 8px;
 }

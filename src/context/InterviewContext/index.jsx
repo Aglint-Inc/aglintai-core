@@ -18,8 +18,11 @@ let animationFrameId;
 let timmer;
 let tempTime = 0;
 
+//video
+
 const context = [];
-const totalNumberOfQuestions = [];
+let totalNumberOfQuestions = [];
+let video_Ids = [];
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -31,7 +34,7 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { updateFeedbackOnJobApplications } from './utils';
+import { getRecruiter, updateFeedbackOnJobApplications } from './utils';
 const useInterviewContext = () => useContext(InterviewContext);
 function InterviewContextProvider({ children }) {
   let {
@@ -42,24 +45,60 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
   const { jobDetails, candidateDetails } = useInterviewDetailsContext();
-
   useEffect(() => {
-    if (Object.keys(jobDetails).length) {
-      const jsonData = jobDetails?.screening_questions[0];
+    getRecruiter(jobDetails?.recruiter_id).then((data) => {
+      // console.log(data.video_assessment);
 
-      // Extract and format the questions
+      interviewerIndex = data?.audio_avatar_id;
+
+      video_Ids = [];
+      totalNumberOfQuestions = [];
+
+      const firstQuestion = jobDetails?.start_video?.question;
+      totalNumberOfQuestions.push(firstQuestion);
+      const jsonData = jobDetails?.screening_questions;
       for (const category in jsonData) {
         // eslint-disable-next-line security/detect-object-injection
         const questions = jsonData[category].questions;
+
         for (const question of questions) {
+          if (question?.videoId && jobDetails?.video_assessment) {
+            video_Ids.push(question?.videoId);
+          }
           totalNumberOfQuestions.push(question.question);
         }
       }
-    }
+
+      const endQuestion = jobDetails?.end_video?.question;
+
+      totalNumberOfQuestions.push(endQuestion);
+      // console.log(totalNumberOfQuestions);
+
+      if (router?.query?.id && video_Ids.length === 0) {
+        setVideoAssessment(false);
+      } else {
+        setVideoAssessment(true);
+      }
+
+      video_Ids.forEach(async (ele) => {
+        const { data, error } = await supabase
+          .from('ai_videos')
+          .select()
+          .eq('video_id', ele);
+        if (!error) {
+          setVideo_Urls((pre) => [
+            ...pre,
+            data[0]?.file_url + data[0]?.video_id,
+          ]);
+        }
+      });
+      // console.log(video_Ids);
+      // console.log(totalNumberOfQuestions);
+    });
   }, [jobDetails]);
 
   const [openSidePanelDrawer, setOpenSidePanelDrawer] = useState(false);
-
+  const [videoAssessment, setVideoAssessment] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [loadingRes, setLoadingRes] = useState(false);
 
@@ -68,6 +107,8 @@ function InterviewContextProvider({ children }) {
   const [openEndInterview, setOpenEndInterview] = useState(false);
 
   const [openThanksPage, setOpenThanksPage] = useState(false);
+
+  const [showStartCard, setShowStartCard] = useState(false);
 
   // timer
 
@@ -81,6 +122,12 @@ function InterviewContextProvider({ children }) {
   const [speaking, setSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
   const senderRef = useRef();
+  const videoRef = useRef();
+
+  const [videoLoad, setVideoLoad] = useState(true);
+
+  // video
+  const [video_Urls, setVideo_Urls] = useState([]);
 
   function startTimer() {
     timmer = setInterval(updateTimer, 1000); // Start the timer with a 1-second interval
@@ -125,9 +172,9 @@ function InterviewContextProvider({ children }) {
 
   async function startInterview() {
     audioElement = null;
-    interviewerIndex = null;
+    // interviewerIndex = null;
     // interviewerIndex = Math.floor(Math.random() * 10); // its generate the random index to pick the interviewer
-    interviewerIndex = 6;
+    // interviewerIndex = 6;
     const timeforMicPer = setTimeout(() => {
       setAllowMic(true);
       //   document.getElementById('open-mic').click();
@@ -141,10 +188,12 @@ function InterviewContextProvider({ children }) {
         clearTimeout(timeforMicPer);
         startTimer();
 
-        context.push({
-          role: 'assistant',
-          content: totalNumberOfQuestions[Number(questionIndex)],
-        });
+        if (questionIndex !== 0) {
+          context.push({
+            role: 'assistant',
+            content: totalNumberOfQuestions[Number(questionIndex)],
+          });
+        }
         handleSpeak('assistant', totalNumberOfQuestions[Number(questionIndex)]);
       })
       .catch(() => {
@@ -206,17 +255,24 @@ function InterviewContextProvider({ children }) {
         fetch(audioDataUrl)
           .then((response) => response.blob())
           .then(async (blob) => {
-            const { data, error } = await supabase.storage
-              .from('candidate_interview')
-              .upload(
-                `${candidateDetails?.email.split('@')[0]}_${
-                  candidateDetails?.application_id
-                }/${
-                  candidateDetails?.application_id
-                }/recorded_ai_voice_${new Date().getTime()}.mp3`,
-                blob,
-              );
-            if (!error) {
+            // eslint-disable-next-line no-console
+            console.log(blob);
+            // const { data, error } = await supabase.storage
+            //   .from('candidate_interview')
+            //   .upload(
+            //     `${candidateDetails?.email.split('@')[0]}_${
+            //       candidateDetails?.application_id
+            //     }/${
+            //       candidateDetails?.application_id
+            //     }/recorded_ai_voice_${new Date().getTime()}.mp3`,
+            //     blob,
+            //   );
+            const error = null;
+            if (
+              !error &&
+              questionIndex !== 0 &&
+              questionIndex < totalNumberOfQuestions.length - 2
+            ) {
               setConversations((pre) => [
                 ...pre,
                 {
@@ -241,12 +297,23 @@ function InterviewContextProvider({ children }) {
         audioElement.addEventListener('ended', () => {
           // Handle the completion of the audio playback here
           // You can invoke a callback function or trigger any desired events
+          if (totalNumberOfQuestions.length - 2 === questionIndex) {
+            setOpenEndInterview(true);
+            setOpenThanksPage(true);
+            getFeedback();
+            setSpeaking(false);
+            return null;
+          }
+          if (questionIndex !== 0) {
+            startRecording();
 
-          startRecording();
-
-          SpeechRecognition.startListening({
-            continuous: true,
-          });
+            SpeechRecognition.startListening({
+              continuous: true,
+            });
+          }
+          if (questionIndex === 0) {
+            setQuestionIndex((pre) => pre + 1);
+          }
 
           setSpeaking(false);
         });
@@ -268,6 +335,122 @@ function InterviewContextProvider({ children }) {
     } catch (error) {
       setLoadingRes(false);
       return error;
+    }
+  }
+
+  async function startVideoInterview() {
+    const timeforMicPer = setTimeout(() => {
+      setAllowMic(true);
+      //   document.getElementById('open-mic').click();
+    }, 1000);
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then(async () => {
+        // Permission granted
+        setAllowMic(false);
+        setOpenSidePanelDrawer(true);
+        clearTimeout(timeforMicPer);
+        // startTimer();
+        setSpeaking(true);
+
+        if (questionIndex !== 0) {
+          context.push({
+            role: 'assistant',
+            content: totalNumberOfQuestions[Number(questionIndex)],
+          });
+          // setConversations((pre) => [
+          //   ...pre,
+          //   {
+          //     role: 'assistant',
+          //     content: totalNumberOfQuestions[Number(questionIndex)],
+          //     userRole: '',
+          //     userContent: '',
+          //     userVoice: '',
+          //     aiAnswer: '',
+          //     aiVoice: ``,
+          //   },
+          // ]);
+        }
+        setLoadingRes(false);
+      })
+      .catch(() => {
+        clearTimeout(timeforMicPer);
+        setAllowMic(true);
+      })
+      .finally(() => {
+        clearTimeout(timeforMicPer);
+      });
+  }
+  function handleVideoPlay() {
+    setSpeaking(true);
+    stopListening();
+  }
+  function handleVideoPause() {
+    stopListening();
+    setSpeaking(false);
+  }
+  function handleVideoEnd() {
+    if (questionIndex === totalNumberOfQuestions.length - 1) {
+      setOpenEndInterview(true);
+      setOpenThanksPage(true);
+      getFeedback();
+      return null;
+    }
+    if (questionIndex !== 0) {
+      startRecording();
+
+      SpeechRecognition.startListening({
+        continuous: true,
+      });
+    }
+
+    setSpeaking(false);
+  }
+  async function submitVideoAnswers() {
+    const userText = senderRef?.current?.value;
+    if (userText) {
+      senderRef.current.value = '';
+      setSpeaking(true);
+
+      audioElement = null;
+      context.push({
+        role: 'user',
+        content: userText,
+      });
+      setConversations((pre) => {
+        pre[conversations.length - 1].userRole = 'You';
+        pre[conversations.length - 1].userContent = userText;
+        return [...pre];
+      });
+
+      stopRecording();
+      SpeechRecognition.abortListening();
+      SpeechRecognition.stopListening();
+      resetTranscript();
+      setLoadingRes(true);
+
+      setQuestionIndex((pre) => pre + 1);
+      if (questionIndex < totalNumberOfQuestions.length - 2) {
+        context.push({
+          role: 'assistant',
+          content: totalNumberOfQuestions[Number(questionIndex + 1)],
+        });
+        setConversations((pre) => [
+          ...pre,
+          {
+            role: 'assistant',
+            content: totalNumberOfQuestions[Number(questionIndex + 1)],
+            userRole: '',
+            userContent: '',
+            userVoice: '',
+            aiAnswer: '',
+            aiVoice: ``,
+          },
+        ]);
+      }
+      setLoadingRes(false);
+    } else {
+      toast.warning('Please provide your answer!');
     }
   }
 
@@ -294,18 +477,15 @@ function InterviewContextProvider({ children }) {
       SpeechRecognition.stopListening();
       resetTranscript();
       setLoadingRes(true);
-      if (totalNumberOfQuestions.length === questionIndex + 1) {
-        setOpenEndInterview(true);
-        setOpenThanksPage(true);
-        getFeedback();
-        return null;
-      } else {
-        setQuestionIndex((pre) => pre + 1);
+
+      setQuestionIndex((pre) => pre + 1);
+      if (questionIndex < totalNumberOfQuestions.length - 2) {
         context.push({
           role: 'assistant',
           content: totalNumberOfQuestions[Number(questionIndex + 1)],
         });
       }
+
       handleSpeak(
         'assistant',
         totalNumberOfQuestions[Number(questionIndex + 1)],
@@ -315,7 +495,8 @@ function InterviewContextProvider({ children }) {
     }
   }
   function stopRecording() {
-    document.getElementById('mic-trigger').click();
+    if (document.getElementById('mic-trigger'))
+      document.getElementById('mic-trigger').click();
     if (mediaRecorder) {
       // Turn off the microphone
       if (mediaStream && mediaStream.getTracks) {
@@ -504,6 +685,26 @@ function InterviewContextProvider({ children }) {
         setOpenEndInterview,
 
         character,
+        startVideoInterview,
+        submitVideoAnswers,
+
+        video_Ids,
+        video_Urls,
+
+        setVideo_Urls,
+        videoRef,
+        videoLoad,
+        setVideoLoad,
+        handleVideoEnd,
+        handleVideoPlay,
+        handleVideoPause,
+        videoAssessment,
+
+        setCharacter,
+        showStartCard,
+        setShowStartCard,
+        setConversations,
+        context,
       }}
     >
       {children}

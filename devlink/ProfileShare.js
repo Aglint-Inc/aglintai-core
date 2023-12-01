@@ -48,6 +48,9 @@ export function ProfileShare({
   isExperienceActive = false,
   isSkillActive = false,
   isOverviewVisible = true,
+  companyName = "Company Name",
+  location = "Location",
+  onClickLinkedin = {},
 }) {
   return (
     <_Component
@@ -71,10 +74,36 @@ export function ProfileShare({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "ps-header-logo-block")}
+                className={_utils.cx(_styles, "ps-company-info-wrapper")}
                 tag="div"
               >
-                {slotCompanyLogo}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ps-header-logo-block")}
+                  tag="div"
+                >
+                  {slotCompanyLogo}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ps-company-info")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "fw-semibold",
+                      "text-color-white"
+                    )}
+                    tag="div"
+                  >
+                    {companyName}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-300")}
+                    tag="div"
+                  >
+                    {location}
+                  </_Builtin.Block>
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -146,6 +175,7 @@ export function ProfileShare({
                     <_Builtin.Block
                       className={_utils.cx(_styles, "clickable")}
                       tag="div"
+                      {...onClickLinkedin}
                     >
                       <_Builtin.HtmlEmbed
                         className={_utils.cx(_styles, "icon-embed")}
@@ -211,11 +241,7 @@ export function ProfileShare({
                     {textInterviewScore}
                   </_Builtin.Block>
                   <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "text-grey-600-3",
-                      "mobile-12"
-                    )}
+                    className={_utils.cx(_styles, "text-grey-200")}
                     tag="div"
                   >
                     {"Interview Score"}

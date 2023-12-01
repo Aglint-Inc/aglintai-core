@@ -1,0 +1,308 @@
+.avatar-modal-wrap {
+  position: relative;
+
+  width: 750px;
+  height: 486px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 24px;
+
+  border-radius: 10px;
+
+  background-color: white;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-lg.fw-semibold.no-wrap-company {
+  flex: 0 0 auto;
+}
+
+@media screen and (max-width: 767px) {
+  .mobile-landscape-hide {
+    display: none;
+  }
+}
+
+.text-lg.fw-semibold.is-profile {
+  color: var(--grey700-7fbe857b);
+}
+
+@media screen and (max-width: 479px) {
+  .text-lg.fw-semibold.is-profile {
+    align-self: flex-end;
+  }
+}
+
+.text-grey-800 {
+  color: var(--grey800-e42b2e06);
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
+.text-yellow-800 {
+  color: var(--yellow800-b1e3bc9b);
+}
+
+.color-black {
+  color: var(--black-0fdbd865);
+}
+
+.text-green-800 {
+  color: var(--green800-a83af583);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.text-grey-500 {
+  color: var(--grey500-0d508ad8);
+}
+
+.text-color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.text-kale-800 {
+  color: var(--kale800-682c1482);
+}
+
+.text-lg.fw-semibold.inline-block {
+  display: inline;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.text-lg.fw-semibold.inline-block.ml-4 {
+  margin-left: 6px;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.text-lg.fw-semibold.inline-text.ml-6 {
+  margin-left: 6px;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
+.text-lg.text-align-center.no-wrap-company {
+  flex: 0 0 auto;
+}
+
+@media screen and (max-width: 479px) {
+  .text-lg.text-align-center.no-wrap-company {
+    flex: 0 auto;
+  }
+}
+
+.text-lg.no-wrap-company {
+  flex: 0 0 auto;
+}
+
+.text-lg.color-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
+.text-lg.color-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.text-lg.color-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.text-lg.color-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.text-lg.color-kale-600 {
+  color: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+}
+
+.text-lg.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.text-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.text-lg.text-grey-700.letter-spacing-small {
+  letter-spacing: -0.45px;
+}
+
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
+.slot-avatar-video-modal {
+  overflow: hidden;
+  width: 100%;
+  height: 381px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.close-modal-avatar {
+  position: absolute;
+  left: auto;
+  top: 25px;
+  right: 25px;
+  bottom: auto;
+
+  padding: 5px;
+
+  border-radius: 100px;
+
+  cursor: pointer;
+}
+
+.close-modal-avatar:hover {
+  background-color: #f8f9f9;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.avatar-play-puase-wrap {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 40px;
+  bottom: 50px;
+  z-index: 1;
+
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 0.6px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  cursor: pointer;
+}

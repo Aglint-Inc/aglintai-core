@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME,
   eslint: {
     dirs: ['src'],
   },
@@ -13,12 +14,12 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
-      {
-        source: '/login',
-        destination: '/signup?step=signin',
-        basePath: false,
-        permanent: true,
-      },
+      // {
+      //   source: '/login',
+      //   destination: '/signup?step=signin',
+      //   basePath: false,
+      //   permanent: true,
+      // },
     ];
   },
   images: {

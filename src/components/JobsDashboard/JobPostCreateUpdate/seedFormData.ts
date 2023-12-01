@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, isEmpty, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -34,39 +34,44 @@ export const getSeedJobFormData = (
       interviewType: 'questions-preset',
       defaultAddress: [],
       defaultDepartments: [],
-      interviewConfig: {
-        skill: {
-          id: nanoid(),
+      interviewConfig: [
+        {
+          category: 'skill',
           copy: 'Skill',
+          id: nanoid(),
           questions: [],
         },
-        behavior: {
-          id: nanoid(),
+        {
+          category: 'behavior',
           copy: 'Behavior',
-
+          id: nanoid(),
           questions: [],
         },
-        communication: {
+        {
+          category: 'communication',
+          copy: 'communication',
           id: nanoid(),
-          copy: 'Communication',
           questions: [],
         },
-        performance: {
-          id: nanoid(),
+        {
+          category: 'performance',
           copy: 'Performance',
+          id: nanoid(),
           questions: [],
         },
-        education: {
-          id: nanoid(),
+        {
+          category: 'education',
           copy: 'Education',
-          questions: [],
-        },
-        general: {
           id: nanoid(),
-          copy: 'General',
           questions: [],
         },
-      },
+        {
+          category: 'general',
+          copy: 'General',
+          id: nanoid(),
+          questions: [],
+        },
+      ],
       screeningEmail: {
         date: new Date().toISOString(),
         isImmediate: true,
@@ -95,7 +100,58 @@ export const getSeedJobFormData = (
         ...scoreWheelDependencies.initialScoreWheelWeights,
       },
       recruiterId: '',
+      videoAssessment: false,
+      introVideo: {
+        id: '',
+        question: '',
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
+      startVideo: {
+        id: '',
+        question:
+          "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences.Let's get started.",
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
+      endVideo: {
+        id: '',
+        question:
+          "Thank you,for your time and sharing your insights with us today. If you have any further questions or need more information from us, please don't hesitate to reach out. Wishing you a great day ahead",
+        videoId: '',
+        videoQn: '',
+        videoUrl: '',
+      },
+      isDraftCleared: false,
+      interviewInstrctions: `<p><strong>Assessment Instructions</strong></p><ul><li><p><strong><span>Quiet Environment</span></strong><br><span>Choose a quiet place to take the assessment where you will not be interrupted.</span></p></li><li><p><strong><span>Interruptions</span></strong><br><span>If the assessment is stopped for any reason, you will need to start over from the beginning.</span></p></li><li><p><strong><span>Question Types</span></strong><br><span>You will be asked questions based on the job requirements. Prepare yourself accordingly.</span></p></li><li><p><strong><span>Answer Submission<br></span></strong><span>You have the option to submit your answers via voice or by typing them out.</span></p></li><li><p><strong><span>Timing<br></span></strong><span>Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed.</span></p></li></ul><p></p><p><strong> Please take a moment to go through the tour before starting your assessment. Once you're ready, click the "Start Assessment" button. Good luck!</strong></p>`,
+      interviewSetting: {
+        assessmentValidity: {
+          candidateRetry: 5,
+          expirationDuration: 7,
+        },
+        isVideoAiGenerated: false,
+        showInstructionVideo: true,
+        aiGeneratedVideoInfo: {
+          id: '',
+          question: '',
+          videoId: '',
+          videoQn: '',
+          videoUrl: '',
+        },
+        uploadedVideoInfo: {
+          id: '',
+          question: '',
+          videoId: '',
+          videoQn: '',
+          videoUrl: '',
+        },
+      },
+      assessment: false,
     },
+    isJobPostReverting: false,
+    jobPostStatus: 'draft',
   };
 
   if (recruiter) {
@@ -104,9 +160,11 @@ export const getSeedJobFormData = (
       value: [s.city, s.region, s.country].filter(Boolean).join(', '),
     }));
 
+    seedFormState.formFields.jobTitle = `${recruiter.name}'s First Job`;
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
+    seedFormState.formFields.videoAssessment = recruiter.video_assessment;
     seedFormState.formFields.defaultWorkPlaceTypes = Object.keys(
       recruiter.workplace_type,
     ).map((o) => {
@@ -187,8 +245,9 @@ export const getSeedJobFormData = (
 };
 
 export const dbToClientjobPostForm = (
-  jobPost: JobTypeDB,
+  jobPost: Partial<JobTypeDB>,
   recruiter: Database['public']['Tables']['recruiter']['Row'],
+  jobPostStatus: string,
 ) => {
   const seedData = getSeedJobFormData(recruiter);
   const jp: JobFormState = {
@@ -197,55 +256,29 @@ export const dbToClientjobPostForm = (
     formType: 'edit',
     jobPostId: jobPost.id,
     currSlide: 'details',
-    updatedAt: '',
+    updatedAt: jobPost.updated_at || new Date().toUTCString(),
     formFields: {
       ...seedData.formFields,
-      company: jobPost.company,
-      workPlaceType: jobPost.workplace_type,
-      interviewConfig: {
-        skill: get(
-          jobPost,
-          'screening_questions[0].skill',
-          seedData.formFields.interviewConfig.skill,
-        ),
-        behavior: get(
-          jobPost,
-          'screening_questions[0].behavior',
-          seedData.formFields.interviewConfig.behavior,
-        ),
-        communication: get(
-          jobPost,
-          'screening_questions[0].communication',
-          seedData.formFields.interviewConfig.communication,
-        ),
-        performance: get(
-          jobPost,
-          'screening_questions[0].performance',
-          seedData.formFields.interviewConfig.performance,
-        ),
-        education: get(
-          jobPost,
-          'screening_questions[0].education',
-          seedData.formFields.interviewConfig.education,
-        ),
-        general: get(
-          jobPost,
-          'screening_questions[0].general',
-          seedData.formFields.interviewConfig.general,
-        ),
-      },
+      company: jobPost.company || seedData.formFields.company,
+      workPlaceType:
+        jobPost.workplace_type || seedData.formFields.workPlaceType,
+      interviewConfig: get(
+        jobPost,
+        'screening_questions',
+        seedData.formFields.interviewConfig,
+      ) as any,
       interviewType: get(
         jobPost,
         'screening_setting.interviewType',
         'questions-preset',
       ),
-      department: jobPost.department,
-      jobDescription: jobPost.description,
-      jobLocation: jobPost.location,
-      logo: jobPost.logo,
-      skills: get(jobPost, 'skills', []),
-      jobTitle: jobPost.job_title,
-      jobType: jobPost.job_type,
+      department: jobPost.department || seedData.formFields.department,
+      jobDescription: jobPost.description || '',
+      jobLocation: jobPost.location || seedData.formFields.jobLocation,
+      logo: jobPost.logo || seedData.formFields.logo,
+      skills: get(jobPost, 'skills', []) || [],
+      jobTitle: jobPost.job_title || '',
+      jobType: jobPost.job_type || seedData.formFields.jobType,
       newScreeningConfig: {
         screening: {
           ...(get(
@@ -281,13 +314,24 @@ export const dbToClientjobPostForm = (
           seedData.formFields.newScreeningConfig.feedbackVisible,
         ) as boolean,
       },
-
       resumeScoreSettings: {
         ...(get(jobPost, 'parameter_weights', {
           ...scoreWheelDependencies.initialScoreWheelWeights,
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
+      videoAssessment: jobPost.video_assessment,
+      startVideo:
+        jobPost.start_video || (seedData.formFields.startVideo as any),
+      endVideo: jobPost.end_video || (seedData.formFields.endVideo as any),
+      interviewInstrctions: jobPost.interview_instructions,
+      isDraftCleared: isUndefined(jobPost.draft)
+        ? false
+        : isEmpty(jobPost.draft),
+      interviewSetting:
+        jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
+      assessment: jobPost.assessment || false,
     },
+    jobPostStatus: jobPostStatus as any,
   };
 
   return jp;

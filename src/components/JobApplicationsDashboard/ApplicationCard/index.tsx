@@ -1,17 +1,28 @@
-import WarningIcon from '@mui/icons-material/Warning';
-import { Tooltip } from '@mui/material';
-import md5 from 'blueimp-md5';
+/* eslint-disable security/detect-object-injection */
+import {
+  AllCandidateListItem,
+  // InsightTagAmbitious,
+  InsightTagExperienced,
+  InsightTagKnowledgeable,
+  InsightTagLeader,
+  // InsightTagReliable,
+  InsightTagSkilled,
+} from '@/devlink2';
+import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
+import {
+  JdScore,
+  JobApplication,
+  JobApplicationSections,
+} from '@/src/context/JobApplicationsContext/types';
 
-import { CandidateListItem } from '@/devlink2';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
-
-import { capitalize, formatTimeStamp, getInterviewScore } from '../utils';
-import MuiAvatar from '../../Common/MuiAvatar';
-import { SmallCircularScore } from '../../Common/SmallCircularScore';
+import CandidateAvatar from '../Common/CandidateAvatar';
+import InterviewScore from '../Common/InterviewScore';
+import ResumeScore from '../Common/ResumeScore';
+import { capitalize, formatTimeStamp, getCandidateName } from '../utils';
 
 const ApplicationCard = ({
+  section,
+  detailedView,
   application,
   index,
   checkList,
@@ -20,6 +31,8 @@ const ApplicationCard = ({
   handleOpenDetails,
   isSelected = false,
 }: {
+  section: JobApplicationSections;
+  detailedView: boolean;
   application: JobApplication;
   index: number;
   checkList: Set<string>;
@@ -30,86 +43,45 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  const { job } = useJobApplications();
-
-  const interviewScore = application?.feedback
-    ? getInterviewScore(application.feedback)
-    : 0;
-
   const creationDate = formatTimeStamp(application.created_at);
-
   const handleCheck = () => {
     handleSelect(index);
   };
-
-  const resumeScore = getOverallResumeScore(
-    application.jd_score,
-    job.parameter_weights,
+  const profile = <CandidateAvatar application={application} fontSize={12} />;
+  const resumeScore = <ResumeScore application={application} />;
+  const interviewScore =
+    section === JobApplicationSections.NEW ? (
+      <></>
+    ) : (
+      <InterviewScore application={application} />
+    );
+  const isChecked = checkList.has(application.application_id);
+  const name = getCandidateName(
+    application.candidates.first_name,
+    application.candidates.last_name,
   );
-  return (
-    <CandidateListItem
+  const summary = (application?.json_resume as any)?.overview ?? '---';
+  return !detailedView ? (
+    <AllCandidateListItem
       onclickSelect={{ onClick: handleCheck }}
-      isChecked={checkList.has(application.application_id)}
-      slotProfileImage={
-        <MuiAvatar
-          level={application.first_name}
-          src={
-            !application.profile_image
-              ? getGravatar(application.email)
-              : application.profile_image
-          }
-          variant='rounded'
-          width='100%'
-          height='100%'
-          // sx={{
-          //   width: '100%',
-          //   height: '100%',
-          //   background: '#fff',
-          //   '& .MuiAvatar-img ': {
-          //     objectFit: 'contain',
-          //   },
-          // }}
-        />
-      }
-      name={
-        application.first_name
-          ? capitalize(
-              application.first_name + ' ' + application?.last_name || '',
-            )
+      isChecked={isChecked}
+      slotProfileImage={profile}
+      name={name}
+      jobTitle={
+        (application.json_resume as any)?.basics?.currentJobTitle
+          ? capitalize((application.json_resume as any).basics.currentJobTitle)
           : '---'
       }
-      jobTitle={
-        application.job_title ? capitalize(application.job_title) : '---'
+      location={
+        (application.json_resume as any)?.basics?.location
+          ? capitalize((application.json_resume as any).basics.location)
+          : '---'
       }
-      slotResumeScore={
-        application.json_resume ? (
-          <SmallCircularScore
-            finalScore={resumeScore}
-            scale={0.5}
-            showScore={true}
-          />
-        ) : (
-          <Tooltip title='Resume not parsable' placement='right' arrow>
-            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
-          </Tooltip>
-        )
-      }
-      email={application.email || '---'}
-      phone={application.phone || '---'}
+      slotResumeScore={resumeScore}
+      email={application.candidates.email || '---'}
+      phone={application.candidates.phone || '---'}
       isInterviewVisible={isInterview}
-      slotInterviewScore={
-        application?.feedback ? (
-          <SmallCircularScore
-            finalScore={interviewScore}
-            scale={0.5}
-            showScore={true}
-          />
-        ) : (
-          <Tooltip title='Yet to be interviewed' placement='right' arrow>
-            <WarningIcon fontSize='small' style={{ color: 'goldenrod' }} />
-          </Tooltip>
-        )
-      }
+      slotAssessmentScore={interviewScore}
       appliedDate={creationDate}
       onclickCandidate={{
         onClick: () => {
@@ -117,17 +89,72 @@ const ApplicationCard = ({
         },
       }}
       isHighlighted={isSelected}
+      experience={getExperienceCount(
+        (application.json_resume as any)?.basics?.totalExperience,
+      )}
+    />
+  ) : (
+    <TopCandidateListItem
+      onclickSelect={{ onClick: handleCheck }}
+      name={name}
+      isChecked={isChecked}
+      isHighlighted={isSelected}
+      slotScores={
+        <>
+          {resumeScore}
+          {interviewScore}
+        </>
+      }
+      summary={summary}
+      onclickCandidate={{
+        onClick: () => {
+          handleOpenDetails();
+        },
+      }}
+      slotInsights={<Insights jdScore={application.jd_score as JdScore} />}
     />
   );
 };
 
+const getExperienceCount = (months: number) => {
+  return months ? Math.trunc(months / 12) : '---';
+};
+
+const Insights = ({ jdScore }: { jdScore: JdScore }) => {
+  if (jdScore?.badges) {
+    const badgeList = badgePriority.reduce((acc, curr) => {
+      if (jdScore.badges[curr]) acc.push(getBadge(curr, jdScore.badges[curr]));
+      return acc;
+    }, []);
+    return <>{badgeList}</>;
+  }
+  return <></>;
+};
+
+const badgePriority = [
+  'leadership',
+  'jobStability',
+  'careerGrowth',
+  'positions',
+  'skills',
+  'schools',
+];
+
+const getBadge = (key: string, count: number) => {
+  switch (key) {
+    case 'skills':
+      return <InsightTagSkilled experience={count} />;
+    case 'schools':
+      return <InsightTagKnowledgeable experience={count} />;
+    case 'positions':
+      return <InsightTagExperienced experience={count} />;
+    case 'leadership':
+      return count >= 70 ? <InsightTagLeader /> : <></>;
+    case 'jobStability':
+      return <></>; //<InsightTagReliable />
+    case 'careerGrowth':
+      return <></>; //<InsightTagAmbitious />
+  }
+};
+
 export default ApplicationCard;
-
-// eslint-disable-next-line no-unused-vars
-export function getGravatar(email, first_name = '') {
-  let imgUrl = `https://www.gravatar.com/avatar/${md5(
-    email ? email.trim().toLowerCase() : '',
-  )}?d=blank&s=240&r=g`;
-
-  return imgUrl;
-}

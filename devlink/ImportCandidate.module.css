@@ -165,6 +165,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -178,7 +184,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {

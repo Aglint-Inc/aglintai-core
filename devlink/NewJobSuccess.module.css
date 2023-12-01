@@ -25,11 +25,13 @@
   }
 }
 
+.job-sidebar-main-block.cj-step-2.height-auto {
+  height: auto;
+}
+
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
   background-color: var(--white-80449ce7);
 }
 
@@ -41,6 +43,10 @@
 
 .cj-step-1 {
   z-index: 1;
+}
+
+.job-sidebar-main-block.cj-step-1.height-auto {
+  height: auto;
 }
 
 .job-sidebar-main-block.cj-step-3 {
@@ -87,10 +93,7 @@
 
   display: flex;
   width: 100%;
-  height: 100%;
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;
@@ -295,6 +298,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -308,7 +317,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {

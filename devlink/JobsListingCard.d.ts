@@ -7,15 +7,15 @@ declare function JobsListingCard(props: {
   textCompanyLocation?: React.ReactNode;
   textPostedDate?: React.ReactNode;
   rejectedCount?: React.ReactNode;
-  interviewingCount?: React.ReactNode;
-  selectedCount?: React.ReactNode;
+  assessmentCount?: React.ReactNode;
+  qualifiedCount?: React.ReactNode;
   bgColorProps?: Types.Devlink.RuntimeProps;
   textJobsStatus?: React.ReactNode;
   onClickCard?: Types.Devlink.RuntimeProps;
   textColorActivePropsSourcing?: Types.Devlink.RuntimeProps;
   textColorActiveInterviewingProps?: Types.Devlink.RuntimeProps;
   slotStatusIcon?: Types.Devlink.Slot;
-  candidateCount?: React.ReactNode;
+  newCount?: React.ReactNode;
   textSourcing?: React.ReactNode;
   slotSourcingIcon?: Types.Devlink.Slot;
   textInterview?: React.ReactNode;

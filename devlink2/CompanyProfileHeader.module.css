@@ -1,0 +1,46 @@
+.rs-header-block-left {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.rs-header-block-left.profile-info {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.rs-header-company-image {
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 4px;
+
+  border-radius: 6px;
+
+  background-color: var(--white);
+
+  object-fit: cover;
+}
+
+.text-color-white {
+  color: white;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}

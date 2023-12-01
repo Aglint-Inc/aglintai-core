@@ -173,8 +173,7 @@ const TeamManagement = () => {
         }}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
-        )} pending invites awaiting your response.
-`}
+        )} pending invites awaiting your response.`}
       />
       {role.manage_users && (
         <AddMember

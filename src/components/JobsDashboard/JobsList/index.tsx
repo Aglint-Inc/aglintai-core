@@ -1,27 +1,21 @@
+import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { JobEmptyState, JobsListingCard } from '@/devlink';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { JobApplcationDB, JobType } from '@/src/types/data.types';
+import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import {
-  calculateTimeDifference,
-  filterApplicationsByStatus,
-  StatusColor,
-} from '../utils';
-import Icon from '../../Common/Icons/Icon';
-import { getStatusInfo } from '../../JobApplicationsDashboard/JobStatus';
+import { POSTED_BY } from '../AddJobWithIntegrations/utils';
+import { calculateTimeDifference, StatusColor } from '../utils';
 
 interface JobsListProps {
-  jobs: JobType[];
-  applications: JobApplcationDB[];
+  jobs: JobTypeDashboard[];
 }
 
-const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
+const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const router = useRouter();
   if (jobs?.length == 0) {
     return (
@@ -41,158 +35,70 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, applications }) => {
   return (
     <>
       {jobs?.map((job, ind) => {
+        let jobDetails;
+        if (job.status == 'draft') {
+          jobDetails = job.draft;
+        } else {
+          jobDetails = job;
+        }
+
         return (
           <>
             <ScrollList uniqueKey={ind}>
               <JobsListingCard
+                slotAtsBadge={
+                  job.posted_by == POSTED_BY.LEVER ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/lever.png'
+                          sx={{ width: '100%', height: '14px' }}
+                        />
+                      }
+                    />
+                  ) : job.posted_by == POSTED_BY.GREENHOUSE ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/greenhouse.svg'
+                          sx={{ width: '100%', height: '18px', pt: '4px' }}
+                        />
+                      }
+                    />
+                  ) : (
+                    ''
+                  )
+                }
                 key={ind}
-                textJobRole={job.job_title}
-                textCompanyLocation={`${job.company}, ${job.location}`}
-                candidateCount={
-                  filterApplicationsByStatus(job.id, applications).length
-                }
-                interviewingCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.INTERVIEWING,
-                  ).length
-                }
-                selectedCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.QUALIFIED,
-                  ).length
-                }
-                rejectedCount={
-                  filterApplicationsByStatus(
-                    job.id,
-                    applications,
-                    JobApplicationSections.DISQUALIFIED,
-                  ).length
-                }
-                slotInterviewIcon={
-                  !job.active_status.closed.isActive ? (
-                    getStatusInfo(
-                      job.active_status.interviewing,
-                      'interviewing',
-                    ).scheduled ? (
-                      <Icon variant='ClockHistory' height='12' width='12' />
-                    ) : (
-                      <Icon variant='DoubleTick' height='16' width='16' />
-                    )
-                  ) : (
-                    ''
-                  )
-                }
-                slotSourcingIcon={
-                  !job.active_status.closed.isActive ? (
-                    getStatusInfo(job.active_status.sourcing, 'sourcing')
-                      .scheduled ? (
-                      <Icon variant='ClockHistory' height='12' width='12' />
-                    ) : (
-                      <Icon variant='DoubleTick' height='16' width='16' />
-                    )
-                  ) : (
-                    ''
-                  )
-                }
-                textSourcing={
-                  !job.active_status.closed.isActive
-                    ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .scheduled
-                      ? getStatusInfo(job.active_status.sourcing, 'sourcing')
-                          .primaryStatus
-                      : 'Sourcing'
-                    : ''
-                }
-                textInterview={
-                  !job.active_status.closed.isActive
-                    ? getStatusInfo(
-                        job.active_status.interviewing,
-                        'interviewing',
-                      ).scheduled
-                      ? getStatusInfo(
-                          job.active_status.interviewing,
-                          'interviewing',
-                        ).primaryStatus
-                      : 'Interviewing'
-                    : ''
-                }
+                textJobRole={jobDetails.job_title}
+                textCompanyLocation={`${jobDetails.company}, ${jobDetails.location}`}
+                newCount={job?.count?.new}
+                qualifiedCount={job?.count?.qualified}
+                assessmentCount={job?.count?.interviewing}
                 bgColorProps={{
                   style: {
                     backgroundColor:
-                      !(
-                        job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive
-                      ) && !job.active_status.closed.isActive
+                      job.status == 'draft'
                         ? StatusColor['inactive']
-                        : (job.active_status.interviewing.isActive ||
-                            job.active_status.sourcing.isActive) &&
-                          !job.active_status.closed.isActive
+                        : job.status == 'published'
                         ? StatusColor['active']
                         : StatusColor['closed'],
                   },
                 }}
-                textJobsStatus={
-                  !(
-                    job.active_status.interviewing.isActive ||
-                    job.active_status.sourcing.isActive
-                  ) && !job.active_status.closed.isActive
-                    ? 'Inactive'
-                    : (job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive) &&
-                      !job.active_status.closed.isActive
-                    ? 'Active'
-                    : 'Closed'
-                }
-                textColorActiveInterviewingProps={{
-                  style: {
-                    color:
-                      !job.active_status.closed.isActive &&
-                      getStatusInfo(
-                        job.active_status.interviewing,
-                        'interviewing',
-                      ).scheduled
-                        ? '#daa520'
-                        : getStatusInfo(
-                            job.active_status.interviewing,
-                            'interviewing',
-                          ).active
-                        ? '#228F67'
-                        : '#C2C8CC',
-                  },
-                }}
-                textColorActivePropsSourcing={{
-                  style: {
-                    color:
-                      !job.active_status.closed.isActive &&
-                      getStatusInfo(job.active_status.sourcing, 'sourcing')
-                        .scheduled
-                        ? '#daa520'
-                        : getStatusInfo(job.active_status.sourcing, 'sourcing')
-                            .active
-                        ? '#228F67'
-                        : '#C2C8CC',
-                  },
-                }}
+                textJobsStatus={job.status}
                 slotStatusIcon={
                   <Image
                     src={
-                      !(
-                        job.active_status.interviewing.isActive ||
-                        job.active_status.sourcing.isActive
-                      ) && !job.active_status.closed.isActive
+                      job.status == 'draft'
                         ? '/images/dashboard/inactive.svg'
-                        : (job.active_status.interviewing.isActive ||
-                            job.active_status.sourcing.isActive) &&
-                          !job.active_status.closed.isActive
+                        : job.status == 'published'
                         ? '/images/dashboard/active.svg'
                         : '/images/dashboard/closed.svg'
                     }
-                    width={10}
-                    height={10}
+                    width={14}
+                    height={14}
                     alt=''
                   />
                 }

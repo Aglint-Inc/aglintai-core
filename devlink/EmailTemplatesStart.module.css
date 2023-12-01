@@ -1,7 +1,5 @@
 .div-block-508 {
   max-width: 780px;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .div-block-507 {
@@ -24,6 +22,14 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 612px;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -42,7 +48,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .fw-semibold.color-grey-600.margin-top-10 {
@@ -63,6 +69,10 @@
 
 .fw-semibold.margin-right-5 {
   margin-right: 5px;
+}
+
+.fw-semibold.text-kale-800 {
+  color: #012b30;
 }
 
 .text-kale-800 {
@@ -91,6 +101,10 @@
 
 .fw-semibold.pink-800 {
   color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.fw-semibold.text-green-800 {
+  color: #0b3b29;
 }
 
 .text-green-800 {
@@ -153,6 +167,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -197,12 +215,73 @@
   margin-bottom: 14px;
 }
 
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
+.fw-semibold.text-kale-700 {
+  color: #03363d;
+}
+
+.text-kale-700 {
+  color: var(--kale700-f5e4c087);
+}
+
+.fw-semibold.new-greenhouse {
+  color: #14413d;
+}
+
+.text-color-white {
+  color: white;
+}
+
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
 
 .color-grey-600.growth-stretch {
   flex: 0 0 auto;
+}
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
+}
+
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
+}
+
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
 }
 
 .email-start-wrap {
@@ -217,10 +296,13 @@
   grid-template-rows: auto;
 }
 
-.div-block-522 {
+.publish-email-wrap {
   display: flex;
   margin-top: 40px;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: stretch;
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {

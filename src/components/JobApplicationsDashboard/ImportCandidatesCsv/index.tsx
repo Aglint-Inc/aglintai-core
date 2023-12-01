@@ -6,56 +6,47 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
+import { CandidateInsert } from '@/src/context/CandidatesContext/types';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
+import { handleUploadCandidates } from './utils';
 import AUIButton from '../../Common/AUIButton';
+
+export interface BulkImportCandidateCsv extends CandidateInsert {
+  resume: string;
+}
 
 function ImportCandidatesCSV() {
   const {
     setOpenImportCandidates,
-    applicationsData,
+    handleJobApplicationError,
     handleJobApplicationBulkCreate,
+    job,
   } = useJobApplications();
 
-  const [bulkImportdata, setbulkImportdata] = useState([]);
+  const [bulkImportdata, setbulkImportdata] = useState<
+    BulkImportCandidateCsv[]
+  >([]);
   const headers = [
     'first_name',
     'last_name',
     'email',
     'phone',
-    'job_title',
-    'company',
-    'status',
-    'score',
-    'profile_image',
+    'linkedin',
     'resume',
   ];
   const [isLoading, setIsLoading] = useState(false);
 
   const csvData = [
-    [
-      'first_name',
-      'last_name',
-      'email',
-      'phone',
-      'job_title',
-      'company',
-      'status',
-      'profile_image',
-      'resume',
-    ],
+    [...headers],
     [
       'xyz',
       'abc',
       'xyzabc@gmail.com',
       '1234567890',
-      'sales manager',
-      'xyz',
-      JobApplicationSections.NEW,
-      'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
+      'https://www.linkedin.com',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
 
@@ -64,31 +55,26 @@ function ImportCandidatesCSV() {
       'd',
       'abcd@gmail.com',
       '9876543210',
-      'designer',
-      'hireDumb',
-      JobApplicationSections.NEW,
-      '',
+      'https://www.linkedin.com',
       'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
   ];
 
-  async function createCandidates(candidates) {
-    const _new = applicationsData.applications.new.list;
-    const interviewing = applicationsData.applications.interviewing.list;
-    const qualified = applicationsData.applications.qualified.list;
-    const disqualified = applicationsData.applications.disqualified.list;
-    const totalApplications = [
-      ..._new,
-      ...interviewing,
-      ...qualified,
-      ...disqualified,
-    ].map((ele) => ele.email);
-    const filteredCandidates = candidates.filter(
-      (ele: { email: string }) => !totalApplications.includes(ele.email),
-    );
+  async function createCandidates(candidates: BulkImportCandidateCsv[]) {
     setbulkImportdata([]);
     setIsLoading(true);
-    await handleJobApplicationBulkCreate(filteredCandidates);
+    const { data, error } = await handleUploadCandidates(candidates, job.id);
+    if (data && data.finalPayload && data.finalPayload.length !== 0) {
+      const confirmation = await handleJobApplicationBulkCreate(
+        data.finalPayload,
+      );
+      if (confirmation)
+        toast.success(
+          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
+        );
+    } else if (error) {
+      handleJobApplicationError(error);
+    }
     setOpenImportCandidates(false);
     setIsLoading(false);
   }
@@ -119,7 +105,9 @@ function ImportCandidatesCSV() {
           // eslint-disable-next-line security/detect-object-injection
           const ws = wb.Sheets[wsname];
           /* Convert array of arrays */
-          const data = XLSX.utils.sheet_to_json(ws);
+          const data = XLSX.utils.sheet_to_json(
+            ws,
+          ) as unknown as BulkImportCandidateCsv[];
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {
@@ -191,8 +179,8 @@ function ImportCandidatesCSV() {
             <CandidatesListTable importedCandidate={bulkImportdata} />{' '}
             <Stack direction={'row'} justifyContent={'flex-end'}>
               <AUIButton
-                onClick={() => {
-                  createCandidates(bulkImportdata);
+                onClick={async () => {
+                  await createCandidates(bulkImportdata);
                 }}
               >
                 Import

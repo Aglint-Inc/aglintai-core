@@ -1,0 +1,33 @@
+.sender-wrap {
+  display: flex;
+  margin-top: 18px;
+  justify-content: flex-end;
+}
+
+.sender-sub-wrap {
+  max-width: 80%;
+  padding: 16px 19px;
+  border-radius: 10px;
+  background-color: #17494d;
+  color: white;
+}
+
+.sender-sub-wrap.withicon {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.sender-sub-wrap.withicon.small {
+  padding: 6px 12px 6px 6px;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.sender-sub-wrap.withicon.after {
+  position: relative;
+}
+
+.text-block-28 {
+  white-space: pre-wrap;
+}

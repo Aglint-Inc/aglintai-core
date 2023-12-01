@@ -6,34 +6,46 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 
 import { ActiveVoice } from '../../Components/ActiveVoice';
 import CameraHolder from '../../Components/CameraHolder';
-function CandidatePanel() {
+function VideoCandidatePanel() {
   const {
     getSecond,
     getminutes,
     transcript,
+    submitVideoAnswers,
     submitAnswers,
+    videoAssessment,
     senderRef,
     handleListing,
     listening,
     speaking,
     stopListening,
+    showStartCard,
+    setShowStartCard,
+    startInterview,
+    setCharacter,
   } = useInterviewContext();
 
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
-    if (transcript) {
+    if (transcript && senderRef.current) {
       senderRef.current.value = transcript;
     }
     const stackElement = senderRef.current;
-    stackElement.scrollTop = stackElement.scrollHeight;
-    // const TypoElement = typoRef.current;
-    // console.log(TypoElement.scrollHeight, stackElement.scrollHeight);
-    // TypoElement.scrollTop = TypoElement.scrollHeight;
+    if (stackElement) stackElement.scrollTop = stackElement.scrollHeight;
   }, [transcript]);
   return (
     <>
       <InterviewCandidateScreen
+        isInputVisible={showStartCard}
+        isInterviewStartVisible={!showStartCard}
+        onClickStart={{
+          onClick: () => {
+            setCharacter('');
+            setShowStartCard(true);
+            startInterview();
+          },
+        }}
         textTimer={`${getminutes < 10 && '0'}
               ${getminutes} : ${getSecond < 10 ? '0' : ''} ${getSecond}`}
         isTimerVisible={false}
@@ -162,7 +174,8 @@ function CandidatePanel() {
         isMicVisible={!listening}
         onClickSubmit={{
           onClick: () => {
-            submitAnswers();
+            if (videoAssessment) submitVideoAnswers();
+            else submitAnswers();
           },
         }}
       />
@@ -170,4 +183,4 @@ function CandidatePanel() {
   );
 }
 
-export default CandidatePanel;
+export default VideoCandidatePanel;

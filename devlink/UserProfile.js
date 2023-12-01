@@ -96,7 +96,7 @@ export function UserProfile({
             {slotUserForm}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-hor-left")}
+            className={_utils.cx(_styles, "flex-hor-left", "emial")}
             tag="div"
           >
             <_Builtin.Block
@@ -157,7 +157,7 @@ export function UserProfile({
               className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
               tag="div"
             >
-              {"Email"}
+              {"Change Email"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -167,7 +167,7 @@ export function UserProfile({
             {slotEmail}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-hor-left")}
+            className={_utils.cx(_styles, "flex-hor-left", "emial")}
             tag="div"
           >
             <_Builtin.Block
@@ -200,7 +200,7 @@ export function UserProfile({
               className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
               tag="div"
             >
-              {"Password"}
+              {"Change Password"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -210,7 +210,7 @@ export function UserProfile({
             {slotPassword}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-hor-left")}
+            className={_utils.cx(_styles, "flex-hor-left", "emial")}
             tag="div"
           >
             <_Builtin.Block

@@ -36,17 +36,6 @@
   object-fit: contain;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -126,6 +115,10 @@
   }
 }
 
+.text-grey-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -177,10 +170,6 @@
 .text-xxsm {
   font-size: 8px;
   line-height: 1.4;
-}
-
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
 .cj-share-via {

@@ -45,6 +45,14 @@
   object-fit: contain;
 }
 
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
 .pi-header-block {
   display: flex;
   max-width: 80%;
@@ -149,6 +157,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -162,7 +176,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -248,6 +262,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

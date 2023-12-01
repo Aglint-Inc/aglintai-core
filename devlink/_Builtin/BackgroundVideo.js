@@ -2,7 +2,7 @@ import React from "react";
 import { cj, debounce } from "../utils";
 const BgVideoContext = React.createContext({
   isPlaying: true,
-  togglePlay: () => {},
+  togglePlay: () => undefined,
 });
 export const BackgroundVideoWrapper = ({
   tag = "div",

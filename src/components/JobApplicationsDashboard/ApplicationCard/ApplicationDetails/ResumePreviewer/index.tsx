@@ -1,14 +1,16 @@
-function ResumePreviewer({ url }) {
+function ResumePreviewer({ url }: { url: string }) {
+  const isDocOrDocx = /\.(doc|docx)$/i.test(url);
   return (
     <embed
-      style={{
-        height: '95vh',
-        border:'0'
-      }}
+      src={
+        isDocOrDocx
+          ? `https://view.officeapps.live.com/op/embed.aspx?src=${url}`
+          : url
+      }
+      title='resume'
       width='100%'
-      src={url}
-      title='Resume Preview'
-    ></embed>
+      height="100%"
+    />
   );
 }
 

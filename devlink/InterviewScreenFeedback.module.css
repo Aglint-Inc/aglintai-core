@@ -89,6 +89,10 @@
   margin-top: 16px;
 }
 
+.mt-16 {
+  margin-top: 16px;
+}
+
 .aui-button-wrap.full {
   align-items: stretch;
 }
@@ -488,6 +492,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -501,7 +511,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -583,6 +593,14 @@
   grid-row-gap: 3px;
 }
 
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 612px;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .cursor-pointer {
   transition: opacity 200ms ease;
   cursor: pointer;
@@ -608,6 +626,10 @@
   margin-right: 5px;
 }
 
+.fw-semibold.text-kale-800 {
+  color: #012b30;
+}
+
 .text-grey-100 {
   color: var(--gray100-3a86b552);
 }
@@ -618,6 +640,10 @@
 
 .fw-semibold.pink-800 {
   color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.fw-semibold.text-green-800 {
+  color: #0b3b29;
 }
 
 .color-grey-500 {
@@ -664,6 +690,10 @@
   z-index: 2;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .color-white {
   color: var(--white-80449ce7);
 }
@@ -702,6 +732,34 @@
 
 .fw-semibold.mb-14 {
   margin-bottom: 14px;
+}
+
+.color-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
+.fw-semibold.text-kale-700 {
+  color: #03363d;
+}
+
+.fw-semibold.new-greenhouse {
+  color: #14413d;
+}
+
+.text-color-white {
+  color: white;
+}
+
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
 }
 
 .profile-mail-wrappers {
@@ -755,6 +813,14 @@
   align-items: center;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -770,6 +836,35 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .max-width-500 {
@@ -797,6 +892,10 @@
 }
 
 .text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
   margin-top: 5px;
 }
 

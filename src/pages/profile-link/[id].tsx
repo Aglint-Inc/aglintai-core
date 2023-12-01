@@ -19,7 +19,6 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
-import { getGravatar } from '@/src/components/JobApplicationsDashboard/ApplicationCard';
 import {
   DetailedInterviewFeedbackParams,
   giveColorForInterviewScore,
@@ -29,19 +28,24 @@ import {
   Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
-import JdFetching from '@/src/components/JobApplicationsDashboard/ApplicationCard/JdFetching';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
+import {
+  JdScore,
+  JobApplication,
+} from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
-import { calculateOverallScore } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
+
+import { selectJobApplicationQuery } from '../api/JobApplicationsApi/utils';
 
 function InterviewFeedbackPage() {
   const router = useRouter();
-  const [applicationDetails, setApplicationDetails] = useState<any>();
+  const [applicationDetails, setApplicationDetails] =
+    useState<JobApplication>(undefined);
   const [job, setJob] = useState<JobTypeDB>();
   const [recruiter, setRecruiter] = useState<RecruiterDB>();
   const [openTranscript, setOpenTranscript] = useState(false);
@@ -56,13 +60,23 @@ function InterviewFeedbackPage() {
   }, [router]);
 
   async function getApplicationDetails(id) {
-    const { data, error } = await supabase
+    const { data: jobApp, error: errorJob } = await supabase
       .from('job_applications')
-      .select()
+      .select(`${selectJobApplicationQuery}`)
       .eq('application_id', id);
-    if (!error) {
-      setApplicationDetails(data[0]);
-      getJobDetails(data[0]?.job_id);
+
+    if (!errorJob) {
+      const { data, error } = await supabase
+        .from('candidates')
+        .select()
+        .eq('id', jobApp[0]?.candidate_id);
+      if (!error) {
+        setApplicationDetails({
+          ...jobApp[0],
+          candidates: data[0],
+        } as JobApplication);
+        getJobDetails(jobApp[0]?.job_id);
+      }
     }
   }
 
@@ -89,36 +103,16 @@ function InterviewFeedbackPage() {
 
   if (applicationDetails && job) {
     interviewScore = getInterviewScore(applicationDetails.feedback);
-    const jobDetails = applicationDetails as unknown as {
-      jd_score: { summary: { feedback: undefined } };
-    };
-    const jdScoreObj = applicationDetails.jd_score as any;
-
-    const jdScore = calculateOverallScore({
-      qualification: jdScoreObj.qualification,
-      skills: jdScoreObj.skills_score,
-    });
-
-    resumeScoreWheel =
-      jobDetails?.jd_score?.summary?.feedback !== 'Resume not Parseble' &&
-      applicationDetails.resume &&
-      applicationDetails.jd_score !== null ? (
-        applicationDetails.jd_score === 'loading' ? (
-          <Stack justifyContent={'center'} alignItems={'center'}>
-            <JdFetching />
-            Calculating
-          </Stack>
-        ) : (
-          <ScoreWheel
-            id={`ScoreWheelApplicationCard${Math.random()}`}
-            weights={job.parameter_weights as ScoreWheelParams}
-            score={jdScore}
-            fontSize={7}
-          />
-        )
-      ) : (
-        <Stack>Not found</Stack>
+    if (applicationDetails.jd_score) {
+      resumeScoreWheel = (
+        <ScoreWheel
+          id={`ScoreWheelApplicationCard${Math.random()}`}
+          scores={(applicationDetails.jd_score as JdScore)?.scores}
+          parameter_weights={job.parameter_weights as ScoreWheelParams}
+          fontSize={10}
+        />
       );
+    }
   }
 
   if (loader) {
@@ -129,7 +123,7 @@ function InterviewFeedbackPage() {
     );
   } else
     return (
-      <>
+      <Stack height={'100vh'} overflow={'scroll'}>
         <Dialog
           sx={{
             '& .MuiDialog-paper': {
@@ -146,7 +140,7 @@ function InterviewFeedbackPage() {
           onClose={() => setOpenResume(false)}
         >
           <Stack>
-            <Stack direction={'row'} justifyContent={'center'}>
+            <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
               <ResumePreviewer url={applicationDetails?.resume} />
             </Stack>
           </Stack>
@@ -165,7 +159,9 @@ function InterviewFeedbackPage() {
         </SidePanelDrawer>
 
         <ProfileShare
-          isOverviewVisible={false}
+          isOverviewVisible={
+            !!(applicationDetails?.json_resume as any)?.overview
+          }
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
@@ -204,7 +200,7 @@ function InterviewFeedbackPage() {
           }
           isInterviewVisible={applicationDetails.feedback !== null}
           slotInterviewTranscript={applicationDetails.conversation.map(
-            (con, i) => {
+            (con: any, i) => {
               return (
                 <>
                   <InterviewAiTranscriptCard
@@ -225,16 +221,8 @@ function InterviewFeedbackPage() {
                     textCandidateScript={con.userContent}
                     slotCandidateImage={
                       <MuiAvatar
-                        level={applicationDetails.first_name}
-                        src={
-                          applicationDetails?.email &&
-                          !applicationDetails?.profile_image
-                            ? getGravatar(
-                                applicationDetails?.email,
-                                applicationDetails?.first_name,
-                              )
-                            : applicationDetails?.profile_image
-                        }
+                        level={applicationDetails.candidates.first_name}
+                        src={applicationDetails?.candidates.profile_image}
                         variant={'rounded'}
                         width={'auto'}
                         height={'auto'}
@@ -247,39 +235,41 @@ function InterviewFeedbackPage() {
             },
           )}
           isEducationVisible={
-            applicationDetails?.json_resume?.education.length > 0
+            (applicationDetails?.json_resume as any)?.schools.length > 0
           }
-          slotCandidateEducationCard={applicationDetails?.json_resume?.education.map(
-            (e, i) => (
-              <CandidateEducationCard
-                key={i}
-                textUniversityName={e.institution}
-                textDate={`${e.startDate} ${
-                  e.endDate && `${e.startDate && '-'} ${e.endDate}`
-                }`}
-              />
-            ),
-          )}
-          isExperienceVisible={applicationDetails?.json_resume?.work.length > 0}
-          slotCandidateExperienceCard={applicationDetails?.json_resume?.work.map(
-            (w, i) => (
-              <CandidateExperienceCard
-                key={i}
-                slotLogo={
-                  <CompanyLogo
-                    companyName={w.name ? w.name.trim().toLowerCase() : null}
-                  />
-                }
-                textRole={w.position}
-                textCompany={w.name}
-                textDate={`${w.startDate} - ${w.endDate}`}
-              />
-            ),
-          )}
-          isSkillVisible={applicationDetails?.json_resume?.skills.length > 0}
-          slotSkill={applicationDetails?.json_resume?.skills.map((s, i) => (
-            <CandidateSkillPills key={i} textSkill={s.name} />
+          slotCandidateEducationCard={(
+            applicationDetails?.json_resume as any
+          )?.schools?.map((e, i) => (
+            <CandidateEducationCard
+              key={i}
+              textUniversityName={e.institution}
+              textDate={`${e?.start?.year || '--'} - ${e?.start?.end || '--'}`}
+            />
           ))}
+          isExperienceVisible={
+            (applicationDetails?.json_resume as any)?.positions?.length > 0
+          }
+          slotCandidateExperienceCard={(
+            applicationDetails?.json_resume as any
+          )?.positions?.map((w, i) => (
+            <CandidateExperienceCard
+              key={i}
+              slotLogo={
+                <CompanyLogo
+                  companyName={w.name ? w.name.trim().toLowerCase() : null}
+                />
+              }
+              textRole={w.title}
+              textCompany={w.org}
+              textDate={`${w?.end?.year || '--'} - ${w?.end?.year || '--'}`}
+            />
+          ))}
+          isSkillVisible={
+            (applicationDetails?.json_resume as any)?.skills?.length > 0
+          }
+          slotSkill={(applicationDetails?.json_resume as any)?.skills?.map(
+            (s, i) => <CandidateSkillPills key={i} textSkill={s} />,
+          )}
           onClickCopyProfile={{
             onClick: () => {
               navigator.clipboard
@@ -312,39 +302,63 @@ function InterviewFeedbackPage() {
             </Avatar>
           }
           slotResume={
-            <Stack maxWidth={'400px'}>
-              <NewResumeScoreDetails
-                applicationDetails={applicationDetails}
-                job={job as any}
-                feedback={true}
-              />
+            <Stack maxWidth={'400px'} pt={'80px'}>
+              <Dialog
+                sx={{
+                  '& .MuiDialog-paper': {
+                    borderRadius: '0px !important',
+                    border: 'none !important',
+                  },
+                  '.MuiDialog-container': {
+                    height: 'auto',
+                  },
+                }}
+                fullWidth
+                maxWidth={'lg'}
+                open={openResume}
+                onClose={() => setOpenResume(false)}
+              >
+                <Stack
+                  direction={'row'}
+                  justifyContent={'center'}
+                  height={'90vh'}
+                >
+                  <ResumePreviewer url={applicationDetails.resume} />
+                </Stack>
+              </Dialog>
+              {applicationDetails?.jd_score && (
+                <NewResumeScoreDetails
+                  applicationDetails={applicationDetails}
+                  job={job as any}
+                  feedback={true}
+                  setOpenResume={setOpenResume}
+                />
+              )}
             </Stack>
           }
-          textMail={applicationDetails?.email}
-          textPhone={applicationDetails?.phone || ''}
+          textMail={applicationDetails?.candidates?.email}
+          textPhone={applicationDetails?.candidates?.phone || ''}
           textName={
-            applicationDetails?.first_name + ' ' + applicationDetails?.last_name
+            applicationDetails?.candidates?.first_name +
+              ' ' +
+              applicationDetails?.candidates?.last_name || ''
           }
           isActivityVisible={false}
           slotProfileImage={
             <MuiAvatar
-              level={applicationDetails.first_name}
-              src={
-                applicationDetails?.email && !applicationDetails?.profile_image
-                  ? getGravatar(
-                      applicationDetails?.email,
-                      applicationDetails?.first_name,
-                    )
-                  : applicationDetails?.profile_image
-              }
+              level={applicationDetails.candidates.first_name}
+              src={applicationDetails?.candidates.profile_image}
               variant={'rounded'}
-              width={'auto'}
-              height={'auto'}
-              fontSize={'28px'}
+              width={'100%'}
+              height={'100%'}
+              fontSize={'48px'}
             />
           }
+          companyName={job?.company}
+          textOverview={(applicationDetails?.json_resume as any)?.overview}
+          location={job?.location}
         />
-      </>
+      </Stack>
     );
 }
 

@@ -1,14 +1,16 @@
 .new-create-job {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
 .new-create-job-header {
-  position: sticky;
-  top: 0px;
   z-index: 4;
 
   display: flex;
-  padding: 15px 20px 15px 15px;
+  padding: 15px 20px;
   justify-content: space-between;
   align-items: center;
 
@@ -63,6 +65,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -78,6 +88,35 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .div-block-481 {
@@ -183,6 +222,12 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 .text-lg.fw-semibold.inline-block.ml-4 {
   margin-left: 6px;
 }
@@ -196,7 +241,7 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
 }
 
 .text-green-600 {
@@ -393,6 +438,10 @@
   text-transform: capitalize;
 }
 
+.text-color-white {
+  color: white;
+}
+
 .create-job-header-right {
   display: flex;
   align-items: center;
@@ -401,13 +450,10 @@
 }
 
 .div-block-503 {
-  position: sticky;
-  top: 55px;
   z-index: 4;
-
   padding-top: 35px;
   padding-bottom: 10px;
-
+  padding-left: 20px;
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
@@ -415,11 +461,10 @@
   z-index: 4;
 
   display: flex;
-  max-width: 650px;
-  margin-right: auto;
-  margin-left: auto;
+  max-width: 630px;
   padding: 6px;
   justify-content: space-between;
+  align-items: center;
 
   border-radius: 10px;
 
@@ -448,6 +493,21 @@
   }
 }
 
+.create-job-menu-wrap.assessment {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.fw-semibold.one-line-clamp.mx-width-662 {
+  max-width: 612px;
+}
+
+.fw-semibold.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold.cursor-pointer.capitialize {
   text-transform: capitalize;
 }
@@ -464,6 +524,10 @@
   margin-right: 5px;
 }
 
+.fw-semibold.text-kale-800 {
+  color: #012b30;
+}
+
 .text-grey-100 {
   color: var(--gray100-3a86b552);
 }
@@ -474,6 +538,10 @@
 
 .fw-semibold.pink-800 {
   color: hsla(307.3170731707317, 87.23%, 18.43%, 1.00);
+}
+
+.fw-semibold.text-green-800 {
+  color: #0b3b29;
 }
 
 .fw-semibold.indeed {
@@ -512,6 +580,10 @@
   position: relative;
 }
 
+.fw-semibold.relative.zindex-6 {
+  z-index: 6;
+}
+
 .fw-semibold.grow-line {
   flex: 0 0 auto;
 }
@@ -536,12 +608,29 @@
   margin-bottom: 14px;
 }
 
+.fw-semibold.mb-15 {
+  margin-bottom: 15px;
+}
+
+.fw-semibold.text-kale-700 {
+  color: #03363d;
+}
+
+.fw-semibold.new-greenhouse {
+  color: #14413d;
+}
+
+.fw-semibold.first-text-capital {
+  text-transform: capitalize;
+}
+
 .white-active-bg {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 4;
 
   border-radius: 10px;
 
@@ -562,11 +651,55 @@
   align-items: center;
 }
 
+.beta-wrap {
+  position: absolute;
+  left: auto;
+  top: -10px;
+  right: -25px;
+  bottom: auto;
+  z-index: 6;
+
+  display: flex;
+  width: 44px;
+  padding: 4px 9px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #228f67;
+
+  color: white;
+}
+
+.text-xsm {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.text-xsm.color-grey-600.inline-text {
+  display: inline-block;
+}
+
+.height-scroll {
+  display: flex;
+  overflow: scroll;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .slot-create-job-new-wrapper {
-  max-width: 1200px;
   margin-top: 40px;
-  margin-right: auto;
-  margin-left: auto;
   padding-right: 20px;
   padding-left: 20px;
+}
+
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.relative.zindex-3 {
+  z-index: 3;
 }

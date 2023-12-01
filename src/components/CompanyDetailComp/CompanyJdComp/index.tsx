@@ -38,6 +38,22 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
+       <UITextField
+        labelSize='small'
+        fullWidth
+        label='Benefits'
+        placeholder='Consider highlighting perks and advantages to enrich your job descriptions.'
+        value={recruiter?.benefits}
+        onChange={(e) => {
+          handleChange({
+            ...recruiter,
+            benefits: e.target.value,
+          });
+        }}
+        multiline
+        minRows={6}
+        maxRows={6}
+      />
       <UITextField
         labelSize='small'
         fullWidth
@@ -102,22 +118,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
-      <UITextField
-        labelSize='small'
-        fullWidth
-        label='Benefits'
-        placeholder='Consider highlighting perks and advantages to enrich your job descriptions.'
-        value={recruiter?.benefits}
-        onChange={(e) => {
-          handleChange({
-            ...recruiter,
-            benefits: e.target.value,
-          });
-        }}
-        multiline
-        minRows={6}
-        maxRows={6}
-      />
+      
       <Stack>
         <UITypography
           type={'small'}

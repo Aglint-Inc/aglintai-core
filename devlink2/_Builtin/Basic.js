@@ -14,6 +14,7 @@ export const Link = function Link({
   options = { href: "#" },
   className = "",
   button = false,
+  children,
   ...props
 }) {
   const { renderLink: UserLink } = React.useContext(DevLinkContext);
@@ -21,7 +22,7 @@ export const Link = function Link({
   if (UserLink) {
     return (
       <UserLink className={className} {...options} {...props}>
-        {props.children}
+        {children}
       </UserLink>
     );
   }
@@ -30,7 +31,9 @@ export const Link = function Link({
     preload !== "none" && typeof href === "string" && !href.startsWith("#");
   return (
     <>
-      <a href={href} target={target} className={className} {...props} />
+      <a href={href} target={target} className={className} {...props}>
+        {children}
+      </a>
       {shouldRenderResource && <link rel={preload} href={href} />}
     </>
   );
@@ -50,9 +53,13 @@ export function List({
 export function ListItem(props) {
   return React.createElement("li", props);
 }
-export function Image(props) {
+export function Image({ alt, ...props }) {
   const { renderImage: UserImage } = React.useContext(DevLinkContext);
-  return UserImage ? <UserImage {...props} /> : <img {...props} />;
+  return UserImage ? (
+    <UserImage alt={alt || ""} {...props} />
+  ) : (
+    <img alt={alt || ""} {...props} />
+  );
 }
 export function Section({ tag = "section", ...props }) {
   return React.createElement(tag, props);

@@ -14,10 +14,11 @@ export type SocialsType = {
 
 export type RecruiterType = Omit<
   Database['public']['Tables']['recruiter']['Row'],
-  'address' | 'socials'
-> & { address: AddressType | null; socials: SocialsType | null };
+  'socials'
+> & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
+//TODO: Draft?
 
 export type JobApplcationDB =
   Database['public']['Tables']['job_applications']['Row'];
@@ -27,6 +28,8 @@ export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
 export type JobType = Omit<JobTypeDB, 'active_status'> & {
   active_status: StatusJobs | null;
 };
+
+export type JobPostStatusType = 'closed' | 'draft' | 'published';
 
 export type StatusJobs = {
   sourcing: {
@@ -148,12 +151,23 @@ export type RoleType = {
   view_candidates_profile: boolean;
 };
 
-export type EmployeeType = Database['public']['Tables']['employee']['Row'];
-
 export type JobApplicationType =
   Database['public']['Tables']['job_applications']['Row'];
+
+export type CandidateType = Database['public']['Tables']['candidates']['Row'];
 
 export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
 
 export type SupportTicketType =
   Database['public']['Tables']['support_ticket']['Row'];
+
+export type SearchHistoryType =
+  Database['public']['Tables']['candidate_search_history']['Row'];
+
+export type GreenhouseRefDbType =
+  Database['public']['Tables']['greenhouse_reference']['Row'];
+
+export type GreenhouseType = Pick<
+  Database['public']['Tables']['greenhouse_reference']['Row'],
+  'posting_id' | 'application_id' | 'greenhouse_id' | 'public_job_id' | 'resume'
+>;

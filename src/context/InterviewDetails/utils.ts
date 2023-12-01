@@ -1,10 +1,11 @@
+import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { supabase } from '@/src/utils/supabaseClient';
 export const getCandidateDetails = async (
   application_id: string | string[],
 ) => {
   const { data, error } = await supabase
     .from('job_applications')
-    .select()
+    .select(`${selectJobApplicationQuery}`)
     .eq('application_id', application_id);
   if (!error) {
     return data[0];

@@ -328,7 +328,11 @@
 }
 
 .color-grey-600 {
-  color: var(--grey600-d5bebe21);
+  color: #68737d;
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
 }
 
 .text-sm.color-grey-400 {
@@ -399,4 +403,8 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.text-color-white {
+  color: white;
 }

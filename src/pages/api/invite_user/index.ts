@@ -28,7 +28,12 @@ export default async function handler(
       for (let user of users) {
         const { data, error } = await supabase.auth.signUp({
           email: user.email,
-          password: 'Test@123',
+          password: 'Aglint@123',
+          options: {
+            data: {
+              role: 'recruiter',
+            },
+          },
         });
         if (!error) {
           const email = data.user.email;

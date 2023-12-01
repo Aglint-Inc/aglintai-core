@@ -5,4 +5,6 @@ declare function LeverApiKey(props: {
   as?: React.ElementType;
   slotSearch?: Types.Devlink.Slot;
   onClickContinue?: Types.Devlink.RuntimeProps;
+  onClickSupport?: Types.Devlink.RuntimeProps;
+  isApiWrong?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

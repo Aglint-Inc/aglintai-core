@@ -1,16 +1,18 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { JobStatus } from "./JobStatus";
+import { RefreshButton } from "./RefreshButton";
 import { JobDetailsTabs } from "./JobDetailsTabs";
-import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
-import { CandidateListItem } from "./CandidateListItem";
 import { SelectActionBar } from "./SelectActionBar";
+import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
+import { AllApplicantsTable } from "./AllApplicantsTable";
+import { TopApplicantsTable } from "./TopApplicantsTable";
+import { CandidatesListPagination } from "./CandidatesListPagination";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-33":{"id":"e-33","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-16","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-34"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"652f80e122406995b2c1cab3|9c94dded-44ad-d099-9739-c6b82983d23b","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"652f80e122406995b2c1cab3|9c94dded-44ad-d099-9739-c6b82983d23b","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697456720752},"e-35":{"id":"e-35","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-36"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"652f80e122406995b2c1cab3|9ea7b547-111e-ef7f-d32b-dd873a5025f3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"652f80e122406995b2c1cab3|9ea7b547-111e-ef7f-d32b-dd873a5025f3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697457005651},"e-39":{"id":"e-39","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-40"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"652f80e122406995b2c1cab3|af308b96-73f9-2165-a39a-a702753dc284","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"652f80e122406995b2c1cab3|af308b96-73f9-2165-a39a-a702753dc284","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697457765433},"e-41":{"id":"e-41","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-42"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934db07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934db07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611},"e-43":{"id":"e-43","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-16","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-44"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934db3a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934db3a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611},"e-45":{"id":"e-45","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-46"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934dbea","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934dbea","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611}},"actionLists":{"a-16":{"id":"a-16","title":"cvs-details-[open]","actionItemGroups":[{"actionItems":[{"id":"a-16-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"none"}},{"id":"a-16-n-7","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-16-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"block"}}]},{"actionItems":[{"id":"a-16-n-8","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697456726613},"a-20":{"id":"a-20","title":"cvs-details-[close]","actionItemGroups":[{"actionItems":[{"id":"a-20-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"PARENT","selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-20-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697456726613},"a-19":{"id":"a-19","title":"cv-sidebar-[close]","actionItemGroups":[{"actionItems":[{"id":"a-19-n","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"easeInOut","duration":300,"target":{"selector":".candidates-view-sidebar","selectorGuids":["9fe62391-7b37-03f4-4bdf-c39a91950395"]},"widthValue":0,"widthUnit":"px","heightUnit":"PX","locked":false}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697457373169}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-41":{"id":"e-41","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-19","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-42"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934db07","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934db07","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611},"e-43":{"id":"e-43","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-16","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-44"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934db3a","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934db3a","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611},"e-45":{"id":"e-45","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-46"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"8e250e4a-68d7-8f39-2620-4fb80934dbea","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"8e250e4a-68d7-8f39-2620-4fb80934dbea","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697536528611}},"actionLists":{"a-19":{"id":"a-19","title":"cv-sidebar-[close]","actionItemGroups":[{"actionItems":[{"id":"a-19-n","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"easeInOut","duration":300,"target":{"selector":".candidates-view-sidebar","selectorGuids":["9fe62391-7b37-03f4-4bdf-c39a91950395"]},"widthValue":0,"widthUnit":"px","heightUnit":"PX","locked":false}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697457373169},"a-16":{"id":"a-16","title":"cvs-details-[open]","actionItemGroups":[{"actionItems":[{"id":"a-16-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"none"}},{"id":"a-16-n-7","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-16-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"block"}}]},{"actionItems":[{"id":"a-16-n-8","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697456726613},"a-20":{"id":"a-20","title":"cvs-details-[close]","actionItemGroups":[{"actionItems":[{"id":"a-20-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"PARENT","selector":".cv-sidebar-details-block","selectorGuids":["ffb99878-2924-1151-7e76-bb598762069f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-20-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".cv-sidebar-details-wrapper","selectorGuids":["1ad5af18-c008-2aab-a5bf-430b3c53bc9c"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697456726613}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function JobDetails({
@@ -25,25 +27,19 @@ export function JobDetails({
     href: "#",
   },
 
-  slotJobStatus,
-  slotBottomBar,
   slotSidebar,
   slotTabs,
-  slotFilterBlock,
-  slotCandidatesList,
-  onclickSelectAll = {},
-  isListTopBarVisible = true,
-  isInterviewVisible = false,
-  isAllChecked = false,
+  slotFilters,
+  onclickHeaderJobs = {},
+  onclickAddCandidates = {},
+  slotTable,
+  slotRefresh,
+  slotPagination,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component className={_utils.cx(_styles, "job-details-wrapper")} tag="div">
-      <_Builtin.HtmlEmbed
-        className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A.cvs-info-content-main%20%7B%0Aheight%3A%20calc(100%25%20-%20320px)%3B%0A%7D%0A%3C%2Fstyle%3E"
-      />
       <_Builtin.Block
         className={_utils.cx(_styles, "job-details-header")}
         tag="div"
@@ -59,6 +55,7 @@ export function JobDetails({
               options={{
                 href: "#",
               }}
+              {...onclickHeaderJobs}
             >
               <_Builtin.Block
                 className={_utils.cx(
@@ -84,7 +81,7 @@ export function JobDetails({
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icon")}
-                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.60958%203.31233C5.43708%203.0967%205.47204%202.78205%205.68767%202.60955C5.87934%202.45621%206.14925%202.46679%206.32802%202.62249L6.39045%202.68763L10.3905%207.68763C10.5157%207.84416%2010.5336%208.05715%2010.4441%208.22981L10.3905%208.31233L6.39045%2013.3123C6.21795%2013.528%205.9033%2013.5629%205.68767%2013.3904C5.496%2013.2371%205.44708%2012.9714%205.55973%2012.7628L5.60958%2012.6876L9.35902%207.99998L5.60958%203.31233Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.60958%203.31233C5.43708%203.0967%205.47204%202.78205%205.68767%202.60955C5.87934%202.45621%206.14925%202.46679%206.32802%202.62249L6.39045%202.68763L10.3905%207.68763C10.5157%207.84416%2010.5336%208.05715%2010.4441%208.22981L10.3905%208.31233L6.39045%2013.3123C6.21795%2013.528%205.9033%2013.5629%205.68767%2013.3904C5.496%2013.2371%205.44708%2012.9714%205.55973%2012.7628L5.60958%2012.6876L9.35902%207.99998L5.60958%203.31233Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
             <_Builtin.Block
@@ -106,7 +103,12 @@ export function JobDetails({
             </_Builtin.Block>
             {isPreviewVisible ? (
               <_Builtin.Link
-                className={_utils.cx(_styles, "tablet-left-auto")}
+                className={_utils.cx(
+                  _styles,
+                  "tablet-left-auto",
+                  "no-underline",
+                  "clickable"
+                )}
                 button={false}
                 options={jobLink}
               >
@@ -114,20 +116,37 @@ export function JobDetails({
                   className={_utils.cx(_styles, "text-blue-500")}
                   tag="div"
                 >
-                  {"Preview"}
+                  {"View Job"}
                 </_Builtin.Block>
               </_Builtin.Link>
             ) : null}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-371")}
+            className={_utils.cx(_styles, "jdet-main-action-menu")}
             tag="div"
           >
+            <_Builtin.Block tag="div">
+              {slotRefresh ?? <RefreshButton />}
+            </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-edit-controls-wrapper")}
+              className={_utils.cx(
+                _styles,
+                "cv-upload-icon-block",
+                "clickable"
+              )}
               tag="div"
+              {...onclickAddCandidates}
             >
-              {slotJobStatus ?? <JobStatus />}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "icon-block")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icon-embed")}
+                  value="%3Csvg%20width%3D%2218%22%20height%3D%2213%22%20viewbox%3D%220%200%2018%2013%22%20fill%3D%22%23337fbd%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.9136%203.16797C10.549%202.65755%2010.0841%202.25651%209.51904%201.96484C8.97217%201.65495%208.36149%201.5%207.68701%201.5C6.61149%201.51823%205.70003%201.88281%204.95264%202.59375C4.22347%203.30469%203.82243%204.19792%203.74951%205.27344C3.71305%205.63802%203.52165%205.89323%203.17529%206.03906C2.57373%206.25781%202.08154%206.63151%201.69873%207.16016C1.33415%207.67057%201.14274%208.26302%201.12451%208.9375C1.14274%209.8125%201.44352%2010.5326%202.02685%2011.0977C2.59196%2011.681%203.31201%2011.9818%204.18701%2012H14.2495C14.9969%2011.9818%2015.6167%2011.7266%2016.1089%2011.2344C16.6011%2010.7422%2016.8563%2010.1224%2016.8745%209.375C16.8745%208.86458%2016.7469%208.40885%2016.4917%208.00781C16.2365%207.60677%2015.8993%207.28776%2015.48%207.05078C15.0972%206.8138%2014.9513%206.47656%2015.0425%206.03906C15.0972%205.85677%2015.1245%205.65625%2015.1245%205.4375C15.1063%204.81771%2014.8966%204.29818%2014.4956%203.87891C14.0763%203.47786%2013.5568%203.26823%2012.937%203.25C12.5907%203.25%2012.2808%203.32292%2012.0073%203.46875C11.5698%203.63281%2011.2052%203.53255%2010.9136%203.16797ZM7.68701%200.624998C8.50732%200.624998%209.25472%200.80729%209.9292%201.17187C10.6219%201.53646%2011.187%202.03776%2011.6245%202.67578C12.0256%202.47526%2012.4631%202.375%2012.937%202.375C13.812%202.39323%2014.5321%202.69401%2015.0972%203.27734C15.6805%203.84245%2015.9813%204.5625%2015.9995%205.4375C15.9995%205.72917%2015.9631%206.01172%2015.8901%206.28516C16.4552%206.57682%2016.9019%206.99609%2017.23%207.54297C17.5763%208.08984%2017.7495%208.70052%2017.7495%209.375C17.7313%2010.3594%2017.394%2011.1888%2016.7378%2011.8633C16.0633%2012.5195%2015.2339%2012.8568%2014.2495%2012.875H4.18701C3.07503%2012.8385%202.14534%2012.4557%201.39795%2011.7266C0.668782%2010.9792%200.285969%2010.0495%200.249511%208.9375C0.26774%208.0625%200.513834%207.29687%200.987792%206.64062C1.46175%205.98437%202.09066%205.51042%202.87451%205.21875C2.96566%203.90625%203.45784%202.82161%204.35107%201.96484C5.2443%201.10807%206.35628%200.661457%207.68701%200.624998ZM6.51123%206.44922L8.69873%204.26172C8.89925%204.07943%209.09977%204.07943%209.30029%204.26172L11.4878%206.44922C11.6701%206.64974%2011.6701%206.85026%2011.4878%207.05078C11.2873%207.23307%2011.0868%207.23307%2010.8862%207.05078L9.43701%205.62891V9.8125C9.41878%2010.0859%209.27295%2010.2318%208.99951%2010.25C8.72607%2010.2318%208.58024%2010.0859%208.56201%209.8125V5.62891L7.11279%207.05078C6.91227%207.23307%206.71175%207.23307%206.51123%207.05078C6.32894%206.85026%206.32894%206.64974%206.51123%206.44922Z%22%20fill%3D%22currentColor%2F%22%3E%0A%3C%2Fpath%3E%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"Add Candidates"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "select-action-btn", "blue-500")}
@@ -141,26 +160,6 @@ export function JobDetails({
                 {"Edit Job"}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "select-action-btn",
-                "blue-500",
-                "hide"
-              )}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icon-embed")}
-                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.83205%200.4453C6.43623%20-0.148433%205.56377%20-0.148433%205.16795%200.4453L3.16795%203.4453C2.72491%204.10985%203.2013%205%204%205H8C8.7987%205%209.27509%204.10985%208.83205%203.4453L6.83205%200.4453ZM4%204L6%201L8%204H4ZM1%207C0.447715%207%200%207.44772%200%208V11C0%2011.5523%200.447715%2012%201%2012H4C4.55228%2012%205%2011.5523%205%2011V8C5%207.44772%204.55228%207%204%207H1ZM1%2011V8H4V11H1ZM9.25%2012C10.7688%2012%2012%2010.7688%2012%209.25C12%207.73122%2010.7688%206.5%209.25%206.5C7.73122%206.5%206.5%207.73122%206.5%209.25C6.5%2010.7688%207.73122%2012%209.25%2012ZM9.25%2011C8.2835%2011%207.5%2010.2165%207.5%209.25C7.5%208.2835%208.2835%207.5%209.25%207.5C10.2165%207.5%2011%208.2835%2011%209.25C11%2010.2165%2010.2165%2011%209.25%2011Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-color-white")}
-                tag="div"
-              >
-                {"Workflow"}
-              </_Builtin.Block>
-            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -172,227 +171,43 @@ export function JobDetails({
           className={_utils.cx(_styles, "candidates-view-main")}
           tag="div"
         >
-          <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
-            {slotTabs ?? <JobDetailsTabs />}
-          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-tab-content-wrapper")}
             tag="div"
           >
-            <_Builtin.Block tag="div">
-              {slotFilterBlock ?? <JobDetailsFilterBlock />}
-            </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-358")}
+              className={_utils.cx(_styles, "jdet-tabs")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list")}
-                tag="div"
-              >
-                {isListTopBarVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "cv-list-row", "top")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "cv-list-column",
-                        "checkbox",
-                        "grey-100"
-                      )}
-                      tag="div"
-                      {...onclickSelectAll}
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "cv-list-checkbox")}
-                        tag="div"
-                      >
-                        {isAllChecked ? (
-                          <_Builtin.Image
-                            className={_utils.cx(_styles, "cli-check-image")}
-                            loading="lazy"
-                            width="auto"
-                            height="auto"
-                            alt=""
-                            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
-                          />
-                        ) : null}
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "cv-list-row-main")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "name",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20width%3D%2213%22%20height%3D%2215%22%20viewbox%3D%220%200%2013%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.1875%204.25C9.1875%203.70312%209.05078%203.19271%208.77734%202.71875C8.50391%202.24479%208.13021%201.87109%207.65625%201.59766C7.18229%201.32422%206.67188%201.1875%206.125%201.1875C5.57812%201.1875%205.06771%201.32422%204.59375%201.59766C4.11979%201.87109%203.74609%202.24479%203.47266%202.71875C3.19922%203.19271%203.0625%203.70312%203.0625%204.25C3.0625%204.79688%203.19922%205.30729%203.47266%205.78125C3.74609%206.25521%204.11979%206.62891%204.59375%206.90234C5.06771%207.17578%205.57812%207.3125%206.125%207.3125C6.67188%207.3125%207.18229%207.17578%207.65625%206.90234C8.13021%206.62891%208.50391%206.25521%208.77734%205.78125C9.05078%205.30729%209.1875%204.79688%209.1875%204.25ZM2.625%204.25C2.625%203.61198%202.77995%203.02865%203.08984%202.5C3.39974%201.97135%203.82812%201.54297%204.375%201.21484C4.92188%200.904948%205.50521%200.75%206.125%200.75C6.74479%200.75%207.32812%200.904948%207.875%201.21484C8.42188%201.54297%208.85026%201.97135%209.16016%202.5C9.47005%203.02865%209.625%203.61198%209.625%204.25C9.625%204.88802%209.47005%205.47135%209.16016%206C8.85026%206.52865%208.42188%206.95703%207.875%207.28516C7.32812%207.59505%206.74479%207.75%206.125%207.75C5.50521%207.75%204.92188%207.59505%204.375%207.28516C3.82812%206.95703%203.39974%206.52865%203.08984%206C2.77995%205.47135%202.625%204.88802%202.625%204.25ZM0.4375%2013.9297C0.455729%2014.1667%200.583333%2014.2943%200.820312%2014.3125H11.4297C11.6667%2014.2943%2011.7943%2014.1667%2011.8125%2013.9297C11.776%2012.6719%2011.3385%2011.6328%2010.5%2010.8125C9.67969%209.97396%208.64062%209.53646%207.38281%209.5H4.86719C3.60938%209.53646%202.57031%209.97396%201.75%2010.8125C0.911458%2011.6328%200.473958%2012.6719%200.4375%2013.9297ZM0%2013.9297C0.0364583%2012.5625%200.510417%2011.4141%201.42188%2010.4844C2.35156%209.57292%203.5%209.09896%204.86719%209.0625H7.38281C8.75%209.09896%209.89844%209.57292%2010.8281%2010.4844C11.7396%2011.4141%2012.2135%2012.5625%2012.25%2013.9297C12.25%2014.1667%2012.168%2014.3581%2012.0039%2014.5039C11.8581%2014.668%2011.6667%2014.75%2011.4297%2014.75H0.820312C0.583333%2014.75%200.391927%2014.668%200.246094%2014.5039C0.0820312%2014.3581%200%2014.1667%200%2013.9297Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "title",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewbox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.9375%201.84375V3.375H10.0625V1.84375C10.026%201.44271%209.80729%201.22396%209.40625%201.1875H4.59375C4.19271%201.22396%203.97396%201.44271%203.9375%201.84375ZM3.5%203.375V1.84375C3.5%201.53385%203.60938%201.27865%203.82812%201.07812C4.02865%200.859375%204.28385%200.75%204.59375%200.75H9.40625C9.71615%200.75%209.97135%200.859375%2010.1719%201.07812C10.3906%201.27865%2010.5%201.53385%2010.5%201.84375V3.375H12.25C12.7422%203.39323%2013.1523%203.56641%2013.4805%203.89453C13.8086%204.22266%2013.9818%204.63281%2014%205.125V7.96875V12.125C13.9818%2012.6172%2013.8086%2013.0273%2013.4805%2013.3555C13.1523%2013.6836%2012.7422%2013.8568%2012.25%2013.875H1.75C1.25781%2013.8568%200.847656%2013.6836%200.519531%2013.3555C0.191406%2013.0273%200.0182292%2012.6172%200%2012.125V7.96875V5.125C0.0182292%204.63281%200.191406%204.22266%200.519531%203.89453C0.847656%203.56641%201.25781%203.39323%201.75%203.375H3.5ZM0.4375%208.1875V12.125C0.455729%2012.4896%200.583333%2012.7995%200.820312%2013.0547C1.07552%2013.2917%201.38542%2013.4193%201.75%2013.4375H12.25C12.6146%2013.4193%2012.9245%2013.2917%2013.1797%2013.0547C13.4167%2012.7995%2013.5443%2012.4896%2013.5625%2012.125V8.1875H9.1875V9.5C9.1875%209.75521%209.10547%209.96484%208.94141%2010.1289C8.77734%2010.293%208.56771%2010.375%208.3125%2010.375H5.6875C5.43229%2010.375%205.22266%2010.293%205.05859%2010.1289C4.89453%209.96484%204.8125%209.75521%204.8125%209.5V8.1875H0.4375ZM4.8125%207.75H5.25H8.75H9.1875H13.5625V5.125C13.5443%204.76042%2013.4167%204.45052%2013.1797%204.19531C12.9245%203.95833%2012.6146%203.83073%2012.25%203.8125H10.2812H3.71875H1.75C1.38542%203.83073%201.07552%203.95833%200.820312%204.19531C0.583333%204.45052%200.455729%204.76042%200.4375%205.125V7.75H4.8125ZM5.25%208.1875V9.5C5.26823%209.77344%205.41406%209.91927%205.6875%209.9375H8.3125C8.58594%209.91927%208.73177%209.77344%208.75%209.5V8.1875H5.25Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">
-                          {"Current Job Title"}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "score",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M2.75%200.9375C2.25781%200.955729%201.875%201.17448%201.60156%201.59375C1.38281%202.03125%201.38281%202.46875%201.60156%202.90625C1.875%203.32552%202.25781%203.54427%202.75%203.5625C3.24219%203.54427%203.625%203.32552%203.89844%202.90625C4.11719%202.46875%204.11719%202.03125%203.89844%201.59375C3.625%201.17448%203.24219%200.955729%202.75%200.9375ZM2.75%204C2.09375%203.98177%201.59245%203.6901%201.24609%203.125C0.917969%202.54167%200.917969%201.95833%201.24609%201.375C1.59245%200.809896%202.09375%200.518229%202.75%200.5C3.40625%200.518229%203.90755%200.809896%204.25391%201.375C4.58203%201.95833%204.58203%202.54167%204.25391%203.125C3.90755%203.6901%203.40625%203.98177%202.75%204ZM9.75%207.9375C9.25781%207.95573%208.875%208.17448%208.60156%208.59375C8.38281%209.03125%208.38281%209.46875%208.60156%209.90625C8.875%2010.3255%209.25781%2010.5443%209.75%2010.5625C10.2422%2010.5443%2010.625%2010.3255%2010.8984%209.90625C11.1172%209.46875%2011.1172%209.03125%2010.8984%208.59375C10.625%208.17448%2010.2422%207.95573%209.75%207.9375ZM9.75%2011C9.09375%2010.9818%208.59245%2010.6901%208.24609%2010.125C7.91797%209.54167%207.91797%208.95833%208.24609%208.375C8.59245%207.8099%209.09375%207.51823%209.75%207.5C10.4062%207.51823%2010.9076%207.8099%2011.2539%208.375C11.582%208.95833%2011.582%209.54167%2011.2539%2010.125C10.9076%2010.6901%2010.4062%2010.9818%209.75%2011ZM11.2266%201.10156L1.60156%2010.7266C1.49219%2010.7995%201.38281%2010.7995%201.27344%2010.7266C1.20052%2010.6172%201.20052%2010.5078%201.27344%2010.3984L10.8984%200.773438C11.0078%200.700521%2011.1172%200.700521%2011.2266%200.773438C11.2995%200.882812%2011.2995%200.992188%2011.2266%201.10156Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">
-                          {"Resume Score"}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                      {isInterviewVisible ? (
-                        <_Builtin.Block
-                          className={_utils.cx(
-                            _styles,
-                            "cv-list-column",
-                            "score",
-                            "grey-100"
-                          )}
-                          tag="div"
-                        >
-                          <_Builtin.Block
-                            className={_utils.cx(_styles, "icon-block")}
-                            tag="div"
-                          >
-                            <_Builtin.HtmlEmbed
-                              className={_utils.cx(_styles, "icon-embed")}
-                              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M2.75%200.9375C2.25781%200.955729%201.875%201.17448%201.60156%201.59375C1.38281%202.03125%201.38281%202.46875%201.60156%202.90625C1.875%203.32552%202.25781%203.54427%202.75%203.5625C3.24219%203.54427%203.625%203.32552%203.89844%202.90625C4.11719%202.46875%204.11719%202.03125%203.89844%201.59375C3.625%201.17448%203.24219%200.955729%202.75%200.9375ZM2.75%204C2.09375%203.98177%201.59245%203.6901%201.24609%203.125C0.917969%202.54167%200.917969%201.95833%201.24609%201.375C1.59245%200.809896%202.09375%200.518229%202.75%200.5C3.40625%200.518229%203.90755%200.809896%204.25391%201.375C4.58203%201.95833%204.58203%202.54167%204.25391%203.125C3.90755%203.6901%203.40625%203.98177%202.75%204ZM9.75%207.9375C9.25781%207.95573%208.875%208.17448%208.60156%208.59375C8.38281%209.03125%208.38281%209.46875%208.60156%209.90625C8.875%2010.3255%209.25781%2010.5443%209.75%2010.5625C10.2422%2010.5443%2010.625%2010.3255%2010.8984%209.90625C11.1172%209.46875%2011.1172%209.03125%2010.8984%208.59375C10.625%208.17448%2010.2422%207.95573%209.75%207.9375ZM9.75%2011C9.09375%2010.9818%208.59245%2010.6901%208.24609%2010.125C7.91797%209.54167%207.91797%208.95833%208.24609%208.375C8.59245%207.8099%209.09375%207.51823%209.75%207.5C10.4062%207.51823%2010.9076%207.8099%2011.2539%208.375C11.582%208.95833%2011.582%209.54167%2011.2539%2010.125C10.9076%2010.6901%2010.4062%2010.9818%209.75%2011ZM11.2266%201.10156L1.60156%2010.7266C1.49219%2010.7995%201.38281%2010.7995%201.27344%2010.7266C1.20052%2010.6172%201.20052%2010.5078%201.27344%2010.3984L10.8984%200.773438C11.0078%200.700521%2011.1172%200.700521%2011.2266%200.773438C11.2995%200.882812%2011.2995%200.992188%2011.2266%201.10156Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                            />
-                          </_Builtin.Block>
-                          <_Builtin.Block tag="div">
-                            {"Interview Score"}
-                          </_Builtin.Block>
-                        </_Builtin.Block>
-                      ) : null}
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "email",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20width%3D%2215%22%20height%3D%2212%22%20viewBox%3D%220%200%2014%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.75%200.9375C1.38542%200.955729%201.07552%201.08333%200.820312%201.32031C0.583333%201.57552%200.455729%201.88542%200.4375%202.25V3.01562L6.04297%207.52734C6.33464%207.76432%206.65365%207.88281%207%207.88281C7.34635%207.88281%207.66536%207.76432%207.95703%207.52734L13.5625%203.01562V2.25C13.5443%201.88542%2013.4167%201.57552%2013.1797%201.32031C12.9245%201.08333%2012.6146%200.955729%2012.25%200.9375H1.75ZM0.4375%203.58984V9.25C0.455729%209.61458%200.583333%209.92448%200.820312%2010.1797C1.07552%2010.4167%201.38542%2010.5443%201.75%2010.5625H12.25C12.6146%2010.5443%2012.9245%2010.4167%2013.1797%2010.1797C13.4167%209.92448%2013.5443%209.61458%2013.5625%209.25V3.58984L8.23047%207.88281C7.86589%208.17448%207.45573%208.32031%207%208.32031C6.54427%208.32031%206.13411%208.17448%205.76953%207.88281L0.4375%203.58984ZM0%202.25C0.0182292%201.75781%200.191406%201.34766%200.519531%201.01953C0.847656%200.691406%201.25781%200.518229%201.75%200.5H12.25C12.7422%200.518229%2013.1523%200.691406%2013.4805%201.01953C13.8086%201.34766%2013.9818%201.75781%2014%202.25V9.25C13.9818%209.74219%2013.8086%2010.1523%2013.4805%2010.4805C13.1523%2010.8086%2012.7422%2010.9818%2012.25%2011H1.75C1.25781%2010.9818%200.847656%2010.8086%200.519531%2010.4805C0.191406%2010.1523%200.0182292%209.74219%200%209.25V2.25Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">{"Email"}</_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "phone",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20width%3D%2210%22%20height%3D%2216%22%20viewbox%3D%220%200%2010%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M2.625%201.1875C2.26042%201.20573%201.95052%201.33333%201.69531%201.57031C1.45833%201.82552%201.33073%202.13542%201.3125%202.5V13C1.33073%2013.3646%201.45833%2013.6745%201.69531%2013.9297C1.95052%2014.1667%202.26042%2014.2943%202.625%2014.3125H7.875C8.23958%2014.2943%208.54948%2014.1667%208.80469%2013.9297C9.04167%2013.6745%209.16927%2013.3646%209.1875%2013V2.5C9.16927%202.13542%209.04167%201.82552%208.80469%201.57031C8.54948%201.33333%208.23958%201.20573%207.875%201.1875H2.625ZM0.875%202.5C0.893229%202.00781%201.06641%201.59766%201.39453%201.26953C1.72266%200.941406%202.13281%200.768229%202.625%200.75H7.875C8.36719%200.768229%208.77734%200.941406%209.10547%201.26953C9.43359%201.59766%209.60677%202.00781%209.625%202.5V13C9.60677%2013.4922%209.43359%2013.9023%209.10547%2014.2305C8.77734%2014.5586%208.36719%2014.7318%207.875%2014.75H2.625C2.13281%2014.7318%201.72266%2014.5586%201.39453%2014.2305C1.06641%2013.9023%200.893229%2013.4922%200.875%2013V2.5ZM3.9375%2012.5625H6.5625C6.6901%2012.5807%206.76302%2012.6536%206.78125%2012.7812C6.76302%2012.9089%206.6901%2012.9818%206.5625%2013H3.9375C3.8099%2012.9818%203.73698%2012.9089%203.71875%2012.7812C3.73698%2012.6536%203.8099%2012.5807%203.9375%2012.5625Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">{"Phone"}</_Builtin.Block>
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "cv-list-column",
-                          "date",
-                          "grey-100"
-                        )}
-                        tag="div"
-                      >
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "icon-block")}
-                          tag="div"
-                        >
-                          <_Builtin.HtmlEmbed
-                            className={_utils.cx(_styles, "icon-embed")}
-                            value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.82706%203.2458C1.67474%203.47613%201.36454%203.53938%201.1342%203.38706C0.90387%203.23474%200.840625%202.92454%200.992943%202.6942C1.44005%202.01809%202.01809%201.44005%202.6942%200.992943C2.92454%200.840625%203.23474%200.90387%203.38706%201.1342C3.53938%201.36454%203.47613%201.67474%203.2458%201.82706C2.68191%202.19995%202.19995%202.68191%201.82706%203.2458ZM1.10081%207.01457C1.15351%207.28563%200.9765%207.5481%200.705435%207.60081C0.434369%207.65352%200.171899%207.4765%200.119192%207.20543C0.0406179%206.80134%200%206.40057%200%206C0%205.6015%200.040072%205.21147%200.119192%204.80457C0.171899%204.5335%200.434369%204.35649%200.705435%204.40919C0.9765%204.4619%201.15351%204.72437%201.10081%204.99543C1.03354%205.34139%201%205.66783%201%206C1%206.33476%201.03416%206.67181%201.10081%207.01457ZM3.23892%2010.175C3.4681%2010.3291%203.52902%2010.6397%203.37498%2010.8689C3.22093%2011.0981%202.91027%2011.159%202.68108%2011.005C2.01735%2010.5589%201.44114%209.98265%200.995024%209.31892C0.840982%209.08973%200.901897%208.77907%201.13108%208.62502C1.36027%208.47098%201.67093%208.5319%201.82498%208.76108C2.19886%209.31735%202.68265%209.80114%203.23892%2010.175ZM7.01456%2010.8992C7.28563%2010.8465%207.5481%2011.0235%207.60081%2011.2946C7.65351%2011.5656%207.4765%2011.8281%207.20543%2011.8808C6.80134%2011.9594%206.40057%2012%205.99873%2012C5.59696%2011.999%205.19625%2011.9589%204.80224%2011.8803C4.53142%2011.8264%204.35566%2011.563%204.40965%2011.2922C4.46364%2011.0214%204.72695%2010.8457%204.99776%2010.8997C5.32822%2010.9655%205.66431%2010.9991%206%2011C6.33476%2011%206.67181%2010.9658%207.01456%2010.8992ZM10.1729%208.7542C10.3253%208.52387%2010.6355%208.46063%2010.8658%208.61294C11.0961%208.76526%2011.1594%209.07546%2011.0071%209.3058C10.56%209.98191%209.98191%2010.56%209.3058%2011.0071C9.07546%2011.1594%208.76526%2011.0961%208.61294%2010.8658C8.46063%2010.6355%208.52387%2010.3253%208.7542%2010.1729C9.31809%209.80005%209.80005%209.31809%2010.1729%208.7542ZM10.8992%204.99543C10.8465%204.72437%2011.0235%204.4619%2011.2946%204.40919C11.5656%204.35649%2011.8281%204.5335%2011.8808%204.80457C11.9599%205.21147%2012%205.6015%2012%206C12%206.3985%2011.9599%206.78853%2011.8808%207.19544C11.8281%207.4665%2011.5656%207.64352%2011.2946%207.59081C11.0235%207.5381%2010.8465%207.27563%2010.8992%207.00457C10.9665%206.65861%2011%206.33217%2011%206C11%205.66783%2010.9665%205.34139%2010.8992%204.99543ZM8.7542%201.82706C8.52387%201.67474%208.46063%201.36454%208.61294%201.1342C8.76526%200.90387%209.07546%200.840625%209.3058%200.992943C9.98191%201.44005%2010.56%202.01809%2011.0071%202.6942C11.1594%202.92454%2011.0961%203.23474%2010.8658%203.38706C10.6355%203.53938%2010.3253%203.47613%2010.1729%203.2458C9.80005%202.68191%209.31809%202.19995%208.7542%201.82706ZM4.99543%201.10081C4.72437%201.15351%204.4619%200.9765%204.40919%200.705435C4.35649%200.434369%204.5335%200.171899%204.80457%200.119192C5.21147%200.040072%205.6015%200%206%200C6.3985%200%206.78853%200.040072%207.19544%200.119192C7.4665%200.171899%207.64352%200.434369%207.59081%200.705435C7.5381%200.9765%207.27563%201.15351%207.00457%201.10081C6.65861%201.03354%206.33217%201%206%201C5.66783%201%205.34139%201.03354%204.99543%201.10081Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                          />
-                        </_Builtin.Block>
-                        <_Builtin.Block tag="div">
-                          {"Applied Date"}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "cv-list-body")}
-                  tag="div"
-                >
-                  {slotCandidatesList ?? (
-                    <CandidateListItem isHighlighted={true} />
-                  )}
-                </_Builtin.Block>
-              </_Builtin.Block>
+              {slotTabs ?? <JobDetailsTabs />}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "job-details-selection-bar")}
+              className={_utils.cx(_styles, "jdet-actions-bar")}
               tag="div"
             >
-              {slotBottomBar ?? <SelectActionBar />}
+              {slotFilters ?? (
+                <>
+                  <SelectActionBar />
+                  <JobDetailsFilterBlock />
+                </>
+              )}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "jdet-table")}
+              tag="div"
+            >
+              {slotTable ?? (
+                <>
+                  <AllApplicantsTable />
+                  <TopApplicantsTable />
+                </>
+              )}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "job-page-nav-bar")}
+              tag="div"
+            >
+              {slotPagination ?? <CandidatesListPagination />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

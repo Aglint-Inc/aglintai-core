@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ImportResume } from "./ImportResume";
+import { Reupload } from "./Reupload";
 import { ImportCandidatesCsv } from "./ImportCandidatesCsv";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
@@ -14,8 +14,6 @@ export function ImportCandidates({
   onClickImportResume = {},
   onClickAddManually = {},
   onClickClose = {},
-  onClickDownloadSample = {},
-  onClickDownloadFiles = {},
 }) {
   return (
     <_Component
@@ -89,7 +87,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportResume ?? <ImportResume />}
+              {slotImportResume ?? <Reupload />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
@@ -107,7 +105,7 @@ export function ImportCandidates({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-import")}
+              className={_utils.cx(_styles, "slot-import", "height-350")}
               tag="div"
             >
               {slotImportCsv ?? <ImportCandidatesCsv />}

@@ -38,4 +38,7 @@ declare function ProfileShare(props: {
   isExperienceActive?: Types.Visibility.VisibilityConditions;
   isSkillActive?: Types.Visibility.VisibilityConditions;
   isOverviewVisible?: Types.Visibility.VisibilityConditions;
+  companyName?: React.ReactNode;
+  location?: React.ReactNode;
+  onClickLinkedin?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

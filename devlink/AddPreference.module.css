@@ -1,0 +1,40 @@
+.add-preference-wrap {
+  overflow: hidden;
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 69, 78, 0.15);
+}
+
+.preference-header {
+  padding: 8px 12px 4px;
+  background-color: #f8f9f9;
+}
+
+.preferernce-body {
+  padding: 8px 12px 15px;
+}
+
+.text-prefernce {
+  display: flex;
+  align-items: center;
+}
+
+.text-enter-prefernce {
+  display: flex;
+  height: 25px;
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-right: 4px;
+  padding-left: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+
+  background-color: #f8f9f9;
+
+  font-size: 12px;
+  font-weight: 600;
+}

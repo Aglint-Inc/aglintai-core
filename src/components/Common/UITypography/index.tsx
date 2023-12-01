@@ -7,7 +7,7 @@ export const typesDefinition = {
   small: {
     fontSize: '14px',
     letterSpacing: '0px',
-    lineHeight: '16px',
+    lineHeight: '20px',
   },
   medium: {
     fontSize: '16px',
@@ -34,6 +34,7 @@ const fontWeight = {
   default: '400',
   normal: '600',
 };
+
 type Props = {
   type?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   children?: React.ReactNode;
@@ -58,6 +59,7 @@ const UITypography = ({
       color={color}
       fontWeight={fontBold ? fontWeight[fontBold] : undefined}
       textTransform={textTransform}
+      
     >
       {children}
     </MuiTypography>

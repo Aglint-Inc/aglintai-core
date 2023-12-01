@@ -1,0 +1,32 @@
+import * as React from "react";
+import * as Types from "./types";
+
+declare function CandidateDialog(props: {
+  as?: React.ElementType;
+  onClickPrev?: Types.Devlink.RuntimeProps;
+  onClickNext?: Types.Devlink.RuntimeProps;
+  onClickCopy?: Types.Devlink.RuntimeProps;
+  onClickClose?: Types.Devlink.RuntimeProps;
+  slotAvatar?: Types.Devlink.Slot;
+  textName?: React.ReactNode;
+  textMail?: React.ReactNode;
+  onClickLinkedin?: Types.Devlink.RuntimeProps;
+  textOverview?: React.ReactNode;
+  isOverviewVisible?: Types.Visibility.VisibilityConditions;
+  textLocation?: React.ReactNode;
+  textJobRoleAtCompany?: React.ReactNode;
+  slotDetails?: Types.Devlink.Slot;
+  isStarActive?: Types.Visibility.VisibilityConditions;
+  onClickStar?: Types.Devlink.RuntimeProps;
+  onClickViewResume?: Types.Devlink.RuntimeProps;
+  slotAddJob?: Types.Devlink.Slot;
+  arrowtooltiphide?: Types.Visibility.VisibilityConditions;
+  isLinkedinVisible?: Types.Visibility.VisibilityConditions;
+  isLocationVisible?: Types.Visibility.VisibilityConditions;
+  slotAddedJobList?: Types.Devlink.Slot;
+  textJobCountwithJob?: React.ReactNode;
+  textJobCount?: React.ReactNode;
+  isAddedToJobVisible?: Types.Visibility.VisibilityConditions;
+  onClickDownloadResume?: Types.Devlink.RuntimeProps;
+  isBookmarkVisible?: Types.Visibility.VisibilityConditions;
+}): React.JSX.Element;

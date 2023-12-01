@@ -20,7 +20,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [dialog, setDialog] = useState(initialDialog());
   useEffect(() => {
     setLogo(recruiter?.logo);
-  }, []);
+  }, [recruiter]);
 
   const handleChange = async (recruit: RecruiterType) => {
     setIsSaving(true);
@@ -52,9 +52,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     });
   };
 
-  useEffect(() => {
-    if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
-  }, [logo]);
+  // useEffect(() => {
+  //   if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
+  // }, [logo]);
 
   return (
     <div>
@@ -87,6 +87,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               setImage={setLogo}
               size={70}
               table='company-logo'
+              changeCallback={(data: any) => {
+                handleChange({ ...recruiter, logo: data });
+              }}
             />
           </>
         }
@@ -114,7 +117,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <UITextField
                   labelSize='small'
                   fullWidth
-                  label='Industry Type'
+                  label='Industry'
                   placeholder='Ex. Healthcare'
                   value={recruiter?.industry}
                   onChange={(e) => {
@@ -180,32 +183,33 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         }
         slotLocation={
           <Stack p={'4px'}>
-            {recruiter?.office_locations.map((loc: any, i) => {
-              const location = [loc.city, loc.region, loc.country]
-                .filter(Boolean)
-                .join(', ');
+            {recruiter?.office_locations &&
+              recruiter?.office_locations.map((loc: any, i) => {
+                const location = [loc.city, loc.region, loc.country]
+                  .filter(Boolean)
+                  .join(', ');
 
-              return (
-                <>
-                  <Stack p={'4px'}>
-                    <CompanyLocation
-                      onClickEdit={{
-                        onClick: () => {
-                          setDialog({
-                            ...dialog,
-                            location: { open: true, edit: i },
-                          });
-                        },
-                      }}
-                      textLocation={location}
-                      onClickDelete={{
-                        onClick: () => handleDeleteLocation(i),
-                      }}
-                    />
-                  </Stack>
-                </>
-              );
-            })}
+                return (
+                  <>
+                    <Stack p={'4px'}>
+                      <CompanyLocation
+                        onClickEdit={{
+                          onClick: () => {
+                            setDialog({
+                              ...dialog,
+                              location: { open: true, edit: i },
+                            });
+                          },
+                        }}
+                        textLocation={location}
+                        onClickDelete={{
+                          onClick: () => handleDeleteLocation(i),
+                        }}
+                      />
+                    </Stack>
+                  </>
+                );
+              })}
           </Stack>
         }
         slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {

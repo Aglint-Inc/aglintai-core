@@ -1,15 +1,23 @@
-import { Stack, TextField } from '@mui/material';
+import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { WelcomeSlider4 } from '@/devlink';
+import { RcInfoForm, RcInfoStep1, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { AddressType, SocialsType } from '@/src/types/data.types';
+import { SocialsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
+import Loader from '../Loader/Index';
 import { stepObj } from '../SlideSignup/utils';
+import { getInitialEmailTemplate } from '../../AppLayout/utils';
+import AUIButton from '../../Common/AUIButton';
+import ImageUpload from '../../Common/ImageUpload';
+import UIPhoneInput from '../../Common/UIPhoneInput';
+import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
+import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
 
 interface Details {
   website: string;
@@ -25,11 +33,52 @@ interface ErrorField {
 }
 
 const SlideDetailsOne = () => {
-  const router = useRouter();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  return (
+    <>
+      <RecCompanyDetails slotMain={<FetchCompanyDetails />} />
+    </>
+  );
+};
 
+export default SlideDetailsOne;
+
+export function validateURL(url) {
+  // Check if the URL starts with 'http://' or 'https://'
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    // If not, prepend 'https://' to the URL
+    url = 'https://' + url;
+  }
+
+  try {
+    // Try creating a new URL object; this will throw an exception if the URL is invalid
+    new URL(url);
+    return true;
+  } catch (error) {
+    // The URL is invalid
+    return false;
+  }
+}
+
+export interface Error1 {
+  phone: ErrorField;
+  logo: ErrorField;
+  name: ErrorField;
+}
+
+type phone = {
+  countryCode: string;
+  dialCode: string;
+  format: string;
+  name: string;
+};
+
+export function FetchCompanyDetails() {
+  const router = useRouter();
+
+  const { recruiter, setRecruiter, userDetails } = useAuthDetails();
   const { setStep } = useSignupDetails();
   const [details, setDetails] = useState<Details | null>(null);
+
   const [error, setError] = useState<Error>({
     website: {
       error: false,
@@ -108,7 +157,6 @@ const SlideDetailsOne = () => {
             if (!error) {
               setRecruiter({
                 ...data[0],
-                address: data[0].address as AddressType,
                 socials: data[0].socials as SocialsType,
               });
               if (res.data.linkedIns[0]) {
@@ -133,19 +181,12 @@ const SlideDetailsOne = () => {
                       .select();
                     setRecruiter({
                       ...newData[0],
-                      address: newData[0].address as AddressType,
                       socials: newData[0].socials as SocialsType,
                     });
-                    router.push(`?step=${stepObj.detailsTwo}`, undefined, {
-                      shallow: true,
-                    });
-                    setStep(stepObj.detailsTwo);
+                    setLoading(false);
                   });
               } else {
-                router.push(`?step=${stepObj.detailsTwo}`, undefined, {
-                  shallow: true,
-                });
-                setStep(stepObj.detailsTwo);
+                setLoading(false);
               }
             }
           } else {
@@ -186,21 +227,17 @@ const SlideDetailsOne = () => {
 
     return userURL;
   }
-
   return (
-    <>
-      <WelcomeSlider4
-        isActiveButtonVisible={!loading}
-        isloadingVisible={loading}
-        isSaveCompanySiteDisable={!details?.website}
-        userName={recruiter?.name}
-        onClickSaveCompanySites={{
-          onClick: () => {
-            submitHandler();
-          },
-        }}
-        slotProfileForm1={
-          <Stack spacing={'20px'} p={'4px'}>
+    <RcInfoStep1
+      slotInput={
+        <>
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            spacing={'10px'}
+          >
             <TextField
               margin='none'
               required
@@ -221,28 +258,281 @@ const SlideDetailsOne = () => {
                 },
               }}
             />
+            <AUIButton
+              disabled={loading}
+              onClick={submitHandler}
+              variant='outlined'
+            >
+              Continue
+            </AUIButton>
           </Stack>
-        }
-      />
-    </>
+        </>
+      }
+      slotDetails={
+        <>
+          {loading ? (
+            <Stack
+              direction={'row'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              flexDirection={'column'}
+            >
+              <Loader />
+              <UITypography color='grey.600'>
+                Fetching company info from the website
+              </UITypography>
+            </Stack>
+          ) : recruiter.company_website ? (
+            <CompanyDetails />
+          ) : userDetails.user.user_metadata.role !== 'recruiter' ? (
+            <Stack
+              alignItems={'center'}
+              direction={'row'}
+              justifyContent={'center'}
+            >
+              <AUIButton
+                variant='text'
+                onClick={() => {
+                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                    shallow: true,
+                  });
+                  setStep(stepObj.atsSystem);
+                }}
+              >
+                Skip this step
+              </AUIButton>
+            </Stack>
+          ) : null}
+        </>
+      }
+    />
   );
-};
+}
 
-export default SlideDetailsOne;
+export function CompanyDetails() {
+  const router = useRouter();
+  const { setStep } = useSignupDetails();
+  const { recruiter, setRecruiter } = useAuthDetails();
+  const [logo, setLogo] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [phonePattern, setPhonePattern] = useState<string>('');
+  const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
+  const [error, setError] = useState<Error1>({
+    phone: {
+      error: false,
+      msg: '',
+    },
+    logo: {
+      error: false,
+      msg: '',
+    },
+    name: {
+      error: false,
+      msg: '',
+    },
+  });
 
-export function validateURL(url) {
-  // Check if the URL starts with 'http://' or 'https://'
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    // If not, prepend 'https://' to the URL
-    url = 'https://' + url;
+  useEffect(() => {
+    if (!recruiter.phone_number) {
+      fetchUserLocation(); // Call the function to fetch user's location when the component mounts
+    }
+    setLogo(recruiter.logo);
+    setPhone(recruiter.phone_number);
+  }, [recruiter]);
+
+  // Function to fetch the user's location information based on IP address
+  const fetchUserLocation = async () => {
+    try {
+      const response = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
+      const data = await response.json();
+
+      const country = data.country; // Extract the country code from the response
+      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
+    } catch (error) {
+      // Handle any errors that occur during the API call
+    }
+  };
+
+  const phoneValidation = (format) => {
+    if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {
+      setError({
+        ...error,
+        phone: { error: true, msg: '' },
+      });
+    } else {
+      setError({
+        ...error,
+        phone: { ...error.phone, error: false },
+      });
+    }
+  };
+
+  function countRept(string, regex) {
+    var numbers = string?.match(regex);
+    return numbers ? numbers.length : 0;
   }
 
-  try {
-    // Try creating a new URL object; this will throw an exception if the URL is invalid
-    new URL(url);
-    return true;
-  } catch (error) {
-    // The URL is invalid
-    return false;
-  }
+  const formValidation = (value) => {
+    let isValid = true;
+    if (!value) {
+      isValid = false;
+      setError({
+        ...error,
+        name: {
+          error: true,
+          msg: 'Company name is required',
+        },
+      });
+    } else {
+      setError({
+        ...error,
+        name: {
+          error: false,
+          msg: '',
+        },
+      });
+    }
+    return isValid;
+  };
+
+  const submitHandler = async () => {
+    if (recruiter?.id && formValidation(recruiter?.name)) {
+      const { error: e1 } = await supabase
+        .from('recruiter')
+        .update({
+          logo: logo,
+          phone_number: phone,
+          employee_size: recruiter.employee_size,
+          name: recruiter.name,
+          industry: recruiter.industry,
+          email_template: getInitialEmailTemplate(recruiter.name),
+        })
+        .eq('id', recruiter.id);
+      const { error: e2 } = await supabase
+        .from('recruiter_user')
+        .update({ phone: phone })
+        .eq('recruiter_id', recruiter.id);
+      if (!(e1 && e2)) {
+        router.push(`?step=${stepObj.atsSystem}`, undefined, {
+          shallow: true,
+        });
+        setStep(stepObj.atsSystem);
+      }
+    }
+  };
+  return (
+    <RcInfoForm
+      slotLogo={
+        <ImageUpload
+          image={logo}
+          setImage={setLogo}
+          size={80}
+          dynamic
+          table='company-logo'
+        />
+      }
+      // onclickChange={{
+      //   onClick: () => {
+      //     console.log('ghjkl');
+      //   },
+      // }}
+      slotForm={
+        <Stack spacing={2}>
+          <UITextField
+            label='Company Name'
+            labelSize='medium'
+            fullWidth
+            value={recruiter?.name}
+            placeholder={'Ex. Google'}
+            error={error.name.error}
+            helperText={error.name.error ? error.name.msg : ''}
+            onChange={(e) => {
+              formValidation(e.target.value);
+              setRecruiter({ ...recruiter, name: e.target.value });
+            }}
+          />
+          <UITextField
+            labelSize='medium'
+            fullWidth
+            label='Industry Type'
+            placeholder='Ex. Healthcare'
+            value={recruiter?.industry}
+            onChange={(e) => {
+              setRecruiter({ ...recruiter, industry: e.target.value });
+            }}
+          />
+          <Autocomplete
+            disableClearable
+            freeSolo
+            fullWidth
+            options={sizes}
+            onChange={(event, value) => {
+              if (value) {
+                setRecruiter({
+                  ...recruiter,
+                  employee_size: value,
+                });
+              }
+            }}
+            value={recruiter.employee_size}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+              <UITextField
+                rest={{ ...params }}
+                fullWidth
+                InputProps={{
+                  ...params.InputProps,
+                }}
+                label='Employee Size'
+                labelSize='medium'
+                onChange={(event) => {
+                  setRecruiter({
+                    ...recruiter,
+                    employee_size: event.target.value,
+                  });
+                }}
+              />
+            )}
+          />
+          <UIPhoneInput
+            defaultCountry={defaultCountry}
+            label='Phone'
+            onBlur={(value, country: phone) => {
+              phoneValidation(country.format);
+            }}
+            placeholder='Enter your phone number'
+            value={phone}
+            error={error.phone.error}
+            onChange={(value, data: phone, event, formattedValue) => {
+              setPhonePattern(data.format);
+              setPhone(formattedValue);
+            }}
+            helperText={
+              !phone
+                ? 'Please enter your phone number.'
+                : error.phone.error
+                ? `Invalid phone number. Please use the ${
+                    phonePattern?.replaceAll('.', 'x') || 'correct'
+                  } format.`
+                : ''
+            }
+          />
+          <Stack
+            mt={'50px !important'}
+            direction={'row'}
+            alignItems={'center'}
+            justifyContent={'center'}
+          >
+            <AUIButton disabled={false} onClick={submitHandler}>
+              Continue
+            </AUIButton>
+          </Stack>
+        </Stack>
+      }
+    />
+  );
 }

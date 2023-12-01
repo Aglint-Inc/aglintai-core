@@ -8,15 +8,27 @@ export const config = {
 
 const whiteListedEndPoints = [
   '/api/sendgrid',
-  'api/ai/gpt3-5-turbo',
-  'api/ai/create-embeddings',
-  'api/extract-openai',
-  'api/templates',
-  'api/generateVideo',
-  'api/checkstatus',
-  'api/webhook',
-  'api/interview',
-  'api/interviewChatOpenAi',
+  '/api/lever/saveResume',
+  '/api/greenhouse/saveResume',
+  '/api/lever/candidateSync',
+  '/api/webhook',
+  '/api/JobApplicationsApi',
+  '/api/ai/resume-embedding',
+  '/api/interview', // need this publicly access for interview feedback.
+  '/api/assistant/listAssistant',
+  '/api/assistant/listMessages',
+  '/api/assistant/createMessage',
+  '/api/assistant/createThread',
+  '/api/assistant/createRun',
+  '/api/assistant/createAssistant',
+  '/api/google/overview',
+  '/api/google/resume',
+  '/api/google/jdparser',
+  '/api/google/overview-handler',
+  '/api/getLinkedin',
+  '/api/resumecron/batchscore',
+  '/api/greenhouse/batchsave',
+  '/api/resumeScoring',
 ];
 
 export async function middleware(request) {
@@ -51,7 +63,7 @@ export async function middleware(request) {
 async function verify(token, secret) {
   try {
     await jwtVerify(token, new TextEncoder().encode(secret), {
-      maxTokenAge: 60 * 60,
+      maxTokenAge: 86400, //one day in supabase
     });
     return true;
   } catch (e) {

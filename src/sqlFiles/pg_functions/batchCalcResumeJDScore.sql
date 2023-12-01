@@ -1,34 +1,54 @@
-CREATE OR REPLACE FUNCTION batchCalcResumeJDScore()
-RETURNS JSONB AS $$
+CREATE OR REPLACE FUNCTION public.batchcalcresumejdscore()
+ RETURNS jsonb
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
     result JSONB;
     request_results JSONB;
-    app_id UUID;
+    app_data RECORD;
 BEGIN
     -- Initialize an empty JSON array for the results
     result := '[]'::JSONB;
 
-    -- Loop through the selected application IDs
-    FOR app_id IN (
-        SELECT application_id
-        FROM job_applications
-        WHERE api_logs->>'scoreStatus' = 'not started'
-        ORDER BY created_at ASC
-        LIMIT 5
+    -- Loop through the selected application data
+    FOR app_data IN (
+       SELECT
+           ja.application_id AS application_id,
+           ja.candidate_id AS candidate_id,
+           ja.jd_score AS jd_score,
+           ja.resume AS resume,
+           ja.json_resume AS json_resume,
+           ja.resume_text AS resume_text,
+           jsonb_build_object('description', pj.description, 'skills', pj.skills, 'job_title', pj.job_title) AS jd_json,
+           0 as retry
+       FROM job_applications ja
+       JOIN public_jobs pj ON ja.job_id = pj.id
+       WHERE ja.api_status = 'not started' AND ja.resume IS NOT NULL
+       ORDER BY ja.created_at ASC
+       LIMIT 50
     )
     LOOP
-        -- Make the HTTP request for each application_id
+        -- Convert the row to JSON
+        request_results := row_to_json(app_data);
+        
+        -- Make the HTTP request for each application data
         SELECT
             net.http_post(
-                url := 'https://us-central1-aglint-cloud-381414.cloudfunctions.net/resume-score-gen',
-                body := jsonb_build_object('application_id', app_id)
+                url := 'https://northamerica-northeast2-aglint-cloud-381414.cloudfunctions.net/process_resume_and_jd_v1',
+                body := request_results
             ) INTO request_results;
 
+        -- UPDATE job_applications
+        -- SET api_status = 'processing',processed_at = current_timestamp
+        -- WHERE application_id = app_data.application_id;
+        
         -- Append the request result to the result array
         result := result || jsonb_build_object('request_result', request_results);
     END LOOP;
 
+
     -- Return the final result as a JSONB array
     RETURN result;
 END;
-$$ LANGUAGE plpgsql;
+$function$
+;

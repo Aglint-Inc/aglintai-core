@@ -102,7 +102,7 @@ const CSVGenerator = () => {
   }
   return (
     <>
-    <Seo
+      <Seo
         title='Aglint for Employers | CSV Generator'
         description='We help companies hire the perfect candidates quickly. Our trained models understand company culture and values, finding the right fit. Our automated screening saves time and money.'
       />

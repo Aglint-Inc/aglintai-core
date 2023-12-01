@@ -24,6 +24,7 @@ import SpeechRecognition, {
 import { useInterviewSignUp } from './InterviewSignup';
 import { useLogActivities } from './LogActivities';
 import { useResumeList } from './ResumeListContext';
+import { selectJobApplicationQuery } from '../pages/api/JobApplicationsApi/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { mixPanel } from '../utils/mix-panel';
@@ -245,7 +246,7 @@ const InterviewPrepProvider = ({ children }) => {
         used_token: [usedToken],
       })
       .eq('application_id', router.query.id)
-      .select();
+      .select(`${selectJobApplicationQuery}`);
     if (!updateError) {
       return updatedData;
     }
@@ -361,7 +362,7 @@ const InterviewPrepProvider = ({ children }) => {
     currentInterviewID = '';
     audioElement?.pause();
     audioElement = null;
-    router.push(pageRoutes.INTERVIEW);
+    router.push(pageRoutes.MOCKTEST);
   }
 
   async function letsBegin() {
@@ -872,7 +873,7 @@ const InterviewPrepProvider = ({ children }) => {
       // log recent activities
       update_log_activity(log_id, {
         log_message: `Completed mock interview for ${data[0].role} at ${data[0].company}`,
-        type: pageRoutes.INTERVIEW,
+        type: pageRoutes.MOCKTEST,
       });
     }
   }

@@ -2,17 +2,20 @@ import { isEmpty } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect } from 'react';
 
-import JobForm from '@/src/components/Job/JobForm';
-import EmptyJobDashboard from '@/src/components/JobsDashboard/EmptyJobDashboard';
+import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
+import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
   useJobForm,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
 
 function Hoc() {
   return (
     <JobPostFormProvider>
-      <New />
+      <IntegrationProvider>
+        <New />
+      </IntegrationProvider>
     </JobPostFormProvider>
   );
 }

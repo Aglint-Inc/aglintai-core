@@ -62,6 +62,10 @@
   margin-top: 5px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-grey-600.mt-17 {
   margin-top: 17px;
 }
@@ -94,6 +98,14 @@
   align-items: center;
 
   object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .slot-company-email-form {

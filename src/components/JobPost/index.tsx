@@ -14,16 +14,26 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
-import { CompanyListingLinks, JobListing, OpenJobListingCard } from '@/devlink';
+import {
+  CompanyListingLinks,
+  InterviewCompleted,
+  JobListing,
+  LoaderSvg,
+  OpenJobListingCard,
+} from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
+import {
+  JobApplcationDB,
+  JobTypeDB,
+  RecruiterDB,
+} from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import ThankYou from './ThankYou';
 import UploadDB from './UploadDB';
 import Icon from '../Common/Icons/Icon';
-import Loader from '../Common/Loader';
 
 interface JobsListProps {
   post: JobTypeDB;
@@ -37,6 +47,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const [error, setError] = useState(false);
   const [thank, setThank] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [application, setApplication] = useState<JobApplcationDB>();
 
   const notifyMe = () => {
     if (email) {
@@ -67,12 +78,13 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
       setError(true);
     }
   };
+
   const filteredJobs = jobs
     .filter((job) => job.id !== post.id)
     .filter((job: any) => job.active_status.sourcing.isActive);
 
   return (
-    <Stack width={'100%'} position={'relative'}>
+    <Stack width={'100%'} position={'relative'} minHeight={'100vh'}>
       {thank && (
         <Stack
           height={'100vh'}
@@ -81,22 +93,77 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           width={'100%'}
           bgcolor={'#fff'}
         >
-          <Stack direction={'row'} justifyContent={'center'} mt={'10vh'}>
-            <Stack
-              sx={{
-                p: 4,
-                borderRadius: '4px',
-                border: '1px solid #d8dcde',
-                maxWidth: '600px',
-                textAlign: 'center',
-              }}
-            >
-              <Typography variant='h4'>
-                Thank You For Applying. We will notify you via email regarding
-                the status of your application.
-              </Typography>
-            </Stack>
-          </Stack>
+          <InterviewCompleted
+            onClickSupport={{
+              onClick: () => {
+                application?.application_id &&
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_RECRUITER_APP}/support/create?id=${application?.application_id}`,
+                  );
+              },
+            }}
+            slotLottie={<ThankYou />}
+            textTitle={'Application submitted successfully.'}
+            textDescription={`Thank you for taking your time to take apply for this role. We will be in touch with you soon.If you have any questions please `}
+            slotCompanyLogo={
+              <Stack alignItems={'center'} spacing={1} width={'100%'}>
+                <Avatar
+                  id='topAvatar'
+                  variant='rounded'
+                  src={recruiter?.logo}
+                  sx={{
+                    p: '4px',
+                    color: 'common.black',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
+                    },
+                    height: '78px',
+                    width: '78px',
+                    borderRadius: '8px',
+                    background: palette.grey[100],
+                  }}
+                >
+                  <Icon variant='CompanyOutlinedBig' />
+                </Avatar>
+                <Typography variant='h3'>
+                  {(recruiter as { name: string })?.name}
+                </Typography>
+                <Typography variant='body2'>
+                  {[
+                    (
+                      recruiter as {
+                        office_locations: {
+                          city?: string;
+                          region?: string;
+                          country?: string;
+                        }[];
+                      }
+                    ).office_locations[0]?.city,
+                    (
+                      recruiter as {
+                        office_locations: {
+                          city?: string;
+                          region?: string;
+                          country?: string;
+                        }[];
+                      }
+                    ).office_locations[0]?.region,
+                    (
+                      recruiter as {
+                        office_locations: {
+                          city?: string;
+                          region?: string;
+                          country?: string;
+                        }[];
+                      }
+                    ).office_locations[0]?.country,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </Typography>
+              </Stack>
+            }
+          />
         </Stack>
       )}
       {loading && (
@@ -107,7 +174,14 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           width={'100%'}
           bgcolor={'#fff'}
         >
-          <Loader />
+          <Stack
+            width={'100%'}
+            alignItems={'center'}
+            height={'100vh'}
+            justifyContent={'center'}
+          >
+            <LoaderSvg />
+          </Stack>
         </Stack>
       )}
 
@@ -122,7 +196,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             <Avatar
               id='topAvatar'
               variant='rounded'
-              src={post?.logo}
+              src={post?.logo || recruiter?.logo}
               sx={{
                 p: '4px',
                 color: 'common.black',
@@ -165,17 +239,71 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 color={palette.grey[800]}
                 sx={{
                   whiteSpace: 'pre-wrap',
+                  fontSize: '14px',
                   h5: {
                     color: palette.grey[600],
                     pt: '20px',
                     pb: '10px',
                     m: 0,
                     fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  strong: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  h6: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  h4: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  h3: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  h2: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  h1: {
+                    color: palette.grey[600],
+                    pt: '20px',
+                    pb: '10px',
+                    m: 0,
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  },
+                  li: {
+                    margin: '10px 0', // Add margin between list items (top and bottom)
                   },
                 }}
                 dangerouslySetInnerHTML={{ __html: post?.description }}
               />
-              {post?.skills.length > 0 && (
+
+              {post?.skills?.length > 0 && (
                 <>
                   <Typography
                     variant='h5'
@@ -200,7 +328,12 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             </>
           }
           slotApplyForThisJob={
-            <UploadDB post={post} setThank={setThank} setLoading={setLoading} />
+            <UploadDB
+              post={post}
+              setThank={setThank}
+              setLoading={setLoading}
+              setApplication={setApplication}
+            />
           }
           slotLinks={
             recruiter?.socials &&
@@ -282,7 +415,13 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           }
           onClickViewMore={{
             onClick: () => {
-              router.push(pageRoutes.COMPANYPOSTINGS + recruiter.id);
+              router.push(
+                process.env.NEXT_PUBLIC_WEBSITE +
+                  '/' +
+                  pageRoutes.COMPANYPOSTINGS +
+                  '/' +
+                  recruiter.id,
+              );
             },
           }}
           slotInputForm={

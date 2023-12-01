@@ -1,22 +1,23 @@
 /* eslint-disable security/detect-object-injection */
 import { Paper, Stack, Tooltip, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import { fileTypes } from '@/src/components/JobPost/UploadDB';
-import { useJobs } from '@/src/context/JobsContext';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 const ResumeUpload = ({ setOpenSidePanel }) => {
-  const router = useRouter();
+  const { recruiter } = useAuthDetails();
+  const { job } = useJobApplications();
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { jobsData, handleApplicationsRead } = useJobs();
+  const { handleJobApplicationRefresh } = useJobApplications();
 
   const InputChange = (files) => {
     // --For Multiple File Input
@@ -49,24 +50,34 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
 
   const FileUploadSubmit = async () => {
     setLoading(true);
+
     for (const file of selectedfile) {
-      let uploadUrl = await uploadResume(file);
+      let candidateId = uuidv4();
+      let uploadUrl = await uploadResume(file, candidateId, job.id);
       try {
-        await supabase
-          .from('job_applications')
+        // TODO: Error handling required and exisiting candidate handling
+        const { data, error } = await supabase
+          .from('candidates')
           .insert({
-            first_name: '',
+            first_name: file.name.toLowerCase().trim(),
             last_name: '',
-            email: '',
-            job_id: router.query.id as any,
-            resume: uploadUrl,
+            email: `temp-${candidateId}@gmail.com`,
+            recruiter_id: recruiter.id,
+            id: candidateId,
           })
           .select();
+        if (!error) {
+          await supabase.from('job_applications').insert({
+            resume: uploadUrl,
+            candidate_id: data[0].id,
+            job_id: job.id,
+          });
+        }
       } catch (error) {
         // Handle errors, if needed
       }
     }
-    await handleApplicationsRead(jobsData.jobs.map((job) => job.id));
+    await handleJobApplicationRefresh();
     setLoading(false);
     setSelectedFile([]);
     setOpenSidePanel(false);
@@ -75,18 +86,14 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     );
   };
 
-  const uploadResume = async (file) => {
+  const uploadResume = async (file, candidate_id, job_id) => {
     const { data } = await supabase.storage
       .from('resume-job-post')
-      .upload(
-        `public/${new Date().toISOString().trim() + file.name.toLowerCase()}`,
-        file,
-        {
-          cacheControl: '3600',
-          // Overwrite file if it exist
-          upsert: true,
-        },
-      );
+      .upload(`public/${candidate_id}/${job_id}`, file, {
+        cacheControl: '3600',
+        // Overwrite file if it exist
+        upsert: true,
+      });
     let uploadUrl = `${
       process.env.NEXT_PUBLIC_SUPABASE_URL
     }/storage/v1/object/public/resume-job-post/${data?.path}?t=${new Date().toISOString()}`;
@@ -201,3 +208,5 @@ export const candidateDatabaseSampleJob = () => {
     is_campus: true,
   };
 };
+
+export const fileTypes = ['PDF', 'DOCX', 'TXT'];

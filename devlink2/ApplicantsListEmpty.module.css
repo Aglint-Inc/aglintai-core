@@ -43,3 +43,19 @@
     font-size: 16px;
   }
 }
+
+.inline-block.ml-6 {
+  margin-left: 6px;
+}
+
+.text-grey-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}

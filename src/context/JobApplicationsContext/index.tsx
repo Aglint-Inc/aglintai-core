@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useContext } from 'react';
 
-import useJobApplicationActions from './hooks';
+import useProviderJobApplicationActions from './hooks';
 import { initialJobApplicationsContext } from './utils';
 
 const JobApplicationsContext = createContext(initialJobApplicationsContext);
 
 const JobApplicationProvider = ({ children }: { children: ReactNode }) => {
-  const value = useJobApplicationActions();
+  const value = useProviderJobApplicationActions();
   return (
     <JobApplicationsContext.Provider value={value}>
       {children}
@@ -22,6 +22,6 @@ export const useJobApplications = () => {
 };
 
 export const useJobApplicationsForJob = (jobId: string) => {
-  const value = useJobApplicationActions(jobId);
+  const value = useProviderJobApplicationActions(jobId);
   return { ...value };
 };

@@ -2,25 +2,38 @@ import { Avatar } from '@mui/material';
 
 import { InterviewInterviewerScreen } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
+import interviewerList from '@/src/utils/interviewer_list';
 function InterviewerPanel() {
-  const { totalNumberOfQuestions, questionIndex, character } =
-    useInterviewContext();
+  const {
+    totalNumberOfQuestions,
+    questionIndex,
+    character,
+    interviewerIndex,
+    showStartCard,
+  } = useInterviewContext();
 
   return (
     <>
       <InterviewInterviewerScreen
+        isPlayPauseVisible={false}
         slotAiVideo={
           <Avatar
             sx={{
               width: '100%',
               height: '100%',
+              '& img': {
+                objectFit: 'contain',
+              },
             }}
             variant='rounded'
-            src={`https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/interview_prep/temp-used/female_interviewer.svg`}
-          ></Avatar>
+            src={interviewerList[Number(interviewerIndex)]?.image}
+          />
         }
-        textQuestion={`Question: ${questionIndex + 1}/${
-          totalNumberOfQuestions?.length
+        isQuestionPillVisible={
+          showStartCard && questionIndex <= totalNumberOfQuestions?.length - 2
+        }
+        textQuestion={`Question: ${questionIndex}/${
+          totalNumberOfQuestions?.length - 2
         }`}
         textAi={character ? character : 'Loading...'}
       />

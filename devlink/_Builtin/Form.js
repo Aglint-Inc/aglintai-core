@@ -205,8 +205,8 @@ const FileUploadContext = React.createContext({
   files: null,
   error: null,
   maxSize: MAX_FILE_SIZE_DEFAULT,
-  setFiles: () => {},
-  setError: () => {},
+  setFiles: () => undefined,
+  setError: () => undefined,
 });
 export function FormFileUploadWrapper({
   maxSize = MAX_FILE_SIZE_DEFAULT,
@@ -325,7 +325,7 @@ export function FormFileUploadSuccess({ className = "", ...props }) {
     ...props,
     style: {
       ...props.style,
-      display: !!files && !error ? "block" : "none",
+      display: Boolean(files) && !error ? "block" : "none",
     },
   });
 }
@@ -363,7 +363,7 @@ export function FormFileUploadError({ className = "", ...props }) {
     ...props,
     style: {
       ...props.style,
-      display: !!error ? "block" : "none",
+      display: error ? "block" : "none",
     },
   });
 }

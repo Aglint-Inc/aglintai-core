@@ -1,0 +1,48 @@
+import { ResumeTag } from '@/devlink2';
+export const ResumeScoreTag = ({ score }: { score: number }) => {
+  const props = getResumeScore(score);
+  return (
+    <ResumeTag
+      slotText={props.text}
+      props={{
+        style: {
+          backgroundColor: props.bgColor,
+          borderColor: props.borderColor,
+        },
+      }}
+    />
+  );
+};
+
+const getResumeScore = (score: number) => {
+  if (score >= 80)
+    return {
+      text: 'Top match',
+      bgColor: 'rgba(168, 24, 151, 0.2)',
+      borderColor: 'rgba(168, 24, 151, 0.2)',
+    };
+  else if (score >= 60)
+    return {
+      text: 'Good match',
+      bgColor: 'rgba(209, 232, 223, 0.5)',
+      borderColor: 'rgb(195, 234, 223)',
+    };
+  else if (score >= 40)
+    return {
+      text: 'Average match',
+      bgColor: 'rgba(255, 237, 194, 1)',
+      borderColor: 'rgba(86, 65, 0, 0.10)',
+    };
+  else if (score >= 20)
+    return {
+      text: 'Below average match',
+      bgColor: 'rgba(255, 238, 219, 1)',
+      borderColor: 'rgba(255, 212, 161, 0.50)',
+    };
+  else if (score >= 0)
+    return {
+      text: 'Not a match',
+      bgColor: 'rgba(255, 240, 241, 1)',
+      borderColor: 'rgb(255, 210, 216)',
+    };
+};

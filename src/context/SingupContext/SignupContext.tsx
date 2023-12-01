@@ -34,10 +34,10 @@ const SignupProvider = ({ children }) => {
       if (router.query.step) {
         setStep(router.query.step as string);
       } else {
-        router.push(`?step=${stepObj.type}`, undefined, {
-          shallow: true,
-        });
-        setStep(stepObj.type);
+        // router.push(`?step=${stepObj.type}`, undefined, {
+        //   shallow: true,
+        // });
+        // setStep(stepObj.type);
       }
     }
   }, [router]);

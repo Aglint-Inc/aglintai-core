@@ -86,18 +86,18 @@ const ProfileDashboard = () => {
       label: 'Last name',
       placeholder: 'Doe',
     },
+    phone: {
+      ...initialFormValues,
+      value: recruiterUser.phone,
+      validation: 'phone',
+      label: 'Phone number',
+    },
     role: {
       ...initialFormValues,
       value: recruiterUser.role,
       label: 'Job title',
       blocked: true,
       placeholder: 'Recruiter',
-    },
-    phone: {
-      ...initialFormValues,
-      value: recruiterUser.phone,
-      validation: 'phone',
-      label: 'Phone number',
     },
   };
   const initialEmail: EmailFormFields = {
@@ -117,7 +117,7 @@ const ProfileDashboard = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Password',
+      label: 'New password',
     },
     confirmPassword: {
       ...initialFormValues,
@@ -184,9 +184,14 @@ const ProfileDashboard = () => {
           />
         }
         slotSavePassword={
-          <Stack style={{ pointerEvents: loading.password ? 'none' : 'auto' }}>
+          <Stack
+            style={{
+              pointerEvents: loading.password ? 'none' : 'auto',
+              zIndex: 0,
+            }}
+          >
             <ButtonPrimaryOutlinedRegular
-              buttonText={'Update Password'}
+              buttonText={'Change password'}
               isDisabled={
                 !passwordChange ||
                 password.password.value === '' ||
@@ -220,7 +225,13 @@ const ProfileDashboard = () => {
           },
         }}
         slotUserInfoBtn={
-          <Stack style={{ pointerEvents: loading.profile ? 'none' : 'auto' }}>
+          <Stack
+            style={{
+              position: 'relative',
+              pointerEvents: loading.profile ? 'none' : 'auto',
+              zIndex: 0,
+            }}
+          >
             <ButtonPrimaryOutlinedRegular
               buttonText={'Save'}
               isDisabled={!profileChange}
@@ -246,7 +257,11 @@ const ProfileDashboard = () => {
         }
         slotPreferencesBtn={
           <Stack
-            style={{ pointerEvents: loading.preferences ? 'none' : 'auto' }}
+            style={{
+              position: 'relative',
+              pointerEvents: loading.preferences ? 'none' : 'auto',
+              zIndex: 0,
+            }}
           >
             <ButtonPrimaryOutlinedRegular
               buttonText={'Save'}
@@ -424,7 +439,9 @@ const validateMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
-    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value.trim())
+    /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+      value.trim(),
+    )
   );
 };
 const validatePhone = (value: string) => {
@@ -434,7 +451,10 @@ const validatePhone = (value: string) => {
   }
   return !(
     value.trim() === '' ||
-    countRept(value.trim(), /\d/g) != countRept('+.. .....-.....', /\./g)
+    !(
+      countRept(value.trim(), /\d/g) === countRept('+.. .....-.....', /\./g) ||
+      countRept(value.trim(), /\d/g) === countRept('+. ......-....', /\./g)
+    )
   );
 };
 const ProfileForms = ({

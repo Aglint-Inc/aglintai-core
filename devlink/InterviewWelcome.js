@@ -5,7 +5,7 @@ import * as _utils from "./utils";
 import _styles from "./InterviewWelcome.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-1352":{"id":"e-1352","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1353"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365602},"e-1353":{"id":"e-1353","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1352"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365605},"e-1382":{"id":"e-1382","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-489","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1383"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1383":{"id":"e-1383","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-490","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1382"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1386":{"id":"e-1386","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1387"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976388},"e-1387":{"id":"e-1387","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1386"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976390},"e-1388":{"id":"e-1388","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1389"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd52c8","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd52c8","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697782416892},"e-1390":{"id":"e-1390","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1391"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5370","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5370","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697782214993},"e-1392":{"id":"e-1392","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1393"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd537c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd537c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697744051630},"e-1394":{"id":"e-1394","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1395"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5382","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5382","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697743748577},"e-1396":{"id":"e-1396","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1397"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a28c5e5f-5732-456b-f7c4-7e1c449eb8af","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a28c5e5f-5732-456b-f7c4-7e1c449eb8af","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697792557660},"e-1400":{"id":"e-1400","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1401"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"480911d7-c6cf-5ff6-539d-ecaccabd7e08","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"480911d7-c6cf-5ff6-539d-ecaccabd7e08","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697817962975}},"actionLists":{"a-471":{"id":"a-471","title":"Email Interaction Hover In","actionItemGroups":[{"actionItems":[{"id":"a-471-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-471-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-471-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-471-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-471-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-471-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-472":{"id":"a-472","title":"Email Interaction Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-472-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-472-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-472-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-489":{"id":"a-489","title":"Email Interaction Hover In 2","actionItemGroups":[{"actionItems":[{"id":"a-489-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-489-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-489-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-489-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-489-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-489-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-490":{"id":"a-490","title":"Email Interaction Hover Out 2","actionItemGroups":[{"actionItems":[{"id":"a-490-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-490-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-490-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-491":{"id":"a-491","title":"End Tour","actionItemGroups":[{"actionItems":[{"id":"a-491-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":0,"unit":""}},{"id":"a-491-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":200,"easing":"ease","duration":300,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-491-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697743751343},"a-492":{"id":"a-492","title":"Start Tour","actionItemGroups":[{"actionItems":[{"id":"a-492-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"none"}},{"id":"a-492-n-7","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".profile-completion-indicator-wrap","selectorGuids":["0b8edd79-9c19-935b-1209-3e1b7eebe306"]},"value":"flex"}},{"id":"a-492-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":0,"unit":""}},{"id":"a-492-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-492-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"flex"}}]},{"actionItems":[{"id":"a-492-n-5","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":1,"unit":""}},{"id":"a-492-n-8","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".profile-completion-indicator-wrap","selectorGuids":["0b8edd79-9c19-935b-1209-3e1b7eebe306"]},"value":"none"}},{"id":"a-492-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697743751343}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-1352":{"id":"e-1352","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1353"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365602},"e-1353":{"id":"e-1353","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1352"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365605},"e-1382":{"id":"e-1382","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-489","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1383"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1383":{"id":"e-1383","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-490","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1382"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1386":{"id":"e-1386","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1387"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976388},"e-1387":{"id":"e-1387","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1386"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976390},"e-1388":{"id":"e-1388","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1389"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd52c8","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd52c8","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697782416892},"e-1390":{"id":"e-1390","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1391"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5370","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5370","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697782214993},"e-1392":{"id":"e-1392","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-491","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1393"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd537c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd537c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697744051630},"e-1394":{"id":"e-1394","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1395"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5382","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"12a2d91a-7668-4d3c-6f7d-217c73bd5382","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697743748577},"e-1396":{"id":"e-1396","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1397"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"a28c5e5f-5732-456b-f7c4-7e1c449eb8af","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"a28c5e5f-5732-456b-f7c4-7e1c449eb8af","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697792557660},"e-1400":{"id":"e-1400","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-492","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1401"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"480911d7-c6cf-5ff6-539d-ecaccabd7e08","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"480911d7-c6cf-5ff6-539d-ecaccabd7e08","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697817962975},"e-1466":{"id":"e-1466","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-536","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1467"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7b3dfdf9-b2e7-63e8-1017-189b33267da3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7b3dfdf9-b2e7-63e8-1017-189b33267da3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1700055514155},"e-1467":{"id":"e-1467","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-537","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1466"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7b3dfdf9-b2e7-63e8-1017-189b33267da3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7b3dfdf9-b2e7-63e8-1017-189b33267da3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1700055514158}},"actionLists":{"a-471":{"id":"a-471","title":"Email Interaction Hover In","actionItemGroups":[{"actionItems":[{"id":"a-471-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-471-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-471-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-471-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-471-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-471-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-472":{"id":"a-472","title":"Email Interaction Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-472-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-472-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-472-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-489":{"id":"a-489","title":"Email Interaction Hover In 2","actionItemGroups":[{"actionItems":[{"id":"a-489-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-489-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-489-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-489-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-489-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-489-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-490":{"id":"a-490","title":"Email Interaction Hover Out 2","actionItemGroups":[{"actionItems":[{"id":"a-490-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-490-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-490-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-491":{"id":"a-491","title":"End Tour","actionItemGroups":[{"actionItems":[{"id":"a-491-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":0,"unit":""}},{"id":"a-491-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":200,"easing":"ease","duration":300,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-491-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697743751343},"a-492":{"id":"a-492","title":"Start Tour","actionItemGroups":[{"actionItems":[{"id":"a-492-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"none"}},{"id":"a-492-n-7","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".profile-completion-indicator-wrap","selectorGuids":["0b8edd79-9c19-935b-1209-3e1b7eebe306"]},"value":"flex"}},{"id":"a-492-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":0,"unit":""}},{"id":"a-492-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-492-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"selector":".tour_popup","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62fa2"]},"value":"flex"}}]},{"actionItems":[{"id":"a-492-n-5","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":500,"target":{"selector":".tour_popup_overlay","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f92"]},"value":1,"unit":""}},{"id":"a-492-n-8","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".profile-completion-indicator-wrap","selectorGuids":["0b8edd79-9c19-935b-1209-3e1b7eebe306"]},"value":"none"}},{"id":"a-492-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"selector":".tour_wrapper.scaled_down","selectorGuids":["47c70c30-605f-2505-03c7-c15de2e62f95","47c70c30-605f-2505-03c7-c15de2e62fbb"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697743751343},"a-536":{"id":"a-536","title":"Welcome Interview Overlay Hover in","actionItemGroups":[{"actionItems":[{"id":"a-536-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":0,"unit":""}},{"id":"a-536-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":"none"}}]},{"actionItems":[{"id":"a-536-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":1,"unit":""}},{"id":"a-536-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1700055521829},"a-537":{"id":"a-537","title":"Welcome Interview Overlay Hover out","actionItemGroups":[{"actionItems":[{"id":"a-537-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":0,"unit":""}},{"id":"a-537-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".welcome-video-overlay","selectorGuids":["bba2548d-7cab-3fc7-3c6f-34bfdfc157cd"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1700055521829}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function InterviewWelcome({
@@ -18,13 +18,22 @@ export function InterviewWelcome({
   onClickSupport = {},
   textCompanyDescription = "Aglint is a San Francisco-based startup founded by successful founders who are passionate about making a difference in the talent development industry. Our team is in stealth mode, working hard to develop an all-in-one talent development platform that provides solutions to help companies develop, retain, and support their employees.",
   isAboutVisible = true,
+  slotWelcomeVideo,
+  isPlayPuaseVisible = true,
+  isPauseButtonVisible = false,
+  isPlayButtonVisible = true,
+  onClickPlay = {},
+  onClickPause = {},
+  isWelcomeVideoVisible = true,
+  slotAssessmentInstruction,
+  isPreviewWarningVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component
       className={_utils.cx(_styles, "interview-start-wrapper")}
-      tag="div"
+      tag="address"
     >
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
@@ -99,117 +108,170 @@ export function InterviewWelcome({
           className={_utils.cx(_styles, "interview-start-left")}
           tag="div"
         >
+          {isWelcomeVideoVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "welcome-video-wrap")}
+              data-w-id="7b3dfdf9-b2e7-63e8-1017-189b33267da3"
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-welcome-video")}
+                tag="div"
+              >
+                {slotWelcomeVideo}
+              </_Builtin.Block>
+              {isPlayPuaseVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "welcome-video-overlay")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {isPlayButtonVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "play-wrappers-wlcome")}
+                        tag="div"
+                        {...onClickPlay}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons", "ml-5")}
+                          value="%3Csvg%20width%3D%2220%22%20height%3D%2221%22%20viewBox%3D%220%200%2011%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.85689%205.076C10.523%205.46185%2010.5216%206.4241%209.85443%206.80805L1.71375%2011.4927C1.04654%2011.8766%200.213886%2011.3943%200.21498%2010.6245L0.228327%201.23216C0.229421%200.462363%201.06344%20-0.0175788%201.72956%200.368268L9.85689%205.076Z%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    ) : null}
+                    {isPauseButtonVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "play-wrappers-wlcome")}
+                        tag="div"
+                        {...onClickPause}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2218%22%20height%3D%2221%22%20viewBox%3D%220%200%208%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3Crect%20x%3D%225%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22%20fill%3D%22black%22%20fill-opacity%3D%220.38%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    ) : null}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "instruction-wrapper")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-lg",
-                "fw-semibold",
-                "color-grey-600"
-              )}
-              tag="div"
-            >
-              {"Assessment Instructions"}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              <_Builtin.List
-                className={_utils.cx(_styles, "instruction")}
-                tag="ul"
-                unstyled={false}
-              >
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
+            {slotAssessmentInstruction ?? (
+              <>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-lg",
+                    "fw-semibold",
+                    "color-grey-600"
+                  )}
+                  tag="div"
                 >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Quiet Environment"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
+                  {"Assessment Instructions"}
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  <_Builtin.List
+                    className={_utils.cx(_styles, "instruction")}
+                    tag="ul"
+                    unstyled={false}
                   >
-                    {
-                      "Choose a quiet place to take the assessment where you will not be interrupted."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Interruptions"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "If the assessment is stopped for any reason, you will need to start over from the beginning."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Question Types"}
-                  </_Builtin.Span>
-                  <br />
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "You will be asked questions based on the job requirements. Prepare yourself accordingly."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Answer Submission"}
-                    <br />
-                  </_Builtin.Span>
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "You have the option to submit your answers via voice or by typing them out."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-                <_Builtin.ListItem
-                  className={_utils.cx(_styles, "instruction-list")}
-                >
-                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                    {"Timing"}
-                    <br />
-                  </_Builtin.Span>
-                  <_Builtin.Span
-                    className={_utils.cx(_styles, "list-nxt-text")}
-                  >
-                    {
-                      "Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed."
-                    }
-                  </_Builtin.Span>
-                </_Builtin.ListItem>
-              </_Builtin.List>
-            </_Builtin.Block>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Quiet Environment"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "Choose a quiet place to take the assessment where you will not be interrupted."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Interruptions"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "If the assessment is stopped for any reason, you will need to start over from the beginning."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Question Types"}
+                      </_Builtin.Span>
+                      <br />
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "You will be asked questions based on the job requirements. Prepare yourself accordingly."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Answer Submission"}
+                        <br />
+                      </_Builtin.Span>
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "You have the option to submit your answers via voice or by typing them out."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                    <_Builtin.ListItem
+                      className={_utils.cx(_styles, "instruction-list")}
+                    >
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "fw-semibold")}
+                      >
+                        {"Timing"}
+                        <br />
+                      </_Builtin.Span>
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "list-nxt-text")}
+                      >
+                        {
+                          "Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed."
+                        }
+                      </_Builtin.Span>
+                    </_Builtin.ListItem>
+                  </_Builtin.List>
+                </_Builtin.Block>
+              </>
+            )}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "start-interview-wrappers")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {
-                'Please take a moment to go through the tour before starting your assessment. Once you\'re ready, click the "Start Assessment" button. Good luck!'
-              }
-            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-471")}
               tag="div"
@@ -1229,14 +1291,14 @@ export function InterviewWelcome({
               <_Builtin.Block tag="div">
                 <_Builtin.Strong>{"Estimated Time :"}</_Builtin.Strong>
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{"30 minitues"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"30 minutues"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "color-grey-600")}
               tag="div"
             >
               {
-                "Please ensure you have sufficient time to complete it in one sitting."
+                "Please ensure you have sufficient time to complete it in one session."
               }
             </_Builtin.Block>
           </_Builtin.Block>

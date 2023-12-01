@@ -59,6 +59,14 @@
   opacity: 0.7;
 }
 
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -74,6 +82,35 @@
 
 .icons.pause {
   display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .text-grey-600 {
@@ -108,6 +145,10 @@
   margin-top: 5px;
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
 .text-grey-600.mt-17 {
   margin-top: 17px;
 }
@@ -137,4 +178,18 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
 }
