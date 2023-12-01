@@ -29,4 +29,6 @@ declare function CandidateDialog(props: {
   isAddedToJobVisible?: Types.Visibility.VisibilityConditions;
   onClickDownloadResume?: Types.Devlink.RuntimeProps;
   isBookmarkVisible?: Types.Visibility.VisibilityConditions;
+  isCloseButtonVisible?: Types.Visibility.VisibilityConditions;
+  isCopyLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -28,6 +28,7 @@ const CandidateDrawer = ({
   eligibleJobs,
   handleAddApplications,
   showBookmark = true,
+  showClose= true,
 }: {
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
@@ -37,6 +38,7 @@ const CandidateDrawer = ({
   eligibleJobs: any;
   handleAddApplications: any;
   showBookmark?: boolean;
+  showClose?: boolean;
 }) => {
   const [resume, setResume] = useState(false);
   const keyPressedRef = useRef({});
@@ -95,6 +97,7 @@ const CandidateDrawer = ({
   return (
     <>
       <CandidateDialog
+      isCloseButtonVisible={!showClose}
         onClickDownloadResume={{
           onClick: () => {
             fetchFile(candidate);

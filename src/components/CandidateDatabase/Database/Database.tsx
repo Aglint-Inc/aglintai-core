@@ -141,12 +141,33 @@ const CandDatabase = () => {
       })),
     );
   };
+  const resetClick=()=>{
+    
+      
+       
+    
+   
+    router.query.page_no = '1';
+  
+  
+    router.query.sort_by_param = 'first_name';
+  
+
+    router.query.sort_type = 'asc';
+  
+  router.replace(router);
+  
+
+}
 
   const totalPageCount = Math.ceil(totalResults / 100);
   const currPageNo = Number(router.query.page_no);
   return (
     <>
       <CandidateDatabaseTable
+      onClickReset={{onClick:()=>{
+        resetClick();
+      }}}
         isChecked={isAnyRowSelected}
         textCandidateCount={counts}
         slotAddtoJob={

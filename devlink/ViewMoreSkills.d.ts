@@ -6,4 +6,5 @@ declare function ViewMoreSkills(props: {
   isViewLessVisible?: Types.Visibility.VisibilityConditions;
   isViewMoreVisible?: Types.Visibility.VisibilityConditions;
   onClickViewMore?: Types.Devlink.RuntimeProps;
+  textMore?: React.ReactNode;
 }): React.JSX.Element;

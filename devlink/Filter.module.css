@@ -1,113 +1,8 @@
 .add-filter-wrap {
+  overflow: hidden;
   width: 386px;
   border-radius: 10px;
   background-color: white;
-}
-
-.slot-add-filter {
-  padding: 20px 20px 0px;
-}
-
-.filter-wraps-add {
-  display: flex;
-  padding: 10px 20px 20px;
-  justify-content: space-between;
-}
-
-.div-block-621 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-  cursor: pointer;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}
-
-.text-blue-600.ml-8 {
-  margin-left: 8px;
 }
 
 .relative {
@@ -123,38 +18,27 @@
   z-index: 3;
 }
 
-.div-block-622 {
-  padding: 8px 12px;
-  border-radius: 4px;
-  background-color: #1f73b7;
-  cursor: pointer;
+.slot-add-filter {
+  position: relative;
+  min-height: 75px;
+  padding: 20px 20px 0px;
 }
 
-.div-block-622.disable {
+.empty-filter-wrap {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
 
-  background-color: #d8dcde;
-
-  color: #c2c8cc;
-
-  cursor: auto;
-}
-
-.div-block-622.disable.sort {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.div-block-622.sort {
-  display: flex;
+  width: 100%;
+  height: 75px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  background-color: #f8f9f9;
 }
 
 .text-sm {
@@ -300,6 +184,19 @@
   color: var(--green800-a83af583);
 }
 
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
 }
@@ -331,4 +228,127 @@
 
 .text-color-white {
   color: white;
+}
+
+.filter-wraps-add {
+  display: flex;
+  padding: 10px 20px 20px;
+  justify-content: space-between;
+}
+
+.div-block-621 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
+.div-block-622 {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #1f73b7;
+  cursor: pointer;
+}
+
+.div-block-622.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #d8dcde;
+
+  color: #c2c8cc;
+
+  cursor: auto;
+}
+
+.div-block-622.disable.sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-622.sort {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

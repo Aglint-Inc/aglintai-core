@@ -794,7 +794,7 @@
   justify-content: space-between;
   align-items: center;
 
-  background-color: white;
+  background-color: #f8f9f9;
 
   box-shadow: 0 -2px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
 }
@@ -857,6 +857,10 @@
   border-width: 1px;
   border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
   border-radius: 4px;
+}
+
+.cdb-select-btn.clickable {
+  background-color: white;
 }
 
 .cdb-select-btn.clickable.py-5 {

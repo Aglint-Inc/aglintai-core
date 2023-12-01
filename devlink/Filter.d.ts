@@ -7,4 +7,5 @@ declare function Filter(props: {
   onClickApplyFilter?: Types.Devlink.RuntimeProps;
   slotFilter?: Types.Devlink.Slot;
   isApplyFilterDisable?: Types.Visibility.VisibilityConditions;
+  isFilterEmpty?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
