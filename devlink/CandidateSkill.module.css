@@ -297,3 +297,15 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }
+
+.div-block-628 {
+  padding: 10px 20px;
+  flex: 1;
+
+  border: 1px solid #e9ebed;
+  border-radius: 4px;
+
+  background-color: #f8f9f9;
+
+  color: #c2c8cc;
+}

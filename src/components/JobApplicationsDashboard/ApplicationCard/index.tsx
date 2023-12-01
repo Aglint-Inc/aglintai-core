@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   AllCandidateListItem,
+  InsightTagEmpty,
   // InsightTagAmbitious,
   InsightTagExperienced,
   InsightTagKnowledgeable,
@@ -122,13 +123,17 @@ const getExperienceCount = (months: number) => {
 
 const Insights = ({ jdScore }: { jdScore: JdScore }) => {
   if (jdScore?.badges) {
-    const badgeList = badgePriority.reduce((acc, curr) => {
-      if (jdScore.badges[curr]) acc.push(getBadge(curr, jdScore.badges[curr]));
-      return acc;
-    }, []);
-    return <>{badgeList}</>;
+    const badgeList = badgePriority
+      .reduce((acc, curr) => {
+        if (jdScore.badges[curr])
+          acc.push(getBadge(curr, jdScore.badges[curr]));
+        return acc;
+      }, [])
+      .filter((f) => f);
+    const hasBadges = badgeList.length !== 0;
+    return hasBadges ? <>{badgeList}</> : <InsightTagEmpty />;
   }
-  return <></>;
+  return <InsightTagEmpty />;
 };
 
 const badgePriority = [
@@ -150,10 +155,10 @@ const getBadge = (key: string, count: number) => {
       return <InsightTagExperienced experience={count} />;
     case 'leadership':
       return count >= 70 ? <InsightTagLeader /> : <></>;
-    case 'jobStability':
-      return <></>; //<InsightTagReliable />
-    case 'careerGrowth':
-      return <></>; //<InsightTagAmbitious />
+    // case 'jobStability':
+    //   return <InsightTagReliable />;
+    // case 'careerGrowth':
+    //   return <InsightTagAmbitious />;
   }
 };
 

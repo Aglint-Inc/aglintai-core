@@ -45,4 +45,16 @@ const getResumeScore = (score: number) => {
       bgColor: 'rgba(255, 240, 241, 1)',
       borderColor: 'rgb(255, 210, 216)',
     };
+  else if (score == -1)
+    return {
+      text: 'Resume not parsable',
+      bgColor: 'rgba(255, 240, 241, 1)',
+      borderColor: 'rgb(255, 210, 216)',
+    };
+  else if (score == -2)
+    return {
+      text: 'Resume not found',
+      bgColor: 'rgba(255, 240, 241, 1)',
+      borderColor: 'rgb(255, 210, 216)',
+    };
 };

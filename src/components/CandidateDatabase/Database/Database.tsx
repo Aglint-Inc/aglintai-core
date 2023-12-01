@@ -165,6 +165,7 @@ const CandDatabase = () => {
   return (
     <>
       <CandidateDatabaseTable
+      isAddToJobVisible={isAnyRowSelected}
       onClickReset={{onClick:()=>{
         resetClick();
       }}}

@@ -31,4 +31,8 @@ declare function CandidateDialog(props: {
   isBookmarkVisible?: Types.Visibility.VisibilityConditions;
   isCloseButtonVisible?: Types.Visibility.VisibilityConditions;
   isCopyLinkVisible?: Types.Visibility.VisibilityConditions;
+  onClickPhone?: Types.Devlink.RuntimeProps;
+  onClickMail?: Types.Devlink.RuntimeProps;
+  isCopiedTooltipVisible?: Types.Visibility.VisibilityConditions;
+  isCopiedMailTooltipVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

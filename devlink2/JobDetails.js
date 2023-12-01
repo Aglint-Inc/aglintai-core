@@ -5,8 +5,6 @@ import { RefreshButton } from "./RefreshButton";
 import { JobDetailsTabs } from "./JobDetailsTabs";
 import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
-import { AllApplicantsTable } from "./AllApplicantsTable";
-import { TopApplicantsTable } from "./TopApplicantsTable";
 import { CandidatesListPagination } from "./CandidatesListPagination";
 import * as _utils from "./utils";
 import _styles from "./JobDetails.module.css";
@@ -196,12 +194,7 @@ export function JobDetails({
               className={_utils.cx(_styles, "jdet-table")}
               tag="div"
             >
-              {slotTable ?? (
-                <>
-                  <AllApplicantsTable />
-                  <TopApplicantsTable />
-                </>
-              )}
+              {slotTable}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "job-page-nav-bar")}

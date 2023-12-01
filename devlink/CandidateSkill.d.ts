@@ -6,4 +6,6 @@ declare function CandidateSkill(props: {
   slotCandidateSkill?: Types.Devlink.Slot;
   isSkillBadgeVisible?: Types.Visibility.VisibilityConditions;
   textSkillCount?: React.ReactNode;
+  slotOtherSkill?: Types.Devlink.Slot;
+  isNumberVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

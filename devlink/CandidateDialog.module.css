@@ -529,10 +529,6 @@
   grid-row-gap: 5px;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .icons {
   display: flex;
   flex-direction: column;
@@ -581,6 +577,10 @@
   margin-left: 5px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .icons.ml-20 {
   margin-left: 20px;
 }
@@ -591,6 +591,8 @@
 }
 
 .phone-icon-wraps {
+  position: relative;
+
   display: flex;
   width: 22px;
   height: 22px;
@@ -602,6 +604,28 @@
   border-radius: 4px;
 
   background-color: #f8f9f9;
+}
+
+.devlink-copy-text {
+  position: absolute;
+  left: -18px;
+  top: auto;
+  right: 0%;
+  bottom: -20px;
+  z-index: 3;
+
+  display: flex;
+  width: 60px;
+  padding: 4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #49545c;
+
+  color: white;
 }
 
 .cdb-card-header-right-candi {
