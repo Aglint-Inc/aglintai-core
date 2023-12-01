@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabase } from '@/src/utils/supabaseClient';
 
-const url = `https://northamerica-northeast2-aglint-cloud-381414.cloudfunctions.net/process_resume_and_jd_v1`;
+const url = process.env.RESUME_JD_SCORE_URL;
 
 interface BatchCalcResumeJDScoreResponse {
   data: Array<Record<string, unknown>>; // Adjust this based on the actual structure of the returned JSONB objects
