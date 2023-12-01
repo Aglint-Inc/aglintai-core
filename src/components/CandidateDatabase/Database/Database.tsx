@@ -173,7 +173,7 @@ const CandDatabase = () => {
                 direction={'row'}
                 alignItems={'center'}
                 height={'500px'}
-                width={'100%'}
+                width={'80vw'}
               >
                 <Loader />
               </Stack>

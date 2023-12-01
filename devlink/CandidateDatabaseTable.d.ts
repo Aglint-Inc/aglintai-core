@@ -16,4 +16,5 @@ declare function CandidateDatabaseTable(props: {
   slotFilter?: Types.Devlink.Slot;
   slotSort?: Types.Devlink.Slot;
   onClickReset?: Types.Devlink.RuntimeProps;
+  isAddToJobVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
