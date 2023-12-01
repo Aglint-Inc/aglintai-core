@@ -34,7 +34,7 @@ const SortComp = () => {
   };
 
   const sortName = sortdisplay.filter(
-    (s) => s.value === router.query.sort_by_param,
+    (s) => s.value === router.query.sort_by_param || 'first_name',
   )[0].name;
 
   return (
