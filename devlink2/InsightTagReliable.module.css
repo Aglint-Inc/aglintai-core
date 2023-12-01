@@ -1,9 +1,13 @@
 .insight-tag {
   position: relative;
+  z-index: 5;
   display: flex;
 }
 
 .insight-tag-block {
+  position: relative;
+  z-index: 5;
+
   display: flex;
   padding: 4px 10px;
   align-items: center;
@@ -20,7 +24,7 @@
 .insight-detail {
   position: absolute;
   top: 34px;
-  z-index: 99;
+  z-index: 10;
 
   display: none;
   width: 360px;

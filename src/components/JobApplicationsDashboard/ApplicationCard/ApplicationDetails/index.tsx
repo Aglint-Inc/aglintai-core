@@ -79,7 +79,7 @@ const ApplicationDetails = ({
   const [openFeedback, setOpenFeedback] = useState(false);
 
   const candidateImage = applicationDetails ? (
-    <CandidateAvatar application={applicationDetails} />
+    <CandidateAvatar application={applicationDetails} fontSize={12} />
   ) : (
     <></>
   );
@@ -395,15 +395,14 @@ const NewCandidateDetails = ({
               ) : (
                 <></>
               )}
-
               {resume.skills &&
               resume.skills instanceof Array &&
               resume.skills.length !== 0 ? (
                 <NewSkillDetails
                   skills={resume.skills}
-                  // relevance={
-                  //   (applicationDetails.jd_score as JdScore)?.relevance?.skills
-                  // }
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance?.skills
+                  }
                 />
               ) : (
                 <></>
@@ -811,11 +810,60 @@ const timeRange = (startDate: string, endDate: string) => {
   }`;
 };
 
-const NewSkillDetails = ({ skills }: { skills }) => {
-  const skillList = skills
-    .filter((s) => s !== null && s !== '')
-    .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
-  return <CandidateSkill slotCandidateSkill={<>{skillList}</>} />;
+const NewSkillDetails = ({
+  skills,
+  relevance,
+}: {
+  skills;
+  relevance: JdScore['relevance']['skills'];
+}) => {
+  if (!relevance) {
+    const skillList = skills
+      .filter((s) => s !== null && s !== '')
+      .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
+    return (
+      <CandidateSkill
+        slotOtherSkill={<>{skillList}</>}
+        isNumberVisible={false}
+      />
+    );
+  }
+  const { relevant, others } = Object.entries(relevance).reduce(
+    (acc, [key, value], i) => {
+      if (value === 'high')
+        return {
+          ...acc,
+          relevant: [
+            ...acc.relevant,
+            <CandidateSkillPills key={i} textSkill={key} />,
+          ],
+        };
+      return {
+        ...acc,
+        others: [
+          ...acc.others,
+          <CandidateSkillPills
+            key={i}
+            textSkill={key}
+            propsBgColor={{
+              style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+            }}
+          />,
+        ],
+      };
+    },
+    { relevant: [], others: [] },
+  );
+  const relevanceCount = relevant.length;
+  const otherCount = others.length;
+  return (
+    <CandidateSkill
+      slotCandidateSkill={relevanceCount !== 0 ? relevant : null}
+      textSkillCount={relevanceCount}
+      isNumberVisible={relevanceCount !== 0}
+      slotOtherSkill={otherCount !== 0 ? others : null}
+    />
+  );
 };
 
 export function Transcript({

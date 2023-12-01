@@ -105,6 +105,6 @@ export function getInterviewScore(feedback) {
 
 export const getCandidateName = (first_name: string, last_name: string) => {
   return first_name || last_name
-    ? capitalize(first_name || '' + ' ' + last_name || '')
+    ? capitalize((first_name || '') + ' ' + (last_name || ''))
     : '---';
 };

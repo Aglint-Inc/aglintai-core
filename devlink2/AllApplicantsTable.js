@@ -1,7 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { AllCandidateListItem } from "./AllCandidateListItem";
-import { ListItemSkeletalLoader } from "./ListItemSkeletalLoader";
 import * as _utils from "./utils";
 import _styles from "./AllApplicantsTable.module.css";
 
@@ -85,12 +83,7 @@ export function AllApplicantsTable({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cv-list-column",
-                  "top",
-                  "assessment"
-                )}
+                className={_utils.cx(_styles, "cv-list-column", "assessment")}
                 tag="div"
               >
                 <_Builtin.Block tag="div">{"Assessment Score"}</_Builtin.Block>
@@ -133,12 +126,7 @@ export function AllApplicantsTable({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "cv-list-body")} tag="div">
-        {slotCandidatesList ?? (
-          <>
-            <AllCandidateListItem />
-            <ListItemSkeletalLoader />
-          </>
-        )}
+        {slotCandidatesList}
       </_Builtin.Block>
     </_Component>
   );
