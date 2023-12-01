@@ -275,7 +275,7 @@ export type JobsContextType = {
   }) => Promise<void>;
   handleInitializeForm: ({
     // eslint-disable-next-line no-unused-vars
-    type = 'new',
+    type,
   }: {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
