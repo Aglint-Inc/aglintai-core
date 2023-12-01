@@ -28,7 +28,7 @@ const CandidateDrawer = ({
   eligibleJobs,
   handleAddApplications,
   showBookmark = true,
-  showClose= true,
+  showClose = true,
 }: {
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
@@ -93,11 +93,31 @@ const CandidateDrawer = ({
       window.removeEventListener('keyup', onkeyUp);
     };
   }, [onClickNext, onClickPrev]);
-
+  const [tooltip, setTooltip] = useState('');
   return (
     <>
       <CandidateDialog
-      isCloseButtonVisible={!showClose}
+        onClickMail={{
+          onClick: () => {
+            navigator.clipboard.writeText(candidate.json_resume.basics.email);
+            setTooltip('mail');
+            setTimeout(() => {
+              setTooltip('');
+            }, 1500);
+          },
+        }}
+        onClickPhone={{
+          onClick: () => {
+            navigator.clipboard.writeText(candidate.json_resume.basics.phone);
+            setTooltip('phone');
+            setTimeout(() => {
+              setTooltip('');
+            }, 1500);
+          },
+        }}
+        isCopiedTooltipVisible={tooltip === 'phone'}
+        isCopiedMailTooltipVisible={tooltip === 'mail'}
+        isCloseButtonVisible={!showClose}
         onClickDownloadResume={{
           onClick: () => {
             fetchFile(candidate);
