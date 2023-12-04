@@ -98,6 +98,7 @@ const ApplicationCard = ({
     />
   ) : (
     <TopCandidateListItem
+      slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
       name={name}
       isChecked={isChecked}

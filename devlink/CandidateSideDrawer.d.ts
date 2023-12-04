@@ -18,4 +18,8 @@ declare function CandidateSideDrawer(props: {
   isCopiedMessageVisible?: Types.Visibility.VisibilityConditions;
   linkedinLink?: Types.Basic.Link;
   onClickLinkedin?: Types.Devlink.RuntimeProps;
+  onClickCopyMail?: Types.Devlink.RuntimeProps;
+  onClickCopyPhone?: Types.Devlink.RuntimeProps;
+  isPhoneIconVisible?: Types.Visibility.VisibilityConditions;
+  isMailIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -291,6 +291,11 @@ const NewJobApplicationSideDrawer = ({
   const handleLinkedInRedirect = () => {
     window.open(applicationDetails.candidates.linkedin, '_blank');
   };
+  const handleCopy = (str: string, tag: 'Phone number' | 'Email') => {
+    navigator.clipboard.writeText(str).then(() => {
+      toast.success(`${tag} copied to clipboard`);
+    });
+  };
   useEffect(() => {
     if (open) {
       if (leftShift) {
@@ -340,6 +345,25 @@ const NewJobApplicationSideDrawer = ({
       }
       onClickLinkedin={{
         onClick: () => handleLinkedInRedirect(),
+      }}
+      isMailIconVisible={
+        applicationDetails.candidates.email &&
+        applicationDetails.candidates.email.trim() !== ''
+      }
+      isPhoneIconVisible={
+        applicationDetails.candidates.phone &&
+        applicationDetails.candidates.phone.trim() !== ''
+      }
+      onClickCopyMail={{
+        onClick: () =>
+          handleCopy(applicationDetails.candidates.email.trim(), 'Email'),
+      }}
+      onClickCopyPhone={{
+        onClick: () =>
+          handleCopy(
+            applicationDetails.candidates.phone.trim(),
+            'Phone number',
+          ),
       }}
     />
   );
