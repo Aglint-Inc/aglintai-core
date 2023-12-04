@@ -132,101 +132,158 @@ export function FetchCompanyDetails() {
     return isValid;
   };
 
-  const submitHandler = async () => {
+  async function saveRecruiterDetails() {
     if ((await formValidation()) && recruiter?.id) {
+      const { data: companyDetails } = await axios.get(
+        `https://api.thecompaniesapi.com/v1/companies/${details.website}?token=o8yxXtHL`,
+      );
       setLoading(true);
-      await axios
-        .post('/api/crawlwebsite', { url: formatURL(details.website) })
-        .then(async (res) => {
-          if (res.status === 200) {
-            const { data, error } = await supabase
-              .from('recruiter')
-              .update({
-                company_website: formatURL(details.website),
-                socials: {
-                  custom: {},
-                  twitter: res.data.twitters[0] || '',
-                  youtube: res.data.youtubes[0] || '',
-                  facebook: res.data.facebooks[0] || '',
-                  linkedin: res.data.linkedIns[0] || '',
-                  instagram: res.data.instagrams[0] || '',
-                },
-              })
-              .eq('id', recruiter.id)
-              .select();
-            if (!error) {
-              setRecruiter({
-                ...data[0],
-                socials: data[0].socials as SocialsType,
-              });
-              if (res.data.linkedIns[0]) {
-                await axios
-                  .post('/api/fetchcompany', {
-                    url: res.data.linkedIns[0],
-                  })
-                  .then(async (res) => {
-                    const company = res.data;
-                    const { data: newData } = await supabase
-                      .from('recruiter')
-                      .update({
-                        name: company.company_name || '',
-                        industry: company.industries[0] || '',
-                        employee_size: company.employee_range,
-                        logo: company.logo_url,
-                        office_locations: company.locations || [],
-                        company_overview: company.description || '',
-                        technology_score: extractKeywords(company.specialties),
-                      })
-                      .eq('id', recruiter.id)
-                      .select();
-                    setRecruiter({
-                      ...newData[0],
-                      socials: newData[0].socials as SocialsType,
-                    });
-                    setLoading(false);
-                  });
-              } else {
-                setLoading(false);
-              }
-            }
-          } else {
-            setLoading(false);
-          }
+      const { data, error } = await supabase
+        .from('recruiter')
+        .update({
+          company_website: details.website || '',
+          name: companyDetails.name || '',
+          phone_number: companyDetails.phoneNumber || '',
+          industry: companyDetails.industryMain || '',
+          employee_size: companyDetails.totalEmployees || '',
+          logo: companyDetails.logo || '/',
+          office_locations:
+            [
+              {
+                city: companyDetails.city?.name || '',
+                line1: companyDetails.city?.address || '',
+                line2: '',
+                region: companyDetails.state?.name || '',
+                country: companyDetails.country?.name || '',
+                zipcode: '',
+                full_address:
+                  companyDetails.city?.address +
+                    ', ' +
+                    companyDetails.state?.name +
+                    ',' +
+                    companyDetails.city?.name || '',
+                is_headquarter: true,
+              },
+            ] || [],
+          company_overview: companyDetails.description || '',
+          technology_score: companyDetails.technologies || [],
+          socials: {
+            custom: {},
+            twitter: companyDetails.socialNetworks?.twitter || '',
+            youtube: companyDetails.socialNetworks?.youtube || '',
+            facebook: companyDetails.socialNetworks?.facebook || '',
+            linkedin: companyDetails.socialNetworks?.linkedin || '',
+            instagram: companyDetails.socialNetworks?.instagram || '',
+          },
+        })
+        .eq('id', recruiter.id)
+        .select();
+      if (!error) {
+        setRecruiter({
+          ...data[0],
+          socials: data[0].socials as SocialsType,
+          phone_number: data[0].phone_number as any,
         });
-    }
-  };
-
-  function extractKeywords(inputString) {
-    if (inputString) {
-      // Split the input string into an array of keywords using a comma as the delimiter
-      const keywordsArray = inputString
-        .split(',')
-        .map((keyword) => keyword.trim());
-
-      return keywordsArray;
-    } else {
-      return [];
+      }
+      setLoading(false);
     }
   }
 
-  function formatURL(userURL) {
-    // Remove leading and trailing spaces
-    userURL = userURL.trim();
+  // const submitHandler = async () => {
+  //   if ((await formValidation()) && recruiter?.id) {
+  //     setLoading(true);
+  //     await axios
+  //       .post('/api/crawlwebsite', { url: formatURL(details.website) })
+  //       .then(async (res) => {
+  //         if (res.status === 200) {
+  //           const { data, error } = await supabase
+  //             .from('recruiter')
+  //             .update({
+  //               company_website: formatURL(details.website),
+  //               socials: {
+  //                 custom: {},
+  //                 twitter: res.data.twitters[0] || '',
+  //                 youtube: res.data.youtubes[0] || '',
+  //                 facebook: res.data.facebooks[0] || '',
+  //                 linkedin: res.data.linkedIns[0] || '',
+  //                 instagram: res.data.instagrams[0] || '',
+  //               },
+  //             })
+  //             .eq('id', recruiter.id)
+  //             .select();
+  //           if (!error) {
+  //             setRecruiter({
+  //               ...data[0],
+  //               socials: data[0].socials as SocialsType,
+  //             });
+  //             if (res.data.linkedIns[0]) {
+  //               await axios
+  //                 .post('/api/fetchcompany', {
+  //                   url: res.data.linkedIns[0],
+  //                 })
+  //                 .then(async (res) => {
+  //                   const company = res.data;
+  //                   const { data: newData } = await supabase
+  //                     .from('recruiter')
+  //                     .update({
+  //                       name: company.company_name || '',
+  //                       industry: company.industries[0] || '',
+  //                       employee_size: company.employee_range,
+  //                       logo: company.logo_url,
+  //                       office_locations: company.locations || [],
+  //                       company_overview: company.description || '',
+  //                       technology_score: extractKeywords(company.specialties),
+  //                     })
+  //                     .eq('id', recruiter.id)
+  //                     .select();
+  //                   setRecruiter({
+  //                     ...newData[0],
+  //                     socials: newData[0].socials as SocialsType,
+  //                   });
+  //                   setLoading(false);
+  //                 });
+  //             } else {
+  //               setLoading(false);
+  //             }
+  //           }
+  //         } else {
+  //           setLoading(false);
+  //         }
+  //       });
+  //   }
+  // };
 
-    // Check if the URL starts with "http://" or "https://"
-    if (!userURL.startsWith('http://') && !userURL.startsWith('https://')) {
-      // If not, add "https://"
-      userURL = 'https://' + userURL;
-    }
+  // function extractKeywords(inputString) {
+  //   if (inputString) {
+  //     // Split the input string into an array of keywords using a comma as the delimiter
+  //     const keywordsArray = inputString
+  //       .split(',')
+  //       .map((keyword) => keyword.trim());
 
-    // Check if the URL contains "www."
-    if (!userURL.includes('www.')) {
-      // If not, add "www."
-      userURL = userURL.replace('https://', 'https://www.');
-    }
+  //     return keywordsArray;
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
-    return userURL;
-  }
+  // function formatURL(userURL) {
+  //   // Remove leading and trailing spaces
+  //   userURL = userURL.trim();
+
+  //   // Check if the URL starts with "http://" or "https://"
+  //   if (!userURL.startsWith('http://') && !userURL.startsWith('https://')) {
+  //     // If not, add "https://"
+  //     userURL = 'https://' + userURL;
+  //   }
+
+  //   // Check if the URL contains "www."
+  //   if (!userURL.includes('www.')) {
+  //     // If not, add "www."
+  //     userURL = userURL.replace('https://', 'https://www.');
+  //   }
+
+  //   return userURL;
+  // }
   return (
     <RcInfoStep1
       slotInput={
@@ -260,7 +317,7 @@ export function FetchCompanyDetails() {
             />
             <AUIButton
               disabled={loading}
-              onClick={submitHandler}
+              onClick={saveRecruiterDetails}
               variant='outlined'
             >
               Continue
