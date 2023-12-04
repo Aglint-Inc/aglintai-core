@@ -6,12 +6,14 @@ import { CreateJob, JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import {
+  STATE_ASHBY_DIALOG,
   STATE_GREENHOUSE_DIALOG,
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
+import { AshbyModalComp } from './AddJobWithIntegrations/Ashby';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import { GreenhouseModal } from './AddJobWithIntegrations/GreenhouseModal';
 import { LeverModalComp } from './AddJobWithIntegrations/LeverModal';
@@ -116,7 +118,29 @@ const DashboardComp = () => {
         }}
       >
         <CreateJob
+          isAshbyVisible={true}
           isGreenhouseVisible={true}
+          onClickAshby={{
+            onClick: () => {
+              if (!recruiter.ashby_key) {
+                setIntegration((prev) => ({
+                  ...prev,
+                  ashby: {
+                    open: true,
+                    step: STATE_ASHBY_DIALOG.API,
+                  },
+                }));
+              } else {
+                setIntegration((prev) => ({
+                  ...prev,
+                  ashby: {
+                    open: true,
+                    step: STATE_ASHBY_DIALOG.LISTJOBS,
+                  },
+                }));
+              }
+            },
+          }}
           onClickGreenhouse={{
             onClick: () => {
               if (!recruiter.greenhouse_key) {
@@ -173,6 +197,13 @@ const DashboardComp = () => {
         maxWidth={'lg'}
       >
         <GreenhouseModal />
+      </Dialog>
+      <Dialog
+        open={integration.ashby.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <AshbyModalComp />
       </Dialog>
       {!initialLoad ? (
         <Loader />

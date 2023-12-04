@@ -37,4 +37,5 @@ export const POSTED_BY = {
   LEVER: 'Lever',
   AGLINT: 'Aglint',
   GREENHOUSE: 'Greenhouse',
+  ASHBY: 'Ashby',
 };

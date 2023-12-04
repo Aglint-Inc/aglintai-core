@@ -122,6 +122,7 @@ export * from "./CompanyListingLinks";
 export * from "./CompanyLocation";
 export * from "./CompanySetting";
 export * from "./ConnectedMail";
+export * from "./ConnectMailModal";
 export * from "./ContactDetails";
 export * from "./ContactDetailsPop";
 export * from "./CreateBtn";

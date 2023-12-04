@@ -5,4 +5,5 @@ declare function AshbyApiKey(props: {
   as?: React.ElementType;
   slotInput?: Types.Devlink.Slot;
   onClickContinue?: Types.Devlink.RuntimeProps;
+  isApiWrong?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

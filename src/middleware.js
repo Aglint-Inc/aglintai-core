@@ -29,6 +29,7 @@ const whiteListedEndPoints = [
   '/api/resumecron/batchscore',
   '/api/greenhouse/batchsave',
   '/api/resumeScoring',
+  '/api/:function*',
 ];
 
 export async function middleware(request) {

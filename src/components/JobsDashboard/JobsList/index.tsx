@@ -63,7 +63,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         <Avatar
                           variant='square'
                           src='/images/ats/greenhouse.svg'
-                          sx={{ width: '100%', height: '18px', pt: '4px' }}
+                          sx={{ width: '100%', height: '16px', pt: '4px' }}
                         />
                       }
                     />
