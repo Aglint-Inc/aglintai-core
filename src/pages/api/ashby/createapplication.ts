@@ -2,11 +2,15 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 const crypto = require('crypto');
-
+import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import { splitFullName } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
-import { supabase } from '@/src/utils/supabaseClient';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 let bucketName = 'resume-job-post';
 
@@ -68,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             if (candCreated) {
               const res = await uploadResume(
-                dataCand[0].id,
+                candCreated[0].id,
                 job_id,
                 resume.results.url,
               );
@@ -176,7 +180,11 @@ const createCandidate = async (cand, recruiter_id: string): Promise<any> => {
   }
 };
 
-const uploadResume = async (candidate_id, job_id, url) => {
+const uploadResume = async (
+  candidate_id: string,
+  job_id: string,
+  url: string,
+) => {
   const responseUrl = await axios.get(url, {
     responseType: 'arraybuffer', // Request binary data
   });
