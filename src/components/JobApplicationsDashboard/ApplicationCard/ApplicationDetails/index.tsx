@@ -78,8 +78,18 @@ const ApplicationDetails = ({
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
 
+  const copyAppId = () => {
+    navigator.clipboard
+      .writeText(applicationDetails.application_id)
+      .then(() => {
+        toast.success('Application ID copied');
+      });
+  };
+
   const candidateImage = applicationDetails ? (
-    <CandidateAvatar application={applicationDetails} fontSize={12} />
+    <Stack onClick={() => copyAppId()} style={{ cursor: 'pointer' }}>
+      <CandidateAvatar application={applicationDetails} fontSize={12} />
+    </Stack>
   ) : (
     <></>
   );
