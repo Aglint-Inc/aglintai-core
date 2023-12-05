@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 import { Stack, TextField, Typography } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -12,6 +12,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
+import UIPhoneInput from '../../Common/UIPhoneInput';
 
 type FormEntries = {
   first_name: FormField;
@@ -48,10 +49,24 @@ const initialFormFields: FormEntries = {
   first_name: initialFormField,
   last_name: initialFormField,
   email: { ...initialFormField, validation: 'mail' },
-  phone: { ...initialFormField, validation: 'phone' },
+  phone: { ...initialFormField, validation: 'phone', required: false },
   linkedin: { ...initialFormField, validation: 'url', required: false },
   resume: { ...initialFormField, validation: 'file' },
   status: { ...initialFormField, value: JobApplicationSections.NEW },
+};
+
+const validatePhone = (value: string) => {
+  function countRept(string, regex) {
+    var numbers = string?.match(regex);
+    return numbers ? numbers.length : 0;
+  }
+  return !(
+    value.trim() === '' ||
+    !(
+      countRept(value.trim(), /\d/g) === countRept('+.. .....-.....', /\./g) ||
+      countRept(value.trim(), /\d/g) === countRept('+. ......-....', /\./g)
+    )
+  );
 };
 
 const ImportManualCandidates = () => {
@@ -101,17 +116,26 @@ const ImportManualCandidates = () => {
               if (
                 value &&
                 value.trim() !== '' &&
-                /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+                /^(http(s):\/\/.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
                   value.trim(),
-                )
+                ) &&
+                value.trim().toLowerCase().includes('linkedin')
               )
                 value = value.trim();
               else error = true;
             }
             break;
-          case 'file': {
-            if (value === null) error = true;
-          }
+          case 'file':
+            {
+              if (value === null) error = true;
+            }
+            break;
+          case 'phone':
+            {
+              if (validatePhone(value)) value = value.trim();
+              else error = true;
+            }
+            break;
         }
         return {
           newApplicant: {
@@ -177,6 +201,13 @@ const ImportManualCandidates = () => {
   );
 };
 
+type TPhone = {
+  countryCode: string;
+  dialCode: string;
+  format: string;
+  name: string;
+};
+
 const FormBody = ({
   applicant,
   setApplicant,
@@ -198,6 +229,25 @@ const FormBody = ({
       };
     });
   };
+  const [defaultCountry, setDefaultCountry] = useState('');
+  const fetchUserLocation = async () => {
+    try {
+      const response = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
+      const data = await response.json();
+
+      const country = data.country; // Extract the country code from the response
+      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
+    } catch (error) {
+      // Handle any errors that occur during the API call
+    }
+  };
+  useEffect(() => {
+    if (defaultCountry === '') fetchUserLocation();
+  }, []);
   return (
     <Stack gap={3}>
       <Stack flexDirection={'row'} gap={3}>
@@ -236,16 +286,30 @@ const FormBody = ({
           helperText={applicant.email.error && getHelper('email')}
           onChange={(e) => handleChange(e, 'email')}
         />
-        <TextField
-          margin='none'
-          label={'Phone number'}
-          fullWidth
-          id={'phone_number'}
-          value={applicant.phone.value}
-          error={applicant.phone.error}
-          helperText={applicant.phone.error && getHelper('phone number')}
-          onChange={(e) => handleChange(e, 'phone')}
-        />
+        <Stack
+          width={'690px'}
+          height={'100%'}
+          className='JobApplicationAddManuallyPhoneInput'
+          sx={{
+            '& .react-tel-input .form-control': {
+              height: '50px !important',
+              font: 'inherit',
+            },
+          }}
+        >
+          <UIPhoneInput
+            labelSize='small'
+            defaultCountry={defaultCountry}
+            placeholder={'Phone number'}
+            value={applicant.phone.value}
+            error={applicant.phone.error}
+            required={false}
+            onChange={(value, data: TPhone, event, formattedValue) => {
+              handleChange({ target: { value: formattedValue } }, 'phone');
+            }}
+            helperText={applicant.phone.error && getHelper('phone number')}
+          />
+        </Stack>
       </Stack>
       <TextField
         margin='none'
