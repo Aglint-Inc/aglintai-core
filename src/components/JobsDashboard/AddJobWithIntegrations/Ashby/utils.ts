@@ -4,7 +4,7 @@ import {
   GreenhouseRefDbType,
   GreenhouseType,
   JobApplcationDB,
-  RecruiterDB
+  RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -84,11 +84,9 @@ export const createJobObject = async (
       skills: [],
       status: 'published',
       parameter_weights: {
-        skills: 30,
-        project: 10,
-        education: 20,
-        experience: 30,
-        certifications: 10,
+        skills: 45,
+        education: 5,
+        experience: 50,
       },
       id: post.public_job_id,
     };
