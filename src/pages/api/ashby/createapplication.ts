@@ -204,13 +204,13 @@ const uploadResume = async (
   ) {
     type = '.docx';
   } else if (extension === 'text/plain') {
-    type = '.pdf';
+    type = '.txt';
   }
   if (type) {
     const { data, error: uploadError } = await supabase.storage
       .from(bucketName)
       .upload(`public/${candidate_id}/${job_id + type}`, responseUrl.data, {
-        contentType: type,
+        contentType: extension,
         cacheControl: '3600',
         upsert: true,
       });
