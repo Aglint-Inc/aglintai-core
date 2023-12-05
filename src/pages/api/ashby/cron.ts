@@ -10,7 +10,6 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const url1 = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/ashby/syncapplications`;
-const url2 = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/ashby/batchsave`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -28,9 +27,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               axios.post(`${url1}`, {
                 synctoken: rec.ashby_sync_token,
                 apikey: rec.ashby_key,
-              });
-              axios.post(`${url2}`, {
-                recruiter_id: rec.id,
               });
               console.log('Request successful for application:', rec.name);
               return res.status(200).send('success');

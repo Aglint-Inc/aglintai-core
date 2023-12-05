@@ -15,21 +15,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 let bucketName = 'resume-job-post';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const json = req.body.ats_json;
+  const recruiter_id = req.body.recruiter_id;
+  const job_id = req.body.job_id;
+  const apiKey = req.body.apikey;
+  const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
+  const base64decryptedApiKey = btoa(decryptedApiKey + ':');
+  console.log('ats_json_id', json.id);
+
   try {
-    const json = req.body.ats_json;
-    const recruiter_id = req.body.recruiter_id;
-    const job_id = req.body.job_id;
-    const apiKey = req.body.apikey;
-    const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
-    const base64decryptedApiKey = btoa(decryptedApiKey + ':');
-
-    console.log('ats_json_id', json.id);
-
-    await supabase
-      .from('application_reference')
-      .update({ is_processed: true })
-      .eq('ats_json->>id', json.id);
-
     if (json) {
       let application = json;
       let candidate = await getCandidate(
@@ -98,8 +92,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json('no json');
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).send(error.message);
+  } finally {
+    await supabase
+      .from('application_reference')
+      .update({ is_processed: true })
+      .eq('ats_json->>id', json.id);
   }
 };
 
