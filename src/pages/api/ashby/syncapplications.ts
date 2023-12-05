@@ -24,10 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const fetchedApplications = await fetchAllCandidates(apiKey, syncToken);
 
-    const dbApp = fetchedApplications.map((app) => {
-      return { ats_json: app };
-    });
-    await supabase.from('application_reference').insert(dbApp);
+    if (!fetchedApplications || fetchedApplications.length === 0) {
+      return res.status(200).send('no new applications');
+    }
 
     await Promise.all(
       fetchedApplications.map(async (application) => {
