@@ -299,6 +299,7 @@ function Conversation({ messages }) {
                       '& .MuiDialog-paper': {
                         borderRadius: '0px !important',
                         border: 'none !important',
+                        height: '90vh',
                       },
                       '.MuiDialog-container': {
                         height: 'auto',
@@ -309,9 +310,7 @@ function Conversation({ messages }) {
                     open={resume}
                     onClose={() => setResume(false)}
                   >
-                    <Stack direction={'row'} justifyContent={'center'}>
-                      <ResumePreviewer url={message?.metadata?.file_path} />
-                    </Stack>
+                    <ResumePreviewer url={message?.metadata?.file_path} />
                   </Dialog>
                 </Stack>
               )}
