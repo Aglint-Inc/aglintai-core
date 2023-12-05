@@ -76,8 +76,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 job_id,
                 resume.results.url,
               );
-              const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
-
+              let fileLink = null;
+              if (res) {
+                fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
+              }
               await createJobApplication(candCreated[0].id, job_id, fileLink);
             }
           }
