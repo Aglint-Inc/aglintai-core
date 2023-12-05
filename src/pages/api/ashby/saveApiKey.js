@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 const crypto = require('crypto');
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -17,6 +18,10 @@ export default async function handler(req, res) {
   console.log(apiKey);
 
   const encryptedApiKey = encrypt(apiKey, process.env.ENCRYPTION_KEY);
+
+  axios.post(process.env.ASHBY_SYNC_URL, {
+    ashby_key: encryptedApiKey,
+  });
 
   console.log(encryptedApiKey);
 

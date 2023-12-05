@@ -28,7 +28,7 @@ import toast from '@/src/utils/toast';
 
 import FetchingJobsLever from './Loader';
 import { JobAshby } from './types';
-import { createJobObject, fetchAllCandidates, fetchAllJobs } from './utils';
+import { createJobObject, fetchAllJobs } from './utils';
 import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
 
@@ -167,14 +167,6 @@ export function AshbyModalComp() {
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-          const fetchedApplications = await fetchAllCandidates(
-            responseRec.data[0].ashby_key,
-          );
-          const dbApp = fetchedApplications.map((app) => {
-            return { ats_json: app };
-          });
-          await supabase.from('application_reference').insert(dbApp);
-
           setRecruiter(responseRec.data[0]);
           setPostings(response.data?.results);
           setInitialFetch(false);
