@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const json = req.body.ats_json;
     const recruiter_id = req.body.recruiter_id;
     const job_id = req.body.job_id;
-    const apiKey = req.body.apiKey;
+    const apiKey = req.body.apikey;
     const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
     const base64decryptedApiKey = btoa(decryptedApiKey + ':');
 

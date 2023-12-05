@@ -30,6 +30,7 @@ const whiteListedEndPoints = [
   '/api/greenhouse/batchsave',
   '/api/resumeScoring',
   '/api/ashby/createapplication',
+  '/api/ashby/batchsave',
 ];
 
 export async function middleware(request) {
