@@ -126,9 +126,9 @@ export function AshbyModalComp() {
           };
         });
         await supabase.from('job_reference').insert(astJobsObj).select();
-        await axios.post('/api/ashby/batchsave', {
-          recruiter_id: recruiter.id,
-        });
+        // await axios.post('/api/ashby/batchsave', {
+        //   recruiter_id: recruiter.id,
+        // });
 
         //updating jobsData
         await handleJobRead();

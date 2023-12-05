@@ -90,7 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(200).json([]);
         }
       } else {
-        console.log('no candidate');
+        console.log('no resume in candidate');
         return res.status(200).json([]);
       }
     } else {
