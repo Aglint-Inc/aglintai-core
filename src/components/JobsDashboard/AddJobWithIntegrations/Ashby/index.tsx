@@ -97,11 +97,25 @@ export function AshbyModalComp() {
         };
       });
       const dbJobs = await createJobObject(refJobsObj, recruiter);
-      const { error } = await supabase
+      const { data: newJobs, error } = await supabase
         .from('public_jobs')
         .insert(dbJobs)
         .select();
       if (!error) {
+        newJobs.map((job) => {
+          if (job.description) {
+            //this will jd_json required for scoring
+            axios.post('/api/publishJob', {
+              data: {
+                job_title: job.job_title,
+                job_description: job.description,
+                skills: [],
+                job_id: job.id,
+              },
+            });
+          }
+        });
+
         const astJobsObj = refJobsObj.map((post) => {
           return {
             ats_json: post.ats_json as any,
@@ -115,6 +129,7 @@ export function AshbyModalComp() {
         await axios.post('/api/ashby/batchsave', {
           recruiter_id: recruiter.id,
         });
+
         //updating jobsData
         await handleJobRead();
         //closing modal once done
