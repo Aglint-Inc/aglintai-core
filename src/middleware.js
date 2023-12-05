@@ -31,6 +31,9 @@ const whiteListedEndPoints = [
   '/api/resumeScoring',
   '/api/ashby/createapplication',
   '/api/ashby/batchsave',
+  '/api/ashby/syncapplications',
+  '/api/ashby/getCandidates',
+  '/api/ashby/cron',
 ];
 
 export async function middleware(request) {

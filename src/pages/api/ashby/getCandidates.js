@@ -7,6 +7,7 @@ export default function handler(req, res) {
   const apiKey = req.body.apiKey;
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
+  const syncToken = req.body.synctoken;
 
   const page = req.body.page;
   let data = {};
@@ -16,6 +17,12 @@ export default function handler(req, res) {
       data = {
         ...data,
         cursor: page,
+      };
+    }
+    if (syncToken) {
+      data = {
+        ...data,
+        syncToken: syncToken,
       };
     }
 
