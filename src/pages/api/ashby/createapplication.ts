@@ -25,6 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     if (json) {
+      await supabase
+        .from('application_reference')
+        .update({ is_processed: true })
+        .eq('ats_json->>id', json.id);
       let application = json;
       let candidate = await getCandidate(
         application.candidate.id,
@@ -60,6 +64,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               resume.results.url,
             );
             const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
+            console.log(fileLink, 'resume');
+
             await createJobApplication(dataCand[0].id, job_id, fileLink);
           } else {
             let candCreated = await createCandidate(cand, recruiter_id);
@@ -95,10 +101,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(error.message);
     return res.status(500).send(error.message);
   } finally {
-    await supabase
-      .from('application_reference')
-      .update({ is_processed: true })
-      .eq('ats_json->>id', json.id);
+    //
   }
 };
 
