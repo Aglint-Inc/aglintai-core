@@ -20,6 +20,7 @@ client.defineJob({
     // Setting a cron schedule to run the job every 2 minutes.
     cron: '*/2 * * * *',
   }),
+  enabled: false,
   run: async (payload, io, ctx) => {
     // Inside the 'run' function, several operations are performed to send weekly summaries and post to Slack.
 
