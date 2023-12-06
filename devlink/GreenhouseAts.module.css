@@ -383,6 +383,21 @@
   justify-content: space-between;
 }
 
+.ats-search-wrappers.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .ats-tab-wappers {
   display: flex;
   align-items: center;
@@ -405,17 +420,6 @@
 
 .ats-tab-menu:hover {
   background-color: #e9ebed;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .text-relative {
@@ -444,6 +448,10 @@
   max-height: 380px;
   margin-top: 34px;
   flex-direction: column;
+}
+
+.slot-ats-cards-wrappers.height-480 {
+  max-height: 480px;
 }
 
 .pagination-wrappers {

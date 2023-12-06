@@ -371,12 +371,17 @@ export function CandidateDialog({
                 </_Builtin.Paragraph>
               </_Builtin.Block>
             ) : null}
-            <_Builtin.Block tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-642")}
+              tag="div"
+            >
               <_Builtin.Block
                 className={_utils.cx(
                   _styles,
                   "cd-view-resume",
-                  "cursor-pointer"
+                  "cursor-pointer",
+                  "mt-0",
+                  "p-2"
                 )}
                 tag="div"
                 {...onClickViewResume}
@@ -399,7 +404,8 @@ export function CandidateDialog({
                   className={_utils.cx(
                     _styles,
                     "cd-download-resume",
-                    "cursor-pointer"
+                    "cursor-pointer",
+                    "mt-0"
                   )}
                   tag="div"
                   {...onClickDownloadResume}

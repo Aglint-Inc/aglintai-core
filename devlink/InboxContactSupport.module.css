@@ -210,6 +210,15 @@
   display: inline;
 }
 
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .slot-contact-form-support {
   margin-top: 37px;
   margin-bottom: 40px;
@@ -269,15 +278,6 @@
 
 .fw-semibold.text-grey-600 {
   color: #68737d;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {

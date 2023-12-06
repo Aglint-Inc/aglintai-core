@@ -25,6 +25,7 @@ export function GreenhouseAts({
   isSelected = false,
   onClickLive = {},
   isClosedActive = false,
+  isAtsMenuVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -82,89 +83,91 @@ export function GreenhouseAts({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "ats-search-wrappers")}
-        tag="div"
-      >
+      {isAtsMenuVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "ats-tab-wappers")}
+          className={_utils.cx(_styles, "ats-search-wrappers")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
+            className={_utils.cx(_styles, "ats-tab-wappers")}
             tag="div"
-            {...onClickAll}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "ats-tab-menu")}
               tag="div"
+              {...onClickAll}
             >
-              {"All"}
-            </_Builtin.Block>
-            {isAllActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "ats-tab-menu-active")}
+                className={_utils.cx(_styles, "text-relative", "zindex-1")}
                 tag="div"
-              />
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickActive}
-          >
+              >
+                {"All"}
+              </_Builtin.Block>
+              {isAllActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ats-tab-menu-active")}
+                  tag="div"
+                />
+              ) : null}
+            </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "ats-tab-menu")}
               tag="div"
+              {...onClickActive}
             >
-              {"Active"}
-            </_Builtin.Block>
-            {isActiveActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "ats-tab-menu-active")}
+                className={_utils.cx(_styles, "text-relative", "zindex-1")}
                 tag="div"
-              />
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickLive}
-          >
+              >
+                {"Active"}
+              </_Builtin.Block>
+              {isActiveActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ats-tab-menu-active")}
+                  tag="div"
+                />
+              ) : null}
+            </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "ats-tab-menu")}
               tag="div"
+              {...onClickLive}
             >
-              {"Live"}
-            </_Builtin.Block>
-            {isLiveActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "ats-tab-menu-active")}
+                className={_utils.cx(_styles, "text-relative", "zindex-1")}
                 tag="div"
-              />
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ats-tab-menu")}
-            tag="div"
-            {...onClickClosed}
-          >
+              >
+                {"Live"}
+              </_Builtin.Block>
+              {isLiveActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ats-tab-menu-active")}
+                  tag="div"
+                />
+              ) : null}
+            </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-relative", "zindex-1")}
+              className={_utils.cx(_styles, "ats-tab-menu")}
               tag="div"
+              {...onClickClosed}
             >
-              {"Closed"}
-            </_Builtin.Block>
-            {isClosedActive ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "ats-tab-menu-active")}
+                className={_utils.cx(_styles, "text-relative", "zindex-1")}
                 tag="div"
-              />
-            ) : null}
+              >
+                {"Closed"}
+              </_Builtin.Block>
+              {isClosedActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ats-tab-menu-active")}
+                  tag="div"
+                />
+              ) : null}
+            </_Builtin.Block>
           </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-ats-cards-wrappers")}
         tag="div"

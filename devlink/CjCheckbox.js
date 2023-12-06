@@ -23,13 +23,17 @@ export function CjCheckbox({
             className={_utils.cx(_styles, "checkbox-field-2")}
           >
             <_Builtin.FormCheckboxInput
-              inputType="default"
               type="checkbox"
               name="checkbox-2"
               data-name="Checkbox 2"
               checked={false}
               required={false}
               id="checkbox-2"
+              form={{
+                type: "checkbox-input",
+                name: "Checkbox 2",
+              }}
+              inputType="default"
             />
             <_Builtin.FormInlineLabel
               className={_utils.cx(_styles, "text-grey-600")}

@@ -224,6 +224,15 @@
   margin-top: 17px;
 }
 
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .slot-roles-wrappers {
   display: flex;
   margin-top: 20px;
@@ -271,15 +280,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .icons.cursor-pointer.width-28 {

@@ -246,6 +246,15 @@
   margin-top: 17px;
 }
 
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;
@@ -330,15 +339,6 @@
 
 .text-blue-500 {
   color: var(--blue500-72579298);
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .text-underline {
