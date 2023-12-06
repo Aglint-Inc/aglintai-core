@@ -114,7 +114,7 @@
 .select-actions-dropdown-content {
   position: absolute;
   top: 32px;
-  z-index: 99;
+  z-index: 50;
   overflow: hidden;
 }
 

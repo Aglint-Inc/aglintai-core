@@ -252,6 +252,15 @@
   margin-top: 17px;
 }
 
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .tu-header-button-wrapper {
   padding-top: 20px;
 }
@@ -353,15 +362,6 @@
 
 .fw-semibold.text-grey-600 {
   color: #68737d;
-}
-
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
 }
 
 .fw-semibold.cursor-pointer.capitialize {

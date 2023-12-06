@@ -8,6 +8,7 @@ export function AshbyApiKey({
   as: _Component = _Builtin.Block,
   slotInput,
   onClickContinue = {},
+  isApiWrong = false,
 }) {
   return (
     <_Component tag="div">
@@ -33,6 +34,45 @@ export function AshbyApiKey({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "generate-api")} tag="div">
+        {isApiWrong ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "warning-lever")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "warning-wraps")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M14.5112%2013.3273L8.5112%201.99398C8.04453%201.11398%206.61787%201.11398%206.1512%201.99398L0.151199%2013.3273C-0.064667%2013.7426%20-0.0484785%2014.2403%200.193914%2014.6407C0.436307%2015.041%200.869851%2015.2861%201.33787%2015.2873H13.3379C13.8045%2015.2873%2014.2312%2015.0473%2014.4845%2014.6473C14.7259%2014.2429%2014.7361%2013.7411%2014.5112%2013.3273ZM6.67122%205.95378C6.67122%205.58044%206.96456%205.28711%207.33789%205.28711C7.71122%205.28711%208.00456%205.58044%208.00456%205.95378V8.62044C8.00456%208.99378%207.71122%209.28711%207.33789%209.28711C6.96456%209.28711%206.67122%208.99378%206.67122%208.62044V5.95378ZM7.33783%2013.0207C6.75116%2013.0207%206.27116%2012.5407%206.27116%2011.954C6.27116%2011.3674%206.75116%2010.8874%207.33783%2010.8874C7.92449%2010.8874%208.40449%2011.3674%208.40449%2011.954C8.40449%2012.5407%207.92449%2013.0207%207.33783%2013.0207Z%22%20fill%3D%22%23F79A3E%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.Block tag="div">
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-yellow-800")}
+                    tag="div"
+                  >
+                    {
+                      "Oops something went wrong. Please retry by re-entering Api key or"
+                    }
+                    <_Builtin.Span
+                      className={_utils.cx(
+                        _styles,
+                        "text-blue-500",
+                        "text-underline"
+                      )}
+                    >
+                      {" contact support"}
+                    </_Builtin.Span>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-539")}
           tag="div"
@@ -57,11 +97,9 @@ export function AshbyApiKey({
           {"To create a new API key, navigate to"}
           <_Builtin.Strong>{" Admin tab"}</_Builtin.Strong>
           {", then select "}
-          <_Builtin.Strong>{"Integrations > Rectxt"}</_Builtin.Strong>
-          {" from the left panel."}
-          <br />
-          {"Click "}
-          <_Builtin.Strong>{"'Create API key for Rectxt' "}</_Builtin.Strong>
+          <_Builtin.Strong>{"Integrations > Company "}</_Builtin.Strong>
+          {" from the left panel. Click "}
+          <_Builtin.Strong>{"'Create API key for Company' "}</_Builtin.Strong>
           {"button"}
         </_Builtin.Block>
         <_Builtin.Block

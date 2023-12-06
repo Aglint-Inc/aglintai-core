@@ -73,7 +73,7 @@ export function AshbyAtsJob({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "ats-search-wrappers")}
+        className={_utils.cx(_styles, "ats-search-wrappers", "hide")}
         tag="div"
       >
         <_Builtin.Block
@@ -131,7 +131,7 @@ export function AshbyAtsJob({
         <_Builtin.Block tag="div" />
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "slot-ats-cards-wrappers")}
+        className={_utils.cx(_styles, "slot-ats-cards-wrappers", "height-480")}
         tag="div"
       >
         {slotAtsCard ?? <AtsCard />}

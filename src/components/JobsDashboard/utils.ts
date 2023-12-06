@@ -78,22 +78,21 @@ export function calculateTimeDifference(postedDate) {
   }
 }
 
-export function searchJobs(jobs, searchString) {
+export function searchJobs(jobs: any[], searchString: string) {
   const search = searchString.toLowerCase();
 
   // Use the filter method to search for matching job titles or statuses
 
   if (search) {
-    const filteredData = jobs
-      .filter((ele) => ele.job_title)
-      .filter((item) => {
-        const jobTitle = item.job_title.toLowerCase();
-        // const status = item.status.toLowerCase();
+    const filteredData = jobs.filter((item) => {
+      const jobTitle = item.job_title.toLowerCase();
+      // const status = item.status.toLowerCase();
 
-        // Check if the job title or status contains the search string
-        return jobTitle.includes(search);
-        // || status.includes(search);
-      });
+      // Check if the job title or status contains the search string
+      return jobTitle.includes(search);
+      // || status.includes(search);
+    });
+
     return filteredData;
   } else {
     return jobs;

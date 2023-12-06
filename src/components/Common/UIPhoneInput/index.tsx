@@ -112,10 +112,14 @@ const UIPhoneInput = ({
           justifyContent={'start'}
           spacing={'2px'}
         >
-          <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
-          <UITypography type='small' color={palette.red[400]}>
-            {error ? helperText : ''}
-          </UITypography>
+          <Stack className='placeholder-icon'>
+            <Icon height='13px' color={palette.red[400]} variant='AlertIcon' />
+          </Stack>
+          <Stack className='placeholder'>
+            <UITypography type='small' color={palette.red[400]}>
+              {error ? helperText : ''}
+            </UITypography>
+          </Stack>
         </Stack>
       )}
     </Stack>

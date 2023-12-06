@@ -6,12 +6,14 @@ import { CreateJob, JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import {
+  STATE_ASHBY_DIALOG,
   STATE_GREENHOUSE_DIALOG,
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
+import { AshbyModalComp } from './AddJobWithIntegrations/Ashby';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import { GreenhouseModal } from './AddJobWithIntegrations/GreenhouseModal';
 import { LeverModalComp } from './AddJobWithIntegrations/LeverModal';
@@ -46,7 +48,7 @@ const DashboardComp = () => {
 
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
-      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
+      setFilteredJobs(jobsData.jobs);
     } else if (router.query.status == 'published') {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
@@ -57,25 +59,18 @@ const DashboardComp = () => {
       const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs(filter);
     } else {
-      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
+      setFilteredJobs(jobsData.jobs);
     }
   };
 
   const handlerFilter = (e) => {
     if (router.query.status == 'all') {
-      setFilteredJobs([
-        ...searchJobs(
-          jobsData.jobs.filter((job) => !job.is_campus),
-          e.target.value,
-        ),
-      ]);
+      setFilteredJobs([...searchJobs(jobsData.jobs, e.target.value)]);
     } else if (router.query.status == 'published') {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'closed') {
-      const filter = jobsData.jobs.filter(
-        (job) => !job.is_campus && job.active_status.closed.isActive,
-      );
+      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'draft') {
       const filter = jobsData.jobs.filter((job) => job.status == 'draft');
@@ -116,7 +111,29 @@ const DashboardComp = () => {
         }}
       >
         <CreateJob
+          isAshbyVisible={true}
           isGreenhouseVisible={true}
+          onClickAshby={{
+            onClick: () => {
+              if (!recruiter.ashby_key) {
+                setIntegration((prev) => ({
+                  ...prev,
+                  ashby: {
+                    open: true,
+                    step: STATE_ASHBY_DIALOG.API,
+                  },
+                }));
+              } else {
+                setIntegration((prev) => ({
+                  ...prev,
+                  ashby: {
+                    open: true,
+                    step: STATE_ASHBY_DIALOG.LISTJOBS,
+                  },
+                }));
+              }
+            },
+          }}
           onClickGreenhouse={{
             onClick: () => {
               if (!recruiter.greenhouse_key) {
@@ -174,6 +191,13 @@ const DashboardComp = () => {
       >
         <GreenhouseModal />
       </Dialog>
+      <Dialog
+        open={integration.ashby.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <AshbyModalComp />
+      </Dialog>
       {!initialLoad ? (
         <Loader />
       ) : (
@@ -214,10 +238,10 @@ const DashboardComp = () => {
                 router.query.status == 'close'
                   ? 'Closed Jobs'
                   : router.query.status == 'inactive'
-                  ? 'Inactive Jobs'
-                  : router.query.status == 'active'
-                  ? 'Active Jobs'
-                  : 'All Jobs'
+                    ? 'Inactive Jobs'
+                    : router.query.status == 'active'
+                      ? 'Active Jobs'
+                      : 'All Jobs'
               }
             />
           )}

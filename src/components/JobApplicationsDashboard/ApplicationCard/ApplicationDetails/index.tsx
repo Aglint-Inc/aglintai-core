@@ -78,8 +78,18 @@ const ApplicationDetails = ({
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
 
+  const copyAppId = () => {
+    navigator.clipboard
+      .writeText(applicationDetails.application_id)
+      .then(() => {
+        toast.success('Application ID copied');
+      });
+  };
+
   const candidateImage = applicationDetails ? (
-    <CandidateAvatar application={applicationDetails} fontSize={12} />
+    <Stack onClick={() => copyAppId()} style={{ cursor: 'pointer' }}>
+      <CandidateAvatar application={applicationDetails} fontSize={12} />
+    </Stack>
   ) : (
     <></>
   );
@@ -281,6 +291,11 @@ const NewJobApplicationSideDrawer = ({
   const handleLinkedInRedirect = () => {
     window.open(applicationDetails.candidates.linkedin, '_blank');
   };
+  const handleCopy = (str: string, tag: 'Phone number' | 'Email') => {
+    navigator.clipboard.writeText(str).then(() => {
+      toast.success(`${tag} copied to clipboard`);
+    });
+  };
   useEffect(() => {
     if (open) {
       if (leftShift) {
@@ -330,6 +345,25 @@ const NewJobApplicationSideDrawer = ({
       }
       onClickLinkedin={{
         onClick: () => handleLinkedInRedirect(),
+      }}
+      isMailIconVisible={
+        applicationDetails.candidates.email &&
+        applicationDetails.candidates.email.trim() !== ''
+      }
+      isPhoneIconVisible={
+        applicationDetails.candidates.phone &&
+        applicationDetails.candidates.phone.trim() !== ''
+      }
+      onClickCopyMail={{
+        onClick: () =>
+          handleCopy(applicationDetails.candidates.email.trim(), 'Email'),
+      }}
+      onClickCopyPhone={{
+        onClick: () =>
+          handleCopy(
+            applicationDetails.candidates.phone.trim(),
+            'Phone number',
+          ),
       }}
     />
   );

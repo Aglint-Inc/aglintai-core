@@ -4,6 +4,10 @@
   display: flex;
 }
 
+.insight-tag:hover {
+  z-index: 7;
+}
+
 .insight-tag-block {
   position: relative;
   z-index: 5;
@@ -35,6 +39,10 @@
 
   font-size: 12px;
   text-align: center;
+}
+
+.yellow-300 {
+  background-color: hsla(32.093023255813954, 97.73%, 82.75%, 1.00);
 }
 
 .insight-detail {

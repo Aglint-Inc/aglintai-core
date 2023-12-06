@@ -752,6 +752,15 @@
   display: inline;
 }
 
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .forgot-password-link {
   color: #2f3941;
   font-size: 12px;

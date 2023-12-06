@@ -29,6 +29,12 @@ const whiteListedEndPoints = [
   '/api/resumecron/batchscore',
   '/api/greenhouse/batchsave',
   '/api/resumeScoring',
+  '/api/ashby/createapplication',
+  '/api/ashby/batchsave',
+  '/api/ashby/syncapplications',
+  '/api/ashby/getCandidates',
+  '/api/ashby/cron',
+  '/api/trigger'
 ];
 
 export async function middleware(request) {

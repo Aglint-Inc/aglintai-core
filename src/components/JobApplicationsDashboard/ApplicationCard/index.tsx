@@ -1,11 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import {
   AllCandidateListItem,
+  InsightTagAmbitious,
   InsightTagEmpty,
   // InsightTagAmbitious,
   InsightTagExperienced,
   InsightTagKnowledgeable,
   InsightTagLeader,
+  InsightTagReliable,
   // InsightTagReliable,
   InsightTagSkilled,
 } from '@/devlink2';
@@ -96,6 +98,7 @@ const ApplicationCard = ({
     />
   ) : (
     <TopCandidateListItem
+      slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
       name={name}
       isChecked={isChecked}
@@ -154,11 +157,11 @@ const getBadge = (key: string, count: number) => {
     case 'positions':
       return <InsightTagExperienced experience={count} />;
     case 'leadership':
-      return count >= 70 ? <InsightTagLeader /> : <></>;
-    // case 'jobStability':
-    //   return <InsightTagReliable />;
-    // case 'careerGrowth':
-    //   return <InsightTagAmbitious />;
+      return count >= 70 ? <InsightTagLeader /> : null;
+    case 'jobStability':
+      return count >= 90 ? <InsightTagReliable /> : null;
+    case 'careerGrowth':
+      return count >= 90 ? <InsightTagAmbitious /> : null;
   }
 };
 

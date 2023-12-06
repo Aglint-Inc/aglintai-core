@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const { TextServiceClient } = require('@google-ai/generativelanguage');
-const MODEL_NAME = 'tunedModels/aglintjdtexttojsonparser-a1nhngjx4key';
+const MODEL_NAME = 'tunedModels/aglintjdtexttojsondataparser-ck6vgye106r';
 
 const { GoogleAuth } = require('google-auth-library');
 
@@ -10,7 +10,7 @@ const serviceAccountKey = {
     '183413559779-u49tu5gl0pu5b6q3djtg1cit13ujrvlv.apps.googleusercontent.com',
   client_secret: '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',
   refresh_token:
-    '1//0gkMz6ajEWbW2CgYIARAAGBASNwF-L9IrOavGOes5yNEIsk61W_xM-O7dRDEyN9a2J5vsK8Fp-yEdpRAOTAtEIJIgvNWkrs2L6oI',
+    '1//0glheyZv9sdIqCgYIARAAGBASNwF-L9IrVRxou2ogfJv9_xs1Ad2eVefgGrw29FB8j4y2bbp7Y62TzTaSbvPoFwjBQso412s3yf8',
   type: 'authorized_user',
 };
 
@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // required, which model to use to generate the result
         model: MODEL_NAME,
         // optional, 0.0 always uses the highest-probability result
-        temperature: 0,
+        temperature: 0.25,
         // optional, how many candidate results to generate
         candidateCount: 1,
         // optional, number of most probable tokens to consider for generation

@@ -20,7 +20,6 @@ declare function CandidateDialog(props: {
   onClickStar?: Types.Devlink.RuntimeProps;
   onClickViewResume?: Types.Devlink.RuntimeProps;
   slotAddJob?: Types.Devlink.Slot;
-  arrowtooltiphide?: Types.Visibility.VisibilityConditions;
   isLinkedinVisible?: Types.Visibility.VisibilityConditions;
   isLocationVisible?: Types.Visibility.VisibilityConditions;
   slotAddedJobList?: Types.Devlink.Slot;
@@ -35,4 +34,6 @@ declare function CandidateDialog(props: {
   onClickMail?: Types.Devlink.RuntimeProps;
   isCopiedTooltipVisible?: Types.Visibility.VisibilityConditions;
   isCopiedMailTooltipVisible?: Types.Visibility.VisibilityConditions;
+  onClickEmailOutreach?: Types.Devlink.RuntimeProps;
+  isEmailOutreachVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

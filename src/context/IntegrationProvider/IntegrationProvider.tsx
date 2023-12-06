@@ -5,6 +5,7 @@ import { initialState } from './utils';
 type IntegrationStateType = {
   lever: { open: boolean; step: string };
   greenhouse: { open: boolean; step: string };
+  ashby: { open: boolean; step: string };
 };
 
 export type IntegrationType = {

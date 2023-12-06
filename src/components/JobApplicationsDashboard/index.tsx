@@ -197,7 +197,7 @@ const JobApplicationComponent = () => {
           />
         }
         onclickHeaderJobs={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}?status=active`,
+          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}`,
         }}
         onclickAddCandidates={{ onClick: () => setOpenImportCandidates(true) }}
         slotTable={
@@ -528,6 +528,21 @@ const ApplicantsList = ({
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
 
+  const infiniteScrollTriggerCount = 15;
+  const [lastLoad, setLastLoad] = useState(infiniteScrollTriggerCount);
+  const observer = useRef(undefined);
+  const lastApplicationRef = (node: any) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting)
+        setLastLoad((prev) => prev + infiniteScrollTriggerCount);
+    });
+    if (node) observer.current.observe(node);
+  };
+  useEffect(() => {
+    setLastLoad(infiniteScrollTriggerCount);
+  }, [section]);
+
   useEffect(() => {
     if (checkList.size === 0 || checkList.size === applications.length)
       setLastPressed(null);
@@ -582,7 +597,7 @@ const ApplicantsList = ({
 
   return (
     <Stack>
-      {applications.map((application, i) => {
+      {applications.slice(0, lastLoad).map((application, i) => {
         const styles =
           (jobUpdate && checkList.has(application.application_id)) ||
           applicationDisable
@@ -591,21 +606,25 @@ const ApplicantsList = ({
         return (
           <Stack
             key={application.application_id}
-            style={styles}
-            id={`job-application-stack-${i}`}
-            ref={currentApplication === i ? scrollToRef : null}
+            ref={i === lastLoad - 1 ? lastApplicationRef : null}
           >
-            <ApplicationCard
-              section={section}
-              detailedView={detailedView}
-              application={application}
-              index={i}
-              checkList={checkList}
-              handleSelect={handleSelect}
-              isInterview={section !== JobApplicationSections.NEW}
-              handleOpenDetails={() => handleSelectCurrentApplication(i)}
-              isSelected={currentApplication === i}
-            />
+            <Stack
+              style={styles}
+              id={`job-application-stack-${i}`}
+              ref={currentApplication === i ? scrollToRef : null}
+            >
+              <ApplicationCard
+                section={section}
+                detailedView={detailedView}
+                application={application}
+                index={i}
+                checkList={checkList}
+                handleSelect={handleSelect}
+                isInterview={section !== JobApplicationSections.NEW}
+                handleOpenDetails={() => handleSelectCurrentApplication(i)}
+                isSelected={currentApplication === i}
+              />
+            </Stack>
           </Stack>
         );
       })}
@@ -946,8 +965,8 @@ export const emailHandler = async (
         status === JobApplicationSections.INTERVIEWING
           ? job.email_template?.interview.fromName
           : status === JobApplicationSections.DISQUALIFIED
-          ? job.email_template?.rejection.fromName
-          : null,
+            ? job.email_template?.rejection.fromName
+            : null,
       email: candidate?.email,
       subject:
         status === JobApplicationSections.INTERVIEWING
@@ -960,15 +979,15 @@ export const emailHandler = async (
               support_link: undefined,
             })
           : status === JobApplicationSections.DISQUALIFIED
-          ? fillEmailTemplate(job?.email_template?.rejection.subject, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-              support_link: undefined,
-            })
-          : null,
+            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+                support_link: undefined,
+              })
+            : null,
       text:
         status === JobApplicationSections.INTERVIEWING
           ? fillEmailTemplate(job?.email_template?.interview?.body, {
@@ -980,15 +999,15 @@ export const emailHandler = async (
               support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidate.application_id}`,
             })
           : status === JobApplicationSections.DISQUALIFIED
-          ? fillEmailTemplate(job?.email_template?.rejection?.body, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-              support_link: undefined,
-            })
-          : null,
+            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+                support_link: undefined,
+              })
+            : null,
     })
     .then(async () => {
       if (status === JobApplicationSections.INTERVIEWING) {

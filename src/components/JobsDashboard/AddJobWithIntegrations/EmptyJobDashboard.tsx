@@ -4,10 +4,12 @@ import { JobDashboardEmpty } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import {
+  STATE_ASHBY_DIALOG,
   STATE_GREENHOUSE_DIALOG,
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 
+import { AshbyModalComp } from './Ashby';
 import { GreenhouseModal } from './GreenhouseModal';
 import { LeverModalComp } from './LeverModal';
 
@@ -37,7 +39,16 @@ export default function EmptyJobDashboard({
         <GreenhouseModal />
       </Dialog>
 
+      <Dialog
+        open={integration.ashby.open}
+        onClose={handleClose}
+        maxWidth={'lg'}
+      >
+        <AshbyModalComp />
+      </Dialog>
+
       <JobDashboardEmpty
+        isAshbyConnected={recruiter?.ashby_key ? true : false}
         isAtsOptionVisible={true}
         isConnectedVisible={recruiter?.lever_key ? true : false}
         isGreenhouseConnected={recruiter?.greenhouse_key ? true : false}
@@ -85,20 +96,20 @@ Thank you,
         }}
         onClickAshby={{
           onClick: () => {
-            window.open(
-              `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
-                `Aglint: Aglint: Request Integration with Ashby`,
-              )}&body=${encodeURIComponent(
-                `
-Hello,
-
-Requesting integration of Ashby into Aglint
-
-Thank you,
-[Your Name]
-                  `,
-              )}`,
-            );
+            if (!recruiter.ashby_key) {
+              setIntegration((prev) => ({
+                ...prev,
+                ashby: { open: true, step: STATE_ASHBY_DIALOG.API },
+              }));
+            } else {
+              setIntegration((prev) => ({
+                ...prev,
+                ashby: {
+                  open: true,
+                  step: STATE_ASHBY_DIALOG.LISTJOBS,
+                },
+              }));
+            }
           },
         }}
         onClickLever={{

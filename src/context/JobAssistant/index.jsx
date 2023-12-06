@@ -236,7 +236,7 @@ function JobAssistantProvider({ children }) {
       }
 
       if (JSON.parse(output).linkedin_url) {
-        const { data: resumeData } = await axios.post('/api/getLinkedin', {
+        const { data: resumeData } = await axios.post('/api/linkedInProfile', {
           linkedInURL: JSON.parse(output).linkedin_url,
         });
         output = JSON.stringify(resumeData);

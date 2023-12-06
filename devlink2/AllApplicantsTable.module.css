@@ -16,7 +16,7 @@
 .cv-list-row.top {
   position: sticky;
   top: 0px;
-  z-index: 1000;
+  z-index: 30;
   background-color: #f8f9f9;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .cv-list-row.top-can:hover {
-  z-index: 99;
+  z-index: 20;
 }
 
 .cv-list-column-wrapper {

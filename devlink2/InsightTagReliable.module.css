@@ -4,6 +4,10 @@
   display: flex;
 }
 
+.insight-tag:hover {
+  z-index: 7;
+}
+
 .insight-tag-block {
   position: relative;
   z-index: 5;
