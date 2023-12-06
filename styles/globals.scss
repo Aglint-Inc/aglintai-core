@@ -155,3 +155,27 @@ input[type='number'] {
 textarea::placeholder {
   color: #c2c8cc;
 }
+
+.JobApplicationAddManuallyPhoneInput {
+  & .form-control {
+    &::-webkit-input-placeholder {
+      color: #87929d;
+      font-size: 15px;
+    }
+    &:-moz-placeholder {
+      color: #87929d;
+    }
+    &:-ms-input-placeholder {
+      color: #87929d;
+    }
+  }
+  & .placeholder-icon {
+    display: none;
+  }
+  & .placeholder > p {
+    font-size: 12px !important;
+  }
+  & .invalid-number {
+    border-color: #d8dcde !important;
+  }
+}

@@ -79,9 +79,11 @@ type Action =
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
     case ActionType.READ: {
-      const newState: JobApplicationsData = {
-        ...action.payload.applicationData,
-      };
+      const newState: JobApplicationsData = action.payload.applicationData
+        ? {
+            ...action.payload.applicationData,
+          }
+        : null;
       return newState;
     }
     case ActionType.PAGINATED_READ: {
@@ -174,7 +176,8 @@ const useProviderJobApplicationActions = (
   const job = initialJobLoad
     ? jobsData.jobs.find((job) => job.id === jobId)
     : undefined;
-  const initialLoad = initialJobLoad && applications ? true : false;
+  const initialLoad =
+    initialJobLoad && applications !== undefined ? true : false;
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [openManualImportCandidates, setOpenManualImportCandidates] =
@@ -249,7 +252,7 @@ const useProviderJobApplicationActions = (
         updateTick.current = !updateTick.current;
         return { confirmation: true, count: count };
       }
-      handleJobApplicationError(error);
+      if (initialLoad) handleJobApplicationError(error);
       return { confirmation: false, count: null as CountJobs };
     }
   };
@@ -422,9 +425,21 @@ const useProviderJobApplicationActions = (
     };
   };
 
+  const handleJobApplicationInit = async () => {
+    const confirmation = await handleJobApplicationRefresh();
+    if (!confirmation) {
+      const action: Action = {
+        type: ActionType.READ,
+        payload: { applicationData: null },
+      };
+      dispatch(action);
+      return false;
+    }
+    return true;
+  };
   useEffect(() => {
     if (initialJobLoad) {
-      handleJobApplicationRefresh();
+      handleJobApplicationInit();
     }
   }, [initialJobLoad]);
 

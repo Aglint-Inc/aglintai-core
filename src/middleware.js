@@ -34,6 +34,7 @@ const whiteListedEndPoints = [
   '/api/ashby/syncapplications',
   '/api/ashby/getCandidates',
   '/api/ashby/cron',
+  '/api/trigger'
 ];
 
 export async function middleware(request) {

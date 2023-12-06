@@ -528,6 +528,21 @@ const ApplicantsList = ({
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
 
+  const infiniteScrollTriggerCount = 15;
+  const [lastLoad, setLastLoad] = useState(infiniteScrollTriggerCount);
+  const observer = useRef(undefined);
+  const lastApplicationRef = (node: any) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting)
+        setLastLoad((prev) => prev + infiniteScrollTriggerCount);
+    });
+    if (node) observer.current.observe(node);
+  };
+  useEffect(() => {
+    setLastLoad(infiniteScrollTriggerCount);
+  }, [section]);
+
   useEffect(() => {
     if (checkList.size === 0 || checkList.size === applications.length)
       setLastPressed(null);
@@ -582,7 +597,7 @@ const ApplicantsList = ({
 
   return (
     <Stack>
-      {applications.map((application, i) => {
+      {applications.slice(0, lastLoad).map((application, i) => {
         const styles =
           (jobUpdate && checkList.has(application.application_id)) ||
           applicationDisable
@@ -591,21 +606,25 @@ const ApplicantsList = ({
         return (
           <Stack
             key={application.application_id}
-            style={styles}
-            id={`job-application-stack-${i}`}
-            ref={currentApplication === i ? scrollToRef : null}
+            ref={i === lastLoad - 1 ? lastApplicationRef : null}
           >
-            <ApplicationCard
-              section={section}
-              detailedView={detailedView}
-              application={application}
-              index={i}
-              checkList={checkList}
-              handleSelect={handleSelect}
-              isInterview={section !== JobApplicationSections.NEW}
-              handleOpenDetails={() => handleSelectCurrentApplication(i)}
-              isSelected={currentApplication === i}
-            />
+            <Stack
+              style={styles}
+              id={`job-application-stack-${i}`}
+              ref={currentApplication === i ? scrollToRef : null}
+            >
+              <ApplicationCard
+                section={section}
+                detailedView={detailedView}
+                application={application}
+                index={i}
+                checkList={checkList}
+                handleSelect={handleSelect}
+                isInterview={section !== JobApplicationSections.NEW}
+                handleOpenDetails={() => handleSelectCurrentApplication(i)}
+                isSelected={currentApplication === i}
+              />
+            </Stack>
           </Stack>
         );
       })}
