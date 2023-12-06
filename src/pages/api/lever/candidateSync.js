@@ -175,7 +175,7 @@ const createGoogleTaskQueue = async (dbRecords) => {
   let config = {
     method: 'post',
     maxBodyLength: Infinity,
-    url: 'https://us-central1-aglint-cloud-381414.cloudfunctions.net/enqueueTask',
+    url: process.env.LEVER_TASK_URL,
     headers: {
       'Content-Type': 'application/json',
     },
