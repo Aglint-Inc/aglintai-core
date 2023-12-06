@@ -67,6 +67,16 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         />
                       }
                     />
+                  ) : job.posted_by == POSTED_BY.ASHBY ? (
+                    <AtsBadge
+                      slotLogo={
+                        <Avatar
+                          variant='square'
+                          src='/images/ats/ashby.svg'
+                          sx={{ width: '100%', height: '14px', p: '2px' }}
+                        />
+                      }
+                    />
                   ) : (
                     ''
                   )
@@ -83,8 +93,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       job.status == 'draft'
                         ? StatusColor['inactive']
                         : job.status == 'published'
-                        ? StatusColor['active']
-                        : StatusColor['closed'],
+                          ? StatusColor['active']
+                          : StatusColor['closed'],
                   },
                 }}
                 textJobsStatus={job.status}
@@ -94,8 +104,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       job.status == 'draft'
                         ? '/images/dashboard/inactive.svg'
                         : job.status == 'published'
-                        ? '/images/dashboard/active.svg'
-                        : '/images/dashboard/closed.svg'
+                          ? '/images/dashboard/active.svg'
+                          : '/images/dashboard/closed.svg'
                     }
                     width={14}
                     height={14}

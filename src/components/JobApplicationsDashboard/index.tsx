@@ -197,7 +197,7 @@ const JobApplicationComponent = () => {
           />
         }
         onclickHeaderJobs={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}?status=active`,
+          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}`,
         }}
         onclickAddCandidates={{ onClick: () => setOpenImportCandidates(true) }}
         slotTable={
@@ -946,8 +946,8 @@ export const emailHandler = async (
         status === JobApplicationSections.INTERVIEWING
           ? job.email_template?.interview.fromName
           : status === JobApplicationSections.DISQUALIFIED
-          ? job.email_template?.rejection.fromName
-          : null,
+            ? job.email_template?.rejection.fromName
+            : null,
       email: candidate?.email,
       subject:
         status === JobApplicationSections.INTERVIEWING
@@ -960,15 +960,15 @@ export const emailHandler = async (
               support_link: undefined,
             })
           : status === JobApplicationSections.DISQUALIFIED
-          ? fillEmailTemplate(job?.email_template?.rejection.subject, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-              support_link: undefined,
-            })
-          : null,
+            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+                support_link: undefined,
+              })
+            : null,
       text:
         status === JobApplicationSections.INTERVIEWING
           ? fillEmailTemplate(job?.email_template?.interview?.body, {
@@ -980,15 +980,15 @@ export const emailHandler = async (
               support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidate.application_id}`,
             })
           : status === JobApplicationSections.DISQUALIFIED
-          ? fillEmailTemplate(job?.email_template?.rejection?.body, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-              support_link: undefined,
-            })
-          : null,
+            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
+                first_name: candidate.first_name,
+                last_name: candidate.last_name,
+                job_title: candidate.job_title,
+                company_name: candidate.company,
+                interview_link: undefined,
+                support_link: undefined,
+              })
+            : null,
     })
     .then(async () => {
       if (status === JobApplicationSections.INTERVIEWING) {

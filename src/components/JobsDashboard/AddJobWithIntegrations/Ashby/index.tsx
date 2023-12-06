@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   AshbyApiKey,
+  AshbyAtsJob,
   AtsCard,
-  GreenhouseAts,
   IntegrationFetching,
   IntegrationModal,
   LeverApiKey,
@@ -41,9 +41,6 @@ export function AshbyModalComp() {
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
     JobAshby[]
   >([]);
-  const [ashbyFilter, setAshbyFilter] = useState<
-    'live' | 'active' | 'closed' | 'all'
-  >('live');
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const apiRef = useRef(null);
 
@@ -248,8 +245,8 @@ export function AshbyModalComp() {
             height={'100%'}
             overflow={'hidden'}
           >
-            <GreenhouseAts
-              textNumberofJobs={
+            <AshbyAtsJob
+              textNumberOfJobs={
                 <Typography variant='body2'>
                   {selectedAshbyPostings.length == 0
                     ? `Showing ${postings.length} Jobs from ashby`
@@ -262,30 +259,6 @@ export function AshbyModalComp() {
                 },
               }}
               isImportDisable={selectedAshbyPostings.length === 0}
-              isAllActive={ashbyFilter == 'all'}
-              isClosedActive={ashbyFilter == 'closed'}
-              isActiveActive={ashbyFilter == 'active'}
-              isLiveActive={ashbyFilter == 'live'}
-              onClickClosed={{
-                onClick: () => {
-                  setAshbyFilter('closed');
-                },
-              }}
-              onClickActive={{
-                onClick: () => {
-                  setAshbyFilter('active');
-                },
-              }}
-              onClickLive={{
-                onClick: () => {
-                  setAshbyFilter('live');
-                },
-              }}
-              onClickAll={{
-                onClick: () => {
-                  setAshbyFilter('all');
-                },
-              }}
               slotAtsCard={
                 !initialFetch ? (
                   postings.length > 0 ? (

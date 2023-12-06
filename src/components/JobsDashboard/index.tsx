@@ -48,7 +48,7 @@ const DashboardComp = () => {
 
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
-      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
+      setFilteredJobs(jobsData.jobs);
     } else if (router.query.status == 'published') {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
@@ -59,25 +59,18 @@ const DashboardComp = () => {
       const filter = jobsData.jobs.filter((job) => job.status == 'draft');
       setFilteredJobs(filter);
     } else {
-      setFilteredJobs(jobsData.jobs.filter((job) => !job.is_campus));
+      setFilteredJobs(jobsData.jobs);
     }
   };
 
   const handlerFilter = (e) => {
     if (router.query.status == 'all') {
-      setFilteredJobs([
-        ...searchJobs(
-          jobsData.jobs.filter((job) => !job.is_campus),
-          e.target.value,
-        ),
-      ]);
+      setFilteredJobs([...searchJobs(jobsData.jobs, e.target.value)]);
     } else if (router.query.status == 'published') {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'closed') {
-      const filter = jobsData.jobs.filter(
-        (job) => !job.is_campus && job.active_status.closed.isActive,
-      );
+      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'draft') {
       const filter = jobsData.jobs.filter((job) => job.status == 'draft');
@@ -245,10 +238,10 @@ const DashboardComp = () => {
                 router.query.status == 'close'
                   ? 'Closed Jobs'
                   : router.query.status == 'inactive'
-                  ? 'Inactive Jobs'
-                  : router.query.status == 'active'
-                  ? 'Active Jobs'
-                  : 'All Jobs'
+                    ? 'Inactive Jobs'
+                    : router.query.status == 'active'
+                      ? 'Active Jobs'
+                      : 'All Jobs'
               }
             />
           )}

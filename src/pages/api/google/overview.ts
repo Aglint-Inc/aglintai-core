@@ -19,20 +19,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const parsedResume = {
       basics: resume_json.basics,
-      positions: resume_json.positions,
+      // positions: resume_json.positions,
       skills: resume_json.skills,
     };
     if (
       !parsedResume.basics ||
-      !parsedResume.positions ||
+      // !parsedResume.positions ||
       !parsedResume.skills
     ) {
       console.log('required fields missing');
       return res.status(200).send('required fields missing');
     }
 
-    const input = `Here is resume_json : ${JSON.stringify(parsedResume)} .
-                    Generate a 2 line overview of this resume provide above. Try to mention current job title, years of experience and some skills`;
+    const input = `Here is resume_json : '''${JSON.stringify(
+      parsedResume,
+    )}'''. Generate a paragraph overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. Dont unnecessary mention years of experience, or any other information in ther overview you. The overview should be in third person.`;
     const promptString = `${input}`;
     const stopSequences = [];
 
