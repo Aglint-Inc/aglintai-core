@@ -30,7 +30,7 @@ const DashboardComp = () => {
   const { jobsData, initialLoad } = useJobs();
   const [anchorEl, setAnchorEl] = useState(null);
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
-    jobsData.jobs?.filter((job) => !job.is_campus),
+    jobsData.jobs?.filter((job: any) => !job.is_campus),
   );
 
   useEffect(() => {
@@ -202,7 +202,7 @@ const DashboardComp = () => {
         <Loader />
       ) : (
         <>
-          {jobsData?.jobs?.filter((job) => !job.is_campus)?.length == 0 ? (
+          {jobsData?.jobs?.filter((job: any) => !job.is_campus)?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
                 router.push('/jobs/new?flow=manual');
@@ -238,10 +238,10 @@ const DashboardComp = () => {
                 router.query.status == 'close'
                   ? 'Closed Jobs'
                   : router.query.status == 'inactive'
-                    ? 'Inactive Jobs'
-                    : router.query.status == 'active'
-                      ? 'Active Jobs'
-                      : 'All Jobs'
+                  ? 'Inactive Jobs'
+                  : router.query.status == 'active'
+                  ? 'Active Jobs'
+                  : 'All Jobs'
               }
             />
           )}
