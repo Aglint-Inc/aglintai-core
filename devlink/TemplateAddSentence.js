@@ -6,6 +6,7 @@ import _styles from "./TemplateAddSentence.module.css";
 export function TemplateAddSentence({
   as: _Component = _Builtin.Block,
   onClickEdit = {},
+  textSentence = "Add one sentence on why the candidate is a good fit for this company a....",
 }) {
   return (
     <_Component
@@ -22,9 +23,7 @@ export function TemplateAddSentence({
           className={_utils.cx(_styles, "text-color-white")}
           tag="div"
         >
-          {
-            "Add one sentence on why the candidate is a good fit for this company a...."
-          }
+          {textSentence}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed

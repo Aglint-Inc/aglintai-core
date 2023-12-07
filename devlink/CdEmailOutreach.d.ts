@@ -17,4 +17,5 @@ declare function CdEmailOutreach(props: {
   isEmailBodyVisible?: Types.Visibility.VisibilityConditions;
   slotLottie?: Types.Devlink.Slot;
   isLoading?: Types.Visibility.VisibilityConditions;
+  slotLoadingIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

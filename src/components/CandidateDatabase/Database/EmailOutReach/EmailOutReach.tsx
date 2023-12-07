@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
 import { useRouter } from 'next/router';
@@ -11,8 +12,8 @@ import {
   EmailSent,
   MailLink,
 } from '@/devlink';
+import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import MuiPopup from '@/src/components/Common/MuiPopup';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -34,7 +35,9 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
   const { candState } = useCandFilter();
   const selcandidate = get(candState.candidates, `[${candPath}]`) as Candidate;
   const [candEmailData, setCandEmailData] = useState<CandEmailData>(null);
-  const [isMailSent, setIsMailSent] = useState(false);
+  const [mailSendStatus, setMailSendStatus] = useState<'' | 'sending' | 'sent'>(
+    '',
+  );
   const [email, setEmail] = useState({
     toEmail: selcandidate.email,
     subject: '',
@@ -56,7 +59,9 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
   }, [recruiter]);
 
   useEffect(() => {
-    setEmail((p) => ({ ...p, toEmail: selcandidate.email }));
+    setMailSendStatus('');
+    let email = selcandidate.json_resume.basics?.email ?? selcandidate.email;
+    setEmail((p) => ({ ...p, toEmail: email }));
   }, [selcandidate]);
 
   const router = useRouter();
@@ -80,6 +85,7 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         toast.error('please enter correct email, subject and body');
         return;
       }
+      setMailSendStatus('sending');
       await axios.post('/api/email-outreach/send-email', {
         fromEmail: candEmailData.email,
         toEmail: email.toEmail,
@@ -88,13 +94,13 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         subject: email.subject,
         body: email.body,
       });
-      setIsMailSent(true);
+      setMailSendStatus('sent');
     } catch (error) {
       toast.error(API_FAIL_MSG);
     } finally {
       setTimeout(() => {
-        setIsMailSent(false);
-      }, 3000);
+        setMailSendStatus('');
+      }, 10000);
     }
   };
 
@@ -105,7 +111,7 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         isLoading={false}
         slotEmailSent={
           <>
-            {isMailSent && (
+            {mailSendStatus === 'sent' && (
               <EmailSent
                 onClickOpenInbox={{
                   onClick: () => {
@@ -132,6 +138,17 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
             />
           </>
         }
+        slotLoadingIcon={
+          <>
+            {mailSendStatus === 'sending' ? (
+              <CircularProgress
+                color='inherit'
+                size={'15px'}
+                sx={{ color: palette.grey[400] }}
+              />
+            ) : undefined}
+          </>
+        }
         slotInputSubject={
           <>
             <UITextField
@@ -150,13 +167,14 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
                 borderRadius: '5px',
               }}
             >
-              <TipTapAIEditor
-                enablAI={false}
-                handleChange={(s) => {
-                  setEmail((p) => ({ ...p, body: s }));
+              <EmailAiEditor
+                defaultValue=''
+                onChangeUpdateJson={(j) => {
+                  // console.log(j);
                 }}
-                initialValue=''
-                placeholder='Email Body'
+                onChangeUpdateHtml={(h) => {
+                  // console.log(h);
+                }}
               />
             </div>
           </>
@@ -221,8 +239,19 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
           }}
         />
       </MuiPopup>
+
+      <MuiPopup props={{ open: false }}>{/*  */}</MuiPopup>
     </>
   );
 };
 
 export default EmailOutReach;
+
+[
+  {
+    name: 'Template 1',
+    subject: 'Research study into the future of work',
+    templateJson: {},
+    templateHtml: '',
+  },
+];
