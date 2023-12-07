@@ -169,10 +169,10 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
             >
               <EmailAiEditor
                 defaultValue=''
-                onChangeUpdateJson={(j) => {
+                onChangeUpdateJson={() => {
                   // console.log(j);
                 }}
-                onChangeUpdateHtml={(h) => {
+                onChangeUpdateHtml={() => {
                   // console.log(h);
                 }}
               />
