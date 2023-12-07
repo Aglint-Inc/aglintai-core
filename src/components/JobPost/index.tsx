@@ -98,7 +98,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               onClick: () => {
                 application?.application_id &&
                   window.open(
-                    `${process.env.NEXT_PUBLIC_RECRUITER_APP}/support/create?id=${application?.application_id}`,
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application?.application_id}`,
                   );
               },
             }}
@@ -348,7 +348,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   key={ind}
                   slotIcon={
                     <Image
-                      src={`/images/logo/${soc[0]}.svg`}
+                      src={`${process.env.NEXT_PUBLIC_HOST_NAME}/images/logo/${soc[0]}.svg`}
                       height={16}
                       width={16}
                       alt=''
