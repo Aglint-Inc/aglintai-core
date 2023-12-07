@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { processEmailsInBatches } from '../GreenhouseModal/utils';
 import { extractLinkedInURL, POSTED_BY, splitFullName } from '../utils';
 
 export const createJobApplications = async (selectedLeverPostings, apiKey) => {
@@ -33,79 +34,72 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         ),
       ];
 
-      const { data: checkCandidates, error: errorCheck } = await supabase
-        .from('candidates')
-        .select()
-        .in('email', [emails]);
+      const checkCandidates = await processEmailsInBatches(emails);
 
-      if (!errorCheck) {
-        //new candidates insert flow
-        const uniqueRefCandidates = refCandidates.filter((cand) => {
-          return !checkCandidates.some((checkCand) => {
-            return checkCand.email === cand.email;
-          });
+      //new candidates insert flow
+      const uniqueRefCandidates = refCandidates.filter((cand) => {
+        return !checkCandidates.some((checkCand) => {
+          return checkCand.email === cand.email;
         });
+      });
 
-        const insertableCandidates = uniqueRefCandidates.map((cand) => {
+      const insertableCandidates = uniqueRefCandidates.map((cand) => {
+        return {
+          first_name: cand.first_name,
+          last_name: cand.last_name,
+          email: cand.email,
+          linkedin: cand.linkedin,
+          phone: cand.phone,
+          id: uuidv4(),
+          recruiter_id: post.recruiter_id,
+        };
+      });
+
+      const dbCandidates = insertableCandidates.filter((cand, index, self) => {
+        // Use the Array.findIndex() method to check if the current email address
+        // exists in the array at a previous index.
+        const isUnique =
+          self.findIndex((c) => c.email === cand.email) === index;
+        return isUnique;
+      });
+
+      const { data: newCandidates, error: errorCandidates } = await supabase
+        .from('candidates')
+        .insert(dbCandidates)
+        .select();
+
+      if (!errorCandidates) {
+        const allCandidates = [...newCandidates, ...checkCandidates];
+        const dbApplications = refCandidates.map((ref) => {
           return {
-            first_name: cand.first_name,
-            last_name: cand.last_name,
-            email: cand.email,
-            linkedin: cand.linkedin,
-            phone: cand.phone,
-            id: uuidv4(),
-            recruiter_id: post.recruiter_id,
+            candidate_id: allCandidates.filter(
+              (cand) => cand.email === ref.email,
+            )[0].id,
+            job_id: post.job_id,
+            application_id: ref.application_id,
+            // resume_text: 'Lever',
           };
         });
 
-        const dbCandidates = insertableCandidates.filter(
-          (cand, index, self) => {
-            // Use the Array.findIndex() method to check if the current email address
-            // exists in the array at a previous index.
-            const isUnique =
-              self.findIndex((c) => c.email === cand.email) === index;
-            return isUnique;
-          },
-        );
+        const { error } = await supabase
+          .from('job_applications')
+          .insert(dbApplications);
 
-        const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('candidates')
-          .insert(dbCandidates)
-          .select();
-
-        if (!errorCandidates) {
-          const allCandidates = [...newCandidates, ...checkCandidates];
-          const dbApplications = refCandidates.map((ref) => {
+        if (!error) {
+          const referenceObj = refCandidates.map((ref) => {
             return {
-              candidate_id: allCandidates.filter(
-                (cand) => cand.email === ref.email,
-              )[0].id,
-              job_id: post.job_id,
               application_id: ref.application_id,
-              // resume_text: 'Lever',
+              posting_id: post.id,
+              opportunity_id: ref.id,
+              public_job_id: post.job_id,
             };
           });
 
-          const { error } = await supabase
-            .from('job_applications')
-            .insert(dbApplications);
-
-          if (!error) {
-            const referenceObj = refCandidates.map((ref) => {
-              return {
-                application_id: ref.application_id,
-                posting_id: post.id,
-                opportunity_id: ref.id,
-                public_job_id: post.job_id,
-              };
-            });
-
-            await createLeverReference(referenceObj);
-          } else {
-            toast.error(
-              'Sorry unable to import. Please try again later or contact support.',
-            );
-          }
+          await createLeverReference(referenceObj);
+        } else {
+          toast.error(
+            'Sorry unable to import. Please try again later or contact support.',
+          );
         }
         //new candidates insert flow
       }
@@ -219,14 +213,14 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
         post.categories.commitment === 'Part Time'
           ? 'parttime'
           : post.categories.commitment === 'Internship'
-          ? 'internship'
-          : 'fulltime',
+            ? 'internship'
+            : 'fulltime',
       workplace_type:
         post.workplaceType === 'hybrid'
           ? 'hybrid'
           : post.workplaceType === 'onsite'
-          ? 'onsite'
-          : 'offsite',
+            ? 'onsite'
+            : 'offsite',
       company: recruiter.name,
       skills: [],
       status: 'published',
@@ -244,8 +238,8 @@ export function getLeverStatusColor(state) {
   return state == 'published'
     ? '#228F67'
     : state == 'closed'
-    ? '#D93F4C'
-    : state == 'internal'
-    ? '#ED8F1C'
-    : '#d93f4c';
+      ? '#D93F4C'
+      : state == 'internal'
+        ? '#ED8F1C'
+        : '#d93f4c';
 }
