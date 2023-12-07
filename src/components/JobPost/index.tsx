@@ -120,7 +120,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     height: '78px',
                     width: '78px',
                     borderRadius: '8px',
-                    background: palette.grey[100],
+                    // background: palette.grey[100],
                   }}
                 >
                   <Icon variant='CompanyOutlinedBig' />
@@ -205,7 +205,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 },
                 height: '78px',
                 width: '78px',
-                background: palette.grey[100],
+                // background: palette.grey[100],
               }}
             >
               <Icon variant='CompanyOutlinedBig' />

@@ -645,6 +645,7 @@
   top: -3px;
   right: -3px;
   bottom: auto;
+  z-index: 5;
 
   flex-direction: column;
   justify-content: center;
@@ -702,4 +703,9 @@
 
 .relative.zindex-3 {
   z-index: 3;
+}
+
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
 }
