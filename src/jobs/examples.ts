@@ -111,28 +111,28 @@
 //   },
 // });
 
-import { Job } from '@trigger.dev/sdk';
-import { SupabaseManagement } from '@trigger.dev/supabase';
+// import { Job } from '@trigger.dev/sdk';
+// import { SupabaseManagement } from '@trigger.dev/supabase';
 
-import { client } from '../trigger';
-import { Database } from '../types/schema';
+// import { client } from '../trigger';
+// import { Database } from '../types/schema';
 
-const supabase = new SupabaseManagement({
-  id: 'supabase-management',
-});
-const supabaseTriggers = supabase.db<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-);
-new Job(client, {
-  id: 'recruiter_inserted',
-  name: 'recruiter inserted',
-  version: '0.1.1',
-  trigger: supabaseTriggers.onInserted({
-    schema: 'public',
-    table: 'recruiter',
-  }),
-  enabled: false,
-  run: async (payload, io, ctx) => {
-    io.logger.log(payload.record.email);
-  },
-});
+// const supabase = new SupabaseManagement({
+//   id: 'supabase-management',
+// });
+// const supabaseTriggers = supabase.db<Database>(
+//   process.env.NEXT_PUBLIC_SUPABASE_URL!,
+// );
+// new Job(client, {
+//   id: 'recruiter_inserted',
+//   name: 'recruiter inserted',
+//   version: '0.1.1',
+//   trigger: supabaseTriggers.onInserted({
+//     schema: 'public',
+//     table: 'recruiter',
+//   }),
+//   enabled: false,
+//   run: async (payload, io, ctx) => {
+//     io.logger.log(payload.record.email);
+//   },
+// });
