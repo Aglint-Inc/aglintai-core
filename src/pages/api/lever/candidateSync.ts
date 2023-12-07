@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
+import { processEmailsInBatches } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal/utils';
 import {
   extractLinkedInURL,
   splitFullName,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 
-import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
 const crypto = require('crypto');
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -42,16 +43,18 @@ export default async function handler(req, res) {
 
     if (!errorApp) {
       previousApplications = app;
+
       const { data: rec, error: errorRec } = await supabase
         .from('recruiter')
         .select('*')
         .eq('id', referenceJob[0].recruiter_id);
       if (!errorRec) {
         apiKey = decrypt(rec[0].lever_key, process.env.ENCRYPTION_KEY);
-        const leverApplications = await fetchAllJobs(
+        const leverApplications = await fetchAllOpporunities(
           apiKey,
           referenceJob[0].posting_id,
         );
+
         const newApplications = [];
         leverApplications.forEach(async (appi) => {
           // Check if app.id does not exist in previousApplications
@@ -68,10 +71,11 @@ export default async function handler(req, res) {
 
         if (newApplications.length === 0) {
           console.log('No new applications found');
-          res.status(200).send('No new applications found');
+          return res.status(200).send('No new applications found');
         }
 
-        const dbCandidates = newApplications.map((cand) => {
+        // for creating lever job reference
+        const refCandidates = newApplications.map((cand) => {
           return {
             first_name: splitFullName(cand.name).firstName,
             last_name: splitFullName(cand.name).lastName,
@@ -79,30 +83,94 @@ export default async function handler(req, res) {
             linkedin: extractLinkedInURL(cand.links || []),
             phone: cand.phones[0]?.value,
             job_id: jobId,
+            application_id: uuidv4(), //our job application id
+            id: cand.id, //lever opportunity id
+          };
+        });
+        // for creating lever job reference
+
+        const emails = [
+          ...new Set(
+            refCandidates.map((cand) => {
+              return cand.email;
+            }),
+          ),
+        ];
+
+        const checkCandidates = await processEmailsInBatches(emails);
+
+        //new candidates insert flow
+        const uniqueRefCandidates = refCandidates.filter((cand) => {
+          return !checkCandidates.some((checkCand) => {
+            return checkCand.email === cand.email;
+          });
+        });
+
+        const insertableCandidates = uniqueRefCandidates.map((cand) => {
+          return {
+            first_name: cand.first_name,
+            last_name: cand.last_name,
+            email: cand.email,
+            linkedin: cand.linkedin,
+            phone: cand.phone,
+            id: uuidv4(),
+            recruiter_id: referenceJob[0].recruiter_id,
           };
         });
 
-        const { data: newCandidates, error } = await supabase
-          .from('job_applications')
-          .insert(dbCandidates)
-          .select(`${selectJobApplicationQuery}`);
+        const dbCandidates = insertableCandidates.filter(
+          (cand, index, self) => {
+            // Use the Array.findIndex() method to check if the current email address
+            // exists in the array at a previous index.
+            const isUnique =
+              self.findIndex((c) => c.email === cand.email) === index;
+            return isUnique;
+          },
+        );
 
-        if (!error) {
-          const referenceObj = newCandidates.map((app) => {
+        const { data: newCandidates, error: errorCandidates } = await supabase
+          .from('candidates')
+          .insert(dbCandidates)
+          .select();
+
+        if (!errorCandidates) {
+          const allCandidates = [...newCandidates, ...checkCandidates];
+          const dbApplications = refCandidates.map((ref) => {
             return {
-              application_id: app.application_id,
-              posting_id: referenceJob[0].posting_id,
-              opportunity_id: leverApplications.filter(
-                (cand) => cand.emails[0] == app.email,
+              candidate_id: allCandidates.filter(
+                (cand) => cand.email === ref.email,
               )[0].id,
-              public_job_id: app.job_id,
+              job_id: jobId,
+              application_id: ref.application_id,
+              // resume_text: 'Lever',
             };
           });
-          const responseLeverRef = await createLeverReference(referenceObj);
-          res.status(200).send(responseLeverRef);
-        } else {
-          res.status(400).send('Error inserting into job_applications');
+
+          const { error } = await supabase
+            .from('job_applications')
+            .insert(dbApplications);
+
+          if (!error) {
+            const referenceObj = refCandidates.map((ref) => {
+              return {
+                application_id: ref.application_id,
+                posting_id: referenceJob[0].posting_id,
+                opportunity_id: ref.id,
+                public_job_id: jobId,
+              };
+            });
+
+            await createLeverReference(referenceObj);
+            return res.status(200).send('success');
+          } else {
+            console.log(
+              'Sorry unable to import. Please try again later or contact support.',
+            );
+          }
         }
+        //new candidates insert flow
+      } else {
+        res.status(400).send('Error inserting into job_applications');
       }
     }
   }
@@ -116,7 +184,7 @@ function decrypt(encryptedData, encryptionKey) {
   return decryptedData;
 }
 
-const fetchAllJobs = async (apiKey, postingId) => {
+const fetchAllOpporunities = async (apiKey, postingId) => {
   let allJobs = [];
   let hasMore = true;
   let next = 0;

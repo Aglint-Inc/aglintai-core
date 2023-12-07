@@ -333,7 +333,7 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleUIJobReplace } = useJobs();
+  const { handleUIJobReplace, jobsData } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     try {
       dispatch({
@@ -343,15 +343,18 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         },
       });
       const updatedJobDb = await saveJobPostToDb(currState);
+      const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
       handleUIJobReplace({
         ...updatedJobDb,
         active_status: updatedJobDb.active_status as unknown as StatusJobs,
-        count: {
-          new: 0,
-          interviewing: 0,
-          qualified: 0,
-          disqualified: 0,
-        },
+        count: uiJob
+          ? uiJob.count
+          : {
+              new: 0,
+              interviewing: 0,
+              qualified: 0,
+              disqualified: 0,
+            },
       });
 
       if (get(currState, 'createdAt', undefined) === undefined) {
