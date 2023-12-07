@@ -121,7 +121,7 @@ const ApplicationDetails = ({
         transition: '0.4s',
         width: drawerOpen ? '420px' : '0px',
         pointerEvents: drawerOpen ? 'auto' : 'none',
-        overflow: drawerOpen ? 'hidden' : 'auto',
+        overflow: drawerOpen ? 'visible' : 'auto',
       }}
     >
       {applicationDetails ? (

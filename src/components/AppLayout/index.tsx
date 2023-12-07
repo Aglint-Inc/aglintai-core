@@ -95,7 +95,7 @@ export default function AppLayout({ children }) {
                       height: '100%',
                       background: '#fff',
                       '& .MuiAvatar-img ': {
-                        objectFit: 'cover',
+                        objectFit: 'contain',
                       },
                     }}
                   />

@@ -57,7 +57,12 @@ export function TopApplicantsTable({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column-wrapper",
+              "top",
+              "name"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -79,7 +84,12 @@ export function TopApplicantsTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column-wrapper",
+              "top",
+              "summary"
+            )}
             tag="div"
           >
             <_Builtin.Block

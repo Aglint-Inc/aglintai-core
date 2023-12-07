@@ -81,7 +81,7 @@ export function TopCandidateListItem({
         {...onclickCandidate}
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "name")}
           tag="div"
         >
           {isHighlighted ? (
@@ -95,13 +95,7 @@ export function TopCandidateListItem({
             tag="div"
           />
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column",
-              "name",
-              "top-can",
-              "overflow-none"
-            )}
+            className={_utils.cx(_styles, "cv-list-column", "name", "top-can")}
             tag="div"
           >
             <_Builtin.Block
@@ -151,7 +145,7 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "summary")}
           tag="div"
         >
           {isHighlighted ? (
