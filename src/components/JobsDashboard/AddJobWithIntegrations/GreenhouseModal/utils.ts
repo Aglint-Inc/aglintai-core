@@ -255,10 +255,10 @@ export function getLeverStatusColor(state: string): string {
   return state == 'published'
     ? '#228F67'
     : state == 'closed'
-    ? '#D93F4C'
-    : state == 'internal'
-    ? '#ED8F1C'
-    : '#d93f4c';
+      ? '#D93F4C'
+      : state == 'internal'
+        ? '#ED8F1C'
+        : '#d93f4c';
 }
 
 function extractLinkedInURLGreenhouse(item: string): string {
@@ -308,7 +308,7 @@ const processBatch = async (
   }
 };
 
-const processEmailsInBatches = async (
+export const processEmailsInBatches = async (
   emails: string[],
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];

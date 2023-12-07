@@ -17,3 +17,4 @@ BEGIN
     ) = current_date;
 END;
 $$ LANGUAGE plpgsql;
+

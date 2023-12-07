@@ -1,4 +1,4 @@
-import { Collapse, Stack } from '@mui/material';
+import { Collapse, Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -13,6 +13,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useCandFilter } from './CandDbProvider';
+import EmailOutReach from './EmailOutReach/EmailOutReach';
 import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
 import SortComp from './SortComp';
@@ -32,7 +33,7 @@ const CandDatabase = () => {
   const [totalResults, setTotalResults] = useState(0);
   const { updateState, candState, handleAddCandidatesTojob } = useCandFilter();
   const [newJobsForCand, setNewJobsForCand] = useState<newCandJob[]>([]);
-
+  const [toggleOutreach, setToggleOutreach] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -141,34 +142,27 @@ const CandDatabase = () => {
       })),
     );
   };
-  const resetClick=()=>{
-    
-      
-       
-    
-   
+  const resetClick = () => {
     router.query.page_no = '1';
-  
-  
+
     router.query.sort_by_param = 'first_name';
-  
 
     router.query.sort_type = 'asc';
-  
-  router.replace(router);
-  
 
-}
+    router.replace(router);
+  };
 
   const totalPageCount = Math.ceil(totalResults / 100);
   const currPageNo = Number(router.query.page_no);
   return (
     <>
       <CandidateDatabaseTable
-      isAddToJobVisible={isAnyRowSelected}
-      onClickReset={{onClick:()=>{
-        resetClick();
-      }}}
+        isAddToJobVisible={isAnyRowSelected}
+        onClickReset={{
+          onClick: () => {
+            resetClick();
+          },
+        }}
         isChecked={isAnyRowSelected}
         textCandidateCount={counts}
         slotAddtoJob={
@@ -306,6 +300,12 @@ const CandDatabase = () => {
                     }
                   }}
                   path={`[${selectedCandidate}]`}
+                  onCLickEmailOutReach={() => {
+                    setToggleOutreach(true);
+                  }}
+                  // isEmailOutreachVisible={Boolean(
+                  //   candidates[Number(selectedCandidate)].email,
+                  // )}
                 />
               )}
             </Collapse>
@@ -340,6 +340,39 @@ const CandDatabase = () => {
           </>
         }
       />
+      <Drawer
+        anchor={'right'}
+        open={toggleOutreach}
+        onClose={() => {
+          setToggleOutreach(false);
+        }}
+      >
+        <Stack direction={'row'} width={'1000px'}>
+          <Stack width={'45%'} height={'100vh'} overflow={'scroll'}>
+            <SelectedCandidate
+              onClickClose={() => setSelectedCand(-1)}
+              onClickNext={() => {
+                if (candidates.length - 1 > selectedCandidate) {
+                  setSelectedCand((p) => p + 1);
+                }
+              }}
+              onClickPrev={() => {
+                if (selectedCandidate > 0) {
+                  setSelectedCand((p) => p - 1);
+                }
+              }}
+              path={`[${selectedCandidate}]`}
+              onCLickEmailOutReach={() => {
+                setToggleOutreach(true);
+              }}
+              isEmailOutreachVisible={false}
+            />
+          </Stack>
+          <Stack width={'60%'} height={'100vh'} overflow={'scroll'}>
+            <EmailOutReach candPath={selectedCandidate} />
+          </Stack>
+        </Stack>
+      </Drawer>
     </>
   );
 };

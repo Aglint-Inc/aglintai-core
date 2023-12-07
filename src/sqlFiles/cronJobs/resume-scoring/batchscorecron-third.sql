@@ -1,8 +1,8 @@
 select
   cron.schedule(
-    'invoke-greenhouse',
+    'batchscorecron-third',
     '*/1 * * * *', -- every minute
     $$
-    select saveGreenHouseResume();
+    select batchscorecron('third');
     $$
 );

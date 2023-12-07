@@ -29,6 +29,8 @@ const CandidateDrawer = ({
   handleAddApplications,
   showBookmark = true,
   showClose = true,
+  onClickEmailOutreach = () => {},
+  isEmailOutreachVisible = false,
 }: {
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
@@ -39,6 +41,8 @@ const CandidateDrawer = ({
   handleAddApplications: any;
   showBookmark?: boolean;
   showClose?: boolean;
+  onClickEmailOutreach?: () => void;
+  isEmailOutreachVisible?: boolean;
 }) => {
   const [resume, setResume] = useState(false);
   const keyPressedRef = useRef({});
@@ -115,6 +119,10 @@ const CandidateDrawer = ({
             }, 1500);
           },
         }}
+        onClickEmailOutreach={{
+          onClick: onClickEmailOutreach,
+        }}
+        isEmailOutreachVisible={isEmailOutreachVisible}
         isCopiedTooltipVisible={tooltip === 'phone'}
         isCopiedMailTooltipVisible={tooltip === 'mail'}
         isCloseButtonVisible={!showClose}

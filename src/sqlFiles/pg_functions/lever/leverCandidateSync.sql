@@ -1,4 +1,4 @@
-    CREATE OR REPLACE FUNCTION leverCandidateSync()
+CREATE OR REPLACE FUNCTION leverCandidateSync()
     RETURNS JSONB AS $$
     DECLARE
         result JSONB;
@@ -30,16 +30,3 @@
         RETURN result;
     END;
     $$ LANGUAGE plpgsql;
-
-
-SELECT cron.schedule (
-    'lever_candidate_sync',
-    '0 7 * * *', -- Run at 7:00 AM PT
-    $$
-    SELECT leverCandidateSync();
-    $$
-);
-
-
-
-select leverCandidateSync();
