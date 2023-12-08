@@ -346,7 +346,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
         support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
       };
       await axios
-        .post('/api/sendgrid', {
+        .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
           fromEmail: `messenger@aglinthq.com`,
           fromName:
             post.email_template.application_recieved.fromName || post.company,
