@@ -240,7 +240,9 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         />
       </MuiPopup>
 
-      <MuiPopup props={{ open: false }}>{/*  */}</MuiPopup>
+      <MuiPopup props={{ open: false }}>
+        <></>
+      </MuiPopup>
     </>
   );
 };
