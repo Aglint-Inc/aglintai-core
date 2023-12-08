@@ -134,8 +134,11 @@ export function FetchCompanyDetails() {
 
   async function saveRecruiterDetails() {
     if ((await formValidation()) && recruiter?.id) {
-      const { data: companyDetails } = await axios.get(
-        `https://api.thecompaniesapi.com/v1/companies/${details.website}?token=o8yxXtHL`,
+      const { data: companyDetails } = await axios.post(
+        `/api/fetchCompanyDetails`,
+        {
+          domain_name: details.website,
+        },
       );
       setLoading(true);
       const { data, error } = await supabase
