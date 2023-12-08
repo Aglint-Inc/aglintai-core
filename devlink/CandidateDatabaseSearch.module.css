@@ -763,6 +763,11 @@
   z-index: 3;
 }
 
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
 .db-req-text-wrap {
   display: flex;
   margin-top: 10px;

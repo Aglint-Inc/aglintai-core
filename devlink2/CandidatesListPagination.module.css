@@ -105,6 +105,13 @@
   background-color: var(--white);
 }
 
+.div-block-406 {
+  display: flex;
+  max-width: 38px;
+  justify-content: center;
+  text-align: center;
+}
+
 .inline-block {
   display: inline;
   margin-right: 2px;

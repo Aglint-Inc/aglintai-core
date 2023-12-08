@@ -7,10 +7,10 @@ export function CandidatesListPagination({
   as: _Component = _Builtin.Block,
   onclickPrevious = {},
   onclickNext = {},
-  currentPageCount = "1",
   totalPageCount = "12",
   currentCandidatesCount = "100",
   totalCandidatesCount = "450",
+  slotPageNumber,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jp-nav-wrapper")} tag="div">
@@ -33,7 +33,12 @@ export function CandidatesListPagination({
           className={_utils.cx(_styles, "jb-nav-page-count")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{currentPageCount}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-406")}
+            tag="div"
+          >
+            {slotPageNumber}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           <_Builtin.Block

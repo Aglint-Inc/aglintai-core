@@ -12,6 +12,7 @@ import {
   InsightTagSkilled,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JdScore,
   JobApplication,
@@ -24,7 +25,6 @@ import ResumeScore from '../Common/ResumeScore';
 import { capitalize, formatTimeStamp, getCandidateName } from '../utils';
 
 const ApplicationCard = ({
-  section,
   detailedView,
   application,
   index,
@@ -34,7 +34,6 @@ const ApplicationCard = ({
   handleOpenDetails,
   isSelected = false,
 }: {
-  section: JobApplicationSections;
   detailedView: boolean;
   application: JobApplication;
   index: number;
@@ -46,6 +45,7 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
+  const { section } = useJobApplications();
   const creationDate = formatTimeStamp(application.created_at);
   const handleCheck = () => {
     handleSelect(index);

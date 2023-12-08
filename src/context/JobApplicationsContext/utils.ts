@@ -1,5 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
+import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
+import {
+  getFilteredQuery,
+  selectJobApplicationQuery,
+} from '@/src/pages/api/JobApplicationsApi/utils';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -14,6 +18,7 @@ import {
 export const initialJobApplicationsContext: JobApplicationContext = {
   applications: undefined,
   applicationDisable: undefined,
+  setApplicationDisable: undefined,
   paginationLimit: undefined,
   job: undefined,
   pageNumber: undefined,
@@ -34,6 +39,8 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   setOpenManualImportCandidates: undefined,
   handleUpdateJobStatus: undefined,
   updateTick: undefined,
+  section: undefined,
+  setSection: undefined,
 };
 
 export const uploadResumeDbAction = async (
@@ -242,16 +249,32 @@ export const updateAllJobStatusDbAction = async (
     source: JobApplicationSections;
     destination: JobApplicationSections;
   },
+  search?: string,
+  filter?: FilterParameter[],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { error } = await supabase
+  let query = supabase
     .from('job_applications')
     .update({ status: sections.destination })
     .eq('job_id', jobId)
-    .eq('status', sections.source)
-    .abortSignal(signal);
+    .eq('status', sections.source);
+
+  if (filter && filter.length > 0) {
+    query = getFilteredQuery(query, filter, sections.source);
+  }
+
+  if (search) {
+    query = query.or(
+      `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
+      { foreignTable: 'candidates' },
+    );
+  }
+
+  query = query.abortSignal(signal);
+
+  const { error } = await query;
   clearTimeout(timeout);
   return { data: error ? false : true, error };
 };

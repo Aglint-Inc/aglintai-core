@@ -10,6 +10,7 @@ import {
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 import {
@@ -24,23 +25,47 @@ const FilterJobApplications = ({
 }: {
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { searchParameters, handleJobApplicationFilter, applicationDisable } =
-    useJobApplications();
+  const {
+    searchParameters,
+    handleJobApplicationFilter,
+    applicationDisable,
+    section,
+  } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
-
-  const [filters, setFilters] = useState(searchParameters.filter);
-  const filterCount = searchParameters.filter.length;
+  const modifiedFilters = searchParameters.filter.reduce((acc, curr) => {
+    if (
+      !(
+        section === JobApplicationSections.NEW &&
+        curr.parameter === 'interview_score'
+      )
+    )
+      acc.push(curr);
+    return acc;
+  }, []);
+  const [filters, setFilters] = useState([...modifiedFilters]);
+  const filterCount = modifiedFilters.length;
   const handleClose = () => {
     if (filterVisibility) {
       setFilterVisibility(false);
-      setFilters(searchParameters.filter);
+      setFilters([...modifiedFilters]);
     }
   };
+
+  useEffect(() => {
+    setFilters([...modifiedFilters]);
+  }, [section]);
+
   const handleReset = async () => {
     if (!applicationDisable) {
       const { confirmation, count } = await handleJobApplicationFilter({
         ...searchParameters,
-        filter: [],
+        filter:
+          section === JobApplicationSections.NEW
+            ? searchParameters.filter.reduce((acc, curr) => {
+                if (curr.parameter === 'interview_score') acc.push(curr);
+                return acc;
+              }, [])
+            : [],
       });
       if (confirmation) {
         setApplicationLimit(count);
@@ -87,7 +112,13 @@ const ApplicationFilterBody = ({
   handleClose: () => void;
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { searchParameters, handleJobApplicationFilter } = useJobApplications();
+  const {
+    searchParameters,
+    handleJobApplicationFilter,
+    applicationDisable,
+    setApplicationDisable,
+    section,
+  } = useJobApplications();
   const handleAddFilter = () => {
     setFilters((prev) => {
       return [
@@ -96,13 +127,28 @@ const ApplicationFilterBody = ({
       ];
     });
   };
+
   const handleSubmit = async () => {
-    const { confirmation, count } = await handleJobApplicationFilter({
-      ...searchParameters,
-      filter: filters,
-    });
-    if (confirmation) {
-      setApplicationLimit(count);
+    if (!applicationDisable) {
+      setApplicationDisable(true);
+      const { confirmation, count } = await handleJobApplicationFilter({
+        ...searchParameters,
+        filter: [
+          ...filters,
+          ...searchParameters.filter.reduce((acc, curr) => {
+            if (
+              section === JobApplicationSections.NEW &&
+              curr.parameter === 'interview_score'
+            )
+              acc.push(curr);
+            return acc;
+          }, []),
+        ],
+      });
+      if (confirmation) {
+        setApplicationLimit(count);
+      }
+      setApplicationDisable(false);
     }
   };
   const disabled =
@@ -122,7 +168,10 @@ const ApplicationFilterBody = ({
   const filterButtons = (
     <Stack flexDirection={'row'} justifyContent={'space-between'}>
       <AUIButton onClick={() => handleAddFilter()}>Add filter</AUIButton>
-      <AUIButton onClick={async () => await handleSubmit()} disabled={disabled}>
+      <AUIButton
+        onClick={async () => await handleSubmit()}
+        disabled={disabled || applicationDisable}
+      >
         Apply filters
       </AUIButton>
     </Stack>
@@ -243,6 +292,7 @@ const CandidateFilterPrimaryDropDown = ({
   // eslint-disable-next-line no-unused-vars
   handleModify: (newParameter: FilterParameter['parameter']) => void;
 }) => {
+  const { section } = useJobApplications();
   return (
     <Select
       value={parameter}
@@ -253,11 +303,19 @@ const CandidateFilterPrimaryDropDown = ({
         handleModify(e.target.value as FilterParameter['parameter'])
       }
     >
-      {CANDIDATE_FILTERS.parameters.map((o, i) => (
-        <MenuItem key={i} value={o} className={'FILTERBODY-Include'}>
-          {capitalize(o)}
-        </MenuItem>
-      ))}
+      {CANDIDATE_FILTERS.parameters.reduce((acc, curr, i) => {
+        if (
+          !(
+            curr === 'interview_score' && section === JobApplicationSections.NEW
+          )
+        )
+          acc.push(
+            <MenuItem key={i} value={curr} className={'FILTERBODY-Include'}>
+              {capitalize(curr)}
+            </MenuItem>,
+          );
+        return acc;
+      }, [])}
     </Select>
   );
 };

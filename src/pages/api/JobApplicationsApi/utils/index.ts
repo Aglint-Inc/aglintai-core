@@ -88,7 +88,7 @@ export const readNewJobApplicationDbAction = async (
   }
 
   if (filter && filter.length > 0) {
-    query = getFilteredQuery(query, filter);
+    query = getFilteredQuery(query, filter, status);
   }
 
   if (search) {
@@ -109,39 +109,50 @@ export const readNewJobApplicationDbAction = async (
   return { data: emailValidation(data), error, count };
 };
 
-const getFilteredQuery = (query: any, filter: FilterParameter[]) => {
+export const getFilteredQuery = (
+  query: any,
+  filter: FilterParameter[],
+  status: JobApplicationSections,
+) => {
   return filter.reduce((acc, curr) => {
-    switch (curr.condition) {
-      case '=':
-        {
-          acc = acc.eq(curr.parameter, curr.count);
-        }
-        break;
-      case '<>':
-        {
-          acc = acc.neq(curr.parameter, curr.count);
-        }
-        break;
-      case '>':
-        {
-          acc = acc.gt(curr.parameter, curr.count);
-        }
-        break;
-      case '>=':
-        {
-          acc = acc.gte(curr.parameter, curr.count);
-        }
-        break;
-      case '<':
-        {
-          acc = acc.lt(curr.parameter, curr.count);
-        }
-        break;
-      case '<=':
-        {
-          acc = acc.lte(curr.parameter, curr.count);
-        }
-        break;
+    if (
+      !(
+        curr.parameter === 'interview_score' &&
+        status === JobApplicationSections.NEW
+      )
+    ) {
+      switch (curr.condition) {
+        case '=':
+          {
+            acc = acc.eq(curr.parameter, curr.count);
+          }
+          break;
+        case '<>':
+          {
+            acc = acc.neq(curr.parameter, curr.count);
+          }
+          break;
+        case '>':
+          {
+            acc = acc.gt(curr.parameter, curr.count);
+          }
+          break;
+        case '>=':
+          {
+            acc = acc.gte(curr.parameter, curr.count);
+          }
+          break;
+        case '<':
+          {
+            acc = acc.lt(curr.parameter, curr.count);
+          }
+          break;
+        case '<=':
+          {
+            acc = acc.lte(curr.parameter, curr.count);
+          }
+          break;
+      }
     }
     return acc;
   }, query);

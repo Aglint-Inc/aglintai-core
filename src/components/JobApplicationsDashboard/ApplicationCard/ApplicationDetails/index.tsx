@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -26,7 +27,11 @@ import {
   ResumeFeedbackScore,
   UnableFetchResume,
 } from '@/devlink';
-import { ResAbsentError, ResumeErrorBlock } from '@/devlink2';
+import {
+  ResAbsentError,
+  ResumeErrorBlock,
+  SelectActionsDropdown,
+} from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
@@ -50,13 +55,14 @@ import toast from '@/src/utils/toast';
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { applicationValidity } from '../utils';
-import { emailHandler } from '../..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
+import { emailHandler, MoveCandidateDialog } from '../../MoveCandidateDialog';
 import {
   ApiLogState,
   capitalize,
+  formatTimeStamp,
   getCandidateName,
   getInterviewScore,
   intactConditionFilter,
@@ -68,12 +74,16 @@ const ApplicationDetails = ({
   applicationDetails,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  jobUpdate,
+  setJobUpdate,
 }: {
   open: boolean;
   onClose: () => void;
   applicationDetails: JobApplication;
   handleSelectNextApplication?: () => void;
   handleSelectPrevApplication?: () => void;
+  jobUpdate: boolean;
+  setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
@@ -134,6 +144,8 @@ const ApplicationDetails = ({
             candidateImage={candidateImage}
             handleSelectNextApplication={handleSelectNextApplication}
             handleSelectPrevApplication={handleSelectPrevApplication}
+            jobUpdate={jobUpdate}
+            setJobUpdate={setJobUpdate}
           />
         ) : (
           <NewDetailedFeedback
@@ -152,6 +164,113 @@ const ApplicationDetails = ({
 };
 
 export default ApplicationDetails;
+
+const MoveCandidatePopUp = ({
+  section,
+  id,
+  name,
+  candidate,
+  emails,
+  jobUpdate,
+  setJobUpdate,
+}: {
+  section: JobApplicationSections;
+  id: string;
+  name: string;
+  candidate: JobApplication['candidates'];
+  emails: JobApplication['emails'];
+  jobUpdate: boolean;
+  setJobUpdate: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { handleUpdateJobStatus, job, handleJobApplicationUpdate } =
+    useJobApplications();
+  const [open, setOpen] = useState(false);
+  const [destination, setDestination] = useState<JobApplicationSections>(null);
+
+  const handleOpen = (destination: JobApplicationSections) => {
+    setOpen(true);
+    setDestination(destination);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setTimeout(() => setDestination(null), 100);
+  };
+
+  const handleSubmit = async () => {
+    if (!jobUpdate) {
+      setJobUpdate(true);
+      await handleUpdateJobStatus(
+        {
+          source: section,
+          destination,
+        },
+        new Set([id]),
+        false,
+      );
+      setJobUpdate(false);
+    }
+  };
+
+  const handleEmail = async () => {
+    await emailHandler(
+      {
+        email: candidate.email,
+        first_name: candidate.first_name,
+        last_name: candidate.last_name,
+        job_title: job.job_title,
+        company: job.company,
+        application_id: id,
+        emails: emails,
+      },
+      job,
+      handleJobApplicationUpdate,
+      destination,
+    );
+  };
+
+  const showNew = section === JobApplicationSections.DISQUALIFIED;
+  const showInterview = section === JobApplicationSections.NEW;
+  const showSelected =
+    section === JobApplicationSections.NEW ||
+    section === JobApplicationSections.INTERVIEWING;
+  const showReject =
+    section === JobApplicationSections.NEW ||
+    section === JobApplicationSections.INTERVIEWING ||
+    section === JobApplicationSections.QUALIFIED;
+
+  return (
+    <>
+      <MoveCandidateDialog
+        open={open}
+        onClose={() => handleClose()}
+        destination={destination}
+        onSubmit={async () => await handleSubmit()}
+        checkAction={async () => await handleEmail()}
+        name={name}
+      />
+      <Stack sx={{ opacity: jobUpdate ? 0.5 : 1 }}>
+        <SelectActionsDropdown
+          isInterview={showInterview}
+          onClickInterview={{
+            onClick: () => handleOpen(JobApplicationSections.INTERVIEWING),
+          }}
+          isQualified={showSelected}
+          onClickQualified={{
+            onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
+          }}
+          isDisqualified={showReject}
+          onClickDisqualified={{
+            onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
+          }}
+          onClickMoveNew={{
+            onClick: () => handleOpen(JobApplicationSections.NEW),
+          }}
+          isMoveNew={showNew}
+        />
+      </Stack>
+    </>
+  );
+};
 
 const NewDetailedFeedback = ({
   applicationDetails,
@@ -267,6 +386,8 @@ const NewJobApplicationSideDrawer = ({
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  jobUpdate,
+  setJobUpdate,
 }: {
   open: boolean;
   applicationDetails: JobApplication;
@@ -275,7 +396,15 @@ const NewJobApplicationSideDrawer = ({
   candidateImage: React.JSX.Element;
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
+  jobUpdate: boolean;
+  setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const name = capitalize(
+    applicationDetails.candidates.first_name +
+      ' ' +
+      `${applicationDetails.candidates.last_name || ''}`,
+  );
+  const creationDate = formatTimeStamp(applicationDetails.created_at);
   const { pressed: shift } = useKeyPress('Shift');
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
@@ -321,11 +450,7 @@ const NewJobApplicationSideDrawer = ({
         onClick: () => onClose(),
       }}
       slotCandidateImage={candidateImage}
-      textName={capitalize(
-        applicationDetails.candidates.first_name +
-          ' ' +
-          `${applicationDetails.candidates.last_name || ''}`,
-      )}
+      textName={name}
       textMail={
         applicationDetails.candidates.email
           ? applicationDetails.candidates.email
@@ -365,6 +490,19 @@ const NewJobApplicationSideDrawer = ({
             'Phone number',
           ),
       }}
+      // slotMoveTo={
+      //   <MoveCandidatePopUp
+      //     section={section}
+      //     id={applicationDetails.application_id}
+      //     name={name}
+      //     candidate={applicationDetails.candidates}
+      //     emails={applicationDetails.emails}
+      //     jobUpdate={jobUpdate}
+      //     setJobUpdate={setJobUpdate}
+      //   />
+      // }
+      textAppliedOn={creationDate}
+      isAppliedOnVisible={true}
     />
   );
 };

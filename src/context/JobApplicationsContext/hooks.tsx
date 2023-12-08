@@ -155,6 +155,9 @@ const useProviderJobApplicationActions = (
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
+  const [section, setSection] = useState<JobApplicationSections>(
+    JobApplicationSections.NEW,
+  );
 
   const paginationLimit = 100;
   const initialJobApplicationPageNumbers = Object.values(
@@ -287,14 +290,15 @@ const useProviderJobApplicationActions = (
         ranges: newRanges,
         ...searchParameters,
       });
-      setApplicationDisable(false);
       if (confirmation) {
         setPageNumber((prev) => {
           return { ...prev, [section]: pageNumber };
         });
+        setApplicationDisable(false);
         return true;
       }
     }
+    setApplicationDisable(false);
     return false;
   };
 
@@ -385,6 +389,8 @@ const useProviderJobApplicationActions = (
       const { data, error } = await updateAllJobStatusDbAction(
         job.id,
         sections,
+        searchParameters.search,
+        searchParameters.filter,
       );
       if (data) {
         await handleJobApplicationRefresh();
@@ -446,6 +452,7 @@ const useProviderJobApplicationActions = (
   const value = {
     applications,
     applicationDisable,
+    setApplicationDisable,
     paginationLimit,
     job,
     updateTick: updateTick.current,
@@ -467,6 +474,8 @@ const useProviderJobApplicationActions = (
     setOpenImportCandidates,
     openManualImportCandidates,
     setOpenManualImportCandidates,
+    section,
+    setSection,
   };
 
   return value;

@@ -18,6 +18,11 @@
   z-index: 3;
 }
 
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
 .slot-add-filter {
   position: relative;
   min-height: 75px;

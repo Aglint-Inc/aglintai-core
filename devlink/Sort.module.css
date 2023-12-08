@@ -141,6 +141,11 @@
   z-index: 3;
 }
 
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
 .div-block-622 {
   padding: 8px 12px;
   border-radius: 4px;
