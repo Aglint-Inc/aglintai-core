@@ -37,7 +37,7 @@ export function NewJobStep1({
             tag="div"
           >
             {
-              "Enter the baisc job details and write with AI or paste your job description and add required skills for this job role"
+              "Enter the basic job details and write with AI or paste your job description and add required skills for this job role"
             }
           </_Builtin.Block>
         </_Builtin.Block>

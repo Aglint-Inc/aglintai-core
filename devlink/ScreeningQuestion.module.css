@@ -23,6 +23,11 @@
   z-index: 3;
 }
 
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
 .instruction-wrap {
   display: flex;
   flex-direction: column;

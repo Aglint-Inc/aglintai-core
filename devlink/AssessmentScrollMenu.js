@@ -239,13 +239,13 @@ export function AssessmentScrollMenu({
         tag="div"
         {...isDisableVisible}
       >
-        <_Builtin.Block tag="div">{"Disable assesment"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"Disable assessment"}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "color-grey-600", "mt-5")}
           tag="div"
         >
           {
-            "Disable this process if you don’t want to use asssesment for the candidate."
+            "Disable this process if you don’t want to use assessment for the candidate."
           }
         </_Builtin.Block>
         <_Builtin.Block

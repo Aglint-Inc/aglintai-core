@@ -31,7 +31,7 @@ export function ResumeScoreSetting({
             tag="div"
           >
             {
-              "Resume score will be calculated based on the follwing critera. adjust values to your needs."
+              "Resume score will be calculated based on the following criteria. Adjust values to your needs."
             }
           </_Builtin.Block>
         </_Builtin.Block>

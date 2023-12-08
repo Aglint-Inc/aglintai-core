@@ -84,7 +84,7 @@ export function ScreeningQuestion({
               tag="div"
             >
               {
-                "This video will appeaer to the candidate along with the instructions"
+                "This video will appear to the candidate along with the instructions"
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -219,7 +219,7 @@ export function ScreeningQuestion({
             tag="div"
           >
             {
-              "The candidate will be informed of this as the beginning of the assessment before the first question."
+              "The candidate will be informed of this at the beginning of the assessment before the first question."
             }
           </_Builtin.Block>
           <_Builtin.Block
@@ -256,7 +256,7 @@ export function ScreeningQuestion({
             className={_utils.cx(_styles, "color-grey-600")}
             tag="div"
           >
-            {"Please set atleast 10 Questions for an ideal assessment"}
+            {"Please set at least 10 Questions for an ideal assessment"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "skill-based-question-wrap")}
@@ -356,7 +356,7 @@ export function ScreeningQuestion({
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
-                {"No of retrys per candidate"}
+                {"No of retries per candidate"}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "fw-semibold")}

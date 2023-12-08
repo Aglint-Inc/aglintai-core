@@ -347,8 +347,8 @@ const CandDatabase = () => {
           setToggleOutreach(false);
         }}
       >
-        <Stack direction={'row'} width={'1100px'}>
-          <Stack width={'45%'} height={'100vh'} overflow={'scroll'}>
+        <Stack direction={'row'} width={'1050px'}>
+          <Stack height={'100vh'} overflow={'scroll'}>
             <SelectedCandidate
               onClickClose={() => setSelectedCand(-1)}
               onClickNext={() => {
