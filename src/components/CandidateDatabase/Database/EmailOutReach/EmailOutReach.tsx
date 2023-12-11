@@ -1,8 +1,8 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Paper, Stack } from '@mui/material';
 import axios from 'axios';
-import { get } from 'lodash';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   ButtonGenerate,
@@ -10,59 +10,34 @@ import {
   ConnectedMail,
   ConnectMailModal,
   EmailSent,
+  LoaderSvg,
   MailLink,
 } from '@/devlink';
-import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import MuiPopup from '@/src/components/Common/MuiPopup';
+import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
 
-import { useCandFilter } from '../CandDbProvider';
-import { Candidate } from '../candFilter.type';
+import EmailTemplateModalComp from './EmailTemplateDialog';
+import { useOutReachCtx } from './OutReachCtx';
 
-type CandEmailData = {
-  access_token: string;
-  refresh_token: string;
-  email: string;
-  provider: 'google' | 'outlook';
-  expiry_date: number;
-} | null;
+const EmailOutReach = () => {
+  const { state: OutreachState, dispatch } = useOutReachCtx();
 
-const EmailOutReach = ({ candPath }: { candPath: number }) => {
-  const { candState } = useCandFilter();
-  const selcandidate = get(candState.candidates, `[${candPath}]`) as Candidate;
-  const [candEmailData, setCandEmailData] = useState<CandEmailData>(null);
-  const [mailSendStatus, setMailSendStatus] = useState<'' | 'sending' | 'sent'>(
-    '',
-  );
-  const [email, setEmail] = useState({
-    toEmail: selcandidate.email,
-    subject: '',
-    body: '',
-  });
-  const { recruiter } = useAuthDetails();
-  const [isMailAuthOpen, setIsMailAuthOpen] = useState(false);
-
-  useEffect(() => {
-    const str = localStorage.getItem(`email-outreach${recruiter.id}`);
-    const candInfo = JSON.parse(str) as CandEmailData;
-    if (!candInfo) return;
-    const isDateExpired = candInfo.expiry_date - Date.now();
-    if (isDateExpired <= 0) {
-      localStorage.removeItem(`email-outreach${recruiter.id}`);
-    } else {
-      setCandEmailData(candInfo);
-    }
-  }, [recruiter]);
-
-  useEffect(() => {
-    setMailSendStatus('');
-    let email = selcandidate.json_resume.basics?.email ?? selcandidate.email;
-    setEmail((p) => ({ ...p, toEmail: email }));
-  }, [selcandidate]);
+  const {
+    email,
+    isOpenEditTempModal,
+    selectedTemplate,
+    mailSendStatus,
+    candEmailData,
+    emailTemplates,
+    isMailAuthOpen,
+    isEmailLoading,
+    defaultEmailJson,
+  } = OutreachState;
 
   const router = useRouter();
 
@@ -85,7 +60,13 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         toast.error('please enter correct email, subject and body');
         return;
       }
-      setMailSendStatus('sending');
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'mailSendStatus',
+          value: 'sending',
+        },
+      });
       await axios.post('/api/email-outreach/send-email', {
         fromEmail: candEmailData.email,
         toEmail: email.toEmail,
@@ -94,13 +75,25 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         subject: email.subject,
         body: email.body,
       });
-      setMailSendStatus('sent');
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'mailSendStatus',
+          value: 'sent',
+        },
+      });
     } catch (error) {
       toast.error(API_FAIL_MSG);
     } finally {
       setTimeout(() => {
-        setMailSendStatus('');
-      }, 10000);
+        dispatch({
+          type: 'updateState',
+          payload: {
+            path: 'mailSendStatus',
+            value: '',
+          },
+        });
+      }, 5000);
     }
   };
 
@@ -108,7 +101,7 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
     <>
       <CdEmailOutreach
         isEmailBodyVisible={true}
-        isLoading={false}
+        // isLoading={true}
         slotEmailSent={
           <>
             {mailSendStatus === 'sent' && (
@@ -130,9 +123,15 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         slotInputMailId={
           <>
             <UITextField
-              defaultValue={selcandidate.email}
+              defaultValue={email.toEmail}
               onChange={(e) => {
-                setEmail((p) => ({ ...p, toEmail: e.target.value }));
+                dispatch({
+                  type: 'updateState',
+                  payload: {
+                    path: 'email.toEmail',
+                    value: e.target.value,
+                  },
+                });
               }}
               value={email.toEmail}
             />
@@ -146,37 +145,66 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
                 size={'15px'}
                 sx={{ color: palette.grey[400] }}
               />
-            ) : undefined}
+            ) : (
+              <>
+                <Image
+                  src='/images/svg/send.svg'
+                  width={15}
+                  height={15}
+                  alt=''
+                />
+              </>
+            )}
           </>
         }
         slotInputSubject={
           <>
             <UITextField
               onChange={(e) => {
-                setEmail((p) => ({ ...p, subject: e.target.value }));
+                dispatch({
+                  type: 'updateState',
+                  payload: {
+                    path: 'email.subject',
+                    value: e.target.value,
+                  },
+                });
               }}
+              value={email.subject}
+              defaultValue={email.subject}
               placeholder='Subject'
             />
           </>
         }
         slotInputBody={
           <>
-            <div
-              style={{
-                border: `1px solid ${palette.grey[300]}`,
-                borderRadius: '5px',
-              }}
-            >
-              <EmailAiEditor
-                defaultValue=''
-                onChangeUpdateJson={() => {
-                  // console.log(j);
+            {isEmailLoading ? (
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                width={'100%'}
+                height={'300px'}
+                justifyContent={'center'}
+              >
+                <LoaderSvg />
+              </Stack>
+            ) : (
+              <div
+                style={{
+                  border: `1px solid ${palette.grey[300]}`,
+                  borderRadius: '4px',
                 }}
-                onChangeUpdateHtml={() => {
-                  // console.log(h);
-                }}
-              />
-            </div>
+              >
+                <TipTapAIEditor
+                  enablAI={false}
+                  initialValue=''
+                  defaultJson={defaultEmailJson}
+                  placeholder=''
+                  handleChange={() => {
+                    // ndkwenjedk
+                  }}
+                />
+              </div>
+            )}
           </>
         }
         slotLinkMail={
@@ -191,17 +219,49 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
               <MailLink
                 onClickLinkNow={{
                   onClick: () => {
-                    setIsMailAuthOpen(true);
+                    dispatch({
+                      type: 'updateState',
+                      payload: {
+                        path: 'isMailAuthOpen',
+                        value: true,
+                      },
+                    });
                   },
                 }}
               />
             )}
           </>
         }
-        slotLottie={<></>}
+        // slotLottie={<>dmqwkdmlqwml</>}
         slotTemplateButton={
           <>
-            <>Template 1</>
+            <UISelect
+              fullWidth
+              menuOptions={emailTemplates.map((e) => ({
+                name: e.name,
+                value: e.id,
+              }))}
+              value={selectedTemplate}
+              defaultValue={0}
+              onChange={(e) => {
+                dispatch({
+                  type: 'updateState',
+                  payload: {
+                    path: 'selectedTemplate',
+                    value: Number(e.target.value),
+                  },
+                });
+                dispatch({
+                  type: 'updateState',
+                  payload: {
+                    path: 'email.subject',
+                    value: emailTemplates.find(
+                      (prev) => prev.id === Number(e.target.value),
+                    )?.subject,
+                  },
+                });
+              }}
+            />
           </>
         }
         onClickBack={{
@@ -211,12 +271,18 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         }}
         onClickCopyMail={{
           onClick: () => {
-            //
+            navigator.clipboard.writeText(email.toEmail);
           },
         }}
         onClickEdit={{
           onClick: () => {
-            //
+            dispatch({
+              type: 'updateState',
+              payload: {
+                path: 'isOpenEditTempModal',
+                value: true,
+              },
+            });
           },
         }}
         onClickSendMail={{
@@ -229,7 +295,13 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         props={{
           open: isMailAuthOpen,
           onClose: () => {
-            setIsMailAuthOpen(false);
+            dispatch({
+              type: 'updateState',
+              payload: {
+                path: 'isMailAuthOpen',
+                value: false,
+              },
+            });
           },
         }}
       >
@@ -240,20 +312,37 @@ const EmailOutReach = ({ candPath }: { candPath: number }) => {
         />
       </MuiPopup>
 
-      <MuiPopup props={{ open: false }}>
-        <></>
+      <MuiPopup
+        props={{
+          open: isOpenEditTempModal,
+          maxWidth: 'md',
+          onClose: () =>
+            dispatch({
+              type: 'updateState',
+              payload: {
+                path: 'isOpenEditTempModal',
+                value: false,
+              },
+            }),
+        }}
+      >
+        <Paper>
+          <EmailTemplateModalComp
+            selectedTemplate={selectedTemplate}
+            onClose={() => {
+              dispatch({
+                type: 'updateState',
+                payload: {
+                  path: 'isOpenEditTempModal',
+                  value: false,
+                },
+              });
+            }}
+          />
+        </Paper>
       </MuiPopup>
     </>
   );
 };
 
 export default EmailOutReach;
-
-[
-  {
-    name: 'Template 1',
-    subject: 'Research study into the future of work',
-    templateJson: {},
-    templateHtml: '',
-  },
-];

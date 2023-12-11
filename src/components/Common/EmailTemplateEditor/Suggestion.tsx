@@ -4,7 +4,7 @@ import tippy from 'tippy.js';
 import CommandsList from './CommandsList';
 
 const Suggestion = {
-  items: ({ query }) => {
+  items: () => {
     return [
       {
         title: 'AI Command',
@@ -24,15 +24,26 @@ const Suggestion = {
             .chain()
             .focus()
             .deleteRange(range)
-            .insertContent('<candidate-label></candidate-label>')
+            .insertContent(
+              `<cand-name content-editable='false' class='cand-name'></cand-name>`,
+            )
             .run();
         },
       },
-    ]
-      .filter((item) =>
-        item.title.toLowerCase().startsWith(query.toLowerCase()),
-      )
-      .slice(0, 10);
+      {
+        title: 'Recruiter Label',
+        command: ({ editor, range }) => {
+          editor
+            .chain()
+            .focus()
+            .deleteRange(range)
+            .insertContent(
+              `<rec-name content-editable='false' class='rec-name'></rec-name>`,
+            )
+            .run();
+        },
+      },
+    ];
   },
 
   render: () => {

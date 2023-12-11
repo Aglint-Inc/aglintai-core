@@ -1,6 +1,39 @@
 import { Popover } from '@mui/material';
+import { mergeAttributes, Node } from '@tiptap/core';
+import { ReactNodeViewRenderer } from '@tiptap/react';
 import { NodeViewWrapper } from '@tiptap/react';
 import React, { useState } from 'react';
+
+export const AiPromptNodeSchema = Node.create({
+  name: 'AiPrompt',
+  group: 'block',
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return {
+      aiPrompt: {
+        default:
+          'Add one sentence on why the candidate is a good fit for this company and also mention candidates strength',
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'ai-prompt',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['ai-prompt', mergeAttributes(HTMLAttributes)];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(Component);
+  },
+});
 
 import { AddCommandInput, TemplateAddSentence } from '@/devlink';
 
@@ -18,6 +51,7 @@ const Component = (props) => {
               onClickEdit={{
                 onClick: (e) => {
                   setAnchorEl(e.currentTarget);
+                  setAiCmd(props.node.attrs.aiPrompt);
                 },
               }}
             />
@@ -83,5 +117,3 @@ const Component = (props) => {
     </NodeViewWrapper>
   );
 };
-
-export default Component;

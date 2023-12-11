@@ -8,7 +8,7 @@ import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './TipTapAIEditor.module.scss';
 
@@ -25,6 +25,7 @@ export type TipTapAIEditorParams = {
   // eslint-disable-next-line no-unused-vars
   handleChange: (s: string) => void;
   showWarnOnEdit?: () => void;
+  defaultJson?: any;
 };
 
 const TipTapAIEditor = ({
@@ -32,6 +33,7 @@ const TipTapAIEditor = ({
   handleChange,
   initialValue,
   enablAI = false,
+  defaultJson,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -88,6 +90,10 @@ const TipTapAIEditor = ({
       },
     },
   }) as Editor;
+
+  useEffect(() => {
+    if (editor && defaultJson) editor.commands.setContent(defaultJson);
+  }, [defaultJson, editor]);
 
   return (
     <TipTapCtx.Provider

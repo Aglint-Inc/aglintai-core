@@ -1,55 +1,70 @@
 import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import './editor.module.scss';
+import { palette } from '@/src/context/Theme/Theme';
 
-import AiPrompt from './AiPrompt';
-import CandidateLabelSchema from './CandidateLabelSchema';
 import Commands from './Commands';
+import { AiPromptNodeSchema } from './CustomNodes/AiPromptNodeSchema';
+import { CandName } from './CustomNodes/CandName';
+import { RecruiterFirstName } from './CustomNodes/RecruiterFirstName';
 import suggestion from './Suggestion';
 
 const EmailTemplateEditor = ({
   defaultValue,
   onChangeUpdateJson,
   onChangeUpdateHtml,
+  defaultJson,
 }: {
-  defaultValue: string;
+  defaultValue?: string;
+  defaultJson?: any;
   // eslint-disable-next-line no-unused-vars
-  onChangeUpdateJson: (json: any) => void;
+  onChangeUpdateJson?: (json: any) => void;
   // eslint-disable-next-line no-unused-vars
-  onChangeUpdateHtml: (html: any) => void;
+  onChangeUpdateHtml?: (html: any) => void;
 }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      AiPrompt,
-      CandidateLabelSchema,
+      AiPromptNodeSchema,
+      RecruiterFirstName.configure({
+        HTMLAttributes: {
+          class: 'rec-name',
+        },
+      }),
+      CandName.configure({
+        HTMLAttributes: {
+          class: 'cand-name',
+        },
+      }),
       Commands.configure({
         suggestion,
       }),
     ],
     content: defaultValue,
     onUpdate: (s) => {
-      onChangeUpdateJson(s.editor.getJSON());
-      onChangeUpdateHtml(s.editor.getHTML());
+      onChangeUpdateJson && onChangeUpdateJson(s.editor.getJSON());
+      onChangeUpdateHtml && onChangeUpdateHtml(s.editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (defaultJson) editor.commands.setContent(defaultJson);
+  }, [defaultJson]);
 
   return (
     <>
       <Stack
         sx={{
+          border: `1px solid ${palette.grey[300]}`,
+          borderRadius: '5px',
           '& .ProseMirror': {
             minHeight: '250px',
             width: '100%',
             wordBreak: 'break-word',
-            px: 0.5,
-            py: 0.2,
-          },
-          '& .ProseMirror *::selection': {
-            background: '#b100af30',
+            px: '12px',
+            py: '12px',
           },
           '.tiptap p.is-editor-empty:first-child::before ': {
             color: '#adb5bd',
@@ -60,6 +75,10 @@ const EmailTemplateEditor = ({
           },
           '& .ProseMirror-focused': {
             outline: 0,
+          },
+          '&  span .mention': {
+            backgroundColor: 'red',
+            color: 'red',
           },
         }}
       >

@@ -21,7 +21,7 @@ type Props = {
     // eslint-disable-next-line no-unused-vars
     event: SelectChangeEvent<string | number>,
   ) => void;
-  defaultValue?: string;
+  defaultValue?: string | number;
   startIcon?: any;
 };
 

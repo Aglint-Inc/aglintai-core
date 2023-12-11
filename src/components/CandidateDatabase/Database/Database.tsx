@@ -14,6 +14,7 @@ import toast from '@/src/utils/toast';
 
 import { useCandFilter } from './CandDbProvider';
 import EmailOutReach from './EmailOutReach/EmailOutReach';
+import { OutReachCtxProvider } from './EmailOutReach/OutReachCtx';
 import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
 import SortComp from './SortComp';
@@ -350,7 +351,7 @@ const CandDatabase = () => {
         <Stack direction={'row'} width={'1050px'}>
           <Stack height={'100vh'} overflow={'scroll'}>
             <SelectedCandidate
-              onClickClose={() => setSelectedCand(-1)}
+              onClickClose={() => setToggleOutreach(false)}
               onClickNext={() => {
                 if (candidates.length - 1 > selectedCandidate) {
                   setSelectedCand((p) => p + 1);
@@ -368,8 +369,16 @@ const CandDatabase = () => {
               isEmailOutreachVisible={false}
             />
           </Stack>
-          <Stack width={'60%'} height={'100vh'} overflow={'scroll'}>
-            <EmailOutReach candPath={selectedCandidate} />
+          <Stack width={'68%'} height={'100vh'} overflow={'scroll'}>
+            <OutReachCtxProvider
+              selcandidate={
+                selectedCandidate !== -1
+                  ? candidates[Number(selectedCandidate)]
+                  : null
+              }
+            >
+              <EmailOutReach />
+            </OutReachCtxProvider>
           </Stack>
         </Stack>
       </Drawer>

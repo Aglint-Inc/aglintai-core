@@ -181,6 +181,45 @@ export interface Database {
         }
         Relationships: []
       }
+      emails_outreaches: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          email: Json[] | null
+          id: number
+          recruiter_id: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          email?: Json[] | null
+          id?: number
+          recruiter_id: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          email?: Json[] | null
+          id?: number
+          recruiter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emails_outreaches_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emails_outreaches_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       env: {
         Row: {
           created_at: string
@@ -654,6 +693,7 @@ export interface Database {
           departments: string[]
           e_o_statement: string | null
           email: string | null
+          email_outreach_templates: Json[] | null
           email_template: Json
           employee_size: string | null
           employment_type: Json
@@ -666,7 +706,6 @@ export interface Database {
           m_v_statement: string | null
           name: string | null
           office_locations: Json[] | null
-          outreach_templates: Json[] | null
           phone_number: string | null
           primary_contact: Json | null
           recruiter_active: boolean | null
@@ -695,6 +734,7 @@ export interface Database {
           departments?: string[]
           e_o_statement?: string | null
           email?: string | null
+          email_outreach_templates?: Json[] | null
           email_template?: Json
           employee_size?: string | null
           employment_type?: Json
@@ -707,7 +747,6 @@ export interface Database {
           m_v_statement?: string | null
           name?: string | null
           office_locations?: Json[] | null
-          outreach_templates?: Json[] | null
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_active?: boolean | null
@@ -736,6 +775,7 @@ export interface Database {
           departments?: string[]
           e_o_statement?: string | null
           email?: string | null
+          email_outreach_templates?: Json[] | null
           email_template?: Json
           employee_size?: string | null
           employment_type?: Json
@@ -748,7 +788,6 @@ export interface Database {
           m_v_statement?: string | null
           name?: string | null
           office_locations?: Json[] | null
-          outreach_templates?: Json[] | null
           phone_number?: string | null
           primary_contact?: Json | null
           recruiter_active?: boolean | null
