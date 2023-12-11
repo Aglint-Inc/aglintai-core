@@ -1,10 +1,15 @@
+import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
 import React, { Dispatch, useContext, useEffect } from 'react';
 
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import { outReachTemplates, TemplateType } from './seedTemplates';
 import { templateToEmailBody } from './utils';
@@ -14,6 +19,8 @@ export interface OutReachCtxType {
   state: StateType;
   dispatch: Dispatch<MyAction>;
   genEmailTempToemail: () => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  genEmailFromTempJson: (templateJson: any) => Promise<void>;
 }
 
 type CandEmailData = {
@@ -52,14 +59,7 @@ export type MyAction =
     }
   | {
       type: 'generatedefaultJson';
-      payload: Pick<
-        StateType,
-        | 'defaultEmailJson'
-        | 'mailSendStatus'
-        | 'email'
-        | 'emailTemplates'
-        | 'isEmailLoading'
-      >;
+      payload: Pick<StateType, 'defaultEmailJson' | 'email' | 'isEmailLoading'>;
     };
 
 // Reducer function
@@ -72,21 +72,13 @@ const reducer = (state: StateType, action: MyAction): StateType => {
       return newState;
     }
     case 'generatedefaultJson': {
-      const {
-        defaultEmailJson,
-        email,
-        emailTemplates,
-        isEmailLoading,
-        mailSendStatus,
-      } = action.payload;
+      const { defaultEmailJson, email, isEmailLoading } = action.payload;
 
       newState = {
         ...newState,
         defaultEmailJson,
         email,
-        emailTemplates,
         isEmailLoading,
-        mailSendStatus,
       };
       return newState;
     }
@@ -116,6 +108,8 @@ const OutReachCtx = React.createContext<OutReachCtxType>({
   state: initialState,
   dispatch: () => {},
   genEmailTempToemail: async () => {},
+  // eslint-disable-next-line no-unused-vars
+  genEmailFromTempJson: async (templateJson: any) => {},
 });
 
 // Provider component
@@ -137,7 +131,27 @@ const OutReachCtxProvider = ({
     if (candInfo) {
       const isDateExpired = candInfo.expiry_date - Date.now();
       if (isDateExpired <= 0) {
-        localStorage.removeItem(`email-outreach${recruiter.id}`);
+        (async () => {
+          const { data: newAcessTOken } = await axios.post(
+            '/api/email-outreach/getNewAcessToken',
+            {
+              refresh_token: candInfo.refresh_token,
+            },
+          );
+          candInfo.access_token = newAcessTOken;
+          localStorage.setItem(
+            `email-outreach${recruiter.id}`,
+            JSON.stringify(newAcessTOken),
+          );
+          dispatch({
+            type: 'updateState',
+            payload: {
+              path: 'candEmailData',
+              value: candInfo,
+            },
+          });
+        })();
+        // localStorage.removeItem(`email-outreach${recruiter.id}`);
       } else {
         dispatch({
           type: 'updateState',
@@ -151,8 +165,34 @@ const OutReachCtxProvider = ({
   }, []);
 
   useEffect(() => {
-    if (!selcandidate) return;
+    (async () => {
+      try {
+        const [emailTemps] = supabaseWrap(
+          await supabase
+            .from('recruiter')
+            .select('email_outreach_templates')
+            .eq('id', recruiterUser.recruiter_id),
+        ) as { email_outreach_templates: TemplateType[] }[];
+        let temps = emailTemps?.email_outreach_templates
+          ? emailTemps.email_outreach_templates
+          : outReachTemplates;
+        dispatch({
+          type: 'updateState',
+          payload: {
+            path: 'emailTemplates',
+            value: temps,
+          },
+        });
+      } catch {
+        //
+      } finally {
+        //
+      }
+    })();
+  }, [recruiter, dispatch]);
 
+  useEffect(() => {
+    if (!selcandidate) return;
     genEmailTempToemail();
   }, [recruiterUser, selcandidate, dispatch]);
 
@@ -166,6 +206,14 @@ const OutReachCtxProvider = ({
         },
       });
       let email = selcandidate.json_resume.basics?.email ?? selcandidate.email;
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'email.toEmail',
+          value: email,
+        },
+      });
+
       const [emailTemps] = supabaseWrap(
         await supabase
           .from('recruiter')
@@ -196,8 +244,6 @@ const OutReachCtxProvider = ({
             subject: temps[0].subject,
             toEmail: email,
           },
-          mailSendStatus: '',
-          emailTemplates: temps,
           isEmailLoading: false,
           defaultEmailJson: emailBodyJson,
         },
@@ -216,7 +262,57 @@ const OutReachCtxProvider = ({
       });
     }
   };
-  const value = { state, dispatch, genEmailTempToemail };
+
+  const genEmailFromTempJson = async (templateJson) => {
+    try {
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'isEmailLoading',
+          value: true,
+        },
+      });
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'email.body',
+          value: '',
+        },
+      });
+      const emailBodyJson = await handleGenEmail(
+        templateJson,
+        recruiterUser.first_name,
+        selcandidate.first_name + ' ' + selcandidate.last_name,
+        async (command) => {
+          const resp = await resolveAiCmd(
+            selcandidate.json_resume.overview,
+            recruiter.company_overview,
+            command,
+          );
+          return resp;
+        },
+      );
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'defaultEmailJson',
+          value: emailBodyJson,
+        },
+      });
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'isEmailLoading',
+          value: false,
+        },
+      });
+    }
+  };
+
+  const value = { state, dispatch, genEmailTempToemail, genEmailFromTempJson };
   if (!selcandidate) return <></>;
   return <OutReachCtx.Provider value={value}>{children}</OutReachCtx.Provider>;
 };

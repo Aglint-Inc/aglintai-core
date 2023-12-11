@@ -26,14 +26,12 @@ const EmailTemplateModalComp = ({
   const [email, setEmail] = useState({ subject: '', body: null, name: '' });
   const [editorJson, setEditorJson] = useState(null);
   const [showEditName, setShowditName] = useState(false);
-  const { dispatch } = useOutReachCtx();
+  const { dispatch, state, genEmailFromTempJson } = useOutReachCtx();
 
   useEffect(() => {
     if (!recruiter || selectedTemplate === -1) return;
 
-    const templates =
-      (recruiter.email_outreach_templates as TemplateType[] | null) ??
-      outReachTemplates;
+    const templates = state.emailTemplates;
 
     const selectedMail = templates.find((s) => s.id === selectedTemplate);
     setEmail({
@@ -88,6 +86,8 @@ const EmailTemplateModalComp = ({
           value: updatedTemps,
         },
       });
+
+      genEmailFromTempJson(newOutReachTemp.templateJson);
       onClose();
       toast.success('template updated sucessfully');
     } catch (err) {
@@ -141,10 +141,9 @@ const EmailTemplateModalComp = ({
           )
         }
         onClickCancel={{
-          onClick: () => {},
-        }}
-        onClickEdit={{
-          onClick: () => {},
+          onClick: () => {
+            onClose();
+          },
         }}
         onClickEditName={{
           onClick: () => {

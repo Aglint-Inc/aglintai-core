@@ -30,6 +30,7 @@ const EmailOutReach = () => {
     state: OutreachState,
     dispatch,
     genEmailTempToemail,
+    genEmailFromTempJson,
   } = useOutReachCtx();
 
   const {
@@ -98,7 +99,7 @@ const EmailOutReach = () => {
             value: '',
           },
         });
-      }, 5000);
+      }, 10000);
     }
   };
 
@@ -265,6 +266,9 @@ const EmailOutReach = () => {
               value={selectedTemplate}
               defaultValue={0}
               onChange={(e) => {
+                genEmailFromTempJson(
+                  emailTemplates[Number(e.target.value)].templateJson,
+                );
                 dispatch({
                   type: 'updateState',
                   payload: {
