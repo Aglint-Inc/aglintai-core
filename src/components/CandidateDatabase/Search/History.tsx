@@ -128,7 +128,7 @@ function CandidateSearchHistory() {
           <>
             <UITextField
               value={searchQuery}
-              placeholder='Type your requirement here and press enter'
+              placeholder='Ex: Software engineer with 2 years of experience'
               onChange={(e) => {
                 setSearchQuery(e.target.value);
               }}
