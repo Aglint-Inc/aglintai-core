@@ -12,6 +12,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { useOutReachCtx } from './OutReachCtx';
 import { outReachTemplates, TemplateType } from './seedTemplates';
 
 const EmailTemplateModalComp = ({
@@ -25,6 +26,7 @@ const EmailTemplateModalComp = ({
   const [email, setEmail] = useState({ subject: '', body: null, name: '' });
   const [editorJson, setEditorJson] = useState(null);
   const [showEditName, setShowditName] = useState(false);
+  const { dispatch } = useOutReachCtx();
 
   useEffect(() => {
     if (!recruiter || selectedTemplate === -1) return;
@@ -71,7 +73,6 @@ const EmailTemplateModalComp = ({
         if (t.id === newOutReachTemp.id) return newOutReachTemp;
         return t;
       });
-
       supabaseWrap(
         await supabase
           .from('recruiter')
@@ -80,6 +81,13 @@ const EmailTemplateModalComp = ({
           })
           .eq('id', recruiter.id),
       );
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'emailTemplates',
+          value: updatedTemps,
+        },
+      });
       onClose();
       toast.success('template updated sucessfully');
     } catch (err) {

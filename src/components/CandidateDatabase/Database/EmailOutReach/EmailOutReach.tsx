@@ -13,6 +13,7 @@ import {
   LoaderSvg,
   MailLink,
 } from '@/devlink';
+import EmailGenerating from '@/src/components/Common/Lotties/EmailGenerating';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
@@ -25,7 +26,11 @@ import EmailTemplateModalComp from './EmailTemplateDialog';
 import { useOutReachCtx } from './OutReachCtx';
 
 const EmailOutReach = () => {
-  const { state: OutreachState, dispatch } = useOutReachCtx();
+  const {
+    state: OutreachState,
+    dispatch,
+    genEmailTempToemail,
+  } = useOutReachCtx();
 
   const {
     email,
@@ -100,8 +105,8 @@ const EmailOutReach = () => {
   return (
     <>
       <CdEmailOutreach
-        isEmailBodyVisible={true}
-        // isLoading={true}
+        isEmailBodyVisible={!OutreachState.isEmailLoading}
+        isLoading={OutreachState.isEmailLoading}
         slotEmailSent={
           <>
             {mailSendStatus === 'sent' && (
@@ -117,7 +122,13 @@ const EmailOutReach = () => {
         }
         slotButtonGenerate={
           <>
-            <ButtonGenerate />
+            <ButtonGenerate
+              onClickGenerate={{
+                onClick: () => {
+                  genEmailTempToemail();
+                },
+              }}
+            />
           </>
         }
         slotInputMailId={
@@ -197,10 +208,16 @@ const EmailOutReach = () => {
                 <TipTapAIEditor
                   enablAI={false}
                   initialValue=''
-                  defaultJson={defaultEmailJson}
-                  placeholder=''
-                  handleChange={() => {
-                    // ndkwenjedk
+                  defaultJson={email.body === '' ? defaultEmailJson : undefined}
+                  placeholder='Email Body'
+                  handleChange={(s) => {
+                    dispatch({
+                      type: 'updateState',
+                      payload: {
+                        path: 'email.body',
+                        value: s,
+                      },
+                    });
                   }}
                 />
               </div>
@@ -232,7 +249,11 @@ const EmailOutReach = () => {
             )}
           </>
         }
-        // slotLottie={<>dmqwkdmlqwml</>}
+        slotLottie={
+          <>
+            <EmailGenerating />
+          </>
+        }
         slotTemplateButton={
           <>
             <UISelect

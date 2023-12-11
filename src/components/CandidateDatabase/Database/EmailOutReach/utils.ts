@@ -8,21 +8,23 @@ export const templateToEmailBody = async (
 ) => {
   if (!isArray(content)) return null;
 
-  content = content.map((c) => {
-    // console.log(c.type);
-    if (c.type === 'AiPrompt') {
-      return {
-        type: 'paragraph',
-        content: [
-          {
-            text: 'replaced ai prompt',
-            type: 'text',
-          },
-        ],
-      };
-    }
-    return c;
-  });
+  content = await Promise.all(
+    content.map(async (c) => {
+      // console.log(c.type);
+      if (c.type === 'AiPrompt') {
+        return {
+          type: 'paragraph',
+          content: [
+            {
+              text: await genAiResp(c.attrs.aiPrompt),
+              type: 'text',
+            },
+          ],
+        };
+      }
+      return c;
+    }),
+  );
 
   const candNameIdx = content.findIndex((c) => c.type === 'cand-name');
   if (candNameIdx !== -1) {
