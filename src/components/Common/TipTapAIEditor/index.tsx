@@ -92,7 +92,7 @@ const TipTapAIEditor = ({
   }) as Editor;
 
   useEffect(() => {
-    if (editor && defaultJson) editor.commands.setContent(defaultJson);
+    if (editor && defaultJson) editor.commands.setContent(defaultJson, true);
   }, [defaultJson, editor]);
 
   return (
