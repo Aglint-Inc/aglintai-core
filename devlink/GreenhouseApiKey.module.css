@@ -137,15 +137,15 @@
   opacity: 0.7;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
 .div-block-539 {
   display: flex;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .text-capitalize-word {
@@ -178,6 +178,17 @@
 
 .text-align-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .fw-semibold.color-blue-800 {

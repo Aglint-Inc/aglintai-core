@@ -15,7 +15,7 @@
 
   display: flex;
   height: 40px;
-  margin-top: 16px;
+  margin-top: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -137,15 +137,15 @@
   opacity: 0.7;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
 .div-block-539 {
   display: flex;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .text-capitalize-word {
@@ -178,6 +178,17 @@
 
 .text-align-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -365,7 +376,7 @@
 }
 
 .lever-api-generate-wrap {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 30px;
   border-radius: 10px;
   background-color: #f8f9f9;

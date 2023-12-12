@@ -1,8 +1,8 @@
 import {
-  Autocomplete,
-  AutocompleteProps,
+  // Autocomplete,
+  // AutocompleteProps,
   Avatar,
-  Chip,
+  // Chip,
   Drawer,
   Stack,
   Switch,
@@ -66,7 +66,7 @@ const TeamManagement = () => {
     (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
-  const [allRoles, setAllRoles] = useState<string[]>();
+  // const [allRoles, setAllRoles] = useState<string[]>();
   const handleMemberUpdate = async (
     details: Partial<RecruiterUserType>,
     id: string,
@@ -88,7 +88,7 @@ const TeamManagement = () => {
         //   }, 0),
         // );}
       });
-      setAllRoles(tempRoles.map((role) => capitalizeAll(role)));
+      // setAllRoles(tempRoles.map((role) => capitalizeAll(role)));
     }
   }, [role]);
   return (
@@ -100,29 +100,29 @@ const TeamManagement = () => {
               <Member
                 key={member.user_id}
                 member={member}
-                allRoles={allRoles.map((role) => capitalizeAll(role))}
-                canUpdate={recruiterUser?.user_id !== member.user_id}
-                memberRoleUpdate={(role: string) => {
-                  handleMemberUpdate({ role }, member.user_id).then(
-                    (member) => {
-                      if (recruiterUser?.user_id === member.user_id) {
-                        toast.error('Cannot Update Role Your Account');
-                      } else {
-                        if (member) {
-                          setMembers(
-                            members.map((mem) => {
-                              if (mem.user_id === member.user_id) {
-                                return member;
-                              }
-                              return mem;
-                            }),
-                          );
-                          toast.success('Role Updated Successfully');
-                        }
-                      }
-                    },
-                  );
-                }}
+                // allRoles={allRoles.map((role) => capitalizeAll(role))}
+                // canUpdate={recruiterUser?.user_id !== member.user_id}
+                // memberRoleUpdate={(role: string) => {
+                //   handleMemberUpdate({ role }, member.user_id).then(
+                //     (member) => {
+                //       if (recruiterUser?.user_id === member.user_id) {
+                //         toast.error('Cannot Update Role Your Account');
+                //       } else {
+                //         if (member) {
+                //           setMembers(
+                //             members.map((mem) => {
+                //               if (mem.user_id === member.user_id) {
+                //                 return member;
+                //               }
+                //               return mem;
+                //             }),
+                //           );
+                //           toast.success('Role Updated Successfully');
+                //         }
+                //       }
+                //     },
+                //   );
+                // }}
                 removeMember={() => {
                   if (recruiterUser?.user_id === member.user_id) {
                     toast.error('Cannot Remove User Account');
@@ -178,7 +178,7 @@ const TeamManagement = () => {
       {role.manage_users && (
         <AddMember
           id={userDetails.user.id}
-          allRoles={allRoles}
+          // allRoles={allRoles}
           open={openDrawer.open}
           menu={openDrawer.window}
           pendingList={pendingList}
@@ -198,7 +198,7 @@ const AddMember = ({
   id,
   open,
   menu,
-  allRoles,
+  // allRoles,
   pendingList,
   onClose,
   addMembers,
@@ -206,7 +206,7 @@ const AddMember = ({
   id: string;
   open: boolean;
   menu: 'addMember' | 'pendingMember';
-  allRoles: string[];
+  // allRoles: string[];
   pendingList: RecruiterUserType[];
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
@@ -216,7 +216,7 @@ const AddMember = ({
     name: string;
     email: string;
     role: string;
-  }>({ name: null, email: null, role: null });
+  }>({ name: null, email: null, role: 'recruiter' });
 
   const [formError, setFormError] = useState<{
     name: boolean;
@@ -266,7 +266,7 @@ const AddMember = ({
                     setForm({ ...form, email: e.target.value });
                   }}
                 />
-                <CustomAutocomplete
+                {/* <CustomAutocomplete
                   values={form.role}
                   placeholder='User Role'
                   options={allRoles}
@@ -277,7 +277,7 @@ const AddMember = ({
                   onChange={(_, newValue) => {
                     setForm({ ...form, role: newValue });
                   }}
-                />
+                /> */}
               </Stack>
             }
             slotButtons={
@@ -362,19 +362,19 @@ const AddMember = ({
 
 const Member = ({
   member,
-  allRoles,
-  canUpdate,
-  memberRoleUpdate,
+  // allRoles,
+  // canUpdate,
+  // memberRoleUpdate,
   removeMember,
 }: {
   member: RecruiterUserType;
-  allRoles: string[];
-  canUpdate: boolean;
+  // allRoles: string[];
+  // canUpdate: boolean;
   // eslint-disable-next-line no-unused-vars
-  memberRoleUpdate: (x: string) => void;
+  // memberRoleUpdate: (x: string) => void;
   removeMember: () => void;
 }) => {
-  const [editRole, setEditRole] = useState(false);
+  // const [editRole, setEditRole] = useState(false);
   return (
     <TeamListItem
       key={1}
@@ -393,39 +393,41 @@ const Member = ({
       userEmail={member.email}
       userName={`${member.first_name || ''} ${member.last_name || ''}`}
       slotUserRole={
-        canUpdate && editRole ? (
-          <CustomAutocomplete
-            fullWidth
-            open={true}
-            clearIcon={false}
-            value={capitalizeAll(member.role)}
-            options={allRoles}
-            sx={{
-              width: '100%',
-            }}
-            onBlur={() => {
-              setEditRole(false);
-            }}
-            onChange={(_, newValue) => {
-              newValue && memberRoleUpdate(newValue.toLowerCase());
-              setEditRole(false);
-            }}
-            InputProps={{
-              fontSize: '14px',
-            }}
-          />
-        ) : (
-          <Stack
-            onClick={() => {
-              setEditRole(true);
-            }}
-            sx={{
-              cursor: canUpdate ? 'pointer' : 'not-allowed',
-            }}
-          >
-            {capitalizeAll(member.role)}
-          </Stack>
-        )
+        // canUpdate && editRole ? (
+        //   <CustomAutocomplete
+        //     fullWidth
+        //     open={true}
+        //     clearIcon={false}
+        //     value={capitalizeAll(member.role)}
+        //     options={allRoles}
+        //     sx={{
+        //       width: '100%',
+        //     }}
+        //     onBlur={() => {
+        //       setEditRole(false);
+        //     }}
+        //     onChange={(_, newValue) => {
+        //       newValue && memberRoleUpdate(newValue.toLowerCase());
+        //       setEditRole(false);
+        //     }}
+        //     InputProps={{
+        //       fontSize: '14px',
+        //     }}
+        //   />
+        // ) : (
+        <Stack
+          // onClick={() => {
+          //   setEditRole(true);
+          // }}
+          sx={
+            {
+              // cursor: canUpdate ? 'pointer' : 'not-allowed',
+            }
+          }
+        >
+          {capitalizeAll(member.role)}
+        </Stack>
+        // )
       }
       userStatusProps={{
         style:
@@ -980,50 +982,50 @@ const CustomTextField = (rest: TextFieldProps) => {
   );
 };
 // @ts-ignore
-const CustomAutocomplete = (props: AutocompleteProps) => {
-  const { label, required, clearIcon, fullWidth, ...rest } = props;
-  return (
-    <Stack width={'100%'}>
-      <Typography fontFamily={'inherit'}>
-        {label}
-        {required && '*'}
-        {/* {rest?.label && ':'} */}
-      </Typography>
-      <Autocomplete
-        {...rest}
-        clearIcon={clearIcon}
-        fullWidth={fullWidth}
-        renderTags={(value: readonly string[], getTagProps) =>
-          value.map((option: string, index: number) => (
-            <Chip
-              key={index}
-              variant='outlined'
-              label={option}
-              {...getTagProps({ index })}
-            />
-          ))
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            inputProps={{
-              ...params.inputProps,
-            }}
-            InputProps={{
-              ...params.InputProps,
-              disableUnderline: true,
-            }}
-            variant='filled'
-            placeholder={rest.placeholder}
-            sx={{
-              '& input': { padding: '0px!important' },
-              '& .MuiInputBase-root': {
-                padding: '8px 39px 8px 8px !important',
-              },
-            }}
-          />
-        )}
-      />
-    </Stack>
-  );
-};
+// const CustomAutocomplete = (props: AutocompleteProps) => {
+//   const { label, required, clearIcon, fullWidth, ...rest } = props;
+//   return (
+//     <Stack width={'100%'}>
+//       <Typography fontFamily={'inherit'}>
+//         {label}
+//         {required && '*'}
+//         {/* {rest?.label && ':'} */}
+//       </Typography>
+//       <Autocomplete
+//         {...rest}
+//         clearIcon={clearIcon}
+//         fullWidth={fullWidth}
+//         renderTags={(value: readonly string[], getTagProps) =>
+//           value.map((option: string, index: number) => (
+//             <Chip
+//               key={index}
+//               variant='outlined'
+//               label={option}
+//               {...getTagProps({ index })}
+//             />
+//           ))
+//         }
+//         renderInput={(params) => (
+//           <TextField
+//             {...params}
+//             inputProps={{
+//               ...params.inputProps,
+//             }}
+//             InputProps={{
+//               ...params.InputProps,
+//               disableUnderline: true,
+//             }}
+//             variant='filled'
+//             placeholder={rest.placeholder}
+//             sx={{
+//               '& input': { padding: '0px!important' },
+//               '& .MuiInputBase-root': {
+//                 padding: '8px 39px 8px 8px !important',
+//               },
+//             }}
+//           />
+//         )}
+//       />
+//     </Stack>
+//   );
+// };

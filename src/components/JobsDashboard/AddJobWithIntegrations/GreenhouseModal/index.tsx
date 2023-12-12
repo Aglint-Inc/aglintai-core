@@ -15,6 +15,7 @@ import {
   NoResultAts,
   SkeletonLoaderAtsCard,
 } from '@/devlink';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
@@ -42,6 +43,7 @@ export function GreenhouseModal() {
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
+  const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
     JobGreenhouse[]
@@ -150,6 +152,7 @@ export function GreenhouseModal() {
 
   const submitApiKey = async () => {
     try {
+      setLoading(true);
       const response = await axios.post('/api/greenhouse/getPostings', {
         page: 1,
         apiKey: apiRef.current.value,
@@ -181,12 +184,14 @@ export function GreenhouseModal() {
           }, 1000);
         }
       } else {
+        setLoading(false);
         setIntegration((prev) => ({
           ...prev,
           greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
         }));
       }
     } catch (error) {
+      setLoading(false);
       setIntegration((prev) => ({
         ...prev,
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
@@ -210,6 +215,16 @@ export function GreenhouseModal() {
         integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.API ||
         integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR ? (
           <GreenhouseApiKey
+            slotPrimaryButton={
+              <ButtonPrimaryDefaultRegular
+                isDisabled={loading}
+                buttonProps={{
+                  onClick: () => {
+                    submitApiKey();
+                  },
+                }}
+              />
+            }
             slotInput={
               <UITextField
                 ref={apiRef}
@@ -222,11 +237,6 @@ export function GreenhouseModal() {
             isApiWrong={
               integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR
             }
-            onClickContinue={{
-              onClick: () => {
-                submitApiKey();
-              },
-            }}
           />
         ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.FETCHING ? (
           <IntegrationFetching
@@ -319,27 +329,27 @@ export function GreenhouseModal() {
                             }
                             onClickCheck={{
                               onClick: () => {
-                                if (selectedGreenhousePostings.length < 5) {
-                                  if (
-                                    selectedGreenhousePostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedGreenhousePostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
-                                  } else {
+                                if (
+                                  selectedGreenhousePostings?.some(
+                                    (p) => p.id === post.id,
+                                  )
+                                ) {
+                                  // If the object is already in the array, remove it
+                                  setSelectedGreenhousePostings((prev) =>
+                                    prev.filter((p) => p.id !== post.id),
+                                  );
+                                } else {
+                                  if (selectedGreenhousePostings.length < 3) {
                                     // If the object is not in the array, add it
                                     setSelectedGreenhousePostings((prev) => [
                                       ...prev,
                                       post,
                                     ]);
+                                  } else {
+                                    toast.error(
+                                      'You can select maximum 3 jobs at a time',
+                                    );
                                   }
-                                } else {
-                                  toast.error(
-                                    'You can select maximum 5 jobs at a time',
-                                  );
                                 }
                               },
                             }}
@@ -353,8 +363,8 @@ export function GreenhouseModal() {
                               post.live
                                 ? 'Live'
                                 : post.active
-                                ? 'Active'
-                                : 'Closed'
+                                  ? 'Active'
+                                  : 'Closed'
                             }
                             textWorktypeLocation={post.location.name}
                           />

@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./AshbyApiKey.module.css";
 
@@ -9,6 +8,7 @@ export function AshbyApiKey({
   slotInput,
   onClickContinue = {},
   isApiWrong = false,
+  slotPrimaryButton,
 }) {
   return (
     <_Component tag="div">
@@ -28,9 +28,8 @@ export function AshbyApiKey({
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-537")}
           tag="div"
-          {...onClickContinue}
         >
-          <ButtonPrimaryRegular textLabel="Continue" />
+          {slotPrimaryButton}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "generate-api")} tag="div">

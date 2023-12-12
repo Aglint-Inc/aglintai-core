@@ -201,7 +201,7 @@ export function TeamUsersList({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "cs-team-users-roles")}
+        className={_utils.cx(_styles, "cs-team-users-roles", "hide")}
         tag="div"
       >
         <_Builtin.Block

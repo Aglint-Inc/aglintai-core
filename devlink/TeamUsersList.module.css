@@ -539,6 +539,10 @@
   }
 }
 
+.cs-team-users-roles.hide {
+  display: none;
+}
+
 .tu-roles-wrapper {
   grid-auto-columns: 1fr;
   grid-column-gap: 22px;
