@@ -82,18 +82,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return res.status(200).send(error.message);
           }
         } else {
-          const result = await openAiHandler(resume_json);
-          const jsonResult = JSON.parse(result);
-          if (jsonResult.overview) {
+          console.log('openai');
+
+          const result = await openAiHandler(parsedResume);
+
+          if (result) {
             await supabase
               .from('job_applications')
               .update({
-                json_resume: { ...resume_json, overview: jsonResult.overview },
+                json_resume: { ...resume_json, overview: result },
               })
               .eq('application_id', req.body.application.application_id);
           }
-          console.log(jsonResult.overview, req.body.application.application_id);
-          return res.status(200).send(jsonResult.overview);
+          console.log(result, req.body.application.application_id);
+          return res.status(200).send(result);
         }
       });
   } catch (error) {
@@ -115,14 +117,10 @@ const openAiHandler = async (resume) => {
         )}'''. Generate a paragraph overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. The overview should be in third person.`,
       },
     ],
-    temperature: 0,
+    temperature: 0.8,
     top_p: 0.8,
-    seed: 87654321,
     frequency_penalty: 0,
     presence_penalty: 0,
-    response_format: {
-      type: 'json_object',
-    },
   });
   const responseB = await response;
   return responseB.choices[0].message.content;
