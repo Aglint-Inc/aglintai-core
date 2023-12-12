@@ -141,7 +141,7 @@ const OutReachCtxProvider = ({
           candInfo.access_token = newAcessTOken;
           localStorage.setItem(
             `email-outreach${recruiter.id}`,
-            JSON.stringify(newAcessTOken),
+            JSON.stringify(candInfo),
           );
           dispatch({
             type: 'updateState',
