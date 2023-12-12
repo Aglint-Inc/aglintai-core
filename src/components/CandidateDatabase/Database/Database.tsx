@@ -289,6 +289,7 @@ const CandDatabase = () => {
             >
               {selectedCandidate !== -1 && (
                 <SelectedCandidate
+                  showClose={false}
                   onClickClose={() => setSelectedCand(-1)}
                   onClickNext={() => {
                     if (candidates.length - 1 > selectedCandidate) {
@@ -351,6 +352,7 @@ const CandDatabase = () => {
         <Stack direction={'row'} width={'1150px'}>
           <Stack width={'460px'} height={'100vh'} overflow={'scroll'}>
             <SelectedCandidate
+              showClose={true}
               onClickClose={() => setToggleOutreach(false)}
               onClickNext={() => {
                 if (candidates.length - 1 > selectedCandidate) {
@@ -377,7 +379,11 @@ const CandDatabase = () => {
                   : null
               }
             >
-              <EmailOutReach />
+              <EmailOutReach
+                onClose={() => {
+                  setToggleOutreach(false);
+                }}
+              />
             </OutReachCtxProvider>
           </Stack>
         </Stack>

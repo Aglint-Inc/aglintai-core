@@ -50,13 +50,16 @@ ${jdText}
           .from('candidate_search_history')
           .insert({
             recruiter_id: recruiter.id,
-            is_search_jd: false,
+            is_search_jd: true,
             query_json: queryJson,
             search_results: cndates,
+            search_query: jobRole,
           })
           .select(),
       );
-      router.push(`/candidates/search?searchQryId=${history.id}`);
+      router.push(
+        `/candidates/search?searchQryId=${history.id}&search_title=${jobRole}`,
+      );
     } catch (err) {
       toast.error(API_FAIL_MSG);
       //
@@ -82,7 +85,7 @@ ${jdText}
             />
             <textarea
               style={{
-                resize: 'vertical',
+                resize: 'none',
                 borderRadius: '5px',
                 width: '100%',
                 height: '200px',

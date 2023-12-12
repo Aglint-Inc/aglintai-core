@@ -7,4 +7,6 @@ declare function AiCommand(props: {
   onClickCandidateName?: Types.Devlink.RuntimeProps;
   isAiCommandActive?: Types.Visibility.VisibilityConditions;
   isCandidateNameActive?: Types.Visibility.VisibilityConditions;
+  onClickRecruiterName?: Types.Devlink.RuntimeProps;
+  isRecruiterActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

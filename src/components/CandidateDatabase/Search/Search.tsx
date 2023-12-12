@@ -180,7 +180,7 @@ const CandidatesSearch = () => {
             resetActiveCards();
           },
         }}
-        textRole={candidateSearchState.queryJson.jobTitles.join(', ')}
+        textRole={router.query.search_title}
         slotCandidateDetailsCard={
           <>
             {isSearching && <Loader />}

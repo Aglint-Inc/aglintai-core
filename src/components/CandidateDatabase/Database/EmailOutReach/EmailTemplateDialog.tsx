@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { EmailTemplateModal } from '@/devlink';
@@ -9,6 +10,7 @@ import {
   supabaseWrap,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -26,6 +28,7 @@ const EmailTemplateModalComp = ({
   const [email, setEmail] = useState({ subject: '', body: null, name: '' });
   const [editorJson, setEditorJson] = useState(null);
   const [showEditName, setShowditName] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { dispatch, state, genEmailFromTempJson } = useOutReachCtx();
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const EmailTemplateModalComp = ({
       if (!email.body || !email.subject || !email.name) {
         return;
       }
-
+      setIsSaving(true);
       const [{ email_outreach_templates }] = supabaseWrap(
         await supabase
           .from('recruiter')
@@ -92,6 +95,8 @@ const EmailTemplateModalComp = ({
       toast.success('template updated sucessfully');
     } catch (err) {
       toast.error(API_FAIL_MSG);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -120,20 +125,27 @@ const EmailTemplateModalComp = ({
             />
           </>
         }
+        isButtonIconVisible={isSaving}
+        slotButtonIcon={
+          <>
+            <CircularProgress
+              color='inherit'
+              size={'15px'}
+              sx={{ color: palette.grey[400] }}
+            />
+          </>
+        }
+        isButtonDisable={
+          email.subject.length === 0 || email.name.length === 0 || !email.body
+        }
         textTemplateName={
           showEditName ? (
             <UITextField
               fullWidth
               defaultValue={email.name}
               placeholder='Press enter to update names'
-              InputProps={{
-                onKeyDown: (e: any) => {
-                  if (e.code === 'Enter') {
-                    setEmail((p) => ({ ...p, name: String(e.target?.value) }));
-                    setShowditName(false);
-                    // getMatchingCandsFromQry();
-                  }
-                },
+              onChange={(e) => {
+                setEmail((p) => ({ ...p, name: String(e.target.value) }));
               }}
             />
           ) : (

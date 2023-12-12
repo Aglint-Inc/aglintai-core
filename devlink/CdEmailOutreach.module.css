@@ -41,6 +41,21 @@
   opacity: 0.6;
 }
 
+.email-out-back.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .icons {
   display: flex;
   flex-direction: column;
