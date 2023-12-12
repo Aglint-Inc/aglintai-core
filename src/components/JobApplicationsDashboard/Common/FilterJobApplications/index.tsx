@@ -123,7 +123,12 @@ const ApplicationFilterBody = ({
     setFilters((prev) => {
       return [
         ...prev,
-        { parameter: 'resume_score', condition: '>', count: null },
+        {
+          parameter: 'resume_score',
+          condition: '>',
+          value: null,
+          type: 'number',
+        },
       ];
     });
   };
@@ -154,12 +159,13 @@ const ApplicationFilterBody = ({
   const disabled =
     (filters.length === 0 && searchParameters.filter.length === 0) ||
     filters.reduce((acc, curr, i) => {
-      if (acc || curr.count === null) {
+      if (acc || curr.value === null) {
         return true;
       } else if (
         i + 1 > searchParameters.filter.length ||
         curr.condition !== searchParameters.filter[i].condition ||
-        curr.count !== searchParameters.filter[i].count ||
+        curr.type !== searchParameters.filter[i].type ||
+        curr.value !== searchParameters.filter[i].value ||
         curr.parameter !== searchParameters.filter[i].parameter
       ) {
         return false;
@@ -247,6 +253,7 @@ const CandidateFilterOptionComp = ({
   handleModify: (index: number, newFilter: FilterParameter) => void;
 }) => {
   return (
+    //TODO: CandidateFilterOption_cl-filter-block__BJvzL -> width: 100%
     <CandidateFilterOption
       onclickRemove={{ onClick: () => handleRemove(index) }}
       slotInputs={
@@ -266,19 +273,36 @@ const CandidateFilterInputs = ({
   filter: FilterParameter; // eslint-disable-next-line no-unused-vars
   handleModify: (newFilter: FilterParameter) => void;
 }) => {
+  useEffect(() => {
+    handleModify({ ...filter, condition: '>', value: null });
+  }, [filter.type]);
   return (
     <>
       <CandidateFilterPrimaryDropDown
         parameter={filter.parameter}
-        handleModify={(e) => handleModify({ ...filter, parameter: e })}
+        handleModify={(e) =>
+          handleModify({
+            ...filter,
+            ...e,
+          } as FilterParameter)
+        }
       />
-      <CandidateFilterSecondaryDropDown
-        condition={filter.condition}
-        handleModify={(e) => handleModify({ ...filter, condition: e })}
-      />
+      {filter.type === 'number' ? (
+        <CandidateFilterSecondaryDropDown
+          condition={filter.condition}
+          handleModify={(e) =>
+            handleModify({ ...filter, condition: e } as FilterParameter)
+          }
+        />
+      ) : (
+        <></>
+      )}
       <CandidateFilterEntry
-        count={filter.count}
-        handleModify={(e) => handleModify({ ...filter, count: e })}
+        value={filter.value}
+        type={filter.type}
+        handleModify={(e) =>
+          handleModify({ ...filter, value: e } as FilterParameter)
+        }
       />
     </>
   );
@@ -290,9 +314,32 @@ const CandidateFilterPrimaryDropDown = ({
 }: {
   parameter: FilterParameter['parameter'];
   // eslint-disable-next-line no-unused-vars
-  handleModify: (newParameter: FilterParameter['parameter']) => void;
+  handleModify: ({
+    // eslint-disable-next-line no-unused-vars
+    parameter,
+    // eslint-disable-next-line no-unused-vars
+    type,
+  }: {
+    parameter: FilterParameter['parameter'];
+    type: FilterParameter['type'];
+  }) => void;
 }) => {
   const { section } = useJobApplications();
+  const getParams = (
+    parameter: FilterParameter['parameter'],
+  ): {
+    parameter: FilterParameter['parameter'];
+    type: FilterParameter['type'];
+  } => {
+    switch (parameter) {
+      case 'resume_score':
+        return { parameter, type: 'number' };
+      case 'interview_score':
+        return { parameter, type: 'number' };
+      case 'location':
+        return { parameter, type: 'string' };
+    }
+  };
   return (
     <Select
       value={parameter}
@@ -300,7 +347,7 @@ const CandidateFilterPrimaryDropDown = ({
         '.MuiSelect-select': { padding: '4px 0 4px 12px', fontSize: '14px' },
       }}
       onChange={(e) =>
-        handleModify(e.target.value as FilterParameter['parameter'])
+        handleModify(getParams(e.target.value as FilterParameter['parameter']))
       }
     >
       {CANDIDATE_FILTERS.parameters.reduce((acc, curr, i) => {
@@ -364,28 +411,40 @@ const CandidateFilterSecondaryDropDown = ({
   );
 };
 const CandidateFilterEntry = ({
-  count,
+  value,
+  type,
   handleModify,
 }: {
-  count: number;
+  value: number | string;
+  type: FilterParameter['type'];
   // eslint-disable-next-line no-unused-vars
-  handleModify: (count: FilterParameter['count']) => void;
+  handleModify: (count: FilterParameter['value']) => void;
 }) => {
-  const validate = (e) => {
-    if (e === '') return null;
-    return e;
-  };
   return (
     <UITextField
-      defaultValue={count}
-      type='number'
+      defaultValue={value}
+      type={getTypeCandidateFilterEntry(type)}
       onChange={(e) =>
         handleModify(
-          validate(e.target.value) as unknown as FilterParameter['count'],
+          validateCandidateFilterEntry(
+            e.target.value,
+          ) as unknown as FilterParameter['value'],
         )
       }
     />
   );
+};
+const validateCandidateFilterEntry = (e) => {
+  if (e === '') return null;
+  return e;
+};
+const getTypeCandidateFilterEntry = (type: FilterParameter['type']) => {
+  switch (type) {
+    case 'string':
+      return 'text';
+    case 'number':
+      return 'number';
+  }
 };
 
 export default FilterJobApplications;
