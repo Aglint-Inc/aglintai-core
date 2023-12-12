@@ -85,7 +85,7 @@ export function AssisstantSettings({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "cb-as-main-block")}
+        className={_utils.cx(_styles, "cb-as-main-block", "hide")}
         tag="div"
       >
         <_Builtin.Block

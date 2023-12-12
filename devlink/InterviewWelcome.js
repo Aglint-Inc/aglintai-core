@@ -1291,7 +1291,7 @@ export function InterviewWelcome({
               <_Builtin.Block tag="div">
                 <_Builtin.Strong>{"Estimated Time :"}</_Builtin.Strong>
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{"30 minutues"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"30 minutes"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "color-grey-600")}

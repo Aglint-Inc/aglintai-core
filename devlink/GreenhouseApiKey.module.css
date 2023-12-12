@@ -15,7 +15,7 @@
 
   display: flex;
   height: 40px;
-  margin-top: 16px;
+  margin-top: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -365,7 +365,7 @@
 }
 
 .lever-api-generate-wrap {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 30px;
   border-radius: 10px;
   background-color: #f8f9f9;
