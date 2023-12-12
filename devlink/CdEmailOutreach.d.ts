@@ -18,4 +18,9 @@ declare function CdEmailOutreach(props: {
   slotLottie?: Types.Devlink.Slot;
   isLoading?: Types.Visibility.VisibilityConditions;
   slotLoadingIcon?: Types.Devlink.Slot;
+  isEmailInputVisible?: Types.Visibility.VisibilityConditions;
+  isEmailSuccess?: Types.Visibility.VisibilityConditions;
+  onClickAddFollowUp?: Types.Devlink.RuntimeProps;
+  onClickOpenInbox?: Types.Devlink.RuntimeProps;
+  slotEmailSuccessCard?: Types.Devlink.Slot;
 }): React.JSX.Element;

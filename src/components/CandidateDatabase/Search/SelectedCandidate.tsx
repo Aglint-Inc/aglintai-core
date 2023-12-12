@@ -15,12 +15,16 @@ const SelectedCandidate = ({
   onClickNext,
   onClickPrev,
   toggleBookMark,
+  showEmailOutReach,
+  onClickEmailOutReach,
 }: {
   candidate: CandidateSearchRes;
   onClickNext: () => void;
   onClickPrev: () => void;
   onClickClose: () => void;
   toggleBookMark: () => any;
+  onClickEmailOutReach: () => any;
+  showEmailOutReach: boolean;
 }) => {
   // const { updateState, candidateSearchState } = useCandidateSearchCtx();
   const { jobsData } = useJobs();
@@ -63,6 +67,8 @@ const SelectedCandidate = ({
         onClickNext={onClickNext}
         onClickPrev={onClickPrev}
         toggleBookMark={toggleBookMark}
+        isEmailOutreachVisible={showEmailOutReach}
+        onClickEmailOutreach={onClickEmailOutReach}
       />
     </>
   );

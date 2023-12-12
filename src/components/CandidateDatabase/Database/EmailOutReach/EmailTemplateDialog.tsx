@@ -103,6 +103,8 @@ const EmailTemplateModalComp = ({
   return (
     <>
       <EmailTemplateModal
+        isEditIconVisible={!showEditName}
+        isSaveButtonVisible={showEditName}
         slotSubjectInput={
           <>
             <UITextField
@@ -164,6 +166,20 @@ const EmailTemplateModalComp = ({
         }}
         onClickSaveTemplate={{
           onClick: submitHandler,
+        }}
+        onClickClose={{
+          onClick: () => {
+            const selectedMail = state.emailTemplates.find(
+              (s) => s.id === selectedTemplate,
+            );
+            setEmail((p) => ({ ...p, name: selectedMail.name }));
+            setShowditName(false);
+          },
+        }}
+        onClickSave={{
+          onClick: () => {
+            setShowditName(false);
+          },
         }}
       />
     </>

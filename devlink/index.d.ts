@@ -147,6 +147,7 @@ export * from "./EditEmail";
 export * from "./EditJob";
 export * from "./EmailCreateNew";
 export * from "./EmailSent";
+export * from "./EmailSuccessCard";
 export * from "./EmailTemplate";
 export * from "./EmailTemplateCard";
 export * from "./EmailTemplateCards";
