@@ -50,7 +50,7 @@ export function TeamAddRole({
             tag="div"
           >
             {
-              "You can give permissions to team members when you need more control over what they can do and see iin aglint"
+              "You can give permissions to team members when you need more control over what they can do and see in aglint"
             }
           </_Builtin.Block>
         ) : null}

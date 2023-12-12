@@ -27,7 +27,7 @@ export function VideoSwitcherCard({
           className={_utils.cx(_styles, "color-grey-600")}
           tag="div"
         >
-          {"To change the avatar go to "}
+          {"To change the avatar, go to "}
           <_Builtin.Span
             className={_utils.cx(_styles, "text-blue-500", "text-underline")}
             {...onClickCompanySetting}

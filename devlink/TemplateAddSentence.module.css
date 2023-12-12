@@ -1,5 +1,6 @@
 .template-ai-add {
   display: flex;
+  width: 90%;
   padding: 4px 10px;
   justify-content: space-between;
   align-items: center;
@@ -13,6 +14,7 @@
 
 .div-block-641 {
   display: flex;
+  width: 95%;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

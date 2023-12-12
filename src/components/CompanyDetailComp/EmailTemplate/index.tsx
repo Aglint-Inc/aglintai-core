@@ -331,12 +331,12 @@ export const templateObj: Record<string, any> = {
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when canditate moved to assessment state',
+    trigger: 'Triggered when candidate moved to assessment state',
   },
   interview_resend: {
     listing: 'Follow Up Assessment',
     heading: 'Follow Up Assessment Email Settings',
-    triggerInfo: 'Triggerd for resending the assessment invite.',
+    triggerInfo: 'Triggered for resending the assessment invite.',
 
     description:
       'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
@@ -363,11 +363,11 @@ export const templateObj: Record<string, any> = {
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when canditate moved to disqualified state',
+    trigger: 'Triggered when candidate moved to disqualified state',
   },
   application_recieved: {
-    listing: 'Application Recieved Email',
-    heading: 'Application Recieved Email Settings',
+    listing: 'Application Received Email',
+    heading: 'Application Received Email Settings',
     triggerInfo: 'Triggered instantly when candidate applied to this job.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
@@ -378,6 +378,6 @@ export const templateObj: Record<string, any> = {
 
     Best regards,
     [senderName]`,
-    trigger: 'Triggered instantly when canditate apply for a job',
+    trigger: 'Triggered instantly when candidate apply for a job',
   },
 };

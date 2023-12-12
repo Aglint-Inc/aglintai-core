@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
+import OpenAI from 'openai';
 
 import { supabase } from '@/src/utils/supabaseClient';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_KEY,
+});
 
 const { TextServiceClient } = require('@google-ai/generativelanguage');
 const { GoogleAuth } = require('google-auth-library');
@@ -19,14 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const parsedResume = {
       basics: resume_json.basics,
-      // positions: resume_json.positions,
       skills: resume_json.skills,
     };
-    if (
-      !parsedResume.basics ||
-      // !parsedResume.positions ||
-      !parsedResume.skills
-    ) {
+    if (!parsedResume.basics || !parsedResume.skills) {
       console.log('required fields missing');
       return res.status(200).send('required fields missing');
     }
@@ -82,11 +82,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return res.status(200).send(error.message);
           }
         } else {
-          console.log(
-            'No overview generated',
-            req.body.application.application_id,
-          );
-          return res.status(200).send('No overview generated');
+          console.log('openai');
+
+          const result = await openAiHandler(parsedResume);
+
+          if (result) {
+            await supabase
+              .from('job_applications')
+              .update({
+                json_resume: { ...resume_json, overview: result },
+              })
+              .eq('application_id', req.body.application.application_id);
+          }
+          console.log(result, req.body.application.application_id);
+          return res.status(200).send(result);
         }
       });
   } catch (error) {
@@ -96,3 +105,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+const openAiHandler = async (resume) => {
+  const response = openai.chat.completions.create({
+    model: 'gpt-3.5-turbo-1106',
+    messages: [
+      {
+        role: 'system',
+        content: `Here is resume_json : '''${JSON.stringify(
+          resume,
+        )}'''. Generate a paragraph overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. The overview should be in third person.`,
+      },
+    ],
+    temperature: 0.8,
+    top_p: 0.8,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
+  const responseB = await response;
+  return responseB.choices[0].message.content;
+};

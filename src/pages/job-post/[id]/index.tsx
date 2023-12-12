@@ -30,7 +30,7 @@ function JobPost() {
             if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
               setValid(false);
             } else {
-              if (data[0]?.status == 'draft') {
+              if (router.query.preview || data[0]?.status == 'draft') {
                 setPost(data[0].draft as JobTypeDB);
               } else {
                 setPost(data[0]);

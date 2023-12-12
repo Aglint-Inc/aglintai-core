@@ -1661,6 +1661,43 @@
   }
 }
 
+.div-block-650 {
+  display: flex;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
+.beta-wrap {
+  position: static;
+  left: auto;
+  top: -10px;
+  right: -25px;
+  bottom: auto;
+  z-index: 6;
+
+  display: flex;
+  width: 44px;
+  padding: 2px 9px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #228f67;
+
+  color: white;
+}
+
+.text-xsm {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.text-xsm.color-grey-600.inline-text {
+  display: inline-block;
+}
+
 .cs-tab-content {
   margin-top: 36px;
 }

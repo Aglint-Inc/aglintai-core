@@ -245,7 +245,7 @@ export function CompanyInfo({
               tag="div"
             >
               {
-                "Consider specifying your specialties; they'll aid in finding the right candidate for you."
+                "Consider specifying your specialities; they'll aid in finding the right candidate for you."
               }
             </_Builtin.Block>
           </_Builtin.Block>

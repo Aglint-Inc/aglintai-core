@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { isArray } from 'lodash';
 
+import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import {
@@ -150,13 +151,23 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   const canididatesDto: CandidateSearchRes[] = candidates
     .filter((c) => Boolean(c.json_resume))
     .map((c) => {
+      let jsonRes: JsonResume = {
+        ...c.json_resume,
+        basics: {
+          ...c.json_resume.basics,
+          location:
+            typeof c.json_resume.basics.location === 'object'
+              ? ''
+              : c.json_resume.basics.location,
+        },
+      };
       return {
         application_id: c.application_id,
         candidate_id: c.candidate_id,
         email: c.email,
         first_name: c.first_name,
         job_title: c.job_title,
-        json_resume: c.json_resume,
+        json_resume: jsonRes,
         last_name: c.last_name,
         resume_link: c.resume_link,
         similarity: c.similarity,

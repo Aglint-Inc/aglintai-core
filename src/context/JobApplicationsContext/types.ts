@@ -58,6 +58,7 @@ export type JobApplicationContext = {
   applications: JobApplicationsData;
   paginationLimit: number;
   applicationDisable: boolean;
+  setApplicationDisable: Dispatch<SetStateAction<boolean>>;
   job: JobTypeDashboard;
   updateTick: boolean;
   pageNumber: { [key in JobApplicationSections]: number };
@@ -116,6 +117,8 @@ export type JobApplicationContext = {
     applicationIdSet?: Set<string>,
     updateAll?: boolean,
   ) => Promise<boolean>;
+  section: JobApplicationSections;
+  setSection: Dispatch<SetStateAction<JobApplicationSections>>;
 };
 
 export type JdScore = {

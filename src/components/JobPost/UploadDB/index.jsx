@@ -200,8 +200,8 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
                 file.type.includes('pdf')
                   ? 'pdf'
                   : file.type.includes('doc')
-                  ? 'docx'
-                  : 'txt'
+                    ? 'docx'
+                    : 'txt'
               }`,
               file,
               {
@@ -233,8 +233,8 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
                   file.type.includes('pdf')
                     ? 'pdf'
                     : file.type.includes('doc')
-                    ? 'docx'
-                    : 'txt'
+                      ? 'docx'
+                      : 'txt'
                 }`,
                 file,
                 {
@@ -273,8 +273,8 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           setLoading(false);
           setThank(true);
         } else {
-          setLoading(false);
           isSubmitRef.current = false;
+          setLoading(false);
           toast.error('You have already applied for this job');
         }
       }
@@ -343,10 +343,10 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
         last_name: profile.lastName,
         job_title: post.job_title,
         company_name: post.company,
-        support_link: `${process.env.NEXT_PUBLIC_RECRUITER_APP}?id=${application_id}`,
+        support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
       };
       await axios
-        .post('/api/sendgrid', {
+        .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
           fromEmail: `messenger@aglinthq.com`,
           fromName:
             post.email_template.application_recieved.fromName || post.company,

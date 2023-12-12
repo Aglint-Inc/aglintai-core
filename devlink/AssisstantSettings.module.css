@@ -204,6 +204,10 @@
   grid-row-gap: 10px;
 }
 
+.cb-as-main-block.hide {
+  display: none;
+}
+
 .cb-as-main-top-content {
   display: flex;
   max-width: 520px;

@@ -107,19 +107,6 @@ function Assistant() {
             </AUIButton>
           </Stack>
         }
-        slotCode={
-          <code>
-            <pre>
-              {`
-           1 <script>
-           2 //some code here
-           3 </script> 
-           4 <script>
-           5 //some more code here
-           6 </script>`}
-            </pre>
-          </code>
-        }
       />
     </div>
   );

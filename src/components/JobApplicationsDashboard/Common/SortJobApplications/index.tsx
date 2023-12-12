@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CandidateSort, CandidateSortBody } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 import {
@@ -61,14 +62,23 @@ const ApplicationSortBody = ({
   handleClose: () => void;
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { searchParameters, handleJobApplicationFilter } = useJobApplications();
+  const {
+    searchParameters,
+    handleJobApplicationFilter,
+    applicationDisable,
+    setApplicationDisable,
+  } = useJobApplications();
   const handleSubmit = async () => {
-    const { confirmation, count } = await handleJobApplicationFilter({
-      ...searchParameters,
-      sort: sort,
-    });
-    if (confirmation) {
-      setApplicationLimit(count);
+    if (!applicationDisable) {
+      setApplicationDisable(true);
+      const { confirmation, count } = await handleJobApplicationFilter({
+        ...searchParameters,
+        sort: sort,
+      });
+      if (confirmation) {
+        setApplicationLimit(count);
+      }
+      setApplicationDisable(false);
     }
   };
   const disabled =
@@ -76,7 +86,10 @@ const ApplicationSortBody = ({
     searchParameters.sort.ascending === sort.ascending;
   const sortButton = (
     <Stack>
-      <AUIButton onClick={async () => await handleSubmit()} disabled={disabled}>
+      <AUIButton
+        onClick={async () => await handleSubmit()}
+        disabled={disabled || applicationDisable}
+      >
         Apply
       </AUIButton>
     </Stack>
@@ -132,10 +145,16 @@ const CandidateSortInput = ({
   // eslint-disable-next-line no-unused-vars
   handleModify: (newParameter: SortParameter['parameter']) => void;
 }) => {
+  const { section } = useJobApplications();
   return (
     <Stack>
       <Select
-        value={parameter}
+        value={
+          section === JobApplicationSections.NEW &&
+          parameter === 'interview_score'
+            ? 'resume_score'
+            : parameter
+        }
         sx={{
           '.MuiSelect-select': { padding: '4px 0 4px 12px', fontSize: '14px' },
         }}
@@ -143,11 +162,20 @@ const CandidateSortInput = ({
           handleModify(e.target.value as SortParameter['parameter'])
         }
       >
-        {CANDIDATE_SORT.map((o, i) => (
-          <MenuItem key={i} value={o} className={'SORTBODY-Include'}>
-            {capitalize(o)}
-          </MenuItem>
-        ))}
+        {CANDIDATE_SORT.reduce((acc, curr, i) => {
+          if (
+            !(
+              curr === 'interview_score' &&
+              section === JobApplicationSections.NEW
+            )
+          )
+            acc.push(
+              <MenuItem key={i} value={curr} className={'SORTBODY-Include'}>
+                {capitalize(curr)}
+              </MenuItem>,
+            );
+          return acc;
+        }, [])}
       </Select>
     </Stack>
   );

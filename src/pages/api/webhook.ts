@@ -1,13 +1,36 @@
 /* eslint-disable no-console */
-import { createClient } from '@supabase/supabase-js';
+import {
+  type CookieOptions,
+  createServerClient,
+  serialize,
+} from '@supabase/ssr';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Add your logic to process the webhook data
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          // eslint-disable-next-line security/detect-object-injection
+          return req.cookies[name];
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, value, options));
+        },
+        remove(name: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, '', options));
+        },
+      },
+    },
+  );
   // Handle incoming webhook data here
   const payload = req.body;
   // const payload = {

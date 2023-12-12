@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, /*Slider,*/ Stack } from '@mui/material';
-import axios from 'axios';
+import { Dialog, /*Slider,*/ Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import {
   Dispatch,
@@ -15,7 +14,6 @@ import { ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
   ApplicantsListEmpty,
-  CandidateSelectionPopup,
   CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
@@ -25,11 +23,9 @@ import {
   // SortArrows,
   TopApplicantsTable,
 } from '@/devlink2';
-import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
-  JobApplicationsData,
   JobApplicationSections,
   // Parameters,
 } from '@/src/context/JobApplicationsContext/types';
@@ -43,10 +39,16 @@ import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import FilterJobApplications from './Common/FilterJobApplications';
 import SortJobApplications from './Common/SortJobApplications';
 import ResumeUpload from './FileUpload';
-import { useKeyPress, usePolling } from './hooks';
+import {
+  getBoundingStatus,
+  useKeyPress,
+  useMouseClick,
+  usePolling,
+} from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
+import { MoveCandidateDialog, sendEmails } from './MoveCandidateDialog';
 import SearchField from './SearchField';
 import { capitalize } from './utils';
 import Loader from '../Common/Loader';
@@ -83,13 +85,15 @@ const JobApplicationComponent = () => {
     job,
     pageNumber,
     applicationDisable,
+    setApplicationDisable,
     updateTick,
     searchParameters,
     setOpenImportCandidates,
     handleJobApplicationRefresh,
+    section,
+    setSection,
   } = useJobApplications();
   const router = useRouter();
-  const [section, setSection] = useState(JobApplicationSections.NEW);
   const sectionApplications = applications[section];
 
   const [checkList, setCheckList] = useState(new Set<string>());
@@ -124,13 +128,12 @@ const JobApplicationComponent = () => {
       setCurrentApplication(sectionApplications.length - 1);
   };
 
-  const [refresh, setRefresh] = useState(false);
   const refreshRef = useRef(true);
 
   const handleAutoRefresh = async () => {
-    setRefresh(true);
+    setApplicationDisable(true);
     await handleJobApplicationRefresh();
-    setRefresh(false);
+    setApplicationDisable(false);
   };
 
   const handleManualRefresh = async () => {
@@ -175,6 +178,8 @@ const JobApplicationComponent = () => {
                 currentApplication === -1 ? 0 : currentApplication
               ]
             }
+            jobUpdate={jobUpdate}
+            setJobUpdate={setJobUpdate}
           />
         }
         slotTabs={
@@ -185,7 +190,6 @@ const JobApplicationComponent = () => {
         }
         slotFilters={
           <NewJobFilterBlock
-            section={section}
             detailedView={detailedView}
             setDetailedView={setDetailedView}
             checkList={checkList}
@@ -203,19 +207,17 @@ const JobApplicationComponent = () => {
         slotTable={
           <ApplicationTable
             detailedView={detailedView}
-            section={section}
             sectionApplications={sectionApplications}
             checkList={checkList}
             setCheckList={setCheckList}
             jobUpdate={jobUpdate}
             handleSelectCurrentApplication={handleSelectCurrentApplication}
             currentApplication={currentApplication}
-            refresh={refresh}
           />
         }
         slotRefresh={
           <RefreshButton
-            isDisabled={refresh || applicationDisable}
+            isDisabled={applicationDisable}
             text={'Refresh'}
             onClick={async () => await handleManualRefresh()}
           />
@@ -223,7 +225,6 @@ const JobApplicationComponent = () => {
         slotPagination={
           <ApplicationPagination
             size={sectionApplications.length}
-            section={section}
             limits={applicationLimit}
           />
         }
@@ -235,17 +236,14 @@ const JobApplicationComponent = () => {
 
 const ApplicationTable = ({
   detailedView,
-  section,
   sectionApplications,
   checkList,
   setCheckList,
   jobUpdate,
   handleSelectCurrentApplication,
   currentApplication,
-  refresh,
 }: {
   detailedView: boolean;
-  section: JobApplicationSections;
   sectionApplications: JobApplication[];
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
@@ -253,9 +251,8 @@ const ApplicationTable = ({
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
-  refresh: boolean;
 }) => {
-  const { applicationDisable } = useJobApplications();
+  const { applicationDisable, section } = useJobApplications();
   const handleSelectAllMin = () => {
     if (!applicationDisable) {
       if (checkList.size === sectionApplications.length)
@@ -278,10 +275,8 @@ const ApplicationTable = ({
       checkList={checkList}
       setCheckList={setCheckList}
       jobUpdate={jobUpdate}
-      section={section}
       handleSelectCurrentApplication={handleSelectCurrentApplication}
       currentApplication={currentApplication}
-      refresh={refresh}
     />
   );
   const isAllChecked = checkList.size === sectionApplications.length;
@@ -306,11 +301,9 @@ const ApplicationTable = ({
 
 const ApplicationPagination = ({
   size,
-  section,
   limits,
 }: {
   size: number;
-  section: JobApplicationSections;
   limits: CountJobs;
 }) => {
   const {
@@ -318,6 +311,7 @@ const ApplicationPagination = ({
     pageNumber,
     handleJobApplicationPaginate,
     applicationDisable,
+    section,
   } = useJobApplications();
   const totalCandidatesCount = limits[section];
   const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
@@ -340,21 +334,106 @@ const ApplicationPagination = ({
     }
   };
   return totalCandidatesCount !== 0 ? (
-    <CandidatesListPagination
-      onclickNext={{ onClick: async () => await handleNext() }}
-      onclickPrevious={{ onClick: async () => await handlePrevious() }}
-      currentPageCount={pageNumber[section]}
-      totalPageCount={totalPageCount}
-      currentCandidatesCount={size}
-      totalCandidatesCount={totalCandidatesCount}
-    />
+    <Stack style={{ backgroundColor: 'white' }}>
+      <Stack
+        style={{
+          opacity: applicationDisable ? 0.5 : 1,
+          pointerEvents: applicationDisable ? 'none' : 'auto',
+        }}
+      >
+        <CandidatesListPagination
+          onclickNext={{ onClick: async () => await handleNext() }}
+          onclickPrevious={{ onClick: async () => await handlePrevious() }}
+          // currentPageCount={pageNumber[section]}
+          totalPageCount={totalPageCount}
+          currentCandidatesCount={size}
+          totalCandidatesCount={totalCandidatesCount}
+          slotPageNumber={<PageCountSlot totalPageCount={totalPageCount} />}
+        />
+      </Stack>
+    </Stack>
   ) : (
     <></>
   );
 };
 
+const PageCountSlot = ({ totalPageCount }: { totalPageCount: number }) => {
+  const { section, handleJobApplicationPaginate, pageNumber } =
+    useJobApplications();
+  const [value, setValue] = useState(pageNumber[section]);
+  const initialRef = useRef(true);
+
+  useEffect(() => {
+    if (initialRef.current) {
+      initialRef.current = false;
+    } else {
+      if (value && value !== pageNumber[section]) {
+        const timer = setTimeout(async () => {
+          document.getElementById('PAGEFORM').blur();
+          await handleJobApplicationPaginate(value, section);
+        }, 400);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [value]);
+
+  useEffect(() => {
+    setValue(pageNumber[section]);
+  }, [pageNumber[section]]);
+
+  const clickData = useMouseClick();
+  useEffect(() => {
+    if (clickData.click && clickData.x !== -1 && clickData.y !== -1) {
+      if (!getBoundingStatus('PAGEBODY', clickData.x, clickData.y))
+        setValue(pageNumber[section]);
+    }
+  }, [clickData.click]);
+
+  const handleChange = (val: any) => {
+    if (val === null || val === '') {
+      setValue(null);
+    } else if (val < 1) {
+      setValue(1);
+    } else if (val > totalPageCount) {
+      setValue(totalPageCount);
+    } else {
+      setValue(val);
+    }
+  };
+  return (
+    <Stack id={'PAGEBODY'}>
+      <TextField
+        id='PAGEFORM'
+        variant='outlined'
+        type='number'
+        value={value}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          '& .MuiOutlinedInput-root': {
+            padding: 0,
+            height: '100%',
+            border: 'none',
+            '& > fieldset': {
+              border: 'none',
+            },
+          },
+          '& .MuiInputBase-input': {
+            width: '38px',
+            textAlign: 'center',
+            height: '12px !important',
+            overflow: 'visible',
+            fontSize: '14px',
+            transform: 'translateY(-2px)',
+          },
+        }}
+        onChange={(e) => handleChange(e.target.value)}
+      />
+    </Stack>
+  );
+};
+
 const NewJobFilterBlock = ({
-  section,
   detailedView,
   setDetailedView,
   checkList,
@@ -364,7 +443,6 @@ const NewJobFilterBlock = ({
   applicationLimit,
   setApplicationLimit,
 }: {
-  section: JobApplicationSections;
   detailedView: boolean;
   setDetailedView: Dispatch<SetStateAction<boolean>>;
   checkList: Set<string>;
@@ -374,7 +452,7 @@ const NewJobFilterBlock = ({
   applicationLimit: CountJobs;
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { job, searchParameters, handleJobApplicationFilter } =
+  const { job, searchParameters, handleJobApplicationFilter, section } =
     useJobApplications();
   const handleSearch = async (val: string) => {
     const value = val ? val.trim().toLowerCase() : null;
@@ -397,9 +475,9 @@ const NewJobFilterBlock = ({
             >
               {checkList.size > 0 && (
                 <ActionBar
-                  section={section}
                   checkList={checkList}
                   setCheckList={setCheckList}
+                  jobUpdate={jobUpdate}
                   setJobUpdate={setJobUpdate}
                   applicationLimit={applicationLimit}
                 />
@@ -509,7 +587,6 @@ const ApplicantsList = ({
   checkList,
   setCheckList,
   jobUpdate,
-  section,
   handleSelectCurrentApplication,
   currentApplication,
 }: {
@@ -518,30 +595,28 @@ const ApplicantsList = ({
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
   jobUpdate: boolean;
-  section: JobApplicationSections;
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
-  refresh: boolean;
 }) => {
-  const { applicationDisable } = useJobApplications();
+  const { applicationDisable, section } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
 
-  const infiniteScrollTriggerCount = 15;
-  const [lastLoad, setLastLoad] = useState(infiniteScrollTriggerCount);
-  const observer = useRef(undefined);
-  const lastApplicationRef = (node: any) => {
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting)
-        setLastLoad((prev) => prev + infiniteScrollTriggerCount);
-    });
-    if (node) observer.current.observe(node);
-  };
-  useEffect(() => {
-    setLastLoad(infiniteScrollTriggerCount);
-  }, [section]);
+  // const infiniteScrollTriggerCount = 15;
+  // const [lastLoad, setLastLoad] = useState(infiniteScrollTriggerCount);
+  // const observer = useRef(undefined);
+  // const lastApplicationRef = (node: any) => {
+  //   if (observer.current) observer.current.disconnect();
+  //   observer.current = new IntersectionObserver((entries) => {
+  //     if (entries[0].isIntersecting)
+  //       setLastLoad((prev) => prev + infiniteScrollTriggerCount);
+  //   });
+  //   if (node) observer.current.observe(node);
+  // };
+  // useEffect(() => {
+  //   setLastLoad(infiniteScrollTriggerCount);
+  // }, [section]);
 
   useEffect(() => {
     if (checkList.size === 0 || checkList.size === applications.length)
@@ -597,24 +672,22 @@ const ApplicantsList = ({
 
   return (
     <Stack>
-      {applications.slice(0, lastLoad).map((application, i) => {
-        const styles =
-          (jobUpdate && checkList.has(application.application_id)) ||
-          applicationDisable
-            ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
-            : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
-        return (
-          <Stack
-            key={application.application_id}
-            ref={i === lastLoad - 1 ? lastApplicationRef : null}
-          >
+      {applications /*.slice(0, lastLoad)*/
+        .map((application, i) => {
+          const styles =
+            (jobUpdate && checkList.has(application.application_id)) ||
+            applicationDisable
+              ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
+              : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
+          return (
             <Stack
+              key={application.application_id}
               style={styles}
               id={`job-application-stack-${i}`}
               ref={currentApplication === i ? scrollToRef : null}
             >
+              {/* <Stack ref={i === lastLoad - 1 ? lastApplicationRef : null}> */}
               <ApplicationCard
-                section={section}
                 detailedView={detailedView}
                 application={application}
                 index={i}
@@ -624,10 +697,10 @@ const ApplicantsList = ({
                 handleOpenDetails={() => handleSelectCurrentApplication(i)}
                 isSelected={currentApplication === i}
               />
+              {/* </Stack> */}
             </Stack>
-          </Stack>
-        );
-      })}
+          );
+        })}
     </Stack>
   );
 };
@@ -650,15 +723,15 @@ const EmptyList = ({ section }: { section: JobApplicationSections }) => {
 };
 
 const ActionBar = ({
-  section,
   checkList,
   setCheckList,
+  jobUpdate,
   setJobUpdate,
   applicationLimit,
 }: {
-  section: JobApplicationSections;
   checkList: Set<string>;
   setCheckList: Dispatch<SetStateAction<Set<string>>>;
+  jobUpdate: boolean;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
   applicationLimit: CountJobs;
 }) => {
@@ -668,36 +741,30 @@ const ActionBar = ({
     handleJobApplicationUpdate,
     job,
     paginationLimit,
+    section,
   } = useJobApplications();
-  const [openInfoDialog, setOpenInfoDialog] = useState(false);
-  const [checkEmail, setCheckEmail] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [destination, setDestination] = useState<JobApplicationSections>(null);
+
   const [selectAll, setSelectAll] = useState(false);
-  const [dialogInfo, setDialogInfo] = useState({
-    header: ``,
-    description: ``,
-    subHeading: '',
-    primaryAction: (checkEmail: boolean) => {
-      checkEmail;
-    },
-    primaryText: '',
-    secondaryText: '',
-    variant: '',
-  });
-  const handleUpdateJobs = async (destination: JobApplicationSections) => {
-    setJobUpdate(true);
-    const confirmation = await handleUpdateJobStatus(
-      {
-        source: section,
-        destination,
-      },
-      checkList,
-      selectAll,
-    );
-    if (confirmation) {
-      setCheckList(new Set<string>());
-      setSelectAll(false);
+
+  const handleUpdateJobs = async () => {
+    if (!jobUpdate) {
+      setJobUpdate(true);
+      const confirmation = await handleUpdateJobStatus(
+        {
+          source: section,
+          destination,
+        },
+        checkList,
+        selectAll,
+      );
+      if (confirmation) {
+        setCheckList(new Set<string>());
+        setSelectAll(false);
+      }
+      setJobUpdate(false);
     }
-    setJobUpdate(false);
   };
 
   const handleSelectAll = () => {
@@ -722,135 +789,36 @@ const ActionBar = ({
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.QUALIFIED);
   const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
-  const DialogInfo = {
-    interviewing: {
-      header: 'Move to Assessment',
-      description: `Move ${checkListCount} candidate${
-        checkListCount !== 1 ? 's' : ''
-      } to Assessment Stage`,
-      subHeading: `Proceed to send an assessment email to the candidate${
-        checkListCount !== 1 ? 's' : ''
-      }`,
-      primaryAction: async (checkEmail: any) => {
-        await handleUpdateJobs(JobApplicationSections.INTERVIEWING);
-        if (checkEmail) {
-          sendEmails(
-            JobApplicationSections.INTERVIEWING,
-            checkList,
-            applications,
-            job,
-            handleJobApplicationUpdate,
-          );
-        }
-      },
-      primaryText: 'Move to Assessment',
-      secondaryText: 'Cancel',
-      variant: 'primary',
-    },
-    selected: {
-      header: 'Move to Qualified',
-      description: `Move ${checkListCount} candidate${
-        checkListCount !== 1 ? 's' : ''
-      } to Qualified Stage`,
-      subHeading: undefined,
-      primaryAction: async (checkEmail: any) => {
-        await handleUpdateJobs(JobApplicationSections.QUALIFIED);
-        if (checkEmail) {
-          sendEmails(
-            JobApplicationSections.QUALIFIED,
-            checkList,
-            applications,
-            job,
-            handleJobApplicationUpdate,
-          );
-        }
-      },
-      primaryText: 'Move to Qualified',
-      secondaryText: 'Cancel',
-      variant: 'primary',
-    },
-    rejected: {
-      header: 'Move to Disqualified',
-      description: `Move ${checkListCount} candidate${
-        checkListCount !== 1 ? 's' : ''
-      } to Disqualified Stage`,
-      subHeading: `Proceed to send a rejection email to the candidate${
-        checkListCount !== 1 ? 's' : ''
-      }`,
-      primaryAction: async (checkEmail: any) => {
-        await handleUpdateJobs(JobApplicationSections.DISQUALIFIED);
-        if (checkEmail) {
-          sendEmails(
-            JobApplicationSections.DISQUALIFIED,
-            checkList,
-            applications,
-            job,
-            handleJobApplicationUpdate,
-          );
-        }
-      },
-      primaryText: 'Move to Disqualified',
-      secondaryText: 'Cancel',
-      variant: 'primary',
-    },
-    applied: {
-      header: 'Move to New',
-      description: `Move ${checkListCount} candidate${
-        checkListCount !== 1 ? 's' : ''
-      } to New`,
-      subHeading: undefined,
-      warningMessage:
-        'Moving candidates to new will restart the entire process and reset candidate history.',
-      primaryAction: async () => {
-        await handleUpdateJobs(JobApplicationSections.NEW);
-      },
-      primaryText: 'Move to New',
-      secondaryText: 'Cancel',
-      variant: 'dark',
-    },
+
+  const handleOpen = (destination: JobApplicationSections) => {
+    setOpen(true);
+    setDestination(destination);
   };
-  const isCheckVisible =
-    dialogInfo.header !== 'Move to Qualified' &&
-    dialogInfo.header !== 'Move to New';
+  const handleClose = () => {
+    setOpen(false);
+    setTimeout(() => setDestination(null), 100);
+  };
+
+  const handleEmail = async () => {
+    await sendEmails(
+      destination,
+      checkList,
+      applications,
+      job,
+      handleJobApplicationUpdate,
+    );
+  };
+
   return (
     <>
-      <Dialog open={openInfoDialog} onClose={() => setOpenInfoDialog(false)}>
-        <CandidateSelectionPopup
-          isCheckVisible={isCheckVisible}
-          textHeader={dialogInfo.header}
-          textDescription={dialogInfo.description}
-          isChecked={checkEmail}
-          textCheck={dialogInfo.subHeading}
-          onclickCheck={{ onClick: () => setCheckEmail((prev) => !prev) }}
-          onclickClose={{ onClick: () => setOpenInfoDialog(false) }}
-          slotButtons={
-            <Stack
-              spacing={'10px'}
-              mt={'10px'}
-              direction={'row'}
-              alignItems={'center'}
-            >
-              <AUIButton
-                onClick={() => setOpenInfoDialog(false)}
-                variant='text'
-              >
-                {dialogInfo.secondaryText}
-              </AUIButton>
-              <AUIButton
-                onClick={() => {
-                  dialogInfo.primaryAction(checkEmail);
-                  setOpenInfoDialog(false);
-                }}
-                variant={dialogInfo.variant as any}
-              >
-                {checkEmail && isCheckVisible
-                  ? 'Send Email & Move'
-                  : dialogInfo.primaryText}
-              </AUIButton>
-            </Stack>
-          }
-        />
-      </Dialog>
+      <MoveCandidateDialog
+        open={open}
+        onClose={() => handleClose()}
+        destination={destination}
+        onSubmit={async () => await handleUpdateJobs()}
+        checkAction={async () => await handleEmail()}
+        count={checkList.size}
+      />
       <SelectActionBar
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
@@ -867,30 +835,18 @@ const ActionBar = ({
           <SelectActionsDropdown
             isInterview={showInterview}
             onClickInterview={{
-              onClick: async () => {
-                setDialogInfo(DialogInfo.interviewing);
-                setOpenInfoDialog(true);
-              },
+              onClick: () => handleOpen(JobApplicationSections.INTERVIEWING),
             }}
             isQualified={showSelected}
             onClickQualified={{
-              onClick: async () => {
-                setDialogInfo(DialogInfo.selected);
-                setOpenInfoDialog(true);
-              },
+              onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
             }}
             isDisqualified={showReject}
             onClickDisqualified={{
-              onClick: async () => {
-                setDialogInfo(DialogInfo.rejected);
-                setOpenInfoDialog(true);
-              },
+              onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
             }}
             onClickMoveNew={{
-              onClick: async () => {
-                setDialogInfo(DialogInfo.applied);
-                setOpenInfoDialog(true);
-              },
+              onClick: () => handleOpen(JobApplicationSections.NEW),
             }}
             isMoveNew={showNew}
           />
@@ -901,162 +857,3 @@ const ActionBar = ({
 };
 
 export default JobApplicationsDashboard;
-
-export function sendEmails(
-  status: string,
-  checkList: Set<string>,
-  applications: JobApplicationsData,
-  job,
-  handleJobApplicationUpdate,
-) {
-  if (
-    status === JobApplicationSections.INTERVIEWING ||
-    status === JobApplicationSections.DISQUALIFIED
-  ) {
-    const _new = applications['new'];
-    const interviewing = applications['interviewing'];
-    const qualified = applications['qualified'];
-    const disqualified = applications['disqualified'];
-
-    const allCandidates = [
-      ..._new,
-      ...interviewing,
-      ...qualified,
-      ...disqualified,
-    ];
-    const allCandidatesIds = allCandidates.map((ele) => ele.application_id);
-    const filteredCandidates = [];
-
-    Array.from(checkList).forEach((id) => {
-      if (allCandidatesIds.includes(id))
-        filteredCandidates.push(
-          allCandidates.filter(
-            (candidate) => candidate.application_id === id,
-          )[0],
-        );
-    });
-
-    // console.log('filteredCandidates', filteredCandidates);
-
-    for (const candidate of filteredCandidates) {
-      emailHandler(candidate, job, handleJobApplicationUpdate, status);
-    }
-  }
-}
-
-export const emailHandler = async (
-  candidate: {
-    email: any;
-    first_name: any;
-    last_name: any;
-    job_title: any;
-    company: any;
-    application_id: any;
-    emails: any;
-  },
-  job: any,
-  handleJobApplicationUpdate: any,
-  status: JobApplicationSections,
-) => {
-  return await axios
-    .post('/api/sendgrid', {
-      fromEmail: `messenger@aglinthq.com`,
-      fromName:
-        status === JobApplicationSections.INTERVIEWING
-          ? job.email_template?.interview.fromName
-          : status === JobApplicationSections.DISQUALIFIED
-            ? job.email_template?.rejection.fromName
-            : null,
-      email: candidate?.email,
-      subject:
-        status === JobApplicationSections.INTERVIEWING
-          ? fillEmailTemplate(job.email_template?.interview.subject, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: undefined,
-              support_link: undefined,
-            })
-          : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection.subject, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-      text:
-        status === JobApplicationSections.INTERVIEWING
-          ? fillEmailTemplate(job?.email_template?.interview?.body, {
-              first_name: candidate.first_name,
-              last_name: candidate.last_name,
-              job_title: candidate.job_title,
-              company_name: candidate.company,
-              interview_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/${pageRoutes.MOCKTEST}?id=${candidate.application_id}`,
-              support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidate.application_id}`,
-            })
-          : status === JobApplicationSections.DISQUALIFIED
-            ? fillEmailTemplate(job?.email_template?.rejection?.body, {
-                first_name: candidate.first_name,
-                last_name: candidate.last_name,
-                job_title: candidate.job_title,
-                company_name: candidate.company,
-                interview_link: undefined,
-                support_link: undefined,
-              })
-            : null,
-    })
-    .then(async () => {
-      if (status === JobApplicationSections.INTERVIEWING) {
-        candidate.emails.interviewing = true;
-        await handleJobApplicationUpdate(candidate.application_id, {
-          emails: candidate.emails,
-        });
-        return true;
-      }
-      if (status === JobApplicationSections.DISQUALIFIED) {
-        candidate.emails.rejected = true;
-        await handleJobApplicationUpdate(candidate.application_id, {
-          emails: candidate.emails,
-        });
-        return true;
-      }
-    })
-    .catch(() => {
-      return false;
-    });
-};
-
-function fillEmailTemplate(
-  template: any,
-  email: {
-    first_name: any;
-    last_name: any;
-    job_title: any;
-    company_name: any;
-    interview_link: any;
-    support_link: any;
-  },
-) {
-  let filledTemplate = template;
-
-  const placeholders = {
-    '[firstName]': email.first_name,
-    '[lastName]': email.last_name,
-    '[jobTitle]': email.job_title,
-    '[companyName]': email.company_name,
-    '[interviewLink]': email.interview_link,
-    '[supportLink]': email.support_link,
-  };
-
-  for (const [placeholder, value] of Object.entries(placeholders)) {
-    // eslint-disable-next-line security/detect-non-literal-regexp
-    const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-    filledTemplate = filledTemplate.replace(regex, value);
-  }
-
-  return filledTemplate;
-}

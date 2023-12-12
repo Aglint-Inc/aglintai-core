@@ -5,8 +5,21 @@ import React, { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  AuthProvider,
+  useAuthDetails,
+} from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
+
+const AuthHoc = () => {
+  return (
+    <>
+      <AuthProvider>
+        <Google />
+      </AuthProvider>
+    </>
+  );
+};
 
 const Google = () => {
   const router = useRouter();
@@ -38,7 +51,6 @@ const Google = () => {
           );
           return router.replace('/candidates');
         } catch (err) {
-          // console.log(err);
           toast.error(API_FAIL_MSG);
           router.replace('/candidates');
         }
@@ -60,11 +72,11 @@ const Google = () => {
   );
 };
 
-Google.getLayout = (page) => {
+AuthHoc.getLayout = (page) => {
   return <>{page}</>;
 };
 
-export default Google;
+export default AuthHoc;
 
 const getTokens = async (code: string) => {
   const { data } = await axios.post('/api/email-outreach/get-accesstoken', {

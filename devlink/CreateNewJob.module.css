@@ -496,8 +496,8 @@
 .create-job-menu-wrap.assessment {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
@@ -645,6 +645,7 @@
   top: -3px;
   right: -3px;
   bottom: auto;
+  z-index: 5;
 
   flex-direction: column;
   justify-content: center;
@@ -652,7 +653,7 @@
 }
 
 .beta-wrap {
-  position: absolute;
+  position: static;
   left: auto;
   top: -10px;
   right: -25px;
@@ -661,7 +662,7 @@
 
   display: flex;
   width: 44px;
-  padding: 4px 9px;
+  padding: 2px 9px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -702,4 +703,9 @@
 
 .relative.zindex-3 {
   z-index: 3;
+}
+
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
 }

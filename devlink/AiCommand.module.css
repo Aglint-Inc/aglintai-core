@@ -1,22 +1,49 @@
 .ai-command-wrap {
   display: flex;
   max-width: 177px;
-  padding: 17px;
+  padding: 10px;
   flex-direction: column;
-  grid-column-gap: 17px;
-  grid-row-gap: 17px;
 
   border: 1px solid #e9ebed;
   border-radius: 10px;
 
+  background-color: white;
+
   box-shadow: 0 4px 8px 0 rgba(0, 69, 78, 0.15);
 }
 
+.relative {
+  position: relative;
+}
+
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.relative.zindex-3 {
+  z-index: 3;
+}
+
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
 .div-block-640 {
+  position: relative;
+  z-index: 2;
+
   display: flex;
+  padding: 12px;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  border-radius: 4px;
+
+  transition: all 250ms ease;
+
   cursor: pointer;
 }
 
@@ -96,4 +123,14 @@
 
 .text-kale-500 {
   color: var(--kale500-ffd3d2f8);
+}
+
+.active-class-tab {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #f8f9f9;
 }

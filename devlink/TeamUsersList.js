@@ -46,7 +46,11 @@ export function TeamUsersList({
                 tag="div"
               >
                 {
-                  "Below, you'll find a list of users, their associated permissions, and their current status. To make changes to user roles, simply click on the action button provided for each user."
+                  "Below, you'll find a list of users, their associated permissions, and their current status. "
+                }
+                <br />
+                {
+                  "To make changes to user roles, simply click on the action button provided for each user."
                 }
               </_Builtin.Block>
               <_Builtin.Block tag="div">{slotInviteBtn}</_Builtin.Block>
