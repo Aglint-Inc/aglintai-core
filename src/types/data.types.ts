@@ -171,3 +171,6 @@ export type GreenhouseType = Pick<
   Database['public']['Tables']['greenhouse_reference']['Row'],
   'posting_id' | 'application_id' | 'greenhouse_id' | 'public_job_id' | 'resume'
 >;
+
+export type OutreachEmailDbType =
+  Database['public']['Tables']['outreached_emails']['Row'];

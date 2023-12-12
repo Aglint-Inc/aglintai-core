@@ -14,6 +14,7 @@ const SelectedCandidate = ({
   onClickPrev,
   onCLickEmailOutReach,
   isEmailOutreachVisible = true,
+  showClose,
 }) => {
   const { candState, handleAddCandidatesTojob } = useCandFilter();
   const candidate = get(candState.candidates, path);
@@ -35,7 +36,7 @@ const SelectedCandidate = ({
   return (
     <>
       <CandidateDrawer
-        showClose={false}
+        showClose={showClose}
         showBookmark={false}
         candidate={{
           ...candidate,

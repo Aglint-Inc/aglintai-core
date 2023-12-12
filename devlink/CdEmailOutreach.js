@@ -115,7 +115,7 @@ export function CdEmailOutreach({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {slotButtonGenerate ?? <ButtonGenerate />}
+            {slotButtonGenerate ?? <ButtonGenerate textDynamic="Regenerate" />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">

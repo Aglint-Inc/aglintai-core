@@ -8,6 +8,7 @@ export function ButtonGenerate({
   as: _Component = _Builtin.Block,
   onClickGenerate = {},
   slotIcon,
+  textDynamic = "Generate",
 }) {
   return (
     <_Component
@@ -18,7 +19,7 @@ export function ButtonGenerate({
       <_Builtin.Block className={_utils.cx(_styles, "icons")} tag="div">
         {slotIcon ?? <AiIcon />}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{"Generate"}</_Builtin.Block>
+      <_Builtin.Block tag="div">{textDynamic}</_Builtin.Block>
     </_Component>
   );
 }

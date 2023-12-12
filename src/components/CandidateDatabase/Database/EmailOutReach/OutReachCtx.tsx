@@ -7,6 +7,7 @@ import {
   supabaseWrap,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { OutreachEmailDbType } from '@/src/types/data.types';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -21,6 +22,8 @@ export interface OutReachCtxType {
   genEmailTempToemail: () => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   genEmailFromTempJson: (templateJson: any) => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  saveEmail: (email: OutreachedEmail) => Promise<void>;
 }
 
 type CandEmailData = {
@@ -29,6 +32,14 @@ type CandEmailData = {
   email: string;
   provider: 'google' | 'outlook';
   expiry_date: number;
+};
+
+type OutreachedEmail = {
+  fromEmail: string;
+  toEmail: string;
+  subject: string;
+  body: string;
+  createdAt: string;
 };
 
 // Initial state interface
@@ -41,6 +52,7 @@ export interface StateType {
   selectedTemplate: number;
   isEmailLoading: boolean;
   defaultEmailJson: any;
+  outReachedEmails: OutreachedEmail[];
   email: {
     subject: string;
     toEmail: string;
@@ -103,6 +115,7 @@ const initialState: StateType = {
     body: '',
   },
   selectedTemplate: 0,
+  outReachedEmails: [],
 };
 const OutReachCtx = React.createContext<OutReachCtxType>({
   state: initialState,
@@ -110,6 +123,8 @@ const OutReachCtx = React.createContext<OutReachCtxType>({
   genEmailTempToemail: async () => {},
   // eslint-disable-next-line no-unused-vars
   genEmailFromTempJson: async (templateJson: any) => {},
+  // eslint-disable-next-line no-unused-vars
+  saveEmail: async (email: OutreachedEmail) => {},
 });
 
 // Provider component
@@ -194,6 +209,7 @@ const OutReachCtxProvider = ({
   useEffect(() => {
     if (!selcandidate) return;
     genEmailTempToemail();
+    getOutreachedEmails();
   }, [recruiterUser, selcandidate, dispatch]);
 
   const genEmailTempToemail = async () => {
@@ -263,6 +279,31 @@ const OutReachCtxProvider = ({
     }
   };
 
+  const getOutreachedEmails = async () => {
+    try {
+      const outreachedMails = supabaseWrap(
+        await supabase
+          .from('outreached_emails')
+          .select()
+          .eq('candidate_id', selcandidate.candidate_id)
+          .eq('recruiter_id', recruiter.id),
+      ) as OutreachEmailDbType[];
+
+      let newEMails: OutreachedEmail[] = outreachedMails.map((e: any) => ({
+        ...e.email,
+      }));
+      dispatch({
+        type: 'updateState',
+        payload: {
+          path: 'outReachedEmails',
+          value: newEMails,
+        },
+      });
+    } catch (err) {
+      //
+    }
+  };
+
   const genEmailFromTempJson = async (templateJson) => {
     try {
       dispatch({
@@ -312,7 +353,34 @@ const OutReachCtxProvider = ({
     }
   };
 
-  const value = { state, dispatch, genEmailTempToemail, genEmailFromTempJson };
+  const saveEmail = async (email: OutreachedEmail) => {
+    supabaseWrap(
+      await supabase
+        .from('outreached_emails')
+        .insert({
+          candidate_id: selcandidate.candidate_id,
+          recruiter_id: recruiter.id,
+          email: email,
+        })
+        .select(),
+    ) as OutreachEmailDbType[];
+
+    dispatch({
+      type: 'updateState',
+      payload: {
+        path: 'outReachedEmails',
+        value: [...state.outReachedEmails, email],
+      },
+    });
+  };
+
+  const value = {
+    state,
+    dispatch,
+    genEmailTempToemail,
+    genEmailFromTempJson,
+    saveEmail,
+  };
   if (!selcandidate) return <></>;
   return <OutReachCtx.Provider value={value}>{children}</OutReachCtx.Provider>;
 };

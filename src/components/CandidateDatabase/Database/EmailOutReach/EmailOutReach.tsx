@@ -25,12 +25,13 @@ import toast from '@/src/utils/toast';
 import EmailTemplateModalComp from './EmailTemplateDialog';
 import { useOutReachCtx } from './OutReachCtx';
 
-const EmailOutReach = () => {
+const EmailOutReach = ({ onClose }) => {
   const {
     state: OutreachState,
     dispatch,
     genEmailTempToemail,
     genEmailFromTempJson,
+    saveEmail,
   } = useOutReachCtx();
 
   const {
@@ -81,6 +82,13 @@ const EmailOutReach = () => {
         subject: email.subject,
         body: email.body,
       });
+      await saveEmail({
+        fromEmail: candEmailData.email,
+        toEmail: email.toEmail,
+        body: email.body,
+        subject: email.subject,
+        createdAt: new Date().toISOString(),
+      });
       dispatch({
         type: 'updateState',
         payload: {
@@ -129,6 +137,7 @@ const EmailOutReach = () => {
                   genEmailTempToemail();
                 },
               }}
+              textDynamic='Regenerate'
             />
           </>
         }
@@ -291,7 +300,7 @@ const EmailOutReach = () => {
         }
         onClickBack={{
           onClick: () => {
-            //
+            onClose();
           },
         }}
         onClickCopyMail={{

@@ -108,10 +108,13 @@ function CandidateSearchHistory() {
             is_search_jd: false,
             query_json: queryJson,
             search_results: cndates,
+            search_query: searchQuery,
           })
           .select(),
       );
-      router.push(`/candidates/search?searchQryId=${history.id}`);
+      router.push(
+        `/candidates/search?searchQryId=${history.id}&search_title=${searchQuery}`,
+      );
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
@@ -167,12 +170,15 @@ function CandidateSearchHistory() {
                         setDeleteHistoryId(hist.id);
                       },
                     }}
-                    textHeader={queryJsonToTitle(hist.query_json as any)}
+                    textHeader={
+                      hist.search_query ??
+                      queryJsonToTitle(hist.query_json as any)
+                    }
                     textPosted={diffrence}
                     onClickCard={{
                       onClick: () => {
                         router.push(
-                          `/candidates/search?searchQryId=${hist.id}`,
+                          `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
                         );
                       },
                     }}
