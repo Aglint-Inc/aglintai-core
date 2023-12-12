@@ -1,6 +1,5 @@
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -17,8 +16,9 @@ import {
   RecruiterType,
   RecruiterUserType,
   RoleType,
-  SocialsType
+  SocialsType,
 } from '@/src/types/data.types';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
@@ -66,22 +66,22 @@ const defaultProvider = {
   role: null,
 };
 
-supabase.auth.onAuthStateChange((event, session) => {
-  // console.log('session event: ', {
-  //   event,
-  //   time: new Date().toLocaleString(),
-  //   session: session.access_token,
-  //   cookie: Cookie.get('access_token'),
-  // });
-  if (event === 'SIGNED_OUT') {
-    // delete cookies on sign out
-    const expires = new Date(0).toUTCString();
-    document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
-  } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-    const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
-    document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
-  }
-});
+// supabase.auth.onAuthStateChange((event, session) => {
+//   // console.log('session event: ', {
+//   //   event,
+//   //   time: new Date().toLocaleString(),
+//   //   session: session.access_token,
+//   //   cookie: Cookie.get('access_token'),
+//   // });
+//   if (event === 'SIGNED_OUT') {
+//     // delete cookies on sign out
+//     const expires = new Date(0).toUTCString();
+//     document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
+//   } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+//     const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
+//     document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
+//   }
+// });
 
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);

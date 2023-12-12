@@ -9,7 +9,7 @@ import '@styles/globals.scss';
 import '@styles/toast.scss';
 import PropTypes from 'prop-types';
 import { Suspense } from 'react';
-import 'regenerator-runtime/runtime';
+// import 'regenerator-runtime/runtime';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
