@@ -1,4 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  type CookieOptions,
+  createServerClient,
+  serialize,
+} from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -18,6 +23,24 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ReadJobApplicationApi['response']>,
 ) => {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return req.cookies[name];
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, value, options));
+        },
+        remove(name: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, '', options));
+        },
+      },
+    },
+  );
+
   const { job_id, ranges, apiStatus, sort, filter, search } =
     req.body as ReadJobApplicationApi['request'];
   if (!job_id || (apiStatus && !Object.values(ApiLogState).includes(apiStatus)))
@@ -27,6 +50,7 @@ const handler = async (
     } as ReadJobApplicationApi['response']);
   const promises = await createMultiPromise(
     job_id,
+    supabase,
     apiStatus ?? null,
     ranges ?? null,
     sort ?? null,
@@ -42,6 +66,7 @@ export default handler;
 
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
+  supabase: any,
   apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
   ranges?: ReadJobApplicationApi['request']['ranges'],
   sort?: ReadJobApplicationApi['request']['sort'],
@@ -51,6 +76,7 @@ const createMultiPromise = (
   return Object.entries(ranges).map(([key, value]) =>
     readNewJobApplicationDbAction(
       job_id,
+      supabase,
       key as JobApplicationSections,
       apiStatus,
       value ?? null,

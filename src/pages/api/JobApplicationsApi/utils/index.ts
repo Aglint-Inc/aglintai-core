@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { createServerClient } from '@supabase/ssr';
+
 import {
   ApiLogState,
   FilterParameter,
@@ -8,13 +10,14 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { Database } from '@/src/types/schema';
 
 export const selectJobApplicationQuery =
   'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails';
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -39,6 +42,7 @@ const getApiStatus = (apiStatus: ApiLogState) => {
 
 export const readNewJobApplicationDbAction = async (
   job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
   status: JobApplicationSections,
   apiStatus?: ApiLogState,
   range?: {
@@ -160,6 +164,7 @@ export const getFilteredQuery = (
 
 export const upsertNewJobApplicationDbAction = async (
   inputData: Partial<JobApplication>[],
+  supabase: ReturnType<typeof createServerClient<Database>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);

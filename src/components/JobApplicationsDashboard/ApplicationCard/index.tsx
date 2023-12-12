@@ -76,8 +76,8 @@ const ApplicationCard = ({
           : '---'
       }
       location={
-        (application.json_resume as any)?.basics?.location
-          ? capitalize((application.json_resume as any).basics.location)
+        (application.json_resume as any)?.basics?.location?.city
+          ? capitalize((application.json_resume as any).basics.location.city)
           : '---'
       }
       slotResumeScore={resumeScore}
