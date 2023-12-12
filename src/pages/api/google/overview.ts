@@ -23,7 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resume_json = req.body.application.json_resume;
 
     const parsedResume = {
-      basics: resume_json.basics,
+      basics: {
+        ...resume_json.basics,
+        totalExperienceInYears: resume_json.basics.totalExperienceInMonths
+          ? resume_json.basics.totalExperienceInMonths / 12
+          : null,
+      },
       skills: resume_json.skills,
     };
     if (!parsedResume.basics || !parsedResume.skills) {
@@ -33,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const input = `Here is resume_json : '''${JSON.stringify(
       parsedResume,
-    )}'''. Generate a paragraph overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. Dont unnecessary mention years of experience, or any other information in ther overview you. The overview should be in third person.`;
+    )}'''. Generate a resume overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. Dont unnecessary mention years of experience, or any other information in their overview. The overview should be in third person.`;
     const promptString = `${input}`;
     const stopSequences = [];
 
@@ -114,7 +119,7 @@ const openAiHandler = async (resume) => {
         role: 'system',
         content: `Here is resume_json : '''${JSON.stringify(
           resume,
-        )}'''. Generate a paragraph overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. The overview should be in third person.`,
+        )}'''. Generate a resume overview of 2 to 3 line based on the provided resume JSON. The overview should encompass current job title, and mention 2 to 3 skills from resume json. Dont unnecessary mention years of experience, or any other information in their overview. The overview should be in third person.`,
       },
     ],
     temperature: 0.8,
