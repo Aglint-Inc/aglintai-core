@@ -31,6 +31,8 @@ export function CompanySetting({
   onclickAssessment = {},
   onclickAssisstant = {},
   slotAssisstantSettings,
+  isAssessmentBetaVisible = true,
+  isAssistantBetaVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -3464,10 +3466,28 @@ export function CompanySetting({
               {...onclickAssessment}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "div-block-650")}
                 tag="div"
               >
-                {"Assessment Settings"}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Assessment Settings"}
+                </_Builtin.Block>
+                {isAssessmentBetaVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "beta-wrap")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-xsm")}
+                      tag="div"
+                    >
+                      {"Beta"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
             </_Builtin.TabsLink>
             <_Builtin.TabsLink
@@ -3476,10 +3496,28 @@ export function CompanySetting({
               {...onclickAssisstant}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "div-block-650")}
                 tag="div"
               >
-                {"Assistant"}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Assistant"}
+                </_Builtin.Block>
+                {isAssistantBetaVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "beta-wrap")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-xsm")}
+                      tag="div"
+                    >
+                      {"Beta"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
             </_Builtin.TabsLink>
           </_Builtin.TabsMenu>
