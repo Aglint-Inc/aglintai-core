@@ -7,6 +7,7 @@ export const resolveAiCmd = async (
   companyOverview,
   aiprompt,
 ) => {
+  if (process.env.NODE_ENV === 'development') return aiprompt;
   const prompt1: MessageType[] = [
     {
       role: 'system',

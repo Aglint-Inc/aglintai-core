@@ -47,6 +47,10 @@
   cursor: pointer;
 }
 
+.div-block-640:hover {
+  background-color: #f8f9f9;
+}
+
 .icons {
   display: flex;
   flex-direction: column;

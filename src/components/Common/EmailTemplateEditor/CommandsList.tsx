@@ -5,7 +5,7 @@ import { AiCommand } from '@/devlink';
 
 class CommandList extends Component<SuggestionProps> {
   state = {
-    selectedIndex: 0,
+    selectedIndex: -1,
   };
 
   componentDidUpdate(oldProps) {
@@ -67,6 +67,7 @@ class CommandList extends Component<SuggestionProps> {
         <AiCommand
           isAiCommandActive={this.state.selectedIndex === 0}
           isCandidateNameActive={this.state.selectedIndex === 1}
+          isRecruiterActive={this.state.selectedIndex === 2}
           onClickAiCommand={{
             onClick: () => {
               this.selectItem(0);
@@ -75,6 +76,11 @@ class CommandList extends Component<SuggestionProps> {
           onClickCandidateName={{
             onClick: () => {
               this.selectItem(1);
+            },
+          }}
+          onClickRecruiterName={{
+            onClick: () => {
+              this.selectItem(2);
             },
           }}
         />

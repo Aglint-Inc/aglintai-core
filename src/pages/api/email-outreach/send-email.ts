@@ -28,24 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       return res.status(400).send('missing required fields');
 
-    // const client = new OAuth2Client(
-    //   process.env.GOOGLE_CLIENT_ID,
-    //   process.env.GOOGLE_CLIENT_SECRET,
-    //   process.env.GOOGLE_REDIRECT_URI,
-    // );
-
-    // const gmail = google.gmail({ version: 'v1', auth: client });
-
-    // const rawMessage = makeEmail();
-    // const resp = await gmail.users.messages.send({
-    //   userId: 'me',
-    //   requestBody: {
-    //     raw: rawMessage,
-    //   },
-    // });
-
-    // console.log('Email sent:', resp.data);
-
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -66,8 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       html: body,
     };
     // Send email
-    await transporter.sendMail(mailOptions);
-    return res.status(200).send('Email sent');
+    const r = await transporter.sendMail(mailOptions);
+    return res.status(200).send(r.messageId);
   } catch (error) {
     res.status(500).send(error.message);
   }

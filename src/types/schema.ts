@@ -77,6 +77,7 @@ export interface Database {
           is_search_jd: boolean | null
           query_json: Json | null
           recruiter_id: string
+          search_query: string | null
           search_results: Json[] | null
         }
         Insert: {
@@ -86,6 +87,7 @@ export interface Database {
           is_search_jd?: boolean | null
           query_json?: Json | null
           recruiter_id: string
+          search_query?: string | null
           search_results?: Json[] | null
         }
         Update: {
@@ -95,6 +97,7 @@ export interface Database {
           is_search_jd?: boolean | null
           query_json?: Json | null
           recruiter_id?: string
+          search_query?: string | null
           search_results?: Json[] | null
         }
         Relationships: [
@@ -160,66 +163,6 @@ export interface Database {
           }
         ]
       }
-      documents: {
-        Row: {
-          content: string | null
-          embedding: string | null
-          id: number
-          metadata: Json | null
-        }
-        Insert: {
-          content?: string | null
-          embedding?: string | null
-          id?: number
-          metadata?: Json | null
-        }
-        Update: {
-          content?: string | null
-          embedding?: string | null
-          id?: number
-          metadata?: Json | null
-        }
-        Relationships: []
-      }
-      emails_outreaches: {
-        Row: {
-          candidate_id: string
-          created_at: string
-          email: Json[] | null
-          id: number
-          recruiter_id: string
-        }
-        Insert: {
-          candidate_id: string
-          created_at?: string
-          email?: Json[] | null
-          id?: number
-          recruiter_id: string
-        }
-        Update: {
-          candidate_id?: string
-          created_at?: string
-          email?: Json[] | null
-          id?: number
-          recruiter_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "emails_outreaches_candidate_id_fkey"
-            columns: ["candidate_id"]
-            isOneToOne: false
-            referencedRelation: "candidates"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "emails_outreaches_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       env: {
         Row: {
           created_at: string
@@ -237,30 +180,6 @@ export interface Database {
           created_at?: string
           id?: number
           name?: string | null
-          value?: string | null
-        }
-        Relationships: []
-      }
-      function: {
-        Row: {
-          value: string | null
-        }
-        Insert: {
-          value?: string | null
-        }
-        Update: {
-          value?: string | null
-        }
-        Relationships: []
-      }
-      function_url: {
-        Row: {
-          value: string | null
-        }
-        Insert: {
-          value?: string | null
-        }
-        Update: {
           value?: string | null
         }
         Relationships: []
@@ -453,6 +372,18 @@ export interface Database {
           }
         ]
       }
+      json_resume: {
+        Row: {
+          "?column?": Json | null
+        }
+        Insert: {
+          "?column?"?: Json | null
+        }
+        Update: {
+          "?column?"?: Json | null
+        }
+        Relationships: []
+      }
       lever_job_reference: {
         Row: {
           created_at: string
@@ -559,6 +490,42 @@ export interface Database {
           job_title?: string | null
         }
         Relationships: []
+      }
+      outreached_emails: {
+        Row: {
+          candidate_id: string
+          email: Json
+          id: number
+          recruiter_id: string
+        }
+        Insert: {
+          candidate_id: string
+          email?: Json
+          id?: number
+          recruiter_id: string
+        }
+        Update: {
+          candidate_id?: string
+          email?: Json
+          id?: number
+          recruiter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outreached_emails_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outreached_emails_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       public_jobs: {
         Row: {
@@ -862,18 +829,6 @@ export interface Database {
           }
         ]
       }
-      result: {
-        Row: {
-          jsonb_agg: Json | null
-        }
-        Insert: {
-          jsonb_agg?: Json | null
-        }
-        Update: {
-          jsonb_agg?: Json | null
-        }
-        Relationships: []
-      }
       rp_logs: {
         Row: {
           application_id: string
@@ -1081,21 +1036,6 @@ export interface Database {
           id?: number
           linkedin_url?: string | null
           thread_id?: string | null
-        }
-        Relationships: []
-      }
-      weight_record: {
-        Row: {
-          jd_score: Json | null
-          parameter_weights: Json | null
-        }
-        Insert: {
-          jd_score?: Json | null
-          parameter_weights?: Json | null
-        }
-        Update: {
-          jd_score?: Json | null
-          parameter_weights?: Json | null
         }
         Relationships: []
       }
