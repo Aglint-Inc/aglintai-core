@@ -1,8 +1,7 @@
--- not being used using reference only
-DROP FUNCTION IF EXISTS calc_sim_score;
+DROP FUNCTION IF EXISTS calc_sim_score2;
 
-CREATE FUNCTION calc_sim_score (
-  jodb_is uuid[],
+CREATE FUNCTION calc_sim_score2 (
+  job_ids uuid[],
   skill_qry_emb vector (1536),
   edu_qry_emb vector (1536),
   exp_qry_emb vector (1536),
@@ -59,7 +58,12 @@ BEGIN
       JOIN candidates c ON ja.candidate_id = c.id
     WHERE
       ja.job_id = ANY(job_ids) AND
-      to_tsvector(COALESCE(lower(ja.json_resume->'basics'->>'currentJobTitle'), '')) @@ to_tsquery('english', ts_query) AND
+      CASE
+        WHEN LENGTH(ts_query) > 0 THEN 
+          to_tsvector(COALESCE(lower(ja.json_resume->'basics'->>'currentJobTitle'), '')) @@ to_tsquery('english', ts_query) 
+        ELSE true
+        end
+      AND
       CASE
         WHEN LENGTH(filter_companies) > 0 THEN to_tsvector(COALESCE(lower(ja.resume_text),'')) @@ to_tsquery('english', filter_companies)
         ELSE true 

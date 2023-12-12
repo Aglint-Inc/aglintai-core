@@ -1120,6 +1120,36 @@ export interface Database {
           sim_educ: number
         }[]
       }
+      calc_sim_score2: {
+        Args: {
+          job_ids: string[]
+          skill_qry_emb: string
+          edu_qry_emb: string
+          exp_qry_emb: string
+          resume_qry_emb: string
+          max_records?: number
+          ts_query?: string
+          filter_companies?: string
+        }
+        Returns: {
+          application_id: string
+          created_at: string
+          first_name: string
+          last_name: string
+          job_title: string
+          email: string
+          resume_link: string
+          json_resume: Json
+          profile_image: string
+          candidate_id: string
+          job_id: string
+          similarity: number
+          sim_exp: number
+          sim_res: number
+          sim_skills: number
+          sim_educ: number
+        }[]
+      }
       calculate_resume_score: {
         Args: {
           score_json: Json

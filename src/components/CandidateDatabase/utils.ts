@@ -95,7 +95,7 @@ export const getRelevantCndidates = async (
     resp[3].value.data[0].embedding;
 
   const cands = supabaseWrap(
-    await supabase.rpc('calc_sim_score', {
+    await supabase.rpc('calc_sim_score2', {
       edu_qry_emb: embeddings.education,
       skill_qry_emb: embeddings.skills,
       exp_qry_emb: embeddings.experience,
