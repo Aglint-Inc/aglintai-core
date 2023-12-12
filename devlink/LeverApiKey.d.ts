@@ -7,4 +7,5 @@ declare function LeverApiKey(props: {
   onClickContinue?: Types.Devlink.RuntimeProps;
   onClickSupport?: Types.Devlink.RuntimeProps;
   isApiWrong?: Types.Visibility.VisibilityConditions;
+  slotPrimaryButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

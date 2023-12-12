@@ -111,8 +111,36 @@ const DashboardComp = () => {
         }}
       >
         <CreateJob
-          isAshbyVisible={true}
-          isGreenhouseVisible={true}
+          isGreenhouseConnected={recruiter.greenhouse_key ? true : false}
+          isAshbyConnected={recruiter.ashby_key ? true : false}
+          isLeverConnected={recruiter.lever_key ? true : false}
+          isAshbyVisible={
+            !(
+              recruiter.ashby_key ||
+              recruiter.greenhouse_key ||
+              recruiter.lever_key
+            ) || recruiter.ashby_key
+              ? true
+              : false
+          }
+          isGreenhouseVisible={
+            !(
+              recruiter.ashby_key ||
+              recruiter.greenhouse_key ||
+              recruiter.lever_key
+            ) || recruiter.greenhouse_key
+              ? true
+              : false
+          }
+          isLeverVisible={
+            !(
+              recruiter.ashby_key ||
+              recruiter.greenhouse_key ||
+              recruiter.lever_key
+            ) || recruiter.lever_key
+              ? true
+              : false
+          }
           onClickAshby={{
             onClick: () => {
               if (!recruiter.ashby_key) {
@@ -238,10 +266,10 @@ const DashboardComp = () => {
                 router.query.status == 'close'
                   ? 'Closed Jobs'
                   : router.query.status == 'inactive'
-                  ? 'Inactive Jobs'
-                  : router.query.status == 'active'
-                  ? 'Active Jobs'
-                  : 'All Jobs'
+                    ? 'Inactive Jobs'
+                    : router.query.status == 'active'
+                      ? 'Active Jobs'
+                      : 'All Jobs'
               }
             />
           )}

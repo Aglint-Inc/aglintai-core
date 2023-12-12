@@ -6,4 +6,5 @@ declare function GreenhouseApiKey(props: {
   slotInput?: Types.Devlink.Slot;
   onClickContinue?: Types.Devlink.RuntimeProps;
   isApiWrong?: Types.Visibility.VisibilityConditions;
+  slotPrimaryButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

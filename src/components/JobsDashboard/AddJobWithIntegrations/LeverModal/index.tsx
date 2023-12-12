@@ -14,6 +14,9 @@ import {
   NoResultAts,
   SkeletonLoaderAtsCard,
 } from '@/devlink';
+import {
+  ButtonPrimaryDefaultRegular
+} from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
@@ -40,6 +43,7 @@ export function LeverModalComp() {
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
+  const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
   const [leverFilter, setLeverFilter] = useState('published');
@@ -147,6 +151,7 @@ export function LeverModalComp() {
 
   const submitApiKey = async () => {
     try {
+      setLoading(true);
       const response = await axios.post('/api/lever/getPostings', {
         offset: 0,
         apiKey: apiRef.current.value,
@@ -174,12 +179,14 @@ export function LeverModalComp() {
           }, 1000);
         }
       } else {
+        setLoading(false);
         setIntegration((prev) => ({
           ...prev,
           lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
         }));
       }
     } catch (error) {
+      setLoading(false);
       setIntegration((prev) => ({
         ...prev,
         lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
@@ -198,6 +205,16 @@ export function LeverModalComp() {
         integration.lever.step === STATE_LEVER_DIALOG.API ||
         integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
           <LeverApiKey
+            slotPrimaryButton={
+              <ButtonPrimaryDefaultRegular
+                isDisabled={loading}
+                buttonProps={{
+                  onClick: () => {
+                    submitApiKey();
+                  },
+                }}
+              />
+            }
             onClickSupport={{
               onClick: () => {
                 window.open(
@@ -216,11 +233,6 @@ export function LeverModalComp() {
                 type='password'
               />
             }
-            onClickContinue={{
-              onClick: () => {
-                submitApiKey();
-              },
-            }}
           />
         ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
           <IntegrationFetching
@@ -315,27 +327,27 @@ export function LeverModalComp() {
                               }
                               onClickCheck={{
                                 onClick: () => {
-                                  if (selectedLeverPostings.length < 5) {
-                                    if (
-                                      selectedLeverPostings?.some(
-                                        (p) => p.id === post.id,
-                                      )
-                                    ) {
-                                      // If the object is already in the array, remove it
-                                      setSelectedLeverPostings((prev) =>
-                                        prev.filter((p) => p.id !== post.id),
-                                      );
-                                    } else {
+                                  if (
+                                    selectedLeverPostings?.some(
+                                      (p) => p.id === post.id,
+                                    )
+                                  ) {
+                                    // If the object is already in the array, remove it
+                                    setSelectedLeverPostings((prev) =>
+                                      prev.filter((p) => p.id !== post.id),
+                                    );
+                                  } else {
+                                    if (selectedLeverPostings.length < 3) {
                                       // If the object is not in the array, add it
                                       setSelectedLeverPostings((prev) => [
                                         ...prev,
                                         post,
                                       ]);
+                                    } else {
+                                      toast.warning(
+                                        'You can select maximum 3 jobs at a time',
+                                      );
                                     }
-                                  } else {
-                                    toast.error(
-                                      'You can select maximum 5 jobs at a time',
-                                    );
                                   }
                                 },
                               }}

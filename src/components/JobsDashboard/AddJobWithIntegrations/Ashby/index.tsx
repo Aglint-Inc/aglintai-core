@@ -16,6 +16,7 @@ import {
   NoResultAts,
   SkeletonLoaderAtsCard,
 } from '@/devlink';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
@@ -38,6 +39,7 @@ export function AshbyModalComp() {
   const router = useRouter();
   const { jobsData, handleJobRead } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
     JobAshby[]
   >([]);
@@ -147,6 +149,7 @@ export function AshbyModalComp() {
 
   const submitApiKey = async () => {
     try {
+      setLoading(true);
       const response = await axios.post('/api/ashby/getPostings', {
         page: 1,
         apiKey: apiRef.current.value,
@@ -178,12 +181,14 @@ export function AshbyModalComp() {
           }, 1000);
         }
       } else {
+        setLoading(false);
         setIntegration((prev) => ({
           ...prev,
           ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
         }));
       }
     } catch (error) {
+      setLoading(false);
       setIntegration((prev) => ({
         ...prev,
         ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
@@ -202,6 +207,16 @@ export function AshbyModalComp() {
         integration.ashby.step === STATE_ASHBY_DIALOG.API ||
         integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
           <AshbyApiKey
+            slotPrimaryButton={
+              <ButtonPrimaryDefaultRegular
+                isDisabled={loading}
+                buttonProps={{
+                  onClick: () => {
+                    submitApiKey();
+                  },
+                }}
+              />
+            }
             slotInput={
               <UITextField
                 ref={apiRef}
@@ -212,15 +227,10 @@ export function AshbyModalComp() {
               />
             }
             isApiWrong={integration.ashby.step === STATE_ASHBY_DIALOG.ERROR}
-            onClickContinue={{
-              onClick: () => {
-                submitApiKey();
-              },
-            }}
           />
         ) : integration.ashby.step === STATE_ASHBY_DIALOG.FETCHING ? (
           <IntegrationFetching
-            textCompany={'Greenhouse'}
+            textCompany={'Ashby'}
             slotIntegrationLogo={
               <Image
                 src={'/images/ats/ashby.svg'}
@@ -273,27 +283,27 @@ export function AshbyModalComp() {
                             }
                             onClickCheck={{
                               onClick: () => {
-                                if (selectedAshbyPostings.length < 5) {
-                                  if (
-                                    selectedAshbyPostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedAshbyPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
-                                  } else {
+                                if (
+                                  selectedAshbyPostings?.some(
+                                    (p) => p.id === post.id,
+                                  )
+                                ) {
+                                  // If the object is already in the array, remove it
+                                  setSelectedAshbyPostings((prev) =>
+                                    prev.filter((p) => p.id !== post.id),
+                                  );
+                                } else {
+                                  if (selectedAshbyPostings.length < 5) {
                                     // If the object is not in the array, add it
                                     setSelectedAshbyPostings((prev) => [
                                       ...prev,
                                       post,
                                     ]);
+                                  } else {
+                                    toast.error(
+                                      'You can select maximum 5 jobs at a time',
+                                    );
                                   }
-                                } else {
-                                  toast.error(
-                                    'You can select maximum 5 jobs at a time',
-                                  );
                                 }
                               },
                             }}
@@ -324,7 +334,7 @@ export function AshbyModalComp() {
           </Stack>
         ) : integration.ashby.step === STATE_ASHBY_DIALOG.IMPORTING ? (
           <LoadingJobsAts
-            textAtsCompany={'Greenhouse'}
+            textAtsCompany={'Ashby'}
             textJobCount={
               selectedAshbyPostings.length < 1
                 ? `${selectedAshbyPostings.length} Job`
