@@ -122,8 +122,8 @@ const EmailOutReach = ({ onClose }) => {
                   slotBodyText={
                     <div dangerouslySetInnerHTML={{ __html: eSent.body }}></div>
                   }
-                  textEmail={eSent.fromEmail}
-                  textSentMail={eSent.toEmail}
+                  textEmail={eSent.toEmail}
+                  textSentMail={eSent.fromEmail}
                   textStatus={getTimeDifference(
                     eSent.createdAt,
                     new Date().toISOString(),
