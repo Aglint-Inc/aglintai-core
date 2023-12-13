@@ -345,7 +345,7 @@ export function CandidateFilter({
               <_Builtin.Block tag="div">{"Companies"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "mt-16")} tag="div">
-              {"Prefered Companies"}
+              {"Preferred Companies"}
             </_Builtin.Block>
             <_Builtin.Block tag="div">
               {slotPreferredCompanyInput}

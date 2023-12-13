@@ -331,6 +331,10 @@ export function CandidateDatabaseTable({
           {slotCandidateDetails}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%40media%20only%20screen%20and%20(max-width%3A%201840px)%20%7B%0A%20%20%0A%0A%5Bclass*%3D%22CandidateDatabaseTable_div-block-620__%22%5D%7B%0Awidth%3Afit-content%3B%0A%7D%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

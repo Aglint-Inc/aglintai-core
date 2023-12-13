@@ -146,6 +146,10 @@
   padding: 10px 16px;
 }
 
+.cvs-header-copy-block.clickable.hide {
+  display: none;
+}
+
 .cvs-header-copy-icon {
   transition: all 250ms ease;
 }

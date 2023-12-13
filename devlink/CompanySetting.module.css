@@ -353,6 +353,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .text-green-500 {
   color: var(--green500-287ff474);
 }
@@ -434,10 +438,6 @@
 
 .text-green-700 {
   color: var(--green700-a1b0a24f);
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-sm.color-grey-400 {

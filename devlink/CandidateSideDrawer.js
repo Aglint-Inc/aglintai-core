@@ -103,7 +103,12 @@ export function CandidateSideDrawer({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-header-copy-block", "clickable")}
+            className={_utils.cx(
+              _styles,
+              "cvs-header-copy-block",
+              "clickable",
+              "hide"
+            )}
             tag="div"
             {...onClickCopyProfile}
           >
