@@ -30,17 +30,25 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-export type FilterParameter = {
+interface NumberFilterParameter {
+  type: 'number';
   parameter: 'resume_score' | 'interview_score';
   condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
-  count: number;
-};
+  value: number;
+}
+interface StringFilterParameter {
+  type: 'string';
+  parameter: 'location';
+  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
+  value: string;
+}
+export type FilterParameter = NumberFilterParameter | StringFilterParameter;
 
 export const CANDIDATE_FILTERS: {
   parameters: FilterParameter['parameter'][];
   conditions: FilterParameter['condition'][];
 } = {
-  parameters: ['resume_score', 'interview_score'],
+  parameters: ['resume_score', 'interview_score', 'location'],
   conditions: ['=', '<>', '>', '<', '>=', '<='],
 };
 

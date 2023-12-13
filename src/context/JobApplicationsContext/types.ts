@@ -136,4 +136,9 @@ export type JdScore = {
     schools: { [key: string]: PromptEnum };
     positions: { [key: string]: PromptEnum };
   };
+  reasoning: {
+    skills: string;
+    schools: string;
+    positions: string;
+  };
 };

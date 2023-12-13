@@ -63,7 +63,10 @@ const ApplicationCard = ({
     application.candidates.first_name,
     application.candidates.last_name,
   );
-  const summary = (application?.json_resume as any)?.overview ?? '---';
+  // const summary = (application?.json_resume as any)?.overview ?? '---';
+  const summary = getReasonings(
+    (application?.jd_score as JdScore)?.reasoning || null,
+  );
   return !detailedView ? (
     <AllCandidateListItem
       onclickSelect={{ onClick: handleCheck }}
@@ -120,6 +123,14 @@ const ApplicationCard = ({
   );
 };
 
+const getReasonings = (reasoning: JdScore['reasoning']) => {
+  return reasoning
+    ? ['positions', 'skills', 'schools'].reduce((acc, curr) => {
+        if (reasoning[curr]) acc += `${capitalize(reasoning[curr])} `;
+        return acc;
+      }, '')
+    : '---';
+};
 const getExperienceCount = (months: number) => {
   return months ? Math.trunc(months / 12) : '---';
 };
