@@ -7,6 +7,7 @@ import { RcInfoForm, RcInfoStep1, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
+import { industries } from '@/src/utils/industries';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import Loader from '../Loader/Index';
@@ -133,6 +134,7 @@ export function FetchCompanyDetails() {
   };
 
   async function saveRecruiterDetails() {
+    setLoading(true);
     if ((await formValidation()) && recruiter?.id) {
       const { data: companyDetails } = await axios.post(
         `/api/fetchCompanyDetails`,
@@ -140,7 +142,7 @@ export function FetchCompanyDetails() {
           domain_name: details.website,
         },
       );
-      setLoading(true);
+     
       const { data, error } = await supabase
         .from('recruiter')
         .update({
@@ -190,6 +192,7 @@ export function FetchCompanyDetails() {
       }
       setLoading(false);
     }
+    setLoading(false);
   }
 
   // const submitHandler = async () => {
@@ -304,7 +307,7 @@ export function FetchCompanyDetails() {
               fullWidth
               id='name'
               label='Company Website'
-              placeholder='https://companydomain.com'
+              placeholder='companydomain.com'
               value={details?.website}
               onChange={(e) => {
                 setDetails({ ...details, website: e.target.value });
@@ -373,7 +376,7 @@ export function CompanyDetails() {
   const router = useRouter();
   const { setStep } = useSignupDetails();
   const { recruiter, setRecruiter } = useAuthDetails();
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
@@ -396,7 +399,7 @@ export function CompanyDetails() {
     if (!recruiter.phone_number) {
       fetchUserLocation(); // Call the function to fetch user's location when the component mounts
     }
-    setLogo(recruiter.logo);
+    // setLogo(recruiter.logo);
     setPhone(recruiter.phone_number);
   }, [recruiter]);
 
@@ -515,14 +518,35 @@ export function CompanyDetails() {
               setRecruiter({ ...recruiter, name: e.target.value });
             }}
           />
-          <UITextField
-            labelSize='medium'
-            fullWidth
-            label='Industry Type'
-            placeholder='Ex. Healthcare'
+          <Autocomplete
+            disableClearable
+            options={industries}
             value={recruiter?.industry}
-            onChange={(e) => {
-              setRecruiter({ ...recruiter, industry: e.target.value });
+            onChange={(event, value) => {
+              if (value) {
+                setRecruiter({
+                  ...recruiter,
+                  industry: value,
+                });
+              }
+            }}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => {
+              return (
+                <UITextField
+                  rest={{ ...params }}
+                  labelSize='medium'
+                  fullWidth
+                  label='Industry Type'
+                  placeholder='Ex. Healthcare'
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                  onChange={(e) => {
+                    setRecruiter({ ...recruiter, industry: e.target.value });
+                  }}
+                />
+              );
             }}
           />
           <Autocomplete
@@ -575,10 +599,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                ? `Invalid phone number. Please use the ${
-                    phonePattern?.replaceAll('.', 'x') || 'correct'
-                  } format.`
-                : ''
+                  ? `Invalid phone number. Please use the ${
+                      phonePattern?.replaceAll('.', 'x') || 'correct'
+                    } format.`
+                  : ''
             }
           />
           <Stack
