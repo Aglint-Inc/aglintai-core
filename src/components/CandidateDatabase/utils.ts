@@ -151,14 +151,19 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   const canididatesDto: CandidateSearchRes[] = candidates
     .filter((c) => Boolean(c.json_resume))
     .map((c) => {
+      let loc = '';
+      if (
+        c.json_resume.basics.location &&
+        typeof c.json_resume.basics.location === 'object'
+      ) {
+        const { city } = c.json_resume.basics.location as any;
+        loc = [city].filter(Boolean).join(', ');
+      }
       let jsonRes: JsonResume = {
         ...c.json_resume,
         basics: {
           ...c.json_resume.basics,
-          location:
-            typeof c.json_resume.basics.location === 'object'
-              ? ''
-              : c.json_resume.basics.location,
+          location: loc,
         },
       };
       return {

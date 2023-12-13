@@ -60,8 +60,12 @@ export const getFilteredCands = async ({
       };
     })
     .map((cand) => {
-      if (typeof cand.json_resume.basics.location === 'object') {
-        cand.json_resume.basics.location = '';
+      if (
+        cand.json_resume.basics.location &&
+        typeof cand.json_resume.basics.location === 'object'
+      ) {
+        const { city } = cand.json_resume.basics.location as any;
+        cand.json_resume.basics.location = [city].filter(Boolean).join(', ');
       }
       return cand;
     });
