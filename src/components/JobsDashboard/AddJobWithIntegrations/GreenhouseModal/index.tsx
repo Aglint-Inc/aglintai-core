@@ -217,6 +217,7 @@ export function GreenhouseModal() {
           <GreenhouseApiKey
             slotPrimaryButton={
               <ButtonPrimaryDefaultRegular
+                buttonText={'Submit'}
                 isDisabled={loading}
                 buttonProps={{
                   onClick: () => {

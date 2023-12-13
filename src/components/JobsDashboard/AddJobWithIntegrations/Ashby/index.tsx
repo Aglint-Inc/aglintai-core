@@ -209,6 +209,7 @@ export function AshbyModalComp() {
           <AshbyApiKey
             slotPrimaryButton={
               <ButtonPrimaryDefaultRegular
+                buttonText={'Submit'}
                 isDisabled={loading}
                 buttonProps={{
                   onClick: () => {

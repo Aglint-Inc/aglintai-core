@@ -66,7 +66,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
             console.log(fileLink, 'resume');
 
-            await createJobApplication(dataCand[0].id, job_id, fileLink);
+            await createJobApplication(
+              dataCand[0].id,
+              job_id,
+              json.createdAt,
+              fileLink,
+            );
           } else {
             let candCreated = await createCandidate(cand, recruiter_id);
 
@@ -80,7 +85,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               if (res) {
                 fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
               }
-              await createJobApplication(candCreated[0].id, job_id, fileLink);
+              await createJobApplication(
+                candCreated[0].id,
+                job_id,
+                json.createdAt,
+                fileLink,
+              );
             }
           }
 
@@ -150,6 +160,7 @@ const getResume = async (handle: string, key: string): Promise<any> => {
 const createJobApplication = async (
   candidate_id: string,
   job_id: string,
+  created_at: string,
   resume_url?: string,
 ): Promise<any> => {
   await supabase
@@ -158,6 +169,7 @@ const createJobApplication = async (
       candidate_id: candidate_id,
       job_id: job_id,
       resume: resume_url,
+      created_at: created_at,
     })
     .select();
 };

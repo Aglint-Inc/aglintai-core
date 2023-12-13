@@ -14,6 +14,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
       // for creating lever job reference
       const refCandidates = fetchedCandidates.map((cand) => {
         return {
+          created_at: new Date(cand.createdAt).toISOString(),
           first_name: splitFullName(cand.name).firstName,
           last_name: splitFullName(cand.name).lastName,
           email: cand.emails[0],
@@ -72,12 +73,12 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         const allCandidates = [...newCandidates, ...checkCandidates];
         const dbApplications = refCandidates.map((ref) => {
           return {
+            created_at: ref.created_at,
             candidate_id: allCandidates.filter(
               (cand) => cand.email === ref.email,
             )[0].id,
             job_id: post.job_id,
             application_id: ref.application_id,
-            // resume_text: 'Lever',
           };
         });
 

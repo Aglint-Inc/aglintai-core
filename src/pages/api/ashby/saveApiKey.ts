@@ -20,6 +20,7 @@ export default async function handler(req, res) {
   const encryptedApiKey = encrypt(apiKey, process.env.ENCRYPTION_KEY);
 
   axios.post(process.env.ASHBY_SYNC_URL, {
+    recruiter_id: recruiterId,
     ashby_key: encryptedApiKey,
   });
 
