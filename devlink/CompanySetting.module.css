@@ -1668,13 +1668,6 @@
 }
 
 .beta-wrap {
-  position: static;
-  left: auto;
-  top: -10px;
-  right: -25px;
-  bottom: auto;
-  z-index: 6;
-
   display: flex;
   width: 44px;
   padding: 2px 9px;
