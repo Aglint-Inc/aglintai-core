@@ -137,9 +137,19 @@
 
 .auth-right-block.sign-up-sign {
   display: flex;
-  margin-top: 40px;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  height: auto;
+  margin-top: 80px;
+  margin-bottom: 40px;
+  padding-top: 30px;
+  padding-right: 40px;
+  padding-left: 70px;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+
+  border-radius: 10px;
+
+  background-color: white;
+
   opacity: 1;
 }
 
