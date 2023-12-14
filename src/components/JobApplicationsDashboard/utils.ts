@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { supabase } from '@/src/utils/supabaseClient';
 
 export const capitalize = (str: string) => {
   if (str) {
@@ -20,8 +21,8 @@ export const formatTimeStamp = (timeStamp: string) => {
     creationHour % 12 === 0
       ? 12
       : creationHour % 12 < 10
-      ? `0${creationHour % 12}`
-      : creationHour % 12;
+        ? `0${creationHour % 12}`
+        : creationHour % 12;
   const creationMinutes =
     date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
   const creationTime = `${finalHour}:${creationMinutes} ${
@@ -115,4 +116,32 @@ export const getCandidateName = (first_name: string, last_name: string) => {
   return first_name || last_name
     ? capitalize((first_name || '') + ' ' + (last_name || ''))
     : '---';
+};
+
+export const checkAshbyCand = async (job_id, recruiter_id) => {
+  let is_sync = true;
+
+  try {
+    const jobReferenceData = await supabase
+      .from('job_reference')
+      .select('*')
+      .eq('public_job_id', job_id)
+      .eq('recruiter_id', recruiter_id);
+
+    const applicationReferenceData = await supabase
+      .from('application_reference')
+      .select('*')
+      .eq('ats_json->job->>id', jobReferenceData.data[0].ats_job_id)
+      .eq('recruiter_id', recruiter_id)
+      .eq('is_processed', false);
+
+    if (applicationReferenceData.data.length === 0) {
+      is_sync = false;
+    }
+  } catch (error) {
+    // Handle errors if needed
+    is_sync = false;
+  }
+
+  return is_sync;
 };

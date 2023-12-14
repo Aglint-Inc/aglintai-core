@@ -1,5 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, /*Slider,*/ Stack, TextField } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  /*Slider,*/ Stack,
+  TextField,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import {
   Dispatch,
@@ -10,7 +15,7 @@ import {
   useState,
 } from 'react';
 
-import { ImportCandidates } from '@/devlink';
+import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
   ApplicantsListEmpty,
@@ -23,11 +28,11 @@ import {
   // SortArrows,
   TopApplicantsTable,
 } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
-  // Parameters,
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
@@ -50,9 +55,10 @@ import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
 import { MoveCandidateDialog, sendEmails } from './MoveCandidateDialog';
 import SearchField from './SearchField';
-import { capitalize } from './utils';
+import { capitalize, checkAshbyCand } from './utils';
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
+import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -151,9 +157,23 @@ const JobApplicationComponent = () => {
     searchParameters.sort.parameter,
   ]);
 
+  let isFetchingPillVisible = false;
+
+  (async () => {
+    if (job.posted_by == POSTED_BY.ASHBY) {
+      isFetchingPillVisible = await checkAshbyCand(job.id, job.recruiter_id);
+    }
+  })();
+
   return (
     <>
       <JobDetails
+        slotLoadingLottie={
+          <CircularProgress
+            style={{ color: '#17494D', width: '12px', height: '12px' }}
+          />
+        }
+        isFetchingPillVisible={isFetchingPillVisible}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={``}
@@ -252,7 +272,8 @@ const ApplicationTable = ({
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
-  const { applicationDisable, section } = useJobApplications();
+  const { recruiter } = useAuthDetails();
+  const { applicationDisable, section, job } = useJobApplications();
   const handleSelectAllMin = () => {
     if (!applicationDisable) {
       if (checkList.size === sectionApplications.length)
@@ -280,7 +301,13 @@ const ApplicationTable = ({
     />
   );
   const isAllChecked = checkList.size === sectionApplications.length;
-  const emptyList = useMemo(() => <EmptyList section={section} />, [section]);
+  let emptyList = useMemo(() => <EmptyList section={section} />, [section]);
+  if (job.posted_by == POSTED_BY.ASHBY) {
+    if (sectionApplications.length === 0 && !recruiter.ashby_sync_token) {
+      emptyList = <FetchingAshbyLoader slotLottie={<NoApplicants />} />;
+    }
+  }
+
   return sectionApplications.length === 0 ? (
     emptyList
   ) : !detailedView ? (

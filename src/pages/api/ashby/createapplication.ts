@@ -28,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await supabase
         .from('application_reference')
         .update({ is_processed: true })
+        .eq('recruiter_id', recruiter_id)
         .eq('ats_json->>id', json.id);
       let application = json;
       let candidate = await getCandidate(

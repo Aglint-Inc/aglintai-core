@@ -248,6 +248,27 @@
   margin-left: 8px;
 }
 
+.fetching-pill {
+  display: flex;
+  padding: 3px 10px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 10px;
+
+  background-color: hsla(180, 53.85%, 97.45%, 1.00);
+}
+
+.div-block-410 {
+  width: 12px;
+  height: 12px;
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
+}
+
 .jdet-main-action-menu {
   display: flex;
   align-items: center;
@@ -658,10 +679,6 @@
   align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
-}
-
-.text-kale-800 {
-  color: var(--kale-800);
 }
 
 .cv-sidebar-info-wrapper {
