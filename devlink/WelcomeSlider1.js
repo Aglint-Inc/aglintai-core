@@ -23,10 +23,6 @@ export function WelcomeSlider1({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "ju-right-top", "right-align")}
-        tag="div"
-      />
-      <_Builtin.Block
         className={_utils.cx(_styles, "auth-cta-block", "tab-edit")}
         tag="div"
       >

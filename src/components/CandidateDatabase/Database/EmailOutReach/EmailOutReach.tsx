@@ -272,6 +272,7 @@ const EmailOutReach = ({ onClose }) => {
         slotTemplateButton={
           <>
             <UISelect
+              size='sm'
               fullWidth
               menuOptions={emailTemplates.map((e) => ({
                 name: e.name,

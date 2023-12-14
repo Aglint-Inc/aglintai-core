@@ -24,6 +24,16 @@
 }
 
 .auth-right-block.join-us {
+  overflow: visible;
+  height: auto;
+  padding-top: 40px;
+  padding-right: 40px;
+  padding-left: 40px;
+
+  border-radius: 10px;
+
+  background-color: white;
+
   opacity: 1;
 }
 
@@ -184,26 +194,10 @@
   }
 }
 
-.ju-right-top {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.ju-right-top.right-align {
-  justify-content: flex-end;
-}
-
-.ju-right-top.align-left {
-  justify-content: flex-start;
-}
-
 .auth-cta-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
 }
@@ -297,7 +291,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }
@@ -643,6 +637,21 @@
   grid-row-gap: 0px;
 
   object-fit: cover;
+}
+
+.ju-right-top {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ju-right-top.right-align {
+  justify-content: flex-end;
+}
+
+.ju-right-top.align-left {
+  justify-content: center;
 }
 
 .ju-redirect-text {

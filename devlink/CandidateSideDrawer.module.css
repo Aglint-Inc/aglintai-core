@@ -261,8 +261,8 @@
   display: flex;
   padding: 20px 16px 10px 20px;
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
 }
 
 .cvs-intro-profile-block {

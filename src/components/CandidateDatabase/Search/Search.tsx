@@ -237,7 +237,13 @@ const CandidatesSearch = () => {
         slotCandidateDialog={
           <>
             <Collapse
-              in={activeCandidate >= 0 && !isSearching}
+              in={
+                activeCandidate >= 0 &&
+                !isSearching &&
+                (showBookmarked
+                  ? candidates[activeCandidate].is_bookmarked
+                  : true)
+              }
               unmountOnExit
               translate='yes'
             >

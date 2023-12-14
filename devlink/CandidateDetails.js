@@ -2,8 +2,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { CandidateInterviewScore } from "./CandidateInterviewScore";
 import { CandidateResumeScore } from "./CandidateResumeScore";
-import { CandidateEducation } from "./CandidateEducation";
 import { CandidateExperience } from "./CandidateExperience";
+import { CandidateEducation } from "./CandidateEducation";
 import { CandidateSkill } from "./CandidateSkill";
 import * as _utils from "./utils";
 import _styles from "./CandidateDetails.module.css";
@@ -93,8 +93,8 @@ export function CandidateDetails({
             <>
               <CandidateInterviewScore />
               <CandidateResumeScore />
-              <CandidateEducation />
               <CandidateExperience />
+              <CandidateEducation />
               <CandidateSkill />
             </>
           )}

@@ -29,6 +29,6 @@ export const dialogFormContent = {
   },
   prefferedCompanies: {
     placeholder: 'Start typing the skills or choose from the list',
-    emptyMsg: 'No prefered companies',
+    emptyMsg: 'No preferred companies',
   },
 };
