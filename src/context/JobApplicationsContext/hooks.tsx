@@ -161,7 +161,7 @@ const useProviderJobApplicationActions = (
     JobApplicationSections.NEW,
   );
 
-  const paginationLimit = 10;
+  const paginationLimit = 100;
   const initialJobApplicationPageNumbers = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
