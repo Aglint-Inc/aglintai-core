@@ -8,6 +8,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
 import { industries } from '@/src/utils/industries';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import Loader from '../Loader/Index';
@@ -88,8 +89,34 @@ export function FetchCompanyDetails() {
   });
   const [loading, setLoading] = useState(false);
 
+  async function getRecruiter() {
+    const { data: recruiterUser, error: errorUser } = await supabase
+      .from('recruiter_user')
+      .select('*')
+      .eq('user_id', userDetails.user.id);
+    if (!errorUser && recruiterUser.length > 0) {
+      const { data: recruiter, error } = await supabase
+        .from('recruiter')
+        .select('*')
+        .eq('id', recruiterUser[0].recruiter_id);
+      if (!error && recruiter.length > 0) {
+        setRecruiter({
+          ...recruiter[0],
+          socials: recruiter[0]?.socials as unknown as SocialsType,
+        });
+      }
+    } else {
+      router.push(pageRoutes.SIGNUP);
+    }
+  }
   useEffect(() => {
-    if (recruiter?.id) setDetails({ website: recruiter.company_website });
+    if (userDetails.user.id) {
+      getRecruiter();
+    }
+  }, [useAuthDetails]);
+
+  useEffect(() => {
+    if (recruiter?.id) setDetails({ website: recruiter?.company_website });
   }, [recruiter]);
 
   const formValidation = async (): Promise<boolean> => {
@@ -345,7 +372,7 @@ export function FetchCompanyDetails() {
                 Fetching company info from the website
               </UITypography>
             </Stack>
-          ) : recruiter.company_website ? (
+          ) : recruiter?.company_website ? (
             <CompanyDetails />
           ) : userDetails.user.user_metadata.role !== 'recruiter' ? (
             <Stack
