@@ -55,7 +55,7 @@ import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
 import { MoveCandidateDialog, sendEmails } from './MoveCandidateDialog';
 import SearchField from './SearchField';
-import { capitalize, checkAshbyCand } from './utils';
+import { capitalize } from './utils';
 import Loader from '../Common/Loader';
 import RefreshButton from '../Common/RefreshButton';
 import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
@@ -89,6 +89,7 @@ const JobApplicationComponent = () => {
   const {
     applications,
     job,
+    atsSync,
     pageNumber,
     applicationDisable,
     setApplicationDisable,
@@ -157,14 +158,6 @@ const JobApplicationComponent = () => {
     searchParameters.sort.parameter,
   ]);
 
-  let isFetchingPillVisible = false;
-
-  (async () => {
-    if (job.posted_by == POSTED_BY.ASHBY) {
-      isFetchingPillVisible = await checkAshbyCand(job.id, job.recruiter_id);
-    }
-  })();
-
   return (
     <>
       <JobDetails
@@ -173,7 +166,7 @@ const JobApplicationComponent = () => {
             style={{ color: '#17494D', width: '12px', height: '12px' }}
           />
         }
-        isFetchingPillVisible={isFetchingPillVisible}
+        isFetchingPillVisible={atsSync}
         textJobStatus={null}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={``}
@@ -304,7 +297,15 @@ const ApplicationTable = ({
   let emptyList = useMemo(() => <EmptyList section={section} />, [section]);
   if (job.posted_by == POSTED_BY.ASHBY) {
     if (sectionApplications.length === 0 && !recruiter.ashby_sync_token) {
-      emptyList = <FetchingAshbyLoader slotLottie={<NoApplicants />} />;
+      emptyList = (
+        <FetchingAshbyLoader
+          slotLottie={
+            <Stack height={'100px'} width={'100px'}>
+              <NoApplicants />
+            </Stack>
+          }
+        />
+      );
     }
   }
 

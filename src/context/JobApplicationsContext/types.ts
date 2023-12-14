@@ -103,6 +103,7 @@ export type JobApplicationContext = {
       interviewing?: number;
     };
   }>;
+  atsSync: boolean;
   searchParameters: Parameters;
   initialLoad: boolean;
   openImportCandidates: boolean;

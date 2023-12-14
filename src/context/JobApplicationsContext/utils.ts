@@ -20,6 +20,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   applicationDisable: undefined,
   setApplicationDisable: undefined,
   paginationLimit: undefined,
+  atsSync: undefined,
   job: undefined,
   pageNumber: undefined,
   handleJobApplicationCreate: undefined,

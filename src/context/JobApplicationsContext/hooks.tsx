@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { checkSyncCand } from '@/src/components/JobApplicationsDashboard/utils';
+import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import toast from '@/src/utils/toast';
 
@@ -159,7 +161,7 @@ const useProviderJobApplicationActions = (
     JobApplicationSections.NEW,
   );
 
-  const paginationLimit = 100;
+  const paginationLimit = 10;
   const initialJobApplicationPageNumbers = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
@@ -179,9 +181,10 @@ const useProviderJobApplicationActions = (
   const job = initialJobLoad
     ? jobsData.jobs.find((job) => job.id === jobId)
     : undefined;
+
   const initialLoad =
     initialJobLoad && applications !== undefined ? true : false;
-
+  const [atsSync, setAtsSync] = useState(false);
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [openManualImportCandidates, setOpenManualImportCandidates] =
     useState(false);
@@ -250,6 +253,10 @@ const useProviderJobApplicationActions = (
           type: ActionType.READ,
           payload: { applicationData: data },
         };
+        if (job.posted_by == POSTED_BY.ASHBY) {
+          const is_sync = await checkSyncCand(job);
+          setAtsSync(is_sync);
+        }
         await handleUpdateJobCount([job.id]);
         dispatch(action);
         updateTick.current = !updateTick.current;
@@ -455,6 +462,7 @@ const useProviderJobApplicationActions = (
     setApplicationDisable,
     paginationLimit,
     job,
+    atsSync,
     updateTick: updateTick.current,
     pageNumber,
     handleJobApplicationCreate,

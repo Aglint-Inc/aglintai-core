@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 export const capitalize = (str: string) => {
@@ -118,30 +119,24 @@ export const getCandidateName = (first_name: string, last_name: string) => {
     : '---';
 };
 
-export const checkAshbyCand = async (job_id, recruiter_id) => {
+export const checkSyncCand = async (job: JobTypeDashboard) => {
   let is_sync = true;
 
-  try {
-    const jobReferenceData = await supabase
-      .from('job_reference')
-      .select('*')
-      .eq('public_job_id', job_id)
-      .eq('recruiter_id', recruiter_id);
+  const jobReferenceData = await supabase
+    .from('job_reference')
+    .select('*')
+    .eq('public_job_id', job.id)
+    .eq('recruiter_id', job.recruiter_id);
 
-    const applicationReferenceData = await supabase
-      .from('application_reference')
-      .select('*')
-      .eq('ats_json->job->>id', jobReferenceData.data[0].ats_job_id)
-      .eq('recruiter_id', recruiter_id)
-      .eq('is_processed', false);
+  const applicationReferenceData = await supabase
+    .from('application_reference')
+    .select('*')
+    .eq('ats_json->job->>id', jobReferenceData.data[0].ats_job_id)
+    .eq('recruiter_id', job.recruiter_id)
+    .eq('is_processed', false);
 
-    if (applicationReferenceData.data.length === 0) {
-      is_sync = false;
-    }
-  } catch (error) {
-    // Handle errors if needed
+  if (applicationReferenceData.data.length === 0) {
     is_sync = false;
   }
-
   return is_sync;
 };
