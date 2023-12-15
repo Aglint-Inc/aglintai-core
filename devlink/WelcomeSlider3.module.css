@@ -29,8 +29,7 @@
   padding-top: 40px;
   padding-right: 40px;
   padding-left: 40px;
-
-  border-radius: 10px;
+  align-items: center;
 
   background-color: white;
 
@@ -137,16 +136,16 @@
 
 .auth-right-block.sign-up-sign {
   display: flex;
+  width: 100%;
   height: auto;
   margin-top: 80px;
   margin-bottom: 40px;
   padding-top: 30px;
   padding-right: 40px;
-  padding-left: 70px;
+  padding-left: 40px;
+  align-items: center;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
-
-  border-radius: 10px;
 
   background-color: white;
 
@@ -208,6 +207,7 @@
 .ju-right-top {
   display: flex;
   width: 100%;
+  padding-left: 40px;
   flex-direction: row;
   justify-content: space-between;
 }
@@ -382,6 +382,17 @@
   .auth-cta-block.tab-edit {
     align-items: center;
   }
+}
+
+.logo-onboard-step1 {
+  position: static;
+  left: 40px;
+  top: 50px;
+  right: auto;
+  bottom: auto;
+
+  display: flex;
+  justify-content: center;
 }
 
 .auth-header-block {
