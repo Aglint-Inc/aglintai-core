@@ -163,7 +163,11 @@ const JobApplicationComponent = () => {
       <JobDetails
         slotLoadingLottie={
           <CircularProgress
-            style={{ color: '#17494D', width: '12px', height: '12px' }}
+            style={{
+              color: '#17494D',
+              width: '12px',
+              height: '12px',
+            }}
           />
         }
         isFetchingPillVisible={atsSync}
@@ -266,7 +270,7 @@ const ApplicationTable = ({
   currentApplication: number;
 }) => {
   const { recruiter } = useAuthDetails();
-  const { applicationDisable, section, job } = useJobApplications();
+  const { applicationDisable, section, job, atsSync } = useJobApplications();
   const handleSelectAllMin = () => {
     if (!applicationDisable) {
       if (checkList.size === sectionApplications.length)
@@ -296,7 +300,10 @@ const ApplicationTable = ({
   const isAllChecked = checkList.size === sectionApplications.length;
   let emptyList = useMemo(() => <EmptyList section={section} />, [section]);
   if (job.posted_by == POSTED_BY.ASHBY) {
-    if (sectionApplications.length === 0 && !recruiter.ashby_sync_token) {
+    if (
+      (sectionApplications.length === 0 && !recruiter.ashby_sync_token) ||
+      atsSync
+    ) {
       emptyList = (
         <FetchingAshbyLoader
           slotLottie={
