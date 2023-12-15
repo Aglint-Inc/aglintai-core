@@ -45,7 +45,7 @@ export default function handler(req, res) {
             .from('recruiter')
             .update({
               ashby_sync_token: response.data.syncToken,
-              ashby_last_synced: new Date(),
+              ashby_last_synced: new Date().toISOString(),
             })
             .eq('ashby_key', apiKey);
         }
