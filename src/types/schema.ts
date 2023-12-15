@@ -54,18 +54,21 @@ export interface Database {
           created_at: string
           id: number
           is_processed: boolean
+          recruiter_id: string | null
         }
         Insert: {
           ats_json: Json
           created_at?: string
           id?: number
           is_processed?: boolean
+          recruiter_id?: string | null
         }
         Update: {
           ats_json?: Json
           created_at?: string
           id?: number
           is_processed?: boolean
+          recruiter_id?: string | null
         }
         Relationships: []
       }
@@ -230,6 +233,7 @@ export interface Database {
           ai_interviewer_id: number | null
           api_status: string
           application_id: string
+          applied_at: string
           candidate_id: string
           conversation: Json[] | null
           created_at: string
@@ -237,10 +241,12 @@ export interface Database {
           emails: Json | null
           experience_embedding: string | null
           feedback: Json | null
+          geolocation: unknown | null
           interview_duration: string | null
           interview_score: number
           interviewing_date: string | null
           is_embedding: boolean
+          is_resume_fetching: boolean | null
           jd_score: Json | null
           job_id: string | null
           json_resume: Json | null
@@ -258,6 +264,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
+          applied_at?: string
           candidate_id: string
           conversation?: Json[] | null
           created_at?: string
@@ -265,10 +272,12 @@ export interface Database {
           emails?: Json | null
           experience_embedding?: string | null
           feedback?: Json | null
+          geolocation?: unknown | null
           interview_duration?: string | null
           interview_score?: number
           interviewing_date?: string | null
           is_embedding?: boolean
+          is_resume_fetching?: boolean | null
           jd_score?: Json | null
           job_id?: string | null
           json_resume?: Json | null
@@ -286,6 +295,7 @@ export interface Database {
           ai_interviewer_id?: number | null
           api_status?: string
           application_id?: string
+          applied_at?: string
           candidate_id?: string
           conversation?: Json[] | null
           created_at?: string
@@ -293,10 +303,12 @@ export interface Database {
           emails?: Json | null
           experience_embedding?: string | null
           feedback?: Json | null
+          geolocation?: unknown | null
           interview_duration?: string | null
           interview_score?: number
           interviewing_date?: string | null
           is_embedding?: boolean
+          is_resume_fetching?: boolean | null
           jd_score?: Json | null
           job_id?: string | null
           json_resume?: Json | null
@@ -542,6 +554,7 @@ export interface Database {
           id: string
           interview_instructions: string | null
           intro_videos: Json | null
+          is_ats_sync: boolean
           jd_json: Json | null
           job_criteria: Json | null
           job_title: string | null
@@ -577,6 +590,7 @@ export interface Database {
           id?: string
           interview_instructions?: string | null
           intro_videos?: Json | null
+          is_ats_sync?: boolean
           jd_json?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
@@ -612,6 +626,7 @@ export interface Database {
           id?: string
           interview_instructions?: string | null
           intro_videos?: Json | null
+          is_ats_sync?: boolean
           jd_json?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
@@ -648,6 +663,7 @@ export interface Database {
           ai_avatar: Json | null
           application_process: string | null
           ashby_key: string | null
+          ashby_last_synced: string | null
           ashby_sync_token: string | null
           assistant_id: string | null
           ats_familiar: string | null
@@ -689,6 +705,7 @@ export interface Database {
           ai_avatar?: Json | null
           application_process?: string | null
           ashby_key?: string | null
+          ashby_last_synced?: string | null
           ashby_sync_token?: string | null
           assistant_id?: string | null
           ats_familiar?: string | null
@@ -730,6 +747,7 @@ export interface Database {
           ai_avatar?: Json | null
           application_process?: string | null
           ashby_key?: string | null
+          ashby_last_synced?: string | null
           ashby_sync_token?: string | null
           assistant_id?: string | null
           ats_familiar?: string | null
@@ -1044,6 +1062,16 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      applications_inview: {
+        Args: {
+          job_id: string
+          min_lat: number
+          min_long: number
+          max_lat: number
+          max_long: number
+        }
+        Returns: unknown
+      }
       ashbyapplicationsync: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -1069,6 +1097,12 @@ export interface Database {
       }
       batchsavegreenhouse: {
         Args: Record<PropertyKey, never>
+        Returns: unknown
+      }
+      batchsavegreenhouse_test: {
+        Args: {
+          rec_id: string
+        }
         Returns: unknown
       }
       batchscorecron: {
@@ -1279,6 +1313,31 @@ export interface Database {
       interviewing_state_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      job_application_filter_sort: {
+        Args: {
+          jb_id: string
+          min_lat?: number
+          min_long?: number
+          max_lat?: number
+          max_long?: number
+          j_status?: string
+          from_rec_num?: number
+          end_rec_num?: number
+          min_resume_score?: number
+          max_resume_score?: number
+          min_interview_score?: number
+          max_interview_score?: number
+          sort_column_text?: string
+          is_sort_desc?: boolean
+          text_search_qry?: string
+          is_locat_filter_on?: boolean
+        }
+        Returns: {
+          job_app: Json
+          cand: Json
+          total_results: number
+        }[]
       }
       kw_match_documents: {
         Args: {

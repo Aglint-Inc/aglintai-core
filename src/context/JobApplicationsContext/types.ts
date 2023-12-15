@@ -38,6 +38,7 @@ export type NewJobApplications = Pick<
   | 'resume'
   | 'candidate_id'
   | 'emails'
+  | 'applied_at'
 >;
 export type NewJobApplicationsInsert =
   Database['public']['Tables']['job_applications']['Insert'];

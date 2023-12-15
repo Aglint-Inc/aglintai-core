@@ -13,7 +13,7 @@ import {
 import { Database } from '@/src/types/schema';
 
 export const selectJobApplicationQuery =
-  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails';
+  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails, applied_at';
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
