@@ -99,6 +99,7 @@ const JobApplicationComponent = () => {
     handleJobApplicationRefresh,
     section,
     setSection,
+    longPolling,
   } = useJobApplications();
   const router = useRouter();
   const sectionApplications = applications[section];
@@ -148,7 +149,7 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 15000, [
+  usePolling(async () => await handleAutoRefresh(), longPolling, [
     ...Object.values(pageNumber),
     section,
     refreshRef.current,
