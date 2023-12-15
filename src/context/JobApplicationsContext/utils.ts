@@ -22,6 +22,7 @@ export const initialJobApplicationsContext: JobApplicationContext = {
   paginationLimit: undefined,
   atsSync: undefined,
   job: undefined,
+  longPolling: 0,
   pageNumber: undefined,
   handleJobApplicationCreate: undefined,
   handleJobApplicationBulkCreate: undefined,

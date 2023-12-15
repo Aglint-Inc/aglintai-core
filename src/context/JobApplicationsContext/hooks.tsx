@@ -162,6 +162,8 @@ const useProviderJobApplicationActions = (
   );
 
   const paginationLimit = 100;
+  const longPolling = 600000;
+
   const initialJobApplicationPageNumbers = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
@@ -484,6 +486,7 @@ const useProviderJobApplicationActions = (
     setOpenManualImportCandidates,
     section,
     setSection,
+    longPolling,
   };
 
   return value;

@@ -104,6 +104,7 @@ export type JobApplicationContext = {
     };
   }>;
   atsSync: boolean;
+  longPolling: number;
   searchParameters: Parameters;
   initialLoad: boolean;
   openImportCandidates: boolean;
