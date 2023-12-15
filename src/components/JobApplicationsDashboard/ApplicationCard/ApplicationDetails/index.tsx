@@ -542,18 +542,6 @@ const NewCandidateDetails = ({
           </>
           {applicationValidity(applicationDetails) ? (
             <>
-              {resume.schools &&
-              resume.schools instanceof Array &&
-              resume.schools.length !== 0 ? (
-                <NewEducationDetails
-                  schools={resume.schools}
-                  relevance={
-                    (applicationDetails.jd_score as JdScore)?.relevance?.schools
-                  }
-                />
-              ) : (
-                <></>
-              )}
               {resume.positions &&
               resume.positions instanceof Array &&
               resume.positions.length !== 0 ? (
@@ -562,6 +550,18 @@ const NewCandidateDetails = ({
                   relevance={
                     (applicationDetails.jd_score as JdScore)?.relevance
                       ?.positions
+                  }
+                />
+              ) : (
+                <></>
+              )}
+              {resume.schools &&
+              resume.schools instanceof Array &&
+              resume.schools.length !== 0 ? (
+                <NewEducationDetails
+                  schools={resume.schools}
+                  relevance={
+                    (applicationDetails.jd_score as JdScore)?.relevance?.schools
                   }
                 />
               ) : (
