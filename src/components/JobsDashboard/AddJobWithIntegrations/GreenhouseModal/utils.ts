@@ -119,7 +119,7 @@ export const createJobApplications = async (
 
             if (matchingCandidate && matchingCandidate.id) {
               return {
-                created_at: ref.created_at,
+                applied_at: ref.created_at,
                 candidate_id: matchingCandidate.id,
                 job_id: post.public_job_id,
                 application_id: ref.application_id,

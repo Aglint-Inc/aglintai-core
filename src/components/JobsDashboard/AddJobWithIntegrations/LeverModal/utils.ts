@@ -73,7 +73,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         const allCandidates = [...newCandidates, ...checkCandidates];
         const dbApplications = refCandidates.map((ref) => {
           return {
-            created_at: ref.created_at,
+            applied_at: ref.created_at,
             candidate_id: allCandidates.filter(
               (cand) => cand.email === ref.email,
             )[0].id,

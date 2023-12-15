@@ -170,7 +170,7 @@ const createJobApplication = async (
       candidate_id: candidate_id,
       job_id: job_id,
       resume: resume_url,
-      created_at: created_at,
+      applied_at: created_at,
     })
     .select();
 };
