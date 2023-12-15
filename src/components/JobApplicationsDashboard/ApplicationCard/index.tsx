@@ -63,8 +63,8 @@ const ApplicationCard = ({
     application.candidates.first_name,
     application.candidates.last_name,
   );
-  // const summary = (application?.json_resume as any)?.overview ?? '---';
-  const summary = getReasonings(
+  const overview = (application?.json_resume as any)?.overview ?? '---';
+  const analysis = getReasonings(
     (application?.jd_score as JdScore)?.reasoning || null,
   );
   return !detailedView ? (
@@ -112,7 +112,8 @@ const ApplicationCard = ({
           {interviewScore}
         </>
       }
-      summary={summary}
+      overview={overview}
+      analysis={analysis}
       onclickCandidate={{
         onClick: () => {
           handleOpenDetails();

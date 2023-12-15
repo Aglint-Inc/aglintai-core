@@ -33,12 +33,13 @@ const ResumeScore = ({ application }: { application: JobApplication }) => {
   ) : (
     <Tooltip title='No resume available.' placement='right' arrow={true}>
       <Stack>
-        <ResumeTag slotText={<ErrorIcon />} />
+        <ResumeTag slotText={<Calculating /> /*<ErrorIcon />*/} />
       </Stack>
     </Tooltip>
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 const ErrorIcon = () => {
   return (
     <Stack

@@ -9,9 +9,10 @@ declare function TopCandidateListItem(props: {
   name?: React.ReactNode;
   strength?: React.ReactNode;
   weakness?: React.ReactNode;
-  summary?: React.ReactNode;
+  overview?: React.ReactNode;
   onclickCandidate?: Types.Devlink.RuntimeProps;
   isHighlighted?: Types.Visibility.VisibilityConditions;
   slotInsights?: Types.Devlink.Slot;
   slotProfileImage?: Types.Devlink.Slot;
+  analysis?: React.ReactNode;
 }): React.JSX.Element;
