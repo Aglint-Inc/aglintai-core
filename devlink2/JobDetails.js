@@ -33,7 +33,7 @@ export function JobDetails({
   slotTable,
   slotRefresh,
   slotPagination,
-  isFetchingPillVisible = false,
+  isFetchingPillVisible = true,
   textStatus = "This is some text inside of a div block.",
   isTextStatusVisible = false,
   slotLoadingLottie,
