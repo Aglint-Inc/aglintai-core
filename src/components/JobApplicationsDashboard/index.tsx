@@ -148,7 +148,7 @@ const JobApplicationComponent = () => {
     await handleAutoRefresh();
   };
 
-  usePolling(async () => await handleAutoRefresh(), 600000, [
+  usePolling(async () => await handleAutoRefresh(), 15000, [
     ...Object.values(pageNumber),
     section,
     refreshRef.current,
