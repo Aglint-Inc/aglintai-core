@@ -6,8 +6,8 @@ function EmailGenerating() {
     animationData: {
       nm: 'Kontakt',
       ddd: 0,
-      h: 156,
-      w: 156,
+      h: 100,
+      w: 100,
       meta: {
         a: 'Monika Madurska',
         k: 'contact, icon, moving, pen',
