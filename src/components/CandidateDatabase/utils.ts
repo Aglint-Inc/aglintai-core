@@ -95,7 +95,7 @@ export const getRelevantCndidates = async (
     resp[3].value.data[0].embedding;
 
   const cands = supabaseWrap(
-    await supabase.rpc('calc_sim_score', {
+    await supabase.rpc('calc_sim_score2', {
       edu_qry_emb: embeddings.education,
       skill_qry_emb: embeddings.skills,
       exp_qry_emb: embeddings.experience,
@@ -151,14 +151,19 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   const canididatesDto: CandidateSearchRes[] = candidates
     .filter((c) => Boolean(c.json_resume))
     .map((c) => {
+      let loc = '';
+      if (
+        c.json_resume.basics.location &&
+        typeof c.json_resume.basics.location === 'object'
+      ) {
+        const { city } = c.json_resume.basics.location as any;
+        loc = [city].filter(Boolean).join(', ');
+      }
       let jsonRes: JsonResume = {
         ...c.json_resume,
         basics: {
           ...c.json_resume.basics,
-          location:
-            typeof c.json_resume.basics.location === 'object'
-              ? ''
-              : c.json_resume.basics.location,
+          location: loc,
         },
       };
       return {

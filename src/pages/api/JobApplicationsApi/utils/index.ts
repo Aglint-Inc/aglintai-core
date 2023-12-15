@@ -13,7 +13,7 @@ import {
 import { Database } from '@/src/types/schema';
 
 export const selectJobApplicationQuery =
-  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails';
+  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails, applied_at';
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
@@ -124,40 +124,58 @@ export const getFilteredQuery = (
         curr.parameter === 'interview_score' &&
         status === JobApplicationSections.NEW
       )
-    ) {
-      switch (curr.condition) {
-        case '=':
+    )
+      switch (curr.type) {
+        case 'number':
           {
-            acc = acc.eq(curr.parameter, curr.count);
+            switch (curr.condition) {
+              case '=':
+                {
+                  acc = acc.eq(curr.parameter, curr.value);
+                }
+                break;
+              case '<>':
+                {
+                  acc = acc.neq(curr.parameter, curr.value);
+                }
+                break;
+              case '>':
+                {
+                  acc = acc.gt(curr.parameter, curr.value);
+                }
+                break;
+              case '>=':
+                {
+                  acc = acc.gte(curr.parameter, curr.value);
+                }
+                break;
+              case '<':
+                {
+                  acc = acc.lt(curr.parameter, curr.value);
+                }
+                break;
+              case '<=':
+                {
+                  acc = acc.lte(curr.parameter, curr.value);
+                }
+                break;
+            }
           }
           break;
-        case '<>':
+        case 'string':
           {
-            acc = acc.neq(curr.parameter, curr.count);
-          }
-          break;
-        case '>':
-          {
-            acc = acc.gt(curr.parameter, curr.count);
-          }
-          break;
-        case '>=':
-          {
-            acc = acc.gte(curr.parameter, curr.count);
-          }
-          break;
-        case '<':
-          {
-            acc = acc.lt(curr.parameter, curr.count);
-          }
-          break;
-        case '<=':
-          {
-            acc = acc.lte(curr.parameter, curr.count);
+            switch (curr.parameter) {
+              case 'location':
+                {
+                  acc = acc.or(
+                    `json_resume->basics->location->>city.ilike.%${curr.value}%,or(json_resume->basics->location->>state.ilike.%${curr.value}%),or(json_resume->basics->location->>country.ilike.%${curr.value}%)`,
+                  );
+                }
+                break;
+            }
           }
           break;
       }
-    }
     return acc;
   }, query);
 };

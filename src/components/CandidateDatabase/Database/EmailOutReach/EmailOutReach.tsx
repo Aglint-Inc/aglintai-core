@@ -9,7 +9,7 @@ import {
   CdEmailOutreach,
   ConnectedMail,
   ConnectMailModal,
-  EmailSent,
+  EmailSuccessCard,
   LoaderSvg,
   MailLink,
 } from '@/devlink';
@@ -20,6 +20,7 @@ import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { palette } from '@/src/context/Theme/Theme';
+import { getTimeDifference } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import EmailTemplateModalComp from './EmailTemplateDialog';
@@ -33,7 +34,6 @@ const EmailOutReach = ({ onClose }) => {
     genEmailFromTempJson,
     saveEmail,
   } = useOutReachCtx();
-
   const {
     email,
     isOpenEditTempModal,
@@ -44,6 +44,8 @@ const EmailOutReach = ({ onClose }) => {
     isMailAuthOpen,
     isEmailLoading,
     defaultEmailJson,
+    outReachedEmails,
+    showEmailEditor,
   } = OutreachState;
 
   const router = useRouter();
@@ -89,13 +91,6 @@ const EmailOutReach = ({ onClose }) => {
         subject: email.subject,
         createdAt: new Date().toISOString(),
       });
-      dispatch({
-        type: 'updateState',
-        payload: {
-          path: 'mailSendStatus',
-          value: 'sent',
-        },
-      });
     } catch (error) {
       toast.error(API_FAIL_MSG);
     } finally {
@@ -116,17 +111,27 @@ const EmailOutReach = ({ onClose }) => {
       <CdEmailOutreach
         isEmailBodyVisible={!OutreachState.isEmailLoading}
         isLoading={OutreachState.isEmailLoading}
-        slotEmailSent={
+        isEmailInputVisible={showEmailEditor}
+        isEmailSuccess={!showEmailEditor}
+        slotEmailSuccessCard={
           <>
-            {mailSendStatus === 'sent' && (
-              <EmailSent
-                onClickOpenInbox={{
-                  onClick: () => {
-                    window.open(`https://mail.google.com/mail`, '_blank');
-                  },
-                }}
-              />
-            )}
+            {outReachedEmails.map((eSent, idx) => {
+              return (
+                <EmailSuccessCard
+                  key={idx}
+                  slotBodyText={
+                    <div dangerouslySetInnerHTML={{ __html: eSent.body }}></div>
+                  }
+                  textEmail={eSent.toEmail}
+                  textSentMail={eSent.fromEmail}
+                  textStatus={getTimeDifference(
+                    eSent.createdAt,
+                    new Date().toISOString(),
+                  )}
+                  textSubject={eSent.subject}
+                />
+              );
+            })}
           </>
         }
         slotButtonGenerate={
@@ -267,6 +272,7 @@ const EmailOutReach = ({ onClose }) => {
         slotTemplateButton={
           <>
             <UISelect
+              size='sm'
               fullWidth
               menuOptions={emailTemplates.map((e) => ({
                 name: e.name,
@@ -322,6 +328,22 @@ const EmailOutReach = ({ onClose }) => {
         onClickSendMail={{
           onClick: sendEmailHandler,
           // onClick: getCandDetailshandler,
+        }}
+        onClickOpenInbox={{
+          onClick: () => {
+            window.open(`https://mail.google.com/mail`, '_blank');
+          },
+        }}
+        onClickAddFollowUp={{
+          onClick: () => {
+            dispatch({
+              type: 'updateState',
+              payload: {
+                path: 'showEmailEditor',
+                value: true,
+              },
+            });
+          },
         }}
       />
 

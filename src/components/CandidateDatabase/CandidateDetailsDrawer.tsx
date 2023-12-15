@@ -207,22 +207,6 @@ const CandidateDrawer = ({
         textName={getFullName(candidate.first_name, candidate.last_name)}
         slotDetails={
           <>
-            <CandidateEducation
-              slotEducationCard={
-                <>
-                  {candidate.json_resume.schools?.map((ed, index) => {
-                    return (
-                      <CandidateEducationCard
-                        key={index}
-                        slotEducationLogo={<></>}
-                        textUniversityName={ed.institution}
-                        textDate={getformatedDate(ed.start, ed.end)}
-                      />
-                    );
-                  })}
-                </>
-              }
-            />
             <CandidateExperience
               slotCandidateExperienceCard={
                 <>
@@ -240,6 +224,22 @@ const CandidateDrawer = ({
                             }
                           />
                         }
+                      />
+                    );
+                  })}
+                </>
+              }
+            />
+            <CandidateEducation
+              slotEducationCard={
+                <>
+                  {candidate.json_resume.schools?.map((ed, index) => {
+                    return (
+                      <CandidateEducationCard
+                        key={index}
+                        slotEducationLogo={<></>}
+                        textUniversityName={ed.institution}
+                        textDate={getformatedDate(ed.start, ed.end)}
                       />
                     );
                   })}

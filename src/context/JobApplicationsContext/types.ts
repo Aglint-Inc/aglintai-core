@@ -38,6 +38,7 @@ export type NewJobApplications = Pick<
   | 'resume'
   | 'candidate_id'
   | 'emails'
+  | 'applied_at'
 >;
 export type NewJobApplicationsInsert =
   Database['public']['Tables']['job_applications']['Insert'];
@@ -103,6 +104,8 @@ export type JobApplicationContext = {
       interviewing?: number;
     };
   }>;
+  atsSync: boolean;
+  longPolling: number;
   searchParameters: Parameters;
   initialLoad: boolean;
   openImportCandidates: boolean;
@@ -135,5 +138,10 @@ export type JdScore = {
     skills: { [key: string]: PromptEnum };
     schools: { [key: string]: PromptEnum };
     positions: { [key: string]: PromptEnum };
+  };
+  reasoning: {
+    skills: string;
+    schools: string;
+    positions: string;
   };
 };

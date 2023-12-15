@@ -43,7 +43,10 @@ export default function handler(req, res) {
         if (!response.data.moreDataAvailable) {
           await supabase
             .from('recruiter')
-            .update({ ashby_sync_token: response.data.syncToken })
+            .update({
+              ashby_sync_token: response.data.syncToken,
+              ashby_last_synced: new Date(),
+            })
             .eq('ashby_key', apiKey);
         }
         return res.status(200).send(response.data);

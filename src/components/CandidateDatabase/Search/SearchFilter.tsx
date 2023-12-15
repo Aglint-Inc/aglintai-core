@@ -197,7 +197,6 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
             onClick={() => {
               !isFilterLoading && handleApplyFilters();
             }}
-            disabled={filters.jobTitles.length == 0}
             endIcon={
               isFilterLoading && (
                 <CircularProgress

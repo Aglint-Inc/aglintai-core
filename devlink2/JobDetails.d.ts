@@ -17,4 +17,8 @@ declare function JobDetails(props: {
   slotTable?: Types.Devlink.Slot;
   slotRefresh?: Types.Devlink.Slot;
   slotPagination?: Types.Devlink.Slot;
+  isFetchingPillVisible?: Types.Visibility.VisibilityConditions;
+  textStatus?: React.ReactNode;
+  isTextStatusVisible?: Types.Visibility.VisibilityConditions;
+  slotLoadingLottie?: Types.Devlink.Slot;
 }): React.JSX.Element;

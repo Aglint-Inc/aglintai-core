@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { supabase } from '@/src/utils/supabaseClient';
 
 export const capitalize = (str: string) => {
   if (str) {
@@ -20,8 +22,8 @@ export const formatTimeStamp = (timeStamp: string) => {
     creationHour % 12 === 0
       ? 12
       : creationHour % 12 < 10
-      ? `0${creationHour % 12}`
-      : creationHour % 12;
+        ? `0${creationHour % 12}`
+        : creationHour % 12;
   const creationMinutes =
     date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
   const creationTime = `${finalHour}:${creationMinutes} ${
@@ -30,17 +32,25 @@ export const formatTimeStamp = (timeStamp: string) => {
   return `${creationDate}, ${creationTime}`;
 };
 
-export type FilterParameter = {
+interface NumberFilterParameter {
+  type: 'number';
   parameter: 'resume_score' | 'interview_score';
   condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
-  count: number;
-};
+  value: number;
+}
+interface StringFilterParameter {
+  type: 'string';
+  parameter: 'location';
+  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
+  value: string;
+}
+export type FilterParameter = NumberFilterParameter | StringFilterParameter;
 
 export const CANDIDATE_FILTERS: {
   parameters: FilterParameter['parameter'][];
   conditions: FilterParameter['condition'][];
 } = {
-  parameters: ['resume_score', 'interview_score'],
+  parameters: ['resume_score', 'interview_score', 'location'],
   conditions: ['=', '<>', '>', '<', '>=', '<='],
 };
 
@@ -107,4 +117,26 @@ export const getCandidateName = (first_name: string, last_name: string) => {
   return first_name || last_name
     ? capitalize((first_name || '') + ' ' + (last_name || ''))
     : '---';
+};
+
+export const checkSyncCand = async (job: JobTypeDashboard) => {
+  let is_sync = true;
+
+  const jobReferenceData = await supabase
+    .from('job_reference')
+    .select('*')
+    .eq('public_job_id', job.id)
+    .eq('recruiter_id', job.recruiter_id);
+
+  const applicationReferenceData = await supabase
+    .from('application_reference')
+    .select('*')
+    .eq('ats_json->job->>id', jobReferenceData.data[0].ats_job_id)
+    .eq('recruiter_id', job.recruiter_id)
+    .eq('is_processed', false);
+
+  if (applicationReferenceData.data.length === 0) {
+    is_sync = false;
+  }
+  return is_sync;
 };

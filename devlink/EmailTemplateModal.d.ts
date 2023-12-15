@@ -14,4 +14,8 @@ declare function EmailTemplateModal(props: {
   slotButtonIcon?: Types.Devlink.Slot;
   isButtonDisable?: Types.Visibility.VisibilityConditions;
   isButtonIconVisible?: Types.Visibility.VisibilityConditions;
+  isEditIconVisible?: Types.Visibility.VisibilityConditions;
+  isSaveButtonVisible?: Types.Visibility.VisibilityConditions;
+  onClickSave?: Types.Devlink.RuntimeProps;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

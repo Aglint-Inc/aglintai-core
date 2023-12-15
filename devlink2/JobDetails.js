@@ -33,6 +33,10 @@ export function JobDetails({
   slotTable,
   slotRefresh,
   slotPagination,
+  isFetchingPillVisible = true,
+  textStatus = "This is some text inside of a div block.",
+  isTextStatusVisible = false,
+  slotLoadingLottie,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -118,11 +122,38 @@ export function JobDetails({
                 </_Builtin.Block>
               </_Builtin.Link>
             ) : null}
+            {isFetchingPillVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fetching-pill")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-410")}
+                  tag="div"
+                >
+                  {slotLoadingLottie}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-sm", "text-kale-800")}
+                  tag="div"
+                >
+                  {"Syncing Candidates"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "jdet-main-action-menu")}
             tag="div"
           >
+            {isTextStatusVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-grey-500")}
+                tag="div"
+              >
+                {textStatus}
+              </_Builtin.Block>
+            ) : null}
             <_Builtin.Block tag="div">
               {slotRefresh ?? <RefreshButton />}
             </_Builtin.Block>

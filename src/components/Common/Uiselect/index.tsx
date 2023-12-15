@@ -23,6 +23,7 @@ type Props = {
   ) => void;
   defaultValue?: string | number;
   startIcon?: any;
+  size?: 'sm' | 'md';
 };
 
 const UISelect = ({
@@ -33,6 +34,7 @@ const UISelect = ({
   label,
   defaultValue,
   startIcon,
+  size = 'md',
 }: Props) => {
   let [focus, setFocus] = useState(false);
   let outlineColor = palette.grey[300];
@@ -73,9 +75,11 @@ const UISelect = ({
             },
             '.MuiSelect-outlined': {
               fontSize: '14px',
-              p: '8px 14px',
+              p: size === 'md' ? '8px 14px' : '4px 12px',
             },
-            outline: `3px solid ${focus ? borderColor : 'transparent'}`,
+            outline: `${size === 'md' ? '3px' : '2px'} solid ${
+              focus ? borderColor : 'transparent'
+            }`,
           },
         }}
         defaultValue={defaultValue}

@@ -3,7 +3,7 @@ export const ResumeScoreTag = ({ score }: { score: number }) => {
   const props = getResumeScore(score);
   return (
     <ResumeTag
-      slotText={props.text}
+      slotText={`${props.text} - ${score}%`}
       props={{
         style: {
           backgroundColor: props.bgColor,

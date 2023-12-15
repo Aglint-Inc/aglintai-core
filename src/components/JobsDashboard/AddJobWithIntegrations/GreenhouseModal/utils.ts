@@ -31,6 +31,7 @@ export const createJobApplications = async (
         .map((cand) => {
           if (cand.email_addresses[0]?.value) {
             return {
+              created_at: cand.created_at,
               first_name: cand.first_name,
               last_name: cand.last_name,
               email: cand.email_addresses[0]?.value,
@@ -118,6 +119,7 @@ export const createJobApplications = async (
 
             if (matchingCandidate && matchingCandidate.id) {
               return {
+                applied_at: ref.created_at,
                 candidate_id: matchingCandidate.id,
                 job_id: post.public_job_id,
                 application_id: ref.application_id,

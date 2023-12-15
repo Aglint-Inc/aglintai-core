@@ -14,9 +14,7 @@ import {
   NoResultAts,
   SkeletonLoaderAtsCard,
 } from '@/devlink';
-import {
-  ButtonPrimaryDefaultRegular
-} from '@/devlink3';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
@@ -207,6 +205,7 @@ export function LeverModalComp() {
           <LeverApiKey
             slotPrimaryButton={
               <ButtonPrimaryDefaultRegular
+                buttonText={'Submit'}
                 isDisabled={loading}
                 buttonProps={{
                   onClick: () => {

@@ -17,11 +17,12 @@ export function TopCandidateListItem({
   name = "Dianne Russell",
   strength = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   weakness = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
-  summary = "--",
+  overview = "--",
   onclickCandidate = {},
   isHighlighted = false,
   slotInsights,
   slotProfileImage,
+  analysis = "--",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -173,7 +174,33 @@ export function TopCandidateListItem({
               className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
-              {summary}
+              {overview}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          tag="div"
+        >
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-highlight")}
+              tag="div"
+            />
+          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-hover-bg")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column", "summary")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {analysis}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

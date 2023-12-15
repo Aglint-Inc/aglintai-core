@@ -53,6 +53,7 @@ export interface StateType {
   isEmailLoading: boolean;
   defaultEmailJson: any;
   outReachedEmails: OutreachedEmail[];
+  showEmailEditor: boolean;
   email: {
     subject: string;
     toEmail: string;
@@ -72,6 +73,13 @@ export type MyAction =
   | {
       type: 'generatedefaultJson';
       payload: Pick<StateType, 'defaultEmailJson' | 'email' | 'isEmailLoading'>;
+    }
+  | {
+      type: 'UpdateMultiStates';
+      payload: {
+        path: string;
+        value: any;
+      }[];
     };
 
 // Reducer function
@@ -94,6 +102,13 @@ const reducer = (state: StateType, action: MyAction): StateType => {
       };
       return newState;
     }
+    case 'UpdateMultiStates': {
+      const updStates = action.payload;
+      for (let singState of updStates) {
+        set(newState, singState.path, singState.value);
+      }
+      return newState;
+    }
     default:
       return state;
   }
@@ -109,6 +124,7 @@ const initialState: StateType = {
   mailSendStatus: '',
   isEmailLoading: true,
   defaultEmailJson: null,
+  showEmailEditor: false,
   email: {
     subject: '',
     toEmail: '',
@@ -214,20 +230,20 @@ const OutReachCtxProvider = ({
 
   const genEmailTempToemail = async () => {
     try {
-      dispatch({
-        type: 'updateState',
-        payload: {
-          path: 'isEmailLoading',
-          value: true,
-        },
-      });
       let email = selcandidate.json_resume.basics?.email ?? selcandidate.email;
+
       dispatch({
-        type: 'updateState',
-        payload: {
-          path: 'email.toEmail',
-          value: email,
-        },
+        type: 'UpdateMultiStates',
+        payload: [
+          {
+            path: 'email.toEmail',
+            value: email,
+          },
+          {
+            path: 'isEmailLoading',
+            value: true,
+          },
+        ],
       });
 
       const [emailTemps] = supabaseWrap(
@@ -267,7 +283,7 @@ const OutReachCtxProvider = ({
 
       //
     } catch (err) {
-      // console.log(err);
+      toast.error(API_FAIL_MSG);
     } finally {
       dispatch({
         type: 'updateState',
@@ -289,15 +305,28 @@ const OutReachCtxProvider = ({
           .eq('recruiter_id', recruiter.id),
       ) as OutreachEmailDbType[];
 
-      let newEMails: OutreachedEmail[] = outreachedMails.map((e: any) => ({
-        ...e.email,
-      }));
+      let newEMails: OutreachedEmail[] = outreachedMails
+        .map((e: any) => ({
+          ...e.email,
+        }))
+        .sort((e1, e2) => {
+          const d1 = new Date(e1.createdAt);
+          const d2 = new Date(e2.createdAt);
+          return d2.getTime() - d1.getTime();
+        });
+
       dispatch({
-        type: 'updateState',
-        payload: {
-          path: 'outReachedEmails',
-          value: newEMails,
-        },
+        type: 'UpdateMultiStates',
+        payload: [
+          {
+            path: 'outReachedEmails',
+            value: newEMails,
+          },
+          {
+            path: 'showEmailEditor',
+            value: newEMails.length === 0,
+          },
+        ],
       });
     } catch (err) {
       //
@@ -366,11 +395,21 @@ const OutReachCtxProvider = ({
     ) as OutreachEmailDbType[];
 
     dispatch({
-      type: 'updateState',
-      payload: {
-        path: 'outReachedEmails',
-        value: [...state.outReachedEmails, email],
-      },
+      type: 'UpdateMultiStates',
+      payload: [
+        {
+          path: 'mailSendStatus',
+          value: 'sent',
+        },
+        {
+          path: 'showEmailEditor',
+          value: false,
+        },
+        {
+          path: 'outReachedEmails',
+          value: [email, ...state.outReachedEmails],
+        },
+      ],
     });
   };
 

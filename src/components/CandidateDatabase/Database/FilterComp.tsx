@@ -135,6 +135,7 @@ const FilterComp = () => {
       >
         <Filter
           isApplyFilterDisable={isSubmitDisabled}
+          isFilterEmpty={filters.length == 0}
           slotFilter={
             <>
               <Stack gap={0.5}>

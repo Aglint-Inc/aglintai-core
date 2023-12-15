@@ -101,6 +101,10 @@
   flex: 0 0 480px;
 }
 
+.cv-list-column-wrapper.top.resume:hover {
+  z-index: 10;
+}
+
 .cv-list-column-wrapper.width-auto {
   width: auto;
 }
@@ -234,6 +238,14 @@
   grid-row-gap: 12px;
 }
 
+.cv-list-column.resume.overflow-visible:hover {
+  overflow: visible;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
 .cv-list-column.top {
   height: 40px;
   border-bottom-style: none;
@@ -264,6 +276,17 @@
 
 .cv-list-column.p-4 {
   padding-top: 4px;
+}
+
+.cv-list-column.overview2 {
+  z-index: -1;
+  min-width: 460px;
+}
+
+@media screen and (min-width: 1440px) {
+  .cv-list-column.overview2 {
+    min-width: 580px;
+  }
 }
 
 .cv-list-checkbox {

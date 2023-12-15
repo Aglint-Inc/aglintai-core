@@ -248,6 +248,31 @@
   margin-left: 8px;
 }
 
+.fetching-pill {
+  display: flex;
+  padding: 3px 10px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 10px;
+
+  background-color: hsla(180, 53.85%, 97.45%, 1.00);
+}
+
+.div-block-410 {
+  display: flex;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
+}
+
 .jdet-main-action-menu {
   display: flex;
   align-items: center;
@@ -658,10 +683,6 @@
   align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
-}
-
-.text-kale-800 {
-  color: var(--kale-800);
 }
 
 .cv-sidebar-info-wrapper {

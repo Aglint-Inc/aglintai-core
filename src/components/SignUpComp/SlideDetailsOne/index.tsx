@@ -7,6 +7,8 @@ import { RcInfoForm, RcInfoStep1, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
+import { industries } from '@/src/utils/industries';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import Loader from '../Loader/Index';
@@ -87,8 +89,34 @@ export function FetchCompanyDetails() {
   });
   const [loading, setLoading] = useState(false);
 
+  async function getRecruiter() {
+    const { data: recruiterUser, error: errorUser } = await supabase
+      .from('recruiter_user')
+      .select('*')
+      .eq('user_id', userDetails.user.id);
+    if (!errorUser && recruiterUser.length > 0) {
+      const { data: recruiter, error } = await supabase
+        .from('recruiter')
+        .select('*')
+        .eq('id', recruiterUser[0].recruiter_id);
+      if (!error && recruiter.length > 0) {
+        setRecruiter({
+          ...recruiter[0],
+          socials: recruiter[0]?.socials as unknown as SocialsType,
+        });
+      }
+    } else {
+      router.push(pageRoutes.SIGNUP);
+    }
+  }
   useEffect(() => {
-    if (recruiter?.id) setDetails({ website: recruiter.company_website });
+    if (userDetails.user.id) {
+      getRecruiter();
+    }
+  }, [useAuthDetails]);
+
+  useEffect(() => {
+    if (recruiter?.id) setDetails({ website: recruiter?.company_website });
   }, [recruiter]);
 
   const formValidation = async (): Promise<boolean> => {
@@ -133,6 +161,7 @@ export function FetchCompanyDetails() {
   };
 
   async function saveRecruiterDetails() {
+    setLoading(true);
     if ((await formValidation()) && recruiter?.id) {
       const { data: companyDetails } = await axios.post(
         `/api/fetchCompanyDetails`,
@@ -140,7 +169,7 @@ export function FetchCompanyDetails() {
           domain_name: details.website,
         },
       );
-      setLoading(true);
+     
       const { data, error } = await supabase
         .from('recruiter')
         .update({
@@ -190,6 +219,7 @@ export function FetchCompanyDetails() {
       }
       setLoading(false);
     }
+    setLoading(false);
   }
 
   // const submitHandler = async () => {
@@ -304,7 +334,7 @@ export function FetchCompanyDetails() {
               fullWidth
               id='name'
               label='Company Website'
-              placeholder='https://companydomain.com'
+              placeholder='companydomain.com'
               value={details?.website}
               onChange={(e) => {
                 setDetails({ ...details, website: e.target.value });
@@ -342,7 +372,7 @@ export function FetchCompanyDetails() {
                 Fetching company info from the website
               </UITypography>
             </Stack>
-          ) : recruiter.company_website ? (
+          ) : recruiter?.company_website ? (
             <CompanyDetails />
           ) : userDetails.user.user_metadata.role !== 'recruiter' ? (
             <Stack
@@ -373,7 +403,7 @@ export function CompanyDetails() {
   const router = useRouter();
   const { setStep } = useSignupDetails();
   const { recruiter, setRecruiter } = useAuthDetails();
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
@@ -396,7 +426,7 @@ export function CompanyDetails() {
     if (!recruiter.phone_number) {
       fetchUserLocation(); // Call the function to fetch user's location when the component mounts
     }
-    setLogo(recruiter.logo);
+    // setLogo(recruiter.logo);
     setPhone(recruiter.phone_number);
   }, [recruiter]);
 
@@ -515,14 +545,35 @@ export function CompanyDetails() {
               setRecruiter({ ...recruiter, name: e.target.value });
             }}
           />
-          <UITextField
-            labelSize='medium'
-            fullWidth
-            label='Industry Type'
-            placeholder='Ex. Healthcare'
+          <Autocomplete
+            disableClearable
+            options={industries}
             value={recruiter?.industry}
-            onChange={(e) => {
-              setRecruiter({ ...recruiter, industry: e.target.value });
+            onChange={(event, value) => {
+              if (value) {
+                setRecruiter({
+                  ...recruiter,
+                  industry: value,
+                });
+              }
+            }}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => {
+              return (
+                <UITextField
+                  rest={{ ...params }}
+                  labelSize='medium'
+                  fullWidth
+                  label='Industry Type'
+                  placeholder='Ex. Healthcare'
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                  onChange={(e) => {
+                    setRecruiter({ ...recruiter, industry: e.target.value });
+                  }}
+                />
+              );
             }}
           />
           <Autocomplete
@@ -575,10 +626,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                ? `Invalid phone number. Please use the ${
-                    phonePattern?.replaceAll('.', 'x') || 'correct'
-                  } format.`
-                : ''
+                  ? `Invalid phone number. Please use the ${
+                      phonePattern?.replaceAll('.', 'x') || 'correct'
+                    } format.`
+                  : ''
             }
           />
           <Stack

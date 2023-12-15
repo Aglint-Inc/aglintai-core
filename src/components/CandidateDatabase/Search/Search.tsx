@@ -1,4 +1,4 @@
-import { Collapse, Dialog } from '@mui/material';
+import { Collapse, Dialog, Drawer, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
@@ -26,6 +26,8 @@ import {
   initialState,
   useCandidateSearchCtx,
 } from '../context/CandidateSearchProvider';
+import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
+import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
 import InCompleteLottie from '../IncompleteLottie';
 import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
 import Loader from '../../Common/Loader';
@@ -53,6 +55,8 @@ const CandidatesSearch = () => {
   const [showBookmarked, setShowBookmarked] = useState(false);
   const [newJobsForCand, setNewJobsForCand] = useState<newCandJob[]>([]);
   const [isaddingTOJob, setIsAddingToJob] = useState(false);
+  const [toggleOutreach, setToggleOutreach] = useState(false);
+
   useEffect(() => {
     const { searchQryId } = router.query;
     if (!router.isReady) return;
@@ -123,8 +127,10 @@ const CandidatesSearch = () => {
   const candidates = candidateSearchState.candidates;
 
   const selectedCandsCnt = useMemo(() => {
-    return candidates.filter((cand) => cand.is_checked).length;
-  }, [candidates]);
+    return candidates.filter(
+      (cand) => (showBookmarked ? cand.is_bookmarked : true) && cand.is_checked,
+    ).length;
+  }, [candidates, showBookmarked]);
 
   const handleAddApplications = async (checkedJobIds: newCandJob[]) => {
     try {
@@ -195,7 +201,12 @@ const CandidatesSearch = () => {
                         key={index}
                         isActive={activeCandidate === index}
                         setIsActive={() => {
-                          setActiveCandidate(index);
+                          const activeCandIdx = candidates.findIndex(
+                            (cand) => c.candidate_id === cand.candidate_id,
+                          );
+                          if (activeCandIdx !== -1) {
+                            setActiveCandidate(activeCandIdx);
+                          }
                         }}
                         isChecked={c.is_checked}
                         toggleChecked={() => {
@@ -226,12 +237,22 @@ const CandidatesSearch = () => {
         slotCandidateDialog={
           <>
             <Collapse
-              in={activeCandidate >= 0 && !isSearching}
+              in={
+                activeCandidate >= 0 &&
+                !isSearching &&
+                (showBookmarked
+                  ? candidates[activeCandidate].is_bookmarked
+                  : true)
+              }
               unmountOnExit
               translate='yes'
             >
               {activeCandidate >= 0 && (
                 <SelectedCandidate
+                  onClickEmailOutReach={() => {
+                    setToggleOutreach(true);
+                  }}
+                  showEmailOutReach={true}
                   candidate={candidates[Number(activeCandidate)]}
                   onClickClose={() => {
                     setActiveCandidate(-1);
@@ -293,6 +314,56 @@ const CandidatesSearch = () => {
           />
         }
       </Dialog>
+      <Drawer
+        anchor={'right'}
+        open={toggleOutreach}
+        onClose={() => {
+          setToggleOutreach(false);
+        }}
+      >
+        <Stack direction={'row'} width={'1150px'}>
+          <Stack width={'460px'} height={'100vh'} overflow={'scroll'}>
+            <SelectedCandidate
+              onClickEmailOutReach={() => {}}
+              showEmailOutReach={false}
+              candidate={candidates[Number(activeCandidate)]}
+              onClickClose={() => {
+                setActiveCandidate(-1);
+              }}
+              onClickNext={() => {
+                if (activeCandidate < candidates.length - 1) {
+                  setActiveCandidate((p) => p + 1);
+                }
+              }}
+              onClickPrev={() => {
+                if (activeCandidate > 0) {
+                  setActiveCandidate((p) => p - 1);
+                }
+              }}
+              toggleBookMark={() => {
+                bookMarkCandidate(
+                  candidates[Number(activeCandidate)].application_id,
+                );
+              }}
+            />
+          </Stack>
+          <Stack width={'68%'} height={'100vh'} overflow={'scroll'}>
+            <OutReachCtxProvider
+              selcandidate={
+                activeCandidate !== -1
+                  ? candidates[Number(activeCandidate)]
+                  : null
+              }
+            >
+              <EmailOutReach
+                onClose={() => {
+                  setToggleOutreach(false);
+                }}
+              />
+            </OutReachCtxProvider>
+          </Stack>
+        </Stack>
+      </Drawer>
     </>
   );
 };

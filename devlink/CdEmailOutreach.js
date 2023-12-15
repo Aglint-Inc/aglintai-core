@@ -1,9 +1,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { EmailSent } from "./EmailSent";
 import { ButtonGenerate } from "./ButtonGenerate";
 import { MailLink } from "./MailLink";
+import { EmailSuccessCard } from "./EmailSuccessCard";
 import * as _utils from "./utils";
 import _styles from "./CdEmailOutreach.module.css";
 
@@ -28,6 +28,11 @@ export function CdEmailOutreach({
   slotLottie,
   isLoading = false,
   slotLoadingIcon,
+  isEmailInputVisible = true,
+  isEmailSuccess = true,
+  onClickAddFollowUp = {},
+  onClickOpenInbox = {},
+  slotEmailSuccessCard,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -76,155 +81,208 @@ export function CdEmailOutreach({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "email-out-body")}
-        tag="div"
-      >
-        <_Builtin.Block tag="div">
-          {slotEmailSent ?? <EmailSent />}
-        </_Builtin.Block>
+      {isEmailInputVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-632")}
+          className={_utils.cx(_styles, "email-out-body")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-631")}
+            className={_utils.cx(_styles, "div-block-632")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "div-block-631")}
               tag="div"
             >
-              {"To"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"To"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-input-email")}
+                tag="div"
+              >
+                {slotInputMailId}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "email-out-edit-btn")}
+                tag="div"
+                {...onClickCopyMail}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.90234%207.9C9.10651%207.9%209.27422%207.83437%209.40547%207.70312C9.53672%207.57187%209.60234%207.40417%209.60234%207.2V2.7375C9.60234%202.63542%209.56589%202.55521%209.49297%202.49687L8.00547%201.00937C7.94714%200.936458%207.86693%200.899999%207.76484%200.899999H5.40234C5.19818%200.899999%205.03047%200.965624%204.89922%201.09687C4.76797%201.22812%204.70234%201.39583%204.70234%201.6V7.2C4.70234%207.40417%204.76797%207.57187%204.89922%207.70312C5.03047%207.83437%205.19818%207.9%205.40234%207.9H8.90234ZM9.99609%201.99375C10.2003%202.19792%2010.3023%202.44583%2010.3023%202.7375V7.2C10.2878%207.59375%2010.1492%207.92187%209.88672%208.18437C9.62422%208.44687%209.29609%208.58542%208.90234%208.6H5.40234C5.00859%208.58542%204.68047%208.44687%204.41797%208.18437C4.15547%207.92187%204.01693%207.59375%204.00234%207.2V1.6C4.01693%201.20625%204.15547%200.878124%204.41797%200.615624C4.68047%200.353124%205.00859%200.214583%205.40234%200.199999H7.76484C8.05651%200.199999%208.30443%200.302083%208.50859%200.506249L9.99609%201.99375ZM1.90234%203H3.30234V3.7H1.90234C1.69818%203.7%201.53047%203.76562%201.39922%203.89687C1.26797%204.02812%201.20234%204.19583%201.20234%204.4V10C1.20234%2010.2042%201.26797%2010.3719%201.39922%2010.5031C1.53047%2010.6344%201.69818%2010.7%201.90234%2010.7H5.40234C5.60651%2010.7%205.77422%2010.6344%205.90547%2010.5031C6.03672%2010.3719%206.10234%2010.2042%206.10234%2010V9.3H6.80234V10C6.78776%2010.3938%206.64922%2010.7219%206.38672%2010.9844C6.12422%2011.2469%205.79609%2011.3854%205.40234%2011.4H1.90234C1.50859%2011.3854%201.18047%2011.2469%200.917968%2010.9844C0.655468%2010.7219%200.516927%2010.3938%200.502343%2010V4.4C0.516927%204.00625%200.655468%203.67812%200.917968%203.41562C1.18047%203.15312%201.50859%203.01458%201.90234%203Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot-input-email")}
-              tag="div"
-            >
-              {slotInputMailId}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "email-out-edit-btn")}
-              tag="div"
-              {...onClickCopyMail}
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.90234%207.9C9.10651%207.9%209.27422%207.83437%209.40547%207.70312C9.53672%207.57187%209.60234%207.40417%209.60234%207.2V2.7375C9.60234%202.63542%209.56589%202.55521%209.49297%202.49687L8.00547%201.00937C7.94714%200.936458%207.86693%200.899999%207.76484%200.899999H5.40234C5.19818%200.899999%205.03047%200.965624%204.89922%201.09687C4.76797%201.22812%204.70234%201.39583%204.70234%201.6V7.2C4.70234%207.40417%204.76797%207.57187%204.89922%207.70312C5.03047%207.83437%205.19818%207.9%205.40234%207.9H8.90234ZM9.99609%201.99375C10.2003%202.19792%2010.3023%202.44583%2010.3023%202.7375V7.2C10.2878%207.59375%2010.1492%207.92187%209.88672%208.18437C9.62422%208.44687%209.29609%208.58542%208.90234%208.6H5.40234C5.00859%208.58542%204.68047%208.44687%204.41797%208.18437C4.15547%207.92187%204.01693%207.59375%204.00234%207.2V1.6C4.01693%201.20625%204.15547%200.878124%204.41797%200.615624C4.68047%200.353124%205.00859%200.214583%205.40234%200.199999H7.76484C8.05651%200.199999%208.30443%200.302083%208.50859%200.506249L9.99609%201.99375ZM1.90234%203H3.30234V3.7H1.90234C1.69818%203.7%201.53047%203.76562%201.39922%203.89687C1.26797%204.02812%201.20234%204.19583%201.20234%204.4V10C1.20234%2010.2042%201.26797%2010.3719%201.39922%2010.5031C1.53047%2010.6344%201.69818%2010.7%201.90234%2010.7H5.40234C5.60651%2010.7%205.77422%2010.6344%205.90547%2010.5031C6.03672%2010.3719%206.10234%2010.2042%206.10234%2010V9.3H6.80234V10C6.78776%2010.3938%206.64922%2010.7219%206.38672%2010.9844C6.12422%2011.2469%205.79609%2011.3854%205.40234%2011.4H1.90234C1.50859%2011.3854%201.18047%2011.2469%200.917968%2010.9844C0.655468%2010.7219%200.516927%2010.3938%200.502343%2010V4.4C0.516927%204.00625%200.655468%203.67812%200.917968%203.41562C1.18047%203.15312%201.50859%203.01458%201.90234%203Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
+            <_Builtin.Block tag="div">
+              {slotButtonGenerate ?? (
+                <ButtonGenerate textDynamic="Regenerate" />
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {slotButtonGenerate ?? <ButtonGenerate textDynamic="Regenerate" />}
+            {isEmailBodyVisible ? (
+              <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-633")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Subject"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-email-subject-input")}
+                    tag="div"
+                  >
+                    {slotInputSubject}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-633")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Email Body"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "slot-email-subject-input")}
+                    tag="div"
+                  >
+                    {slotInputBody}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+            {isLoading ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "generating-mail")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-637")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{slotLottie}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-500")}
+                    tag="div"
+                  >
+                    {"Generating outreach email.."}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
           {isEmailBodyVisible ? (
-            <_Builtin.Block tag="div">
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-633")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Subject"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-email-subject-input")}
-                  tag="div"
-                >
-                  {slotInputSubject}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-633")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Email Body"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "slot-email-subject-input")}
-                  tag="div"
-                >
-                  {slotInputBody}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          {isLoading ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "generating-mail")}
+              className={_utils.cx(_styles, "send-mail-wrap-email")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-637")}
+                className={_utils.cx(_styles, "send-mail-left-wrap")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{slotLottie}</_Builtin.Block>
+                {slotLinkMail ?? <MailLink />}
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
+                  className={_utils.cx(_styles, "aui-button-wrap")}
                   tag="div"
+                  tabIndex="0"
                 >
-                  {"Generating outreach email.."}
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "aui-button",
+                      "is-button-bg-blue"
+                    )}
+                    tag="div"
+                    tabIndex="0"
+                    {...onClickSendMail}
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-md")}
+                      tag="div"
+                    >
+                      {"Send Mail"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "button-icon", "is-large")}
+                      tag="div"
+                      tabIndex="0"
+                    >
+                      {slotLoadingIcon ?? (
+                        <_Builtin.HtmlEmbed value="%3Csvg%20width%3D%2212%22%20height%3D%2211%22%20viewBox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.867968%201.90625C0.751302%201.62917%200.795052%201.36667%200.999218%201.11875C1.21797%200.899999%201.48047%200.848958%201.78672%200.965624L11.5867%205.16562C11.8492%205.28229%2011.9878%205.49375%2012.0023%205.8C11.9878%206.09167%2011.8492%206.30312%2011.5867%206.43437L1.78672%2010.6344C1.48047%2010.751%201.21797%2010.7%200.999218%2010.4813C0.795052%2010.2333%200.751302%209.97083%200.867968%209.69375L2.81484%205.8L0.867968%201.90625ZM3.42734%206.15L1.50234%2010L10.493%206.15H3.42734ZM10.493%205.45L1.50234%201.6L3.42734%205.45H10.493Z%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E" />
+                      )}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
-        {isEmailBodyVisible ? (
+      ) : null}
+      {isEmailSuccess ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "email-outreach-success")}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "send-mail-wrap-email")}
+            className={_utils.cx(_styles, "div-block-651")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "send-mail-left-wrap")}
+              className={_utils.cx(_styles, "add-emial-wrap")}
               tag="div"
+              {...onClickAddFollowUp}
             >
-              {slotLinkMail ?? <MailLink />}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7.9987%201.33398C7.5896%201.33398%207.25796%201.66563%207.25796%202.07473V7.25991H2.07277C1.66367%207.25991%201.33203%207.59155%201.33203%208.00065C1.33203%208.40975%201.66367%208.74139%202.07277%208.74139H7.25796V13.9266C7.25796%2014.3357%207.5896%2014.6673%207.9987%2014.6673C8.4078%2014.6673%208.73944%2014.3357%208.73944%2013.9266V8.74139H13.9246C14.3337%208.74139%2014.6654%208.40975%2014.6654%208.00065C14.6654%207.59155%2014.3337%207.25991%2013.9246%207.25991H8.73944V2.07473C8.73944%201.66563%208.4078%201.33398%207.9987%201.33398Z%22%20fill%3D%22%231F73B7%22%20style%3D%22fill%3A%231F73B7%3Bfill%3Acolor(display-p3%200.1216%200.4510%200.7176)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
               <_Builtin.Block
-                className={_utils.cx(_styles, "aui-button-wrap")}
+                className={_utils.cx(_styles, "text-blue-600")}
                 tag="div"
-                tabIndex="0"
               >
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "aui-button",
-                    "is-button-bg-blue"
-                  )}
-                  tag="div"
-                  tabIndex="0"
-                  {...onClickSendMail}
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-md")}
-                    tag="div"
-                  >
-                    {"Send Mail"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "button-icon", "is-large")}
-                    tag="div"
-                    tabIndex="0"
-                  >
-                    {slotLoadingIcon ?? (
-                      <_Builtin.HtmlEmbed value="%3Csvg%20width%3D%2212%22%20height%3D%2211%22%20viewBox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.867968%201.90625C0.751302%201.62917%200.795052%201.36667%200.999218%201.11875C1.21797%200.899999%201.48047%200.848958%201.78672%200.965624L11.5867%205.16562C11.8492%205.28229%2011.9878%205.49375%2012.0023%205.8C11.9878%206.09167%2011.8492%206.30312%2011.5867%206.43437L1.78672%2010.6344C1.48047%2010.751%201.21797%2010.7%200.999218%2010.4813C0.795052%2010.2333%200.751302%209.97083%200.867968%209.69375L2.81484%205.8L0.867968%201.90625ZM3.42734%206.15L1.50234%2010L10.493%206.15H3.42734ZM10.493%205.45L1.50234%201.6L3.42734%205.45H10.493Z%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E" />
-                    )}
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                {"Add Followup Email"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "inbox-wrap")}
+              tag="div"
+              {...onClickOpenInbox}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2220%22%20height%3D%2216%22%20viewBox%3D%220%200%2020%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_6373_16598)%22%3E%0A%3Cpath%20d%3D%22M4.54545%2015.5014V7.77427L2.14896%205.58185L0%204.36523V14.1378C0%2014.8923%200.611364%2015.5014%201.36364%2015.5014H4.54545Z%22%20fill%3D%22%234285F4%22%20style%3D%22fill%3A%234285F4%3Bfill%3Acolor(display-p3%200.2588%200.5216%200.9569)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Cpath%20d%3D%22M15.4531%2015.5014H18.6349C19.3895%2015.5014%2019.9986%2014.8901%2019.9986%2014.1378V4.36523L17.5646%205.75882L15.4531%207.77427V15.5014Z%22%20fill%3D%22%2334A853%22%20style%3D%22fill%3A%2334A853%3Bfill%3Acolor(display-p3%200.2039%200.6588%200.3255)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Cpath%20d%3D%22M4.54485%207.77423L4.21875%204.75497L4.54485%201.86523L9.99939%205.95608L15.4539%201.86523L15.8187%204.59894L15.4539%207.77423L9.99939%2011.8651L4.54485%207.77423Z%22%20fill%3D%22%23EA4335%22%20style%3D%22fill%3A%23EA4335%3Bfill%3Acolor(display-p3%200.9176%200.2627%200.2078)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Cpath%20d%3D%22M15.4531%201.86553V7.77452L19.9986%204.36549V2.54734C19.9986%200.861%2018.0736%20-0.100348%2016.7259%200.910999L15.4531%201.86553Z%22%20fill%3D%22%23FBBC04%22%20style%3D%22fill%3A%23FBBC04%3Bfill%3Acolor(display-p3%200.9843%200.7373%200.0157)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Cpath%20d%3D%22M0%204.36549L2.09053%205.93336L4.54545%207.77452V1.86553L3.27273%200.910999C1.92273%20-0.100348%200%200.861%200%202.54734V4.36549Z%22%20fill%3D%22%23C5221F%22%20style%3D%22fill%3A%23C5221F%3Bfill%3Acolor(display-p3%200.7725%200.1333%200.1216)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_6373_16598%22%3E%0A%3Crect%20width%3D%2220%22%20height%3D%2215.0037%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%20transform%3D%22translate(0%200.498047)%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-blue-500", "fw-semibold")}
+                tag="div"
+              >
+                {"Open Inbox"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotEmailSuccessCard ?? (
+              <>
+                <EmailSuccessCard />
+                <EmailSuccessCard />
+              </>
+            )}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }
