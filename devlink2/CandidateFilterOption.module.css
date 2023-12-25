@@ -8,6 +8,7 @@
 
 .cl-filter-inputs-wrapper {
   display: flex;
+  width: 100%;
   grid-column-gap: 14px;
   grid-row-gap: 14px;
 }

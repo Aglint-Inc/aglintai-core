@@ -17,7 +17,7 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 
-import { readNewJobApplicationDbAction } from './utils';
+import { newReadNewJobApplicationDbAction } from './utils';
 
 const handler = async (
   req: NextApiRequest,
@@ -51,7 +51,6 @@ const handler = async (
   const promises = await createMultiPromise(
     job_id,
     supabase,
-    apiStatus ?? null,
     ranges ?? null,
     sort ?? null,
     filter ?? null,
@@ -67,22 +66,20 @@ export default handler;
 const createMultiPromise = (
   job_id: ReadJobApplicationApi['request']['job_id'],
   supabase: any,
-  apiStatus?: ReadJobApplicationApi['request']['apiStatus'],
   ranges?: ReadJobApplicationApi['request']['ranges'],
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
   search?: ReadJobApplicationApi['request']['search'],
 ) => {
   return Object.entries(ranges).map(([key, value]) =>
-    readNewJobApplicationDbAction(
+    newReadNewJobApplicationDbAction(
       job_id,
       supabase,
       key as JobApplicationSections,
-      apiStatus,
-      value ?? null,
       sort,
-      filter,
+      value ?? null,
       search,
+      filter,
     ),
   );
 };
@@ -176,7 +173,7 @@ export type ReadJobApplicationApi = {
     };
     apiStatus?: ApiLogState;
     sort?: SortParameter;
-    filter?: FilterParameter[];
+    filter?: FilterParameter;
     search?: string;
   };
   response: {

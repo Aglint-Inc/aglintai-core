@@ -1,14 +1,14 @@
 import { RefreshButton } from '@/devlink2';
 
-const RefreshBtn = ({ text, isDisabled, onClick }) => {
+const RefreshBtn = ({ text, isDisabled, onClick, animatedDisable = true }) => {
   const style = {
     color: isDisabled ? 'grey' : '#5293c7',
   };
   return (
     <RefreshButton
-      text={isDisabled ? 'Loading' : text}
+      text={isDisabled ? (animatedDisable ? 'Loading' : text) : text}
       iconProps={{
-        className: isDisabled ? 'rotating' : null,
+        className: isDisabled ? (animatedDisable ? 'rotating' : null) : null,
         style: { ...style },
       }}
       buttonProps={{

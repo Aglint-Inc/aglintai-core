@@ -12,7 +12,7 @@ const SearchField = ({
 }: {
   val: string;
   // eslint-disable-next-line no-unused-vars
-  handleSearch: (val: string) => Promise<void>;
+  handleSearch: (val: string, signal?: AbortSignal) => Promise<void>;
 }) => {
   const [value, setValue] = useState(val);
   const initialRef = useRef(true);
@@ -21,10 +21,14 @@ const SearchField = ({
     if (initialRef.current) {
       initialRef.current = false;
     } else {
+      const controller = new AbortController();
       const timer = setTimeout(async () => {
-        await handleSearch(value);
+        await handleSearch(value, controller.signal);
       }, 400);
-      return () => clearTimeout(timer);
+      return () => {
+        controller.abort();
+        clearTimeout(timer);
+      };
     }
   }, [value]);
 
@@ -34,7 +38,7 @@ const SearchField = ({
       onChange={(e) => {
         setValue(e.target.value);
       }}
-      value={value}
+      value={value || ''}
       placeholder='Search'
       InputProps={{
         endAdornment: (

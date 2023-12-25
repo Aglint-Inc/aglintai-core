@@ -490,17 +490,20 @@ const NewJobFilterBlock = ({
 }) => {
   const { job, searchParameters, handleJobApplicationFilter, section } =
     useJobApplications();
-  const handleSearch = async (val: string) => {
+  const handleSearch = async (val: string, signal?: AbortSignal) => {
     const value = val ? val.trim().toLowerCase() : null;
-    const { confirmation, count } = await handleJobApplicationFilter({
-      ...searchParameters,
-      search: value,
-    });
+    const { confirmation, count } = await handleJobApplicationFilter(
+      {
+        ...searchParameters,
+        search: value,
+      },
+      signal,
+    );
     if (confirmation) setApplicationLimit(count);
   };
   return (
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
-      <YTransform uniqueKey={checkList.size > 0}>
+      <>
         {checkList.size > 0 ? (
           <Stack style={{ backgroundColor: 'white' }}>
             <Stack
@@ -523,8 +526,8 @@ const NewJobFilterBlock = ({
         ) : (
           <></>
         )}
-      </YTransform>
-      <YTransform uniqueKey={checkList.size === 0}>
+      </>
+      <>
         {checkList.size === 0 ? (
           <JobDetailsFilterBlock
             onclickAllApplicants={{ onClick: () => setDetailedView(true) }}
@@ -549,7 +552,7 @@ const NewJobFilterBlock = ({
         ) : (
           <></>
         )}
-      </YTransform>
+      </>
     </Stack>
   );
 };
@@ -776,13 +779,13 @@ const ActionBar = ({
     applications,
     handleJobApplicationUpdate,
     job,
-    paginationLimit,
+    // paginationLimit,
     section,
   } = useJobApplications();
   const [open, setOpen] = useState(false);
   const [destination, setDestination] = useState<JobApplicationSections>(null);
 
-  const [selectAll, setSelectAll] = useState(false);
+  // const [selectAll, setSelectAll] = useState(false);
 
   const handleUpdateJobs = async () => {
     if (!jobUpdate) {
@@ -793,24 +796,24 @@ const ActionBar = ({
           destination,
         },
         checkList,
-        selectAll,
+        // selectAll,
       );
       if (confirmation) {
         setCheckList(new Set<string>());
-        setSelectAll(false);
+        // setSelectAll(false);
       }
       setJobUpdate(false);
     }
   };
 
-  const handleSelectAll = () => {
-    setCheckList(new Set(applications[section].map((a) => a.application_id)));
-    setSelectAll(true);
-  };
+  // const handleSelectAll = () => {
+  //   setCheckList(new Set(applications[section].map((a) => a.application_id)));
+  //   setSelectAll(true);
+  // };
 
-  useEffect(() => {
-    if (checkList.size !== applications[section].length) setSelectAll(false);
-  }, [checkList.size]);
+  // useEffect(() => {
+  //   if (checkList.size !== applications[section].length) setSelectAll(false);
+  // }, [checkList.size]);
 
   const isChecked = checkList.size !== 0;
   const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
@@ -824,7 +827,8 @@ const ActionBar = ({
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.INTERVIEWING ||
       section === JobApplicationSections.QUALIFIED);
-  const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
+  // const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
+  const checkListCount = checkList.size;
 
   const handleOpen = (destination: JobApplicationSections) => {
     setOpen(true);
@@ -864,9 +868,10 @@ const ActionBar = ({
         } selected`}
         selectAllText={`Select all ${applicationLimit[section]} candidates`}
         isSelectAllVisible={
-          !selectAll && applicationLimit[section] > paginationLimit
+          false
+          // !selectAll && applicationLimit[section] > paginationLimit
         }
-        onclickSelectAll={{ onClick: () => handleSelectAll() }}
+        // onclickSelectAll={{ onClick: () => handleSelectAll() }}
         slotDropdown={
           <SelectActionsDropdown
             isInterview={showInterview}

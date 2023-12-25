@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
+// import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 import {
-  getFilteredQuery,
+  // getFilteredQuery,
   selectJobApplicationQuery,
 } from '@/src/pages/api/JobApplicationsApi/utils';
 import { Database } from '@/src/types/schema';
@@ -18,6 +18,7 @@ import {
 export const initialJobApplicationsContext: JobApplicationContext = {
   applications: undefined,
   applicationDisable: undefined,
+  defaultFilters: undefined,
   setApplicationDisable: undefined,
   paginationLimit: undefined,
   atsSync: undefined,
@@ -245,38 +246,38 @@ export const getRange = (
   };
 };
 
-export const updateAllJobStatusDbAction = async (
-  jobId: string,
-  sections: {
-    source: JobApplicationSections;
-    destination: JobApplicationSections;
-  },
-  search?: string,
-  filter?: FilterParameter[],
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  let query = supabase
-    .from('job_applications')
-    .update({ status: sections.destination })
-    .eq('job_id', jobId)
-    .eq('status', sections.source);
+// export const updateAllJobStatusDbAction = async (
+//   jobId: string,
+//   sections: {
+//     source: JobApplicationSections;
+//     destination: JobApplicationSections;
+//   },
+//   search?: string,
+//   filter?: FilterParameter[],
+//   signal?: AbortSignal,
+// ) => {
+//   const timerSignal = new AbortController();
+//   const timeout = setTimeout(() => timerSignal.abort(), 60000);
+//   let query = supabase
+//     .from('job_applications')
+//     .update({ status: sections.destination })
+//     .eq('job_id', jobId)
+//     .eq('status', sections.source);
 
-  if (filter && filter.length > 0) {
-    query = getFilteredQuery(query, filter, sections.source);
-  }
+//   if (filter && filter.length > 0) {
+//     query = getFilteredQuery(query, filter, sections.source);
+//   }
 
-  if (search) {
-    query = query.or(
-      `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
-      { foreignTable: 'candidates' },
-    );
-  }
+//   if (search) {
+//     query = query.or(
+//       `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
+//       { foreignTable: 'candidates' },
+//     );
+//   }
 
-  query = query.abortSignal(signal);
+//   query = query.abortSignal(signal);
 
-  const { error } = await query;
-  clearTimeout(timeout);
-  return { data: error ? false : true, error };
-};
+//   const { error } = await query;
+//   clearTimeout(timeout);
+//   return { data: error ? false : true, error };
+// };

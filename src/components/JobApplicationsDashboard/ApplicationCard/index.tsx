@@ -46,7 +46,7 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const { section } = useJobApplications();
-  const creationDate = formatTimeStamp(application.applied_at);
+  const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
     handleSelect(index);
   };

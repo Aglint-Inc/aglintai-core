@@ -179,3 +179,7 @@ textarea::placeholder {
     border-color: #d8dcde !important;
   }
 }
+
+.reverse-slider-job-applications .MuiSlider-valueLabelOpen {
+  transform: translateY(120%) !important;
+}

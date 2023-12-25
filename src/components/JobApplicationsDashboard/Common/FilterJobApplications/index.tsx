@@ -1,13 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { MenuItem, Select, Stack } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Slider, Stack } from '@mui/material';
+import { ValueOf } from 'next/dist/shared/lib/constants';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import {
-  CandidateFilter,
-  CandidateFilterBody,
-  CandidateFilterOption,
-} from '@/devlink2';
+import { ButtonOutlinedRegular, Checkbox } from '@/devlink';
+import { CandidateFilter, CandidateFilterBody } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
+import RefreshBtn from '@/src/components/Common/RefreshButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -18,7 +17,7 @@ import {
   getBoundingStatus,
   useMouseClick,
 } from '../../hooks';
-import { CANDIDATE_FILTERS, capitalize, FilterParameter } from '../../utils';
+import { capitalize, FilterParameter } from '../../utils';
 
 const FilterJobApplications = ({
   setApplicationLimit,
@@ -27,59 +26,38 @@ const FilterJobApplications = ({
 }) => {
   const {
     searchParameters,
-    handleJobApplicationFilter,
-    applicationDisable,
+    // handleJobApplicationFilter,
+    // applicationDisable,
     section,
   } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
-  const modifiedFilters = searchParameters.filter.reduce((acc, curr) => {
-    if (
-      !(
-        section === JobApplicationSections.NEW &&
-        curr.parameter === 'interview_score'
+  const [filters, setFilters] = useState(searchParameters.filter);
+  const filterCount = Object.entries(searchParameters.filter).reduce(
+    (acc, [key, value]) => {
+      if (
+        !(
+          key === 'interview_score' && section === JobApplicationSections.NEW
+        ) &&
+        (value as any).active
       )
-    )
-      acc.push(curr);
-    return acc;
-  }, []);
-  const [filters, setFilters] = useState([...modifiedFilters]);
-  const filterCount = modifiedFilters.length;
+        acc += 1;
+      return acc;
+    },
+    0,
+  );
   const handleClose = () => {
     if (filterVisibility) {
       setFilterVisibility(false);
-      setFilters([...modifiedFilters]);
+      setFilters(searchParameters.filter);
     }
   };
 
   useEffect(() => {
-    setFilters([...modifiedFilters]);
+    setFilters(searchParameters.filter);
   }, [section]);
-
-  const handleReset = async () => {
-    if (!applicationDisable) {
-      const { confirmation, count } = await handleJobApplicationFilter({
-        ...searchParameters,
-        filter:
-          section === JobApplicationSections.NEW
-            ? searchParameters.filter.reduce((acc, curr) => {
-                if (curr.parameter === 'interview_score') acc.push(curr);
-                return acc;
-              }, [])
-            : [],
-      });
-      if (confirmation) {
-        setApplicationLimit(count);
-        setFilters([]);
-      }
-    }
-  };
   return (
     <Stack id={'FILTERPARENT'}>
       <CandidateFilter
-        onclickReset={{
-          onClick: async () => await handleReset(),
-        }}
-        isResetVisible={filterCount > 0}
         filterCount={filterCount}
         isCountVisible={filterCount > 0}
         filterHeaderProps={{
@@ -107,48 +85,39 @@ const ApplicationFilterBody = ({
   handleClose,
   setApplicationLimit,
 }: {
-  filters: FilterParameter[];
-  setFilters: Dispatch<SetStateAction<FilterParameter[]>>;
+  filters: FilterParameter;
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
   handleClose: () => void;
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
   const {
+    section,
+    defaultFilters,
     searchParameters,
     handleJobApplicationFilter,
     applicationDisable,
     setApplicationDisable,
-    section,
   } = useJobApplications();
-  const handleAddFilter = () => {
-    setFilters((prev) => {
-      return [
-        ...prev,
-        {
-          parameter: 'resume_score',
-          condition: '>',
-          value: null,
-          type: 'number',
-        },
-      ];
-    });
+
+  const handleResetSection = (section: keyof FilterParameter) => {
+    setFilters((prev) => ({
+      ...prev,
+      [section]: { ...defaultFilters[section] },
+    }));
   };
 
-  const handleSubmit = async () => {
+  const handleCancel = () => {
+    setFilters(searchParameters.filter);
+  };
+
+  const handleSubmit = async (filters: FilterParameter) => {
+    const { newFilters } = validateFilters(filters, defaultFilters);
     if (!applicationDisable) {
+      setFilters({ ...newFilters });
       setApplicationDisable(true);
       const { confirmation, count } = await handleJobApplicationFilter({
         ...searchParameters,
-        filter: [
-          ...filters,
-          ...searchParameters.filter.reduce((acc, curr) => {
-            if (
-              section === JobApplicationSections.NEW &&
-              curr.parameter === 'interview_score'
-            )
-              acc.push(curr);
-            return acc;
-          }, []),
-        ],
+        filter: { ...newFilters },
       });
       if (confirmation) {
         setApplicationLimit(count);
@@ -156,27 +125,42 @@ const ApplicationFilterBody = ({
       setApplicationDisable(false);
     }
   };
-  const disabled =
-    (filters.length === 0 && searchParameters.filter.length === 0) ||
-    filters.reduce((acc, curr, i) => {
-      if (acc || curr.value === null) {
-        return true;
-      } else if (
-        i + 1 > searchParameters.filter.length ||
-        curr.condition !== searchParameters.filter[i].condition ||
-        curr.type !== searchParameters.filter[i].type ||
-        curr.value !== searchParameters.filter[i].value ||
-        curr.parameter !== searchParameters.filter[i].parameter
-      ) {
-        return false;
-      }
-    }, false);
+  const isDefault = captureChanges(filters, defaultFilters, section);
+  const hasChanges = captureChanges(filters, searchParameters.filter, section);
   const filterButtons = (
-    <Stack flexDirection={'row'} justifyContent={'space-between'}>
-      <AUIButton onClick={() => handleAddFilter()}>Add filter</AUIButton>
+    <Stack
+      flexDirection={'row'}
+      alignItems={'center'}
+      justifyContent={'space-between'}
+      gap={1}
+      width={'100%'}
+    >
+      <Stack mr={'auto'}>
+        <RefreshBtn
+          isDisabled={!isDefault || applicationDisable}
+          onClick={async () => {
+            if (!(!isDefault || applicationDisable))
+              await handleSubmit({ ...defaultFilters });
+          }}
+          text={'Reset'}
+          animatedDisable={false}
+        />
+      </Stack>
+      <ButtonOutlinedRegular
+        onClickButton={{
+          onClick: async () => {
+            if (!(!hasChanges || applicationDisable)) await handleCancel();
+          },
+        }}
+        isDisabled={!hasChanges || applicationDisable}
+        textLabel={'Cancel'}
+      />
       <AUIButton
-        onClick={async () => await handleSubmit()}
-        disabled={disabled || applicationDisable}
+        onClick={async () => {
+          if (!(!hasChanges || applicationDisable))
+            await handleSubmit({ ...filters });
+        }}
+        disabled={!hasChanges || applicationDisable}
       >
         Apply filters
       </AUIButton>
@@ -195,9 +179,11 @@ const ApplicationFilterBody = ({
     <Stack id={'FILTERBODY'}>
       <CandidateFilterBody
         slotFilters={
-          filters.length !== 0 ? (
-            <CandidateFilters filters={filters} setFilters={setFilters} />
-          ) : null
+          <CandidateFilters
+            filters={filters}
+            setFilters={setFilters}
+            handleResetSection={handleResetSection}
+          />
         }
         slotButtons={filterButtons}
       />
@@ -205,236 +191,319 @@ const ApplicationFilterBody = ({
   );
 };
 
+const validateFilters = (
+  filters: FilterParameter,
+  defaultFilters: FilterParameter,
+) => {
+  const newFilters = Object.entries(filters).reduce(
+    (acc, [key, val]) => {
+      switch (key) {
+        case 'location': {
+          if (
+            (val as FilterParameter['location']).active &&
+            (val as FilterParameter['location']).name ===
+              defaultFilters[key].name
+          ) {
+            return { ...acc, [key]: { ...defaultFilters[key] } };
+          }
+          return acc;
+        }
+        case 'resume_score':
+        case 'interview_score': {
+          return acc;
+        }
+      }
+    },
+    { ...filters },
+  );
+  return { newFilters };
+};
+
+const captureChanges = (
+  filters: FilterParameter,
+  mainFilters: FilterParameter,
+  section: JobApplicationSections,
+) => {
+  return Object.entries(mainFilters).reduce((acc, [key, value]) => {
+    if (
+      acc ||
+      (key === 'interview_score' && section === JobApplicationSections.NEW)
+    )
+      return acc;
+    else {
+      return Object.entries(value).reduce((acc2, [key2, value2]) => {
+        if (acc2) return acc2;
+        else {
+          return filters[key][key2] !== value2;
+        }
+      }, false);
+    }
+  }, false);
+};
+
 const CandidateFilters = ({
   filters,
   setFilters,
+  handleResetSection,
 }: {
-  filters: FilterParameter[];
-  setFilters: Dispatch<SetStateAction<FilterParameter[]>>;
-}) => {
-  const handleRemove = (index: number) => {
-    setFilters((prev) => prev.filter((f, i) => i !== index));
-  };
-  const handleModify = (index: number, newFilter: FilterParameter) => {
-    setFilters((prev) =>
-      prev.reduce((acc, curr, i) => {
-        if (index === i) acc.push(newFilter);
-        else acc.push(curr);
-        return acc;
-      }, []),
-    );
-  };
-  return (
-    <>
-      {filters.map((f, i) => (
-        <CandidateFilterOptionComp
-          key={i}
-          filter={f}
-          index={i}
-          handleRemove={(i) => handleRemove(i)}
-          handleModify={(i, n) => handleModify(i, n)}
-        />
-      ))}
-    </>
-  );
-};
-
-const CandidateFilterOptionComp = ({
-  filter,
-  index,
-  handleRemove,
-  handleModify,
-}: {
-  filter: FilterParameter;
-  index: number;
+  filters: FilterParameter;
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
   // eslint-disable-next-line no-unused-vars
-  handleRemove: (index: number) => void;
-  // eslint-disable-next-line no-unused-vars
-  handleModify: (index: number, newFilter: FilterParameter) => void;
-}) => {
-  return (
-    //TODO: CandidateFilterOption_cl-filter-block__BJvzL -> width: 100%
-    <CandidateFilterOption
-      onclickRemove={{ onClick: () => handleRemove(index) }}
-      slotInputs={
-        <CandidateFilterInputs
-          filter={filter}
-          handleModify={(n) => handleModify(index, n)}
-        />
-      }
-    />
-  );
-};
-
-const CandidateFilterInputs = ({
-  filter,
-  handleModify,
-}: {
-  filter: FilterParameter; // eslint-disable-next-line no-unused-vars
-  handleModify: (newFilter: FilterParameter) => void;
-}) => {
-  useEffect(() => {
-    handleModify({ ...filter, condition: '>', value: null });
-  }, [filter.type]);
-  return (
-    <>
-      <CandidateFilterPrimaryDropDown
-        parameter={filter.parameter}
-        handleModify={(e) =>
-          handleModify({
-            ...filter,
-            ...e,
-          } as FilterParameter)
-        }
-      />
-      {filter.type === 'number' ? (
-        <CandidateFilterSecondaryDropDown
-          condition={filter.condition}
-          handleModify={(e) =>
-            handleModify({ ...filter, condition: e } as FilterParameter)
-          }
-        />
-      ) : (
-        <></>
-      )}
-      <CandidateFilterEntry
-        value={filter.value}
-        type={filter.type}
-        handleModify={(e) =>
-          handleModify({ ...filter, value: e } as FilterParameter)
-        }
-      />
-    </>
-  );
-};
-
-const CandidateFilterPrimaryDropDown = ({
-  parameter,
-  handleModify,
-}: {
-  parameter: FilterParameter['parameter'];
-  // eslint-disable-next-line no-unused-vars
-  handleModify: ({
-    // eslint-disable-next-line no-unused-vars
-    parameter,
-    // eslint-disable-next-line no-unused-vars
-    type,
-  }: {
-    parameter: FilterParameter['parameter'];
-    type: FilterParameter['type'];
-  }) => void;
+  handleResetSection: (section: keyof FilterParameter) => void;
 }) => {
   const { section } = useJobApplications();
-  const getParams = (
-    parameter: FilterParameter['parameter'],
-  ): {
-    parameter: FilterParameter['parameter'];
-    type: FilterParameter['type'];
-  } => {
-    switch (parameter) {
-      case 'resume_score':
-        return { parameter, type: 'number' };
-      case 'interview_score':
-        return { parameter, type: 'number' };
+  return (
+    <Stack gap={'40px'}>
+      {Object.entries(filters).map(([key, val], i) =>
+        section === JobApplicationSections.NEW && key === 'interview_score' ? (
+          <></>
+        ) : (
+          <CandidateFilterCheckbox
+            key={i}
+            keyString={key as keyof FilterParameter}
+            valObj={val as ValueOf<FilterParameter>}
+            setFilters={setFilters}
+            handleResetSection={handleResetSection}
+          >
+            <Stack
+              width={'400px'}
+              style={{ transform: 'translateX(30px)' }}
+              mt={'10px'}
+            >
+              <CandidateFilterOptionBody
+                keyString={key as keyof FilterParameter}
+                valObj={val as ValueOf<FilterParameter>}
+                setFilters={setFilters}
+              />
+            </Stack>
+          </CandidateFilterCheckbox>
+        ),
+      )}
+    </Stack>
+  );
+};
+
+const CandidateFilterCheckbox = ({
+  keyString,
+  valObj,
+  setFilters,
+  children,
+  handleResetSection,
+}: {
+  keyString: keyof FilterParameter;
+  valObj: ValueOf<FilterParameter>;
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
+  // eslint-disable-next-line no-unused-vars
+  handleResetSection: (section: keyof FilterParameter) => void;
+  children: React.JSX.Element;
+}) => {
+  const handleCheck = () => {
+    valObj.active
+      ? handleResetSection(keyString)
+      : setFilters((prev) => ({
+          ...prev,
+          [keyString]: { ...prev[keyString], active: !prev[keyString].active },
+        }));
+  };
+  return (
+    <Stack>
+      <Stack flexDirection={'row'} alignItems={'center'} gap={'10px'}>
+        <Checkbox
+          onClickCheck={{ onClick: () => handleCheck() }}
+          isChecked={valObj.active}
+        />
+        <Stack
+          style={{
+            fontWeight: '600',
+            transform: 'translateY(-1px)',
+            opacity: valObj.active ? 1 : 0.4,
+          }}
+        >
+          {`${capitalize(keyString)} ${getUnit(keyString)}`}
+        </Stack>
+      </Stack>
+      <Stack style={{ opacity: valObj.active ? 1 : 0.4 }}>{children}</Stack>
+    </Stack>
+  );
+};
+
+const getUnit = (keyString: keyof FilterParameter) => {
+  switch (keyString) {
+    case 'location':
+      return '(km)';
+    case 'resume_score':
+    case 'interview_score':
+      return '';
+  }
+};
+
+const CandidateFilterOptionBody = ({
+  keyString,
+  valObj,
+  setFilters,
+}: {
+  keyString: keyof FilterParameter;
+  valObj: ValueOf<FilterParameter>;
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
+}) => {
+  switch (keyString) {
+    case 'resume_score':
+    case 'interview_score':
+      return (
+        <CandidateFilterDualSlider
+          keyString={keyString}
+          range={valObj as any}
+          setFilters={setFilters}
+        />
+      );
+    case 'location':
+      return (
+        <CandidateLocationFilter
+          keyString={keyString}
+          value={valObj as any}
+          setFilters={setFilters}
+        />
+      );
+  }
+};
+
+const CandidateFilterDualSlider = ({
+  keyString,
+  range,
+  setFilters,
+}: {
+  keyString: keyof FilterParameter;
+  range: FilterParameter['resume_score'];
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
+}) => {
+  const minRange = 10;
+  const handleRangeChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number,
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    if (newValue[1] - newValue[0] < minRange) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - minRange);
+        setFilters((prev) => ({
+          ...prev,
+          [keyString]: {
+            min: clamped,
+            max: clamped + minRange,
+            active: true,
+          },
+        }));
+      } else {
+        const clamped = Math.max(newValue[1], minRange);
+        setFilters((prev) => ({
+          ...prev,
+          [keyString]: {
+            min: clamped - minRange,
+            max: clamped,
+            active: true,
+          },
+        }));
+      }
+    } else {
+      setFilters((prev) => ({
+        ...prev,
+        [keyString]: {
+          min: newValue[0],
+          max: newValue[1],
+          active: true,
+        },
+      }));
     }
   };
   return (
-    <Select
-      value={parameter}
+    <Slider
+      className='reverse-slider-job-applications'
+      value={[range.min, range.max]}
+      onChange={handleRangeChange}
+      valueLabelDisplay='on'
+      disableSwap
       sx={{
-        '.MuiSelect-select': { padding: '4px 0 4px 12px', fontSize: '14px' },
+        color: '#1F73B7',
+        '& .MuiSlider-valueLabelOpen': {
+          backgroundColor: 'transparent !important',
+        },
+        '& .MuiSlider-valueLabelLabel': {
+          color: 'black !important',
+        },
       }}
-      onChange={(e) =>
-        handleModify(getParams(e.target.value as FilterParameter['parameter']))
-      }
-    >
-      {CANDIDATE_FILTERS.parameters.reduce((acc, curr, i) => {
-        if (
-          !(
-            curr === 'interview_score' && section === JobApplicationSections.NEW
-          )
-        )
-          acc.push(
-            <MenuItem key={i} value={curr} className={'FILTERBODY-Include'}>
-              {capitalize(curr)}
-            </MenuItem>,
-          );
-        return acc;
-      }, [])}
-    </Select>
-  );
-};
-const CandidateFilterSecondaryDropDown = ({
-  condition,
-  handleModify,
-}: {
-  condition: FilterParameter['condition'];
-  // eslint-disable-next-line no-unused-vars
-  handleModify: (newCondition: FilterParameter['condition']) => void;
-}) => {
-  const getSupportText = (o) => {
-    switch (o) {
-      case '=':
-        return 'Equals';
-      case '<>':
-        return 'Not equals';
-      case '<':
-        return 'Less than';
-      case '<=':
-        return 'Less than or equal';
-      case '>':
-        return 'Greater than';
-      case '>=':
-        return 'Greater than or equal';
-      default:
-        return capitalize(o);
-    }
-  };
-  return (
-    <Select
-      value={condition}
-      sx={{
-        '.MuiSelect-select': { padding: '4px 0 4px 12px', fontSize: '14px' },
-      }}
-      onChange={(e) =>
-        handleModify(e.target.value as FilterParameter['condition'])
-      }
-    >
-      {CANDIDATE_FILTERS.conditions.map((o, i) => (
-        <MenuItem key={i} value={o} className={'FILTERBODY-Include'}>
-          {getSupportText(o)}
-        </MenuItem>
-      ))}
-    </Select>
-  );
-};
-const CandidateFilterEntry = ({
-  value,
-  type,
-  handleModify,
-}: {
-  value: number | string;
-  type: FilterParameter['type'];
-  // eslint-disable-next-line no-unused-vars
-  handleModify: (count: FilterParameter['value']) => void;
-}) => {
-  return (
-    <UITextField
-      defaultValue={value}
-      type={type}
-      onChange={(e) =>
-        handleModify(
-          validateCandidateFilterEntry(
-            e.target.value,
-          ) as unknown as FilterParameter['value'],
-        )
-      }
     />
   );
 };
-const validateCandidateFilterEntry = (e) => {
-  if (e === '') return null;
-  return e;
+
+const CandidateLocationFilter = ({
+  keyString,
+  value,
+  setFilters,
+}: {
+  keyString: keyof FilterParameter;
+  value: FilterParameter['location'];
+  setFilters: Dispatch<SetStateAction<FilterParameter>>;
+}) => {
+  const handleOnFocus = () => {
+    setFilters((prev) => ({
+      ...prev,
+      [keyString]: { ...prev[keyString], active: true },
+    }));
+  };
+  const handleChange = (e: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      [keyString]: {
+        ...prev[keyString],
+        name: e?.target?.value || null,
+        active: true,
+      },
+    }));
+  };
+  const handleSliderChange = (event: Event) => {
+    setFilters((prev) => ({
+      ...prev,
+      [keyString]: {
+        ...prev[keyString],
+        value: (event.target as any).value,
+        active: true,
+      },
+    }));
+  };
+  return (
+    <Stack gap={'15px'}>
+      <UITextField
+        value={value.name || ''}
+        placeholder='Location'
+        onFocus={() => handleOnFocus()}
+        onChange={(e) => handleChange(e)}
+      />
+      <Stack style={{ fontWeight: 400, fontSize: '14px' }}>
+        {`Consider also candidates within the mentioned radius (in km)`}
+      </Stack>
+      <Slider
+        className='reverse-slider-job-applications'
+        value={value.value}
+        onChange={handleSliderChange}
+        valueLabelDisplay='on'
+        max={1000}
+        min={50}
+        step={50}
+        sx={{
+          color: '#1F73B7',
+          '& .MuiSlider-valueLabelOpen': {
+            backgroundColor: 'transparent !important',
+          },
+          '& .MuiSlider-valueLabelLabel': {
+            color: 'black !important',
+          },
+        }}
+      />
+    </Stack>
+  );
 };
 
 export default FilterJobApplications;
