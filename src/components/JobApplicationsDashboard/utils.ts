@@ -22,8 +22,8 @@ export const formatTimeStamp = (timeStamp: string) => {
     creationHour % 12 === 0
       ? 12
       : creationHour % 12 < 10
-        ? `0${creationHour % 12}`
-        : creationHour % 12;
+      ? `0${creationHour % 12}`
+      : creationHour % 12;
   const creationMinutes =
     date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
   const creationTime = `${finalHour}:${creationMinutes} ${
@@ -38,26 +38,28 @@ interface NumberFilterParameter {
   condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
   value: number;
 }
-interface StringFilterParameter {
-  type: 'string';
-  parameter: 'location';
-  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
-  value: string;
-}
-export type FilterParameter = NumberFilterParameter | StringFilterParameter;
+export type FilterParameter = NumberFilterParameter;
 
 export const CANDIDATE_FILTERS: {
   parameters: FilterParameter['parameter'][];
   conditions: FilterParameter['condition'][];
 } = {
-  parameters: ['resume_score', 'interview_score', 'location'],
+  parameters: ['resume_score', 'interview_score'],
   conditions: ['=', '<>', '>', '<', '>=', '<='],
+};
+
+export const NEW_CANDIDATE_FILTERS: {
+  parameters: FilterParameter['parameter'][];
+  conditions: FilterParameter['condition'][];
+} = {
+  parameters: ['resume_score', 'interview_score'],
+  conditions: ['>=', '<='],
 };
 
 export const CANDIDATE_SORT: SortParameter['parameter'][] = [
   'resume_score',
   'interview_score',
-  'first_name',
+  'full_name',
   'email',
   'created_at',
 ];
@@ -66,7 +68,7 @@ export type SortParameter = {
   parameter:
     | 'resume_score'
     | 'interview_score'
-    | 'first_name'
+    | 'full_name'
     | 'email'
     | 'created_at';
   ascending: boolean;

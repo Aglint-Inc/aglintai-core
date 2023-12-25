@@ -336,8 +336,6 @@ const CandidateFilterPrimaryDropDown = ({
         return { parameter, type: 'number' };
       case 'interview_score':
         return { parameter, type: 'number' };
-      case 'location':
-        return { parameter, type: 'string' };
     }
   };
   return (
@@ -423,7 +421,7 @@ const CandidateFilterEntry = ({
   return (
     <UITextField
       defaultValue={value}
-      type={getTypeCandidateFilterEntry(type)}
+      type={type}
       onChange={(e) =>
         handleModify(
           validateCandidateFilterEntry(
@@ -437,14 +435,6 @@ const CandidateFilterEntry = ({
 const validateCandidateFilterEntry = (e) => {
   if (e === '') return null;
   return e;
-};
-const getTypeCandidateFilterEntry = (type: FilterParameter['type']) => {
-  switch (type) {
-    case 'string':
-      return 'text';
-    case 'number':
-      return 'number';
-  }
 };
 
 export default FilterJobApplications;
