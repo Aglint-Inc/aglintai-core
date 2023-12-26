@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Collapse, Dialog, Drawer, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';

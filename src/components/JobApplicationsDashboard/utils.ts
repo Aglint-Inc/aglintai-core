@@ -13,62 +13,61 @@ export const capitalize = (str: string) => {
 };
 
 export const formatTimeStamp = (timeStamp: string) => {
-  const date = new Date(timeStamp);
-  const creationDate = `${date.getDate()} ${date.toLocaleString('default', {
-    month: 'short',
-  })} ${date.getFullYear()}`;
-  const creationHour = date.getHours();
-  const finalHour =
-    creationHour % 12 === 0
-      ? 12
-      : creationHour % 12 < 10
+  if (timeStamp) {
+    const date = new Date(timeStamp);
+    const creationDate = `${date.getDate()} ${date.toLocaleString('default', {
+      month: 'short',
+    })} ${date.getFullYear()}`;
+    const creationHour = date.getHours();
+    const finalHour =
+      creationHour % 12 === 0
+        ? 12
+        : creationHour % 12 < 10
         ? `0${creationHour % 12}`
         : creationHour % 12;
-  const creationMinutes =
-    date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-  const creationTime = `${finalHour}:${creationMinutes} ${
-    creationHour < 12 ? 'AM' : 'PM'
-  }`;
-  return `${creationDate}, ${creationTime}`;
+    const creationMinutes =
+      date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+    const creationTime = `${finalHour}:${creationMinutes} ${
+      creationHour < 12 ? 'AM' : 'PM'
+    }`;
+    return `${creationDate}, ${creationTime}`;
+  }
+  return '---';
 };
 
-interface NumberFilterParameter {
-  type: 'number';
-  parameter: 'resume_score' | 'interview_score';
-  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
-  value: number;
-}
-interface StringFilterParameter {
-  type: 'string';
-  parameter: 'location';
-  condition: '=' | '<>' | '<' | '<=' | '>' | '>=';
-  value: string;
-}
-export type FilterParameter = NumberFilterParameter | StringFilterParameter;
-
-export const CANDIDATE_FILTERS: {
-  parameters: FilterParameter['parameter'][];
-  conditions: FilterParameter['condition'][];
-} = {
-  parameters: ['resume_score', 'interview_score', 'location'],
-  conditions: ['=', '<>', '>', '<', '>=', '<='],
+export type FilterParameter = {
+  resume_score?: {
+    active: boolean;
+    min: number;
+    max: number;
+  };
+  interview_score?: {
+    active: boolean;
+    min: number;
+    max: number;
+  };
+  location?: {
+    active: boolean;
+    name: string;
+    value: number;
+  };
 };
 
 export const CANDIDATE_SORT: SortParameter['parameter'][] = [
   'resume_score',
   'interview_score',
-  'first_name',
+  'full_name',
   'email',
-  'created_at',
+  'applied_at',
 ];
 
 export type SortParameter = {
   parameter:
     | 'resume_score'
     | 'interview_score'
-    | 'first_name'
+    | 'full_name'
     | 'email'
-    | 'created_at';
+    | 'applied_at';
   ascending: boolean;
 };
 

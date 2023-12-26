@@ -150,28 +150,3 @@
 .cl-filters-content.sort {
   width: 200px;
 }
-
-.cl-filter-reset {
-  position: relative;
-  z-index: 101;
-
-  display: flex;
-  padding: 4px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
-}
-
-.text-underline {
-  transition: all 250ms ease;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-underline:hover {
-  opacity: 0.7;
-}

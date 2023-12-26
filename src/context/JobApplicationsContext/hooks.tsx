@@ -24,7 +24,7 @@ import {
   deleteJobApplicationDbAction,
   getRange,
   getUpdatedJobStatus,
-  updateAllJobStatusDbAction,
+  // updateAllJobStatusDbAction,
   updateJobApplicationDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
@@ -191,9 +191,27 @@ const useProviderJobApplicationActions = (
   const [openManualImportCandidates, setOpenManualImportCandidates] =
     useState(false);
 
+  const defaultFilters = {
+    interview_score: {
+      max: 100,
+      min: 0,
+      active: false,
+    },
+    resume_score: {
+      max: 100,
+      min: 0,
+      active: false,
+    },
+    location: {
+      name: null,
+      value: 50,
+      active: false,
+    },
+  };
+
   const initialParameters: Parameters = {
     sort: { parameter: 'resume_score', ascending: false },
-    filter: [],
+    filter: { ...defaultFilters },
     search: null,
   };
   const [searchParameters, setSearchParameters] = useState({
@@ -241,12 +259,15 @@ const useProviderJobApplicationActions = (
   //PRIMARY
   const handleJobApplicationRead = async (
     request: ReadJobApplicationApi['request'],
+    signal?: AbortSignal,
   ) => {
     if (recruiter) {
       const { data: axiosData } = await axios({
         method: 'post',
         url: '/api/JobApplicationsApi/read',
         data: request,
+        timeout: 60000,
+        signal: signal,
       });
       const { data, error, count }: ReadJobApplicationApi['response'] =
         axiosData;
@@ -392,27 +413,28 @@ const useProviderJobApplicationActions = (
       destination: JobApplicationSections;
     },
     applicationIdSet?: Set<string>,
+    // eslint-disable-next-line no-unused-vars
     updateAll: boolean = false,
   ) => {
-    if (updateAll) {
-      const { data, error } = await updateAllJobStatusDbAction(
-        job.id,
-        sections,
-        searchParameters.search,
-        searchParameters.filter,
-      );
-      if (data) {
-        await handleJobApplicationRefresh();
-        return true;
-      } else {
-        handleJobApplicationError(error);
-        return false;
-      }
-    } else {
-      return await handleJobApplicationBulkUpdate(
-        getUpdatedJobStatus(applicationIdSet, applications, sections),
-      );
-    }
+    // if (updateAll) {
+    //   const { data, error } = await updateAllJobStatusDbAction(
+    //     job.id,
+    //     sections,
+    //     searchParameters.search,
+    //     searchParameters.filter,
+    //   );
+    //   if (data) {
+    //     await handleJobApplicationRefresh();
+    //     return true;
+    //   } else {
+    //     handleJobApplicationError(error);
+    //     return false;
+    //   }
+    // } else {
+    return await handleJobApplicationBulkUpdate(
+      getUpdatedJobStatus(applicationIdSet, applications, sections),
+    );
+    //}
   };
 
   //TERTIARY
@@ -421,13 +443,19 @@ const useProviderJobApplicationActions = (
   };
 
   //SECONDARY
-  const handleJobApplicationFilter = async (parameters: Parameters) => {
+  const handleJobApplicationFilter = async (
+    parameters: Parameters,
+    signal?: AbortSignal,
+  ) => {
     setApplicationDisable(true);
-    const { confirmation, count } = await handleJobApplicationRead({
-      job_id: jobId,
-      ranges: ranges,
-      ...parameters,
-    });
+    const { confirmation, count } = await handleJobApplicationRead(
+      {
+        job_id: jobId,
+        ranges: ranges,
+        ...parameters,
+      },
+      signal,
+    );
     setApplicationDisable(false);
     if (confirmation) {
       setSearchParameters({ ...parameters });
@@ -463,6 +491,7 @@ const useProviderJobApplicationActions = (
     applicationDisable,
     setApplicationDisable,
     paginationLimit,
+    defaultFilters,
     job,
     atsSync,
     updateTick: updateTick.current,

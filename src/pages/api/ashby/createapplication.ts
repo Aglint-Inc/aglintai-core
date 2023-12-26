@@ -56,7 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const { data: dataCand, error: errorCand } = await supabase
             .from('candidates')
             .select()
-            .eq('email', application.candidate.primaryEmailAddress.value);
+            .eq('email', application.candidate.primaryEmailAddress.value)
+            .eq('recruiter_id', recruiter_id);
 
           if (!errorCand && dataCand?.length > 0) {
             const res = await uploadResume(

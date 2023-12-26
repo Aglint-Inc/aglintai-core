@@ -50,15 +50,16 @@ export interface JobApplication extends NewJobApplications {
 }
 
 export type Parameters = {
-  sort?: SortParameter;
-  filter?: FilterParameter[];
-  search?: string;
+  sort: SortParameter;
+  filter: FilterParameter;
+  search: string;
 };
 
 export type JobApplicationContext = {
   applications: JobApplicationsData;
   paginationLimit: number;
   applicationDisable: boolean;
+  defaultFilters: FilterParameter;
   setApplicationDisable: Dispatch<SetStateAction<boolean>>;
   job: JobTypeDashboard;
   updateTick: boolean;
@@ -95,7 +96,10 @@ export type JobApplicationContext = {
     applicationStatus: JobApplicationSections,
   ) => Promise<boolean>;
   handleJobApplicationError: (error: any) => void;
-  handleJobApplicationFilter: (parameters: Parameters) => Promise<{
+  handleJobApplicationFilter: (
+    parameters: Parameters,
+    signal?: AbortSignal,
+  ) => Promise<{
     confirmation: boolean;
     count: {
       new?: number;

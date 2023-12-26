@@ -97,7 +97,7 @@ export default async function handler(req, res) {
           ),
         ];
 
-        const checkCandidates = await processEmailsInBatches(emails);
+        const checkCandidates = await processEmailsInBatches(emails, rec[0].id);
 
         //new candidates insert flow
         const uniqueRefCandidates = refCandidates.filter((cand) => {

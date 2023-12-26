@@ -35,7 +35,10 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         ),
       ];
 
-      const checkCandidates = await processEmailsInBatches(emails);
+      const checkCandidates = await processEmailsInBatches(
+        emails,
+        post.recruiter_id,
+      );
 
       //new candidates insert flow
       const uniqueRefCandidates = refCandidates.filter((cand) => {
