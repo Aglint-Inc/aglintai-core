@@ -68,7 +68,10 @@ export const createJobApplications = async (
         ),
       ];
 
-      const checkCandidates = await processEmailsInBatches(emails);
+      const checkCandidates = await processEmailsInBatches(
+        emails,
+        post.recruiter_id,
+      );
 
       //new candidates insert flow
       const uniqueRefCandidates = refCandidates.filter((cand) => {
@@ -297,11 +300,13 @@ const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requiremen
 
 const processBatch = async (
   emailBatch: string[],
+  recruiter_id: string,
 ): Promise<CandidateType[] | undefined> => {
   const { data: checkCandidates, error: errorCheck } = await supabase
     .from('candidates')
     .select()
-    .in('email', emailBatch);
+    .in('email', emailBatch)
+    .eq('recruiter_id', recruiter_id);
 
   if (!errorCheck) {
     return checkCandidates;
@@ -312,11 +317,12 @@ const processBatch = async (
 
 export const processEmailsInBatches = async (
   emails: string[],
+  recruiter_id: string,
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
-    const cand = await processBatch(emailBatch);
+    const cand = await processBatch(emailBatch, recruiter_id);
     allCandidates = [...allCandidates, ...cand];
   }
   return allCandidates;
