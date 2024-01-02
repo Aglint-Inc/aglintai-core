@@ -172,6 +172,7 @@ const createJobApplication = async (
       job_id: job_id,
       resume: resume_url,
       applied_at: created_at,
+      is_resume_fetching: false,
     })
     .select();
 };
