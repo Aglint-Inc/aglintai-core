@@ -80,35 +80,41 @@ export default function Loading() {
           if (data.length == 0) {
             (async () => {
               await refershAccessToken();
-              const { data: dataRecruiter, error: errorRecruiter } =
-                await supabase
-                  .from('recruiter')
-                  .insert({
-                    email: userDetails.user.email,
-                    name:
-                      userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                        '.com',
-                        '',
-                      ) || '',
-                    recruiter_type: storedValue,
-                  })
-                  .select();
-              if (!errorRecruiter) {
-                const { error: erroruser } = await supabase
-                  .from('recruiter_user')
-                  .insert({
-                    user_id: userDetails.user.id,
-                    recruiter_id: dataRecruiter[0].id,
-                    email: userDetails.user.user_metadata.email,
-                    first_name: splitFullName(
-                      userDetails.user.user_metadata.full_name,
-                    ).firstName,
-                    last_name: splitFullName(
-                      userDetails.user.user_metadata.full_name,
-                    ).lastName,
-                  })
-                  .select();
-                if (!erroruser) {
+
+              const { error: erroruser } = await supabase
+                .from('recruiter_user')
+                .insert({
+                  user_id: userDetails.user.id,
+                  email: userDetails.user.user_metadata.email,
+                  first_name: splitFullName(
+                    userDetails.user.user_metadata.full_name,
+                  ).firstName,
+                  last_name: splitFullName(
+                    userDetails.user.user_metadata.full_name,
+                  ).lastName,
+                  role: 'admin',
+                })
+                .select();
+
+              if (!erroruser) {
+                const { data: dataRecruiter, error: errorRecruiter } =
+                  await supabase
+                    .from('recruiter')
+                    .insert({
+                      email: userDetails.user.email,
+                      name:
+                        userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                          '.com',
+                          '',
+                        ) || '',
+                      recruiter_type: storedValue,
+                    })
+                    .select();
+                if (!errorRecruiter) {
+                  await supabase
+                    .from('recruiter_user')
+                    .update({ recruiter_id: dataRecruiter[0].id })
+                    .eq('user_id', userDetails.user.id);
                   router.push(
                     `${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`,
                   );

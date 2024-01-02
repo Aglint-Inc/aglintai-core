@@ -15,11 +15,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const syncToken = req.body.synctoken;
     const apiKey = req.body.apikey;
+    const recruiter_id = req.body.recruiter_id;
     if (!syncToken) {
       return res.status(200).send('no sync token');
     }
     if (!apiKey) {
       return res.status(200).send('no api key');
+    }
+    if (!recruiter_id) {
+      return res.status(200).send('no recruiter id');
     }
 
     const fetchedApplications = await fetchAllCandidates(apiKey, syncToken);
@@ -33,19 +37,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { data, error } = await supabase
           .from('application_reference')
           .select()
-          .eq('ats_json->>id', application.id);
+          .eq('ats_json->>id', application.id)
+          .eq('recruiter_id', recruiter_id);
         if (!error) {
           if (data && data.length > 0) {
             await supabase
               .from('application_reference')
               .update({ ats_json: application })
-              .eq('ats_json->>id', application.id);
-            console.log('application already existed', application.id);
+              .eq('ats_json->>id', application.id)
+              .eq('recruiter_id', recruiter_id);
           } else {
             await supabase
               .from('application_reference')
-              .insert({ ats_json: application });
-            console.log('application new', application.id);
+              .insert({ ats_json: application, recruiter_id: recruiter_id });
           }
         }
       }),

@@ -27,6 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               axios.post(`${url1}`, {
                 synctoken: rec.ashby_sync_token,
                 apikey: rec.ashby_key,
+                recruiter_id: rec.id,
               });
               console.log('Request successful for application:', rec.name);
               return res.status(200).send('success');
