@@ -18,4 +18,5 @@ declare function AllCandidateListItem(props: {
   onclickCandidate?: Types.Devlink.RuntimeProps;
   experience?: React.ReactNode;
   location?: React.ReactNode;
+  company?: React.ReactNode;
 }): React.JSX.Element;

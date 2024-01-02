@@ -98,6 +98,9 @@ const ApplicationCard = ({
       experience={getExperienceCount(
         (application.json_resume as any)?.basics?.totalExperience,
       )}
+      company={
+        (application.json_resume as any)?.basics?.currentCompany || '---'
+      }
     />
   ) : (
     <TopCandidateListItem

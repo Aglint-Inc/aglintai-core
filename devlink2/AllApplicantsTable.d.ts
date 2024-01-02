@@ -7,4 +7,10 @@ declare function AllApplicantsTable(props: {
   isAllChecked?: Types.Visibility.VisibilityConditions;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   slotCandidatesList?: Types.Devlink.Slot;
+  topMatchCount?: React.ReactNode;
+  goodMatchCount?: React.ReactNode;
+  averageMatchCount?: React.ReactNode;
+  belowMatchCount?: React.ReactNode;
+  noMatchCount?: React.ReactNode;
+  notFoundCount?: React.ReactNode;
 }): React.JSX.Element;
