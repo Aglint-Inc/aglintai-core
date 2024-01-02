@@ -12,6 +12,8 @@ function ScreeningSettings() {
 
   return (
     <NewJobStep4
+      isWorkflowContentVisible={jobForm.formFields.assessment}
+      isWorkflowInfoVisible={!jobForm.formFields.assessment}
       isAssessmentScoringVisible={jobForm.formFields.assessment}
       isEmailScheduleVisible={jobForm.formFields.assessment}
       slotApplicationWorkflow={<WorkFlow flow='screening' />}

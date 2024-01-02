@@ -19,6 +19,8 @@ export function NewJobStep4({
   isJobAdd = true,
   isAssessmentScoringVisible = false,
   isEmailScheduleVisible = false,
+  isWorkflowInfoVisible = false,
+  isWorkflowContentVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -27,90 +29,62 @@ export function NewJobStep4({
       className={_utils.cx(_styles, "job-sidebar-main-block", "cj-step-5")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "cj-main-wrapper")}
-        tag="div"
-      >
-        {isJobAdd ? (
+      {isWorkflowInfoVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "enable-assessment-wrap")}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-507", "remove-bottom")}
+            className={_utils.cx(_styles, "enable-header")}
             tag="div"
           >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.5%2012C2.46%2012%200%209.54%200%206.5C0%203.46%202.46%201%205.5%201C8.54%201%2011%203.46%2011%206.5C11%209.54%208.54%2012%205.5%2012ZM5%209.5C5%209.78%205.22%2010%205.5%2010C5.78%2010%206%209.78%206%209.5V6.5C6%206.22%205.78%206%205.5%206C5.22%206%205%206.22%205%206.5V9.5ZM5.5%203C4.95%203%204.5%203.45%204.5%204C4.5%204.55%204.95%205%205.5%205C6.05%205%206.5%204.55%206.5%204C6.5%203.45%206.05%203%205.5%203Z%22%20fill%3D%22%23F79A3E%22%20style%3D%22fill%3A%23F79A3E%3Bfill%3Acolor(display-p3%200.9686%200.6039%200.2431)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
             <_Builtin.Block
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Workflows"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600")}
-              tag="div"
-            >
-              {
-                "Automate your hiring process by setting up conditions in workflow."
-              }
+              {"Workflow is configurable only when assessment is enable"}
             </_Builtin.Block>
           </_Builtin.Block>
-        ) : null}
-        <_Builtin.Block
-          className={_utils.cx(_styles, "_wf-screening-block")}
-          tag="div"
-        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "_wf-top-wrapper")}
+            className={_utils.cx(_styles, "color-grey-600", "mt-12")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "_wf-header-block")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "color-black")}
-                tag="div"
-              >
-                {"Application Scoring Workflow"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "toggle-btn-block")}
-                data-w-id="930a88ec-6ffc-69a2-ca2e-f1d896876ae6"
-                tag="div"
-              />
-            </_Builtin.Block>
-            <_Builtin.List
-              className={_utils.cx(_styles, "workflow-description-list")}
-              tag="ul"
-              unstyled={false}
-            >
-              <_Builtin.ListItem>
-                {
-                  "Guide your recruitment decisions with our application scoring workflow."
-                }
-              </_Builtin.ListItem>
-              <_Builtin.ListItem>
-                {
-                  "Use scoring thresholds to seamlessly categorize new applicants based on their application scores."
-                }
-              </_Builtin.ListItem>
-              <_Builtin.ListItem>
-                {
-                  " Set specific limits to guide their progression through the recruitment process, or choose to handle the process manually."
-                }
-              </_Builtin.ListItem>
-            </_Builtin.List>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "_wf-radio-form-wrapper")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "_wf-radio-form-block")}
-              tag="div"
-            >
-              {slotApplicationWorkflow}
-            </_Builtin.Block>
+            {
+              "The ability to customize workflows is contingent upon the activation of the assessment feature. This integration likely aims to promote a more responsive and adaptive system, ensuring that any modifications to the workflow are informed by relevant assessment data."
+            }
           </_Builtin.Block>
         </_Builtin.Block>
-        {isAssessmentScoringVisible ? (
+      ) : null}
+      {isWorkflowContentVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cj-main-wrapper")}
+          tag="div"
+        >
+          {isJobAdd ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-507", "remove-bottom")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Workflows"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "color-grey-600")}
+                tag="div"
+              >
+                {
+                  "Automate your hiring process by setting up conditions in workflow."
+                }
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "_wf-screening-block")}
             tag="div"
@@ -127,11 +101,11 @@ export function NewJobStep4({
                   className={_utils.cx(_styles, "fw-semibold", "color-black")}
                   tag="div"
                 >
-                  {"Assessment Scoring Workflow"}
+                  {"Application Scoring Workflow"}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "toggle-btn-block")}
-                  data-w-id="a0b33eea-adc8-53c9-b181-aeaf4cea03d4"
+                  data-w-id="930a88ec-6ffc-69a2-ca2e-f1d896876ae6"
                   tag="div"
                 />
               </_Builtin.Block>
@@ -142,17 +116,17 @@ export function NewJobStep4({
               >
                 <_Builtin.ListItem>
                   {
-                    "Guide your recruitment decisions with our assessment scoring workflow."
+                    "Guide your recruitment decisions with our application scoring workflow."
                   }
                 </_Builtin.ListItem>
                 <_Builtin.ListItem>
                   {
-                    "Use scoring thresholds to seamlessly categorize candidates based on their assessment scores."
+                    "Use scoring thresholds to seamlessly categorize new applicants based on their application scores."
                   }
                 </_Builtin.ListItem>
                 <_Builtin.ListItem>
                   {
-                    "Set specific limits to guide their progression through the assessment stage, or choose to handle the process manually."
+                    " Set specific limits to guide their progression through the recruitment process, or choose to handle the process manually."
                   }
                 </_Builtin.ListItem>
               </_Builtin.List>
@@ -165,12 +139,113 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "_wf-radio-form-block")}
                 tag="div"
               >
-                {slotInterviewWorkflow}
+                {slotApplicationWorkflow}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        ) : null}
-        {isEmailScheduleVisible ? (
+          {isAssessmentScoringVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "_wf-screening-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "_wf-top-wrapper")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "_wf-header-block")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold", "color-black")}
+                    tag="div"
+                  >
+                    {"Assessment Scoring Workflow"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "toggle-btn-block")}
+                    data-w-id="a0b33eea-adc8-53c9-b181-aeaf4cea03d4"
+                    tag="div"
+                  />
+                </_Builtin.Block>
+                <_Builtin.List
+                  className={_utils.cx(_styles, "workflow-description-list")}
+                  tag="ul"
+                  unstyled={false}
+                >
+                  <_Builtin.ListItem>
+                    {
+                      "Guide your recruitment decisions with our assessment scoring workflow."
+                    }
+                  </_Builtin.ListItem>
+                  <_Builtin.ListItem>
+                    {
+                      "Use scoring thresholds to seamlessly categorize candidates based on their assessment scores."
+                    }
+                  </_Builtin.ListItem>
+                  <_Builtin.ListItem>
+                    {
+                      "Set specific limits to guide their progression through the assessment stage, or choose to handle the process manually."
+                    }
+                  </_Builtin.ListItem>
+                </_Builtin.List>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "_wf-radio-form-wrapper")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "_wf-radio-form-block")}
+                  tag="div"
+                >
+                  {slotInterviewWorkflow}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+          {isEmailScheduleVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "_wf-screening-block")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "_wf-top-wrapper")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "_wf-header-block")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold", "color-black")}
+                    tag="div"
+                  >
+                    {"Assessment Email Schedule"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "toggle-btn-block")}
+                    tag="div"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">
+                  {
+                    "Configure when to dispatch assessment emails to candidates :"
+                  }
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "_wf-radio-form-wrapper")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "_wf-radio-form-block")}
+                  tag="div"
+                >
+                  {slotInterviewEmail}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "_wf-screening-block")}
             tag="div"
@@ -187,7 +262,7 @@ export function NewJobStep4({
                   className={_utils.cx(_styles, "fw-semibold", "color-black")}
                   tag="div"
                 >
-                  {"Assessment Email Schedule"}
+                  {"Disqualified Email Schedule"}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "toggle-btn-block")}
@@ -195,7 +270,9 @@ export function NewJobStep4({
                 />
               </_Builtin.Block>
               <_Builtin.Block tag="div">
-                {"Configure when to dispatch assessment emails to candidates :"}
+                {
+                  "Configure when to dispatch disqualified emails to candidates:"
+                }
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -206,125 +283,108 @@ export function NewJobStep4({
                 className={_utils.cx(_styles, "_wf-radio-form-block")}
                 tag="div"
               >
-                {slotInterviewEmail}
+                {slotDisqualifyEmail}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        ) : null}
-        <_Builtin.Block
-          className={_utils.cx(_styles, "_wf-screening-block")}
-          tag="div"
-        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "_wf-top-wrapper")}
+            className={_utils.cx(_styles, "div-block-278", "hide")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "_wf-header-block")}
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "color-black")}
-                tag="div"
-              >
-                {"Disqualified Email Schedule"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "toggle-btn-block")}
-                tag="div"
-              />
+              {"Additional settings"}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              {"Configure when to dispatch disqualified emails to candidates:"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "_wf-radio-form-wrapper")}
-            tag="div"
-          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "_wf-radio-form-block")}
-              tag="div"
-            >
-              {slotDisqualifyEmail}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-278", "hide")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-grey-600")}
-            tag="div"
-          >
-            {"Additional settings"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "toggle-dropdown")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "toggle-dropdown-toggle",
-                "screening"
-              )}
+              className={_utils.cx(_styles, "toggle-dropdown")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-277")}
+                className={_utils.cx(
+                  _styles,
+                  "toggle-dropdown-toggle",
+                  "screening"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-280")}
+                  className={_utils.cx(_styles, "div-block-277")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold", "color-black")}
+                    className={_utils.cx(_styles, "div-block-280")}
                     tag="div"
                   >
-                    {"Allow candidate to see AI feedback"}
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "fw-semibold",
+                        "color-black"
+                      )}
+                      tag="div"
+                    >
+                      {"Allow candidate to see AI feedback"}
+                    </_Builtin.Block>
                   </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "toggle-btn-block")}
+                    data-w-id="fc10a2b6-404d-f88a-976a-2a9bbe39df1a"
+                    tag="div"
+                  />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "toggle-btn-block")}
-                  data-w-id="fc10a2b6-404d-f88a-976a-2a9bbe39df1a"
+                  className={_utils.cx(_styles, "toggle-dropdown-description")}
                   tag="div"
-                />
+                >
+                  {
+                    "AI will provide feedback to you after finishing the interview.The same feeback will be visible to the candidate if ther switch is on."
+                  }
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "toggle-dropdown-description")}
+                className={_utils.cx(
+                  _styles,
+                  "toggle-dropdown-content-wrapper"
+                )}
                 tag="div"
-              >
-                {
-                  "AI will provide feedback to you after finishing the interview.The same feeback will be visible to the candidate if ther switch is on."
-                }
-              </_Builtin.Block>
+              />
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "toggle-dropdown-content-wrapper")}
-              tag="div"
-            />
           </_Builtin.Block>
         </_Builtin.Block>
-        {isJobAdd ? (
+      ) : null}
+      {isJobAdd ? (
+        <_Builtin.Block
+          className={_utils.cx(
+            _styles,
+            "job-details-button-wrappers",
+            "remove-bottom",
+            "mt-30"
+          )}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "job-details-button-wrappers",
-              "remove-bottom"
-            )}
+            className={_utils.cx(_styles, "proceed-to-apply")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "proceed-to-apply")}
+              className={_utils.cx(_styles, "blue-process-button")}
               tag="div"
+              {...onClickProcced}
             >
+              <_Builtin.Block tag="div">
+                {"Proceed to email templates"}
+              </_Builtin.Block>
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+            {isProceedDisable ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "blue-process-button")}
+                className={_utils.cx(_styles, "grey-disable-process-button")}
                 tag="div"
-                {...onClickProcced}
               >
                 <_Builtin.Block tag="div">
                   {"Proceed to email templates"}
@@ -334,24 +394,10 @@ export function NewJobStep4({
                   value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
                 />
               </_Builtin.Block>
-              {isProceedDisable ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "grey-disable-process-button")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div">
-                    {"Proceed to email templates"}
-                  </_Builtin.Block>
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "icons")}
-                    value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
-                </_Builtin.Block>
-              ) : null}
-            </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "pd-100")} tag="div" />
     </_Component>
   );
