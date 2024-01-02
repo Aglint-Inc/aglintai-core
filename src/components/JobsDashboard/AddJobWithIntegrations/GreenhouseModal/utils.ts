@@ -126,6 +126,7 @@ export const createJobApplications = async (
                 candidate_id: matchingCandidate.id,
                 job_id: post.public_job_id,
                 application_id: ref.application_id,
+                is_resume_fetching: true,
               };
             } else {
               return null;
