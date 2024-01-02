@@ -25,7 +25,7 @@ export function LoadingJobsAts({
           className={_utils.cx(_styles, "div-block-532")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Imporing"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Importing"}</_Builtin.Block>
           <_Builtin.Block tag="div">{textJobCount}</_Builtin.Block>
           <_Builtin.Block tag="div">{"from"}</_Builtin.Block>
           <_Builtin.Block tag="div">{textAtsCompany}</_Builtin.Block>

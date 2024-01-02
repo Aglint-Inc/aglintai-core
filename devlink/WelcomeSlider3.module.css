@@ -26,6 +26,7 @@
 .auth-right-block.join-us {
   overflow: visible;
   height: auto;
+  margin-top: 40px;
   padding-top: 40px;
   padding-right: 40px;
   padding-left: 40px;
@@ -138,9 +139,7 @@
   display: flex;
   width: 100%;
   height: auto;
-  margin-top: 80px;
   margin-bottom: 40px;
-  padding-top: 30px;
   padding-right: 40px;
   padding-left: 40px;
   align-items: center;
