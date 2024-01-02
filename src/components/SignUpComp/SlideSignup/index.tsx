@@ -12,11 +12,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';
-import {
-  handleEmail,
-  handlePassword,
-  stepObj,
-} from './utils';
+import { handleEmail, handlePassword, stepObj } from './utils';
 import Icon from '../../Common/Icons/Icon';
 
 const SlideTwoSignUp = () => {
@@ -120,31 +116,33 @@ const SlideTwoSignUp = () => {
       });
       if (!authdata.error) {
         setUserDetails(authdata.data.session);
-        const { data, error } = await supabase
-          .from('recruiter')
+        const { error: erroruser } = await supabase
+          .from('recruiter_user')
           .insert({
+            user_id: authdata.data.user.id,
             email: details.email,
-            recruiter_type: flow,
-            recruiter_active: true,
-          })
-          .select();
-        if (!error) {
-          setRecruiter(data[0] as RecruiterType);
-          const { data: recruiterUser, error: erroruser } = await supabase
-            .from('recruiter_user')
+            first_name: details.first_name,
+            last_name: details.last_name || '',
+            role: 'admin',
+          });
+
+        if (!erroruser) {
+          const { data, error } = await supabase
+            .from('recruiter')
             .insert({
-              user_id: authdata.data.user.id,
-              recruiter_id: data[0].id,
               email: details.email,
-              first_name: details.first_name,
-              last_name: details.last_name || '',
+              recruiter_type: flow,
+              recruiter_active: true,
+              recruiter_user_id: authdata.data.user.id,
             })
             .select();
-          if (!erroruser) {
+
+          if (!error) {
+            setRecruiter(data[0] as RecruiterType);
             await supabase
-              .from('recruiter')
-              .update({ recruiter_user_id: recruiterUser[0].user_id })
-              .eq('id', data[0].id);
+              .from('recruiter_user')
+              .update({ recruiter_id: data[0].id })
+              .eq('user_id', authdata.data.user.id);
             router.push(`?step=${stepObj.detailsOne}`, undefined, {
               shallow: true,
             });
