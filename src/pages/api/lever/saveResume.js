@@ -89,6 +89,7 @@ export default async function handler(req, res) {
                 .from('job_applications')
                 .update({
                   resume: fileLink,
+                  is_resume_fetching: false,
                 })
                 .eq('application_id', payload.application_id);
 

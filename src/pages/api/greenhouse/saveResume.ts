@@ -45,20 +45,20 @@ export default async function handler(req, res) {
               (fileUrl.includes('pdf')
                 ? '.pdf'
                 : fileUrl.includes('doc')
-                ? '.docx'
-                : fileUrl.includes('txt')
-                ? '.txt'
-                : '.pdf')
+                  ? '.docx'
+                  : fileUrl.includes('txt')
+                    ? '.txt'
+                    : '.pdf')
             }`,
             response.data,
             {
               contentType: fileUrl.includes('pdf')
                 ? 'application/pdf'
                 : fileUrl.includes('doc')
-                ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                : fileUrl.includes('txt')
-                ? 'text/plain'
-                : 'application/pdf',
+                  ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  : fileUrl.includes('txt')
+                    ? 'text/plain'
+                    : 'application/pdf',
               cacheControl: '3600',
               upsert: true,
             },
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
           console.log(fileLink);
           const { data: app, error: errorApp } = await supabase
             .from('job_applications')
-            .update({ resume: fileLink })
+            .update({ resume: fileLink, is_resume_fetching: false })
             .eq('application_id', payload.application_id)
             .select(`${selectJobApplicationQuery}`);
 

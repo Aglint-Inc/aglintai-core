@@ -82,6 +82,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
             )[0].id,
             job_id: post.job_id,
             application_id: ref.application_id,
+            is_resume_fetching: true,
           };
         });
 
