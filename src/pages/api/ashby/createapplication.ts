@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       const { data: checkApp, error: checkError } = await supabase
-        .from('cities')
+        .from('job_applications')
         .select('recruiter_id, application_id, candidates(*)')
         .eq('recruiter_id', recruiter_id)
         .eq('countries.email', application.candidate.primaryEmailAddress.value);
