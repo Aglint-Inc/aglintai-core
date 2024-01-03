@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('ats_json->>id', json.id);
 
       let application = json;
-      if (!application.candidate.primaryEmailAddress.value) {
+      if (!application?.candidate?.primaryEmailAddress?.value) {
         return res.status(200).json('no email in ashby application');
       }
 
@@ -103,6 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               if (res) {
                 fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
               }
+              console.log(fileLink, 'resume');
               await createJobApplication(
                 candCreated[0].id,
                 job_id,
@@ -127,7 +128,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).send(error.message);
+    return res.status(400).send(error.message);
   } finally {
     //
   }
