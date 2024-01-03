@@ -26,7 +26,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (json) {
       let application = json;
-
+      if (!application.candidate.primaryEmailAddress.value) {
+        return res.status(200).json('no email in ashby application');
+      }
+      
       const { data: checkApp, error: checkError } = await supabase
         .from('cities')
         .select('recruiter_id, application_id, candidates(*)')
