@@ -244,7 +244,6 @@ function JobForm() {
   return (
     <>
       <CreateNewJob
-      
         slotCreateJob={<>{formSlide}</>}
         onClickApplyForm={{
           onClick: () => {
@@ -359,15 +358,14 @@ function JobForm() {
         slotCloseJob={
           <>
             {jobForm.formType === 'edit' &&
-              jobForm.jobPostStatus === 'draft' &&
-              jobForm.formFields.assessment && (
+              jobForm.jobPostStatus === 'draft' && (
                 <CloseJob
                   onClickCloseJob={{
                     onClick: () => setShowDraftPopup(true),
                   }}
-                  isCloseJob={false}
                   isDeleteJob={true}
                   isTextVisible={false}
+                  isCloseJob={false}
                 />
               )}
 
