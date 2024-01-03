@@ -27,6 +27,7 @@ export function AllCandidateListItem({
   onclickCandidate = {},
   experience = "--",
   location = "--",
+  company = "--",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -189,6 +190,36 @@ export function AllCandidateListItem({
               tag="div"
             >
               {jobTitle}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(
+            _styles,
+            "cv-list-column-wrapper",
+            "items-v-center"
+          )}
+          tag="div"
+        >
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-item-highlight")}
+              tag="div"
+            />
+          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-hover-bg")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column", "job")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-titlecase")}
+              tag="div"
+            >
+              {company}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

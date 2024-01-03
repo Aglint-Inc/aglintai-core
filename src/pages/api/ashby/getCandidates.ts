@@ -1,6 +1,9 @@
+import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
-import { supabase } from '@/src/utils/supabaseClient';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const crypto = require('crypto');
 
 export default function handler(req, res) {
@@ -41,6 +44,8 @@ export default function handler(req, res) {
       .request(options)
       .then(async function (response) {
         if (!response.data.moreDataAvailable) {
+          // eslint-disable-next-line no-console
+          console.log('synctoken', response.data.syncToken);
           await supabase
             .from('recruiter')
             .update({

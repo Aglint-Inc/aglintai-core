@@ -35,7 +35,7 @@ const getResumeScore = (score: number) => {
     };
   else if (score >= 20)
     return {
-      text: 'Below average match',
+      text: 'Poor match',
       bgColor: 'rgba(255, 238, 219, 1)',
       borderColor: 'rgba(255, 212, 161, 0.50)',
     };

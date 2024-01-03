@@ -22,7 +22,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
   console.log('ats_json_id', json.id);
-
+  console.log('recruiter_id', recruiter_id);
+  if (!json) {
+    return res.status(200).json('no json');
+  }
+  if (!recruiter_id) {
+    return res.status(200).json('no recruiter id');
+  }
+  if (!job_id) {
+    return res.status(200).json('no job id');
+  }
+  if (!apiKey) {
+    return res.status(200).json('no api key');
+  }
   try {
     if (json) {
       await supabase
@@ -30,7 +42,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .update({ is_processed: true })
         .eq('recruiter_id', recruiter_id)
         .eq('ats_json->>id', json.id);
+
       let application = json;
+      if (!application?.candidate?.primaryEmailAddress?.value) {
+        console.log('no email in ashby application');
+        return res.status(200).json('no email in ashby application');
+      }
+
+      const { data: checkApp, error: checkError } = await supabase
+        .from('job_applications')
+        .select('recruiter_id, application_id, candidates(*)')
+        .eq('recruiter_id', recruiter_id)
+        .eq('job_id', job_id)
+        .eq('countries.email', application.candidate.primaryEmailAddress.value);
+      if (!checkError && checkApp.length > 0) {
+        console.log('email already exists in job application table');
+
+        return res
+          .status(200)
+          .json('email already exists in job application table');
+      }
+
       let candidate = await getCandidate(
         application.candidate.id,
         base64decryptedApiKey,
@@ -87,6 +119,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               if (res) {
                 fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
               }
+              console.log(fileLink, 'resume');
               await createJobApplication(
                 candCreated[0].id,
                 job_id,
@@ -111,7 +144,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).send(error.message);
+    return res.status(400).send(error.message);
   } finally {
     //
   }
