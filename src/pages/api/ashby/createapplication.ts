@@ -23,7 +23,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
   console.log('ats_json_id', json.id);
   console.log('recruiter_id', recruiter_id);
-
+  if (!json) {
+    return res.status(200).json('no json');
+  }
+  if (!recruiter_id) {
+    return res.status(200).json('no recruiter id');
+  }
+  if (!job_id) {
+    return res.status(200).json('no job id');
+  }
+  if (!apiKey) {
+    return res.status(200).json('no api key');
+  }
   try {
     if (json) {
       await supabase
@@ -34,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       let application = json;
       if (!application?.candidate?.primaryEmailAddress?.value) {
+        console.log('no email in ashby application');
         return res.status(200).json('no email in ashby application');
       }
 
