@@ -41,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .from('job_applications')
         .select('recruiter_id, application_id, candidates(*)')
         .eq('recruiter_id', recruiter_id)
+        .eq('job_id', job_id)
         .eq('countries.email', application.candidate.primaryEmailAddress.value);
       if (!checkError && checkApp.length > 0) {
         return res
