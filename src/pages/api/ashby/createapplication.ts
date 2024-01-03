@@ -56,6 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('job_id', job_id)
         .eq('countries.email', application.candidate.primaryEmailAddress.value);
       if (!checkError && checkApp.length > 0) {
+        console.log('email already exists in job application table');
+
         return res
           .status(200)
           .json('email already exists in job application table');
