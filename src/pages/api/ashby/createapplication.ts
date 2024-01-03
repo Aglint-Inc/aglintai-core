@@ -22,6 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');
   console.log('ats_json_id', json.id);
+  console.log('recruiter_id', recruiter_id);
 
   try {
     if (json) {
