@@ -42,14 +42,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('recruiter_id', recruiter_id)
         .eq('countries.email', application.candidate.primaryEmailAddress.value);
       if (!checkError && checkApp.length > 0) {
-        return res.status(200).json('email already exists');
+        return res
+          .status(200)
+          .json('email already exists in job application table');
       }
-
-      await supabase
-        .from('application_reference')
-        .update({ is_processed: true })
-        .eq('recruiter_id', recruiter_id)
-        .eq('ats_json->>id', json.id);
 
       let candidate = await getCandidate(
         application.candidate.id,
