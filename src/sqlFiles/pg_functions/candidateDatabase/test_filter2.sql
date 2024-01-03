@@ -1,38 +1,30 @@
-DROP FUNCTION IF EXISTS job_application_filter_sort;
+DROP FUNCTION IF EXISTS test_filter2;
 
-CREATE FUNCTION job_application_filter_sort(
-  jb_id uuid,
-  j_status text,
-  min_resume_score numeric=0,
-  max_resume_score numeric=100,
-  min_interview_score numeric=0,
-  max_interview_score numeric=100,
-  sort_column_text text ='resume_score',
-  is_sort_desc boolean=true,
-  text_search_qry text '',
-  from_rec_num numberic,
-  end_rec_num numeric
+CREATE FUNCTION test_filter2(
+  rec_id uuid,
+  location_filter text,
+  name_filter text,
+  job_title_filter text,
+  page_size integer,
+  page_number integer,
+  sort_param text ='first_name',
+  is_name_sort_desc boolean = false,
+  is_location_sort_desc boolean = false,
+  is_job_title_sort_desc boolean = false
 )
 RETURNS TABLE
 (
   application_id uuid,
   created_at text,
-  resume_score numeric,
+  first_name citext,
   last_name citext,
-  feedback jsonb,
-  conversation jsonb[],
-  status text,
-  jd_score jsonb,
-  job_id uuid,
-  interview_score numeric,
-  api_status text,
+  job_title text,
+  email citext,
+  resume_link text,
   json_resume jsonb,
-  resume text,
+  profile_image text,
   candidate_id uuid,
-  emails json,
-  first_name text,
-  last_name text,
-  candidates jsonb,
+  job_id uuid,
   total_results bigint
 ) LANGUAGE plpgsql AS $$ 
 BEGIN
@@ -42,8 +34,9 @@ BEGIN
   -- Return the paginated results along with total_results
   RETURN QUERY 
   WITH filtered_results AS (
-      ja.application_id  as application_id,
-      ja.created_at::text as created_at,
+    SELECT DISTINCT ON (ja.candidate_id)
+      ja.application_id,
+      ja.created_at::text,
       c.first_name,
       c.last_name,
       COALESCE(ja.json_resume->'basics'->>'currentJobTitle', '') as job_title,
@@ -54,20 +47,32 @@ BEGIN
       ja.candidate_id,
       ja.job_id
     FROM
-      job_applications ja      
-      JOIN candidates c ON ja.candidate_id = c.id     
+      job_applications ja
+      JOIN candidates c ON ja.candidate_id = c.id
     WHERE
-      ja.job_id=jb_id
+      c.recruiter_id = rec_id
       AND
-      ja.status=j_status
-      and
-      ja.resume_score>=min_resume_score and ja.resume_score <= max_resume_score
-      and 
-      ja.interview_score >= min_interview_score and ja.interview_score <= max_interview_score
-      and
-      case
-      when length(text_search_qry)>0 then to_tsvector(lower(concat(c.first_name,' ',c.last_name,' ',c.email))) @@ to_tsquery('english', lower(text_search_qry))
-    
+      ja.json_resume is not null
+      AND
+      ja.json_resume->'basics' is not null
+      AND (
+        CASE
+          WHEN LENGTH(location_filter) > 0 THEN to_tsvector(lower(COALESCE(ja.json_resume->'basics'->>'location', ''))) @@ to_tsquery('english', lower(location_filter))
+          ELSE true 
+        END
+      )
+      AND (
+        CASE
+          WHEN LENGTH(name_filter) > 0 THEN to_tsvector(lower(concat(COALESCE(ja.json_resume->'basics'->>'firstName', ''),' ',COALESCE(ja.json_resume->'basics'->>'lastName', '')))) @@ to_tsquery('english', lower(name_filter))
+          ELSE true 
+        END
+      )
+      AND (
+        CASE
+          WHEN LENGTH(job_title_filter) > 0 THEN to_tsvector(lower(COALESCE(ja.json_resume->'basics'->>'currentJobTitle', ''))) @@ to_tsquery('english', lower(job_title_filter))
+          ELSE true 
+        END
+      )
   )
  SELECT 
     fr.application_id,
