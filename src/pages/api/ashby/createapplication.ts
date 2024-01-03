@@ -25,12 +25,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     if (json) {
+      let application = json;
+
+      const { data: checkApp, error: checkError } = await supabase
+        .from('cities')
+        .select('recruiter_id, application_id, candidates(*)')
+        .eq('recruiter_id', recruiter_id)
+        .eq('countries.email', application.candidate.primaryEmailAddress.value);
+      if (!checkError && checkApp.length > 0) {
+        return res.status(200).json('email already exists');
+      }
+
       await supabase
         .from('application_reference')
         .update({ is_processed: true })
         .eq('recruiter_id', recruiter_id)
         .eq('ats_json->>id', json.id);
-      let application = json;
+
       let candidate = await getCandidate(
         application.candidate.id,
         base64decryptedApiKey,

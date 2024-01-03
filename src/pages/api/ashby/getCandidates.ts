@@ -41,6 +41,8 @@ export default function handler(req, res) {
       .request(options)
       .then(async function (response) {
         if (!response.data.moreDataAvailable) {
+          // eslint-disable-next-line no-console
+          console.log('synctoken', response.data.syncToken);
           await supabase
             .from('recruiter')
             .update({
