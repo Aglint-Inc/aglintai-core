@@ -261,6 +261,11 @@
   opacity: 0.7;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .tu-header-button-wrapper {
   padding-top: 20px;
 }

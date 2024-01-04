@@ -14,8 +14,10 @@ import {
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobApplicationsForJob } from '@/src/context/JobApplicationsContext';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
+import toast from '@/src/utils/toast';
 
 import AIgeninstructionVideo from './AIgeninstructionVideo';
 import Categories from './Categories';
@@ -268,7 +270,8 @@ const sectionIds = [
 ];
 
 function SectionTabs() {
-  const { handleUpdateFormFields } = useJobForm();
+  const { handleUpdateFormFields, jobForm } = useJobForm();
+  const { job } = useJobApplicationsForJob(jobForm.jobPostId);
 
   const [isSectionInview, setIsSectionInView] = useState(Array(6).fill(false));
   const sectionRefs = useRef(null);
@@ -320,15 +323,28 @@ function SectionTabs() {
     section.scrollIntoView({ behavior: 'smooth', inline: 'start' });
   };
 
+  const allowDisable = job.count.interviewing === 0;
+
+  const handleWarning = () => {
+    const count = job.count.interviewing;
+    toast.warning(
+      `${count} cadidate${
+        count === 1 ? '' : 's'
+      } under assessment. Disabling forbidden!`,
+    );
+  };
+
   return (
     <>
       <AssessmentScrollMenu
         onClickDisable={{
           onClick: () => {
-            handleUpdateFormFields({
-              path: 'assessment',
-              value: false,
-            });
+            allowDisable
+              ? handleUpdateFormFields({
+                  path: 'assessment',
+                  value: false,
+                })
+              : handleWarning();
           },
         }}
         isInstructionActive={isSectionInview[0]}

@@ -9,7 +9,6 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import RefreshBtn from '@/src/components/Common/RefreshButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 import {
@@ -17,7 +16,11 @@ import {
   getBoundingStatus,
   useMouseClick,
 } from '../../hooks';
-import { capitalize, FilterParameter } from '../../utils';
+import {
+  capitalize,
+  FilterParameter,
+  getUpdateParameterName,
+} from '../../utils';
 
 const FilterJobApplications = ({
   setApplicationLimit,
@@ -29,15 +32,14 @@ const FilterJobApplications = ({
     // handleJobApplicationFilter,
     // applicationDisable,
     section,
+    showInterview,
   } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
   const [filters, setFilters] = useState(searchParameters.filter);
   const filterCount = Object.entries(searchParameters.filter).reduce(
     (acc, [key, value]) => {
       if (
-        !(
-          key === 'interview_score' && section === JobApplicationSections.NEW
-        ) &&
+        !(key === 'interview_score' && !showInterview) &&
         (value as any).active
       )
         acc += 1;
@@ -91,12 +93,12 @@ const ApplicationFilterBody = ({
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
   const {
-    section,
     defaultFilters,
     searchParameters,
     handleJobApplicationFilter,
     applicationDisable,
     setApplicationDisable,
+    showInterview,
   } = useJobApplications();
 
   const handleResetSection = (section: keyof FilterParameter) => {
@@ -125,8 +127,12 @@ const ApplicationFilterBody = ({
       setApplicationDisable(false);
     }
   };
-  const isDefault = captureChanges(filters, defaultFilters, section);
-  const hasChanges = captureChanges(filters, searchParameters.filter, section);
+  const isDefault = captureChanges(filters, defaultFilters, showInterview);
+  const hasChanges = captureChanges(
+    filters,
+    searchParameters.filter,
+    showInterview,
+  );
   const filterButtons = (
     <Stack
       flexDirection={'row'}
@@ -222,14 +228,10 @@ const validateFilters = (
 const captureChanges = (
   filters: FilterParameter,
   mainFilters: FilterParameter,
-  section: JobApplicationSections,
+  showInterview: boolean,
 ) => {
   return Object.entries(mainFilters).reduce((acc, [key, value]) => {
-    if (
-      acc ||
-      (key === 'interview_score' && section === JobApplicationSections.NEW)
-    )
-      return acc;
+    if (acc || (key === 'interview_score' && !showInterview)) return acc;
     else {
       return Object.entries(value).reduce((acc2, [key2, value2]) => {
         if (acc2) return acc2;
@@ -251,11 +253,11 @@ const CandidateFilters = ({
   // eslint-disable-next-line no-unused-vars
   handleResetSection: (section: keyof FilterParameter) => void;
 }) => {
-  const { section } = useJobApplications();
+  const { showInterview } = useJobApplications();
   return (
     <Stack gap={'40px'}>
       {Object.entries(filters).map(([key, val], i) =>
-        section === JobApplicationSections.NEW && key === 'interview_score' ? (
+        !showInterview && key === 'interview_score' ? (
           <></>
         ) : (
           <CandidateFilterCheckbox
@@ -319,7 +321,9 @@ const CandidateFilterCheckbox = ({
             opacity: valObj.active ? 1 : 0.4,
           }}
         >
-          {`${capitalize(keyString)} ${getUnit(keyString)}`}
+          {`${capitalize(getUpdateParameterName(keyString))} ${getUnit(
+            keyString,
+          )}`}
         </Stack>
       </Stack>
       <Stack style={{ opacity: valObj.active ? 1 : 0.4 }}>{children}</Stack>
@@ -330,7 +334,7 @@ const CandidateFilterCheckbox = ({
 const getUnit = (keyString: keyof FilterParameter) => {
   switch (keyString) {
     case 'location':
-      return '(km)';
+      return '(miles)';
     case 'resume_score':
     case 'interview_score':
       return '';
@@ -482,7 +486,7 @@ const CandidateLocationFilter = ({
         onChange={(e) => handleChange(e)}
       />
       <Stack style={{ fontWeight: 400, fontSize: '14px' }}>
-        {`Consider also candidates within the mentioned radius (in km)`}
+        {`Consider also candidates within the mentioned radius (in miles)`}
       </Stack>
       <Slider
         className='reverse-slider-job-applications'
@@ -490,8 +494,8 @@ const CandidateLocationFilter = ({
         onChange={handleSliderChange}
         valueLabelDisplay='on'
         max={1000}
-        min={50}
-        step={50}
+        min={10}
+        step={10}
         sx={{
           color: '#1F73B7',
           '& .MuiSlider-valueLabelOpen': {

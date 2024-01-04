@@ -73,6 +73,11 @@
   opacity: 0.7;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

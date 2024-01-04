@@ -94,6 +94,7 @@
   display: flex;
   width: 100%;
   max-width: 780px;
+  margin-top: 20px;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;
@@ -169,6 +170,17 @@
 
 .text-align-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -463,6 +475,11 @@
   display: inline;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .content-11 {
   display: flex;
   height: 32px;
@@ -530,6 +547,10 @@
 
 .job-details-button-wrappers.remove-bottom {
   margin-top: 0px;
+}
+
+.job-details-button-wrappers.remove-bottom.mt-30 {
+  margin-top: 30px;
 }
 
 .proceed-to-apply {

@@ -343,6 +343,17 @@
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .il-job-info {
   width: 260px;
   margin-left: 32px;
@@ -353,6 +364,10 @@
   flex-direction: column;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
 }
 
 .ils-dropdown-option {

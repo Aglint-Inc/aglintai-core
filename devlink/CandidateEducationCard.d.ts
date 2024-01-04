@@ -7,4 +7,7 @@ declare function CandidateEducationCard(props: {
   textUniversityName?: React.ReactNode;
   textDate?: React.ReactNode;
   isBadgeVisible?: Types.Visibility.VisibilityConditions;
+  textDegree?: React.ReactNode;
+  textGpa?: React.ReactNode;
+  isDegreeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

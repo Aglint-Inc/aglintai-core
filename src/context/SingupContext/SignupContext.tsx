@@ -13,6 +13,9 @@ interface ContextValue {
   flow: string;
   // eslint-disable-next-line no-unused-vars
   setFlow: (details: string) => void;
+  companyName: null;
+  // eslint-disable-next-line no-unused-vars
+  setCompanyName: (details: string) => void;
 }
 
 const defaultProvider = {
@@ -20,6 +23,8 @@ const defaultProvider = {
   setStep: () => {},
   flow: companyType.COMPANY,
   setFlow: () => {},
+  companyName: null,
+  setCompanyName: () => {},
 };
 
 export const useSignupDetails = () => useContext(SignupContext);
@@ -28,6 +33,7 @@ const SignupProvider = ({ children }) => {
   const router = useRouter();
   const [step, setStep] = useState<string>(stepObj.type);
   const [flow, setFlow] = useState<string>(companyType.COMPANY);
+  const [companyName, setCompanyName] = useState(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -42,7 +48,9 @@ const SignupProvider = ({ children }) => {
     }
   }, [router]);
   return (
-    <SignupContext.Provider value={{ step, setStep, flow, setFlow }}>
+    <SignupContext.Provider
+      value={{ step, setStep, flow, setFlow, companyName, setCompanyName }}
+    >
       {children}
     </SignupContext.Provider>
   );

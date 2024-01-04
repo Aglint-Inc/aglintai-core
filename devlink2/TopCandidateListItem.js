@@ -127,32 +127,6 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column-wrapper",
-            "z-10",
-            "insights"
-          )}
-          tag="div"
-        >
-          {isHighlighted ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "top-can-highlight")}
-              tag="div"
-            />
-          ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-hover-bg")}
-            tag="div"
-          />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "insights")}
-            tag="div"
-          >
-            {slotInsights ?? <InsightTagEmpty />}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-column-wrapper")}
           tag="div"
         >
@@ -167,7 +141,7 @@ export function TopCandidateListItem({
             tag="div"
           />
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "summary")}
+            className={_utils.cx(_styles, "cv-list-column", "overview3")}
             tag="div"
           >
             <_Builtin.Block
@@ -193,7 +167,7 @@ export function TopCandidateListItem({
             tag="div"
           />
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "summary")}
+            className={_utils.cx(_styles, "cv-list-column", "overview3")}
             tag="div"
           >
             <_Builtin.Block
@@ -202,6 +176,32 @@ export function TopCandidateListItem({
             >
               {analysis}
             </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(
+            _styles,
+            "cv-list-column-wrapper",
+            "z-10",
+            "insights"
+          )}
+          tag="div"
+        >
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-highlight")}
+              tag="div"
+            />
+          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-hover-bg")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column", "insights")}
+            tag="div"
+          >
+            {slotInsights ?? <InsightTagEmpty />}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

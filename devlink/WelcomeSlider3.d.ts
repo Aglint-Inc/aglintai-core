@@ -12,4 +12,5 @@ declare function WelcomeSlider3(props: {
   onClickSignUp?: Types.Devlink.RuntimeProps;
   onClickCheck?: Types.Devlink.RuntimeProps;
   isSignUpButtonVisible?: Types.Visibility.VisibilityConditions;
+  onClickTermsandCondition?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

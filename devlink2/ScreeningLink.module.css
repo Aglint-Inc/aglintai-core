@@ -119,6 +119,17 @@
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -150,6 +161,10 @@
   background-color: hsla(180, 7.69%, 97.45%, 1.00);
 
   overflow-wrap: anywhere;
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
 }
 
 .cj-copy-icon {

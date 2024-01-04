@@ -139,3 +139,16 @@ export const checkSyncCand = async (job: JobTypeDashboard) => {
   }
   return is_sync;
 };
+
+export const getUpdateParameterName = (str: string) => {
+  switch (str) {
+    case 'interview_score':
+      return 'assessment_score';
+    case 'resume_score':
+      return 'resume_match';
+    case 'location':
+      return 'city';
+    default:
+      return str;
+  }
+};

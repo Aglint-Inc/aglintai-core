@@ -82,6 +82,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .slot-input-command {
   width: 100%;
   min-height: 40px;

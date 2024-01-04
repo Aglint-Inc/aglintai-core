@@ -10,27 +10,43 @@ export function LoginAtsInfo({
   slotAdditionalInfo,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "sl-ats-wrapper")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-        tag="div"
-      >
+    <_Component
+      className={_utils.cx(_styles, "sl-ats-wrapper", "sl-ats-padding")}
+      tag="div"
+    >
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
         {"Are you currently using any ATS system?"}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-388")} tag="div">
         {slotRadioButtons ?? (
           <>
-            <RcFormRadio isImageAvailabe={true} />
-            <RcFormRadio isImageAvailabe={true} name="Ashby" />
-            <RcFormRadio isImageAvailabe={true} name="Greenhouse" />
-            <RcFormRadio isImageAvailabe={true} name="Indeed" />
-            <RcFormRadio name="Other" />
-            <RcFormRadio name="I do not use any ATS system" />
+            <RcFormRadio />
+            <RcFormRadio />
+            <RcFormRadio />
+            <RcFormRadio />
+            <RcFormRadio
+              isTextVisible={true}
+              isImageAvailabe={false}
+              text="Other"
+            />
+            <RcFormRadio
+              isImageAvailabe={false}
+              isTextVisible={true}
+              text="I do not use any ATS system"
+            />
           </>
         )}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-389")} tag="div">
-        {slotAdditionalInfo}
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-414")} tag="div">
+        <_Builtin.Block tag="div">
+          {"Kindly provide the name of the ATS system you are using."}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-389")}
+          tag="div"
+        >
+          {slotAdditionalInfo}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

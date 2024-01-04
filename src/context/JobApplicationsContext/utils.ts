@@ -15,37 +15,6 @@ import {
   NewJobApplicationsInsert,
 } from './types';
 
-export const initialJobApplicationsContext: JobApplicationContext = {
-  applications: undefined,
-  applicationDisable: undefined,
-  defaultFilters: undefined,
-  setApplicationDisable: undefined,
-  paginationLimit: undefined,
-  atsSync: undefined,
-  job: undefined,
-  longPolling: 0,
-  pageNumber: undefined,
-  handleJobApplicationCreate: undefined,
-  handleJobApplicationBulkCreate: undefined,
-  handleJobApplicationRead: undefined,
-  handleJobApplicationRefresh: undefined,
-  handleJobApplicationPaginate: undefined,
-  handleJobApplicationUpdate: undefined,
-  handleJobApplicationDelete: undefined,
-  handleJobApplicationError: undefined,
-  handleJobApplicationFilter: undefined,
-  searchParameters: undefined,
-  initialLoad: false,
-  openImportCandidates: false,
-  setOpenImportCandidates: undefined,
-  openManualImportCandidates: undefined,
-  setOpenManualImportCandidates: undefined,
-  handleUpdateJobStatus: undefined,
-  updateTick: undefined,
-  section: undefined,
-  setSection: undefined,
-};
-
 export const uploadResumeDbAction = async (
   candidateId: string,
   jobId: string,

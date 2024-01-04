@@ -13,7 +13,6 @@ import { companyType } from '@/src/utils/userRoles';
 
 import Loader from './Loader/Index';
 import SelectAtsSystem from './SelectAtsSystem';
-import SelectGoal from './SelecteGoal';
 import SlideDetailsOne from './SlideDetailsOne';
 import SlideTwoSignUp from './SlideSignup';
 import { stepObj } from './SlideSignup/utils';
@@ -95,17 +94,13 @@ const SignUpComp = () => {
         />
       )}
       <>
-        {step == stepObj.detailsOne ? (
+        {step == stepObj.detailsOne || step == stepObj.detailsTwo ? (
           <YTransform uniqueKey={step}>
             <SlideDetailsOne />
           </YTransform>
         ) : step == stepObj.atsSystem ? (
           <YTransform uniqueKey={step}>
             <SelectAtsSystem />
-          </YTransform>
-        ) : step == stepObj.useGoal ? (
-          <YTransform uniqueKey={step}>
-            <SelectGoal />
           </YTransform>
         ) : step == stepObj.allSet ? (
           <YTransform uniqueKey={step}>

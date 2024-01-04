@@ -166,7 +166,19 @@ export type ReadJobApplicationApi = {
     job_id: string;
     ranges?: {
       // eslint-disable-next-line no-unused-vars
-      [key in JobApplicationSections]: {
+      [JobApplicationSections.NEW]: {
+        start: number;
+        end: number;
+      };
+      [JobApplicationSections.INTERVIEWING]?: {
+        start: number;
+        end: number;
+      };
+      [JobApplicationSections.QUALIFIED]: {
+        start: number;
+        end: number;
+      };
+      [JobApplicationSections.DISQUALIFIED]: {
         start: number;
         end: number;
       };

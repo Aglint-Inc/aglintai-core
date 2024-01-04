@@ -923,6 +923,11 @@
   margin-top: 17px;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;

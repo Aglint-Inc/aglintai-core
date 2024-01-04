@@ -150,6 +150,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -378,6 +389,11 @@
   display: inline;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .click-fake-div {
   position: absolute;
   left: 0%;
@@ -391,15 +407,4 @@
 
 .click-fake-div.hide {
   display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }

@@ -28,6 +28,7 @@
 .insight-detail {
   position: absolute;
   top: 34px;
+  right: 0px;
   z-index: 10;
 
   display: none;
@@ -49,9 +50,9 @@
 
 .tag-tooltip-icon {
   position: absolute;
-  left: 30px;
+  left: auto;
   top: -7px;
-  right: auto;
+  right: 30px;
   bottom: auto;
 }
 
@@ -143,6 +144,17 @@
 
 .text-grey-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 767px) {

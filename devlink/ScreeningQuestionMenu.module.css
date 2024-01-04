@@ -82,6 +82,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -275,17 +286,6 @@
   height: 6px;
   border-radius: 100px;
   background-color: #d9d9d9;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .radio-green-active {

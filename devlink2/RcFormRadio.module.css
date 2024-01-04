@@ -1,8 +1,8 @@
 .sl-radio-btn-block {
   display: flex;
   align-items: center;
-  grid-column-gap: 22px;
-  grid-row-gap: 22px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .sl-radio-btn {
@@ -36,18 +36,10 @@
 
 .sl-radio-image-block {
   display: flex;
-  width: 40px;
   height: 40px;
   min-height: 40px;
-  min-width: 40px;
   margin-right: -6px;
   padding: 5px;
   justify-content: center;
   align-items: center;
-
-  border-radius: 8px;
-
-  background-color: hsla(0, 0.00%, 100.00%, 1.00);
-
-  box-shadow: 0 4px 8px 0 hsla(187.3972602739726, 90.12%, 15.88%, 0.15);
 }

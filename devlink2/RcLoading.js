@@ -6,17 +6,25 @@ import _styles from "./RcLoading.module.css";
 export function RcLoading({ as: _Component = _Builtin.Block, slotLottie }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "sl-login-loading-block")}
+      className={_utils.cx(_styles, "sl-company-details-wrapper")}
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "sl-login-lottie-block")}
+        className={_utils.cx(_styles, "sl-login-loading-block")}
         tag="div"
       >
-        {slotLottie}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
-        {"Fetching company info from the website"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "sl-login-lottie-block")}
+          tag="div"
+        >
+          {slotLottie}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-grey-600")}
+          tag="div"
+        >
+          {"Hold on. Fetching company details from the website"}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

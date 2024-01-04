@@ -1,12 +1,69 @@
 .sl-ats-wrapper {
   display: flex;
-  max-width: 860px;
-  margin-right: auto;
-  margin-left: auto;
+  width: 100%;
+  max-width: 720px;
   flex-direction: column;
-  align-items: center;
-  grid-column-gap: 38px;
-  grid-row-gap: 38px;
+  align-items: stretch;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+}
+
+.sl-ats-padding {
+  padding: 32px 32px 36px;
+  border-radius: 20px;
+  background-color: hsla(180, 7.69%, 97.45%, 0.50);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-yellow-800 {
+  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+}
+
+.text-grey-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.color-black {
+  color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
+.text-kale-600 {
+  color: var(--kale-600);
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-yellow-700 {
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
+}
+
+.text-grey-500 {
+  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+}
+
+.fw-semibold.z-index-5 {
+  position: relative;
+  z-index: 5;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
 .text-lg {
@@ -26,39 +83,38 @@
   }
 }
 
-.fw-semibold {
-  font-weight: 600;
+.text-yellow-600 {
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+@media screen and (max-width: 767px) {
+  .fw-semibold.text-lg.text-yellow-600.mobile-14 {
+    font-size: 14px;
+  }
 }
 
-.text-color-black {
-  color: var(--black-9b0fc3fc);
+.text-grey-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+.hide {
+  display: none;
+  flex-direction: row;
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .div-block-388 {
   display: flex;
-  margin-bottom: 12px;
-  justify-content: center;
+  margin-bottom: 6px;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  grid-column-gap: 90px;
-  grid-row-gap: 48px;
+  grid-column-gap: 40px;
+  grid-row-gap: 24px;
 }
 
 @media screen and (max-width: 767px) {
@@ -79,10 +135,17 @@
   }
 }
 
+.div-block-414 {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
 .div-block-389 {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }

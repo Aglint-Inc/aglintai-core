@@ -73,6 +73,28 @@ export function TopApplicantsTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-column", "overview3")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Overview"}</_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-column", "analysis2")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Analysis"}</_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(
               _styles,
               "cv-list-column-wrapper",
@@ -86,28 +108,6 @@ export function TopApplicantsTable({
               tag="div"
             >
               <_Builtin.Block tag="div">{"Insights"}</_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "summary")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Overview"}</_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "overview2")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Analysis"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

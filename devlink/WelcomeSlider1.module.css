@@ -26,7 +26,6 @@
 .auth-right-block.join-us {
   overflow: visible;
   height: auto;
-  padding-top: 40px;
   padding-right: 40px;
   padding-left: 40px;
   align-items: center;
@@ -135,12 +134,12 @@
 }
 
 .auth-right-block.sign-up-sign {
+  position: relative;
+
   display: flex;
   width: 100%;
   height: auto;
-  margin-top: 80px;
   margin-bottom: 40px;
-  padding-top: 30px;
   padding-right: 40px;
   padding-left: 40px;
   align-items: center;
@@ -213,8 +212,11 @@
 }
 
 .auth-cta-block.sign-up {
+  padding: 40px 32px;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
+  border-radius: 20px;
+  background-color: rgba(248, 249, 249, 0.5);
 }
 
 @media screen and (max-width: 991px) {
@@ -299,17 +301,6 @@
   .auth-cta-block.tab-edit {
     align-items: center;
   }
-}
-
-.logo-onboard-step1 {
-  position: static;
-  left: 40px;
-  top: 50px;
-  right: auto;
-  bottom: auto;
-
-  display: flex;
-  justify-content: center;
 }
 
 .auth-header-block {
@@ -680,8 +671,15 @@
   justify-content: center;
 }
 
+.ju-right-top.fixed-signup-back {
+  position: fixed;
+  left: 30px;
+  top: 30px;
+  right: auto;
+  bottom: auto;
+}
+
 .ju-redirect-text {
-  align-self: flex-end;
   color: var(--grey600-d5bebe21);
 }
 

@@ -46,16 +46,8 @@ export function NewJobStep4({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Workflow is configurable only when assessment is enable"}
+              {"Workflow is configurable only when assessment is enabled"}
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600", "mt-12")}
-            tag="div"
-          >
-            {
-              "The ability to customize workflows is contingent upon the activation of the assessment feature. This integration likely aims to promote a more responsive and adaptive system, ensuring that any modifications to the workflow are informed by relevant assessment data."
-            }
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

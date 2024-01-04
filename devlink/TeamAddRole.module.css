@@ -282,6 +282,11 @@
   opacity: 0.7;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .aur-main-wrapper {
   display: flex;
   flex-direction: column;
@@ -396,6 +401,10 @@
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
 }
 
 .text-red-600 {

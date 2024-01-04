@@ -277,6 +277,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .edit-icons-inbox {
   padding: 4px;
   border-radius: 100px;
@@ -428,10 +432,6 @@
 
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-green-500 {

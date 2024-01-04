@@ -145,6 +145,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -376,6 +387,7 @@
   display: flex;
   width: 100%;
   max-width: 780px;
+  margin-top: 20px;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;

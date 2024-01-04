@@ -41,13 +41,10 @@
   text-align: center;
 }
 
-.yellow-300 {
-  background-color: hsla(32.093023255813954, 97.73%, 82.75%, 1.00);
-}
-
 .insight-detail {
   position: absolute;
   top: 34px;
+  right: 0px;
   z-index: 10;
 
   display: none;
@@ -69,9 +66,9 @@
 
 .tag-tooltip-icon {
   position: absolute;
-  left: 30px;
+  left: auto;
   top: -7px;
-  right: auto;
+  right: 30px;
   bottom: auto;
 }
 
@@ -165,8 +162,27 @@
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
+}
+
+.j-tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }

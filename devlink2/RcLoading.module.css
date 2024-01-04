@@ -1,3 +1,8 @@
+.sl-company-details-wrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
 .sl-login-loading-block {
   display: flex;
   flex-direction: column;

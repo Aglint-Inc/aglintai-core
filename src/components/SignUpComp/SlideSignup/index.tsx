@@ -232,49 +232,51 @@ const SlideTwoSignUp = () => {
         }}
         slotSignUpForm={
           <Stack spacing={'20px'} p={'4px'}>
-            <TextField
-              margin='none'
-              required
-              fullWidth
-              id='name'
-              label='First Name'
-              value={details.first_name}
-              onChange={(e) => {
-                setDetails({ ...details, first_name: e.target.value });
-              }}
-              error={signUpError.first_name.error}
-              helperText={
-                signUpError.first_name.error ? signUpError.first_name.msg : ''
-              }
-              inputProps={{
-                autoCapitalize: 'true',
-                style: {
-                  fontSize: '14px',
-                },
-              }}
-            />
-            <TextField
-              margin='none'
-              fullWidth
-              id='name'
-              label='Last Name'
-              value={details.last_name}
-              onChange={(e) => {
-                setDetails({ ...details, last_name: e.target.value });
-              }}
-              inputProps={{
-                autoCapitalize: 'true',
-                style: {
-                  fontSize: '14px',
-                },
-              }}
-            />
+            <Stack direction={'row'} spacing={'10px'}>
+              <TextField
+                margin='none'
+                required
+                fullWidth
+                id='name'
+                label='First Name'
+                value={details.first_name}
+                onChange={(e) => {
+                  setDetails({ ...details, first_name: e.target.value });
+                }}
+                error={signUpError.first_name.error}
+                helperText={
+                  signUpError.first_name.error ? signUpError.first_name.msg : ''
+                }
+                inputProps={{
+                  autoCapitalize: 'true',
+                  style: {
+                    fontSize: '14px',
+                  },
+                }}
+              />
+              <TextField
+                margin='none'
+                fullWidth
+                id='name'
+                label='Last Name'
+                value={details.last_name}
+                onChange={(e) => {
+                  setDetails({ ...details, last_name: e.target.value });
+                }}
+                inputProps={{
+                  autoCapitalize: 'true',
+                  style: {
+                    fontSize: '14px',
+                  },
+                }}
+              />
+            </Stack>
             <TextField
               margin='none'
               required
               fullWidth
               id='email'
-              label='Email'
+              label='Work Email ID'
               name='email'
               autoComplete='email'
               value={details.email}

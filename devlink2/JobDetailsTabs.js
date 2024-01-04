@@ -17,6 +17,7 @@ export function JobDetailsTabs({
   isInterviewSelected = false,
   isQualifiedSelected = false,
   isDisqualifiedSelected = false,
+  isAssessmentVisible = false,
 }) {
   return (
     <_Component
@@ -65,44 +66,50 @@ export function JobDetailsTabs({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "cv-tab-link-block")}
-        tag="div"
-        {...onClickInterview}
-      >
+      {isAssessmentVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-tab-link-block-inner")}
+          className={_utils.cx(_styles, "cv-tab-link-block")}
           tag="div"
+          {...onClickInterview}
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-tab-link-icon-block")}
+            className={_utils.cx(_styles, "cv-tab-link-block-inner")}
             tag="div"
           >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
-              value="%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewbox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.77627%205.25H7.45502L9.17002%201.995C9.22252%201.86375%209.16127%201.75%209.02127%201.75H6.46627C6.32627%201.75%206.16877%201.86375%206.11627%201.995L4.83877%204.97C4.77752%205.11%204.83877%205.25%204.97877%205.25H6.12502L4.88252%208.81125C4.78627%209.065%204.85627%209.28375%205.18002%208.995L8.79377%205.59125C8.99502%205.39%208.98627%205.25%208.77627%205.25V5.25ZM3.49996%2012.9438L6.81878%209.625H13.125V0.875H0.875V9.625H3.5V10.0625L3.49996%2012.9438ZM2.625%2010.5H0.875C0.388375%2010.5%200%2010.1116%200%209.625V0.875C0%200.388375%200.388375%200%200.875%200H13.125C13.6116%200%2014%200.388375%2014%200.875V9.625C14%2010.1116%2013.6116%2010.5%2013.125%2010.5H7.18122L4.11254%2013.5686C3.86256%2013.8137%203.49053%2013.8862%203.1668%2013.7529C2.84307%2013.6196%202.62996%2013.3062%202.625%2012.95V10.5Z%22%20fill%3D%22black%22%20style%3D%22fill%3Ablack%3Bfill%3Ablack%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-tab-link-icon-block")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icon-embed")}
+                value="%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewbox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.77627%205.25H7.45502L9.17002%201.995C9.22252%201.86375%209.16127%201.75%209.02127%201.75H6.46627C6.32627%201.75%206.16877%201.86375%206.11627%201.995L4.83877%204.97C4.77752%205.11%204.83877%205.25%204.97877%205.25H6.12502L4.88252%208.81125C4.78627%209.065%204.85627%209.28375%205.18002%208.995L8.79377%205.59125C8.99502%205.39%208.98627%205.25%208.77627%205.25V5.25ZM3.49996%2012.9438L6.81878%209.625H13.125V0.875H0.875V9.625H3.5V10.0625L3.49996%2012.9438ZM2.625%2010.5H0.875C0.388375%2010.5%200%2010.1116%200%209.625V0.875C0%200.388375%200.388375%200%200.875%200H13.125C13.6116%200%2014%200.388375%2014%200.875V9.625C14%2010.1116%2013.6116%2010.5%2013.125%2010.5H7.18122L4.11254%2013.5686C3.86256%2013.8137%203.49053%2013.8862%203.1668%2013.7529C2.84307%2013.6196%202.62996%2013.3062%202.625%2012.95V10.5Z%22%20fill%3D%22black%22%20style%3D%22fill%3Ablack%3Bfill%3Ablack%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Assessment"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "cv-tab-candidate-count",
+                "blue-400"
+              )}
+              tag="div"
+            >
+              {countInterview}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          {isInterviewSelected ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-tab-link-selected", "blue-100")}
+              tag="div"
             />
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Assessment"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-tab-candidate-count", "blue-400")}
-            tag="div"
-          >
-            {countInterview}
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
-        {isInterviewSelected ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-tab-link-selected", "blue-100")}
-            tag="div"
-          />
-        ) : null}
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-tab-link-block")}
         tag="div"

@@ -22,4 +22,6 @@ declare function JobsListingCard(props: {
   slotInterviewIcon?: Types.Devlink.Slot;
   isSourcingInterviewVisible?: Types.Visibility.VisibilityConditions;
   slotAtsBadge?: Types.Devlink.Slot;
+  isStatusVisible?: Types.Visibility.VisibilityConditions;
+  textStatus?: React.ReactNode;
 }): React.JSX.Element;

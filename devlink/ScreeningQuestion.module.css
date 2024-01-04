@@ -643,6 +643,10 @@
   margin-top: 0px;
 }
 
+.job-details-button-wrappers.remove-bottom.mt-30 {
+  margin-top: 30px;
+}
+
 .proceed-to-apply {
   position: relative;
 }

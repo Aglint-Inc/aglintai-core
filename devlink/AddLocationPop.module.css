@@ -291,6 +291,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .social-btn-wrappers-pop {
   display: flex;
   margin-top: 20px;

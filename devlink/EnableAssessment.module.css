@@ -86,6 +86,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -120,6 +124,17 @@
 
 .text-align-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -232,10 +247,6 @@
 
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-color-black {
@@ -358,6 +369,10 @@
 
 .job-details-button-wrappers.remove-bottom {
   margin-top: 0px;
+}
+
+.job-details-button-wrappers.remove-bottom.mt-30 {
+  margin-top: 30px;
 }
 
 .proceed-to-apply {

@@ -113,6 +113,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -270,10 +274,6 @@
 
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-color-black {

@@ -301,6 +301,11 @@
   opacity: 0.7;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .div-block-434 {
   padding: 8px 16px;
 
@@ -544,6 +549,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .fw-semibold.one-line-clamp.mx-width-662 {
   max-width: 612px;
 }
@@ -638,10 +647,6 @@
 
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-green-500 {

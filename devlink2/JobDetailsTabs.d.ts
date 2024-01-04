@@ -15,4 +15,5 @@ declare function JobDetailsTabs(props: {
   isInterviewSelected?: Types.Visibility.VisibilityConditions;
   isQualifiedSelected?: Types.Visibility.VisibilityConditions;
   isDisqualifiedSelected?: Types.Visibility.VisibilityConditions;
+  isAssessmentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

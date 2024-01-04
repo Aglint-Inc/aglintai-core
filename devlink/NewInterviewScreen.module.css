@@ -154,6 +154,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .new-end-interview-btn {
   display: flex;
   padding: 10px 20px;
@@ -210,6 +214,17 @@
 
 .text-align-center {
   text-align: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -322,10 +337,6 @@
 
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
-}
-
-.color-white {
-  color: var(--white-80449ce7);
 }
 
 .text-color-black {
@@ -537,17 +548,6 @@
 
 .text-green-700 {
   color: var(--green700-a1b0a24f);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 @media screen and (min-width: 1280px) {

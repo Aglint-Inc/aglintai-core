@@ -30,10 +30,16 @@ const ResumeScore = ({ application }: { application: JobApplication }) => {
         </Stack>
       </Tooltip>
     )
+  ) : application.is_resume_fetching ? (
+    <Tooltip title='Fetching resume' placement='right' arrow={true}>
+      <Stack>
+        <ResumeTag slotText={<Calculating />} />
+      </Stack>
+    </Tooltip>
   ) : (
     <Tooltip title='No resume available.' placement='right' arrow={true}>
       <Stack>
-        <ResumeTag slotText={<Calculating /> /*<ErrorIcon />*/} />
+        <ResumeTag slotText={<ErrorIcon />} />
       </Stack>
     </Tooltip>
   );

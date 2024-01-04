@@ -82,6 +82,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .div-block-609 {
   display: flex;
   margin-left: 12px;

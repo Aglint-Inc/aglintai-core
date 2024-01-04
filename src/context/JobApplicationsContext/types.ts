@@ -10,8 +10,8 @@ import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { Database } from '@/src/types/schema';
 
+import useProviderJobApplicationActions from './hooks';
 import { Candidate } from '../CandidatesContext/types';
-import { JobTypeDashboard } from '../JobsContext/types';
 
 export enum JobApplicationSections {
   NEW = 'new',
@@ -39,6 +39,7 @@ export type NewJobApplications = Pick<
   | 'candidate_id'
   | 'emails'
   | 'applied_at'
+  | 'is_resume_fetching'
 >;
 export type NewJobApplicationsInsert =
   Database['public']['Tables']['job_applications']['Insert'];
@@ -55,78 +56,9 @@ export type Parameters = {
   search: string;
 };
 
-export type JobApplicationContext = {
-  applications: JobApplicationsData;
-  paginationLimit: number;
-  applicationDisable: boolean;
-  defaultFilters: FilterParameter;
-  setApplicationDisable: Dispatch<SetStateAction<boolean>>;
-  job: JobTypeDashboard;
-  updateTick: boolean;
-  pageNumber: { [key in JobApplicationSections]: number };
-  handleJobApplicationCreate: (
-    inputData: NewJobApplicationsInsert,
-  ) => Promise<boolean>;
-  handleJobApplicationBulkCreate: (
-    inputData: NewJobApplicationsInsert[],
-  ) => Promise<boolean>;
-  handleJobApplicationRead: (
-    request: ReadJobApplicationApi['request'],
-  ) => Promise<{
-    confirmation: boolean;
-    count: {
-      new?: number;
-      qualified?: number;
-      disqualified?: number;
-      interviewing?: number;
-    };
-  }>;
-  handleJobApplicationRefresh: () => Promise<boolean>;
-  handleJobApplicationPaginate: (
-    pageNumber: number,
-    section: JobApplicationSections,
-  ) => Promise<boolean>;
-  handleJobApplicationUpdate: (
-    applicationId: string,
-
-    inputData: NewJobApplicationsUpdate,
-  ) => Promise<boolean>;
-  handleJobApplicationDelete: (
-    applicationId: string,
-    applicationStatus: JobApplicationSections,
-  ) => Promise<boolean>;
-  handleJobApplicationError: (error: any) => void;
-  handleJobApplicationFilter: (
-    parameters: Parameters,
-    signal?: AbortSignal,
-  ) => Promise<{
-    confirmation: boolean;
-    count: {
-      new?: number;
-      qualified?: number;
-      disqualified?: number;
-      interviewing?: number;
-    };
-  }>;
-  atsSync: boolean;
-  longPolling: number;
-  searchParameters: Parameters;
-  initialLoad: boolean;
-  openImportCandidates: boolean;
-  setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
-  openManualImportCandidates: boolean;
-  setOpenManualImportCandidates: Dispatch<SetStateAction<boolean>>;
-  handleUpdateJobStatus: (
-    sections: {
-      source: JobApplicationSections;
-      destination: JobApplicationSections;
-    },
-    applicationIdSet?: Set<string>,
-    updateAll?: boolean,
-  ) => Promise<boolean>;
-  section: JobApplicationSections;
-  setSection: Dispatch<SetStateAction<JobApplicationSections>>;
-};
+export type JobApplicationContext = ReturnType<
+  typeof useProviderJobApplicationActions
+>;
 
 export type JdScore = {
   scores: ScoreWheelParams;

@@ -1,4 +1,7 @@
 /* eslint-disable security/detect-object-injection */
+import React from 'react';
+
+import { CandidateSkillPills } from '@/devlink';
 import {
   AllCandidateListItem,
   InsightTagAmbitious,
@@ -122,7 +125,7 @@ const ApplicationCard = ({
           handleOpenDetails();
         },
       }}
-      slotInsights={<Insights jdScore={application.jd_score as JdScore} />}
+      slotInsights={<Insights application={application} />}
     />
   );
 };
@@ -139,12 +142,19 @@ const getExperienceCount = (months: number) => {
   return months ? Math.trunc(months / 12) : '---';
 };
 
-const Insights = ({ jdScore }: { jdScore: JdScore }) => {
+const Insights = ({ application }: { application: JobApplication }) => {
+  const jdScore = application.jd_score as JdScore;
   if (jdScore?.badges) {
     const badgeList = badgePriority
-      .reduce((acc, curr) => {
+      .reduce((acc, curr: keyof JdScore['badges']) => {
         if (jdScore.badges[curr])
-          acc.push(getBadge(curr, jdScore.badges[curr]));
+          acc.push(
+            getBadge(
+              curr,
+              jdScore.badges[curr],
+              getPills(curr, jdScore.relevance, application.json_resume),
+            ),
+          );
         return acc;
       }, [])
       .filter((f) => f);
@@ -152,6 +162,90 @@ const Insights = ({ jdScore }: { jdScore: JdScore }) => {
     return hasBadges ? <>{badgeList}</> : <InsightTagEmpty />;
   }
   return <InsightTagEmpty />;
+};
+
+const getPills = (
+  badge: keyof JdScore['badges'],
+  relevance: JdScore['relevance'],
+  resume: any,
+) => {
+  switch (badge) {
+    case 'skills':
+      return getSkillPills(relevance.skills);
+    case 'schools':
+      return getEducationPills(resume.schools, relevance.schools);
+    case 'positions':
+      return getPositionPills(resume.positions, relevance.positions);
+    default:
+      return [];
+  }
+};
+
+const getSkillPills = (skills: JdScore['relevance']['skills']) => {
+  return Object.entries(skills).reduce((acc, [key, value], i) => {
+    if (value === 'high')
+      acc.push(<CandidateSkillPills key={i} textSkill={key} />);
+    return acc;
+  }, []);
+};
+
+const getEducationPills = (
+  schools,
+  relevance: JdScore['relevance']['schools'],
+) => {
+  const educationList =
+    Array.isArray(schools) &&
+    schools
+      .filter(
+        (e) =>
+          e.institution &&
+          typeof e.institution === 'string' &&
+          e.institution.trim() !== '',
+      )
+      .reduce((acc, e, i) => {
+        if (relevance && relevance[i] && relevance[i] === 'high')
+          acc.push(
+            <CandidateSkillPills
+              key={i}
+              textSkill={`${
+                e.degree &&
+                typeof e.degree === 'string' &&
+                e.degree.trim() !== ''
+                  ? `${e.degree} - `
+                  : ''
+              }${e.institution}`}
+            />,
+          );
+        return acc;
+      }, []);
+  return educationList;
+};
+
+const getPositionPills = (
+  positions,
+  relevance: JdScore['relevance']['positions'],
+) => {
+  const positionsList =
+    Array.isArray(positions) &&
+    positions
+      .filter(
+        (e) => e.title && typeof e.title === 'string' && e.title.trim() !== '',
+      )
+      .reduce((acc, e, i) => {
+        if (relevance && relevance[i] && relevance[i] === 'high')
+          acc.push(
+            <CandidateSkillPills
+              key={i}
+              textSkill={`${e.title}${
+                e.org && typeof e.org === 'string' && e.org.trim() !== ''
+                  ? ` - ${e.org}`
+                  : ''
+              }`}
+            />,
+          );
+        return acc;
+      }, []);
+  return positionsList;
 };
 
 const badgePriority = [
@@ -163,14 +257,29 @@ const badgePriority = [
   'schools',
 ];
 
-const getBadge = (key: string, count: number) => {
+const getBadge = (key: string, count: number, pills: any) => {
   switch (key) {
     case 'skills':
-      return <InsightTagSkilled experience={count} />;
+      return (
+        <InsightTagSkilled
+          experience={pills.length}
+          slotSkills={<>{pills}</>}
+        />
+      );
     case 'schools':
-      return <InsightTagKnowledgeable experience={count} />;
+      return (
+        <InsightTagKnowledgeable
+          experience={pills.length}
+          slotEducation={<>{pills}</>}
+        />
+      );
     case 'positions':
-      return <InsightTagExperienced experience={count} />;
+      return (
+        <InsightTagExperienced
+          experience={pills.length}
+          slotExperiences={<>{pills}</>}
+        />
+      );
     case 'leadership':
       return count >= 70 ? <InsightTagLeader /> : null;
     case 'jobStability':

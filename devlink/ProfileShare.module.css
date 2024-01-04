@@ -118,6 +118,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -342,6 +353,10 @@
 
 .cvs-header-copy-block.clickable.padding-medium {
   padding: 10px 16px;
+}
+
+.cvs-header-copy-block.clickable.hide {
+  display: none;
 }
 
 .cvs-header-copy-icon {
@@ -630,17 +645,6 @@
 
 .profile-share-navbar.hide {
   display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .ps-nav-menu-wrapper {

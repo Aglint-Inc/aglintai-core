@@ -431,6 +431,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .il-list-block {
   width: 100%;
   max-height: 85vh;

@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CandidateSort, CandidateSortBody } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 import {
@@ -12,7 +11,12 @@ import {
   getBoundingStatus,
   useMouseClick,
 } from '../../hooks';
-import { CANDIDATE_SORT, capitalize, SortParameter } from '../../utils';
+import {
+  CANDIDATE_SORT,
+  capitalize,
+  getUpdateParameterName,
+  SortParameter,
+} from '../../utils';
 
 const SortJobApplications = ({
   setApplicationLimit,
@@ -145,13 +149,12 @@ const CandidateSortInput = ({
   // eslint-disable-next-line no-unused-vars
   handleModify: (newParameter: SortParameter['parameter']) => void;
 }) => {
-  const { section } = useJobApplications();
+  const { showInterview } = useJobApplications();
   return (
     <Stack>
       <Select
         value={
-          section === JobApplicationSections.NEW &&
-          parameter === 'interview_score'
+          !showInterview && parameter === 'interview_score'
             ? 'resume_score'
             : parameter
         }
@@ -163,15 +166,10 @@ const CandidateSortInput = ({
         }
       >
         {CANDIDATE_SORT.reduce((acc, curr, i) => {
-          if (
-            !(
-              curr === 'interview_score' &&
-              section === JobApplicationSections.NEW
-            )
-          )
+          if (!(curr === 'interview_score' && !showInterview))
             acc.push(
               <MenuItem key={i} value={curr} className={'SORTBODY-Include'}>
-                {capitalize(curr)}
+                {capitalize(getUpdateParameterName(curr))}
               </MenuItem>,
             );
           return acc;

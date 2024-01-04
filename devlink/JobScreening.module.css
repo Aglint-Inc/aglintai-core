@@ -1908,6 +1908,11 @@
   margin-top: 17px;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .toggle-btn-block {
   align-items: center;
 }

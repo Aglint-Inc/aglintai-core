@@ -115,12 +115,12 @@
   opacity: 0.7;
 }
 
-.color-grey-600 {
-  color: #68737d;
-}
-
 .fw-semibold {
   font-weight: 600;
+}
+
+.color-grey-600 {
+  color: #68737d;
 }
 
 .color-grey-600.max-width-350 {

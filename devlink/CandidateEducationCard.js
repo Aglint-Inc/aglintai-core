@@ -9,6 +9,9 @@ export function CandidateEducationCard({
   textUniversityName = "University Of Waterloo",
   textDate = "May 2015",
   isBadgeVisible = false,
+  textDegree = "Degree",
+  textGpa = "May 2015",
+  isDegreeVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cvs-education-block")} tag="div">
@@ -19,6 +22,25 @@ export function CandidateEducationCard({
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {textUniversityName}
         </_Builtin.Block>
+        {isDegreeVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "degree-date-wrap")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
+              tag="div"
+            >
+              {textDegree}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
+              tag="div"
+            >
+              {textGpa}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "fw-semibold", "text-grey-500")}
           tag="div"

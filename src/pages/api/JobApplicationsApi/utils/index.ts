@@ -14,7 +14,7 @@ import {
 import { Database } from '@/src/types/schema';
 
 export const selectJobApplicationQuery =
-  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails, applied_at';
+  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails, applied_at, is_resume_fetching';
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
@@ -241,7 +241,7 @@ export const getBoundingBox = async (
   const halfSideInKm: number = range;
   const lat = deg2rad(latitudeInDegrees);
   const lon = deg2rad(longitudeInDegrees);
-  const halfSide = 1000 * halfSideInKm;
+  const halfSide = 1000 * halfSideInKm * 0.621371;
   const radius = WGS84EarthRadius(lat);
   const pradius = radius * Math.cos(lat);
   const latMin = lat - halfSide / radius;
@@ -250,12 +250,12 @@ export const getBoundingBox = async (
   const lonMax = lon + halfSide / pradius;
   return {
     latitude: {
-      min: Math.trunc(rad2deg(latMin)),
-      max: Math.trunc(rad2deg(latMax)),
+      min: rad2deg(latMin),
+      max: rad2deg(latMax),
     },
     longitude: {
-      min: Math.trunc(rad2deg(lonMin)),
-      max: Math.trunc(rad2deg(lonMax)),
+      min: rad2deg(lonMin),
+      max: rad2deg(lonMax),
     },
   };
 };

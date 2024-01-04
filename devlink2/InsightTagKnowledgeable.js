@@ -11,6 +11,7 @@ const _interactionsData = JSON.parse(
 export function InsightTagKnowledgeable({
   as: _Component = _Builtin.Block,
   experience = "--",
+  slotEducation,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -74,6 +75,12 @@ export function InsightTagKnowledgeable({
           {
             "Well-informed and possessing a broad understanding of relevant subjects. Capable of applying theoretical knowledge in practical situations."
           }
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "j-tags-wrapper")}
+          tag="div"
+        >
+          {slotEducation}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

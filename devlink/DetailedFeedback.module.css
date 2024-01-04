@@ -139,6 +139,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -335,17 +346,6 @@
   align-items: flex-start;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .job-sidebar-main-block {

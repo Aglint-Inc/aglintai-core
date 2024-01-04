@@ -40,7 +40,7 @@ const useUploadCandidate = () => {
           candidate_id: d1[0].id,
           job_id: job.id,
           resume: d2,
-        });
+        } as any);
         if (confirmation) {
           toast.success(
             'Job application created successfully. Processing will take some time.',

@@ -148,6 +148,17 @@
   text-align: center;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold.color-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -567,4 +578,11 @@
 .applicants-number.selected {
   background-color: var(--green100-8db28f70);
   color: var(--green700-a1b0a24f);
+}
+
+.status-connect {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

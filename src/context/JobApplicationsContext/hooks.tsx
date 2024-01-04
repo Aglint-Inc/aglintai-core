@@ -11,7 +11,6 @@ import toast from '@/src/utils/toast';
 
 import {
   JobApplication,
-  JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
   NewJobApplications,
@@ -147,9 +146,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
   }
 };
 
-const useProviderJobApplicationActions = (
-  job_id: string = undefined,
-): JobApplicationContext => {
+const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
@@ -164,6 +161,14 @@ const useProviderJobApplicationActions = (
   const paginationLimit = 100;
   const longPolling = 600000;
 
+  const initialJobLoad = recruiter?.id && jobLoad ? true : false;
+  const job = initialJobLoad
+    ? jobsData.jobs.find((job) => job.id === jobId)
+    : undefined;
+
+  const initialLoad =
+    initialJobLoad && applications !== undefined ? true : false;
+
   const initialJobApplicationPageNumbers = Object.values(
     JobApplicationSections,
   ).reduce((acc, curr) => {
@@ -173,19 +178,19 @@ const useProviderJobApplicationActions = (
   const [pageNumber, setPageNumber] = useState(
     initialJobApplicationPageNumbers,
   );
-  const ranges = Object.values(JobApplicationSections).reduce((acc, curr) => {
-    return {
-      ...acc,
-      [curr]: getRange(pageNumber[curr], paginationLimit),
-    };
-  }, {}) as ReadJobApplicationApi['request']['ranges'];
-  const initialJobLoad = recruiter?.id && jobLoad ? true : false;
-  const job = initialJobLoad
-    ? jobsData.jobs.find((job) => job.id === jobId)
-    : undefined;
+  const ranges = Object.values(JobApplicationSections)
+    .filter(
+      (section) =>
+        section !== JobApplicationSections.INTERVIEWING ||
+        (initialJobLoad && job.assessment),
+    )
+    .reduce((acc, curr) => {
+      return {
+        ...acc,
+        [curr]: getRange(pageNumber[curr], paginationLimit),
+      };
+    }, {}) as ReadJobApplicationApi['request']['ranges'];
 
-  const initialLoad =
-    initialJobLoad && applications !== undefined ? true : false;
   const [atsSync, setAtsSync] = useState(false);
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [openManualImportCandidates, setOpenManualImportCandidates] =
@@ -204,7 +209,7 @@ const useProviderJobApplicationActions = (
     },
     location: {
       name: null,
-      value: 50,
+      value: 10,
       active: false,
     },
   };
@@ -221,6 +226,9 @@ const useProviderJobApplicationActions = (
   const [applicationDisable, setApplicationDisable] = useState(false);
 
   const updateTick = useRef(false);
+
+  const showInterview =
+    section !== JobApplicationSections.NEW && initialJobLoad && job.assessment;
 
   //SECONDARY
   const handleJobApplicationCreate = async (inputData: JobApplication) => {
@@ -447,6 +455,10 @@ const useProviderJobApplicationActions = (
     parameters: Parameters,
     signal?: AbortSignal,
   ) => {
+    const prevParams = JSON.parse(
+      JSON.stringify(searchParameters),
+    ) as typeof searchParameters;
+    setSearchParameters({ ...parameters });
     setApplicationDisable(true);
     const { confirmation, count } = await handleJobApplicationRead(
       {
@@ -458,9 +470,9 @@ const useProviderJobApplicationActions = (
     );
     setApplicationDisable(false);
     if (confirmation) {
-      setSearchParameters({ ...parameters });
       return { confirmation: true, count: count };
     }
+    setSearchParameters({ ...prevParams });
     return {
       confirmation: false,
       // eslint-disable-next-line no-unused-vars
@@ -516,6 +528,7 @@ const useProviderJobApplicationActions = (
     section,
     setSection,
     longPolling,
+    showInterview,
   };
 
   return value;

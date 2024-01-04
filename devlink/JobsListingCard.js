@@ -29,6 +29,8 @@ export function JobsListingCard({
   slotInterviewIcon,
   isSourcingInterviewVisible = true,
   slotAtsBadge,
+  isStatusVisible = true,
+  textStatus = "This is some text inside of a div block.",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -191,6 +193,19 @@ export function JobsListingCard({
               {"Qualified"}
             </_Builtin.Block>
           </_Builtin.Block>
+          {isStatusVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "status-connect")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-grey-500")}
+                tag="div"
+              >
+                {textStatus}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey-500")}

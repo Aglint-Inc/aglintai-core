@@ -7,9 +7,10 @@ export function RcFormRadio({
   as: _Component = _Builtin.Block,
   onclickRadio = {},
   isClicked = false,
-  name = "Lever",
-  isImageAvailabe = false,
-  slotImage,
+  text = "Lever",
+  isImageAvailabe = true,
+  isTextVisible = false,
+  slotLogo,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-radio-btn-block")} tag="div">
@@ -34,10 +35,10 @@ export function RcFormRadio({
           className={_utils.cx(_styles, "sl-radio-image-block")}
           tag="div"
         >
-          {slotImage}
+          {slotLogo}
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block tag="div">{name}</_Builtin.Block>
+      {isTextVisible ? <_Builtin.Block tag="div">{text}</_Builtin.Block> : null}
     </_Component>
   );
 }

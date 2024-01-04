@@ -255,6 +255,11 @@
   opacity: 0.7;
 }
 
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;

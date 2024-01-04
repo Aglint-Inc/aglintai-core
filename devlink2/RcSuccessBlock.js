@@ -34,13 +34,15 @@ export function RcSuccessBlock({
         >
           {message}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Kickstart your hiring journey by posting your first job now."}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotButton}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "margin-top-14")}
+          tag="div"
+        >
+          {slotButton}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

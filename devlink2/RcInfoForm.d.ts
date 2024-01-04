@@ -6,4 +6,5 @@ declare function RcInfoForm(props: {
   slotLogo?: Types.Devlink.Slot;
   onclickChange?: Types.Devlink.RuntimeProps;
   slotForm?: Types.Devlink.Slot;
+  slotChangeLogoBtn?: Types.Devlink.Slot;
 }): React.JSX.Element;

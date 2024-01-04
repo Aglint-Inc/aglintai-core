@@ -1,7 +1,40 @@
 import { createContext, ReactNode, useContext } from 'react';
 
 import useProviderJobApplicationActions from './hooks';
-import { initialJobApplicationsContext } from './utils';
+import { JobApplicationContext } from './types';
+
+const initialJobApplicationsContext = {
+  applications: undefined,
+  applicationDisable: undefined,
+  defaultFilters: undefined,
+  setApplicationDisable: undefined,
+  paginationLimit: undefined,
+  atsSync: undefined,
+  job: undefined,
+  longPolling: 0,
+  pageNumber: undefined,
+  handleJobApplicationCreate: undefined,
+  handleJobApplicationBulkCreate: undefined,
+  handleJobApplicationRead: undefined,
+  handleJobApplicationRefresh: undefined,
+  handleJobApplicationPaginate: undefined,
+  handleJobApplicationUpdate: undefined,
+  handleJobApplicationBulkUpdate: undefined,
+  handleJobApplicationDelete: undefined,
+  handleJobApplicationError: undefined,
+  handleJobApplicationFilter: undefined,
+  searchParameters: undefined,
+  initialLoad: false,
+  openImportCandidates: false,
+  setOpenImportCandidates: undefined,
+  openManualImportCandidates: undefined,
+  setOpenManualImportCandidates: undefined,
+  handleUpdateJobStatus: undefined,
+  updateTick: undefined,
+  section: undefined,
+  setSection: undefined,
+  showInterview: false,
+};
 
 const JobApplicationsContext = createContext(initialJobApplicationsContext);
 
@@ -16,7 +49,7 @@ const JobApplicationProvider = ({ children }: { children: ReactNode }) => {
 
 export default JobApplicationProvider;
 
-export const useJobApplications = () => {
+export const useJobApplications = (): JobApplicationContext => {
   const value = useContext(JobApplicationsContext);
   return { ...value };
 };

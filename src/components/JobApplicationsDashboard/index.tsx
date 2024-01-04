@@ -36,7 +36,6 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
@@ -64,27 +63,16 @@ const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
   return initialLoad ? (
     job !== undefined ? (
-      <YTransformWrapper>
-        <JobApplicationComponent />
-      </YTransformWrapper>
+      <JobApplicationComponent />
     ) : (
-      <YTransform uniqueKey={initialLoad}>
-        <NotFoundPage />
-      </YTransform>
+      <NotFoundPage />
     )
   ) : (
-    <YTransformWrapper>
-      <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-        <Loader />
-      </Stack>
-    </YTransformWrapper>
+    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+      <Loader />
+    </Stack>
   );
 };
-const YTransformWrapper = ({ children }) => {
-  const { initialLoad } = useJobApplications();
-  return <YTransform uniqueKey={initialLoad}>{children}</YTransform>;
-};
-
 const JobApplicationComponent = () => {
   const {
     applications,
@@ -271,7 +259,9 @@ const ApplicationTable = ({
   currentApplication: number;
 }) => {
   const { recruiter } = useAuthDetails();
-  const { applicationDisable, section, job, atsSync } = useJobApplications();
+  const { applicationDisable, section, job, atsSync, showInterview } =
+    useJobApplications();
+
   const handleSelectAllMin = () => {
     if (!applicationDisable) {
       if (checkList.size === sectionApplications.length)
@@ -323,7 +313,7 @@ const ApplicationTable = ({
     <AllApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
       isAllChecked={isAllChecked}
-      isInterviewVisible={section !== JobApplicationSections.NEW}
+      isInterviewVisible={showInterview}
       slotCandidatesList={applicantsList}
     />
   ) : (
@@ -616,6 +606,7 @@ const NewJobDetailsTabs = ({
       onClickQualified={{
         onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
       }}
+      isAssessmentVisible={job.assessment}
     />
   );
 };
@@ -638,7 +629,7 @@ const ApplicantsList = ({
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
-  const { applicationDisable, section } = useJobApplications();
+  const { applicationDisable, showInterview } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
 
@@ -732,7 +723,7 @@ const ApplicantsList = ({
                 index={i}
                 checkList={checkList}
                 handleSelect={handleSelect}
-                isInterview={section !== JobApplicationSections.NEW}
+                isInterview={showInterview}
                 handleOpenDetails={() => handleSelectCurrentApplication(i)}
                 isSelected={currentApplication === i}
               />
@@ -817,7 +808,8 @@ const ActionBar = ({
 
   const isChecked = checkList.size !== 0;
   const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
-  const showInterview = isChecked && section === JobApplicationSections.NEW;
+  const showInterview =
+    isChecked && section === JobApplicationSections.NEW && job.assessment;
   const showSelected =
     isChecked &&
     (section === JobApplicationSections.NEW ||

@@ -248,7 +248,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
             >
               <Loader />
               <UITypography color='grey.600'>
-                Fetching company info from the website
+                Hold on, Fetching company info from the website.
               </UITypography>
             </Stack>
           ) : (

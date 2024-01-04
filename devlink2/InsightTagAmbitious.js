@@ -29,7 +29,7 @@ export function InsightTagAmbitious({
           alt=""
           src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65672e8bf8a50097d8406d88_%F0%9F%8E%AF.svg"
         />
-        <_Builtin.Block tag="div">{"Ambitious"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"Career Growth"}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "insight-detail")}
@@ -58,7 +58,7 @@ export function InsightTagAmbitious({
             className={_utils.cx(_styles, "fw-semibold", "text-color-black")}
             tag="div"
           >
-            {"Ambitious"}
+            {"Career Growth"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

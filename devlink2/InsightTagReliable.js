@@ -29,7 +29,7 @@ export function InsightTagReliable({
           alt=""
           src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65672e1d5d1a6fef3c3f8b29_%F0%9F%A4%9D.svg"
         />
-        <_Builtin.Block tag="div">{"Reliable"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"Job Stability"}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "insight-detail")}
@@ -58,7 +58,7 @@ export function InsightTagReliable({
             className={_utils.cx(_styles, "fw-semibold", "text-color-black")}
             tag="div"
           >
-            {"Reliable"}
+            {"Job Stability"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

@@ -159,6 +159,10 @@
   z-index: 1;
 }
 
+.color-white {
+  color: var(--white-80449ce7);
+}
+
 .video-icon-wrapper {
   position: absolute;
   left: 11px;
@@ -203,6 +207,10 @@
   opacity: 0.7;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
 .edit-delete-wrappers {
   display: flex;
   align-items: center;
@@ -212,10 +220,6 @@
 
 .color-grey-600 {
   color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .color-grey-600.max-width-350 {

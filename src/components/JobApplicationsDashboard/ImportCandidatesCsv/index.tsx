@@ -66,7 +66,7 @@ function ImportCandidatesCSV() {
     const { data, error } = await handleUploadCandidates(candidates, job.id);
     if (data && data.finalPayload && data.finalPayload.length !== 0) {
       const confirmation = await handleJobApplicationBulkCreate(
-        data.finalPayload,
+        data.finalPayload as any,
       );
       if (confirmation)
         toast.success(

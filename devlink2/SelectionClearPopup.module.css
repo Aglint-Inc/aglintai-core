@@ -95,6 +95,17 @@
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .text-grey-600.mobile-12 {
     font-size: 12px;
@@ -103,6 +114,7 @@
 
 .flex-h {
   display: flex;
+  flex-wrap: wrap;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
 }
