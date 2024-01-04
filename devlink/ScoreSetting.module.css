@@ -30,6 +30,10 @@
   background-color: var(--grey200-9ba653f1);
 }
 
+.indicator-box.purple {
+  background-color: #886bd8;
+}
+
 .score-outer-wrap {
   display: flex;
   width: 100%;

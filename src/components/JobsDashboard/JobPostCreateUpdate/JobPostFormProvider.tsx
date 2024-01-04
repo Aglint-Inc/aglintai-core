@@ -53,6 +53,17 @@ export type EmailDetails = {
   subject: string;
 };
 
+export type jsonItemType = {
+  field: string;
+  isMustHave: boolean;
+};
+
+export type JdJsonType = {
+  rolesResponsibilities: jsonItemType[];
+  skills: jsonItemType[];
+  educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
+};
+
 type EmailTemplate = Record<string, EmailDetails>;
 export type FormJobType = {
   jobTitle: string;
@@ -91,6 +102,7 @@ export type FormJobType = {
     };
     feedbackVisible: boolean;
   };
+  jdJson: JdJsonType;
   resumeScoreSettings: ScoreWheelParams;
   defaultWorkPlaceTypes: dropDownOption[];
   defaultDepartments: AutoCompleteType[];
@@ -342,20 +354,25 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           status: 'saving',
         },
       });
+
       const updatedJobDb = await saveJobPostToDb(currState);
-      const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
-      handleUIJobReplace({
-        ...updatedJobDb,
-        active_status: updatedJobDb.active_status as unknown as StatusJobs,
-        count: uiJob
-          ? uiJob.count
-          : {
-              new: 0,
-              interviewing: 0,
-              qualified: 0,
-              disqualified: 0,
-            },
-      });
+
+      //randomly .jobs was not initilised temp soln
+      if (jobsData.jobs) {
+        const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
+        handleUIJobReplace({
+          ...updatedJobDb,
+          active_status: updatedJobDb.active_status as unknown as StatusJobs,
+          count: uiJob
+            ? uiJob.count
+            : {
+                new: 0,
+                interviewing: 0,
+                qualified: 0,
+                disqualified: 0,
+              },
+        });
+      }
 
       if (get(currState, 'createdAt', undefined) === undefined) {
         dispatch({

@@ -1,12 +1,14 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScoreCard } from "./ScoreCard";
+import { ScoreWeightage } from "./ScoreWeightage";
 import * as _utils from "./utils";
 import _styles from "./ScoreSetting.module.css";
 
 export function ScoreSetting({
   as: _Component = _Builtin.Block,
   slotScoreCardDetails,
+  slotScoreWeight,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "score-setting-wrap")} tag="div">
@@ -42,7 +44,12 @@ export function ScoreSetting({
         >
           {slotScoreCardDetails ?? <ScoreCard />}
         </_Builtin.Block>
-        <_Builtin.Block tag="div" />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "right-score-wrap")}
+          tag="div"
+        >
+          {slotScoreWeight ?? <ScoreWeightage />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

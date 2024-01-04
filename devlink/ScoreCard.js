@@ -12,6 +12,7 @@ export function ScoreCard({
   textAddButton = "Add required skills",
   textHeading = "Skills",
   colorPropsHeading = {},
+  slotAddCard,
 }) {
   return (
     <_Component
@@ -35,6 +36,12 @@ export function ScoreCard({
             <ScorePillMust />
           </>
         )}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "add-skill-required")}
+        tag="div"
+      >
+        {slotAddCard}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "add-button-wrap")}

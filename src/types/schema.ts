@@ -486,11 +486,12 @@ export interface Database {
           candidate_id: string | null
           created_at: string
           id: string
+          is_resume_fetching: boolean
           job_id: string
           overall_score: number | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
-          score_json: Json
+          score_json: Json | null
           status: Database["public"]["Enums"]["application_status"]
           status_emails_sent: Json
         }
@@ -500,11 +501,12 @@ export interface Database {
           candidate_id?: string | null
           created_at?: string
           id?: string
+          is_resume_fetching?: boolean
           job_id: string
           overall_score?: number | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
-          score_json: Json
+          score_json?: Json | null
           status?: Database["public"]["Enums"]["application_status"]
           status_emails_sent?: Json
         }
@@ -514,11 +516,12 @@ export interface Database {
           candidate_id?: string | null
           created_at?: string
           id?: string
+          is_resume_fetching?: boolean
           job_id?: string
           overall_score?: number | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
-          score_json?: Json
+          score_json?: Json | null
           status?: Database["public"]["Enums"]["application_status"]
           status_emails_sent?: Json
         }
@@ -618,7 +621,7 @@ export interface Database {
           geolocation?: unknown | null
           id?: string
           last_name?: string | null
-          last_updated: string
+          last_updated?: string
           recruiter_id: string
           state?: string | null
           update_from: string
@@ -783,6 +786,7 @@ export interface Database {
           intro_videos: Json | null
           is_ats_sync: boolean
           jd_json: Json | null
+          jd_json_2: Json | null
           job_criteria: Json | null
           job_title: string | null
           job_type: string | null
@@ -819,6 +823,7 @@ export interface Database {
           intro_videos?: Json | null
           is_ats_sync?: boolean
           jd_json?: Json | null
+          jd_json_2?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: string | null
@@ -855,6 +860,7 @@ export interface Database {
           intro_videos?: Json | null
           is_ats_sync?: boolean
           jd_json?: Json | null
+          jd_json_2?: Json | null
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: string | null
@@ -1524,6 +1530,10 @@ export interface Database {
           status: string
           count: number
         }[]
+      }
+      greenhousecandidatesync: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       interviewing_state_active: {
         Args: Record<PropertyKey, never>

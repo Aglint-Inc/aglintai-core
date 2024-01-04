@@ -149,6 +149,11 @@ export const getSeedJobFormData = (
         },
       },
       assessment: false,
+      jdJson: {
+        educations: [],
+        rolesResponsibilities: [],
+        skills: [],
+      },
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -330,6 +335,7 @@ export const dbToClientjobPostForm = (
       interviewSetting:
         jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
       assessment: jobPost.assessment || false,
+      jdJson: (jobPost.jd_json_2 as any) || seedData.formFields.jdJson,
     },
     jobPostStatus: jobPostStatus as any,
   };

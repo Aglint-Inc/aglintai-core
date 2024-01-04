@@ -363,9 +363,9 @@ function JobForm() {
                   onClickCloseJob={{
                     onClick: () => setShowDraftPopup(true),
                   }}
+                  isCloseJob={false}
                   isDeleteJob={true}
                   isTextVisible={false}
-                  isCloseJob={false}
                 />
               )}
 
