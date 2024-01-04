@@ -112,6 +112,12 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     alt=''
                   />
                 }
+                isJobWarningVisible={
+                  job.status == 'published' &&
+                  (!job.jd_json || !job.description)
+                    ? true
+                    : false
+                }
                 textPostedDate={
                   'Posted ' + calculateTimeDifference(job.created_at)
                 }
