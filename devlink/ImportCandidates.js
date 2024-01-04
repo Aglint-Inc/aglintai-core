@@ -44,6 +44,7 @@ export function ImportCandidates({
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "ic-tab-link-block")}
             data-w-tab="Tab 1"
+            block="inline"
             {...onClickImportCsv}
           >
             <_Builtin.Block
@@ -56,6 +57,7 @@ export function ImportCandidates({
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "ic-tab-link-block")}
             data-w-tab="Tab 2"
+            block="inline"
             {...onClickImportResume}
           >
             <_Builtin.Block
@@ -68,6 +70,7 @@ export function ImportCandidates({
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "ic-tab-link-block")}
             data-w-tab="Tab 3"
+            block="inline"
             {...onClickAddManually}
           >
             <_Builtin.Block

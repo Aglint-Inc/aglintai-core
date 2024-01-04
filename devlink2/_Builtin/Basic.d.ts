@@ -30,6 +30,7 @@ export type LinkProps = Props<
     };
     className?: string;
     button?: boolean;
+    block?: string;
   }
 >;
 export declare const Link: ({
@@ -37,6 +38,7 @@ export declare const Link: ({
   className,
   button,
   children,
+  block,
   ...props
 }: LinkProps) => React.JSX.Element;
 type ListProps = Props<

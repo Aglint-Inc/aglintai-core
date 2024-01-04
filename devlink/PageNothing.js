@@ -81,6 +81,7 @@ export function PageNothing({ as: _Component = _Builtin.Block }) {
               <_Builtin.Link
                 className={_utils.cx(_styles, "tools-link")}
                 button={false}
+                block="inline"
                 options={{
                   href: "/dashboard",
                 }}
@@ -91,6 +92,7 @@ export function PageNothing({ as: _Component = _Builtin.Block }) {
               <_Builtin.Link
                 className={_utils.cx(_styles, "tools-link")}
                 button={false}
+                block="inline"
                 options={{
                   href: "mailto:support@alignthq.com?subject=Contact%20Aglint",
                 }}

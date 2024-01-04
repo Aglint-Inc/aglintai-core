@@ -54,6 +54,7 @@ export function JobDetails({
             <_Builtin.Link
               className={_utils.cx(_styles, "link-block", "bold-text-mobile")}
               button={false}
+              block="inline"
               options={{
                 href: "#",
               }}
@@ -112,6 +113,7 @@ export function JobDetails({
                   "clickable"
                 )}
                 button={false}
+                block="inline"
                 options={jobLink}
               >
                 <_Builtin.Block

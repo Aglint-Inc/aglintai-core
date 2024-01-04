@@ -130,6 +130,7 @@ export function CompanyListing({
               <_Builtin.Link
                 className={_utils.cx(_styles, "header-menu-wrappers")}
                 button={false}
+                block="inline"
                 options={{
                   href: "#open-job",
                 }}
@@ -144,6 +145,7 @@ export function CompanyListing({
               <_Builtin.Link
                 className={_utils.cx(_styles, "header-menu-wrappers")}
                 button={false}
+                block="inline"
                 options={{
                   href: "#about",
                 }}
@@ -164,6 +166,7 @@ export function CompanyListing({
               <_Builtin.Link
                 className={_utils.cx(_styles, "header-menu-wrappers", "hide")}
                 button={false}
+                block="inline"
                 options={{
                   href: "#gallery",
                 }}
@@ -178,6 +181,7 @@ export function CompanyListing({
               <_Builtin.Link
                 className={_utils.cx(_styles, "header-menu-wrappers")}
                 button={false}
+                block="inline"
                 options={{
                   href: "#office-location",
                 }}

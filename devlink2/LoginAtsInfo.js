@@ -38,9 +38,6 @@ export function LoginAtsInfo({
         )}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-414")} tag="div">
-        <_Builtin.Block tag="div">
-          {"Kindly provide the name of the ATS system you are using."}
-        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-389")}
           tag="div"

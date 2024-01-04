@@ -31,6 +31,7 @@ export function NavMenuBottom({
           className={_utils.cx(_styles, "nav_sublink", "hide")}
           button={false}
           id="cover-letter"
+          block="inline"
           options={{
             href: "/notifications",
           }}
@@ -58,6 +59,7 @@ export function NavMenuBottom({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="cover-letter"
+        block="inline"
         options={{
           href: "/company",
         }}
@@ -100,6 +102,7 @@ export function NavMenuBottom({
         <_Builtin.Link
           className={_utils.cx(_styles, "rd-menu-profile-block")}
           button={false}
+          block="inline"
           options={{
             href: "/profile",
           }}

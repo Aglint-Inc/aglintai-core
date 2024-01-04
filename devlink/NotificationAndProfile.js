@@ -24,6 +24,7 @@ export function NotificationAndProfile({
       <_Builtin.Link
         className={_utils.cx(_styles, "nav_mainlink_mobile", "negative")}
         button={false}
+        block="inline"
         options={{
           href: "/notifications",
         }}
@@ -50,6 +51,7 @@ export function NotificationAndProfile({
       <_Builtin.Link
         className={_utils.cx(_styles, "nav_mainlink_mobile")}
         button={false}
+        block="inline"
         options={{
           href: "/profile",
         }}

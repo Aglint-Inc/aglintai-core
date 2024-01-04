@@ -16,6 +16,7 @@ export function SublinksInterview({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="mock-interview"
+        block="inline"
         options={{
           href: "/interview",
         }}
@@ -41,6 +42,7 @@ export function SublinksInterview({
       <_Builtin.Link
         className={_utils.cx(_styles, "nav_sublink", "hide")}
         button={false}
+        block="inline"
         options={{
           href: "/interview/history",
         }}

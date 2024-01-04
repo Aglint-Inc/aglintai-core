@@ -43,6 +43,7 @@ export function SidemenuLeft({
           <_Builtin.Link
             className={_utils.cx(_styles, "sidemenu_favicon")}
             button={false}
+            block="inline"
             options={{
               href: "/dashboard",
             }}
@@ -61,6 +62,7 @@ export function SidemenuLeft({
               className={_utils.cx(_styles, "nav_mainlink")}
               button={false}
               id="dashboard"
+              block="inline"
               options={{
                 href: "/dashboard",
               }}
@@ -93,6 +95,7 @@ export function SidemenuLeft({
               className={_utils.cx(_styles, "nav_mainlink")}
               button={false}
               id="job"
+              block="inline"
               options={{
                 href: "/jobs",
               }}
@@ -125,6 +128,7 @@ export function SidemenuLeft({
               className={_utils.cx(_styles, "nav_mainlink")}
               button={false}
               id="resume"
+              block="inline"
               options={{
                 href: "/resume",
               }}
@@ -159,6 +163,7 @@ export function SidemenuLeft({
               className={_utils.cx(_styles, "nav_mainlink")}
               button={false}
               id="interview"
+              block="inline"
               options={{
                 href: "/interview",
               }}
@@ -191,6 +196,7 @@ export function SidemenuLeft({
               className={_utils.cx(_styles, "nav_mainlink")}
               button={false}
               id="coach"
+              block="inline"
               options={{
                 href: "/career-coach",
               }}
@@ -236,6 +242,7 @@ export function SidemenuLeft({
           <_Builtin.Link
             className={_utils.cx(_styles, "nav_mainlink")}
             button={false}
+            block="inline"
             options={{
               href: "/settings",
             }}
@@ -267,6 +274,7 @@ export function SidemenuLeft({
             className={_utils.cx(_styles, "nav_mainlink", "negative")}
             button={false}
             id="notification"
+            block="inline"
             options={{
               href: "/notifications",
             }}
@@ -322,6 +330,7 @@ export function SidemenuLeft({
                   className={_utils.cx(_styles, "aui_profile_link")}
                   button={false}
                   id="view-profile"
+                  block="inline"
                   options={{
                     href: "/profile",
                   }}

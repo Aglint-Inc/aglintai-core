@@ -144,6 +144,7 @@ export function ModalDanger({
                     "w-node-_9b1d8b98-bdd6-5097-f16f-6720ac94f870-ac94f859"
                   )}
                   button={true}
+                  block=""
                   options={{
                     href: "https://www.finsweet.com/attributes/modal",
                     target: "_blank",
@@ -158,6 +159,7 @@ export function ModalDanger({
                     "w-node-_9b1d8b98-bdd6-5097-f16f-6720ac94f872-ac94f859"
                   )}
                   button={true}
+                  block=""
                   options={{
                     href: "https://www.finsweet.com/attributes/modal",
                     target: "_blank",

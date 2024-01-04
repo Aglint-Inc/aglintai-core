@@ -18,6 +18,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="search-job"
+        block="inline"
         options={{
           href: "/jobs",
         }}
@@ -44,6 +45,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="job-tracker"
+        block="inline"
         options={{
           href: "/jobs/tracker",
         }}
@@ -70,6 +72,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="email-follow"
+        block="inline"
         options={{
           href: "/jobs/email-followup",
         }}
@@ -96,6 +99,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="reminder"
+        block="inline"
         options={{
           href: "/jobs/reminder",
         }}
@@ -122,6 +126,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="contacts"
+        block="inline"
         options={{
           href: "/jobs/contacts",
         }}
@@ -148,6 +153,7 @@ export function SublinksJobs({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="organisation"
+        block="inline"
         options={{
           href: "/jobs/organisation",
         }}

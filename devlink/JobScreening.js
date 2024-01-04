@@ -59,6 +59,7 @@ export function JobScreening({
             <_Builtin.Link
               className={_utils.cx(_styles, "link-block")}
               button={false}
+              block="inline"
               options={{
                 href: "#",
               }}
@@ -175,6 +176,7 @@ export function JobScreening({
                     <_Builtin.Link
                       className={_utils.cx(_styles, "link-block-3")}
                       button={false}
+                      block="inline"
                       options={{
                         href: "#",
                       }}
@@ -264,6 +266,7 @@ export function JobScreening({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "cdd-tab-link", "all")}
                 data-w-tab="Tab 1"
+                block="inline"
                 {...onClickAllApplicant}
               >
                 <_Builtin.Block
@@ -304,6 +307,7 @@ export function JobScreening({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "cdd-tab-link", "job-post")}
                 data-w-tab="Tab 2"
+                block="inline"
                 {...onClickViewJobPost}
               >
                 <_Builtin.Block
@@ -348,6 +352,7 @@ export function JobScreening({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "cdd-tab-link", "screening")}
                 data-w-tab="Tab 3"
+                block="inline"
                 {...onClickScreening}
               >
                 <_Builtin.Block
@@ -397,6 +402,7 @@ export function JobScreening({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "cdd-tab-link", "shortlisted")}
                 data-w-tab="Tab 4"
+                block="inline"
                 {...onClickShortlisted}
               >
                 <_Builtin.Block
@@ -442,6 +448,7 @@ export function JobScreening({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "cdd-tab-link", "selected")}
                 data-w-tab="Tab 5"
+                block="inline"
                 {...onClickSelected}
               >
                 <_Builtin.Block

@@ -91,6 +91,7 @@ export function CandidateDatabaseComingSoon({
           </_Builtin.Block>
           <_Builtin.Link
             button={false}
+            block="inline"
             options={{
               href: "mailto:customersuccess@aglinthq.com",
             }}

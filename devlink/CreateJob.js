@@ -194,6 +194,7 @@ export function CreateJob({
       <_Builtin.Link
         className={_utils.cx(_styles, "request-wrap")}
         button={false}
+        block="inline"
         options={{
           href: "mailto:admin@aglinthq.com?subject=Request%20Integration",
         }}

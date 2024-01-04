@@ -95,6 +95,7 @@ export function InterviewStart({
           <_Builtin.Link
             className={_utils.cx(_styles, "terms-link-wrapper")}
             button={false}
+            block="inline"
             options={{
               href: "https://www.aglinthq.com/terms",
             }}

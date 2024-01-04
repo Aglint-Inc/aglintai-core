@@ -62,6 +62,7 @@ export function JobScreening({
             <_Builtin.Link
               className={_utils.cx(_styles, "link-block", "bold-text-mobile")}
               button={false}
+              block="inline"
               options={linkActiveJobs}
             >
               <_Builtin.Block
@@ -113,7 +114,7 @@ export function JobScreening({
                 {textApplicantsNumber}
               </_Builtin.Block>
               {isPreviewVisible ? (
-                <_Builtin.Link button={false} options={jobLink}>
+                <_Builtin.Link button={false} block="inline" options={jobLink}>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "text-blue-500")}
                     tag="div"

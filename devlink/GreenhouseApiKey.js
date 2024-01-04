@@ -124,6 +124,7 @@ export function GreenhouseApiKey({
         <_Builtin.Link
           className={_utils.cx(_styles, "text-link-lever")}
           button={false}
+          block=""
           options={{
             href: "https://support.greenhouse.io/hc/en-us/articles/360003470371-Generate-a-Greenhouse-Onboarding-API-key#:~:text=To%20create%20a%20new%20API,Click%20Create.",
             target: "_blank",

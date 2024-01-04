@@ -92,6 +92,7 @@ export function PwResetConfirm({
           <_Builtin.Link
             className={_utils.cx(_styles, "sl-link")}
             button={false}
+            block=""
             options={contactLink}
           >
             {"Contact Support"}

@@ -44,6 +44,7 @@ export function ResetPassword({
         <_Builtin.Link
           className={_utils.cx(_styles, "back-link")}
           button={false}
+          block="inline"
           options={{
             href: "/login",
           }}

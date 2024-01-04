@@ -165,6 +165,7 @@ export function WelcomeSlider2({
                 <_Builtin.Link
                   className={_utils.cx(_styles, "forgot-password-link")}
                   button={false}
+                  block="inline"
                   options={{
                     href: "/forgot-password",
                   }}

@@ -16,6 +16,7 @@ export function SublinksCoach({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="ask-coach"
+        block="inline"
         options={{
           href: "/career-coach",
         }}
@@ -42,6 +43,7 @@ export function SublinksCoach({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="my-coach"
+        block="inline"
         options={{
           href: "/career-coach/my-coach",
         }}
@@ -68,6 +70,7 @@ export function SublinksCoach({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="suggesteed-coach"
+        block="inline"
         options={{
           href: "/career-coach/suggetions",
         }}
@@ -94,6 +97,7 @@ export function SublinksCoach({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="plan-details"
+        block="inline"
         options={{
           href: "/career-coach/plan",
         }}

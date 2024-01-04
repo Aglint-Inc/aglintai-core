@@ -44,6 +44,7 @@ export function SignupSlider({
                 <_Builtin.Link
                   className={_utils.cx(_styles, "ju-redirect-link")}
                   button={false}
+                  block=""
                   options={{
                     href: "#",
                   }}

@@ -3413,6 +3413,7 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 1"
+              block="inline"
               {...onClickCompanyInfo}
             >
               <_Builtin.Block
@@ -3425,6 +3426,7 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 2"
+              block="inline"
               {...onClickCompanyJd}
             >
               <_Builtin.Block
@@ -3437,6 +3439,7 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 3"
+              block="inline"
               {...onClickEmailTemplate}
             >
               <_Builtin.Block
@@ -3450,6 +3453,7 @@ export function CompanySetting({
               <_Builtin.TabsLink
                 className={_utils.cx(_styles, "company-tab-link")}
                 data-w-tab="Tab 4"
+                block="inline"
                 {...onClickTeam}
               >
                 <_Builtin.Block
@@ -3463,6 +3467,7 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 5"
+              block="inline"
               {...onclickAssessment}
             >
               <_Builtin.Block
@@ -3493,6 +3498,7 @@ export function CompanySetting({
             <_Builtin.TabsLink
               className={_utils.cx(_styles, "company-tab-link")}
               data-w-tab="Tab 6"
+              block="inline"
               {...onclickAssisstant}
             >
               <_Builtin.Block

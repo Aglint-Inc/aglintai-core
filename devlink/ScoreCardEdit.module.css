@@ -1,0 +1,104 @@
+.score-edit-card {
+  width: 360px;
+  padding: 15px;
+  border: 1px solid #e9ebed;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.edit-desc-wrap {
+  overflow: scroll;
+  max-height: 88px;
+  padding: 15px 15px 20px;
+  border-radius: 4px;
+  background-color: #f8f9f9;
+}
+
+.div-block-662 {
+  display: flex;
+  margin-top: 9px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
+}

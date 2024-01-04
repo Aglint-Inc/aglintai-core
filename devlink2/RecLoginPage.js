@@ -186,6 +186,7 @@ export function RecLoginPage({
           <_Builtin.Link
             className={_utils.cx(_styles, "sl-link")}
             button={false}
+            block=""
             options={contactLink}
           >
             {"Contact Support"}

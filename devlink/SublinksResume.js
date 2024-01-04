@@ -17,6 +17,7 @@ export function SublinksResume({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="my-resume"
+        block="inline"
         options={{
           href: "/resume",
         }}
@@ -43,6 +44,7 @@ export function SublinksResume({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="cover-letter"
+        block="inline"
         options={{
           href: "/cover-letter",
         }}
@@ -68,6 +70,7 @@ export function SublinksResume({
       <_Builtin.Link
         className={_utils.cx(_styles, "nav_sublink", "hide")}
         button={false}
+        block="inline"
         options={{
           href: "/favorites",
         }}
@@ -94,6 +97,7 @@ export function SublinksResume({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="jd"
+        block="inline"
         options={{
           href: "/resume/jd-match",
         }}
@@ -120,6 +124,7 @@ export function SublinksResume({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="resume-analysis"
+        block="inline"
         options={{
           href: "/resume/analysis",
         }}

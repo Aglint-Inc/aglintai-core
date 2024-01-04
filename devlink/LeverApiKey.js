@@ -123,6 +123,7 @@ export function LeverApiKey({
         <_Builtin.Link
           className={_utils.cx(_styles, "text-link-lever")}
           button={false}
+          block=""
           options={{
             href: "https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials",
             target: "_blank",

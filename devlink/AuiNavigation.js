@@ -13,6 +13,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
         <_Builtin.Link
           className={_utils.cx(_styles, "nav-logo")}
           button={false}
+          block="inline"
           options={{
             href: "#",
           }}
@@ -32,6 +33,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
           <_Builtin.Link
             className={_utils.cx(_styles, "aui-link")}
             button={false}
+            block=""
             options={{
               href: "#",
             }}
@@ -41,6 +43,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
           <_Builtin.Link
             className={_utils.cx(_styles, "aui-link")}
             button={false}
+            block=""
             options={{
               href: "#",
             }}
@@ -50,6 +53,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
           <_Builtin.Link
             className={_utils.cx(_styles, "aui-link")}
             button={false}
+            block=""
             options={{
               href: "#",
             }}
@@ -59,6 +63,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
           <_Builtin.Link
             className={_utils.cx(_styles, "aui-link")}
             button={false}
+            block=""
             options={{
               href: "#",
             }}
@@ -68,6 +73,7 @@ export function AuiNavigation({ as: _Component = _Builtin.Block }) {
           <_Builtin.Link
             className={_utils.cx(_styles, "aui-link")}
             button={false}
+            block=""
             options={{
               href: "#",
             }}

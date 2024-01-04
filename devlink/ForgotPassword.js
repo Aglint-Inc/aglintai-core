@@ -54,6 +54,7 @@ export function ForgotPassword({
             "text-underline-none"
           )}
           button={false}
+          block="inline"
           options={{
             href: "/signup?step=signin",
           }}

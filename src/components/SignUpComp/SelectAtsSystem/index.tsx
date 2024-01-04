@@ -133,7 +133,7 @@ function SelectAtsSystem() {
                     <>
                       <YTransform uniqueKey={selectedObject}>
                         <Stack spacing={'13px'}>
-                          <UITypography fontBold={'normal'}>
+                          <UITypography variant='body1' >
                             Kindly provide the name of the ATS system you are
                             using.
                           </UITypography>

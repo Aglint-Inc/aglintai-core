@@ -31,7 +31,7 @@ export function JobsListingCard({
   slotAtsBadge,
   isStatusVisible = true,
   textStatus = "This is some text inside of a div block.",
-  isJobWarningVisible = false,
+  isJobWarningVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 

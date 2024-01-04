@@ -17,6 +17,7 @@ export function SideNavMenu({
         className={_utils.cx(_styles, "nav_sublink")}
         button={false}
         id="jd"
+        block="inline"
         options={{
           href: "/candidates",
         }}

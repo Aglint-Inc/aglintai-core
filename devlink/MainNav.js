@@ -44,6 +44,7 @@ export function MainNav({
           <_Builtin.Link
             className={_utils.cx(_styles, "sign-slots")}
             button={false}
+            block="inline"
             options={{
               href: "#",
             }}

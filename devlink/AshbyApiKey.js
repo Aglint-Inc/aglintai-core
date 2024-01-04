@@ -119,6 +119,7 @@ export function AshbyApiKey({
         <_Builtin.Link
           className={_utils.cx(_styles, "text-link-lever")}
           button={false}
+          block=""
           options={{
             href: "https://support.rectxt.com/en/articles/6746802-finding-your-ashby-api-key",
             target: "_blank",

@@ -142,6 +142,7 @@ export function SignUpPage({
             <_Builtin.Link
               className={_utils.cx(_styles, "sign-up-now-link")}
               button={false}
+              block="inline"
               options={{
                 href: "/login",
               }}

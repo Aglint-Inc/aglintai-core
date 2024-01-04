@@ -73,6 +73,7 @@ export declare function DropdownLink({
       | undefined;
     className?: string | undefined;
     button?: boolean | undefined;
+    block?: string | undefined;
   }
 >;
 export {};

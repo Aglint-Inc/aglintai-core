@@ -296,6 +296,7 @@ export function InterviewWelcome({
                 <_Builtin.Link
                   className={_utils.cx(_styles, "terms-link")}
                   button={false}
+                  block=""
                   options={{
                     href: "https://www.aglinthq.com/terms",
                     target: "_blank",
@@ -1388,6 +1389,7 @@ export function InterviewWelcome({
                 <_Builtin.Link
                   className={_utils.cx(_styles, "contact-support")}
                   button={false}
+                  block=""
                   options={{
                     href: "#",
                   }}

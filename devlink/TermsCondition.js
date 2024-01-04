@@ -46,6 +46,7 @@ export function TermsCondition({
       <_Builtin.Link
         className={_utils.cx(_styles, "links-forgot")}
         button={false}
+        block="inline"
         options={{
           href: "https://www.aglinthq.com/terms",
           target: "_blank",

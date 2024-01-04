@@ -12,6 +12,7 @@ export function NavMenu({ as: _Component = _Builtin.Block }) {
       <_Builtin.Link
         className={_utils.cx(_styles, "subnav-link")}
         button={false}
+        block="inline"
         options={{
           href: "#",
         }}
@@ -35,6 +36,7 @@ export function NavMenu({ as: _Component = _Builtin.Block }) {
       <_Builtin.Link
         className={_utils.cx(_styles, "subnav-link")}
         button={false}
+        block="inline"
         options={{
           href: "#",
         }}
@@ -58,6 +60,7 @@ export function NavMenu({ as: _Component = _Builtin.Block }) {
       <_Builtin.Link
         className={_utils.cx(_styles, "subnav-link", "current")}
         button={false}
+        block="inline"
         options={{
           href: "#",
         }}

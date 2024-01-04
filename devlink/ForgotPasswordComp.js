@@ -46,6 +46,7 @@ export function ForgotPasswordComp({
       <_Builtin.Link
         className={_utils.cx(_styles, "links-forgot")}
         button={false}
+        block="inline"
         options={{
           href: "/forgot-password",
         }}
