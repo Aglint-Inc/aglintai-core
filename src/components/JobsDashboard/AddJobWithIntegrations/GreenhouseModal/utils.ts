@@ -160,7 +160,7 @@ export const createJobApplications = async (
   );
 };
 
-const fetchAllCandidates = async (
+export const fetchAllCandidates = async (
   post_id: string,
   apiKey: string,
 ): Promise<GreenhouseApplication[]> => {
@@ -231,7 +231,7 @@ export const fetchAllJobs = async (
 };
 
 export const createJobObject = async (
-  selectedPostings: JobGreenhouse[],
+  selectedPostings: ExtendedJobGreenhouse[],
   recruiter: RecruiterDB,
 ): Promise<Partial<JobApplcationDB> & { recruiter_id: string }[]> => {
   const dbJobs = selectedPostings.map((post) => {
@@ -252,6 +252,7 @@ export const createJobObject = async (
         education: 5,
         experience: 50,
       },
+      id: post.public_job_id,
     };
   });
   return dbJobs;
@@ -267,7 +268,7 @@ export function getLeverStatusColor(state: string): string {
         : '#d93f4c';
 }
 
-function extractLinkedInURLGreenhouse(item: string): string {
+export function extractLinkedInURLGreenhouse(item: string): string {
   // Check if the item starts with "http://linkedin.com" or "https://linkedin.com"
   if (
     item.startsWith('http://linkedin.com') ||

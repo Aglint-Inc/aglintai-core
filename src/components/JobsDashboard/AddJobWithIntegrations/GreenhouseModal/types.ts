@@ -40,6 +40,7 @@ export interface JobGreenhouse {
 export interface ExtendedJobGreenhouse extends JobGreenhouse {
   public_job_id: string;
   recruiter_id: string;
+  ats_job_id: string;
 }
 
 type Attachment = {

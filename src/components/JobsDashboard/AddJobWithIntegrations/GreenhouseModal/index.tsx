@@ -3,6 +3,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   AtsCard,
@@ -87,11 +88,18 @@ export function GreenhouseModal() {
         ...prev,
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       }));
+
+      const refJobsObj = selectedGreenhousePostings.map((post) => {
+        return {
+          ...post,
+          public_job_id: uuidv4(),
+          ats_job_id: post.job_id,
+          recruiter_id: recruiter.id,
+          ats_json: post, //used saving the whole job posting from greenhouse
+        };
+      });
       //converting greenhouse jobs to db jobs
-      const dbJobs = await createJobObject(
-        selectedGreenhousePostings,
-        recruiter,
-      );
+      const dbJobs = await createJobObject(refJobsObj, recruiter);
 
       const { data: newJobs, error } = await supabase
         .from('public_jobs')
@@ -125,6 +133,18 @@ export function GreenhouseModal() {
             recruiter_id: recruiter.id,
           };
         }) as unknown as ExtendedJobGreenhouse[];
+
+        const astJobsObj = refJobsObj.map((post) => {
+          return {
+            ats_json: post.ats_json as any,
+            public_job_id: post.public_job_id,
+            recruiter_id: recruiter.id,
+            ats_job_id: post.ats_job_id, //saving job posting id from ashby
+            ats: 'greenhouse',
+          };
+        });
+
+        await supabase.from('job_reference').insert(astJobsObj).select();
         //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
         //updating jobsData
