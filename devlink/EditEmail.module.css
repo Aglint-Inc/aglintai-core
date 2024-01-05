@@ -88,6 +88,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .header-right-button--company {
   display: flex;
   align-items: center;

@@ -237,3 +237,7 @@
   font-size: 12px;
   line-height: 16px;
 }
+
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}

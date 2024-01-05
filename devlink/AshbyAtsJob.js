@@ -25,7 +25,7 @@ export function AshbyAtsJob({
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
       <_Builtin.Block tag="div">
         {
-          "These jobs are retrieved from your greenhouse account. You can view/edit api key in "
+          "These jobs are retrieved from your ashby account. You can view/edit api key in "
         }
         <_Builtin.Strong>{"Integrations > "}</_Builtin.Strong>
         <br />

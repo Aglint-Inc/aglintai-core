@@ -260,6 +260,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;

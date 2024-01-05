@@ -789,6 +789,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .forgot-password-link {
   color: #2f3941;
   font-size: 12px;

@@ -331,6 +331,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .tu-list-item-status {
   padding: 4px 10px;
   border-radius: 50px;

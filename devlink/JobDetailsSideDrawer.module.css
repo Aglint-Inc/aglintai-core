@@ -517,6 +517,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .vectors-wrapper-43 {
   display: flex;
   width: 12px;

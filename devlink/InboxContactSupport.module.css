@@ -224,6 +224,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .slot-contact-form-support {
   margin-top: 37px;
   margin-bottom: 40px;

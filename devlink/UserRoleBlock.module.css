@@ -441,6 +441,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 #w-node-_6f093b60-cbb7-c451-fc49-a51ba7c34eb3-a7c34eb3 {
   grid-column-start: span 1;
   grid-column-end: span 1;

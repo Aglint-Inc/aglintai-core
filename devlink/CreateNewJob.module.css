@@ -449,6 +449,105 @@
   grid-row-gap: 10px;
 }
 
+.div-block-668 {
+  position: relative;
+  cursor: pointer;
+}
+
+.discard-wrap {
+  position: absolute;
+  left: -237px;
+  top: 25px;
+  right: auto;
+  bottom: auto;
+
+  display: none;
+  width: 260px;
+  padding: 15px;
+  flex-direction: column;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 69, 78, 0.15);
+}
+
+.color-grey-600.max-width-350 {
+  max-width: 350px;
+}
+
+.color-grey-600.growth-stretch {
+  flex: 0 0 auto;
+}
+
+.color-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.color-grey-600.cursor-pointer.delete-button-screeing:hover {
+  opacity: 1;
+  color: #d93f4c;
+}
+
+.color-grey-600.ml-20 {
+  margin-left: 20px;
+}
+
+.color-grey-600.mt-12 {
+  margin-top: 12px;
+}
+
+.color-grey-600.width-588 {
+  max-width: 588px;
+}
+
+.mt-5 {
+  margin-top: 5px;
+}
+
+.div-block-558 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.cursor-pointer.grow-job-wishlist {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 0 auto;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.text-blue-600.ml-8 {
+  margin-left: 8px;
+}
+
+.ml-12 {
+  margin-left: 12px;
+}
+
 .div-block-503 {
   z-index: 4;
   padding-top: 35px;

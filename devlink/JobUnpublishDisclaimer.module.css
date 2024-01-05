@@ -111,6 +111,7 @@
 
 .div-block-558 {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   grid-column-gap: 20px;
   grid-row-gap: 20px;

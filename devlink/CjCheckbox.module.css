@@ -99,6 +99,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .text-field-4 {
   width: 50px;
   height: 28px;

@@ -33,4 +33,7 @@ declare function CreateNewJob(props: {
   onClickPreviewChanges?: Types.Devlink.RuntimeProps;
   slotUnpublishDisclaimer?: Types.Devlink.Slot;
   isBetaVisible?: Types.Visibility.VisibilityConditions;
+  slotCloseJobButton?: Types.Devlink.Slot;
+  onClickDiscardChanges?: Types.Devlink.RuntimeProps;
+  isUnpublishWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

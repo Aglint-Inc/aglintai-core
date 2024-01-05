@@ -560,6 +560,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .cj-imports-options-drawer {
   display: grid;
   grid-auto-columns: 1fr;

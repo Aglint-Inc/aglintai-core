@@ -1579,6 +1579,10 @@
   margin-left: 8px;
 }
 
+.ml-12 {
+  margin-left: 12px;
+}
+
 .rd-email-edit-btn {
   display: flex;
   height: 32px;
@@ -1751,6 +1755,10 @@
 .text-sm-2 {
   font-size: 12px;
   line-height: 16px;
+}
+
+.text-grey-600.mt-9 {
+  margin-top: 9px;
 }
 
 .email-temp-wrappers {

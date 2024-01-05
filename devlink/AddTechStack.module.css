@@ -238,6 +238,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .slot-roles-wrappers {
   display: flex;
   margin-top: 20px;

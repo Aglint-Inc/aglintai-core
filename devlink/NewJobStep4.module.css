@@ -477,35 +477,6 @@
   margin-top: 5px;
 }
 
-.cj-main-wrapper {
-  position: relative;
-
-  display: flex;
-  width: 100%;
-  max-width: 780px;
-  margin-top: 20px;
-  flex-direction: column;
-  flex: 1;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-}
-
-.cj-main-wrapper.pb-200 {
-  padding-bottom: 200px;
-}
-
-.div-block-507 {
-  display: flex;
-  margin-bottom: 32px;
-  flex-direction: column;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.div-block-507.remove-bottom {
-  margin-bottom: 0px;
-}
-
 ._wf-screening-block {
   display: flex;
   padding-top: 14px;

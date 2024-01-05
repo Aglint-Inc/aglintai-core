@@ -166,6 +166,10 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
 .apply-button-icon {
   position: absolute;
   left: auto;
