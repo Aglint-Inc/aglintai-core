@@ -7,7 +7,7 @@ import { NewJobStep4, WorkflowRadioItem } from '@/devlink';
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
 
 import { useJobForm } from '../JobPostFormProvider';
-function ScreeningSettings() {
+function Assessment() {
   const { dispatch, jobForm } = useJobForm();
 
   return (
@@ -326,4 +326,4 @@ const EmailSchedule = ({
   );
 };
 
-export default ScreeningSettings;
+export default Assessment;

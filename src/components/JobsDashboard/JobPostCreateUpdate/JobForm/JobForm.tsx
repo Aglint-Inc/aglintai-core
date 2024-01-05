@@ -17,14 +17,14 @@ import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
 import SectionWarning from './SectionWarnings';
 import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
-import ApplyForm from '../JobPostFormSlides/ApplyForm';
+import ScreeningSettings from '../JobPostFormSlides/Assessment';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
 import Emails from '../JobPostFormSlides/EmailTemplates';
 import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
 import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
+import ScreeningComp from '../JobPostFormSlides/ScreeningComp';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
-import ScreeningSettings from '../JobPostFormSlides/ScreeningSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import { API_FAIL_MSG, supabaseWrap } from '../utils';
 import MuiPopup from '../../../Common/MuiPopup';
@@ -97,8 +97,6 @@ function JobForm() {
         />
       </>
     );
-  } else if (currSlide === 'applyForm') {
-    formSlide = <ApplyForm />;
   } else if (currSlide === 'resumeScore') {
     formSlide = <ScoreSettings />;
   } else if (currSlide === 'templates') {
@@ -107,6 +105,8 @@ function JobForm() {
     formSlide = <ScreeningQns />;
   } else if (currSlide == 'workflow') {
     formSlide = <ScreeningSettings />;
+  } else if (currSlide === 'phoneScreening') {
+    formSlide = <ScreeningComp />;
   }
 
   const formValidation = () => {
@@ -290,49 +290,18 @@ function JobForm() {
     <>
       <CreateNewJob
         slotCreateJob={<>{formSlide}</>}
-        onClickApplyForm={{
-          onClick: () => {
-            changeSlide('applyForm');
-          },
-        }}
-        onClickEmailTemplates={{
-          onClick: () => {
-            changeSlide('templates');
-          },
-        }}
-        onClickDetails={{
-          onClick: () => {
-            changeSlide('details');
-          },
-        }}
-        onClickScoreSetting={{
-          onClick: () => {
-            changeSlide('resumeScore');
-          },
-        }}
-        onClickScreeningQuestions={{
-          onClick: () => {
-            changeSlide('screening');
-          },
-        }}
-        onClickWorkflows={{
-          onClick: () => {
-            changeSlide('workflow');
-          },
-        }}
-        onClickBack={{
-          onClick: () => {
-            router.back();
-          },
-        }}
-        isApplyFormActive={currSlide === 'applyForm'}
         isDetailsActive={currSlide === 'details'}
         isEmailTemplateActive={currSlide === 'templates'}
         isScreeningQuestionsActive={currSlide === 'screening'}
         isScoreSettingActive={currSlide === 'resumeScore'}
         isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
-        //
+        isScreeningActive={currSlide === 'phoneScreening'}
+        onClickScreening={{
+          onClick: () => {
+            changeSlide('phoneScreening');
+          },
+        }}
         slotSavedChanges={
           <>
             <SyncStatus status={jobForm.syncStatus} />
@@ -404,33 +373,39 @@ function JobForm() {
         onClickDiscardChanges={{
           onClick: handleRevertChanges,
         }}
-        // slotCloseJob={
-        //   <>
-        //     {jobForm.formType === 'edit' &&
-        //       jobForm.jobPostStatus === 'draft' && (
-        //         <CloseJob
-        //           onClickCloseJob={{
-        //             onClick: () => setShowDraftPopup(true),
-        //           }}
-        //           isCloseJob={false}
-        //           isDeleteJob={true}
-        //           isTextVisible={false}
-        //         />
-        //       )}
-
-        //     {jobForm.jobPostStatus === 'published' && (
-        //       <CloseJob
-        //         onClickCloseJob={{
-        //           onClick: () => setIsDeletePopupOpen(true),
-        //         }}
-        //         isCloseJob={true}
-        //       />
-        //     )}
-        //   </>
-        // }
         slotUnpublishDisclaimer={
           <>{isShowChangesWarn && <PublishDesclaimer />}</>
         }
+        onClickEmailTemplates={{
+          onClick: () => {
+            changeSlide('templates');
+          },
+        }}
+        onClickDetails={{
+          onClick: () => {
+            changeSlide('details');
+          },
+        }}
+        onClickScoreSetting={{
+          onClick: () => {
+            changeSlide('resumeScore');
+          },
+        }}
+        onClickScreeningQuestions={{
+          onClick: () => {
+            changeSlide('screening');
+          },
+        }}
+        onClickWorkflows={{
+          onClick: () => {
+            changeSlide('workflow');
+          },
+        }}
+        onClickBack={{
+          onClick: () => {
+            router.back();
+          },
+        }}
         onClickPreviewChanges={{
           onClick: () => {
             window.open(
@@ -532,8 +507,8 @@ export default JobForm;
 
 const slidePathToNum: Record<JobFormState['currSlide'], number> = {
   details: 1,
-  applyForm: 2,
-  resumeScore: 3,
+  resumeScore: 2,
+  phoneScreening: 3,
   screening: 4,
   workflow: 5,
   templates: 6,

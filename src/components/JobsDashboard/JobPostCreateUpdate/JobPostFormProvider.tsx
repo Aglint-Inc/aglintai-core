@@ -149,9 +149,10 @@ export type JobFormState = {
     | 'details'
     | 'templates'
     | 'screening'
+    | 'phoneScreening'
     | 'workflow'
-    | 'resumeScore'
-    | 'applyForm';
+    | 'resumeScore';
+  // | 'applyForm';
   syncStatus: 'saving' | 'saved' | '';
   jobPostStatus: 'published' | 'draft' | 'closed';
   isJobPostReverting: boolean;
