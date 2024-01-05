@@ -93,31 +93,60 @@ export function AshbyApiKey({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">
-          {"To create a new API key, navigate to"}
-          <_Builtin.Strong>{" Admin tab"}</_Builtin.Strong>
-          {", then select "}
-          <_Builtin.Strong>{"Integrations > Company "}</_Builtin.Strong>
-          {" from the left panel. Click "}
-          <_Builtin.Strong>{"'Create API key for Company' "}</_Builtin.Strong>
-          {"button"}
+          {"Sign in to Ashby and click "}
+          <_Builtin.Strong>{"Admin "}</_Builtin.Strong>
+          {"in the top navigation bar"}
+          <br />
+          {"Navigate to "}
+          <_Builtin.Strong>{"Integrations > API Keys"}</_Builtin.Strong>
+          {""}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "lever-api-image-wraps")}
           tag="div"
         >
           <_Builtin.Image
+            className={_utils.cx(_styles, "ashby-image")}
             loading="lazy"
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6566dad0d0f9b83eff0fce01_image%2014.svg"
+            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65968273faf591680f660d92_Screen%20Shot%202023-05-17%20at%204.43.30%20PM.png"
           />
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "mt-18")} tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">
+          {"Click "}
+          <_Builtin.Strong>{"+ New"}</_Builtin.Strong>
+          {" in the upper right corner"}
+          <br />
+          {"Add a name for the new API Key, click "}
+          <_Builtin.Strong>{"Create API Key"}</_Builtin.Strong>
+          {""}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "lever-api-image-wraps")}
+          tag="div"
+        >
+          <_Builtin.Image
+            className={_utils.cx(_styles, "ashby-image")}
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6596832d98a65d88d35badde_Ashby_Step_2.png"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">
+          {"Copy the API Key and add it to Merge Link"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "mt-18", "hide")}
+          tag="div"
+        >
           {"For more guidelines visit"}
         </_Builtin.Block>
         <_Builtin.Link
-          className={_utils.cx(_styles, "text-link-lever")}
+          className={_utils.cx(_styles, "text-link-lever", "hide")}
           button={false}
           block=""
           options={{
