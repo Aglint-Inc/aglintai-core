@@ -416,7 +416,7 @@ const ScoreSettings = () => {
                       setPopUpEl(null);
                     }}
                   >
-                    Edit
+                    update
                   </AUIButton>
                 </>
               }
@@ -430,6 +430,7 @@ const ScoreSettings = () => {
                       backgroundColor: '#f8f9f9',
                       resize: 'none',
                     }}
+                    placeholder={'Type Here'}
                     value={editParam?.value}
                     onChange={(e) => {
                       setEditParam((p) => ({ ...p, value: e.target.value }));

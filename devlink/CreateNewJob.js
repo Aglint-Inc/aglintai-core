@@ -46,6 +46,8 @@ export function CreateNewJob({
   slotCloseJobButton,
   onClickDiscardChanges = {},
   isUnpublishWarningVisible = true,
+  isScreeningActive = false,
+  onClickScreening = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -197,30 +199,6 @@ export function CreateNewJob({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "create-job-menu-wrap", "hide")}
-              tag="div"
-              {...onClickApplyForm}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative")}
-                tag="div"
-              >
-                {"Apply Form"}
-              </_Builtin.Block>
-              {isApplyFormActive ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "white-active-bg")}
-                  tag="div"
-                />
-              ) : null}
-              <_Builtin.Block
-                className={_utils.cx(_styles, "disclaimer-icons")}
-                tag="div"
-              >
-                {slotDisclaimerApplyForm}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
               className={_utils.cx(_styles, "create-job-menu-wrap")}
               tag="div"
               {...onClickScoreSetting}
@@ -247,6 +225,30 @@ export function CreateNewJob({
                 tag="div"
               >
                 {slotDisclaimerScoreSetting}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "create-job-menu-wrap")}
+              tag="div"
+              {...onClickScreening}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "relative")}
+                tag="div"
+              >
+                {"Screening "}
+              </_Builtin.Block>
+              {isScreeningActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "white-active-bg")}
+                  tag="div"
+                />
+              ) : null}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "disclaimer-icons")}
+                tag="div"
+              >
+                {slotDisclaimerApplyForm}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block

@@ -456,7 +456,7 @@
 
 .discard-wrap {
   position: absolute;
-  left: -237px;
+  left: -206px;
   top: 25px;
   right: auto;
   bottom: auto;
@@ -560,7 +560,7 @@
   z-index: 4;
 
   display: flex;
-  max-width: 630px;
+  max-width: 740px;
   padding: 6px;
   justify-content: space-between;
   align-items: center;

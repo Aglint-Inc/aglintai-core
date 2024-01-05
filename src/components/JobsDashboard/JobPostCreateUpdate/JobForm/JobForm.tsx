@@ -1,14 +1,16 @@
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 
-import { CloseJob, CreateNewJob } from '@/devlink';
+import { CloseDeleteJob, CloseJobButton, CreateNewJob } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
 import Loader from '@/src/components/Common/Loader';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
@@ -24,7 +26,7 @@ import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import ScreeningSettings from '../JobPostFormSlides/ScreeningSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
-import { API_FAIL_MSG } from '../utils';
+import { API_FAIL_MSG, supabaseWrap } from '../utils';
 import MuiPopup from '../../../Common/MuiPopup';
 
 export type JobFormErrorParams = {
@@ -51,8 +53,16 @@ export type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
+  const { recruiter } = useAuthDetails();
+
   const { handleJobDelete } = useJobs();
-  const { jobForm, dispatch, formWarnings } = useJobForm();
+  const {
+    jobForm,
+    dispatch,
+    formWarnings,
+    handleUpdateRevertStatus,
+    handleInitializeForm,
+  } = useJobForm();
   const router = useRouter();
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [formError, setFormError] = useState<JobFormErrorParams>({
@@ -65,6 +75,9 @@ function JobForm() {
   const [showDraftPopup, setShowDraftPopup] = useState(false);
 
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
+
+  const [popupEl, setPopupEl] = useState(null);
+
   let formSlide = <></>;
   const { currSlide } = jobForm;
   if (jobForm.isJobPostReverting) {
@@ -241,6 +254,38 @@ function JobForm() {
     !jobForm.formFields.isDraftCleared &&
     jobForm.jobPostStatus === 'published';
 
+  let showCloseJob = jobForm.jobPostStatus === 'published';
+  if (jobForm.formType === 'edit' && jobForm.jobPostStatus === 'draft') {
+    showCloseJob = false;
+  }
+
+  const handleRevertChanges = async () => {
+    try {
+      handleUpdateRevertStatus(true);
+      const [publishedJobPost] = supabaseWrap(
+        await supabase
+          .from('public_jobs')
+          .update({
+            draft: null,
+          })
+          .eq('id', jobForm.jobPostId)
+          .select(),
+      );
+      handleInitializeForm({
+        type: 'edit',
+        currSlide: jobForm.currSlide,
+        job: publishedJobPost,
+        recruiter,
+      });
+      toast.success('Reverted SucessFully');
+    } catch (err) {
+      // console.log(err);
+      toast.error(API_FAIL_MSG);
+    } finally {
+      // handleUpdateRevertStatus(false);
+      //
+    }
+  };
   return (
     <>
       <CreateNewJob
@@ -355,30 +400,34 @@ function JobForm() {
             />
           </>
         }
-        slotCloseJob={
-          <>
-            {jobForm.formType === 'edit' &&
-              jobForm.jobPostStatus === 'draft' && (
-                <CloseJob
-                  onClickCloseJob={{
-                    onClick: () => setShowDraftPopup(true),
-                  }}
-                  isCloseJob={false}
-                  isDeleteJob={true}
-                  isTextVisible={false}
-                />
-              )}
+        isUnpublishWarningVisible={isShowChangesWarn}
+        onClickDiscardChanges={{
+          onClick: handleRevertChanges,
+        }}
+        // slotCloseJob={
+        //   <>
+        //     {jobForm.formType === 'edit' &&
+        //       jobForm.jobPostStatus === 'draft' && (
+        //         <CloseJob
+        //           onClickCloseJob={{
+        //             onClick: () => setShowDraftPopup(true),
+        //           }}
+        //           isCloseJob={false}
+        //           isDeleteJob={true}
+        //           isTextVisible={false}
+        //         />
+        //       )}
 
-            {jobForm.jobPostStatus === 'published' && (
-              <CloseJob
-                onClickCloseJob={{
-                  onClick: () => setIsDeletePopupOpen(true),
-                }}
-                isCloseJob={true}
-              />
-            )}
-          </>
-        }
+        //     {jobForm.jobPostStatus === 'published' && (
+        //       <CloseJob
+        //         onClickCloseJob={{
+        //           onClick: () => setIsDeletePopupOpen(true),
+        //         }}
+        //         isCloseJob={true}
+        //       />
+        //     )}
+        //   </>
+        // }
         slotUnpublishDisclaimer={
           <>{isShowChangesWarn && <PublishDesclaimer />}</>
         }
@@ -396,6 +445,17 @@ function JobForm() {
         }}
         slotPublishButton={
           <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
+        }
+        slotCloseJobButton={
+          <>
+            <CloseJobButton
+              onClickClose={{
+                onClick: (e) => {
+                  setPopupEl(e.currentTarget);
+                },
+              }}
+            />
+          </>
         }
       />
       <MuiPopup
@@ -437,6 +497,33 @@ function JobForm() {
           />
         </Paper>
       </MuiPopup>
+      <Popover
+        open={Boolean(popupEl)}
+        anchorEl={popupEl}
+        onClose={() => {
+          setPopupEl(null);
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        sx={{
+          mt: 2,
+        }}
+      >
+        <CloseDeleteJob
+          isCloseJobVisible={showCloseJob}
+          isDeleteJobVisible={!showCloseJob}
+          onClickClose={{
+            onClick: () => {
+              setPopupEl(null);
+              showCloseJob
+                ? setIsDeletePopupOpen(true)
+                : setShowDraftPopup(true);
+            },
+          }}
+        />
+      </Popover>
     </>
   );
 }

@@ -11,9 +11,16 @@ export function CloseDeleteJob({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "close-delete-wrap")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {"Close this job"}
-      </_Builtin.Block>
+      {isCloseJobVisible ? (
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Close this job"}
+        </_Builtin.Block>
+      ) : null}
+      {isDeleteJobVisible ? (
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Delete this job"}
+        </_Builtin.Block>
+      ) : null}
       {isCloseJobVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey-600", "mt-9")}
