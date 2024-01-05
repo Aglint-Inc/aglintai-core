@@ -154,6 +154,13 @@ export const getSeedJobFormData = (
         rolesResponsibilities: [],
         skills: [],
       },
+      phoneScreening: {
+        startMessage:
+          'Welcome to the candidate application form.Please fill out the following information',
+        endMessage:
+          'Thank you for taking your time. We will get back to you shortly',
+        questions: [],
+      },
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -336,6 +343,8 @@ export const dbToClientjobPostForm = (
         jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
       assessment: jobPost.assessment || false,
       jdJson: (jobPost.jd_json_2 as any) || seedData.formFields.jdJson,
+      phoneScreening:
+        (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
     },
     jobPostStatus: jobPostStatus as any,
   };

@@ -218,15 +218,7 @@ export interface Database {
           resume?: string | null
           resume_saved?: boolean
         }
-        Relationships: [
-          {
-            foreignKeyName: "greenhouse_reference_application_id_fkey"
-            columns: ["application_id"]
-            isOneToOne: false
-            referencedRelation: "job_applications"
-            referencedColumns: ["application_id"]
-          }
-        ]
+        Relationships: []
       }
       job_applications: {
         Row: {
@@ -483,7 +475,7 @@ export interface Database {
         Row: {
           applied_at: string
           candidate_file_id: string | null
-          candidate_id: string | null
+          candidate_id: string
           created_at: string
           id: string
           is_resume_fetching: boolean
@@ -498,7 +490,7 @@ export interface Database {
         Insert: {
           applied_at?: string
           candidate_file_id?: string | null
-          candidate_id?: string | null
+          candidate_id: string
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -513,7 +505,7 @@ export interface Database {
         Update: {
           applied_at?: string
           candidate_file_id?: string | null
-          candidate_id?: string | null
+          candidate_id?: string
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -606,9 +598,10 @@ export interface Database {
           id: string
           last_name: string | null
           last_updated: string
+          linkedin: string | null
+          phone: string | null
           recruiter_id: string
           state: string | null
-          update_from: string
         }
         Insert: {
           avatar?: string | null
@@ -622,9 +615,10 @@ export interface Database {
           id?: string
           last_name?: string | null
           last_updated?: string
+          linkedin?: string | null
+          phone?: string | null
           recruiter_id: string
           state?: string | null
-          update_from: string
         }
         Update: {
           avatar?: string | null
@@ -638,9 +632,10 @@ export interface Database {
           id?: string
           last_name?: string | null
           last_updated?: string
+          linkedin?: string | null
+          phone?: string | null
           recruiter_id?: string
           state?: string | null
-          update_from?: string
         }
         Relationships: [
           {
@@ -648,13 +643,6 @@ export interface Database {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "new_candidate_update_from_fkey"
-            columns: ["update_from"]
-            isOneToOne: false
-            referencedRelation: "new_application"
             referencedColumns: ["id"]
           }
         ]
@@ -671,7 +659,7 @@ export interface Database {
           resume_json: Json | null
           resume_text: string | null
           skills_embedding: string | null
-          type: string
+          type: Database["public"]["Enums"]["file_type"] | null
         }
         Insert: {
           candidate_id?: string | null
@@ -684,7 +672,7 @@ export interface Database {
           resume_json?: Json | null
           resume_text?: string | null
           skills_embedding?: string | null
-          type?: string
+          type?: Database["public"]["Enums"]["file_type"] | null
         }
         Update: {
           candidate_id?: string | null
@@ -697,7 +685,7 @@ export interface Database {
           resume_json?: Json | null
           resume_text?: string | null
           skills_embedding?: string | null
-          type?: string
+          type?: Database["public"]["Enums"]["file_type"] | null
         }
         Relationships: [
           {
@@ -795,6 +783,7 @@ export interface Database {
           new_screening_setting: Json
           overview: string | null
           parameter_weights: Json
+          phone_screening: Json | null
           posted_by: string
           recruiter_id: string
           screening_questions: Json[] | null
@@ -832,6 +821,7 @@ export interface Database {
           new_screening_setting?: Json
           overview?: string | null
           parameter_weights?: Json
+          phone_screening?: Json | null
           posted_by?: string
           recruiter_id: string
           screening_questions?: Json[] | null
@@ -869,6 +859,7 @@ export interface Database {
           new_screening_setting?: Json
           overview?: string | null
           parameter_weights?: Json
+          phone_screening?: Json | null
           posted_by?: string
           recruiter_id?: string
           screening_questions?: Json[] | null
@@ -1666,6 +1657,7 @@ export interface Database {
     Enums: {
       application_processing_status: "not started" | "processing" | "failed"
       application_status: "new" | "assessment" | "qualified" | "disqualified"
+      file_type: "resume" | "coverletter" | "cv" | "image"
     }
     CompositeTypes: {
       [_ in never]: never

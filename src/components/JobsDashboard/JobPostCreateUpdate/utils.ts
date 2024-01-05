@@ -104,6 +104,7 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     interview_instructions: jobForm.formFields.interviewInstrctions,
     assessment: jobForm.formFields.assessment,
     jd_json_2: jobForm.formFields.jdJson,
+    phone_screening: jobForm.formFields.phoneScreening,
   };
 
   return updateJobData;

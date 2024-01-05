@@ -63,7 +63,13 @@ export type JdJsonType = {
   skills: jsonItemType[];
   educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
 };
-
+export type phoneScreenQuestion = {
+  isRequired: boolean;
+  question: string;
+  questionLabel: string;
+  type: 'multiSelect' | 'singleSelect' | 'shortAnswer';
+  options: string[];
+};
 type EmailTemplate = Record<string, EmailDetails>;
 export type FormJobType = {
   jobTitle: string;
@@ -125,6 +131,11 @@ export type FormJobType = {
   isDraftCleared: boolean;
   interviewInstrctions: string;
   assessment: boolean;
+  phoneScreening: {
+    startMessage: string;
+    endMessage: string;
+    questions: phoneScreenQuestion[];
+  };
 };
 
 export type JobFormState = {
