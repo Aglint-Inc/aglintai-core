@@ -8,13 +8,14 @@ import {
   extractLinkedInURL,
   splitFullName,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+import { Database } from '@/src/types/schema';
 
 const crypto = require('crypto');
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
@@ -129,7 +130,7 @@ export default async function handler(req, res) {
         );
 
         const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('candidates')
+          .from('new_candidate')
           .insert(dbCandidates)
           .select();
 
@@ -141,13 +142,12 @@ export default async function handler(req, res) {
                 (cand) => cand.email === ref.email,
               )[0].id,
               job_id: jobId,
-              application_id: ref.application_id,
-              // resume_text: 'Lever',
+              id: ref.application_id,
             };
           });
 
           const { error } = await supabase
-            .from('job_applications')
+            .from('new_application')
             .insert(dbApplications);
 
           if (!error) {
@@ -163,9 +163,7 @@ export default async function handler(req, res) {
             await createLeverReference(referenceObj);
             return res.status(200).send('success');
           } else {
-            console.log(
-              'Sorry unable to import. Please try again later or contact support.',
-            );
+            console.log('error while inserting into new_application');
           }
         }
         //new candidates insert flow

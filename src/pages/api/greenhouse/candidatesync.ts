@@ -135,8 +135,6 @@ export default async function handler(req, res) {
             first_name: cand.first_name,
             last_name: cand.last_name,
             email: cand.email,
-            job_title: cand.job_title,
-            company: cand.company,
             linkedin: cand.linkedin,
             phone: cand.phone,
             id: uuidv4(),
@@ -159,7 +157,7 @@ export default async function handler(req, res) {
         );
 
         const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('candidates')
+          .from('new_candidate')
           .insert(dbCandidates)
           .select();
 
@@ -177,7 +175,7 @@ export default async function handler(req, res) {
                   applied_at: ref.created_at,
                   candidate_id: matchingCandidate.id,
                   job_id: jobId,
-                  application_id: ref.application_id,
+                  id: ref.application_id,
                   is_resume_fetching: true,
                 };
               } else {
@@ -187,7 +185,7 @@ export default async function handler(req, res) {
             .filter(Boolean);
 
           const { error } = await supabase
-            .from('job_applications')
+            .from('new_application')
             .insert(dbApplications);
 
           if (!error) {

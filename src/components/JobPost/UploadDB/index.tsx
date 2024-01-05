@@ -14,7 +14,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -67,9 +66,9 @@ const initialError = () => {
   };
 };
 
-function UploadDB({ post, setThank, setLoading, setApplication }) {
+function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
   const isSubmitRef = useRef(false);
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<any>({
     firstName: null,
     lastName: null,
     email: null,
@@ -84,7 +83,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
   });
   const [checked, setChecked] = useState(true);
   const [error, setError] = useState(initialError());
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<any>();
   // eslint-disable-next-line no-unused-vars
 
   const router = useRouter();
@@ -181,87 +180,45 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
 
   const submitHandler = async () => {
     if (checked && validate()) {
-      const { data: checkCand, error: errorCheck } = await supabase
-        .from('candidates')
-        .select()
-        .match({ email: profile.email });
-
-      let candidateId;
-
+      let fileId = uuidv4();
       let uploadUrl = null;
+      const { data } = await supabase.storage
+        .from('resume-job-post')
+        .upload(
+          `public/${fileId}.${
+            file.type.includes('pdf')
+              ? 'pdf'
+              : file.type.includes('doc')
+                ? 'docx'
+                : 'txt'
+          }`,
+          file,
+          {
+            cacheControl: '3600',
+            // Overwrite file if it exist
+            upsert: true,
+          },
+        );
+      uploadUrl = `${
+        process.env.NEXT_PUBLIC_SUPABASE_URL
+      }/storage/v1/object/public/resume-job-post/${data?.path}?t=${new Date().toISOString()}`;
 
-      if (!errorCheck && checkCand.length == 0) {
-        candidateId = uuidv4();
-        if (file) {
-          const { data } = await supabase.storage
-            .from('resume-job-post')
-            .upload(
-              `public/${candidateId}/${post.id}.${
-                file.type.includes('pdf')
-                  ? 'pdf'
-                  : file.type.includes('doc')
-                    ? 'docx'
-                    : 'txt'
-              }`,
-              file,
-              {
-                cacheControl: '3600',
-                // Overwrite file if it exist
-                upsert: true,
-              },
-            );
-          uploadUrl = `${
-            process.env.NEXT_PUBLIC_SUPABASE_URL
-          }/storage/v1/object/public/resume-job-post/${
-            data?.path
-          }?t=${new Date().toISOString()}`;
-        }
-        await insertCandidate(uploadUrl, post.id);
-      } else {
-        const { data: checkApplication, error: errorCheck } = await supabase
-          .from('job_applications')
-          .select(`${selectJobApplicationQuery}`)
-          .eq('candidate_id', checkCand[0].id)
-          .eq('job_id', post.id);
+      const response = await axios.post('/api/jobpost/write', {
+        profile: profile,
+        recruiter: recruiter,
+        post: post,
+        fileId: fileId,
+        uploadUrl: uploadUrl,
+      });
 
-        if (!errorCheck && checkApplication.length == 0) {
-          if (file) {
-            const { data } = await supabase.storage
-              .from('resume-job-post')
-              .upload(
-                `public/${checkCand[0].id}/${post.id}.${
-                  file.type.includes('pdf')
-                    ? 'pdf'
-                    : file.type.includes('doc')
-                      ? 'docx'
-                      : 'txt'
-                }`,
-                file,
-                {
-                  cacheControl: '3600',
-                  // Overwrite file if it exist
-                  upsert: true,
-                },
-              );
-
-            uploadUrl = `${
-              process.env.NEXT_PUBLIC_SUPABASE_URL
-            }/storage/v1/object/public/resume-job-post/${
-              data?.path
-            }?t=${new Date().toISOString()}`;
-          }
-
-          const { data: newApplication } = await supabase
-            .from('job_applications')
-            .insert({
-              candidate_id: checkCand[0].id,
-              job_id: post.id,
-              status: 'new',
-              resume: uploadUrl,
-            })
-            .select(`${selectJobApplicationQuery}`);
-          setApplication(newApplication[0]);
-          await mailHandler(newApplication[0].application_id);
+      if (response.status === 200 && response.data) {
+        if (response.data.applied) {
+          isSubmitRef.current = false;
+          setLoading(false);
+          toast.error('You have already applied for this job');
+        } else {
+          setApplication(response.data.application);
+          await mailHandler(response.data.application.id);
           setProfile({
             firstName: '',
             lastName: '',
@@ -272,50 +229,10 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           });
           setLoading(false);
           setThank(true);
-        } else {
-          isSubmitRef.current = false;
-          setLoading(false);
-          toast.error('You have already applied for this job');
         }
+      } else {
+        toast.error('Something went wrong. Please try again later');
       }
-    }
-  };
-
-  const insertCandidate = async (uploadUrl, jobId) => {
-    const { data: newCandidate, error: errorCandidate } = await supabase
-      .from('candidates')
-      .insert({
-        first_name: profile.firstName,
-        last_name: profile.lastName || '',
-        email: profile.email,
-        phone: profile.phoneNumber,
-        linkedin: profile.linkedin,
-      })
-      .select();
-
-    if (!errorCandidate) {
-      const { data: newApplication } = await supabase
-        .from('job_applications')
-        .insert({
-          candidate_id: newCandidate[0].id,
-          job_id: jobId,
-          status: 'new',
-          resume: uploadUrl,
-        })
-        .select(`${selectJobApplicationQuery}`);
-
-      setApplication(newApplication[0]);
-      await mailHandler(newApplication[0].application_id);
-      setProfile({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        resume: '',
-        linkedin: '',
-      });
-      setLoading(false);
-      setThank(true);
     }
   };
 
@@ -336,7 +253,7 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
     return filledTemplate;
   }
 
-  const mailHandler = async (application_id) => {
+  const mailHandler = async (application_id: string) => {
     try {
       const email = {
         first_name: profile.firstName,
@@ -358,7 +275,6 @@ function UploadDB({ post, setThank, setLoading, setApplication }) {
           text: fillEmailTemplate(
             post.email_template.application_recieved.body,
             email,
-            application_id,
           ),
         })
         .then((res) => {

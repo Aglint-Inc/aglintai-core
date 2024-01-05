@@ -101,6 +101,8 @@ const allowedPaths = new Set([
   '/api/ashby/getCandidates',
   '/api/ashby/cron',
   '/api/trigger',
+  '/api/jobpost/read',
+  '/api/jobpost/write',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {

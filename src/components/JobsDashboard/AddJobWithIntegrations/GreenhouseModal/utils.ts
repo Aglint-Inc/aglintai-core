@@ -6,6 +6,7 @@ import {
   GreenhouseRefDbType,
   GreenhouseType,
   JobApplcationDB,
+  NewCandidateType,
   RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -86,8 +87,6 @@ export const createJobApplications = async (
           first_name: cand.first_name,
           last_name: cand.last_name,
           email: cand.email,
-          job_title: cand.job_title,
-          company: cand.company,
           linkedin: cand.linkedin,
           phone: cand.phone,
           id: uuidv4(),
@@ -107,7 +106,7 @@ export const createJobApplications = async (
       });
 
       const { data: newCandidates, error: errorCandidates } = await supabase
-        .from('candidates')
+        .from('new_candidate')
         .insert(dbCandidates)
         .select();
 
@@ -125,7 +124,7 @@ export const createJobApplications = async (
                 applied_at: ref.created_at,
                 candidate_id: matchingCandidate.id,
                 job_id: post.public_job_id,
-                application_id: ref.application_id,
+                id: ref.application_id,
                 is_resume_fetching: true,
               };
             } else {
@@ -135,7 +134,7 @@ export const createJobApplications = async (
           .filter(Boolean);
 
         const { error } = await supabase
-          .from('job_applications')
+          .from('new_application')
           .insert(dbApplications);
 
         if (!error) {
@@ -303,9 +302,9 @@ const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requiremen
 const processBatch = async (
   emailBatch: string[],
   recruiter_id: string,
-): Promise<CandidateType[] | undefined> => {
+): Promise<NewCandidateType[] | undefined> => {
   const { data: checkCandidates, error: errorCheck } = await supabase
-    .from('candidates')
+    .from('new_candidate')
     .select()
     .in('email', emailBatch)
     .eq('recruiter_id', recruiter_id);

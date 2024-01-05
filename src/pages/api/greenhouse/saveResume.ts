@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
-import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
+import { Database } from '@/src/types/schema';
+
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -20,12 +22,13 @@ export default async function handler(req, res) {
     // Supabase credentials
 
     const { data: job } = await supabase
-      .from('job_applications')
-      .select(`${selectJobApplicationQuery}`)
-      .eq('application_id', payload.application_id);
+      .from('new_application')
+      .select()
+      .eq('id', payload.application_id);
 
     let fileUrl = payload.resume;
     let bucketName = 'resume-job-post';
+    let fileId = uuidv4();
 
     if (
       fileUrl.includes('pdf') ||
@@ -40,15 +43,14 @@ export default async function handler(req, res) {
         const { data, error: uploadError } = await supabase.storage
           .from(bucketName)
           .upload(
-            `public/${job[0].candidate_id}/${
-              job[0].job_id +
-              (fileUrl.includes('pdf')
+            `public/${fileId}${
+              fileUrl.includes('pdf')
                 ? '.pdf'
                 : fileUrl.includes('doc')
                   ? '.docx'
                   : fileUrl.includes('txt')
                     ? '.txt'
-                    : '.pdf')
+                    : '.pdf'
             }`,
             response.data,
             {
@@ -66,11 +68,22 @@ export default async function handler(req, res) {
         const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
         if (!uploadError) {
           console.log(fileLink);
+
+          await supabase
+            .from('new_candidate_files')
+            .insert({
+              candidate_id: job[0].candidate_id,
+              file_url: fileLink,
+              id: fileId,
+              type: 'resume',
+            })
+            .select();
+
           const { data: app, error: errorApp } = await supabase
-            .from('job_applications')
-            .update({ resume: fileLink, is_resume_fetching: false })
-            .eq('application_id', payload.application_id)
-            .select(`${selectJobApplicationQuery}`);
+            .from('new_application')
+            .update({ is_resume_fetching: false, candidate_file_id: fileId })
+            .eq('id', payload.application_id)
+            .select();
 
           if (!errorApp) {
             await supabase

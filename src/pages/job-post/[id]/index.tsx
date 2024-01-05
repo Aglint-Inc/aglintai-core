@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,7 +8,6 @@ import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
 import InvalidJobPostLottie from '@/src/components/JobPost/InvalidJobPostLottie';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
 
 function JobPost() {
   const router = useRouter();
@@ -21,46 +21,20 @@ function JobPost() {
   useEffect(() => {
     if (router.isReady) {
       let query = isValidUUID(jobId) ? `id.eq.${jobId}` : `slug.eq.${jobId}`;
-      supabase
-        .from('public_jobs')
-        .select('*')
-        .or(query)
-        .then(({ data, error }) => {
-          if (!error && data?.length > 0) {
-            if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
-              setValid(false);
-            } else {
-              if (router.query.preview || data[0]?.status == 'draft') {
-                setPost(data[0].draft as JobTypeDB);
-              } else {
-                setPost(data[0]);
-              }
-              setPost(data[0]);
-              setValid(true);
-            }
-            setLoading(false);
-            supabase
-              .from('recruiter')
-              .select('*')
-              .eq('id', data[0].recruiter_id)
-              .then(({ data, error }) => {
-                if (!error) {
-                  setRecruiter(data[0]);
-                }
-              });
-            supabase
-              .from('public_jobs')
-              .select('*')
-              .eq('recruiter_id', data[0].recruiter_id)
-              .then(({ data, error }) => {
-                if (!error) {
-                  setJobs(data);
-                }
-              });
-          } else {
-            setLoading(false);
-          }
+
+      (async () => {
+        const response = await axios.post('/api/jobpost/read', {
+          query: query,
+          preview: router.query.preview,
         });
+        if (response.data) {
+          setPost(response.data.post);
+          setValid(response.data.isValid);
+          setRecruiter(response.data.recruiter);
+          setJobs(response.data.jobs);
+          setLoading(false);
+        }
+      })();
     }
   }, [router]);
 

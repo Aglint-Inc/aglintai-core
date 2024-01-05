@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
-import { selectJobApplicationQuery } from '../JobApplicationsApi/utils';
+import { Database } from '@/src/types/schema';
 
 const apiKey = 'wjISASRrEo75ixrodaAS5eT8iV4Bv2T2RhNZ3iIUziYsIAC8';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -23,6 +23,7 @@ export default async function handler(req, res) {
     let url = `https://api.lever.co/v1/opportunities/${payload.opportunity_id}/resumes`;
     let fileUrl;
     let bucketName = 'resume-job-post';
+    let fileId = uuidv4();
 
     try {
       axios
@@ -53,24 +54,24 @@ export default async function handler(req, res) {
             let extension = responseUrl.headers['content-type'];
             // Upload the file to Supabase Storage
             const { data: application, error: errorApp } = await supabase
-              .from('job_applications')
-              .select(`${selectJobApplicationQuery}`)
-              .eq('application_id', payload.application_id);
+              .from('new_application')
+              .select()
+              .eq('id', payload.application_id);
             if (errorApp) {
               console.log('no application found');
               res.status(400).send('no application found');
               return;
             }
-            const { data: cand } = await supabase
-              .from('candidates')
-              .select()
-              .eq('id', application[0].candidate_id);
+
+            if (application.length === 0) {
+              console.log('no application found');
+              return res.status(400).json({ error: 'no application found' });
+            }
+
             const { data, error: uploadError } = await supabase.storage
               .from(bucketName)
               .upload(
-                `public/${cand[0].id}/${
-                  application[0].job_id + response.data.data[0].file.ext
-                }`,
+                `public/${fileId}${response.data.data[0].file.ext}`,
                 responseUrl.data,
                 {
                   contentType: extension,
@@ -85,14 +86,33 @@ export default async function handler(req, res) {
             const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
-              await supabase
-                .from('job_applications')
+              const { error: errorResume } = await supabase
+                .from('new_candidate_files')
+                .insert({
+                  candidate_id: application[0].candidate_id,
+                  file_url: fileLink,
+                  id: fileId,
+                  type: 'resume',
+                })
+                .select();
+
+              if (errorResume) {
+                console.log('errorResume', errorResume);
+                throw errorResume;
+              }
+
+              const { error: errorApp } = await supabase
+                .from('new_application')
                 .update({
-                  resume: fileLink,
+                  candidate_file_id: fileId,
                   is_resume_fetching: false,
                 })
-                .eq('application_id', payload.application_id);
+                .eq('id', payload.application_id);
 
+              if (errorApp) {
+                console.log('errorApp', errorApp);
+                throw errorApp;
+              }
               //first we save previous and then go for openai calls. if there are work experience in resume then only generate resume skills overview etc and add to json_resume
             }
             return res.status(200).json({

@@ -1,0 +1,54 @@
+/* eslint-disable security/detect-object-injection */
+/* eslint-disable no-console */
+import { createClient } from '@supabase/supabase-js';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import { Database } from '@/src/types/schema';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
+
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!req.body.query) {
+    return res.status(400).send('No query provided');
+  }
+
+  let isValid = false;
+  let post;
+
+  const { data, error } = await supabase
+    .from('public_jobs')
+    .select('*')
+    .or(req.body.query);
+
+  if (!error && data?.length > 0) {
+    if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
+      isValid = false;
+    } else {
+      if (req.body.preview || data[0]?.status == 'draft') {
+        post = data[0].draft;
+      } else {
+        post = data[0];
+      }
+      isValid = true;
+    }
+    const { data: rec } = await supabase
+      .from('recruiter')
+      .select('id, logo, name, office_locations')
+      .eq('id', data[0].recruiter_id);
+
+    const { data: jobs } = await supabase
+      .from('public_jobs')
+      .select('*')
+      .eq('recruiter_id', data[0].recruiter_id)
+      .eq('status', 'published');
+
+    return res
+      .status(200)
+      .send({ recruiter: rec[0], jobs: jobs, isValid: isValid, post: post });
+  }
+};
+
+export default handler;

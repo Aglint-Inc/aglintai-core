@@ -138,7 +138,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                           country?: string;
                         }[];
                       }
-                    ).office_locations[0]?.city,
+                    )?.office_locations[0]?.city,
                     (
                       recruiter as {
                         office_locations: {
@@ -147,7 +147,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                           country?: string;
                         }[];
                       }
-                    ).office_locations[0]?.region,
+                    )?.office_locations[0]?.region,
                     (
                       recruiter as {
                         office_locations: {
@@ -156,7 +156,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                           country?: string;
                         }[];
                       }
-                    ).office_locations[0]?.country,
+                    )?.office_locations[0]?.country,
                   ]
                     .filter(Boolean)
                     .join(', ')}
@@ -333,6 +333,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               setThank={setThank}
               setLoading={setLoading}
               setApplication={setApplication}
+              recruiter={recruiter}
             />
           }
           slotLinks={

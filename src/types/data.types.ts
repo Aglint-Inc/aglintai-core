@@ -156,6 +156,9 @@ export type JobApplicationType =
 
 export type CandidateType = Database['public']['Tables']['candidates']['Row'];
 
+export type NewCandidateType =
+  Database['public']['Tables']['new_candidate']['Row'];
+
 export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
 
 export type SupportTicketType =
