@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { data: checkCand, error: errorCheck } = await supabase
-    .from('new_candidate')
+    .from('candidates')
     .select('*')
     .match({ email: profile.email, recruiter_id: recruiter.id });
 
@@ -60,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send({ application: application });
   } else {
     const { data: checkApplication, error: errorCheck } = await supabase
-      .from('new_application')
+      .from('applications')
       .select()
       .eq('candidate_id', checkCand[0].id)
       .eq('job_id', post.id);
@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!errorCheck) {
       if (checkApplication.length == 0) {
         await supabase
-          .from('new_candidate_files')
+          .from('candidate_files')
           .insert({
             candidate_id: checkCand[0].id,
             file_url: uploadUrl,
@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           })
           .select();
         const { data: newApplication } = await supabase
-          .from('new_application')
+          .from('applications')
           .insert({
             candidate_id: checkCand[0].id,
             job_id: post.id,
@@ -108,19 +108,17 @@ const insertCandidate = async (
   fileId: string,
   profile: any,
 ) => {
-  const { error: errorCandidate } = await supabase
-    .from('new_candidate')
-    .insert({
-      first_name: profile.firstName,
-      last_name: profile.lastName || '',
-      email: profile.email,
-      recruiter_id: recruiterId,
-      id: candidateId,
-    });
+  const { error: errorCandidate } = await supabase.from('candidates').insert({
+    first_name: profile.firstName,
+    last_name: profile.lastName || '',
+    email: profile.email,
+    recruiter_id: recruiterId,
+    id: candidateId,
+  });
 
   if (!errorCandidate) {
     await supabase
-      .from('new_candidate_files')
+      .from('candidate_files')
       .insert({
         candidate_id: candidateId,
         file_url: uploadUrl,
@@ -130,7 +128,7 @@ const insertCandidate = async (
       .select();
 
     const { data: newApplication } = await supabase
-      .from('new_application')
+      .from('applications')
       .insert({
         candidate_id: candidateId,
         job_id: jobId,

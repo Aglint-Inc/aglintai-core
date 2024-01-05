@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Database } from '@/src/types/schema';
 
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
     // Supabase credentials
 
     const { data: job } = await supabase
-      .from('new_application')
+      .from('applications')
       .select()
       .eq('id', payload.application_id);
 
@@ -70,7 +69,7 @@ export default async function handler(req, res) {
           console.log(fileLink);
 
           await supabase
-            .from('new_candidate_files')
+            .from('candidate_files')
             .insert({
               candidate_id: job[0].candidate_id,
               file_url: fileLink,
@@ -80,7 +79,7 @@ export default async function handler(req, res) {
             .select();
 
           const { data: app, error: errorApp } = await supabase
-            .from('new_application')
+            .from('applications')
             .update({ is_resume_fetching: false, candidate_file_id: fileId })
             .eq('id', payload.application_id)
             .select();

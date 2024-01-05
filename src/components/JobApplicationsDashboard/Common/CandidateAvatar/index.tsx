@@ -16,7 +16,7 @@ const CandidateAvatar = ({
         application.candidates.first_name,
         application.candidates.last_name,
       )}
-      src={application.candidates.profile_image}
+      src={application.candidates.avatar}
       variant={'rounded'}
       width={'100%'}
       height={'100%'}

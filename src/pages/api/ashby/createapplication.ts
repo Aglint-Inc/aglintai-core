@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       const { data: checkApp, error: checkError } = await supabase
-        .from('new_application')
+        .from('applications')
         .select('recruiter_id, id, candidates(*)')
         .eq('recruiter_id', recruiter_id)
         .eq('job_id', job_id)
@@ -91,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           };
 
           const { data: dataCand, error: errorCand } = await supabase
-            .from('new_candidate')
+            .from('candidates')
             .select()
             .eq('email', application.candidate.primaryEmailAddress.value)
             .eq('recruiter_id', recruiter_id);
@@ -102,7 +102,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             console.log(fileLink, 'resume');
 
             await supabase
-              .from('new_candidate_files')
+              .from('candidate_files')
               .insert({
                 candidate_id: dataCand[0].id,
                 file_url: fileLink,
@@ -129,7 +129,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               console.log(fileLink, 'resume');
 
               await supabase
-                .from('new_candidate_files')
+                .from('candidate_files')
                 .insert({
                   candidate_id: dataCand[0].id,
                   file_url: fileLink,
@@ -216,7 +216,7 @@ const createJobApplication = async (
   fileId?: string,
 ): Promise<any> => {
   await supabase
-    .from('new_application')
+    .from('applications')
     .insert({
       candidate_id: candidate_id,
       job_id: job_id,
@@ -229,7 +229,7 @@ const createJobApplication = async (
 
 const createCandidate = async (cand, recruiter_id: string): Promise<any> => {
   const { data, error } = await supabase
-    .from('new_candidate')
+    .from('candidates')
     .insert({
       first_name: cand.first_name,
       last_name: cand.last_name,

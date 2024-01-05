@@ -54,7 +54,7 @@ export default async function handler(req, res) {
             let extension = responseUrl.headers['content-type'];
             // Upload the file to Supabase Storage
             const { data: application, error: errorApp } = await supabase
-              .from('new_application')
+              .from('applications')
               .select()
               .eq('id', payload.application_id);
             if (errorApp) {
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
             if (!uploadError) {
               // Get the link to the uploaded file
               const { error: errorResume } = await supabase
-                .from('new_candidate_files')
+                .from('candidate_files')
                 .insert({
                   candidate_id: application[0].candidate_id,
                   file_url: fileLink,
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
               }
 
               const { error: errorApp } = await supabase
-                .from('new_application')
+                .from('applications')
                 .update({
                   candidate_file_id: fileId,
                   is_resume_fetching: false,

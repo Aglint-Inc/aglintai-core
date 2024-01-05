@@ -130,7 +130,7 @@ export default async function handler(req, res) {
         );
 
         const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('new_candidate')
+          .from('candidates')
           .insert(dbCandidates)
           .select();
 
@@ -147,7 +147,7 @@ export default async function handler(req, res) {
           });
 
           const { error } = await supabase
-            .from('new_application')
+            .from('applications')
             .insert(dbApplications);
 
           if (!error) {
@@ -163,7 +163,7 @@ export default async function handler(req, res) {
             await createLeverReference(referenceObj);
             return res.status(200).send('success');
           } else {
-            console.log('error while inserting into new_application');
+            console.log('error while inserting into applications');
           }
         }
         //new candidates insert flow

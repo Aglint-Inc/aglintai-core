@@ -157,7 +157,7 @@ export default async function handler(req, res) {
         );
 
         const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('new_candidate')
+          .from('candidates')
           .insert(dbCandidates)
           .select();
 
@@ -185,7 +185,7 @@ export default async function handler(req, res) {
             .filter(Boolean);
 
           const { error } = await supabase
-            .from('new_application')
+            .from('applications')
             .insert(dbApplications);
 
           if (!error) {
