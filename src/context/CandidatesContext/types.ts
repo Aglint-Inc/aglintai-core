@@ -9,27 +9,47 @@ export type CandidateInsert =
 export type CandidateUpdate =
   Database['public']['Tables']['candidates']['Update'];
 
+export type CandidateFiles =
+  Database['public']['Tables']['candidate_files']['Row'];
+export type CandidateFilesInsert =
+  Database['public']['Tables']['candidate_files']['Insert'];
+export type CandidateFilesUpdate =
+  Database['public']['Tables']['candidate_files']['Update'];
+
+export type CandidateResumeInsert = {
+  id: Candidate['id'];
+  file: any;
+};
+
+export type Applications = Database['public']['Tables']['applications']['Row'];
+export type ApplicationsInsert =
+  Database['public']['Tables']['applications']['Insert'];
+export type ApplicationsUpdate =
+  Database['public']['Tables']['applications']['Update'];
+
 export type CandidatesContext = {
   handleCandidateCreate: (
-    inputData: CandidateCreateAction['inputData'],
-    signal?: CandidateCreateAction['signal'],
+    inputData: CandidateCreateAction['request']['inputData'],
+    signal?: CandidateCreateAction['request']['signal'],
   ) => void;
   handleCandidateBulkCreate: (
-    inputData: CandidateBulkCreateAction['inputData'],
-    signal?: CandidateBulkCreateAction['signal'],
+    inputData: CandidateBulkCreateAction['request']['inputData'],
+    signal?: CandidateBulkCreateAction['request']['signal'],
   ) => void;
-  handleCandidateRead: (signal?: CandidateReadAction['signal']) => void;
+  handleCandidateRead: (
+    signal?: CandidateReadAction['request']['signal'],
+  ) => void;
   handleCandidateUpdate: (
-    inputData: CandidateUpdateAction['inputData'],
-    signal?: CandidateUpdateAction['signal'],
+    inputData: CandidateUpdateAction['request']['inputData'],
+    signal?: CandidateUpdateAction['request']['signal'],
   ) => void;
   handleCandidatesBulkUpdate: (
-    inputData: CandidateBulkUpdateAction['inputData'],
-    signal?: CandidateBulkUpdateAction['signal'],
+    inputData: CandidateBulkUpdateAction['request']['inputData'],
+    signal?: CandidateBulkUpdateAction['request']['signal'],
   ) => void;
   handleCandidateDelete: (
-    inputData: CandidateDeleteAction['inputData'],
-    signal?: CandidateDeleteAction['signal'],
+    inputData: CandidateDeleteAction['request']['inputData'],
+    signal?: CandidateDeleteAction['request']['signal'],
   ) => void;
   handleCandidateError: (error: PostgrestError) => void;
   intialLoad: boolean;
@@ -40,40 +60,191 @@ export type Candidates = {
 };
 
 export type CandidateCreateAction = {
-  inputData: CandidateInsert;
-  signal: AbortSignal;
+  request: {
+    inputData: CandidateInsert;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Candidate;
 };
 
 export type CandidateBulkCreateAction = {
-  inputData: CandidateInsert[];
-  signal: AbortSignal;
+  request: {
+    inputData: CandidateInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Candidate[];
 };
 
 export type CandidateReadAction = {
-  signal: AbortSignal;
+  request: {
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Candidate[];
 };
 
 export type CandidateUpdateAction = {
-  inputData: CandidateUpdate;
-  signal: AbortSignal;
+  request: {
+    inputData: CandidateUpdate;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Candidate;
 };
 
 export type CandidateBulkUpdateAction = {
-  inputData: CandidateInsert[];
-  signal: AbortSignal;
+  request: {
+    inputData: CandidateInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Candidate[];
 };
 
 export type CandidateDeleteAction = {
-  inputData: Candidate['id'];
-  signal: AbortSignal;
+  request: {
+    inputData: Candidate['id'];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: void;
+};
+
+export type CandidateFilesCreateAction = {
+  request: {
+    inputData: CandidateFilesInsert;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: CandidateFiles;
+};
+
+export type CandidateFilesBulkCreateAction = {
+  request: {
+    inputData: CandidateFilesInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: CandidateFiles[];
+};
+
+export type CandidateFilesReadAction = {
+  request: {
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: CandidateFiles[];
+};
+
+export type CandidateFilesUpdateAction = {
+  request: {
+    inputData: CandidateFilesUpdate;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: CandidateFiles;
+};
+
+export type CandidateFilesBulkUpdateAction = {
+  request: {
+    inputData: CandidateFilesInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: CandidateFiles[];
+};
+
+export type CandidateFilesDeleteAction = {
+  request: {
+    inputData: CandidateFiles['id'];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: void;
+};
+
+export type CandidateResumeUploadAction = {
+  request: {
+    inputData: CandidateResumeInsert;
+    retry: number;
+  };
+  response: {
+    file_url: string;
+    type: string;
+  };
+};
+
+export type CandidateResumeDeleteAction = {
+  request: {
+    inputData: CandidateResumeInsert;
+    retry: number;
+  };
+  response: void;
 };
 
 export type CandidateDuplicationCheckAction = {
-  inputData: Candidate['email'];
-  signal: AbortSignal;
+  request: {
+    inputData: {
+      email: Candidate['email'];
+      recruiter_id: Candidate['recruiter_id'];
+    };
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: boolean;
 };
 
-export type CandidateFilteredInsertCheckAction = {
-  inputData: CandidateInsert;
-  signal: AbortSignal;
+export type ApplicationsCreateAction = {
+  request: {
+    inputData: ApplicationsInsert;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Applications;
+};
+
+export type ApplicationsBulkCreateAction = {
+  request: {
+    inputData: ApplicationsInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Applications[];
+};
+
+export type ApplicationsReadAction = {
+  request: {
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Applications[];
+};
+
+export type ApplicationsUpdateAction = {
+  request: {
+    inputData: ApplicationsUpdate;
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Applications;
+};
+
+export type ApplicationsBulkUpdateAction = {
+  request: {
+    inputData: ApplicationsInsert[];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: Applications[];
+};
+
+export type ApplicationsDeleteAction = {
+  request: {
+    inputData: Applications['id'];
+    retry: number;
+    signal: AbortSignal;
+  };
+  response: void;
 };

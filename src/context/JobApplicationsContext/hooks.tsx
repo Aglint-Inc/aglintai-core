@@ -182,7 +182,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     .filter(
       (section) =>
         section !== JobApplicationSections.INTERVIEWING ||
-        (initialJobLoad && job.assessment),
+        (initialJobLoad && job?.assessment),
     )
     .reduce((acc, curr) => {
       return {

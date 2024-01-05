@@ -68,7 +68,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
       });
 
       const { data: newCandidates, error: errorCandidates } = await supabase
-        .from('candidates')
+        .from('new_candidate')
         .insert(dbCandidates)
         .select();
 

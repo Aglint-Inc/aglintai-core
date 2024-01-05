@@ -106,7 +106,7 @@ export const createJobApplications = async (
       });
 
       const { data: newCandidates, error: errorCandidates } = await supabase
-        .from('candidates')
+        .from('new_candidate')
         .insert(dbCandidates)
         .select();
 
@@ -304,7 +304,7 @@ const processBatch = async (
   recruiter_id: string,
 ): Promise<NewCandidateType[] | undefined> => {
   const { data: checkCandidates, error: errorCheck } = await supabase
-    .from('candidates')
+    .from('new_candidate')
     .select()
     .in('email', emailBatch)
     .eq('recruiter_id', recruiter_id);

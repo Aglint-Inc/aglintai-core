@@ -91,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           };
 
           const { data: dataCand, error: errorCand } = await supabase
-            .from('candidates')
+            .from('new_candidate')
             .select()
             .eq('email', application.candidate.primaryEmailAddress.value)
             .eq('recruiter_id', recruiter_id);
@@ -229,7 +229,7 @@ const createJobApplication = async (
 
 const createCandidate = async (cand, recruiter_id: string): Promise<any> => {
   const { data, error } = await supabase
-    .from('candidates')
+    .from('new_candidate')
     .insert({
       first_name: cand.first_name,
       last_name: cand.last_name,

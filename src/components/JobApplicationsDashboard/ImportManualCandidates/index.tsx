@@ -8,6 +8,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
+import toast from '@/src/utils/toast';
 
 import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
@@ -148,12 +149,11 @@ const ImportManualCandidates = () => {
       { newApplicant: applicant, validation: true },
     );
   };
-
   const handleSubmit = async () => {
     const { newApplicant, validation } = handleValidate();
     if (validation) {
       setLoading(true);
-      const confirmation = await handleUploadCandidate(
+      const { confirmation, error } = await handleUploadCandidate(
         job,
         {
           first_name: applicant.first_name.value,
@@ -161,15 +161,22 @@ const ImportManualCandidates = () => {
           email: applicant.email.value,
           phone: applicant.phone.value,
           linkedin: applicant.linkedin.value,
+          recruiter_id: job.recruiter_id,
         },
         applicant.resume.value,
       );
+
       if (confirmation) {
         setOpenImportCandidates(false);
         setApplicant(initialFormFields);
+        toast.success('Candidate added successfully!');
+      } else {
+        toast.error(error);
       }
       setLoading(false);
-    } else setApplicant(newApplicant);
+    } else {
+      setApplicant(newApplicant);
+    }
   };
   return (
     <Stack style={{ background: 'white' }}>

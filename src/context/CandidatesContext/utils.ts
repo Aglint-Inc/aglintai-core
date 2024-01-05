@@ -7,8 +7,6 @@ import {
   CandidateBulkUpdateAction,
   CandidateCreateAction,
   CandidateDeleteAction,
-  CandidateDuplicationCheckAction,
-  CandidateFilteredInsertCheckAction,
   CandidateReadAction,
   CandidatesContext,
   CandidateUpdateAction,
@@ -120,38 +118,6 @@ export const deleteCandidateDbAction = async (
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   return { data, error, confirmation: getConfirmation(error) };
-};
-
-export const duplicateCheckCandidateDbAction = async (
-  email: CandidateDuplicationCheckAction['inputData'],
-  signal?: CandidateDuplicationCheckAction['signal'],
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('candidates')
-    .select()
-    .eq('email', email)
-    .abortSignal(signal)
-    .abortSignal(timerSignal.signal);
-  clearTimeout(timeout);
-  return { data, error };
-};
-
-export const filteredInsertCandidateDbAction = async (
-  candidate: CandidateFilteredInsertCheckAction['inputData'],
-  signal?: CandidateFilteredInsertCheckAction['signal'],
-) => {
-  const { data: d1, error: e1 } = await duplicateCheckCandidateDbAction(
-    candidate.email,
-    signal,
-  );
-  if (!e1 && d1 && d1.length !== 0)
-    return { data: d1, error: null, isNew: false };
-  else {
-    const { data, error } = await createCandidateDbAction(candidate, signal);
-    return { data, error, isNew: true };
-  }
 };
 
 const getConfirmation = (error: PostgrestError) => {

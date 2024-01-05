@@ -1,61 +1,42 @@
-import { filteredInsertCandidateDbAction } from '@/src/context/CandidatesContext/utils';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import {
-  deleteCandidateDbAction,
-  deleteResumeDbAction,
-  uploadResumeDbAction,
-} from '@/src/context/JobApplicationsContext/utils';
+import axios from 'axios';
+
+import { CandidateInsert } from '@/src/context/CandidatesContext/types';
+import { ManualUploadApi } from '@/src/pages/api/candidateUpload/manualUpload';
 import { JobType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
-import toast from '@/src/utils/toast';
 
 const useUploadCandidate = () => {
-  const { handleJobApplicationCreate, handleJobApplicationError } =
-    useJobApplications();
-
   const handleUploadCandidate = async (
     job: JobType,
-    candidate: Partial<Database['public']['Tables']['candidates']['Row']>,
-    file: any,
+    candidate: CandidateInsert,
+    file: File,
+    signal?: AbortSignal,
   ) => {
-    const {
-      data: d1,
-      error: e1,
-      isNew,
-    } = await filteredInsertCandidateDbAction({
-      first_name: candidate.first_name,
-      last_name: candidate.last_name,
+    const request: ManualUploadApi['request']['params'] = {
       email: candidate.email,
-      phone: candidate.phone,
-      linkedin: candidate.linkedin,
+      first_name: candidate.first_name,
+      job_id: job.id,
+      last_name: candidate.last_name,
+      phone: candidate.phone || null,
+      linkedin: candidate.linkedin || null,
+      recruiter_id: candidate.recruiter_id,
+    };
+    const params = Object.entries(request)
+      .reduce((acc, [key, value]) => {
+        if (value) acc.push(`${key}=${encodeURIComponent(value)}`);
+        return acc;
+      }, [])
+      .join('&');
+    const { data: response } = await axios({
+      method: 'post',
+      url: `/api/candidateUpload/manualUpload?${params}`,
+      data: file,
+      timeout: 60000,
+      headers: {
+        'Content-Type': file.type,
+      },
+      signal: signal,
     });
-    if (d1 && !e1) {
-      const { data: d2, error: e2 } = await uploadResumeDbAction(
-        d1[0].id,
-        job.id,
-        file,
-      );
-      if (d2 && !e2) {
-        const confirmation = await handleJobApplicationCreate({
-          candidate_id: d1[0].id,
-          job_id: job.id,
-          resume: d2,
-        } as any);
-        if (confirmation) {
-          toast.success(
-            'Job application created successfully. Processing will take some time.',
-          );
-          return true;
-        }
-      } else {
-        await deleteResumeDbAction(d1[0].id, job.id, file);
-        if (isNew) await deleteCandidateDbAction(d1[0].id);
-        handleJobApplicationError(e2);
-      }
-    } else {
-      handleJobApplicationError(e1);
-    }
-    return false;
+    return response as ManualUploadApi['response'];
   };
 
   return { handleUploadCandidate };
