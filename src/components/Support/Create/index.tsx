@@ -10,12 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 import { palette } from '@/src/context/Theme/Theme';
-import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import {
   CandidateType,
   JobApplicationType,
@@ -176,10 +175,10 @@ function Support() {
           variant='rounded'
           src={
             jobDetails?.companyDetails?.logo ||
-            getCompanyIcon(jobDetails?.company) ||
+            getCompanyIcon(jobDetails?.companyDetails.name) ||
             ''
           }
-          alt={capitalize(jobDetails?.company || '')}
+          alt={capitalize(jobDetails?.companyDetails.name || '')}
           sx={{
             width: '100%',
             height: '100%',
@@ -194,9 +193,9 @@ export default Support;
 
 const getApplicationDetails = async (id: string) => {
   const { data, error } = await supabase
-    .from('job_applications')
-    .select(`${selectJobApplicationQuery}`)
-    .eq('application_id', id);
+    .from('applications')
+    .select()
+    .eq('id', id);
   if (!error && data.length) {
     const {
       data: [candidate],

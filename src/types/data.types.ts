@@ -152,7 +152,7 @@ export type RoleType = {
 };
 
 export type JobApplicationType =
-  Database['public']['Tables']['job_applications']['Row'];
+  Database['public']['Tables']['applications']['Row'];
 
 export type CandidateType = Database['public']['Tables']['candidates']['Row'];
 

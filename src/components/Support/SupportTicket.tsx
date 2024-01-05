@@ -30,7 +30,6 @@ import {
   useSupportContext,
 } from '@/src/context/SupportContext/SupportContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
 import {
   CandidateType,
   EmailTemplateType,
@@ -80,7 +79,7 @@ function SupportTicketDetails({
     Support_ticketType & { jobsDetails: Public_jobsType }
   >(null);
   const [application, setApplication] = useState<
-    JobApplicationType & CandidateType
+    JobApplicationType & CandidateType & { company: string; job_title: string }
   >(null);
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplateType>(null);
 
@@ -404,9 +403,9 @@ export default SupportTicketDetails;
 
 const getApplicationDetails = async (id: string) => {
   const { data, error } = await supabase
-    .from('job_applications')
-    .select(`${selectJobApplicationQuery}`)
-    .eq('application_id', id);
+    .from('applications')
+    .select()
+    .eq('id', id);
   if (!error && data.length) {
     const {
       data: [candidate],
@@ -415,10 +414,23 @@ const getApplicationDetails = async (id: string) => {
       .from('candidates')
       .select()
       .eq('id', data[0].candidate_id);
-
-    const tempData =
-      !candidateError && candidate ? { ...data[0], ...candidate } : data[0];
-    return tempData as unknown as JobApplicationType & CandidateType;
+    const job_details = supabase
+      .from('public_jobs')
+      .select('company,job_title')
+      .eq('id', data[0].job_id)
+      .then(({ data, error }) => {
+        if (error || !data.length) {
+          return {};
+        }
+        return data[0];
+      });
+    const tempData = !candidateError && {
+      ...data[0],
+      ...(candidate || {}),
+      ...(job_details || {}),
+    };
+    return tempData as unknown as JobApplicationType &
+      CandidateType & { company: string; job_title: string };
   }
   return null;
 };
@@ -870,8 +882,8 @@ const CustomAvatar = ({
         ...(backgroundColor
           ? { backgroundColor }
           : isRandomColor
-          ? { backgroundColor: getRandomColor() }
-          : {}),
+            ? { backgroundColor: getRandomColor() }
+            : {}),
       }}
     >
       {alt.toLocaleUpperCase().slice(0, 1)}
