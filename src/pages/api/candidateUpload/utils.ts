@@ -66,9 +66,10 @@ export const createCandidate = async (
   if (retry === RETRY) throw new Error(prev_error.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
+  const avatar = await emailHash(candidate.email);
   const { data, error } = await supabase
     .from('candidates')
-    .insert({ ...candidate })
+    .insert({ ...candidate, avatar })
     .select()
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -316,4 +317,18 @@ export const deleteResume = async (
     throw new Error(error.message);
   }
   // console.log('NEW CANDIDATE RESUME DELETED');
+};
+
+const sha256 = async (message) => {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+  return hashHex;
+};
+
+const emailHash = async (email) => {
+  return `https://gravatar.com/avatar/${await sha256(email)}`;
 };

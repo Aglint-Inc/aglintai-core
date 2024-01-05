@@ -171,8 +171,9 @@ export const newReadNewJobApplicationDbAction = async (
       end_rec_num: range.end + 1,
     })
     .abortSignal(controller.signal);
+  if (error) throw new Error(error.message);
   const safeData = rpcDataFormatter(data);
-  return { data: safeData.data, error, count: safeData.count };
+  return { data: safeData.data, error: null, count: safeData.count };
 };
 
 const rpcDataFormatter = (

@@ -293,7 +293,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         updateTick.current = !updateTick.current;
         return { confirmation: true, count: count };
       }
-      if (initialLoad) handleJobApplicationError(error);
+      /*if (initialLoad)*/ handleJobApplicationError(error);
       return { confirmation: false, count: null as CountJobs };
     }
   };
@@ -447,7 +447,24 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   //TERTIARY
   const handleJobApplicationError = (error) => {
-    toast.error(`Oops! Something went wrong.\n (${error?.message})`);
+    if (typeof error === 'string') {
+      toast.error(`Oops! Something went wrong.\n (${error})`);
+    } else if (typeof error === 'object') {
+      if (error.message)
+        toast.error(`Oops! Something went wrong.\n (${error.message})`);
+      else if (Array.isArray(error))
+        error.map((e) =>
+          e.message
+            ? toast.error(`Oops! Something went wrong.\n (${e.message})`)
+            : toast.error(`Oops! Something went wrong.\n (${e})`),
+        );
+      else
+        Object.values(error).map((e: any) =>
+          e.message
+            ? toast.error(`Oops! Something went wrong.\n (${e.message})`)
+            : toast.error(`Oops! Something went wrong.\n (${e})`),
+        );
+    }
   };
 
   //SECONDARY
@@ -485,7 +502,19 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     if (!confirmation) {
       const action: Action = {
         type: ActionType.READ,
-        payload: { applicationData: null },
+        payload: {
+          applicationData: Object.assign(
+            {},
+            ...Object.values(JobApplicationSections).map((section) => ({
+              [section]: [],
+            })),
+          ) as {
+            new?: JobApplication[];
+            qualified?: JobApplication[];
+            interviewing?: JobApplication[];
+            disqualified?: JobApplication[];
+          },
+        },
       };
       dispatch(action);
       return false;

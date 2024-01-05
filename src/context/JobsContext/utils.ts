@@ -49,7 +49,6 @@ export const readJobDbAction = async (recruiter_id: string) => {
 
 export const jobApplicationCountDbAction = async (ids: string[]) => {
   const { data, error } = await supabase.rpc('getjobapplications', { ids });
-
   return {
     data: data
       ? data.reduce(
