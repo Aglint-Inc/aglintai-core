@@ -1,6 +1,6 @@
 import { supabase } from '@/src/utils/supabaseClient';
 export async function updateFeedbackOnJobApplications(
-  candidateDetails: { application_id: any },
+  application_id: any,
   jobDetails: any,
   feedback: any,
   conversation: any,
@@ -31,23 +31,38 @@ export async function updateFeedbackOnJobApplications(
   );
   const isManual = jobDetails?.new_screening_setting?.interview?.isManual;
   const { error } = await supabase
-    .from('job_applications')
-    .update({
+    .from('assessment_results')
+    .insert({
+      application_id,
       feedback: feedback,
       conversation: conversation,
       ai_interviewer_id: interviewIndex,
-      status: isManual
-        ? 'interviewing'
-        : overAllScore >= maxScore
-        ? 'qualified'
-        : overAllScore < maxScore && overAllScore > minScore
-        ? 'interviewing'
-        : 'disqualified',
+      // status: isManual
+      //   ? 'interviewing'
+      //   : overAllScore >= maxScore
+      //   ? 'qualified'
+      //   : overAllScore < maxScore && overAllScore > minScore
+      //   ? 'interviewing'
+      //   : 'disqualified',
       interview_duration: interviewDuration,
       interview_score: overAllScore,
     })
-    .eq('application_id', candidateDetails?.application_id);
+    .eq('application_id', application_id);
   if (!error) {
+    await supabase
+      .from('applications')
+      .update({
+        status: isManual
+          ? 'assessment'
+          : overAllScore >= maxScore
+            ? 'qualified'
+            : overAllScore < maxScore && overAllScore > minScore
+              ? 'assessment'
+              : 'disqualified',
+      })
+      .eq('id', application_id)
+      .select();
+
     return true;
   }
 }

@@ -613,7 +613,7 @@ function InterviewContextProvider({ children }) {
     });
 
     const res = await updateFeedbackOnJobApplications(
-      candidateDetails,
+      router.query.id,
       jobDetails,
       structuredFeedback,
       conversations,
@@ -621,7 +621,7 @@ function InterviewContextProvider({ children }) {
       '00:00',
     );
     if (res) {
-      router.push(`/thanks-page?id=${candidateDetails?.application_id}`);
+      router.push(`/thanks-page?id=${candidateDetails?.id}`);
     }
   }
 
