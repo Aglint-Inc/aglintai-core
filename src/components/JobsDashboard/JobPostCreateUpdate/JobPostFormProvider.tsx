@@ -64,11 +64,15 @@ export type JdJsonType = {
   educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
 };
 export type phoneScreenQuestion = {
+  id: string;
   isRequired: boolean;
   question: string;
   questionLabel: string;
   type: 'multiSelect' | 'singleSelect' | 'shortAnswer';
-  options: string[];
+  options: {
+    option: string;
+    id: string;
+  }[];
 };
 type EmailTemplate = Record<string, EmailDetails>;
 export type FormJobType = {
