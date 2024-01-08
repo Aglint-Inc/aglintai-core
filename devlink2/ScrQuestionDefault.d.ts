@@ -8,4 +8,5 @@ declare function ScrQuestionDefault(props: {
   textOption?: React.ReactNode;
   isRequired?: Types.Visibility.VisibilityConditions;
   onclickEdit?: Types.Devlink.RuntimeProps;
+  isOptionsVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

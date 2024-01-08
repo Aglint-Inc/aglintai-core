@@ -257,6 +257,9 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
               setEditQn(q);
             },
           }}
+          isOptionsVisible={
+            q.type === 'multiSelect' || q.type === 'singleSelect'
+          }
           textOption={
             <Stack direction={'row'} gap={1} flexWrap={'wrap'}>
               {q.options.map((op, idx) => (
@@ -426,7 +429,7 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
 const seedQns: PhoneScreenQuestion[] = [
   {
     id: nanoid(),
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question:

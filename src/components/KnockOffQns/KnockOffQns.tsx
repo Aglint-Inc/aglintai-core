@@ -4,7 +4,7 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import CompanyLogo from './CompanyLogo';
 import PhoneScreeningQn from './PhoneScreeningQn';
-import { useScreeningCtx } from './ScreeningCtx';
+import { useScreeningCtx } from './ScreeningCtxProvider';
 import AUIButton from '../Common/AUIButton';
 
 const KnockOffQns = () => {

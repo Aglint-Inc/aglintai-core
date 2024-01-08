@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { useScreeningCtx } from './ScreeningCtx';
+import { useScreeningCtx } from './ScreeningCtxProvider';
 
 const CompanyLogo = () => {
   const { state } = useScreeningCtx();

@@ -103,6 +103,8 @@ const allowedPaths = new Set([
   '/api/trigger',
   '/api/jobpost/read',
   '/api/jobpost/write',
+  '/api/phone-screening/submit',
+  '/api/phone-screening/get-application-info',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {

@@ -1,31 +1,49 @@
-import { Radio, Stack, TextField } from '@mui/material';
+import { CircularProgress, Radio, Stack, TextField } from '@mui/material';
+import axios from 'axios';
 import { get } from 'lodash';
 import Image from 'next/image';
 import { useState } from 'react';
 
 import { Checkbox, PhoneScreeningQ } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
+import toast from '@/src/utils/toast';
 
 import CompanyLogo from './CompanyLogo';
-import { PhoneScreeningResponseType, useScreeningCtx } from './ScreeningCtx';
+import {
+  PhoneScreeningResponseType,
+  useScreeningCtx,
+} from './ScreeningCtxProvider';
 import AUIButton from '../Common/AUIButton';
 import UITypography from '../Common/UITypography';
+import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 const PhoneScreeningQn = ({ path, qnNo }) => {
   const { state, updateState } = useScreeningCtx();
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const qn: PhoneScreeningResponseType = get(state, path);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
+      if (!isResponseValid()) return;
+      setIsSubmitting(true);
+
+      const candResponse = {
+        response: state.phoneScreen,
+        applied_at: new Date().toUTCString(),
+      };
+      await axios.post('/api/submit-phone-screening', {
+        candResponse: candResponse,
+        application_id: state.applicationId,
+      });
       updateState({
         path: 'showEndMessage',
         value: true,
       });
     } catch (err) {
-      //
+      toast.error(API_FAIL_MSG);
     } finally {
-      //
+      setIsSubmitting(false);
     }
   };
 
@@ -43,9 +61,9 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       return false;
     } else if (
       qn.type === 'shortAnswer' &&
-      qn.candAnswer.split(' ').length < 10
+      qn.candAnswer.split(' ').length < 3
     ) {
-      setErrorMsg('Please enter atlease 10 words');
+      setErrorMsg('Please enter atleast 3 words');
       return false;
     }
     return true;
@@ -119,6 +137,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
               path: `${path}.candAnswer`,
               value: e.target.value,
             });
+            setErrorMsg('');
           }}
         />
       </>
@@ -153,14 +172,25 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           {state.phoneScreen.length === qnNo ? (
             <AUIButton
               variant='success'
-              disabled={errorMsg.length > 0}
+              disabled={errorMsg.length > 0 || state.isPreview}
               endIcon={
-                <Image
-                  alt=''
-                  src={'/images/svg/tick.svg'}
-                  width={15}
-                  height={15}
-                />
+                <>
+                  {!isSubmitting && (
+                    <Image
+                      alt=''
+                      src={'/images/svg/tick.svg'}
+                      width={15}
+                      height={15}
+                    />
+                  )}
+                  {isSubmitting && (
+                    <CircularProgress
+                      color='inherit'
+                      size={'15px'}
+                      sx={{ color: palette.grey[400] }}
+                    />
+                  )}
+                </>
               }
               onClick={handleSubmit}
             >

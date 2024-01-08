@@ -1,0 +1,35 @@
+import { createClient } from '@supabase/supabase-js';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { Database } from '@/src/types/schema';
+
+export const supabaseAdmin = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const { candResponse, application_id } = req.body;
+    if (!candResponse)
+      return res.status(400).send('missing candResponse in payload');
+    if (!application_id)
+      return res.status(400).send('missing application_id in payload');
+
+    supabaseWrap(
+      await supabaseAdmin
+        .from('applications')
+        .update({
+          phone_screening: candResponse as any,
+        })
+        .eq('id', application_id),
+    );
+
+    return res.status(200).send('sucess');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+export default handler;

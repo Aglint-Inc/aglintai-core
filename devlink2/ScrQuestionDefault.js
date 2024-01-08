@@ -10,6 +10,7 @@ export function ScrQuestionDefault({
   textOption = "1. Yes",
   isRequired = false,
   onclickEdit = {},
+  isOptionsVisible = true,
 }) {
   return (
     <_Component
@@ -47,27 +48,34 @@ export function ScrQuestionDefault({
         className={_utils.cx(_styles, "scr-question-default-content")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "scr-qd-options-wrapper")}
-          tag="div"
-        >
+        {isOptionsVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "scr-qd-options-wrapper")}
             tag="div"
           >
-            {"Options :"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600", "text-no-wrap")}
+              tag="div"
+            >
+              {"Options :"}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{textOption}</_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textOption}</_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         {isRequired ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "margin-left-auto")}
             tag="div"
           >
-            <_Builtin.Span className={_utils.cx(_styles, "text-red-500")}>
-              {"*"}
-            </_Builtin.Span>
-            {"required"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              <_Builtin.Span className={_utils.cx(_styles, "text-red-500")}>
+                {"*"}
+              </_Builtin.Span>
+              {"required"}
+            </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

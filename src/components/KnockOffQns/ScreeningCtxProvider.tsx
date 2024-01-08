@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
 import React, {
@@ -12,12 +13,16 @@ import React, {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import {
   FormJobType,
   PhoneScreenQuestion,
 } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;
 export interface PhoneScreeningResponseType extends PhoneScreenCandQnType {
@@ -35,6 +40,9 @@ type CandPhoneScreeningState = {
   currentQn: number;
   showStartMessage: boolean;
   showEndMessage: boolean;
+  applicationId: string;
+  jobPostId: string;
+  isPreview: boolean;
 };
 
 type ScreeningCtxProviderType = {
@@ -81,6 +89,9 @@ const initialState: CandPhoneScreeningState = {
   currentQn: -1,
   showEndMessage: true,
   showStartMessage: false,
+  applicationId: '',
+  isPreview: true,
+  jobPostId: '',
 };
 
 const ScreeningCtx = createContext<ScreeningCtxProviderType>({
@@ -97,6 +108,14 @@ export const ScreeningCtxProvider = ({ children }) => {
 
   useEffect(() => {
     if (!router.isReady) return;
+    const { job_post_id, application_id, preview } = router.query as any;
+
+    if (!job_post_id) {
+      toast.error('invalid Link');
+      router.replace('/login');
+      return;
+    }
+
     (async () => {
       try {
         setIsLoading(true);
@@ -126,6 +145,18 @@ export const ScreeningCtxProvider = ({ children }) => {
               })),
             };
           });
+
+        const { data } = await axios.post(
+          '/api/phone-screening/get-application-info',
+          {
+            application_id: application_id,
+          },
+        );
+        let isFormFilled = false;
+        if (data?.phone_screening?.response) {
+          isFormFilled = true;
+        }
+
         dispatch({
           type: 'initialise',
           payload: {
@@ -133,13 +164,17 @@ export const ScreeningCtxProvider = ({ children }) => {
               companyLogo: job.logo,
               phoneScreen: candPhScreenResp,
               currentQn: -1,
-              showStartMessage: true,
-              showEndMessage: false,
+              showStartMessage: !isFormFilled,
+              showEndMessage: isFormFilled,
+              applicationId: application_id,
+              jobPostId: job_post_id,
+              isPreview: preview === 'true',
             },
           },
         });
       } catch (err) {
-        // console.log(err);
+        router.push('/login');
+        toast.error(API_FAIL_MSG);
       } finally {
         setIsLoading(false);
       }
