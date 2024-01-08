@@ -8,7 +8,8 @@ import { ResumeScoreTag } from '../../ResumeScoreTag';
 import { ApiLogState, intactConditionFilter } from '../../utils';
 
 const ResumeScore = ({ application }: { application: JobApplication }) => {
-  return application.candidate_files.resume_json || application.candidate_files.file_url ? (
+  return application.candidate_files?.resume_json ||
+    application.candidate_files?.file_url ? (
     intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
       application.score_json ? (
         <ResumeScoreTag score={application.overall_score} />

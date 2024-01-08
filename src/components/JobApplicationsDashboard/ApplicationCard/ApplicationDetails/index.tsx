@@ -90,11 +90,9 @@ const ApplicationDetails = ({
   const [openFeedback, setOpenFeedback] = useState(false);
 
   const copyAppId = () => {
-    navigator.clipboard
-      .writeText(applications.id)
-      .then(() => {
-        toast.success('Application ID copied');
-      });
+    navigator.clipboard.writeText(applications.id).then(() => {
+      toast.success('Application ID copied');
+    });
   };
 
   const candidateImage = applications ? (
@@ -188,9 +186,7 @@ const NewDetailedFeedback = ({
         applications.candidates.last_name,
       )}
       textMail={
-        applications.candidates.email
-          ? applications.candidates.email
-          : '--'
+        applications.candidates.email ? applications.candidates.email : '--'
       }
       slotDetailedFeedback={
         <DetailedInterviewFeedbackParams
@@ -304,7 +300,8 @@ const NewJobApplicationSideDrawer = ({
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
-  const overview = (applications?.candidate_files?.resume_json as any)?.overview ?? null;
+  const overview =
+    (applications?.candidate_files?.resume_json as any)?.overview ?? null;
   const handleProfileRedirect = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applications.id}`,
@@ -346,9 +343,7 @@ const NewJobApplicationSideDrawer = ({
       slotCandidateImage={candidateImage}
       textName={name}
       textMail={
-        applications.candidates.email
-          ? applications.candidates.email
-          : '--'
+        applications.candidates.email ? applications.candidates.email : '--'
       }
       textOverviewDesc={overview}
       slotCandidateDetails={
@@ -379,10 +374,7 @@ const NewJobApplicationSideDrawer = ({
       }}
       onClickCopyPhone={{
         onClick: () =>
-          handleCopy(
-            applications.candidates.phone.trim(),
-            'Phone number',
-          ),
+          handleCopy(applications.candidates.phone.trim(), 'Phone number'),
       }}
       // slotMoveTo={
       //   <MoveCandidatePopUp
@@ -409,29 +401,23 @@ const NewCandidateDetails = ({
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { job } = useJobApplications();
-  const resume = applications.candidate_files.resume_json as any;
+  const resume = applications.candidate_files?.resume_json as any;
   return (
     <CandidateDetails
       slotInterviewScore={
         <>
           <>
-            {applications.assessment_results.feedback ? (
+            {applications.assessment_results?.feedback ? (
               <NewInterviewScoreDetails
                 applications={applications}
                 setOpenFeedback={setOpenFeedback}
               />
-            ) : applications.status === 'assessment'? (
-              <NewInterviewStatus
-                applications={applications}
-                job={job}
-              />
+            ) : applications.status === 'assessment' ? (
+              <NewInterviewStatus applications={applications} job={job} />
             ) : (
               <></>
             )}
-            <NewResumeSection
-              applications={applications}
-              job={job}
-            />
+            <NewResumeSection applications={applications} job={job} />
           </>
           {applicationValidity(applications) ? (
             <>
@@ -441,8 +427,7 @@ const NewCandidateDetails = ({
                 <NewExperienceDetails
                   positions={resume.positions}
                   relevance={
-                    (applications.score_json as ScoreJson)?.relevance
-                      ?.positions
+                    (applications.score_json as ScoreJson)?.relevance?.positions
                   }
                 />
               ) : (
@@ -572,9 +557,7 @@ const NewInterviewScoreDetails = ({ applications, setOpenFeedback }) => {
       }}
       slotInterviewFeedbackScore={
         applications.feedback && (
-          <InterviewFeedbackParams
-            feedbackParamsObj={applications.feedback}
-          />
+          <InterviewFeedbackParams feedbackParamsObj={applications.feedback} />
         )
       }
     />
@@ -615,10 +598,10 @@ const NewResumeSection = ({
         onClose={() => setOpenResume(false)}
       >
         <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-          <ResumePreviewer url={applications.candidate_files.file_url} />
+          <ResumePreviewer url={applications.candidate_files?.file_url} />
         </Stack>
       </Dialog>
-      {applications.score_json || applications.candidate_files.file_url ? (
+      {applications.score_json || applications.candidate_files?.file_url ? (
         intactConditionFilter(applications) !== ApiLogState.PROCESSING ? (
           applications.score_json ? (
             <NewResumeScoreDetails

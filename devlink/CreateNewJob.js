@@ -49,7 +49,6 @@ export function CreateNewJob({
   isScreeningActive = false,
   onClickScreening = {},
   isProductionVisible = true,
-  isProductionVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 

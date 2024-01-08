@@ -21,7 +21,7 @@ export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 //TODO: Draft?
 
 export type JobApplcationDB =
-  Database['public']['Tables']['job_applications']['Row'];
+  Database['public']['Tables']['applications']['Row'];
 
 export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
 

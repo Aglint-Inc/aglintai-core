@@ -66,7 +66,8 @@ const ApplicationCard = ({
     application.candidates.first_name,
     application.candidates.last_name,
   );
-  const overview = (application?.candidate_files.resume_json as any)?.overview ?? '---';
+  const overview =
+    (application?.candidate_files?.resume_json as any)?.overview ?? '---';
   const analysis = getReasonings(
     (application?.score_json as ScoreJson)?.reasoning || null,
   );
@@ -77,13 +78,21 @@ const ApplicationCard = ({
       slotProfileImage={profile}
       name={name}
       jobTitle={
-        (application.candidate_files.resume_json as any)?.basics?.currentJobTitle
-          ? capitalize((application.candidate_files.resume_json as any).basics.currentJobTitle)
+        (application.candidate_files?.resume_json as any)?.basics
+          ?.currentJobTitle
+          ? capitalize(
+              (application.candidate_files?.resume_json as any).basics
+                .currentJobTitle,
+            )
           : '---'
       }
       location={
-        (application.candidate_files.resume_json as any)?.basics?.location?.city
-          ? capitalize((application.candidate_files.resume_json as any).basics.location.city)
+        (application.candidate_files?.resume_json as any)?.basics?.location
+          ?.city
+          ? capitalize(
+              (application.candidate_files?.resume_json as any).basics.location
+                .city,
+            )
           : '---'
       }
       slotResumeScore={resumeScore}
@@ -99,10 +108,12 @@ const ApplicationCard = ({
       }}
       isHighlighted={isSelected}
       experience={getExperienceCount(
-        (application.candidate_files.resume_json as any)?.basics?.totalExperience,
+        (application.candidate_files?.resume_json as any)?.basics
+          ?.totalExperience,
       )}
       company={
-        (application.candidate_files.resume_json as any)?.basics?.currentCompany || '---'
+        (application.candidate_files?.resume_json as any)?.basics
+          ?.currentCompany || '---'
       }
     />
   ) : (
@@ -152,7 +163,11 @@ const Insights = ({ application }: { application: JobApplication }) => {
             getBadge(
               curr,
               jdScore.badges[curr],
-              getPills(curr, jdScore.relevance, application.candidate_files.resume_json),
+              getPills(
+                curr,
+                jdScore.relevance,
+                application.candidate_files.resume_json,
+              ),
             ),
           );
         return acc;
