@@ -597,11 +597,28 @@ function InterviewContextProvider({ children }) {
     resetTranscript();
     audioElement?.pause();
 
-    const result = await axios.post('/api/interview', {
-      interviewData: context,
+    // const result = await axios.post('/api/interview', {
+    //   interviewData: context,
+    // });
+    // console.log(result)
+    const { data: feedback_response } = await axios.post(
+      'api/interview_feedback',
+      {
+        data: context,
+      },
+    );
+    const result = JSON.parse(feedback_response?.response?.content)
+
+    const convertedArray = Object.entries(result).map(([key, value]) => {
+      return { [key]: value };
     });
 
-    const structuredFeedback = result.data.data.results.map((item) => {
+    // Ensure that the array has three empty objects
+    while (convertedArray.length < 3) {
+      convertedArray.push({});
+    }
+
+    const structuredFeedback = convertedArray.map((item) => {
       const key = Object.keys(item)[0];
       const feedback = item[key].feedback;
       const rating = item[key].rating;
