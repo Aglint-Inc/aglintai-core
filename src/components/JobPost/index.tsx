@@ -22,11 +22,7 @@ import {
   OpenJobListingCard,
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import {
-  JobApplcationDB,
-  JobTypeDB,
-  RecruiterDB,
-} from '@/src/types/data.types';
+import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -47,7 +43,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const [error, setError] = useState(false);
   const [thank, setThank] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [application, setApplication] = useState<JobApplcationDB>();
+  const [application, setApplication] = useState<any>();
 
   const notifyMe = () => {
     if (email) {
