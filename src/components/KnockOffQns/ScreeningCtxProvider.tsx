@@ -188,7 +188,6 @@ export const ScreeningCtxProvider = ({ children }) => {
           },
         });
       } catch (err) {
-        console.log(err);
         toast.error(API_FAIL_MSG);
         router.push('/login');
       } finally {
