@@ -1,9 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { Database } from '@/src/types/schema';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
+
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 const url = process.env.RESUME_JD_SCORE_URL;
 
@@ -20,8 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rpcfunction == 'first'
         ? 'batchcalcresumejdscore'
         : rpcfunction == 'second'
-        ? 'retrybatchcalcresumejdscore'
-        : 'secondretrybatchcalcresumejdscore',
+          ? 'retrybatchcalcresumejdscore'
+          : 'secondretrybatchcalcresumejdscore',
     )) as BatchCalcResumeJDScoreResponse;
 
     if (error) {
