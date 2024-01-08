@@ -157,7 +157,7 @@ export default async function handler(req, res) {
         );
 
         const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('new_candidate')
+          .from('candidates')
           .insert(dbCandidates)
           .select();
 
