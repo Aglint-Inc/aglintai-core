@@ -36,6 +36,8 @@ export interface PhoneScreeningResponseType extends PhoneScreenCandQnType {
 
 type CandPhoneScreeningState = {
   phoneScreen: PhoneScreeningResponseType[];
+  startMessage: string;
+  endMessage: string;
   companyLogo: string;
   currentQn: number;
   showStartMessage: boolean;
@@ -92,6 +94,8 @@ const initialState: CandPhoneScreeningState = {
   applicationId: '',
   isPreview: true,
   jobPostId: '',
+  startMessage: '',
+  endMessage: '',
 };
 
 const ScreeningCtx = createContext<ScreeningCtxProviderType>({
@@ -146,15 +150,24 @@ export const ScreeningCtxProvider = ({ children }) => {
             };
           });
 
-        const { data } = await axios.post(
-          '/api/phone-screening/get-application-info',
-          {
-            application_id: application_id,
-          },
-        );
         let isFormFilled = false;
-        if (data?.phone_screening?.response) {
-          isFormFilled = true;
+
+        if (application_id) {
+          const { data } = await axios.post(
+            '/api/phone-screening/get-application-info',
+            {
+              application_id: application_id,
+            },
+          );
+          if (!data) {
+            toast.error('invalid link');
+            router.push('/login');
+            return;
+          }
+
+          if (data.phone_screening !== null) {
+            isFormFilled = true;
+          }
         }
 
         dispatch({
@@ -169,12 +182,15 @@ export const ScreeningCtxProvider = ({ children }) => {
               applicationId: application_id,
               jobPostId: job_post_id,
               isPreview: preview === 'true',
+              endMessage: jobPhoneScreening.endMessage as any,
+              startMessage: jobPhoneScreening.startMessage as any,
             },
           },
         });
       } catch (err) {
-        router.push('/login');
+        console.log(err);
         toast.error(API_FAIL_MSG);
+        router.push('/login');
       } finally {
         setIsLoading(false);
       }

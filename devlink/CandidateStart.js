@@ -7,6 +7,7 @@ export function CandidateStart({
   as: _Component = _Builtin.Block,
   slotStartButton,
   slotLogo,
+  textWelcome = "Welcome to the candidate application form.Please fill out the following information",
 }) {
   return (
     <_Component
@@ -32,9 +33,7 @@ export function CandidateStart({
         className={_utils.cx(_styles, "text-lg", "fw-semibold")}
         tag="div"
       >
-        {
-          "Welcome to the candidate application form.Please fill out the following information"
-        }
+        {textWelcome}
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotStartButton}</_Builtin.Block>
     </_Component>

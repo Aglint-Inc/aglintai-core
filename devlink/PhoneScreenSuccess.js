@@ -7,6 +7,7 @@ export function PhoneScreenSuccess({
   as: _Component = _Builtin.Block,
   slotLogo,
   slotLottie,
+  textSuccess = "Thank you for taking your time. We will get back to you shortly",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-672")} tag="div">
@@ -36,7 +37,7 @@ export function PhoneScreenSuccess({
           className={_utils.cx(_styles, "text-grey-600", "mt-15")}
           tag="div"
         >
-          {"Thank you for taking your time. We will get back to you shortly"}
+          {textSuccess}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

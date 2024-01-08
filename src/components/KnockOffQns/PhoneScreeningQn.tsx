@@ -32,7 +32,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         response: state.phoneScreen,
         applied_at: new Date().toUTCString(),
       };
-      await axios.post('/api/submit-phone-screening', {
+      await axios.post('/api/phone-screening/submit', {
         candResponse: candResponse,
         application_id: state.applicationId,
       });

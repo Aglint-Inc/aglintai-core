@@ -39,7 +39,7 @@ const KnockOffQns = () => {
 };
 
 const StartSlide = () => {
-  const { updateState } = useScreeningCtx();
+  const { updateState, state } = useScreeningCtx();
   return (
     <CandidateStart
       slotLogo={
@@ -65,11 +65,13 @@ const StartSlide = () => {
           </AUIButton>
         </>
       }
+      textWelcome={state.startMessage}
     />
   );
 };
 
 const EndMessage = () => {
+  const { state } = useScreeningCtx();
   return (
     <>
       <PhoneScreenSuccess
@@ -79,6 +81,7 @@ const EndMessage = () => {
             <PhoneScreeningFormSubmit />
           </>
         }
+        textSuccess={state.endMessage}
       />
     </>
   );
