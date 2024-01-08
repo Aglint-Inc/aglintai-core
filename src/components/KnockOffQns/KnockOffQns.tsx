@@ -6,6 +6,7 @@ import CompanyLogo from './CompanyLogo';
 import PhoneScreeningQn from './PhoneScreeningQn';
 import { useScreeningCtx } from './ScreeningCtxProvider';
 import AUIButton from '../Common/AUIButton';
+import PhoneScreeningFormSubmit from '../Common/Lotties/PhoneScreeningFormSubmit';
 
 const KnockOffQns = () => {
   const { state } = useScreeningCtx();
@@ -71,7 +72,14 @@ const StartSlide = () => {
 const EndMessage = () => {
   return (
     <>
-      <PhoneScreenSuccess slotLogo={<CompanyLogo />} />
+      <PhoneScreenSuccess
+        slotLogo={<CompanyLogo />}
+        slotLottie={
+          <>
+            <PhoneScreeningFormSubmit />
+          </>
+        }
+      />
     </>
   );
 };
