@@ -70,7 +70,7 @@ const CandDbProvider = ({ children }) => {
           .from('job_applications')
           .select()
           .or(jobAppIds.map((j) => `application_id.eq.${j}`).join(',')),
-      ) as JobApplcationDB[];
+      ) as any[];
 
       let newJobApps: Partial<JobApplcationDB> & { candidate_id: string }[] =
         [];
