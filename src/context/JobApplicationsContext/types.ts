@@ -23,7 +23,7 @@ export enum JobApplicationSections {
 
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
-export interface JobApplication extends Applications {
+export type JobApplication  =  Applications & {
   candidates: Candidate;
   candidate_files: CandidateFiles;
   assessment_results: AssessmentResults;
