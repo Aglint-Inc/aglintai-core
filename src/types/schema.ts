@@ -1403,6 +1403,8 @@ export interface Database {
         Returns: {
           job_app: Json
           cand: Json
+          assres: Json
+          candfiles: Json
           total_results: number
         }[]
       }

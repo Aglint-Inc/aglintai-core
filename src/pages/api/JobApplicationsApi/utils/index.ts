@@ -90,8 +90,9 @@ const rpcDataFormatter = (
   unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
-    (curr.job_app as unknown as JobApplication).candidates =
-      curr.cand as JobApplication['candidates'];
+    (curr.job_app as unknown as JobApplication).candidates = curr.cand as JobApplication['candidates'];
+    (curr.job_app as unknown as JobApplication).assessment_results = curr.assres as JobApplication['assessment_results'];
+    (curr.job_app as unknown as JobApplication).candidate_files = curr.candfiles as JobApplication['candidate_files'];
     acc.push(curr.job_app as unknown as JobApplication);
     return acc;
   }, [] as JobApplication[]);
