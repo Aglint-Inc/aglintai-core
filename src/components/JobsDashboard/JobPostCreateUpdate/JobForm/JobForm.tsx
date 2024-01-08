@@ -421,6 +421,9 @@ function JobForm() {
         slotPublishButton={
           <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
         }
+        isProductionVisible={
+          !process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com')
+        }
         slotCloseJobButton={
           <>
             <CloseJobButton

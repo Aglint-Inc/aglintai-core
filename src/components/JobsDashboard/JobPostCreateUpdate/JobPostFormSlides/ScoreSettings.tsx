@@ -19,6 +19,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
 
+import JobPublishButton from '../JobForm/PublishButton';
 import { JdJsonType, useJobForm } from '../JobPostFormProvider';
 import { API_FAIL_MSG } from '../utils';
 
@@ -368,6 +369,15 @@ const ScoreSettings = () => {
                   },
                 }}
               />
+            }
+            isAddJob={
+              jobForm.formType === 'new' &&
+              process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com')
+            }
+            slotButtonPrimaryRegular={
+              <>
+                <JobPublishButton />
+              </>
             }
           />
 

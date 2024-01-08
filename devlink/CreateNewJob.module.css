@@ -550,9 +550,12 @@
 
 .div-block-503 {
   z-index: 4;
+
+  display: flex;
   padding-top: 35px;
   padding-bottom: 10px;
   padding-left: 20px;
+
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
@@ -560,9 +563,8 @@
   z-index: 4;
 
   display: flex;
-  max-width: 745px;
   padding: 6px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   border-radius: 10px;

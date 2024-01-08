@@ -49,6 +49,7 @@ export function CreateNewJob({
   isScreeningActive = false,
   onClickScreening = {},
   isProductionVisible = true,
+  isProductionVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -395,7 +396,7 @@ export function CreateNewJob({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_height-scroll__%22%5D%7B%0Aheight%3Acalc(100vh%20-%20145px)%3B%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_height-scroll__%22%5D%7B%0Aheight%3Acalc(100vh%20-%20172px)%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );
