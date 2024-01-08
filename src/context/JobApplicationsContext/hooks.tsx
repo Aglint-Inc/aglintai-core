@@ -170,7 +170,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   };
 
   const initialParameters: Parameters = {
-    sort: { parameter: 'resume_score', ascending: false },
+    sort: { parameter: 'overall_score', ascending: false },
     filter: { ...defaultFilters },
     search: null,
   };

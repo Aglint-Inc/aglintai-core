@@ -54,7 +54,7 @@ export type FilterParameter = {
 };
 
 export const CANDIDATE_SORT: SortParameter['parameter'][] = [
-  'resume_score',
+  'overall_score',
   'interview_score',
   'full_name',
   'email',
@@ -63,7 +63,7 @@ export const CANDIDATE_SORT: SortParameter['parameter'][] = [
 
 export type SortParameter = {
   parameter:
-    | 'resume_score'
+    | 'overall_score'
     | 'interview_score'
     | 'full_name'
     | 'email'
@@ -144,7 +144,7 @@ export const getUpdateParameterName = (str: string) => {
   switch (str) {
     case 'interview_score':
       return 'assessment_score';
-    case 'resume_score':
+    case 'overall_score':
       return 'resume_match';
     case 'location':
       return 'city';
