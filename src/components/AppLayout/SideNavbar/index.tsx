@@ -2,7 +2,7 @@ import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { NavJobSubLink } from '@/devlink';
+import { BetaComp, NavJobSubLink } from '@/devlink';
 import {
   RsnDatabaseIcon,
   RsnJobsIcon,
@@ -90,6 +90,7 @@ function SideNavbar() {
               >
                 {item.text}
               </Typography>
+              {item.text === 'Candidates' && <BetaComp />}
             </Stack>
             <Stack
               sx={{

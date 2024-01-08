@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { BetaComp } from "./BetaComp";
 import { CandidateHistoryCard } from "./CandidateHistoryCard";
 import * as _utils from "./utils";
 import _styles from "./CandidateDatabaseSearch.module.css";
@@ -30,7 +31,7 @@ export function CandidateDatabaseSearch({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "job-header-empty")}
+        className={_utils.cx(_styles, "job-header-empty", "beta-flex")}
         tag="div"
       >
         <_Builtin.Block
@@ -39,6 +40,7 @@ export function CandidateDatabaseSearch({
         >
           {"Candidate Database"}
         </_Builtin.Block>
+        <BetaComp />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate-empty-landing-wrappers")}

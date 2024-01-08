@@ -50,3 +50,12 @@
   grid-column-gap: 18px;
   grid-row-gap: 18px;
 }
+
+.publish-email-wrap {
+  display: flex;
+  margin-top: 40px;
+  justify-content: flex-start;
+  align-items: stretch;
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
+}

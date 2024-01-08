@@ -38,4 +38,5 @@ declare function CreateNewJob(props: {
   isUnpublishWarningVisible?: Types.Visibility.VisibilityConditions;
   isScreeningActive?: Types.Visibility.VisibilityConditions;
   onClickScreening?: Types.Devlink.RuntimeProps;
+  isProductionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

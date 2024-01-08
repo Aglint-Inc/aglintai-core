@@ -158,7 +158,7 @@ export function NewJobStep2({
                   {...onClickProceed}
                 >
                   <_Builtin.Block tag="div">
-                    {"Proceed to score setting"}
+                    {"Proceed to profile score"}
                   </_Builtin.Block>
                   <_Builtin.HtmlEmbed
                     className={_utils.cx(_styles, "icons")}
@@ -174,7 +174,7 @@ export function NewJobStep2({
                     tag="div"
                   >
                     <_Builtin.Block tag="div">
-                      {"Proceed to score setting"}
+                      {"Proceed to profile score"}
                     </_Builtin.Block>
                     <_Builtin.HtmlEmbed
                       className={_utils.cx(_styles, "icons")}

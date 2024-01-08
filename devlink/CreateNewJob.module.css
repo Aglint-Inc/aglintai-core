@@ -560,7 +560,7 @@
   z-index: 4;
 
   display: flex;
-  max-width: 740px;
+  max-width: 745px;
   padding: 6px;
   justify-content: space-between;
   align-items: center;
@@ -597,6 +597,10 @@
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.create-job-menu-wrap.assessment.hide {
+  display: none;
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {

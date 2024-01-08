@@ -3407,7 +3407,7 @@ export function CompanySetting({
           fadeOut={100}
         >
           <_Builtin.TabsMenu
-            className={_utils.cx(_styles, "tab-menu-link-company")}
+            className={_utils.cx(_styles, "tab-menu-link-company", "hide")}
             tag="div"
           >
             <_Builtin.TabsLink
