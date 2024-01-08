@@ -2,13 +2,13 @@
 import { PostgrestError } from '@supabase/supabase-js';
 
 import {
-  Applications,
-  Candidate,
   CandidateCreateAction,
   CandidateDeleteAction,
   CandidateDuplicationCheckAction,
-  CandidateFiles,
 } from '@/src/context/CandidatesContext/types';
+import { Applications } from '@/src/types/applications.types';
+import { CandidateFiles } from '@/src/types/candidate_files.types';
+import { Candidate } from '@/src/types/candidates.types';
 
 import { Supabase } from './manualUpload';
 
@@ -119,7 +119,7 @@ export const createFile = async (
   candidate_id: string,
   file_url: string,
   candidate_file_id: string,
-  contentType: string,
+  contentType: keyof typeof supportedTypes,
   retry: number = 1,
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
@@ -255,7 +255,7 @@ export const uploadResume = async (
   candidateId: string,
   jobId: string,
   file: any,
-  contentType: string,
+  contentType: keyof typeof supportedTypes,
   candidate_file_id: string,
   retry: number = 1,
   prev_error?: string,
@@ -296,7 +296,7 @@ export const uploadResume = async (
 export const deleteResume = async (
   supabase: Supabase,
   candidate_file_id: string,
-  contentType: string,
+  contentType: keyof typeof supportedTypes,
   retry: number = 1,
   prev_error?: string,
 ): Promise<void> => {

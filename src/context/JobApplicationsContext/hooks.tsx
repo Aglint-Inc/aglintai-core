@@ -7,20 +7,18 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 import { checkSyncCand } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
+import { Applications } from '@/src/types/applications.types';
 import toast from '@/src/utils/toast';
 
 import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-  NewJobApplications,
   Parameters,
 } from './types';
 import {
   bulkCreateJobApplicationDbAction,
   bulkUpdateJobApplicationDbAction,
-  createJobApplicationDbAction,
-  deleteJobApplicationDbAction,
   getRange,
   getUpdatedJobStatus,
   // updateAllJobStatusDbAction,
@@ -35,13 +33,7 @@ enum ActionType {
   // eslint-disable-next-line no-unused-vars
   PAGINATED_READ,
   // eslint-disable-next-line no-unused-vars
-  PAGINATED_UPDATE,
-  // eslint-disable-next-line no-unused-vars
   UPDATE,
-  // eslint-disable-next-line no-unused-vars
-  BULK_UPDATE,
-  // eslint-disable-next-line no-unused-vars
-  DELETE,
 }
 
 type Action =
@@ -58,24 +50,11 @@ type Action =
       };
     }
   | {
-      type: ActionType.PAGINATED_UPDATE;
-      payload: {
-        applicationData: JobApplicationsData;
-      };
-    }
-  | {
       type: ActionType.UPDATE;
       payload: {
         applicationData: JobApplication;
       };
     }
-  | {
-      type: ActionType.DELETE;
-      payload: {
-        applicationId: string;
-        applicationStatus: JobApplicationSections;
-      };
-    };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
@@ -98,17 +77,6 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       );
       return newState;
     }
-    case ActionType.PAGINATED_UPDATE: {
-      const newState: JobApplicationsData = Object.entries(
-        action.payload.applicationData,
-      ).reduce(
-        (acc, [key, value]) => {
-          return { ...acc, [key]: [...value] };
-        },
-        { ...state },
-      );
-      return newState;
-    }
     case ActionType.UPDATE: {
       const newState: JobApplicationsData = {
         ...state,
@@ -116,26 +84,13 @@ const reducer = (state: JobApplicationsData, action: Action) => {
           action.payload.applicationData.status
         ].reduce((acc: JobApplication[], curr: JobApplication) => {
           if (
-            curr.application_id ===
-            action.payload.applicationData.application_id
+            curr.id ===
+            action.payload.applicationData.id
           )
             acc.push(action.payload.applicationData);
           else acc.push(curr);
           return acc;
         }, []),
-      };
-      return newState;
-    }
-
-    case ActionType.DELETE: {
-      const newState: JobApplicationsData = {
-        ...state,
-        [action.payload.applicationStatus]: state[
-          action.payload.applicationStatus
-        ].filter(
-          (a: JobApplication) =>
-            a.application_id !== action.payload.applicationId,
-        ),
       };
       return newState;
     }
@@ -181,7 +136,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const ranges = Object.values(JobApplicationSections)
     .filter(
       (section) =>
-        section !== JobApplicationSections.INTERVIEWING ||
+        section !== JobApplicationSections.ASSESSMENT ||
         (initialJobLoad && job?.assessment),
     )
     .reduce((acc, curr) => {
@@ -229,22 +184,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const showInterview =
     section !== JobApplicationSections.NEW && initialJobLoad && job.assessment;
-
-  //SECONDARY
-  const handleJobApplicationCreate = async (inputData: JobApplication) => {
-    if (recruiter) {
-      const { data, error } = await createJobApplicationDbAction(
-        jobId,
-        inputData,
-      );
-      if (data) {
-        await handleJobApplicationRefresh();
-        return true;
-      }
-      handleJobApplicationError(error);
-      return false;
-    }
-  };
 
   //SECONDARY
   const handleJobApplicationBulkCreate = async (
@@ -343,7 +282,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   //PRIMARY
   const handleJobApplicationUpdate = async (
     applicationId: string,
-    inputData: NewJobApplications,
+    inputData: JobApplication,
   ) => {
     if (recruiter) {
       const { data, error } = await updateJobApplicationDbAction(
@@ -369,7 +308,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   //SECONDARY
   const handleJobApplicationBulkUpdate = async (
-    updatedApplicationData: NewJobApplications[],
+    updatedApplicationData: Applications[],
   ) => {
     const { data: d1, error: e1 } = await bulkUpdateJobApplicationDbAction(
       updatedApplicationData,
@@ -388,28 +327,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       }
     } else {
       handleJobApplicationError(e1);
-      return false;
-    }
-  };
-
-  //PRIMARY
-  const handleJobApplicationDelete = async (
-    applicationId: string,
-    applicationStatus: JobApplicationSections,
-  ) => {
-    if (recruiter) {
-      const { data, error } = await deleteJobApplicationDbAction(applicationId);
-      if (data) {
-        const action: Action = {
-          type: ActionType.DELETE,
-          payload: { applicationId, applicationStatus },
-        };
-        await handleUpdateJobCount([job.id]);
-        dispatch(action);
-        updateTick.current = !updateTick.current;
-        return true;
-      }
-      handleJobApplicationError(error);
       return false;
     }
   };
@@ -537,14 +454,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     atsSync,
     updateTick: updateTick.current,
     pageNumber,
-    handleJobApplicationCreate,
     handleJobApplicationBulkCreate,
     handleJobApplicationRead,
     handleJobApplicationPaginate,
     handleJobApplicationUpdate,
     handleJobApplicationRefresh,
     handleJobApplicationBulkUpdate,
-    handleJobApplicationDelete,
     handleJobApplicationError,
     handleUpdateJobStatus,
     handleJobApplicationFilter,

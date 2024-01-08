@@ -73,7 +73,7 @@ export const MoveCandidateDialog = ({
 
 const checkVisibility = (destination: JobApplicationSections) => {
   return (
-    destination === JobApplicationSections.INTERVIEWING ||
+    destination === JobApplicationSections.ASSESSMENT ||
     destination === JobApplicationSections.DISQUALIFIED
   );
 };
@@ -82,7 +82,7 @@ const sectionMapper = (section: JobApplicationSections) => {
   switch (section) {
     case JobApplicationSections.NEW:
       return 'New';
-    case JobApplicationSections.INTERVIEWING:
+    case JobApplicationSections.ASSESSMENT:
       return 'Assessment';
     case JobApplicationSections.QUALIFIED:
       return 'Qualified';
@@ -113,7 +113,7 @@ const getSubTitle = (
 ) => {
   if (name) {
     switch (destination) {
-      case JobApplicationSections.INTERVIEWING:
+      case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to ${name}`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to ${name}`;
@@ -123,7 +123,7 @@ const getSubTitle = (
   } else if (count === 0) return null;
   else {
     switch (destination) {
-      case JobApplicationSections.INTERVIEWING:
+      case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to the candidate${
           count !== 1 ? 's' : ''
         }`;
@@ -145,7 +145,7 @@ export function sendEmails(
   handleJobApplicationUpdate,
 ) {
   if (
-    status === JobApplicationSections.INTERVIEWING ||
+    status === JobApplicationSections.ASSESSMENT ||
     status === JobApplicationSections.DISQUALIFIED
   ) {
     const _new = applications['new'];
@@ -185,7 +185,7 @@ export const emailHandler = async (
     job_title: any;
     company: any;
     application_id: any;
-    emails: any;
+    status_emails_sent: any;
   },
   job: any,
   handleJobApplicationUpdate: any,
@@ -195,14 +195,14 @@ export const emailHandler = async (
     .post('/api/sendgrid', {
       fromEmail: `messenger@aglinthq.com`,
       fromName:
-        status === JobApplicationSections.INTERVIEWING
+        status === JobApplicationSections.ASSESSMENT
           ? job.email_template?.interview.fromName
           : status === JobApplicationSections.DISQUALIFIED
           ? job.email_template?.rejection.fromName
           : null,
       email: candidate?.email,
       subject:
-        status === JobApplicationSections.INTERVIEWING
+        status === JobApplicationSections.ASSESSMENT
           ? fillEmailTemplate(job.email_template?.interview.subject, {
               first_name: candidate.first_name,
               last_name: candidate.last_name,
@@ -222,7 +222,7 @@ export const emailHandler = async (
             })
           : null,
       text:
-        status === JobApplicationSections.INTERVIEWING
+        status === JobApplicationSections.ASSESSMENT
           ? fillEmailTemplate(job?.email_template?.interview?.body, {
               first_name: candidate.first_name,
               last_name: candidate.last_name,
@@ -243,17 +243,17 @@ export const emailHandler = async (
           : null,
     })
     .then(async () => {
-      if (status === JobApplicationSections.INTERVIEWING) {
-        candidate.emails.interviewing = true;
+      if (status === JobApplicationSections.ASSESSMENT) {
+        candidate.status_emails_sent.assessment = true;
         await handleJobApplicationUpdate(candidate.application_id, {
-          emails: candidate.emails,
+          emails: candidate.status_emails_sent,
         });
         return true;
       }
       if (status === JobApplicationSections.DISQUALIFIED) {
-        candidate.emails.rejected = true;
+        candidate.status_emails_sent.rejected = true;
         await handleJobApplicationUpdate(candidate.application_id, {
-          emails: candidate.emails,
+          emails: candidate.status_emails_sent,
         });
         return true;
       }

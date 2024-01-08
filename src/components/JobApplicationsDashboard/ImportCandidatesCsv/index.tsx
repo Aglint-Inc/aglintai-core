@@ -6,8 +6,8 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
-import { CandidateInsert } from '@/src/context/CandidatesContext/types';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { CandidateInsert } from '@/src/types/candidates.types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';

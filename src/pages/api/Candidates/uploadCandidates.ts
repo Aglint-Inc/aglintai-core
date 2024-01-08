@@ -3,9 +3,9 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { BulkImportCandidateCsv } from '@/src/components/JobApplicationsDashboard/ImportCandidatesCsv';
-import { Candidate } from '@/src/context/CandidatesContext/types';
 import { bulkCreateCandidateDbAction } from '@/src/context/CandidatesContext/utils';
-import { NewJobApplicationsInsert } from '@/src/context/JobApplicationsContext/types';
+import { ApplicationsInsert } from '@/src/types/applications.types';
+import { Candidate } from '@/src/types/candidates.types';
 
 import { getExisitingCandidates, getExisitingJobApplications } from './utils';
 
@@ -122,7 +122,7 @@ const handler = async (
       existingApplicants: [] as Candidate[],
     },
   );
-  const finalPayload: NewJobApplicationsInsert[] = [
+  const finalPayload: ApplicationsInsert[] = [
     ...newApplicants,
     ...d2,
   ].map((c) => {
@@ -130,7 +130,7 @@ const handler = async (
       job_id: jobId,
       candidate_id: c.id,
       resume: candidateObj[c.email].resume,
-    } as NewJobApplicationsInsert;
+    } as ApplicationsInsert;
   });
 
   res.status(200).json({
@@ -160,7 +160,7 @@ export type UploadCandidateAPi = {
       existingCandidates: Candidate[];
       newApplicants: Candidate[];
       existingApplicants: Candidate[];
-      finalPayload: NewJobApplicationsInsert[];
+      finalPayload: ApplicationsInsert[];
     };
     error: PostgrestError;
   };

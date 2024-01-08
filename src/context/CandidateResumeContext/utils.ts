@@ -2,35 +2,27 @@ import { PostgrestError } from '@supabase/supabase-js';
 
 import { supabase } from '@/src/utils/supabaseClient';
 
-import {
-  CandidateBulkCreateAction,
-  CandidateBulkUpdateAction,
-  CandidateCreateAction,
-  CandidateDeleteAction,
-  CandidateReadAction,
-  CandidatesContext,
-  CandidateUpdateAction,
-} from './types';
+import { CandidateFilesBulkCreateAction, CandidateFilesBulkUpdateAction, CandidateFilesContext, CandidateFilesCreateAction, CandidateFilesDeleteAction, CandidateFilesReadAction, CandidateFilesUpdateAction } from './types';
 
-export const initialCandidatesContext: CandidatesContext = {
-  handleCandidateCreate: undefined,
-  handleCandidateBulkCreate: undefined,
-  handleCandidateRead: undefined,
-  handleCandidateUpdate: undefined,
-  handleCandidatesBulkUpdate: undefined,
-  handleCandidateDelete: undefined,
-  handleCandidateError: undefined,
+export const initialCandidatesContext: CandidateFilesContext = {
+  handleCandidateFilesCreate: undefined,
+  handleCandidateFilesBulkCreate: undefined,
+  handleCandidateFilesRead: undefined,
+  handleCandidateFilesUpdate: undefined,
+  handleCandidateFilesBulkUpdate: undefined,
+  handleCandidateFilesDelete: undefined,
+  handleCandidateFilesError: undefined,
   intialLoad: false,
 };
 
 export const createCandidateDbAction = async (
-  candidate: CandidateCreateAction['request']['inputData'],
-  signal?: CandidateCreateAction['request']['signal'],
+  candidate: CandidateFilesCreateAction['request']['inputData'],
+  signal?: CandidateFilesCreateAction['request']['signal'],
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates')
+    .from('candidates_files')
     .insert({ ...candidate })
     .select()
     .abortSignal(signal)
@@ -40,14 +32,14 @@ export const createCandidateDbAction = async (
 };
 
 export const bulkCreateCandidateDbAction = async (
-  candidates: CandidateBulkCreateAction['request']['inputData'],
-  signal?: CandidateBulkCreateAction['request']['signal'],
+  candidates: CandidateFilesBulkCreateAction['request']['inputData'],
+  signal?: CandidateFilesBulkCreateAction['request']['signal'],
 ) => {
   if (candidates && candidates.length !== 0) {
     const timerSignal = new AbortController();
     const timeout = setTimeout(() => timerSignal.abort(), 60000);
     const { data, error } = await supabase
-      .from('candidates')
+      .from('candidates_files')
       .insert(candidates)
       .select()
       .abortSignal(signal)
@@ -59,12 +51,12 @@ export const bulkCreateCandidateDbAction = async (
 };
 
 export const readCandidatesDbAction = async (
-  signal?: CandidateReadAction['request']['signal'],
+  signal?: CandidateFilesReadAction['request']['signal'],
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates')
+    .from('candidates_files')
     .select('*')
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -73,13 +65,13 @@ export const readCandidatesDbAction = async (
 };
 
 export const updateCandidateDbAction = async (
-  candidate: CandidateUpdateAction['request']['inputData'],
-  signal?: CandidateUpdateAction['request']['signal'],
+  candidate: CandidateFilesUpdateAction['request']['inputData'],
+  signal?: CandidateFilesUpdateAction['request']['signal'],
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates')
+    .from('candidates_files')
     .update(candidate)
     .select()
     .abortSignal(signal)
@@ -89,13 +81,13 @@ export const updateCandidateDbAction = async (
 };
 
 export const bulkUpdateCandidateDbAction = async (
-  candidates: CandidateBulkUpdateAction['request']['inputData'],
-  signal?: CandidateBulkUpdateAction['request']['signal'],
+  candidates: CandidateFilesBulkUpdateAction['request']['inputData'],
+  signal?: CandidateFilesBulkUpdateAction['request']['signal'],
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates')
+    .from('candidates_files')
     .upsert(candidates)
     .select()
     .abortSignal(signal)
@@ -105,13 +97,13 @@ export const bulkUpdateCandidateDbAction = async (
 };
 
 export const deleteCandidateDbAction = async (
-  candidateId: CandidateDeleteAction['request']['inputData'],
-  signal?: CandidateDeleteAction['request']['signal'],
+  candidateId: CandidateFilesDeleteAction['request']['inputData'],
+  signal?: CandidateFilesDeleteAction['request']['signal'],
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates')
+    .from('candidates_files')
     .delete()
     .eq('id', candidateId)
     .abortSignal(signal)

@@ -8,10 +8,10 @@ import { ResumeScoreTag } from '../../ResumeScoreTag';
 import { ApiLogState, intactConditionFilter } from '../../utils';
 
 const ResumeScore = ({ application }: { application: JobApplication }) => {
-  return application.json_resume || application.resume ? (
+  return application.candidate_files.resume_json || application.candidate_files.file_url ? (
     intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-      application.jd_score ? (
-        <ResumeScoreTag score={application.resume_score} />
+      application.score_json ? (
+        <ResumeScoreTag score={application.overall_score} />
       ) : (
         <Tooltip
           title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { Dispatch, SetStateAction } from 'react';
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import {
@@ -8,46 +7,26 @@ import {
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
-import { Database } from '@/src/types/schema';
+import { Applications } from '@/src/types/applications.types';
+import { AssessmentResults } from '@/src/types/assessment_results.types';
+import { CandidateFiles } from '@/src/types/candidate_files.types';
+import { Candidate } from '@/src/types/candidates.types';
 
 import useProviderJobApplicationActions from './hooks';
-import { Candidate } from '../CandidatesContext/types';
 
 export enum JobApplicationSections {
   NEW = 'new',
-  INTERVIEWING = 'interviewing',
+  ASSESSMENT = 'assessment',
   QUALIFIED = 'qualified',
   DISQUALIFIED = 'disqualified',
 }
 
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
-export type NewJobApplications = Pick<
-  Database['public']['Tables']['job_applications']['Row'],
-  | 'application_id'
-  | 'created_at'
-  | 'resume_score'
-  | 'feedback'
-  | 'conversation'
-  | 'status'
-  | 'jd_score'
-  | 'job_id'
-  | 'interview_score'
-  | 'api_status'
-  | 'json_resume'
-  | 'resume'
-  | 'candidate_id'
-  | 'emails'
-  | 'applied_at'
-  | 'is_resume_fetching'
->;
-export type NewJobApplicationsInsert =
-  Database['public']['Tables']['job_applications']['Insert'];
-export type NewJobApplicationsUpdate =
-  Database['public']['Tables']['job_applications']['Update'];
-
-export interface JobApplication extends NewJobApplications {
+export interface JobApplication extends Applications {
   candidates: Candidate;
+  candidate_files: CandidateFiles;
+  assessment_results: AssessmentResults;
 }
 
 export type Parameters = {
@@ -60,7 +39,7 @@ export type JobApplicationContext = ReturnType<
   typeof useProviderJobApplicationActions
 >;
 
-export type JdScore = {
+export type ScoreJson = {
   scores: ScoreWheelParams;
   badges: {
     skills: number;

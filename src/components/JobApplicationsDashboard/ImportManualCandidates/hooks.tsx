@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { CandidateInsert } from '@/src/context/CandidatesContext/types';
 import { ManualUploadApi } from '@/src/pages/api/candidateUpload/manualUpload';
+import { CandidateInsert } from '@/src/types/candidates.types';
 import { JobType } from '@/src/types/data.types';
 
 const useUploadCandidate = () => {

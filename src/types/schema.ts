@@ -75,6 +75,7 @@ export interface Database {
       applications: {
         Row: {
           applied_at: string
+          assessment_id: string | null
           candidate_file_id: string | null
           candidate_id: string
           created_at: string
@@ -90,6 +91,7 @@ export interface Database {
         }
         Insert: {
           applied_at?: string
+          assessment_id?: string | null
           candidate_file_id?: string | null
           candidate_id: string
           created_at?: string
@@ -105,6 +107,7 @@ export interface Database {
         }
         Update: {
           applied_at?: string
+          assessment_id?: string | null
           candidate_file_id?: string | null
           candidate_id?: string
           created_at?: string
@@ -119,6 +122,13 @@ export interface Database {
           status_emails_sent?: Json
         }
         Relationships: [
+          {
+            foreignKeyName: "applications_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_results"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "applications_candidate_file_id_fkey"
             columns: ["candidate_file_id"]
@@ -145,40 +155,40 @@ export interface Database {
       assessment_results: {
         Row: {
           ai_interviewer_id: number
-          application_id: string | null
+          application_id: string
           conversation: Json[]
           created_at: string
           feedback: Json
           id: string
-          interview_duration: number
+          interview_duration: string
+          interview_score: number
           interviewing_date: string
-          inteview_score: number
         }
         Insert: {
           ai_interviewer_id: number
-          application_id?: string | null
+          application_id: string
           conversation: Json[]
           created_at?: string
           feedback: Json
           id?: string
-          interview_duration?: number
+          interview_duration: string
+          interview_score?: number
           interviewing_date?: string
-          inteview_score?: number
         }
         Update: {
           ai_interviewer_id?: number
-          application_id?: string | null
+          application_id?: string
           conversation?: Json[]
           created_at?: string
           feedback?: Json
           id?: string
-          interview_duration?: number
+          interview_duration?: string
+          interview_score?: number
           interviewing_date?: string
-          inteview_score?: number
         }
         Relationships: [
           {
-            foreignKeyName: "new_assessment_results_application_id_fkey"
+            foreignKeyName: "assessment_results_application_id_fkey"
             columns: ["application_id"]
             isOneToOne: false
             referencedRelation: "applications"
@@ -392,110 +402,6 @@ export interface Database {
           resume_saved?: boolean
         }
         Relationships: []
-      }
-      job_applications: {
-        Row: {
-          ai_interviewer_id: number | null
-          api_status: string
-          application_id: string
-          applied_at: string
-          candidate_id: string
-          conversation: Json[] | null
-          created_at: string
-          education_embedding: string | null
-          emails: Json | null
-          experience_embedding: string | null
-          feedback: Json | null
-          geolocation: unknown | null
-          interview_duration: string | null
-          interview_score: number
-          interviewing_date: string | null
-          is_embedding: boolean
-          is_resume_fetching: boolean
-          jd_score: Json | null
-          job_id: string | null
-          json_resume: Json | null
-          last_updated_at: string | null
-          processed_at: string | null
-          resume: string | null
-          resume_embedding: string | null
-          resume_score: number
-          resume_text: string | null
-          retry: number
-          skills_embedding: string | null
-          status: string | null
-        }
-        Insert: {
-          ai_interviewer_id?: number | null
-          api_status?: string
-          application_id?: string
-          applied_at?: string
-          candidate_id: string
-          conversation?: Json[] | null
-          created_at?: string
-          education_embedding?: string | null
-          emails?: Json | null
-          experience_embedding?: string | null
-          feedback?: Json | null
-          geolocation?: unknown | null
-          interview_duration?: string | null
-          interview_score?: number
-          interviewing_date?: string | null
-          is_embedding?: boolean
-          is_resume_fetching?: boolean
-          jd_score?: Json | null
-          job_id?: string | null
-          json_resume?: Json | null
-          last_updated_at?: string | null
-          processed_at?: string | null
-          resume?: string | null
-          resume_embedding?: string | null
-          resume_score?: number
-          resume_text?: string | null
-          retry?: number
-          skills_embedding?: string | null
-          status?: string | null
-        }
-        Update: {
-          ai_interviewer_id?: number | null
-          api_status?: string
-          application_id?: string
-          applied_at?: string
-          candidate_id?: string
-          conversation?: Json[] | null
-          created_at?: string
-          education_embedding?: string | null
-          emails?: Json | null
-          experience_embedding?: string | null
-          feedback?: Json | null
-          geolocation?: unknown | null
-          interview_duration?: string | null
-          interview_score?: number
-          interviewing_date?: string | null
-          is_embedding?: boolean
-          is_resume_fetching?: boolean
-          jd_score?: Json | null
-          job_id?: string | null
-          json_resume?: Json | null
-          last_updated_at?: string | null
-          processed_at?: string | null
-          resume?: string | null
-          resume_embedding?: string | null
-          resume_score?: number
-          resume_text?: string | null
-          retry?: number
-          skills_embedding?: string | null
-          status?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "job_applications_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          }
-        ]
       }
       job_reference: {
         Row: {
@@ -1435,6 +1341,15 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
+      get_recruiter_name_id: {
+        Args: {
+          in_application_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+        }[]
+      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -1588,7 +1503,11 @@ export interface Database {
       }
     }
     Enums: {
-      application_processing_status: "not started" | "processing" | "failed"
+      application_processing_status:
+        | "not started"
+        | "processing"
+        | "failed"
+        | "success"
       application_status: "new" | "assessment" | "qualified" | "disqualified"
       file_type: "resume" | "coverletter" | "cv" | "image"
     }

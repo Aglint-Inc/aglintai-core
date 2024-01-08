@@ -6,11 +6,11 @@ import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { getInterviewScore } from '../../utils';
 
 const InterviewScore = ({ application }: { application: JobApplication }) => {
-  const interviewScore = application?.feedback
-    ? getInterviewScore(application.feedback)
+  const interviewScore = application?.assessment_results?.feedback
+    ? getInterviewScore(application.assessment_results.feedback)
     : 0;
   const color = getColor(interviewScore);
-  return application?.feedback ? (
+  return application?.assessment_results?.feedback ? (
     <AssessmentScore
       textScore={interviewScore}
       props={{ style: { color: color, borderColor: color } }}

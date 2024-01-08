@@ -17,9 +17,9 @@ import {
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
-  JdScore,
   JobApplication,
   JobApplicationSections,
+  ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 
 import CandidateAvatar from '../Common/CandidateAvatar';
@@ -61,14 +61,14 @@ const ApplicationCard = ({
     ) : (
       <InterviewScore application={application} />
     );
-  const isChecked = checkList.has(application.application_id);
+  const isChecked = checkList.has(application.id);
   const name = getCandidateName(
     application.candidates.first_name,
     application.candidates.last_name,
   );
-  const overview = (application?.json_resume as any)?.overview ?? '---';
+  const overview = (application?.candidate_files.resume_json as any)?.overview ?? '---';
   const analysis = getReasonings(
-    (application?.jd_score as JdScore)?.reasoning || null,
+    (application?.score_json as ScoreJson)?.reasoning || null,
   );
   return !detailedView ? (
     <AllCandidateListItem
@@ -77,13 +77,13 @@ const ApplicationCard = ({
       slotProfileImage={profile}
       name={name}
       jobTitle={
-        (application.json_resume as any)?.basics?.currentJobTitle
-          ? capitalize((application.json_resume as any).basics.currentJobTitle)
+        (application.candidate_files.resume_json as any)?.basics?.currentJobTitle
+          ? capitalize((application.candidate_files.resume_json as any).basics.currentJobTitle)
           : '---'
       }
       location={
-        (application.json_resume as any)?.basics?.location?.city
-          ? capitalize((application.json_resume as any).basics.location.city)
+        (application.candidate_files.resume_json as any)?.basics?.location?.city
+          ? capitalize((application.candidate_files.resume_json as any).basics.location.city)
           : '---'
       }
       slotResumeScore={resumeScore}
@@ -99,10 +99,10 @@ const ApplicationCard = ({
       }}
       isHighlighted={isSelected}
       experience={getExperienceCount(
-        (application.json_resume as any)?.basics?.totalExperience,
+        (application.candidate_files.resume_json as any)?.basics?.totalExperience,
       )}
       company={
-        (application.json_resume as any)?.basics?.currentCompany || '---'
+        (application.candidate_files.resume_json as any)?.basics?.currentCompany || '---'
       }
     />
   ) : (
@@ -130,7 +130,7 @@ const ApplicationCard = ({
   );
 };
 
-const getReasonings = (reasoning: JdScore['reasoning']) => {
+const getReasonings = (reasoning: ScoreJson['reasoning']) => {
   return reasoning
     ? ['positions', 'skills', 'schools'].reduce((acc, curr) => {
         if (reasoning[curr]) acc += `${capitalize(reasoning[curr])} `;
@@ -143,16 +143,16 @@ const getExperienceCount = (months: number) => {
 };
 
 const Insights = ({ application }: { application: JobApplication }) => {
-  const jdScore = application.jd_score as JdScore;
+  const jdScore = application.score_json as ScoreJson;
   if (jdScore?.badges) {
     const badgeList = badgePriority
-      .reduce((acc, curr: keyof JdScore['badges']) => {
+      .reduce((acc, curr: keyof ScoreJson['badges']) => {
         if (jdScore.badges[curr])
           acc.push(
             getBadge(
               curr,
               jdScore.badges[curr],
-              getPills(curr, jdScore.relevance, application.json_resume),
+              getPills(curr, jdScore.relevance, application.candidate_files.resume_json),
             ),
           );
         return acc;
@@ -165,8 +165,8 @@ const Insights = ({ application }: { application: JobApplication }) => {
 };
 
 const getPills = (
-  badge: keyof JdScore['badges'],
-  relevance: JdScore['relevance'],
+  badge: keyof ScoreJson['badges'],
+  relevance: ScoreJson['relevance'],
   resume: any,
 ) => {
   switch (badge) {
@@ -181,7 +181,7 @@ const getPills = (
   }
 };
 
-const getSkillPills = (skills: JdScore['relevance']['skills']) => {
+const getSkillPills = (skills: ScoreJson['relevance']['skills']) => {
   return Object.entries(skills).reduce((acc, [key, value], i) => {
     if (value === 'high')
       acc.push(<CandidateSkillPills key={i} textSkill={key} />);
@@ -191,7 +191,7 @@ const getSkillPills = (skills: JdScore['relevance']['skills']) => {
 
 const getEducationPills = (
   schools,
-  relevance: JdScore['relevance']['schools'],
+  relevance: ScoreJson['relevance']['schools'],
 ) => {
   const educationList =
     Array.isArray(schools) &&
@@ -223,7 +223,7 @@ const getEducationPills = (
 
 const getPositionPills = (
   positions,
-  relevance: JdScore['relevance']['positions'],
+  relevance: ScoreJson['relevance']['positions'],
 ) => {
   const positionsList =
     Array.isArray(positions) &&

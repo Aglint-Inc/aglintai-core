@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { JdScore } from '@/src/context/JobApplicationsContext/types';
+import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
@@ -149,7 +149,7 @@ export type QualificationRelevance =
   | 'more match';
 
 export const getOverallResumeScore = (
-  scores: JdScore['scores'],
+  scores: ScoreJson['scores'],
   parameter_weights: JobTypeDashboard['parameter_weights'],
 ) => {
   return Math.trunc(

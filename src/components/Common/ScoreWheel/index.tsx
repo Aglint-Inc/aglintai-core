@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { JdScore } from '@/src/context/JobApplicationsContext/types';
+import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import { getOverallResumeScore } from '@/src/utils/support/supportUtils';
 
 export const scoreWheelDependencies = {
@@ -34,7 +34,7 @@ const ScoreWheel = ({
   fontSize = 14,
 }: {
   id: string;
-  scores?: JdScore['scores'];
+  scores?: ScoreJson['scores'];
   parameter_weights: ScoreWheelParams;
   fontSize?: number;
 }) => {

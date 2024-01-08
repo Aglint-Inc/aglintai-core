@@ -1,31 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { PostgrestError } from '@supabase/supabase-js';
 
-import { Database } from '@/src/types/schema';
-
-export type Candidate = Database['public']['Tables']['candidates']['Row'];
-export type CandidateInsert =
-  Database['public']['Tables']['candidates']['Insert'];
-export type CandidateUpdate =
-  Database['public']['Tables']['candidates']['Update'];
-
-export type CandidateFiles =
-  Database['public']['Tables']['candidate_files']['Row'];
-export type CandidateFilesInsert =
-  Database['public']['Tables']['candidate_files']['Insert'];
-export type CandidateFilesUpdate =
-  Database['public']['Tables']['candidate_files']['Update'];
+import { Applications, ApplicationsInsert, ApplicationsUpdate } from '@/src/types/applications.types';
+import { CandidateFiles, CandidateFilesInsert, CandidateFilesUpdate } from '@/src/types/candidate_files.types';
+import { Candidate, CandidateInsert, CandidateUpdate } from '@/src/types/candidates.types';
 
 export type CandidateResumeInsert = {
   id: Candidate['id'];
   file: any;
 };
-
-export type Applications = Database['public']['Tables']['applications']['Row'];
-export type ApplicationsInsert =
-  Database['public']['Tables']['applications']['Insert'];
-export type ApplicationsUpdate =
-  Database['public']['Tables']['applications']['Update'];
 
 export type CandidatesContext = {
   handleCandidateCreate: (

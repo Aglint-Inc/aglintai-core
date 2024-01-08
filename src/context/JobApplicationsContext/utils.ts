@@ -4,6 +4,7 @@ import {
   // getFilteredQuery,
   selectJobApplicationQuery,
 } from '@/src/pages/api/JobApplicationsApi/utils';
+import { Applications, ApplicationsInsert, ApplicationsUpdate } from '@/src/types/applications.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -11,8 +12,6 @@ import {
   JobApplicationContext,
   JobApplicationsData,
   JobApplicationSections,
-  NewJobApplications,
-  NewJobApplicationsInsert,
 } from './types';
 
 export const uploadResumeDbAction = async (
@@ -88,26 +87,9 @@ export const deleteCandidateDbAction = async (
   return { data: error ? false : true, error };
 };
 
-export const createJobApplicationDbAction = async (
-  job_id: string,
-  inputData: NewJobApplications,
-  signal?: AbortSignal,
-) => {
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
-    .from('job_applications')
-    .insert({ ...inputData, job_id })
-    .select(`${selectJobApplicationQuery}, candidates(*)`)
-    .abortSignal(timerSignal.signal)
-    .abortSignal(signal);
-  clearTimeout(timeout);
-  return { data, error };
-};
-
 export const bulkCreateJobApplicationDbAction = async (
   job_id: string,
-  inputData: NewJobApplicationsInsert[],
+  inputData: ApplicationsInsert[],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
@@ -116,7 +98,7 @@ export const bulkCreateJobApplicationDbAction = async (
     return { ...data, job_id };
   });
   const { data, error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .insert(applications)
     .select(`${selectJobApplicationQuery}`)
     .abortSignal(signal);
@@ -131,7 +113,7 @@ export const readJobApplicationDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .select(`${selectJobApplicationQuery}`)
     .eq('job_id', job_id)
     .abortSignal(signal);
@@ -141,29 +123,29 @@ export const readJobApplicationDbAction = async (
 
 export const updateJobApplicationDbAction = async (
   application_id: string,
-  inputData: NewJobApplications,
+  inputData: ApplicationsUpdate,
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .update(inputData)
     .eq('application_id', application_id)
-    .select(`${selectJobApplicationQuery},candidates(*)`)
+    .select(`${selectJobApplicationQuery}`)
     .abortSignal(signal);
   clearTimeout(timeout);
   return { data, error };
 };
 
 export const bulkUpdateJobApplicationDbAction = async (
-  inputData: NewJobApplications[],
+  inputData: Applications[],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .upsert(inputData)
     .abortSignal(signal);
 
@@ -178,7 +160,7 @@ export const deleteJobApplicationDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .delete()
     .eq('application_id', application_id)
     .abortSignal(signal);
@@ -193,11 +175,11 @@ export const getUpdatedJobStatus = (
     source: JobApplicationSections;
     destination: JobApplicationSections;
   },
-): NewJobApplications[] => {
+): Applications[] => {
   return applications[sections.source].reduce(
     // eslint-disable-next-line no-unused-vars
-    (acc: NewJobApplications[], { candidates, ...curr }) => {
-      if (applicationIdSet.has(curr.application_id))
+    (acc: Applications[], { candidates, ...curr }) => {
+      if (applicationIdSet.has(curr.id))
         acc.push({ ...curr, status: sections.destination });
       return acc;
     },

@@ -38,7 +38,7 @@ export const getStatusColor = (status: string) => {
 export const applicationValidity = (application: JobApplication) => {
   return (
     intactConditionFilter(application) !== ApiLogState.PROCESSING &&
-    application.json_resume &&
-    application.jd_score
+    application.candidate_files.resume_json &&
+    application.score_json
   );
 };

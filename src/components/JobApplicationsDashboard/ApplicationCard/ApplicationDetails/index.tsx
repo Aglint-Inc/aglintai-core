@@ -43,9 +43,9 @@ import ScoreWheel, {
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
-  JdScore,
   JobApplication,
   JobApplicationSections,
+  ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { JobType } from '@/src/types/data.types';
@@ -72,7 +72,7 @@ import {
 const ApplicationDetails = ({
   open,
   onClose,
-  applicationDetails,
+  applications,
   handleSelectNextApplication,
   handleSelectPrevApplication,
   jobUpdate,
@@ -80,7 +80,7 @@ const ApplicationDetails = ({
 }: {
   open: boolean;
   onClose: () => void;
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   handleSelectNextApplication?: () => void;
   handleSelectPrevApplication?: () => void;
   jobUpdate: boolean;
@@ -91,15 +91,15 @@ const ApplicationDetails = ({
 
   const copyAppId = () => {
     navigator.clipboard
-      .writeText(applicationDetails.application_id)
+      .writeText(applications.id)
       .then(() => {
         toast.success('Application ID copied');
       });
   };
 
-  const candidateImage = applicationDetails ? (
+  const candidateImage = applications ? (
     <Stack onClick={() => copyAppId()} style={{ cursor: 'pointer' }}>
-      <CandidateAvatar application={applicationDetails} fontSize={12} />
+      <CandidateAvatar application={applications} fontSize={12} />
     </Stack>
   ) : (
     <></>
@@ -112,11 +112,11 @@ const ApplicationDetails = ({
   }, [open]);
 
   useEffect(() => {
-    if (applicationDetails === undefined) {
+    if (applications === undefined) {
       setDrawerOpen(false);
       onClose();
     }
-  }, [applicationDetails === undefined]);
+  }, [applications === undefined]);
 
   const handleClose = () => {
     setDrawerOpen(false);
@@ -128,18 +128,18 @@ const ApplicationDetails = ({
   return (
     <Stack
       style={{
-        display: open && applicationDetails ? 'flex' : 'none',
+        display: open && applications ? 'flex' : 'none',
         transition: '0.4s',
         width: drawerOpen ? '420px' : '0px',
         pointerEvents: drawerOpen ? 'auto' : 'none',
         overflow: drawerOpen ? 'visible' : 'auto',
       }}
     >
-      {applicationDetails ? (
+      {applications ? (
         !openFeedback ? (
           <NewJobApplicationSideDrawer
             open={open}
-            applicationDetails={applicationDetails}
+            applications={applications}
             onClose={() => handleClose()}
             setOpenFeedback={setOpenFeedback}
             candidateImage={candidateImage}
@@ -150,7 +150,7 @@ const ApplicationDetails = ({
           />
         ) : (
           <NewDetailedFeedback
-            applicationDetails={applicationDetails}
+            applications={applications}
             candidateImage={candidateImage}
             onClose={() => {
               setOpenFeedback(false);
@@ -166,119 +166,12 @@ const ApplicationDetails = ({
 
 export default ApplicationDetails;
 
-const MoveCandidatePopUp = ({
-  section,
-  id,
-  name,
-  candidate,
-  emails,
-  jobUpdate,
-  setJobUpdate,
-}: {
-  section: JobApplicationSections;
-  id: string;
-  name: string;
-  candidate: JobApplication['candidates'];
-  emails: JobApplication['emails'];
-  jobUpdate: boolean;
-  setJobUpdate: Dispatch<SetStateAction<boolean>>;
-}) => {
-  const { handleUpdateJobStatus, job, handleJobApplicationUpdate } =
-    useJobApplications();
-  const [open, setOpen] = useState(false);
-  const [destination, setDestination] = useState<JobApplicationSections>(null);
-
-  const handleOpen = (destination: JobApplicationSections) => {
-    setOpen(true);
-    setDestination(destination);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setTimeout(() => setDestination(null), 100);
-  };
-
-  const handleSubmit = async () => {
-    if (!jobUpdate) {
-      setJobUpdate(true);
-      await handleUpdateJobStatus(
-        {
-          source: section,
-          destination,
-        },
-        new Set([id]),
-        false,
-      );
-      setJobUpdate(false);
-    }
-  };
-
-  const handleEmail = async () => {
-    await emailHandler(
-      {
-        email: candidate.email,
-        first_name: candidate.first_name,
-        last_name: candidate.last_name,
-        job_title: job.job_title,
-        company: job.company,
-        application_id: id,
-        emails: emails,
-      },
-      job,
-      handleJobApplicationUpdate,
-      destination,
-    );
-  };
-
-  const showNew = section === JobApplicationSections.DISQUALIFIED;
-  const showInterview = section === JobApplicationSections.NEW;
-  const showSelected =
-    section === JobApplicationSections.NEW ||
-    section === JobApplicationSections.INTERVIEWING;
-  const showReject =
-    section === JobApplicationSections.NEW ||
-    section === JobApplicationSections.INTERVIEWING ||
-    section === JobApplicationSections.QUALIFIED;
-
-  return (
-    <>
-      <MoveCandidateDialog
-        open={open}
-        onClose={() => handleClose()}
-        destination={destination}
-        onSubmit={async () => await handleSubmit()}
-        checkAction={async () => await handleEmail()}
-        name={name}
-      />
-      <Stack sx={{ opacity: jobUpdate ? 0.5 : 1 }}>
-        <SelectActionsDropdown
-          isInterview={showInterview}
-          onClickInterview={{
-            onClick: () => handleOpen(JobApplicationSections.INTERVIEWING),
-          }}
-          isQualified={showSelected}
-          onClickQualified={{
-            onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
-          }}
-          isDisqualified={showReject}
-          onClickDisqualified={{
-            onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
-          }}
-          onClickMoveNew={{
-            onClick: () => handleOpen(JobApplicationSections.NEW),
-          }}
-          isMoveNew={showNew}
-        />
-      </Stack>
-    </>
-  );
-};
-
 const NewDetailedFeedback = ({
-  applicationDetails,
+  applications,
   candidateImage,
   onClose,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   candidateImage: React.JSX.Element;
   onClose: () => void;
 }) => {
@@ -291,22 +184,22 @@ const NewDetailedFeedback = ({
       }}
       slotCandidateImage={candidateImage}
       textName={getCandidateName(
-        applicationDetails.candidates.first_name,
-        applicationDetails.candidates.last_name,
+        applications.candidates.first_name,
+        applications.candidates.last_name,
       )}
       textMail={
-        applicationDetails.candidates.email
-          ? applicationDetails.candidates.email
+        applications.candidates.email
+          ? applications.candidates.email
           : '--'
       }
       slotDetailedFeedback={
         <DetailedInterviewFeedbackParams
-          feedbackParamsObj={applicationDetails.feedback}
+          feedbackParamsObj={applications.assessment_results.feedback}
         />
       }
       slotTranscript={
         <TranscriptParams
-          feedbackParams={applicationDetails.conversation}
+          feedbackParams={applications.assessment_results.conversation}
           candidateImage={candidateImage}
         />
       }
@@ -381,7 +274,7 @@ export const DetailedInterviewFeedbackParams = ({
 
 const NewJobApplicationSideDrawer = ({
   open,
-  applicationDetails,
+  applications,
   onClose,
   setOpenFeedback,
   candidateImage,
@@ -391,7 +284,7 @@ const NewJobApplicationSideDrawer = ({
   setJobUpdate,
 }: {
   open: boolean;
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   onClose: () => void;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
   candidateImage: React.JSX.Element;
@@ -401,25 +294,25 @@ const NewJobApplicationSideDrawer = ({
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
   const name = capitalize(
-    applicationDetails.candidates.first_name +
+    applications.candidates.first_name +
       ' ' +
-      `${applicationDetails.candidates.last_name || ''}`,
+      `${applications.candidates.last_name || ''}`,
   );
-  const creationDate = formatTimeStamp(applicationDetails.applied_at);
+  const creationDate = formatTimeStamp(applications.applied_at);
   const { pressed: shift } = useKeyPress('Shift');
   const { pressed: right } = useKeyPress('ArrowRight');
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
-  const overview = (applicationDetails?.json_resume as any)?.overview ?? null;
+  const overview = (applications?.candidate_files?.resume_json as any)?.overview ?? null;
   const handleProfileRedirect = () => {
     window.open(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applicationDetails.application_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${applications.id}`,
       '_blank',
     );
   };
   const handleLinkedInRedirect = () => {
-    window.open(applicationDetails.candidates.linkedin, '_blank');
+    window.open(applications.candidates.linkedin, '_blank');
   };
   const handleCopy = (str: string, tag: 'Phone number' | 'Email') => {
     navigator.clipboard.writeText(str).then(() => {
@@ -453,51 +346,51 @@ const NewJobApplicationSideDrawer = ({
       slotCandidateImage={candidateImage}
       textName={name}
       textMail={
-        applicationDetails.candidates.email
-          ? applicationDetails.candidates.email
+        applications.candidates.email
+          ? applications.candidates.email
           : '--'
       }
       textOverviewDesc={overview}
       slotCandidateDetails={
         <NewCandidateDetails
-          applicationDetails={applicationDetails}
+          applications={applications}
           setOpenFeedback={setOpenFeedback}
         />
       }
       isOverviewVisible={overview}
       isLinkedInVisible={
-        applicationDetails.candidates.linkedin !== null &&
-        applicationDetails.candidates.linkedin !== ''
+        applications.candidates.linkedin !== null &&
+        applications.candidates.linkedin !== ''
       }
       onClickLinkedin={{
         onClick: () => handleLinkedInRedirect(),
       }}
       isMailIconVisible={
-        applicationDetails.candidates.email &&
-        applicationDetails.candidates.email.trim() !== ''
+        applications.candidates.email &&
+        applications.candidates.email.trim() !== ''
       }
       isPhoneIconVisible={
-        applicationDetails.candidates.phone &&
-        applicationDetails.candidates.phone.trim() !== ''
+        applications.candidates.phone &&
+        applications.candidates.phone.trim() !== ''
       }
       onClickCopyMail={{
         onClick: () =>
-          handleCopy(applicationDetails.candidates.email.trim(), 'Email'),
+          handleCopy(applications.candidates.email.trim(), 'Email'),
       }}
       onClickCopyPhone={{
         onClick: () =>
           handleCopy(
-            applicationDetails.candidates.phone.trim(),
+            applications.candidates.phone.trim(),
             'Phone number',
           ),
       }}
       // slotMoveTo={
       //   <MoveCandidatePopUp
       //     section={section}
-      //     id={applicationDetails.application_id}
+      //     id={applications.application_id}
       //     name={name}
-      //     candidate={applicationDetails.candidates}
-      //     emails={applicationDetails.emails}
+      //     candidate={applications.candidates}
+      //     emails={applications.emails}
       //     jobUpdate={jobUpdate}
       //     setJobUpdate={setJobUpdate}
       //   />
@@ -509,39 +402,38 @@ const NewJobApplicationSideDrawer = ({
 };
 
 const NewCandidateDetails = ({
-  applicationDetails,
+  applications,
   setOpenFeedback,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { job } = useJobApplications();
-  const resume = applicationDetails.json_resume as any;
+  const resume = applications.candidate_files.resume_json as any;
   return (
     <CandidateDetails
       slotInterviewScore={
         <>
           <>
-            {applicationDetails.feedback ? (
+            {applications.assessment_results.feedback ? (
               <NewInterviewScoreDetails
-                applicationDetails={applicationDetails}
+                applications={applications}
                 setOpenFeedback={setOpenFeedback}
               />
-            ) : applicationDetails.status ===
-              JobApplicationSections.INTERVIEWING ? (
+            ) : applications.status === 'assessment'? (
               <NewInterviewStatus
-                applicationDetails={applicationDetails}
+                applications={applications}
                 job={job}
               />
             ) : (
               <></>
             )}
             <NewResumeSection
-              applicationDetails={applicationDetails}
+              applications={applications}
               job={job}
             />
           </>
-          {applicationValidity(applicationDetails) ? (
+          {applicationValidity(applications) ? (
             <>
               {resume.positions &&
               resume.positions instanceof Array &&
@@ -549,7 +441,7 @@ const NewCandidateDetails = ({
                 <NewExperienceDetails
                   positions={resume.positions}
                   relevance={
-                    (applicationDetails.jd_score as JdScore)?.relevance
+                    (applications.score_json as ScoreJson)?.relevance
                       ?.positions
                   }
                 />
@@ -562,7 +454,7 @@ const NewCandidateDetails = ({
                 <NewEducationDetails
                   schools={resume.schools}
                   relevance={
-                    (applicationDetails.jd_score as JdScore)?.relevance?.schools
+                    (applications.score_json as ScoreJson)?.relevance?.schools
                   }
                 />
               ) : (
@@ -574,7 +466,7 @@ const NewCandidateDetails = ({
                 <NewSkillDetails
                   skills={resume.skills}
                   relevance={
-                    (applicationDetails.jd_score as JdScore)?.relevance?.skills
+                    (applications.score_json as ScoreJson)?.relevance?.skills
                   }
                 />
               ) : (
@@ -591,15 +483,15 @@ const NewCandidateDetails = ({
 };
 
 const NewInterviewStatus = ({
-  applicationDetails,
+  applications,
   job,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   job: JobType;
 }) => {
   const { handleJobApplicationUpdate } = useJobApplications();
   const [loading, setLoading] = useState(false);
-  const invited = applicationDetails.emails['interviewing'] ?? false;
+  const invited = applications.status_emails_sent['interviewing'] ?? false;
   const status = {
     bgColor: invited ? '#CEE2F2' : '#FFF7ED',
     text: invited ? 'Invited' : 'Pending Invite',
@@ -613,17 +505,17 @@ const NewInterviewStatus = ({
     setLoading(true);
     const confirmation = await emailHandler(
       {
-        email: applicationDetails.candidates.email,
-        first_name: applicationDetails.candidates.first_name,
-        last_name: applicationDetails.candidates.last_name,
+        email: applications.candidates.email,
+        first_name: applications.candidates.first_name,
+        last_name: applications.candidates.last_name,
         job_title: job.job_title,
         company: job.company,
-        application_id: applicationDetails.application_id,
-        emails: applicationDetails.emails,
+        application_id: applications.id,
+        status_emails_sent: applications.status_emails_sent,
       },
       job,
       handleJobApplicationUpdate,
-      JobApplicationSections.INTERVIEWING,
+      JobApplicationSections.ASSESSMENT,
     );
     if (confirmation) toast.success('Mail sent successfully');
     else toast.error('Mail not sent');
@@ -646,7 +538,7 @@ const NewInterviewStatus = ({
           onClick: () => {
             navigator.clipboard
               .writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${applicationDetails.application_id}`,
+                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${applications.id}`,
               )
               .then(() => {
                 toast.success('Interview link copied');
@@ -664,8 +556,8 @@ const NewInterviewStatus = ({
   );
 };
 
-const NewInterviewScoreDetails = ({ applicationDetails, setOpenFeedback }) => {
-  const interviewScore = getInterviewScore(applicationDetails.feedback);
+const NewInterviewScoreDetails = ({ applications, setOpenFeedback }) => {
+  const interviewScore = getInterviewScore(applications.feedback);
   const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
     <CandidateInterviewScore
@@ -679,9 +571,9 @@ const NewInterviewScoreDetails = ({ applicationDetails, setOpenFeedback }) => {
         onClick: () => setOpenFeedback(true),
       }}
       slotInterviewFeedbackScore={
-        applicationDetails.feedback && (
+        applications.feedback && (
           <InterviewFeedbackParams
-            feedbackParamsObj={applicationDetails.feedback}
+            feedbackParamsObj={applications.feedback}
           />
         )
       }
@@ -690,10 +582,10 @@ const NewInterviewScoreDetails = ({ applicationDetails, setOpenFeedback }) => {
 };
 
 const NewResumeSection = ({
-  applicationDetails,
+  applications,
   job,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   job: JobTypeDashboard;
 }) => {
   const [openResume, setOpenResume] = useState(false);
@@ -701,7 +593,7 @@ const NewResumeSection = ({
   const handleDownload = async () => {
     if (!downloading) {
       setDownloading(true);
-      await fetchFile(applicationDetails);
+      await fetchFile(applications);
       setDownloading(false);
     }
   };
@@ -723,21 +615,21 @@ const NewResumeSection = ({
         onClose={() => setOpenResume(false)}
       >
         <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-          <ResumePreviewer url={applicationDetails.resume} />
+          <ResumePreviewer url={applications.candidate_files.file_url} />
         </Stack>
       </Dialog>
-      {applicationDetails.json_resume || applicationDetails.resume ? (
-        intactConditionFilter(applicationDetails) !== ApiLogState.PROCESSING ? (
-          applicationDetails.jd_score ? (
+      {applications.score_json || applications.candidate_files.file_url ? (
+        intactConditionFilter(applications) !== ApiLogState.PROCESSING ? (
+          applications.score_json ? (
             <NewResumeScoreDetails
-              applicationDetails={applicationDetails}
+              applications={applications}
               job={job}
               feedback={false}
               setOpenResume={setOpenResume}
             />
           ) : (
             <UnableFetchResume
-              propsLink={{ href: applicationDetails.resume }}
+              propsLink={{ href: applications.candidate_files.file_url }}
               onClickViewResume={{
                 onClick: () => {
                   setOpenResume(true);
@@ -754,7 +646,7 @@ const NewResumeSection = ({
             onclickView={{ onClick: () => setOpenResume(true) }}
           />
         )
-      ) : applicationDetails.is_resume_fetching ? (
+      ) : applications.is_resume_fetching ? (
         <ResumeErrorBlock2 slotLottie={<ResumeWait />} />
       ) : (
         <ResAbsentError />
@@ -785,30 +677,30 @@ export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
 };
 
 export const NewResumeScoreDetails = ({
-  applicationDetails,
+  applications,
   job,
   feedback,
   setOpenResume,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   job: JobTypeDashboard;
-  feedback: JobApplication['feedback'];
+  feedback: JobApplication['assessment_results']['feedback'];
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const jdScoreObj = (applicationDetails.jd_score as JdScore)?.scores;
-  const score = applicationDetails.resume_score;
+  const jdScoreObj = (applications.score_json as ScoreJson)?.scores;
+  const score = applications.overall_score;
   const [downloading, setDownloading] = useState(false);
   const handleDownload = async () => {
     if (!downloading) {
       setDownloading(true);
-      await fetchFile(applicationDetails);
+      await fetchFile(applications);
       setDownloading(false);
     }
   };
   const resumeScoreWheel = (
     <ScoreWheel
       id={`ScoreWheelApplicationCard${Math.random()}`}
-      scores={(applicationDetails.jd_score as JdScore)?.scores}
+      scores={(applications.score_json as ScoreJson)?.scores}
       parameter_weights={job.parameter_weights as ScoreWheelParams}
       fontSize={7}
     />
@@ -832,7 +724,7 @@ export const NewResumeScoreDetails = ({
       onClickDownloadResume={{
         onClick: async () => await handleDownload(),
       }}
-      propsLink={{ href: applicationDetails.resume }}
+      propsLink={{ href: applications.candidate_files.file_url }}
       slotFeedbackScore={
         <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
       }
@@ -874,22 +766,22 @@ export const ResumeFeedbackParams = ({
   );
 };
 
-const fetchFile = async (applicationDetails: JobApplication) => {
+const fetchFile = async (applications: JobApplication) => {
   await axios({
-    url: applicationDetails?.resume ?? '#',
+    url: applications?.candidate_files.file_url ?? '#',
     method: 'GET',
     responseType: 'blob',
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    const ext = applicationDetails.resume.slice(
-      applicationDetails.resume.lastIndexOf('.'),
+    const ext = applications.candidate_files.file_url.slice(
+      applications.candidate_files.file_url.lastIndexOf('.'),
     );
     link.setAttribute(
       'download',
-      `${applicationDetails.candidates.first_name}_${
-        applicationDetails.candidates.last_name
+      `${applications.candidates.first_name}_${
+        applications.candidates.last_name
       }_Resume${ext ?? '.pdf'}`,
     );
     document.body.appendChild(link);
@@ -904,7 +796,7 @@ const NewEducationDetails = ({
   relevance,
 }: {
   schools;
-  relevance: JdScore['relevance']['schools'];
+  relevance: ScoreJson['relevance']['schools'];
 }) => {
   const educationList =
     Array.isArray(schools) &&
@@ -942,7 +834,7 @@ const NewExperienceDetails = ({
   relevance,
 }: {
   positions;
-  relevance: JdScore['relevance']['positions'];
+  relevance: ScoreJson['relevance']['positions'];
 }) => {
   const workList = positions.reduce((acc, w, i) => {
     const startDate = timeFormat(w.start);
@@ -1000,7 +892,7 @@ const NewSkillDetails = ({
   relevance,
 }: {
   skills;
-  relevance: JdScore['relevance']['skills'];
+  relevance: ScoreJson['relevance']['skills'];
 }) => {
   if (!relevance) {
     const skillList = skills
@@ -1052,20 +944,20 @@ const NewSkillDetails = ({
 };
 
 export function Transcript({
-  applicationDetails,
+  applications,
   setOpenDetailedFeedback,
   hideFeedback,
 }: {
-  applicationDetails: JobApplication;
+  applications: JobApplication;
   setOpenDetailedFeedback: React.Dispatch<React.SetStateAction<boolean>>;
   hideFeedback: boolean;
 }) {
-  const feedback = applicationDetails.feedback as any[];
+  const feedback = applications.assessment_results.feedback as any[];
   return (
     <DetailedFeedback
       slotTranscript={
         <>
-          {applicationDetails.conversation?.map((ele: any, i) => {
+          {applications.assessment_results.conversation?.map((ele: any, i) => {
             return (
               <>
                 <ConversationCard
@@ -1079,8 +971,8 @@ export function Transcript({
                 {ele.userContent && (
                   <ConversationCard
                     cardFor={undefined}
-                    roleImage={applicationDetails.candidates.avatar}
-                    roleName={applicationDetails.candidates.first_name}
+                    roleImage={applications.candidates.avatar}
+                    roleName={applications.candidates.first_name}
                     textForSpeech={ele.userContent}
                     src={ele.userVoice}
                     index={i}

@@ -149,14 +149,14 @@ const handleMultiPromiseValidation = (
       [JobApplicationSections.NEW]: JobApplication[];
       [JobApplicationSections.QUALIFIED]: JobApplication[];
       [JobApplicationSections.DISQUALIFIED]: JobApplication[];
-      [JobApplicationSections.INTERVIEWING]: JobApplication[];
+      [JobApplicationSections.ASSESSMENT]: JobApplication[];
     };
     error: PostgrestError;
     count: {
       [JobApplicationSections.NEW]: number;
       [JobApplicationSections.QUALIFIED]: number;
       [JobApplicationSections.DISQUALIFIED]: number;
-      [JobApplicationSections.INTERVIEWING]: number;
+      [JobApplicationSections.ASSESSMENT]: number;
     };
   };
 };
@@ -170,7 +170,7 @@ export type ReadJobApplicationApi = {
         start: number;
         end: number;
       };
-      [JobApplicationSections.INTERVIEWING]?: {
+      [JobApplicationSections.ASSESSMENT]?: {
         start: number;
         end: number;
       };
@@ -192,7 +192,7 @@ export type ReadJobApplicationApi = {
     data: {
       [JobApplicationSections.NEW]?: JobApplication[];
       [JobApplicationSections.QUALIFIED]?: JobApplication[];
-      [JobApplicationSections.INTERVIEWING]?: JobApplication[];
+      [JobApplicationSections.ASSESSMENT]?: JobApplication[];
       [JobApplicationSections.DISQUALIFIED]?: JobApplication[];
     };
     error: PostgrestError;
@@ -200,7 +200,7 @@ export type ReadJobApplicationApi = {
       [JobApplicationSections.NEW]?: number;
       [JobApplicationSections.QUALIFIED]?: number;
       [JobApplicationSections.DISQUALIFIED]?: number;
-      [JobApplicationSections.INTERVIEWING]?: number;
+      [JobApplicationSections.ASSESSMENT]?: number;
     };
   };
 };

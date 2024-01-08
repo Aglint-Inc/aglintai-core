@@ -179,7 +179,7 @@ const JobApplicationComponent = () => {
             onClose={() => handleSelectCurrentApplication(-1)}
             handleSelectNextApplication={() => handleSelectNextApplication()}
             handleSelectPrevApplication={() => handleSelectPrevApplication()}
-            applicationDetails={
+            applications={
               sectionApplications[
                 currentApplication === -1 ? 0 : currentApplication
               ]
@@ -270,7 +270,7 @@ const ApplicationTable = ({
         setCheckList(
           new Set(
             sectionApplications.reduce((acc, curr) => {
-              acc.push(curr.application_id);
+              acc.push(curr.id);
               return acc;
             }, []),
           ),
@@ -591,10 +591,10 @@ const NewJobDetailsTabs = ({
       onClickNew={{
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
-      isInterviewSelected={section === JobApplicationSections.INTERVIEWING}
+      isInterviewSelected={section === JobApplicationSections.ASSESSMENT}
       countInterview={count.interviewing}
       onClickInterview={{
-        onClick: () => handleSetSection(JobApplicationSections.INTERVIEWING),
+        onClick: () => handleSetSection(JobApplicationSections.ASSESSMENT),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
       countDisqualified={count.disqualified}
@@ -656,7 +656,7 @@ const ApplicantsList = ({
   const handleSingleSelect = (index: number) => {
     setCheckList((prev) => {
       const newSet = new Set(prev);
-      const id = applications[index].application_id;
+      const id = applications[index].id;
       if (newSet.has(id)) {
         newSet.delete(id);
         setLastPressed(null);
@@ -672,13 +672,13 @@ const ApplicantsList = ({
     if (!pressed) {
       handleSingleSelect(index);
     } else {
-      if (lastPressed && !checkList.has(applications[index].application_id)) {
+      if (lastPressed && !checkList.has(applications[index].id)) {
         const start = applications.findIndex(
-          (application) => application.application_id === lastPressed,
+          (application) => application.id === lastPressed,
         );
         setCheckList((prev) => {
           const newSet = applications.reduce((acc, curr, i) => {
-            if ((i - start) * (i - index) <= 0) acc.push(curr.application_id);
+            if ((i - start) * (i - index) <= 0) acc.push(curr.id);
             return acc;
           }, []);
           return new Set([...prev, ...newSet]);
@@ -705,13 +705,13 @@ const ApplicantsList = ({
       {applications /*.slice(0, lastLoad)*/
         .map((application, i) => {
           const styles =
-            (jobUpdate && checkList.has(application.application_id)) ||
+            (jobUpdate && checkList.has(application.id)) ||
             applicationDisable
               ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
               : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
           return (
             <Stack
-              key={application.application_id}
+              key={application.id}
               style={styles}
               id={`job-application-stack-${i}`}
               ref={currentApplication === i ? scrollToRef : null}
@@ -741,7 +741,7 @@ const EmptyList = ({ section }: { section: JobApplicationSections }) => {
       <Stack>
         <ApplicantsListEmpty
           textEmpty={
-            section === JobApplicationSections.INTERVIEWING
+            section === JobApplicationSections.ASSESSMENT
               ? 'assessment'
               : section
           }
@@ -813,11 +813,11 @@ const ActionBar = ({
   const showSelected =
     isChecked &&
     (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.INTERVIEWING);
+      section === JobApplicationSections.ASSESSMENT);
   const showReject =
     isChecked &&
     (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.INTERVIEWING ||
+      section === JobApplicationSections.ASSESSMENT ||
       section === JobApplicationSections.QUALIFIED);
   // const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
   const checkListCount = checkList.size;
@@ -868,7 +868,7 @@ const ActionBar = ({
           <SelectActionsDropdown
             isInterview={showInterview}
             onClickInterview={{
-              onClick: () => handleOpen(JobApplicationSections.INTERVIEWING),
+              onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
             }}
             isQualified={showSelected}
             onClickQualified={{

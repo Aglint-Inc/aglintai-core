@@ -27,11 +27,11 @@ const handler = async (
   res: NextApiResponse<ManualUploadApi['response']>,
 ) => {
   const file = req.body as ManualUploadApi['request']['file'];
-  const contentType = req.headers['content-type'];
+  const contentType = req.headers['content-type'] as keyof typeof supportedTypes;
   if (!Object.keys(supportedTypes).includes(contentType)) {
     res.status(200).json({ confirmation: false, error: 'Unsupported type' });
     return;
-  }
+  } 
   const {
     email,
     first_name,

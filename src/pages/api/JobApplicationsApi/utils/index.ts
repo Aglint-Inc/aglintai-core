@@ -3,7 +3,6 @@ import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
 import {
-  ApiLogState,
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
@@ -13,8 +12,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
-export const selectJobApplicationQuery =
-  'application_id, created_at, resume_score, feedback, conversation, status, jd_score, job_id, interview_score, api_status, json_resume, resume, candidate_id, emails, applied_at, is_resume_fetching';
+export const selectJobApplicationQuery = '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type)';
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
@@ -23,99 +21,11 @@ export const deleteNewJobApplicationDbAction = async (
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
   const { error } = await supabase
-    .from('job_applications')
+    .from('applications')
     .delete()
     .eq('application_id', application_id)
     .abortSignal(controller.signal);
   return { data: error ? false : true, error };
-};
-
-const getApiStatus = (apiStatus: ApiLogState) => {
-  switch (apiStatus) {
-    case ApiLogState.SUCCESS:
-      return ['success'];
-    case ApiLogState.FAILED:
-      return ['Failed'];
-    case ApiLogState.PROCESSING:
-      return ['calculating', 'not started'];
-  }
-};
-
-export const readNewJobApplicationDbAction = async (
-  job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
-  status: JobApplicationSections,
-  apiStatus?: ApiLogState,
-  range?: {
-    start: number;
-    end: number;
-  } | null,
-  sort?: SortParameter,
-  filter?: FilterParameter,
-  search?: string,
-) => {
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 60000);
-
-  let query = supabase
-    .from('job_applications')
-    .select(`${selectJobApplicationQuery},candidates!inner(*)`, {
-      count: 'exact',
-    })
-    .eq('job_id', job_id)
-    .eq('status', status);
-
-  if (apiStatus) {
-    getApiStatus(apiStatus).map((status) => {
-      query = query.eq('api_status', status);
-    });
-  }
-
-  if (sort) {
-    const params = {
-      ascending: sort.ascending,
-      nullsFirst: false,
-    };
-    if (sort.parameter === 'email') {
-      query = query
-        .order(`candidates(${sort.parameter})`, params)
-        .order('application_id', { ascending: true, nullsFirst: false });
-    } else if (sort.parameter === 'full_name') {
-      query = query
-        .order(`candidates(first_name)`, params)
-        .order('application_id', { ascending: true, nullsFirst: false });
-    } else {
-      query = query
-        .order(
-          status === JobApplicationSections.NEW
-            ? 'resume_score'
-            : sort.parameter,
-          params,
-        )
-        .order('application_id', { ascending: true, nullsFirst: false });
-    }
-  }
-
-  // if (filter && filter.length > 0) {
-  //   query = getFilteredQuery(query, filter, status);
-  // }
-
-  if (search) {
-    query = query.or(
-      `email.ilike.%${search}%,or(first_name.ilike.%${search}%),or(last_name.ilike.%${search}%)`,
-      { foreignTable: 'candidates' },
-    );
-  }
-
-  if (range) {
-    query = query.range(range.start, range.end);
-  }
-
-  query = query.abortSignal(controller.signal);
-
-  const { data, error, count } = await query;
-
-  return { data: emailValidation(data), error, count };
 };
 
 export const newReadNewJobApplicationDbAction = async (
@@ -340,12 +250,4 @@ export const upsertNewJobApplicationDbAction = async (
     .select(`${selectJobApplicationQuery}`)
     .abortSignal(controller.signal);
   return { data, error };
-};
-
-const emailValidation = (data: JobApplication[]) => {
-  return data.map((d) => {
-    if (d.candidates.email === `temp-${d.candidate_id}@gmail.com`)
-      return { ...d, candidates: { ...d.candidates, email: '---' } };
-    return d;
-  });
 };
