@@ -268,9 +268,12 @@ const isRoutePublic = (path = '') => {
     pageRoutes.LOGIN,
     pageRoutes.SIGNUP,
     pageRoutes.MOCKTEST,
+    pageRoutes.PHONESCREEN,
   ];
   for (const route of whiteListedRoutes) {
-    if (path.startsWith(route)) return true;
+    if (path.startsWith(route)) {
+      return true;
+    }
   }
 };
 

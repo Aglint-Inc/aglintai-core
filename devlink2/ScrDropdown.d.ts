@@ -8,4 +8,6 @@ declare function ScrDropdown(props: {
   onclickShortAnswer?: Types.Devlink.RuntimeProps;
   slotSelectedIcon?: Types.Devlink.Slot;
   selectedText?: React.ReactNode;
+  isOptionsBodyVisible?: Types.Visibility.VisibilityConditions;
+  onclickTrigger?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -8,7 +8,7 @@ import * as _utils from "./utils";
 import _styles from "./ScrDropdown.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-101":{"id":"e-101","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-47","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-102"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"dcc9a764-8915-b7a1-bfe0-46ffc7f4056b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704457640818},"e-102":{"id":"e-102","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-48","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-101"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"dcc9a764-8915-b7a1-bfe0-46ffc7f4056b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704457640819}},"actionLists":{"a-47":{"id":"a-47","title":"scr-dropdown-[open]","actionItemGroups":[{"actionItems":[{"id":"a-47-n","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"","duration":500,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".scr-dropdown-content","selectorGuids":["159e4b58-faea-14b7-5706-bdd5edd55355"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px"}}]},{"actionItems":[{"id":"a-47-n-2","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"easeInOut","duration":300,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".scr-dropdown-content","selectorGuids":["159e4b58-faea-14b7-5706-bdd5edd55355"]},"widthUnit":"PX","heightUnit":"AUTO"}}]}],"createdOn":1704457657914,"useFirstGroupAsInitialState":true},"a-48":{"id":"a-48","title":"scr-dropdown-[close]","actionItemGroups":[{"actionItems":[{"id":"a-48-n","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"easeInOut","duration":300,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".scr-dropdown-content","selectorGuids":["159e4b58-faea-14b7-5706-bdd5edd55355"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px"}}]}],"createdOn":1704457732872,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-101":{"id":"e-101","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-48","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-102"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".scr-dropdown-option","originalId":"dcc9a764-8915-b7a1-bfe0-46ffc7f40573","appliesTo":"CLASS"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1704695093900}},"actionLists":{"a-48":{"id":"a-48","title":"scr-dropdown-[close]","actionItemGroups":[{"actionItems":[{"id":"a-48-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"PARENT","selector":".scr-dropdown-option","selectorGuids":["a3fc59f3-7a0a-8a6f-158d-fc768374b2d4"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1704457732872}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function ScrDropdown({
@@ -18,6 +18,8 @@ export function ScrDropdown({
   onclickShortAnswer = {},
   slotSelectedIcon,
   selectedText = "Single select",
+  isOptionsBodyVisible = false,
+  onclickTrigger = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -25,8 +27,8 @@ export function ScrDropdown({
     <_Component className={_utils.cx(_styles, "scr-dropdown")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "scr-dropdown-trigger")}
-        data-w-id="dcc9a764-8915-b7a1-bfe0-46ffc7f4056b"
         tag="div"
+        {...onclickTrigger}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "scr-dropdown-icon")}
@@ -50,70 +52,72 @@ export function ScrDropdown({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "scr-dropdown-content")}
-        tag="div"
-      >
+      {isOptionsBodyVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "scr-dropdown-content-block")}
+          className={_utils.cx(_styles, "scr-dropdown-content")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "scr-dropdown-option")}
+            className={_utils.cx(_styles, "scr-dropdown-content-block")}
             tag="div"
-            {...onclickMultiSelect}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "scr-dropdown-icon")}
+              className={_utils.cx(_styles, "scr-dropdown-option")}
               tag="div"
+              {...onclickMultiSelect}
             >
-              <ScrCheckmarkIcon />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "scr-dropdown-icon")}
+                tag="div"
+              >
+                <ScrCheckmarkIcon />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-color-black")}
+                tag="div"
+              >
+                {"Multi select"}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-black")}
+              className={_utils.cx(_styles, "scr-dropdown-option")}
               tag="div"
+              {...onclickSingleSelect}
             >
-              {"Multi select"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "scr-dropdown-option")}
-            tag="div"
-            {...onclickSingleSelect}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "scr-dropdown-icon")}
-              tag="div"
-            >
-              <ScrRadioIcon />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-black")}
-              tag="div"
-            >
-              {"Single select"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "scr-dropdown-option")}
-            tag="div"
-            {...onclickShortAnswer}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "scr-dropdown-icon")}
-              tag="div"
-            >
-              <ScrShortTextIcon />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "scr-dropdown-icon")}
+                tag="div"
+              >
+                <ScrRadioIcon />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-color-black")}
+                tag="div"
+              >
+                {"Single select"}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-black")}
+              className={_utils.cx(_styles, "scr-dropdown-option")}
               tag="div"
+              {...onclickShortAnswer}
             >
-              {"Short answer"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "scr-dropdown-icon")}
+                tag="div"
+              >
+                <ScrShortTextIcon />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-color-black")}
+                tag="div"
+              >
+                {"Short answer"}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

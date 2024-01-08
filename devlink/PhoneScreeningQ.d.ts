@@ -9,4 +9,5 @@ declare function PhoneScreeningQ(props: {
   textQuestion?: React.ReactNode;
   isQuestionImp?: Types.Visibility.VisibilityConditions;
   slotInputAndButton?: Types.Devlink.Slot;
+  onClickBack?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

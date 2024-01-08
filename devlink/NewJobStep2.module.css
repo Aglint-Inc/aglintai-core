@@ -561,6 +561,10 @@
   margin-top: 30px;
 }
 
+.job-details-button-wrappers.hide {
+  display: none;
+}
+
 .proceed-to-apply {
   position: relative;
 }

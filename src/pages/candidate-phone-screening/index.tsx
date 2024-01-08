@@ -1,11 +1,14 @@
 import React from 'react';
 
 import KnockOffQns from '@/src/components/KnockOffQns/KnockOffQns';
+import { ScreeningCtxProvider } from '@/src/components/KnockOffQns/ScreeningCtx';
 
 const Screening = () => {
   return (
     <>
-      <KnockOffQns />
+      <ScreeningCtxProvider>
+        <KnockOffQns />
+      </ScreeningCtxProvider>
     </>
   );
 };

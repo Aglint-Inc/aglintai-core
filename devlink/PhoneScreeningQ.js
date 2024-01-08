@@ -11,9 +11,17 @@ export function PhoneScreeningQ({
   textQuestion = "Have you completed the following degree: Bachelors Degree? ",
   isQuestionImp = true,
   slotInputAndButton,
+  onClickBack = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "phone-screen-1")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-674")}
+        tag="div"
+        {...onClickBack}
+      >
+        <_Builtin.Block tag="div">{"< Back"}</_Builtin.Block>
+      </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-671")} tag="div">
         {slotLogo}
       </_Builtin.Block>

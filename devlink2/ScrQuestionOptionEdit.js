@@ -7,6 +7,7 @@ export function ScrQuestionOptionEdit({
   as: _Component = _Builtin.Block,
   count = "1.",
   slotInput,
+  onclickRemove = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scr-question-option")} tag="div">
@@ -20,6 +21,7 @@ export function ScrQuestionOptionEdit({
       <_Builtin.Block
         className={_utils.cx(_styles, "scr-option-remove")}
         tag="div"
+        {...onclickRemove}
       >
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

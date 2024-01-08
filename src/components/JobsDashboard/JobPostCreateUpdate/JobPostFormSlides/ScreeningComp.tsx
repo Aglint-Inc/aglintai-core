@@ -21,7 +21,7 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 
-import { phoneScreenQuestion, useJobForm } from '../JobPostFormProvider';
+import { PhoneScreenQuestion, useJobForm } from '../JobPostFormProvider';
 
 const ScreeningComp = () => {
   const [messageOpen, setMessageOpen] = useState<{
@@ -227,11 +227,21 @@ export default ScreeningComp;
 const KnowOffQn = ({ qnPath, qnIdx }) => {
   const { jobForm, handleUpdateFormFields } = useJobForm();
   const [isDefaultView, setIsDefaultView] = useState(true);
-  const [editQn, setEditQn] = useState<phoneScreenQuestion | null>(null);
-
-  const q = get(jobForm, `formFields.${qnPath}`, null) as phoneScreenQuestion;
+  const [editQn, setEditQn] = useState<PhoneScreenQuestion | null>(null);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const q = get(jobForm, `formFields.${qnPath}`, null) as PhoneScreenQuestion;
   if (!q) return;
 
+  let disableEditBtn = false;
+
+  if (
+    editQn &&
+    (((editQn.type === 'multiSelect' || editQn.type === 'singleSelect') &&
+      editQn.options.length === 0) ||
+      (editQn.type === 'shortAnswer' && editQn.question.length === 0))
+  ) {
+    disableEditBtn = true;
+  }
   return (
     <ScrQuestion
       isDefaultView={isDefaultView}
@@ -267,6 +277,14 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
               <>
                 {editQn.options.map((op, idx) => (
                   <ScrQuestionOptionEdit
+                    onclickRemove={{
+                      onClick: () => {
+                        const updOptions = editQn.options.filter(
+                          (e) => e.id !== op.id,
+                        );
+                        setEditQn((prev) => ({ ...prev, options: updOptions }));
+                      },
+                    }}
                     key={op.id}
                     count={idx + 1}
                     slotInput={
@@ -322,16 +340,25 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
                   onclickMultiSelect={{
                     onClick: () => {
                       setEditQn((prev) => ({ ...prev, type: 'multiSelect' }));
+                      setShowDropDown((prev) => !prev);
                     },
                   }}
                   onclickShortAnswer={{
                     onClick: () => {
                       setEditQn((prev) => ({ ...prev, type: 'shortAnswer' }));
+                      setShowDropDown((prev) => !prev);
                     },
                   }}
                   onclickSingleSelect={{
                     onClick: () => {
                       setEditQn((prev) => ({ ...prev, type: 'singleSelect' }));
+                      setShowDropDown((prev) => !prev);
+                    },
+                  }}
+                  isOptionsBodyVisible={showDropDown}
+                  onclickTrigger={{
+                    onClick: () => {
+                      setShowDropDown((prev) => !prev);
                     },
                   }}
                 />
@@ -374,6 +401,7 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
                 <AUIButton
                   variant='primary'
                   size='medium'
+                  disabled={disableEditBtn}
                   onClick={() => {
                     if (!editQn?.question) return;
                     handleUpdateFormFields({
@@ -395,7 +423,7 @@ const KnowOffQn = ({ qnPath, qnIdx }) => {
   );
 };
 
-const seedQns: phoneScreenQuestion[] = [
+const seedQns: PhoneScreenQuestion[] = [
   {
     id: nanoid(),
     type: 'singleSelect',
@@ -436,7 +464,7 @@ const seedQns: phoneScreenQuestion[] = [
   {
     id: nanoid(),
 
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question: `This role may involve occasional travel. Do you possess a valid driver's license, and are you comfortable with potential travel requirements?`,
@@ -456,7 +484,7 @@ const seedQns: phoneScreenQuestion[] = [
   },
   {
     id: nanoid(),
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question:
@@ -475,7 +503,7 @@ const seedQns: phoneScreenQuestion[] = [
   {
     id: nanoid(),
 
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question: `What is your current visa status in the country where you would be working remotely, and do you have any restrictions that might affect your eligibility for the role?`,
@@ -491,7 +519,7 @@ const seedQns: phoneScreenQuestion[] = [
   },
   {
     id: nanoid(),
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question: `Can you confirm your work authorization and eligibility to work remotely without any restrictions in the [country]?`,
@@ -499,7 +527,7 @@ const seedQns: phoneScreenQuestion[] = [
   },
   {
     id: nanoid(),
-    type: 'singleSelect',
+    type: 'shortAnswer',
     isRequired: true,
     options: [],
     question: 'Add your Custom Question Here',
@@ -507,7 +535,7 @@ const seedQns: phoneScreenQuestion[] = [
   },
 ];
 
-const qnTypeToIcon = (type: phoneScreenQuestion['type']) => {
+const qnTypeToIcon = (type: PhoneScreenQuestion['type']) => {
   if (type === 'singleSelect') {
     return <ScrRadioIcon />;
   }

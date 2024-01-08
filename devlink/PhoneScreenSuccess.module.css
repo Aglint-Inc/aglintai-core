@@ -1,0 +1,98 @@
+.div-block-672 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slot-lgo-phone {
+  width: 100px;
+  height: 100px;
+}
+
+.submitted-success {
+  display: flex;
+  margin-top: 120px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-lg-default {
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.45px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.max-width-500 {
+  max-width: 500px;
+}
+
+.text-grey-600.width-90 {
+  width: 90%;
+}
+
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-600 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-600 {
+    max-width: none;
+  }
+}
+
+.max-width-600 {
+  max-width: 600px;
+}
+
+.text-grey-600.mt-5 {
+  margin-top: 5px;
+}
+
+.mt-5 {
+  margin-top: 5px;
+}
+
+.text-grey-600.mt-17 {
+  margin-top: 17px;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}

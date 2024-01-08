@@ -165,7 +165,7 @@
 
 .scr-question-input-block {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }

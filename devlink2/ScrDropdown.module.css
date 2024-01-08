@@ -2,6 +2,7 @@
   position: relative;
   width: 160px;
   min-width: 160px;
+  cursor: pointer;
 }
 
 .scr-dropdown-trigger {
@@ -144,6 +145,9 @@
 .scr-dropdown-content {
   position: absolute;
   top: 47px;
+  z-index: 10;
+
+  display: block;
   overflow: hidden;
   width: 100%;
 }

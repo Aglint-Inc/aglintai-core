@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./ResumeScoreSetting.module.css";
 
@@ -9,6 +10,10 @@ export function ResumeScoreSetting({
   isProceedDisable = true,
   onClickProceed = {},
   isJobAdd = true,
+  onClickDone = {},
+  slotButtonPrimaryRegular,
+  onClickSaveDraft = {},
+  slotBasicButton,
 }) {
   return (
     <_Component
@@ -49,7 +54,7 @@ export function ResumeScoreSetting({
       </_Builtin.Block>
       {isJobAdd ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "job-details-button-wrappers")}
+          className={_utils.cx(_styles, "job-details-button-wrappers", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -83,6 +88,25 @@ export function ResumeScoreSetting({
                 />
               </_Builtin.Block>
             ) : null}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
+      {isJobAdd ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "publish-email-wrap")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div" {...onClickDone}>
+            {slotButtonPrimaryRegular ?? (
+              <ButtonPrimaryRegular textLabel="Publish Job" />
+            )}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-basic-button")}
+            tag="div"
+            {...onClickSaveDraft}
+          >
+            {slotBasicButton}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

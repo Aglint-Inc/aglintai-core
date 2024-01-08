@@ -83,6 +83,7 @@ export interface Database {
           is_resume_fetching: boolean
           job_id: string
           overall_score: number | null
+          phone_screening: Json | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
           score_json: Json | null
@@ -99,6 +100,7 @@ export interface Database {
           is_resume_fetching?: boolean
           job_id: string
           overall_score?: number | null
+          phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
@@ -115,6 +117,7 @@ export interface Database {
           is_resume_fetching?: boolean
           job_id?: string
           overall_score?: number | null
+          phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null

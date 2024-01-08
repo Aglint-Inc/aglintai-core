@@ -63,7 +63,7 @@ export type JdJsonType = {
   skills: jsonItemType[];
   educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
 };
-export type phoneScreenQuestion = {
+export type PhoneScreenQuestion = {
   id: string;
   isRequired: boolean;
   question: string;
@@ -138,7 +138,7 @@ export type FormJobType = {
   phoneScreening: {
     startMessage: string;
     endMessage: string;
-    questions: phoneScreenQuestion[];
+    questions: PhoneScreenQuestion[];
   };
 };
 
