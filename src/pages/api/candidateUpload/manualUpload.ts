@@ -6,19 +6,17 @@ import {
 } from '@supabase/ssr';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Database } from '@/src/types/schema';
 
 import {
+  createAndUploadCandidate,
   createApplication,
-  createCandidate,
   createFile,
   deleteCandidate,
   deleteFile,
   deleteResume,
   supportedTypes,
-  uploadResume,
   verifyCandidate,
 } from './utils';
 
@@ -27,11 +25,13 @@ const handler = async (
   res: NextApiResponse<ManualUploadApi['response']>,
 ) => {
   const file = req.body as ManualUploadApi['request']['file'];
-  const contentType = req.headers['content-type'] as keyof typeof supportedTypes;
+  const contentType = req.headers[
+    'content-type'
+  ] as keyof typeof supportedTypes;
   if (!Object.keys(supportedTypes).includes(contentType)) {
     res.status(200).json({ confirmation: false, error: 'Unsupported type' });
     return;
-  } 
+  }
   const {
     email,
     first_name,
@@ -69,84 +69,45 @@ const handler = async (
     recruiter_id,
   )
     .then(() =>
-      createCandidate(supabase, {
-        email,
-        recruiter_id,
-        first_name,
-        last_name,
-        linkedin,
-        phone,
-      })
-        .then(({ id: candidate_id }) =>
-          uploadResume(
-            supabase,
-            candidate_id,
-            job_id,
-            file,
-            contentType,
-            uuidv4(),
-          )
-            .then(({ file_url, candidate_file_id }) =>
-              createFile(
-                supabase,
-                candidate_id,
-                file_url,
-                candidate_file_id,
-                contentType,
-              )
-                .then(() =>
-                  createApplication(
-                    supabase,
-                    job_id,
-                    candidate_id,
-                    candidate_file_id,
-                  )
-                    .then(
-                      async (): Promise<ManualUploadApi['response']> => ({
-                        confirmation: true,
-                        error: null as string,
-                      }),
-                    )
-                    .catch(
-                      async (
-                        e: PostgrestError,
-                      ): Promise<ManualUploadApi['response']> => {
-                        await Promise.allSettled([
-                          deleteFile(supabase, candidate_file_id),
-                          deleteResume(
-                            supabase,
-                            candidate_file_id,
-                            contentType,
-                          ),
-                          deleteCandidate(supabase, candidate_id),
-                        ]);
-                        return {
-                          confirmation: false,
-                          error: e.message,
-                        };
-                      },
-                    ),
-                )
-                .catch(
-                  async (
-                    e: PostgrestError,
-                  ): Promise<ManualUploadApi['response']> => {
-                    await Promise.allSettled([
-                      deleteResume(supabase, candidate_file_id, contentType),
-                      deleteCandidate(supabase, candidate_id),
-                    ]);
-                    return {
-                      confirmation: false,
-                      error: e.message,
-                    };
-                  },
-                ),
+      createAndUploadCandidate(
+        supabase,
+        {
+          email,
+          recruiter_id,
+          first_name,
+          last_name,
+          linkedin,
+          phone,
+        },
+        file,
+        contentType,
+      ),
+    )
+    .then(({ candidate_id, file_url, candidate_file_id }) =>
+      createFile(
+        supabase,
+        candidate_id,
+        file_url,
+        candidate_file_id,
+        contentType,
+      )
+        .then(() =>
+          createApplication(supabase, job_id, candidate_id, candidate_file_id)
+            .then(
+              async (): Promise<ManualUploadApi['response']> => ({
+                confirmation: true,
+                error: null as string,
+              }),
             )
             .catch(
               async (
                 e: PostgrestError,
               ): Promise<ManualUploadApi['response']> => {
-                await deleteCandidate(supabase, candidate_id);
+                await Promise.allSettled([
+                  deleteFile(supabase, candidate_file_id),
+                  deleteResume(supabase, candidate_file_id, contentType),
+                  deleteCandidate(supabase, candidate_id),
+                ]);
                 return {
                   confirmation: false,
                   error: e.message,
@@ -155,10 +116,16 @@ const handler = async (
             ),
         )
         .catch(
-          async (e: PostgrestError): Promise<ManualUploadApi['response']> => ({
-            confirmation: false,
-            error: e.message,
-          }),
+          async (e: PostgrestError): Promise<ManualUploadApi['response']> => {
+            await Promise.allSettled([
+              deleteResume(supabase, candidate_file_id, contentType),
+              deleteCandidate(supabase, candidate_id),
+            ]);
+            return {
+              confirmation: false,
+              error: e.message,
+            };
+          },
         ),
     )
     .catch(
@@ -184,7 +151,7 @@ export type ManualUploadApi = {
       recruiter_id: string;
       job_id: string;
     };
-    file: any;
+    file: File;
   };
   response: {
     confirmation: boolean;

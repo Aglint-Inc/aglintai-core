@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { PostgrestError } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   CandidateCreateAction,
@@ -252,8 +253,6 @@ export const deleteApplication = async (
 
 export const uploadResume = async (
   supabase: Supabase,
-  candidateId: string,
-  jobId: string,
   file: any,
   contentType: keyof typeof supportedTypes,
   candidate_file_id: string,
@@ -276,8 +275,6 @@ export const uploadResume = async (
     if (retry < RETRY)
       return await uploadResume(
         supabase,
-        candidateId,
-        jobId,
         file,
         contentType,
         candidate_file_id,
@@ -317,6 +314,34 @@ export const deleteResume = async (
     throw new Error(error.message);
   }
   // console.log('NEW CANDIDATE RESUME DELETED');
+};
+
+export const createAndUploadCandidate = async (
+  supabase: Supabase,
+  candidate: CandidateCreateAction['request']['inputData'],
+  file: File,
+  contentType: keyof typeof supportedTypes,
+) => {
+  const candidate_file_id = uuidv4();
+  const responses = await Promise.allSettled([
+    createCandidate(supabase, candidate),
+    uploadResume(supabase, file, contentType, candidate_file_id),
+  ]);
+  if (responses[0].status === 'rejected') {
+    if (responses[1].status === 'fulfilled')
+      await deleteResume(supabase, candidate_file_id, contentType);
+    throw new Error(responses[0].reason);
+  } else if (responses[1].status === 'rejected') {
+    if (responses[0].status === 'fulfilled')
+      await deleteCandidate(supabase, responses[0].value.id);
+    throw new Error(responses[1].reason);
+  } else {
+    return {
+      candidate_id: responses[0].value.id,
+      file_url: responses[1].value.file_url,
+      candidate_file_id,
+    };
+  }
 };
 
 const sha256 = async (message) => {
