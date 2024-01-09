@@ -27,10 +27,6 @@ export default function Loading() {
   const handleUser = async () => {
     try {
       if (userDetails?.user?.id) {
-        if (userDetails.user.user_metadata.role == 'Employee') {
-          router.push('https://app.aglinthq.com');
-          return;
-        }
         if (handleEmail(userDetails.user.email).error) {
           router.push(pageRoutes.SIGNUP);
           toast.error('Please signup/login with company email');
@@ -38,9 +34,11 @@ export default function Loading() {
         }
         await createUser();
       } else {
+        toast.error('Please signup/login with company email');
         router.push(pageRoutes.LOGIN);
       }
     } catch (error) {
+      toast.error('Unable to login. Please try again later');
       router.push(pageRoutes.LOGIN);
     }
   };
