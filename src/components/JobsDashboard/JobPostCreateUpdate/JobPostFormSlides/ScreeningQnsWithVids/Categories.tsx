@@ -105,7 +105,7 @@ const Category = ({
         categ.questions.map((p) => p.question),
         htmlToText(get(jobForm, 'formFields.jobDescription', '')),
         categ.copy,
-        categ.category == 'skill' ? jobForm.formFields.skills : undefined,
+        // categ.category == 'skill' ? jobForm.formFields.skills : undefined,
       );
 
       const categIdx = jobForm.formFields.interviewConfig.findIndex(
