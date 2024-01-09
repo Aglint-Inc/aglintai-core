@@ -123,6 +123,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .div-block-481 {
   display: flex;
   align-items: center;
@@ -457,7 +461,7 @@
 .discard-wrap {
   position: absolute;
   left: -206px;
-  top: 25px;
+  top: 21px;
   right: auto;
   bottom: auto;
 
@@ -679,10 +683,6 @@
 
 .fw-semibold.relative {
   z-index: 2;
-}
-
-.relative {
-  position: relative;
 }
 
 .fw-semibold.relative.zindex-6 {

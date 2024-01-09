@@ -386,6 +386,10 @@
   grid-row-gap: 20px;
 }
 
+.cj-skills.hide {
+  display: none;
+}
+
 .cj-add-skill-wrapper {
   display: flex;
   flex-direction: column;

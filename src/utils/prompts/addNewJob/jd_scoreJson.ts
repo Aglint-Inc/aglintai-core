@@ -6,20 +6,21 @@ export const generatejdToScoreJson = async (jdText: string) => {
   const prompts: MessageType[] = [
     {
       role: 'system',
-      content: `Your given a job description, your job is to extract and return in this following JSON format
+      content: `
+You're given a job description, and your task is to extract and return the information in the following JSON format:
 
-      export type jsonItemType = {
-        field: string;
-        isMustHave: boolean;
-      };
+export type JsonItemType = {
+  field: string;
+  isMustHave: boolean;  // If the field is absolutely necessary, then the value is true; otherwise, it's false.
+};
 
-      export type JdJson = {
-        responsibilities: jsonItemType[];
-        roles: jsonItemType[];
-        skills: jsonItemType[];
-        educations: jsonItemType[];
-      };
-
+export type JdJson = {
+  responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description and whether they are a must-have.
+  roles: JsonItemType[]; // Roles mentioned in the job description and whether they are a must-have.
+  requirements: JsonItemType[]; // Requirements mentioned in the job description and whether they are a must-have.
+  skills: JsonItemType[]; // Skills mentioned in the job description and whether they are a must-have.
+  educations: JsonItemType[]; // Educations mentioned in the job description and whether they are a must-have.
+};
 `,
     },
     {

@@ -29,7 +29,6 @@ export const getSeedJobFormData = (
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
       workPlaceType: 'onSite',
-      skills: [],
       jobDescription: '',
       interviewType: 'questions-preset',
       defaultAddress: [],
@@ -288,7 +287,6 @@ export const dbToClientjobPostForm = (
       jobDescription: jobPost.description || '',
       jobLocation: jobPost.location || seedData.formFields.jobLocation,
       logo: jobPost.logo || seedData.formFields.logo,
-      skills: get(jobPost, 'skills', []) || [],
       jobTitle: jobPost.job_title || '',
       jobType: jobPost.job_type || seedData.formFields.jobType,
       newScreeningConfig: {

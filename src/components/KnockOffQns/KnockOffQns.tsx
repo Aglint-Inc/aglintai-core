@@ -1,5 +1,4 @@
-import { CandidateStart, PhoneScreenSuccess } from '@/devlink';
-import { PhoneScreening } from '@/devlink';
+import { CandidateStart, PhoneScreenings, PhoneScreenSuccess } from '@/devlink';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import CompanyLogo from './CompanyLogo';
@@ -26,7 +25,8 @@ const KnockOffQns = () => {
   }
   return (
     <>
-      <PhoneScreening
+      <PhoneScreenings
+        isPreviewEnable={state.isPreview}
         isPrevDisable={false}
         slotStep={
           <>

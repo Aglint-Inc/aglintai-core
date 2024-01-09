@@ -84,7 +84,6 @@ export type FormJobType = {
   jobType: string;
   jobDescription: string;
   department: string;
-  skills: string[];
   interviewType: 'ai-powered' | 'questions-preset';
   interviewConfig: InterviewConfigType[];
   videoAssessment: boolean;

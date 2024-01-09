@@ -78,7 +78,6 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     job_title: jobForm.formFields.jobTitle,
     job_type: jobForm.formFields.jobType,
     workplace_type: jobForm.formFields.workPlaceType,
-    skills: jobForm.formFields.skills,
     department: jobForm.formFields.department,
     slug: jobForm.createdAt
       ? undefined
