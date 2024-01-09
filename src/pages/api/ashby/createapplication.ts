@@ -132,7 +132,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               await supabase
                 .from('candidate_files')
                 .insert({
-                  candidate_id: dataCand[0].id,
+                  candidate_id: candCreated[0].id,
                   file_url: fileLink,
                   id: fileId,
                   type: 'resume',
