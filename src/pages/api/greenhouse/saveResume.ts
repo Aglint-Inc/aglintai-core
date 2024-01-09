@@ -27,6 +27,16 @@ export default async function handler(req, res) {
       .select()
       .eq('id', payload.application_id);
 
+    if (job.length === 0) {
+      await supabase
+        .from('greenhouse_reference')
+        .update({ resume_saved: true })
+        .eq('application_id', payload.application_id)
+        .select();
+      console.log('No application found');
+      return res.status(200).json('No application found');
+    }
+
     let fileUrl = payload.resume;
     let bucketName = 'resume-job-post';
     let fileId = uuidv4();
