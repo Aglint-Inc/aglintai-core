@@ -18,6 +18,8 @@ const useUploadCandidate = () => {
       last_name: candidate.last_name,
       phone: candidate.phone || null,
       linkedin: candidate.linkedin || null,
+      contentType:
+        file.type as ManualUploadApi['request']['params']['contentType'],
       recruiter_id: candidate.recruiter_id,
     };
     const params = Object.entries(request)
@@ -26,14 +28,13 @@ const useUploadCandidate = () => {
         return acc;
       }, [])
       .join('&');
+    const formData = new FormData();
+    formData.append('resume', file);
     const { data: response } = await axios({
       method: 'post',
       url: `/api/candidateUpload/manualUpload?${params}`,
-      data: file,
+      data: formData,
       timeout: 60000,
-      headers: {
-        'Content-Type': file.type,
-      },
       signal: signal,
     });
     return response as ManualUploadApi['response'];

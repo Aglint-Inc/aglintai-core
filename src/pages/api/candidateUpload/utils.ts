@@ -269,6 +269,7 @@ export const uploadResume = async (
     .from('candidate-files')
     .upload(`resumes/${candidate_file_id}${ext}`, file, {
       cacheControl: '3600',
+      duplex: 'half',
       contentType,
     });
   if (error) {
