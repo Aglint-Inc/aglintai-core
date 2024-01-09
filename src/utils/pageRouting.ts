@@ -5,6 +5,7 @@ export const pageRoutes = Object.freeze({
   RESETPASSWORD: '/reset-password',
   HOMEPAGE: '/',
   JOBS: '/jobs',
+  EDITJOBS: '/jobs/edit',
   COMPANY: '/company',
   CANDIDATES: '/candidates/history',
   NOTIFICATIONS: '/notifications',

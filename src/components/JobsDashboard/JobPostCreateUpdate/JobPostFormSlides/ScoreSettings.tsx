@@ -89,7 +89,11 @@ const ScoreSettings = () => {
           );
 
           const j: JdJsonType = {
-            rolesResponsibilities: [...json.roles, ...json.responsibilities],
+            rolesResponsibilities: [
+              ...json.roles,
+              ...json.responsibilities,
+              ...json.requirements,
+            ],
             skills: [...json.skills],
             educations: [...json.educations],
           };

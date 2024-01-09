@@ -203,7 +203,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           type: 'initialise',
           payload: {
             newState: {
-              companyLogo: job.logo,
+              companyLogo: job.logo || '',
               phoneScreen: candPhScreenResp,
               currentQn: -1,
               showStartMessage: !isFormFilled,

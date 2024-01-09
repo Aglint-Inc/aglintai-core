@@ -107,28 +107,14 @@ export function GreenhouseModal() {
         .select();
 
       if (!error) {
-        newJobs.map((job) => {
-          if (job.description) {
-            //this will jd_json required for scoring
-            axios.post('/api/publishJob', {
-              data: {
-                job_title: job.job_title,
-                job_description: job.description,
-                skills: [],
-                job_id: job.id,
-              },
-            });
-          }
-        });
-
         //now creating jobsObj for creating candidates and job_applications
         const jobsObj = selectedGreenhousePostings.map((post) => {
           return {
             ...post,
-            public_job_id: newJobs.filter(
+            public_job_id: (newJobs as any).filter(
               (job) =>
-                job.job_title == post.title &&
-                job.location == post.location.name,
+                job.draft.job_title == post.title &&
+                job.draft.location == post.location.name,
             )[0].id,
             recruiter_id: recruiter.id,
           };
@@ -154,8 +140,7 @@ export function GreenhouseModal() {
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-        toast.success('Jobs Imported Successfully');
-        router.push(`${pageRoutes.JOBS}?status=published`);
+        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}`);
       } else {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',
@@ -360,15 +345,15 @@ export function GreenhouseModal() {
                                     prev.filter((p) => p.id !== post.id),
                                   );
                                 } else {
-                                  if (selectedGreenhousePostings.length < 3) {
+                                  if (selectedGreenhousePostings.length < 1) {
                                     // If the object is not in the array, add it
                                     setSelectedGreenhousePostings((prev) => [
                                       ...prev,
                                       post,
                                     ]);
                                   } else {
-                                    toast.error(
-                                      'You can select maximum 3 jobs at a time',
+                                    toast.warning(
+                                      'You can import 1 job at a time',
                                     );
                                   }
                                 }

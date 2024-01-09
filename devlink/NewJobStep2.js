@@ -51,7 +51,10 @@ export function NewJobStep2({
           >
             {slotJobDescription}
           </_Builtin.Block>
-          <_Builtin.Block className={_utils.cx(_styles, "cj-skills")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cj-skills", "hide")}
+            tag="div"
+          >
             <_Builtin.Block
               className={_utils.cx(_styles, "cj-add-skill-wrapper")}
               tag="div"

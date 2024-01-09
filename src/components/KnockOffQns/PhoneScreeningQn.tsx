@@ -26,6 +26,16 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
   const handleSubmit = async () => {
     try {
       if (!isResponseValid()) return;
+
+      if (state.isPreview) {
+        updateState({
+          path: 'showEndMessage',
+          value: true,
+        });
+
+        return;
+      }
+
       setIsSubmitting(true);
 
       const candResponse = {
@@ -172,7 +182,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           {state.phoneScreen.length === qnNo ? (
             <AUIButton
               variant='success'
-              disabled={errorMsg.length > 0 || state.isPreview}
+              disabled={errorMsg.length > 0}
               endIcon={
                 <>
                   {!isSubmitting && (

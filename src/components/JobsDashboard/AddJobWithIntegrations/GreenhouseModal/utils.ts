@@ -5,8 +5,8 @@ import {
   CandidateType,
   GreenhouseRefDbType,
   GreenhouseType,
-  JobApplcationDB,
   NewCandidateType,
+  PublicJobsType,
   RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -232,26 +232,34 @@ export const fetchAllJobs = async (
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
   recruiter: RecruiterDB,
-): Promise<Partial<JobApplcationDB> & { recruiter_id: string }[]> => {
+): Promise<Partial<PublicJobsType> & { recruiter_id: string }[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
+      draft: {
+        id: post.public_job_id,
+        location: post.location.name,
+        job_title: post.title,
+        description: post.content,
+        email_template: recruiter.email_template,
+        recruiter_id: recruiter.id,
+        posted_by: POSTED_BY.GREENHOUSE,
+        job_type: 'fulltime',
+        workplace_type: 'onsite',
+        company: recruiter.name,
+        skills: [],
+        status: 'draft',
+        parameter_weights: {
+          skills: 45,
+          education: 5,
+          experience: 50,
+        },
+      },
       location: post.location.name,
       job_title: post.title,
-      description: post.content,
-      email_template: recruiter.email_template,
-      recruiter_id: recruiter.id,
+      status: 'draft',
       posted_by: POSTED_BY.GREENHOUSE,
-      job_type: 'fulltime',
-      workplace_type: 'onsite',
-      company: recruiter.name,
-      skills: [],
-      status: 'published',
-      parameter_weights: {
-        skills: 45,
-        education: 5,
-        experience: 50,
-      },
       id: post.public_job_id,
+      recruiter_id: recruiter.id,
     };
   });
   return dbJobs;
