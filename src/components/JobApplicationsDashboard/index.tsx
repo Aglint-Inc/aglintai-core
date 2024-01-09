@@ -150,6 +150,11 @@ const JobApplicationComponent = () => {
   return (
     <>
       <JobDetails
+        isWarningVisible={
+          job.status == 'published' && (!job.jd_json || !job.description)
+            ? true
+            : false
+        }
         slotLoadingLottie={
           <CircularProgress
             style={{
@@ -705,8 +710,7 @@ const ApplicantsList = ({
       {applications /*.slice(0, lastLoad)*/
         .map((application, i) => {
           const styles =
-            (jobUpdate && checkList.has(application.id)) ||
-            applicationDisable
+            (jobUpdate && checkList.has(application.id)) || applicationDisable
               ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
               : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
           return (

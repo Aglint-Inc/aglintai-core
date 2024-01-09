@@ -21,4 +21,6 @@ declare function JobDetails(props: {
   textStatus?: React.ReactNode;
   isTextStatusVisible?: Types.Visibility.VisibilityConditions;
   slotLoadingLottie?: Types.Devlink.Slot;
+  isEmptyTextVisible?: Types.Visibility.VisibilityConditions;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
