@@ -206,34 +206,44 @@ export const fetchAllJobs = async (apiKey) => {
 
 export const createJobObject = async (selectedLeverPostings, recruiter) => {
   const dbJobs = selectedLeverPostings.map((post) => {
+    const id = uuidv4();
     return {
+      draft: {
+        id: id,
+        location: post.categories.location,
+        job_title: post.text,
+        description: post.content.descriptionHtml,
+        email_template: recruiter.email_template,
+        department: post.categories.department || '',
+        recruiter_id: recruiter.id,
+        posted_by: POSTED_BY.LEVER,
+        job_type:
+          post.categories.commitment === 'Part Time'
+            ? 'parttime'
+            : post.categories.commitment === 'Internship'
+              ? 'internship'
+              : 'fulltime',
+        workplace_type:
+          post.workplaceType === 'hybrid'
+            ? 'hybrid'
+            : post.workplaceType === 'onsite'
+              ? 'onsite'
+              : 'offsite',
+        company: recruiter.name,
+        skills: [],
+        status: 'draft',
+        parameter_weights: {
+          skills: 45,
+          education: 5,
+          experience: 50,
+        },
+      },
       location: post.categories.location,
       job_title: post.text,
-      description: post.content.descriptionHtml,
-      email_template: recruiter.email_template,
-      department: post.categories.department || '',
-      recruiter_id: recruiter.id,
+      status: 'draft',
       posted_by: POSTED_BY.LEVER,
-      job_type:
-        post.categories.commitment === 'Part Time'
-          ? 'parttime'
-          : post.categories.commitment === 'Internship'
-            ? 'internship'
-            : 'fulltime',
-      workplace_type:
-        post.workplaceType === 'hybrid'
-          ? 'hybrid'
-          : post.workplaceType === 'onsite'
-            ? 'onsite'
-            : 'offsite',
-      company: recruiter.name,
-      skills: [],
-      status: 'published',
-      parameter_weights: {
-        skills: 45,
-        education: 5,
-        experience: 50,
-      },
+      recruiter_id: recruiter.id,
+      id: id,
     };
   });
   return dbJobs;

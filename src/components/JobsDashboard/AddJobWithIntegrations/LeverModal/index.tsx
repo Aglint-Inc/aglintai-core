@@ -89,18 +89,6 @@ export function LeverModalComp() {
         .select();
 
       if (!error) {
-        newJobs.map((job) => {
-          if (job.description) {
-            axios.post('/api/publishJob', {
-              data: {
-                job_title: job.job_title,
-                job_description: job.description,
-                skills: [],
-                job_id: job.id,
-              },
-            });
-          }
-        });
         selectedLeverPostings.map(async (post) => {
           await createLeverJobReference({
             posting_id: post.id,
@@ -130,9 +118,7 @@ export function LeverModalComp() {
           ...prev,
           lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
         }));
-
-        toast.success('Jobs Imported Successfully');
-        router.push(`${pageRoutes.JOBS}?status=published`);
+        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}`);
       } else {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',
@@ -336,7 +322,7 @@ export function LeverModalComp() {
                                       prev.filter((p) => p.id !== post.id),
                                     );
                                   } else {
-                                    if (selectedLeverPostings.length < 3) {
+                                    if (selectedLeverPostings.length < 1) {
                                       // If the object is not in the array, add it
                                       setSelectedLeverPostings((prev) => [
                                         ...prev,
@@ -344,7 +330,7 @@ export function LeverModalComp() {
                                       ]);
                                     } else {
                                       toast.warning(
-                                        'You can select maximum 3 jobs at a time',
+                                        'You can import 1 job at a time',
                                       );
                                     }
                                   }

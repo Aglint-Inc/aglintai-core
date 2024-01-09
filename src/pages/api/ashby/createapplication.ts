@@ -97,6 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .eq('recruiter_id', recruiter_id);
 
           if (!errorCand && dataCand?.length > 0) {
+            console.log('candidate already exists in candidate table');
             const res = await uploadResume(fileId, resume.results.url);
             const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${res.path}`;
             console.log(fileLink, 'resume');

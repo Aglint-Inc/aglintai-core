@@ -101,20 +101,6 @@ export function AshbyModalComp() {
         .insert(dbJobs)
         .select();
       if (!error) {
-        newJobs.map((job) => {
-          if (job.description) {
-            //this will jd_json required for scoring
-            axios.post('/api/publishJob', {
-              data: {
-                job_title: job.job_title,
-                job_description: job.description,
-                skills: [],
-                job_id: job.id,
-              },
-            });
-          }
-        });
-
         const astJobsObj = refJobsObj.map((post) => {
           return {
             ats_json: post.ats_json as any,
@@ -136,8 +122,7 @@ export function AshbyModalComp() {
           ...prev,
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         }));
-        toast.success('Jobs Imported Successfully');
-        router.push(`${pageRoutes.JOBS}?status=published`);
+        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}`);
       }
     } catch (error) {
       toast.error(
@@ -294,15 +279,15 @@ export function AshbyModalComp() {
                                     prev.filter((p) => p.id !== post.id),
                                   );
                                 } else {
-                                  if (selectedAshbyPostings.length < 5) {
+                                  if (selectedAshbyPostings.length < 1) {
                                     // If the object is not in the array, add it
                                     setSelectedAshbyPostings((prev) => [
                                       ...prev,
                                       post,
                                     ]);
                                   } else {
-                                    toast.error(
-                                      'You can select maximum 5 jobs at a time',
+                                    toast.warning(
+                                      'You can import 1 job at a time',
                                     );
                                   }
                                 }

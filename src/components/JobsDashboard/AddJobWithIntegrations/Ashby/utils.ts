@@ -3,14 +3,14 @@ import axios from 'axios';
 import {
   GreenhouseRefDbType,
   GreenhouseType,
-  JobApplcationDB,
-  RecruiterDB,
+  RecruiterDB
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 import { POSTED_BY } from '../utils';
+import { JobType } from '../../types';
 
 export const fetchAllCandidates = async (
   apiKey: string,
@@ -68,26 +68,34 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
 export const createJobObject = async (
   selectedPostings: ExtendedJobAshby[],
   recruiter: RecruiterDB,
-): Promise<Partial<JobApplcationDB> & { recruiter_id: string }[]> => {
+): Promise<Partial<JobType> & { recruiter_id: string }[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
+      draft: {
+        id: post.public_job_id,
+        location: post.location,
+        job_title: post.title,
+        description: post.description,
+        department: post.departmentName,
+        email_template: recruiter.email_template,
+        recruiter_id: recruiter.id,
+        posted_by: POSTED_BY.ASHBY,
+        job_type: post.employmentType == 'Contract' ? 'contract' : 'fulltime',
+        workplace_type: 'onsite',
+        company: recruiter.name,
+        skills: [],
+        status: 'draft',
+        parameter_weights: {
+          skills: 45,
+          education: 5,
+          experience: 50,
+        },
+      },
       location: post.location,
       job_title: post.title,
-      description: post.description,
-      department: post.departmentName,
-      email_template: recruiter.email_template,
       recruiter_id: recruiter.id,
       posted_by: POSTED_BY.ASHBY,
-      job_type: post.employmentType == 'Contract' ? 'contract' : 'fulltime',
-      workplace_type: 'onsite',
-      company: recruiter.name,
-      skills: [],
-      status: 'published',
-      parameter_weights: {
-        skills: 45,
-        education: 5,
-        experience: 50,
-      },
+      status: 'draft',
       id: post.public_job_id,
     };
   });
