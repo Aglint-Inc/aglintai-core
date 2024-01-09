@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   let payload = req.body;
 
   if (payload.application_id && payload.resume) {
-    console.log(payload.application_id, payload.resume);
+    console.log(payload.application_id, 'payload.application_id');
 
     // Supabase credentials
 
