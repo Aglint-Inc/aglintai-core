@@ -18,6 +18,8 @@ export default async function handler(req, res) {
   let payload = req.body;
 
   if (payload.application_id && payload.resume) {
+    console.log(payload.application_id, payload.resume);
+
     // Supabase credentials
 
     const { data: job } = await supabase
@@ -68,7 +70,7 @@ export default async function handler(req, res) {
         if (!uploadError) {
           console.log(fileLink);
 
-          await supabase
+          const { error: errorCandFiles } = await supabase
             .from('candidate_files')
             .insert({
               candidate_id: job[0].candidate_id,
@@ -77,6 +79,8 @@ export default async function handler(req, res) {
               type: 'resume',
             })
             .select();
+
+          console.log(errorCandFiles, 'errorCandFiles');
 
           const { data: app, error: errorApp } = await supabase
             .from('applications')
