@@ -4,7 +4,6 @@ import set from 'lodash/set';
 import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
-import { JobApplcationDB } from '@/src/types/data.types';
 import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -28,6 +27,7 @@ export interface CandidateSearchRes {
   is_bookmarked: boolean;
   is_checked: boolean;
   applied_job_posts: CandJobPost[];
+  candfile_id: string;
 }
 
 export type CandJobPost = {
@@ -212,29 +212,23 @@ const CandidateSearchProvider = ({ children }) => {
       let updaCandState = [...state.candidates];
       const candsjobApps = supabaseWrap(
         await supabase
-          .from('job_applications')
+          .from('applications')
           .select()
-          .or(jobAppIds.map((j) => `application_id.eq.${j}`).join(',')),
+          .or(jobAppIds.map((j) => `id.eq.${j}`).join(',')),
       ) as any[];
 
-      let newJobApps: Partial<JobApplcationDB> & { candidate_id: string }[] =
-        [];
-
+      let newJobApps: {
+        candidate_id: string;
+        job_id: string;
+        candidate_file_id: string;
+      }[] = [];
       for (const candJobApp of candsjobApps) {
         let newCandApps = job_ids.map((j) => ({
           candidate_id: candJobApp.candidate_id,
-          resume: candJobApp.resume,
-          resume_text: candJobApp.resume_text,
-          resume_embedding: candJobApp.resume_embedding,
-          education_embedding: candJobApp.education_embedding,
-          experience_embedding: candJobApp.experience_embedding,
-          is_embedding: candJobApp.is_embedding,
           job_id: j.job_id,
-          json_resume: candJobApp.json_resume,
-          skills_embedding: candJobApp.skills_embedding,
+          candidate_file_id: candJobApp.candidate_file_id,
         }));
         newJobApps = [...newJobApps, ...newCandApps];
-
         updaCandState = updaCandState.map((cand) => {
           if (cand.candidate_id === candJobApp.candidate_id) {
             cand.applied_job_posts = [...cand.applied_job_posts, ...job_ids];
@@ -246,9 +240,7 @@ const CandidateSearchProvider = ({ children }) => {
         path: 'candidates',
         value: updaCandState,
       });
-      supabaseWrap(
-        await supabase.from('job_applications').insert([...newJobApps]),
-      );
+      supabaseWrap(await supabase.from('applications').insert([...newJobApps]));
       toast.success('Applied to job/s sucessfully');
     } catch (er) {
       toast.error(API_FAIL_MSG);

@@ -13,6 +13,7 @@ export interface Candidate {
   profile_image?: string;
   resume_link: string;
   is_checked: boolean;
+  candfile_id: string;
   applied_job_posts: CandJobPost[];
 }
 

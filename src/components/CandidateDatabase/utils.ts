@@ -95,7 +95,7 @@ export const getRelevantCndidates = async (
     resp[3].value.data[0].embedding;
 
   const cands = supabaseWrap(
-    await supabase.rpc('calc_sim_score2', {
+    await supabase.rpc('calc_sim_score3', {
       edu_qry_emb: embeddings.education,
       skill_qry_emb: embeddings.skills,
       exp_qry_emb: embeddings.experience,
@@ -139,7 +139,7 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   bookmarkedCands: string[],
 ) => {
   const candjobs = (await supabaseWrap(
-    await supabase.rpc('getjobapplicationcountforcandidates', {
+    await supabase.rpc('getjobapplicationcountforcandidates2', {
       candidate_ids: candidates.map((c) => c.candidate_id),
     }),
   )) as CandidateJobINfo[];
@@ -150,6 +150,7 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   });
   const canididatesDto: CandidateSearchRes[] = candidates
     .filter((c) => Boolean(c.json_resume))
+    .filter((c) => Boolean(c.json_resume.skills))
     .map((c) => {
       let loc = '';
       if (
@@ -179,6 +180,7 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
         profile_image: c.profile_image,
         is_bookmarked: bookmarkedCands.includes(c.application_id),
         is_checked: false,
+        candfile_id: c.candfile_id,
         applied_job_posts: mp.get(c.candidate_id).job_titles.map((_, idx) => {
           return {
             job_id: mp.get(c.candidate_id).job_ids[Number(idx)],

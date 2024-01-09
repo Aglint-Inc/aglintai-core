@@ -1,9 +1,9 @@
 import React from 'react';
 
-// import CandidateSearchHistory from '@/src/components/CandidateDatabase/Search/History';
+import CandidateSearchHistory from '@/src/components/CandidateDatabase/Search/History';
 
 const history = () => {
-  return <>{/* <CandidateSearchHistory /> */}</>;
+  return <>{<CandidateSearchHistory />}</>;
 };
 
 export default history;

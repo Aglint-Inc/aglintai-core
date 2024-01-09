@@ -242,8 +242,8 @@ const CandidatesSearch = () => {
                 activeCandidate >= 0 &&
                 !isSearching &&
                 (showBookmarked
-                  // eslint-disable-next-line security/detect-object-injection
-                  ? candidates[activeCandidate].is_bookmarked
+                  ? // eslint-disable-next-line security/detect-object-injection
+                    candidates[activeCandidate].is_bookmarked
                   : true)
               }
               unmountOnExit

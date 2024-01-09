@@ -16,6 +16,7 @@ type CandidateSearchType = {
   resume_link: string;
   created_at: string;
   job_id: string | null;
+  candfile_id: string;
   total_results: number;
 };
 
@@ -37,7 +38,7 @@ export const getFilteredCands = async ({
   is_sort_desc: boolean;
 }) => {
   const candidates = supabaseWrap(
-    await supabase.rpc('test_filter2', {
+    await supabase.rpc('test_filter3', {
       rec_id: recruiter_id,
       page_size: 100,
       page_number: currPage,
@@ -69,12 +70,12 @@ export const getFilteredCands = async ({
       }
       return cand;
     });
-
   const candjobs = await supabaseWrap(
-    await supabase.rpc('getjobapplicationcountforcandidates', {
+    await supabase.rpc('getjobapplicationcountforcandidates2', {
       candidate_ids: filteredCands.map((c) => c.candidate_id),
     }),
   );
+
   let mp = new Map();
   candjobs.forEach((c) => {
     mp.set(c.candidate_id, {
@@ -97,6 +98,7 @@ export const getFilteredCands = async ({
         resume_link: c.resume_link,
         profile_image: c.profile_image,
         is_checked: false,
+        candfile_id: c.candfile_id,
         applied_job_posts:
           mp.get(c.candidate_id)?.job_titles.map((_, idx) => {
             return {

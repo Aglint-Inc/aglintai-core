@@ -126,29 +126,22 @@ export const ScreeningCtxProvider = ({ children }) => {
         const [job] = (await supabaseWrap(
           await supabase
             .from('public_jobs')
-            .select('phone_screening,logo')
+            .select('phone_screening,logo,draft')
             .eq('id', router.query.job_post_id),
-        )) as Pick<PublicJobsType, 'phone_screening' | 'logo'>[];
+        )) as Pick<PublicJobsType, 'phone_screening' | 'logo' | 'draft'>[];
+        if (!job) {
+          toast.error('invalid link');
+          router.push('/login');
+          return;
+        }
 
-        const jobPhoneScreening: FormJobType['phoneScreening'] =
-          job.phone_screening as any;
+        let draftJobPhoneScreen: FormJobType['phoneScreening'] | null =
+          (job.draft as any)?.phone_screening || null;
 
-        const candPhScreenResp: CandPhoneScreeningState['phoneScreen'] =
-          jobPhoneScreening.questions.map((q) => {
-            return {
-              candAnswer: '',
-              id: q.id,
-              isRequired: q.isRequired,
-              type: q.type,
-              questionLabel: q.questionLabel,
-              question: q.question,
-              options: q.options.map((o) => ({
-                option: o.option,
-                id: o.id,
-                isChecked: false,
-              })),
-            };
-          });
+        let jobPhoneScreening: FormJobType['phoneScreening'] | null = null;
+
+        let candPhScreenResp: CandPhoneScreeningState['phoneScreen'] | null =
+          null;
 
         let isFormFilled = false;
 
@@ -164,10 +157,46 @@ export const ScreeningCtxProvider = ({ children }) => {
             router.push('/login');
             return;
           }
-
           if (data.phone_screening !== null) {
             isFormFilled = true;
           }
+          jobPhoneScreening = job.phone_screening as any;
+          candPhScreenResp = jobPhoneScreening.questions.map((q) => {
+            return {
+              candAnswer: '',
+              id: q.id,
+              isRequired: q.isRequired,
+              type: q.type,
+              questionLabel: q.questionLabel,
+              question: q.question,
+              options: q.options.map((o) => ({
+                option: o.option,
+                id: o.id,
+                isChecked: false,
+              })),
+            };
+          });
+        } else {
+          if (draftJobPhoneScreen) {
+            jobPhoneScreening = draftJobPhoneScreen;
+          } else {
+            jobPhoneScreening = job.phone_screening as any;
+          }
+          candPhScreenResp = jobPhoneScreening.questions.map((q) => {
+            return {
+              candAnswer: '',
+              id: q.id,
+              isRequired: q.isRequired,
+              type: q.type,
+              questionLabel: q.questionLabel,
+              question: q.question,
+              options: q.options.map((o) => ({
+                option: o.option,
+                id: o.id,
+                isChecked: false,
+              })),
+            };
+          });
         }
 
         dispatch({
@@ -179,9 +208,9 @@ export const ScreeningCtxProvider = ({ children }) => {
               currentQn: -1,
               showStartMessage: !isFormFilled,
               showEndMessage: isFormFilled,
-              applicationId: application_id,
+              applicationId: application_id ?? '',
               jobPostId: job_post_id,
-              isPreview: preview === 'true',
+              isPreview: preview === 'true' || !application_id,
               endMessage: jobPhoneScreening.endMessage as any,
               startMessage: jobPhoneScreening.startMessage as any,
             },
