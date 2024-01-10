@@ -7,35 +7,31 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { CandidateInsert } from '@/src/types/candidates.types';
+import { CsvUploadApi } from '@/src/pages/api/candidateUpload/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
-import { handleUploadCandidates } from './utils';
+import useUploadCandidate from '../ImportManualCandidates/hooks';
 import AUIButton from '../../Common/AUIButton';
 
-export interface BulkImportCandidateCsv extends CandidateInsert {
-  resume: string;
-}
+export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
 function ImportCandidatesCSV() {
-  const {
-    setOpenImportCandidates,
-    handleJobApplicationError,
-    handleJobApplicationBulkCreate,
-    job,
-  } = useJobApplications();
+  const { setOpenImportCandidates, handleJobApplicationRefresh } =
+    useJobApplications();
 
-  const [bulkImportdata, setbulkImportdata] = useState<
-    BulkImportCandidateCsv[]
-  >([]);
+  const { hanelBulkCsvUpload } = useUploadCandidate();
+
+  const [bulkImportdata, setbulkImportdata] = useState<BulkImportCandidateCsv>(
+    [],
+  );
   const headers = [
     'first_name',
     'last_name',
     'email',
     'phone',
     'linkedin',
-    'resume',
+    'file_url',
   ];
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,23 +56,13 @@ function ImportCandidatesCSV() {
     ],
   ];
 
-  async function createCandidates(candidates: BulkImportCandidateCsv[]) {
+  async function createCandidates(candidates: BulkImportCandidateCsv) {
     setbulkImportdata([]);
     setIsLoading(true);
-    const { data, error } = await handleUploadCandidates(candidates, job.id);
-    if (data && data.finalPayload && data.finalPayload.length !== 0) {
-      const confirmation = await handleJobApplicationBulkCreate(
-        data.finalPayload as any,
-      );
-      if (confirmation)
-        toast.success(
-          'Resume(s) uploaded successfully. Once processed, you will be able to view them in the job applications dashboard.',
-        );
-    } else if (error) {
-      handleJobApplicationError(error);
-    }
+    const { confirmation } = await hanelBulkCsvUpload(candidates);
     setOpenImportCandidates(false);
     setIsLoading(false);
+    if (confirmation) await handleJobApplicationRefresh();
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -107,7 +93,7 @@ function ImportCandidatesCSV() {
           /* Convert array of arrays */
           const data = XLSX.utils.sheet_to_json(
             ws,
-          ) as unknown as BulkImportCandidateCsv[];
+          ) as unknown as BulkImportCandidateCsv;
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {

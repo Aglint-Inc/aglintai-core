@@ -8,7 +8,6 @@ import { FileUploader } from 'react-drag-drop-files';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
-import toast from '@/src/utils/toast';
 
 import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
@@ -71,7 +70,8 @@ const validatePhone = (value: string) => {
 };
 
 const ImportManualCandidates = () => {
-  const { job, setOpenImportCandidates } = useJobApplications();
+  const { setOpenImportCandidates, handleJobApplicationRefresh } =
+    useJobApplications();
   const [applicant, setApplicant] = useState(initialFormFields);
   const [loading, setLoading] = useState(false);
   const { handleUploadCandidate } = useUploadCandidate();
@@ -153,15 +153,13 @@ const ImportManualCandidates = () => {
     const { newApplicant, validation } = handleValidate();
     if (validation) {
       setLoading(true);
-      const { confirmation, error } = await handleUploadCandidate(
-        job,
+      const { confirmation } = await handleUploadCandidate(
         {
           first_name: applicant.first_name.value,
           last_name: applicant.last_name.value,
           email: applicant.email.value,
           phone: applicant.phone.value,
           linkedin: applicant.linkedin.value,
-          recruiter_id: job.recruiter_id,
         },
         applicant.resume.value,
       );
@@ -169,9 +167,7 @@ const ImportManualCandidates = () => {
       if (confirmation) {
         setOpenImportCandidates(false);
         setApplicant(initialFormFields);
-        toast.success('Candidate added successfully!');
-      } else {
-        toast.error(error);
+        await handleJobApplicationRefresh();
       }
       setLoading(false);
     } else {

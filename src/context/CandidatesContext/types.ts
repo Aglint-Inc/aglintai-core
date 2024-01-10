@@ -1,9 +1,21 @@
 /* eslint-disable no-unused-vars */
 import { PostgrestError } from '@supabase/supabase-js';
 
-import { Applications, ApplicationsInsert, ApplicationsUpdate } from '@/src/types/applications.types';
-import { CandidateFiles, CandidateFilesInsert, CandidateFilesUpdate } from '@/src/types/candidate_files.types';
-import { Candidate, CandidateInsert, CandidateUpdate } from '@/src/types/candidates.types';
+import {
+  Applications,
+  ApplicationsInsert,
+  ApplicationsUpdate,
+} from '@/src/types/applications.types';
+import {
+  CandidateFiles,
+  CandidateFilesInsert,
+  CandidateFilesUpdate,
+} from '@/src/types/candidate_files.types';
+import {
+  Candidate,
+  CandidateInsert,
+  CandidateUpdate,
+} from '@/src/types/candidates.types';
 
 export type CandidateResumeInsert = {
   id: Candidate['id'];
@@ -45,7 +57,7 @@ export type Candidates = {
 export type CandidateCreateAction = {
   request: {
     inputData: CandidateInsert;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Candidate;
@@ -54,7 +66,7 @@ export type CandidateCreateAction = {
 export type CandidateBulkCreateAction = {
   request: {
     inputData: CandidateInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Candidate[];
@@ -62,7 +74,7 @@ export type CandidateBulkCreateAction = {
 
 export type CandidateReadAction = {
   request: {
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Candidate[];
@@ -71,7 +83,7 @@ export type CandidateReadAction = {
 export type CandidateUpdateAction = {
   request: {
     inputData: CandidateUpdate;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Candidate;
@@ -80,7 +92,7 @@ export type CandidateUpdateAction = {
 export type CandidateBulkUpdateAction = {
   request: {
     inputData: CandidateInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Candidate[];
@@ -89,7 +101,7 @@ export type CandidateBulkUpdateAction = {
 export type CandidateDeleteAction = {
   request: {
     inputData: Candidate['id'];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: void;
@@ -98,7 +110,7 @@ export type CandidateDeleteAction = {
 export type CandidateFilesCreateAction = {
   request: {
     inputData: CandidateFilesInsert;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: CandidateFiles;
@@ -107,7 +119,7 @@ export type CandidateFilesCreateAction = {
 export type CandidateFilesBulkCreateAction = {
   request: {
     inputData: CandidateFilesInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: CandidateFiles[];
@@ -115,7 +127,7 @@ export type CandidateFilesBulkCreateAction = {
 
 export type CandidateFilesReadAction = {
   request: {
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: CandidateFiles[];
@@ -124,7 +136,7 @@ export type CandidateFilesReadAction = {
 export type CandidateFilesUpdateAction = {
   request: {
     inputData: CandidateFilesUpdate;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: CandidateFiles;
@@ -133,7 +145,7 @@ export type CandidateFilesUpdateAction = {
 export type CandidateFilesBulkUpdateAction = {
   request: {
     inputData: CandidateFilesInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: CandidateFiles[];
@@ -142,7 +154,7 @@ export type CandidateFilesBulkUpdateAction = {
 export type CandidateFilesDeleteAction = {
   request: {
     inputData: CandidateFiles['id'];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: void;
@@ -151,7 +163,7 @@ export type CandidateFilesDeleteAction = {
 export type CandidateResumeUploadAction = {
   request: {
     inputData: CandidateResumeInsert;
-    retry: number;
+    tries: number;
   };
   response: {
     file_url: string;
@@ -162,7 +174,7 @@ export type CandidateResumeUploadAction = {
 export type CandidateResumeDeleteAction = {
   request: {
     inputData: CandidateResumeInsert;
-    retry: number;
+    tries: number;
   };
   response: void;
 };
@@ -173,7 +185,7 @@ export type CandidateDuplicationCheckAction = {
       email: Candidate['email'];
       recruiter_id: Candidate['recruiter_id'];
     };
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: boolean;
@@ -182,7 +194,7 @@ export type CandidateDuplicationCheckAction = {
 export type ApplicationsCreateAction = {
   request: {
     inputData: ApplicationsInsert;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Applications;
@@ -191,7 +203,7 @@ export type ApplicationsCreateAction = {
 export type ApplicationsBulkCreateAction = {
   request: {
     inputData: ApplicationsInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Applications[];
@@ -199,7 +211,7 @@ export type ApplicationsBulkCreateAction = {
 
 export type ApplicationsReadAction = {
   request: {
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Applications[];
@@ -208,7 +220,7 @@ export type ApplicationsReadAction = {
 export type ApplicationsUpdateAction = {
   request: {
     inputData: ApplicationsUpdate;
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Applications;
@@ -217,7 +229,7 @@ export type ApplicationsUpdateAction = {
 export type ApplicationsBulkUpdateAction = {
   request: {
     inputData: ApplicationsInsert[];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: Applications[];
@@ -226,7 +238,7 @@ export type ApplicationsBulkUpdateAction = {
 export type ApplicationsDeleteAction = {
   request: {
     inputData: Applications['id'];
-    retry: number;
+    tries: number;
     signal: AbortSignal;
   };
   response: void;
