@@ -183,6 +183,10 @@
   color: var(--green600-40a2ee5f);
 }
 
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -289,6 +293,10 @@
 
 .text-grey-600.mt-9 {
   margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
 }
 
 .pi-user-wrapper {

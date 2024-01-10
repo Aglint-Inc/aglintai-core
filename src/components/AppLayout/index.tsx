@@ -5,6 +5,7 @@ import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
+import { NavBottom } from '@/devlink';
 import { CompanyProfileHeader, NavProfileBlock } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
@@ -71,55 +72,58 @@ export default function AppLayout({ children }) {
         direction={'row'}
       >
         <Stack
-          sx={{
-            transition: 'width 0.4s, border 0.6s',
-          }}
           borderRight={'1px solid'}
           borderColor={'grey.200'}
           position={'relative'}
-          p={'28px 20px 12px 16px'}
-          bgcolor={'#25282A'}
-          width={'260px'}
+          // p={'28px 20px 12px 16px'}
+          // pt={'28px'}
+          // bgcolor={'#25282A'}
+          width={'70px'}
+          p={'10px'}
         >
-          <Stack height={'calc(100vh - 44px)'}>
-            {userDetails?.user.user_metadata.role?.toLowerCase() ===
-            'recruiter' ? (
-              <CompanyProfileHeader
-                companyName={companyName}
-                slotLogo={
+          <Stack
+            width={'100%'}
+            alignItems={'center'}
+            height={'100%'}
+            justifyContent={'space-between'}
+          >
+            <Stack
+              height={'100%'}
+              width={'100%'}
+              spacing={'10px'}
+              alignItems={'center'}
+            >
+              {userDetails?.user.user_metadata.role?.toLowerCase() ===
+              'recruiter' ? (
+                <Stack direction={'row'} mb={'20px !important'}>
                   <Avatar
                     src={logo}
                     variant='rounded'
                     sx={{
-                      width: '100%',
-                      height: '100%',
+                      // width: '100%',
+                      // height: '100%',
                       background: '#fff',
                       '& .MuiAvatar-img ': {
                         objectFit: 'contain',
                       },
                     }}
                   />
-                }
-              />
-            ) : (
-              <CompanyList />
-            )}
-            <Stack height={'100%'} justifyContent={'space-between'} pt={'26px'}>
-              <Stack spacing={'10px'}>
-                <SideNavbar />
-              </Stack>
+                </Stack>
+              ) : (
+                <CompanyList />
+              )}
+              <SideNavbar />
             </Stack>
-            <NavProfileBlock
-              onclickProfile={{
+            <NavBottom
+              onClickProfile={{
                 onClick: () => router.push(pageRoutes.PROFILE),
               }}
-              onclickLogout={{
+              onClickLogout={{
                 onClick: () => {
                   handleLogout();
                 },
               }}
-              profileName={profileName}
-              slotProfileImage={
+              slotProfile={
                 <Avatar
                   src={profileImage}
                   variant='rounded'

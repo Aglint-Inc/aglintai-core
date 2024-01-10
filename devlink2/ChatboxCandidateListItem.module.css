@@ -97,6 +97,10 @@
   }
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .cb-cli-bg {
   position: absolute;
   left: 0%;

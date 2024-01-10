@@ -2,6 +2,8 @@
   position: relative;
 
   display: flex;
+  overflow: auto;
+  height: 100vh;
   min-height: 100vh;
   padding: 42px;
   flex-direction: column;
@@ -287,6 +289,10 @@
   background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
+.text-grey-500.hide {
+  display: none;
+}
+
 .sl-button {
   display: flex;
   padding: 10px 16px;
@@ -377,6 +383,10 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
 }
 
 .sl-link {

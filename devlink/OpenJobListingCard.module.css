@@ -117,6 +117,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -168,6 +172,10 @@
 
 .text-grey-600.mt-9 {
   margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
 }
 
 .apply-button-icon {

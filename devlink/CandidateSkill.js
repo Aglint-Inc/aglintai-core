@@ -20,7 +20,7 @@ export function CandidateSkill({
         className={_utils.cx(_styles, "relevant-skills-wrap")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Relevent Skills"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"Relevant Skills"}</_Builtin.Block>
         {isSkillBadgeVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-623")}

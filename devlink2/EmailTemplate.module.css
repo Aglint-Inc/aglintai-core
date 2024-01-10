@@ -571,6 +571,10 @@
   margin-left: 8px;
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .rd-email-edit-btn {
   display: flex;
   height: 32px;

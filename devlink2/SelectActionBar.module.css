@@ -200,3 +200,7 @@
 .text-blue-500.ml-12 {
   margin-left: 8px;
 }
+
+.text-no-wrap {
+  white-space: nowrap;
+}

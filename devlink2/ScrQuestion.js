@@ -19,7 +19,7 @@ export function ScrQuestion({
     >
       {isDefaultView ? (
         <_Builtin.Block tag="div">
-          {slotDefault ?? <ScrQuestionDefault />}
+          {slotDefault ?? <ScrQuestionDefault isRequired={true} />}
         </_Builtin.Block>
       ) : null}
       {isEditView ? (

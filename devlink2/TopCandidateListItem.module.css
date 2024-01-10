@@ -377,3 +377,7 @@
     font-size: 12px;
   }
 }
+
+.text-no-wrap {
+  white-space: nowrap;
+}

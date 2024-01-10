@@ -32,6 +32,13 @@
   position: static;
 }
 
+.job-header-empty.beta-flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -152,6 +159,10 @@
 
 .text-green-600 {
   color: var(--green600-40a2ee5f);
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
 }
 
 .text-blue-800 {
@@ -481,10 +492,6 @@
 
 .fw-semibold.first-text-capital {
   text-transform: capitalize;
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
 }
 
 .cj-option-block-white {
@@ -930,6 +937,10 @@
 
 .text-grey-600.mt-9 {
   margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
 }
 
 .text-underline {

@@ -1,0 +1,126 @@
+.cvs-intro-overview-block {
+  display: flex;
+  padding: 14px 36px 17px 15px;
+  flex-direction: column;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
+
+  border-radius: 10px;
+
+  background-color: var(--kale-100);
+
+  transition: all 300ms ease;
+}
+
+.cvs-intro-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.icon-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
+.icon-block.clickable.padding-4 {
+  padding: 4px;
+}
+
+.icon-block._10px {
+  width: 10px;
+  height: 10px;
+  min-height: 10px;
+  min-width: 10px;
+}
+
+.icon-block._10px.sort {
+  position: relative;
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icon-block._10px.sort:hover {
+  opacity: 0.8;
+}
+
+.icon-block._30px {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+}
+
+.icon-block._30px.rs-add {
+  border-radius: 6px;
+  background-color: hsla(0, 0.00%, 33.73%, 1.00);
+}
+
+.icon-block.screening {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  border-radius: 2px;
+  background-color: var(--grey-200);
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icon-embed.sort-filled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 99;
+
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-700 {
+  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-blue-700 {
+  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
+}
+
+.text-kale-600 {
+  color: var(--kale-600);
+}

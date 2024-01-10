@@ -71,7 +71,7 @@ export function JobsDashboard({
               {slotSearchInputJob}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "relative")}
+              className={_utils.cx(_styles, "relative", "hide")}
               data-w-id="84f8be11-6076-e13a-b037-17605a69d1ac"
               tag="div"
             >

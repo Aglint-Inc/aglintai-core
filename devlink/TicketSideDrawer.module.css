@@ -142,6 +142,10 @@
   color: var(--green600-40a2ee5f);
 }
 
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -304,6 +308,10 @@
 
 .color-white {
   color: var(--white-80449ce7);
+}
+
+.relative {
+  position: relative;
 }
 
 .arrow-tooltips {
@@ -518,10 +526,6 @@
   z-index: 2;
 }
 
-.relative {
-  position: relative;
-}
-
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
 }
@@ -586,10 +590,6 @@
   text-transform: capitalize;
 }
 
-.text-red-500 {
-  color: var(--red500-2e806c7d);
-}
-
 .inde-details-block {
   display: flex;
   flex-direction: column;
@@ -647,6 +647,10 @@
 
 .text-grey-600.mt-9 {
   margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
 }
 
 .div-block-479 {

@@ -179,6 +179,10 @@
   }
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .j-tags-wrapper {
   display: flex;
   flex-wrap: wrap;

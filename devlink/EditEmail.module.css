@@ -92,6 +92,10 @@
   margin-top: 9px;
 }
 
+.mt-15 {
+  margin-top: 15px;
+}
+
 .header-right-button--company {
   display: flex;
   align-items: center;

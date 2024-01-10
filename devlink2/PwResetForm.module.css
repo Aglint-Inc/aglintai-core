@@ -2,6 +2,8 @@
   position: relative;
 
   display: flex;
+  overflow: auto;
+  height: 100vh;
   min-height: 100vh;
   padding: 42px;
   flex-direction: column;
@@ -145,6 +147,10 @@
   .text-grey-600.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
 }
 
 .sl-login-form {

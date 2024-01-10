@@ -117,6 +117,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .ascen-text {
   position: relative;
   z-index: 2;
@@ -130,10 +134,6 @@
   bottom: 0%;
 
   background-color: var(--blue-100);
-}
-
-.relative {
-  position: relative;
 }
 
 .relative.upload-video-wrap {

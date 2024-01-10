@@ -123,6 +123,10 @@
   }
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .cl-res-error-btn {
   padding: 8px 12px;
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);

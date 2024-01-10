@@ -92,6 +92,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .text-green-700 {
   color: var(--green700-a1b0a24f);
 }

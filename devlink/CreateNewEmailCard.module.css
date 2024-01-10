@@ -94,6 +94,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 #w-node-a79fecd5-634e-0ac6-7d1c-48e52d7d03d9-2d7d03d9 {
   order: 9999;
 }

@@ -67,6 +67,10 @@
   }
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .cl-filters-buttons {
   display: flex;
   padding: 16px 32px 24px 24px;

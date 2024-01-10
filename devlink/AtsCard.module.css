@@ -111,6 +111,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .checkbox-right-wrappers-text {
   position: relative;
   z-index: 1;
@@ -277,10 +281,6 @@
 
 .fw-semibold.relative {
   z-index: 2;
-}
-
-.relative {
-  position: relative;
 }
 
 .fw-semibold.relative.zindex-6 {

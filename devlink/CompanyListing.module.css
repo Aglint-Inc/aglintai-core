@@ -209,6 +209,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -317,6 +321,10 @@
 
 .text-green-600 {
   color: var(--green600-40a2ee5f);
+}
+
+.text-red-500 {
+  color: var(--red500-2e806c7d);
 }
 
 .text-blue-800 {
@@ -544,10 +552,6 @@
   z-index: 2;
 }
 
-.relative {
-  position: relative;
-}
-
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
 }
@@ -606,10 +610,6 @@
 
 .fw-semibold.first-text-capital {
   text-transform: capitalize;
-}
-
-.text-red-500 {
-  color: var(--red500-2e806c7d);
 }
 
 .cl-wrapper {

@@ -82,6 +82,10 @@
   margin-top: 9px;
 }
 
+.mt-15 {
+  margin-top: 15px;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

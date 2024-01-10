@@ -157,6 +157,10 @@
   color: var(--green600-40a2ee5f);
 }
 
+.text-red-500 {
+  color: var(--red500-2e806c7d);
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -427,10 +431,6 @@
   text-transform: capitalize;
 }
 
-.text-red-500 {
-  color: var(--red500-2e806c7d);
-}
-
 .upload-wrap-edit {
   margin-top: 23px;
 }
@@ -645,6 +645,10 @@
 
 .job-details-button-wrappers.remove-bottom.mt-30 {
   margin-top: 30px;
+}
+
+.job-details-button-wrappers.hide {
+  display: none;
 }
 
 .proceed-to-apply {

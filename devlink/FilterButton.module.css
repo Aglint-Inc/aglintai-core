@@ -87,6 +87,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .number-text {
   display: flex;
   width: 16px;

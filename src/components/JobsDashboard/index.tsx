@@ -1,34 +1,22 @@
-import { Dialog, InputAdornment, Popover, Stack } from '@mui/material';
+import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CreateJob, JobsDashboard } from '@/devlink';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import {
-  STATE_ASHBY_DIALOG,
-  STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
-} from '@/src/context/IntegrationProvider/utils';
+import { JobsDashboard } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
-import { AshbyModalComp } from './AddJobWithIntegrations/Ashby';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
-import { GreenhouseModal } from './AddJobWithIntegrations/GreenhouseModal';
-import { LeverModalComp } from './AddJobWithIntegrations/LeverModal';
 import JobsList from './JobsList';
 import { searchJobs } from './utils';
+import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 
 const DashboardComp = () => {
-  const { recruiter } = useAuthDetails();
-  const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
     jobsData.jobs?.filter((job: any) => !job.is_campus),
   );
@@ -78,154 +66,8 @@ const DashboardComp = () => {
     }
   };
 
-  //popover Add Job
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClosePop = () => {
-    setAnchorEl(null);
-  };
-  //popover Add Job
-
   return (
     <Stack height={'100%'} width={'100%'}>
-      <Popover
-        id='add-job'
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClosePop}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{ vertical: -14, horizontal: 0 }}
-        slotProps={{
-          paper: {
-            style: {
-              border: 'none',
-              borderRadius: 'none',
-              boxShadow: '0px 4px 8px 0px #04444D26',
-            },
-          },
-        }}
-      >
-        <CreateJob
-          isGreenhouseConnected={recruiter.greenhouse_key ? true : false}
-          isAshbyConnected={recruiter.ashby_key ? true : false}
-          isLeverConnected={recruiter.lever_key ? true : false}
-          isAshbyVisible={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            ) || recruiter.ashby_key
-              ? true
-              : false
-          }
-          isGreenhouseVisible={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            ) || recruiter.greenhouse_key
-              ? true
-              : false
-          }
-          isLeverVisible={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            ) || recruiter.lever_key
-              ? true
-              : false
-          }
-          onClickAshby={{
-            onClick: () => {
-              if (!recruiter.ashby_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.API,
-                  },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.LISTJOBS,
-                  },
-                }));
-              }
-            },
-          }}
-          onClickGreenhouse={{
-            onClick: () => {
-              if (!recruiter.greenhouse_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.API,
-                  },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-                  },
-                }));
-              }
-            },
-          }}
-          onClickCreateNewJob={{
-            onClick: () => {
-              router.push('/jobs/new?flow=manual');
-            },
-          }}
-          onClickLeverImport={{
-            onClick: () => {
-              if (!recruiter.lever_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
-                }));
-              }
-            },
-          }}
-        />
-      </Popover>
-      <Dialog
-        open={integration.lever.open}
-        onClose={handleClose}
-        maxWidth={'lg'}
-      >
-        <LeverModalComp />
-      </Dialog>
-      <Dialog
-        open={integration.greenhouse.open}
-        onClose={handleClose}
-        maxWidth={'lg'}
-      >
-        <GreenhouseModal />
-      </Dialog>
-      <Dialog
-        open={integration.ashby.open}
-        onClose={handleClose}
-        maxWidth={'lg'}
-      >
-        <AshbyModalComp />
-      </Dialog>
       {!initialLoad ? (
         <Loader />
       ) : (
@@ -238,40 +80,42 @@ const DashboardComp = () => {
               heading={'Jobs'}
             />
           ) : (
-            <JobsDashboard
-              onClickAddJob={{ onClick: handleClick }}
-              slotAllJobs={<JobsList jobs={filteredJobs} />}
-              slotSearchInputJob={
-                <Stack maxWidth={'260px'} width={'100%'}>
-                  <UITextField
-                    height='42px'
-                    fullWidth
-                    placeholder='Search'
-                    onChange={(e) => {
-                      handlerFilter(e);
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <Icon variant='Search' width='14' height='14' />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Stack>
-              }
-              isJobCountTagVisible={filteredJobs?.length > 0}
-              jobCount={filteredJobs?.length}
-              textJobsHeader={
-                router.query.status == 'close'
-                  ? 'Closed Jobs'
-                  : router.query.status == 'inactive'
-                    ? 'Inactive Jobs'
-                    : router.query.status == 'active'
-                      ? 'Active Jobs'
-                      : 'All Jobs'
-              }
-            />
+            <Stack height={'100%'} direction={'row'}>
+              <SubNavBar />
+              <JobsDashboard
+                slotAllJobs={<JobsList jobs={filteredJobs} />}
+                slotSearchInputJob={
+                  <Stack maxWidth={'260px'} width={'100%'}>
+                    <UITextField
+                      height='42px'
+                      fullWidth
+                      placeholder='Search'
+                      onChange={(e) => {
+                        handlerFilter(e);
+                      }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <Icon variant='Search' width='14' height='14' />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Stack>
+                }
+                isJobCountTagVisible={filteredJobs?.length > 0}
+                jobCount={filteredJobs?.length}
+                textJobsHeader={
+                  router.query.status == 'close'
+                    ? 'Closed Jobs'
+                    : router.query.status == 'inactive'
+                      ? 'Inactive Jobs'
+                      : router.query.status == 'active'
+                        ? 'Active Jobs'
+                        : 'All Jobs'
+                }
+              />
+            </Stack>
           )}
         </>
       )}

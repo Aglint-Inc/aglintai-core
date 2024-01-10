@@ -112,6 +112,10 @@
   }
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .flex-h {
   display: flex;
   flex-wrap: wrap;

@@ -90,6 +90,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -241,10 +245,6 @@
   z-index: 2;
 }
 
-.relative {
-  position: relative;
-}
-
 .fw-semibold.relative.zindex-6 {
   z-index: 6;
 }
@@ -373,6 +373,10 @@
 
 .job-details-button-wrappers.remove-bottom.mt-30 {
   margin-top: 30px;
+}
+
+.job-details-button-wrappers.hide {
+  display: none;
 }
 
 .proceed-to-apply {

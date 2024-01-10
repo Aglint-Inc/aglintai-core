@@ -30,6 +30,51 @@ export function NavJobSubLink({
       <_Builtin.Block
         className={_utils.cx(_styles, "nav_sublink-drop")}
         tag="div"
+        id="my-resume"
+        {...onClickJobAll}
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-365")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "inactive-drop")}
+            tag="div"
+          >
+            {"All"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "job-link-tag", "blue-500")}
+            tag="div"
+          >
+            <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
+              {allCount}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+        {isJobAll ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "aui_nav_sublink_active-drop")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "job-link-tag", "blue-500")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm")}
+                tag="div"
+              >
+                {allCount}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "nav_sublink-drop")}
+        tag="div"
         id="jd"
         {...onClickJobActive}
       >
@@ -51,20 +96,7 @@ export function NavJobSubLink({
           <_Builtin.Block
             className={_utils.cx(_styles, "aui_nav_sublink_active-drop")}
             tag="div"
-          >
-            <_Builtin.Block tag="div">{"Published"}</_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-link-tag", "green-500")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
-                tag="div"
-              >
-                {activeCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
+          />
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
@@ -142,51 +174,6 @@ export function NavJobSubLink({
                 tag="div"
               >
                 {closedCount}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "nav_sublink-drop")}
-        tag="div"
-        id="my-resume"
-        {...onClickJobAll}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-365")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "inactive-drop")}
-            tag="div"
-          >
-            {"All"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "job-link-tag", "blue-500")}
-            tag="div"
-          >
-            <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-              {allCount}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        {isJobAll ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "aui_nav_sublink_active-drop")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-link-tag", "blue-500")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
-                tag="div"
-              >
-                {allCount}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

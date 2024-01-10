@@ -564,6 +564,10 @@
   margin-top: 9px;
 }
 
+.mt-15 {
+  margin-top: 15px;
+}
+
 .cj-imports-options-drawer {
   display: grid;
   grid-auto-columns: 1fr;

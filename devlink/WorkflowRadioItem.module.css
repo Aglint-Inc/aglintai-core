@@ -112,6 +112,10 @@
   color: var(--white-80449ce7);
 }
 
+.relative {
+  position: relative;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

@@ -253,6 +253,10 @@
   margin-left: 8px;
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .jdet-edit-controls-wrapper {
   display: flex;
   align-items: center;

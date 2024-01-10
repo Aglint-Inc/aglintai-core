@@ -2,6 +2,8 @@
   position: relative;
 
   display: flex;
+  overflow: auto;
+  height: 100vh;
   min-height: 100vh;
   padding: 42px;
   flex-direction: column;

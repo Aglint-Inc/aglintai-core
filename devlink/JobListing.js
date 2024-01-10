@@ -36,6 +36,7 @@ export function JobListing({
   slotOpenJobListing,
   slotDescription,
   slotSocialLink,
+  isDiscriptionEmpty = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -174,9 +175,11 @@ export function JobListing({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block tag="div">
-                  {textCompanyDescription}
-                </_Builtin.Block>
+                {isDiscriptionEmpty ? (
+                  <_Builtin.Block tag="div">
+                    {textCompanyDescription}
+                  </_Builtin.Block>
+                ) : null}
                 <_Builtin.Block
                   className={_utils.cx(_styles, "company-list-link-wrappers")}
                   tag="div"
@@ -388,7 +391,7 @@ export function JobListing({
               className={_utils.cx(_styles, "text-sm", "text-grey-600")}
               tag="div"
             >
-              {"© 2023 Aglint Inc. All Rights Reserved"}
+              {"© 2024 Aglint Inc. All Rights Reserved"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
