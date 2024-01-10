@@ -1,5 +1,7 @@
 import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
 
+import { JobApplicationSections } from '../JobApplicationsContext/types';
+
 export type JobsData = {
   jobs: JobTypeDashboard[] | undefined;
   applications: ApplicationData[] | undefined;
@@ -27,7 +29,14 @@ export type JobContext = {
   // eslint-disable-next-line no-unused-vars
   handleUIJobReplace: (newJob: JobTypeDashboard) => boolean;
   // eslint-disable-next-line no-unused-vars
-  handleUIJobUpdate: (jobId: string, newJob?: JobTypeDashboard) => boolean;
+  handleUIJobUpdate: (
+    // eslint-disable-next-line no-unused-vars
+    jobId: string,
+    // eslint-disable-next-line no-unused-vars
+    newJob?: JobTypeDashboard,
+    // eslint-disable-next-line no-unused-vars
+    count?: CountJobs,
+  ) => boolean;
   // eslint-disable-next-line no-unused-vars
   handleJobDelete: (jobId: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
@@ -44,9 +53,5 @@ export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
   count: CountJobs;
 };
 
-export type CountJobs = {
-  new?: number;
-  interviewing?: number;
-  qualified?: number;
-  disqualified?: number;
-};
+// eslint-disable-next-line no-unused-vars
+export type CountJobs = { [key in JobApplicationSections]?: number };

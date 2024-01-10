@@ -71,7 +71,7 @@ type Action =
         jobId: string;
         newJob?: JobTypeDashboard;
         // eslint-disable-next-line no-unused-vars
-        count?: { [key in JobApplicationSections]: number };
+        count?: { [key in JobApplicationSections]?: number };
       };
     }
   | {
@@ -242,7 +242,11 @@ const useJobActions = () => {
     }
   };
 
-  const handleUIJobUpdate = (jobId: string, newJob?: JobTypeDashboard) => {
+  const handleUIJobUpdate = (
+    jobId: string,
+    newJob?: JobTypeDashboard,
+    count?: CountJobs,
+  ) => {
     if (recruiter) {
       if (newJob) {
         const action: Action = {
@@ -250,6 +254,7 @@ const useJobActions = () => {
           payload: {
             jobId,
             newJob,
+            count,
           },
         };
         dispatch(action);

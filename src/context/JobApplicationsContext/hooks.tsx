@@ -54,7 +54,7 @@ type Action =
       payload: {
         applicationData: JobApplication;
       };
-    }
+    };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
@@ -83,10 +83,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
         [action.payload.applicationData.status]: state[
           action.payload.applicationData.status
         ].reduce((acc: JobApplication[], curr: JobApplication) => {
-          if (
-            curr.id ===
-            action.payload.applicationData.id
-          )
+          if (curr.id === action.payload.applicationData.id)
             acc.push(action.payload.applicationData);
           else acc.push(curr);
           return acc;
@@ -105,7 +102,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
-  const { jobsData, initialLoad: jobLoad, handleUpdateJobCount } = useJobs();
+  const {
+    jobsData,
+    initialLoad: jobLoad,
+    handleUIJobUpdate,
+    handleUpdateJobCount,
+  } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
@@ -227,7 +229,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           const is_sync = await checkSyncCand(job);
           setAtsSync(is_sync);
         }
-        await handleUpdateJobCount([job.id]);
+        handleUIJobUpdate(job.id, null, count);
         dispatch(action);
         updateTick.current = !updateTick.current;
         return { confirmation: true, count: count };
