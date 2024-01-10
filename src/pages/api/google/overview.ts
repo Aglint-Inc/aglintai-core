@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
+import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
-import { supabase } from '@/src/utils/supabaseClient';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
