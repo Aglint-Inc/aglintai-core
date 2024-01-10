@@ -224,7 +224,7 @@ export function JobsListingCard({
           </_Builtin.Block>
           {isStatusVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "status-connect")}
+              className={_utils.cx(_styles, "status-connect", "hide")}
               tag="div"
             >
               <_Builtin.Block

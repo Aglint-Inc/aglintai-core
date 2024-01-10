@@ -681,17 +681,22 @@
   background-color: #f8f9f9;
 }
 
+.div-block-678 {
+  display: flex;
+}
+
 .div-block-620 {
   display: flex;
   height: 100%;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  flex: 1;
 }
 
 .job-page-nav-bar {
   position: fixed;
-  left: 260px;
+  left: 70px;
   top: auto;
   right: 0%;
   bottom: 0%;

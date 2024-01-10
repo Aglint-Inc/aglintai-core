@@ -23,10 +23,7 @@ export function JobsDashboard({
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component
-      className={_utils.cx(_styles, "rd-main-wrapper", "grey-100")}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "rd-main-wrapper")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "div-block-271")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "rd-jobs-header-wrapper")}
@@ -37,24 +34,11 @@ export function JobsDashboard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+              className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
               {textJobsHeader}
             </_Builtin.Block>
-            {isJobCountTagVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-373")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {jobCount}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-371")}

@@ -281,41 +281,46 @@ export function CandidateDatabaseTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-620")}
+            className={_utils.cx(_styles, "div-block-678")}
             tag="div"
-            {...propsOpacity}
           >
-            {slotCandidateRows ?? (
-              <>
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-              </>
-            )}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-620")}
+              tag="div"
+              {...propsOpacity}
+            >
+              {slotCandidateRows ?? (
+                <>
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                </>
+              )}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "job-page-nav-bar")}
@@ -333,7 +338,7 @@ export function CandidateDatabaseTable({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%40media%20only%20screen%20and%20(max-width%3A%201840px)%20%7B%0A%20%20%0A%0A%5Bclass*%3D%22CandidateDatabaseTable_div-block-620__%22%5D%7B%0Awidth%3Afit-content%3B%0A%7D%0A%7D%0A%5Bclass*%3D%22CandidateDatabaseTable_cv-list-row-2__%22%5D%7B%0Awidth%3Afit-content%20!important%3B%0A%7D%0A%0A%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%2F*%0A%40media%20only%20screen%20and%20(max-width%3A%201840px)%20%7B%0A%20%20%0A%0A%5Bclass*%3D%22CandidateDatabaseTable_div-block-620__%22%5D%7B%0Awidth%3A100%25%3B%0A%7D%0A%7D%0A%5Bclass*%3D%22CandidateDatabaseTable_cv-list-row-2__%22%5D%7B%0Awidth%3A100%25%20!important%3B%0A%7D%0A%0A*%2F%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

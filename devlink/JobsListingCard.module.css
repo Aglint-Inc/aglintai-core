@@ -11,6 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 
+  border: 1px solid #e9ebed;
   border-radius: 10px;
 
   background-color: hsla(180, 0.00%, 100.00%, 1.00);
@@ -676,4 +677,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.status-connect.hide {
+  display: none;
 }
