@@ -20,7 +20,7 @@ const client = new TextServiceClient({
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const resume_json = req.body.application.json_resume;
+    const resume_json = req.body.application.resume_json;
 
     const parsedResume = {
       basics: {
@@ -76,14 +76,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // eslint-disable-next-line no-console
         if (overview) {
           const { error } = await supabase
-            .from('job_applications')
-            .update({ json_resume: { ...resume_json, overview: overview } })
-            .eq('application_id', req.body.application.application_id);
+            .from('candidate_files')
+            .update({ resume_json: { ...resume_json, overview: overview } })
+            .eq('id', req.body.application.file_id);
           if (!error) {
-            console.log(overview, req.body.application.application_id);
+            console.log(overview, req.body.application.file_id);
             return res.status(200).json(overview);
           } else {
-            console.log(error, req.body.application.application_id);
+            console.log(error, req.body.application.file_id);
             return res.status(200).send(error.message);
           }
         } else {
@@ -93,13 +93,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           if (result) {
             await supabase
-              .from('job_applications')
+              .from('candidate_files')
               .update({
-                json_resume: { ...resume_json, overview: result },
+                resume_json: { ...resume_json, overview: result },
               })
-              .eq('application_id', req.body.application.application_id);
+              .eq('id', req.body.application.file_id);
           }
-          console.log(result, req.body.application.application_id);
+          console.log(result, req.body.application.file_id);
           return res.status(200).send(result);
         }
       });
