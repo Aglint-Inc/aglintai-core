@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -28,13 +29,16 @@ export default function Loading() {
     try {
       if (userDetails?.user?.id) {
         if (handleEmail(userDetails.user.email).error) {
-          router.push(pageRoutes.SIGNUP);
+          await axios.post('/api/supabase/deleteuser', {
+            user_id: userDetails?.user?.id,
+          });
           toast.error('Please signup/login with company email');
+          router.push(pageRoutes.SIGNUP);
           return;
         }
         await createUser();
       } else {
-        toast.error('Please signup/login with company email');
+        toast.error('Unable to login. Please try again later');
         router.push(pageRoutes.LOGIN);
       }
     } catch (error) {
@@ -48,7 +52,7 @@ export default function Loading() {
 
     supabase.auth.updateUser({
       data: {
-        role: 'Recruiter',
+        role: 'recruiter',
         first_name: !userDetails.user.user_metadata.first_name
           ? splitFullName(userDetails.user.user_metadata.full_name).firstName
           : userDetails.user.user_metadata.first_name,
