@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { supabase } from '@/src/utils/supabaseClient';
 export async function updateFeedbackOnJobApplications(
   application_id: any,
@@ -30,51 +32,36 @@ export async function updateFeedbackOnJobApplications(
     jobDetails?.new_screening_setting?.interview?.qualificationRange?.min,
   );
   const isManual = jobDetails?.new_screening_setting?.interview?.isManual;
-  const { error } = await supabase
-    .from('assessment_results')
-    .insert({
-      application_id,
-      feedback: feedback,
-      conversation: conversation,
-      ai_interviewer_id: interviewIndex,
-      // status: isManual
-      //   ? 'interviewing'
-      //   : overAllScore >= maxScore
-      //   ? 'qualified'
-      //   : overAllScore < maxScore && overAllScore > minScore
-      //   ? 'interviewing'
-      //   : 'disqualified',
-      interview_duration: interviewDuration,
-      interview_score: overAllScore,
-    })
-    .eq('application_id', application_id);
-  if (!error) {
-    await supabase
-      .from('applications')
-      .update({
-        status: isManual
-          ? 'assessment'
-          : overAllScore >= maxScore
-            ? 'qualified'
-            : overAllScore < maxScore && overAllScore > minScore
-              ? 'assessment'
-              : 'disqualified',
-      })
-      .eq('id', application_id)
-      .select();
 
-    return true;
-  }
+  await axios.post('/api/assessment/insert_assessment_results', {
+    application_id: application_id,
+    feedback: feedback,
+    conversation: conversation,
+    ai_interviewer_id: interviewIndex,
+    interview_duration: interviewDuration,
+    interview_score: overAllScore,
+  });
+  await axios.post('/api/assessment/update_applications', {
+    application_id: application_id,
+    status: isManual
+      ? 'assessment'
+      : overAllScore >= maxScore
+        ? 'qualified'
+        : overAllScore < maxScore && overAllScore > minScore
+          ? 'assessment'
+          : 'disqualified',
+  });
+  return true;
 }
 
 export async function getRecruiter(id: any) {
-  const { data, error } = await supabase
-    .from('recruiter')
-    .select()
-    .eq('id', id);
-
-  if (!error) {
-    return data[0];
+  try {
+    const { data } = await axios.post('/api/assessment/access_recruiter', {
+      id: id,
+    });
+    return data;
+  } catch (error) {
+    return error;
   }
 }
 
