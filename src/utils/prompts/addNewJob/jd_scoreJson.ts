@@ -18,7 +18,7 @@ export type JdJson = {
   responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description and whether they are a must-have.
   roles: JsonItemType[]; // Roles mentioned in the job description and whether they are a must-have.
   requirements: JsonItemType[]; // Requirements mentioned in the job description and whether they are a must-have.
-  skills: JsonItemType[]; // Skills mentioned in the job description and whether they are a must-have.
+  skills: JsonItemType[]; // Skills mentioned in roles,reponsibilities and requirements and whether they are a must-have.
   educations: JsonItemType[]; // Educations mentioned in the job description and whether they are a must-have.
 };
 `,

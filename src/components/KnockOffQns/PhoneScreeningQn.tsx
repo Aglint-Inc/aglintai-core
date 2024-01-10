@@ -13,6 +13,7 @@ import {
   PhoneScreeningResponseType,
   useScreeningCtx,
 } from './ScreeningCtxProvider';
+import { phoneScreenEmail } from './utils';
 import AUIButton from '../Common/AUIButton';
 import UITypography from '../Common/UITypography';
 import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
@@ -32,7 +33,12 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           path: 'showEndMessage',
           value: true,
         });
-
+        phoneScreenEmail({
+          candidate: state.candidate,
+          company: state.company,
+          role: state.jobTitle,
+          screenResp: state.phoneScreen,
+        });
         return;
       }
 
@@ -45,6 +51,13 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       await axios.post('/api/phone-screening/submit', {
         candResponse: candResponse,
         application_id: state.applicationId,
+      });
+
+      phoneScreenEmail({
+        candidate: state.candidate,
+        company: state.company,
+        role: state.jobTitle,
+        screenResp: state.phoneScreen,
       });
       updateState({
         path: 'showEndMessage',

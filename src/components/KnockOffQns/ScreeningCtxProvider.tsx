@@ -34,7 +34,7 @@ export interface PhoneScreeningResponseType extends PhoneScreenCandQnType {
   candAnswer: string;
 }
 
-type CandPhoneScreeningState = {
+export type CandPhoneScreeningState = {
   phoneScreen: PhoneScreeningResponseType[];
   startMessage: string;
   endMessage: string;
@@ -45,6 +45,13 @@ type CandPhoneScreeningState = {
   applicationId: string;
   jobPostId: string;
   isPreview: boolean;
+  candidate: null | {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  jobTitle: string;
+  company: string;
 };
 
 type ScreeningCtxProviderType = {
@@ -96,6 +103,9 @@ const initialState: CandPhoneScreeningState = {
   jobPostId: '',
   startMessage: '',
   endMessage: '',
+  jobTitle: '',
+  company: '',
+  candidate: null,
 };
 
 const ScreeningCtx = createContext<ScreeningCtxProviderType>({
@@ -112,7 +122,8 @@ export const ScreeningCtxProvider = ({ children }) => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    const { job_post_id, application_id, preview } = router.query as any;
+    const { job_post_id, application_id, recruiter_name, recruiter_email } =
+      router.query as any;
 
     if (!job_post_id) {
       toast.error('invalid Link');
@@ -128,7 +139,11 @@ export const ScreeningCtxProvider = ({ children }) => {
             .from('public_jobs')
             .select('phone_screening,logo,draft')
             .eq('id', router.query.job_post_id),
-        )) as Pick<PublicJobsType, 'phone_screening' | 'logo' | 'draft'>[];
+        )) as Pick<
+          PublicJobsType,
+          'phone_screening' | 'logo' | 'draft' | 'job_title' | 'company'
+        >[];
+
         if (!job) {
           toast.error('invalid link');
           router.push('/login');
@@ -144,7 +159,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           null;
 
         let isFormFilled = false;
-
+        let candidate: CandPhoneScreeningState['candidate'] = null;
         if (application_id) {
           const { data } = await axios.post(
             '/api/phone-screening/get-application-info',
@@ -157,6 +172,11 @@ export const ScreeningCtxProvider = ({ children }) => {
             router.push('/login');
             return;
           }
+          candidate = {
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name,
+          };
           if (data.phone_screening !== null) {
             isFormFilled = true;
           }
@@ -177,6 +197,11 @@ export const ScreeningCtxProvider = ({ children }) => {
             };
           });
         } else {
+          candidate = {
+            email: recruiter_email,
+            first_name: recruiter_name,
+            last_name: '',
+          };
           if (draftJobPhoneScreen) {
             jobPhoneScreening = draftJobPhoneScreen;
           } else {
@@ -210,9 +235,12 @@ export const ScreeningCtxProvider = ({ children }) => {
               showEndMessage: isFormFilled,
               applicationId: application_id ?? '',
               jobPostId: job_post_id,
-              isPreview: preview === 'true' || !application_id,
+              isPreview: !application_id,
+              company: (job.draft as any)?.company ?? job.company,
+              jobTitle: (job.draft as any)?.job_title ?? job.job_title,
               endMessage: jobPhoneScreening.endMessage as any,
               startMessage: jobPhoneScreening.startMessage as any,
+              candidate,
             },
           },
         });

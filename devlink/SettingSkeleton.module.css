@@ -1,0 +1,40 @@
+.div-block-677 {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.skeleton-width-80 {
+  width: 80%;
+  height: 16px;
+}
+
+.skeleton-width-80.height-28 {
+  height: 28px;
+}
+
+.skeleton-item {
+  width: 100%;
+  height: 100%;
+}
+
+.skeleton-width-60 {
+  width: 60%;
+  height: 16px;
+}
+
+.skeleton-width-60.height-28 {
+  height: 28px;
+}
+
+.skeleton-width-40 {
+  width: 40%;
+  height: 16px;
+}
+
+.skeleton-width-40.height-28 {
+  height: 28px;
+}

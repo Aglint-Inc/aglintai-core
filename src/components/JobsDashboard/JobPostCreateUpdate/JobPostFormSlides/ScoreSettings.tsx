@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 
 import {
   Checkbox,
-  LoaderSvg,
   ScoreCard,
   ScorePercentage,
   ScorePillMust,
   ScorePillNice,
   ScoreSetting,
   ScoreWeightage,
+  SettingSkeleton,
 } from '@/devlink';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -128,28 +128,16 @@ const ScoreSettings = () => {
           <ScoreSetting
             slotScoreCardDetails={
               <>
-                {isJsonLoading && (
-                  <>
-                    <Stack
-                      height={'200px'}
-                      direction={'column'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                      width={'500px'}
-                    >
-                      <LoaderSvg />
-                    </Stack>
-                  </>
-                )}
-                {!isJsonLoading &&
-                  params.map((p) => {
-                    return (
-                      <ScoreCard
-                        key={p.paramKey}
-                        textHeading={p.label}
-                        slotScorePills={
-                          <>
-                            {get(
+                {params.map((p) => {
+                  return (
+                    <ScoreCard
+                      key={p.paramKey}
+                      textHeading={p.label}
+                      slotScorePills={
+                        <>
+                          {isJsonLoading && <SettingSkeleton />}
+                          {!isJsonLoading &&
+                            get(
                               jobForm.formFields,
                               `jdJson.${p.paramKey}`,
                               [],
@@ -178,96 +166,96 @@ const ScoreSettings = () => {
                                 );
                               }
                             })}
-                          </>
-                        }
-                        textAddButton={p.AddBtnLabel}
-                        onClickAdd={{
-                          onClick: () => {
-                            setNewField({
-                              paramKey: p.paramKey,
-                              isMustHave: true,
-                              value: '',
-                            });
-                          },
-                        }}
-                        slotAddCard={
-                          newField &&
-                          newField.paramKey === p.paramKey && (
-                            <ScoreCardEdit
-                              isDeleteVisible={false}
-                              slotButtonUpdate={
-                                <>
-                                  <AUIButton
-                                    size='small'
-                                    onClick={() => {
-                                      if (newField.value.length === 0) return;
-                                      handleUpdateFormFields({
-                                        path: `jdJson.${p.paramKey}`,
-                                        value: [
-                                          ...get(
-                                            jobForm.formFields,
-                                            `jdJson.${p.paramKey}`,
-                                            [],
-                                          ),
-                                          {
-                                            field: newField.value,
-                                            isMustHave: newField.isMustHave,
-                                          },
-                                        ],
-                                      });
-                                      setNewField(null);
-                                    }}
-                                  >
-                                    Add
-                                  </AUIButton>
-                                </>
-                              }
-                              slotTextEdit={
-                                <>
-                                  <textarea
-                                    style={{
-                                      width: '100%',
-                                      outline: 'none',
-                                      border: '0px',
-                                      backgroundColor: '#f8f9f9',
-                                      resize: 'none',
-                                    }}
-                                    placeholder={p.AddBtnLabel}
-                                    value={newField?.value}
-                                    onChange={(e) => {
-                                      setNewField((p) => ({
-                                        ...p,
-                                        value: e.target.value,
-                                      }));
-                                    }}
-                                  ></textarea>
-                                </>
-                              }
-                              isCancelVisible={true}
-                              onClickCancel={{
-                                onClick: () => {
-                                  setNewField(null);
-                                },
-                              }}
-                              slotCheckBox={
-                                <Checkbox
-                                  isChecked={newField.isMustHave}
-                                  onClickCheck={{
-                                    onClick: () => {
-                                      setNewField((prev) => ({
-                                        ...prev,
-                                        isMustHave: !newField?.isMustHave,
-                                      }));
-                                    },
+                        </>
+                      }
+                      textAddButton={p.AddBtnLabel}
+                      onClickAdd={{
+                        onClick: () => {
+                          setNewField({
+                            paramKey: p.paramKey,
+                            isMustHave: true,
+                            value: '',
+                          });
+                        },
+                      }}
+                      slotAddCard={
+                        newField &&
+                        newField.paramKey === p.paramKey && (
+                          <ScoreCardEdit
+                            isDeleteVisible={false}
+                            slotButtonUpdate={
+                              <>
+                                <AUIButton
+                                  size='small'
+                                  onClick={() => {
+                                    if (newField.value.length === 0) return;
+                                    handleUpdateFormFields({
+                                      path: `jdJson.${p.paramKey}`,
+                                      value: [
+                                        ...get(
+                                          jobForm.formFields,
+                                          `jdJson.${p.paramKey}`,
+                                          [],
+                                        ),
+                                        {
+                                          field: newField.value,
+                                          isMustHave: newField.isMustHave,
+                                        },
+                                      ],
+                                    });
+                                    setNewField(null);
                                   }}
-                                />
-                              }
-                            />
-                          )
-                        }
-                      />
-                    );
-                  })}
+                                >
+                                  Add
+                                </AUIButton>
+                              </>
+                            }
+                            slotTextEdit={
+                              <>
+                                <textarea
+                                  style={{
+                                    width: '100%',
+                                    outline: 'none',
+                                    border: '0px',
+                                    backgroundColor: '#f8f9f9',
+                                    resize: 'none',
+                                  }}
+                                  placeholder={p.AddBtnLabel}
+                                  value={newField?.value}
+                                  onChange={(e) => {
+                                    setNewField((p) => ({
+                                      ...p,
+                                      value: e.target.value,
+                                    }));
+                                  }}
+                                ></textarea>
+                              </>
+                            }
+                            isCancelVisible={true}
+                            onClickCancel={{
+                              onClick: () => {
+                                setNewField(null);
+                              },
+                            }}
+                            slotCheckBox={
+                              <Checkbox
+                                isChecked={newField.isMustHave}
+                                onClickCheck={{
+                                  onClick: () => {
+                                    setNewField((prev) => ({
+                                      ...prev,
+                                      isMustHave: !newField?.isMustHave,
+                                    }));
+                                  },
+                                }}
+                              />
+                            }
+                          />
+                        )
+                      }
+                    />
+                  );
+                })}
               </>
             }
             slotScoreWeight={

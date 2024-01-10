@@ -20,6 +20,7 @@ import {
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { PhoneScreenQuestion, useJobForm } from '../JobPostFormProvider';
 
@@ -28,6 +29,7 @@ const ScreeningComp = () => {
     start: boolean;
     end: boolean;
   }>({ end: false, start: false });
+  const { recruiterUser } = useAuthDetails();
   const { jobForm, handleUpdateFormFields } = useJobForm();
   const [startMessage, setStartMessage] = useState('');
   const [endMessage, setEndMessage] = useState('');
@@ -212,7 +214,10 @@ const ScreeningComp = () => {
                 jobForm,
                 'jobPostId',
                 '',
-              )}&preview=true`,
+              )}&recruiter_email=${recruiterUser.email}&recruiter_name=${[
+                recruiterUser.first_name,
+                recruiterUser.last_name,
+              ].join(' ')}`,
               '_blank',
             );
           },
