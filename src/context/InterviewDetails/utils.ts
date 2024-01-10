@@ -1,31 +1,24 @@
-import { supabase } from '@/src/utils/supabaseClient';
+import axios from 'axios';
 export const getCandidateDetails = async (
   application_id: string | string[],
 ) => {
-  const { data: application, error: application_error } = await supabase
-    .from('applications')
-    .select()
-    .eq('id', application_id);
-  if (!application_error) {
-    const { data: result } = await supabase
-      .from('assessment_results')
-      .select()
-      .eq('application_id', application_id);
-
-    return { ...application[0], ...result[0] };
-  } else {
-    return [];
+  try {
+    const { data } = await axios.post('/api/assessment/access_applications', {
+      application_id: application_id,
+    });
+    return data;
+  } catch (error) {
+    return error;
   }
 };
 
 export const getJobDetails = async (job_id: string | string[]) => {
-  const { data, error } = await supabase
-    .from('public_jobs')
-    .select()
-    .eq('id', job_id);
-  if (!error) {
-    return data[0];
-  } else {
-    return [];
+  try {
+    const { data } = await axios.post('/api/assessment/access_public_jobs', {
+      job_id: job_id,
+    });
+    return data;
+  } catch (error) {
+    return error;
   }
 };

@@ -73,6 +73,7 @@ const allowedPaths = new Set([
   '/signup',
   '/api/sendgrid',
   '/api/lever/saveResume',
+  '/api/interview_feedback',
   '/api/greenhouse/saveResume',
   '/api/greenhouse/candidatesync',
   '/api/greenhouse/batchsave',
@@ -105,6 +106,12 @@ const allowedPaths = new Set([
   '/api/jobpost/write',
   '/api/phone-screening/submit',
   '/api/phone-screening/get-application-info',
+  '/api/assessment/access_applications',
+  '/api/assessment/access_public_jobs',
+  '/api/assessment/access_recruiter',
+  '/api/assessment/insert_assessment_results',
+  '/api/assessment/update_applications',
+
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {
