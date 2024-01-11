@@ -11,6 +11,23 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  if (req.method === 'OPTIONS') {
+    // Send response to OPTIONS requests
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Max-Age', '3600');
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'POST') {
+    return res
+      .status(405)
+      .json({ error: 'invalid request method', success: false });
+  }
+
   if (!req.body.query) {
     return res.status(400).send('No query provided');
   }
