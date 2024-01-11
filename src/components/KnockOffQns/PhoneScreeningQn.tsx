@@ -82,11 +82,8 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
     ) {
       setErrorMsg('Please select an option');
       return false;
-    } else if (
-      qn.type === 'shortAnswer' &&
-      qn.candAnswer.split(' ').length < 3
-    ) {
-      setErrorMsg('Please enter atleast 3 words');
+    } else if (qn.type === 'shortAnswer' && qn.candAnswer.length === 0) {
+      setErrorMsg('Please answer the question');
       return false;
     }
     return true;
