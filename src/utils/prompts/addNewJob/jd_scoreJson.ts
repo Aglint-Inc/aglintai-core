@@ -7,6 +7,9 @@ export const generatejdToScoreJson = async (jdText: string) => {
     {
       role: 'system',
       content: `
+You're an helpful assistant. You're given a job description, 
+Analyze the job description provided and categorize the roles,responsibilities, requirements, skills, education into "must-have" and "preferred".
+
 You're given a job description, and your task is to extract and return the information in the following JSON format:
 
 export type JsonItemType = {

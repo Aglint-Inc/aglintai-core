@@ -151,6 +151,9 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       <>
         <TextField
           fullWidth
+          multiline
+          minRows={1}
+          maxRows={3}
           placeholder='Type Your Answer'
           sx={{ width: '100%', borderBottom: 1, mb: 2 }}
           variant='standard'

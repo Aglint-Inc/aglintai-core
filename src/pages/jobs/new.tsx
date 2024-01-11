@@ -2,6 +2,7 @@ import { isEmpty } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import React, { useEffect } from 'react';
 
+import Seo from '@/src/components/Common/Seo';
 import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
@@ -12,11 +13,17 @@ import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationPr
 
 function Hoc() {
   return (
-    <JobPostFormProvider>
-      <IntegrationProvider>
-        <New />
-      </IntegrationProvider>
-    </JobPostFormProvider>
+    <>
+      <Seo
+        title='Aglint | Create Job'
+        description='AI Powered Talent Development Platform.'
+      />
+      <JobPostFormProvider>
+        <IntegrationProvider>
+          <New />
+        </IntegrationProvider>
+      </JobPostFormProvider>
+    </>
   );
 }
 

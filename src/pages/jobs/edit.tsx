@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import Seo from '@/src/components/Common/Seo';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
   useJobForm,
@@ -11,9 +12,15 @@ import { supabase } from '@/src/utils/supabaseClient';
 
 function Hoc() {
   return (
-    <JobPostFormProvider>
-      <Edit />
-    </JobPostFormProvider>
+    <>
+      <Seo
+        title='Aglint | Edit Job'
+        description='AI Powered Talent Development Platform.'
+      />
+      <JobPostFormProvider>
+        <Edit />
+      </JobPostFormProvider>
+    </>
   );
 }
 

@@ -30,12 +30,19 @@ const Emails = () => {
   const [editTemplate, setEditTemplate] = useState('');
   const emails: EmailTemplateParams[] = Object.keys(
     jobForm.formFields.screeningEmail.emailTemplates,
-  ).map((email) => ({
-    title: templateObj[`${email}`],
-    excerpt: '',
-    path: email,
-  }));
-
+  )
+    .filter((path) => {
+      if (!jobForm.formFields.assessment) {
+        return path === 'application_recieved' || path === 'rejection';
+      } else {
+        return true;
+      }
+    })
+    .map((email) => ({
+      title: templateObj[`${email}`],
+      excerpt: '',
+      path: email,
+    }));
   return (
     <>
       <EmailTemplatesStart

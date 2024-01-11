@@ -28,8 +28,7 @@ const SyncStatus = ({ status }: { status: JobFormState['syncStatus'] }) => {
     return (
       <Stack direction={'row'} gap={0.5} alignItems={'center'}>
         <UITypography color={palette.green[600]} type='small' fontBold='normal'>
-          {' '}
-          Saved{' '}
+          Saved to draft
         </UITypography>
         <Image
           alt='save'

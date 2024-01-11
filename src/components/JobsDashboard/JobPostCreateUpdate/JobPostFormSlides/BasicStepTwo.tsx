@@ -28,7 +28,9 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
             showWarnOnEdit={showWarnOnEdit}
             placeholder='Job Description'
             handleChange={handleChangeTipTap}
-            enablAI
+            enablAI={
+              !process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com')
+            }
             initialValue={formFields.jobDescription}
           />
         </>

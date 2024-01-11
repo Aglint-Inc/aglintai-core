@@ -254,6 +254,7 @@
 
 .skills-wrap-details {
   display: flex;
+  width: 100%;
   margin-top: 15px;
   flex-wrap: wrap;
   grid-column-gap: 10px;

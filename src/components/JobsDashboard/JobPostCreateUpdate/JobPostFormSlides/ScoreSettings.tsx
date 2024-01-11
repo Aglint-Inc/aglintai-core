@@ -85,7 +85,11 @@ const ScoreSettings = () => {
         ) {
           setIsJsonLoading(true);
           const json = await generatejdToScoreJson(
-            jobForm.formFields.jobDescription,
+            `
+Job Role : ${jobForm.formFields.jobTitle}
+
+${jobForm.formFields.jobDescription}
+`,
           );
 
           const j: JdJsonType = {
@@ -120,7 +124,6 @@ const ScoreSettings = () => {
     });
     setPopUpEl(e.currentTarget);
   };
-
   return (
     <>
       {
