@@ -20,6 +20,11 @@ export function WelcomeSlider3({
   onClickCheck = {},
   isSignUpButtonVisible = true,
   onClickTermsandCondition = {},
+
+  basicLinkStyleLink = {
+    href: "https://www.aglinthq.com/terms",
+    target: "_blank",
+  },
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -167,12 +172,16 @@ export function WelcomeSlider3({
               tag="div"
             >
               {"By clicking signup you are agreeing to "}
-              <_Builtin.Span
-                className={_utils.cx(_styles, "text-underline")}
-                {...onClickTermsandCondition}
+              <_Builtin.Link
+                className={_utils.cx(_styles, "basic-link-style")}
+                button={false}
+                block=""
+                options={basicLinkStyleLink}
               >
-                {"terms and conditions"}
-              </_Builtin.Span>
+                <_Builtin.Span className={_utils.cx(_styles, "text-underline")}>
+                  {"terms and conditions"}
+                </_Builtin.Span>
+              </_Builtin.Link>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "ju-redirect-text")}

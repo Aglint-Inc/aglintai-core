@@ -944,6 +944,10 @@
   margin-top: 15px;
 }
 
+.basic-link-style {
+  color: var(--grey-600);
+}
+
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;
