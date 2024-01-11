@@ -314,7 +314,7 @@ function JobForm() {
                 jobForm,
                 'jobPostId',
                 '',
-              )}&preview=true`,
+              )}?preview=true`,
               '_blank',
             );
           },
@@ -413,7 +413,7 @@ function JobForm() {
                 jobForm,
                 'jobPostId',
                 '',
-              )}&preview=true`,
+              )}?preview=true`,
               '_blank',
             );
           },

@@ -55,7 +55,7 @@ function PublishDesclaimer() {
                 jobForm,
                 'jobPostId',
                 '',
-              )}&preview=true`,
+              )}?preview=true`,
               '_blank',
             );
           },
