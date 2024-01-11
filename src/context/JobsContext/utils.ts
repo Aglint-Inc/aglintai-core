@@ -35,12 +35,10 @@ export const readJobDbAction = async (recruiter_id: string) => {
   const jobsWithCount = data.map((job) => {
     return {
       ...job,
-      count: {
-        new: d1[job.id]['new'],
-        interviewing: d1[job.id]['interviewing'],
-        qualified: d1[job.id]['qualified'],
-        disqualified: d1[job.id]['disqualified'],
-      },
+      count: Object.entries(d1[job.id]).reduce((acc, [key, value]) => ({
+        ...acc,
+        [key]: value,
+      })),
     };
   });
 

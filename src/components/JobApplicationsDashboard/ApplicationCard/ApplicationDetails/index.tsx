@@ -476,7 +476,8 @@ const NewInterviewStatus = ({
 }) => {
   const { handleJobApplicationUpdate } = useJobApplications();
   const [loading, setLoading] = useState(false);
-  const invited = applications.status_emails_sent['interviewing'] ?? false;
+  const invited =
+    applications.status_emails_sent[JobApplicationSections.ASSESSMENT] ?? false;
   const status = {
     bgColor: invited ? '#CEE2F2' : '#FFF7ED',
     text: invited ? 'Invited' : 'Pending Invite',

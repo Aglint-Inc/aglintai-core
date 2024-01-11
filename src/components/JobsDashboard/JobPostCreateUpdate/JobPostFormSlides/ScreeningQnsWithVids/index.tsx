@@ -323,10 +323,10 @@ function SectionTabs() {
     section.scrollIntoView({ behavior: 'smooth', inline: 'start' });
   };
 
-  const allowDisable = job.count.interviewing === 0;
+  const allowDisable = job.count.assessment === 0;
 
   const handleWarning = () => {
-    const count = job.count.interviewing;
+    const count = job.count.assessment;
     toast.warning(
       `${count} cadidate${
         count === 1 ? '' : 's'

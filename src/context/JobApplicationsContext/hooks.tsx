@@ -428,10 +428,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
               [section]: [],
             })),
           ) as {
-            new?: JobApplication[];
-            qualified?: JobApplication[];
-            interviewing?: JobApplication[];
-            disqualified?: JobApplication[];
+            // eslint-disable-next-line no-unused-vars
+            [key in JobApplicationSections]: JobApplication[];
           },
         },
       };

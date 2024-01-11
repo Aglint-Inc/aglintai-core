@@ -13,6 +13,7 @@ import React, { useRef, useState } from 'react';
 
 import { AppLogo } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 const CSVGenerator = () => {
   const csvCountRef = useRef();
   const [checked, setChecked] = useState(false);
@@ -51,13 +52,8 @@ const CSVGenerator = () => {
       const score = checked1 ? randomNumber : '';
       const company = 'Aglint Inc';
       const status = checked
-        ? faker.helpers.arrayElement([
-            'new',
-            'interviewing',
-            'qualified',
-            'disqualified',
-          ])
-        : 'new'; // You can change this if needed
+        ? faker.helpers.arrayElement(Object.values(JobApplicationSections))
+        : JobApplicationSections.NEW; // You can change this if needed
       const profileImage = faker.image.avatar(); // You can change this if needed
       const resume =
         'https://aetdssowoezhaepzhzag.supabase.co/storage/v1/object/public/resume-job-post/public/729ddd04-ea4f-43af-a1f1-d88e1ca9f06a?t=2023-10-04T15:25:41.344Z'; // You can change this if needed
@@ -155,7 +151,7 @@ const CSVGenerator = () => {
                 }}
               />
             }
-            label='Mix status[applied ,interviewing, selected, rejected]'
+            label={`Mix status[${Object.values(JobApplicationSections)}]`}
           />
           <FormControlLabel
             control={

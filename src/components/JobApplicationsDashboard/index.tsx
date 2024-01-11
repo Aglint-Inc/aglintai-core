@@ -597,7 +597,7 @@ const NewJobDetailsTabs = ({
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
       isInterviewSelected={section === JobApplicationSections.ASSESSMENT}
-      countInterview={count.interviewing}
+      countInterview={count.assessment}
       onClickInterview={{
         onClick: () => handleSetSection(JobApplicationSections.ASSESSMENT),
       }}
