@@ -8,6 +8,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details } from '../SignUpComp/SlideSignup/types';
+import posthog from 'posthog-js'
 
 function Login() {
   const router = useRouter();
@@ -118,6 +119,7 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
+        posthog.identify(details.email)
         router.push(pageRoutes.JOBS);
       } else {
         setErrorCheck({

@@ -16,21 +16,24 @@ import Theme from '../context/Theme/Theme';
 import { NotificationsContextProvider } from '../context/Notifications';
 import JobsProvider from '../context/JobsContext';
 import { SupportProvider } from '../context/SupportContext/SupportContext';
+import { PHProvider } from '../components/PostHog/postHog';
 
 const MyApp = ({ Component, pageProps }) => {
   const getProvider = Component.getProvider ?? ((page) => page);
   if (Component.getLayout) {
     return Component.getLayout(
       <>
+        <PHProvider>
         <DevlinkMainProvider>
           <Theme>{getProvider(<Component {...pageProps} />)}</Theme>
         </DevlinkMainProvider>
+        </PHProvider>
       </>,
     );
   }
 
   return (
-    <>
+    <><PHProvider>
       <ErrorBoundary>
         <Suspense fallback={'Loading'}>
           <DevlinkMainProvider>
@@ -52,6 +55,7 @@ const MyApp = ({ Component, pageProps }) => {
           </DevlinkMainProvider>
         </Suspense>
       </ErrorBoundary>
+      </PHProvider>
     </>
   );
 };
