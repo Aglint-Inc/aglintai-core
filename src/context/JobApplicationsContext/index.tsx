@@ -6,7 +6,7 @@ import { JobApplicationContext } from './types';
 const initialJobApplicationsContext = {
   applications: undefined,
   applicationDisable: undefined,
-  setApplicationDisable:undefined,
+  setApplicationDisable: undefined,
   paginationLimit: undefined,
   defaultFilters: undefined,
   job: undefined,
@@ -16,7 +16,6 @@ const initialJobApplicationsContext = {
   handleJobApplicationBulkCreate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationPaginate: undefined,
-  handleJobApplicationUpdate: undefined,
   handleJobApplicationRefresh: undefined,
   handleJobApplicationBulkUpdate: undefined,
   handleJobApplicationError: undefined,

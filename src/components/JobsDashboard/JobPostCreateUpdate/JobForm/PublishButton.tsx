@@ -50,7 +50,7 @@ const JobPublishButton = () => {
         router.replace(`/jobs/${jobForm.jobPostId}`);
       }
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
-      await handleUIJobUpdate(job.id, job);
+      await handleUIJobUpdate({ ...job });
       toast.success('Job Published SuccessFully');
     } catch (err) {
       toast.error(API_FAIL_MSG);

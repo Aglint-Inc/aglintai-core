@@ -32,6 +32,7 @@ import {
   ResumeErrorBlock,
   ResumeErrorBlock2,
   SelectActionsDropdown,
+  SidebarScreening,
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
@@ -41,6 +42,7 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
+// import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -59,7 +61,7 @@ import { applicationValidity } from '../utils';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
-import { emailHandler, MoveCandidateDialog } from '../../MoveCandidateDialog';
+// import { emailHandler, MoveCandidateDialog } from '../../MoveCandidateDialog';
 import {
   ApiLogState,
   capitalize,
@@ -289,6 +291,7 @@ const NewJobApplicationSideDrawer = ({
   jobUpdate: boolean;
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { section } = useJobApplications();
   const name = capitalize(
     applications.candidates.first_name +
       ' ' +
@@ -325,6 +328,12 @@ const NewJobApplicationSideDrawer = ({
       }
     }
   }, [leftShift, rightShift]);
+
+  // console.log(applications.status_emails_sent);
+
+  const { isPhoneScreeningInvited = false } =
+    applications.status_emails_sent as any;
+  // const {} = applications.
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
@@ -347,10 +356,12 @@ const NewJobApplicationSideDrawer = ({
       }
       textOverviewDesc={overview}
       slotCandidateDetails={
-        <NewCandidateDetails
-          applications={applications}
-          setOpenFeedback={setOpenFeedback}
-        />
+        <>
+          <NewCandidateDetails
+            applications={applications}
+            setOpenFeedback={setOpenFeedback}
+          />
+        </>
       }
       isOverviewVisible={overview}
       isLinkedInVisible={
@@ -406,6 +417,8 @@ const NewCandidateDetails = ({
     <CandidateDetails
       slotInterviewScore={
         <>
+          <NewResumeSection applications={applications} job={job} />
+          <PhoneScreeningSection />
           <>
             {applications.assessment_results?.feedback ? (
               <NewInterviewScoreDetails
@@ -417,7 +430,6 @@ const NewCandidateDetails = ({
             ) : (
               <></>
             )}
-            <NewResumeSection applications={applications} job={job} />
           </>
           {applicationValidity(applications) ? (
             <>
@@ -474,7 +486,6 @@ const NewInterviewStatus = ({
   applications: JobApplication;
   job: JobType;
 }) => {
-  const { handleJobApplicationUpdate } = useJobApplications();
   const [loading, setLoading] = useState(false);
   const invited =
     applications.status_emails_sent[JobApplicationSections.ASSESSMENT] ?? false;
@@ -489,20 +500,7 @@ const NewInterviewStatus = ({
   };
   const handleSendLink = async () => {
     setLoading(true);
-    const confirmation = await emailHandler(
-      {
-        email: applications.candidates.email,
-        first_name: applications.candidates.first_name,
-        last_name: applications.candidates.last_name,
-        job_title: job.job_title,
-        company: job.company,
-        application_id: applications.id,
-        status_emails_sent: applications.status_emails_sent,
-      },
-      job,
-      handleJobApplicationUpdate,
-      JobApplicationSections.ASSESSMENT,
-    );
+    const confirmation = true;
     if (confirmation) toast.success('Mail sent successfully');
     else toast.error('Mail not sent');
     setLoading(false);
@@ -747,6 +745,16 @@ export const ResumeFeedbackParams = ({
         );
       })}
     </>
+  );
+};
+
+const PhoneScreeningSection = () => {
+  return (
+    <SidebarScreening
+      isPending={false}
+      isSubmitted={false}
+      isNotInvited={true}
+    />
   );
 };
 

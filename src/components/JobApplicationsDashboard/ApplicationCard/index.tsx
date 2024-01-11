@@ -56,7 +56,8 @@ const ApplicationCard = ({
   const profile = <CandidateAvatar application={application} fontSize={12} />;
   const resumeScore = <ResumeScore application={application} />;
   const interviewScore =
-    section === JobApplicationSections.NEW ? (
+    section === JobApplicationSections.NEW ||
+    section === JobApplicationSections.SCREENING ? (
       <></>
     ) : (
       <InterviewScore application={application} />

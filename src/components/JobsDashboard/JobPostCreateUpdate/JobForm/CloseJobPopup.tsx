@@ -12,7 +12,7 @@ import { supabaseWrap } from '../utils';
 import UITextField from '../../../Common/UITextField';
 
 const CloseJobPopup = ({ onClose }) => {
-  const { handleUIJobReplace } = useJobs();
+  const { handleUIJobUpdate } = useJobs();
   const router = useRouter();
   const [confirmJobTitle, setConfirmJobTitle] = useState({
     value: '',
@@ -45,7 +45,7 @@ const CloseJobPopup = ({ onClose }) => {
           .eq('id', jobForm.jobPostId)
           .select(),
       );
-      handleUIJobReplace({
+      handleUIJobUpdate({
         ...job,
         count: {
           new: 0,

@@ -8,12 +8,10 @@ export const initialJobContext: JobContext = {
   jobsData: { applications: undefined, jobs: undefined },
   handleJobRead: undefined,
   handleJobUpdate: undefined,
-  handleUIJobReplace: undefined,
   handleJobDelete: undefined,
   handleJobError: undefined,
   handleGetJob: undefined,
   initialLoad: false,
-  handleUpdateJobCount: undefined,
   handleUIJobUpdate: undefined,
 };
 
@@ -48,7 +46,7 @@ export const readJobDbAction = async (recruiter_id: string) => {
   return { data: jobsWithCount, error };
 };
 
-export const jobApplicationCountDbAction = async (ids: string[]) => {
+const jobApplicationCountDbAction = async (ids: string[]) => {
   const { data, error } = await supabase.rpc('getjobapplications', { ids });
   return {
     data: data

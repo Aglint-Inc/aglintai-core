@@ -89,7 +89,8 @@ const handleSinglePromiseValidation = (
   responses: PromiseSettledResult<{
     data: JobApplication[];
     error: PostgrestError;
-    count: number;
+    filteredCount: number;
+    unFilteredCount: number;
   }>,
   status: JobApplicationSections,
 ) => {
@@ -97,9 +98,15 @@ const handleSinglePromiseValidation = (
     return {
       data: { [status]: responses.value.data },
       error: null,
-      count: { [status]: responses.value.count },
+      filteredCount: { [status]: responses.value.filteredCount },
+      unFilteredCount: { [status]: responses.value.unFilteredCount },
     };
-  return { data: null, error: { [status]: responses.reason }, count: null };
+  return {
+    data: null,
+    error: { [status]: responses.reason },
+    filteredCount: null,
+    unFilteredCount: null,
+  };
 };
 
 const handleMultiPromiseValidation = (
@@ -107,16 +114,18 @@ const handleMultiPromiseValidation = (
   responses: PromiseSettledResult<{
     data: JobApplication[];
     error: PostgrestError;
-    count: number;
+    filteredCount: number;
+    unFilteredCount: number;
   }>[],
   ranges: ReadJobApplicationApi['request']['ranges'],
 ) => {
   return Object.keys(ranges).reduce(
     (acc, curr, i) => {
-      const { data, error, count } = handleSinglePromiseValidation(
-        responses[i],
-        curr as JobApplicationSections,
-      );
+      const { data, error, filteredCount, unFilteredCount } =
+        handleSinglePromiseValidation(
+          responses[i],
+          curr as JobApplicationSections,
+        );
       if (data) {
         return {
           ...acc,
@@ -124,9 +133,13 @@ const handleMultiPromiseValidation = (
             ...acc.data,
             ...data,
           },
-          count: {
-            ...acc.count,
-            ...count,
+          filteredCount: {
+            ...acc.filteredCount,
+            ...filteredCount,
+          },
+          unFilteredCount: {
+            ...acc.unFilteredCount,
+            ...unFilteredCount,
           },
         };
       } else if (error) {
@@ -142,21 +155,22 @@ const handleMultiPromiseValidation = (
     {
       data: null,
       error: null,
-      count: null,
+      filteredCount: null,
+      unFilteredCount: null,
     },
   ) as {
     data: {
-      [JobApplicationSections.NEW]: JobApplication[];
-      [JobApplicationSections.QUALIFIED]: JobApplication[];
-      [JobApplicationSections.DISQUALIFIED]: JobApplication[];
-      [JobApplicationSections.ASSESSMENT]: JobApplication[];
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: JobApplication[];
     };
     error: PostgrestError;
-    count: {
-      [JobApplicationSections.NEW]: number;
-      [JobApplicationSections.QUALIFIED]: number;
-      [JobApplicationSections.DISQUALIFIED]: number;
-      [JobApplicationSections.ASSESSMENT]: number;
+    filteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
+    };
+    unFilteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
     };
   };
 };
@@ -166,19 +180,7 @@ export type ReadJobApplicationApi = {
     job_id: string;
     ranges?: {
       // eslint-disable-next-line no-unused-vars
-      [JobApplicationSections.NEW]: {
-        start: number;
-        end: number;
-      };
-      [JobApplicationSections.ASSESSMENT]?: {
-        start: number;
-        end: number;
-      };
-      [JobApplicationSections.QUALIFIED]: {
-        start: number;
-        end: number;
-      };
-      [JobApplicationSections.DISQUALIFIED]: {
+      [key in JobApplicationSections]: {
         start: number;
         end: number;
       };
@@ -190,17 +192,17 @@ export type ReadJobApplicationApi = {
   };
   response: {
     data: {
-      [JobApplicationSections.NEW]?: JobApplication[];
-      [JobApplicationSections.QUALIFIED]?: JobApplication[];
-      [JobApplicationSections.ASSESSMENT]?: JobApplication[];
-      [JobApplicationSections.DISQUALIFIED]?: JobApplication[];
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: JobApplication[];
     };
     error: PostgrestError;
-    count: {
-      [JobApplicationSections.NEW]?: number;
-      [JobApplicationSections.QUALIFIED]?: number;
-      [JobApplicationSections.DISQUALIFIED]?: number;
-      [JobApplicationSections.ASSESSMENT]?: number;
+    filteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
+    };
+    unFilteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
     };
   };
 };

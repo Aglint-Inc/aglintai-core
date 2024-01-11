@@ -4,7 +4,11 @@ import {
   // getFilteredQuery,
   selectJobApplicationQuery,
 } from '@/src/pages/api/JobApplicationsApi/utils';
-import { Applications, ApplicationsInsert, ApplicationsUpdate } from '@/src/types/applications.types';
+import {
+  Applications,
+  ApplicationsInsert,
+  ApplicationsUpdate,
+} from '@/src/types/applications.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabaseClient';
 
@@ -148,7 +152,6 @@ export const bulkUpdateJobApplicationDbAction = async (
     .from('applications')
     .upsert(inputData)
     .abortSignal(signal);
-
   clearTimeout(timeout);
   return { data: error ? false : true, error };
 };
@@ -177,8 +180,11 @@ export const getUpdatedJobStatus = (
   },
 ): Applications[] => {
   return applications[sections.source].reduce(
-    // eslint-disable-next-line no-unused-vars
-    (acc: Applications[], { candidates, ...curr }) => {
+    (
+      acc: Applications[],
+      // eslint-disable-next-line no-unused-vars
+      { candidates, assessment_results, candidate_files, ...curr },
+    ) => {
       if (applicationIdSet.has(curr.id))
         acc.push({ ...curr, status: sections.destination });
       return acc;

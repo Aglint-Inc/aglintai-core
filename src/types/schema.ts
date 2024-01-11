@@ -82,7 +82,7 @@ export interface Database {
           id: string
           is_resume_fetching: boolean
           job_id: string
-          overall_score: number | null
+          overall_score: number
           phone_screening: Json | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
@@ -99,7 +99,7 @@ export interface Database {
           id?: string
           is_resume_fetching?: boolean
           job_id: string
-          overall_score?: number | null
+          overall_score?: number
           phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
@@ -116,7 +116,7 @@ export interface Database {
           id?: string
           is_resume_fetching?: boolean
           job_id?: string
-          overall_score?: number | null
+          overall_score?: number
           phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
@@ -1446,20 +1446,7 @@ export interface Database {
           cand: Json
           candfiles: Json
           assres: Json
-          total_results: number
-        }[]
-      }
-      kw_match_documents: {
-        Args: {
-          query_text: string
-          match_count: number
-        }
-        Returns: {
-          id: string
-          content: string
-          metadata: Json
-          similarity: number
-          json_resume: Json
+          fil_res: number
         }[]
       }
       levercandidatesync: {
@@ -1480,23 +1467,6 @@ export interface Database {
           json_resume: Json
         }[]
       }
-      match_job_applications: {
-        Args: {
-          query_embedding: string
-          match_threshold: number
-          match_count: number
-          job_ids: string[]
-        }
-        Returns: {
-          application_id: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          json_resume: Json
-          similarity: number
-        }[]
-      }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1512,34 +1482,6 @@ export interface Database {
       secondretrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
         Returns: unknown
-      }
-      test_filter2: {
-        Args: {
-          rec_id: string
-          location_filter: string
-          name_filter: string
-          job_title_filter: string
-          page_size: number
-          page_number: number
-          sort_param?: string
-          is_name_sort_desc?: boolean
-          is_location_sort_desc?: boolean
-          is_job_title_sort_desc?: boolean
-        }
-        Returns: {
-          application_id: string
-          created_at: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume_link: string
-          json_resume: Json
-          profile_image: string
-          candidate_id: string
-          job_id: string
-          total_results: number
-        }[]
       }
       test_filter3: {
         Args: {
@@ -1583,7 +1525,12 @@ export interface Database {
         | "processing"
         | "failed"
         | "success"
-      application_status: "new" | "assessment" | "qualified" | "disqualified"
+      application_status:
+        | "new"
+        | "assessment"
+        | "qualified"
+        | "disqualified"
+        | "screening"
       file_type: "resume" | "coverletter" | "cv" | "image"
     }
     CompositeTypes: {

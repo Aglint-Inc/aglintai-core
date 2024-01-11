@@ -75,12 +75,12 @@ const ApplicationSortBody = ({
   const handleSubmit = async () => {
     if (!applicationDisable) {
       setApplicationDisable(true);
-      const { confirmation, count } = await handleJobApplicationFilter({
+      const { confirmation, filteredCount } = await handleJobApplicationFilter({
         ...searchParameters,
         sort: sort,
       });
       if (confirmation) {
-        setApplicationLimit(count);
+        setApplicationLimit(filteredCount);
       }
       setApplicationDisable(false);
     }

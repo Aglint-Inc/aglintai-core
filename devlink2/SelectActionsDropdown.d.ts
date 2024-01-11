@@ -11,4 +11,6 @@ declare function SelectActionsDropdown(props: {
   onClickDisqualified?: Types.Devlink.RuntimeProps;
   isMoveNew?: Types.Visibility.VisibilityConditions;
   onClickMoveNew?: Types.Devlink.RuntimeProps;
+  isScreening?: Types.Visibility.VisibilityConditions;
+  onClickScreening?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

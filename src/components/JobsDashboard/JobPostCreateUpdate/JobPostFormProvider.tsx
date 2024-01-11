@@ -360,7 +360,7 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleUIJobReplace, jobsData } = useJobs();
+  const { handleUIJobUpdate, jobsData } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     try {
       dispatch({
@@ -375,7 +375,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       //randomly .jobs was not initilised temp soln
       if (jobsData.jobs) {
         const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
-        handleUIJobReplace({
+        handleUIJobUpdate({
           ...updatedJobDb,
           active_status: updatedJobDb.active_status as unknown as StatusJobs,
           count: uiJob

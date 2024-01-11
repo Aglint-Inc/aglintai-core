@@ -117,12 +117,12 @@ const ApplicationFilterBody = ({
     if (!applicationDisable) {
       setFilters({ ...newFilters });
       setApplicationDisable(true);
-      const { confirmation, count } = await handleJobApplicationFilter({
+      const { confirmation, filteredCount } = await handleJobApplicationFilter({
         ...searchParameters,
         filter: { ...newFilters },
       });
       if (confirmation) {
-        setApplicationLimit(count);
+        setApplicationLimit(filteredCount);
       }
       setApplicationDisable(false);
     }
@@ -203,7 +203,8 @@ const validateFilters = (
 ) => {
   const newFilters = Object.entries(filters).reduce(
     (acc, [key, val]) => {
-      switch (key) {
+      const safeKey = key as keyof FilterParameter;
+      switch (safeKey) {
         case 'location': {
           if (
             (val as FilterParameter['location']).active &&
@@ -214,7 +215,7 @@ const validateFilters = (
           }
           return acc;
         }
-        case 'resume_score':
+        case 'overall_score':
         case 'interview_score': {
           return acc;
         }
@@ -335,7 +336,7 @@ const getUnit = (keyString: keyof FilterParameter) => {
   switch (keyString) {
     case 'location':
       return '(miles)';
-    case 'resume_score':
+    case 'overall_score':
     case 'interview_score':
       return '';
   }
@@ -351,7 +352,7 @@ const CandidateFilterOptionBody = ({
   setFilters: Dispatch<SetStateAction<FilterParameter>>;
 }) => {
   switch (keyString) {
-    case 'resume_score':
+    case 'overall_score':
     case 'interview_score':
       return (
         <CandidateFilterDualSlider
@@ -377,7 +378,7 @@ const CandidateFilterDualSlider = ({
   setFilters,
 }: {
   keyString: keyof FilterParameter;
-  range: FilterParameter['resume_score'];
+  range: FilterParameter['overall_score'];
   setFilters: Dispatch<SetStateAction<FilterParameter>>;
 }) => {
   const minRange = 10;

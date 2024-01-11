@@ -23,8 +23,8 @@ export const formatTimeStamp = (timeStamp: string) => {
       creationHour % 12 === 0
         ? 12
         : creationHour % 12 < 10
-        ? `0${creationHour % 12}`
-        : creationHour % 12;
+          ? `0${creationHour % 12}`
+          : creationHour % 12;
     const creationMinutes =
       date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
     const creationTime = `${finalHour}:${creationMinutes} ${
@@ -36,7 +36,7 @@ export const formatTimeStamp = (timeStamp: string) => {
 };
 
 export type FilterParameter = {
-  resume_score?: {
+  overall_score?: {
     active: boolean;
     min: number;
     max: number;

@@ -17,17 +17,18 @@ import useProviderJobApplicationActions from './hooks';
 export enum JobApplicationSections {
   NEW = 'new',
   ASSESSMENT = 'assessment',
+  SCREENING = 'screening',
   QUALIFIED = 'qualified',
   DISQUALIFIED = 'disqualified',
 }
 
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
-export type JobApplication  =  Applications & {
+export type JobApplication = Applications & {
   candidates: Candidate;
   candidate_files: CandidateFiles;
   assessment_results: AssessmentResults;
-}
+};
 
 export type Parameters = {
   sort: SortParameter;

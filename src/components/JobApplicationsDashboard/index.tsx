@@ -52,7 +52,7 @@ import {
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
-import { MoveCandidateDialog, sendEmails } from './MoveCandidateDialog';
+import { MoveCandidateDialog } from './MoveCandidateDialog';
 import SearchField from './SearchField';
 import { capitalize } from './utils';
 import Loader from '../Common/Loader';
@@ -487,14 +487,14 @@ const NewJobFilterBlock = ({
     useJobApplications();
   const handleSearch = async (val: string, signal?: AbortSignal) => {
     const value = val ? val.trim().toLowerCase() : null;
-    const { confirmation, count } = await handleJobApplicationFilter(
+    const { confirmation, filteredCount } = await handleJobApplicationFilter(
       {
         ...searchParameters,
         search: value,
       },
       signal,
     );
-    if (confirmation) setApplicationLimit(count);
+    if (confirmation) setApplicationLimit(filteredCount);
   };
   return (
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
@@ -589,6 +589,7 @@ const NewJobDetailsTabs = ({
 }) => {
   const { job } = useJobApplications();
   const count = job.count;
+
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
@@ -596,10 +597,16 @@ const NewJobDetailsTabs = ({
       onClickNew={{
         onClick: () => handleSetSection(JobApplicationSections.NEW),
       }}
-      isInterviewSelected={section === JobApplicationSections.ASSESSMENT}
-      countInterview={count.assessment}
-      onClickInterview={{
+      isAssessmentSelected={section === JobApplicationSections.ASSESSMENT}
+      countAssessment={count.assessment}
+      isAssessmentVisible={job.assessment}
+      onClickAssessment={{
         onClick: () => handleSetSection(JobApplicationSections.ASSESSMENT),
+      }}
+      isScreeningSelected={section === JobApplicationSections.SCREENING}
+      countScreening={count.screening}
+      onClickScreening={{
+        onClick: () => handleSetSection(JobApplicationSections.SCREENING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
       countDisqualified={count.disqualified}
@@ -611,7 +618,6 @@ const NewJobDetailsTabs = ({
       onClickQualified={{
         onClick: () => handleSetSection(JobApplicationSections.QUALIFIED),
       }}
-      isAssessmentVisible={job.assessment}
     />
   );
 };
@@ -769,14 +775,7 @@ const ActionBar = ({
   setJobUpdate: Dispatch<SetStateAction<boolean>>;
   applicationLimit: CountJobs;
 }) => {
-  const {
-    handleUpdateJobStatus,
-    applications,
-    handleJobApplicationUpdate,
-    job,
-    // paginationLimit,
-    section,
-  } = useJobApplications();
+  const { handleUpdateJobStatus, job, section } = useJobApplications();
   const [open, setOpen] = useState(false);
   const [destination, setDestination] = useState<JobApplicationSections>(null);
 
@@ -785,6 +784,7 @@ const ActionBar = ({
   const handleUpdateJobs = async () => {
     if (!jobUpdate) {
       setJobUpdate(true);
+
       const confirmation = await handleUpdateJobStatus(
         {
           source: section,
@@ -812,15 +812,21 @@ const ActionBar = ({
 
   const isChecked = checkList.size !== 0;
   const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
+  const showScreening = isChecked && section === JobApplicationSections.NEW;
   const showInterview =
-    isChecked && section === JobApplicationSections.NEW && job.assessment;
-  const showSelected =
     isChecked &&
     (section === JobApplicationSections.NEW ||
+      section === JobApplicationSections.SCREENING) &&
+    job.assessment;
+  const showQualified =
+    isChecked &&
+    (section === JobApplicationSections.NEW ||
+      section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT);
-  const showReject =
+  const showDisqualified =
     isChecked &&
     (section === JobApplicationSections.NEW ||
+      section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT ||
       section === JobApplicationSections.QUALIFIED);
   // const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
@@ -835,16 +841,6 @@ const ActionBar = ({
     setTimeout(() => setDestination(null), 100);
   };
 
-  const handleEmail = async () => {
-    await sendEmails(
-      destination,
-      checkList,
-      applications,
-      job,
-      handleJobApplicationUpdate,
-    );
-  };
-
   return (
     <>
       <MoveCandidateDialog
@@ -852,10 +848,14 @@ const ActionBar = ({
         onClose={() => handleClose()}
         destination={destination}
         onSubmit={async () => await handleUpdateJobs()}
-        checkAction={async () => await handleEmail()}
+        checkAction={async () => {} /*await handleEmail()*/}
         count={checkList.size}
       />
       <SelectActionBar
+        isSendScreeningVisible={section === JobApplicationSections.SCREENING}
+        // onclickSendScreening={{
+        //   onClick: handleSendBulkPhoneScreeningEmail,
+        // }}
         onClickClear={{
           onClick: () => setCheckList(new Set<string>()),
         }}
@@ -869,24 +869,30 @@ const ActionBar = ({
         }
         // onclickSelectAll={{ onClick: () => handleSelectAll() }}
         slotDropdown={
-          <SelectActionsDropdown
-            isInterview={showInterview}
-            onClickInterview={{
-              onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
-            }}
-            isQualified={showSelected}
-            onClickQualified={{
-              onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
-            }}
-            isDisqualified={showReject}
-            onClickDisqualified={{
-              onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
-            }}
-            onClickMoveNew={{
-              onClick: () => handleOpen(JobApplicationSections.NEW),
-            }}
-            isMoveNew={showNew}
-          />
+          <>
+            <SelectActionsDropdown
+              isInterview={showInterview}
+              onClickInterview={{
+                onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
+              }}
+              isQualified={showQualified}
+              onClickQualified={{
+                onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
+              }}
+              isDisqualified={showDisqualified}
+              onClickDisqualified={{
+                onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
+              }}
+              onClickMoveNew={{
+                onClick: () => handleOpen(JobApplicationSections.NEW),
+              }}
+              isMoveNew={showNew}
+              onClickScreening={{
+                onClick: () => handleOpen(JobApplicationSections.SCREENING),
+              }}
+              isScreening={showScreening}
+            />
+          </>
         }
       />
     </>
