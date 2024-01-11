@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
       isValid = false;
     } else {
-      if (req.body.preview || data[0]?.status == 'draft') {
+      if ((req.body.preview || data[0]?.status == 'draft') && data[0]?.draft) {
         post = data[0].draft;
       } else {
         post = data[0];

@@ -15,7 +15,7 @@ function SideNavbar() {
     // if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
     //   tempList = tempList.filter((x) => x.route === pageRoutes.SUPPORT);
     // }
-    if (recruiterUser.role.toLowerCase() !== 'admin')
+    if (recruiterUser?.role.toLowerCase() !== 'admin')
       tempList = tempList.filter((x) => x.text !== 'Company Settings');
     return tempList;
   }, [recruiter, recruiterUser]);

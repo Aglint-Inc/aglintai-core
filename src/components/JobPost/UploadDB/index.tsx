@@ -203,13 +203,16 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
         process.env.NEXT_PUBLIC_SUPABASE_URL
       }/storage/v1/object/public/resume-job-post/${data?.path}?t=${new Date().toISOString()}`;
 
-      const response = await axios.post('/api/jobpost/write', {
-        profile: profile,
-        recruiter: recruiter,
-        post: post,
-        fileId: fileId,
-        uploadUrl: uploadUrl,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/write`,
+        {
+          profile: profile,
+          recruiter: recruiter,
+          post: post,
+          fileId: fileId,
+          uploadUrl: uploadUrl,
+        },
+      );
 
       if (response.status === 200 && response.data) {
         if (response.data.applied) {

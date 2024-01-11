@@ -23,10 +23,13 @@ function JobPost() {
       let query = isValidUUID(jobId) ? `id.eq.${jobId}` : `slug.eq.${jobId}`;
 
       (async () => {
-        const response = await axios.post('/api/jobpost/read', {
-          query: query,
-          preview: router.query.preview,
-        });
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/read`,
+          {
+            query: query,
+            preview: router.query.preview,
+          },
+        );
         if (response.data) {
           setPost(response.data.post);
           setValid(response.data.isValid);
