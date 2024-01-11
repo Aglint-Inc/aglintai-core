@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { JobsDashboard } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
@@ -13,6 +14,7 @@ import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
+import { stepObj } from '../SignUpComp/SlideSignup/utils';
 
 const DashboardComp = () => {
   const router = useRouter();
@@ -20,19 +22,26 @@ const DashboardComp = () => {
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
     jobsData.jobs?.filter((job: any) => !job.is_campus),
   );
+  const { recruiter } = useAuthDetails();
 
   useEffect(() => {
-    if (router.isReady) {
-      if (!router.query.status) {
-        router.push(`?status=published`, undefined, {
-          shallow: true,
-        });
-      }
-      if (jobsData?.jobs) {
-        initialFilterJobs();
+    if (recruiter?.name === null) {
+      router.push(`/signup?step=${stepObj.detailsOne}`, undefined, {
+        shallow: true,
+      });
+    } else {
+      if (router.isReady) {
+        if (!router.query.status) {
+          router.push(`?status=published`, undefined, {
+            shallow: true,
+          });
+        }
+        if (jobsData?.jobs) {
+          initialFilterJobs();
+        }
       }
     }
-  }, [router, jobsData]);
+  }, [recruiter, router, jobsData]);
 
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {

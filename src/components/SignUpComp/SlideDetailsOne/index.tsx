@@ -425,14 +425,7 @@ export function FetchCompanyDetails({ setCompanyName }) {
                       },
                     }}
                   />
-                  <Stack direction={'row'} justifyContent={'space-between'}>
-                    <BackButton
-                      onclickProps={{
-                        onClick: () => {
-                          router.back();
-                        },
-                      }}
-                    />
+                  <Stack direction={'row'} justifyContent={'end'}>
                     <AUIButton
                       disabled={loading}
                       onClick={saveRecruiterDetails}

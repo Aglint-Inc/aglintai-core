@@ -1,6 +1,6 @@
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -17,7 +17,7 @@ import { handleEmail, handlePassword, stepObj } from './utils';
 const SlideTwoSignUp = () => {
   const router = useRouter();
   const { setStep, flow } = useSignupDetails();
-  const { setUserDetails, setRecruiter } = useAuthDetails();
+  const { setUserDetails, setRecruiter, userDetails } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
     first_name: '',
     last_name: '',
@@ -189,7 +189,11 @@ const SlideTwoSignUp = () => {
         toast.error(err.message);
       }
   };
-
+  useEffect(() => {
+    if (userDetails?.user) {
+      setStep(stepObj.detailsOne);
+    }
+  }, [userDetails]);
   return (
     <>
       <WelcomeSlider3

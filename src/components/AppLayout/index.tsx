@@ -110,7 +110,9 @@ export default function AppLayout({ children }) {
                   />
                 </Stack>
               ) : (
-                <CompanyList />
+                <Stack direction={'row'} mb={'20px !important'}>
+                  <CompanyList />
+                </Stack>
               )}
               <SideNavbar />
             </Stack>
