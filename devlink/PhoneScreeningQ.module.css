@@ -4,7 +4,6 @@
   margin-bottom: 70px;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
 }
 
 @media screen and (max-width: 991px) {
@@ -15,7 +14,7 @@
 
 .div-block-674 {
   display: flex;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;

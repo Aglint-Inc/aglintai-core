@@ -86,7 +86,7 @@ export function JobDashboardEmpty({
                   className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
-                  {"Create job from scratch"}
+                  {"Add Job"}
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>

@@ -77,27 +77,27 @@ const ProfileDashboard = () => {
       value: recruiterUser.first_name,
       required: true,
       label: 'First name',
-      placeholder: 'John',
+      placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
       value: recruiterUser.last_name,
       required: true,
       label: 'Last name',
-      placeholder: 'Doe',
+      placeholder: 'Enter your last name.',
     },
     phone: {
       ...initialFormValues,
       value: recruiterUser.phone,
       validation: 'phone',
-      label: 'Phone number',
+      label: 'Contact Number',
     },
     role: {
       ...initialFormValues,
       value: recruiterUser.role,
-      label: 'Job title',
+      label: 'Position',
       blocked: true,
-      placeholder: 'Recruiter',
+      placeholder: 'Enter your job title.',
     },
   };
   const initialEmail: EmailFormFields = {
@@ -117,7 +117,8 @@ const ProfileDashboard = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'New password',
+      label: 'Create New Password',
+      placeholder: 'Enter a new password.',
     },
     confirmPassword: {
       ...initialFormValues,
@@ -125,7 +126,8 @@ const ProfileDashboard = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Confirm password',
+      label: 'Repeat New Password',
+      placeholder: 'Re-enter the new password for confirmation.',
     },
   };
   const initialPreferenceFormFields: PreferenceFormFields = {
@@ -191,7 +193,7 @@ const ProfileDashboard = () => {
             }}
           >
             <ButtonPrimaryOutlinedRegular
-              buttonText={'Change password'}
+              buttonText={'Update Password'}
               isDisabled={
                 !passwordChange ||
                 password.password.value === '' ||
@@ -233,7 +235,7 @@ const ProfileDashboard = () => {
             }}
           >
             <ButtonPrimaryOutlinedRegular
-              buttonText={'Save'}
+              buttonText={'Save Changes'}
               isDisabled={!profileChange}
               buttonProps={{
                 onClick: async () => {

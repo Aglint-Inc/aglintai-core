@@ -36,7 +36,7 @@ export function UserProfile({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Profile"}
@@ -62,14 +62,14 @@ export function UserProfile({
             tag="div"
           >
             <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
-              <ButtonOutlinedSmall textLabel="Change profile photo" />
+              <ButtonOutlinedSmall textLabel="Update Profile Picture" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-sm", "color-grey-600")}
               tag="div"
             >
               {
-                "Please upload your profile pic in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
+                "Upload a square profile image (PNG or JPEG). Maximum size: 5 MB."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -86,7 +86,7 @@ export function UserProfile({
               className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
               tag="div"
             >
-              {"User Info"}
+              {"Your Details"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -200,7 +200,7 @@ export function UserProfile({
               className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
               tag="div"
             >
-              {"Change Password"}
+              {"Password Update"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

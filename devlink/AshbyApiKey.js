@@ -137,7 +137,7 @@ export function AshbyApiKey({
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "width-581")} tag="div">
-          {"Copy the API Key and add it to Merge Link"}
+          {"Copy the API Key and paste above."}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "mt-18", "hide")}

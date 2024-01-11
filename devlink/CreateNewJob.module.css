@@ -73,6 +73,10 @@
   height: 28px;
 }
 
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -449,26 +453,33 @@
 .create-job-header-right {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
-.div-block-668 {
+.div-block-558 {
   position: relative;
-  cursor: pointer;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .discard-wrap {
   position: absolute;
-  left: -206px;
-  top: 21px;
+  left: -67px;
+  top: 26px;
   right: auto;
   bottom: auto;
+  z-index: 8;
 
   display: none;
-  width: 260px;
-  padding: 15px;
+  width: 240px;
+  padding: 8px;
   flex-direction: column;
+  align-items: center;
   grid-column-gap: 15px;
   grid-row-gap: 15px;
 
@@ -517,14 +528,6 @@
   margin-top: 5px;
 }
 
-.div-block-558 {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
 .cursor-pointer.grow-job-wishlist {
   display: flex;
   flex-direction: row;
@@ -532,6 +535,13 @@
   flex: 0 0 auto;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.cursor-pointer.discard-job {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
 }
 
 .text-underline {
@@ -549,7 +559,7 @@
 }
 
 .ml-12 {
-  margin-left: 12px;
+  margin-left: 8px;
 }
 
 .div-block-503 {

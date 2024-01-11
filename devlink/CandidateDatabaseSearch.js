@@ -34,10 +34,7 @@ export function CandidateDatabaseSearch({
         className={_utils.cx(_styles, "job-header-empty", "beta-flex")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Candidate Database"}
         </_Builtin.Block>
         <BetaComp />

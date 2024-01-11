@@ -44,7 +44,7 @@ export function CreateJob({
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Create new job from scratch"}
+          {"Add Job"}
         </_Builtin.Block>
       </_Builtin.Block>
       {isLeverVisible ? (
@@ -67,7 +67,7 @@ export function CreateJob({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import jobs from lever"}
+              {"Import jobs from Lever"}
             </_Builtin.Block>
             {isLeverConnected ? (
               <_Builtin.Block
@@ -114,7 +114,7 @@ export function CreateJob({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import from greenhouse"}
+              {"Import from Greenhouse"}
             </_Builtin.Block>
             {isGreenhouseConnected ? (
               <_Builtin.Block
@@ -164,7 +164,7 @@ export function CreateJob({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Import jobs from ashby"}
+              {"Import jobs from Ashby"}
             </_Builtin.Block>
             {isAshbyConnected ? (
               <_Builtin.Block

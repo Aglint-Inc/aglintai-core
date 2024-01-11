@@ -37,7 +37,7 @@ export function JobEmptyState({
             )}
             {...onClickHere}
           >
-            {"create a new job"}
+            {"Add Job"}
           </_Builtin.Span>
         </_Builtin.Block>
       </_Builtin.Block>
