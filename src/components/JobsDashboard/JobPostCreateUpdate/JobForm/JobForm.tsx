@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
-import posthog from 'posthog-js'
+import posthog from 'posthog-js';
 
 import { CloseDeleteJob, CloseJobButton, CreateNewJob } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
@@ -245,7 +245,7 @@ function JobForm() {
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs');
       toast.error('Deleted Draft job SuccessFully');
-      posthog.capture("Deleted Draft job")
+      posthog.capture('Deleted Draft job');
     } catch (err) {
       toast.error(API_FAIL_MSG);
     }
@@ -319,6 +319,7 @@ function JobForm() {
               )}?preview=true`,
               '_blank',
             );
+            posthog.capture('Preview Job Post clicked');
           },
         }}
         slotDisclaimerDetails={
@@ -381,26 +382,31 @@ function JobForm() {
         onClickEmailTemplates={{
           onClick: () => {
             changeSlide('templates');
+            posthog.capture('Email Template Flow Button clicked');
           },
         }}
         onClickDetails={{
           onClick: () => {
             changeSlide('details');
+            posthog.capture('Details Flow Button clicked');
           },
         }}
         onClickScoreSetting={{
           onClick: () => {
             changeSlide('resumeScore');
+            posthog.capture('Profile Score Flow Button clicked');
           },
         }}
         onClickScreeningQuestions={{
           onClick: () => {
             changeSlide('screening');
+            posthog.capture('Screening Questions Flow Button clicked');
           },
         }}
         onClickWorkflows={{
           onClick: () => {
             changeSlide('workflow');
+            posthog.capture('Workflow Flow Button clicked');
           },
         }}
         onClickBack={{

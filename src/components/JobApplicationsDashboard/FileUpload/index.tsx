@@ -3,6 +3,7 @@ import { Paper, Stack, Tooltip, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import posthog from 'posthog-js';
 
 import { ImportResume, LoaderSvg } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -52,7 +53,10 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     setLoading(false);
     setSelectedFile([]);
     setOpenSidePanel(false);
-    if (confirmation) await handleJobApplicationRefresh();
+    if (confirmation) {
+      await handleJobApplicationRefresh();
+      posthog.capture('ADD candidates using resume');
+    }
   };
 
   return (

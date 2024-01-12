@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import posthog from 'posthog-js';
 
 import {
   AtsCard,
@@ -145,6 +146,7 @@ export function GreenhouseModal() {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',
         );
+        posthog.capture('GreenHouse Import Error');
         handleClose();
       }
     } catch (error) {
@@ -178,6 +180,7 @@ export function GreenhouseModal() {
           setRecruiter(responseRec.data[0]);
           setPostings(response.data);
           setInitialFetch(false);
+          posthog.capture('Green House Data Fetched');
           setTimeout(() => {
             setIntegration((prev) => ({
               ...prev,
@@ -294,6 +297,7 @@ export function GreenhouseModal() {
               onClickImport={{
                 onClick: () => {
                   importGreenhouse();
+                  posthog.capture('GreenHouse Jobs successfully imported');
                 },
               }}
               isImportDisable={selectedGreenhousePostings.length === 0}

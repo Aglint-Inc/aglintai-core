@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import React from 'react';
+import posthog from 'posthog-js';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
@@ -104,6 +105,7 @@ const ApplicationCard = ({
       appliedDate={creationDate}
       onclickCandidate={{
         onClick: () => {
+          posthog.capture('candidate card clicked');
           handleOpenDetails();
         },
       }}

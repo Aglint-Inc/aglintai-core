@@ -4,6 +4,7 @@
 import { Stack, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import posthog from 'posthog-js'
 
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -168,6 +169,7 @@ const ImportManualCandidates = () => {
         setOpenImportCandidates(false);
         setApplicant(initialFormFields);
         await handleJobApplicationRefresh();
+        posthog.capture("ADDED candidates manually")
       }
       setLoading(false);
     } else {

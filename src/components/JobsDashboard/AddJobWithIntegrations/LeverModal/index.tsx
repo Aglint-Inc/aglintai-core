@@ -3,6 +3,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import posthog from 'posthog-js';
 
 import {
   AtsCard,
@@ -123,6 +124,7 @@ export function LeverModalComp() {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',
         );
+        posthog.capture('Error Importing Lever Jobs');
         handleClose();
       }
     } catch (error) {
@@ -155,6 +157,7 @@ export function LeverModalComp() {
           setRecruiter(responseRec.data[0]);
           setLeverPostings(response.data.data);
           setInitialFetch(false);
+          posthog.capture('Lever Data Fetched');
           setTimeout(() => {
             setIntegration((prev) => ({
               ...prev,
@@ -257,6 +260,7 @@ export function LeverModalComp() {
               onClickImport={{
                 onClick: () => {
                   importLever();
+                  posthog.capture('Lever Jobs successfully imported');
                 },
               }}
               isImportDisable={selectedLeverPostings.length === 0}

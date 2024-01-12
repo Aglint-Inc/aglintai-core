@@ -14,7 +14,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import posthog from 'posthog-js'
+import posthog from 'posthog-js';
 
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
@@ -172,7 +172,7 @@ const JobApplicationComponent = () => {
         onClickEditJobs={{
           onClick: () => {
             router.push(`/jobs/edit?job_id=${job.id}`);
-            posthog.capture("Edit Job Details clicked")
+            posthog.capture('Edit Job Details clicked');
           },
         }}
         isPreviewVisible={true}
@@ -216,7 +216,12 @@ const JobApplicationComponent = () => {
         onclickHeaderJobs={{
           href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}`,
         }}
-        onclickAddCandidates={{ onClick: () => {setOpenImportCandidates(true),posthog.capture("ADD Candidates Clicked")} }}
+        onclickAddCandidates={{
+          onClick: () => {
+            setOpenImportCandidates(true);
+            posthog.capture('ADD Candidates Clicked');
+          },
+        }}
         slotTable={
           <ApplicationTable
             detailedView={detailedView}
@@ -528,7 +533,12 @@ const NewJobFilterBlock = ({
         {checkList.size === 0 ? (
           <JobDetailsFilterBlock
             onclickAllApplicants={{ onClick: () => setDetailedView(true) }}
-            onclickTopApplicants={{ onClick: () => setDetailedView(false) }}
+            onclickTopApplicants={{
+              onClick: () => {
+                setDetailedView(false);
+                posthog.capture('Expanded Analysis clicked');
+              },
+            }}
             isAllApplicants={detailedView}
             isTopApplicants={!detailedView}
             slotFilter={

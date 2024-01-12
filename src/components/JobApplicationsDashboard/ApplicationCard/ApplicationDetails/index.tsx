@@ -4,6 +4,7 @@ import { Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
+import posthog from 'posthog-js';
 
 import {
   CandidateDetails,
@@ -98,7 +99,13 @@ const ApplicationDetails = ({
   };
 
   const candidateImage = applications ? (
-    <Stack onClick={() => copyAppId()} style={{ cursor: 'pointer' }}>
+    <Stack
+      onClick={() => {
+        copyAppId();
+        posthog.capture('Application ID copied');
+      }}
+      style={{ cursor: 'pointer' }}
+    >
       <CandidateAvatar application={applications} fontSize={12} />
     </Stack>
   ) : (
@@ -701,6 +708,7 @@ export const NewResumeScoreDetails = ({
       onClickViewResume={{
         onClick: () => {
           setOpenResume(true);
+          posthog.capture('View Resume Clicked');
         },
       }}
       onClickDownloadResume={{
@@ -776,6 +784,7 @@ const fetchFile = async (applications: JobApplication) => {
         applications.candidates.last_name
       }_Resume${ext ?? '.pdf'}`,
     );
+    posthog.capture('Download Resume Clicked');
     document.body.appendChild(link);
     link.click();
     window.URL.revokeObjectURL(url);
