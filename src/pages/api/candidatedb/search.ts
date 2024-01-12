@@ -20,7 +20,11 @@ export default async function handler(
   };
 
   try {
-    const response = await axios.post(apiUrl, requestData, { headers });
+    const response = await axios.post(
+      apiUrl,
+      { api_key: 'AMw7kom6e0a7EUhSuLJF4A', ...requestData },
+      { headers },
+    );
 
     return res.status(response.status).json(response.data);
   } catch (error) {

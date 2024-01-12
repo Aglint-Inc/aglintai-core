@@ -83,7 +83,8 @@
     "tiptap": "^1.32.2",
     "uuid": "^9.0.1",
     "vercel-toast": "^1.8.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
