@@ -6,6 +6,7 @@ import { JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import posthog from 'posthog-js'
 
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import JobsList from './JobsList';
@@ -15,6 +16,7 @@ import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
+
 
 const DashboardComp = () => {
   const router = useRouter();
@@ -84,6 +86,7 @@ const DashboardComp = () => {
           {jobsData?.jobs?.filter((job: any) => !job.is_campus)?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
+                posthog.capture("ADD New Job Button Clicked"),
                 router.push('/jobs/new?flow=manual');
               }}
               heading={'Jobs'}

@@ -2,6 +2,7 @@ import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import posthog from 'posthog-js'
 
 import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
@@ -123,7 +124,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }
                 onClickCard={{
                   onClick: () => {
-                    router.push(`${pageRoutes.JOBS}/${job.id}`);
+                    router.push(`${pageRoutes.JOBS}/${job.id}`),
+                    posthog.capture("Job Card Clicked");
                   },
                 }}
               />

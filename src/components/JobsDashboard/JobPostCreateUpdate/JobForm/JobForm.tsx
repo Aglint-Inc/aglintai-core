@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
+import posthog from 'posthog-js'
 
 import { CloseDeleteJob, CloseJobButton, CreateNewJob } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
@@ -149,7 +150,7 @@ function JobForm() {
       ) as FormJobType['interviewConfig'];
 
       if (formError.aiQnGen > 0) {
-        toast.error('Please wait till qusetions get generated');
+        toast.error('Please wait till questions get generated');
         return false;
       }
 
@@ -244,6 +245,7 @@ function JobForm() {
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs');
       toast.error('Deleted Draft job SuccessFully');
+      posthog.capture("Deleted Draft job")
     } catch (err) {
       toast.error(API_FAIL_MSG);
     }

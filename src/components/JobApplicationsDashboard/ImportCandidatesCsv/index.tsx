@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
+import posthog from 'posthog-js'
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -77,6 +78,7 @@ function ImportCandidatesCSV() {
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
+      posthog.capture("Candidates added using CSV")
       setIsLoading(true);
       const file = acceptedFiles.map((file) => Object.assign(file))[0];
       const reader = new FileReader();
@@ -98,6 +100,7 @@ function ImportCandidatesCSV() {
           if (headers?.length) {
             if (data.length === 0) {
               toast.error('Candidates are not in CSV file😑');
+              posthog.capture("Candidates imported using CSV/Candidates are not in CSV file")
               setIsLoading(false);
               return;
             }
@@ -113,6 +116,7 @@ function ImportCandidatesCSV() {
               setbulkImportdata(data);
             } else {
               toast.error('Invalid header😑');
+              posthog.capture("Candidates imported using CSV/Invalid header")
               // console.log('invalid header');
             }
           }
@@ -167,6 +171,7 @@ function ImportCandidatesCSV() {
               <AUIButton
                 onClick={async () => {
                   await createCandidates(bulkImportdata);
+                  posthog.capture("Candidates imported successfully using CSV Import")
                 }}
               >
                 Import

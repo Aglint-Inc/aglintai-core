@@ -1,4 +1,5 @@
 import { Dialog } from '@mui/material';
+import posthog from 'posthog-js'
 
 import { JobDashboardEmpty } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -60,6 +61,7 @@ export default function EmptyJobDashboard({
         isSelectTitleVisible={true}
         onClickRequestIntegration={{
           onClick: () => {
+            posthog.capture("Request New Integration Button Clicked")
             window.open(
               `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
                 'Aglint : Request ATS Integration',
@@ -79,6 +81,7 @@ Thank you,
         onClickGreenHouse={{
           onClick: () => {
             if (!recruiter.greenhouse_key) {
+              posthog.capture("Green House Button Clicked")
               setIntegration((prev) => ({
                 ...prev,
                 greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.API },
@@ -97,6 +100,7 @@ Thank you,
         onClickAshby={{
           onClick: () => {
             if (!recruiter.ashby_key) {
+              posthog.capture("Ashby Button Clicked")
               setIntegration((prev) => ({
                 ...prev,
                 ashby: { open: true, step: STATE_ASHBY_DIALOG.API },
@@ -115,6 +119,7 @@ Thank you,
         onClickLever={{
           onClick: () => {
             if (!recruiter.lever_key) {
+              posthog.capture("Lever Button Clicked")
               setIntegration((prev) => ({
                 ...prev,
                 lever: { open: true, step: STATE_LEVER_DIALOG.API },
