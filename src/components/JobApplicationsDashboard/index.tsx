@@ -219,7 +219,7 @@ const JobApplicationComponent = () => {
         onclickAddCandidates={{
           onClick: () => {
             setOpenImportCandidates(true);
-            posthog.capture('ADD Candidates Clicked');
+            posthog.capture('Import Candidates Clicked');
           },
         }}
         slotTable={
