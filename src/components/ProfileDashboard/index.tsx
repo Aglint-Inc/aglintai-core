@@ -6,9 +6,17 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Autocomplete, Dialog, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import { ProfileEmailPop, UserProfile } from '@/devlink';
+import {
+  NavSublink,
+  ProfileEmailPop,
+  UserChangeEmail,
+  UserDetails,
+  UserPasswordChange,
+  UserProfile,
+} from '@/devlink';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
@@ -57,6 +65,7 @@ const ProfileDashboard = () => {
     handleUpdatePassword,
   } = useAuthDetails();
   const userMail = userDetails.user.email;
+  const router = useRouter();
   const initialFormValues: FormValues = {
     value: null,
     label: null,
@@ -130,25 +139,8 @@ const ProfileDashboard = () => {
       placeholder: 'Re-enter the new password for confirmation.',
     },
   };
-  const initialPreferenceFormFields: PreferenceFormFields = {
-    language: {
-      ...initialFormValues,
-      value: '',
-      label: 'Language',
-      validation: 'string',
-      options: ['English', 'Spanish'],
-    },
-    timezone: {
-      ...initialFormValues,
-      value: '',
-      label: 'Timezone',
-      validation: 'string',
-      options: ['IST', 'GMT'],
-    },
-  };
 
   const [profileChange, setProfileChange] = React.useState(false);
-  const [preferenceChange, setPreferenceChange] = React.useState(false);
   const [loading, setLoading] = React.useState({
     profile: false,
     preferences: false,
@@ -162,137 +154,181 @@ const ProfileDashboard = () => {
   const [email, setEmail] = React.useState(initialEmail);
   const [password, setPassword] = React.useState(initialPassword);
   const [passwordChange, setPasswordChange] = React.useState(false);
-  const [preferences, setPreferences] = React.useState(
-    initialPreferenceFormFields,
-  );
 
+  let currTab: 'User Detail' | 'Change Email' | 'Change password' =
+    'User Detail';
+  if (router.query?.update === 'Change Email') {
+    currTab = 'Change Email';
+  } else if (router.query?.update === 'Change password') {
+    currTab = 'Change password';
+  }
   return (
     <Stack>
       <UserProfile
-        slotUserImage={<ProfileImage />}
-        slotUserForm={
-          <ProfileForms
-            profile={profile}
-            setProfile={setProfile}
-            setChanges={() => setProfileChange(true)}
-          />
-        }
-        slotEmail={<ProfileForms profile={email} setProfile={setEmail} />}
-        slotPassword={
-          <ProfileForms
-            profile={password}
-            setProfile={setPassword}
-            setChanges={() => setPasswordChange(true)}
-          />
-        }
-        slotSavePassword={
-          <Stack
-            style={{
-              pointerEvents: loading.password ? 'none' : 'auto',
-              zIndex: 0,
-            }}
-          >
-            <ButtonPrimaryOutlinedRegular
-              buttonText={'Update Password'}
-              isDisabled={
-                !passwordChange ||
-                password.password.value === '' ||
-                password.confirmPassword.value === ''
-              }
-              buttonProps={{
-                onClick: async () => {
-                  setLoading((prev) => {
-                    return { ...prev, profile: true };
-                  });
-                  const confirmation = await handleSubmitPassword(
-                    password,
-                    setPassword,
-                    handleUpdatePassword,
-                  );
-                  if (confirmation) {
-                    setPasswordChange(true);
-                    setPassword(initialPassword);
+        slotInfo={
+          <>
+            {currTab === 'User Detail' && (
+              <UserDetails
+                slotUserImage={<ProfileImage />}
+                slotUserForm={
+                  <>
+                    <ProfileForms
+                      profile={profile}
+                      setProfile={setProfile}
+                      setChanges={() => setProfileChange(true)}
+                    />
+                  </>
+                }
+                slotUserInfoBtn={
+                  <>
+                    <Stack
+                      style={{
+                        position: 'relative',
+                        pointerEvents: loading.profile ? 'none' : 'auto',
+                        zIndex: 0,
+                      }}
+                    >
+                      <ButtonPrimaryOutlinedRegular
+                        buttonText={'Save Changes'}
+                        isDisabled={!profileChange}
+                        buttonProps={{
+                          onClick: async () => {
+                            setLoading((prev) => {
+                              return { ...prev, password: true };
+                            });
+                            const confirmation = await handleSubmit(
+                              profile,
+                              setProfile,
+                              handleUpdateProfile,
+                              recruiterUser,
+                            );
+                            if (confirmation) setProfileChange(false);
+                            setLoading((prev) => {
+                              return { ...prev, profile: false };
+                            });
+                          },
+                        }}
+                      />
+                    </Stack>
+                  </>
+                }
+                onClickProfilePhotoChange={{
+                  onClick: () => {
+                    document.getElementById('image-upload').click();
+                  },
+                }}
+              />
+            )}
+            {currTab === 'Change Email' && (
+              <>
+                <UserChangeEmail
+                  onClickEmailChange={{
+                    onClick: () => {
+                      document
+                        .getElementById('job-profile-change-email')
+                        .click();
+                    },
+                  }}
+                  slotEmail={
+                    <ProfileForms
+                      profile={email}
+                      setProfile={setEmail}
+                      setChanges={() => setPasswordChange(true)}
+                    />
                   }
-                  setLoading((prev) => {
-                    return { ...prev, password: false };
-                  });
+                />
+              </>
+            )}
+            <>
+              {currTab === 'Change password' && (
+                <UserPasswordChange
+                  slotPassword={
+                    <>
+                      <ProfileForms
+                        profile={password}
+                        setProfile={setPassword}
+                        setChanges={() => setPasswordChange(true)}
+                      />
+                    </>
+                  }
+                  slotSavePassword={
+                    <>
+                      <Stack
+                        style={{
+                          pointerEvents: loading.password ? 'none' : 'auto',
+                          zIndex: 0,
+                        }}
+                      >
+                        <ButtonPrimaryOutlinedRegular
+                          buttonText={'Update Password'}
+                          isDisabled={
+                            !passwordChange ||
+                            password.password.value === '' ||
+                            password.confirmPassword.value === ''
+                          }
+                          buttonProps={{
+                            onClick: async () => {
+                              setLoading((prev) => {
+                                return { ...prev, profile: true };
+                              });
+                              const confirmation = await handleSubmitPassword(
+                                password,
+                                setPassword,
+                                handleUpdatePassword,
+                              );
+                              if (confirmation) {
+                                setPasswordChange(true);
+                                setPassword(initialPassword);
+                              }
+                              setLoading((prev) => {
+                                return { ...prev, password: false };
+                              });
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </>
+                  }
+                />
+              )}
+            </>
+          </>
+        }
+        // slotPreferenceForm={<>fjerknferjkn</>}
+        slotNavSublink={
+          <>
+            <NavSublink
+              isActive={currTab === 'User Detail'}
+              onClickNav={{
+                onClick: () => {
+                  router.query.update = 'User Detail';
+                  router.push(router);
                 },
               }}
+              textLink='User Detail'
             />
-          </Stack>
-        }
-        onClickProfilePhotoChange={{
-          onClick: () => {
-            document.getElementById('image-upload').click();
-          },
-        }}
-        slotUserInfoBtn={
-          <Stack
-            style={{
-              position: 'relative',
-              pointerEvents: loading.profile ? 'none' : 'auto',
-              zIndex: 0,
-            }}
-          >
-            <ButtonPrimaryOutlinedRegular
-              buttonText={'Save Changes'}
-              isDisabled={!profileChange}
-              buttonProps={{
-                onClick: async () => {
-                  setLoading((prev) => {
-                    return { ...prev, password: true };
-                  });
-                  const confirmation = await handleSubmit(
-                    profile,
-                    setProfile,
-                    handleUpdateProfile,
-                    recruiterUser,
-                  );
-                  if (confirmation) setProfileChange(false);
-                  setLoading((prev) => {
-                    return { ...prev, profile: false };
-                  });
+            <NavSublink
+              isActive={currTab === 'Change Email'}
+              onClickNav={{
+                onClick: () => {
+                  router.query.update = 'Change Email';
+                  router.push(router);
                 },
               }}
+              textLink='Change Email'
             />
-          </Stack>
-        }
-        slotPreferencesBtn={
-          <Stack
-            style={{
-              position: 'relative',
-              pointerEvents: loading.preferences ? 'none' : 'auto',
-              zIndex: 0,
-            }}
-          >
-            <ButtonPrimaryOutlinedRegular
-              buttonText={'Save'}
-              isDisabled={!preferenceChange}
-              buttonProps={{
-                onClick: async () => {
-                  setLoading((prev) => {
-                    return { ...prev, preferences: true };
-                  });
-                  const confirmation = await handleSubmit(
-                    preferences,
-                    setPreferences,
-                    handleUpdateProfile,
-                    recruiterUser,
-                  );
-                  if (confirmation) setPreferenceChange(false);
-                  setLoading((prev) => {
-                    return { ...prev, preferences: false };
-                  });
+            <NavSublink
+              isActive={currTab === 'Change password'}
+              onClickNav={{
+                onClick: () => {
+                  router.query.update = 'Change password';
+                  router.push(router);
                 },
               }}
+              textLink='Change Password'
             />
-          </Stack>
+          </>
         }
-        onClickEmailChange={{
-          onClick: () => {
-            document.getElementById('job-profile-change-email').click();
-          },
-        }}
       />
     </Stack>
   );

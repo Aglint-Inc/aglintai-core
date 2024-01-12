@@ -1,5 +1,6 @@
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
 import { RecLoginPage } from '@/devlink2';
@@ -8,7 +9,6 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details } from '../SignUpComp/SlideSignup/types';
-import posthog from 'posthog-js'
 
 function Login() {
   const router = useRouter();
@@ -119,7 +119,7 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
-        posthog.identify(details.email)
+        posthog.identify(details.email);
         router.push(pageRoutes.JOBS);
       } else {
         setErrorCheck({

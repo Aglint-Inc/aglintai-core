@@ -13,4 +13,7 @@ declare function CandidateDatabaseSearch(props: {
   onClickSearch?: Types.Devlink.RuntimeProps;
   slotLottieSearch?: Types.Devlink.Slot;
   textCandidateCount?: React.ReactNode;
+  isSearchInAglintVisible?: Types.Visibility.VisibilityConditions;
+  isSearchInAllVisible?: Types.Visibility.VisibilityConditions;
+  slotNavSublink?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -6,12 +6,14 @@ import {
   CandidateDatabaseSearch,
   CandidateHistoryCard,
   ClearHistory,
+  NavSublink,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -126,7 +128,37 @@ function CandidateSearchHistory() {
   return (
     <>
       <CandidateDatabaseSearch
+        isSearchInAglintVisible={false}
+        isSearchInAllVisible={true}
         textCandidateCount={candidatesCount}
+        slotNavSublink={
+          <>
+            <NavSublink
+              textLink='Aglint DB'
+              isActive={router.pathname === pageRoutes.MYCANDIDATES}
+              onClickNav={{
+                onClick: () => {
+                  router.push(pageRoutes.MYCANDIDATES);
+                },
+              }}
+            />
+            <NavSublink
+              textLink='My Candidates'
+              isActive={router.pathname === pageRoutes.AGLINTCANDIDATES}
+              onClickNav={{
+                onClick: () => {
+                  router.push(pageRoutes.AGLINTCANDIDATES);
+                },
+              }}
+            />
+            {/* <NavSublink
+              textLink='All Bookmarks'
+              isActive={true}
+              onClickNav={{ onClick: () => {} }}
+            /> */}
+          </>
+        }
+        // onClickClearHistory={}
         slotInputSearch={
           <>
             <UITextField

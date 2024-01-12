@@ -32,7 +32,7 @@ export default function AppLayout({ children }) {
       if (
         router.pathname === pageRoutes.JOBS ||
         router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATES ||
+        router.pathname === pageRoutes.MYCANDIDATES ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
         router.pathname === pageRoutes.SETTINGS ||
         router.pathname === pageRoutes.PROFILE
@@ -53,7 +53,7 @@ export default function AppLayout({ children }) {
         setExpand(false);
       }
       if (
-        router.pathname === pageRoutes.CANDIDATES ||
+        router.pathname === pageRoutes.MYCANDIDATES ||
         router.pathname === pageRoutes.NOTIFICATIONS ||
         router.pathname === pageRoutes.COMPANY
       ) {

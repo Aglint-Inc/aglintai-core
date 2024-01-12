@@ -1,0 +1,22 @@
+.nav-sub-link-menu {
+  position: relative;
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+
+.bg-active-link {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 10px;
+
+  background-color: #f8f9f9;
+}
+
+.nav-sublink-text {
+  position: relative;
+  font-weight: 600;
+}

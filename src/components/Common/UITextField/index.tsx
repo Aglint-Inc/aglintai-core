@@ -111,7 +111,7 @@ const UITextField = React.forwardRef(
         gap={'5px'}
       >
         {label && (
-          <UITypography type={labelSize} color={labelColor} fontBold='normal'>
+          <UITypography type={labelSize} color={labelColor} fontBold='default'>
             {label}
             {required && <sup>*</sup>}
           </UITypography>
