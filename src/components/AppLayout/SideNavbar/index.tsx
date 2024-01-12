@@ -36,7 +36,7 @@ function SideNavbar() {
             color={'white.700'}
             borderRadius={'10px'}
             bgcolor={
-              router.pathname === item.route && 'rgba(233, 235, 237, 0.5)'
+              router.pathname.includes(item.route) && 'rgba(233, 235, 237, 0.5)'
             }
             sx={{
               '&:hover': {

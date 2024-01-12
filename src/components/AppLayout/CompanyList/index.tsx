@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CompanyProfileHeader, RecSideNavProfileBlock } from '@/devlink2';
+import { CompanyProfileHeader, CompanySwitchDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { SocialsType } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -12,13 +12,10 @@ import AddNewCompany from './AddNewCompany';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 function CompanyList() {
   const router = useRouter();
-  const { recruiterUser, userDetails, setRecruiter } = useAuthDetails();
+  const { userDetails, setRecruiter, recruiter } = useAuthDetails();
   const [allCompanies, setAllCompanies] = useState([]);
   async function getCompanies() {
-    const { data, error } = await supabase
-      .from('recruiter')
-      .select()
-      .eq('recruiter_user_id', recruiterUser?.user_id);
+    const { data, error } = await supabase.from('recruiter').select();
     if (!error) {
       const activeCompany = data.filter((ele) => ele.recruiter_active);
       setRecruiter({
@@ -34,6 +31,7 @@ function CompanyList() {
     }
   }, [userDetails]);
 
+  const [openCompanyList, setOpenCompanyList] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
 
   async function handleClick(ele: { id: any }) {
@@ -70,14 +68,30 @@ function CompanyList() {
           setOpenSideBar={setOpenSideBar}
         />
       </SidePanelDrawer>
-      <RecSideNavProfileBlock
+
+      <CompanySwitchDropdown
+        slotCurrentCompany={
+          <Avatar
+            src={recruiter.logo}
+            variant='rounded'
+            sx={{
+              width: '100%',
+              height: '100%',
+              background: '#fff',
+              '& .MuiAvatar-img ': {
+                objectFit: 'contain',
+              },
+            }}
+          />
+        }
+        isDropdownBodyVisible={openCompanyList}
         slotCompanyList={[...allCompanies]
           .sort((a, b) =>
             a.recruiter_active === b.recruiter_active
               ? 0
               : a.recruiter_active
-              ? -1
-              : 1,
+                ? -1
+                : 1,
           )
           .map((ele, i) => {
             if (ele.name)
@@ -101,9 +115,7 @@ function CompanyList() {
                   onclickCompany={{
                     onClick: () => {
                       if (i === 0) {
-                        document
-                          .getElementById('company-switch-arrows')
-                          .click();
+                        setOpenCompanyList(false);
                         router.push(pageRoutes.COMPANY);
                       } else {
                         handleClick(ele);
@@ -114,17 +126,16 @@ function CompanyList() {
                 />
               );
           })}
-          onclickAdd={{
-            onClick: () => {
-              setOpenSideBar(true);
-            },
-          }}
-          backdropProps={{
-            style:{
-              'height': 'calc(100% + 32px)',
-              'width':'calc(100% + 16px)',
-            }
-          }}
+        onclickAddButton={{
+          onClick: () => {
+            setOpenSideBar(true);
+          },
+        }}
+        onclickDropdown={{
+          onClick: () => {
+            setOpenCompanyList(true);
+          },
+        }}
       />
     </>
   );

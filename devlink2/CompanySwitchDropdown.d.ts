@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function RecSideNavProfileBlock(props: {
+declare function CompanySwitchDropdown(props: {
   as?: React.ElementType;
-  slotCompanyList?: Types.Devlink.Slot;
-  onclickAdd?: Types.Devlink.RuntimeProps;
-  backdropProps?: Types.Devlink.RuntimeProps;
+  slotCurrentCompany?: Types.Devlink.Slot;
   onclickDropdown?: Types.Devlink.RuntimeProps;
   isDropdownBodyVisible?: Types.Visibility.VisibilityConditions;
-  slotSelectedCompanyLogo?: Types.Devlink.Slot;
+  slotCompanyList?: Types.Devlink.Slot;
+  onclickAddButton?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

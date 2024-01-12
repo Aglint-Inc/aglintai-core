@@ -1,9 +1,7 @@
 .comp-switch-dropdown {
   position: relative;
   z-index: 5;
-
   display: flex;
-  margin-bottom: 52px;
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -18,10 +16,10 @@
 
 .cs-company-image {
   overflow: hidden;
-  width: 30px;
-  height: 30px;
-  min-height: 30px;
-  min-width: 30px;
+  width: 50px;
+  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
   padding: 4px;
 
   border-radius: 6px;
@@ -48,8 +46,8 @@
 
 .cs-company-list-wrapper {
   display: flex;
-  overflow: hidden;
-  width: 90%;
+  width: 240px;
+  min-width: 240px;
   margin-top: 48px;
   padding: 12px 16px;
   flex-direction: column;
@@ -57,6 +55,8 @@
   border-radius: 12px;
 
   background-color: var(--white);
+
+  box-shadow: 3px 3px 20px 0 hsla(0, 0.00%, 0.00%, 0.10);
 }
 
 .cs-company-list {
@@ -82,6 +82,12 @@
 
 .clickable:hover {
   opacity: 0.8;
+}
+
+.cs-add-btn {
+  overflow: hidden;
+  padding: 5px;
+  border-radius: 12px;
 }
 
 .icon-block {
@@ -175,6 +181,27 @@
   height: 40px;
   min-height: 40px;
   min-width: 40px;
+}
+
+.grey-200 {
+  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+}
+
+.icon-block._40x40.cs-add {
+  border-radius: 12px;
+  background-color: var(--grey-200);
+}
+
+.icon-block._50x50 {
+  width: 50px;
+  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
+}
+
+.icon-block._50x50.cs-add {
+  border-radius: 12px;
+  background-color: var(--grey-200);
 }
 
 .svg-icon {

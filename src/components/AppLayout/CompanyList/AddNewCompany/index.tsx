@@ -86,103 +86,155 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
   };
 
   const submitHandler = async () => {
+    setLoading(true);
     if ((await formValidation()) && recruiter?.id) {
-      setLoading(true);
-      await axios
-        .post('/api/crawlwebsite', { url: formatURL(details.company_website) })
-        .then(async (data) => {
-          if (data.status === 200) {
-            if (data.data.linkedIns[0]) {
-              await axios
-                .post('/api/fetchcompany', {
-                  url: data.data.linkedIns[0],
-                })
-                .then(async (res) => {
-                  const company = res.data;
-                  setLogo(company?.logo_url);
-                  setDetails((pre: any) => ({
-                    ...pre,
-
-                    company_website: formatURL(details.company_website),
-                    socials: {
-                      custom: {},
-                      twitter: data.data.twitters[0] || '',
-                      youtube: data.data.youtubes[0] || '',
-                      facebook: data.data.facebooks[0] || '',
-                      linkedin: data.data.linkedIns[0] || '',
-                      instagram: data.data.instagrams[0] || '',
-                    },
-
-                    name: company.company_name || '',
-                    industry: company.industries[0] || '',
-                    employee_size: company.employee_range,
-                    logo: company.logo_url,
-                    office_locations: company.locations || [],
-                    company_overview: company.description || '',
-                    technology_score: extractKeywords(company.specialties),
-                  }));
-                });
-            } else {
-              setLogo('');
-              setDetails((pre: any) => ({
-                ...pre,
-
-                company_website: formatURL(details.company_website),
-                socials: {
-                  custom: {},
-                  twitter: data.data.twitters[0] || '',
-                  youtube: data.data.youtubes[0] || '',
-                  facebook: data.data.facebooks[0] || '',
-                  linkedin: data.data.linkedIns[0] || '',
-                  instagram: data.data.instagrams[0] || '',
-                },
-
-                name: '',
-                industry: '',
-                employee_size: null,
-                logo: '',
-                office_locations: [],
-                company_overview: '',
-                technology_score: [],
-              }));
-            }
-          }
-        });
+      const url = details.company_website.replace(/^https?:\/\//i, '');
+      const { data: companyDetails } = await axios.post(
+        `/api/fetchCompanyDetails`,
+        {
+          domain_name: url,
+        },
+      );
+      setLogo(companyDetails.logo);
+      setDetails((pre: any) => ({
+        ...pre,
+        company_website: details.company_website || '',
+        name: companyDetails.name || '',
+        phone_number: companyDetails.phoneNumber || '',
+        industry: companyDetails.industryMain || '',
+        employee_size: companyDetails.totalEmployees || '',
+        logo: companyDetails.logo || '/',
+        office_locations:
+          [
+            {
+              city: companyDetails.city?.name || '',
+              line1: companyDetails.city?.address || '',
+              line2: '',
+              region: companyDetails.state?.name || '',
+              country: companyDetails.country?.name || '',
+              zipcode: '',
+              full_address:
+                companyDetails.city?.address +
+                  ', ' +
+                  companyDetails.state?.name +
+                  ',' +
+                  companyDetails.city?.name || '',
+              is_headquarter: true,
+            },
+          ] || [],
+        company_overview: companyDetails.description || '',
+        technology_score: companyDetails.technologies || [],
+        socials: {
+          custom: {},
+          twitter: companyDetails.socialNetworks?.twitter || '',
+          youtube: companyDetails.socialNetworks?.youtube || '',
+          facebook: companyDetails.socialNetworks?.facebook || '',
+          linkedin: companyDetails.socialNetworks?.linkedin || '',
+          instagram: companyDetails.socialNetworks?.instagram || '',
+        },
+      }));
       setLoading(false);
     }
   };
 
-  function extractKeywords(inputString) {
-    if (inputString) {
-      // Split the input string into an array of keywords using a comma as the delimiter
-      const keywordsArray = inputString
-        .split(',')
-        .map((keyword) => keyword.trim());
+  // const submitHandler = async () => {
+  //   if ((await formValidation()) && recruiter?.id) {
+  //     setLoading(true);
+  //     await axios
+  //       .post('/api/crawlwebsite', { url: formatURL(details.company_website) })
+  //       .then(async (data) => {
+  //         if (data.status === 200) {
+  //           if (data.data.linkedIns[0]) {
+  //             await axios
+  //               .post('/api/fetchcompany', {
+  //                 url: data.data.linkedIns[0],
+  //               })
+  //               .then(async (res) => {
+  //                 const company = res.data;
+  //                 setLogo(company?.logo_url);
+  //                 setDetails((pre: any) => ({
+  //                   ...pre,
 
-      return keywordsArray;
-    } else {
-      return [];
-    }
-  }
+  //                   company_website: formatURL(details.company_website),
+  //                   socials: {
+  //                     custom: {},
+  //                     twitter: data.data.twitters[0] || '',
+  //                     youtube: data.data.youtubes[0] || '',
+  //                     facebook: data.data.facebooks[0] || '',
+  //                     linkedin: data.data.linkedIns[0] || '',
+  //                     instagram: data.data.instagrams[0] || '',
+  //                   },
 
-  function formatURL(userURL) {
-    // Remove leading and trailing spaces
-    userURL = userURL.trim();
+  //                   name: company.company_name || '',
+  //                   industry: company.industries[0] || '',
+  //                   employee_size: company.employee_range,
+  //                   logo: company.logo_url,
+  //                   office_locations: company.locations || [],
+  //                   company_overview: company.description || '',
+  //                   technology_score: extractKeywords(company.specialties),
+  //                 }));
+  //               });
+  //           } else {
+  //             setLogo('');
+  //             setDetails((pre: any) => ({
+  //               ...pre,
 
-    // Check if the URL starts with "http://" or "https://"
-    if (!userURL.startsWith('http://') && !userURL.startsWith('https://')) {
-      // If not, add "https://"
-      userURL = 'https://' + userURL;
-    }
+  //               company_website: formatURL(details.company_website),
+  //               socials: {
+  //                 custom: {},
+  //                 twitter: data.data.twitters[0] || '',
+  //                 youtube: data.data.youtubes[0] || '',
+  //                 facebook: data.data.facebooks[0] || '',
+  //                 linkedin: data.data.linkedIns[0] || '',
+  //                 instagram: data.data.instagrams[0] || '',
+  //               },
 
-    // Check if the URL contains "www."
-    if (!userURL.includes('www.')) {
-      // If not, add "www."
-      userURL = userURL.replace('https://', 'https://www.');
-    }
+  //               name: '',
+  //               industry: '',
+  //               employee_size: null,
+  //               logo: '',
+  //               office_locations: [],
+  //               company_overview: '',
+  //               technology_score: [],
+  //             }));
+  //           }
+  //         }
+  //       });
+  //     setLoading(false);
+  //   }
+  // };
 
-    return userURL;
-  }
+  // function extractKeywords(inputString) {
+  //   if (inputString) {
+  //     // Split the input string into an array of keywords using a comma as the delimiter
+  //     const keywordsArray = inputString
+  //       .split(',')
+  //       .map((keyword) => keyword.trim());
+
+  //     return keywordsArray;
+  //   } else {
+  //     return [];
+  //   }
+  // }
+
+  // function formatURL(userURL) {
+  //   // Remove leading and trailing spaces
+  //   userURL = userURL.trim();
+
+  //   // Check if the URL starts with "http://" or "https://"
+  //   if (!userURL.startsWith('http://') && !userURL.startsWith('https://')) {
+  //     // If not, add "https://"
+  //     userURL = 'https://' + userURL;
+  //   }
+
+  //   // Check if the URL contains "www."
+  //   if (!userURL.includes('www.')) {
+  //     // If not, add "www."
+  //     userURL = userURL.replace('https://', 'https://www.');
+  //   }
+
+  //   return userURL;
+  // }
   return (
     <Stack width={600}>
       <AddCompany
@@ -363,19 +415,17 @@ function CompanyDetails({
 
   const submitHandler = async () => {
     if (formValidation(details?.name)) {
-      const { error: e1 } = await supabase
-        .from('recruiter')
-        .insert({
-          ...details,
-          logo: logo,
-          phone_number: phone,
-          employee_size: details.employee_size,
-          name: details.name,
-          industry: details.industry,
-          email_template: getInitialEmailTemplate(details.name),
-          recruiter_user_id: recruiterUser.user_id,
-        })
-        .select();
+      const { error: e1 } = await supabase.from('recruiter').insert({
+        ...details,
+        logo: logo,
+        phone_number: phone,
+        employee_size: details.employee_size,
+        name: details.name,
+        industry: details.industry,
+        email_template: getInitialEmailTemplate(details.name),
+        recruiter_user_id: recruiterUser.user_id,
+      });
+
       if (!e1) {
         setOpenSideBar(false);
         getCompanies();
@@ -458,10 +508,10 @@ function CompanyDetails({
           !phone
             ? 'Please enter your phone number.'
             : error.phone.error
-            ? `Invalid phone number. Please use the ${
-                phonePattern?.replaceAll('.', 'x') || 'correct'
-              } format.`
-            : ''
+              ? `Invalid phone number. Please use the ${
+                  phonePattern?.replaceAll('.', 'x') || 'correct'
+                } format.`
+              : ''
         }
       />
       <Stack
