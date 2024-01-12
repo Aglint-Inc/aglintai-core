@@ -50,7 +50,7 @@ export function DeleteDraft({
             {"Cancel"}
           </_Builtin.Block>
           <_Builtin.Block tag="div" {...onClickClear}>
-            <ButtonDangerRegular textLabel="Clear " />
+            <ButtonDangerRegular textLabel="Delete" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

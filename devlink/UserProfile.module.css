@@ -39,6 +39,8 @@
 .rd-main-wrapper.profile-wrappers {
   overflow: visible;
   height: auto;
+  min-height: 100vh;
+  padding-bottom: 0px;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
@@ -367,6 +369,7 @@
 
 .profile-new-layout {
   display: flex;
+  height: 100%;
 }
 
 .new-layout-sublink {
@@ -374,6 +377,7 @@
   width: 216px;
   padding: 20px 10px;
   flex-direction: column;
+  flex: 0 0 auto;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
