@@ -147,7 +147,7 @@ const navList = [
     icon: <NavCd isActive={false} />,
     text: 'Candidates',
     SubComponents: null,
-    route: pageRoutes.MYCANDIDATES,
+    route: pageRoutes.CANDIDATES,
     comingsoon: true,
   },
   // {

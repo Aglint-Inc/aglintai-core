@@ -13,7 +13,6 @@ import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -125,29 +124,39 @@ function CandidateSearchHistory() {
     }
   };
 
+  //Seaarch with API
+  const getCandsFromApi = async () => {
+    //
+  };
+
+  let currentTab: 'my Candidates' | 'aglint candidates' | 'book mark' = router
+    .query.currentTab as any;
+
   return (
     <>
       <CandidateDatabaseSearch
-        isSearchInAglintVisible={false}
-        isSearchInAllVisible={true}
+        isSearchInAglintVisible={currentTab === 'aglint candidates'}
+        isSearchInAllVisible={currentTab === 'my Candidates'}
         textCandidateCount={candidatesCount}
         slotNavSublink={
           <>
             <NavSublink
               textLink='Aglint DB'
-              isActive={router.pathname === pageRoutes.MYCANDIDATES}
+              isActive={currentTab === 'aglint candidates'}
               onClickNav={{
                 onClick: () => {
-                  router.push(pageRoutes.MYCANDIDATES);
+                  router.query.currentTab = 'aglint candidates';
+                  router.push(router);
                 },
               }}
             />
             <NavSublink
               textLink='My Candidates'
-              isActive={router.pathname === pageRoutes.AGLINTCANDIDATES}
+              isActive={currentTab === 'my Candidates'}
               onClickNav={{
                 onClick: () => {
-                  router.push(pageRoutes.AGLINTCANDIDATES);
+                  router.query.currentTab = 'my Candidates';
+                  router.push(router);
                 },
               }}
             />
@@ -233,7 +242,11 @@ function CandidateSearchHistory() {
         }}
         onClickSearch={{
           onClick: () => {
-            getMatchingCandsFromQry();
+            if (currentTab === 'my Candidates') {
+              getMatchingCandsFromQry();
+            } else {
+              getCandsFromApi();
+            }
           },
         }}
         isClearHistoryVisible={history.length > 0}
