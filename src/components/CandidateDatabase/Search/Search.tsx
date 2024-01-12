@@ -249,7 +249,7 @@ const CandidatesSearch = () => {
               unmountOnExit
               translate='yes'
             >
-              {activeCandidate >= 0 && (
+              {activeCandidate >= 0 && candidates.length > 0 && (
                 <SelectedCandidate
                   onClickEmailOutReach={() => {
                     setToggleOutreach(true);
@@ -350,19 +350,31 @@ const CandidatesSearch = () => {
             />
           </Stack>
           <Stack width={'68%'} height={'100vh'} overflow={'scroll'}>
-            <OutReachCtxProvider
-              selcandidate={
-                activeCandidate !== -1
-                  ? candidates[Number(activeCandidate)]
-                  : null
-              }
-            >
-              <EmailOutReach
-                onClose={() => {
-                  setToggleOutreach(false);
-                }}
-              />
-            </OutReachCtxProvider>
+            {activeCandidate >= 0 && candidates.length > 0 && (
+              <OutReachCtxProvider
+                selcandidate={
+                  activeCandidate === -1
+                    ? null
+                    : {
+                        candidateId:
+                          candidates[Number(activeCandidate)].candidate_id,
+                        candOverview:
+                          candidates[Number(activeCandidate)].json_resume
+                            .overview,
+                        email: candidates[Number(activeCandidate)].email,
+                        firstName:
+                          candidates[Number(activeCandidate)].first_name,
+                        lastName: candidates[Number(activeCandidate)].last_name,
+                      }
+                }
+              >
+                <EmailOutReach
+                  onClose={() => {
+                    setToggleOutreach(false);
+                  }}
+                />
+              </OutReachCtxProvider>
+            )}
           </Stack>
         </Stack>
       </Drawer>

@@ -374,9 +374,19 @@ const CandDatabase = () => {
           <Stack width={'68%'} height={'100vh'} overflow={'scroll'}>
             <OutReachCtxProvider
               selcandidate={
-                selectedCandidate !== -1
-                  ? candidates[Number(selectedCandidate)]
-                  : null
+                selectedCandidate === -1
+                  ? null
+                  : {
+                      candidateId:
+                        candidates[Number(selectedCandidate)].candidate_id,
+                      candOverview:
+                        candidates[Number(selectedCandidate)].json_resume
+                          .overview,
+                      email: candidates[Number(selectedCandidate)].email,
+                      firstName:
+                        candidates[Number(selectedCandidate)].first_name,
+                      lastName: candidates[Number(selectedCandidate)].last_name,
+                    }
               }
             >
               <EmailOutReach

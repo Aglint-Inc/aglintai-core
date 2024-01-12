@@ -14,7 +14,6 @@ import toast from '@/src/utils/toast';
 
 import { outReachTemplates, TemplateType } from './seedTemplates';
 import { templateToEmailBody } from './utils';
-import { Candidate } from '../candFilter.type';
 
 export interface OutReachCtxType {
   state: StateType;
@@ -42,6 +41,13 @@ type OutreachedEmail = {
   createdAt: string;
 };
 
+type OutReachCandDetailsType = {
+  candidateId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  candOverview: string;
+};
 // Initial state interface
 export interface StateType {
   candEmailData: CandEmailData | null;
@@ -148,7 +154,7 @@ const OutReachCtxProvider = ({
   children,
   selcandidate,
 }: {
-  selcandidate: Candidate;
+  selcandidate: OutReachCandDetailsType;
   children: React.ReactNode;
 }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -230,7 +236,7 @@ const OutReachCtxProvider = ({
 
   const genEmailTempToemail = async () => {
     try {
-      let email = selcandidate.json_resume.basics?.email ?? selcandidate.email;
+      let email = selcandidate.email;
 
       dispatch({
         type: 'UpdateMultiStates',
@@ -258,10 +264,10 @@ const OutReachCtxProvider = ({
       const emailBodyJson = await handleGenEmail(
         temps[0].templateJson,
         recruiterUser.first_name,
-        selcandidate.first_name + ' ' + selcandidate.last_name,
+        selcandidate.firstName + ' ' + selcandidate.lastName,
         async (command) => {
           const resp = await resolveAiCmd(
-            selcandidate.json_resume.overview,
+            selcandidate.candOverview,
             recruiter.company_overview,
             command,
           );
@@ -301,7 +307,7 @@ const OutReachCtxProvider = ({
         await supabase
           .from('outreached_emails')
           .select()
-          .eq('candidate_id', selcandidate.candidate_id)
+          .eq('candidate_id', selcandidate.candidateId)
           .eq('recruiter_id', recruiter.id),
       ) as OutreachEmailDbType[];
 
@@ -352,10 +358,10 @@ const OutReachCtxProvider = ({
       const emailBodyJson = await handleGenEmail(
         templateJson,
         recruiterUser.first_name,
-        selcandidate.first_name + ' ' + selcandidate.last_name,
+        selcandidate.firstName + ' ' + selcandidate.lastName,
         async (command) => {
           const resp = await resolveAiCmd(
-            selcandidate.json_resume.overview,
+            selcandidate.candOverview,
             recruiter.company_overview,
             command,
           );
@@ -387,7 +393,7 @@ const OutReachCtxProvider = ({
       await supabase
         .from('outreached_emails')
         .insert({
-          candidate_id: selcandidate.candidate_id,
+          candidate_id: selcandidate.candidateId,
           recruiter_id: recruiter.id,
           email: email,
         })
