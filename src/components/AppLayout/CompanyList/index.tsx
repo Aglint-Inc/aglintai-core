@@ -72,7 +72,7 @@ function CompanyList() {
       <CompanySwitchDropdown
         slotCurrentCompany={
           <Avatar
-            src={recruiter.logo}
+            src={recruiter?.logo}
             variant='rounded'
             sx={{
               width: '100%',
