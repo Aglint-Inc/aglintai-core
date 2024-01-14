@@ -24,24 +24,16 @@ const SignUpComp = () => {
   const { step, setStep, setFlow } = useSignupDetails();
 
   useEffect(() => {
-    if (recruiter?.id && router.query.step) hanadleSession();
-  }, [recruiter, router]);
+    if (recruiter?.id) hanadleSession();
+  }, [recruiter]);
 
   const hanadleSession = async () => {
-    if (
-      router.query.step == stepObj.signin ||
-      router.query.step == stepObj.type
-    ) {
-      if (recruiter?.name) {
+    if (router.asPath == `/${stepObj.signup}` || router.asPath==`/${stepObj.signup}?step=type`) {
+      if (recruiter?.id) {
         router.push(pageRoutes.JOBS);
-      } else {
-        router.push(`?step=${stepObj.detailsOne}`, undefined, {
-          shallow: true,
-        });
       }
     }
   };
-
   return (
     <>
       {(step == 'type' || step == stepObj.signup) && (
