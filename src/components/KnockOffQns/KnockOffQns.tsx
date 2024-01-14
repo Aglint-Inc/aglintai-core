@@ -11,10 +11,10 @@ const KnockOffQns = () => {
   const { state } = useScreeningCtx();
 
   let slide;
-  if (state.showStartMessage) {
-    slide = <StartSlide />;
-  } else if (state.showEndMessage) {
+  if (state.showEndMessage) {
     slide = <EndMessage />;
+  } else if (state.showStartMessage) {
+    slide = <StartSlide />;
   } else if (state.currentQn > 0) {
     slide = (
       <PhoneScreeningQn

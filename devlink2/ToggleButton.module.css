@@ -1,0 +1,29 @@
+.toggle-button {
+  display: flex;
+  width: 30px;
+  height: 15px;
+  padding: 3px 3.75px;
+  justify-content: flex-start;
+
+  border-radius: 7.5px;
+
+  background-color: var(--grey-500);
+
+  cursor: pointer;
+}
+
+.toggle-button.active {
+  justify-content: flex-end;
+  background-color: var(--blue-600);
+}
+
+.toggle-dot {
+  width: 9px;
+  height: 9px;
+  min-height: 9px;
+  min-width: 9px;
+
+  border-radius: 50px;
+
+  background-color: var(--white);
+}

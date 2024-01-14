@@ -24,10 +24,10 @@ export function ScrQuestionsWrapper({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-400")}
+              className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
-              {"No Questions added. Add atleast one question."}
+              {"No questions added."}
             </_Builtin.Block>
           </_Builtin.Block>
         )}

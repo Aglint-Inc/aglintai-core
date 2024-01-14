@@ -9,4 +9,7 @@ declare function ScrQuestionDefault(props: {
   isRequired?: Types.Visibility.VisibilityConditions;
   onclickEdit?: Types.Devlink.RuntimeProps;
   isOptionsVisible?: Types.Visibility.VisibilityConditions;
+  slotOptions?: Types.Devlink.Slot;
+  slotDescriptionToggle?: Types.Devlink.Slot;
+  description?: React.ReactNode;
 }): React.JSX.Element;

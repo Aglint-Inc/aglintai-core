@@ -1,8 +1,8 @@
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useState } from 'react';
-import posthog from 'posthog-js'
 
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobs } from '@/src/context/JobsContext';
@@ -53,7 +53,7 @@ const JobPublishButton = () => {
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       await handleUIJobUpdate({ ...job });
       toast.success('Job Published SuccessFully');
-      posthog.capture("Publish Job Button Clicked")
+      posthog.capture('Publish Job Button Clicked');
     } catch (err) {
       toast.error(API_FAIL_MSG);
     } finally {

@@ -18,11 +18,11 @@ export type JsonItemType = {
 };
 
 export type JdJson = {
-  responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description and whether they are a must-have.
-  roles: JsonItemType[]; // Roles mentioned in the job description and whether they are a must-have.
-  requirements: JsonItemType[]; // Requirements mentioned in the job description and whether they are a must-have.
-  skills: JsonItemType[]; // Skills mentioned in roles,reponsibilities and requirements and whether they are a must-have.
-  educations: JsonItemType[]; // Educations mentioned in the job description and whether they are a must-have.
+  roles: JsonItemType[]; // previous roles and number of years.
+  responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description .
+  requirements: JsonItemType[]; // Requirements mentioned in the job description .
+  skills: JsonItemType[]; // Each Skill mentioned in roles, reponsibilities and requirements and whether they are a must-have.
+  educations: JsonItemType[]; // Each Education degree mentioned in the job description .
 };
 `,
     },

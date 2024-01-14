@@ -67,6 +67,8 @@ export type PhoneScreenQuestion = {
   id: string;
   isRequired: boolean;
   question: string;
+  description: string;
+  showDescription: boolean;
   questionLabel: string;
   type: 'multiSelect' | 'singleSelect' | 'shortAnswer';
   options: {
@@ -324,6 +326,10 @@ const initialContextValue: JobsContextType = {
   handleUpdateRevertStatus: (s) => {},
   formWarnings: {
     details: {
+      err: [],
+      title: '',
+    },
+    phoneScreening: {
       err: [],
       title: '',
     },

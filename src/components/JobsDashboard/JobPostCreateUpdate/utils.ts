@@ -3,7 +3,7 @@ import { get, isEmpty } from 'lodash';
 import { JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { FormErrorParams, slideName } from './JobForm/JobForm';
+import { FormErrorParams } from './JobForm/JobForm';
 import {
   FormJobType,
   InterviewParam,
@@ -117,10 +117,15 @@ export const findDisclaimers = (jobForm: FormJobType) => {
       err: [],
       title: '',
     },
+    phoneScreening: {
+      err: [],
+      title: '',
+    },
     screening: {
       err: [],
       title: '',
     },
+
     templates: {
       err: [],
       title: '',
@@ -225,11 +230,15 @@ export const findDisclaimers = (jobForm: FormJobType) => {
 
 export const isWarningsCleared = (warnings: FormErrorParams) => {
   let flag = true;
-  Object.keys(warnings).forEach((key: slideName) => {
+  Object.keys(warnings).forEach((key: JobFormState['currSlide']) => {
     if (warnings[String(key)].err.length > 0) {
       flag = false;
     }
   });
 
   return flag;
+};
+
+export const isEnvProd = () => {
+  return process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com');
 };

@@ -10,7 +10,7 @@ import { NewJobStep1 } from '@/devlink';
 import { useJobForm } from '../JobPostFormProvider';
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';
-const BasicStepOne = ({ formError, setFormError }) => {
+const BasicStepOne = () => {
   const {
     jobForm: { formFields, formType },
     handleUpdateFormFields,
@@ -41,14 +41,11 @@ const BasicStepOne = ({ formError, setFormError }) => {
                   defaultValue={jobTitle}
                   value={jobTitle}
                   onChange={(e) => {
-                    setFormError((p) => ({ ...p, jobTitle: '' }));
                     handleUpdateFormFields({
                       path: 'jobTitle',
                       value: String(e.target.value),
                     });
                   }}
-                  error={Boolean(formError.jobTitle)}
-                  helperText={formError.jobTitle}
                   placeholder='Ex : Software developer'
                 />
               </Grid>
@@ -74,13 +71,10 @@ const BasicStepOne = ({ formError, setFormError }) => {
                       </InputAdornment>
                     ),
                   }}
-                  error={Boolean(formError.company)}
-                  helperText={formError.company}
                   label={'Company'}
                   defaultValue={company}
                   value={company}
                   onChange={(e) => {
-                    setFormError((p) => ({ ...p, company: '' }));
                     handleUpdateFormFields({
                       path: 'company',
                       value: String(e.target.value),
@@ -110,7 +104,6 @@ const BasicStepOne = ({ formError, setFormError }) => {
                   options={defaultDepartments}
                   onChange={(event: any, newValue) => {
                     if (!newValue) return;
-                    setFormError((p) => ({ ...p, department: '' }));
                     handleUpdateFormFields({
                       path: 'department',
                       value: get(newValue, 'value', event.target.value),
@@ -122,14 +115,11 @@ const BasicStepOne = ({ formError, setFormError }) => {
                       label='Department '
                       placeholder='Ex : Marketing'
                       onChange={(e) => {
-                        setFormError((p) => ({ ...p, department: '' }));
                         handleUpdateFormFields({
                           path: 'department',
                           value: String(e.target.value),
                         });
                       }}
-                      error={Boolean(formError.department)}
-                      helperText={formError.department}
                     />
                   )}
                   defaultValue={{
@@ -145,7 +135,6 @@ const BasicStepOne = ({ formError, setFormError }) => {
                   options={defaultAddress}
                   onChange={(event: any, newValue) => {
                     if (!newValue) return;
-                    setFormError((p) => ({ ...p, location: '' }));
                     handleUpdateFormFields({
                       path: 'jobLocation',
                       value: get(newValue, 'value', event.target.value),
@@ -157,14 +146,11 @@ const BasicStepOne = ({ formError, setFormError }) => {
                       label='Job Location'
                       placeholder='Ex : San Fransisco, United States'
                       onChange={(e) => {
-                        setFormError((p) => ({ ...p, location: '' }));
                         handleUpdateFormFields({
                           path: 'jobLocation',
                           value: String(e.target.value),
                         });
                       }}
-                      error={Boolean(formError.location)}
-                      helperText={formError.location}
                     />
                   )}
                   defaultValue={{

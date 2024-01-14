@@ -1,3 +1,103 @@
+.div-block-696 {
+  display: flex;
+  width: 662px;
+  margin-bottom: 32px;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-radius: 10px;
+
+  background-color: #fff7ed;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
+}
+
+.relative {
+  position: relative;
+}
+
+.text-yellow-800 {
+  color: var(--yellow800-b1e3bc9b);
+}
+
 .div-block-661 {
   display: flex;
   grid-column-gap: 18px;
@@ -49,6 +149,80 @@
   flex-direction: column;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
+}
+
+.job-details-button-wrappers {
+  display: flex;
+  margin-top: 50px;
+}
+
+.job-details-button-wrappers.remove-bottom {
+  margin-top: 0px;
+}
+
+.job-details-button-wrappers.remove-bottom.mt-30 {
+  margin-top: 30px;
+}
+
+.job-details-button-wrappers.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.proceed-to-apply {
+  position: relative;
+}
+
+.blue-process-button {
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #1f73b7;
+
+  transition: all 250ms ease;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.blue-process-button:hover {
+  opacity: 0.8;
+}
+
+.grey-disable-process-button {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  padding: 10px 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
 }
 
 .publish-email-wrap {

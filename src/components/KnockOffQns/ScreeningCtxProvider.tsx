@@ -137,7 +137,7 @@ export const ScreeningCtxProvider = ({ children }) => {
         const [job] = (await supabaseWrap(
           await supabase
             .from('public_jobs')
-            .select('phone_screening,logo,draft')
+            .select('phone_screening,logo,draft,job_title,company')
             .eq('id', router.query.job_post_id),
         )) as Pick<
           PublicJobsType,
@@ -184,8 +184,10 @@ export const ScreeningCtxProvider = ({ children }) => {
           candPhScreenResp = jobPhoneScreening.questions.map((q) => {
             return {
               candAnswer: '',
+              showDescription: q.showDescription,
               id: q.id,
               isRequired: q.isRequired,
+              description: q.description,
               type: q.type,
               questionLabel: q.questionLabel,
               question: q.question,
@@ -213,6 +215,8 @@ export const ScreeningCtxProvider = ({ children }) => {
               id: q.id,
               isRequired: q.isRequired,
               type: q.type,
+              description: q.description,
+              showDescription: q.showDescription,
               questionLabel: q.questionLabel,
               question: q.question,
               options: q.options.map((o) => ({
@@ -228,7 +232,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           type: 'initialise',
           payload: {
             newState: {
-              companyLogo: job.logo || '',
+              companyLogo: (job.draft as any)?.logo ?? (job.logo || ''),
               phoneScreen: candPhScreenResp,
               currentQn: -1,
               showStartMessage: !isFormFilled,

@@ -8,7 +8,7 @@ import _styles from "./ScrQuestion.module.css";
 export function ScrQuestion({
   as: _Component = _Builtin.Block,
   slotEdit,
-  isEditView = false,
+  isEditView = true,
   isDefaultView = true,
   slotDefault,
 }) {

@@ -11,4 +11,8 @@ declare function ScrQuestionEdit(props: {
   onclickAddOption?: Types.Devlink.RuntimeProps;
   slotButtons?: Types.Devlink.Slot;
   onclickDelete?: Types.Devlink.RuntimeProps;
+  isDeleteVisible?: Types.Visibility.VisibilityConditions;
+  slotDescription?: Types.Devlink.Slot;
+  isDescriptionVisible?: Types.Visibility.VisibilityConditions;
+  slotDescriptionToggle?: Types.Devlink.Slot;
 }): React.JSX.Element;

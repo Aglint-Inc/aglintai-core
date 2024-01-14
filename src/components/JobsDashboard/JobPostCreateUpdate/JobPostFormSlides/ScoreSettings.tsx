@@ -19,7 +19,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
 
-import JobPublishButton from '../JobForm/PublishButton';
 import { JdJsonType, useJobForm } from '../JobPostFormProvider';
 import { API_FAIL_MSG } from '../utils';
 
@@ -59,7 +58,7 @@ const params: {
 ];
 
 const ScoreSettings = () => {
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { jobForm, handleUpdateFormFields, dispatch } = useJobForm();
   const [editParam, setEditParam] = useState<ScoreParam>(null);
   const [popUpEl, setPopUpEl] = useState(null);
   const [isJsonLoading, setIsJsonLoading] = useState(true);
@@ -129,6 +128,9 @@ ${jobForm.formFields.jobDescription}
       {
         <>
           <ScoreSetting
+            isEmptyWarningVisible={
+              jobForm.formFields.jobDescription.length === 0
+            }
             slotScoreCardDetails={
               <>
                 {params.map((p) => {
@@ -365,15 +367,20 @@ ${jobForm.formFields.jobDescription}
                 }}
               />
             }
-            isAddJob={
-              jobForm.formType === 'new' &&
-              process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com')
-            }
-            slotButtonPrimaryRegular={
-              <>
-                <JobPublishButton />
-              </>
-            }
+            isAddJob={jobForm.formType === 'new'}
+            slotButtonPrimaryRegular={<></>}
+            isProceedDisable={false}
+            onClickProceed={{
+              onClick: () => {
+                dispatch({
+                  type: 'moveToSlide',
+                  payload: {
+                    nextSlide: 'phoneScreening',
+                  },
+                });
+              },
+            }}
+            // slotBasicButton={<></>}
           />
 
           <Popover
@@ -421,7 +428,7 @@ ${jobForm.formFields.jobDescription}
                       setPopUpEl(null);
                     }}
                   >
-                    update
+                    Update
                   </AUIButton>
                 </>
               }

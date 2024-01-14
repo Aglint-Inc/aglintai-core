@@ -1,6 +1,7 @@
 .scr-questions-wrapper {
   display: flex;
-  padding: 16px 22px 16px 18px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   flex-direction: column;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
@@ -20,9 +21,8 @@
 
 .div-block-416 {
   display: flex;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  justify-content: center;
+  padding: 20px;
+  justify-content: flex-start;
   align-items: center;
 
   border-radius: 10px;
@@ -32,12 +32,30 @@
   text-align: center;
 }
 
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
 }
 
 .scr-options-wrapper {
   display: flex;
+  padding-right: 20px;
+  padding-left: 20px;
   flex-direction: column;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
@@ -51,18 +69,8 @@
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
 }
 
 .text-color-black {
@@ -122,6 +130,10 @@
   }
 }
 
+.text-grey-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -131,6 +143,34 @@
   .hide {
     display: none;
   }
+}
+
+.text-blue-600 {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-fuschia-600 {
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-color-white {
+  color: white;
+}
+
+.text-black-100 {
+  color: var(--black-100);
 }
 
 .scr-options-block {

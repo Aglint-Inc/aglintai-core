@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.icon-embed {
+.svg-icon {
   display: flex;
   width: 100%;
   height: 100%;
@@ -16,7 +16,7 @@
   object-fit: contain;
 }
 
-.icon-embed.absolute {
+.svg-icon.absolute {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -24,7 +24,7 @@
   bottom: 0%;
 }
 
-.icon-embed.sort-filled {
+.svg-icon.sort-filled {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -45,4 +45,16 @@
 
 .text-blue-700 {
   color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-fuschia-600 {
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }

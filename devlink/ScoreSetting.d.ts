@@ -10,4 +10,7 @@ declare function ScoreSetting(props: {
   slotButtonPrimaryRegular?: Types.Devlink.Slot;
   slotBasicButton?: Types.Devlink.Slot;
   onClickSaveDraft?: Types.Devlink.RuntimeProps;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isEmptyWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

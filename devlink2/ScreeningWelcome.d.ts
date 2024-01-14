@@ -10,4 +10,5 @@ declare function ScreeningWelcome(props: {
   editHeading?: React.ReactNode;
   slotInput?: Types.Devlink.Slot;
   slotButtons?: Types.Devlink.Slot;
+  tooltipText?: React.ReactNode;
 }): React.JSX.Element;

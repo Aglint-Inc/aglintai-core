@@ -21,7 +21,10 @@ export function ScorePercentage({
           {textTitle}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotInputPercent}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-695")} tag="div">
+        <_Builtin.Block tag="div">{slotInputPercent}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"%"}</_Builtin.Block>
+      </_Builtin.Block>
     </_Component>
   );
 }
