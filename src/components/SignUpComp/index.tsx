@@ -28,7 +28,10 @@ const SignUpComp = () => {
   }, [recruiter]);
 
   const hanadleSession = async () => {
-    if (router.asPath == `/${stepObj.signup}` || router.asPath==`/${stepObj.signup}?step=type`) {
+    if (
+      router.asPath == `/${stepObj.signup}` ||
+      router.asPath == `/${stepObj.signup}?step=type`
+    ) {
       if (recruiter?.id) {
         router.push(pageRoutes.JOBS);
       }

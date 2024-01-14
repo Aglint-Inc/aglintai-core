@@ -24,6 +24,8 @@ export type JobApplcationDB =
   Database['public']['Tables']['applications']['Row'];
 
 export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
+export type RecruiterRelationsType = Database['public']['Tables']['recruiter_relation']['Row'];
+
 
 export type JobType = Omit<JobTypeDB, 'active_status'> & {
   active_status: StatusJobs | null;

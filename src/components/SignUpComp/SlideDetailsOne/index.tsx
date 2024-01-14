@@ -1,5 +1,6 @@
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -239,9 +240,10 @@ export function FetchCompanyDetails({ setCompanyName }) {
           company_website: details.website || '',
           name: companyDetails.name || '',
           phone_number: companyDetails.phoneNumber || '',
-          industry: companyDetails.industryMain || '',
+          industry:
+            capitalize(companyDetails.industryMain?.replaceAll('-', ' ')) || '',
           employee_size: companyDetails.totalEmployees || '',
-          logo: companyDetails.logo || '/',
+          logo: companyDetails.logo || null,
           office_locations:
             [
               {

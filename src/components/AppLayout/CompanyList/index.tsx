@@ -1,30 +1,47 @@
 import { Avatar } from '@mui/material';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { CompanyProfileHeader, CompanySwitchDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { SocialsType } from '@/src/types/data.types';
-import { pageRoutes } from '@/src/utils/pageRouting';
+// import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import AddNewCompany from './AddNewCompany';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 function CompanyList() {
-  const router = useRouter();
-  const { userDetails, setRecruiter, recruiter } = useAuthDetails();
+  // const router = useRouter();
+  const {
+    userDetails,
+    setRecruiter,
+    recruiter,
+    allrecruterRelation,
+    setAllrecruterRelation,
+  } = useAuthDetails();
   const [allCompanies, setAllCompanies] = useState([]);
+
   async function getCompanies() {
-    const { data, error } = await supabase.from('recruiter').select();
-    if (!error) {
-      const activeCompany = data.filter((ele) => ele.recruiter_active);
-      setRecruiter({
-        ...activeCompany[0],
-        socials: activeCompany[0]?.socials as unknown as SocialsType,
+    setAllCompanies([]);
+    setAllrecruterRelation([] as any);
+    const { data: recruiter_relation, error: recruiter_relation_error } =
+      await supabase
+        .from('recruiter_relation')
+        .select()
+        .eq('user_id', userDetails.user.id);
+    setAllrecruterRelation(recruiter_relation as any);
+    if (!recruiter_relation_error)
+      recruiter_relation.map(async (ele) => {
+        const { data } = await supabase
+          .from('recruiter')
+          .select()
+          .eq('id', ele.recruiter_id);
+        setAllCompanies((pre) => [...pre, data[0]]);
+        if (ele.is_active) {
+          setRecruiter(data[0] as any);
+        }
       });
-      setAllCompanies(data);
-    }
   }
+
   useEffect(() => {
     if (userDetails.user.user_metadata.role !== 'recruiter') {
       getCompanies();
@@ -34,22 +51,27 @@ function CompanyList() {
   const [openCompanyList, setOpenCompanyList] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
 
-  async function handleClick(ele: { id: any }) {
-    document.getElementById('company-switch-arrows').click();
-    for (const company of allCompanies) {
-      await updateStatus(company.id, ele.id === company.id);
+  async function handleClick(ele: any) {
+    for (const recruterRelation of allrecruterRelation as any) {
+      await updateStatus(
+        recruterRelation?.recruiter_id,
+        ele.id === recruterRelation?.recruiter_id,
+        ele,
+      );
     }
   }
 
-  async function updateStatus(id: any, status: boolean) {
-    supabase
-      .from('recruiter')
-      .update({ recruiter_active: status })
-      .eq('id', id)
+  async function updateStatus(id: any, status: boolean, ele: any) {
+    await supabase
+      .from('recruiter_relation')
+      .update({
+        is_active: status,
+      })
+      .eq('recruiter_id', id)
       .select()
       .then(({ data }) => {
-        if (data[0]?.recruiter_active) {
-          getCompanies();
+        if (data[0]?.is_active) {
+          setRecruiter(ele);
         }
       });
   }
@@ -85,49 +107,38 @@ function CompanyList() {
           />
         }
         isDropdownBodyVisible={openCompanyList}
-        slotCompanyList={[...allCompanies]
-          .sort((a, b) =>
-            a.recruiter_active === b.recruiter_active
-              ? 0
-              : a.recruiter_active
-                ? -1
-                : 1,
-          )
-          .map((ele, i) => {
-            if (ele.name)
-              return (
-                <CompanyProfileHeader
-                  slotLogo={
-                    <Avatar
-                      src={ele?.logo}
-                      variant='rounded'
-                      sx={{
-                        width: '100%',
-                        height: '100%',
-                        background: '#fff',
-                        '& .MuiAvatar-img ': {
-                          objectFit: 'contain',
-                        },
-                      }}
-                    />
-                  }
-                  key={i}
-                  onclickCompany={{
-                    onClick: () => {
-                      if (i === 0) {
-                        setOpenCompanyList(false);
-                        router.push(pageRoutes.COMPANY);
-                      } else {
-                        handleClick(ele);
-                      }
+        slotCompanyList={allCompanies.map((ele, i) => {
+          return (
+            <CompanyProfileHeader
+              slotLogo={
+                <Avatar
+                  src={ele?.logo}
+                  variant='rounded'
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    background: '#fff',
+                    '& .MuiAvatar-img ': {
+                      objectFit: 'contain',
                     },
                   }}
-                  companyName={ele?.name}
                 />
-              );
-          })}
+              }
+              key={i}
+              onclickCompany={{
+                onClick: () => {
+                  setOpenCompanyList(false);
+                  // router.push(pageRoutes.COMPANY);
+                  handleClick(ele);
+                },
+              }}
+              companyName={ele?.name}
+            />
+          );
+        })}
         onclickAddButton={{
           onClick: () => {
+            setOpenCompanyList(false);
             setOpenSideBar(true);
           },
         }}

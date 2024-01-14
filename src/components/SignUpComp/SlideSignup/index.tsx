@@ -145,6 +145,11 @@ const SlideTwoSignUp = () => {
             router.push(`?step=${stepObj.detailsOne}`, undefined, {
               shallow: true,
             });
+            await supabase.from('recruiter_relation').insert({
+              user_id: authdata.data.user.id,
+              recruiter_id: data[0].id,
+              is_active: true,
+            });
             setStep(stepObj.detailsOne);
           }
         }

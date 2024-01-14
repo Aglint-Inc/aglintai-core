@@ -77,7 +77,7 @@ export interface Database {
           applied_at: string
           assessment_id: string | null
           candidate_file_id: string | null
-          candidate_id: string
+          candidate_id: string | null
           created_at: string
           id: string
           is_resume_fetching: boolean
@@ -94,7 +94,7 @@ export interface Database {
           applied_at?: string
           assessment_id?: string | null
           candidate_file_id?: string | null
-          candidate_id: string
+          candidate_id?: string | null
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -111,7 +111,7 @@ export interface Database {
           applied_at?: string
           assessment_id?: string | null
           candidate_file_id?: string | null
-          candidate_id?: string
+          candidate_id?: string | null
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -201,7 +201,7 @@ export interface Database {
       }
       candidate_files: {
         Row: {
-          candidate_id: string | null
+          candidate_id: string
           created_at: string
           education_embedding: string | null
           experience_embedding: string | null
@@ -214,7 +214,7 @@ export interface Database {
           type: Database["public"]["Enums"]["file_type"] | null
         }
         Insert: {
-          candidate_id?: string | null
+          candidate_id: string
           created_at?: string
           education_embedding?: string | null
           experience_embedding?: string | null
@@ -227,7 +227,7 @@ export interface Database {
           type?: Database["public"]["Enums"]["file_type"] | null
         }
         Update: {
-          candidate_id?: string | null
+          candidate_id?: string
           created_at?: string
           education_embedding?: string | null
           experience_embedding?: string | null
@@ -241,7 +241,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "new_candidate_files_candidate_id_fkey"
+            foreignKeyName: "candidate_files_candidate_id_fkey"
             columns: ["candidate_id"]
             isOneToOne: false
             referencedRelation: "candidates"
@@ -253,6 +253,7 @@ export interface Database {
         Row: {
           bookmarked_candidates: string[] | null
           created_at: string
+          db_search: Database["public"]["Enums"]["db_search_type"] | null
           id: number
           is_search_jd: boolean | null
           query_json: Json | null
@@ -263,6 +264,7 @@ export interface Database {
         Insert: {
           bookmarked_candidates?: string[] | null
           created_at?: string
+          db_search?: Database["public"]["Enums"]["db_search_type"] | null
           id?: number
           is_search_jd?: boolean | null
           query_json?: Json | null
@@ -273,6 +275,7 @@ export interface Database {
         Update: {
           bookmarked_candidates?: string[] | null
           created_at?: string
+          db_search?: Database["public"]["Enums"]["db_search_type"] | null
           id?: number
           is_search_jd?: boolean | null
           query_json?: Json | null
@@ -855,6 +858,45 @@ export interface Database {
           workplace_type?: Json
         }
         Relationships: []
+      }
+      recruiter_relation: {
+        Row: {
+          created_at: string
+          id: number
+          is_active: boolean
+          recruiter_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_active?: boolean
+          recruiter_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_active?: boolean
+          recruiter_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recruiter_relation_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       recruiter_user: {
         Row: {
@@ -1531,7 +1573,9 @@ export interface Database {
         | "qualified"
         | "disqualified"
         | "screening"
+      db_search_type: "aglint" | "candidate"
       file_type: "resume" | "coverletter" | "cv" | "image"
+      recruiter_roles: "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never

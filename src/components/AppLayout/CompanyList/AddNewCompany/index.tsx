@@ -1,5 +1,6 @@
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
 import { AddCompany } from '@/devlink2';
@@ -101,7 +102,8 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
         company_website: details.company_website || '',
         name: companyDetails.name || '',
         phone_number: companyDetails.phoneNumber || '',
-        industry: companyDetails.industryMain || '',
+        industry:
+          capitalize(companyDetails.industryMain?.replaceAll('-', ' ')) || '',
         employee_size: companyDetails.totalEmployees || '',
         logo: companyDetails.logo || '/',
         office_locations:
@@ -327,7 +329,13 @@ function CompanyDetails({
   setOpenSideBar,
   getCompanies,
 }) {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const {
+    recruiter,
+    setRecruiter,
+    recruiterUser,
+    userDetails,
+    allrecruterRelation,
+  } = useAuthDetails();
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
@@ -415,23 +423,44 @@ function CompanyDetails({
 
   const submitHandler = async () => {
     if (formValidation(details?.name)) {
-      const { error: e1 } = await supabase.from('recruiter').insert({
-        ...details,
-        logo: logo,
-        phone_number: phone,
-        employee_size: details.employee_size,
-        name: details.name,
-        industry: details.industry,
-        email_template: getInitialEmailTemplate(details.name),
-        recruiter_user_id: recruiterUser.user_id,
-      });
-
+      const { data, error: e1 } = await supabase
+        .from('recruiter')
+        .insert({
+          ...details,
+          logo: logo,
+          phone_number: phone,
+          employee_size: details.employee_size,
+          name: details.name,
+          industry: details.industry,
+          email_template: getInitialEmailTemplate(details.name),
+          recruiter_user_id: recruiterUser.user_id,
+        })
+        .select();
       if (!e1) {
+        update_companies_status();
+        await supabase.from('recruiter_relation').insert({
+          user_id: userDetails.user.id,
+          recruiter_id: data[0]?.id as any,
+          is_active: true,
+        });
+        setRecruiter(data[0] as any);
         setOpenSideBar(false);
         getCompanies();
       }
     }
   };
+  // update_companies_status();
+  async function update_companies_status() {
+    const all_Recruiter_relation = allrecruterRelation as unknown as Array<[]>;
+    all_Recruiter_relation.map(async (ele: any) => {
+      await supabase
+        .from('recruiter_relation')
+        .update({
+          is_active: false,
+        })
+        .eq('recruiter_id', ele.recruiter_id);
+    });
+  }
   return (
     <Stack spacing={2}>
       <UITextField

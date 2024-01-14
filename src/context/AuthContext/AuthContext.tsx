@@ -13,6 +13,7 @@ import {
 import { LoaderSvg } from '@/devlink';
 import {
   RecruiterDB,
+  RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
   RoleType,
@@ -30,6 +31,8 @@ interface ContextValue {
   recruiter: RecruiterType | null;
   // eslint-disable-next-line no-unused-vars
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
+  allrecruterRelation: RecruiterRelationsType | null;
+  setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType>>;
   loading: boolean;
   // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
@@ -55,6 +58,8 @@ const defaultProvider = {
   handleUpdatePassword: undefined,
   recruiter: null,
   setRecruiter: () => {},
+  allrecruterRelation: null,
+  setAllrecruterRelation: () => {},
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
@@ -92,6 +97,9 @@ const AuthProvider = ({ children }) => {
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
+  const [allrecruterRelation, setAllrecruterRelation] =
+    useState<RecruiterRelationsType>(null);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [role, setRole] = useState<RoleType>(null);
   async function getSupabaseSession() {
@@ -246,6 +254,8 @@ const AuthProvider = ({ children }) => {
         updateRecruiter,
         recruiterUser,
         role,
+        allrecruterRelation,
+        setAllrecruterRelation,
       }}
     >
       {loading ? <AuthLoader /> : children}
