@@ -1,6 +1,7 @@
 import { Popover, Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { get } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import posthog from 'posthog-js';
 import { useState } from 'react';
@@ -16,15 +17,15 @@ import toast from '@/src/utils/toast';
 import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
 import SectionWarning from './SectionWarnings';
-import { JobFormState, useJobForm } from '../JobPostFormProvider';
-import WorkFlow from '../JobPostFormSlides/Assessment';
+import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
+import ScreeningSettings from '../JobPostFormSlides/Assessment';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
 import Emails from '../JobPostFormSlides/EmailTemplates';
-import PhoneScreening from '../JobPostFormSlides/PhoneScreening/PhoneScreening';
+import ScreeningComp from '../JobPostFormSlides/PhoneScreening/PhoneScreening';
 import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
 import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
-import Assessment from '../JobPostFormSlides/ScreeningQnsWithVids';
+import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import { API_FAIL_MSG, supabaseWrap } from '../utils';
 import MuiPopup from '../../../Common/MuiPopup';
@@ -37,8 +38,15 @@ export type JobFormErrorParams = {
   aiQnGen: number;
 };
 
+export type slideName =
+  | 'details'
+  | 'templates'
+  | 'screening'
+  | 'workflow'
+  | 'resumeScore';
+
 export type FormErrorParams = Record<
-  JobFormState['currSlide'],
+  slideName,
   {
     title: string;
     err: string[];
@@ -58,7 +66,13 @@ function JobForm() {
   } = useJobForm();
   const router = useRouter();
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-
+  const [formError, setFormError] = useState<JobFormErrorParams>({
+    jobTitle: '',
+    company: '',
+    location: '',
+    department: '',
+    aiQnGen: 0,
+  });
   const [showDraftPopup, setShowDraftPopup] = useState(false);
 
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
@@ -76,7 +90,9 @@ function JobForm() {
   } else if (currSlide === 'details') {
     formSlide = (
       <>
-        <BasicStepOne />
+        <BasicStepOne
+        // formError={formError} setFormError={setFormError} // commmented beacuse not in use
+        />
         <BasicStepTwo
           showWarnOnEdit={() => {
             if (jdWarn !== 'shown') setJdWarn('show');
@@ -89,14 +105,110 @@ function JobForm() {
   } else if (currSlide === 'templates') {
     formSlide = <Emails />;
   } else if (currSlide == 'screening') {
-    formSlide = <Assessment />;
+    formSlide = <ScreeningQns />;
   } else if (currSlide == 'workflow') {
-    formSlide = <WorkFlow />;
+    formSlide = <ScreeningSettings />;
   } else if (currSlide === 'phoneScreening') {
-    formSlide = <PhoneScreening />;
+    formSlide = <ScreeningComp />;
   }
 
+  const formValidation = () => {
+    let flag = true;
+    const { company, jobTitle, jobLocation, department } = jobForm.formFields;
+    if (currSlide === 'details') {
+      if (isEmpty(jobTitle.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
+      }
+
+      if (isEmpty(company?.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, company: 'Please Enter Company Name' }));
+      }
+
+      if (isEmpty(jobLocation.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, location: 'Please Enter Location' }));
+      }
+
+      if (isEmpty(get(jobForm, 'formFields.jobDescription', ''))) {
+        return false;
+      }
+
+      if (isEmpty(get(jobForm, 'formFields.skills', []))) {
+        return false;
+      }
+      if (isEmpty(department.trim())) {
+        flag = false;
+        setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
+      }
+    }
+
+    if (currSlide === 'screening') {
+      const interviewConfig = get(
+        jobForm,
+        'formFields.interviewConfig',
+        {},
+      ) as FormJobType['interviewConfig'];
+
+      if (formError.aiQnGen > 0) {
+        toast.error('Please wait till questions get generated');
+        return false;
+      }
+
+      let totalQns = 0;
+
+      if (get(interviewConfig, 'skill.value', false)) {
+        let count = get(interviewConfig, 'skill.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'behavior.value', false)) {
+        let count = get(interviewConfig, 'behavior.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'communication.value', false)) {
+        let count = get(interviewConfig, 'communication.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'performance.value', false)) {
+        let count = get(interviewConfig, 'performance.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'education.value', false)) {
+        let count = get(interviewConfig, 'education.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (get(interviewConfig, 'general.value', false)) {
+        let count = get(interviewConfig, 'general.questions', []).length;
+        if (count === 0) {
+          return false;
+        }
+        totalQns += count;
+      }
+      if (totalQns < 10 || totalQns > 25) {
+        flag = false;
+      }
+    }
+    return flag;
+  };
+
   const changeSlide = (nextSlide: JobFormState['currSlide']) => {
+    formValidation();
     dispatch({
       type: 'moveToSlide',
       payload: {
@@ -134,7 +246,7 @@ function JobForm() {
       const isDeleted = await handleJobDelete(jobForm.jobPostId);
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs');
-      toast.error('Deleted Draft job SuccessFully');
+      toast.error('Deleted Draft job Successfully');
       posthog.capture('Deleted Draft job');
     } catch (err) {
       toast.error(API_FAIL_MSG);

@@ -220,7 +220,7 @@ export function JobDetails({
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "bu")}
+              className={_utils.cx(_styles, "bu", "clickable")}
               tag="div"
               {...onClickEditJobs}
             >
@@ -434,13 +434,13 @@ export function JobDetails({
                         </_Builtin.Block>
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey-600")}
+                        className={_utils.cx(_styles, "text-gray-600")}
                         tag="div"
                       >
                         {"dianerussel@example.com"}
                       </_Builtin.Block>
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey-600")}
+                        className={_utils.cx(_styles, "text-gray-600")}
                         tag="div"
                       >
                         {"(704) 555-0127"}
@@ -1454,13 +1454,13 @@ export function JobDetails({
                           </_Builtin.Block>
                         </_Builtin.Block>
                         <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
+                          className={_utils.cx(_styles, "text-gray-600")}
                           tag="div"
                         >
                           {"dianerussel@example.com"}
                         </_Builtin.Block>
                         <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
+                          className={_utils.cx(_styles, "text-gray-600")}
                           tag="div"
                         >
                           {"(704) 555-0127"}
