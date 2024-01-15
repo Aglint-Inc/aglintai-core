@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 
-import { Candidate } from './types';
+import { CandidateSearchHistoryType } from './types';
 
 export const createCandidateDatabaseSlice: StateCreator<
   CandidateDatabaseSlice
@@ -11,12 +11,14 @@ export const createCandidateDatabaseSlice: StateCreator<
     person_seniorities: ['senior'],
     person_titles: ['software developer'],
   },
-  setSearchQuery: (searchQuery) => set((state) => ({ ...state, searchQuery })),
+  setSearchQuery: (searchQuery) =>
+    set((state) => ({ ...state, ...searchQuery })),
   isEditDialogOpen: false,
   setIsEditDialogOpen: (isEditDialogOpen) =>
     set((state) => ({ ...state, isEditDialogOpen })),
-  candidates: [],
-  setCandidates: (candidates) => set((state) => ({ ...state, candidates })),
+  candidateHistory: null,
+  setCandidateHistory: (candidateHistory) =>
+    set((state) => ({ ...state, candidateHistory })),
 });
 
 export type CandidateDatabaseSlice = {
@@ -36,7 +38,7 @@ export type CandidateDatabaseSlice = {
   isEditDialogOpen: boolean;
   // eslint-disable-next-line no-unused-vars
   setIsEditDialogOpen: (isEditDialogOpen: boolean) => void;
-  candidates: Candidate[];
+  candidateHistory: CandidateSearchHistoryType;
   // eslint-disable-next-line no-unused-vars
-  setCandidates: (candidates: Candidate[]) => void;
+  setCandidateHistory: (candidates: CandidateSearchHistoryType) => void;
 };

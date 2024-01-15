@@ -43,7 +43,7 @@ function CompanyList() {
   }
 
   useEffect(() => {
-    if (userDetails.user.user_metadata.role !== 'recruiter') {
+    if (userDetails?.user.user_metadata.role !== 'recruiter') {
       getCompanies();
     }
   }, [userDetails]);

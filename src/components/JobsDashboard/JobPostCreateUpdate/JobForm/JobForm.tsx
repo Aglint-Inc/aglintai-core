@@ -43,7 +43,8 @@ export type slideName =
   | 'templates'
   | 'screening'
   | 'workflow'
-  | 'resumeScore';
+  | 'resumeScore'
+  | 'phoneScreening';
 
 export type FormErrorParams = Record<
   slideName,

@@ -1,3 +1,7 @@
+import { Json } from '@trigger.dev/sdk';
+
+import { Database } from '@/src/types/schema';
+
 export interface Candidate {
   city: string;
   country: string;
@@ -29,6 +33,11 @@ export interface Candidate {
   title: string;
   twitter_url: string | null;
 }
+
+export type CandidateSearchHistoryType = Omit<
+  Database['public']['Tables']['candidate_search_history']['Row'],
+  'search_results'
+> & { search_results: Candidate[] | null };
 
 interface EmploymentHistory {
   created_at: string | null;
@@ -68,7 +77,20 @@ interface Organization {
   website_url: string;
   blog_url: string | null;
   angellist_url: string | null;
-  // Add more properties as needed
+  linkedin_url: string | null;
+  twitter_url: string | null;
+  facebook_url: string | null;
+  primary_phone: Json;
+  languages: string[];
+  alexa_ranking: number;
+  phone: string | null;
+  linkedin_uid: string | null;
+  founded_year: 2015;
+  publicly_traded_symbol: string | null;
+  publicly_traded_exchange: string | null;
+  logo_url: string | null;
+  crunchbase_url: string | null;
+  primary_domain: string | null;
 }
 
 export interface FetchCandidatesParams {

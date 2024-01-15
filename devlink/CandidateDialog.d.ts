@@ -36,4 +36,7 @@ declare function CandidateDialog(props: {
   isCopiedMailTooltipVisible?: Types.Visibility.VisibilityConditions;
   onClickEmailOutreach?: Types.Devlink.RuntimeProps;
   isEmailOutreachVisible?: Types.Visibility.VisibilityConditions;
+  isViewResumeVisible?: Types.Visibility.VisibilityConditions;
+  isEmailVisible?: Types.Visibility.VisibilityConditions;
+  isPhoneVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -16,7 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         role: 'system',
         content: `extract from the given text and respond in this strict json format:{
           person_locations: string[] ( extract city if mentioned in the text orelse empty array),
-          person_seniorities : enums ("senior", "manager")
           person_titles : string[],
           }.
           

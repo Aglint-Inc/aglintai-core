@@ -1,4 +1,5 @@
 import { CircularProgress, Paper, Stack } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
@@ -126,6 +127,50 @@ function CandidateSearchHistory() {
 
   //Seaarch with API
   const getCandsFromApi = async () => {
+    try {
+      if (searchQuery.length === 0 || isQrySearching) return;
+      setIsQrySearching(true);
+      const res = await axios.post('/api/candidatedb/query', {
+        query: searchQuery,
+      });
+
+      if (res.data.error) {
+        toast.error(res.data.error);
+        return;
+      }
+
+      let aiSearchQuery = JSON.parse(res.data);
+
+      const resCand = await axios.post('/api/candidatedb/search', {
+        page: 1,
+        per_page: 99,
+        ...aiSearchQuery,
+      });
+
+      if (resCand.data.error) {
+        toast.error(resCand.data.error);
+        return;
+      }
+
+      const [history] = supabaseWrap(
+        await supabase
+          .from('candidate_search_history')
+          .insert({
+            recruiter_id: recruiter.id,
+            query_json: { page: 1, per_page: 99, ...aiSearchQuery },
+            search_results: resCand.data.people,
+            search_query: searchQuery,
+            db_search: 'aglint',
+          })
+          .select(),
+      );
+      router.push(`/candidates/aglintdb?id=${history.id}`);
+    } catch (err) {
+      // console.log(err);
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsQrySearching(false);
+    }
     //
   };
 
@@ -218,6 +263,10 @@ function CandidateSearchHistory() {
                     textPosted={diffrence}
                     onClickCard={{
                       onClick: () => {
+                        if (hist.db_search === 'aglint') {
+                          router.push(`/candidates/aglintdb?id=${hist.id}`);
+                          return;
+                        }
                         router.push(
                           `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
                         );

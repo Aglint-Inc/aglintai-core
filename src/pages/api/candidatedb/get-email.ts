@@ -10,7 +10,7 @@ export default async function handler(
     return res.status(405).end(); // Method Not Allowed
   }
 
-  const apiUrl = 'https://api.apollo.io/v1/mixed_people/search';
+  const apiUrl = 'https://api.apollo.io/v1/people/match';
 
   const requestData = req.body;
 
@@ -22,11 +22,7 @@ export default async function handler(
   try {
     const response = await axios.post(
       apiUrl,
-      {
-        api_key: 'AMw7kom6e0a7EUhSuLJF4A',
-        contact_email_status: ['verified'],
-        ...requestData,
-      },
+      { api_key: 'AMw7kom6e0a7EUhSuLJF4A', ...requestData },
       { headers },
     );
 
