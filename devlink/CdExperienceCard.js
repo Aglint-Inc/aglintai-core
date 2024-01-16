@@ -44,7 +44,7 @@ export function CdExperienceCard({
           {textRole}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-grey-600", "text-grow")}
           tag="div"
         >
           {textDate}

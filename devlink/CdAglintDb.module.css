@@ -164,10 +164,12 @@
 .div-block-707 {
   display: flex;
   overflow: auto;
+  width: 100%;
 }
 
 .div-block-705 {
   display: flex;
+  width: 100%;
   flex-direction: column;
   flex: 0 0 auto;
 }
@@ -205,6 +207,8 @@
 
 .div-block-692 {
   display: flex;
+  width: 100%;
+  height: 53px;
   padding: 16px 20px;
   align-items: center;
   grid-column-gap: 10px;
