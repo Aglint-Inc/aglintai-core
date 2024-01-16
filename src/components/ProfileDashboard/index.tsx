@@ -43,7 +43,7 @@ type FormValues = {
 type FormFields = {
   first_name: FormValues;
   last_name: FormValues;
-  role: FormValues;
+  position: FormValues;
   phone: FormValues;
 };
 type PreferenceFormFields = {
@@ -101,11 +101,11 @@ const ProfileDashboard = () => {
       validation: 'phone',
       label: 'Contact Number',
     },
-    role: {
+    position: {
       ...initialFormValues,
-      value: recruiterUser.role,
+      value: recruiterUser.position,
       label: 'Position',
-      blocked: true,
+      blocked: false,
       placeholder: 'Enter your job title.',
     },
   };
@@ -424,6 +424,7 @@ const handleSubmit = async (
       first_name: profile.first_name.value,
       last_name: profile.last_name.value,
       phone: profile.phone.value,
+      position: profile.position.value,
     });
     if (confirmation) {
       toast.success('Profile infomation saved successfully');
