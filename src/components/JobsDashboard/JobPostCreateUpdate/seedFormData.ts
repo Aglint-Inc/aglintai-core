@@ -98,6 +98,7 @@ export const getSeedJobFormData = (
       resumeScoreSettings: {
         ...scoreWheelDependencies.initialScoreWheelWeights,
       },
+      isjdChanged: false,
       recruiterId: '',
       videoAssessment: false,
       introVideo: {
@@ -149,6 +150,8 @@ export const getSeedJobFormData = (
       },
       assessment: false,
       jdJson: {
+        title: '',
+        level: 'Mid-level',
         educations: [],
         rolesResponsibilities: [],
         skills: [],
@@ -345,9 +348,11 @@ export const dbToClientjobPostForm = (
       interviewSetting:
         jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
       assessment: jobPost.assessment || false,
-      jdJson: (jobPost.jd_json_2 as any) || seedData.formFields.jdJson,
+      jdJson: (jobPost.jd_json as any) || seedData.formFields.jdJson,
       phoneScreening:
         (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
+      isjdChanged:
+        (jobPost.jd_changed as any) || seedData.formFields.isjdChanged,
     },
     jobPostStatus: jobPostStatus as any,
   };

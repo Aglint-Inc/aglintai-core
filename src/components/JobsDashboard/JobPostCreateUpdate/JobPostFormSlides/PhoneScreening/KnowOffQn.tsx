@@ -7,6 +7,7 @@ import UITypography from '@/src/components/Common/UITypography';
 
 import { qnTypeToIcon } from './PhoneScreening';
 import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
+import { qnTypeToLabel2 } from './utils';
 import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
 
 const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
@@ -25,6 +26,7 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
           <Collapse in={isDefaultView} translate='yes' unmountOnExit>
             {
               <ScrQuestionDefault
+                title={qnTypeToLabel2(q.type)}
                 isRequired={q.isRequired}
                 textQuestion={q.question}
                 slotIcon={qnTypeToIcon(q.type)}

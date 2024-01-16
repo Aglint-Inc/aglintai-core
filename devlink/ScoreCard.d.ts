@@ -9,4 +9,5 @@ declare function ScoreCard(props: {
   textHeading?: React.ReactNode;
   colorPropsHeading?: Types.Devlink.RuntimeProps;
   slotAddCard?: Types.Devlink.Slot;
+  slotAddButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

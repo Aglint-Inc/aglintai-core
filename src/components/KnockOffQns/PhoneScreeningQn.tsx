@@ -1,7 +1,6 @@
-import { CircularProgress, Radio, Stack, TextField } from '@mui/material';
+import { Radio, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { Checkbox, PhoneScreeningQ } from '@/devlink';
@@ -14,7 +13,6 @@ import {
   useScreeningCtx,
 } from './ScreeningCtxProvider';
 import { phoneScreenEmail } from './utils';
-import AUIButton from '../Common/AUIButton';
 import UITypography from '../Common/UITypography';
 import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -185,16 +183,33 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
         },
       }}
       isDescriptionVisible={qn.showDescription}
-      textDescription={qn.description}
+      textDescription={qn.description || ''}
       currentQuestionNo={qnNo}
       isQuestionImp={qn.isRequired}
       slotLogo={<CompanyLogo />}
       textQuestion={qn.question}
       totalQuestionNo={state.phoneScreen.length}
+      isSubmitButtonVisible={state.phoneScreen.length === qnNo}
+      isOkButtonVisible={state.phoneScreen.length !== qnNo}
+      onClickOk={{
+        onClick: () => {
+          if (!isResponseValid()) return;
+          updateState({
+            path: 'currentQn',
+            value: qnNo + 1,
+          });
+        },
+      }}
+      isBackVisible={true}
+      isOkDisable={errorMsg.length > 0}
+      isSubmitDisable={errorMsg.length > 0 || isSubmitting}
+      onClickSubmit={{
+        onClick: handleSubmit,
+      }}
       slotInputAndButton={
         <>
           {candRespComp}
-          {state.phoneScreen.length === qnNo ? (
+          {/* {state.phoneScreen.length === qnNo ? (
             <AUIButton
               variant='success'
               disabled={errorMsg.length > 0}
@@ -242,7 +257,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
             >
               Ok
             </AUIButton>
-          )}
+          )} */}
           {errorMsg && (
             <Stack mt={2}>
               {<UITypography color={palette.red[400]}>{errorMsg}</UITypography>}

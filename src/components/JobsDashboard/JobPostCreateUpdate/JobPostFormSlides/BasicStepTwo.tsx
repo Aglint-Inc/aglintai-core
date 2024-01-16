@@ -17,6 +17,10 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
       path: 'jobDescription',
       value: s,
     });
+    handleUpdateFormFields({
+      path: 'isjdChanged',
+      value: true,
+    });
   };
 
   return (
