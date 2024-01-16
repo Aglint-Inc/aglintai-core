@@ -1,6 +1,7 @@
 import { Popover, Stack } from '@mui/material';
+import axios from 'axios';
 import { get } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   Checkbox,
@@ -12,6 +13,7 @@ import {
   ScoreWeightage,
   SettingSkeleton,
 } from '@/devlink';
+import { AddButton } from '@/devlink/AddButton';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ScoreWheel from '@/src/components/Common/ScoreWheel';
@@ -61,9 +63,10 @@ const ScoreSettings = () => {
   const { jobForm, handleUpdateFormFields, dispatch } = useJobForm();
   const [editParam, setEditParam] = useState<ScoreParam>(null);
   const [popUpEl, setPopUpEl] = useState(null);
-  const [isJsonLoading, setIsJsonLoading] = useState(true);
+  const [isJsonLoading, setIsJsonLoading] = useState(false);
   const [newField, setNewField] = useState<newField>(null);
-
+  const [newFieldEv, setNewFieldEv] = useState(null);
+  const sourceRef = useRef(axios.CancelToken.source());
   const onChangeScore = (e, paramKey: string) => {
     if (Number(e.target.value) < 0 || Number(e.target.value) > 100) return;
     handleUpdateFormFields({
@@ -72,47 +75,69 @@ const ScoreSettings = () => {
     });
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (
-          jobForm.formFields.jdJson.educations.length === 0 &&
-          jobForm.formFields.jdJson.skills.length === 0 &&
-          jobForm.formFields.jdJson.rolesResponsibilities.length === 0 &&
-          jobForm.formFields.jobDescription &&
-          jobForm.formFields.jobDescription.split(' ').length > 50
-        ) {
-          setIsJsonLoading(true);
-          const json = await generatejdToScoreJson(
-            `
+  const areAllFieldsEmpty =
+    jobForm.formFields.jdJson.educations.length === 0 &&
+    jobForm.formFields.jdJson.skills.length === 0 &&
+    jobForm.formFields.jdJson.rolesResponsibilities.length === 0;
+
+  const handleGenerate = async () => {
+    try {
+      setIsJsonLoading(true);
+      const json = await generatejdToScoreJson(
+        `
 Job Role : ${jobForm.formFields.jobTitle}
 
 ${jobForm.formFields.jobDescription}
 `,
-          );
+        sourceRef.current,
+      );
 
-          const j: JdJsonType = {
-            rolesResponsibilities: [
-              ...json.roles,
-              ...json.responsibilities,
-              ...json.requirements,
-            ],
-            skills: [...json.skills],
-            educations: [...json.educations],
-          };
+      const j: JdJsonType = {
+        title: jobForm.formFields.jobTitle,
+        level: json.jobLevel,
+        rolesResponsibilities: [
+          ...json.roles,
+          ...json.responsibilities,
+          ...json.requirements,
+        ],
+        skills: [...json.skills],
+        educations: [...json.educations],
+      };
 
-          handleUpdateFormFields({
-            path: 'jdJson',
-            value: j,
-          });
-        }
-      } catch (err) {
+      handleUpdateFormFields({
+        path: 'isjdChanged',
+        value: false,
+      });
+      handleUpdateFormFields({
+        path: 'jdJson',
+        value: j,
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
         toast.error(API_FAIL_MSG);
-      } finally {
-        setIsJsonLoading(false);
+      }
+    } finally {
+      setIsJsonLoading(false);
+    }
+  };
+  useEffect(() => {
+    (async () => {
+      const areAllFieldsEmpty =
+        jobForm.formFields.jdJson.educations.length === 0 &&
+        jobForm.formFields.jdJson.skills.length === 0 &&
+        jobForm.formFields.jdJson.rolesResponsibilities.length === 0;
+      if (
+        areAllFieldsEmpty &&
+        jobForm.formFields.jobDescription &&
+        jobForm.formFields.jobDescription.split(' ').length > 50
+      ) {
+        handleGenerate();
       }
     })();
-  }, []);
+    return () => {
+      sourceRef.current.cancel('Pervious request canceled');
+    };
+  }, [jobForm]);
 
   const handleClickEdit = (paramKey: string, index: number, s, e) => {
     setEditParam({
@@ -123,14 +148,23 @@ ${jobForm.formFields.jobDescription}
     });
     setPopUpEl(e.currentTarget);
   };
+
+  let showRegen = false;
+  if (!isJsonLoading) {
+    showRegen = !areAllFieldsEmpty && jobForm.formFields.isjdChanged;
+  }
+  let isJdTooShort =
+    areAllFieldsEmpty &&
+    (!jobForm.formFields.jobDescription ||
+      jobForm.formFields.jobDescription.split(' ').length <= 50);
+
   return (
     <>
       {
         <>
           <ScoreSetting
-            isEmptyWarningVisible={
-              jobForm.formFields.jobDescription.length === 0
-            }
+            isRegenerateVisible={showRegen}
+            isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={
               <>
                 {params.map((p) => {
@@ -173,90 +207,122 @@ ${jobForm.formFields.jobDescription}
                             })}
                         </>
                       }
-                      textAddButton={p.AddBtnLabel}
-                      onClickAdd={{
-                        onClick: () => {
-                          setNewField({
-                            paramKey: p.paramKey,
-                            isMustHave: true,
-                            value: '',
-                          });
-                        },
-                      }}
-                      slotAddCard={
-                        newField &&
-                        newField.paramKey === p.paramKey && (
-                          <ScoreCardEdit
-                            isDeleteVisible={false}
-                            slotButtonUpdate={
-                              <>
-                                <AUIButton
-                                  size='small'
-                                  onClick={() => {
-                                    if (newField.value.length === 0) return;
-                                    handleUpdateFormFields({
-                                      path: `jdJson.${p.paramKey}`,
-                                      value: [
-                                        ...get(
-                                          jobForm.formFields,
-                                          `jdJson.${p.paramKey}`,
-                                          [],
-                                        ),
-                                        {
-                                          field: newField.value,
-                                          isMustHave: newField.isMustHave,
-                                        },
-                                      ],
-                                    });
-                                    setNewField(null);
-                                  }}
-                                >
-                                  Add
-                                </AUIButton>
-                              </>
-                            }
-                            slotTextEdit={
-                              <>
-                                <textarea
-                                  style={{
-                                    width: '100%',
-                                    outline: 'none',
-                                    border: '0px',
-                                    backgroundColor: '#f8f9f9',
-                                    resize: 'none',
-                                  }}
-                                  placeholder={p.AddBtnLabel}
-                                  value={newField?.value}
-                                  onChange={(e) => {
-                                    setNewField((p) => ({
-                                      ...p,
-                                      value: e.target.value,
-                                    }));
-                                  }}
-                                ></textarea>
-                              </>
-                            }
-                            isCancelVisible={true}
-                            onClickCancel={{
-                              onClick: () => {
-                                setNewField(null);
+                      slotAddButton={
+                        <>
+                          <AddButton
+                            textAddButton={p.AddBtnLabel}
+                            onClickAdd={{
+                              onClick: (e) => {
+                                setNewFieldEv(e.currentTarget);
+                                setNewField({
+                                  paramKey: p.paramKey,
+                                  isMustHave: true,
+                                  value: '',
+                                });
                               },
                             }}
-                            slotCheckBox={
-                              <Checkbox
-                                isChecked={newField.isMustHave}
-                                onClickCheck={{
-                                  onClick: () => {
-                                    setNewField((prev) => ({
-                                      ...prev,
-                                      isMustHave: !newField?.isMustHave,
-                                    }));
-                                  },
-                                }}
-                              />
-                            }
                           />
-                        )
+                          <Popover
+                            open={
+                              Boolean(newFieldEv) &&
+                              newField &&
+                              newField.paramKey === p.paramKey
+                            }
+                            anchorEl={newFieldEv}
+                            transformOrigin={{
+                              vertical: 'top',
+                              horizontal: 'left',
+                            }}
+                            onClose={() => {
+                              setNewField(null);
+                              setNewFieldEv(null);
+                            }}
+                          >
+                            <div
+                              style={{
+                                width:
+                                  newField &&
+                                  newField.paramKey === 'rolesResponsibilities'
+                                    ? '600px'
+                                    : '300px',
+                              }}
+                            >
+                              {newField && (
+                                <ScoreCardEdit
+                                  isDeleteVisible={false}
+                                  slotButtonUpdate={
+                                    <>
+                                      <AUIButton
+                                        size='small'
+                                        onClick={() => {
+                                          if (newField.value.length === 0)
+                                            return;
+                                          handleUpdateFormFields({
+                                            path: `jdJson.${p.paramKey}`,
+                                            value: [
+                                              ...get(
+                                                jobForm.formFields,
+                                                `jdJson.${p.paramKey}`,
+                                                [],
+                                              ),
+                                              {
+                                                field: newField.value,
+                                                isMustHave: newField.isMustHave,
+                                              },
+                                            ],
+                                          });
+                                          setNewField(null);
+                                        }}
+                                      >
+                                        Add
+                                      </AUIButton>
+                                    </>
+                                  }
+                                  slotTextEdit={
+                                    <>
+                                      <textarea
+                                        style={{
+                                          width: '100%',
+                                          outline: 'none',
+                                          border: '0px',
+                                          backgroundColor: '#f8f9f9',
+                                          resize: 'none',
+                                        }}
+                                        placeholder={p.AddBtnLabel}
+                                        value={newField?.value}
+                                        onChange={(e) => {
+                                          setNewField((p) => ({
+                                            ...p,
+                                            value: e.target.value,
+                                          }));
+                                        }}
+                                      ></textarea>
+                                    </>
+                                  }
+                                  isCancelVisible={true}
+                                  onClickCancel={{
+                                    onClick: () => {
+                                      setNewField(null);
+                                    },
+                                  }}
+                                  slotCheckBox={
+                                    <Checkbox
+                                      isChecked={newField.isMustHave}
+                                      onClickCheck={{
+                                        onClick: () => {
+                                          setNewField((prev) => ({
+                                            ...prev,
+                                            isMustHave: !newField?.isMustHave,
+                                          }));
+                                        },
+                                      }}
+                                    />
+                                  }
+                                />
+                              )}
+                            </div>
+                          </Popover>
+                        </>
                       }
                     />
                   );
@@ -380,6 +446,26 @@ ${jobForm.formFields.jobDescription}
                 });
               },
             }}
+            // onClickDone={{
+            //   onClick: () => {
+            //     handleUpdateFormFields({
+            //       path: 'isjdChanged',
+            //       value: false,
+            //     });
+            //   },
+            // }}
+            onClickRegenerate={{
+              onClick: handleGenerate,
+            }}
+            onClickDismiss={{
+              onClick: () => {
+                handleUpdateFormFields({
+                  path: 'isjdChanged',
+                  value: false,
+                });
+              },
+            }}
+
             // slotBasicButton={<></>}
           />
 
@@ -397,73 +483,86 @@ ${jobForm.formFields.jobDescription}
               mt: 1,
             }}
           >
-            <ScoreCardEdit
-              isDeleteVisible={true}
-              onClickDelete={{
-                onClick: () => {
-                  handleUpdateFormFields({
-                    path: `jdJson.${editParam.paramKey}`,
-                    value: get(
-                      jobForm.formFields.jdJson,
-                      `${editParam.paramKey}`,
-                      [],
-                    ).filter((_, idx) => idx !== editParam.index),
-                  });
-                  setPopUpEl(null);
-                },
+            <div
+              style={{
+                width:
+                  editParam && editParam.paramKey === 'rolesResponsibilities'
+                    ? '600px'
+                    : '300px',
               }}
-              slotButtonUpdate={
-                <>
-                  <AUIButton
-                    size='small'
-                    onClick={() => {
-                      if (editParam.value.length === 0) return;
-                      handleUpdateFormFields({
-                        path: `jdJson.${editParam.paramKey}[${editParam.index}]`,
-                        value: {
-                          field: editParam.value,
-                          isMustHave: editParam.isMustHave,
-                        },
-                      });
-                      setPopUpEl(null);
+            >
+              <ScoreCardEdit
+                isDeleteVisible={true}
+                onClickDelete={{
+                  onClick: () => {
+                    handleUpdateFormFields({
+                      path: `jdJson.${editParam.paramKey}`,
+                      value: get(
+                        jobForm.formFields.jdJson,
+                        `${editParam.paramKey}`,
+                        [],
+                      ).filter((_, idx) => idx !== editParam.index),
+                    });
+                    handleUpdateFormFields({
+                      path: 'isjdChanged',
+                      value: false,
+                    });
+                    setPopUpEl(null);
+                  },
+                }}
+                slotButtonUpdate={
+                  <>
+                    <AUIButton
+                      size='small'
+                      onClick={() => {
+                        if (editParam.value.length === 0) return;
+                        handleUpdateFormFields({
+                          path: `jdJson.${editParam.paramKey}[${editParam.index}]`,
+                          value: {
+                            field: editParam.value,
+                            isMustHave: editParam.isMustHave,
+                          },
+                        });
+                        setPopUpEl(null);
+                      }}
+                    >
+                      Update
+                    </AUIButton>
+                  </>
+                }
+                slotTextEdit={
+                  <>
+                    <textarea
+                      style={{
+                        width: '100%',
+                        outline: 'none',
+                        border: '0px',
+                        backgroundColor: '#f8f9f9',
+                        resize: 'none',
+                      }}
+                      placeholder={'Type Here'}
+                      value={editParam?.value}
+                      onChange={(e) => {
+                        setEditParam((p) => ({ ...p, value: e.target.value }));
+                      }}
+                    ></textarea>
+                  </>
+                }
+                slotCheckBox={
+                  <Checkbox
+                    isChecked={editParam?.isMustHave}
+                    onClickCheck={{
+                      onClick: () => {
+                        setEditParam((prev) => ({
+                          ...prev,
+                          isMustHave: !editParam?.isMustHave,
+                        }));
+                      },
                     }}
-                  >
-                    Update
-                  </AUIButton>
-                </>
-              }
-              slotTextEdit={
-                <>
-                  <textarea
-                    style={{
-                      width: '100%',
-                      outline: 'none',
-                      border: '0px',
-                      backgroundColor: '#f8f9f9',
-                      resize: 'none',
-                    }}
-                    placeholder={'Type Here'}
-                    value={editParam?.value}
-                    onChange={(e) => {
-                      setEditParam((p) => ({ ...p, value: e.target.value }));
-                    }}
-                  ></textarea>
-                </>
-              }
-              slotCheckBox={
-                <Checkbox
-                  isChecked={editParam?.isMustHave}
-                  onClickCheck={{
-                    onClick: () => {
-                      setEditParam((prev) => ({
-                        ...prev,
-                        isMustHave: !editParam?.isMustHave,
-                      }));
-                    },
-                  }}
-                />
-              }
-            />
+                  />
+                }
+              />
+            </div>
           </Popover>
         </>
       }

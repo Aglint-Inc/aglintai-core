@@ -12,4 +12,11 @@ declare function PhoneScreeningQ(props: {
   onClickBack?: Types.Devlink.RuntimeProps;
   textDescription?: React.ReactNode;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
+  onClickOk?: Types.Devlink.RuntimeProps;
+  isOkButtonVisible?: Types.Visibility.VisibilityConditions;
+  onClickSubmit?: Types.Devlink.RuntimeProps;
+  isSubmitButtonVisible?: Types.Visibility.VisibilityConditions;
+  isOkDisable?: Types.Visibility.VisibilityConditions;
+  isSubmitDisable?: Types.Visibility.VisibilityConditions;
+  isBackVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

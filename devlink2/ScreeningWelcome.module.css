@@ -14,7 +14,7 @@
 
 .screening-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
@@ -88,6 +88,7 @@
 
 .scr-header-tooltip-wrapper {
   position: relative;
+  margin-top: 2px;
 }
 
 .icon-block {

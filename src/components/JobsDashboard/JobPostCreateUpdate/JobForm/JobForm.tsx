@@ -247,7 +247,7 @@ function JobForm() {
       const isDeleted = await handleJobDelete(jobForm.jobPostId);
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs');
-      toast.error('Deleted Draft job Successfully');
+      toast.error('Deleted Draft job ');
       posthog.capture('Deleted Draft job');
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -294,6 +294,7 @@ function JobForm() {
   return (
     <>
       <CreateNewJob
+        isDotButtonVisible={jobForm.formType === 'edit'}
         slotCreateJob={<>{formSlide}</>}
         isDetailsActive={currSlide === 'details'}
         isEmailTemplateActive={currSlide === 'templates'}
