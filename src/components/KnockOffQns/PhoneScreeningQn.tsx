@@ -169,13 +169,10 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
     <PhoneScreeningQ
       onClickBack={{
         onClick: () => {
-          if (qnNo === 1) {
-            updateState({
-              path: 'showStartMessage',
-              value: true,
-            });
-            return;
-          }
+          updateState({
+            path: 'showStartMessage',
+            value: true,
+          });
           updateState({
             path: 'currentQn',
             value: qnNo - 1,
@@ -200,7 +197,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           });
         },
       }}
-      isBackVisible={true}
+      isBackVisible={state.currentQn > 1}
       isOkDisable={errorMsg.length > 0}
       isSubmitDisable={errorMsg.length > 0 || isSubmitting}
       onClickSubmit={{
