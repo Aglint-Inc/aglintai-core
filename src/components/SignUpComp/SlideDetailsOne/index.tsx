@@ -263,7 +263,7 @@ export function FetchCompanyDetails({ setCompanyName }) {
               },
             ] || [],
           company_overview: companyDetails.description || '',
-          technology_score: companyDetails.technologies || [],
+          // technology_score: companyDetails.technologies || [],
           socials: {
             custom: {},
             twitter: companyDetails.socialNetworks?.twitter || '',
