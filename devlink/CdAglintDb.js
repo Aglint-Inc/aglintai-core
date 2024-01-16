@@ -28,7 +28,12 @@ export function CdAglintDb({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-600", "fw-semibold")}
+            className={_utils.cx(
+              _styles,
+              "text-blue-600",
+              "fw-semibold",
+              "cursor-pointer"
+            )}
             tag="div"
             {...onClickCandidateData}
           >
