@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
 import * as _utils from "./utils";
 import _styles from "./UserDetails.module.css";
 
@@ -43,7 +42,17 @@ export function UserDetails({
           tag="div"
         >
           <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
-            <ButtonOutlinedSmall textLabel="Update Profile Picture" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cursor-pointer")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-blue-500")}
+                tag="div"
+              >
+                {"Update Profile Picture"}
+              </_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-sm", "color-grey-600")}

@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./UserChangeEmail.module.css";
 
@@ -14,10 +15,7 @@ export function UserChangeEmail({
         className={_utils.cx(_styles, "profile-header-wrappers")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Change Email"}
         </_Builtin.Block>
       </_Builtin.Block>
@@ -36,12 +34,7 @@ export function UserChangeEmail({
           tag="div"
           {...onClickEmailChange}
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-600", "cursor-pointer")}
-            tag="div"
-          >
-            {"Change email"}
-          </_Builtin.Block>
+          <ButtonPrimaryRegular textLabel="Change Email" />
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

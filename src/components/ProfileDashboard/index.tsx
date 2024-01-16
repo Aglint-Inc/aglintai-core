@@ -305,7 +305,7 @@ const ProfileDashboard = () => {
                   router.push(router);
                 },
               }}
-              textLink='User Detail'
+              textLink='Your Detail'
             />
             <NavSublink
               isActive={currTab === 'Change Email'}
@@ -325,7 +325,7 @@ const ProfileDashboard = () => {
                   router.push(router);
                 },
               }}
-              textLink='Change Password'
+              textLink='Password Update'
             />
           </>
         }
@@ -338,7 +338,7 @@ const ProfileImage = () => {
   return (
     <ImageUpload
       image={recruiterUser.profile_image}
-      size={70}
+      size={80}
       table='recruiter-user'
       handleUpdateProfile={handleUpdateProfile}
     />

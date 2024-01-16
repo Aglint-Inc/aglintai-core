@@ -100,7 +100,7 @@ function ImageUpload({
                 height: dynamic ? '100%' : size,
                 borderRadius: '10px',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                 },
                 textTransform: 'capitalize',
                 bgcolor: 'transparent',

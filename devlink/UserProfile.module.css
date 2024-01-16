@@ -386,7 +386,7 @@
 
 .profile-inner-wrapper {
   display: flex;
-  max-width: 490px;
+  width: 390px;
   padding: 20px 20px 24px;
   flex-direction: column;
   grid-auto-columns: 1fr;
