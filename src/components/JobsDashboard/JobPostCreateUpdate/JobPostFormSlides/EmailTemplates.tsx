@@ -33,7 +33,11 @@ const Emails = () => {
   )
     .filter((path) => {
       if (!jobForm.formFields.assessment) {
-        return path === 'application_recieved' || path === 'rejection';
+        return (
+          path === 'application_recieved' ||
+          path === 'rejection' ||
+          path === 'phone_screen'
+        );
       } else {
         return true;
       }
@@ -43,6 +47,7 @@ const Emails = () => {
       excerpt: '',
       path: email,
     }));
+
   return (
     <>
       <EmailTemplatesStart

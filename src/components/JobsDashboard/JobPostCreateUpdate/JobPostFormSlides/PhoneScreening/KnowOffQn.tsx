@@ -20,66 +20,66 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
 
   return (
     <ScrQuestion
-      // isEditView={true}
-      // isDefaultView={true}
       slotDefault={
-        <Collapse in={isDefaultView} unmountOnExit translate='yes'>
-          <ScrQuestionDefault
-            isRequired={q.isRequired}
-            textQuestion={q.question}
-            slotIcon={qnTypeToIcon(q.type)}
-            // slotDescriptionToggle={<></>}
-            description={<>{q.showDescription && q.description}</>}
-            onclickEdit={{
-              onClick: () => {
-                setIsDefaultView(false);
-              },
-            }}
-            isOptionsVisible={
-              q.type === 'multiSelect' || q.type === 'singleSelect'
+        <>
+          <Collapse in={isDefaultView} translate='yes' unmountOnExit>
+            {
+              <ScrQuestionDefault
+                isRequired={q.isRequired}
+                textQuestion={q.question}
+                slotIcon={qnTypeToIcon(q.type)}
+                description={<>{q.showDescription && q.description}</>}
+                onclickEdit={{
+                  onClick: () => {
+                    setIsDefaultView(false);
+                  },
+                }}
+                isOptionsVisible={
+                  q.type === 'multiSelect' || q.type === 'singleSelect'
+                }
+                slotOptions={
+                  <>
+                    {q.options.map((op, idx) => (
+                      <UITypography key={idx} fontBold='default' type='small'>
+                        {`${idx + 1}.  ${op.option} `}
+                      </UITypography>
+                    ))}
+                  </>
+                }
+              />
             }
-            slotOptions={
-              <>
-                {q.options.map((op, idx) => (
-                  <UITypography key={idx} fontBold='default' type='small'>
-                    {`${idx + 1}.  ${op.option} `}
-                  </UITypography>
-                ))}
-              </>
-            }
-            // textOption={
-            //   <Stack direction={'row'} gap={1} flexWrap={'wrap'}></Stack>
-            // }
-          />
-        </Collapse>
+          </Collapse>
+        </>
       }
       slotEdit={
-        <Collapse in={!isDefaultView} unmountOnExit translate='yes'>
-          <PhoneScreenNewQnForm
-            isEdit={true}
-            defaultEditQn={{ ...q }}
-            handleCancel={() => {
-              setIsDefaultView(true);
-            }}
-            handleDelete={() => {
-              const updatedQns =
-                jobForm.formFields.phoneScreening.questions.filter(
-                  (qn) => qn.id !== q.id,
-                );
-              handleUpdateFormFields({
-                path: 'phoneScreening.questions',
-                value: updatedQns,
-              });
-              setIsDefaultView(true);
-            }}
-            handleDone={(updatedQn) => {
-              handleUpdateFormFields({
-                path: `${qnPath}`,
-                value: updatedQn,
-              });
-              setIsDefaultView(true);
-            }}
-          />
+        <Collapse in={!isDefaultView} translate='yes' unmountOnExit>
+          {
+            <PhoneScreenNewQnForm
+              isEdit={true}
+              defaultEditQn={{ ...q }}
+              handleCancel={() => {
+                setIsDefaultView(true);
+              }}
+              handleDelete={() => {
+                const updatedQns =
+                  jobForm.formFields.phoneScreening.questions.filter(
+                    (qn) => qn.id !== q.id,
+                  );
+                handleUpdateFormFields({
+                  path: 'phoneScreening.questions',
+                  value: updatedQns,
+                });
+                setIsDefaultView(true);
+              }}
+              handleDone={(updatedQn) => {
+                handleUpdateFormFields({
+                  path: `${qnPath}`,
+                  value: updatedQn,
+                });
+                setIsDefaultView(true);
+              }}
+            />
+          }
         </Collapse>
       }
     />

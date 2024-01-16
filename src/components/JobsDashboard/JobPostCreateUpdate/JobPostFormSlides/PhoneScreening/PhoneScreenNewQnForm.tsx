@@ -47,6 +47,7 @@ const PhoneScreenNewQnForm = ({
   return (
     <>
       <ScrQuestionEdit
+        topHeading={isEdit ? 'Edit question' : 'Add question'}
         isReqChecked={editQn?.isRequired}
         isOptionsVisible={editQn?.type !== 'shortAnswer'}
         onclickDelete={{
