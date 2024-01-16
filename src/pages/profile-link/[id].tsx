@@ -151,7 +151,7 @@ function InterviewFeedbackPage() {
         >
           <Stack width={500}>
             <Transcript
-              applications={application}
+              application={application}
               setOpenDetailedFeedback={setOpenTranscript}
               hideFeedback={true}
             />
@@ -159,9 +159,7 @@ function InterviewFeedbackPage() {
         </SidePanelDrawer>
 
         <ProfileShare
-          isOverviewVisible={
-            !!(application?.score_json as any)?.overview
-          }
+          isOverviewVisible={!!(application?.score_json as any)?.overview}
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
@@ -186,12 +184,16 @@ function InterviewFeedbackPage() {
                   )}
                   slotFeedbackScore={
                     <InterviewFeedbackParams
-                      feedbackParamsObj={application.assessment_results.feedback}
+                      feedbackParamsObj={
+                        application.assessment_results.feedback
+                      }
                     />
                   }
                   slotDetailedFeedback={
                     <DetailedInterviewFeedbackParams
-                      feedbackParamsObj={application.assessment_results.feedback}
+                      feedbackParamsObj={
+                        application.assessment_results.feedback
+                      }
                     />
                   }
                 />
@@ -264,12 +266,10 @@ function InterviewFeedbackPage() {
               textDate={`${w?.end?.year || '--'} - ${w?.end?.year || '--'}`}
             />
           ))}
-          isSkillVisible={
-            (application?.score_json as any)?.skills?.length > 0
-          }
-          slotSkill={(application?.score_json as any)?.skills?.map(
-            (s, i) => <CandidateSkillPills key={i} textSkill={s} />,
-          )}
+          isSkillVisible={(application?.score_json as any)?.skills?.length > 0}
+          slotSkill={(application?.score_json as any)?.skills?.map((s, i) => (
+            <CandidateSkillPills key={i} textSkill={s} />
+          ))}
           onClickCopyProfile={{
             onClick: () => {
               navigator.clipboard
@@ -323,12 +323,14 @@ function InterviewFeedbackPage() {
                   justifyContent={'center'}
                   height={'90vh'}
                 >
-                  <ResumePreviewer url={application.candidate_files?.file_url} />
+                  <ResumePreviewer
+                    url={application.candidate_files?.file_url}
+                  />
                 </Stack>
               </Dialog>
               {application?.score_json && (
                 <NewResumeScoreDetails
-                  applications={application}
+                  application={application}
                   job={job as any}
                   feedback={true}
                   setOpenResume={setOpenResume}

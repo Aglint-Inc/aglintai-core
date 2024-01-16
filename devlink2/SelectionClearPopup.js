@@ -19,7 +19,7 @@ export function SelectionClearPopup({
         <br />
         {"‍"}
         <br />
-        <_Builtin.Span className={_utils.cx(_styles, "text-grey-600")}>
+        <_Builtin.Span className={_utils.cx(_styles, "text-gray-600")}>
           {
             "By proceeding navigation to the other page, selected candidates will be deselected."
           }

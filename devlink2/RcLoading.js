@@ -20,7 +20,7 @@ export function RcLoading({ as: _Component = _Builtin.Block, slotLottie }) {
           {slotLottie}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-gray-600")}
           tag="div"
         >
           {"Hold on. Fetching company details from the website"}

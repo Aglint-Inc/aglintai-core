@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import React from 'react';
 import posthog from 'posthog-js';
+import React from 'react';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
@@ -26,7 +26,13 @@ import {
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
 import ResumeScore from '../Common/ResumeScore';
-import { capitalize, formatTimeStamp, getCandidateName } from '../utils';
+import {
+  capitalize,
+  formatTimeStamp,
+  getCandidateName,
+  getReasonings,
+  getScreeningStatus,
+} from '../utils';
 
 const ApplicationCard = ({
   detailedView,
@@ -73,6 +79,8 @@ const ApplicationCard = ({
   const analysis = getReasonings(
     (application?.score_json as ScoreJson)?.reasoning || null,
   );
+  const { isNotInvited, isPending, isSubmitted } =
+    getScreeningStatus(application);
   return !detailedView ? (
     <AllCandidateListItem
       onclickSelect={{ onClick: handleCheck }}
@@ -98,8 +106,6 @@ const ApplicationCard = ({
           : '---'
       }
       slotResumeScore={resumeScore}
-      email={application.candidates.email || '---'}
-      phone={application.candidates.phone || '---'}
       isInterviewVisible={isInterview}
       slotAssessmentScore={interviewScore}
       appliedDate={creationDate}
@@ -114,10 +120,10 @@ const ApplicationCard = ({
         (application.candidate_files?.resume_json as any)?.basics
           ?.totalExperience,
       )}
-      company={
-        (application.candidate_files?.resume_json as any)?.basics
-          ?.currentCompany || '---'
-      }
+      isScreeningVisible={section !== JobApplicationSections.NEW}
+      isScreenStatusPending={isPending}
+      isScreenStatusSubmitted={isSubmitted}
+      isScreeningStatusNotInvited={isNotInvited}
     />
   ) : (
     <TopCandidateListItem
@@ -144,14 +150,6 @@ const ApplicationCard = ({
   );
 };
 
-const getReasonings = (reasoning: ScoreJson['reasoning']) => {
-  return reasoning
-    ? ['positions', 'skills', 'schools'].reduce((acc, curr) => {
-        if (reasoning[curr]) acc += `${capitalize(reasoning[curr])} `;
-        return acc;
-      }, '')
-    : '---';
-};
 const getExperienceCount = (months: number) => {
   return months ? Math.trunc(months / 12) : '---';
 };

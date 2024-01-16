@@ -19,6 +19,7 @@ export function ScrQuestionEdit({
   slotDescription,
   isDescriptionVisible = false,
   slotDescriptionToggle,
+  topHeading = "Edit question",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scr-question-block")} tag="div">
@@ -34,7 +35,7 @@ export function ScrQuestionEdit({
             className={_utils.cx(_styles, "text-gray-600")}
             tag="div"
           >
-            {"Edit question"}
+            {topHeading}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

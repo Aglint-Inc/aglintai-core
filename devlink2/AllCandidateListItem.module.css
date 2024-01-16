@@ -75,7 +75,7 @@
 }
 
 .cv-list-column-wrapper.top {
-  padding: 8px 12px;
+  padding: 10px;
   border-bottom-style: none;
   background-color: #f8f9f9;
 }
@@ -90,6 +90,10 @@
 }
 
 .cv-list-column-wrapper.top.resume:hover {
+  z-index: 10;
+}
+
+.cv-list-column-wrapper.top.screening:hover {
   z-index: 10;
 }
 
@@ -112,6 +116,11 @@
 .cv-list-column-wrapper.items-v-center {
   display: flex;
   align-items: center;
+}
+
+.cv-list-column-wrapper.pv-12 {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .cv-list-column {
@@ -150,8 +159,8 @@
 }
 
 .cv-list-column.job {
-  width: 250px;
-  min-width: 250px;
+  width: 280px;
+  min-width: 280px;
 }
 
 .cv-list-column.experience {
@@ -160,20 +169,20 @@
 }
 
 .cv-list-column.date {
-  width: 220px;
-  min-width: 220px;
+  width: 240px;
+  min-width: 240px;
   margin-right: 0px;
   text-align: right;
 }
 
 .cv-list-column.location {
-  width: 160px;
-  min-width: 160px;
+  width: 230px;
+  min-width: 230px;
 }
 
 .cv-list-column.resume {
-  width: 220px;
-  min-width: 220px;
+  width: 180px;
+  min-width: 180px;
   align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
@@ -214,6 +223,37 @@
   .cv-list-column.analysis2 {
     min-width: 580px;
   }
+}
+
+.cv-list-column.small {
+  width: 60px;
+  min-width: 60px;
+  margin-left: 0px;
+}
+
+.cv-list-column.small.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.cv-list-column.xlarge {
+  width: 480px;
+  min-width: 480px;
+  margin-left: 0px;
+}
+
+.cv-list-column.xlarge.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.cv-list-column.screening {
+  width: 150px;
+  min-width: 150px;
 }
 
 .cv-list-checkbox {
@@ -287,10 +327,6 @@
 
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
-}
-
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .color-black {
@@ -373,6 +409,34 @@
   .hide {
     display: none;
   }
+}
+
+.text-blue-600 {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-fuschia-600 {
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-color-white {
+  color: white;
+}
+
+.text-black-100 {
+  color: var(--black-100);
 }
 
 .text-titlecase {

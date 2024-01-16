@@ -17,8 +17,6 @@ export function AllCandidateListItem({
   slotProfileImage,
   name = "Dianne Russell",
   jobTitle = "--",
-  email = "unknown",
-  phone = "(704) 555-0127",
   isInterviewVisible = false,
   slotResumeScore,
   slotAssessmentScore,
@@ -27,7 +25,10 @@ export function AllCandidateListItem({
   onclickCandidate = {},
   experience = "--",
   location = "--",
-  company = "--",
+  isScreenStatusPending = false,
+  isScreenStatusSubmitted = false,
+  isScreeningStatusNotInvited = false,
+  isScreeningVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -51,11 +52,11 @@ export function AllCandidateListItem({
           "items-v-center"
         )}
         tag="div"
+        {...onclickSelect}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-column")}
           tag="div"
-          {...onclickSelect}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-checkbox")}
@@ -163,6 +164,70 @@ export function AllCandidateListItem({
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
+        {isScreeningVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "cv-list-column-wrapper",
+              "items-v-center"
+            )}
+            tag="div"
+          >
+            {isHighlighted ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-list-item-highlight")}
+                tag="div"
+              />
+            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-hover-bg")}
+              tag="div"
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-column", "screening")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">
+                {isScreenStatusPending ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-titlecase",
+                      "text-yellow-600"
+                    )}
+                    tag="div"
+                  >
+                    {"Pending"}
+                  </_Builtin.Block>
+                ) : null}
+                {isScreenStatusSubmitted ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-titlecase",
+                      "text-green-500"
+                    )}
+                    tag="div"
+                  >
+                    {"Submitted"}
+                  </_Builtin.Block>
+                ) : null}
+                {isScreeningStatusNotInvited ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-titlecase",
+                      "text-red-500"
+                    )}
+                    tag="div"
+                  >
+                    {"Not Invited"}
+                  </_Builtin.Block>
+                ) : null}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(
             _styles,
@@ -190,36 +255,6 @@ export function AllCandidateListItem({
               tag="div"
             >
               {jobTitle}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column-wrapper",
-            "items-v-center"
-          )}
-          tag="div"
-        >
-          {isHighlighted ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-item-highlight")}
-              tag="div"
-            />
-          ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-hover-bg")}
-            tag="div"
-          />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "job")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-titlecase")}
-              tag="div"
-            >
-              {company}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
@@ -279,7 +314,10 @@ export function AllCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.line-clamp-1%20%7B%0Adisplay%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%201%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%20%20%0A%20%20overflow%3A%20hidden%3B%0A%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A.line-clamp-1%20%7B%0Adisplay%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%201%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%20%20%0A%20%20overflow%3A%20hidden%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

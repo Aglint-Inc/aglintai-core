@@ -116,8 +116,8 @@ const ScreeningComp = () => {
                     return (
                       <ScrQuestion
                         key={newQn.id}
-                        isEditView
-                        isDefaultView={false}
+                        // isEditView
+                        // isDefaultView={false}
                         slotDefault={<></>}
                         slotEdit={
                           <>

@@ -150,7 +150,7 @@ export const bulkUpdateJobApplicationDbAction = async (
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { error } = await supabase
     .from('applications')
-    .upsert(inputData)
+    .update(inputData[0])
     .abortSignal(signal);
   clearTimeout(timeout);
   return { data: error ? false : true, error };
@@ -201,6 +201,40 @@ export const getRange = (
     start: (pageNumber - 1) * paginationLimit,
     end: pageNumber * paginationLimit - 1,
   };
+};
+
+export type Tables = Database['public']['Tables'];
+
+export type Columns<T extends keyof Tables> = keyof Tables[T]['Row'];
+
+type Relationships<T extends keyof Tables> =
+  Tables[T]['Relationships'][number]['referencedRelation'];
+
+export const application_relationships: Relationships<'applications'>[] = [
+  'assessment_results',
+  'candidate_files',
+  'candidates',
+  'public_jobs',
+];
+
+export const universalUpdateDbAction = async <
+  T extends keyof Tables,
+  I extends Tables[T]['Update'],
+>(
+  table: T,
+  input: I,
+  id: string,
+  signal?: AbortSignal,
+): Promise<boolean> => {
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 60000);
+  const { error } = await supabase
+    .from(table)
+    .update(input as any)
+    .eq(`id`, id)
+    .abortSignal(signal);
+  clearTimeout(timeout);
+  return error ? false : true;
 };
 
 // export const updateAllJobStatusDbAction = async (

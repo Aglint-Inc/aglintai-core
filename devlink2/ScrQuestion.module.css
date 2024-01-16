@@ -2,10 +2,6 @@
   display: flex;
   padding: 20px;
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-
   border-radius: 10px;
-
   background-color: #f8f9f9;
 }

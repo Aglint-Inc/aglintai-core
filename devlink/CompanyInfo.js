@@ -38,18 +38,10 @@ export function CompanyInfo({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Basic Info"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
-            tag="div"
-          >
-            {
-              "Provide the company details for display on your public job listings page. You can preview your listings here."
-            }
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -104,7 +96,7 @@ export function CompanyInfo({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Additional Info"}

@@ -30,7 +30,7 @@ export function SidebarScreening({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "text-gray-600")}
             tag="div"
           >
             {"Status:"}

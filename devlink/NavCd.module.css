@@ -13,6 +13,10 @@
   cursor: pointer;
 }
 
+.nav-bar-icon:hover {
+  color: var(--red-400);
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -35,6 +39,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {
@@ -130,4 +138,8 @@
 
 .nav-bar-icon-hover.csetting {
   width: 125px;
+}
+
+.nav-bar-icon-hover.logout {
+  width: 65px;
 }

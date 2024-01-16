@@ -6,6 +6,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import {
   Dispatch,
   SetStateAction,
@@ -14,7 +15,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import posthog from 'posthog-js';
 
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
@@ -186,7 +186,7 @@ const JobApplicationComponent = () => {
             onClose={() => handleSelectCurrentApplication(-1)}
             handleSelectNextApplication={() => handleSelectNextApplication()}
             handleSelectPrevApplication={() => handleSelectPrevApplication()}
-            applications={
+            application={
               sectionApplications[
                 currentApplication === -1 ? 0 : currentApplication
               ]
@@ -327,6 +327,7 @@ const ApplicationTable = ({
       isAllChecked={isAllChecked}
       isInterviewVisible={showInterview}
       slotCandidatesList={applicantsList}
+      isScreeningVisible={section !== JobApplicationSections.NEW}
     />
   ) : (
     <TopApplicantsTable

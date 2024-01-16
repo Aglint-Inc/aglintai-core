@@ -19,12 +19,13 @@
 
 .powered-aglint-wrap {
   position: absolute;
-  left: auto;
+  left: 0%;
   top: auto;
-  right: 20px;
+  right: 0%;
   bottom: 20px;
 
   display: flex;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -232,6 +233,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {

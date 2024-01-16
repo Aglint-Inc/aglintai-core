@@ -16,4 +16,5 @@ declare function CandidateDatabaseSearch(props: {
   isSearchInAglintVisible?: Types.Visibility.VisibilityConditions;
   isSearchInAllVisible?: Types.Visibility.VisibilityConditions;
   slotNavSublink?: Types.Devlink.Slot;
+  isSearchJdVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

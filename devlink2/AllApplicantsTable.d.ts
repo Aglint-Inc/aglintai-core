@@ -13,4 +13,5 @@ declare function AllApplicantsTable(props: {
   belowMatchCount?: React.ReactNode;
   noMatchCount?: React.ReactNode;
   notFoundCount?: React.ReactNode;
+  isScreeningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

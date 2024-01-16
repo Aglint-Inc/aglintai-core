@@ -8,8 +8,6 @@ declare function AllCandidateListItem(props: {
   slotProfileImage?: Types.Devlink.Slot;
   name?: React.ReactNode;
   jobTitle?: React.ReactNode;
-  email?: React.ReactNode;
-  phone?: React.ReactNode;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   slotResumeScore?: Types.Devlink.Slot;
   slotAssessmentScore?: Types.Devlink.Slot;
@@ -18,5 +16,8 @@ declare function AllCandidateListItem(props: {
   onclickCandidate?: Types.Devlink.RuntimeProps;
   experience?: React.ReactNode;
   location?: React.ReactNode;
-  company?: React.ReactNode;
+  isScreenStatusPending?: Types.Visibility.VisibilityConditions;
+  isScreenStatusSubmitted?: Types.Visibility.VisibilityConditions;
+  isScreeningStatusNotInvited?: Types.Visibility.VisibilityConditions;
+  isScreeningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

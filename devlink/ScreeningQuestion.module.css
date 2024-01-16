@@ -28,6 +28,17 @@
   border-radius: 4px;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .instruction-wrap {
   display: flex;
   flex-direction: column;
@@ -102,17 +113,6 @@
 
 .text-green-800 {
   color: var(--green800-a83af583);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .text-grey-500 {
@@ -477,6 +477,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {

@@ -242,6 +242,14 @@
   line-height: 16px;
 }
 
+.text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
 .slot-roles-wrappers {
   display: flex;
   margin-top: 20px;
@@ -297,6 +305,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {

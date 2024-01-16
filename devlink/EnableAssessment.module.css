@@ -40,6 +40,10 @@
   height: 28px;
 }
 
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;

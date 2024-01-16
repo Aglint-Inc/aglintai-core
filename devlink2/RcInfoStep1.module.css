@@ -74,12 +74,12 @@
   margin-left: 2px;
 }
 
-.text-grey-600 {
+.text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 @media screen and (max-width: 767px) {
-  .text-grey-600.mobile-12 {
+  .text-gray-600.mobile-12 {
     font-size: 12px;
   }
 }
@@ -148,6 +148,34 @@
   .hide {
     display: none;
   }
+}
+
+.text-blue-600 {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.text-red-500 {
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-fuschia-600 {
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-color-white {
+  color: white;
+}
+
+.text-black-100 {
+  color: var(--black-100);
 }
 
 .div-block-386 {

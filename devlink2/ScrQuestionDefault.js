@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ToggleButton } from "./ToggleButton";
 import * as _utils from "./utils";
 import _styles from "./ScrQuestionDefault.module.css";
 
@@ -8,12 +7,10 @@ export function ScrQuestionDefault({
   as: _Component = _Builtin.Block,
   slotIcon,
   textQuestion = "Have you completed the following degree: Bachelors Degree?",
-  textOption = "1. Yes",
   isRequired = false,
   onclickEdit = {},
   isOptionsVisible = true,
   slotOptions,
-  slotDescriptionToggle,
   description = "This is some text inside of a div block.",
 }) {
   return (
@@ -73,15 +70,6 @@ export function ScrQuestionDefault({
         className={_utils.cx(_styles, "scr-description-wrapper")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "scr-toggle-top")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">
-            {slotDescriptionToggle ?? <ToggleButton />}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Show Description"}</_Builtin.Block>
-        </_Builtin.Block>
         <_Builtin.Block tag="div">{description}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

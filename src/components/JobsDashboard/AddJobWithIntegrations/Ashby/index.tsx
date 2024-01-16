@@ -2,9 +2,9 @@ import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import posthog from 'posthog-js';
 
 import {
   AshbyApiKey,

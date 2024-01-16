@@ -32,10 +32,6 @@
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
@@ -52,6 +48,18 @@
   color: var(--kale-800);
 }
 
+.text-blue-600 {
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.text-grey-500 {
+  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+}
+
+.text-black-100 {
+  color: var(--black-100);
+}
+
 .jdet-status-info-block {
   display: flex;
   align-items: center;
@@ -59,7 +67,7 @@
   grid-row-gap: 4px;
 }
 
-.icon-embed {
+.svg-icon {
   display: flex;
   width: 100%;
   height: 100%;
@@ -69,7 +77,7 @@
   object-fit: contain;
 }
 
-.icon-embed.absolute {
+.svg-icon.absolute {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -77,7 +85,7 @@
   bottom: 0%;
 }
 
-.icon-embed.sort-filled {
+.svg-icon.sort-filled {
   position: absolute;
   left: 0%;
   top: 0%;
@@ -98,4 +106,16 @@
 
 .text-blue-700 {
   color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-green-500 {
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-fuschia-600 {
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }

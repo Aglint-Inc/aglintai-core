@@ -15,4 +15,5 @@ declare function ScrQuestionEdit(props: {
   slotDescription?: Types.Devlink.Slot;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
   slotDescriptionToggle?: Types.Devlink.Slot;
+  topHeading?: React.ReactNode;
 }): React.JSX.Element;

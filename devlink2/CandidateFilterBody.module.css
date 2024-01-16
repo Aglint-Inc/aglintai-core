@@ -57,12 +57,16 @@
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
-.text-grey-600 {
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 @media screen and (max-width: 767px) {
-  .text-grey-600.mobile-12 {
+  .text-gray-600.mobile-12 {
     font-size: 12px;
   }
 }

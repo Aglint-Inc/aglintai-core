@@ -41,6 +41,10 @@
   height: 28px;
 }
 
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -114,6 +118,8 @@
 }
 
 .div-block-558 {
+  position: relative;
+
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -141,10 +147,21 @@
   grid-row-gap: 8px;
 }
 
+.cursor-pointer.discard-job {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
 
 .text-blue-600.ml-8 {
   margin-left: 8px;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }

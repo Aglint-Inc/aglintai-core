@@ -14,6 +14,7 @@ const initialJobApplicationsContext = {
   updateTick: undefined,
   pageNumber: undefined,
   handleJobApplicationBulkCreate: undefined,
+  handleJobApplicationUpdate: undefined,
   handleJobApplicationRead: undefined,
   handleJobApplicationPaginate: undefined,
   handleJobApplicationRefresh: undefined,

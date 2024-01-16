@@ -70,7 +70,7 @@ export function InvalidJob({ as: _Component = _Builtin.Block, slotLottie }) {
             className={_utils.cx(_styles, "text-sm", "text-grey-600")}
             tag="div"
           >
-            {"© 2023 Aglint Inc. All Rights Reserved"}
+            {"© 2024 Aglint Inc. All Rights Reserved"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

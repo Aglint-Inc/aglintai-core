@@ -153,7 +153,7 @@ function JobForm() {
       ) as FormJobType['interviewConfig'];
 
       if (formError.aiQnGen > 0) {
-        toast.error('Please wait till questions get generated');
+        toast.error('Please wait till qusetions get generated');
         return false;
       }
 

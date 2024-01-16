@@ -46,7 +46,7 @@
 }
 
 .cv-list-column-wrapper.top {
-  padding: 8px 12px;
+  padding: 10px;
   border-bottom-style: none;
   background-color: #f8f9f9;
 }
@@ -61,6 +61,10 @@
 }
 
 .cv-list-column-wrapper.top.resume:hover {
+  z-index: 10;
+}
+
+.cv-list-column-wrapper.top.screening:hover {
   z-index: 10;
 }
 
@@ -83,6 +87,248 @@
 .cv-list-column-wrapper.items-v-center {
   display: flex;
   align-items: center;
+}
+
+.cv-list-column-wrapper.pv-12 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.skeletal-wrapper {
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+  align-items: center;
+}
+
+.skeletal-wrapper.name {
+  width: 240px;
+  min-width: 240px;
+  margin-left: 0px;
+}
+
+.skeletal-wrapper.name.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.skeletal-wrapper.assessment {
+  width: 220px;
+  min-width: 220px;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.skeletal-wrapper.job {
+  width: 280px;
+  min-width: 280px;
+}
+
+.skeletal-wrapper.experience {
+  width: 140px;
+  min-width: 140px;
+}
+
+.skeletal-wrapper.date {
+  width: 240px;
+  min-width: 240px;
+  margin-right: 0px;
+  text-align: right;
+}
+
+.skeletal-wrapper.location {
+  width: 230px;
+  min-width: 230px;
+}
+
+.skeletal-wrapper.resume {
+  width: 180px;
+  min-width: 180px;
+  align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.skeletal-wrapper.resume.overflow-visible:hover {
+  overflow: visible;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.skeletal-wrapper.insights {
+  overflow: visible;
+  width: 460px;
+  min-width: 460px;
+  flex-wrap: wrap;
+}
+
+.skeletal-wrapper.overview3 {
+  z-index: -1;
+  min-width: 360px;
+}
+
+@media screen and (min-width: 1440px) {
+  .skeletal-wrapper.overview3 {
+    min-width: 580px;
+  }
+}
+
+.skeletal-wrapper.analysis2 {
+  z-index: -1;
+  min-width: 360px;
+}
+
+@media screen and (min-width: 1440px) {
+  .skeletal-wrapper.analysis2 {
+    min-width: 580px;
+  }
+}
+
+.skeletal-wrapper.small {
+  width: 60px;
+  min-width: 60px;
+  margin-left: 0px;
+}
+
+.skeletal-wrapper.small.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.skeletal-wrapper.xlarge {
+  width: 480px;
+  min-width: 480px;
+  margin-left: 0px;
+}
+
+.skeletal-wrapper.xlarge.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.skeletal-wrapper.screening {
+  width: 150px;
+  min-width: 150px;
+}
+
+.skeletal-wrapper.h-14 {
+  height: 14px;
+}
+
+.skeletal-wrapper._w-14 {
+  width: 14px;
+}
+
+.skeletal-wrapper.h-16 {
+  height: 16px;
+}
+
+.skeletal-wrapper._w-16 {
+  width: 16px;
+}
+
+.skeletal-wrapper.h-20 {
+  height: 20px;
+}
+
+.skeletal-wrapper._w-20 {
+  width: 20px;
+}
+
+.skeletal-wrapper.h-24 {
+  height: 24px;
+}
+
+.skeletal-wrapper._w-24 {
+  width: 24px;
+}
+
+.skeletal-wrapper.h-32 {
+  height: 32px;
+}
+
+.skeletal-wrapper._w-32 {
+  width: 32px;
+}
+
+.skeletal-wrapper.h-40 {
+  height: 40px;
+}
+
+.skeletal-wrapper._w-40 {
+  width: 40px;
+}
+
+.skeletal-wrapper._w-60 {
+  width: 60px;
+}
+
+.skeletal-wrapper._w-100 {
+  width: 100px;
+}
+
+.skeletal-wrapper._w-240 {
+  width: 240px;
+}
+
+.skeletal-wrapper._w-360 {
+  width: 360px;
+}
+
+.skeletal-wrapper._w-480 {
+  width: 480px;
+}
+
+.skeletal-wrapper._w-160 {
+  width: 160px;
+}
+
+.skeletal-block {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background-color: var(--grey-200);
+}
+
+.skeletal-block.overlay {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 5;
+
+  background-color: hsla(180, 7.69%, 97.45%, 0.00);
+  background-image: linear-gradient(98deg, hsla(0, 0.00%, 100.00%, 0.00), hsla(0, 0.00%, 100.00%, 0.68) 46%, hsla(0, 0.00%, 0.00%, 0.00));
+}
+
+.cv-list-row-main {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding-right: 10px;
+  padding-left: 2px;
+  justify-content: flex-start;
+  align-items: stretch;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.cv-list-row-main.pointer {
+  cursor: pointer;
 }
 
 .cv-list-column {
@@ -121,8 +367,8 @@
 }
 
 .cv-list-column.job {
-  width: 250px;
-  min-width: 250px;
+  width: 280px;
+  min-width: 280px;
 }
 
 .cv-list-column.experience {
@@ -131,30 +377,26 @@
 }
 
 .cv-list-column.date {
-  width: 220px;
-  min-width: 220px;
+  width: 240px;
+  min-width: 240px;
   margin-right: 0px;
   text-align: right;
 }
 
 .cv-list-column.location {
-  width: 160px;
-  min-width: 160px;
+  width: 230px;
+  min-width: 230px;
 }
 
 .cv-list-column.resume {
-  width: 220px;
-  min-width: 220px;
+  width: 180px;
+  min-width: 180px;
   align-items: center;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
 }
 
 .cv-list-column.resume.overflow-visible:hover {
-  overflow: visible;
-}
-
-.overflow-visible {
   overflow: visible;
 }
 
@@ -187,45 +429,33 @@
   }
 }
 
-.cv-skeletal-block {
-  width: 100%;
-  height: 16px;
-  min-width: 16px;
-  border-radius: 4px;
-  background-color: var(--grey-200);
+.cv-list-column.small {
+  width: 60px;
+  min-width: 60px;
+  margin-left: 0px;
 }
 
-.cv-skeletal-block.overlay {
-  position: absolute;
-  left: 0%;
-  top: 50%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 5;
-
-  background-color: hsla(180, 7.69%, 97.45%, 0.00);
-  background-image: linear-gradient(98deg, hsla(0, 0.00%, 100.00%, 0.00), hsla(0, 0.00%, 100.00%, 0.68) 46%, hsla(0, 0.00%, 0.00%, 0.00));
-
-  transform: translate(0px, -50%);
+.cv-list-column.small.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
-.cv-list-row-main {
-  position: relative;
-  z-index: 5;
-
-  display: flex;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  padding-right: 10px;
-  padding-left: 2px;
-  justify-content: flex-start;
-  align-items: stretch;
-  grid-auto-columns: 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
+.cv-list-column.xlarge {
+  width: 480px;
+  min-width: 480px;
+  margin-left: 0px;
 }
 
-.cv-list-row-main.pointer {
-  cursor: pointer;
+.cv-list-column.xlarge.top-can {
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.cv-list-column.screening {
+  width: 150px;
+  min-width: 150px;
 }

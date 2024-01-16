@@ -67,9 +67,17 @@
   height: 16px;
 }
 
+.skeleton-width-80.height-28 {
+  height: 28px;
+}
+
 .skeleton-width-60 {
   width: 60%;
   height: 16px;
+}
+
+.skeleton-width-60.height-28 {
+  height: 28px;
 }
 
 .div-block-552 {

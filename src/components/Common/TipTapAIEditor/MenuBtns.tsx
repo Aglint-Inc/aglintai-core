@@ -4,8 +4,8 @@ import { Button, IconButton, Tooltip } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
+import posthog from 'posthog-js';
 import React, { useState } from 'react';
-import posthog from 'posthog-js'
 
 import { palette } from '@/src/context/Theme/Theme';
 
@@ -310,7 +310,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
     if (!enableGenerate) return;
     try {
       setIsAiGenerating(true);
-      posthog.capture("Generate Job Description clicked")
+      posthog.capture('Generate Job Description clicked');
       const jdGenConfig: JDGenParams = {
         workPlaceType: formFields.workPlaceType,
         location: formFields.jobLocation,
@@ -349,8 +349,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
           },
         }}
         onClickGenerate={{
-          onClick: handlegenerate
-
+          onClick: handlegenerate,
         }}
         isGenerateDisable={!enableGenerate || isAiGenerating}
         textGenerateHeader={

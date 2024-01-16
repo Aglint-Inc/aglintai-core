@@ -1,11 +1,7 @@
 .filter-wrap {
-  max-width: 1010px;
-  padding-right: 30px;
-  padding-bottom: 35px;
-  padding-left: 22px;
-
+  max-width: 995px;
+  padding: 20px;
   border-radius: 10px;
-
   background-color: #f8f9f9;
 }
 
@@ -15,7 +11,7 @@
   z-index: 2;
 
   display: flex;
-  padding-top: 16px;
+  padding-top: 0px;
   padding-bottom: 20px;
   justify-content: space-between;
   align-items: center;
@@ -302,8 +298,8 @@
 .div-block-581 {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
 }
@@ -311,8 +307,8 @@
 .div-block-582 {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 18px;
-  grid-row-gap: 18px;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
 .filter-outer-wrappers {
@@ -331,6 +327,10 @@
 .filter-outer-wrappers.py-20 {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.filter-outer-wrappers.hide {
+  display: none;
 }
 
 .wrap-flex {
@@ -353,6 +353,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {
@@ -456,7 +460,7 @@
 
 .div-block-583 {
   display: flex;
-  margin-top: 12px;
+  margin-top: 8px;
   margin-bottom: 10px;
   flex-wrap: wrap;
   align-items: center;

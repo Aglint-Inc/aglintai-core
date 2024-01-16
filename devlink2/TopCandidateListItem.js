@@ -42,7 +42,12 @@ export function TopCandidateListItem({
         tag="div"
       />
       <_Builtin.Block
-        className={_utils.cx(_styles, "cv-list-column-wrapper", "width-auto")}
+        className={_utils.cx(
+          _styles,
+          "cv-list-column-wrapper",
+          "width-auto",
+          "pv-12"
+        )}
         tag="div"
       >
         {isHighlighted ? (
@@ -84,7 +89,12 @@ export function TopCandidateListItem({
         {...onclickCandidate}
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper", "name")}
+          className={_utils.cx(
+            _styles,
+            "cv-list-column-wrapper",
+            "name",
+            "pv-12"
+          )}
           tag="div"
         >
           {isHighlighted ? (
@@ -127,7 +137,7 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "pv-12")}
           tag="div"
         >
           {isHighlighted ? (
@@ -145,7 +155,7 @@ export function TopCandidateListItem({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
+              className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {overview}
@@ -153,7 +163,7 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "pv-12")}
           tag="div"
         >
           {isHighlighted ? (
@@ -171,7 +181,7 @@ export function TopCandidateListItem({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
+              className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {analysis}
@@ -183,7 +193,8 @@ export function TopCandidateListItem({
             _styles,
             "cv-list-column-wrapper",
             "z-10",
-            "insights"
+            "insights",
+            "pv-12"
           )}
           tag="div"
         >

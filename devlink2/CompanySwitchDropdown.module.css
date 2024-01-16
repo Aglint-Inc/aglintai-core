@@ -204,6 +204,10 @@
   background-color: var(--grey-200);
 }
 
+.icon-block.height-12 {
+  height: 12px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;

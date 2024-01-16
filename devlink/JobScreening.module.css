@@ -1,5 +1,7 @@
 .rd-main-wrapper {
   display: flex;
+  overflow: scroll;
+  height: 100vh;
   padding-bottom: 40px;
   flex-direction: column;
   align-items: stretch;
@@ -35,7 +37,12 @@
 }
 
 .rd-main-wrapper.profile-wrappers {
+  overflow: visible;
+  height: auto;
   min-height: 100vh;
+  padding-bottom: 0px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .rd-main-wrapper.height-scroll {

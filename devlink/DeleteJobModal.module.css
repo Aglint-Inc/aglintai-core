@@ -444,6 +444,13 @@
   grid-row-gap: 8px;
 }
 
+.cursor-pointer.discard-job {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+}
+
 .close-job-btn-modal {
   position: absolute;
   left: auto;
@@ -477,6 +484,10 @@
 
 .icons.cursor-pointer.height-28 {
   height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
 }
 
 .icons.curser-hover-pointer {

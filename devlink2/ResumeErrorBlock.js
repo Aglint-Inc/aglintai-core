@@ -30,7 +30,7 @@ export function ResumeErrorBlock({
           {"Fething candidate details from resume"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-gray-600")}
           tag="div"
         >
           {"This may take a while."}

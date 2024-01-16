@@ -7,26 +7,20 @@ import _styles from "./ScrQuestion.module.css";
 
 export function ScrQuestion({
   as: _Component = _Builtin.Block,
-  slotEdit,
-  isEditView = true,
-  isDefaultView = true,
   slotDefault,
+  slotEdit,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "scr-question-wrapper")}
       tag="div"
     >
-      {isDefaultView ? (
-        <_Builtin.Block tag="div">
-          {slotDefault ?? <ScrQuestionDefault isRequired={true} />}
-        </_Builtin.Block>
-      ) : null}
-      {isEditView ? (
-        <_Builtin.Block tag="div">
-          {slotEdit ?? <ScrQuestionEdit />}
-        </_Builtin.Block>
-      ) : null}
+      <_Builtin.Block tag="div">
+        {slotDefault ?? <ScrQuestionDefault isRequired={true} />}
+      </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotEdit ?? <ScrQuestionEdit />}
+      </_Builtin.Block>
     </_Component>
   );
 }

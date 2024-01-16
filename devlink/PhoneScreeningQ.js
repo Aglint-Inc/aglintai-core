@@ -12,6 +12,8 @@ export function PhoneScreeningQ({
   isQuestionImp = true,
   slotInputAndButton,
   onClickBack = {},
+  textDescription = "Answer this by choosing an option",
+  isDescriptionVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "phone-screen-1")} tag="div">
@@ -30,24 +32,40 @@ export function PhoneScreeningQ({
         <_Builtin.Block tag="div">{"of"}</_Builtin.Block>
         <_Builtin.Block tag="div">{totalQuestionNo}</_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-670")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "mt-23", "gap-4")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+          className={_utils.cx(_styles, "div-block-670")}
           tag="div"
         >
-          {textQuestion}
-        </_Builtin.Block>
-        {isQuestionImp ? (
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "fw-semibold",
-              "text-red-500"
-            )}
+            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
-            {" *"}
+            {textQuestion}
+          </_Builtin.Block>
+          {isQuestionImp ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-lg",
+                "fw-semibold",
+                "text-red-500"
+              )}
+              tag="div"
+            >
+              {" *"}
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        {isDescriptionVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600")}
+            tag="div"
+          >
+            {textDescription}
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

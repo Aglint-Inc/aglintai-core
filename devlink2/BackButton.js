@@ -13,7 +13,7 @@ export function BackButton({
       tag="div"
       {...onclickProps}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "text-gray-600")} tag="div">
         {"Back"}
       </_Builtin.Block>
     </_Component>

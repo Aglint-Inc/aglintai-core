@@ -67,6 +67,10 @@
   height: 28px;
 }
 
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -148,6 +152,17 @@
 .relative.ai-comm {
   overflow: hidden;
   border-radius: 4px;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .div-block-622 {

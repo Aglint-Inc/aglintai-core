@@ -6,4 +6,6 @@ declare function CandidateSort(props: {
   isSortBodyVisible?: Types.Visibility.VisibilityConditions;
   slotBody?: Types.Devlink.Slot;
   onclickSort?: Types.Devlink.RuntimeProps;
+  isSortVisible?: Types.Visibility.VisibilityConditions;
+  sortLabelText?: React.ReactNode;
 }): React.JSX.Element;

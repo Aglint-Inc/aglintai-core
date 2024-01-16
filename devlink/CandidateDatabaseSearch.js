@@ -20,6 +20,7 @@ export function CandidateDatabaseSearch({
   isSearchInAglintVisible = true,
   isSearchInAllVisible = false,
   slotNavSublink,
+  isSearchJdVisible = true,
 }) {
   return (
     <_Component
@@ -192,19 +193,21 @@ export function CandidateDatabaseSearch({
                 }
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div" {...onClickSearchJobDescription}>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-blue-600",
-                  "text-underline",
-                  "cursor-pointer"
-                )}
-                tag="div"
-              >
-                {"Search with job description"}
+            {isSearchJdVisible ? (
+              <_Builtin.Block tag="div" {...onClickSearchJobDescription}>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-blue-600",
+                    "text-underline",
+                    "cursor-pointer"
+                  )}
+                  tag="div"
+                >
+                  {"Search with job description"}
+                </_Builtin.Block>
               </_Builtin.Block>
-            </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

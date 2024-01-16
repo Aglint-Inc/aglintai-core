@@ -1,7 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import {
+  JobApplication,
+  ScoreJson,
+} from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { supabase } from '@/src/utils/supabaseClient';
+
+import { PhoneScreeningResponseType } from '../KnockOffQns/ScreeningCtxProvider';
 
 export const capitalize = (str: string) => {
   if (str) {
@@ -57,17 +62,11 @@ export const CANDIDATE_SORT: SortParameter['parameter'][] = [
   'overall_score',
   'interview_score',
   'full_name',
-  'email',
   'applied_at',
 ];
 
 export type SortParameter = {
-  parameter:
-    | 'overall_score'
-    | 'interview_score'
-    | 'full_name'
-    | 'email'
-    | 'applied_at';
+  parameter: 'overall_score' | 'interview_score' | 'full_name' | 'applied_at';
   ascending: boolean;
 };
 
@@ -148,7 +147,60 @@ export const getUpdateParameterName = (str: string) => {
       return 'resume_match';
     case 'location':
       return 'city';
+    case 'full_name':
+      return 'candidate';
+    case 'applied_at':
+      return 'applied_date';
     default:
       return str;
   }
+};
+
+export const applicationValidity = (application: JobApplication) => {
+  return (
+    intactConditionFilter(application) !== ApiLogState.PROCESSING &&
+    application.candidate_files.resume_json &&
+    application.score_json
+  );
+};
+
+export const getScreeningStatus = (application: JobApplication) => {
+  const emails = application?.status_emails_sent ?? (null as any);
+
+  const phoneScreening = ((application?.phone_screening as any)?.response ??
+    null) as PhoneScreeningResponseType[];
+
+  const isNotInvited = (emails?.screening ?? false) === false;
+  const isPending = (emails?.screening ?? false) === true && !phoneScreening;
+  const isSubmitted = !isNotInvited && !isPending;
+
+  const screeningStatus = isNotInvited
+    ? 'Not Invited'
+    : isPending
+      ? 'Pending'
+      : isSubmitted
+        ? 'Submitted'
+        : '';
+
+  return {
+    phoneScreening,
+    isNotInvited,
+    isPending,
+    isSubmitted,
+    screeningStatus,
+  };
+};
+
+export const getReasonings = (reasoning: ScoreJson['reasoning']) => {
+  const order: Array<keyof ScoreJson['reasoning']> = [
+    'positions',
+    'skills',
+    'schools',
+  ];
+  return reasoning
+    ? order.reduce((acc, curr) => {
+        if (reasoning[curr]) acc += `${capitalize(reasoning[curr])} `;
+        return acc;
+      }, '')
+    : null;
 };

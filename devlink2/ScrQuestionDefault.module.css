@@ -149,13 +149,6 @@
   grid-row-gap: 10px;
 }
 
-.scr-toggle-top {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
 .scr-question-default-content {
   display: flex;
   justify-content: space-between;

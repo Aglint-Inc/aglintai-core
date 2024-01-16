@@ -25,9 +25,11 @@ export enum JobApplicationSections {
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
 export type JobApplication = Applications & {
-  candidates: Candidate;
-  candidate_files: CandidateFiles;
-  assessment_results: AssessmentResults;
+  candidates: Partial<Candidate> & { id: Candidate['id'] };
+  candidate_files: Partial<CandidateFiles> & { id: CandidateFiles['id'] };
+  assessment_results: Partial<AssessmentResults> & {
+    id: AssessmentResults['id'];
+  };
 };
 
 export type Parameters = {

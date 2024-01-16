@@ -39,6 +39,10 @@
 .rd-main-wrapper.profile-wrappers {
   overflow: visible;
   height: auto;
+  min-height: 100vh;
+  padding-bottom: 0px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .rd-main-wrapper.height-scroll {
@@ -1710,7 +1714,7 @@
 }
 
 .cs-tab-content {
-  margin-top: 36px;
+  margin-top: 0px;
 }
 
 .cs-tab-content-wrapper.jd-settings {

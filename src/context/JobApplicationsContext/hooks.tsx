@@ -10,7 +10,10 @@ import {
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
-import { Applications } from '@/src/types/applications.types';
+import {
+  Applications,
+  ApplicationsUpdate,
+} from '@/src/types/applications.types';
 import toast from '@/src/utils/toast';
 
 import {
@@ -20,10 +23,12 @@ import {
   Parameters,
 } from './types';
 import {
+  application_relationships,
   bulkCreateJobApplicationDbAction,
   bulkUpdateJobApplicationDbAction,
   getRange,
   getUpdatedJobStatus,
+  universalUpdateDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
 import { CountJobs } from '../JobsContext/types';
@@ -52,9 +57,7 @@ type Action =
     }
   | {
       type: ActionType.UPDATE;
-      payload: {
-        applicationData: JobApplication;
-      };
+      payload: Partial<JobApplication>;
     };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
@@ -79,18 +82,27 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       return newState;
     }
     case ActionType.UPDATE: {
-      const newState: JobApplicationsData = {
-        ...state,
-        [action.payload.applicationData.status]: state[
-          action.payload.applicationData.status
-        ].reduce((acc: JobApplication[], curr: JobApplication) => {
-          if (curr.id === action.payload.applicationData.id)
-            acc.push(action.payload.applicationData);
-          else acc.push(curr);
-          return acc;
-        }, []),
-      };
-      return newState;
+      const applicationState = Object.assign(
+        {},
+        ...Object.entries(state).map(([key, value]) => {
+          return {
+            [key]: value.map((v) => {
+              if (v.id === action.payload.id) {
+                return Object.entries(action.payload).reduce(
+                  (acc, [key, value]) => {
+                    if (typeof value === 'object')
+                      return { ...acc, [key]: { ...v[key], ...value } };
+                    else return { ...acc, [key]: value };
+                  },
+                  { ...v },
+                );
+              }
+              return v;
+            }),
+          };
+        }),
+      );
+      return applicationState;
     }
 
     default: {
@@ -181,7 +193,10 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const updateTick = useRef(false);
 
   const showInterview =
-    section !== JobApplicationSections.NEW && initialJobLoad && job.assessment;
+    section !== JobApplicationSections.NEW &&
+    section !== JobApplicationSections.SCREENING &&
+    initialJobLoad &&
+    job.assessment;
 
   //SECONDARY
   const handleJobApplicationBulkCreate = async (
@@ -279,6 +294,67 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     }
     setApplicationDisable(false);
     return false;
+  };
+
+  const handleJobApplicationUpdate = async (
+    jobApplication: Partial<Omit<JobApplication, 'id'>>,
+    applicationId: JobApplication['id'],
+  ): Promise<Partial<JobApplication>> => {
+    const foreignChanges = (
+      Object.keys(jobApplication) as (keyof JobApplication)[]
+    ).reduce(
+      (acc, curr) => {
+        if (
+          application_relationships.includes(
+            curr as (typeof application_relationships)[number],
+          )
+        ) {
+          const relation = curr as (typeof application_relationships)[number];
+          const { id, ...safeObject } = jobApplication[relation];
+          acc.promises.push(universalUpdateDbAction(relation, safeObject, id));
+          acc.tables.push(relation);
+        }
+        return acc;
+      },
+      { promises: [], tables: [] },
+    );
+    const localChanges = Object.entries(jobApplication).reduce(
+      (acc, [key, value]) => {
+        if (![...application_relationships, 'id'].includes(key))
+          return { ...acc, [key]: value };
+        return acc;
+      },
+      {} as ApplicationsUpdate,
+    );
+    const localPromise = universalUpdateDbAction(
+      'applications',
+      localChanges,
+      applicationId,
+    );
+    const responses = await Promise.allSettled<boolean>([
+      ...foreignChanges.promises,
+      localPromise,
+    ]);
+    const updatedValues = responses.reduce((acc, curr, i) => {
+      if (curr.status === 'fulfilled') {
+        if (i === responses.length - 1 && curr.value)
+          return { ...acc, ...localChanges, id: applicationId };
+        else
+          return {
+            ...acc,
+            [foreignChanges.tables[i]]:
+              jobApplication[foreignChanges.tables[i]],
+          };
+      }
+      return acc;
+    }, {}) as Partial<JobApplication>;
+
+    const action: Action = {
+      type: ActionType.UPDATE,
+      payload: updatedValues,
+    };
+    dispatch(action);
+    return updatedValues;
   };
 
   //SECONDARY
@@ -421,6 +497,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     updateTick: updateTick.current,
     pageNumber,
     handleJobApplicationBulkCreate,
+    handleJobApplicationUpdate,
     handleJobApplicationRead,
     handleJobApplicationPaginate,
     handleJobApplicationRefresh,

@@ -62,7 +62,7 @@ export function InsightTagReliable({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-gray-600")}
           tag="div"
         >
           {

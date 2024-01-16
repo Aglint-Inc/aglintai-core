@@ -70,14 +70,14 @@ export function InboxListItem({
             </_Builtin.Block>
             <_Builtin.Block tag="div">
               <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icon-embed")}
+                className={_utils.cx(_styles, "svg-icon")}
                 value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%229%22%20height%3D%228%22%20viewbox%3D%220%200%209%208%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M4.5%200L8.83013%207.5H0.169873L4.5%200Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
+              className={_utils.cx(_styles, "svg-icon")}
               value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.64645%203.64645C1.82001%203.47288%202.08944%203.4536%202.28431%203.58859L2.35355%203.64645L6%207.293L9.64645%203.64645C9.82001%203.47288%2010.0894%203.4536%2010.2843%203.58859L10.3536%203.64645C10.5271%203.82001%2010.5464%204.08944%2010.4114%204.28431L10.3536%204.35355L6.35355%208.35355C6.17999%208.52712%205.91056%208.5464%205.71569%208.41141L5.64645%208.35355L1.64645%204.35355C1.45118%204.15829%201.45118%203.84171%201.64645%203.64645Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
@@ -102,7 +102,7 @@ export function InboxListItem({
               </_Builtin.Block>
               <_Builtin.Block tag="div">
                 <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
+                  className={_utils.cx(_styles, "svg-icon")}
                   value="%3Csvg%20width%3D%228%22%20height%3D%228%22%20viewbox%3D%220%200%208%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.5%22%20y%3D%220.5%22%20width%3D%227%22%20height%3D%227%22%20fill%3D%22%23F79A3E%22%2F%3E%0A%3C%2Fsvg%3E"
                 />
               </_Builtin.Block>
@@ -119,7 +119,7 @@ export function InboxListItem({
               </_Builtin.Block>
               <_Builtin.Block tag="div">
                 <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
+                  className={_utils.cx(_styles, "svg-icon")}
                   value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%229%22%20height%3D%228%22%20viewbox%3D%220%200%209%208%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M4.5%208L0.169872%200.5L8.83013%200.5L4.5%208Z%22%20fill%3D%22%23467B7C%22%2F%3E%0A%3C%2Fsvg%3E"
                 />
               </_Builtin.Block>
@@ -154,7 +154,7 @@ export function InboxListItem({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
+              className={_utils.cx(_styles, "svg-icon")}
               value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.64645%203.64645C1.82001%203.47288%202.08944%203.4536%202.28431%203.58859L2.35355%203.64645L6%207.293L9.64645%203.64645C9.82001%203.47288%2010.0894%203.4536%2010.2843%203.58859L10.3536%203.64645C10.5271%203.82001%2010.5464%204.08944%2010.4114%204.28431L10.3536%204.35355L6.35355%208.35355C6.17999%208.52712%205.91056%208.5464%205.71569%208.41141L5.64645%208.35355L1.64645%204.35355C1.45118%204.15829%201.45118%203.84171%201.64645%203.64645Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
@@ -244,7 +244,7 @@ export function InboxListItem({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
+              className={_utils.cx(_styles, "svg-icon")}
               value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M1.64645%203.64645C1.82001%203.47288%202.08944%203.4536%202.28431%203.58859L2.35355%203.64645L6%207.293L9.64645%203.64645C9.82001%203.47288%2010.0894%203.4536%2010.2843%203.58859L10.3536%203.64645C10.5271%203.82001%2010.5464%204.08944%2010.4114%204.28431L10.3536%204.35355L6.35355%208.35355C6.17999%208.52712%205.91056%208.5464%205.71569%208.41141L5.64645%208.35355L1.64645%204.35355C1.45118%204.15829%201.45118%203.84171%201.64645%203.64645Z%22%20fill%3D%22%23fff%22%2F%3E%0A%3C%2Fsvg%3E"
             />
           </_Builtin.Block>
@@ -339,7 +339,7 @@ export function InboxListItem({
             {...onClickArchiveBtn}
           >
             <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icon-embed")}
+              className={_utils.cx(_styles, "svg-icon")}
               value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M10%201.5L11%203.5V10C11%2010.2761%2010.7761%2010.5%2010.5%2010.5H1.5C1.22386%2010.5%201%2010.2761%201%2010V3.50177L2%201.5H10ZM10%204.5H2V9.5H10V4.5ZM6.5%205V7H8L6%209L4%207H5.5V5H6.5ZM9.38195%202.5H2.61828L2.11872%203.5H9.88195L9.38195%202.5Z%22%20fill%3D%22black%22%2F%3E%0A%3C%2Fsvg%3E"
             />
             <_Builtin.Block

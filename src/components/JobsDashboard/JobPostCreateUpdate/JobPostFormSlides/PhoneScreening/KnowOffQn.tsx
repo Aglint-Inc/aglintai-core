@@ -1,4 +1,4 @@
-import { Collapse, Stack } from '@mui/material';
+import { Collapse } from '@mui/material';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
@@ -20,15 +20,15 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
 
   return (
     <ScrQuestion
-      isEditView={true}
-      isDefaultView={true}
+      // isEditView={true}
+      // isDefaultView={true}
       slotDefault={
         <Collapse in={isDefaultView} unmountOnExit translate='yes'>
           <ScrQuestionDefault
             isRequired={q.isRequired}
             textQuestion={q.question}
             slotIcon={qnTypeToIcon(q.type)}
-            slotDescriptionToggle={<></>}
+            // slotDescriptionToggle={<></>}
             description={<>{q.showDescription && q.description}</>}
             onclickEdit={{
               onClick: () => {
@@ -47,9 +47,9 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
                 ))}
               </>
             }
-            textOption={
-              <Stack direction={'row'} gap={1} flexWrap={'wrap'}></Stack>
-            }
+            // textOption={
+            //   <Stack direction={'row'} gap={1} flexWrap={'wrap'}></Stack>
+            // }
           />
         </Collapse>
       }

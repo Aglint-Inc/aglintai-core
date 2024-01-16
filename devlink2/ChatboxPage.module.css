@@ -51,10 +51,6 @@
   margin-left: 2px;
 }
 
-.text-grey-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .cb-body-wrapper {
   display: grid;
   height: 100%;

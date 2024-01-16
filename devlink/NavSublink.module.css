@@ -6,10 +6,6 @@
   cursor: pointer;
 }
 
-.nav-sub-link-menu:hover {
-  background-color: #f8f9f9;
-}
-
 .bg-active-link {
   position: absolute;
   left: 0%;

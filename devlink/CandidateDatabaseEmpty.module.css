@@ -224,9 +224,7 @@
 
   display: flex;
   width: 100%;
-  margin-top: 40px;
   margin-bottom: 32px;
-  padding-left: 20px;
   flex-direction: row;
   justify-content: space-between;
   grid-column-gap: 20px;
@@ -585,6 +583,10 @@
   height: 28px;
 }
 
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -856,8 +858,9 @@
 
 .db-rquest-wrap {
   display: flex;
-  width: 370px;
-  padding-right: 35px;
+  width: 416px;
+  padding-top: 20px;
+  padding-right: 20px;
   flex-direction: column;
   flex: 0 0 auto;
   grid-column-gap: 20px;
@@ -871,13 +874,9 @@
 
 .db--request {
   position: relative;
-
   width: 100%;
-  padding: 20px;
-
-  border: 1px solid #e9ebed;
+  border: 1px none #e9ebed;
   border-radius: 10px;
-
   cursor: pointer;
 }
 
@@ -910,10 +909,10 @@
 
 .db-req-text-wrap {
   display: flex;
-  margin-top: 10px;
+  margin-top: 6px;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .color-grey-600.max-width-350 {

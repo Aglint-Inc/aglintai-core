@@ -58,7 +58,7 @@ const UIPhoneInput = ({
   return (
     <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'0px'}>
       {label && (
-        <UITypography type={labelSize} color={labelColor} fontBold='default'>
+        <UITypography type={labelSize} color={labelColor} fontBold='normal'>
           {label}
           {required && <sup>*</sup>}
         </UITypography>

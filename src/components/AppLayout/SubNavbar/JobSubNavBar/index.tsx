@@ -1,7 +1,6 @@
 import { Dialog, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import posthog from 'posthog-js'
 
 import { AddNewJob, CreateJob, NavJobSubLink } from '@/devlink';
 import { AshbyModalComp } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby';
@@ -177,7 +176,6 @@ function AddJob() {
           onClickCreateNewJob={{
             onClick: () => {
               router.push('/jobs/new?flow=manual');
-              posthog.capture("ADD New Job Button Clicked")
             },
           }}
           onClickLeverImport={{
