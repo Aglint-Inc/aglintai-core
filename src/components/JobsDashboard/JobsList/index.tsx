@@ -83,8 +83,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   )
                 }
                 key={ind}
-                textJobRole={jobDetails.job_title}
-                textCompanyLocation={`${jobDetails.company}, ${jobDetails.location}`}
+                textJobRole={jobDetails?.job_title}
+                textCompanyLocation={`${jobDetails?.company}, ${jobDetails?.location}`}
                 newCount={job?.count?.new}
                 qualifiedCount={job?.count?.qualified}
                 assessmentCount={job?.count?.assessment}
