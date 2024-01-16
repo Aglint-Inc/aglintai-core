@@ -255,6 +255,7 @@ function AppoloSearch() {
 
     if (!error) {
       setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+      toast.success('Candidates bookmarked successfully');
     }
     setSelectedCandidates([]);
     setIsSelectAll(false);
