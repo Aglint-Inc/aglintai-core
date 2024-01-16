@@ -106,6 +106,11 @@ const EmailOutReach = ({ onClose }) => {
     }
   };
 
+  const setLocalStorage = () => {
+    localStorage.setItem('redirect-candidate', router.asPath);
+  };
+  
+
   return (
     <>
       <CdEmailOutreach
@@ -251,6 +256,7 @@ const EmailOutReach = ({ onClose }) => {
               <MailLink
                 onClickLinkNow={{
                   onClick: () => {
+                    setLocalStorage();
                     dispatch({
                       type: 'updateState',
                       payload: {

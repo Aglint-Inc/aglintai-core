@@ -41,7 +41,11 @@ function CandidateSearchHistory() {
   const { jobsData } = useJobs();
   const router = useRouter();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
+
   useEffect(() => {
+    if (router.isReady && !router.query.currentTab) {
+      router.push('/candidates/history?currentTab=aglint+candidates');
+    }
     getHistory();
   }, [recruiter]);
 
@@ -248,7 +252,6 @@ function CandidateSearchHistory() {
                   <CandidateHistoryCard
                     key={index}
                     isSearchByJobVisible={hist.is_search_jd}
-                    isSearchByTypeVisible={false}
                     onClickDelete={{
                       onClick: (e) => {
                         e.preventDefault();

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import CandidateSearchHistory from '@/src/components/CandidateDatabase/Search/History';
 
