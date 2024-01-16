@@ -16,6 +16,8 @@ export function CandidateHistoryCard({
   isSearchByTypeVisible = false,
   onClickDelete = {},
   onClickCard = {},
+  textCategory = "My Candidates",
+  colorPropsCategory = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -32,7 +34,7 @@ export function CandidateHistoryCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600")}
+          className={_utils.cx(_styles, "text-sm", "color-grey-600")}
           tag="div"
         >
           {textPosted}
@@ -45,17 +47,13 @@ export function CandidateHistoryCard({
             <_Builtin.Block
               className={_utils.cx(_styles, "search-by-job")}
               tag="div"
+              {...colorPropsCategory}
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-sm",
-                  "fw-semibold",
-                  "text-blue-800"
-                )}
+                className={_utils.cx(_styles, "text-sm", "text-blue-800")}
                 tag="div"
               >
-                {"Search by job description"}
+                {textCategory}
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}

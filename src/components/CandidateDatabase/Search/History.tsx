@@ -184,6 +184,7 @@ function CandidateSearchHistory() {
   return (
     <>
       <CandidateDatabaseSearch
+        isSearchByJdVisible={currentTab === 'my Candidates'}
         isSearchInAglintVisible={currentTab === 'aglint candidates'}
         isSearchInAllVisible={currentTab === 'my Candidates'}
         textCandidateCount={candidatesCount}
@@ -250,8 +251,21 @@ function CandidateSearchHistory() {
                 );
                 return (
                   <CandidateHistoryCard
+                    colorPropsCategory={{
+                      style: {
+                        backgroundColor:
+                          hist.db_search == 'candidate'
+                            ? '#EDF7FF'
+                            : '#FF622433',
+                      },
+                    }}
                     key={index}
-                    isSearchByJobVisible={hist.is_search_jd}
+                    textCategory={
+                      hist.db_search == 'candidate'
+                        ? 'My Candidates'
+                        : 'Aglint DB'
+                    }
+                    isSearchByJobVisible={true}
                     onClickDelete={{
                       onClick: (e) => {
                         e.preventDefault();

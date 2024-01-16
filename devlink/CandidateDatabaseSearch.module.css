@@ -270,6 +270,7 @@
 
   display: flex;
   width: 100%;
+  height: 100%;
   margin-bottom: 32px;
   flex-direction: row;
   justify-content: space-between;
@@ -369,9 +370,13 @@
   border-right: 1px solid #e9ebed;
 }
 
+.div-block-697 {
+  width: 100%;
+}
+
 .search-left-wrap-candidate {
   display: flex;
-  width: 100%;
+  max-width: 738px;
   padding-top: 20px;
   padding-bottom: 30px;
   flex-direction: column;
@@ -645,9 +650,9 @@
   top: 0px;
 }
 
-.sticky-top-90 {
-  position: sticky;
-  top: 100px;
+.db-rquest-wrap.left-border {
+  padding-left: 20px;
+  border-left: 1px solid #e9ebed;
 }
 
 .sticky-top-90.gap-20 {

@@ -9,4 +9,6 @@ declare function CandidateHistoryCard(props: {
   isSearchByTypeVisible?: Types.Visibility.VisibilityConditions;
   onClickDelete?: Types.Devlink.RuntimeProps;
   onClickCard?: Types.Devlink.RuntimeProps;
+  textCategory?: React.ReactNode;
+  colorPropsCategory?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
