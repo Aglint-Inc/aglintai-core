@@ -9,21 +9,36 @@ export function CdExperienceCard({
   isLogoVisible = true,
   textRole = "Marketing manager @Apple",
   textDate = "3 years (Jan 2017 - Dec 2023)",
-  isActive = false,
+  isActive = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cd-experience-card")} tag="div">
-      {isLogoVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-688")}
-          tag="div"
-        >
-          {slotLogo}
-        </_Builtin.Block>
-      ) : null}
+      <_Builtin.Block className={_utils.cx(_styles, "logo-current")} tag="div">
+        {isLogoVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-688")}
+            tag="div"
+          >
+            {slotLogo}
+          </_Builtin.Block>
+        ) : null}
+        {isActive ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "current-job-logo")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-xsm", "l-9px")}
+              tag="div"
+            >
+              {"Current"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-689")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-color-black")}
+          className={_utils.cx(_styles, "text-color-black", "one-line-clamp")}
           tag="div"
         >
           {textRole}

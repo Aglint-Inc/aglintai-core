@@ -14,4 +14,6 @@ declare function CdAglintDb(props: {
   textNoCandidateSelected?: React.ReactNode;
   onClickBookmark?: Types.Devlink.RuntimeProps;
   isHeaderVisible?: Types.Visibility.VisibilityConditions;
+  slotViewSaveList?: Types.Devlink.Slot;
+  slotEmailOut?: Types.Devlink.Slot;
 }): React.JSX.Element;

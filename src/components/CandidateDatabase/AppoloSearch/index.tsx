@@ -1,51 +1,42 @@
-import {
-  Avatar,
-  CircularProgress,
-  Dialog,
-  MenuItem,
-  Stack,
-  Switch,
-} from '@mui/material';
+import { Avatar, Stack, Switch } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep, set } from 'lodash';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import {
   CdAglintDb,
-  CdEditQuerry,
   CdExperienceCard,
   CdTableAglint,
   Checkbox,
-  JobPills,
 } from '@/devlink';
-import { palette } from '@/src/context/Theme/Theme';
 import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import CandidateDetail from './CandidateDetail';
+import EditFilter from './EditFilter';
+import EmailOutReachComp from './EmailOutReach';
 import { Candidate, CandidateSearchHistoryType } from './types';
-import { employeeRange, initialQuery } from './utils';
-import FilterInput from '../Search/FilterInput';
-import AUIButton from '../../Common/AUIButton';
+import { initialQuery } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
-import UITextField from '../../Common/UITextField';
 
 function AppoloSearch() {
   const router = useRouter();
   const [bookmark, setBookmark] = useState(false);
   const [isfilterOpen, setIsFilterOpen] = useState(false);
   const [isFilterLoading, setIsFilterLoading] = useState(false);
+  const [emailOutReach, setEmailOutReach] = useState(false);
   const setCandidateHistory = useBoundStore(
     (state) => state.setCandidateHistory,
   );
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
     null,
   );
+  const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>([]);
+  const [isSelectAll, setIsSelectAll] = useState(false);
   const [filters, setFilters] = useState<any>(initialQuery());
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
 
@@ -57,6 +48,21 @@ function AppoloSearch() {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (!candidateHistory?.id) return;
+
+    let cand = {
+      companies: [],
+      jobTitles: (candidateHistory.query_json as { person_titles: string[] })
+        .person_titles,
+      locations: (candidateHistory.query_json as { person_locations: string[] })
+        .person_locations,
+      companySize: '10001',
+    };
+
+    setFilters(cand);
+  }, [candidateHistory?.id]);
+
   const fetchCandidates = async (id: number): Promise<boolean> => {
     const { data, error } = await supabase
       .from('candidate_search_history')
@@ -65,14 +71,6 @@ function AppoloSearch() {
     if (!error) {
       setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
     }
-    // const response = await axios.post('/api/candidatedb/search', {
-    //   page: 1,
-    //   per_page: 10,
-    //   ...params,
-    // });
-
-    // eslint-disable-next-line no-console
-
     return true;
   };
 
@@ -81,48 +79,46 @@ function AppoloSearch() {
   };
 
   const handleBookmark = async (candidate: Candidate) => {
-    if (!candidateHistory.bookmarked_candidates.includes(candidate.id)) {
+    if (
+      candidateHistory.bookmarked_results.filter(
+        (cand: Candidate) => candidate.id === cand.id,
+      ).length === 0
+    ) {
       setCandidateHistory({
         ...candidateHistory,
-        bookmarked_candidates: [
-          ...candidateHistory.bookmarked_candidates,
-          candidate.id,
-        ],
+        bookmarked_results: [...candidateHistory.bookmarked_results, candidate],
       });
       await supabase
         .from('candidate_search_history')
         .update({
-          bookmarked_candidates: [
-            ...candidateHistory.bookmarked_candidates,
-            candidate.id,
-          ],
+          bookmarked_results: [
+            ...candidateHistory.bookmarked_results,
+            candidate,
+          ] as any,
         })
         .eq('id', Number(router.query.id));
     } else {
       setCandidateHistory({
         ...candidateHistory,
-        bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
-          (id) => id !== candidate.id,
+        bookmarked_results: candidateHistory.bookmarked_results.filter(
+          (cand: Candidate) => cand.id !== candidate.id,
         ),
       });
       await supabase
         .from('candidate_search_history')
         .update({
-          bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
-            (id) => id !== candidate.id,
-          ),
+          bookmarked_results: candidateHistory.bookmarked_results.filter(
+            (cand: Candidate) => cand.id !== candidate.id,
+          ) as any,
         })
         .eq('id', Number(router.query.id));
     }
   };
 
-  let candidates = [];
+  let candidates: Candidate[] = [];
 
   if (Boolean(candidateHistory) && bookmark) {
-    candidates =
-      candidateHistory.search_results.filter((candidate) =>
-        candidateHistory.bookmarked_candidates.includes(candidate.id),
-      ) || [];
+    candidates = candidateHistory.bookmarked_results || [];
   } else {
     candidates = candidateHistory?.search_results || [];
   }
@@ -186,166 +182,110 @@ function AppoloSearch() {
     setIsFilterOpen(false);
   };
 
-  useEffect(() => {
-    if (!candidateHistory?.id) return;
+  const emailOutReachHandler = async (selCandidate: Candidate) => {
+    if (selCandidate.email?.includes('email_not_unlocked')) {
+      const resEmail = await axios.post('/api/candidatedb/get-email', {
+        id: selCandidate.id,
+      });
 
-    let cand = {
-      companies: [],
-      jobTitles: (candidateHistory.query_json as { person_titles: string[] })
-        .person_titles,
-      locations: (candidateHistory.query_json as { person_locations: string[] })
-        .person_locations,
-      companySize: '10001',
-    };
+      if (resEmail.status !== 200) {
+        toast.error('Something went wrong');
+        return;
+      }
 
-    setFilters(cand);
-  }, [candidateHistory?.id]);
+      if (resEmail.data.person?.email) {
+        const updatedSelectedCandidate = {
+          ...selCandidate,
+          email: resEmail.data.person?.email,
+        };
 
-  const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>([]);
-  const [isSelectAll, setIsSelectAll] = useState(false);
+        // Update the selected candidate in search_results array
+        const updatedSearchResults = candidates.map((candidate) => {
+          if (candidate.id === selCandidate.id) {
+            return updatedSelectedCandidate;
+          }
+          return candidate;
+        });
+
+        setSelectedCandidate({
+          ...selCandidate,
+          email: resEmail.data.person?.email,
+        });
+
+        const { data, error } = await supabase
+          .from('candidate_search_history')
+          .update({
+            search_results: updatedSearchResults as any,
+          })
+          .match({ id: Number(router.query.id) })
+          .select();
+
+        if (!error) {
+          // Update the candidate history in state
+          setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+        }
+      }
+      setEmailOutReach(true);
+    } else {
+      setEmailOutReach(true);
+    }
+  };
+
+  const handleMultipleBookmark = async (selectedCandidates: Candidate[]) => {
+    if (selectedCandidates.length === 0) return;
+    const bookmarkedResults = candidateHistory.bookmarked_results;
+
+    const updatedBookmarkedResults = [
+      ...bookmarkedResults,
+      ...selectedCandidates.filter(
+        (candidate) =>
+          !bookmarkedResults.some(
+            (bookmarkedCandidate) => bookmarkedCandidate.id === candidate.id,
+          ),
+      ),
+    ];
+
+    const { data, error } = await supabase
+      .from('candidate_search_history')
+      .update({
+        bookmarked_results: updatedBookmarkedResults as any,
+      })
+      .eq('id', Number(router.query.id))
+      .select();
+
+    if (!error) {
+      setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+    }
+    setSelectedCandidates([]);
+    setIsSelectAll(false);
+  };
 
   return (
     <Stack overflow={'hidden'}>
-      <Dialog
-        open={isfilterOpen}
-        fullWidth={true}
-        maxWidth={'md'}
-        onClose={() => {
-          setIsFilterOpen(false);
-        }}
-      >
-        <CdEditQuerry
-          onClickResetQuery={{
-            onClick: () => {
-              setFilters(initialQuery());
-            },
-          }}
-          slotCompanySizeInput={
-            <UITextField
-              select
-              defaultValue={'10001'}
-              onChange={(e) => {
-                setFilters((p) => ({
-                  ...p,
-                  companySize: e.target.value,
-                }));
-              }}
-            >
-              {employeeRange.map((range) => (
-                <MenuItem key={range.value} value={range.value}>
-                  {range.show}
-                </MenuItem>
-              ))}
-            </UITextField>
-          }
-          slotPreferredCompanySuggestion={filters.companies.map(
-            (title, index) => {
-              return (
-                <JobPills
-                  key={index}
-                  onClickDelete={{
-                    onClick: () => {
-                      handlePillRemove('companies', index);
-                    },
-                  }}
-                  textJob={title}
-                />
-              );
-            },
-          )}
-          slotJobSuggestion={filters.jobTitles.map((title, index) => {
-            return (
-              <JobPills
-                key={index}
-                onClickDelete={{
-                  onClick: () => {
-                    handlePillRemove('jobTitles', index);
-                  },
-                }}
-                textJob={title}
-              />
-            );
-          })}
-          slotLocationSuggestion={filters.locations.map((title, index) => {
-            return (
-              <JobPills
-                key={index}
-                onClickDelete={{
-                  onClick: () => {
-                    handlePillRemove('locations', index);
-                  },
-                }}
-                textJob={title}
-              />
-            );
-          })}
-          slotApplyFilterButton={
-            <>
-              <AUIButton
-                variant='primary'
-                size='small'
-                onClick={() => {
-                  !isFilterLoading && handleApplyFilters();
-                }}
-                endIcon={
-                  isFilterLoading && (
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: palette.grey[400] }}
-                    />
-                  )
-                }
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Image
-                    width={12}
-                    height={12}
-                    alt=''
-                    src={'/images/svg/graphUp.svg'}
-                    style={{ marginRight: '10px' }}
-                  />
-                  <p> Apply </p>
-                </div>
-              </AUIButton>
-            </>
-          }
-          slotPreferredCompaniesInput={
-            <FilterInput
-              handleAdd={(s) => {
-                handleUpdatePillInput('companies', s);
-              }}
-              path='excludedCompanies'
-            />
-          }
-          slotJobInput={
-            <FilterInput
-              handleAdd={(s) => {
-                handleUpdatePillInput('jobTitles', s);
-              }}
-              path='jobTitles'
-            />
-          }
-          slotLocationInput={
-            <FilterInput
-              handleAdd={(s) => {
-                handleUpdatePillInput('locations', s);
-              }}
-              path='location'
-            />
-          }
-        />
-      </Dialog>
+      <EditFilter
+        setFilters={setFilters}
+        filters={filters}
+        handleApplyFilters={handleApplyFilters}
+        handlePillRemove={handlePillRemove}
+        handleUpdatePillInput={handleUpdatePillInput}
+        isFilterLoading={isFilterLoading}
+        isfilterOpen={isfilterOpen}
+        setIsFilterOpen={setIsFilterOpen}
+      />
 
-      <CandidateDetail
-        candidateHistory={candidateHistory}
-        candidates={candidates}
-        handleBookmark={handleBookmark}
+      <EmailOutReachComp
+        emailOutReach={emailOutReach}
         selectedCandidate={selectedCandidate}
+        setEmailOutReach={setEmailOutReach}
         setSelectedCandidate={setSelectedCandidate}
       />
 
       <CdAglintDb
+        onClickBookmark={{
+          onClick: () => {
+            handleMultipleBookmark(selectedCandidates);
+          },
+        }}
         textNoCandidateSelected={`${selectedCandidates.length} candidate selected`}
         textHeader={candidateHistory?.search_query}
         onClickCloseSelected={{
@@ -383,15 +323,35 @@ function AppoloSearch() {
         }}
         slotToggle={
           <Switch
+            color='secondary'
+            size='small'
             checked={bookmark}
             onChange={handleBookmarkToogle}
-            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        }
+        slotEmailOut={
+          <CandidateDetail
+            candidateHistory={candidateHistory}
+            candidates={candidates}
+            handleBookmark={handleBookmark}
+            selectedCandidate={selectedCandidate}
+            setSelectedCandidate={setSelectedCandidate}
+            setEmailOutReach={setEmailOutReach}
+            emailOutReach={emailOutReach}
+            emailOutReachHandler={emailOutReachHandler}
           />
         }
         slotCdTableAglint={
           <Stack overflow={'auto'} height={'calc(100vh - 112px)'}>
             {candidates.map((candidate) => (
               <CdTableAglint
+                onClickEmailReachOut={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    setSelectedCandidate(candidate);
+                    emailOutReachHandler(candidate);
+                  },
+                }}
                 slotCheckbox={
                   <Checkbox
                     isChecked={selectedCandidates?.includes(candidate)}
@@ -410,11 +370,15 @@ function AppoloSearch() {
                   />
                 }
                 notBookmark={
-                  !candidateHistory.bookmarked_candidates.includes(candidate.id)
+                  candidateHistory.bookmarked_results?.filter(
+                    (cand: Candidate) => candidate.id === cand.id,
+                  ).length === 0
                 }
-                isBookMarked={candidateHistory.bookmarked_candidates.includes(
-                  candidate.id,
-                )}
+                isBookMarked={
+                  candidateHistory.bookmarked_results?.filter(
+                    (cand: Candidate) => candidate.id === cand.id,
+                  ).length > 0
+                }
                 onClickBookmark={{
                   onClick: (e) => {
                     e.stopPropagation();
@@ -442,34 +406,39 @@ function AppoloSearch() {
                 ]
                   .filter(Boolean)
                   .join(', ')}
-                slotCdExperienceCard={candidate.employment_history
-                  .slice(0, 3)
-                  .map((exp, ind) => {
-                    return (
-                      <CdExperienceCard
-                        key={exp.id}
-                        textRole={exp.organization_name}
-                        isLogoVisible={
-                          candidate?.organization?.id === exp?.organization_id
-                        }
-                        isActive={ind === 0}
-                        slotLogo={
-                          <Avatar
-                            variant='rounded'
-                            src={candidate?.organization?.logo_url}
-                            sx={{ height: 40, width: 40 }}
+                slotCdExperienceCard={
+                  <>
+                    {candidate.employment_history
+                      .slice(0, 3)
+                      .map((exp, ind) => {
+                        return (
+                          <CdExperienceCard
+                            key={exp.id}
+                            textRole={exp.organization_name}
+                            isLogoVisible={
+                              candidate?.organization?.id ===
+                              exp?.organization_id
+                            }
+                            isActive={ind === 0}
+                            slotLogo={
+                              <Avatar
+                                variant='rounded'
+                                src={candidate?.organization?.logo_url}
+                                sx={{ height: 40, width: 40 }}
+                              />
+                            }
+                            textDate={`${dayjs(exp.start_date).format(
+                              'MMM YYYY',
+                            )} - ${
+                              exp.end_date
+                                ? dayjs(exp.end_date).format('MMM YYYY')
+                                : 'Present'
+                            }`}
                           />
-                        }
-                        textDate={`${dayjs(exp.start_date).format(
-                          'MMM YYYY',
-                        )} - ${
-                          exp.end_date
-                            ? dayjs(exp.end_date).format('MMM YYYY')
-                            : 'Present'
-                        }`}
-                      />
-                    );
-                  })}
+                        );
+                      })}
+                  </>
+                }
                 slotProfileImage={
                   <>
                     <MuiAvatar

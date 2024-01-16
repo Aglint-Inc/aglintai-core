@@ -2,6 +2,7 @@
   position: relative;
 
   display: flex;
+  min-width: 320px;
   padding: 12px 16px;
   align-items: center;
   grid-column-gap: 10px;
@@ -9,7 +10,11 @@
 
   border-radius: 10px;
 
-  background-color: #f8f9f9;
+  background-color: rgba(248, 249, 249, 0.8);
+}
+
+.logo-current {
+  position: relative;
 }
 
 .div-block-688 {
@@ -23,6 +28,72 @@
   border-radius: 7px;
 
   background-color: white;
+}
+
+.current-job-logo {
+  position: absolute;
+  left: -3px;
+  top: auto;
+  right: 0%;
+  bottom: -6px;
+  z-index: 2;
+
+  width: 56px;
+  padding: 3px 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 100px;
+
+  background-color: white;
+}
+
+.text-xsm {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.text-xsm.color-grey-600.inline-text {
+  display: inline-block;
+}
+
+.inline-text {
+  display: inline;
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
+}
+
+.text-yellow-700 {
+  color: var(--yellow700-b1438949);
+}
+
+.text-kale-800 {
+  color: var(--kale800-682c1482);
+}
+
+.text-blue-800 {
+  color: var(--blue800-09c1dfbf);
+}
+
+.text-green-700 {
+  color: var(--green700-a1b0a24f);
+}
+
+.text-xsm.l-9px {
+  line-height: 9px;
 }
 
 .div-block-689 {
@@ -67,10 +138,6 @@
   max-width: 600px;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
 .text-grey-600.mt-5 {
   margin-top: 5px;
 }
@@ -81,10 +148,6 @@
 
 .text-grey-600.mt-17 {
   margin-top: 17px;
-}
-
-.inline-text {
-  display: inline;
 }
 
 .cursor-pointer {
@@ -118,5 +181,5 @@
 
   border-radius: 10px;
 
-  background-color: #e9ebed;
+  background-color: rgba(233, 235, 237, 0.5);
 }

@@ -39,4 +39,11 @@ declare function CandidateDialog(props: {
   isViewResumeVisible?: Types.Visibility.VisibilityConditions;
   isEmailVisible?: Types.Visibility.VisibilityConditions;
   isPhoneVisible?: Types.Visibility.VisibilityConditions;
+  textPhone?: React.ReactNode;
+  onClickGit?: Types.Devlink.RuntimeProps;
+  isGitVisible?: Types.Visibility.VisibilityConditions;
+  onClickFacebook?: Types.Devlink.RuntimeProps;
+  isFacebookVisible?: Types.Visibility.VisibilityConditions;
+  onClickTwitter?: Types.Devlink.RuntimeProps;
+  isTwitterVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -15,4 +15,6 @@ declare function CdTableAglint(props: {
   onClickBookMarked?: Types.Devlink.RuntimeProps;
   slotCdExperienceCard?: Types.Devlink.Slot;
   onClickCard?: Types.Devlink.RuntimeProps;
+  onClickSaveToList?: Types.Devlink.RuntimeProps;
+  onClickEmailReachOut?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

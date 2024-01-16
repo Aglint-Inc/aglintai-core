@@ -239,7 +239,16 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
     }
   };
 
-  function fillEmailTemplate(template, email) {
+  function fillEmailTemplate(
+    template: string,
+    email: {
+      first_name: string;
+      last_name: string;
+      job_title: string;
+      company_name: string;
+      support_link: string;
+    },
+  ) {
     let filledTemplate = template;
     const placeholders = {
       '[firstName]': email.first_name,

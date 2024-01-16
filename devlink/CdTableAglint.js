@@ -6,7 +6,7 @@ import * as _utils from "./utils";
 import _styles from "./CdTableAglint.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-1514":{"id":"e-1514","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-566","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1515"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1705054364602},"e-1515":{"id":"e-1515","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-567","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1514"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1705054364604}},"actionLists":{"a-566":{"id":"a-566","title":"Cd Table bookmark hover(In)","actionItemGroups":[{"actionItems":[{"id":"a-566-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":"none"}},{"id":"a-566-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-566-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":"flex"}},{"id":"a-566-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1705054368926},"a-567":{"id":"a-567","title":"Cd Table bookmark hover(Out)","actionItemGroups":[{"actionItems":[{"id":"a-567-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":0,"unit":""}},{"id":"a-567-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1705054368926}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-1514":{"id":"e-1514","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-566","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1515"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1705054364602},"e-1515":{"id":"e-1515","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-567","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1514"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7a3bcb75-6206-c6cc-8531-425f7bd60dbc","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1705054364604}},"actionLists":{"a-566":{"id":"a-566","title":"Cd Table bookmark hover(In)","actionItemGroups":[{"actionItems":[{"id":"a-566-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]},"value":0,"unit":""}},{"id":"a-566-n-10","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":0,"unit":""}},{"id":"a-566-n-9","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]}}},{"id":"a-566-n-5","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]}}}]},{"actionItems":[{"id":"a-566-n-8","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]},"value":1,"unit":""}},{"id":"a-566-n-12","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":1,"unit":""}},{"id":"a-566-n-11","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]}}},{"id":"a-566-n-7","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]}}}]}],"useFirstGroupAsInitialState":true,"createdOn":1705054368926},"a-567":{"id":"a-567","title":"Cd Table bookmark hover(Out)","actionItemGroups":[{"actionItems":[{"id":"a-567-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]},"value":1,"unit":""}},{"id":"a-567-n-8","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]},"value":0,"unit":""}},{"id":"a-567-n-5","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".cd-hover-reach","selectorGuids":["00e7c71b-9140-d336-6677-ed8cd660f87c"]}}},{"id":"a-567-n-7","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".profile-image-hover","selectorGuids":["127c161c-d7b3-28e7-f284-80e81d1be2dc"]}}}]}],"useFirstGroupAsInitialState":false,"createdOn":1705054368926}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function CdTableAglint({
@@ -23,6 +23,8 @@ export function CdTableAglint({
   onClickBookMarked = {},
   slotCdExperienceCard,
   onClickCard = {},
+  onClickSaveToList = {},
+  onClickEmailReachOut = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -96,7 +98,49 @@ export function CdTableAglint({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-690")} tag="div">
-        {slotCdExperienceCard ?? <CdExperienceCard />}
+        {slotCdExperienceCard ?? (
+          <>
+            <CdExperienceCard />
+            <CdExperienceCard />
+          </>
+        )}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "cd-hover-reach")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "save-list-wrap-cd", "hide")}
+          tag="div"
+          {...onClickSaveToList}
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-blue-700")}
+            tag="div"
+          >
+            {"Save to list"}
+          </_Builtin.Block>
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "icons")}
+            value="%3Csvg%20width%3D%2211%22%20height%3D%226%22%20viewBox%3D%220%200%2011%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75781%205.25781C5.58594%205.41406%205.41406%205.41406%205.24219%205.25781L0.742188%200.757812C0.585938%200.585938%200.585938%200.414062%200.742188%200.242188C0.914062%200.0859375%201.08594%200.0859375%201.25781%200.242188L5.5%204.46094L9.74219%200.242188C9.91406%200.0859375%2010.0859%200.0859375%2010.2578%200.242188C10.4141%200.414062%2010.4141%200.585938%2010.2578%200.757812L5.75781%205.25781Z%22%20fill%3D%22%23144A75%22%2F%3E%0A%3C%2Fsvg%3E"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "save-list-wrap-cd", "pink-btn")}
+          tag="div"
+          {...onClickEmailReachOut}
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-block-30")}
+            tag="div"
+          >
+            {"Email outreach"}
+          </_Builtin.Block>
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "icons")}
+            value="%3Csvg%20width%3D%229%22%20height%3D%228%22%20viewBox%3D%220%200%209%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.875%200.25C8.10938%200.265625%208.23438%200.390625%208.25%200.625V5.875C8.23438%206.10938%208.10938%206.23438%207.875%206.25C7.64062%206.23438%207.51562%206.10938%207.5%205.875V1.53906L1.38281%207.63281C1.21094%207.78906%201.03906%207.78906%200.867188%207.63281C0.710938%207.46094%200.710938%207.28906%200.867188%207.11719L6.96094%201H2.625C2.39062%200.984375%202.26562%200.859375%202.25%200.625C2.26562%200.390625%202.39062%200.265625%202.625%200.25H7.875Z%22%20fill%3D%22%23A81897%22%2F%3E%0A%3C%2Fsvg%3E"
+          />
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
