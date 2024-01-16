@@ -149,14 +149,13 @@ ${jobForm.formFields.jobDescription}
     setPopUpEl(e.currentTarget);
   };
 
+  let isJdTooShort =
+    !jobForm.formFields.jobDescription ||
+    jobForm.formFields.jobDescription.split(' ').length <= 50;
   let showRegen = false;
-  if (!isJsonLoading) {
+  if (!isJsonLoading && !isJdTooShort) {
     showRegen = !areAllFieldsEmpty && jobForm.formFields.isjdChanged;
   }
-  let isJdTooShort =
-    areAllFieldsEmpty &&
-    (!jobForm.formFields.jobDescription ||
-      jobForm.formFields.jobDescription.split(' ').length <= 50);
 
   return (
     <>
@@ -236,6 +235,12 @@ ${jobForm.formFields.jobDescription}
                             onClose={() => {
                               setNewField(null);
                               setNewFieldEv(null);
+                            }}
+                            sx={{
+                              '& .MuiPaper-outlined': {
+                                border: 'none',
+                                outline: 'none',
+                              },
                             }}
                           >
                             <div
@@ -481,6 +486,10 @@ ${jobForm.formFields.jobDescription}
             }}
             sx={{
               mt: 1,
+              '& .MuiPaper-outlined': {
+                border: 'none',
+                outline: 'none',
+              },
             }}
           >
             <div
