@@ -18,6 +18,22 @@ export function PhoneScreening({
       className={_utils.cx(_styles, "screening-content-block")}
       tag="div"
     >
+      <_Builtin.Block
+        className={_utils.cx(_styles, "screening-title-block")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Phone Screening"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-gray-600")}
+          tag="div"
+        >
+          {
+            "These are the screening questions will be presented to the candidates, allowing them to complete the form with the questions listed below."
+          }
+        </_Builtin.Block>
+      </_Builtin.Block>
       <_Builtin.Block tag="div">{slotWelcomeText}</_Builtin.Block>
       <_Builtin.Block tag="div">{slotQuestions}</_Builtin.Block>
       <_Builtin.Block tag="div">{slotEndText}</_Builtin.Block>

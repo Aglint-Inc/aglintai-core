@@ -6,9 +6,6 @@
   grid-column-gap: 24px;
   grid-row-gap: 24px;
 
-  border-style: solid;
-  border-width: 1px;
-  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
   border-radius: 10px;
 }
 
@@ -90,8 +87,8 @@
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+.text-gray-500 {
+  color: var(--gray-500);
 }
 
 .fw-semibold.z-index-5 {
@@ -128,10 +125,6 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
-}
-
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
 .hide {
