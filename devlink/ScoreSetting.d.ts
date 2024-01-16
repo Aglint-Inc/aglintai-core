@@ -13,4 +13,7 @@ declare function ScoreSetting(props: {
   isProceedDisable?: Types.Visibility.VisibilityConditions;
   onClickProceed?: Types.Devlink.RuntimeProps;
   isEmptyWarningVisible?: Types.Visibility.VisibilityConditions;
+  onClickDismiss?: Types.Devlink.RuntimeProps;
+  onClickRegenerate?: Types.Devlink.RuntimeProps;
+  isRegenerateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

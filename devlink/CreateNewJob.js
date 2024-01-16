@@ -49,6 +49,7 @@ export function CreateNewJob({
   isScreeningActive = false,
   onClickScreening = {},
   isProductionVisible = true,
+  isDotButtonVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -152,9 +153,11 @@ export function CreateNewJob({
             >
               {slotPublishButton}
             </_Builtin.Block>
-            <_Builtin.Block className={_utils.cx(_styles, "ml-12")} tag="div">
-              {slotCloseJobButton ?? <CloseJobButton />}
-            </_Builtin.Block>
+            {isDotButtonVisible ? (
+              <_Builtin.Block className={_utils.cx(_styles, "ml-12")} tag="div">
+                {slotCloseJobButton ?? <CloseJobButton />}
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

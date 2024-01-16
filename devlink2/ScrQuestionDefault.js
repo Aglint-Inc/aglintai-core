@@ -12,6 +12,7 @@ export function ScrQuestionDefault({
   isOptionsVisible = true,
   slotOptions,
   description = "This is some text inside of a div block.",
+  title = "Short answer",
 }) {
   return (
     <_Component
@@ -33,7 +34,9 @@ export function ScrQuestionDefault({
             {slotIcon}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{textQuestion}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "mt-2")} tag="div">
+          {title}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-423")}
           tag="div"
@@ -70,7 +73,15 @@ export function ScrQuestionDefault({
         className={_utils.cx(_styles, "scr-description-wrapper")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{description}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {textQuestion}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-gray-600")}
+          tag="div"
+        >
+          {description}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "scr-question-default-content")}

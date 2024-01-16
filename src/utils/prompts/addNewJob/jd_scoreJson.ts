@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { MessageType } from '../types';
 
-export const generatejdToScoreJson = async (jdText: string) => {
+export const generatejdToScoreJson = async (jdText: string, source) => {
   const prompts: MessageType[] = [
     {
       role: 'system',
@@ -21,8 +21,9 @@ export type JdJson = {
   roles: JsonItemType[]; // previous roles and number of years.
   responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description .
   requirements: JsonItemType[]; // Requirements mentioned in the job description .
+  jobLevel:enum // 'Fresher-level', 'Associate-level', 'Mid-level', 'Senior-level', 'Executive-level',
   skills: JsonItemType[]; // Each Skill mentioned in roles, reponsibilities and requirements and whether they are a must-have.
-  educations: JsonItemType[]; // Each Education degree mentioned in the job description .
+  educations: JsonItemType[]; // Each Education degree mentioned in roles, reponsibilities and requirements and whether they are a must-have .
 };
 `,
     },
@@ -35,8 +36,14 @@ ${jdText}
     },
   ];
 
-  const { data } = await axios.post('/api/ai/queryToJson', {
-    prompts,
-  });
+  const { data } = await axios.post(
+    '/api/ai/queryToJson',
+    {
+      prompts,
+    },
+    {
+      cancelToken: source.token,
+    },
+  );
   return JSON.parse(data);
 };

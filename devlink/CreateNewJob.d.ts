@@ -39,4 +39,5 @@ declare function CreateNewJob(props: {
   isScreeningActive?: Types.Visibility.VisibilityConditions;
   onClickScreening?: Types.Devlink.RuntimeProps;
   isProductionVisible?: Types.Visibility.VisibilityConditions;
+  isDotButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

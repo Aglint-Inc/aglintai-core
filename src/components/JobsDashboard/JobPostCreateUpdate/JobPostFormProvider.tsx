@@ -59,6 +59,13 @@ export type jsonItemType = {
 };
 
 export type JdJsonType = {
+  title: string;
+  level:
+    | 'Fresher-level'
+    | 'Associate-level'
+    | 'Mid-level'
+    | 'Senior-level'
+    | 'Executive-level';
   rolesResponsibilities: jsonItemType[];
   skills: jsonItemType[];
   educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
@@ -136,6 +143,7 @@ export type FormJobType = {
   isDraftCleared: boolean;
   interviewInstrctions: string;
   assessment: boolean;
+  isjdChanged: boolean;
   phoneScreening: {
     startMessage: string;
     endMessage: string;
@@ -229,9 +237,10 @@ type JobsAction =
   | null;
 
 const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
+  const newState = cloneDeep(state);
+
   switch (action.type) {
     case 'editJobField': {
-      const newState: JobFormState = cloneDeep(state);
       const { path, value } = action.payload;
       set(newState.formFields, path, value);
       set(newState, 'formFields.isDraftCleared', false);
@@ -252,39 +261,34 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
     }
     case 'setPostMeta': {
       const { createdAt, updatedAt } = action.payload;
-      const newState = cloneDeep(state);
       set(newState, 'createdAt', createdAt);
       set(newState, 'updatedAt', updatedAt);
       return newState;
     }
     case 'moveToSlide': {
       const { nextSlide } = action.payload;
-      const newState = cloneDeep(state);
       set(newState, 'currSlide', nextSlide);
       return newState;
     }
     case 'setDbSyncStatus': {
       const { status } = action.payload;
-      const newState = cloneDeep(state);
       set(newState, 'syncStatus', status);
       return newState;
     }
     case 'updateRevertStatus': {
       const { status } = action.payload;
-      const newState = cloneDeep(state);
       set(newState, 'isJobPostReverting', status);
       return newState;
     }
     case 'updateJobPublishstatus': {
       const { status } = action.payload;
-      const newState = cloneDeep(state);
-
       set(newState, 'jobPostStatus', status);
       if (status === 'published') {
         set(newState.formFields, 'isDraftCleared', true);
       }
       return newState;
     }
+
     default:
       return state;
   }
@@ -425,7 +429,6 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   }: {
     path: string;
     value: any;
-    saveField?: 'job-details' | 'screening';
   }) => {
     try {
       dispatch({

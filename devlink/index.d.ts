@@ -6,6 +6,7 @@ export * from "./interactions";
 export * from "./utils";
 export * from "./devlink";
 export * from "./ActivityFlowCard";
+export * from "./AddButton";
 export * from "./AddCommandInput";
 export * from "./AddDepartmentPop";
 export * from "./AddedJobList";

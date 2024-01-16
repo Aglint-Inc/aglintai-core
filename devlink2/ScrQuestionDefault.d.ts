@@ -10,4 +10,5 @@ declare function ScrQuestionDefault(props: {
   isOptionsVisible?: Types.Visibility.VisibilityConditions;
   slotOptions?: Types.Devlink.Slot;
   description?: React.ReactNode;
+  title?: React.ReactNode;
 }): React.JSX.Element;
