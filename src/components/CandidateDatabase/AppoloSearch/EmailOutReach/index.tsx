@@ -13,8 +13,9 @@ function EmailOutReachComp({
   return (
     <Drawer
       anchor={'right'}
-      open={emailOutReach}
+      open={emailOutReach && selectedCandidate?.id}
       onClose={() => {
+        setEmailOutReach(false);
         setSelectedCandidate(null);
       }}
     >
