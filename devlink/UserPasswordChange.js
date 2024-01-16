@@ -14,10 +14,7 @@ export function UserPasswordChange({
         className={_utils.cx(_styles, "profile-header-wrappers")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "color-grey-600")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Password Update"}
         </_Builtin.Block>
       </_Builtin.Block>

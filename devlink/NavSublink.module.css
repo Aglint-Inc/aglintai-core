@@ -2,6 +2,12 @@
   position: relative;
   padding: 10px 16px;
   border-radius: 10px;
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.nav-sub-link-menu:hover {
+  background-color: #f8f9f9;
 }
 
 .bg-active-link {
