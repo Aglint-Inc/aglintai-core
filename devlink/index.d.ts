@@ -280,6 +280,7 @@ export * from "./Page404";
 export * from "./PageNothing";
 export * from "./Pagination";
 export * from "./PdfSelected";
+export * from "./PhoneScreening";
 export * from "./PhoneScreeningQ";
 export * from "./PhoneScreenings";
 export * from "./PhoneScreenSuccess";

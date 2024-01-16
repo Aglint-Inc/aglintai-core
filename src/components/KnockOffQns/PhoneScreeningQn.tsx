@@ -184,6 +184,8 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           });
         },
       }}
+      isDescriptionVisible={qn.showDescription}
+      textDescription={qn.description}
       currentQuestionNo={qnNo}
       isQuestionImp={qn.isRequired}
       slotLogo={<CompanyLogo />}

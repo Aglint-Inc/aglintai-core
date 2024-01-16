@@ -380,4 +380,18 @@ export const templateObj: Record<string, any> = {
     [senderName]`,
     trigger: 'Triggered instantly when candidate apply for a job',
   },
+  phone_screen: {
+    listing: 'Phone Screen Email',
+    heading: 'Phone Screen Email Setting',
+    triggerInfo: 'Triggered instantly when you move candidate to screening',
+    description: 'Set up a default Phone Screening email template',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+    Best regards,
+    [senderName]`,
+    trigger: 'Triggered instantly when you move candidate to screening',
+  },
 };

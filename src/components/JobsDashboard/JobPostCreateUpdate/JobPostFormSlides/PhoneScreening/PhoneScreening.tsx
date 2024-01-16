@@ -34,6 +34,8 @@ const ScreeningComp = () => {
   const [newQnsForms, setNewQnForms] = useState([]);
   const phoneScreening = jobForm.formFields.phoneScreening;
 
+  const isEmpty =
+    phoneScreening.questions.length === 0 && newQnsForms.length === 0;
   return (
     <>
       <PhoneScreening
@@ -100,64 +102,64 @@ const ScreeningComp = () => {
           <>
             <ScrQuestionsWrapper
               slotQuestions={
-                <>
-                  {phoneScreening.questions.map((q, idx) => {
-                    return (
-                      <KnowOffQn
-                        key={q.id}
-                        isdefaultEditMode={
-                          q.questionLabel === 'Add custom Question'
-                        }
-                        qnPath={`phoneScreening.questions[${idx}]`}
-                      />
-                    );
-                  })}
-                  {newQnsForms.map((newQn) => {
-                    return (
-                      <ScrQuestion
-                        key={newQn.id}
-                        // isEditView
-                        // isDefaultView={false}
-                        slotDefault={<></>}
-                        slotEdit={
-                          <>
-                            <PhoneScreenNewQnForm
-                              key={newQn}
-                              handleCancel={() =>
-                                setNewQnForms((prev) =>
-                                  prev.filter((q) => q !== newQn),
-                                )
-                              }
-                              defaultEditQn={{
-                                question: '',
-                                type: 'shortAnswer',
-                                id: nanoid(),
-                                description: '',
-                                isRequired: false,
-                                options: [],
-                                questionLabel: 'Custom Question',
-                              }}
-                              handleDelete={null}
-                              handleDone={(editQn: PhoneScreenQuestion) => {
-                                handleUpdateFormFields({
-                                  path: 'phoneScreening.questions',
-                                  value: [
-                                    ...jobForm.formFields.phoneScreening
-                                      .questions,
-                                    editQn,
-                                  ],
-                                });
-                                setNewQnForms((prev) =>
-                                  prev.filter((q) => q !== newQn),
-                                );
-                              }}
-                            />
-                          </>
-                        }
-                      />
-                    );
-                  })}
-                </>
+                !isEmpty ? (
+                  <>
+                    {phoneScreening.questions.map((q, idx) => {
+                      return (
+                        <KnowOffQn
+                          key={q.id}
+                          isdefaultEditMode={
+                            q.questionLabel === 'Add custom Question'
+                          }
+                          qnPath={`phoneScreening.questions[${idx}]`}
+                        />
+                      );
+                    })}
+                    {newQnsForms.map((newQn) => {
+                      return (
+                        <ScrQuestion
+                          key={newQn.id}
+                          slotDefault={<></>}
+                          slotEdit={
+                            <>
+                              <PhoneScreenNewQnForm
+                                key={newQn}
+                                handleCancel={() =>
+                                  setNewQnForms((prev) =>
+                                    prev.filter((q) => q !== newQn),
+                                  )
+                                }
+                                defaultEditQn={{
+                                  question: '',
+                                  type: 'shortAnswer',
+                                  id: nanoid(),
+                                  description: '',
+                                  isRequired: false,
+                                  options: [],
+                                  questionLabel: 'Custom Question',
+                                }}
+                                handleDelete={null}
+                                handleDone={(editQn: PhoneScreenQuestion) => {
+                                  handleUpdateFormFields({
+                                    path: 'phoneScreening.questions',
+                                    value: [
+                                      ...jobForm.formFields.phoneScreening
+                                        .questions,
+                                      editQn,
+                                    ],
+                                  });
+                                  setNewQnForms((prev) =>
+                                    prev.filter((q) => q !== newQn),
+                                  );
+                                }}
+                              />
+                            </>
+                          }
+                        />
+                      );
+                    })}
+                  </>
+                ) : undefined
               }
               slotOptions={
                 <>

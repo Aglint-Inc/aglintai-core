@@ -12,11 +12,8 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './TipTapAIEditor.module.scss';
 
-import { palette } from '@/src/context/Theme/Theme';
-
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
-import MenuBtns, { GenerateDescription } from './MenuBtns';
-import Loader from '../Loader';
+import MenuBtns from './MenuBtns';
 
 export type TipTapAIEditorParams = {
   placeholder: string;
@@ -42,7 +39,7 @@ const TipTapAIEditor = ({
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
 
-  const [isAiGenerating, setIsAiGenerating] = useState(false);
+  // const [isAiGenerating, setIsAiGenerating] = useState(false);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -133,7 +130,7 @@ const TipTapAIEditor = ({
             },
           }}
         >
-          {isAiGenerating && (
+          {/* {isAiGenerating && (
             <Stack
               zIndex={1}
               position={'absolute'}
@@ -146,19 +143,19 @@ const TipTapAIEditor = ({
             >
               <Loader />
             </Stack>
-          )}
+          )} */}
 
           <Stack p={2}>
             <EditorContent editor={editor} />
           </Stack>
         </Stack>
 
-        {enablAI && (
+        {/* {enablAI && (
           <GenerateDescription
             isAiGenerating={isAiGenerating}
             setIsAiGenerating={setIsAiGenerating}
           />
-        )}
+        )} */}
       </div>
     </TipTapCtx.Provider>
   );
