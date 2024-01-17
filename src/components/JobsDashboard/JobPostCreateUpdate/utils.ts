@@ -243,3 +243,21 @@ export const isWarningsCleared = (warnings: FormErrorParams) => {
 export const isEnvProd = () => {
   return process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com');
 };
+
+export const slidePathToNum: Record<JobFormState['currSlide'], number> = {
+  details: 1,
+  resumeScore: 2,
+  phoneScreening: 3,
+  screening: 4,
+  workflow: 5,
+  templates: 6,
+};
+
+export const allSlides: { path: JobFormState['currSlide']; title: string }[] = [
+  { title: 'Details', path: 'details' },
+  { title: 'Profile Score', path: 'resumeScore' },
+  { title: 'Screening', path: 'phoneScreening' },
+  { title: 'Assessment', path: 'screening' },
+  { title: 'Workflows', path: 'workflow' },
+  { title: 'Email Templates', path: 'templates' },
+];

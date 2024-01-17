@@ -6,4 +6,6 @@ declare function NavSublink(props: {
   isActive?: Types.Visibility.VisibilityConditions;
   textLink?: React.ReactNode;
   onClickNav?: Types.Devlink.RuntimeProps;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
+  isMute?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

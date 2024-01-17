@@ -40,4 +40,13 @@ declare function CreateNewJob(props: {
   onClickScreening?: Types.Devlink.RuntimeProps;
   isProductionVisible?: Types.Visibility.VisibilityConditions;
   isDotButtonVisible?: Types.Visibility.VisibilityConditions;
+  slotNavSublink?: Types.Devlink.Slot;
+  isAssessmentPreviewVisible?: Types.Visibility.VisibilityConditions;
+  onClickAssessmentPreview?: Types.Devlink.RuntimeProps;
+  onClickDisableAssessment?: Types.Devlink.RuntimeProps;
+  isProceedDisable?: Types.Visibility.VisibilityConditions;
+  onClickProceed?: Types.Devlink.RuntimeProps;
+  isProceedVisible?: Types.Visibility.VisibilityConditions;
+  slotWarning?: Types.Devlink.Slot;
+  textProceed?: React.ReactNode;
 }): React.JSX.Element;

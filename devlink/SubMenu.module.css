@@ -1,0 +1,38 @@
+.relative {
+  position: relative;
+}
+
+.relative.upload-video-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.relative.zindex-3 {
+  z-index: 3;
+}
+
+.relative.ai-comm {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.active-text-sub {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  color: #337fbd;
+}

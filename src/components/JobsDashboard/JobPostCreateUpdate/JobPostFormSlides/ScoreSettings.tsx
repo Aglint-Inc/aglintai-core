@@ -293,6 +293,8 @@ ${jobForm.formFields.jobDescription}
                                           backgroundColor: '#f8f9f9',
                                           resize: 'none',
                                         }}
+                                        // eslint-disable-next-line jsx-a11y/no-autofocus
+                                        autoFocus={true}
                                         placeholder={p.AddBtnLabel}
                                         value={newField?.value}
                                         onChange={(e) => {
@@ -549,6 +551,8 @@ ${jobForm.formFields.jobDescription}
                         backgroundColor: '#f8f9f9',
                         resize: 'none',
                       }}
+                      // eslint-disable-next-line jsx-a11y/no-autofocus
+                      autoFocus={true}
                       placeholder={'Type Here'}
                       value={editParam?.value}
                       onChange={(e) => {

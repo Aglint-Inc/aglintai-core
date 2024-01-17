@@ -166,6 +166,7 @@ export const getSeedJobFormData = (
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
+    currentAssmSlides: 'instructions',
   };
 
   if (recruiter) {

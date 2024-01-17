@@ -4,6 +4,10 @@ import * as _interactions from "./interactions";
 import { CloseJobButton } from "./CloseJobButton";
 import { JobUnpublishDisclaimer } from "./JobUnpublishDisclaimer";
 import { ScreeningQuestion } from "./ScreeningQuestion";
+import { AssessmentEpilogue } from "./AssessmentEpilogue";
+import { AssessmentQuestion } from "./AssessmentQuestion";
+import { WelcomeMessage } from "./WelcomeMessage";
+import { AssessmentSetting } from "./AssessmentSetting";
 import * as _utils from "./utils";
 import _styles from "./CreateNewJob.module.css";
 
@@ -50,6 +54,15 @@ export function CreateNewJob({
   onClickScreening = {},
   isProductionVisible = true,
   isDotButtonVisible = true,
+  slotNavSublink,
+  isAssessmentPreviewVisible = false,
+  onClickAssessmentPreview = {},
+  onClickDisableAssessment = {},
+  isProceedDisable = true,
+  onClickProceed = {},
+  isProceedVisible = true,
+  slotWarning,
+  textProceed = "Proceed to Email Templates",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -161,82 +174,31 @@ export function CreateNewJob({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-503")}
+          className={_utils.cx(_styles, "div-block-708")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot-unpublish-disclaimer", "hide")}
-            tag="div"
-          >
-            {slotUnpublishDisclaimer ?? <JobUnpublishDisclaimer />}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "create-new-job-menu-wrappers")}
+            className={_utils.cx(_styles, "div-block-503", "hide")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "create-job-menu-wrap")}
+              className={_utils.cx(
+                _styles,
+                "slot-unpublish-disclaimer",
+                "hide"
+              )}
               tag="div"
-              {...onClickDetails}
             >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative",
-                  "zindex-6"
-                )}
-                tag="div"
-              >
-                {"Details"}
-              </_Builtin.Block>
-              {isDetailsActive ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "white-active-bg")}
-                  tag="div"
-                />
-              ) : null}
-              <_Builtin.Block
-                className={_utils.cx(_styles, "disclaimer-icons")}
-                tag="div"
-              >
-                {slotDisclaimerDetails}
-              </_Builtin.Block>
+              {slotUnpublishDisclaimer ?? <JobUnpublishDisclaimer />}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "create-job-menu-wrap")}
+              className={_utils.cx(_styles, "create-new-job-menu-wrappers")}
               tag="div"
-              {...onClickScoreSetting}
             >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative",
-                  "zindex-6"
-                )}
-                tag="div"
-              >
-                {"Profile Score"}
-              </_Builtin.Block>
-              {isScoreSettingActive ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "white-active-bg")}
-                  tag="div"
-                />
-              ) : null}
-              <_Builtin.Block
-                className={_utils.cx(_styles, "disclaimer-icons")}
-                tag="div"
-              >
-                {slotDisclaimerScoreSetting}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            {isProductionVisible ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "create-job-menu-wrap")}
                 tag="div"
-                {...onClickScreening}
+                {...onClickDetails}
               >
                 <_Builtin.Block
                   className={_utils.cx(
@@ -247,9 +209,9 @@ export function CreateNewJob({
                   )}
                   tag="div"
                 >
-                  {"Screening "}
+                  {"Details"}
                 </_Builtin.Block>
-                {isScreeningActive ? (
+                {isDetailsActive ? (
                   <_Builtin.Block
                     className={_utils.cx(_styles, "white-active-bg")}
                     tag="div"
@@ -259,19 +221,13 @@ export function CreateNewJob({
                   className={_utils.cx(_styles, "disclaimer-icons")}
                   tag="div"
                 >
-                  {slotDisclaimerApplyForm}
+                  {slotDisclaimerDetails}
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
-            {isProductionVisible ? (
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "create-job-menu-wrap",
-                  "assessment"
-                )}
+                className={_utils.cx(_styles, "create-job-menu-wrap")}
                 tag="div"
-                {...onClickScreeningQuestions}
+                {...onClickScoreSetting}
               >
                 <_Builtin.Block
                   className={_utils.cx(
@@ -282,9 +238,9 @@ export function CreateNewJob({
                   )}
                   tag="div"
                 >
-                  {"Assessment"}
+                  {"Profile Score"}
                 </_Builtin.Block>
-                {isScreeningQuestionsActive ? (
+                {isScoreSettingActive ? (
                   <_Builtin.Block
                     className={_utils.cx(_styles, "white-active-bg")}
                     tag="div"
@@ -294,113 +250,289 @@ export function CreateNewJob({
                   className={_utils.cx(_styles, "disclaimer-icons")}
                   tag="div"
                 >
-                  {slotDisclaimerScreening}
+                  {slotDisclaimerScoreSetting}
                 </_Builtin.Block>
-                {isBetaVisible ? (
+              </_Builtin.Block>
+              {isProductionVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "create-job-menu-wrap")}
+                  tag="div"
+                  {...onClickScreening}
+                >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "beta-wrap")}
+                    className={_utils.cx(
+                      _styles,
+                      "fw-semibold",
+                      "relative",
+                      "zindex-6"
+                    )}
                     tag="div"
                   >
+                    {"Screening "}
+                  </_Builtin.Block>
+                  {isScreeningActive ? (
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-xsm")}
+                      className={_utils.cx(_styles, "white-active-bg")}
+                      tag="div"
+                    />
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "disclaimer-icons")}
+                    tag="div"
+                  >
+                    {slotDisclaimerApplyForm}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              {isProductionVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "create-job-menu-wrap",
+                    "assessment"
+                  )}
+                  tag="div"
+                  {...onClickScreeningQuestions}
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "fw-semibold",
+                      "relative",
+                      "zindex-6"
+                    )}
+                    tag="div"
+                  >
+                    {"Assessment"}
+                  </_Builtin.Block>
+                  {isScreeningQuestionsActive ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "white-active-bg")}
+                      tag="div"
+                    />
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "disclaimer-icons")}
+                    tag="div"
+                  >
+                    {slotDisclaimerScreening}
+                  </_Builtin.Block>
+                  {isBetaVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "beta-wrap")}
                       tag="div"
                     >
-                      {"Beta"}
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-xsm")}
+                        tag="div"
+                      >
+                        {"Beta"}
+                      </_Builtin.Block>
                     </_Builtin.Block>
+                  ) : null}
+                </_Builtin.Block>
+              ) : null}
+              {isProductionVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "create-job-menu-wrap")}
+                  tag="div"
+                  {...onClickWorkflows}
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "fw-semibold",
+                      "relative",
+                      "zindex-6"
+                    )}
+                    tag="div"
+                  >
+                    {"Workflows"}
                   </_Builtin.Block>
-                ) : null}
-              </_Builtin.Block>
-            ) : null}
-            {isProductionVisible ? (
+                  {isWorkflowsActive ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "white-active-bg")}
+                      tag="div"
+                    />
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "disclaimer-icons")}
+                    tag="div"
+                  >
+                    {slotDisclaimerWorkflow}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              {isProductionVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "create-job-menu-wrap")}
+                  tag="div"
+                  {...onClickEmailTemplates}
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "fw-semibold",
+                      "relative",
+                      "zindex-6"
+                    )}
+                    tag="div"
+                  >
+                    {"Email Templates"}
+                  </_Builtin.Block>
+                  {isEmailTemplateActive ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "white-active-bg")}
+                      tag="div"
+                    />
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "disclaimer-icons")}
+                    tag="div"
+                  >
+                    {slotEmailDisclaimer}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "hide")}
+              value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_create-new-job-menu-wrappers__%22%5D%3A%3A-webkit-scrollbar%7B%0Adisplay%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "new-layout-sublink")}
+            tag="div"
+          >
+            {slotNavSublink}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "height-scroll")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot-create-job-new-wrapper")}
+              tag="div"
+            >
+              {slotCreateJob ?? (
+                <>
+                  <ScreeningQuestion />
+                  <AssessmentEpilogue />
+                  <AssessmentQuestion />
+                  <WelcomeMessage />
+                  <AssessmentSetting />
+                </>
+              )}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          {isAssessmentPreviewVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "assessment-side-panel")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "create-job-menu-wrap")}
+                className={_utils.cx(_styles, "div-block-711")}
                 tag="div"
-                {...onClickWorkflows}
               >
+                <_Builtin.Block tag="div">
+                  {
+                    "Preview how candidates will be taking interview in real time."
+                  }
+                </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
-                    "fw-semibold",
-                    "relative",
-                    "zindex-6"
+                    "div-block-712",
+                    "cursor-pointer"
                   )}
                   tag="div"
+                  {...onClickAssessmentPreview}
                 >
-                  {"Workflows"}
-                </_Builtin.Block>
-                {isWorkflowsActive ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "white-active-bg")}
-                    tag="div"
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons")}
+                    value="%3Csvg%20width%3D%2215%22%20height%3D%2212%22%20viewBox%3D%220%200%2015%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.49219%203.1875C2.99219%203.67188%202.57031%204.16406%202.22656%204.66406C1.89844%205.16406%201.65625%205.60938%201.5%206C1.65625%206.39062%201.89844%206.83594%202.22656%207.33594C2.57031%207.83594%202.99219%208.32812%203.49219%208.8125C4.00781%209.29688%204.59375%209.69531%205.25%2010.0078C5.92188%2010.3203%206.67188%2010.4844%207.5%2010.5C8.32812%2010.4844%209.07812%2010.3203%209.75%2010.0078C10.4062%209.69531%2010.9922%209.29688%2011.5078%208.8125C12.0078%208.32812%2012.4297%207.83594%2012.7734%207.33594C13.1016%206.83594%2013.3438%206.39062%2013.5%206C13.3438%205.60938%2013.1016%205.16406%2012.7734%204.66406C12.4297%204.16406%2012.0078%203.67188%2011.5078%203.1875C10.9922%202.70312%2010.4062%202.30469%209.75%201.99219C9.07812%201.67969%208.32812%201.51563%207.5%201.5C6.67188%201.51563%205.92188%201.67969%205.25%201.99219C4.59375%202.30469%204.00781%202.70312%203.49219%203.1875ZM7.5%200.75C8.45312%200.765625%209.30469%200.953125%2010.0547%201.3125C10.8047%201.67187%2011.4609%202.11719%2012.0234%202.64844C12.5703%203.16406%2013.0234%203.69531%2013.3828%204.24219C13.7422%204.78906%2014.0156%205.28125%2014.2031%205.71875C14.2812%205.90625%2014.2812%206.09375%2014.2031%206.28125C14.0156%206.71875%2013.7422%207.21094%2013.3828%207.75781C13.0234%208.30469%2012.5703%208.83594%2012.0234%209.35156C11.4609%209.88281%2010.8047%2010.3281%2010.0547%2010.6875C9.30469%2011.0469%208.45312%2011.2344%207.5%2011.25C6.54688%2011.2344%205.69531%2011.0469%204.94531%2010.6875C4.19531%2010.3281%203.53906%209.88281%202.97656%209.35156C2.42969%208.83594%201.97656%208.30469%201.61719%207.75781C1.25781%207.21094%200.992188%206.71875%200.820312%206.28125C0.742188%206.09375%200.742188%205.90625%200.820312%205.71875C0.992188%205.28125%201.25781%204.78906%201.61719%204.24219C1.97656%203.69531%202.42969%203.16406%202.97656%202.64844C3.53906%202.11719%204.19531%201.67187%204.94531%201.3125C5.69531%200.953125%206.54688%200.765625%207.5%200.75ZM5.25%206C5.25%206.40625%205.35156%206.78125%205.55469%207.125C5.75781%207.46875%206.03125%207.74219%206.375%207.94531C6.73438%208.14844%207.10938%208.25%207.5%208.25C7.89062%208.25%208.26562%208.14844%208.625%207.94531C8.96875%207.74219%209.24219%207.46875%209.44531%207.125C9.64844%206.78125%209.75%206.40625%209.75%206C9.75%205.59375%209.64844%205.21875%209.44531%204.875C9.24219%204.53125%208.96875%204.25781%208.625%204.05469C8.26562%203.85156%207.89062%203.75%207.5%203.75C7.10938%203.75%206.73438%203.85156%206.375%204.05469C6.03125%204.25781%205.75781%204.53125%205.55469%204.875C5.35156%205.21875%205.25%205.59375%205.25%206ZM10.5%206C10.5%206.54688%2010.3672%207.04688%2010.1016%207.5C9.83594%207.95312%209.46875%208.32031%209%208.60156C8.53125%208.86719%208.03125%209%207.5%209C6.96875%209%206.46875%208.86719%206%208.60156C5.53125%208.32031%205.16406%207.95312%204.89844%207.5C4.63281%207.04688%204.5%206.54688%204.5%206C4.5%205.45312%204.63281%204.95312%204.89844%204.5C5.16406%204.04688%205.53125%203.67969%206%203.39844C6.46875%203.13281%206.96875%203%207.5%203C8.03125%203%208.53125%203.13281%209%203.39844C9.46875%203.67969%209.83594%204.04688%2010.1016%204.5C10.3672%204.95312%2010.5%205.45312%2010.5%206Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
                   />
-                ) : null}
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "disclaimer-icons")}
-                  tag="div"
-                >
-                  {slotDisclaimerWorkflow}
+                  <_Builtin.Block tag="div">{"Preview"}</_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
-            {isProductionVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "create-job-menu-wrap")}
+                className={_utils.cx(_styles, "div-block-711")}
                 tag="div"
-                {...onClickEmailTemplates}
               >
+                <_Builtin.Block tag="div">
+                  {
+                    "Disable this process if you don’t want to use assessment for the candidate."
+                  }
+                </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
-                    "fw-semibold",
-                    "relative",
-                    "zindex-6"
+                    "text-red-500",
+                    "cursor-pointer"
                   )}
                   tag="div"
                 >
-                  {"Email Templates"}
-                </_Builtin.Block>
-                {isEmailTemplateActive ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "white-active-bg")}
-                    tag="div"
-                  />
-                ) : null}
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "disclaimer-icons")}
-                  tag="div"
-                >
-                  {slotEmailDisclaimer}
+                  <_Builtin.Block tag="div" {...onClickDisableAssessment}>
+                    {"Disable Assesment"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "hide")}
-            value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_create-new-job-menu-wrappers__%22%5D%3A%3A-webkit-scrollbar%7B%0Adisplay%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "height-scroll")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-create-job-new-wrapper")}
-            tag="div"
-          >
-            {slotCreateJob ?? <ScreeningQuestion />}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "relative", "zindex-3")}
-            tag="div"
-          >
-            {slotCloseJob}
-          </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
         value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_height-scroll__%22%5D%7B%0Aheight%3Acalc(100vh%20-%20172px)%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
+      {isProceedVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "proceed-to-wrap")}
+          tag="div"
+        >
+          <_Builtin.Block className={_utils.cx(_styles, "relative")} tag="div">
+            <_Builtin.Block
+              className={_utils.cx(_styles, "proceed-to-btn", "cursor-pointer")}
+              tag="div"
+              {...onClickProceed}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
+                tag="div"
+              >
+                {textProceed}
+              </_Builtin.Block>
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2210%22%20height%3D%2216%22%20viewBox%3D%220%200%2010%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.53125%207.46875C9.82292%207.82292%209.82292%208.17708%209.53125%208.53125L3.53125%2014.5312C3.17708%2014.8229%202.82292%2014.8229%202.46875%2014.5312C2.17708%2014.1771%202.17708%2013.8229%202.46875%2013.4688L7.9375%208L2.46875%202.53125C2.17708%202.17708%202.17708%201.82292%202.46875%201.46875C2.82292%201.17708%203.17708%201.17708%203.53125%201.46875L9.53125%207.46875Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+            {isProceedDisable ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "proceed-to-btn", "disable")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold", "text-grey-400")}
+                  tag="div"
+                >
+                  {textProceed}
+                </_Builtin.Block>
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2210%22%20height%3D%2216%22%20viewBox%3D%220%200%2010%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.53125%207.46875C9.82292%207.82292%209.82292%208.17708%209.53125%208.53125L3.53125%2014.5312C3.17708%2014.8229%202.82292%2014.8229%202.46875%2014.5312C2.17708%2014.1771%202.17708%2013.8229%202.46875%2013.4688L7.9375%208L2.46875%202.53125C2.17708%202.17708%202.17708%201.82292%202.46875%201.46875C2.82292%201.17708%203.17708%201.17708%203.53125%201.46875L9.53125%207.46875Z%22%20fill%3D%22%23C2C8CC%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-warning")}
+              tag="div"
+            >
+              {slotWarning}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

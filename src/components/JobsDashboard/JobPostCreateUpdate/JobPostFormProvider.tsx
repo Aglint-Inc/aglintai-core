@@ -150,7 +150,12 @@ export type FormJobType = {
     questions: PhoneScreenQuestion[];
   };
 };
-
+type AssMenusType =
+  | 'instructions'
+  | 'welcome'
+  | 'assesqns'
+  | 'epilogue'
+  | 'settings';
 export type JobFormState = {
   isFormOpen: boolean;
   jobPostId: string | undefined;
@@ -165,7 +170,7 @@ export type JobFormState = {
     | 'phoneScreening'
     | 'workflow'
     | 'resumeScore';
-  // | 'applyForm';
+  currentAssmSlides: AssMenusType;
   syncStatus: 'saving' | 'saved' | '';
   jobPostStatus: 'published' | 'draft' | 'closed';
   isJobPostReverting: boolean;
@@ -182,6 +187,7 @@ const initialState: JobFormState = {
   currSlide: 'details',
   isJobPostReverting: false,
   jobPostStatus: 'draft',
+  currentAssmSlides: 'instructions',
 };
 
 // Define action types
@@ -232,6 +238,12 @@ type JobsAction =
       type: 'updateJobPublishstatus';
       payload: {
         status: JobFormState['jobPostStatus'];
+      };
+    }
+  | {
+      type: 'updateAssmTab';
+      payload: {
+        tab: JobFormState['currentAssmSlides'];
       };
     }
   | null;
@@ -288,7 +300,11 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       }
       return newState;
     }
-
+    case 'updateAssmTab': {
+      const { tab } = action.payload;
+      set(newState, 'currentAssmSlides', tab);
+      return newState;
+    }
     default:
       return state;
   }
