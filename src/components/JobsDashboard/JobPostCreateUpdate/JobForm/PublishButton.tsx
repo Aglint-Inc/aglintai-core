@@ -1,5 +1,4 @@
 import { CircularProgress } from '@mui/material';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useState } from 'react';
@@ -29,7 +28,6 @@ const JobPublishButton = () => {
       setIsPublishing(true);
       const jobFormData = getjobformToDbcolumns(jobForm);
 
-      saveJson(jobFormData);
       const [job] = supabaseWrap(
         await supabase
           .from('public_jobs')
@@ -59,17 +57,6 @@ const JobPublishButton = () => {
     } finally {
       setIsPublishing(false);
     }
-  };
-
-  const saveJson = (jobFormData) => {
-    axios.post('/api/publishJob', {
-      data: {
-        job_title: jobFormData.job_title,
-        job_description: jobFormData.description,
-        skills: jobFormData.skills || [],
-        job_id: jobFormData.id,
-      },
-    });
   };
 
   const isJobPublished = jobForm.formFields.isDraftCleared;
