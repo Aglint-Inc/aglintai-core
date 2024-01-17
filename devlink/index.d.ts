@@ -53,6 +53,7 @@ export * from "./AudioSwitcherCard";
 export * from "./AuiNavigation";
 export * from "./AvatarCard";
 export * from "./AvatarModal";
+export * from "./BasicInfo";
 export * from "./BetaComp";
 export * from "./BookmarkEmpty";
 export * from "./BriefcaseIcon";

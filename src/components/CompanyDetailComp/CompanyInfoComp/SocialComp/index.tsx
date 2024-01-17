@@ -71,14 +71,14 @@ const SocialComp = ({ setIsSaving }) => {
       socialName == 'facebook'
         ? validateFacebookUrl(recruiter.socials[socialName])
         : socialName == 'linkedin'
-        ? validateLinkedInUrl(recruiter.socials[socialName])
-        : socialName == 'youtube'
-        ? validateYouTubeUrl(recruiter.socials[socialName])
-        : socialName == 'twitter'
-        ? validateTwitterUrl(recruiter.socials[socialName])
-        : socialName == 'instagram'
-        ? validateInstagramUrl(recruiter.socials[socialName])
-        : true
+          ? validateLinkedInUrl(recruiter.socials[socialName])
+          : socialName == 'youtube'
+            ? validateYouTubeUrl(recruiter.socials[socialName])
+            : socialName == 'twitter'
+              ? validateTwitterUrl(recruiter.socials[socialName])
+              : socialName == 'instagram'
+                ? validateInstagramUrl(recruiter.socials[socialName])
+                : true
     ) {
       if (
         !custom ||
@@ -233,10 +233,10 @@ const SocialComp = ({ setIsSaving }) => {
 
   return (
     <Stack spacing={'10px'}>
-      <UITypography type={'small'} color={palette.grey[800]} fontBold='normal'>
+      <UITypography type={'small'} color={palette.grey[800]} fontBold='default'>
         Social Links
       </UITypography>
-      <Stack spacing={'10px'}>
+      <Stack spacing={'20px'}>
         {socials?.map((socialName) => {
           return (
             <Stack

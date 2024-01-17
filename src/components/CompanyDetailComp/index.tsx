@@ -1,8 +1,9 @@
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CompanySetting } from '@/devlink';
+import { CompanySetting, NavSublink } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AssessmentSettings from './AssessmentSettings';
 import Assistant from './Assistant';
@@ -18,6 +19,7 @@ import {
 import LoaderGrey from '../Common/LoaderGrey';
 
 const CompanyDetailComp = () => {
+  const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -35,24 +37,48 @@ const CompanyDetailComp = () => {
     }
   }, [recruiter]);
 
+  useEffect(() => {
+    if (router.isReady && !router.query?.tab) {
+      router.replace('/company?tab=basic-info');
+    }
+  }, [router]);
+
   return (
-    <>
-      <YTransform uniqueKey={1}>
-        <CompanySetting
-          slotSavingLottie={<LoaderGrey />}
-          isSaving={isSaving}
-          isSaved={!isSaving}
-          slotCompanyInfo={<CompanyInfoComp setIsSaving={setIsSaving} />}
-          slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
-          slotEmailTemplate={<EmailTemplate />}
-          slotTeam={<TeamManagement />}
-          slotAssesmentSetting={
-            <AssessmentSettings setIsSaving={setIsSaving} />
-          }
-          slotAssisstantSettings={<Assistant />}
-        />
-      </YTransform>
-    </>
+    <Stack overflow={'hidden'}>
+      <CompanySetting
+        slotNavSublink={
+          <>
+            <NavSublink
+              isActive={router.query?.tab === 'basic-info'}
+              textLink={'Basic Info'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=basic-info');
+                },
+              }}
+            />
+            <NavSublink
+              textLink={'Additional Info'}
+              isActive={router.query?.tab === 'additional-info'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=additional-info');
+                },
+              }}
+            />
+          </>
+        }
+        slotSavingLottie={<LoaderGrey />}
+        isSaving={isSaving}
+        isSaved={!isSaving}
+        slotCompany={<CompanyInfoComp setIsSaving={setIsSaving} />}
+        slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
+        slotEmailTemplate={<EmailTemplate />}
+        slotTeam={<TeamManagement />}
+        slotAssesmentSetting={<AssessmentSettings setIsSaving={setIsSaving} />}
+        slotAssisstantSettings={<Assistant />}
+      />
+    </Stack>
   );
 };
 

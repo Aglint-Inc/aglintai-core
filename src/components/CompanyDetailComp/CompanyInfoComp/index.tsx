@@ -1,9 +1,11 @@
-import { Autocomplete, Grid, Stack } from '@mui/material';
+import { Autocomplete, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
+import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
@@ -15,6 +17,7 @@ import ImageUpload from '../../Common/ImageUpload';
 import UITextField from '../../Common/UITextField';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
+  const router = useRouter();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
@@ -57,52 +60,169 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   // }, [logo]);
 
   return (
-    <div>
-      <AddTechnologyDialog
-        handleClose={handleClose}
-        open={dialog.stacks}
-        handleChange={handleChange}
-      />
-      <AddDepartmentsDialog
-        handleClose={handleClose}
-        open={dialog.departments}
-        handleChange={handleChange}
-      />
-      <AddRolesDialog
-        handleClose={handleClose}
-        open={dialog.roles}
-        handleChange={handleChange}
-      />
-      <AddLocationDialog
-        key={Math.random()}
-        handleClose={handleClose}
-        open={dialog.location.open}
-        edit={dialog.location.edit}
-      />
-      <CompanyInfo
-        slotCompanyLogo={
-          <>
-            <ImageUpload
-              image={logo}
-              setImage={setLogo}
-              size={70}
-              table='company-logo'
-              changeCallback={(data: any) => {
-                handleChange({ ...recruiter, logo: data });
-              }}
-            />
-          </>
-        }
-        onClickChangeLogo={{
-          onClick: () => {
-            document.getElementById('image-upload').click();
-          },
-        }}
-        slotBasicForm={
-          <Stack p={'4px'} width={'100%'}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+    <Stack
+      sx={{ overflowY: 'scroll', height: 'calc(100vh - 60px)', pb: '20px' }}
+      width={'100%'}
+    >
+      <YTransform uniqueKey={router.query.tab}>
+        <AddTechnologyDialog
+          handleClose={handleClose}
+          open={dialog.stacks}
+          handleChange={handleChange}
+        />
+        <AddDepartmentsDialog
+          handleClose={handleClose}
+          open={dialog.departments}
+          handleChange={handleChange}
+        />
+        <AddRolesDialog
+          handleClose={handleClose}
+          open={dialog.roles}
+          handleChange={handleChange}
+        />
+        <AddLocationDialog
+          key={Math.random()}
+          handleClose={handleClose}
+          open={dialog.location.open}
+          edit={dialog.location.edit}
+        />
+        {router.query?.tab === 'additional-info' ? (
+          <CompanyInfo
+            slotLocation={
+              <Stack p={'4px'}>
+                {recruiter?.office_locations &&
+                  recruiter?.office_locations.map((loc: any, i) => {
+                    const location = [loc.city, loc.region, loc.country]
+                      .filter(Boolean)
+                      .join(', ');
+
+                    return (
+                      <>
+                        <Stack p={'4px'}>
+                          <CompanyLocation
+                            onClickEdit={{
+                              onClick: () => {
+                                setDialog({
+                                  ...dialog,
+                                  location: { open: true, edit: i },
+                                });
+                              },
+                            }}
+                            textLocation={location}
+                            onClickDelete={{
+                              onClick: () => handleDeleteLocation(i),
+                            }}
+                          />
+                        </Stack>
+                      </>
+                    );
+                  })}
+              </Stack>
+            }
+            slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
+              return (
+                <RolesPill
+                  key={ind}
+                  textRoles={rol}
+                  onClickRemoveRoles={{
+                    onClick: () => {
+                      let roles = recruiter.available_roles.filter(
+                        (role) => role != rol,
+                      );
+                      handleChange({
+                        ...recruiter,
+                        available_roles: roles,
+                      });
+                    },
+                  }}
+                />
+              );
+            })}
+            slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
+              return (
+                <RolesPill
+                  key={ind}
+                  textRoles={dep}
+                  onClickRemoveRoles={{
+                    onClick: () => {
+                      let departments = recruiter.departments.filter(
+                        (depart) => depart != dep,
+                      );
+                      handleChange({
+                        ...recruiter,
+                        departments: departments,
+                      });
+                    },
+                  }}
+                />
+              );
+            })}
+            slotTechStackPills={recruiter?.technology_score?.map(
+              (stack, ind) => {
+                return (
+                  <RolesPill
+                    key={ind}
+                    textRoles={stack}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        let technologies = recruiter.technology_score.filter(
+                          (tech) => tech != stack,
+                        );
+                        handleChange({
+                          ...recruiter,
+                          technology_score: technologies,
+                        });
+                      },
+                    }}
+                  />
+                );
+              },
+            )}
+            onClickAddLocation={{
+              onClick: () => {
+                setDialog({ ...dialog, location: { open: true, edit: -1 } });
+              },
+            }}
+            onClickAddAvailableRoles={{
+              onClick: () => {
+                setDialog({ ...dialog, roles: true });
+              },
+            }}
+            onClickAddDepartments={{
+              onClick: () => {
+                setDialog({ ...dialog, departments: true });
+              },
+            }}
+            onClickAddTechStacks={{
+              onClick: () => {
+                setDialog({ ...dialog, stacks: true });
+              },
+            }}
+          />
+        ) : (
+          <BasicInfo
+            slotCompanyLogo={
+              <>
+                <ImageUpload
+                  image={logo}
+                  setImage={setLogo}
+                  size={70}
+                  table='company-logo'
+                  changeCallback={(data: any) => {
+                    handleChange({ ...recruiter, logo: data });
+                  }}
+                />
+              </>
+            }
+            onClickChangeLogo={{
+              onClick: () => {
+                document.getElementById('image-upload').click();
+              },
+            }}
+            slotBasicForm={
+              <Stack spacing={2}>
                 <UITextField
+                  labelBold='default'
                   labelSize='small'
                   fullWidth
                   label='Company Name'
@@ -112,9 +232,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     handleChange({ ...recruiter, name: e.target.value });
                   }}
                 />
-              </Grid>
-              <Grid item xs={6} md={6}>
                 <UITextField
+                  labelBold='default'
                   labelSize='small'
                   fullWidth
                   label='Industry'
@@ -124,8 +243,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     handleChange({ ...recruiter, industry: e.target.value });
                   }}
                 />
-              </Grid>
-              <Grid item xs={6} md={6}>
                 <Autocomplete
                   disableClearable
                   freeSolo
@@ -143,6 +260,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   getOptionLabel={(option) => option}
                   renderInput={(params) => (
                     <UITextField
+                      labelBold='default'
                       rest={{ ...params }}
                       fullWidth
                       InputProps={{
@@ -159,9 +277,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     />
                   )}
                 />
-              </Grid>
-              <Grid item xs={6} md={6}>
+
                 <UITextField
+                  labelBold='default'
                   labelSize='small'
                   fullWidth
                   label='Company Website'
@@ -174,123 +292,15 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     });
                   }}
                 />
-              </Grid>
-              <Grid item xs={6} md={6}>
-                <SocialComp setIsSaving={setIsSaving} />
-              </Grid>
-            </Grid>
-          </Stack>
-        }
-        slotLocation={
-          <Stack p={'4px'}>
-            {recruiter?.office_locations &&
-              recruiter?.office_locations.map((loc: any, i) => {
-                const location = [loc.city, loc.region, loc.country]
-                  .filter(Boolean)
-                  .join(', ');
 
-                return (
-                  <>
-                    <Stack p={'4px'}>
-                      <CompanyLocation
-                        onClickEdit={{
-                          onClick: () => {
-                            setDialog({
-                              ...dialog,
-                              location: { open: true, edit: i },
-                            });
-                          },
-                        }}
-                        textLocation={location}
-                        onClickDelete={{
-                          onClick: () => handleDeleteLocation(i),
-                        }}
-                      />
-                    </Stack>
-                  </>
-                );
-              })}
-          </Stack>
-        }
-        slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
-          return (
-            <RolesPill
-              key={ind}
-              textRoles={rol}
-              onClickRemoveRoles={{
-                onClick: () => {
-                  let roles = recruiter.available_roles.filter(
-                    (role) => role != rol,
-                  );
-                  handleChange({
-                    ...recruiter,
-                    available_roles: roles,
-                  });
-                },
-              }}
-            />
-          );
-        })}
-        slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
-          return (
-            <RolesPill
-              key={ind}
-              textRoles={dep}
-              onClickRemoveRoles={{
-                onClick: () => {
-                  let departments = recruiter.departments.filter(
-                    (depart) => depart != dep,
-                  );
-                  handleChange({
-                    ...recruiter,
-                    departments: departments,
-                  });
-                },
-              }}
-            />
-          );
-        })}
-        slotTechStackPills={recruiter?.technology_score?.map((stack, ind) => {
-          return (
-            <RolesPill
-              key={ind}
-              textRoles={stack}
-              onClickRemoveRoles={{
-                onClick: () => {
-                  let technologies = recruiter.technology_score.filter(
-                    (tech) => tech != stack,
-                  );
-                  handleChange({
-                    ...recruiter,
-                    technology_score: technologies,
-                  });
-                },
-              }}
-            />
-          );
-        })}
-        onClickAddLocation={{
-          onClick: () => {
-            setDialog({ ...dialog, location: { open: true, edit: -1 } });
-          },
-        }}
-        onClickAddAvailableRoles={{
-          onClick: () => {
-            setDialog({ ...dialog, roles: true });
-          },
-        }}
-        onClickAddDepartments={{
-          onClick: () => {
-            setDialog({ ...dialog, departments: true });
-          },
-        }}
-        onClickAddTechStacks={{
-          onClick: () => {
-            setDialog({ ...dialog, stacks: true });
-          },
-        }}
-      />
-    </div>
+                <SocialComp setIsSaving={setIsSaving} />
+              </Stack>
+            }
+            textLogoUpdate={'Update Logo'}
+          />
+        )}
+      </YTransform>
+    </Stack>
   );
 };
 

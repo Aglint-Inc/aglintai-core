@@ -2,10 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { CompanyInfo } from "./CompanyInfo";
-import { EmailTemplateCards } from "./EmailTemplateCards";
-import { CreateNewEmailCard } from "./CreateNewEmailCard";
-import { AssesmentSetting } from "./AssesmentSetting";
-import { AssisstantSettings } from "./AssisstantSettings";
+import { BasicInfo } from "./BasicInfo";
 import * as _utils from "./utils";
 import _styles from "./CompanySetting.module.css";
 
@@ -18,7 +15,6 @@ export function CompanySetting({
   onClickCompanyInfo = {},
   onClickCompanyJd = {},
   onClickEmailTemplate = {},
-  slotCompanyInfo,
   slotCompanyJdSetting,
   slotEmailTemplate,
   isSaved = false,
@@ -33,12 +29,14 @@ export function CompanySetting({
   slotAssisstantSettings,
   isAssessmentBetaVisible = true,
   isAssistantBetaVisible = true,
+  slotNavSublink,
+  slotCompany,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-main-wrapper", "height-scroll-company")}
+      className={_utils.cx(_styles, "rd-main-wrapper", "no-scroll")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-344")} tag="div">
@@ -3399,240 +3397,23 @@ export function CompanySetting({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-353")} tag="div">
-        <_Builtin.TabsWrapper
-          className={_utils.cx(_styles, "company-settings-tabs")}
-          current="Tab 1"
-          easing="ease"
-          fadeIn={300}
-          fadeOut={100}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "new-layout-sublink")}
+          tag="div"
         >
-          <_Builtin.TabsMenu
-            className={_utils.cx(_styles, "tab-menu-link-company", "hide")}
-            tag="div"
-          >
-            <_Builtin.TabsLink
-              className={_utils.cx(_styles, "company-tab-link")}
-              data-w-tab="Tab 1"
-              block="inline"
-              {...onClickCompanyInfo}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Company Info"}
-              </_Builtin.Block>
-            </_Builtin.TabsLink>
-            <_Builtin.TabsLink
-              className={_utils.cx(_styles, "company-tab-link")}
-              data-w-tab="Tab 2"
-              block="inline"
-              {...onClickCompanyJd}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Job Site Settings"}
-              </_Builtin.Block>
-            </_Builtin.TabsLink>
-            <_Builtin.TabsLink
-              className={_utils.cx(_styles, "company-tab-link")}
-              data-w-tab="Tab 3"
-              block="inline"
-              {...onClickEmailTemplate}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Email Templates"}
-              </_Builtin.Block>
-            </_Builtin.TabsLink>
-            {isTeamVisible ? (
-              <_Builtin.TabsLink
-                className={_utils.cx(_styles, "company-tab-link")}
-                data-w-tab="Tab 4"
-                block="inline"
-                {...onClickTeam}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Team"}
-                </_Builtin.Block>
-              </_Builtin.TabsLink>
-            ) : null}
-            <_Builtin.TabsLink
-              className={_utils.cx(_styles, "company-tab-link")}
-              data-w-tab="Tab 5"
-              block="inline"
-              {...onclickAssessment}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-650")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Assessment Settings"}
-                </_Builtin.Block>
-                {isAssessmentBetaVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "beta-wrap")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-xsm")}
-                      tag="div"
-                    >
-                      {"Beta"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
-              </_Builtin.Block>
-            </_Builtin.TabsLink>
-            <_Builtin.TabsLink
-              className={_utils.cx(_styles, "company-tab-link")}
-              data-w-tab="Tab 6"
-              block="inline"
-              {...onclickAssisstant}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-650")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Assistant"}
-                </_Builtin.Block>
-                {isAssistantBetaVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "beta-wrap")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-xsm")}
-                      tag="div"
-                    >
-                      {"Beta"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
-              </_Builtin.Block>
-            </_Builtin.TabsLink>
-          </_Builtin.TabsMenu>
-          <_Builtin.TabsContent
-            className={_utils.cx(_styles, "cs-tab-content")}
-            tag="div"
-          >
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 1">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cs-tab-content-wrapper",
-                  "company-info"
-                )}
-                tag="div"
-              >
-                {slotCompanyInfo ?? <CompanyInfo />}
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cs-tab-content-wrapper",
-                  "jd-settings"
-                )}
-                tag="div"
-              >
-                {slotCompanyJdSetting}
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 3">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cs-tab-content-wrapper",
-                  "email-settings"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cs-info-header",
-                    "max-width-600"
-                  )}
-                  id={_utils.cx(
-                    _styles,
-                    "w-node-f951d516-f1b7-f7ea-9c93-44108fd23327-4b5bf303"
-                  )}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Custom Email Templates"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-grey-600")}
-                    tag="div"
-                  >
-                    {
-                      "Set default email templates that align with your company's branding and voice, ensuring a consistent representation throughout your recruitment journey."
-                    }
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "email-temp-wrappers")}
-                  tag="div"
-                >
-                  {slotEmailTemplate ?? (
-                    <>
-                      <EmailTemplateCards
-                        id={_utils.cx(
-                          _styles,
-                          "w-node-d8541f26-e8f7-cb79-ace1-4e3a96a095a5-4b5bf303"
-                        )}
-                      />
-                      <CreateNewEmailCard />
-                    </>
-                  )}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 4">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cs-tab-content-wrapper",
-                  "team-settings"
-                )}
-                tag="div"
-              >
-                {slotTeam}
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 5">
-              <_Builtin.Block tag="div">
-                {slotAssesmentSetting ?? <AssesmentSetting />}
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-            <_Builtin.TabsPane tag="div" data-w-tab="Tab 6">
-              <_Builtin.Block tag="div">
-                {slotAssisstantSettings ?? <AssisstantSettings />}
-              </_Builtin.Block>
-            </_Builtin.TabsPane>
-          </_Builtin.TabsContent>
-        </_Builtin.TabsWrapper>
+          {slotNavSublink}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-698")}
+          tag="div"
+        >
+          {slotCompany ?? (
+            <>
+              <CompanyInfo />
+              <BasicInfo />
+            </>
+          )}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

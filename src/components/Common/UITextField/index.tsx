@@ -44,6 +44,7 @@ type Props = {
   width?: string;
   select?: boolean;
   secondaryText?: string;
+  labelBold?: 'default' | 'normal';
 };
 
 // eslint-disable-next-line react/display-name
@@ -77,6 +78,7 @@ const UITextField = React.forwardRef(
       select,
       height,
       secondaryText,
+      labelBold = 'normal',
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -111,7 +113,11 @@ const UITextField = React.forwardRef(
         gap={'5px'}
       >
         {label && (
-          <UITypography type={labelSize} color={labelColor} fontBold='normal'>
+          <UITypography
+            type={labelSize}
+            color={labelColor}
+            fontBold={labelBold}
+          >
             {label}
             {required && <sup>*</sup>}
           </UITypography>
@@ -193,8 +199,8 @@ const UITextField = React.forwardRef(
               {error
                 ? helperText
                 : contentExceeded
-                ? errorMessages.maxCharExceeded
-                : ''}
+                  ? errorMessages.maxCharExceeded
+                  : ''}
             </UITypography>
           </Stack>
         )}

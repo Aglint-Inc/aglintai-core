@@ -6,7 +6,6 @@ declare function CompanySetting(props: {
   onClickCompanyInfo?: Types.Devlink.RuntimeProps;
   onClickCompanyJd?: Types.Devlink.RuntimeProps;
   onClickEmailTemplate?: Types.Devlink.RuntimeProps;
-  slotCompanyInfo?: Types.Devlink.Slot;
   slotCompanyJdSetting?: Types.Devlink.Slot;
   slotEmailTemplate?: Types.Devlink.Slot;
   isSaved?: Types.Visibility.VisibilityConditions;
@@ -21,4 +20,6 @@ declare function CompanySetting(props: {
   slotAssisstantSettings?: Types.Devlink.Slot;
   isAssessmentBetaVisible?: Types.Visibility.VisibilityConditions;
   isAssistantBetaVisible?: Types.Visibility.VisibilityConditions;
+  slotNavSublink?: Types.Devlink.Slot;
+  slotCompany?: Types.Devlink.Slot;
 }): React.JSX.Element;
