@@ -732,6 +732,10 @@
   justify-content: space-between;
 }
 
+.height-scroll.width-100 {
+  width: 100%;
+}
+
 .slot-create-job-new-wrapper {
   margin-top: 20px;
   padding-right: 20px;

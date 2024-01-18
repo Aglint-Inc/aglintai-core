@@ -19,7 +19,7 @@ export function BasicInfo({
 
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-company-primary-info-2")}
+      className={_utils.cx(_styles, "rd-company-primary-info-2", "width-420")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
@@ -59,9 +59,9 @@ export function BasicInfo({
               className={_utils.cx(_styles, "text-sm", "color-grey-600")}
               tag="div"
             >
-              {
-                "Please upload your logo in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
-              }
+              {"Upload a square company logo (PNG or JPEG). "}
+              <br />
+              {"Maximum size: 2 MB."}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

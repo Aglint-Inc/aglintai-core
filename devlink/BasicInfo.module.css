@@ -8,6 +8,14 @@
   grid-row-gap: 20px;
 }
 
+.rd-company-primary-info-2.width-585 {
+  max-width: 585px;
+}
+
+.rd-company-primary-info-2.width-420 {
+  max-width: 430px;
+}
+
 .profile-block {
   display: flex;
   flex-direction: column;

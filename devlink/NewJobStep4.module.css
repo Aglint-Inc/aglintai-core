@@ -188,6 +188,21 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -222,17 +237,6 @@
 
 .text-align-center {
   text-align: center;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -624,69 +628,6 @@
 
 .toggle-dropdown-content-wrapper {
   overflow: hidden;
-}
-
-.job-details-button-wrappers {
-  display: flex;
-  margin-top: 50px;
-}
-
-.job-details-button-wrappers.remove-bottom {
-  margin-top: 0px;
-}
-
-.job-details-button-wrappers.remove-bottom.mt-30 {
-  margin-top: 30px;
-}
-
-.job-details-button-wrappers.hide {
-  display: none;
-}
-
-.proceed-to-apply {
-  position: relative;
-}
-
-.blue-process-button {
-  display: flex;
-  padding: 10px 16px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  background-color: #1f73b7;
-
-  transition: all 250ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.blue-process-button:hover {
-  opacity: 0.8;
-}
-
-.grey-disable-process-button {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  padding: 10px 16px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-
-  color: #c2c8cc;
 }
 
 .pd-100 {

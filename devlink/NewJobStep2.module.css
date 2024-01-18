@@ -492,6 +492,14 @@
   margin-top: 15px;
 }
 
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
 .content-11 {
   display: flex;
   height: 32px;
@@ -550,132 +558,4 @@
 
 .label-5.disable {
   color: var(--grey500-0d508ad8);
-}
-
-.job-details-button-wrappers {
-  display: flex;
-  margin-top: 50px;
-}
-
-.job-details-button-wrappers.remove-bottom {
-  margin-top: 0px;
-}
-
-.job-details-button-wrappers.remove-bottom.mt-30 {
-  margin-top: 30px;
-}
-
-.job-details-button-wrappers.hide {
-  display: none;
-}
-
-.proceed-to-apply {
-  position: relative;
-}
-
-.blue-process-button {
-  display: flex;
-  padding: 10px 16px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  background-color: #1f73b7;
-
-  transition: all 250ms ease;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.blue-process-button:hover {
-  opacity: 0.8;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.grey-disable-process-button {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  padding: 10px 16px;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-
-  color: #c2c8cc;
 }

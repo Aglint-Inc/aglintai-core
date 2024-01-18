@@ -407,7 +407,7 @@ export function CreateNewJob({
             {slotNavSublink}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "height-scroll")}
+            className={_utils.cx(_styles, "height-scroll", "width-100")}
             tag="div"
           >
             <_Builtin.Block
@@ -483,7 +483,7 @@ export function CreateNewJob({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_height-scroll__%22%5D%7B%0Aheight%3Acalc(100vh%20-%20172px)%3B%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22CreateNewJob_height-scroll__%22%5D%7B%0Aheight%3Acalc(100vh%20-%2063px)%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
       {isProceedVisible ? (
         <_Builtin.Block
