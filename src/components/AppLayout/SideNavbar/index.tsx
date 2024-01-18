@@ -169,7 +169,7 @@ const navList = [
     icon: <NavCompanySetting isActive={false} />,
     text: 'Company Settings',
     SubComponents: null,
-    route: pageRoutes.COMPANY,
+    route: pageRoutes.COMPANY + '?tab=basic-info',
     comingsoon: false,
   },
 ];
