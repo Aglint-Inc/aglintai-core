@@ -49,7 +49,7 @@ export const readCandidates = async (
   return candidates;
 };
 
-export const sendMails = async (
+export const sendMails = (
   job: JobApplicationEmails['request']['job'],
   purpose: JobApplicationEmails['request']['purpose'],
   candidates: Awaited<ReturnType<typeof readCandidates>>,
