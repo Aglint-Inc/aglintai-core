@@ -76,7 +76,9 @@ const SignUpComp = () => {
                 }}
                 onClickSignIn={{
                   onClick: () => {
-                    router.push(pageRoutes.LOGIN, undefined, { shallow: true });
+                    router.push(pageRoutes.LOGIN, undefined, {
+                      shallow: true,
+                    });
                   },
                 }}
               />
@@ -90,10 +92,10 @@ const SignUpComp = () => {
       )}
       <>
         {step == stepObj.detailsOne || step == stepObj.detailsTwo ? (
-          <YTransform uniqueKey={step}>
-            <SlideDetailsOne />
-          </YTransform>
-        ) : step == stepObj.atsSystem ? (
+          // <YTransform uniqueKey={router.query.step == 'details-two'}>
+          <SlideDetailsOne />
+        ) : // </YTransform>
+        step == stepObj.atsSystem ? (
           <YTransform uniqueKey={step}>
             <SelectAtsSystem />
           </YTransform>

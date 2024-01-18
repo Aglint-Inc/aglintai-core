@@ -23,7 +23,7 @@ function JobSubNavbar() {
   return (
     <Stack
       spacing={'22px'}
-      p={'20px 10px'}
+      p={'12px 10px'}
       width={200}
       borderRight={'1px solid'}
       borderColor={'grey.200'}

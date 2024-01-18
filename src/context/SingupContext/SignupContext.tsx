@@ -31,7 +31,7 @@ export const useSignupDetails = () => useContext(SignupContext);
 const SignupContext = createContext<ContextValue>(defaultProvider);
 const SignupProvider = ({ children }) => {
   const router = useRouter();
-  const [step, setStep] = useState<string>(stepObj.type);
+  const [step, setStep] = useState<string>(router.query.step as any);
   const [flow, setFlow] = useState<string>(companyType.COMPANY);
   const [companyName, setCompanyName] = useState(null);
 

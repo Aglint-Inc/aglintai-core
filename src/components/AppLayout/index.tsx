@@ -79,7 +79,7 @@ export default function AppLayout({ children }) {
           // pt={'28px'}
           // bgcolor={'#25282A'}
           width={'70px'}
-          p={'10px'}
+          p={'12px 10px'}
         >
           <Stack
             width={'100%'}

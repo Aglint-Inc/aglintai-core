@@ -47,6 +47,7 @@ const SlideDetailsOne = () => {
       <RecCompanyDetails
         slotStatusText={
           step == stepObj.detailsTwo &&
+          companyName !== null &&
           (companyName ? (
             <Stack
               direction={'row'}
