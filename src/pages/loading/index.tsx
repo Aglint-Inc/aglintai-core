@@ -3,6 +3,7 @@ import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import React, { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
@@ -16,7 +17,6 @@ import {
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
-import posthog from 'posthog-js';
 
 export default function Loading() {
   const { userDetails } = useAuthDetails();
@@ -80,6 +80,8 @@ export default function Loading() {
       .eq('user_id', userDetails?.user?.id)
       .then(({ data, error }) => {
         if (!error) {
+          //post hog logging
+          posthog.identify(userDetails.user.email);
           if (data.length == 0) {
             (async () => {
               await refershAccessToken();
@@ -139,7 +141,6 @@ export default function Loading() {
   };
 
   const refershAccessToken = async () => {
-    posthog.identify(userDetails.user.email)
     await supabase.auth.refreshSession({
       refresh_token: userDetails?.refresh_token,
     });
