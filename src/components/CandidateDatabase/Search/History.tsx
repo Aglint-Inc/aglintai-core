@@ -12,12 +12,15 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { SearchHistoryType } from '@/src/types/data.types';
+import {
+  SearchHistoryType
+} from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { Candidate } from '../AppoloSearch/types';
 import { CandidateSearchState } from '../context/CandidateSearchProvider';
 import { getFilteredCands } from '../Database/utils';
 import { JDSearchModal } from '../JDSearchModal';
@@ -106,6 +109,7 @@ function CandidateSearchHistory() {
         jobsData.jobs.map((j) => j.id),
         25,
       )) as any;
+
       const [history] = supabaseWrap(
         await supabase
           .from('candidate_search_history')
@@ -147,7 +151,7 @@ function CandidateSearchHistory() {
 
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
-        per_page: 99,
+        per_page: 50,
         ...aiSearchQuery,
       });
 
@@ -156,15 +160,19 @@ function CandidateSearchHistory() {
         return;
       }
 
+      let fetchedCandidates: Candidate[] = resCand.data.people;
+      const fetchedIds = fetchedCandidates.map((c) => c.id);
+
       const [history] = supabaseWrap(
         await supabase
           .from('candidate_search_history')
           .insert({
             recruiter_id: recruiter.id,
-            query_json: { page: 1, per_page: 99, ...aiSearchQuery },
+            query_json: { page: 1, per_page: 50, ...aiSearchQuery },
             search_results: resCand.data.people,
             search_query: searchQuery,
             db_search: 'aglint',
+            candidates: fetchedIds,
           })
           .select(),
       );
@@ -219,10 +227,14 @@ function CandidateSearchHistory() {
         }
         // onClickClearHistory={}
         slotInputSearch={
-          <>
+          <Stack pl={0.5}>
             <UITextField
               value={searchQuery}
-              placeholder='Ex: Software engineer with 2 years of experience'
+              placeholder={
+                currentTab === 'my Candidates'
+                  ? 'Ex: Software engineer with 2 years of experience'
+                  : 'Software Engineer in San Francisco'
+              }
               onChange={(e) => {
                 setSearchQuery(e.target.value);
               }}
@@ -234,7 +246,7 @@ function CandidateSearchHistory() {
                 },
               }}
             />
-          </>
+          </Stack>
         }
         slotCandidateHistoryCard={
           <>

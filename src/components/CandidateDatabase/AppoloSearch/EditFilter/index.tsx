@@ -6,20 +6,22 @@ import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { palette } from '@/src/context/Theme/Theme';
+import { useBoundStore } from '@/src/store';
 
 import { employeeRange, initialQuery } from '../utils';
 import FilterInput from '../../Search/FilterInput';
 
 function EditFilter({
-  isfilterOpen,
-  setIsFilterOpen,
-  setFilters,
-  filters,
   handlePillRemove,
-  isFilterLoading,
   handleApplyFilters,
   handleUpdatePillInput,
 }) {
+
+  const isfilterOpen = useBoundStore((state) => state.isfilterOpen);
+  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
+  const filters = useBoundStore((state) => state.filters);
+  const setFilters = useBoundStore((state) => state.setFilters);
+  const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
   return (
     <Dialog
       open={isfilterOpen}

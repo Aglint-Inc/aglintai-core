@@ -10,35 +10,25 @@ import { palette } from '@/src/context/Theme/Theme';
 import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { Candidate, CandidateSearchHistoryType } from './types';
+import { Candidate } from './types';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 
 function CandidateDetail({
-  selectedCandidate,
-  setSelectedCandidate,
-  candidates,
-  candidateHistory,
   handleBookmark,
   emailOutReachHandler,
 }: {
-  selectedCandidate: Candidate;
-  // eslint-disable-next-line no-unused-vars
-  setSelectedCandidate: (candidate: Candidate) => void;
-  candidates: Candidate[];
-  candidateHistory: CandidateSearchHistoryType;
   // eslint-disable-next-line no-unused-vars
   handleBookmark: (candidate: Candidate) => void;
-  emailOutReach: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setEmailOutReach: (value: boolean) => void;
   // eslint-disable-next-line no-unused-vars
   emailOutReachHandler: (selCandidate: Candidate) => void;
 }) {
-  // eslint-disable-next-line no-unused-vars
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
+  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
+  const setSelectedCandidate = useBoundStore(
+    (state) => state.setSelectedCandidate,
   );
+  const candidates = useBoundStore((state) => state.candidates);
+  const candidateHistory = useBoundStore((state) => state.candidateHistory);
 
   return (
     <Stack
@@ -90,11 +80,9 @@ function CandidateDetail({
                   }
                 },
               }}
-              isStarActive={
-                candidateHistory.bookmarked_results?.filter(
-                  (cand: Candidate) => cand.id === selectedCandidate.id,
-                ).length > 0
-              }
+              isStarActive={candidateHistory.bookmarked_candidates?.includes(
+                selectedCandidate.id,
+              )}
               onClickStar={{
                 onClick: () => {
                   handleBookmark(selectedCandidate);

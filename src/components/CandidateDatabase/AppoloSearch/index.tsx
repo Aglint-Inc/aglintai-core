@@ -3,7 +3,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import {
   CdAglintDb,
@@ -20,25 +20,33 @@ import CandidateDetail from './CandidateDetail';
 import EditFilter from './EditFilter';
 import EmailOutReachComp from './EmailOutReach';
 import { Candidate, CandidateSearchHistoryType } from './types';
-import { initialQuery } from './utils';
+import { processCandidatesInBatches } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 function AppoloSearch() {
   const router = useRouter();
-  const [bookmark, setBookmark] = useState(false);
-  const [isfilterOpen, setIsFilterOpen] = useState(false);
-  const [isFilterLoading, setIsFilterLoading] = useState(false);
-  const [emailOutReach, setEmailOutReach] = useState(false);
+  const bookmark = useBoundStore((state) => state.bookmark);
+  const setBookmark = useBoundStore((state) => state.setBookmark);
+  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
+  const filters = useBoundStore((state) => state.filters);
+  const setFilters = useBoundStore((state) => state.setFilters);
+  const setIsFilterLoading = useBoundStore((state) => state.setIsFilterLoading);
+  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
+  const setSelectedCandidate = useBoundStore(
+    (state) => state.setSelectedCandidate,
+  );
+  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
+  const setSelectedCandidates = useBoundStore(
+    (state) => state.setSelectedCandidates,
+  );
+  const isSelectAll = useBoundStore((state) => state.isSelectAll);
+  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
+  const candidateHistory = useBoundStore((state) => state.candidateHistory);
   const setCandidateHistory = useBoundStore(
     (state) => state.setCandidateHistory,
   );
-  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(
-    null,
-  );
-  const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>([]);
-  const [isSelectAll, setIsSelectAll] = useState(false);
-  const [filters, setFilters] = useState<any>(initialQuery());
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
+  const dbCandidates = useBoundStore((state) => state.candidates);
+  const setCandidates = useBoundStore((state) => state.setCandidates);
 
   useEffect(() => {
     if (router.isReady) {
@@ -70,6 +78,10 @@ function AppoloSearch() {
       .eq('id', id);
     if (!error) {
       setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+      const cand = [...data[0].candidates, ...data[0].bookmarked_candidates];
+      const uniqueCand = [...new Set(cand)];
+      const resCand = await processCandidatesInBatches(uniqueCand);
+      setCandidates(resCand as unknown as Candidate[]);
     }
     return true;
   };
@@ -79,37 +91,36 @@ function AppoloSearch() {
   };
 
   const handleBookmark = async (candidate: Candidate) => {
-    if (
-      candidateHistory.bookmarked_results.filter(
-        (cand: Candidate) => candidate.id === cand.id,
-      ).length === 0
-    ) {
+    if (!candidateHistory.bookmarked_candidates.includes(candidate.id)) {
       setCandidateHistory({
         ...candidateHistory,
-        bookmarked_results: [...candidateHistory.bookmarked_results, candidate],
+        bookmarked_candidates: [
+          ...candidateHistory.bookmarked_candidates,
+          candidate.id,
+        ],
       });
       await supabase
         .from('candidate_search_history')
         .update({
-          bookmarked_results: [
-            ...candidateHistory.bookmarked_results,
-            candidate,
-          ] as any,
+          bookmarked_candidates: [
+            ...candidateHistory.bookmarked_candidates,
+            candidate.id,
+          ],
         })
         .eq('id', Number(router.query.id));
     } else {
       setCandidateHistory({
         ...candidateHistory,
-        bookmarked_results: candidateHistory.bookmarked_results.filter(
-          (cand: Candidate) => cand.id !== candidate.id,
+        bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
+          (id) => id !== candidate.id,
         ),
       });
       await supabase
         .from('candidate_search_history')
         .update({
-          bookmarked_results: candidateHistory.bookmarked_results.filter(
-            (cand: Candidate) => cand.id !== candidate.id,
-          ) as any,
+          bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
+            (id) => id !== candidate.id,
+          ),
         })
         .eq('id', Number(router.query.id));
     }
@@ -118,9 +129,11 @@ function AppoloSearch() {
   let candidates: Candidate[] = [];
 
   if (Boolean(candidateHistory) && bookmark) {
-    candidates = candidateHistory.bookmarked_results || [];
+    candidates = dbCandidates.filter((candidate) =>
+      candidateHistory.bookmarked_candidates.includes(candidate.id),
+    );
   } else {
-    candidates = candidateHistory?.search_results || [];
+    candidates = dbCandidates || [];
   }
 
   // console.log(candidateHistory);
@@ -150,7 +163,7 @@ function AppoloSearch() {
 
     const resCand = await axios.post('/api/candidatedb/search', {
       page: 1,
-      per_page: 99,
+      per_page: 50,
       person_titles: filters.jobTitles,
       person_locations: filters.locations,
     });
@@ -160,23 +173,26 @@ function AppoloSearch() {
       setIsFilterLoading(false);
     }
 
+    let fetchedCandidates: Candidate[] = resCand.data.people;
+    const fetchedIds = fetchedCandidates.map((c) => c.id);
+
     const { data, error } = await supabase
       .from('candidate_search_history')
       .update({
         query_json: {
           page: 1,
-          per_page: 99,
+          per_page: 50,
           person_titles: filters.jobTitles,
           person_locations: filters.locations,
         },
-        search_results: resCand.data.people,
+        candidates: fetchedIds,
       })
-
       .eq('id', Number(router.query.id))
       .select();
 
     if (!error) {
       setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+      setCandidates(fetchedCandidates);
     }
     setIsFilterLoading(false);
     setIsFilterOpen(false);
@@ -199,7 +215,7 @@ function AppoloSearch() {
           email: resEmail.data.person?.email,
         };
 
-        // Update the selected candidate in search_results array
+        // Update the selected candidate array
         const updatedSearchResults = candidates.map((candidate) => {
           if (candidate.id === selCandidate.id) {
             return updatedSelectedCandidate;
@@ -212,17 +228,17 @@ function AppoloSearch() {
           email: resEmail.data.person?.email,
         });
 
-        const { data, error } = await supabase
-          .from('candidate_search_history')
+        const { error } = await supabase
+          .from('aglint_candidates')
           .update({
-            search_results: updatedSearchResults as any,
+            email: resEmail.data.person?.email,
           })
-          .match({ id: Number(router.query.id) })
+          .eq('id', selCandidate.id)
           .select();
 
         if (!error) {
           // Update the candidate history in state
-          setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+          setCandidates(updatedSearchResults);
         }
       }
       setEmailOutReach(true);
@@ -233,22 +249,19 @@ function AppoloSearch() {
 
   const handleMultipleBookmark = async (selectedCandidates: Candidate[]) => {
     if (selectedCandidates.length === 0) return;
-    const bookmarkedResults = candidateHistory.bookmarked_results;
+    const bookmarkedResults = candidateHistory.bookmarked_candidates;
 
     const updatedBookmarkedResults = [
       ...bookmarkedResults,
-      ...selectedCandidates.filter(
-        (candidate) =>
-          !bookmarkedResults.some(
-            (bookmarkedCandidate) => bookmarkedCandidate.id === candidate.id,
-          ),
-      ),
+      ...selectedCandidates
+        .filter((candidate) => !bookmarkedResults.includes(candidate.id))
+        .map((candidate) => candidate.id),
     ];
 
     const { data, error } = await supabase
       .from('candidate_search_history')
       .update({
-        bookmarked_results: updatedBookmarkedResults as any,
+        bookmarked_candidates: updatedBookmarkedResults as any,
       })
       .eq('id', Number(router.query.id))
       .select();
@@ -264,22 +277,12 @@ function AppoloSearch() {
   return (
     <Stack overflow={'hidden'}>
       <EditFilter
-        setFilters={setFilters}
-        filters={filters}
         handleApplyFilters={handleApplyFilters}
         handlePillRemove={handlePillRemove}
         handleUpdatePillInput={handleUpdatePillInput}
-        isFilterLoading={isFilterLoading}
-        isfilterOpen={isfilterOpen}
-        setIsFilterOpen={setIsFilterOpen}
       />
 
-      <EmailOutReachComp
-        emailOutReach={emailOutReach}
-        selectedCandidate={selectedCandidate}
-        setEmailOutReach={setEmailOutReach}
-        setSelectedCandidate={setSelectedCandidate}
-      />
+      <EmailOutReachComp />
 
       <CdAglintDb
         onClickBookmark={{
@@ -332,13 +335,7 @@ function AppoloSearch() {
         }
         slotEmailOut={
           <CandidateDetail
-            candidateHistory={candidateHistory}
-            candidates={candidates}
             handleBookmark={handleBookmark}
-            selectedCandidate={selectedCandidate}
-            setSelectedCandidate={setSelectedCandidate}
-            setEmailOutReach={setEmailOutReach}
-            emailOutReach={emailOutReach}
             emailOutReachHandler={emailOutReachHandler}
           />
         }
@@ -359,27 +356,28 @@ function AppoloSearch() {
                     onClickCheck={{
                       onClick: (e) => {
                         e.stopPropagation();
-                        setSelectedCandidates((p) => {
-                          if (!p) return [candidate];
-                          if (p.includes(candidate)) {
-                            return p.filter((c) => c !== candidate);
-                          }
-                          return [...p, candidate];
-                        });
+                        let selCand = [];
+                        if (!selectedCandidates) {
+                          selCand = [candidate];
+                        }
+                        if (selectedCandidates?.includes(candidate)) {
+                          selCand = selectedCandidates.filter(
+                            (c) => c !== candidate,
+                          );
+                        }
+                        setSelectedCandidates(selCand);
                       },
                     }}
                   />
                 }
                 notBookmark={
-                  candidateHistory.bookmarked_results?.filter(
-                    (cand: Candidate) => candidate.id === cand.id,
-                  ).length === 0
+                  !candidateHistory.bookmarked_candidates?.includes(
+                    candidate.id,
+                  )
                 }
-                isBookMarked={
-                  candidateHistory.bookmarked_results?.filter(
-                    (cand: Candidate) => candidate.id === cand.id,
-                  ).length > 0
-                }
+                isBookMarked={candidateHistory.bookmarked_candidates?.includes(
+                  candidate.id,
+                )}
                 onClickBookmark={{
                   onClick: (e) => {
                     e.stopPropagation();

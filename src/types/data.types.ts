@@ -18,14 +18,17 @@ export type RecruiterType = Omit<
 > & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
+
+export type AglintCandidatesTypeDB =
+  Database['public']['Tables']['aglint_candidates']['Row'];
 //TODO: Draft?
 
 export type JobApplcationDB =
   Database['public']['Tables']['applications']['Row'];
 
 export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
-export type RecruiterRelationsType = Database['public']['Tables']['recruiter_relation']['Row'];
-
+export type RecruiterRelationsType =
+  Database['public']['Tables']['recruiter_relation']['Row'];
 
 export type JobType = Omit<JobTypeDB, 'active_status'> & {
   active_status: StatusJobs | null;

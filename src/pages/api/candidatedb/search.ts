@@ -1,6 +1,16 @@
 // pages/api/apolloSearch.ts
+import {
+  type CookieOptions,
+  createServerClient,
+  serialize,
+} from '@supabase/ssr';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+import { Candidate } from '@/src/types/candidates.types';
+import { AglintCandidatesTypeDB } from '@/src/types/data.types';
+
+import { Supabase } from '../candidateUpload/types';
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,6 +19,25 @@ export default async function handler(
   if (req.method !== 'POST') {
     return res.status(405).end(); // Method Not Allowed
   }
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          // eslint-disable-next-line security/detect-object-injection
+          return req.cookies[name];
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, value, options));
+        },
+        remove(name: string, options: CookieOptions) {
+          res.setHeader('Set-Cookie', serialize(name, '', options));
+        },
+      },
+    },
+  );
 
   const apiUrl = 'https://api.apollo.io/v1/mixed_people/search';
 
@@ -30,6 +59,18 @@ export default async function handler(
       { headers },
     );
 
+    let fetchedCandidates: Candidate[] = response.data.people as Candidate[];
+    const fetchedIds = fetchedCandidates.map((c) => c.id);
+    const existingCandidates = await checkCandidates(fetchedIds, supabase);
+    const existingIds = existingCandidates.map((c) => c.id);
+    const insertableCandidates = fetchedCandidates.filter(
+      (cand) => !existingIds.includes(cand.id),
+    ) as unknown as AglintCandidatesTypeDB[];
+
+    if (insertableCandidates.length > 0) {
+      await insertCandidates(insertableCandidates, supabase, requestData);
+    }
+
     return res.status(response.status).json(response.data);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -39,3 +80,60 @@ export default async function handler(
       .json({ error: 'Internal Server Error' });
   }
 }
+
+const insertCandidates = async (
+  candidates: AglintCandidatesTypeDB[],
+  supabase: Supabase,
+  searchQuery,
+) => {
+  const dbCandidates = candidates.map((cand) => {
+    return {
+      city: cand.city,
+      country: cand.country,
+      departments: cand.departments,
+      email: cand.email,
+      email_status: cand.email_status,
+      employment_history: cand.employment_history,
+      extrapolated_email_confidence: cand.extrapolated_email_confidence,
+      facebook_url: cand.facebook_url,
+      first_name: cand.first_name,
+      functions: cand.functions,
+      intent_strength: cand.intent_strength,
+      github_url: cand.github_url,
+      headline: cand.headline,
+      id: cand.id,
+      is_likely_to_engage: cand.is_likely_to_engage,
+      last_name: cand.last_name,
+      linkedin_url: cand.linkedin_url,
+      name: cand.name,
+      organization: cand.organization,
+      organization_id: cand.organization_id,
+      phone_numbers: cand.phone_numbers,
+      photo_url: cand.photo_url,
+      revealed_for_current_team: cand.revealed_for_current_team,
+      seniority: cand.seniority,
+      show_intent: cand.show_intent,
+      state: cand.state,
+      subdepartments: cand.subdepartments,
+      title: cand.title,
+      twitter_url: cand.twitter_url,
+      search_query: searchQuery,
+    };
+  });
+  await supabase.from('aglint_candidates').insert(dbCandidates).select();
+};
+
+const checkCandidates = async (
+  existingIds: string[],
+  supabase: Supabase,
+): Promise<AglintCandidatesTypeDB[]> => {
+  const { data, error } = await supabase
+    .from('aglint_candidates')
+    .select()
+    .in('id', existingIds);
+  if (error) {
+    return [];
+  } else {
+    return data;
+  }
+};

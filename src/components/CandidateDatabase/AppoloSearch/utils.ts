@@ -1,3 +1,6 @@
+import { AglintCandidatesTypeDB } from "@/src/types/data.types";
+import { supabase } from "@/src/utils/supabaseClient";
+
 export const employeeRange = [
   { value: '10001', show: '10001+' },
   { value: '5001,10000', show: '5001-10000' },
@@ -19,4 +22,34 @@ export const initialQuery = () => {
     locations: [],
     companySize: '',
   };
+};
+
+
+export const processCandidatesInBatches = async (
+  ids: string[],
+): Promise<AglintCandidatesTypeDB[] | null> => {
+  let allCandidates = [];
+  for (let i = 0; i < ids.length; i += MAX_EMAILS_PER_BATCH) {
+    const idsBatch = ids.slice(i, i + MAX_EMAILS_PER_BATCH);
+    const cand = await processBatch(idsBatch);
+    allCandidates = [...allCandidates, ...cand];
+  }
+  return allCandidates || [];
+};
+
+const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requirements
+
+const processBatch = async (
+  ids: string[],
+): Promise<AglintCandidatesTypeDB[]> => {
+  const { data: checkCandidates, error: errorCheck } = await supabase
+    .from('aglint_candidates')
+    .select('*')
+    .in('id', ids);
+
+  if (!errorCheck) {
+    return checkCandidates;
+  } else {
+    return [];
+  }
 };

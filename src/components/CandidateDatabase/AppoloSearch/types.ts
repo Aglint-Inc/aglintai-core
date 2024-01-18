@@ -36,10 +36,9 @@ export interface Candidate {
 
 export type CandidateSearchHistoryType = Omit<
   Database['public']['Tables']['candidate_search_history']['Row'],
-  'search_results' | 'bookmarked_results'
+  'search_results' 
 > & {
   search_results: Candidate[] | null;
-  bookmarked_results: Candidate[] | [];
 };
 
 interface EmploymentHistory {
