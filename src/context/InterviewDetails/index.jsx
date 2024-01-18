@@ -35,6 +35,10 @@ function InterviewDetailsContextProvider({ children }) {
   function fetchingDetails(application_id) {
     getCandidateDetails(application_id).then(async (candidate_details) => {
       const job_Details = await getJobDetails(candidate_details?.job_id);
+      if (!job_Details.assessment) {
+        router.push('/404');
+        return
+      }
       if (candidate_details?.length === 0 || job_Details?.length === 0) {
         router.push('/404');
         return null;
