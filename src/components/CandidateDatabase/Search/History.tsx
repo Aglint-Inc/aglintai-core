@@ -184,7 +184,7 @@ function CandidateSearchHistory() {
     //
   };
 
-  let currentTab: 'my Candidates' | 'aglint candidates' | 'book mark' = router
+  let currentTab: 'aglint candidates' | 'my Candidates' | 'book mark' = router
     .query.currentTab as any;
 
   return (

@@ -603,6 +603,7 @@ const ProfileForm = ({
     case 'password': {
       return (
         <UITextField
+          labelBold='default'
           labelSize='small'
           fullWidth
           type={showPassword ? 'text' : 'password'}
@@ -652,6 +653,7 @@ const ProfileForm = ({
             getOptionLabel={(option) => option}
             renderInput={(params) => (
               <UITextField
+                labelBold='default'
                 rest={{ ...params }}
                 fullWidth
                 InputProps={{
@@ -670,6 +672,7 @@ const ProfileForm = ({
             <SpecialForm name={id} validation={value.validation} />
           )}
           <UITextField
+            labelBold='default'
             labelSize='small'
             fullWidth
             label={value.label}
@@ -739,6 +742,7 @@ const SpecialForm = ({
   };
   const inputSlot = (
     <UITextField
+      labelBold='default'
       labelSize='small'
       fullWidth
       value={value}

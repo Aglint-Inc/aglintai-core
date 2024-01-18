@@ -113,14 +113,22 @@ const UITextField = React.forwardRef(
         gap={'5px'}
       >
         {label && (
-          <UITypography
-            type={labelSize}
-            color={labelColor}
-            fontBold={labelBold}
-          >
-            {label}
-            {required && <sup>*</sup>}
-          </UITypography>
+          <Stack direction={'row'}>
+            <UITypography
+              type={labelSize}
+              color={labelColor}
+              fontBold={labelBold}
+            >
+              {label}
+            </UITypography>
+            {required && (
+              <Typography
+                sx={{ fontWeight: 600, color: palette.red[400], pl: 0.5 }}
+              >
+                <sup>*</sup>
+              </Typography>
+            )}
+          </Stack>
         )}
         {secondaryText && (
           <Typography variant='body2'>{secondaryText}</Typography>

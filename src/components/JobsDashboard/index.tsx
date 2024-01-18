@@ -115,12 +115,12 @@ const DashboardComp = () => {
                 isJobCountTagVisible={filteredJobs?.length > 0}
                 jobCount={filteredJobs?.length}
                 textJobsHeader={
-                  router.query.status == 'close'
-                    ? 'Closed Jobs'
-                    : router.query.status == 'inactive'
-                      ? 'Inactive Jobs'
-                      : router.query.status == 'active'
-                        ? 'Active Jobs'
+                  router.query.status == 'published'
+                    ? 'Published Jobs'
+                    : router.query.status == 'draft'
+                      ? 'Draft Jobs'
+                      : router.query.status == 'closed'
+                        ? 'Closed Jobs'
                         : 'All Jobs'
                 }
               />

@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import {
   createContext,
   Dispatch,
@@ -23,7 +24,6 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-import posthog from 'posthog-js';
 
 interface ContextValue {
   userDetails: Session | null;

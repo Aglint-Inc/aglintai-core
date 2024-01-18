@@ -20,6 +20,7 @@ type Props = {
   ): void;
   error?: boolean;
   label?: string;
+  labelBold?: 'default' | 'normal';
   labelSize?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
   helperText?: string;
   disabled?: boolean;
@@ -40,6 +41,7 @@ const UIPhoneInput = ({
   error,
   helperText,
   label,
+  labelBold = 'default',
   labelSize = 'medium',
   onChange,
   placeholder = '',
@@ -58,7 +60,7 @@ const UIPhoneInput = ({
   return (
     <Stack direction={'column'} gap={'5px'} sx={customPhoneStyle} p={'0px'}>
       {label && (
-        <UITypography type={labelSize} color={labelColor} fontBold='normal'>
+        <UITypography type={labelSize} color={labelColor} fontBold={labelBold}>
           {label}
           {required && <sup>*</sup>}
         </UITypography>
