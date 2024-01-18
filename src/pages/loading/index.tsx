@@ -118,6 +118,11 @@ export default function Loading() {
                     .from('recruiter_user')
                     .update({ recruiter_id: dataRecruiter[0].id })
                     .eq('user_id', userDetails.user.id);
+                  await supabase.from('recruiter_relation').insert({
+                    user_id: userDetails.user.id,
+                    recruiter_id: dataRecruiter[0].id,
+                    is_active: true,
+                  });
                   router.push(
                     `${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`,
                   );

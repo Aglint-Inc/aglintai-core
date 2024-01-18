@@ -212,7 +212,7 @@ const SlideTwoSignUp = () => {
         }}
         onClickRegisterLinkedIn={{
           onClick: () => {
-            oauthHandler('google');
+            oauthHandler('linkedin_oidc');
           },
         }}
         onClickBack={{

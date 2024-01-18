@@ -167,7 +167,7 @@ function Login() {
         }}
         onclickLinkedIn={{
           onClick: () => {
-            oauthHandler('linkedin');
+            oauthHandler('linkedin_oidc');
           },
         }}
         onclickSignup={{
