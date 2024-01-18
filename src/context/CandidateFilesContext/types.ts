@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { supportedTypes } from '@/src/pages/api/candidateUpload/utils';
+import { supportedTypes } from '@/src/pages/api/jobApplications/candidateUpload/utils';
 
-import { createCandidateResumeDbAction, deleteCandidateResumeDbAction } from './utils';
+import {
+  createCandidateResumeDbAction,
+  deleteCandidateResumeDbAction,
+} from './utils';
 
 export type CandidateResumesContext = {
   handleCandidateResumesCreate: (
@@ -34,24 +37,24 @@ export type CandidateResumesContext = {
 export type CandidateResumesCreateAction = {
   request: {
     inputData: {
-      file:File,
-      candidate_file_id:string;
-      contentType: keyof typeof supportedTypes
+      file: File;
+      candidate_file_id: string;
+      contentType: keyof typeof supportedTypes;
     };
     retry: number;
     signal: AbortSignal;
   };
-  response: ReturnType< typeof createCandidateResumeDbAction>
+  response: ReturnType<typeof createCandidateResumeDbAction>;
 };
 
 export type CandidateResumesDeleteAction = {
   request: {
     inputData: {
-      candidate_file_id:string;
-      contentType: keyof typeof supportedTypes
+      candidate_file_id: string;
+      contentType: keyof typeof supportedTypes;
     };
     retry: number;
     signal: AbortSignal;
   };
-  response: ReturnType< typeof deleteCandidateResumeDbAction>
+  response: ReturnType<typeof deleteCandidateResumeDbAction>;
 };

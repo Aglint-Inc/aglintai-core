@@ -80,7 +80,6 @@ const allowedPaths = new Set([
   '/api/greenhouse/getCandidates',
   '/api/lever/candidateSync',
   '/api/webhook',
-  '/api/JobApplicationsApi',
   '/api/ai/resume-embedding',
   '/api/interview', // need this publicly access for interview feedback.
   '/api/assistant/listAssistant',
@@ -113,6 +112,7 @@ const allowedPaths = new Set([
   '/api/assessment/access_recruiter',
   '/api/assessment/insert_assessment_results',
   '/api/assessment/update_applications',
+  '/api/jobApplications/read',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {

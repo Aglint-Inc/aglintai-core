@@ -44,7 +44,6 @@ import ScoreWheel, {
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
-import { PhoneScreenQuestion } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
 // import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -83,21 +82,17 @@ const ApplicationDetails = ({
   application,
   handleSelectNextApplication,
   handleSelectPrevApplication,
-  jobUpdate,
-  setJobUpdate,
 }: {
   open: boolean;
   onClose: () => void;
   application: JobApplication;
   handleSelectNextApplication?: () => void;
   handleSelectPrevApplication?: () => void;
-  jobUpdate: boolean;
-  setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
 
-  const copyAppId = () => {
+  const copyAppId = async () => {
     navigator.clipboard.writeText(application.id).then(() => {
       toast.success('Application ID copied');
     });
@@ -158,8 +153,6 @@ const ApplicationDetails = ({
             candidateImage={candidateImage}
             handleSelectNextApplication={handleSelectNextApplication}
             handleSelectPrevApplication={handleSelectPrevApplication}
-            jobUpdate={jobUpdate}
-            setJobUpdate={setJobUpdate}
           />
         ) : (
           <NewDetailedFeedback
@@ -291,8 +284,6 @@ const NewJobApplicationSideDrawer = ({
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
-  jobUpdate,
-  setJobUpdate,
 }: {
   open: boolean;
   application: JobApplication;
@@ -301,10 +292,7 @@ const NewJobApplicationSideDrawer = ({
   candidateImage: React.JSX.Element;
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
-  jobUpdate: boolean;
-  setJobUpdate: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { section, handleJobApplicationUpdate } = useJobApplications();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -342,11 +330,6 @@ const NewJobApplicationSideDrawer = ({
     }
   }, [leftShift, rightShift]);
 
-  // console.log(application.status_emails_sent);
-
-  const { isPhoneScreeningInvited = false } =
-    application.status_emails_sent as any;
-  // const {} = application.
   return (
     <CandidateSideDrawer
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
@@ -792,12 +775,12 @@ export const ResumeFeedbackParams = ({
     return e === 100
       ? 'Perfect'
       : e >= 75
-      ? 'High'
-      : e >= 50
-      ? 'Average'
-      : e >= 25
-      ? 'Low'
-      : 'Poor';
+        ? 'High'
+        : e >= 50
+          ? 'Average'
+          : e >= 25
+            ? 'Low'
+            : 'Poor';
   };
   return (
     <>
@@ -1128,10 +1111,10 @@ export function Transcript({
                         rating >= 90
                           ? '#228F67'
                           : rating >= 70
-                          ? '#f79a3e'
-                          : rating >= 50
-                          ? '#de701d'
-                          : '#d93f4c',
+                            ? '#f79a3e'
+                            : rating >= 50
+                              ? '#de701d'
+                              : '#d93f4c',
                     },
                   }}
                   textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
@@ -1144,19 +1127,19 @@ export function Transcript({
                         rating >= 90
                           ? '#228F67'
                           : rating >= 70
-                          ? '#f79a3e'
-                          : rating >= 50
-                          ? '#de701d'
-                          : '#d93f4c'
+                            ? '#f79a3e'
+                            : rating >= 50
+                              ? '#de701d'
+                              : '#d93f4c'
                       }
                       bgFill={
                         rating >= 90
                           ? '#edf8f4'
                           : rating >= 70
-                          ? '#fff7ed'
-                          : rating >= 50
-                          ? '#ffeedb'
-                          : '#fff0f1'
+                            ? '#fff7ed'
+                            : rating >= 50
+                              ? '#ffeedb'
+                              : '#fff0f1'
                       }
                       size={5}
                       progress={rating}
@@ -1193,18 +1176,18 @@ export function giveRateInWordForInterview(overAllScore: number) {
   return overAllScore > 90
     ? `Absolutely incredible! 🌟😍`
     : overAllScore > 70
-    ? `Truly outstanding! 🤩`
-    : overAllScore > 50
-    ? `Excellent job! 👏`
-    : `Not up to mark! 😑`;
+      ? `Truly outstanding! 🤩`
+      : overAllScore > 50
+        ? `Excellent job! 👏`
+        : `Not up to mark! 😑`;
 }
 
 export function giveColorForInterviewScore(rating) {
   return rating >= 90
     ? '#228F67'
     : rating >= 70
-    ? '#f79a3e'
-    : rating >= 50
-    ? '#de701d'
-    : '#d93f4c';
+      ? '#f79a3e'
+      : rating >= 50
+        ? '#de701d'
+        : '#d93f4c';
 }

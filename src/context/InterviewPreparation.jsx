@@ -24,7 +24,7 @@ import SpeechRecognition, {
 import { useInterviewSignUp } from './InterviewSignup';
 import { useLogActivities } from './LogActivities';
 import { useResumeList } from './ResumeListContext';
-import { selectJobApplicationQuery } from '../pages/api/JobApplicationsApi/utils';
+import { selectJobApplicationQuery } from '../pages/api/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { mixPanel } from '../utils/mix-panel';
@@ -478,9 +478,8 @@ const InterviewPrepProvider = ({ children }) => {
         if (conversations.length === 0) {
           pre[1].userVoice = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/interview_prep/${data.path}`;
         } else {
-          pre[
-            conversations.length - 1
-          ].userVoice = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/interview_prep/${data.path}`;
+          pre[conversations.length - 1].userVoice =
+            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/interview_prep/${data.path}`;
         }
         return [...pre];
       });

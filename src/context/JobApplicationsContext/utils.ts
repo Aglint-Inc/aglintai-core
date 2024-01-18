@@ -1,9 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
-import {
-  // getFilteredQuery,
-  selectJobApplicationQuery,
-} from '@/src/pages/api/JobApplicationsApi/utils';
+
+import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
 import {
   Applications,
   ApplicationsInsert,

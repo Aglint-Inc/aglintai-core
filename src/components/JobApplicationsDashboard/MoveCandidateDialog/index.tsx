@@ -1,7 +1,6 @@
 import { Dialog, Stack } from '@mui/material';
-// import axios from 'axios';
-import { useState } from 'react';
 
+// import axios from 'axios';
 import { CandidateSelectionPopup } from '@/devlink2';
 import {
   // JobApplicationsData,
@@ -15,6 +14,7 @@ import AUIButton from '../../Common/AUIButton';
 export const MoveCandidateDialog = ({
   open,
   onClose,
+  checked,
   destination,
   onSubmit,
   checkAction,
@@ -22,6 +22,7 @@ export const MoveCandidateDialog = ({
   name = null,
 }: {
   open: boolean;
+  checked: boolean;
   onClose: () => void;
   destination: JobApplicationSections;
   onSubmit: () => Promise<void>;
@@ -29,26 +30,20 @@ export const MoveCandidateDialog = ({
   count?: number;
   name?: string;
 }) => {
-  const [check, setCheck] = useState(false);
   const title = capitalize(destination);
   const subTitle = getSubTitle(destination, count, name);
   const description = getDescription(destination, count, name);
   const showCheck = checkVisibility(destination);
-  const handleSubmit = async () => {
-    await onSubmit();
-    check && (await checkAction());
-  };
 
   return (
     <Dialog open={open} onClose={() => onClose()}>
       <CandidateSelectionPopup
         isCheckVisible={showCheck}
-        // isCheckVisible={showCheck}
         textHeader={title}
         textDescription={description}
-        isChecked={check}
+        isChecked={checked}
         textCheck={subTitle}
-        onclickCheck={{ onClick: () => setCheck((prev) => !prev) }}
+        onclickCheck={{ onClick: () => checkAction() }}
         onclickClose={{ onClick: () => onClose() }}
         slotButtons={
           <Stack
@@ -60,11 +55,8 @@ export const MoveCandidateDialog = ({
             <AUIButton onClick={() => onClose()} variant='text'>
               Cancel
             </AUIButton>
-            <AUIButton
-              onClick={async () => await handleSubmit()}
-              variant={'primary'}
-            >
-              {check && showCheck ? 'Send Email & Move' : title}
+            <AUIButton onClick={() => onSubmit()} variant={'primary'}>
+              {checked && showCheck ? 'Send Email & Move' : title}
             </AUIButton>
           </Stack>
         }
@@ -73,13 +65,12 @@ export const MoveCandidateDialog = ({
   );
 };
 
-// eslint-disable-next-line no-unused-vars
 const checkVisibility = (destination: JobApplicationSections) => {
-  return false;
-  // return (
-  //   destination === JobApplicationSections.ASSESSMENT ||
-  //   destination === JobApplicationSections.DISQUALIFIED
-  // );
+  return (
+    destination === JobApplicationSections.SCREENING ||
+    destination === JobApplicationSections.ASSESSMENT ||
+    destination === JobApplicationSections.DISQUALIFIED
+  );
 };
 
 const getDescription = (
@@ -100,6 +91,8 @@ const getSubTitle = (
 ) => {
   if (name) {
     switch (destination) {
+      case JobApplicationSections.SCREENING:
+        return `Proceed to send a screening email to ${name}`;
       case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to ${name}`;
       case JobApplicationSections.DISQUALIFIED:
@@ -110,6 +103,10 @@ const getSubTitle = (
   } else if (count === 0) return null;
   else {
     switch (destination) {
+      case JobApplicationSections.SCREENING:
+        return `Proceed to send a screening email to the candidate${
+          count !== 1 ? 's' : ''
+        }`;
       case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to the candidate${
           count !== 1 ? 's' : ''

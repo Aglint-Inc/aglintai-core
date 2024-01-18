@@ -5,7 +5,7 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
+import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { Applications } from '@/src/types/applications.types';
 import { AssessmentResults } from '@/src/types/assessment_results.types';

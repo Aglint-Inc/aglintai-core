@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
@@ -9,11 +8,14 @@ import {
   FilterParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
-import { ReadJobApplicationApi } from '@/src/pages/api/JobApplicationsApi/read';
+import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
+import { handleJobApplicationApi } from '@/src/pages/api/jobApplications/utils';
 import {
   Applications,
   ApplicationsUpdate,
 } from '@/src/types/applications.types';
+import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import {
@@ -27,7 +29,6 @@ import {
   bulkCreateJobApplicationDbAction,
   bulkUpdateJobApplicationDbAction,
   getRange,
-  getUpdatedJobStatus,
   universalUpdateDbAction,
 } from './utils';
 import { useJobs } from '../JobsContext';
@@ -37,7 +38,7 @@ enum ActionType {
   // eslint-disable-next-line no-unused-vars
   READ,
   // eslint-disable-next-line no-unused-vars
-  PAGINATED_READ,
+  SECTION_READ,
   // eslint-disable-next-line no-unused-vars
   UPDATE,
 }
@@ -47,10 +48,11 @@ type Action =
       type: ActionType.READ;
       payload: {
         applicationData: JobApplicationsData;
+        activeSections: JobApplicationSections[];
       };
     }
   | {
-      type: ActionType.PAGINATED_READ;
+      type: ActionType.SECTION_READ;
       payload: {
         applicationData: JobApplicationsData;
       };
@@ -64,18 +66,24 @@ const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
     case ActionType.READ: {
       const newState: JobApplicationsData = action.payload.applicationData
-        ? {
-            ...action.payload.applicationData,
-          }
+        ? Object.entries(action.payload.applicationData).reduce(
+            (acc, [key, value]) => {
+              return { ...acc, [key]: value };
+            },
+            Object.assign(
+              {},
+              ...action.payload.activeSections.map((s) => ({ [s]: [] })),
+            ) as unknown as JobApplicationsData,
+          )
         : null;
       return newState;
     }
-    case ActionType.PAGINATED_READ: {
+    case ActionType.SECTION_READ: {
       const newState: JobApplicationsData = Object.entries(
         action.payload.applicationData,
       ).reduce(
         (acc, [key, value]) => {
-          return { ...acc, [key]: [...state[key], ...value] };
+          return { ...acc, [key]: value };
         },
         { ...state },
       );
@@ -102,7 +110,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
           };
         }),
       );
-      return applicationState;
+      return applicationState as JobApplicationsData;
     }
 
     default: {
@@ -188,7 +196,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     ...initialParameters,
   });
 
-  const [applicationDisable, setApplicationDisable] = useState(false);
+  const [allApplicationDisable, setAllApplicationDisable] = useState(false);
+  const [checkListManager, setCheckListManager] = useState({
+    disable: false,
+    checkList: new Set<string>(),
+  });
 
   const updateTick = useRef(false);
 
@@ -197,6 +209,19 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     section !== JobApplicationSections.SCREENING &&
     initialJobLoad &&
     job.assessment;
+
+  const activeSections = Object.values(JobApplicationSections).reduce(
+    (acc, curr) => {
+      if (
+        curr === JobApplicationSections.ASSESSMENT &&
+        !(initialJobLoad && job.assessment)
+      )
+        return acc;
+      acc.push(curr);
+      return acc;
+    },
+    [] as JobApplicationSections[],
+  );
 
   //SECONDARY
   const handleJobApplicationBulkCreate = async (
@@ -218,23 +243,20 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   //PRIMARY
   const handleJobApplicationRead = async (
-    request: ReadJobApplicationApi['request'],
+    request: Omit<ReadJobApplicationApi['request'], 'sections'>,
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
-      const {
-        data: { data, error, filteredCount, unFilteredCount },
-      } = await axios<ReadJobApplicationApi['response']>({
-        method: 'post',
-        url: '/api/JobApplicationsApi/read',
-        data: request,
-        timeout: 60000,
-        signal: signal,
-      });
+      const { data, error, filteredCount, unFilteredCount } =
+        await handleJobApplicationApi(
+          'read',
+          { ...request, sections: activeSections },
+          signal,
+        );
       if (data) {
         const action: Action = {
           type: ActionType.READ,
-          payload: { applicationData: data },
+          payload: { applicationData: data, activeSections },
         };
         if (job.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
@@ -246,6 +268,36 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         return { confirmation: true, filteredCount, unFilteredCount };
       }
       /*if (initialLoad)*/ handleJobApplicationError(error);
+      return {
+        confirmation: false,
+        filteredCount: null as CountJobs,
+        unFilteredCount: null as CountJobs,
+      };
+    }
+  };
+
+  //PRIMARY
+  const handleJobApplicationSectionRead = async (
+    request: ReadJobApplicationApi['request'],
+    signal?: AbortSignal,
+  ) => {
+    if (recruiter) {
+      const { data, error, filteredCount, unFilteredCount } =
+        await handleJobApplicationApi('read', request, signal);
+      if (data) {
+        const action: Action = {
+          type: ActionType.SECTION_READ,
+          payload: { applicationData: data },
+        };
+        if (job.posted_by == POSTED_BY.ASHBY) {
+          const is_sync = await checkSyncCand(job);
+          setAtsSync(is_sync);
+        }
+        dispatch(action);
+        updateTick.current = !updateTick.current;
+        return { confirmation: true, filteredCount, unFilteredCount };
+      }
+      handleJobApplicationError(error);
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
@@ -274,25 +326,26 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     section: JobApplicationSections,
   ) => {
     if (recruiter) {
-      setApplicationDisable(true);
+      setAllApplicationDisable(true);
       const newRanges = {
         ...ranges,
         [section]: getRange(pageNumber, paginationLimit),
       } as ReadJobApplicationApi['request']['ranges'];
-      const { confirmation } = await handleJobApplicationRead({
+      const { confirmation } = await handleJobApplicationSectionRead({
         job_id: jobId,
         ranges: newRanges,
+        sections: [section],
         ...searchParameters,
       });
       if (confirmation) {
         setPageNumber((prev) => {
           return { ...prev, [section]: pageNumber };
         });
-        setApplicationDisable(false);
+        setAllApplicationDisable(false);
         return true;
       }
     }
-    setApplicationDisable(false);
+    setAllApplicationDisable(false);
     return false;
   };
 
@@ -379,29 +432,66 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
+    purpose?: JobApplicationEmails['request']['purpose'],
     applicationIdSet?: Set<string>,
-    // eslint-disable-next-line no-unused-vars
     updateAll: boolean = false,
   ) => {
-    // if (updateAll) {
-    //   const { data, error } = await updateAllJobStatusDbAction(
-    //     job.id,
-    //     sections,
-    //     searchParameters.search,
-    //     searchParameters.filter,
-    //   );
-    //   if (data) {
-    //     await handleJobApplicationRefresh();
-    //     return true;
-    //   } else {
-    //     handleJobApplicationError(error);
-    //     return false;
-    //   }
-    // } else {
-    return await handleJobApplicationBulkUpdate(
-      getUpdatedJobStatus(applicationIdSet, applications, sections),
-    );
-    //}
+    if (recruiter) {
+      const candidates = !updateAll
+        ? applications[section].reduce(
+            (acc, curr) => {
+              if (applicationIdSet.has(curr.id))
+                acc.push({
+                  application_id: curr.id,
+                  email: curr.candidates.email,
+                  first_name: curr.candidates.first_name,
+                  last_name: curr.candidates.last_name,
+                  status_emails_sent: curr.status_emails_sent,
+                });
+              return acc;
+            },
+            [] as JobApplicationEmails['request']['candidates'],
+          )
+        : null;
+      const { data, error, filteredCount, unFilteredCount } =
+        await handleJobApplicationApi('candidateEmail', {
+          job: {
+            id: job.id,
+            company: job.company,
+            email_template: job.email_template as EmailTemplateType,
+          },
+          parameter: {
+            ranges,
+            ...searchParameters,
+          },
+          sections,
+          candidates,
+          purpose,
+        });
+      if (data) {
+        const action: Action = {
+          type: ActionType.SECTION_READ,
+          payload: { applicationData: data },
+        };
+        if (job.posted_by == POSTED_BY.ASHBY) {
+          const is_sync = await checkSyncCand(job);
+          setAtsSync(is_sync);
+        }
+        handleUIJobUpdate({
+          ...job,
+          count: { ...job.count, ...unFilteredCount },
+        });
+        dispatch(action);
+        updateTick.current = !updateTick.current;
+        return { confirmation: true, filteredCount, unFilteredCount };
+      }
+      handleJobApplicationError(error);
+      return {
+        confirmation: false,
+        filteredCount: null as CountJobs,
+        unFilteredCount: null as CountJobs,
+      };
+    }
   };
 
   //TERTIARY
@@ -415,14 +505,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         error.map((e) =>
           e.message
             ? toast.error(`Oops! Something went wrong.\n (${e.message})`)
-            : toast.error(`Oops! Something went wrong.\n (${e})`),
+            : toast.error(
+                `Oops! Something went wrong.\n (${JSON.stringify(e)})`,
+              ),
         );
       else
-        Object.values(error).map((e: any) =>
-          e.message
-            ? toast.error(`Oops! Something went wrong.\n (${e.message})`)
-            : toast.error(`Oops! Something went wrong.\n (${e})`),
-        );
+        toast.error(`Oops! Something went wrong.\n ${JSON.stringify(error)}`);
     }
   };
 
@@ -435,7 +523,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       JSON.stringify(searchParameters),
     ) as typeof searchParameters;
     setSearchParameters({ ...parameters });
-    setApplicationDisable(true);
+    setAllApplicationDisable(true);
     const { confirmation, filteredCount } = await handleJobApplicationRead(
       {
         job_id: jobId,
@@ -444,7 +532,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       },
       signal,
     );
-    setApplicationDisable(false);
+    setAllApplicationDisable(false);
     if (confirmation) {
       return { confirmation: true, filteredCount };
     }
@@ -463,6 +551,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       const action: Action = {
         type: ActionType.READ,
         payload: {
+          activeSections,
           applicationData: Object.assign(
             {},
             ...Object.values(JobApplicationSections).map((section) => ({
@@ -488,8 +577,10 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const value = {
     applications,
-    applicationDisable,
-    setApplicationDisable,
+    allApplicationDisable,
+    setAllApplicationDisable,
+    checkListManager,
+    setCheckListManager,
     paginationLimit,
     defaultFilters,
     job,

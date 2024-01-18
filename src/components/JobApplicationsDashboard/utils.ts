@@ -4,6 +4,7 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { EmailTemplateType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { PhoneScreeningResponseType } from '../KnockOffQns/ScreeningCtxProvider';
@@ -165,13 +166,16 @@ export const applicationValidity = (application: JobApplication) => {
 };
 
 export const getScreeningStatus = (application: JobApplication) => {
-  const emails = application?.status_emails_sent ?? (null as any);
+  const emails = (application?.status_emails_sent ?? null) as {
+    // eslint-disable-next-line no-unused-vars
+    [id in keyof EmailTemplateType]: boolean;
+  };
 
   const phoneScreening = ((application?.phone_screening as any)?.response ??
     null) as PhoneScreeningResponseType[];
 
-  const isNotInvited = (emails?.screening ?? false) === false;
-  const isPending = (emails?.screening ?? false) === true && !phoneScreening;
+  const isNotInvited = (emails?.phone_screen ?? false) === false;
+  const isPending = (emails?.phone_screen ?? false) === true && !phoneScreening;
   const isSubmitted = !isNotInvited && !isPending;
 
   const screeningStatus = isNotInvited

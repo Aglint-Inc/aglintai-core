@@ -37,7 +37,9 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
+import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
@@ -80,23 +82,19 @@ const JobApplicationComponent = () => {
     job,
     atsSync,
     pageNumber,
-    applicationDisable,
-    setApplicationDisable,
+    allApplicationDisable,
+    setAllApplicationDisable,
     updateTick,
     searchParameters,
     setOpenImportCandidates,
     handleJobApplicationRefresh,
     section,
-    setSection,
     longPolling,
   } = useJobApplications();
   const router = useRouter();
   const sectionApplications = applications[section];
 
-  const [checkList, setCheckList] = useState(new Set<string>());
   const [currentApplication, setCurrentApplication] = useState(-1);
-
-  const [jobUpdate, setJobUpdate] = useState(false);
   const [detailedView, setDetailedView] = useState(false);
 
   const [applicationLimit, setApplicationLimit] = useState(job.count);
@@ -104,11 +102,6 @@ const JobApplicationComponent = () => {
   useEffect(() => {
     setApplicationLimit(job.count);
   }, [...Object.values(job.count)]);
-
-  const handleSetSection = (section) => {
-    setSection(section);
-    setCheckList(new Set<string>());
-  };
 
   const handleSelectCurrentApplication = (i: number) => {
     setCurrentApplication(i);
@@ -128,9 +121,9 @@ const JobApplicationComponent = () => {
   const refreshRef = useRef(true);
 
   const handleAutoRefresh = async () => {
-    setApplicationDisable(true);
+    setAllApplicationDisable(true);
     await handleJobApplicationRefresh();
-    setApplicationDisable(false);
+    setAllApplicationDisable(false);
   };
 
   const handleManualRefresh = async () => {
@@ -191,24 +184,13 @@ const JobApplicationComponent = () => {
                 currentApplication === -1 ? 0 : currentApplication
               ]
             }
-            jobUpdate={jobUpdate}
-            setJobUpdate={setJobUpdate}
           />
         }
-        slotTabs={
-          <NewJobDetailsTabs
-            section={section}
-            handleSetSection={handleSetSection}
-          />
-        }
+        slotTabs={<NewJobDetailsTabs />}
         slotFilters={
           <NewJobFilterBlock
             detailedView={detailedView}
             setDetailedView={setDetailedView}
-            checkList={checkList}
-            setCheckList={setCheckList}
-            jobUpdate={jobUpdate}
-            setJobUpdate={setJobUpdate}
             applicationLimit={applicationLimit}
             setApplicationLimit={setApplicationLimit}
           />
@@ -226,16 +208,13 @@ const JobApplicationComponent = () => {
           <ApplicationTable
             detailedView={detailedView}
             sectionApplications={sectionApplications}
-            checkList={checkList}
-            setCheckList={setCheckList}
-            jobUpdate={jobUpdate}
             handleSelectCurrentApplication={handleSelectCurrentApplication}
             currentApplication={currentApplication}
           />
         }
         slotRefresh={
           <RefreshButton
-            isDisabled={applicationDisable}
+            isDisabled={allApplicationDisable}
             text={'Refresh'}
             onClick={async () => await handleManualRefresh()}
           />
@@ -247,7 +226,7 @@ const JobApplicationComponent = () => {
           />
         }
       />
-      <AddCandidates section={section} />
+      <AddCandidates />
     </>
   );
 };
@@ -255,47 +234,51 @@ const JobApplicationComponent = () => {
 const ApplicationTable = ({
   detailedView,
   sectionApplications,
-  checkList,
-  setCheckList,
-  jobUpdate,
   handleSelectCurrentApplication,
   currentApplication,
 }: {
   detailedView: boolean;
   sectionApplications: JobApplication[];
-  checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
-  jobUpdate: boolean;
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
   const { recruiter } = useAuthDetails();
-  const { applicationDisable, section, job, atsSync, showInterview } =
-    useJobApplications();
+  const {
+    allApplicationDisable,
+    section,
+    job,
+    atsSync,
+    showInterview,
+    checkListManager,
+    setCheckListManager,
+  } = useJobApplications();
+
+  const checkList = checkListManager.checkList;
+  const checkListDisable = checkListManager.disable;
 
   const handleSelectAllMin = () => {
-    if (!applicationDisable) {
+    if (!allApplicationDisable && !checkListDisable) {
       if (checkList.size === sectionApplications.length)
-        setCheckList(new Set<string>());
+        setCheckListManager((prev) => ({ ...prev, checkList: new Set() }));
       else
-        setCheckList(
-          new Set(
+        setCheckListManager((prev) => ({
+          ...prev,
+          checkList: new Set(
             sectionApplications.reduce((acc, curr) => {
               acc.push(curr.id);
               return acc;
             }, []),
           ),
-        );
+        }));
+    } else {
+      toast.warning('Please wait till the ongoing process has finished');
     }
   };
   const applicantsList = (
     <ApplicantsList
       detailedView={detailedView}
       applications={sectionApplications}
-      checkList={checkList}
-      setCheckList={setCheckList}
-      jobUpdate={jobUpdate}
       handleSelectCurrentApplication={handleSelectCurrentApplication}
       currentApplication={currentApplication}
     />
@@ -349,13 +332,13 @@ const ApplicationPagination = ({
     paginationLimit,
     pageNumber,
     handleJobApplicationPaginate,
-    applicationDisable,
+    allApplicationDisable,
     section,
   } = useJobApplications();
   const totalCandidatesCount = limits[section];
   const totalPageCount = Math.ceil(totalCandidatesCount / paginationLimit);
   const handleNext = async () => {
-    if (!applicationDisable && totalPageCount > 1) {
+    if (!allApplicationDisable && totalPageCount > 1) {
       const newPageNum = (pageNumber[section] + 1) % totalPageCount;
       await handleJobApplicationPaginate(
         newPageNum === 0 ? totalPageCount : newPageNum,
@@ -364,7 +347,7 @@ const ApplicationPagination = ({
     }
   };
   const handlePrevious = async () => {
-    if (!applicationDisable && totalPageCount > 1) {
+    if (!allApplicationDisable && totalPageCount > 1) {
       const newPageNum = pageNumber[section] - 1;
       await handleJobApplicationPaginate(
         newPageNum === 0 ? totalPageCount : newPageNum,
@@ -376,8 +359,8 @@ const ApplicationPagination = ({
     <Stack style={{ backgroundColor: 'white' }}>
       <Stack
         style={{
-          opacity: applicationDisable ? 0.5 : 1,
-          pointerEvents: applicationDisable ? 'none' : 'auto',
+          opacity: allApplicationDisable ? 0.5 : 1,
+          pointerEvents: allApplicationDisable ? 'none' : 'auto',
         }}
       >
         <CandidatesListPagination
@@ -475,34 +458,38 @@ const PageCountSlot = ({ totalPageCount }: { totalPageCount: number }) => {
 const NewJobFilterBlock = ({
   detailedView,
   setDetailedView,
-  checkList,
-  setCheckList,
-  jobUpdate,
-  setJobUpdate,
   applicationLimit,
   setApplicationLimit,
 }: {
   detailedView: boolean;
   setDetailedView: Dispatch<SetStateAction<boolean>>;
-  checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
-  jobUpdate: boolean;
-  setJobUpdate: Dispatch<SetStateAction<boolean>>;
   applicationLimit: CountJobs;
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { job, searchParameters, handleJobApplicationFilter, section } =
-    useJobApplications();
+  const {
+    job,
+    searchParameters,
+    handleJobApplicationFilter,
+    section,
+    checkListManager,
+  } = useJobApplications();
+
+  const checkList = checkListManager.checkList;
+  const checkListDisable = checkListManager.disable;
   const handleSearch = async (val: string, signal?: AbortSignal) => {
-    const value = val ? val.trim().toLowerCase() : null;
-    const { confirmation, filteredCount } = await handleJobApplicationFilter(
-      {
-        ...searchParameters,
-        search: value,
-      },
-      signal,
-    );
-    if (confirmation) setApplicationLimit(filteredCount);
+    try {
+      const value = val ? val.trim().toLowerCase() : null;
+      const { confirmation, filteredCount } = await handleJobApplicationFilter(
+        {
+          ...searchParameters,
+          search: value,
+        },
+        signal,
+      );
+      if (confirmation) setApplicationLimit(filteredCount);
+    } catch (e) {
+      //do nothing
+    }
   };
   return (
     <Stack style={{ display: job.count[section] === 0 ? 'none' : 'flex' }}>
@@ -511,18 +498,12 @@ const NewJobFilterBlock = ({
           <Stack style={{ backgroundColor: 'white' }}>
             <Stack
               style={{
-                opacity: jobUpdate ? 0.5 : 1,
-                pointerEvents: jobUpdate ? 'none' : 'auto',
+                opacity: checkListDisable ? 0.5 : 1,
+                pointerEvents: checkListDisable ? 'none' : 'auto',
               }}
             >
               {checkList.size > 0 && (
-                <ActionBar
-                  checkList={checkList}
-                  setCheckList={setCheckList}
-                  jobUpdate={jobUpdate}
-                  setJobUpdate={setJobUpdate}
-                  applicationLimit={applicationLimit}
-                />
+                <ActionBar applicationLimit={applicationLimit} />
               )}
             </Stack>
           </Stack>
@@ -565,10 +546,10 @@ const NewJobFilterBlock = ({
   );
 };
 
-const AddCandidates = ({ section }: { section: JobApplicationSections }) => {
+const AddCandidates = () => {
   const { setOpenImportCandidates, openImportCandidates } =
     useJobApplications();
-  return section === JobApplicationSections.NEW ? (
+  return (
     <Dialog
       open={openImportCandidates}
       onClose={() => setOpenImportCandidates(false)}
@@ -587,22 +568,18 @@ const AddCandidates = ({ section }: { section: JobApplicationSections }) => {
         }
       />
     </Dialog>
-  ) : (
-    <></>
   );
 };
 
-const NewJobDetailsTabs = ({
-  section,
-  handleSetSection,
-}: {
-  section: JobApplicationSections;
-  // eslint-disable-next-line no-unused-vars
-  handleSetSection: (section: any) => void;
-}) => {
-  const { job } = useJobApplications();
+const NewJobDetailsTabs = () => {
+  const { job, section, setSection, setCheckListManager } =
+    useJobApplications();
   const count = job.count;
 
+  const handleSetSection = (section) => {
+    setSection(section);
+    setCheckListManager((prev) => ({ ...prev, checkList: new Set() }));
+  };
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
@@ -638,24 +615,26 @@ const NewJobDetailsTabs = ({
 const ApplicantsList = ({
   detailedView,
   applications,
-  checkList,
-  setCheckList,
-  jobUpdate,
   handleSelectCurrentApplication,
   currentApplication,
 }: {
   detailedView: boolean;
   applications: JobApplication[];
-  checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
-  jobUpdate: boolean;
   // eslint-disable-next-line no-unused-vars
   handleSelectCurrentApplication: (id: number) => void;
   currentApplication: number;
 }) => {
-  const { applicationDisable, showInterview } = useJobApplications();
+  const {
+    allApplicationDisable,
+    showInterview,
+    checkListManager,
+    setCheckListManager,
+  } = useJobApplications();
   const { pressed } = useKeyPress('Shift');
   const [lastPressed, setLastPressed] = useState(null);
+
+  const checkList = checkListManager.checkList;
+  const checkListDisable = checkListManager.disable;
 
   // const infiniteScrollTriggerCount = 15;
   // const [lastLoad, setLastLoad] = useState(infiniteScrollTriggerCount);
@@ -678,8 +657,8 @@ const ApplicantsList = ({
   }, [checkList.size]);
 
   const handleSingleSelect = (index: number) => {
-    setCheckList((prev) => {
-      const newSet = new Set(prev);
+    setCheckListManager((prev) => {
+      const newSet = new Set(prev.checkList);
       const id = applications[index].id;
       if (newSet.has(id)) {
         newSet.delete(id);
@@ -688,29 +667,36 @@ const ApplicantsList = ({
         newSet.add(id);
         setLastPressed(id);
       }
-      return newSet;
+      return { ...prev, checkList: newSet };
     });
   };
 
   const handleSelect = (index: number) => {
-    if (!pressed) {
-      handleSingleSelect(index);
-    } else {
-      if (lastPressed && !checkList.has(applications[index].id)) {
-        const start = applications.findIndex(
-          (application) => application.id === lastPressed,
-        );
-        setCheckList((prev) => {
-          const newSet = applications.reduce((acc, curr, i) => {
-            if ((i - start) * (i - index) <= 0) acc.push(curr.id);
-            return acc;
-          }, []);
-          return new Set([...prev, ...newSet]);
-        });
-        setLastPressed(null);
-      } else {
+    if (!checkListDisable) {
+      if (!pressed) {
         handleSingleSelect(index);
+      } else {
+        if (lastPressed && !checkList.has(applications[index].id)) {
+          const start = applications.findIndex(
+            (application) => application.id === lastPressed,
+          );
+          setCheckListManager((prev) => {
+            const newSet = applications.reduce((acc, curr, i) => {
+              if ((i - start) * (i - index) <= 0) acc.push(curr.id);
+              return acc;
+            }, []);
+            return {
+              ...prev,
+              checkList: new Set([...prev.checkList, ...newSet]),
+            };
+          });
+          setLastPressed(null);
+        } else {
+          handleSingleSelect(index);
+        }
       }
+    } else {
+      toast.warning('Please wait till the ongoing process has finished');
     }
   };
 
@@ -729,7 +715,8 @@ const ApplicantsList = ({
       {applications /*.slice(0, lastLoad)*/
         .map((application, i) => {
           const styles =
-            (jobUpdate && checkList.has(application.id)) || applicationDisable
+            (checkListDisable && checkList.has(application.id)) ||
+            allApplicationDisable
               ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
               : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
           return (
@@ -744,7 +731,6 @@ const ApplicantsList = ({
                 detailedView={detailedView}
                 application={application}
                 index={i}
-                checkList={checkList}
                 handleSelect={handleSelect}
                 isInterview={showInterview}
                 handleOpenDetails={() => handleSelectCurrentApplication(i)}
@@ -775,53 +761,61 @@ const EmptyList = ({ section }: { section: JobApplicationSections }) => {
   );
 };
 
-const ActionBar = ({
-  checkList,
-  setCheckList,
-  jobUpdate,
-  setJobUpdate,
-  applicationLimit,
-}: {
-  checkList: Set<string>;
-  setCheckList: Dispatch<SetStateAction<Set<string>>>;
-  jobUpdate: boolean;
-  setJobUpdate: Dispatch<SetStateAction<boolean>>;
-  applicationLimit: CountJobs;
-}) => {
-  const { handleUpdateJobStatus, job, section } = useJobApplications();
+const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
+  const {
+    handleUpdateJobStatus,
+    job,
+    section,
+    applications,
+    paginationLimit,
+    checkListManager,
+    setCheckListManager,
+  } = useJobApplications();
+
+  const checkList = checkListManager.checkList;
+  const checkListDisable = checkListManager.disable;
+
   const [open, setOpen] = useState(false);
   const [destination, setDestination] = useState<JobApplicationSections>(null);
 
-  // const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [purpose, setPurpose] = useState<
+    JobApplicationEmails['request']['purpose']
+  >(getPurpose(destination));
 
   const handleUpdateJobs = async () => {
-    if (!jobUpdate) {
-      setJobUpdate(true);
-
-      const confirmation = await handleUpdateJobStatus(
+    if (!checkListDisable) {
+      setOpen(false);
+      setCheckListManager((prev) => ({ ...prev, disable: true }));
+      await handleUpdateJobStatus(
         {
           source: section,
           destination,
         },
+        purpose,
         checkList,
-        // selectAll,
+        selectAll,
       );
-      if (confirmation) {
-        setCheckList(new Set<string>());
-        // setSelectAll(false);
-      }
-      setJobUpdate(false);
+      setCheckListManager({ checkList: new Set(), disable: false });
+      setSelectAll(false);
     }
   };
 
-  // const handleSelectAll = () => {
-  //   setCheckList(new Set(applications[section].map((a) => a.application_id)));
-  //   setSelectAll(true);
-  // };
+  const handleSelectAll = () => {
+    if (!checkListDisable) {
+      setCheckListManager((prev) => ({
+        ...prev,
+        checkList: new Set(applications[section].map((a) => a.id)),
+      }));
+      setSelectAll(true);
+    } else {
+      toast.warning('Please wait till the ongoing process has finished');
+    }
+  };
 
-  // useEffect(() => {
-  //   if (checkList.size !== applications[section].length) setSelectAll(false);
-  // }, [checkList.size]);
+  useEffect(() => {
+    if (checkList.size !== applications[section].length) setSelectAll(false);
+  }, [checkList.size]);
 
   const isChecked = checkList.size !== 0;
   const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
@@ -842,8 +836,7 @@ const ActionBar = ({
       section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT ||
       section === JobApplicationSections.QUALIFIED);
-  // const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
-  const checkListCount = checkList.size;
+  const checkListCount = selectAll ? applicationLimit[section] : checkList.size;
 
   const handleOpen = (destination: JobApplicationSections) => {
     setOpen(true);
@@ -861,7 +854,10 @@ const ActionBar = ({
         onClose={() => handleClose()}
         destination={destination}
         onSubmit={async () => await handleUpdateJobs()}
-        checkAction={async () => {} /*await handleEmail()*/}
+        checked={purpose !== null}
+        checkAction={async () =>
+          setPurpose((prev) => (prev ? null : getPurpose(destination)))
+        }
         count={checkList.size}
       />
       <SelectActionBar
@@ -870,17 +866,20 @@ const ActionBar = ({
         //   onClick: handleSendBulkPhoneScreeningEmail,
         // }}
         onClickClear={{
-          onClick: () => setCheckList(new Set<string>()),
+          onClick: () =>
+            setCheckListManager((prev) => ({
+              ...prev,
+              checkList: new Set<string>(),
+            })),
         }}
         textSelected={`${checkListCount} candidate${
           checkListCount !== 1 ? 's' : ''
         } selected`}
         selectAllText={`Select all ${applicationLimit[section]} candidates`}
         isSelectAllVisible={
-          false
-          // !selectAll && applicationLimit[section] > paginationLimit
+          !selectAll && applicationLimit[section] > paginationLimit
         }
-        // onclickSelectAll={{ onClick: () => handleSelectAll() }}
+        onclickSelectAll={{ onClick: () => handleSelectAll() }}
         slotDropdown={
           <>
             <SelectActionsDropdown
@@ -910,6 +909,25 @@ const ActionBar = ({
       />
     </>
   );
+};
+
+const getPurpose = (
+  destination: JobApplicationSections,
+): JobApplicationEmails['request']['purpose'] => {
+  switch (destination) {
+    case JobApplicationSections.NEW:
+      return null;
+    case JobApplicationSections.ASSESSMENT:
+      return 'interview';
+    case JobApplicationSections.SCREENING:
+      return 'phone_screen';
+    case JobApplicationSections.QUALIFIED:
+      return null;
+    case JobApplicationSections.DISQUALIFIED:
+      return 'rejection';
+    default:
+      return null;
+  }
 };
 
 export default JobApplicationsDashboard;

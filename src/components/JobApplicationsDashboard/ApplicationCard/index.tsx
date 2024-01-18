@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import posthog from 'posthog-js';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
@@ -38,7 +38,6 @@ const ApplicationCard = ({
   detailedView,
   application,
   index,
-  checkList,
   handleSelect,
   isInterview,
   handleOpenDetails,
@@ -47,7 +46,6 @@ const ApplicationCard = ({
   detailedView: boolean;
   application: JobApplication;
   index: number;
-  checkList: Set<string>;
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
   isInterview: boolean;
@@ -55,7 +53,7 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  const { section } = useJobApplications();
+  const { section, checkListManager } = useJobApplications();
   const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
     handleSelect(index);
@@ -69,7 +67,7 @@ const ApplicationCard = ({
     ) : (
       <InterviewScore application={application} />
     );
-  const isChecked = checkList.has(application.id);
+  const isChecked = checkListManager.checkList.has(application.id);
   const name = getCandidateName(
     application.candidates.first_name,
     application.candidates.last_name,
@@ -81,8 +79,13 @@ const ApplicationCard = ({
   );
   const { isNotInvited, isPending, isSubmitted } =
     getScreeningStatus(application);
+  const [key1, key2] = useMemo(
+    () => [Math.random(), Math.random()],
+    [checkListManager.checkList.has(application.id)],
+  );
   return !detailedView ? (
     <AllCandidateListItem
+      key={key1}
       onclickSelect={{ onClick: handleCheck }}
       isChecked={isChecked}
       slotProfileImage={profile}
@@ -127,6 +130,7 @@ const ApplicationCard = ({
     />
   ) : (
     <TopCandidateListItem
+      key={key2}
       slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
       name={name}

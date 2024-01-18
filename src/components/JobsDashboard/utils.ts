@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { selectJobApplicationQuery } from '@/src/pages/api/JobApplicationsApi/utils';
+import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
 import { JobApplcationDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 

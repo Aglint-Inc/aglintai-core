@@ -5,8 +5,10 @@ import { JobApplicationContext } from './types';
 
 const initialJobApplicationsContext = {
   applications: undefined,
-  applicationDisable: undefined,
-  setApplicationDisable: undefined,
+  allApplicationDisable: undefined,
+  setAllApplicationDisable: undefined,
+  checkListManager: undefined,
+  setCheckListManager: undefined,
   paginationLimit: undefined,
   defaultFilters: undefined,
   job: undefined,

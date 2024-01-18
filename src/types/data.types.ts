@@ -91,6 +91,8 @@ export type EmailTemplateType = {
   interview: ApplicationReceived;
   rejection: ApplicationReceived;
   application_recieved: ApplicationReceived;
+  phone_screen: ApplicationReceived;
+  interview_resend: ApplicationReceived;
 };
 
 export type getNotificationMailBodyType = {

@@ -6,7 +6,7 @@ export type Supabase = SupabaseClient<Database>;
 
 export type ManualUploadApi = {
   request: {
-    params: {
+    [UploadApiFormData.PARAMS]: {
       first_name: string;
       last_name: string;
       email: string;
@@ -15,7 +15,7 @@ export type ManualUploadApi = {
       recruiter_id: string;
       job_id: string;
     };
-    file: File;
+    [UploadApiFormData.FILES]: FormData;
   };
   response: {
     confirmation: boolean;
@@ -44,11 +44,11 @@ export type CsvUploadApi = {
 
 export type ResumeUploadApi = {
   request: {
-    params: {
+    [UploadApiFormData.PARAMS]: {
       recruiter_id: string;
       job_id: string;
     };
-    files: File[];
+    [UploadApiFormData.FILES]: FormData;
   };
   response: {
     confirmation: boolean;
@@ -57,6 +57,8 @@ export type ResumeUploadApi = {
 };
 
 export enum UploadApiFormData {
+  // eslint-disable-next-line no-unused-vars
+  PARAMS = 'params',
   // eslint-disable-next-line no-unused-vars
   FILES = 'files',
 }

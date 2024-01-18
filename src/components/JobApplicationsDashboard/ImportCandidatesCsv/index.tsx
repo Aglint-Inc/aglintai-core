@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { CsvUploadApi } from '@/src/pages/api/candidateUpload/types';
+import { CsvUploadApi } from '@/src/pages/api/jobApplications/candidateUpload/types';
 import toast from '@/src/utils/toast';
 
 import CandidatesListTable from './CandidatesListTable';
@@ -20,7 +20,7 @@ function ImportCandidatesCSV() {
   const { setOpenImportCandidates, handleJobApplicationRefresh } =
     useJobApplications();
 
-  const { hanelBulkCsvUpload } = useUploadCandidate();
+  const { handleBulkCsvUpload } = useUploadCandidate();
 
   const [bulkImportdata, setbulkImportdata] = useState<BulkImportCandidateCsv>(
     [],
@@ -59,7 +59,7 @@ function ImportCandidatesCSV() {
   async function createCandidates(candidates: BulkImportCandidateCsv) {
     setbulkImportdata([]);
     setIsLoading(true);
-    const { confirmation } = await hanelBulkCsvUpload(candidates);
+    const { confirmation } = await handleBulkCsvUpload(candidates);
     setOpenImportCandidates(false);
     setIsLoading(false);
     if (confirmation) await handleJobApplicationRefresh();
