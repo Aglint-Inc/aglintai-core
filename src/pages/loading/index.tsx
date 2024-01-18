@@ -81,7 +81,7 @@ export default function Loading() {
       .then(({ data, error }) => {
         if (!error) {
           //post hog logging
-          posthog.identify(userDetails.user.email);
+          posthog.identify(userDetails.user.email , { Email: userDetails.user.email  });
           if (data.length == 0) {
             (async () => {
               await refershAccessToken();

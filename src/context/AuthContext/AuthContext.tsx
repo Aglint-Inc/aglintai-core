@@ -23,6 +23,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+import posthog from 'posthog-js';
 
 interface ContextValue {
   userDetails: Session | null;
@@ -163,6 +164,7 @@ const AuthProvider = ({ children }) => {
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
+    posthog.reset();
     if (!error) {
       router.push(pageRoutes.LOGIN);
     }

@@ -119,7 +119,7 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
-        posthog.identify(details.email);
+        posthog.identify(details.email, {Email: details.email  });
         router.push(pageRoutes.JOBS);
       } else {
         setErrorCheck({
