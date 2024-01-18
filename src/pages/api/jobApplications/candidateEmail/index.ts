@@ -10,7 +10,7 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { readCandidates, sendMails, updateApplication } from './utils';
+import { readCandidates, updateApplication } from './utils';
 import { type ReadJobApplicationApi } from '../read';
 import { handleRead } from '../read/utils';
 
@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      sendMails(job, purpose, candidates, sgMail);
+      // sendMails(job, purpose, candidates, sgMail);
       res.status(200).send(results as ReadJobApplicationApi['response']);
     } else {
       const results = await updateAllApplications(
@@ -57,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      sendMails(job, purpose, candidates, sgMail);
+      // sendMails(job, purpose, candidates, sgMail);
       res.status(200).send(results as ReadJobApplicationApi['response']);
     }
     return;
