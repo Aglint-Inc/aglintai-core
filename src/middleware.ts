@@ -112,6 +112,10 @@ const allowedPaths = new Set([
   '/api/assessment/access_recruiter',
   '/api/assessment/insert_assessment_results',
   '/api/assessment/update_applications',
+  '/api/jobApplications/candidateEmail',
+  '/api/jobApplications/candidateUpload/csvUpload',
+  '/api/jobApplications/candidateUpload/manualUpload',
+  '/api/jobApplications/candidateUpload/resumeUpload',
   '/api/jobApplications/read',
 ]);
 
