@@ -75,13 +75,22 @@ const EndMessage = () => {
   return (
     <>
       <PhoneScreenSuccess
+        textSubmitted={
+          state.formFilledDate
+            ? 'Already submitted the form'
+            : 'Form submitted successfully.'
+        }
         slotLogo={<CompanyLogo />}
         slotLottie={
           <>
             <PhoneScreeningFormSubmit />
           </>
         }
-        textSuccess={state.endMessage}
+        textSuccess={
+          state.formFilledDate
+            ? 'We will get back to you soon'
+            : 'Thank you for taking your time. We will get back to you shortly'
+        }
       />
     </>
   );

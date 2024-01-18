@@ -206,55 +206,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       slotInputAndButton={
         <>
           {candRespComp}
-          {/* {state.phoneScreen.length === qnNo ? (
-            <AUIButton
-              variant='success'
-              disabled={errorMsg.length > 0}
-              endIcon={
-                <>
-                  {!isSubmitting && (
-                    <Image
-                      alt=''
-                      src={'/images/svg/tick.svg'}
-                      width={15}
-                      height={15}
-                    />
-                  )}
-                  {isSubmitting && (
-                    <CircularProgress
-                      color='inherit'
-                      size={'15px'}
-                      sx={{ color: palette.grey[400] }}
-                    />
-                  )}
-                </>
-              }
-              onClick={handleSubmit}
-            >
-              Submit
-            </AUIButton>
-          ) : (
-            <AUIButton
-              endIcon={
-                <Image
-                  src={'/images/svg/arrowRight.svg'}
-                  height={10}
-                  width={10}
-                  alt=''
-                />
-              }
-              disabled={errorMsg.length > 0}
-              onClick={() => {
-                if (!isResponseValid()) return;
-                updateState({
-                  path: 'currentQn',
-                  value: qnNo + 1,
-                });
-              }}
-            >
-              Ok
-            </AUIButton>
-          )} */}
+
           {errorMsg && (
             <Stack mt={2}>
               {<UITypography color={palette.red[400]}>{errorMsg}</UITypography>}

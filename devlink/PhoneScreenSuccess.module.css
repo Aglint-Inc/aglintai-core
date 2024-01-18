@@ -11,9 +11,11 @@
 
 .submitted-success {
   display: flex;
-  margin-top: 120px;
+  max-width: 420px;
+  margin-top: 70px;
   flex-direction: column;
   align-items: center;
+
   text-align: center;
 }
 
@@ -95,4 +97,12 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
 }

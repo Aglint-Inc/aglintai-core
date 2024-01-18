@@ -45,6 +45,7 @@ export type CandPhoneScreeningState = {
   applicationId: string;
   jobPostId: string;
   isPreview: boolean;
+  formFilledDate: string;
   candidate: null | {
     first_name: string;
     last_name: string;
@@ -106,6 +107,7 @@ const initialState: CandPhoneScreeningState = {
   jobTitle: '',
   company: '',
   candidate: null,
+  formFilledDate: '',
 };
 
 const ScreeningCtx = createContext<ScreeningCtxProviderType>({
@@ -159,6 +161,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           null;
 
         let isFormFilled = false;
+        let formFilledDate = '';
         let candidate: CandPhoneScreeningState['candidate'] = null;
         if (application_id) {
           const { data } = await axios.post(
@@ -178,6 +181,7 @@ export const ScreeningCtxProvider = ({ children }) => {
             last_name: data.last_name,
           };
           if (data.phone_screening !== null) {
+            formFilledDate = data.phone_screening.applied_at;
             isFormFilled = true;
           }
           jobPhoneScreening = job.phone_screening as any;
@@ -245,6 +249,7 @@ export const ScreeningCtxProvider = ({ children }) => {
               endMessage: jobPhoneScreening.endMessage as any,
               startMessage: jobPhoneScreening.startMessage as any,
               candidate,
+              formFilledDate: formFilledDate,
             },
           },
         });

@@ -6,4 +6,5 @@ declare function PhoneScreenSuccess(props: {
   slotLogo?: Types.Devlink.Slot;
   slotLottie?: Types.Devlink.Slot;
   textSuccess?: React.ReactNode;
+  textSubmitted?: React.ReactNode;
 }): React.JSX.Element;

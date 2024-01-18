@@ -8,6 +8,7 @@ export function PhoneScreenSuccess({
   slotLogo,
   slotLottie,
   textSuccess = "Thank you for taking your time. We will get back to you shortly",
+  textSubmitted = "Form submitted successfully.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-672")} tag="div">
@@ -31,7 +32,7 @@ export function PhoneScreenSuccess({
           )}
           tag="div"
         >
-          {"Form submitted successfully."}
+          {textSubmitted}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey-600", "mt-15")}
