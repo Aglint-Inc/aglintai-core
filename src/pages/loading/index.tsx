@@ -16,6 +16,7 @@ import {
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
+import posthog from 'posthog-js';
 
 export default function Loading() {
   const { userDetails } = useAuthDetails();
@@ -133,6 +134,7 @@ export default function Loading() {
   };
 
   const refershAccessToken = async () => {
+    posthog.identify(userDetails.user.email)
     await supabase.auth.refreshSession({
       refresh_token: userDetails?.refresh_token,
     });
