@@ -47,8 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      res.status(200).send(results as ReadJobApplicationApi['response']);
       sendMails(job, purpose, candidates, sgMail);
+      res.status(200).send(results as ReadJobApplicationApi['response']);
     } else {
       const results = await updateAllApplications(
         supabase,
@@ -57,8 +57,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      res.status(200).send(results as ReadJobApplicationApi['response']);
       sendMails(job, purpose, candidates, sgMail);
+      res.status(200).send(results as ReadJobApplicationApi['response']);
     }
     return;
   } catch (e) {
