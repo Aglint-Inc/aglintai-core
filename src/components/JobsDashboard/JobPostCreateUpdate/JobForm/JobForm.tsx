@@ -295,7 +295,7 @@ function JobForm() {
         job: publishedJobPost,
         recruiter,
       });
-      toast.success('Reverted SucessFully');
+      toast.success('Reverted Sucessfully');
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
