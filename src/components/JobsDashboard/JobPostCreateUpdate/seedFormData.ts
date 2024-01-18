@@ -158,7 +158,7 @@ export const getSeedJobFormData = (
       },
       phoneScreening: {
         startMessage:
-          'Welcome to the candidate application form.Please fill out the following information',
+          'Welcome to the candidate application form. Please fill out the following information',
         endMessage:
           'Thank you for taking your time. We will get back to you shortly',
         questions: [],

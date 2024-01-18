@@ -1,6 +1,6 @@
 import { Collapse } from '@mui/material';
 import { get } from 'lodash';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ScrQuestion, ScrQuestionDefault } from '@/devlink2';
 import UITypography from '@/src/components/Common/UITypography';
@@ -10,12 +10,9 @@ import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
 import { qnTypeToLabel2 } from './utils';
 import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
 
-const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
+const KnowOffQn = ({ qnPath, isEditMode, changeMode }) => {
   const { jobForm, handleUpdateFormFields } = useJobForm();
-  const [isDefaultView, setIsDefaultView] = useState(!isdefaultEditMode);
-  // const [editQn, setEditQn] = useState<PhoneScreenQuestion | null>(
-  //   isdefaultEditMode ? { ...seedQns[seedQns.length - 1] } : null,
-  // );
+
   const q = get(jobForm, `formFields.${qnPath}`, null) as PhoneScreenQuestion;
   if (!q) return;
 
@@ -23,7 +20,7 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
     <ScrQuestion
       slotDefault={
         <>
-          <Collapse in={isDefaultView} translate='yes' unmountOnExit>
+          <Collapse in={!isEditMode} translate='yes' unmountOnExit>
             {
               <ScrQuestionDefault
                 title={qnTypeToLabel2(q.type)}
@@ -33,7 +30,7 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
                 description={<>{q.showDescription && q.description}</>}
                 onclickEdit={{
                   onClick: () => {
-                    setIsDefaultView(false);
+                    changeMode(true);
                   },
                 }}
                 isOptionsVisible={
@@ -54,14 +51,14 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
         </>
       }
       slotEdit={
-        <Collapse in={!isDefaultView} translate='yes' unmountOnExit>
+        <Collapse in={isEditMode} translate='yes' unmountOnExit>
           {
             <PhoneScreenNewQnForm
-              isEdit={true}
-              defaultEditQn={{ ...q }}
-              handleCancel={() => {
-                setIsDefaultView(true);
+              onClose={() => {
+                changeMode(false);
               }}
+              qnPath={qnPath}
+              isEdit={true}
               handleDelete={() => {
                 const updatedQns =
                   jobForm.formFields.phoneScreening.questions.filter(
@@ -71,14 +68,6 @@ const KnowOffQn = ({ qnPath, isdefaultEditMode }) => {
                   path: 'phoneScreening.questions',
                   value: updatedQns,
                 });
-                setIsDefaultView(true);
-              }}
-              handleDone={(updatedQn) => {
-                handleUpdateFormFields({
-                  path: `${qnPath}`,
-                  value: updatedQn,
-                });
-                setIsDefaultView(true);
               }}
             />
           }

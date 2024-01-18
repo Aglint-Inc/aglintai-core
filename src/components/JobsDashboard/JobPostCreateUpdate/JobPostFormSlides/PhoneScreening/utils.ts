@@ -17,110 +17,160 @@ export const seedQns: PhoneScreenQuestion[] = [
     isRequired: true,
     options: [],
     question:
-      'Can you provide a brief overview of your professional background and how it aligns with the responsibilities of an Enterprise Customer Success Manager ?',
+      'Are you willing to undergo a background check, in accordance with local law/regulations ?',
     questionLabel: 'Backgound check',
   },
   {
     id: nanoid(),
     description: '',
-
-    type: 'singleSelect',
-    isRequired: true,
+    isRequired: false,
+    options: [],
+    question: 'What is your average deal size in [Currency] (in thousands) ?',
+    questionLabel: 'Average Deal Size',
     showDescription: false,
-
-    options: [
-      {
-        id: nanoid(),
-        option: ' Advanced proficiency',
-      },
-      {
-        id: nanoid(),
-        option: 'Intermediate proficiency',
-      },
-      {
-        id: nanoid(),
-        option: 'Basic proficiency',
-      },
-      {
-        id: nanoid(),
-        option: 'Limited proficiency',
-      },
-    ],
-
-    question:
-      'Which of the following best describes your expertise with [relevant skills]? (Select all that apply)',
-    questionLabel: 'Expertise with skill',
+    type: 'shortAnswer',
   },
+
   {
     id: nanoid(),
     description: '',
     showDescription: false,
 
-    type: 'shortAnswer',
+    type: 'singleSelect',
     isRequired: true,
-    options: [],
-    question: `This role may involve occasional travel. Do you possess a valid driver's license, and are you comfortable with potential travel requirements?`,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Do you have a valid driver's license ?`,
     questionLabel: 'Drivers licence',
   },
   {
     id: nanoid(),
-    type: 'multiSelect',
+    description: '',
+    showDescription: false,
+
+    type: 'singleSelect',
+    isRequired: true,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Are you willing to take a drug test, in accordance with local law/regulations ?`,
+    questionLabel: 'Drug Test',
+  },
+  {
+    id: nanoid(),
+    type: 'singleSelect',
     description: '',
     showDescription: false,
 
     isRequired: true,
     options: [
-      { id: nanoid(), option: 'Remote' },
-      { id: nanoid(), option: 'Hybrid' },
-      { id: nanoid(), option: 'Onsite' },
+      { id: nanoid(), option: 'High School' },
+      { id: nanoid(), option: `Bachelor's` },
+      { id: nanoid(), option: `Master's` },
+      {
+        id: nanoid(),
+        option: `Ph.D.`,
+      },
     ],
-    question: `Which workplace type do you have the most experience with, and how do you ensure productivity and collaboration within that setting?`,
-    questionLabel: 'Workplace type',
+    question: `Have you completed the following level of education: [Degree] ?`,
+    questionLabel: 'Education',
   },
-  {
-    id: nanoid(),
-    type: 'shortAnswer',
-    description: '',
-    showDescription: false,
 
-    isRequired: true,
-    options: [],
-    question:
-      'Our company has a policy requiring a drug test as part of the hiring process. Are you comfortable undergoing a drug test as part of the onboarding process?',
-    questionLabel: 'Drug test',
-  },
   {
     id: nanoid(),
     showDescription: false,
 
-    type: 'shortAnswer',
+    type: 'singleSelect',
     isRequired: true,
     description: '',
 
-    options: [],
-    question: `Please elaborate on your experience managing enterprise-level customer relationships, highlighting any notable achievements or challenges you've successfully navigated.`,
-    questionLabel: 'Experience',
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Are you comfortable working in a hybrid setting ?`,
+    questionLabel: 'Hybrid Work',
   },
   {
     id: nanoid(),
     showDescription: false,
 
-    type: 'shortAnswer',
+    type: 'singleSelect',
     isRequired: true,
     description: '',
 
-    options: [],
-    question: `What is your current visa status in the country where you would be working remotely, and do you have any restrictions that might affect your eligibility for the role?`,
-    questionLabel: 'Industry experience',
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Are you comfortable commuting to this job's location ?`,
+    questionLabel: 'Location',
   },
   {
     id: nanoid(),
-    type: 'shortAnswer',
+    showDescription: false,
+
+    type: 'singleSelect',
+    isRequired: true,
+    description: '',
+
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `We must fill this position urgently. Can you start immediately?`,
+    questionLabel: 'Urgent Hiring Need',
+  },
+  {
+    id: nanoid(),
+    type: 'singleSelect',
     description: '',
     isRequired: true,
     showDescription: false,
-    options: [],
-    question: `What is your current visa status in the country where you would be working remotely, and do you have any restrictions that might affect your eligibility for the role?`,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: ` Will you now or in the future require sponsorship for employment visa status ?`,
     questionLabel: 'Visa status',
   },
   {
@@ -130,7 +180,96 @@ export const seedQns: PhoneScreenQuestion[] = [
     description: '',
     isRequired: true,
     options: [],
-    question: `Can you confirm your work authorization and eligibility to work remotely without any restrictions in the [country]?`,
+    question: `Can you confirm your work authorization and eligibility to work remotely without any restrictions in the USA ?`,
     questionLabel: 'Work authorisation',
+  },
+  {
+    id: nanoid(),
+    type: 'multiSelect',
+    description: '',
+    isRequired: true,
+    showDescription: false,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Visual (e.g., videos, diagrams)',
+      },
+      {
+        id: nanoid(),
+        option: 'Auditory (e.g., lectures, discussions)',
+      },
+      {
+        id: nanoid(),
+        option:
+          'Kinesthetic (e.g., hands-on activities, practical application)',
+      },
+    ],
+    question: `When acquiring new skills or knowledge, what is your preferred learning style ?`,
+    questionLabel: 'Learning Style',
+  },
+  {
+    id: nanoid(),
+    type: 'multiSelect',
+    description: '',
+    isRequired: true,
+    showDescription: false,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Authoritative',
+      },
+      {
+        id: nanoid(),
+        option: 'Transformational',
+      },
+      {
+        id: nanoid(),
+        option: 'Servant',
+      },
+      {
+        id: nanoid(),
+        option: 'Collaborative',
+      },
+    ],
+    question: `What leadership style do you find most effective or inspiring ?`,
+    questionLabel: 'Leadership Style',
+  },
+  {
+    id: nanoid(),
+    type: 'singleSelect',
+    description: '',
+    isRequired: true,
+    showDescription: false,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Are you comfortable working in an onsite setting ?`,
+    questionLabel: 'Onsite Work',
+  },
+  {
+    id: nanoid(),
+    type: 'singleSelect',
+    description: '',
+    isRequired: true,
+    showDescription: false,
+    options: [
+      {
+        id: nanoid(),
+        option: 'Yes',
+      },
+      {
+        id: nanoid(),
+        option: 'No',
+      },
+    ],
+    question: `Are you comfortable working in a remote setting ?`,
+    questionLabel: 'Remote Work',
   },
 ];

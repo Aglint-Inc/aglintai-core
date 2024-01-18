@@ -8,7 +8,7 @@ import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker
 
 import { useJobForm } from '../JobPostFormProvider';
 function Assessment() {
-  const { dispatch, jobForm } = useJobForm();
+  const { jobForm } = useJobForm();
 
   return (
     <NewJobStep4
@@ -21,17 +21,6 @@ function Assessment() {
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}
       slotDisqualifyEmail={<EmailSchedule flow='disqualifiedMail' />}
       isProceedDisable={false}
-      isJobAdd={jobForm.formType === 'new'}
-      onClickProcced={{
-        onClick: () => {
-          dispatch({
-            type: 'moveToSlide',
-            payload: {
-              nextSlide: 'templates',
-            },
-          });
-        },
-      }}
     />
   );
 }

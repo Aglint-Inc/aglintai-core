@@ -86,11 +86,7 @@ const EndMessage = () => {
             <PhoneScreeningFormSubmit />
           </>
         }
-        textSuccess={
-          state.formFilledDate
-            ? 'We will get back to you soon'
-            : 'Thank you for taking your time. We will get back to you shortly'
-        }
+        textSuccess={state.endMessage}
       />
     </>
   );

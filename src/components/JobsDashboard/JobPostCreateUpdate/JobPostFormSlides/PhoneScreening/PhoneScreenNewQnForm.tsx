@@ -1,4 +1,5 @@
 import { Collapse } from '@mui/material';
+import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 
@@ -8,51 +9,83 @@ import {
   ScrQuestionOptionEdit,
   ToggleButton,
 } from '@/devlink2';
-import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 
 import { qnTypeToIcon } from './PhoneScreening';
 import { qnTypeToLabel2 } from './utils';
-import { PhoneScreenQuestion } from '../../JobPostFormProvider';
+import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
 
 const PhoneScreenNewQnForm = ({
-  defaultEditQn,
-  handleCancel,
   handleDelete,
-  handleDone,
   isEdit = false,
+  qnPath,
+  onClose,
 }) => {
-  const [editQn, setEditQn] = useState<PhoneScreenQuestion>(defaultEditQn);
+  const { handleUpdateFormFields, jobForm } = useJobForm();
   const [showDropDown, setShowDropDown] = useState(false);
+
+  const editQn = get(jobForm.formFields, qnPath) as PhoneScreenQuestion;
 
   const handleEditQn = (type: PhoneScreenQuestion['type']) => {
     if (type === 'multiSelect' || type === 'singleSelect') {
-      setEditQn((prev) => ({
-        ...prev,
-        type: type,
-        options: Array(2)
-          .fill(0)
-          .map(() => {
-            return { id: nanoid(), option: '' };
-          }),
-      }));
+      handleUpdateFormFields({
+        path: `${qnPath}`,
+        value: {
+          ...editQn,
+          type: type,
+          options: Array(2)
+            .fill(0)
+            .map(() => {
+              return { id: nanoid(), option: '' };
+            }),
+        },
+      });
     } else {
-      setEditQn((prev) => ({
-        ...prev,
-        type: type,
-      }));
+      handleUpdateFormFields({
+        path: `${qnPath}.type`,
+        value: type,
+      });
     }
   };
 
   return (
     <>
       <ScrQuestionEdit
-        topHeading={isEdit ? 'Edit question' : 'Add question'}
         isReqChecked={editQn?.isRequired}
         isOptionsVisible={editQn?.type !== 'shortAnswer'}
         onclickDelete={{
           onClick: handleDelete,
         }}
+        slotDropdown={
+          <ScrDropdown
+            slotSelectedIcon={qnTypeToIcon(editQn?.type)}
+            selectedText={qnTypeToLabel2(editQn.type)}
+            onclickMultiSelect={{
+              onClick: () => {
+                handleEditQn('multiSelect');
+                setShowDropDown((prev) => !prev);
+              },
+            }}
+            onclickShortAnswer={{
+              onClick: () => {
+                handleEditQn('shortAnswer');
+                setShowDropDown((prev) => !prev);
+              },
+            }}
+            onclickSingleSelect={{
+              onClick: () => {
+                handleEditQn('singleSelect');
+                setShowDropDown((prev) => !prev);
+              },
+            }}
+            isOptionsBodyVisible={showDropDown}
+            onclickTrigger={{
+              onClick: () => {
+                setShowDropDown((prev) => !prev);
+              },
+            }}
+          />
+        }
         slotOptions={
           <>
             {editQn.options.map((op, idx) => (
@@ -62,10 +95,11 @@ const PhoneScreenNewQnForm = ({
                     const updOptions = editQn.options.filter(
                       (e) => e.id !== op.id,
                     );
-                    setEditQn((prev) => ({
-                      ...prev,
-                      options: updOptions,
-                    }));
+
+                    handleUpdateFormFields({
+                      path: `${qnPath}.options`,
+                      value: updOptions,
+                    });
                   },
                 }}
                 key={op.id}
@@ -82,10 +116,11 @@ const PhoneScreenNewQnForm = ({
                         }
                         return t;
                       });
-                      setEditQn((prev) => ({
-                        ...prev,
-                        options: updOptions,
-                      }));
+
+                      handleUpdateFormFields({
+                        path: `${qnPath}.options`,
+                        value: updOptions,
+                      });
                     }}
                   />
                 }
@@ -105,10 +140,10 @@ const PhoneScreenNewQnForm = ({
                 maxRows={3}
                 value={editQn.description}
                 onChange={(e) => {
-                  setEditQn((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }));
+                  handleUpdateFormFields({
+                    path: `${qnPath}.description`,
+                    value: e.target.value,
+                  });
                 }}
               />
             </Collapse>
@@ -121,10 +156,10 @@ const PhoneScreenNewQnForm = ({
               isInactive={!editQn.showDescription}
               onclickToggle={{
                 onClick: () => {
-                  setEditQn((prev) => ({
-                    ...prev,
-                    showDescription: !prev.showDescription,
-                  }));
+                  handleUpdateFormFields({
+                    path: `${qnPath}.showDescription`,
+                    value: !editQn.showDescription,
+                  });
                 },
               }}
             />
@@ -139,79 +174,39 @@ const PhoneScreenNewQnForm = ({
               maxRows={3}
               value={editQn?.question}
               onChange={(e) => {
-                setEditQn((p) => ({ ...p, question: e.target.value }));
+                handleUpdateFormFields({
+                  path: `${qnPath}.question`,
+                  value: e.target.value,
+                });
               }}
-            />
-            <ScrDropdown
-              slotSelectedIcon={qnTypeToIcon(editQn?.type)}
-              selectedText={qnTypeToLabel2(editQn.type)}
-              onclickMultiSelect={{
-                onClick: () => {
-                  handleEditQn('multiSelect');
-                  setShowDropDown((prev) => !prev);
-                },
-              }}
-              onclickShortAnswer={{
-                onClick: () => {
-                  handleEditQn('shortAnswer');
-                  setShowDropDown((prev) => !prev);
-                },
-              }}
-              onclickSingleSelect={{
-                onClick: () => {
-                  handleEditQn('singleSelect');
-                  setShowDropDown((prev) => !prev);
-                },
-              }}
-              isOptionsBodyVisible={showDropDown}
-              onclickTrigger={{
-                onClick: () => {
-                  setShowDropDown((prev) => !prev);
-                },
-              }}
+              placeholder='Type your question Here'
             />
           </>
         }
         onclickAddOption={{
           onClick: () => {
-            setEditQn((prev) => ({
-              ...prev,
-              options: [
+            handleUpdateFormFields({
+              path: `${qnPath}.options`,
+              value: [
                 ...editQn.options,
                 {
                   id: nanoid(),
                   option: '',
                 },
               ],
-            }));
+            });
           },
         }}
         onclickRequiredCheckbox={{
           onClick: () => {
-            setEditQn((prev) => ({
-              ...prev,
-              isRequired: !prev.isRequired,
-            }));
+            handleUpdateFormFields({
+              path: `${qnPath}.isRequired`,
+              value: !editQn.isRequired,
+            });
           },
         }}
         isDeleteVisible={isEdit}
-        slotButtons={
-          <>
-            <AUIButton variant='text' size='medium' onClick={handleCancel}>
-              Cancel
-            </AUIButton>
-            <AUIButton
-              variant='primary'
-              size='medium'
-              disabled={editQn.question.length === 0}
-              onClick={() => {
-                handleDone(editQn);
-              }}
-            >
-              {isEdit ? 'Update' : 'Add'}
-            </AUIButton>
-          </>
-        }
+        onclickClose={{ onClick: onClose }}
       />
     </>
   );

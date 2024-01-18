@@ -27,6 +27,14 @@
   }
 }
 
+.relative.mt-12 {
+  margin-top: 12px;
+}
+
+.text-block-31 {
+  white-space: nowrap;
+}
+
 .active-text-sub {
   position: absolute;
   left: 0%;
@@ -35,4 +43,5 @@
   bottom: 0%;
 
   color: #337fbd;
+  white-space: nowrap;
 }

@@ -52,7 +52,7 @@ const UISelect = ({
       gap={'5px'}
     >
       {label && (
-        <UITypography type={'small'} fontBold='normal'>
+        <UITypography type={'small'} fontBold='default'>
           {label}
         </UITypography>
       )}

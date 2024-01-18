@@ -7,8 +7,6 @@ declare function CreateNewJob(props: {
   onClickPreview?: Types.Devlink.RuntimeProps;
   onClickDetails?: Types.Devlink.RuntimeProps;
   isDetailsActive?: Types.Visibility.VisibilityConditions;
-  onClickApplyForm?: Types.Devlink.RuntimeProps;
-  isApplyFormActive?: Types.Visibility.VisibilityConditions;
   onClickScoreSetting?: Types.Devlink.RuntimeProps;
   isScoreSettingActive?: Types.Visibility.VisibilityConditions;
   onClickEmailTemplates?: Types.Devlink.RuntimeProps;
@@ -29,7 +27,6 @@ declare function CreateNewJob(props: {
   slotDisclaimerWorkflow?: Types.Devlink.Slot;
   isPreviewVisible?: Types.Visibility.VisibilityConditions;
   slotAtsBadge?: Types.Devlink.Slot;
-  slotCloseJob?: Types.Devlink.Slot;
   onClickPreviewChanges?: Types.Devlink.RuntimeProps;
   slotUnpublishDisclaimer?: Types.Devlink.Slot;
   isBetaVisible?: Types.Visibility.VisibilityConditions;
@@ -42,11 +39,10 @@ declare function CreateNewJob(props: {
   isDotButtonVisible?: Types.Visibility.VisibilityConditions;
   slotNavSublink?: Types.Devlink.Slot;
   isAssessmentPreviewVisible?: Types.Visibility.VisibilityConditions;
-  onClickAssessmentPreview?: Types.Devlink.RuntimeProps;
-  onClickDisableAssessment?: Types.Devlink.RuntimeProps;
   isProceedDisable?: Types.Visibility.VisibilityConditions;
   onClickProceed?: Types.Devlink.RuntimeProps;
   isProceedVisible?: Types.Visibility.VisibilityConditions;
   slotWarning?: Types.Devlink.Slot;
   textProceed?: React.ReactNode;
+  slotSideSection?: Types.Devlink.Slot;
 }): React.JSX.Element;

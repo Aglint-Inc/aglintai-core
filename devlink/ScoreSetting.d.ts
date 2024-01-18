@@ -16,4 +16,6 @@ declare function ScoreSetting(props: {
   onClickDismiss?: Types.Devlink.RuntimeProps;
   onClickRegenerate?: Types.Devlink.RuntimeProps;
   isRegenerateVisible?: Types.Visibility.VisibilityConditions;
+  slotWarning?: Types.Devlink.Slot;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -10,4 +10,5 @@ declare function SublinkSubMenu(props: {
   onClickLink?: Types.Devlink.RuntimeProps;
   isSubMenuVisible?: Types.Visibility.VisibilityConditions;
   isBetaVisible?: Types.Visibility.VisibilityConditions;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

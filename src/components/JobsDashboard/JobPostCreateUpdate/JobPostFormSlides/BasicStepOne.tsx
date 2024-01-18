@@ -5,15 +5,17 @@ import { get } from 'lodash';
 import Image from 'next/image';
 import React from 'react';
 
-import { NewJobStep1 } from '@/devlink';
+import { JobEditWarning, JobWarningList, NewJobStep1 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
+import { isShoWWarn, slidePathToNum } from '../utils';
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';
 const BasicStepOne = () => {
   const {
-    jobForm: { formFields, formType },
+    jobForm: { formFields, formType, jobPostId },
     handleUpdateFormFields,
+    formWarnings,
   } = useJobForm();
 
   const {
@@ -29,9 +31,32 @@ const BasicStepOne = () => {
     defaultDepartments,
   } = formFields;
 
+  const isShowWarn = isShoWWarn(
+    formType,
+    formWarnings,
+    'details',
+    slidePathToNum['details'],
+    jobPostId,
+  );
   return (
     <>
       <NewJobStep1
+        isWarningVisible={isShowWarn}
+        slotWarning={
+          <>
+            {formWarnings.details.err.length !== 0 && (
+              <JobEditWarning
+                slotWarningList={
+                  <>
+                    {formWarnings.details.err.map((er, index) => (
+                      <JobWarningList key={index} textWarning={er} />
+                    ))}
+                  </>
+                }
+              />
+            )}
+          </>
+        }
         slotForm={
           <>
             <Grid container spacing={2}>

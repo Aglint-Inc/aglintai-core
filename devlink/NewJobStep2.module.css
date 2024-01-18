@@ -47,6 +47,7 @@
 
 .job-sidebar-main-block.cj-step-1.height-auto {
   height: auto;
+  margin-bottom: 20px;
 }
 
 .job-sidebar-main-block.cj-step-3 {
@@ -498,6 +499,12 @@
 
 .text-grow {
   flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
 }
 
 .content-11 {

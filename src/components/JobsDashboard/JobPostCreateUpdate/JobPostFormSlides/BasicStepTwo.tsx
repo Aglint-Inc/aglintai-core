@@ -8,7 +8,6 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
   const {
     handleUpdateFormFields,
     jobForm: { formFields, formType },
-    dispatch,
   } = useJobForm();
 
   const handleChangeTipTap = (s: string) => {
@@ -45,17 +44,6 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
       slotAddedSkill={<></>}
       slotRequiredSKill={<></>}
       slotSuggestedSkill={<></>}
-      onClickProceed={{
-        onClick: () => {
-          dispatch({
-            type: 'moveToSlide',
-            payload: {
-              nextSlide: 'resumeScore',
-            },
-          });
-        },
-      }}
-      isAddJob={formType === 'new'}
     />
   );
 };

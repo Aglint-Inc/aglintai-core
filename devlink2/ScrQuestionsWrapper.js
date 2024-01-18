@@ -43,7 +43,9 @@ export function ScrQuestionsWrapper({
           className={_utils.cx(_styles, "scr-options-block")}
           tag="div"
         >
-          {slotOptions ?? <ScrQuestionOption />}
+          {slotOptions ?? (
+            <ScrQuestionOption isTicked={true} isAddIconVisible={false} />
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

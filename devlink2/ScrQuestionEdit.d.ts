@@ -9,11 +9,11 @@ declare function ScrQuestionEdit(props: {
   isOptionsVisible?: Types.Visibility.VisibilityConditions;
   slotOptions?: Types.Devlink.Slot;
   onclickAddOption?: Types.Devlink.RuntimeProps;
-  slotButtons?: Types.Devlink.Slot;
   onclickDelete?: Types.Devlink.RuntimeProps;
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
   slotDescription?: Types.Devlink.Slot;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
   slotDescriptionToggle?: Types.Devlink.Slot;
-  topHeading?: React.ReactNode;
+  onclickClose?: Types.Devlink.RuntimeProps;
+  slotDropdown?: Types.Devlink.Slot;
 }): React.JSX.Element;

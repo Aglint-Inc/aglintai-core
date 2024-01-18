@@ -2,8 +2,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import { ScoreCard } from "./ScoreCard";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
-import { ScoreWeightage } from "./ScoreWeightage";
 import * as _utils from "./utils";
 import _styles from "./ScoreSetting.module.css";
 
@@ -22,6 +20,8 @@ export function ScoreSetting({
   onClickDismiss = {},
   onClickRegenerate = {},
   isRegenerateVisible = false,
+  slotWarning,
+  isWarningVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "score-setting-wrap")} tag="div">
@@ -29,7 +29,23 @@ export function ScoreSetting({
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Profile Score"}
         </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-grey-600")}
+          tag="div"
+        >
+          {
+            "Setup the scoring criteria for this job, which will be automatically extracted from the job description. A score will be generated for each candidate based on these criteria."
+          }
+        </_Builtin.Block>
       </_Builtin.Block>
+      {isWarningVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-718")}
+          tag="div"
+        >
+          {slotWarning}
+        </_Builtin.Block>
+      ) : null}
       {isEmptyWarningVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-696")}
@@ -119,31 +135,6 @@ export function ScoreSetting({
           >
             {slotScoreCardDetails ?? <ScoreCard />}
           </_Builtin.Block>
-          {isAddJob ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "publish-email-wrap")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div" {...onClickDone}>
-                {slotButtonPrimaryRegular ?? (
-                  <ButtonPrimaryRegular textLabel="Publish Job" />
-                )}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "slot-basic-button")}
-                tag="div"
-                {...onClickSaveDraft}
-              >
-                {slotBasicButton}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "right-score-wrap")}
-          tag="div"
-        >
-          {slotScoreWeight ?? <ScoreWeightage />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

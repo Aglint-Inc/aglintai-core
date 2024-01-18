@@ -157,8 +157,12 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.details.err.push('Missing job description');
   }
 
-  if (isEmpty(jobForm.department.trim())) {
-    warnings.details.err.push('Missing department');
+  if (
+    isEmpty(get(jobForm, 'jdJson.educations')) &&
+    isEmpty(get(jobForm, 'jdJson.skills')) &&
+    isEmpty(get(jobForm, 'jdJson.rolesResponsibilities'))
+  ) {
+    warnings.resumeScore.err.push('Please Complete Profile Score Section');
   }
   if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
     warnings.screening.err.push('Please Provide Assessment Instructions');
@@ -253,7 +257,7 @@ export const slidePathToNum: Record<JobFormState['currSlide'], number> = {
   templates: 6,
 };
 
-export const allSlides: { path: JobFormState['currSlide']; title: string }[] = [
+export const jobSlides: { path: JobFormState['currSlide']; title: string }[] = [
   { title: 'Details', path: 'details' },
   { title: 'Profile Score', path: 'resumeScore' },
   { title: 'Screening', path: 'phoneScreening' },
@@ -261,3 +265,20 @@ export const allSlides: { path: JobFormState['currSlide']; title: string }[] = [
   { title: 'Workflows', path: 'workflow' },
   { title: 'Email Templates', path: 'templates' },
 ];
+
+export const isShoWWarn = (
+  formType,
+  formWarnings,
+  path,
+  slideNum,
+  jobPostId,
+) => {
+  const isShowWarn =
+    (formType === 'edit' && formWarnings[String(path)].err.length > 0) ||
+    (formType === 'new' &&
+      slideNum <=
+        Number(localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1) &&
+      formWarnings[String(path)].err.length > 0);
+
+  return isShowWarn;
+};

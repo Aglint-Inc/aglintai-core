@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { EmailTemplateCards } from "./EmailTemplateCards";
-import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplatesStart.module.css";
 
@@ -19,6 +18,8 @@ export function EmailTemplatesStart({
   onClickSaveDraft = {},
   slotButtonPrimaryRegular,
   slotBasicButton,
+  slotWarning,
+  isWarningVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-508")} tag="div">
@@ -43,6 +44,11 @@ export function EmailTemplatesStart({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
+      {isWarningVisible ? (
+        <_Builtin.Block className={_utils.cx(_styles, "mb-20")} tag="div">
+          {slotWarning}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "email-start-wrap")}
         id={_utils.cx(
@@ -53,25 +59,6 @@ export function EmailTemplatesStart({
       >
         {slotEmailTemplateCards ?? <EmailTemplateCards />}
       </_Builtin.Block>
-      {isAddJob ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "publish-email-wrap")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div" {...onClickDone}>
-            {slotButtonPrimaryRegular ?? (
-              <ButtonPrimaryRegular textLabel="Publish Job" />
-            )}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-basic-button")}
-            tag="div"
-            {...onClickSaveDraft}
-          >
-            {slotBasicButton}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
     </_Component>
   );
 }

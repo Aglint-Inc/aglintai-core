@@ -78,7 +78,7 @@ const UITextField = React.forwardRef(
       select,
       height,
       secondaryText,
-      labelBold = 'normal',
+      labelBold = 'default',
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
   ) => {
@@ -207,8 +207,8 @@ const UITextField = React.forwardRef(
               {error
                 ? helperText
                 : contentExceeded
-                  ? errorMessages.maxCharExceeded
-                  : ''}
+                ? errorMessages.maxCharExceeded
+                : ''}
             </UITypography>
           </Stack>
         )}

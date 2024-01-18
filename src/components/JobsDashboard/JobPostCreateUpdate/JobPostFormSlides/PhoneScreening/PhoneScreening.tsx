@@ -1,26 +1,24 @@
+import { Collapse } from '@mui/material';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   PhoneScreening,
   ScrCheckmarkIcon,
   ScreeningWelcome,
-  ScrQuestion,
   ScrQuestionOption,
   ScrQuestionsWrapper,
   ScrRadioIcon,
   ScrShortTextIcon,
 } from '@/devlink2';
-import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import KnowOffQn from './KnowOffQn';
-import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
 import { seedQns } from './utils';
 import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
-import { isEnvProd } from '../../utils';
 
 const ScreeningComp = () => {
   const [messageOpen, setMessageOpen] = useState<{
@@ -28,71 +26,75 @@ const ScreeningComp = () => {
     end: boolean;
   }>({ end: false, start: false });
   const { recruiterUser } = useAuthDetails();
-  const { jobForm, handleUpdateFormFields, dispatch } = useJobForm();
-  const [startMessage, setStartMessage] = useState('');
-  const [endMessage, setEndMessage] = useState('');
-  const [newQnsForms, setNewQnForms] = useState([]);
-  const phoneScreening = jobForm.formFields.phoneScreening;
+  const { jobForm, handleUpdateFormFields } = useJobForm();
 
-  const isEmpty =
-    phoneScreening.questions.length === 0 && newQnsForms.length === 0;
+  const phoneScreening = jobForm.formFields.phoneScreening;
+  const [isqnsModeEdit, setIsqnsModeEdit] = useState([]);
+  const isEmpty = phoneScreening.questions.length === 0;
+
+  useEffect(() => {
+    let qnIdOpen = localStorage.getItem('qnIdOpen');
+    setIsqnsModeEdit(
+      phoneScreening.questions.map((q) => {
+        if (q.id === qnIdOpen) {
+          return { id: q.id, isEdit: true };
+        }
+        return { id: q.id, isEdit: false };
+      }),
+    );
+  }, [phoneScreening.questions.length]);
+
   return (
     <>
       <PhoneScreening
         slotWelcomeText={
           <>
             <ScreeningWelcome
-              defaultText={phoneScreening.startMessage}
+              isCloseVisible={messageOpen.start}
+              isEditButtonVisible={!messageOpen.start}
               editHeading={'Start Message'}
               tooltipText={
                 'This message will appear to the candidate as a welcome message before filling the form'
               }
-              isDefaultView={!messageOpen.start}
-              isEditView={messageOpen.start}
               onclickEdit={{
                 onClick: () => {
                   setMessageOpen((p) => ({ ...p, start: !p.start }));
-                  setStartMessage(phoneScreening.startMessage);
                 },
               }}
-              slotButtons={
-                <>
-                  <AUIButton
-                    variant='text'
-                    onClick={() => {
-                      setMessageOpen((p) => ({ ...p, start: false }));
-                      setStartMessage('');
-                    }}
-                  >
-                    Cancel
-                  </AUIButton>
-                  <AUIButton
-                    variant='primary'
-                    size='medium'
-                    onClick={() => {
-                      handleUpdateFormFields({
-                        path: 'phoneScreening.startMessage',
-                        value: startMessage,
-                      });
-                      setMessageOpen((p) => ({ ...p, start: false }));
-                      setStartMessage('');
-                    }}
-                  >
-                    Update
-                  </AUIButton>
-                </>
-              }
+              onclickClose={{
+                onClick: () => {
+                  setMessageOpen((p) => ({ ...p, start: !p.start }));
+                },
+              }}
               slotInput={
                 <>
-                  <UITextField
-                    multiline
-                    maxRows={5}
-                    minRows={1}
-                    value={startMessage}
-                    onChange={(e) => {
-                      setStartMessage(e.target.value);
-                    }}
-                  />
+                  <Collapse
+                    in={!messageOpen.start}
+                    unmountOnExit
+                    translate='yes'
+                  >
+                    <UITypography type='small' fontBold='normal'>
+                      {phoneScreening.startMessage}
+                    </UITypography>
+                  </Collapse>
+                  <Collapse
+                    in={messageOpen.start}
+                    unmountOnExit
+                    translate='yes'
+                  >
+                    <UITextField
+                      multiline
+                      maxRows={5}
+                      minRows={1}
+                      value={phoneScreening.startMessage}
+                      onChange={(e) => {
+                        handleUpdateFormFields({
+                          path: 'phoneScreening.startMessage',
+                          value: e.target.value,
+                        });
+                      }}
+                    />
+                  </Collapse>
                 </>
               }
             />
@@ -108,53 +110,20 @@ const ScreeningComp = () => {
                       return (
                         <KnowOffQn
                           key={q.id}
-                          isdefaultEditMode={
-                            q.questionLabel === 'Add custom Question'
+                          isEditMode={
+                            isqnsModeEdit.find((m) => m.id === q.id)?.isEdit
                           }
                           qnPath={`phoneScreening.questions[${idx}]`}
-                        />
-                      );
-                    })}
-                    {newQnsForms.map((newQn) => {
-                      return (
-                        <ScrQuestion
-                          key={newQn.id}
-                          slotDefault={<></>}
-                          slotEdit={
-                            <>
-                              <PhoneScreenNewQnForm
-                                key={newQn}
-                                handleCancel={() =>
-                                  setNewQnForms((prev) =>
-                                    prev.filter((q) => q !== newQn),
-                                  )
-                                }
-                                defaultEditQn={{
-                                  question: '',
-                                  type: 'shortAnswer',
-                                  id: nanoid(),
-                                  description: '',
-                                  isRequired: false,
-                                  options: [],
-                                  questionLabel: 'Custom Question',
-                                }}
-                                handleDelete={null}
-                                handleDone={(editQn: PhoneScreenQuestion) => {
-                                  handleUpdateFormFields({
-                                    path: 'phoneScreening.questions',
-                                    value: [
-                                      ...jobForm.formFields.phoneScreening
-                                        .questions,
-                                      editQn,
-                                    ],
-                                  });
-                                  setNewQnForms((prev) =>
-                                    prev.filter((q) => q !== newQn),
-                                  );
-                                }}
-                              />
-                            </>
-                          }
+                          changeMode={(mode: boolean) => {
+                            setIsqnsModeEdit((prev) => {
+                              const newState = [...prev];
+                              return newState.map((nm) => {
+                                if (nm.id === q.id)
+                                  return { ...nm, isEdit: mode };
+                                return nm;
+                              });
+                            });
+                          }}
                         />
                       );
                     })}
@@ -202,7 +171,21 @@ const ScreeningComp = () => {
                     slotIcon={qnTypeToIcon('shortAnswer')}
                     onclickOption={{
                       onClick: () => {
-                        setNewQnForms((prev) => [...prev, nanoid()]);
+                        let newQn: PhoneScreenQuestion = {
+                          description: '',
+                          id: nanoid(),
+                          isRequired: false,
+                          options: [],
+                          question: '',
+                          questionLabel: 'Add custom Question',
+                          showDescription: false,
+                          type: 'shortAnswer',
+                        };
+                        localStorage.setItem('qnIdOpen', newQn.id);
+                        handleUpdateFormFields({
+                          path: 'phoneScreening.questions',
+                          value: [...phoneScreening.questions, newQn],
+                        });
                       },
                     }}
                   />
@@ -214,55 +197,41 @@ const ScreeningComp = () => {
         slotEndText={
           <>
             <ScreeningWelcome
-              defaultText={phoneScreening.endMessage}
               editHeading={'End Message'}
               tooltipText='Thank you for taking your time. We will get back to you shortly'
-              isDefaultView={!messageOpen.end}
-              isEditView={messageOpen.end}
               onclickEdit={{
                 onClick: () => {
                   setMessageOpen((p) => ({ ...p, end: !p.end }));
-                  setEndMessage(phoneScreening.endMessage);
                 },
               }}
-              slotButtons={
-                <>
-                  <AUIButton
-                    variant='text'
-                    onClick={() => {
-                      setMessageOpen((p) => ({ ...p, end: false }));
-                      setEndMessage('');
-                    }}
-                  >
-                    Cancel
-                  </AUIButton>
-                  <AUIButton
-                    variant='primary'
-                    size='medium'
-                    onClick={() => {
-                      handleUpdateFormFields({
-                        path: 'phoneScreening.endMessage',
-                        value: endMessage,
-                      });
-                      setMessageOpen((p) => ({ ...p, end: false }));
-                      setEndMessage('');
-                    }}
-                  >
-                    Update
-                  </AUIButton>
-                </>
-              }
+              isCloseVisible={messageOpen.end}
+              isEditButtonVisible={!messageOpen.end}
+              onclickClose={{
+                onClick: () => {
+                  setMessageOpen((p) => ({ ...p, end: !p.end }));
+                },
+              }}
               slotInput={
                 <>
-                  <UITextField
-                    multiline
-                    maxRows={5}
-                    minRows={1}
-                    value={endMessage}
-                    onChange={(e) => {
-                      setEndMessage(e.target.value);
-                    }}
-                  />
+                  <Collapse in={!messageOpen.end} unmountOnExit translate='yes'>
+                    <UITypography type='small' fontBold='normal'>
+                      {phoneScreening.endMessage}
+                    </UITypography>
+                  </Collapse>
+                  <Collapse in={messageOpen.end} unmountOnExit translate='yes'>
+                    <UITextField
+                      multiline
+                      maxRows={5}
+                      minRows={1}
+                      value={phoneScreening.endMessage}
+                      onChange={(e) => {
+                        handleUpdateFormFields({
+                          path: 'phoneScreening.endMessage',
+                          value: e.target.value,
+                        });
+                      }}
+                    />
+                  </Collapse>
                 </>
               }
             />
@@ -285,28 +254,6 @@ const ScreeningComp = () => {
             );
           },
         }}
-        proceedButtonText={
-          isEnvProd() ? 'Proceed to Email Templates' : 'Proceed to Assesment'
-        }
-        onclickProceedBtn={{
-          onClick: () => {
-            if (isEnvProd()) {
-              dispatch({
-                type: 'moveToSlide',
-                payload: {
-                  nextSlide: 'templates',
-                },
-              });
-            } else
-              dispatch({
-                type: 'moveToSlide',
-                payload: {
-                  nextSlide: 'screening',
-                },
-              });
-          },
-        }}
-        isProceedButtonVisible={jobForm.formType === 'new'}
       />
     </>
   );

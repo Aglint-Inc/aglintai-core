@@ -8,4 +8,6 @@ declare function NewJobStep1(props: {
   onClickProceed?: Types.Devlink.RuntimeProps;
   isProceedButtonDisable?: Types.Visibility.VisibilityConditions;
   isAddJob?: Types.Visibility.VisibilityConditions;
+  slotWarning?: Types.Devlink.Slot;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,11 +1,8 @@
 .scr-questions-wrapper {
   display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
   flex-direction: column;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
   border-radius: 10px;
 }
 
@@ -49,10 +46,12 @@
   white-space: nowrap;
 }
 
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
 .scr-options-wrapper {
   display: flex;
-  padding-right: 20px;
-  padding-left: 20px;
   flex-direction: column;
   grid-column-gap: 12px;
   grid-row-gap: 12px;

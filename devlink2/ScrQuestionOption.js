@@ -39,7 +39,7 @@ export function ScrQuestionOption({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-700")}
+          className={_utils.cx(_styles, "text-gray-700")}
           tag="div"
         >
           {text}

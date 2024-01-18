@@ -1,31 +1,33 @@
 import { Collapse, Popover, Stack } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { get } from 'lodash';
-import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/dist/client/router';
 import posthog from 'posthog-js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
+  AssessmentSide,
   CloseDeleteJob,
   CloseJobButton,
   CreateNewJob,
   NavSublink,
+  ScorePercentage,
+  ScoreWeightage,
   SublinkSubMenu,
   SubMenu,
 } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
 import Loader from '@/src/components/Common/Loader';
+import ScoreWheel from '@/src/components/Common/ScoreWheel';
+import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobApplicationsForJob } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
-import SectionWarning from './SectionWarnings';
-import { FormJobType, JobFormState, useJobForm } from '../JobPostFormProvider';
+import { JobFormState, useJobForm } from '../JobPostFormProvider';
 import ScreeningSettings from '../JobPostFormSlides/Assessment';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
@@ -36,8 +38,9 @@ import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import {
-  allSlides,
   API_FAIL_MSG,
+  isShoWWarn,
+  jobSlides,
   slidePathToNum,
   supabaseWrap,
 } from '../utils';
@@ -71,23 +74,11 @@ function JobForm() {
   const { recruiter } = useAuthDetails();
 
   const { handleJobDelete } = useJobs();
-  const {
-    jobForm,
-    dispatch,
-    formWarnings,
-    handleUpdateRevertStatus,
-    handleInitializeForm,
-    handleUpdateFormFields,
-  } = useJobForm();
+  const { jobForm, dispatch, handleUpdateRevertStatus, handleInitializeForm } =
+    useJobForm();
   const router = useRouter();
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-  const [formError, setFormError] = useState<JobFormErrorParams>({
-    jobTitle: '',
-    company: '',
-    location: '',
-    department: '',
-    aiQnGen: 0,
-  });
+
   const [showDraftPopup, setShowDraftPopup] = useState(false);
 
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
@@ -105,9 +96,7 @@ function JobForm() {
   } else if (currSlide === 'details') {
     formSlide = (
       <>
-        <BasicStepOne
-        // formError={formError} setFormError={setFormError} // commmented beacuse not in use
-        />
+        <BasicStepOne />
         <BasicStepTwo
           showWarnOnEdit={() => {
             if (jdWarn !== 'shown') setJdWarn('show');
@@ -127,103 +116,7 @@ function JobForm() {
     formSlide = <ScreeningComp />;
   }
 
-  const formValidation = () => {
-    let flag = true;
-    const { company, jobTitle, jobLocation, department } = jobForm.formFields;
-    if (currSlide === 'details') {
-      if (isEmpty(jobTitle.trim())) {
-        flag = false;
-        setFormError((p) => ({ ...p, jobTitle: 'Please Enter Job Title' }));
-      }
-
-      if (isEmpty(company?.trim())) {
-        flag = false;
-        setFormError((p) => ({ ...p, company: 'Please Enter Company Name' }));
-      }
-
-      if (isEmpty(jobLocation.trim())) {
-        flag = false;
-        setFormError((p) => ({ ...p, location: 'Please Enter Location' }));
-      }
-
-      if (isEmpty(get(jobForm, 'formFields.jobDescription', ''))) {
-        return false;
-      }
-
-      if (isEmpty(get(jobForm, 'formFields.skills', []))) {
-        return false;
-      }
-      if (isEmpty(department.trim())) {
-        flag = false;
-        setFormError((p) => ({ ...p, department: 'Please Enter Department' }));
-      }
-    }
-
-    if (currSlide === 'screening') {
-      const interviewConfig = get(
-        jobForm,
-        'formFields.interviewConfig',
-        {},
-      ) as FormJobType['interviewConfig'];
-
-      if (formError.aiQnGen > 0) {
-        toast.error('Please wait till qusetions get generated');
-        return false;
-      }
-
-      let totalQns = 0;
-
-      if (get(interviewConfig, 'skill.value', false)) {
-        let count = get(interviewConfig, 'skill.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (get(interviewConfig, 'behavior.value', false)) {
-        let count = get(interviewConfig, 'behavior.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (get(interviewConfig, 'communication.value', false)) {
-        let count = get(interviewConfig, 'communication.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (get(interviewConfig, 'performance.value', false)) {
-        let count = get(interviewConfig, 'performance.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (get(interviewConfig, 'education.value', false)) {
-        let count = get(interviewConfig, 'education.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (get(interviewConfig, 'general.value', false)) {
-        let count = get(interviewConfig, 'general.questions', []).length;
-        if (count === 0) {
-          return false;
-        }
-        totalQns += count;
-      }
-      if (totalQns < 10 || totalQns > 25) {
-        flag = false;
-      }
-    }
-    return flag;
-  };
-
   const changeSlide = (nextSlide: JobFormState['currSlide']) => {
-    formValidation();
     dispatch({
       type: 'moveToSlide',
       payload: {
@@ -241,7 +134,6 @@ function JobForm() {
       jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
     }`;
   }
-  const warning = formWarnings;
   const handleUpdateMaxVisitedSlideNo = (slideNo: number) => {
     if (jobForm.formType === 'edit') return;
     const currMax = Number(
@@ -304,13 +196,21 @@ function JobForm() {
       //
     }
   };
-  const { job } = useJobApplicationsForJob(jobForm.jobPostId);
 
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  let allSlides = jobSlides.filter((slide) => {
+    if (slide.path === 'workflow' || slide.path === 'screening') {
+      return isAssesEnabled;
+    }
+    return true;
+  });
   return (
     <>
       <CreateNewJob
         isPreviewVisible
-        isDotButtonVisible={jobForm.formType === 'edit'}
+        isDotButtonVisible={
+          jobForm.formType === 'edit' && jobForm.jobPostStatus === 'published'
+        }
         slotCreateJob={<>{formSlide}</>}
         isDetailsActive={currSlide === 'details'}
         isEmailTemplateActive={currSlide === 'templates'}
@@ -342,43 +242,16 @@ function JobForm() {
             if (nextSlide) changeSlide(nextSlide);
           },
         }}
-        slotWarning={
+        isAssessmentPreviewVisible={
+          currSlide === 'phoneScreening' ||
+          currSlide === 'resumeScore' ||
+          (currSlide === 'screening' && jobForm.formFields.assessment)
+        }
+        slotSideSection={
           <>
-            <SectionWarning
-              warnings={warning}
-              slidePath={currSlide}
-              currSlideNo={slidePathToNum[String(currSlide)]}
-            />
+            <SideSection />
           </>
         }
-        isAssessmentPreviewVisible={
-          currSlide === 'screening' && jobForm.formFields.assessment
-        }
-        onClickDisableAssessment={{
-          onClick: () => {
-            const count = job.count.assessment;
-            if (!count) {
-              handleUpdateFormFields({
-                path: 'assessment',
-                value: false,
-              });
-            } else {
-              toast.warning(
-                `cadidate${
-                  count === 1 ? '' : 's'
-                } under assessment. Disabling forbidden!`,
-              );
-            }
-          },
-        }}
-        onClickAssessmentPreview={{
-          onClick: () => {
-            window.open(
-              `/assessment?job_id=${router.query.job_id}&mode=preview`,
-              'blank',
-            );
-          },
-        }}
         onClickPreview={{
           onClick: () => {
             window.open(
@@ -446,9 +319,7 @@ function JobForm() {
             );
           },
         }}
-        slotPublishButton={
-          <>{jobForm.formType === 'edit' && <JobPublishButton />}</>
-        }
+        slotPublishButton={<>{<PublishButton />}</>}
         isProductionVisible={
           !process.env.NEXT_PUBLIC_HOST_NAME.includes('app.aglinthq.com')
         }
@@ -542,7 +413,7 @@ function JobForm() {
 export default JobForm;
 
 const SideNavs = ({ changeSlide }) => {
-  const { jobForm, dispatch } = useJobForm();
+  const { jobForm, dispatch, formWarnings } = useJobForm();
   const currSlide = jobForm.currSlide;
 
   const handleChangeSubMenus = (s: JobFormState['currentAssmSlides']) => {
@@ -554,9 +425,25 @@ const SideNavs = ({ changeSlide }) => {
     });
   };
   const currentAssTab = jobForm.currentAssmSlides;
+
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  let allSlides = jobSlides.filter((slide) => {
+    if (slide.path === 'workflow' || slide.path === 'screening') {
+      return isAssesEnabled;
+    }
+    return true;
+  });
+
   return (
     <>
       {allSlides.map((sl) => {
+        const isShowWarn = isShoWWarn(
+          jobForm.formType,
+          formWarnings,
+          sl.path,
+          slidePathToNum[sl.path],
+          jobForm.jobPostId,
+        );
         if (sl.path === 'screening') {
           return (
             <SublinkSubMenu
@@ -570,17 +457,18 @@ const SideNavs = ({ changeSlide }) => {
                   posthog.capture(`${sl.title} Flow Button clicked`);
                 },
               }}
+              isSubMenuVisible
               isBetaVisible={true}
-              isSubMenuVisible={sl.path === 'screening'}
               slotSubMenu={
                 <>
-                  <Collapse in={currSlide === 'screening'} translate='yes'>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 10,
-                      }}
+                  {
+                    <Collapse
+                      in={
+                        currSlide === 'screening' &&
+                        jobForm.formFields.assessment
+                      }
+                      translate='yes'
+                      unmountOnExit
                     >
                       {assmSubmenus.map((assM) => {
                         return (
@@ -596,8 +484,8 @@ const SideNavs = ({ changeSlide }) => {
                           />
                         );
                       })}
-                    </div>
-                  </Collapse>
+                    </Collapse>
+                  }
                 </>
               }
             />
@@ -606,6 +494,7 @@ const SideNavs = ({ changeSlide }) => {
           return (
             <NavSublink
               key={sl.path}
+              isWarningVisible={isShowWarn}
               isActive={currSlide === sl.path}
               onClickNav={{
                 onClick: () => {
@@ -649,3 +538,191 @@ const assmSubmenus: {
     path: 'epilogue',
   },
 ];
+
+const PublishButton = () => {
+  const [showBtn, setShowBtn] = useState(false);
+  const { jobForm } = useJobForm();
+
+  useEffect(() => {
+    if (slidePathToNum[jobForm.currSlide] >= 3 || jobForm.formType === 'edit') {
+      setShowBtn(true);
+    }
+  }, [jobForm.currSlide]);
+
+  return <>{showBtn && <JobPublishButton />}</>;
+};
+
+const SideSection = () => {
+  const { jobForm, handleUpdateFormFields } = useJobForm();
+
+  const currSlide = jobForm.currSlide;
+  const { recruiterUser } = useAuthDetails();
+  const router = useRouter();
+  const onChangeScore = (e, paramKey: string) => {
+    if (Number(e.target.value) < 0 || Number(e.target.value) > 100) return;
+    handleUpdateFormFields({
+      path: `resumeScoreSettings.${paramKey}`,
+      value: Number(e.target.value),
+    });
+  };
+
+  if (currSlide === 'phoneScreening') {
+    return (
+      <AssessmentSide
+        isDisableAssessmentVisible={false}
+        textPreview='Preview how candidates will be taking the screening questions'
+        onClickAssessmentPreview={{
+          onClick: () => {
+            window.open(
+              `${
+                process.env.NEXT_PUBLIC_HOST_NAME
+              }/candidate-phone-screening?job_post_id=${get(
+                jobForm,
+                'jobPostId',
+                '',
+              )}&recruiter_email=${recruiterUser.email}&recruiter_name=${[
+                recruiterUser.first_name,
+                recruiterUser.last_name,
+              ].join(' ')}`,
+              '_blank',
+            );
+          },
+        }}
+      />
+    );
+  } else if (currSlide === 'screening') {
+    return (
+      <AssessmentSide
+        onClickDisableAssessment={{
+          onClick: async () => {
+            const { count } = await supabase
+              .from('applications')
+              .select('id')
+              .eq('job_id', jobForm.jobPostId)
+              .eq('status', 'assessment');
+            if (jobForm.formType === 'new' || !count) {
+              handleUpdateFormFields({
+                path: 'assessment',
+                value: false,
+              });
+            } else {
+              toast.warning(
+                `cadidate${
+                  count === 1 ? '' : 's'
+                } under assessment. Disabling forbidden!`,
+              );
+            }
+          },
+        }}
+        textPreviewButton={'Preview'}
+        onClickAssessmentPreview={{
+          onClick: () => {
+            window.open(
+              `/assessment?job_id=${router.query.job_id}&mode=preview`,
+              'blank',
+            );
+          },
+        }}
+      />
+    );
+  } else if (currSlide === 'resumeScore') {
+    return (
+      <>
+        <ScoreWeightage
+          slotScoreWheel={
+            <>
+              <Stack
+                direction={'row'}
+                width={'60%'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                gap={'40px'}
+              >
+                <ScoreWheel
+                  id={'ScoreWheelSetting'}
+                  parameter_weights={jobForm.formFields.resumeScoreSettings}
+                />
+              </Stack>
+            </>
+          }
+          slotScorePercent={
+            <>
+              <ScorePercentage
+                colorPropsBg={{
+                  style: {
+                    backgroundColor: '#30AABC',
+                  },
+                }}
+                textTitle={'Experience'}
+                slotInputPercent={
+                  <>
+                    <UITextField
+                      type='number'
+                      width='50px'
+                      value={jobForm.formFields.resumeScoreSettings.experience}
+                      onChange={(e) => {
+                        onChangeScore(e, 'experience');
+                      }}
+                    />
+                  </>
+                }
+              />
+              <ScorePercentage
+                colorPropsBg={{
+                  style: {
+                    backgroundColor: '#886BD8',
+                  },
+                }}
+                textTitle={'Skill'}
+                slotInputPercent={
+                  <>
+                    <UITextField
+                      type='number'
+                      width='50px'
+                      value={jobForm.formFields.resumeScoreSettings.skills}
+                      onChange={(e) => {
+                        onChangeScore(e, 'skills');
+                      }}
+                    />
+                  </>
+                }
+              />
+              <ScorePercentage
+                colorPropsBg={{
+                  style: {
+                    backgroundColor: '#5D7DF5',
+                  },
+                }}
+                textTitle={'Education'}
+                slotInputPercent={
+                  <>
+                    <UITextField
+                      type='number'
+                      width='50px'
+                      value={jobForm.formFields.resumeScoreSettings.education}
+                      onChange={(e) => {
+                        onChangeScore(e, 'education');
+                      }}
+                    />
+                  </>
+                }
+              />
+            </>
+          }
+          onClickEqualize={{
+            onClick: () => {
+              handleUpdateFormFields({
+                path: `resumeScoreSettings`,
+                value: {
+                  skills: 34,
+                  experience: 33,
+                  education: 33,
+                },
+              });
+            },
+          }}
+        />
+      </>
+    );
+  }
+};

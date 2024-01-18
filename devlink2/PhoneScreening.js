@@ -9,9 +9,6 @@ export function PhoneScreening({
   slotQuestions,
   slotEndText,
   onclickPreview = {},
-  onclickProceedBtn = {},
-  proceedButtonText = "Proceed to Assessment",
-  isProceedButtonVisible = true,
 }) {
   return (
     <_Component
@@ -26,7 +23,7 @@ export function PhoneScreening({
           {"Phone Screening"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
+          className={_utils.cx(_styles, "text-gray-600", "max-width-500")}
           tag="div"
         >
           {
@@ -34,9 +31,19 @@ export function PhoneScreening({
           }
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotWelcomeText}</_Builtin.Block>
-      <_Builtin.Block tag="div">{slotQuestions}</_Builtin.Block>
-      <_Builtin.Block tag="div">{slotEndText}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "screening-body")}
+        tag="div"
+      >
+        <_Builtin.Block tag="div">{slotWelcomeText}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "flex-v", "gap-10")}
+          tag="div"
+        >
+          {slotQuestions}
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotEndText}</_Builtin.Block>
+      </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-415")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "scr-preview-btn")}
@@ -59,29 +66,6 @@ export function PhoneScreening({
             {"Preview screening form"}
           </_Builtin.Block>
         </_Builtin.Block>
-        {isProceedButtonVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "scr-proceed-button")}
-            tag="div"
-            {...onclickProceedBtn}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-color-white")}
-              tag="div"
-            >
-              {proceedButtonText}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "icon-block", "_16x16")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "svg-icon")}
-                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.1464%202.24645C9.95118%202.44171%209.95118%202.75829%2010.1464%202.95355L14.1929%207L0.499999%207C0.223857%207%20-5.04966e-07%207.22386%20-4.80825e-07%207.5C-4.56684e-07%207.77614%200.223857%208%200.5%208L14.2929%208L10.1464%2012.1464C9.95118%2012.3417%209.95118%2012.6583%2010.1464%2012.8536C10.3417%2013.0488%2010.6583%2013.0488%2010.8536%2012.8536L15.4536%208.25355C15.8488%207.85829%2015.8488%207.24171%2015.4536%206.84645L10.8536%202.24645C10.6583%202.05119%2010.3417%202.05119%2010.1464%202.24645Z%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
       </_Builtin.Block>
     </_Component>
   );

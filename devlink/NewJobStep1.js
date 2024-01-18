@@ -10,6 +10,8 @@ export function NewJobStep1({
   onClickProceed = {},
   isProceedButtonDisable = true,
   isAddJob = true,
+  slotWarning,
+  isWarningVisible = true,
 }) {
   return (
     <_Component
@@ -41,6 +43,9 @@ export function NewJobStep1({
             }
           </_Builtin.Block>
         </_Builtin.Block>
+      ) : null}
+      {isWarningVisible ? (
+        <_Builtin.Block tag="div">{slotWarning}</_Builtin.Block>
       ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper", "height-auto")}

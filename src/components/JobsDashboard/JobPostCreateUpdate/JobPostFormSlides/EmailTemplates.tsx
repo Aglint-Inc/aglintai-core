@@ -6,10 +6,15 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { get } from 'lodash';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { EditEmail, EmailTemplateCards, EmailTemplatesStart } from '@/devlink';
+import {
+  EditEmail,
+  EmailTemplateCards,
+  EmailTemplatesStart,
+  JobEditWarning,
+  JobWarningList,
+} from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
@@ -20,12 +25,10 @@ import { palette } from '@/src/context/Theme/Theme';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
-import JobPublishButton from '../JobForm/PublishButton';
 import { EmailDetails, useJobForm } from '../JobPostFormProvider';
 
 const Emails = () => {
-  const { jobForm } = useJobForm();
-  const router = useRouter();
+  const { jobForm, formWarnings } = useJobForm();
 
   const [editTemplate, setEditTemplate] = useState('');
   const emails: EmailTemplateParams[] = Object.keys(
@@ -51,6 +54,20 @@ const Emails = () => {
   return (
     <>
       <EmailTemplatesStart
+        isWarningVisible={formWarnings.templates.err.length > 0}
+        slotWarning={
+          <>
+            <JobEditWarning
+              slotWarningList={
+                <>
+                  {formWarnings.templates.err.map((er, index) => (
+                    <JobWarningList key={index} textWarning={er} />
+                  ))}
+                </>
+              }
+            />
+          </>
+        }
         slotEmailTemplateCards={
           <>
             {emails.map((email) => {
@@ -72,28 +89,6 @@ const Emails = () => {
                 />
               );
             })}
-          </>
-        }
-        isAddJob={jobForm.formType == 'new'}
-        isProceedDisable={false}
-        // onClickDone={{
-        //   onClick: () => {
-        //     router.replace('/jobs');
-        //   },
-        // }}
-        slotButtonPrimaryRegular={
-          <>{jobForm.formType === 'new' && <JobPublishButton />}</>
-        }
-        slotBasicButton={
-          <>
-            <AUIButton
-              variant='text'
-              onClick={() => {
-                router.replace('/jobs');
-              }}
-            >
-              Save To Draft
-            </AUIButton>
           </>
         }
       />

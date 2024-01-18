@@ -93,15 +93,15 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
   if (qn.type === 'singleSelect' || qn.type === 'multiSelect') {
     candRespComp = (
       <>
-        <Stack my={5}>
+        <Stack>
           {qn.options.map((op) => {
             return (
               <Stack
                 key={op.id}
                 direction={'row'}
                 gap={qn.type === 'multiSelect' && 1.5}
-                my={qn.type === 'multiSelect' && 1.5}
                 alignItems={'center'}
+                my={qn.type === 'multiSelect' && 0.5}
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (qn.type === 'multiSelect') {
@@ -169,10 +169,6 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
     <PhoneScreeningQ
       onClickBack={{
         onClick: () => {
-          updateState({
-            path: 'showStartMessage',
-            value: true,
-          });
           updateState({
             path: 'currentQn',
             value: qnNo - 1,

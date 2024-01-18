@@ -11,11 +11,13 @@ export function SubMenu({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "relative")}
+      className={_utils.cx(_styles, "relative", "mt-12")}
       tag="div"
       {...onClickMenu}
     >
-      <_Builtin.Block tag="div">{textSubMenu}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "text-block-31")} tag="div">
+        {textSubMenu}
+      </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "active-text-sub")}

@@ -47,6 +47,7 @@
 
 .job-sidebar-main-block.cj-step-1.height-auto {
   height: auto;
+  margin-bottom: 20px;
 }
 
 .job-sidebar-main-block.cj-step-3 {
@@ -90,7 +91,7 @@
 
 .div-block-507 {
   display: flex;
-  margin-bottom: 32px;
+  margin-bottom: 26px;
   flex-direction: column;
   grid-column-gap: 8px;
   grid-row-gap: 8px;

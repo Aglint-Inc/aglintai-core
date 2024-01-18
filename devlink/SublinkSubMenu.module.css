@@ -25,6 +25,9 @@
 }
 
 .div-block-709 {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   padding-top: 10px;
   padding-right: 16px;
@@ -35,6 +38,8 @@
 }
 
 .div-block-709.no-padding {
+  position: relative;
+  z-index: 1;
   padding-top: 0px;
   padding-right: 0px;
   padding-left: 0px;
@@ -71,6 +76,12 @@
 
 .icons.cursor-pointer.p-4 {
   padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
 }
 
 .icons.curser-hover-pointer {
@@ -222,11 +233,8 @@
 
 .nav-sub-sub {
   display: flex;
-  margin-top: 14px;
   padding-right: 26px;
   padding-left: 26px;
   flex-direction: column;
   align-items: flex-start;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
 }
