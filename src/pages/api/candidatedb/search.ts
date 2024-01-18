@@ -10,8 +10,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Candidate } from '@/src/types/candidates.types';
 import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 
-import { Supabase } from '../candidateUpload/types';
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -83,7 +81,7 @@ export default async function handler(
 
 const insertCandidates = async (
   candidates: AglintCandidatesTypeDB[],
-  supabase: Supabase,
+  supabase: any,
   searchQuery,
 ) => {
   const dbCandidates = candidates.map((cand) => {
@@ -125,7 +123,7 @@ const insertCandidates = async (
 
 const checkCandidates = async (
   existingIds: string[],
-  supabase: Supabase,
+  supabase: any,
 ): Promise<AglintCandidatesTypeDB[]> => {
   const { data, error } = await supabase
     .from('aglint_candidates')
