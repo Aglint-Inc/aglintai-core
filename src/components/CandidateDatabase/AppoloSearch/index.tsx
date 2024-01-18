@@ -200,12 +200,14 @@ function AppoloSearch() {
 
   const emailOutReachHandler = async (selCandidate: Candidate) => {
     if (selCandidate.email?.includes('email_not_unlocked')) {
+
+      
       const resEmail = await axios.post('/api/candidatedb/get-email', {
         id: selCandidate.id,
       });
 
       if (resEmail.status !== 200) {
-        toast.error('Something went wrong');
+        toast.error('Unable to fetch email. Please try again later.');
         return;
       }
 
@@ -356,16 +358,18 @@ function AppoloSearch() {
                     onClickCheck={{
                       onClick: (e) => {
                         e.stopPropagation();
-                        let selCand = [];
-                        if (!selectedCandidates) {
-                          selCand = [candidate];
-                        }
                         if (selectedCandidates?.includes(candidate)) {
-                          selCand = selectedCandidates.filter(
-                            (c) => c !== candidate,
+                          setSelectedCandidates(
+                            selectedCandidates.filter(
+                              (c) => c.id !== candidate.id,
+                            ),
                           );
+                        } else {
+                          setSelectedCandidates([
+                            ...selectedCandidates,
+                            candidate,
+                          ]);
                         }
-                        setSelectedCandidates(selCand);
                       },
                     }}
                   />

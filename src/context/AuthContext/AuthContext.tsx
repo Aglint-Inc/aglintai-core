@@ -130,7 +130,6 @@ const AuthProvider = ({ children }) => {
           if (recruiterUser[0].is_deactivated) {
             // route something don't login
           }
-          // @ts-ignore
           (recruiterUser[0].join_status || '').toLocaleLowerCase() ===
             'invited' &&
             handleUpdateProfile(
@@ -138,17 +137,34 @@ const AuthProvider = ({ children }) => {
               data.session.user.id,
             );
           setRecruiterUser(recruiterUser[0]);
-          const { data: recruiter, error } = await supabase
-            .from('recruiter')
+
+          const { data: recruiterRel, error: errorRel } = await supabase
+            .from('recruiter_relation')
             .select('*')
-            .eq('id', recruiterUser[0].recruiter_id);
-          if (!error && recruiter.length > 0) {
-            setRecruiter({
-              ...recruiter[0],
-              socials: recruiter[0]?.socials as unknown as SocialsType,
-            });
-            const temp = recruiter[0]?.roles[String(recruiterUser[0]?.role)];
-            temp && setRole(temp as RoleType);
+            .match({ user_id: data.session.user.id, is_active: true });
+
+          if (!errorRel) {
+            if (recruiterRel.length > 0) {
+              const { data: recruiter, error } = await supabase
+                .from('recruiter')
+                .select('*')
+                .eq('id', recruiterRel[0].recruiter_id);
+              if (!error && recruiter.length > 0) {
+                setRecruiter({
+                  ...recruiter[0],
+                  socials: recruiter[0]?.socials as unknown as SocialsType,
+                });
+                const temp =
+                  recruiter[0]?.roles[String(recruiterUser[0]?.role)];
+                temp && setRole(temp as RoleType);
+              }
+            } else {
+              toast.error(
+                'Something went wrong. Please contact aglint support.',
+              );
+            }
+          } else {
+            toast.error('Something went wrong. Please contact aglint support.');
           }
         } else {
           router.push(pageRoutes.SIGNUP);

@@ -20,7 +20,7 @@ const DashboardComp = () => {
   const router = useRouter();
   const { jobsData, initialLoad } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
-    jobsData.jobs?.filter((job: any) => !job.is_campus),
+    jobsData.jobs,
   );
   const { recruiter } = useAuthDetails();
 
@@ -81,7 +81,7 @@ const DashboardComp = () => {
         <Loader />
       ) : (
         <>
-          {jobsData?.jobs?.filter((job: any) => !job.is_campus)?.length == 0 ? (
+          {jobsData?.jobs?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
                 router.push('/jobs/new?flow=manual');

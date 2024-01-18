@@ -21,15 +21,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   if (jobs?.length == 0) {
     return (
       <YTransform uniqueKey={router.query.status}>
-        <JobEmptyState
-          onClickHere={{
-            onClick: () => {
-              router.push(`${pageRoutes.CREATEJOB}`, undefined, {
-                shallow: true,
-              });
-            },
-          }}
-        />
+        <JobEmptyState />
       </YTransform>
     );
   }
@@ -45,7 +37,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
         return (
           <>
-            <ScrollList uniqueKey={ind}>
+            <ScrollList uniqueKey={job.id}>
               <JobsListingCard
                 slotAtsBadge={
                   job.posted_by == POSTED_BY.LEVER ? (
