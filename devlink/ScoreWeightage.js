@@ -36,12 +36,6 @@ export function ScoreWeightage({
           <_Builtin.Block tag="div" {...onClickEqualize}>
             <ButtonOutlinedRegular textLabel="Reset" />
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"%"}
-          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
