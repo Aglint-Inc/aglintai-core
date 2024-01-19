@@ -1,7 +1,8 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { LoaderSvg } from '@/devlink';
 import { CompanyProfileHeader, CompanySwitchDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
@@ -28,7 +29,7 @@ function CompanyList() {
       await supabase
         .from('recruiter_relation')
         .select()
-        .eq('user_id', userDetails.user.id);
+        .eq('user_id', userDetails?.user.id);
     setAllrecruterRelation(recruiter_relation as any);
     if (!recruiter_relation_error)
       recruiter_relation.map(async (ele) => {
@@ -47,7 +48,8 @@ function CompanyList() {
     const role = userDetails?.user.user_metadata.role?.toLowerCase() as any;
     if (
       role &&
-      (role === companyType.AGENCY || role === companyType.CONSULTANT)
+      (role === companyType.AGENCY?.toLowerCase() ||
+        role === companyType.CONSULTANT?.toLowerCase())
     ) {
       getCompanies();
     }
@@ -55,8 +57,10 @@ function CompanyList() {
 
   const [openCompanyList, setOpenCompanyList] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
+  const [companyUpdateLoader, setCompanyUploadLoader] = useState(null);
 
   async function handleClick(ele: any) {
+    setCompanyUploadLoader(ele.id);
     for (const recruterRelation of allrecruterRelation as any) {
       await updateStatus(
         recruterRelation?.recruiter_id,
@@ -77,7 +81,9 @@ function CompanyList() {
       .then(({ data }) => {
         if (data[0]?.is_active) {
           setRecruiter(ele);
+          setOpenCompanyList(false);
         }
+        setCompanyUploadLoader(null);
       });
   }
 
@@ -114,31 +120,61 @@ function CompanyList() {
         isDropdownBodyVisible={openCompanyList}
         slotCompanyList={allCompanies.map((ele, i) => {
           return (
-            <CompanyProfileHeader
-              slotLogo={
-                <Avatar
-                  src={ele?.logo}
-                  variant='rounded'
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    background: '#fff',
-                    '& .MuiAvatar-img ': {
-                      objectFit: 'contain',
-                    },
-                  }}
-                />
-              }
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+              px={'5px'}
+              borderRadius={'10px'}
               key={i}
-              onclickCompany={{
-                onClick: () => {
-                  setOpenCompanyList(false);
-                  // router.push(pageRoutes.COMPANY);
-                  handleClick(ele);
-                },
+              bgcolor={ele.name === recruiter.name && 'grey.100'}
+              onClick={() => {
+                handleClick(ele);
               }}
-              companyName={ele?.name}
-            />
+              sx={{
+                cursor: 'pointer',
+                // '&:hover': {
+                //   bgcolor: 'grey.100',
+                // },
+              }}
+            >
+              <CompanyProfileHeader
+                slotLogo={
+                  <Avatar
+                    src={ele?.logo}
+                    variant='rounded'
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      background: '#fff',
+                      '& .MuiAvatar-img ': {
+                        objectFit: 'contain',
+                      },
+                    }}
+                  />
+                }
+                onclickCompany={{
+                  onClick: () => {
+                    // router.push(pageRoutes.COMPANY);
+                    handleClick(ele);
+                  },
+                }}
+                companyName={ele?.name}
+              />
+              {ele.id === companyUpdateLoader && (
+                <Stack
+                  sx={{
+                    '& svg': {
+                      width: '24px',
+                      height: '24px',
+                    },
+                    px: '10px',
+                  }}
+                >
+                  <LoaderSvg />
+                </Stack>
+              )}
+            </Stack>
           );
         })}
         onclickAddButton={{
