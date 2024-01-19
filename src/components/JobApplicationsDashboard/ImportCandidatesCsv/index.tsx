@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
@@ -16,9 +16,12 @@ import AUIButton from '../../Common/AUIButton';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
-function ImportCandidatesCSV() {
-  const { setOpenImportCandidates, handleJobApplicationRefresh } =
-    useJobApplications();
+const ImportCandidatesCSV = ({
+  setOpenImportCandidates,
+}: {
+  setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { handleJobApplicationRefresh } = useJobApplications();
 
   const { handleBulkCsvUpload } = useUploadCandidate();
 
@@ -196,5 +199,5 @@ function ImportCandidatesCSV() {
       </Stack>
     </Stack>
   );
-}
+};
 export default ImportCandidatesCSV;

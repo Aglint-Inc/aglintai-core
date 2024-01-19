@@ -27,7 +27,7 @@ export const handleRead = async (
   filter?: ReadJobApplicationApi['request']['filter'],
   search?: ReadJobApplicationApi['request']['search'],
 ) => {
-  const safeSections = [...new Set(sections)];
+  const safeSections = [...new Set(sections.filter((s) => s))];
   const promises = await createMultiPromise(
     safeSections,
     job_id,
@@ -262,12 +262,12 @@ export const readNewJobApplicationDbAction = async (
       text_search_qry: search || '',
 
       is_locat_filter_on: filter.location.active,
-      max_lat: coordinates?.latitude?.max || null,
-      min_lat: coordinates?.latitude?.min || null,
-      max_long: coordinates?.longitude?.max || null,
-      min_long: coordinates?.longitude?.min || null,
-      from_rec_num: range.start,
-      end_rec_num: range.end + 1,
+      max_lat: coordinates?.latitude?.max ?? null,
+      min_lat: coordinates?.latitude?.min ?? null,
+      max_long: coordinates?.longitude?.max ?? null,
+      min_long: coordinates?.longitude?.min ?? null,
+      from_rec_num: range?.start ?? null,
+      end_rec_num: range?.end + 1 ?? null,
     })
     .abortSignal(controller.signal);
 

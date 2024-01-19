@@ -27,13 +27,7 @@ const FilterJobApplications = ({
 }: {
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const {
-    searchParameters,
-    // handleJobApplicationFilter,
-    // allApplicationDisable,
-    section,
-    showInterview,
-  } = useJobApplications();
+  const { searchParameters, section, showInterview } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
   const [filters, setFilters] = useState(searchParameters.filter);
   const filterCount = Object.entries(searchParameters.filter).reduce(
@@ -96,8 +90,8 @@ const ApplicationFilterBody = ({
     defaultFilters,
     searchParameters,
     handleJobApplicationFilter,
-    allApplicationDisable,
-    setAllApplicationDisable,
+    allApplicationsDisabled,
+    setAllApplicationsDisabled,
     showInterview,
   } = useJobApplications();
 
@@ -114,9 +108,9 @@ const ApplicationFilterBody = ({
 
   const handleSubmit = async (filters: FilterParameter) => {
     const { newFilters } = validateFilters(filters, defaultFilters);
-    if (!allApplicationDisable) {
+    if (!allApplicationsDisabled) {
       setFilters({ ...newFilters });
-      setAllApplicationDisable(true);
+      setAllApplicationsDisabled(true);
       const { confirmation, filteredCount } = await handleJobApplicationFilter({
         ...searchParameters,
         filter: { ...newFilters },
@@ -124,7 +118,7 @@ const ApplicationFilterBody = ({
       if (confirmation) {
         setApplicationLimit(filteredCount);
       }
-      setAllApplicationDisable(false);
+      setAllApplicationsDisabled(false);
     }
   };
   const isDefault = captureChanges(filters, defaultFilters, showInterview);
@@ -143,9 +137,9 @@ const ApplicationFilterBody = ({
     >
       <Stack mr={'auto'}>
         <RefreshBtn
-          isDisabled={!isDefault || allApplicationDisable}
+          isDisabled={!isDefault || allApplicationsDisabled}
           onClick={async () => {
-            if (!(!isDefault || allApplicationDisable))
+            if (!(!isDefault || allApplicationsDisabled))
               await handleSubmit({ ...defaultFilters });
           }}
           text={'Reset'}
@@ -155,18 +149,18 @@ const ApplicationFilterBody = ({
       <ButtonOutlinedRegular
         onClickButton={{
           onClick: async () => {
-            if (!(!hasChanges || allApplicationDisable)) await handleCancel();
+            if (!(!hasChanges || allApplicationsDisabled)) await handleCancel();
           },
         }}
-        isDisabled={!hasChanges || allApplicationDisable}
+        isDisabled={!hasChanges || allApplicationsDisabled}
         textLabel={'Cancel'}
       />
       <AUIButton
         onClick={async () => {
-          if (!(!hasChanges || allApplicationDisable))
+          if (!(!hasChanges || allApplicationsDisabled))
             await handleSubmit({ ...filters });
         }}
-        disabled={!hasChanges || allApplicationDisable}
+        disabled={!hasChanges || allApplicationsDisabled}
       >
         Apply filters
       </AUIButton>

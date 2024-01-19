@@ -53,21 +53,25 @@ const ApplicationCard = ({
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
-  const { section, checkListManager } = useJobApplications();
+  const {
+    section,
+    cardStates: {
+      checkList: { list },
+    },
+    showInterview,
+  } = useJobApplications();
   const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
   const resumeScore = <ResumeScore application={application} />;
-  const interviewScore =
-    section === JobApplicationSections.NEW ||
-    section === JobApplicationSections.SCREENING ? (
-      <></>
-    ) : (
-      <InterviewScore application={application} />
-    );
-  const isChecked = checkListManager.checkList.has(application.id);
+  const interviewScore = showInterview ? (
+    <InterviewScore application={application} />
+  ) : (
+    <></>
+  );
+  const isChecked = list.has(application.id);
   const name = getCandidateName(
     application.candidates.first_name,
     application.candidates.last_name,
@@ -81,7 +85,7 @@ const ApplicationCard = ({
     getScreeningStatus(application);
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
-    [checkListManager.checkList.has(application.id)],
+    [list.has(application.id)],
   );
   return !detailedView ? (
     <AllCandidateListItem

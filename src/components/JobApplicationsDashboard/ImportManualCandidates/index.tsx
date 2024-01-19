@@ -70,9 +70,12 @@ const validatePhone = (value: string) => {
   );
 };
 
-const ImportManualCandidates = () => {
-  const { setOpenImportCandidates, handleJobApplicationRefresh } =
-    useJobApplications();
+const ImportManualCandidates = ({
+  setOpenImportCandidates,
+}: {
+  setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { handleJobApplicationRefresh } = useJobApplications();
   const [applicant, setApplicant] = useState(initialFormFields);
   const [loading, setLoading] = useState(false);
   const { handleUploadCandidate } = useUploadCandidate();

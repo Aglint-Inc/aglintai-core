@@ -6,8 +6,13 @@ import {
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import { PhoneScreeningResponseType } from '../KnockOffQns/ScreeningCtxProvider';
+
+export const handleOngoingWarning = () => {
+  toast.warning('Please wait till the ongoing process has finished');
+};
 
 export const capitalize = (str: string) => {
   if (str) {

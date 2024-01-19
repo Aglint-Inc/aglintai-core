@@ -17,7 +17,7 @@ export function AllCandidateListItem({
   slotProfileImage,
   name = "Dianne Russell",
   jobTitle = "--",
-  isInterviewVisible = false,
+  isInterviewVisible = true,
   slotResumeScore,
   slotAssessmentScore,
   isHighlighted = false,
@@ -141,29 +141,6 @@ export function AllCandidateListItem({
             {slotResumeScore ?? <ResumeTag />}
           </_Builtin.Block>
         </_Builtin.Block>
-        {isInterviewVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper")}
-            tag="div"
-          >
-            {isHighlighted ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-item-highlight")}
-                tag="div"
-              />
-            ) : null}
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-hover-bg")}
-              tag="div"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "assessment")}
-              tag="div"
-            >
-              {slotAssessmentScore ?? <AssessmentScore />}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
         {isScreeningVisible ? (
           <_Builtin.Block
             className={_utils.cx(
@@ -225,6 +202,29 @@ export function AllCandidateListItem({
                   </_Builtin.Block>
                 ) : null}
               </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
+        {isInterviewVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-column-wrapper")}
+            tag="div"
+          >
+            {isHighlighted ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-list-item-highlight")}
+                tag="div"
+              />
+            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-hover-bg")}
+              tag="div"
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-column", "assessment")}
+              tag="div"
+            >
+              {slotAssessmentScore ?? <AssessmentScore />}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

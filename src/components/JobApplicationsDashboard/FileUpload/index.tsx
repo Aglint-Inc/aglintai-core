@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import {
@@ -16,7 +16,11 @@ import toast from '@/src/utils/toast';
 
 import useUploadCandidate from '../ImportManualCandidates/hooks';
 
-const ResumeUpload = ({ setOpenSidePanel }) => {
+const ResumeUpload = ({
+  setOpenImportCandidates,
+}: {
+  setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [selectedfile, setSelectedFile] = useState([]);
   const [loading, setLoading] = useState(false);
   const { handleJobApplicationRefresh } = useJobApplications();
@@ -56,7 +60,7 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
     const { confirmation } = await handleBulkResumeUpload(selectedfile);
     setLoading(false);
     setSelectedFile([]);
-    setOpenSidePanel(false);
+    setOpenImportCandidates(false);
     if (confirmation) {
       await handleJobApplicationRefresh();
       posthog.capture('ADD candidates using resume');

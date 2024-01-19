@@ -122,8 +122,8 @@ const ScoreWheel = ({
                 ? hoverKey
                   ? `${parameter_weights[hoverKey] ?? unused.count}%`
                   : unused.isUnused
-                  ? `${unused.count}%`
-                  : '100%'
+                    ? `${unused.count}%`
+                    : '100%'
                 : `${
                     hoverKey
                       ? Math.trunc(
@@ -137,11 +137,11 @@ const ScoreWheel = ({
               ? hoverKey
                 ? capitalize(hoverKey)
                 : unused.isUnused
-                ? 'Unused'
-                : 'Complete'
+                  ? 'Unused'
+                  : 'Complete'
               : hoverKey
-              ? capitalize(hoverKey)
-              : 'Overall Score'}
+                ? capitalize(hoverKey)
+                : 'Overall Score'}
           </Stack>
         </Stack>
       </Stack>
@@ -155,7 +155,7 @@ const getStyles = (
   score: ScoreWheelParams,
   degree?: number,
 ) => {
-  const lightColors = ['#886BD8', '#30AABC', '#5D7DF5'];
+  const lightColors = ['#e7e1f7', '#d6eef2', '#dfe5fd'];
   const disabledColor = '#e9ebed';
   const unusedColor = '#ddd';
   const count = Object.keys(weights).length;

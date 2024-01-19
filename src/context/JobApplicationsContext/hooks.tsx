@@ -1,8 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
+import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
   checkSyncCand,
   FilterParameter,
@@ -11,10 +13,6 @@ import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
 import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { handleJobApplicationApi } from '@/src/pages/api/jobApplications/utils';
-import {
-  Applications,
-  ApplicationsUpdate,
-} from '@/src/types/applications.types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -24,13 +22,7 @@ import {
   JobApplicationSections,
   Parameters,
 } from './types';
-import {
-  application_relationships,
-  bulkCreateJobApplicationDbAction,
-  bulkUpdateJobApplicationDbAction,
-  getRange,
-  universalUpdateDbAction,
-} from './utils';
+import { getRange } from './utils';
 import { useJobs } from '../JobsContext';
 import { CountJobs } from '../JobsContext/types';
 // eslint-disable-next-line no-unused-vars
@@ -165,9 +157,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     }, {}) as ReadJobApplicationApi['request']['ranges'];
 
   const [atsSync, setAtsSync] = useState(false);
-  const [openImportCandidates, setOpenImportCandidates] = useState(false);
-  const [openManualImportCandidates, setOpenManualImportCandidates] =
-    useState(false);
 
   const defaultFilters: FilterParameter = {
     interview_score: {
@@ -196,25 +185,17 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     ...initialParameters,
   });
 
-  const [allApplicationDisable, setAllApplicationDisable] = useState(false);
-  const [checkListManager, setCheckListManager] = useState({
-    disable: false,
-    checkList: new Set<string>(),
-  });
-
-  const updateTick = useRef(false);
-
   const showInterview =
     section !== JobApplicationSections.NEW &&
     section !== JobApplicationSections.SCREENING &&
     initialJobLoad &&
-    job.assessment;
+    job?.assessment;
 
   const activeSections = Object.values(JobApplicationSections).reduce(
     (acc, curr) => {
       if (
         curr === JobApplicationSections.ASSESSMENT &&
-        !(initialJobLoad && job.assessment)
+        !(initialJobLoad && job?.assessment)
       )
         return acc;
       acc.push(curr);
@@ -223,22 +204,42 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     [] as JobApplicationSections[],
   );
 
-  //SECONDARY
-  const handleJobApplicationBulkCreate = async (
-    inputData: JobApplication[],
+  const [allApplicationsDisabled, setAllApplicationsDisabled] = useState(false);
+  const [cardStateManager, setCardStateManager] = useState(
+    Object.assign(
+      {},
+      ...activeSections.map((a) => ({
+        [a]: {
+          checkList: {
+            list: new Set<string>(),
+            disabled: false,
+          },
+          disabledList: new Set<string>(),
+        },
+      })),
+    ) as {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]?: {
+        checkList: {
+          list: Set<string>;
+          disabled: boolean;
+        };
+        disabledList: Set<string>;
+      };
+    },
+  );
+  const cardStates = cardStateManager[section];
+  const setCardStates = (
+    // eslint-disable-next-line no-unused-vars
+    callBack: (prev: typeof cardStates) => typeof cardStates,
   ) => {
-    if (recruiter) {
-      const { data, error } = await bulkCreateJobApplicationDbAction(
-        jobId,
-        inputData,
-      );
-      if (data) {
-        await handleJobApplicationRefresh();
-        return true;
-      }
-      handleJobApplicationError(error);
-      return false;
-    }
+    const newValue = callBack(cardStates);
+    setCardStateManager((prev) => {
+      return {
+        ...prev,
+        [section]: cloneDeep(newValue),
+      };
+    });
   };
 
   //PRIMARY
@@ -264,10 +265,9 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         }
         handleUIJobUpdate({ ...job, count: unFilteredCount });
         dispatch(action);
-        updateTick.current = !updateTick.current;
         return { confirmation: true, filteredCount, unFilteredCount };
       }
-      /*if (initialLoad)*/ handleJobApplicationError(error);
+      if (initialLoad) handleJobApplicationError(error);
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
@@ -294,7 +294,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           setAtsSync(is_sync);
         }
         dispatch(action);
-        updateTick.current = !updateTick.current;
         return { confirmation: true, filteredCount, unFilteredCount };
       }
       handleJobApplicationError(error);
@@ -326,7 +325,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     section: JobApplicationSections,
   ) => {
     if (recruiter) {
-      setAllApplicationDisable(true);
+      setAllApplicationsDisabled(true);
       const newRanges = {
         ...ranges,
         [section]: getRange(pageNumber, paginationLimit),
@@ -341,93 +340,16 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         setPageNumber((prev) => {
           return { ...prev, [section]: pageNumber };
         });
-        setAllApplicationDisable(false);
+        setAllApplicationsDisabled(false);
         return true;
       }
     }
-    setAllApplicationDisable(false);
+    setAllApplicationsDisabled(false);
     return false;
   };
 
-  const handleJobApplicationUpdate = async (
-    jobApplication: Partial<Omit<JobApplication, 'id'>>,
-    applicationId: JobApplication['id'],
-  ): Promise<Partial<JobApplication>> => {
-    const foreignChanges = (
-      Object.keys(jobApplication) as (keyof JobApplication)[]
-    ).reduce(
-      (acc, curr) => {
-        if (
-          application_relationships.includes(
-            curr as (typeof application_relationships)[number],
-          )
-        ) {
-          const relation = curr as (typeof application_relationships)[number];
-          const { id, ...safeObject } = jobApplication[relation];
-          acc.promises.push(universalUpdateDbAction(relation, safeObject, id));
-          acc.tables.push(relation);
-        }
-        return acc;
-      },
-      { promises: [], tables: [] },
-    );
-    const localChanges = Object.entries(jobApplication).reduce(
-      (acc, [key, value]) => {
-        if (![...application_relationships, 'id'].includes(key))
-          return { ...acc, [key]: value };
-        return acc;
-      },
-      {} as ApplicationsUpdate,
-    );
-    const localPromise = universalUpdateDbAction(
-      'applications',
-      localChanges,
-      applicationId,
-    );
-    const responses = await Promise.allSettled<boolean>([
-      ...foreignChanges.promises,
-      localPromise,
-    ]);
-    const updatedValues = responses.reduce((acc, curr, i) => {
-      if (curr.status === 'fulfilled') {
-        if (i === responses.length - 1 && curr.value)
-          return { ...acc, ...localChanges, id: applicationId };
-        else
-          return {
-            ...acc,
-            [foreignChanges.tables[i]]:
-              jobApplication[foreignChanges.tables[i]],
-          };
-      }
-      return acc;
-    }, {}) as Partial<JobApplication>;
-
-    const action: Action = {
-      type: ActionType.UPDATE,
-      payload: updatedValues,
-    };
-    dispatch(action);
-    return updatedValues;
-  };
-
   //SECONDARY
-  const handleJobApplicationBulkUpdate = async (
-    updatedApplicationData: Applications[],
-  ) => {
-    const { data, error: e1 } = await bulkUpdateJobApplicationDbAction(
-      updatedApplicationData,
-    );
-    if (data) {
-      await handleJobApplicationRefresh();
-      return true;
-    } else {
-      handleJobApplicationError(e1);
-      return false;
-    }
-  };
-
-  //SECONDARY
-  const handleUpdateJobStatus = async (
+  const handleJobApplicationSectionUpdate = async (
     sections: {
       source: JobApplicationSections;
       destination: JobApplicationSections;
@@ -482,7 +404,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           count: { ...job.count, ...unFilteredCount },
         });
         dispatch(action);
-        updateTick.current = !updateTick.current;
         return { confirmation: true, filteredCount, unFilteredCount };
       }
       handleJobApplicationError(error);
@@ -519,11 +440,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     parameters: Parameters,
     signal?: AbortSignal,
   ) => {
-    const prevParams = JSON.parse(
-      JSON.stringify(searchParameters),
-    ) as typeof searchParameters;
     setSearchParameters({ ...parameters });
-    setAllApplicationDisable(true);
+    setAllApplicationsDisabled(true);
     const { confirmation, filteredCount } = await handleJobApplicationRead(
       {
         job_id: jobId,
@@ -532,11 +450,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       },
       signal,
     );
-    setAllApplicationDisable(false);
+    setAllApplicationsDisabled(false);
     if (confirmation) {
       return { confirmation: true, filteredCount };
     }
-    setSearchParameters({ ...prevParams });
+    setSearchParameters({ ...cloneDeep(searchParameters) });
     return {
       confirmation: false,
       // eslint-disable-next-line no-unused-vars
@@ -569,6 +487,28 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     return true;
   };
 
+  const refreshRef = useRef(true);
+
+  const handleAutoRefresh = async () => {
+    setAllApplicationsDisabled(true);
+    await handleJobApplicationRefresh();
+    setAllApplicationsDisabled(false);
+  };
+
+  const handleManualRefresh = async () => {
+    refreshRef.current = !refreshRef.current;
+    await handleAutoRefresh();
+  };
+
+  usePolling(async () => await handleAutoRefresh(), longPolling, [
+    ...Object.values(pageNumber),
+    section,
+    refreshRef.current,
+    searchParameters.search,
+    searchParameters.sort.ascending,
+    searchParameters.sort.parameter,
+  ]);
+
   useEffect(() => {
     if (initialJobLoad) {
       handleJobApplicationInit();
@@ -577,34 +517,24 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const value = {
     applications,
-    allApplicationDisable,
-    setAllApplicationDisable,
-    checkListManager,
-    setCheckListManager,
+    setCardStates,
+    cardStates,
+    allApplicationsDisabled,
+    setAllApplicationsDisabled,
     paginationLimit,
-    defaultFilters,
     job,
     atsSync,
-    updateTick: updateTick.current,
     pageNumber,
-    handleJobApplicationBulkCreate,
-    handleJobApplicationUpdate,
-    handleJobApplicationRead,
-    handleJobApplicationPaginate,
-    handleJobApplicationRefresh,
-    handleJobApplicationBulkUpdate,
-    handleJobApplicationError,
-    handleUpdateJobStatus,
-    handleJobApplicationFilter,
-    searchParameters,
-    initialLoad,
-    openImportCandidates,
-    setOpenImportCandidates,
-    openManualImportCandidates,
-    setOpenManualImportCandidates,
     section,
     setSection,
-    longPolling,
+    handleJobApplicationPaginate,
+    handleJobApplicationRefresh,
+    handleJobApplicationSectionUpdate,
+    handleJobApplicationFilter,
+    handleManualRefresh,
+    defaultFilters,
+    searchParameters,
+    initialLoad,
     showInterview,
   };
 

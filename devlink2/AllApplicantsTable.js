@@ -12,7 +12,7 @@ export function AllApplicantsTable({
   as: _Component = _Builtin.Block,
   onclickSelectAll = {},
   isAllChecked = false,
-  isInterviewVisible = false,
+  isInterviewVisible = true,
   slotCandidatesList,
   topMatchCount = "--",
   goodMatchCount = "--",

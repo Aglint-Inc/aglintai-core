@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
 import posthog from 'posthog-js';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -45,7 +44,6 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-// import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -53,7 +51,6 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
-import { JobType } from '@/src/types/data.types';
 import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -63,7 +60,6 @@ import ResumePreviewer from './ResumePreviewer';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import { useKeyPress } from '../../hooks';
-// import { emailHandler, MoveCandidateDialog } from '../../MoveCandidateDialog';
 import {
   ApiLogState,
   applicationValidity,
@@ -73,6 +69,7 @@ import {
   getInterviewScore,
   getReasonings,
   getScreeningStatus,
+  handleOngoingWarning,
   intactConditionFilter,
 } from '../../utils';
 
@@ -304,8 +301,6 @@ const NewJobApplicationSideDrawer = ({
   const { pressed: left } = useKeyPress('ArrowLeft');
   const leftShift = shift && left;
   const rightShift = shift && right;
-  const overview =
-    (application?.candidate_files?.resume_json as any)?.overview ?? null;
   const handleProfileRedirect = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`,
@@ -380,17 +375,6 @@ const NewJobApplicationSideDrawer = ({
         onClick: () =>
           handleCopy(application.candidates.phone.trim(), 'Phone number'),
       }}
-      // slotMoveTo={
-      //   <MoveCandidatePopUp
-      //     section={section}
-      //     id={application.application_id}
-      //     name={name}
-      //     candidate={application.candidates}
-      //     emails={application.emails}
-      //     jobUpdate={jobUpdate}
-      //     setJobUpdate={setJobUpdate}
-      //   />
-      // }
       textAppliedOn={creationDate}
       isAppliedOnVisible={true}
     />
@@ -404,14 +388,26 @@ const NewCandidateDetails = ({
   application: JobApplication;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { job } = useJobApplications();
+  const {
+    cardStates: {
+      disabledList,
+      checkList: { list, disabled },
+    },
+  } = useJobApplications();
+  const disable =
+    disabledList.has(application.id) || (disabled && list.has(application.id));
   const resume = application.candidate_files?.resume_json as any;
+  const styles = disable
+    ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
+    : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
   return (
     <CandidateDetails
       slotInterviewScore={
         <>
-          <NewResumeSection application={application} job={job} />
-          <PhoneScreeningSection application={application} />
+          <NewResumeSection application={application} />
+          <Stack style={styles}>
+            <PhoneScreeningSection application={application} />
+          </Stack>
           <>
             {application.assessment_results?.feedback ? (
               <NewInterviewScoreDetails
@@ -419,7 +415,7 @@ const NewCandidateDetails = ({
                 setOpenFeedback={setOpenFeedback}
               />
             ) : application.status === 'assessment' ? (
-              <NewInterviewStatus application={application} job={job} />
+              <NewInterviewStatus application={application} />
             ) : (
               <></>
             )}
@@ -474,10 +470,8 @@ const NewCandidateDetails = ({
 
 const NewInterviewStatus = ({
   application,
-  job,
 }: {
   application: JobApplication;
-  job: JobType;
 }) => {
   const [loading, setLoading] = useState(false);
   const invited =
@@ -614,13 +608,8 @@ const OverviewBlock = ({
   );
 };
 
-const NewResumeSection = ({
-  application,
-  job,
-}: {
-  application: JobApplication;
-  job: JobTypeDashboard;
-}) => {
+const NewResumeSection = ({ application }: { application: JobApplication }) => {
+  const { job } = useJobApplications();
   const [openResume, setOpenResume] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const handleDownload = async () => {
@@ -805,12 +794,48 @@ const PhoneScreeningSection = ({
 }: {
   application: JobApplication;
 }) => {
-  const { section } = useJobApplications();
+  const {
+    section,
+    handleJobApplicationSectionUpdate,
+    setCardStates,
+    cardStates: {
+      disabledList,
+      checkList: { disabled, list },
+    },
+  } = useJobApplications();
 
   const showComponent = section !== JobApplicationSections.NEW;
   if (!showComponent) return <></>;
 
-  const handleInvite = async () => {};
+  const disable =
+    disabledList.has(application.id) || (disabled && list.has(application.id));
+
+  const handleInvite = async () => {
+    if (!disable) {
+      setCardStates((prev) => ({
+        ...prev,
+        disabledList: new Set([...prev.disabledList, application.id]),
+      }));
+      await handleJobApplicationSectionUpdate(
+        {
+          source: section,
+          destination: null,
+        },
+        'phone_screen',
+        new Set(application.id),
+      );
+      setCardStates((prev) => {
+        return {
+          ...prev,
+          disabledList: new Set(
+            [...prev.disabledList].filter((e) => e === application.id),
+          ),
+        };
+      });
+    } else {
+      handleOngoingWarning();
+    }
+  };
 
   const { isNotInvited, isPending, phoneScreening } =
     getScreeningStatus(application);
@@ -827,7 +852,7 @@ const PhoneScreeningSection = ({
     return (
       <SidebarScreening
         isPending={true}
-        onclickInvite={{ onClick: async () => await handleInvite() }}
+        onclickResend={{ onClick: async () => await handleInvite() }}
       />
     );
 

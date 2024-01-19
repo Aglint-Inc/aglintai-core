@@ -69,12 +69,12 @@ const ApplicationSortBody = ({
   const {
     searchParameters,
     handleJobApplicationFilter,
-    allApplicationDisable,
-    setAllApplicationDisable,
+    allApplicationsDisabled,
+    setAllApplicationsDisabled,
   } = useJobApplications();
   const handleSubmit = async () => {
-    if (!allApplicationDisable) {
-      setAllApplicationDisable(true);
+    if (!allApplicationsDisabled) {
+      setAllApplicationsDisabled(true);
       const { confirmation, filteredCount } = await handleJobApplicationFilter({
         ...searchParameters,
         sort: sort,
@@ -82,7 +82,7 @@ const ApplicationSortBody = ({
       if (confirmation) {
         setApplicationLimit(filteredCount);
       }
-      setAllApplicationDisable(false);
+      setAllApplicationsDisabled(false);
     }
   };
   const disabled =
@@ -92,7 +92,7 @@ const ApplicationSortBody = ({
     <Stack>
       <AUIButton
         onClick={async () => await handleSubmit()}
-        disabled={disabled || allApplicationDisable}
+        disabled={disabled || allApplicationsDisabled}
       >
         Apply
       </AUIButton>
