@@ -72,6 +72,7 @@ export default function AppLayout({ children }) {
         direction={'row'}
       >
         <Stack
+          paddingTop={'12px !important'}
           borderRight={'1px solid'}
           borderColor={'grey.200'}
           position={'relative'}

@@ -94,7 +94,7 @@ const DashboardComp = () => {
               <JobsDashboard
                 slotAllJobs={<JobsList jobs={filteredJobs} />}
                 slotSearchInputJob={
-                  <Stack maxWidth={'260px'} width={'100%'}>
+                  <Stack maxWidth={'260px'} width={'312px'}>
                     <UITextField
                       height='42px'
                       fullWidth
@@ -118,10 +118,10 @@ const DashboardComp = () => {
                   router.query.status == 'published'
                     ? 'Published Jobs'
                     : router.query.status == 'draft'
-                      ? 'Draft Jobs'
-                      : router.query.status == 'closed'
-                        ? 'Closed Jobs'
-                        : 'All Jobs'
+                    ? 'Draft Jobs'
+                    : router.query.status == 'closed'
+                    ? 'Closed Jobs'
+                    : 'All Jobs'
                 }
               />
             </Stack>

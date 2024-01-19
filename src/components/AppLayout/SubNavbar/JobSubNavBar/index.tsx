@@ -22,6 +22,7 @@ function JobSubNavbar() {
 
   return (
     <Stack
+      paddingTop={'12px !important'}
       spacing={'22px'}
       p={'12px 10px'}
       width={200}

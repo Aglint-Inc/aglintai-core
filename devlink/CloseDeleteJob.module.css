@@ -1,9 +1,13 @@
 .close-delete-wrap {
-  width: 341px;
-  padding: 22px;
+  width: 448px;
+  padding: 20px;
+
   border: 1px solid #e9ebed;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 69, 78, 0.15);
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
 .fw-semibold {
@@ -303,6 +307,20 @@
   margin-top: 15px;
 }
 
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
 .div-block-667 {
   position: relative;
   display: flex;
@@ -349,6 +367,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -393,4 +417,8 @@
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.icons.hide {
+  display: none;
 }

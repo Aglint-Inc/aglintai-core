@@ -205,7 +205,7 @@ function JobForm() {
     return true;
   });
   return (
-    <>
+    <div style={{ height: '100vh', overflow: 'hidden' }}>
       <CreateNewJob
         isPreviewVisible
         isDotButtonVisible={
@@ -406,7 +406,7 @@ function JobForm() {
           }}
         />
       </Popover>
-    </>
+    </div>
   );
 }
 
