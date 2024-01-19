@@ -10,6 +10,8 @@ import {
   CloseJobButton,
   CreateNewJob,
   JobDiscardChanges,
+  JobEditWarning,
+  JobWarningList,
   NavSublink,
   ScorePercentage,
   ScoreWeightage,
@@ -598,7 +600,7 @@ const PublishButton = () => {
 };
 
 const SideSection = () => {
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { jobForm, handleUpdateFormFields, formWarnings } = useJobForm();
 
   const currSlide = jobForm.currSlide;
   const { recruiterUser } = useAuthDetails();
@@ -673,6 +675,19 @@ const SideSection = () => {
   } else if (currSlide === 'resumeScore') {
     return (
       <>
+        <div style={{ height: '60px' }}>
+          {formWarnings.resumeScore.err.length > 0 && (
+            <JobEditWarning
+              slotWarningList={
+                <>
+                  {formWarnings.resumeScore.err.map((er, index) => (
+                    <JobWarningList key={index} textWarning={er} />
+                  ))}
+                </>
+              }
+            />
+          )}
+        </div>
         <ScoreWeightage
           slotScoreWheel={
             <>

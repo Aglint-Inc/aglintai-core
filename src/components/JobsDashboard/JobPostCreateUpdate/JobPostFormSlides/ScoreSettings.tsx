@@ -18,7 +18,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
 
-import { JdJsonType, useJobForm } from '../JobPostFormProvider';
+import { JdJsonType, JobFormState, useJobForm } from '../JobPostFormProvider';
 import { API_FAIL_MSG } from '../utils';
 
 type ScoreParam = {
@@ -68,13 +68,6 @@ const ScoreSettings = () => {
   const [newField, setNewField] = useState<newField>(null);
   const [newFieldEv, setNewFieldEv] = useState(null);
   const sourceRef = useRef(axios.CancelToken.source());
-  // const onChangeScore = (e, paramKey: string) => {
-  //   if (Number(e.target.value) < 0 || Number(e.target.value) > 100) return;
-  //   handleUpdateFormFields({
-  //     path: `resumeScoreSettings.${paramKey}`,
-  //     value: Number(e.target.value),
-  //   });
-  // };
 
   const handleGenerate = async () => {
     try {
@@ -100,26 +93,14 @@ ${jobForm.formFields.jobDescription}
         educations: [...json.educations],
       };
 
-      if (j.skills.length === 0) {
-        handleUpdateFormFields({
-          path: `resumeScoreSettings.skills`,
-          value: 0,
-        });
-      }
-
-      if (j.educations.length === 0) {
-        handleUpdateFormFields({
-          path: `resumeScoreSettings.educations`,
-          value: 0,
-        });
-      }
-
-      if (j.rolesResponsibilities.length === 0) {
-        handleUpdateFormFields({
-          path: `resumeScoreSettings.experience`,
-          value: 0,
-        });
-      }
+      handleUpdateFormFields({
+        path: `resumeScoreSettings.skills`,
+        value: getBalancedScore(
+          j.rolesResponsibilities.length === 0,
+          j.educations.length === 0,
+          j.skills.length === 0,
+        ),
+      });
 
       if (j.skills.length)
         handleUpdateFormFields({
@@ -531,10 +512,6 @@ ${jobForm.formFields.jobDescription}
                         [],
                       ).filter((_, idx) => idx !== editParam.index),
                     });
-                    handleUpdateFormFields({
-                      path: 'isjdChanged',
-                      value: false,
-                    });
                     setPopUpEl(null);
                   },
                 }}
@@ -600,3 +577,38 @@ ${jobForm.formFields.jobDescription}
   );
 };
 export default ScoreSettings;
+
+export const getBalancedScore = (
+  isExpZero: boolean,
+  isEduZero: boolean,
+  isSkillZero: boolean,
+): JobFormState['formFields']['resumeScoreSettings'] => {
+  const scoreSetting: JobFormState['formFields']['resumeScoreSettings'] = {
+    experience: 60,
+    education: 20,
+    skills: 20,
+  };
+
+  if (
+    (isExpZero && isEduZero && isSkillZero) ||
+    (!isExpZero && !isEduZero && !isSkillZero)
+  ) {
+    return scoreSetting;
+  }
+
+  if (isExpZero) {
+    scoreSetting.experience = 0;
+    scoreSetting.skills = isEduZero ? 100 : 50;
+    scoreSetting.education = isEduZero ? 0 : 50;
+  } else if (isEduZero) {
+    scoreSetting.experience = 50;
+    scoreSetting.skills = isSkillZero ? 50 : 0;
+    scoreSetting.education = 0;
+  } else if (isSkillZero) {
+    scoreSetting.experience = 50;
+    scoreSetting.skills = 0;
+    scoreSetting.education = 50;
+  }
+
+  return scoreSetting;
+};
