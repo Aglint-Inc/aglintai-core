@@ -1,16 +1,12 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { CompanySetting, NavSublink } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-import AssessmentSettings from './AssessmentSettings';
-import Assistant from './Assistant';
 import CompanyInfoComp from './CompanyInfoComp';
-import CompanyJdComp from './CompanyJdComp';
-import EmailTemplate from './EmailTemplate';
-import TeamManagement from './TeamManagement';
 import {
   generateDepartments,
   generateRoles,
@@ -43,6 +39,9 @@ const CompanyDetailComp = () => {
     }
   }, [router]);
 
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const isTeamEnabled = posthog.isFeatureEnabled('isTeamEnabled');
+
   return (
     <Stack overflow={'hidden'}>
       <CompanySetting
@@ -66,17 +65,52 @@ const CompanyDetailComp = () => {
                 },
               }}
             />
+            <NavSublink
+              textLink={'About Company'}
+              isActive={router.query?.tab === 'about'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=about');
+                },
+              }}
+            />
+            {isAssesEnabled && (
+              <NavSublink
+                textLink={'Assessment Settings'}
+                isActive={router.query?.tab === 'assessment'}
+                onClickNav={{
+                  onClick: () => {
+                    router.replace('/company?tab=assessment');
+                  },
+                }}
+              />
+            )}
+            <NavSublink
+              textLink={'Email Settings'}
+              isActive={router.query?.tab === 'email'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=email');
+                },
+              }}
+            />
+            {isTeamEnabled && (
+              <NavSublink
+                textLink={'Team Settings'}
+                isActive={router.query?.tab === 'team'}
+                onClickNav={{
+                  onClick: () => {
+                    router.replace('/company?tab=team');
+                  },
+                }}
+              />
+            )}
           </>
         }
         slotSavingLottie={<LoaderGrey />}
         isSaving={isSaving}
         isSaved={!isSaving}
         slotCompany={<CompanyInfoComp setIsSaving={setIsSaving} />}
-        slotCompanyJdSetting={<CompanyJdComp setIsSaving={setIsSaving} />}
-        slotEmailTemplate={<EmailTemplate />}
-        slotTeam={<TeamManagement />}
-        slotAssesmentSetting={<AssessmentSettings setIsSaving={setIsSaving} />}
-        slotAssisstantSettings={<Assistant />}
       />
     </Stack>
   );

@@ -12,6 +12,11 @@ import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddTechnologyDialog from './AddTechnologyDialog';
 import SocialComp from './SocialComp';
+import AssessmentSettings from '../AssessmentSettings';
+// import Assistant from '../Assistant';
+import CompanyJdComp from '../CompanyJdComp';
+import EmailTemplate from '../EmailTemplate';
+import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
 import ImageUpload from '../../Common/ImageUpload';
 import UITextField from '../../Common/UITextField';
@@ -86,7 +91,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           open={dialog.location.open}
           edit={dialog.location.edit}
         />
-        {router.query?.tab === 'additional-info' ? (
+        {router.query?.tab === 'additional-info' && (
           <CompanyInfo
             slotLocation={
               <Stack p={'4px'}>
@@ -199,105 +204,120 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               },
             }}
           />
-        ) : (
-          <BasicInfo
-            slotCompanyLogo={
-              <>
-                <ImageUpload
-                  image={logo}
-                  setImage={setLogo}
-                  size={70}
-                  table='company-logo'
-                  changeCallback={(data: any) => {
-                    handleChange({ ...recruiter, logo: data });
-                  }}
-                />
-              </>
-            }
-            onClickChangeLogo={{
-              onClick: () => {
-                document.getElementById('image-upload').click();
-              },
-            }}
-            slotBasicForm={
-              <Stack spacing={2}>
-                <UITextField
-                  labelBold='default'
-                  labelSize='small'
-                  fullWidth
-                  label='Company Name'
-                  placeholder='Ex. Google'
-                  value={recruiter?.name}
-                  onChange={(e) => {
-                    handleChange({ ...recruiter, name: e.target.value });
-                  }}
-                />
-                <UITextField
-                  labelBold='default'
-                  labelSize='small'
-                  fullWidth
-                  label='Industry'
-                  placeholder='Ex. Healthcare'
-                  value={recruiter?.industry}
-                  onChange={(e) => {
-                    handleChange({ ...recruiter, industry: e.target.value });
-                  }}
-                />
-                <Autocomplete
-                  disableClearable
-                  freeSolo
-                  fullWidth
-                  options={sizes}
-                  onChange={(event, value) => {
-                    if (value) {
-                      handleChange({
-                        ...recruiter,
-                        employee_size: value,
-                      });
-                    }
-                  }}
-                  value={recruiter.employee_size}
-                  getOptionLabel={(option) => option}
-                  renderInput={(params) => (
-                    <UITextField
-                      labelBold='default'
-                      rest={{ ...params }}
-                      fullWidth
-                      InputProps={{
-                        ...params.InputProps,
-                      }}
-                      label='Employee Size'
-                      labelSize='small'
-                      onChange={(event) => {
+        )}
+        {router.query?.tab === 'basic-info' && (
+          <>
+            <BasicInfo
+              slotCompanyLogo={
+                <>
+                  <ImageUpload
+                    image={logo}
+                    setImage={setLogo}
+                    size={70}
+                    table='company-logo'
+                    changeCallback={(data: any) => {
+                      handleChange({ ...recruiter, logo: data });
+                    }}
+                  />
+                </>
+              }
+              onClickChangeLogo={{
+                onClick: () => {
+                  document.getElementById('image-upload').click();
+                },
+              }}
+              slotBasicForm={
+                <Stack spacing={2}>
+                  <UITextField
+                    labelBold='default'
+                    labelSize='small'
+                    fullWidth
+                    label='Company Name'
+                    placeholder='Ex. Google'
+                    value={recruiter?.name}
+                    onChange={(e) => {
+                      handleChange({ ...recruiter, name: e.target.value });
+                    }}
+                  />
+                  <UITextField
+                    labelBold='default'
+                    labelSize='small'
+                    fullWidth
+                    label='Industry'
+                    placeholder='Ex. Healthcare'
+                    value={recruiter?.industry}
+                    onChange={(e) => {
+                      handleChange({ ...recruiter, industry: e.target.value });
+                    }}
+                  />
+                  <Autocomplete
+                    disableClearable
+                    freeSolo
+                    fullWidth
+                    options={sizes}
+                    onChange={(event, value) => {
+                      if (value) {
                         handleChange({
                           ...recruiter,
-                          employee_size: event.target.value,
+                          employee_size: value,
                         });
-                      }}
-                    />
-                  )}
-                />
+                      }
+                    }}
+                    value={recruiter.employee_size}
+                    getOptionLabel={(option) => option}
+                    renderInput={(params) => (
+                      <UITextField
+                        labelBold='default'
+                        rest={{ ...params }}
+                        fullWidth
+                        InputProps={{
+                          ...params.InputProps,
+                        }}
+                        label='Employee Size'
+                        labelSize='small'
+                        onChange={(event) => {
+                          handleChange({
+                            ...recruiter,
+                            employee_size: event.target.value,
+                          });
+                        }}
+                      />
+                    )}
+                  />
 
-                <UITextField
-                  labelBold='default'
-                  labelSize='small'
-                  fullWidth
-                  label='Company Website'
-                  placeholder='https://companydomain.com'
-                  value={recruiter?.company_website}
-                  onChange={(e) => {
-                    handleChange({
-                      ...recruiter,
-                      company_website: e.target.value,
-                    });
-                  }}
-                />
+                  <UITextField
+                    labelBold='default'
+                    labelSize='small'
+                    fullWidth
+                    label='Company Website'
+                    placeholder='https://companydomain.com'
+                    value={recruiter?.company_website}
+                    onChange={(e) => {
+                      handleChange({
+                        ...recruiter,
+                        company_website: e.target.value,
+                      });
+                    }}
+                  />
 
-                <SocialComp setIsSaving={setIsSaving} />
-              </Stack>
-            }
-            textLogoUpdate={'Update Logo'}
-          />
+                  <SocialComp setIsSaving={setIsSaving} />
+                </Stack>
+              }
+              textLogoUpdate={'Update Logo'}
+            />
+          </>
+        )}
+        {router.query?.tab === 'assessment' && (
+          <AssessmentSettings setIsSaving={setIsSaving} />
+        )}
+        {router.query?.tab === 'email' && (
+          <>
+            <EmailTemplate />
+          </>
+        )}
+        {router.query?.tab === 'team' && <TeamManagement />}
+        {router.query?.tab === 'about' && (
+          <CompanyJdComp setIsSaving={setIsSaving} />
         )}
       </YTransform>
     </Stack>

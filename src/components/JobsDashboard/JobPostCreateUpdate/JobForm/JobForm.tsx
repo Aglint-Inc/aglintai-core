@@ -202,6 +202,9 @@ function JobForm() {
   };
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const isJobMarketingEnabled = posthog.isFeatureEnabled(
+    'isJobMarketingEnabled',
+  );
   let allSlides = jobSlides.filter((slide) => {
     if (slide.path === 'workflow' || slide.path === 'screening') {
       return isAssesEnabled;
@@ -211,7 +214,7 @@ function JobForm() {
   return (
     <div style={{ height: '100vh', overflow: 'hidden' }}>
       <CreateNewJob
-        isPreviewVisible
+        isPreviewVisible={isJobMarketingEnabled}
         isDotButtonVisible={
           jobForm.formType === 'edit' && jobForm.jobPostStatus !== 'closed'
         }
