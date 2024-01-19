@@ -178,13 +178,6 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.details.err.push('Job description incomplete');
   }
 
-  if (
-    isEmpty(get(jobForm, 'jdJson.educations')) &&
-    isEmpty(get(jobForm, 'jdJson.skills')) &&
-    isEmpty(get(jobForm, 'jdJson.rolesResponsibilities'))
-  ) {
-    warnings.resumeScore.err.push('Please Complete Profile Score Section');
-  }
   if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
     warnings.screening.err.push('Please Provide Assessment Instructions');
   }

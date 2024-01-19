@@ -477,13 +477,21 @@ const SideNavs = ({ changeSlide }) => {
         );
 
         if (sl.path === 'resumeScore') {
-          isShowWarn = isShoWWarn(
-            jobForm.formType,
-            formWarnings,
-            'details',
-            slidePathToNum[sl.path],
-            jobForm.jobPostId,
-          );
+          isShowWarn =
+            isShoWWarn(
+              jobForm.formType,
+              formWarnings,
+              'details',
+              slidePathToNum[sl.path],
+              jobForm.jobPostId,
+            ) ||
+            isShoWWarn(
+              jobForm.formType,
+              formWarnings,
+              'resumeScore',
+              slidePathToNum[sl.path],
+              jobForm.jobPostId,
+            );
         } else {
           isShowWarn = isShoWWarn(
             jobForm.formType,

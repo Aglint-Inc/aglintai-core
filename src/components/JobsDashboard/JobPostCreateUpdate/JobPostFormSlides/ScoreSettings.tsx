@@ -94,7 +94,7 @@ ${jobForm.formFields.jobDescription}
       };
 
       handleUpdateFormFields({
-        path: `resumeScoreSettings.skills`,
+        path: `resumeScoreSettings`,
         value: getBalancedScore(
           j.rolesResponsibilities.length === 0,
           j.educations.length === 0,
@@ -102,11 +102,10 @@ ${jobForm.formFields.jobDescription}
         ),
       });
 
-      if (j.skills.length)
-        handleUpdateFormFields({
-          path: 'isjdChanged',
-          value: false,
-        });
+      handleUpdateFormFields({
+        path: 'isjdChanged',
+        value: false,
+      });
       handleUpdateFormFields({
         path: 'jdJson',
         value: j,
@@ -602,7 +601,7 @@ export const getBalancedScore = (
     scoreSetting.education = isEduZero ? 0 : 50;
   } else if (isEduZero) {
     scoreSetting.experience = 50;
-    scoreSetting.skills = isSkillZero ? 50 : 0;
+    scoreSetting.skills = isSkillZero ? 0 : 50;
     scoreSetting.education = 0;
   } else if (isSkillZero) {
     scoreSetting.experience = 50;
