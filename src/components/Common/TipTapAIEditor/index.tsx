@@ -5,7 +5,8 @@ import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { EditorContent, Extension, useEditor } from '@tiptap/react';
 import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useState } from 'react';
@@ -43,6 +44,7 @@ const TipTapAIEditor = ({
   const editor = useEditor({
     extensions: [
       StarterKit,
+      EventHandler,
       Placeholder.configure({
         placeholder: placeholder || '',
       }),
@@ -162,3 +164,79 @@ const TipTapAIEditor = ({
 };
 
 export default TipTapAIEditor;
+
+export const EventHandler = Extension.create({
+  name: 'eventHandler',
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('tiptapPaste'),
+        props: {
+          handlePaste(view, event) {
+            const pastedHTML = event.clipboardData.getData('text/html');
+
+            if (pastedHTML.includes('•')) {
+              const { state, dispatch } = view;
+              const json = convertTextToProseMirrorJSON(
+                event.clipboardData.getData('text/plain'),
+              );
+              const content = state.schema.nodeFromJSON(json);
+              // Create a new state with modifications
+              const newState = state.tr.replaceWith(0, 0, content);
+              // Dispatch the transaction to update the state
+              event.preventDefault();
+              dispatch(newState);
+              return true;
+            }
+          },
+        },
+      }),
+    ];
+  },
+});
+
+function convertTextToProseMirrorJSON(text) {
+  const lines = text.split('\n');
+  let isInBulletList = false;
+  let json = { type: 'doc', content: [] };
+  let currentListItem = null;
+
+  lines.forEach((line) => {
+    const trimmedLine = line.trim();
+
+    if (trimmedLine.startsWith('•')) {
+      // Start or continue a bullet list
+      if (!isInBulletList) {
+        isInBulletList = true;
+        json.content.push({ type: 'bulletList', content: [] });
+      }
+
+      // Create a new list item
+      currentListItem = { type: 'listItem', content: [] };
+      json.content[json.content.length - 1].content.push(currentListItem);
+
+      // Add the content of the list item if not empty
+      const listItemContent = trimmedLine.slice(1).trim();
+      if (listItemContent.length > 0) {
+        currentListItem.content.push({
+          type: 'paragraph',
+          content: [{ type: 'text', text: listItemContent }],
+        });
+      }
+    } else {
+      // Not a bullet point, treat as a regular paragraph
+      isInBulletList = false;
+
+      // Add the content of the paragraph if not empty
+      if (trimmedLine.length > 0) {
+        json.content.push({
+          type: 'paragraph',
+          content: [{ type: 'text', text: trimmedLine }],
+        });
+      }
+    }
+  });
+
+  return json;
+}
