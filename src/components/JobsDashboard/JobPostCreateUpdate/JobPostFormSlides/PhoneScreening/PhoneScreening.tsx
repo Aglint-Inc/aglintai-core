@@ -1,5 +1,4 @@
 import { Collapse } from '@mui/material';
-import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 
@@ -14,7 +13,6 @@ import {
 } from '@/devlink2';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import KnowOffQn from './KnowOffQn';
 import { seedQns } from './utils';
@@ -25,7 +23,6 @@ const ScreeningComp = () => {
     start: boolean;
     end: boolean;
   }>({ end: false, start: false });
-  const { recruiterUser } = useAuthDetails();
   const { jobForm, handleUpdateFormFields } = useJobForm();
 
   const phoneScreening = jobForm.formFields.phoneScreening;
@@ -237,23 +234,6 @@ const ScreeningComp = () => {
             />
           </>
         }
-        onclickPreview={{
-          onClick: () => {
-            window.open(
-              `${
-                process.env.NEXT_PUBLIC_HOST_NAME
-              }/candidate-phone-screening?job_post_id=${get(
-                jobForm,
-                'jobPostId',
-                '',
-              )}&recruiter_email=${recruiterUser.email}&recruiter_name=${[
-                recruiterUser.first_name,
-                recruiterUser.last_name,
-              ].join(' ')}`,
-              '_blank',
-            );
-          },
-        }}
       />
     </>
   );
