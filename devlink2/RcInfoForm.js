@@ -58,7 +58,7 @@ export function RcInfoForm({
                 tag="div"
               >
                 {
-                  "Please upload your logo in PNG/jpeg format with dimensions of 512px x 512px and ensure it's under 5 MB."
+                  "Upload a square company logo (PNG or JPEG). Maximum size: 2 MB."
                 }
               </_Builtin.Block>
             </_Builtin.Block>
