@@ -32,6 +32,7 @@
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;
+  margin-bottom: 0px;
   background-color: var(--white-80449ce7);
 }
 
@@ -47,7 +48,6 @@
 
 .job-sidebar-main-block.cj-step-1.height-auto {
   height: auto;
-  margin-bottom: 20px;
 }
 
 .job-sidebar-main-block.cj-step-3 {
@@ -388,7 +388,7 @@
   display: flex;
   width: 100%;
   max-width: 780px;
-  margin-top: 20px;
+  margin-top: 16px;
   flex-direction: column;
   flex: 1;
   grid-column-gap: 30px;

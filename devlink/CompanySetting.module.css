@@ -385,6 +385,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -828,7 +834,7 @@
   position: relative;
 
   display: flex;
-  padding: 10px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 8px;
@@ -1097,11 +1103,19 @@
 .rd-company-primary-info-2 {
   display: flex;
   max-width: 870px;
-  padding-top: 20px;
+  padding-bottom: 40px;
   flex-direction: column;
   align-items: stretch;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+}
+
+.rd-company-primary-info-2.width-585 {
+  max-width: 585px;
+}
+
+.rd-company-primary-info-2.width-420 {
+  max-width: 430px;
 }
 
 .rd-email-edit-block-2 {
@@ -1655,5 +1669,6 @@
 
 .div-block-698 {
   width: 100%;
+  padding-top: 20px;
   padding-left: 20px;
 }

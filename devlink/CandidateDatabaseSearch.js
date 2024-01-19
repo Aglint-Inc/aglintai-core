@@ -135,14 +135,6 @@ export function CandidateDatabaseSearch({
                       }
                     </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "color-grey-600")}
-                    tag="div"
-                  >
-                    {
-                      "All candidates who have submitted their applications and been successfully imported into the system will be included in this search."
-                    }
-                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
@@ -262,7 +254,8 @@ export function CandidateDatabaseSearch({
                     className={_utils.cx(
                       _styles,
                       "history-wrap-candidate",
-                      "cursor-pointer"
+                      "cursor-pointer",
+                      "hide"
                     )}
                     tag="div"
                     {...onClickClearHistory}
