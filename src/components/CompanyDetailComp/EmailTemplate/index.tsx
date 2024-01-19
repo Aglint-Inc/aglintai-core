@@ -86,7 +86,7 @@ const EmailTemplate = () => {
 
   return (
     <>
-      <Stack gap={2} width={'500px'} mt={5}>
+      <Stack gap={2} width={'500px'}>
         {templateEntries.map(([templateName, templateData], ind) => (
           <EmailTemplateCards
             key={ind}

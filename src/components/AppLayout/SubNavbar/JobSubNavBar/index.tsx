@@ -96,7 +96,7 @@ function AddJob() {
             style: {
               border: 'none',
               borderRadius: 'none',
-              boxShadow: '0px 4px 8px 0px #04444D26',
+              overflow: 'visible !important',
             },
           },
         }}

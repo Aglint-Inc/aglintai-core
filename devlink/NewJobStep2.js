@@ -39,12 +39,7 @@ export function NewJobStep2({
           className={_utils.cx(_styles, "cj-input-wrapper", "pb-80")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Job Description"}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{"Job Description"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cj-richtext-editor-wrapper")}
             tag="div"

@@ -575,63 +575,6 @@
   grid-row-gap: 20px;
 }
 
-.discard-wrap {
-  position: absolute;
-  left: -67px;
-  top: 26px;
-  right: auto;
-  bottom: auto;
-  z-index: 8;
-
-  display: none;
-  width: 240px;
-  padding: 8px;
-  flex-direction: column;
-  align-items: center;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-
-  background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(0, 69, 78, 0.15);
-}
-
-.color-grey-600.max-width-350 {
-  max-width: 350px;
-}
-
-.color-grey-600.growth-stretch {
-  flex: 0 0 auto;
-}
-
-.color-grey-600.mt-8 {
-  margin-top: 8px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.color-grey-600.cursor-pointer.delete-button-screeing:hover {
-  opacity: 1;
-  color: #d93f4c;
-}
-
-.color-grey-600.ml-20 {
-  margin-left: 20px;
-}
-
-.color-grey-600.mt-12 {
-  margin-top: 12px;
-}
-
-.color-grey-600.width-588 {
-  max-width: 588px;
-}
-
 .cursor-pointer.grow-job-wishlist {
   display: flex;
   flex-direction: row;
@@ -672,6 +615,7 @@
 }
 
 .div-block-708 {
+  position: relative;
   display: flex;
 }
 
@@ -825,6 +769,13 @@
 }
 
 .assessment-side-panel {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
   display: flex;
   width: 367px;
   padding: 20px;
@@ -832,6 +783,8 @@
   flex: 0 0 auto;
 
   border-left: 1px solid #e9ebed;
+
+  background-color: white;
 }
 
 .proceed-to-wrap {
@@ -860,6 +813,10 @@
 
 .relative.mt-12 {
   margin-top: 12px;
+}
+
+.relative.width-inc {
+  width: 162.1171875px;
 }
 
 .proceed-to-btn {

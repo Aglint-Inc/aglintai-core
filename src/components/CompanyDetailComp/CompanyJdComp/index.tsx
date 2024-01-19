@@ -21,7 +21,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
   };
 
   return (
-    <Stack p={'4px'} width={'500px'} spacing={'20px'}>
+    <Stack p={'4px'} width={'500px'} spacing={'20px'} pb={'40px'}>
       <UITextField
         labelSize='small'
         fullWidth
