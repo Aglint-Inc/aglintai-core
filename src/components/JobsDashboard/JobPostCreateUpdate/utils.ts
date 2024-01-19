@@ -172,9 +172,10 @@ export const findDisclaimers = (jobForm: FormJobType) => {
   if (isEmpty(jobForm.jobLocation.trim())) {
     warnings.details.err.push('Missing job location');
   }
-
-  if (isEmpty(get(jobForm, 'jobDescription', ''))) {
-    warnings.details.err.push('Missing job description');
+  let isJdTooShort =
+    !jobForm.jobDescription || jobForm.jobDescription.split(' ').length <= 10;
+  if (isJdTooShort) {
+    warnings.details.err.push('Job description incomplete');
   }
 
   if (
@@ -187,6 +188,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
   if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
     warnings.screening.err.push('Please Provide Assessment Instructions');
   }
+
   if (
     jobForm.assessment &&
     jobForm.interviewSetting.showInstructionVideo &&

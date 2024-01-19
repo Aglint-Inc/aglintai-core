@@ -23,27 +23,19 @@ export function NewJobStep1({
       )}
       tag="div"
     >
-      {isAddJob ? (
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-507")} tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Job Details"}
+        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-507")}
+          className={_utils.cx(_styles, "color-grey-600")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Job Details"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {
-              "Enter the basic job details and write with AI or paste your job description and add required skills for this job role"
-            }
-          </_Builtin.Block>
+          {
+            "Enter the basic job details and write with AI or paste your job description and add required skills for this job role"
+          }
         </_Builtin.Block>
-      ) : null}
+      </_Builtin.Block>
       {isWarningVisible ? (
         <_Builtin.Block tag="div">{slotWarning}</_Builtin.Block>
       ) : null}

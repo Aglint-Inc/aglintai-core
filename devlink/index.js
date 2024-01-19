@@ -228,6 +228,7 @@ export * from "./JobDescriptionModal";
 export * from "./JobDetail";
 export * from "./JobDetailLeft";
 export * from "./JobDetailsSideDrawer";
+export * from "./JobDiscardChanges";
 export * from "./JobDraftPopup";
 export * from "./JobEditWarning";
 export * from "./JobEmptyState";

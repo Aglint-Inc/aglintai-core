@@ -1,5 +1,4 @@
 import { Collapse, Popover, Stack } from '@mui/material';
-import Paper from '@mui/material/Paper';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import posthog from 'posthog-js';
@@ -10,6 +9,7 @@ import {
   CloseDeleteJob,
   CloseJobButton,
   CreateNewJob,
+  JobDiscardChanges,
   NavSublink,
   ScorePercentage,
   ScoreWeightage,
@@ -82,12 +82,10 @@ function JobForm() {
     useJobForm();
   const router = useRouter();
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-
   const [showDraftPopup, setShowDraftPopup] = useState(false);
-
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
-
   const [popupEl, setPopupEl] = useState(null);
+  const [discardPop, setDiscardPop] = useState(false);
 
   let formSlide = <></>;
   const { currSlide } = jobForm;
@@ -213,7 +211,7 @@ function JobForm() {
       <CreateNewJob
         isPreviewVisible
         isDotButtonVisible={
-          jobForm.formType === 'edit' && jobForm.jobPostStatus === 'published'
+          jobForm.formType === 'edit' && jobForm.jobPostStatus !== 'closed'
         }
         slotCreateJob={<>{formSlide}</>}
         isDetailsActive={currSlide === 'details'}
@@ -271,7 +269,9 @@ function JobForm() {
         }}
         isUnpublishWarningVisible={isShowChangesWarn}
         onClickDiscardChanges={{
-          onClick: handleRevertChanges,
+          onClick: () => {
+            setDiscardPop(true);
+          },
         }}
         slotUnpublishDisclaimer={
           <>{isShowChangesWarn && <PublishDesclaimer />}</>
@@ -352,13 +352,11 @@ function JobForm() {
           open: isDeletePopupOpen,
         }}
       >
-        <Paper>
-          <CloseJobPopup
-            onClose={() => {
-              setIsDeletePopupOpen(false);
-            }}
-          />
-        </Paper>
+        <CloseJobPopup
+          onClose={() => {
+            setIsDeletePopupOpen(false);
+          }}
+        />
       </MuiPopup>
       <MuiPopup
         props={{
@@ -368,20 +366,18 @@ function JobForm() {
           open: showDraftPopup,
         }}
       >
-        <Paper>
-          <DeleteDraft
-            onClickCancel={{
-              onClick: () => {
-                setShowDraftPopup(false);
-              },
-            }}
-            onClickClear={{
-              onClick: () => {
-                handleDeleteJob();
-              },
-            }}
-          />
-        </Paper>
+        <DeleteDraft
+          onClickCancel={{
+            onClick: () => {
+              setShowDraftPopup(false);
+            },
+          }}
+          onClickClear={{
+            onClick: () => {
+              handleDeleteJob();
+            },
+          }}
+        />
       </MuiPopup>
       <Popover
         open={Boolean(popupEl)}
@@ -395,6 +391,10 @@ function JobForm() {
         }}
         sx={{
           mt: 2,
+          '& .MuiPaper-root': {
+            border: 'none !important',
+            overflow: 'visible !important',
+          },
         }}
       >
         <CloseDeleteJob
@@ -410,6 +410,28 @@ function JobForm() {
           }}
         />
       </Popover>
+      <MuiPopup
+        props={{
+          onClose: () => {
+            setDiscardPop(false);
+          },
+          open: discardPop,
+        }}
+      >
+        <JobDiscardChanges
+          onClickCancel={{
+            onClick: () => {
+              setDiscardPop(false);
+            },
+          }}
+          onClickDiscardChanges={{
+            onClick: () => {
+              handleRevertChanges();
+              setDiscardPop(false);
+            },
+          }}
+        />
+      </MuiPopup>
     </div>
   );
 }
@@ -441,13 +463,32 @@ const SideNavs = ({ changeSlide }) => {
   return (
     <>
       {allSlides.map((sl) => {
-        const isShowWarn = isShoWWarn(
+        let isShowWarn = isShoWWarn(
           jobForm.formType,
           formWarnings,
           sl.path,
           slidePathToNum[sl.path],
           jobForm.jobPostId,
         );
+
+        if (sl.path === 'resumeScore') {
+          isShowWarn = isShoWWarn(
+            jobForm.formType,
+            formWarnings,
+            'details',
+            slidePathToNum[sl.path],
+            jobForm.jobPostId,
+          );
+        } else {
+          isShowWarn = isShoWWarn(
+            jobForm.formType,
+            formWarnings,
+            sl.path,
+            slidePathToNum[sl.path],
+            jobForm.jobPostId,
+          );
+        }
+
         if (sl.path === 'screening') {
           return (
             <SublinkSubMenu

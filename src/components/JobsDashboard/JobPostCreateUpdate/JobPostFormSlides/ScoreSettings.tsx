@@ -5,8 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   Checkbox,
-  JobEditWarning,
-  JobWarningList,
   ScoreCard,
   ScorePillMust,
   ScorePillNice,
@@ -63,7 +61,7 @@ const params: {
 ];
 
 const ScoreSettings = () => {
-  const { jobForm, handleUpdateFormFields, formWarnings } = useJobForm();
+  const { jobForm, handleUpdateFormFields } = useJobForm();
   const [editParam, setEditParam] = useState<ScoreParam>(null);
   const [popUpEl, setPopUpEl] = useState(null);
   const [isJsonLoading, setIsJsonLoading] = useState(false);
@@ -77,11 +75,6 @@ const ScoreSettings = () => {
   //     value: Number(e.target.value),
   //   });
   // };
-
-  const areAllFieldsEmpty =
-    jobForm.formFields.jdJson.educations.length === 0 &&
-    jobForm.formFields.jdJson.skills.length === 0 &&
-    jobForm.formFields.jdJson.rolesResponsibilities.length === 0;
 
   const handleGenerate = async () => {
     try {
@@ -154,7 +147,7 @@ ${jobForm.formFields.jobDescription}
       if (
         areAllFieldsEmpty &&
         jobForm.formFields.jobDescription &&
-        jobForm.formFields.jobDescription.split(' ').length > 50
+        jobForm.formFields.jobDescription.split(' ').length > 10
       ) {
         handleGenerate();
       }
@@ -176,10 +169,10 @@ ${jobForm.formFields.jobDescription}
 
   let isJdTooShort =
     !jobForm.formFields.jobDescription ||
-    jobForm.formFields.jobDescription.split(' ').length <= 50;
+    jobForm.formFields.jobDescription.split(' ').length <= 10;
   let showRegen = false;
   if (!isJsonLoading && !isJdTooShort) {
-    showRegen = !areAllFieldsEmpty && jobForm.formFields.isjdChanged;
+    showRegen = jobForm.formFields.isjdChanged;
   }
 
   return (
@@ -187,20 +180,6 @@ ${jobForm.formFields.jobDescription}
       {
         <>
           <ScoreSetting
-            isWarningVisible={formWarnings.resumeScore.err.length > 0}
-            slotWarning={
-              <>
-                <JobEditWarning
-                  slotWarningList={
-                    <>
-                      {formWarnings.resumeScore.err.map((er, index) => (
-                        <JobWarningList key={index} textWarning={er} />
-                      ))}
-                    </>
-                  }
-                />
-              </>
-            }
             isRegenerateVisible={showRegen}
             isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={

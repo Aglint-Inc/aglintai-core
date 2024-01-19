@@ -1,4 +1,4 @@
-import { Dialog, DialogProps } from '@mui/material';
+import { Dialog, DialogProps, Paper } from '@mui/material';
 import React from 'react';
 
 function MuiPopup({
@@ -18,7 +18,7 @@ function MuiPopup({
       }}
       {...props}
     >
-      {children}
+      <Paper>{children}</Paper>
     </Dialog>
   );
 }
