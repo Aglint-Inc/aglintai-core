@@ -183,7 +183,11 @@ export const EventHandler = Extension.create({
               );
               const content = state.schema.nodeFromJSON(json);
               // Create a new state with modifications
-              const newState = state.tr.replaceWith(0, 0, content);
+              const newState = state.tr.insert(
+                state.doc.content.size - 2,
+                content,
+              );
+
               // Dispatch the transaction to update the state
               event.preventDefault();
               dispatch(newState);
