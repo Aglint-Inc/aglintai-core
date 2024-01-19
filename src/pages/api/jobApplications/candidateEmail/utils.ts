@@ -55,14 +55,16 @@ export const sendMails = (
   candidates: Awaited<ReturnType<typeof readCandidates>>,
   sgMail: MailService,
 ) => {
-  const safeCandidatesBatch = createBatches(candidates, 20, 2000);
-  safeCandidatesBatch.forEach(async (candidateBatch) => {
-    Promise.allSettled(
-      candidateBatch.map((candidate) =>
-        sendMail(candidate, job, purpose, sgMail),
-      ),
-    );
-  });
+  if (purpose && job.email_template[purpose]) {
+    const safeCandidatesBatch = createBatches(candidates, 20, 2000);
+    safeCandidatesBatch.forEach(async (candidateBatch) => {
+      Promise.allSettled(
+        candidateBatch.map((candidate) =>
+          sendMail(candidate, job, purpose, sgMail),
+        ),
+      );
+    });
+  }
 };
 
 const sendMail = (
