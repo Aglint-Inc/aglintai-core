@@ -1,7 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Reupload } from "./Reupload";
-import { ImportCandidatesCsv } from "./ImportCandidatesCsv";
+import { ImportCsv } from "./ImportCsv";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
 
@@ -14,6 +14,12 @@ export function ImportCandidates({
   onClickImportResume = {},
   onClickAddManually = {},
   onClickClose = {},
+  isImportDescVisible = true,
+  textListingCount = "Listing 320 candidates",
+  onClickReupload = {},
+  isListingCountVisible = false,
+  textCountExistinJob = "130 candidates already exists in this job",
+  onClickImportRemaining = {},
 }) {
   return (
     <_Component
@@ -94,24 +100,8 @@ export function ImportCandidates({
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-524")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "color-grey-700")}
-                tag="div"
-              >
-                {
-                  "Import applicants by uploading a CSV or XLSX file containing First Name, Last Name, Email, and a link to their resume (PDF, DOC, or TXT format). Simply drag and drop your file or click to upload."
-                }
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot-import", "height-350")}
-              tag="div"
-            >
-              {slotImportCsv ?? <ImportCandidatesCsv />}
+            <_Builtin.Block tag="div">
+              {slotImportCsv ?? <ImportCsv />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 3">

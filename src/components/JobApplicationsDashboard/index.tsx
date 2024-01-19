@@ -557,6 +557,8 @@ const AddCandidates = () => {
     >
       <ImportCandidates
         slotAddManually={<ImportManualCandidates />}
+        isImportDescVisible={false}
+        isListingCountVisible={true}
         slotImportCsv={<ImportCandidatesCSV />}
         onClickClose={{
           onClick: () => {

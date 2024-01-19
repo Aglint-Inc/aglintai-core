@@ -94,6 +94,21 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .div-block-609 {
   display: flex;
   margin-left: 12px;
