@@ -197,7 +197,7 @@ const SlideTwoSignUp = () => {
   useEffect(() => {
     setRouteCheker(true);
     if (router.isReady && router.asPath == `${pageRoutes.SIGNUP}`) {
-      if (userDetails?.user && recruiter.industry) {
+      if (userDetails?.user && recruiter?.industry) {
         router.push(pageRoutes.JOBS);
         return;
       }

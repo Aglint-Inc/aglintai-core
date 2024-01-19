@@ -85,8 +85,8 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
   };
 
   const submitHandler = async () => {
-    setLoading(true);
     if ((await formValidation()) && recruiter?.id) {
+      setLoading(true);
       const url = details.company_website.replace(/^https?:\/\//i, '');
       const { data: companyDetails } = await axios.post(
         `/api/fetchCompanyDetails`,
@@ -94,45 +94,60 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
           domain_name: url,
         },
       );
-      setLogo(companyDetails.logo);
+      setLogo(companyDetails.logo_url);
+      const company_size =
+        companyDetails?.estimated_num_employees > 1 &&
+        companyDetails?.estimated_num_employees < 5
+          ? sizes[0]
+          : companyDetails?.estimated_num_employees > 5 &&
+              companyDetails?.estimated_num_employees < 50
+            ? sizes[1]
+            : companyDetails?.estimated_num_employees > 50 &&
+                companyDetails?.estimated_num_employees < 100
+              ? sizes[2]
+              : companyDetails?.estimated_num_employees > 100 &&
+                  companyDetails?.estimated_num_employees < 1000
+                ? sizes[3]
+                : companyDetails?.estimated_num_employees > 1000 &&
+                    companyDetails?.estimated_num_employees < 5000
+                  ? sizes[4]
+                  : companyDetails?.estimated_num_employees > 5000
+                    ? sizes[5]
+                    : '';
       setDetails((pre: any) => ({
         ...pre,
-        company_website: details.company_website || '',
-        name: companyDetails.name || '',
-        phone_number: companyDetails.phoneNumber || '',
+        company_website: details?.company_website || '',
+        name: companyDetails?.name || '',
+        phone_number: companyDetails?.primary_phone?.number || '',
         industry:
-          capitalize(companyDetails.industryMain?.replaceAll('-', ' ')) || '',
-        employee_size: companyDetails.totalEmployees || '',
-        logo: companyDetails.logo || '/',
+          capitalize(companyDetails?.industry?.replaceAll('-', ' ')) || '',
+        employee_size: company_size || '',
+        logo: companyDetails.logo_url || null,
         office_locations:
           [
             {
-              city: companyDetails.city?.name || '',
-              line1: companyDetails.city?.address || '',
+              city: companyDetails?.city || '',
+              line1: companyDetails.city?.street_address || '',
               line2: '',
-              region: companyDetails.state?.name || '',
-              country: companyDetails.country?.name || '',
-              zipcode: '',
-              full_address:
-                companyDetails.city?.address +
-                  ', ' +
-                  companyDetails.state?.name +
-                  ',' +
-                  companyDetails.city?.name || '',
+              region: companyDetails?.state || '',
+              country: companyDetails?.country || '',
+              zipcode: companyDetails?.postal_code,
+              full_address: companyDetails?.raw_address,
               is_headquarter: true,
             },
           ] || [],
-        company_overview: companyDetails.description || '',
+        company_overview: companyDetails?.short_description || '',
         // technology_score: companyDetails.technologies || [],
         socials: {
           custom: {},
-          twitter: companyDetails.socialNetworks?.twitter || '',
-          youtube: companyDetails.socialNetworks?.youtube || '',
-          facebook: companyDetails.socialNetworks?.facebook || '',
-          linkedin: companyDetails.socialNetworks?.linkedin || '',
-          instagram: companyDetails.socialNetworks?.instagram || '',
+          twitter: companyDetails?.twitter_url || '',
+          youtube: companyDetails?.youtube_url || '',
+          facebook: companyDetails?.facebook_url || '',
+          linkedin: companyDetails?.linkedin_url || '',
+          instagram: companyDetails?.instagram_url || '',
         },
       }));
+
       setLoading(false);
     }
   };
@@ -327,13 +342,8 @@ function CompanyDetails({
   setOpenSideBar,
   getCompanies,
 }) {
-  const {
-    recruiter,
-    setRecruiter,
-    recruiterUser,
-    userDetails,
-    allrecruterRelation,
-  } = useAuthDetails();
+  const { setRecruiter, recruiterUser, userDetails, allrecruterRelation } =
+    useAuthDetails();
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
@@ -356,9 +366,9 @@ function CompanyDetails({
     if (!details.phone_number) {
       fetchUserLocation(); // Call the function to fetch user's location when the component mounts
     }
-    // setLogo(recruiter.logo);
-    // setPhone(recruiter.phone_number);
-  }, [recruiter]);
+    // setLogo(details.logo);
+    setPhone(details.phone_number);
+  }, [details]);
 
   // Function to fetch the user's location information based on IP address
   const fetchUserLocation = async () => {
@@ -534,10 +544,10 @@ function CompanyDetails({
           !phone
             ? 'Please enter your phone number.'
             : error.phone.error
-            ? `Invalid phone number. Please use the ${
-                phonePattern?.replaceAll('.', 'x') || 'correct'
-              } format.`
-            : ''
+              ? `Invalid phone number. Please use the ${
+                  phonePattern?.replaceAll('.', 'x') || 'correct'
+                } format.`
+              : ''
         }
       />
       <Stack

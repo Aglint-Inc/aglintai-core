@@ -14,6 +14,7 @@ import Loader from '../Loader/Index';
 import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import UITypography from '../../Common/UITypography';
+import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
 
 interface Details {
   website: string;
@@ -158,43 +159,58 @@ export function FetchCompanyDetails() {
           domain_name: url,
         },
       );
+
+      const company_size =
+        companyDetails?.estimated_num_employees > 1 &&
+        companyDetails?.estimated_num_employees < 5
+          ? sizes[0]
+          : companyDetails?.estimated_num_employees > 5 &&
+              companyDetails?.estimated_num_employees < 50
+            ? sizes[1]
+            : companyDetails?.estimated_num_employees > 50 &&
+                companyDetails?.estimated_num_employees < 100
+              ? sizes[2]
+              : companyDetails?.estimated_num_employees > 100 &&
+                  companyDetails?.estimated_num_employees < 1000
+                ? sizes[3]
+                : companyDetails?.estimated_num_employees > 1000 &&
+                    companyDetails?.estimated_num_employees < 5000
+                  ? sizes[4]
+                  : companyDetails?.estimated_num_employees > 5000
+                    ? sizes[5]
+                    : '';
       const { data, error } = await supabase
         .from('recruiter')
         .update({
-          company_website: details.website || '',
-          name: companyDetails.name || '',
-          phone_number: companyDetails.phoneNumber || '',
+          company_website: details?.website || '',
+          name: companyDetails?.name || '',
+          phone_number: companyDetails?.primary_phone?.number || '',
           industry:
-            capitalize(companyDetails.industryMain?.replaceAll('-', ' ')) || '',
-          employee_size: companyDetails.totalEmployees || '',
-          logo: companyDetails.logo || null,
+            capitalize(companyDetails?.industry?.replaceAll('-', ' ')) || '',
+          employee_size: company_size || '',
+          logo: companyDetails.logo_url || null,
           office_locations:
             [
               {
-                city: companyDetails.city?.name || '',
-                line1: companyDetails.city?.address || '',
+                city: companyDetails?.city || '',
+                line1: companyDetails.city?.street_address || '',
                 line2: '',
-                region: companyDetails.state?.name || '',
-                country: companyDetails.country?.name || '',
-                zipcode: '',
-                full_address:
-                  companyDetails.city?.address +
-                    ', ' +
-                    companyDetails.state?.name +
-                    ',' +
-                    companyDetails.city?.name || '',
+                region: companyDetails?.state || '',
+                country: companyDetails?.country || '',
+                zipcode: companyDetails?.postal_code,
+                full_address: companyDetails?.raw_address,
                 is_headquarter: true,
               },
             ] || [],
-          company_overview: companyDetails.description || '',
+          company_overview: companyDetails?.short_description || '',
           // technology_score: companyDetails.technologies || [],
           socials: {
             custom: {},
-            twitter: companyDetails.socialNetworks?.twitter || '',
-            youtube: companyDetails.socialNetworks?.youtube || '',
-            facebook: companyDetails.socialNetworks?.facebook || '',
-            linkedin: companyDetails.socialNetworks?.linkedin || '',
-            instagram: companyDetails.socialNetworks?.instagram || '',
+            twitter: companyDetails?.twitter_url || '',
+            youtube: companyDetails?.youtube_url || '',
+            facebook: companyDetails?.facebook_url || '',
+            linkedin: companyDetails?.linkedin_url || '',
+            instagram: companyDetails?.instagram_url || '',
           },
         })
         .eq('id', recruiter.id)
