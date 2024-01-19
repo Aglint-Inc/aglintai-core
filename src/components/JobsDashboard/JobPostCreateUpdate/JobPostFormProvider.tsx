@@ -150,7 +150,8 @@ export type FormJobType = {
     questions: PhoneScreenQuestion[];
   };
 };
-type AssMenusType =
+
+export type AssesMenusType =
   | 'instructions'
   | 'welcome'
   | 'assesqns'
@@ -170,7 +171,7 @@ export type JobFormState = {
     | 'phoneScreening'
     | 'workflow'
     | 'resumeScore';
-  currentAssmSlides: AssMenusType;
+  currentAssmSlides: AssesMenusType;
   syncStatus: 'saving' | 'saved' | '';
   jobPostStatus: 'published' | 'draft' | 'closed';
   isJobPostReverting: boolean;
@@ -366,6 +367,26 @@ const initialContextValue: JobsContextType = {
       title: '',
     },
     resumeScore: {
+      err: [],
+      title: '',
+    },
+    assesqns: {
+      err: [],
+      title: '',
+    },
+    epilogue: {
+      err: [],
+      title: '',
+    },
+    instructions: {
+      err: [],
+      title: '',
+    },
+    settings: {
+      err: [],
+      title: '',
+    },
+    welcome: {
       err: [],
       title: '',
     },

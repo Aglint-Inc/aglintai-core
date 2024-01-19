@@ -168,7 +168,6 @@ export const getSeedJobFormData = (
     jobPostStatus: 'draft',
     currentAssmSlides: 'instructions',
   };
-
   if (recruiter) {
     const defaultAddress = get(recruiter, 'office_locations', []).map((s) => ({
       label: [s.city, s.region, s.country].filter(Boolean).join(', '),
@@ -255,7 +254,6 @@ export const getSeedJobFormData = (
       [],
     ).map((d) => ({ label: d, value: d }));
   }
-
   return seedFormState;
 };
 

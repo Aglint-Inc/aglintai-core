@@ -27,7 +27,11 @@ import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
-import { JobFormState, useJobForm } from '../JobPostFormProvider';
+import {
+  AssesMenusType,
+  JobFormState,
+  useJobForm,
+} from '../JobPostFormProvider';
 import ScreeningSettings from '../JobPostFormSlides/Assessment';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
@@ -63,7 +67,7 @@ export type slideName =
   | 'phoneScreening';
 
 export type FormErrorParams = Record<
-  slideName,
+  slideName | AssesMenusType,
   {
     title: string;
     err: string[];

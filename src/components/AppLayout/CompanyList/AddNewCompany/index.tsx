@@ -15,8 +15,6 @@ import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
 
-import { getInitialEmailTemplate } from '../../utils';
-
 interface Error {
   website: ErrorField;
 }
@@ -432,7 +430,6 @@ function CompanyDetails({
           employee_size: details.employee_size,
           name: details.name,
           industry: details.industry,
-          email_template: getInitialEmailTemplate(details.name),
           recruiter_user_id: recruiterUser.user_id,
         })
         .select();
@@ -537,10 +534,10 @@ function CompanyDetails({
           !phone
             ? 'Please enter your phone number.'
             : error.phone.error
-              ? `Invalid phone number. Please use the ${
-                  phonePattern?.replaceAll('.', 'x') || 'correct'
-                } format.`
-              : ''
+            ? `Invalid phone number. Please use the ${
+                phonePattern?.replaceAll('.', 'x') || 'correct'
+              } format.`
+            : ''
         }
       />
       <Stack

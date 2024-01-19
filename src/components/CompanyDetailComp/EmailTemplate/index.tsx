@@ -380,7 +380,7 @@ export const templateObj: Record<string, any> = {
     [senderName]`,
     trigger: 'Triggered instantly when candidate apply for a job',
   },
-  phone_screen: {
+  phone_screening: {
     listing: 'Phone Screen Email',
     heading: 'Phone Screen Email Setting',
     triggerInfo: 'Triggered instantly when you move candidate to screening',

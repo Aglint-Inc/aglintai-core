@@ -39,7 +39,7 @@ const Emails = () => {
         return (
           path === 'application_recieved' ||
           path === 'rejection' ||
-          path === 'phone_screen'
+          path === 'phone_screening'
         );
       } else {
         return true;

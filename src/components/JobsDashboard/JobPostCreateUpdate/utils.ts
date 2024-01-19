@@ -139,6 +139,26 @@ export const findDisclaimers = (jobForm: FormJobType) => {
       err: [],
       title: '',
     },
+    assesqns: {
+      err: [],
+      title: '',
+    },
+    epilogue: {
+      err: [],
+      title: '',
+    },
+    instructions: {
+      err: [],
+      title: '',
+    },
+    settings: {
+      err: [],
+      title: '',
+    },
+    welcome: {
+      err: [],
+      title: '',
+    },
   };
 
   if (isEmpty(jobForm.jobTitle.trim())) {
