@@ -10,7 +10,6 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import { stepObj } from '../SlideSignup/utils';
-import { getInitialEmailTemplate } from '../../AppLayout/utils';
 import AUIButton from '../../Common/AUIButton';
 import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
@@ -235,7 +234,6 @@ export function CompanyDetails() {
           employee_size: recruiter.employee_size,
           name: recruiter.name,
           industry: recruiter.industry,
-          email_template: getInitialEmailTemplate(recruiter.name),
         })
         .eq('id', recruiter.id);
       const { error: e2 } = await supabase
@@ -358,10 +356,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                  ? `Invalid phone number. Please use the ${
-                      phonePattern?.replaceAll('.', 'x') || 'correct'
-                    } format.`
-                  : ''
+                ? `Invalid phone number. Please use the ${
+                    phonePattern?.replaceAll('.', 'x') || 'correct'
+                  } format.`
+                : ''
             }
           />
           <Stack
