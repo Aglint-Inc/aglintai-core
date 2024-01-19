@@ -197,7 +197,7 @@ const SlideTwoSignUp = () => {
   useEffect(() => {
     setRouteCheker(true);
     if (router.isReady && router.asPath == `${pageRoutes.SIGNUP}`) {
-      if (userDetails?.user && recruiter?.name && recruiter.industry) {
+      if (userDetails?.user && recruiter.industry) {
         router.push(pageRoutes.JOBS);
         return;
       }
@@ -206,7 +206,7 @@ const SlideTwoSignUp = () => {
           shallow: true,
         });
         return;
-      } else if (userDetails?.user && !recruiter?.name) {
+      } else if (userDetails?.user && !recruiter?.industry) {
         router.push(`?step=${stepObj.detailsOne}`, undefined, {
           shallow: true,
         });

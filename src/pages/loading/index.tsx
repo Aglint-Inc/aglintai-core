@@ -121,11 +121,7 @@ export default function Loading() {
               .from('recruiter')
               .select()
               .eq('id', data[0].recruiter_id);
-            if (
-              !recruiter_error &&
-              recruiter[0].name &&
-              recruiter[0].industry
-            ) {
+            if (!recruiter_error && recruiter[0].industry) {
               router.push(pageRoutes.JOBS);
             } else {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
