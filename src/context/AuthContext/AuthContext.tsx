@@ -166,9 +166,7 @@ const AuthProvider = ({ children }) => {
           } else {
             toast.error('Something went wrong. Please contact aglint support.');
           }
-        } else {
-          router.push(pageRoutes.SIGNUP);
-        }
+        } 
       }
     } catch (err) {
       router.push(pageRoutes.LOGIN);

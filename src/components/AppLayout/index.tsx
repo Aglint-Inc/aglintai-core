@@ -95,7 +95,7 @@ export default function AppLayout({ children }) {
               alignItems={'center'}
             >
               {userDetails?.user.user_metadata.role?.toLowerCase() ===
-              'recruiter' ? (
+              'company' ? (
                 <Stack direction={'row'} mb={'20px !important'}>
                   <Avatar
                     src={logo}

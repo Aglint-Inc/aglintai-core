@@ -119,7 +119,7 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
-        posthog.identify(details.email, {Email: details.email  });
+        posthog.identify(details.email, { Email: details.email });
         router.push(pageRoutes.JOBS);
       } else {
         setErrorCheck({
@@ -172,7 +172,7 @@ function Login() {
         }}
         onclickSignup={{
           onClick: () => {
-            router.push(`${pageRoutes.SIGNUP}?step=type`);
+            router.push(`${pageRoutes.SIGNUP}`);
           },
         }}
         slotForm={

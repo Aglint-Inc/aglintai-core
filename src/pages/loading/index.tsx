@@ -19,7 +19,7 @@ import {
 import toast from '@/src/utils/toast';
 
 export default function Loading() {
-  const { userDetails } = useAuthDetails();
+  const { userDetails, handleLogout } = useAuthDetails();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Loading() {
             user_id: userDetails?.user?.id,
           });
           toast.error('Please signup/login with company email');
-          router.push(pageRoutes.SIGNUP);
+          await handleLogout();
           return;
         }
         await createUser();
@@ -49,39 +49,16 @@ export default function Loading() {
   };
 
   const createUser = () => {
-    const storedValue = localStorage.getItem('flow') || 'Company';
-
-    supabase.auth.updateUser({
-      data: {
-        role: 'recruiter',
-        first_name: !userDetails.user.user_metadata.first_name
-          ? splitFullName(userDetails.user.user_metadata.full_name).firstName
-          : userDetails.user.user_metadata.first_name,
-        last_name: !userDetails.user.user_metadata.first_name
-          ? splitFullName(userDetails.user.user_metadata.full_name).lastName
-          : userDetails.user.user_metadata.last_name,
-        image_url: !userDetails.user.user_metadata.image_url
-          ? ''
-          : userDetails.user.user_metadata.image_url,
-        phone: !userDetails.user.user_metadata.phone
-          ? ''
-          : userDetails.user.user_metadata.phone,
-        language: !userDetails.user.user_metadata.language
-          ? ''
-          : userDetails.user.user_metadata.language,
-        timezone: !userDetails.user.user_metadata.timezone
-          ? ''
-          : userDetails.user.user_metadata.timezone,
-      },
-    });
     supabase
-      .from('recruiter_user')
+      .from('recruiter_relation')
       .select('*')
       .eq('user_id', userDetails?.user?.id)
-      .then(({ data, error }) => {
+      .then(async ({ data, error }) => {
         if (!error) {
           //post hog logging
-          posthog.identify(userDetails.user.email , { Email: userDetails.user.email  });
+          posthog.identify(userDetails.user.email, {
+            Email: userDetails.user.email,
+          });
           if (data.length == 0) {
             (async () => {
               await refershAccessToken();
@@ -94,10 +71,17 @@ export default function Loading() {
                   first_name: splitFullName(
                     userDetails.user.user_metadata.full_name,
                   ).firstName,
-                  last_name: splitFullName(
-                    userDetails.user.user_metadata.full_name,
-                  ).lastName,
+                  last_name: !userDetails.user.user_metadata.first_name
+                    ? splitFullName(userDetails.user.user_metadata.full_name)
+                        .lastName
+                    : userDetails.user.user_metadata.last_name,
                   role: 'admin',
+                  profile_image: !userDetails.user.user_metadata.image_url
+                    ? null
+                    : userDetails.user.user_metadata.image_url,
+                  phone: !userDetails.user.user_metadata.phone
+                    ? ''
+                    : userDetails.user.user_metadata.phone,
                 })
                 .select();
 
@@ -112,7 +96,6 @@ export default function Loading() {
                           '.com',
                           '',
                         ) || '',
-                      recruiter_type: storedValue,
                     })
                     .select();
                 if (!errorRecruiter) {
@@ -125,14 +108,28 @@ export default function Loading() {
                     recruiter_id: dataRecruiter[0].id,
                     is_active: true,
                   });
-                  router.push(
-                    `${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`,
-                  );
+                  router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
                 }
               }
             })();
           } else {
-            router.push(pageRoutes.JOBS);
+            if (!userDetails?.user.user_metadata?.role) {
+              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+              return;
+            }
+            const { data: recruiter, error: recruiter_error } = await supabase
+              .from('recruiter')
+              .select()
+              .eq('id', data[0].recruiter_id);
+            if (
+              !recruiter_error &&
+              recruiter[0].name &&
+              recruiter[0].industry
+            ) {
+              router.push(pageRoutes.JOBS);
+            } else {
+              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
+            }
           }
         } else {
           router.push(pageRoutes.LOGIN);

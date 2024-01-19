@@ -1,6 +1,5 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
@@ -9,47 +8,52 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabaseClient';
 import { companyType } from '@/src/utils/userRoles';
 
 import Loader from './Loader/Index';
 import SelectAtsSystem from './SelectAtsSystem';
 import SlideDetailsOne from './SlideDetailsOne';
+import SlideDetailsTwo from './SlideDetailsTwo';
 import SlideTwoSignUp from './SlideSignup';
 import { stepObj } from './SlideSignup/utils';
 import AUIButton from '../Common/AUIButton';
 
 const SignUpComp = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   const { step, setStep, setFlow } = useSignupDetails();
+  const { recruiter } = useAuthDetails();
 
-  useEffect(() => {
-    if (recruiter?.id) hanadleSession();
-  }, [recruiter]);
-
-  const hanadleSession = async () => {
-    if (
-      router.asPath == `/${stepObj.signup}` ||
-      router.asPath == `/${stepObj.signup}?step=type`
-    ) {
-      if (recruiter?.id) {
-        router.push(pageRoutes.JOBS);
-      }
-    }
-  };
+  async function updateAuthDetails(type: string) {
+    await supabase.auth.updateUser({
+      data: { role: type },
+    });
+    await supabase
+      .from('recruiter')
+      .update({
+        recruiter_type: type,
+      })
+      .eq('id', recruiter.id);
+  }
   return (
     <>
-      {(step == 'type' || step == stepObj.signup) && (
+      {router.asPath === pageRoutes.SIGNUP && (
+        <YTransform uniqueKey={step}>
+          <SlideTwoSignUp />
+        </YTransform>
+      )}
+      {step === stepObj.type && (
         <SignupSlider
           slotRightSlider={
-            step == 'type' ? (
+            <YTransform uniqueKey={step}>
               <WelcomeSlider1
                 onClickAgency={{
                   onClick: () => {
                     setFlow(companyType.AGENCY);
                     localStorage.setItem('flow', companyType.AGENCY);
                     setStep(stepObj.signup);
-                    router.push(`?step=signup&category=agency`, undefined, {
+                    updateAuthDetails(companyType.AGENCY);
+                    router.push(`?step=${stepObj.detailsOne}`, undefined, {
                       shallow: true,
                     });
                   },
@@ -59,7 +63,8 @@ const SignUpComp = () => {
                     setFlow(companyType.COMPANY);
                     localStorage.setItem('flow', companyType.COMPANY);
                     setStep(stepObj.signup);
-                    router.push(`?step=signup&category=recruiter`, undefined, {
+                    updateAuthDetails(companyType.COMPANY);
+                    router.push(`?step=${stepObj.detailsOne}`, undefined, {
                       shallow: true,
                     });
                   },
@@ -69,9 +74,14 @@ const SignUpComp = () => {
                     setFlow(companyType.CONSULTANT);
                     localStorage.setItem('flow', companyType.CONSULTANT);
                     setStep(stepObj.signup);
-                    router.push(`?step=signup&category=consultant`, undefined, {
-                      shallow: true,
-                    });
+                    updateAuthDetails(companyType.CONSULTANT);
+                    router.push(
+                      `?step=${stepObj.detailsOne}&category=consultant`,
+                      undefined,
+                      {
+                        shallow: true,
+                      },
+                    );
                   },
                 }}
                 onClickSignIn={{
@@ -82,65 +92,66 @@ const SignUpComp = () => {
                   },
                 }}
               />
-            ) : step == stepObj.signup ? (
-              <YTransform uniqueKey={step}>
-                <SlideTwoSignUp />
-              </YTransform>
-            ) : null
+            </YTransform>
           }
         />
       )}
-      <>
-        {step == stepObj.detailsOne || step == stepObj.detailsTwo ? (
-          // <YTransform uniqueKey={router.query.step == 'details-two'}>
+
+      {step == stepObj.detailsOne ? (
+        <YTransform uniqueKey={step}>
           <SlideDetailsOne />
-        ) : // </YTransform>
-        step == stepObj.atsSystem ? (
+        </YTransform>
+      ) : step == stepObj.detailsTwo ? (
+        <YTransform uniqueKey={step}>
+          <SlideDetailsTwo />
+        </YTransform>
+      ) : step == stepObj.atsSystem ? (
+        <YTransform uniqueKey={step}>
           <YTransform uniqueKey={step}>
             <SelectAtsSystem />
           </YTransform>
-        ) : step == stepObj.allSet ? (
-          <YTransform uniqueKey={step}>
-            <RecCompanyDetails
-              slotMain={
-                <RcSuccessBlock
-                  message='You are all set'
-                  slotButton={
-                    <Stack direction={'row'} spacing={'10px'}>
-                      <AUIButton
-                        onClick={() => {
-                          router.push(`${pageRoutes.JOBS}/new`, undefined, {
-                            shallow: true,
-                          });
-                        }}
-                      >
-                        Post your first job
-                      </AUIButton>
-                      <AUIButton
-                        variant='outlined'
-                        onClick={() => {
-                          router.push(pageRoutes.JOBS);
-                        }}
-                      >
-                        Go to Dashboard
-                      </AUIButton>
-                    </Stack>
-                  }
-                />
-              }
-            />
-          </YTransform>
-        ) : (
-          <Stack
-            justifyContent={'center'}
-            alignItems={'center'}
-            height={'100vh'}
-            width={'100vw'}
-          >
-            <Loader />
-          </Stack>
-        )}
-      </>
+        </YTransform>
+      ) : step == stepObj.allSet ? (
+        <YTransform uniqueKey={step}>
+          <RecCompanyDetails
+            slotMain={
+              <RcSuccessBlock
+                message='You are all set'
+                slotButton={
+                  <Stack direction={'row'} spacing={'10px'}>
+                    <AUIButton
+                      onClick={() => {
+                        router.push(`${pageRoutes.JOBS}/new`, undefined, {
+                          shallow: true,
+                        });
+                      }}
+                    >
+                      Post your first job
+                    </AUIButton>
+                    <AUIButton
+                      variant='outlined'
+                      onClick={() => {
+                        router.push(pageRoutes.JOBS);
+                      }}
+                    >
+                      Go to Dashboard
+                    </AUIButton>
+                  </Stack>
+                }
+              />
+            }
+          />
+        </YTransform>
+      ) : (
+        <Stack
+          justifyContent={'center'}
+          alignItems={'center'}
+          height={'100vh'}
+          width={'100vw'}
+        >
+          <Loader />
+        </Stack>
+      )}
     </>
   );
 };

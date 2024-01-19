@@ -6,6 +6,7 @@ import { CompanyProfileHeader, CompanySwitchDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
+import { companyType } from '@/src/utils/userRoles';
 
 import AddNewCompany from './AddNewCompany';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
@@ -43,7 +44,11 @@ function CompanyList() {
   }
 
   useEffect(() => {
-    if (userDetails?.user.user_metadata.role !== 'recruiter') {
+    const role = userDetails?.user.user_metadata.role?.toLowerCase() as any;
+    if (
+      role &&
+      (role === companyType.AGENCY || role === companyType.CONSULTANT)
+    ) {
       getCompanies();
     }
   }, [userDetails]);
