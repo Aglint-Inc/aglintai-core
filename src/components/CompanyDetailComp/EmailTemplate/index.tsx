@@ -86,19 +86,22 @@ const EmailTemplate = () => {
 
   return (
     <>
-      {templateEntries.map(([templateName, templateData], ind) => (
-        <EmailTemplateCards
-          key={ind}
-          textDescription={templateObj[templateName].trigger}
-          textTitle={templateObj[templateName].listing}
-          onClickApplicationRecieved={{
-            onClick: () => {
-              setSelectedTemplate({ ...templateData, name: templateName });
-              setOpen(true);
-            },
-          }}
-        />
-      ))}
+      <Stack gap={2} width={'500px'} mt={5}>
+        {templateEntries.map(([templateName, templateData], ind) => (
+          <EmailTemplateCards
+            key={ind}
+            textDescription={templateObj[templateName].trigger}
+            textTitle={templateObj[templateName].listing}
+            onClickApplicationRecieved={{
+              onClick: () => {
+                setSelectedTemplate({ ...templateData, name: templateName });
+                setOpen(true);
+              },
+            }}
+          />
+        ))}
+      </Stack>
+
       <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
         <Stack mb={'10px'}>
           <EditEmail

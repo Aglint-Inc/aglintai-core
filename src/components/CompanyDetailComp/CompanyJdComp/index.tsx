@@ -21,7 +21,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
   };
 
   return (
-    <Stack p={'4px'} spacing={'20px'}>
+    <Stack p={'4px'} width={'500px'} spacing={'20px'}>
       <UITextField
         labelSize='small'
         fullWidth
@@ -38,7 +38,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
-       <UITextField
+      <UITextField
         labelSize='small'
         fullWidth
         label='Benefits'
@@ -118,7 +118,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
-      
+
       <Stack>
         <UITypography
           type={'small'}
