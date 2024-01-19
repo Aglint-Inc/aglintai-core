@@ -3,21 +3,16 @@
 import { faker } from '@faker-js/faker';
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useRef, } from 'react';
 
 import { AppLogo } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 const CSVGenerator = () => {
   const csvCountRef = useRef();
-  const [checked, setChecked] = useState(false);
-  const [checked1, setChecked1] = useState(false);
 
   function generateCsv() {
     // Create an array to hold the CSV data
@@ -27,48 +22,30 @@ const CSVGenerator = () => {
       'last_name',
       'email',
       'phone',
-      'job_title',
-      'company',
-      'status',
-      'score',
-      'profile_image',
-      'resume',
+      'linkedin',
+      'file_url',
     ];
 
     // Generate data for 100 people
-    function getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
     for (let i = 0; i < csvCountRef?.current?.value; i++) {
       // Function to generate a random number within a specific range
 
       // Generate a random number between 1 and 100
-      const randomNumber = getRandomNumber(1, 100);
       const firstName = faker.name.firstName();
       const lastName = faker.name.lastName();
       const email = faker.internet.email();
       const phone = faker.number.int(9999999999);
-      const jobTitle = faker.name.jobTitle();
-      const score = checked1 ? randomNumber : '';
-      const company = 'Aglint Inc';
-      const status = checked
-        ? faker.helpers.arrayElement(Object.values(JobApplicationSections))
-        : JobApplicationSections.NEW; // You can change this if needed
-      const profileImage = faker.image.avatar(); // You can change this if needed
       const resume =
         'https://aetdssowoezhaepzhzag.supabase.co/storage/v1/object/public/resume-job-post/public/729ddd04-ea4f-43af-a1f1-d88e1ca9f06a?t=2023-10-04T15:25:41.344Z'; // You can change this if needed
+      const linkedIn = 'https://www.linkedin.com/in/dheerajkumar518/'
 
       const person = [
         firstName,
         lastName,
         email,
         phone,
-        jobTitle,
-        company,
-        status,
-        score,
-        profileImage,
         resume,
+        linkedIn
       ];
       data.push(person);
     }
@@ -143,26 +120,7 @@ const CSVGenerator = () => {
             variant='outlined'
             type='number'
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={(e) => {
-                  setChecked(e.target.checked);
-                }}
-              />
-            }
-            label={`Mix status[${Object.values(JobApplicationSections)}]`}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={(e) => {
-                  setChecked1(e.target.checked);
-                }}
-              />
-            }
-            label='With score'
-          />
+
           <Stack direction={'row'} justifyContent={'end'}>
             <Button variant='contained' onClick={generateCsv}>
               Generate and Download

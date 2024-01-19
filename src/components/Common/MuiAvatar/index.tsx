@@ -35,7 +35,7 @@ export default function MuiAvatar({
       color += `00${value.toString(16)}`.slice(-2);
     }
     /* eslint-enable no-bitwise */
-    return color + '99';
+    return color + 'cc';
   }
 
   function stringAvatar(value: string): {

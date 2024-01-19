@@ -8,11 +8,12 @@ export function UploadedResume({
   as: _Component = _Builtin.Block,
   textCountDocument = "24 documents",
   slotPrimaryButton,
+  slotUploadResumeList,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "upload-resume-list")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "div-block-611")} tag="div">
-        <UploadedResumeList />
+        {slotUploadResumeList ?? <UploadedResumeList />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "resume-upload-bottom")}

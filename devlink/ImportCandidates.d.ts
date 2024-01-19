@@ -10,4 +10,10 @@ declare function ImportCandidates(props: {
   onClickImportResume?: Types.Devlink.RuntimeProps;
   onClickAddManually?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
+  isImportDescVisible?: Types.Visibility.VisibilityConditions;
+  textListingCount?: React.ReactNode;
+  onClickReupload?: Types.Devlink.RuntimeProps;
+  isListingCountVisible?: Types.Visibility.VisibilityConditions;
+  textCountExistinJob?: React.ReactNode;
+  onClickImportRemaining?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

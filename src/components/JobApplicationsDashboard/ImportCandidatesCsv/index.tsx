@@ -5,7 +5,7 @@ import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
-import { ImportCandidatesCsv, LoaderSvg } from '@/devlink';
+import { ImportCandidatesCsv, ImportCsv, LoaderSvg } from '@/devlink';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CsvUploadApi } from '@/src/pages/api/jobApplications/candidateUpload/types';
 import toast from '@/src/utils/toast';
@@ -135,22 +135,8 @@ function ImportCandidatesCSV() {
         height: '100%',
       }}
     >
-      <Stack direction={'row'} pb={2}>
-        <Typography fontSize={'14px'}>Need help?&nbsp;</Typography>
-        <CSVLink filename={'candidates-sample.csv'} data={csvData}>
-          <Typography
-            sx={{
-              textDecoration: 'underline',
-            }}
-            color={'blue.600'}
-            fontSize={'14px'}
-          >
-            Download our sample file here.
-          </Typography>
-        </CSVLink>
-      </Stack>
       <Stack spacing={1} height={'100%'}>
-        {isLoading ? (
+        {isLoading && (
           <Stack
             justifyContent={'center'}
             alignItems={'center'}
@@ -160,24 +146,52 @@ function ImportCandidatesCSV() {
           >
             <LoaderSvg />
           </Stack>
-        ) : bulkImportdata?.length > 0 ? (
-          <>
-            <CandidatesListTable importedCandidate={bulkImportdata} />{' '}
-            <Stack direction={'row'} justifyContent={'flex-end'}>
-              <AUIButton
-                onClick={async () => {
-                  await createCandidates(bulkImportdata);
-                }}
-              >
-                Import
-              </AUIButton>
-            </Stack>
-          </>
-        ) : (
-          <Stack {...getRootProps()} sx={{ height: '100%' }}>
-            <input {...getInputProps()} />
-            <ImportCandidatesCsv />
-          </Stack>
+        )}
+        {!isLoading && (
+          <ImportCsv
+            slotReuploadButton={
+              <Stack {...getRootProps()} sx={{ height: '100%' }}>
+                <input id='uploadCsv' {...getInputProps()} />
+                <AUIButton variant='text'>Reupload</AUIButton>
+              </Stack>
+            }
+            textListingCount={`Listing ${bulkImportdata?.length} candidates`}
+            textCountExistinJob={'0 candidates already exists in this job'}
+            isExistWarningVisible={false} // enable for showing the existing candidates
+            isImportDescVisible={bulkImportdata?.length === 0}
+            isListingCountVisible={bulkImportdata?.length !== 0}
+            slotImportCandidatesCsv={
+              bulkImportdata?.length > 0 ? (
+                <CandidatesListTable importedCandidate={bulkImportdata} />
+              ) : (
+                <>
+                  <Stack direction={'row'} pb={1}>
+                    <Typography fontSize={'14px'}>Need help?&nbsp;</Typography>
+                    <CSVLink filename={'candidates-sample.csv'} data={csvData}>
+                      <Typography
+                        sx={{
+                          textDecoration: 'underline',
+                        }}
+                        color={'blue.600'}
+                        fontSize={'14px'}
+                      >
+                        Download our sample file here.
+                      </Typography>
+                    </CSVLink>
+                  </Stack>
+                  <Stack {...getRootProps()} sx={{ height: '320px' }}>
+                    <input id='uploadCsv' {...getInputProps()} />
+                    <ImportCandidatesCsv />
+                  </Stack>
+                </>
+              )
+            }
+            onClickImportRemaining={{
+              onClick: async () => {
+                await createCandidates(bulkImportdata);
+              },
+            }}
+          />
         )}
       </Stack>
     </Stack>

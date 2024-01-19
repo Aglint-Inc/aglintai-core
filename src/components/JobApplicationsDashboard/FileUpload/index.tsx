@@ -1,11 +1,15 @@
 /* eslint-disable security/detect-object-injection */
-import { Paper, Stack, Tooltip, Typography } from '@mui/material';
-import dayjs from 'dayjs';
+import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { ImportResume, LoaderSvg } from '@/devlink';
+import {
+  ImportResume,
+  LoaderSvg,
+  UploadedResume,
+  UploadedResumeList,
+} from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';
@@ -97,61 +101,48 @@ const ResumeUpload = ({ setOpenSidePanel }) => {
                 opacity: loading ? 0.5 : 1,
               }}
             >
-              {selectedfile.map((data, index) => {
-                const { name, type, lastModifiedDate, size } = data;
-                return (
-                  <Paper
-                    sx={{
-                      p: 2,
-                    }}
-                    key={index}
-                  >
-                    <Stack spacing={1}>
-                      <Stack direction={'row'} justifyContent={'space-between'}>
-                        <Tooltip title={name}>
-                          <Typography variant='h5' className='one-line-clamp'>
-                            {name}
-                          </Typography>
-                        </Tooltip>
+              <>
+                <UploadedResume
+                  slotUploadResumeList={selectedfile.map((data, index) => {
+                    const { name, type, size } = data;
+                    function convertBytesToKB(bytes) {
+                      if (Math.floor(bytes / (1024 * 1024))) {
+                        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+                      }
+                      return (bytes / 1024).toFixed(2) + ' KB';
+                    }
 
-                        <Typography variant='caption'>{type}</Typography>
-                      </Stack>
-                      <Stack direction={'row'} spacing={2}>
-                        <Typography variant='body2'>Size : {size}</Typography>
-                        <Typography variant='body2'>
-                          Modified Time :{' '}
-                          {dayjs(lastModifiedDate).format('MMM D, YYYY h:mm A')}
-                        </Typography>
-                      </Stack>
+                    return (
+                      <UploadedResumeList
+                        isDocVisible={!type.includes('pdf')}
+                        isPdfIconVisible={type.includes('pdf')}
+                        textSize={convertBytesToKB(size)}
+                        key={index}
+                        textName={name}
+                        onClickDelete={{
+                          onClick: () => DeleteSelectFile(name),
+                        }}
+                      />
+                    );
+                  })}
+                  textCountDocument={selectedfile.length + ' documents'}
+                  slotPrimaryButton={
+                    selectedfile.length !== 0 && (
                       <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <Typography
-                          sx={{ cursor: 'pointer' }}
-                          variant='caption'
-                          color={'error.main'}
-                          component={'span'}
-                          onClick={() => DeleteSelectFile(name)}
+                        <AUIButton
+                          disabled={loading}
+                          onClick={() => {
+                            FileUploadSubmit();
+                          }}
                         >
-                          Delete
-                        </Typography>
+                          Upload
+                        </AUIButton>
                       </Stack>
-                    </Stack>
-                  </Paper>
-                );
-              })}
+                    )
+                  }
+                />
+              </>
             </Stack>
-          </Stack>
-        )}
-
-        {selectedfile.length !== 0 && (
-          <Stack direction={'row'} justifyContent={'flex-end'}>
-            <AUIButton
-              disabled={loading}
-              onClick={() => {
-                FileUploadSubmit();
-              }}
-            >
-              Upload
-            </AUIButton>
           </Stack>
         )}
       </Stack>

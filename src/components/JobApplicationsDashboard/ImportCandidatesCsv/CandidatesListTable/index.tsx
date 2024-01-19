@@ -11,31 +11,25 @@ function CandidatesListTable({ importedCandidate }) {
   return (
     <Stack
       borderRadius={'10px'}
-      border={'1px solid'}
-      p={'10px'}
-      overflow={'hidden'}
+      border={'1px solid '}
+      borderColor={'grey.200'}
+      height={'100%'}
+      overflow={'scroll'}
     >
-      <Stack pb={'10px'}>
-        <Typography>Found {importedCandidate.length} candidates</Typography>
-      </Stack>
-      <Stack>
-        <TableHeader />
-      </Stack>
-      <Stack spacing={'5px'} maxHeight={'250px'} overflow={'auto'}>
-        {importedCandidate.map((ele, i) => {
-          return (
-            <YTransform key={i} uniqueKey={i}>
-              <TableRow
-                key={i}
-                name={ele.first_name + ' ' + ele.last_name}
-                email={ele.email}
-                phone={ele.phone}
-                profile_image={ele.profile_image}
-              />
-            </YTransform>
-          );
-        })}
-      </Stack>
+      <TableHeader />
+      {importedCandidate.map((ele, i) => {
+        return (
+          <YTransform key={i} uniqueKey={i}>
+            <TableRow
+              index={i}
+              name={ele.first_name + ' ' + ele.last_name}
+              email={ele.email}
+              phone={ele.phone}
+              profile_image={ele.profile_image}
+            />
+          </YTransform>
+        );
+      })}
     </Stack>
   );
 }
@@ -46,52 +40,48 @@ function TableHeader() {
   return (
     <Stack
       bgcolor={'grey.100'}
-      p={'3px'}
+      py={'10px'}
+      px={'20px'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
       spacing={'5px'}
     >
-      <Stack
-        width={`${100 / 3}%`}
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'5px'}
-      >
-        <IconCandidate />
-        <Typography variant='subtitle2'>Candidate</Typography>
-      </Stack>
-
-      <Stack
-        width={`${100 / 3}%`}
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'5px'}
-      >
-        <IconMail />
-        <Typography variant='subtitle2'>Email</Typography>
-      </Stack>
-      <Stack
-        width={`${100 / 5}%`}
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'5px'}
-      >
-        <IconPhone />
-        <Typography variant='subtitle2'>Phone</Typography>
-      </Stack>
+      {headerObject.map((ele, i) => {
+        const { heading, icon } = ele;
+        return (
+          <Stack
+            key={i}
+            width={`${100 / 3}%`}
+            direction={'row'}
+            alignItems={'center'}
+            spacing={'5px'}
+          >
+            {icon}
+            <Typography variant='body2'>{heading}</Typography>
+          </Stack>
+        );
+      })}
     </Stack>
   );
 }
 
-function TableRow({ name, email, phone, profile_image }) {
+const headerObject = [
+  { heading: 'Candidate', icon: <IconCandidate /> },
+  { heading: 'Eail', icon: <IconMail /> },
+  { heading: 'Phone', icon: <IconPhone /> },
+];
+
+function TableRow({ name, email, phone, profile_image, index }) {
   return (
     <Stack
-      p={'3px'}
+      key={index}
+      py={'4px'}
+      px={'20px'}
       justifyContent={'left'}
       direction={'row'}
       alignItems={'center'}
-      spacing={'5px'}
+      // bgcolor={'yellow.100'} // background color for duplicate candidate row
     >
       <Stack
         width={`${100 / 3}%`}
@@ -103,7 +93,7 @@ function TableRow({ name, email, phone, profile_image }) {
           width={'20px'}
           height={'20px'}
           src={profile_image}
-          fontSize={'20px'}
+          fontSize={'12px'}
           level={name}
           variant={'circular'}
         />
@@ -111,7 +101,6 @@ function TableRow({ name, email, phone, profile_image }) {
           {name}
         </Typography>
       </Stack>
-
       <Typography
         variant='body2'
         className='one-line-clamp'
@@ -122,7 +111,8 @@ function TableRow({ name, email, phone, profile_image }) {
       <Typography
         variant='body2'
         className='one-line-clamp'
-        width={`${100 / 5}%`}
+        width={`${100 / 3}%`}
+        pl={'10px'}
       >
         {phone}
       </Typography>
