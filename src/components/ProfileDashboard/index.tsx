@@ -577,7 +577,7 @@ const ProfileForm = ({
     }
   };
   React.useEffect(() => {
-    if (value.validation === 'phone') {
+    if (value.validation === 'phone' && !value.value) {
       fetchUserLocation();
     }
   }, []);
