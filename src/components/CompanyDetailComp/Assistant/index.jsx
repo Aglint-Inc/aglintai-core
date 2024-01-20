@@ -10,7 +10,7 @@ import toast from '@/src/utils/toast';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 
-function Assistant() {
+function Assistant({ setIsSaving }) {
   const { recruiter, setRecruiter } = useAuthDetails();
   const [assistant, setAssistant] = useState([]);
   const [btnhide, setbtnhide] = useState(true);
@@ -18,6 +18,7 @@ function Assistant() {
   const instructionRef = useRef(null);
   const nameRef = useRef(null);
   async function handleClick() {
+    handleChange()
     if (recruiter?.assistant_id) {
       updateAssistant();
     } else {
@@ -42,13 +43,19 @@ function Assistant() {
   }
 
   async function updateAssistant() {
+
     await axios.post('/api/assistant/updateAssistant', {
       instructions: instructionRef.current.value,
       name: nameRef.current.value,
       assistant_id: recruiter.assistant_id,
     });
   }
-
+  const handleChange = async () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 1000);
+  };
   useEffect(() => {
     if (recruiter?.assistant_id) {
       getAssistant();

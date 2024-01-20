@@ -13,6 +13,7 @@ import AddRolesDialog from './AddRolesDialog';
 import AddTechnologyDialog from './AddTechnologyDialog';
 import SocialComp from './SocialComp';
 import AssessmentSettings from '../AssessmentSettings';
+import Assistant from '../Assistant';
 // import Assistant from '../Assistant';
 import CompanyJdComp from '../CompanyJdComp';
 import EmailTemplate from '../EmailTemplate';
@@ -309,6 +310,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         )}
         {router.query?.tab === 'assessment' && (
           <AssessmentSettings setIsSaving={setIsSaving} />
+        )}
+        {router.query?.tab === 'job-assistant' && (
+          <Assistant setIsSaving={setIsSaving} />
         )}
         {router.query?.tab === 'email' && (
           <>

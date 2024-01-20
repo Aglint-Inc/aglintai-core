@@ -41,6 +41,7 @@ const CompanyDetailComp = () => {
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const isTeamEnabled = posthog.isFeatureEnabled('isTeamEnabled');
+  let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
 
   return (
     <Stack overflow={'hidden'}>
@@ -81,6 +82,17 @@ const CompanyDetailComp = () => {
                 onClickNav={{
                   onClick: () => {
                     router.replace('/company?tab=assessment');
+                  },
+                }}
+              />
+            )}
+            {isAssistantEnabled && (
+              <NavSublink
+                textLink={'Job Assistant'}
+                isActive={router.query?.tab === 'job-assistant'}
+                onClickNav={{
+                  onClick: () => {
+                    router.replace('/company?tab=job-assistant');
                   },
                 }}
               />

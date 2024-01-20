@@ -57,7 +57,7 @@ function SideNavbar() {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
       SubComponents: null,
-      route: pageRoutes.COMPANY + '?tab=basic-info',
+      route: pageRoutes.COMPANY,
       comingsoon: false,
       isvisible: true,
     },
