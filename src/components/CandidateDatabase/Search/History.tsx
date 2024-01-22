@@ -20,7 +20,6 @@ import toast from '@/src/utils/toast';
 
 import { Candidate } from '../AppoloSearch/types';
 import { CandidateSearchState } from '../context/CandidateSearchProvider';
-import { getFilteredCands } from '../Database/utils';
 import { JDSearchModal } from '../JDSearchModal';
 import { getRelevantCndidates } from '../utils';
 import Loader from '../../Common/Loader';
@@ -37,7 +36,6 @@ function CandidateSearchHistory() {
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isQrySearching, setIsQrySearching] = useState(false);
-  const [candidatesCount, setCandidatesCount] = useState(0);
   const [deleteHistoryId, setDeleteHistoryId] = useState(-1);
   const { jobsData } = useJobs();
   const router = useRouter();
@@ -59,17 +57,17 @@ function CandidateSearchHistory() {
           .select()
           .eq('recruiter_id', recruiter.id),
       ) as SearchHistoryType[];
-      const { total_results } = await getFilteredCands({
-        recruiter_id: recruiter.id,
-        currPage: 1,
-        location_filter: '',
-        name_filter: '',
-        job_role: '',
-        sort_param: 'first_name',
-        is_sort_desc: false,
-      });
+      // const { total_results } = await getFilteredCands({
+      //   recruiter_id: recruiter.id,
+      //   currPage: 1,
+      //   location_filter: '',
+      //   name_filter: '',
+      //   job_role: '',
+      //   sort_param: 'first_name',
+      //   is_sort_desc: false,
+      // });
 
-      setCandidatesCount(total_results);
+      // setCandidatesCount(total_results);
 
       setHistory(history);
     } catch (err) {
@@ -193,7 +191,6 @@ function CandidateSearchHistory() {
         isSearchByJdVisible={currentTab === 'my Candidates'}
         isSearchInAglintVisible={currentTab === 'aglint candidates'}
         isSearchInAllVisible={currentTab === 'my Candidates'}
-        textCandidateCount={candidatesCount}
         slotNavSublink={
           <>
             <NavSublink

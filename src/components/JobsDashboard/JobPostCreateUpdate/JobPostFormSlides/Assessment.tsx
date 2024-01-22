@@ -20,7 +20,6 @@ function Assessment() {
       slotInterviewWorkflow={<WorkFlow flow='interview' />}
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}
       slotDisqualifyEmail={<EmailSchedule flow='disqualifiedMail' />}
-      isProceedDisable={false}
     />
   );
 }
