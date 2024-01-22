@@ -54,13 +54,15 @@ export function JobDetails({
           tag="div"
         >
           <_Builtin.Block className={_utils.cx(_styles, "jdet-main")} tag="div">
-            <_Builtin.Link
-              className={_utils.cx(_styles, "fw-semibold", "text-blue-600")}
-              button={false}
-              block="inline"
-              options={{
-                href: "#",
-              }}
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "fw-semibold",
+                "text-blue-600",
+                "text-dec-none"
+              )}
+              tag="div"
+              href="#"
               {...onclickHeaderJobs}
             >
               <_Builtin.Block
@@ -70,12 +72,16 @@ export function JobDetails({
                 {textJobStatus}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "inline-block")}
+                className={_utils.cx(
+                  _styles,
+                  "inline-block",
+                  "text-decoration-none"
+                )}
                 tag="div"
               >
                 {"Jobs"}
               </_Builtin.Block>
-            </_Builtin.Link>
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "icon-block", "_12x12")}
               tag="div"
@@ -104,7 +110,7 @@ export function JobDetails({
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-list-info", "text-grey-600")}
+              className={_utils.cx(_styles, "jdet-list-info", "text-gray-600")}
               tag="div"
             >
               <_Builtin.Block
@@ -184,7 +190,7 @@ export function JobDetails({
           >
             {isTextStatusVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-500", "hide")}
+                className={_utils.cx(_styles, "text-gray-500", "hide")}
                 tag="div"
               >
                 {textStatus}
@@ -1074,7 +1080,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1107,7 +1113,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1193,7 +1199,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1203,7 +1209,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1245,7 +1251,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1255,7 +1261,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1297,7 +1303,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
@@ -1307,7 +1313,7 @@ export function JobDetails({
                               className={_utils.cx(
                                 _styles,
                                 "fw-semibold",
-                                "text-grey-500"
+                                "text-gray-500"
                               )}
                               tag="div"
                             >
