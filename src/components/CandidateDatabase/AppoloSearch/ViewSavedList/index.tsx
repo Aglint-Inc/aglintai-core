@@ -8,6 +8,9 @@ import { useBoundStore } from '@/src/store';
 function ViewSavedList() {
   const router = useRouter();
   const candidateLists = useBoundStore((state) => state.lists);
+  const setSelectedCandidate = useBoundStore(
+    (state) => state.setSelectedCandidate,
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -59,6 +62,7 @@ function ViewSavedList() {
                   textCountCandidate={`(${list.candidates.length} candidates)`}
                   onClickList={{
                     onClick: () => {
+                      setSelectedCandidate(null);
                       router.push(`/candidates/aglintdb?list=${list.id}`);
                     },
                   }}

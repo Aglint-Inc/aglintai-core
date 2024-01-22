@@ -1,6 +1,7 @@
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { createToast } from 'vercel-toast';
 
 import {
   AddToList,
@@ -10,10 +11,12 @@ import {
   SavedList,
   SavedListMenu,
 } from '@/devlink';
+import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
 import { CandidateListTypeDB } from '@/src/types/data.types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -31,14 +34,19 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const candidateLists = useBoundStore((state) => state.lists);
   const setCandidateLists = useBoundStore((state) => state.setLists);
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
+  const setSelectedCandidate = useBoundStore(
+    (state) => state.setSelectedCandidate,
+  );
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
   const setSelectedCandidates = useBoundStore(
     (state) => state.setSelectedCandidates,
   );
-
+  const isSelectAll = useBoundStore((state) => state.isSelectAll);
+  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
   const [text, setText] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [selectedList, setSelectedList] = useState<CandidateListTypeDB[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const submitHandler = async () => {
     const { data, error } = await supabase
@@ -78,27 +86,49 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   };
 
   const addMultipleToListHandler = async () => {
-    let candIds = selectedCandidates.map((c) => c.id);
-    const dbList = selectedList.map((list) => {
-      return {
-        ...list,
-        candidates: [...new Set([...list.candidates, ...candIds])],
-      };
-    });
-
-    const { data, error } = await supabase
-      .from('candidate_list')
-      .upsert(dbList)
-      .select();
-    if (!error) {
-      const oldList = candidateLists.filter((list) => {
-        return !selectedList.find((l) => l.id === list.id);
+    try {
+      setIsSaving(true);
+      let candIds = selectedCandidates.map((c) => c.id);
+      const dbList = selectedList.map((list) => {
+        return {
+          ...list,
+          candidates: [...new Set([...list.candidates, ...candIds])],
+        };
       });
-      setCandidateLists([...oldList, ...data]);
-      setSelectedCandidates([]);
-      setSelectedList([]);
-    } else {
+
+      const { data, error } = await supabase
+        .from('candidate_list')
+        .upsert(dbList)
+        .select();
+      if (!error) {
+        const oldList = candidateLists.filter((list) => {
+          return !selectedList.find((l) => l.id === list.id);
+        });
+        setCandidateLists([...oldList, ...data]);
+        setSelectedCandidates([]);
+        setSelectedList([]);
+        if (isSelectAll) {
+          setIsSelectAll(false);
+        }
+        createToast('Candidates added to list successfully', {
+          type: 'success',
+          action: {
+            text: 'View',
+            callback(toast) {
+              setSelectedCandidate(null);
+              router.push(pageRoutes.AGLINTDB + `?list=${data[0].id}`);
+              toast.destroy();
+            },
+          },
+          timeout: 3000,
+        });
+      } else {
+        toast.error('Something went wrong. Please try again later.');
+      }
+    } catch {
       toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -107,6 +137,19 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       setSelectedList(selectedList.filter((l) => l.id !== list.id));
     } else {
       setSelectedList([...selectedList, list]);
+    }
+  };
+
+  const checkboxHandler = async (list: CandidateListTypeDB) => {
+    const oldList = candidateLists.find((l) => l.id === list.id);
+    if (isSaveToList) {
+      updateListHandler(list);
+    } else {
+      if (!oldList.candidates.includes(selectedCandidate.id)) {
+        updateListHandler(list);
+      } else {
+        toast.error('Candidate already added to this list.');
+      }
     }
   };
 
@@ -157,7 +200,17 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
         <SavedListMenu
           slotAddButton={
             <ButtonPrimarySmall
-              textLabel={'Add'}
+              isStartIcon={isSaving}
+              slotStartIcon={
+                <Stack
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  height={'100%'}
+                >
+                  <LoaderGrey />
+                </Stack>
+              }
+              textLabel={'Save'}
               isDisabled={selectedList.length == 0}
               onClickButton={{
                 onClick: () => {
@@ -221,22 +274,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
                       onClickCheck={{
                         onClick: async (e) => {
                           e.stopPropagation();
-                          const oldList = candidateLists.find(
-                            (l) => l.id === list.id,
-                          );
-                          if (isSaveToList) {
-                            updateListHandler(list);
-                          } else {
-                            if (
-                              !oldList.candidates.includes(selectedCandidate.id)
-                            ) {
-                              updateListHandler(list);
-                            } else {
-                              toast.error(
-                                'Candidate already added to this list.',
-                              );
-                            }
-                          }
+                          checkboxHandler(list);
                         },
                       }}
                     />
@@ -246,7 +284,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
                   textCountCandidate={`(${list.candidates.length} candidates)`}
                   onClickList={{
                     onClick: () => {
-                      router.push(`/candidates/aglintdb?list=${list.id}`);
+                      checkboxHandler(list);
                     },
                   }}
                 />

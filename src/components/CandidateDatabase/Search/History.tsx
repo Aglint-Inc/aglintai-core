@@ -7,6 +7,7 @@ import {
   CandidateDatabaseSearch,
   CandidateHistoryCard,
   ClearHistory,
+  LoaderSvg,
   NavSublink,
   SavedList,
 } from '@/devlink';
@@ -38,6 +39,12 @@ function CandidateSearchHistory() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isQrySearching, setIsQrySearching] = useState(false);
   const [deleteHistoryId, setDeleteHistoryId] = useState(-1);
+  const [list, setList] = useState<CandidateListTypeDB[]>([]);
+  const [editText, setEditText] = useState('');
+  const [text, setText] = useState('');
+  const [editList, setEditList] = useState<CandidateListTypeDB>(null);
+  const [isInputVisible, setIsInputVisible] = useState(false);
+  const [deleteList, setDeleteList] = useState(null);
   const { jobsData } = useJobs();
   const router = useRouter();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
@@ -47,7 +54,6 @@ function CandidateSearchHistory() {
       router.push('/candidates/history?currentTab=aglint+candidates');
     }
     getHistory();
-    fetchList();
   }, [recruiter]);
 
   const getHistory = async () => {
@@ -59,18 +65,7 @@ function CandidateSearchHistory() {
           .select()
           .eq('recruiter_id', recruiter.id),
       ) as SearchHistoryType[];
-      // const { total_results } = await getFilteredCands({
-      //   recruiter_id: recruiter.id,
-      //   currPage: 1,
-      //   location_filter: '',
-      //   name_filter: '',
-      //   job_role: '',
-      //   sort_param: 'first_name',
-      //   is_sort_desc: false,
-      // });
-
-      // setCandidatesCount(total_results);
-
+      await fetchList();
       setHistory(history);
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -189,12 +184,6 @@ function CandidateSearchHistory() {
     //
   };
 
-  const [list, setList] = useState<CandidateListTypeDB[]>([]);
-  const [editText, setEditText] = useState('');
-  const [text, setText] = useState('');
-  const [editList, setEditList] = useState<CandidateListTypeDB>(null);
-  const [isInputVisible, setIsInputVisible] = useState(false);
-
   const fetchList = async (): Promise<boolean> => {
     const { data, error } = await supabase
       .from('candidate_list')
@@ -239,6 +228,19 @@ function CandidateSearchHistory() {
       setEditList(null);
     } else {
       toast.error('Something went wrong. Please try again later.');
+    }
+  };
+
+  const handleDeleteList = async () => {
+    try {
+      supabaseWrap(
+        await supabase.from('candidate_list').delete().eq('id', deleteList.id),
+      ) as CandidateListTypeDB[];
+      setList((p) => p.filter((p) => p.id !== deleteList.id));
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setDeleteList(null);
     }
   };
 
@@ -305,7 +307,7 @@ function CandidateSearchHistory() {
             />
           </Stack>
         }
-        isSavedListEmpty={list.length === 0}
+        isSavedListEmpty={!isHistoryLoading && list.length === 0}
         slotInput={
           <UITextField
             value={text}
@@ -330,65 +332,79 @@ function CandidateSearchHistory() {
             setIsInputVisible(false);
           },
         }}
-        slotSavedList={list.map((list) => (
-          <SavedList
-            isCheckboxVisible={false}
-            slotInputTextSavedList={
-              <Stack
-                onClick={(e) => {
-                  e.stopPropagation();
+        slotSavedList={
+          isHistoryLoading ? (
+            <>
+              <LoaderSvg />
+            </>
+          ) : (
+            list.map((list) => (
+              <SavedList
+                isCheckboxVisible={false}
+                slotInputTextSavedList={
+                  <Stack
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <UITextField
+                      ref={multiTextFieldRef}
+                      // rest={{
+                      //   sx: { border: 'none', '& fieldset': { border: 'none' } },
+                      //   inputProps: { style: { fontSize: '14px' } },
+                      // }}
+                      value={editText}
+                      onChange={(e) => {
+                        setEditText(e.target.value);
+                      }}
+                    />
+                  </Stack>
+                }
+                onClickDelete={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    setDeleteList(list);
+                  },
                 }}
-              >
-                <UITextField
-                  ref={multiTextFieldRef}
-                  // rest={{
-                  //   sx: { border: 'none', '& fieldset': { border: 'none' } },
-                  //   inputProps: { style: { fontSize: '14px' } },
-                  // }}
-                  value={editText}
-                  onChange={(e) => {
-                    setEditText(e.target.value);
-                  }}
-                />
-              </Stack>
-            }
-            isSavedListInputVisible={editList?.id === list.id}
-            isSavedListTextVisible={editList?.id !== list.id}
-            onClickClose={{
-              onClick: (e) => {
-                e.stopPropagation();
-                setEditList(null);
-              },
-            }}
-            onClickSubmit={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateHandler();
-              },
-            }}
-            onClickEdit={{
-              onClick: (e) => {
-                e.stopPropagation();
-                setEditText(list.name);
-                setEditList(list);
-                setTimeout(() => {
-                  if (multiTextFieldRef.current) {
-                    multiTextFieldRef.current.focus();
-                  }
-                }, 100);
-              },
-            }}
-            isEditVisible={editList?.id !== list.id}
-            key={list.id}
-            textRole={list.name}
-            textCountCandidate={`(${list.candidates.length} candidates)`}
-            onClickList={{
-              onClick: () => {
-                router.push(`/candidates/aglintdb?list=${list.id}`);
-              },
-            }}
-          />
-        ))}
+                isSavedListInputVisible={editList?.id === list.id}
+                isSavedListTextVisible={editList?.id !== list.id}
+                onClickClose={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    setEditList(null);
+                  },
+                }}
+                onClickSubmit={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    updateHandler();
+                  },
+                }}
+                onClickEdit={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    setEditText(list.name);
+                    setEditList(list);
+                    setTimeout(() => {
+                      if (multiTextFieldRef.current) {
+                        multiTextFieldRef.current.focus();
+                      }
+                    }, 100);
+                  },
+                }}
+                isEditVisible={editList?.id !== list.id}
+                key={list.id}
+                textRole={list.name}
+                textCountCandidate={`(${list.candidates.length} candidates)`}
+                onClickList={{
+                  onClick: () => {
+                    router.push(`/candidates/aglintdb?list=${list.id}`);
+                  },
+                }}
+              />
+            ))
+          )
+        }
         slotCandidateHistoryCard={
           <>
             {history
@@ -480,24 +496,6 @@ function CandidateSearchHistory() {
             </>
           )
         }
-        onClickDbRequest={{
-          onClick: () => {
-            window.open(
-              `mailto:customersuccess@aglinthq.com?subject=${encodeURIComponent(
-                'Aglint : Request Aglint Candidate Database',
-              )}&body=${encodeURIComponent(
-                ` 
-Hello,
-
-I would like for Aglint Candidate Database.
-
-Thank you,
-[Your Name]
-`,
-              )}`,
-            );
-          },
-        }}
         onClickAllCandidate={{
           onClick: () => {
             router.push('/candidates?page_no=1');
@@ -515,6 +513,28 @@ Thank you,
         <Paper>
           <JDSearchModal setJdPopup={setIsJdPopUPopOpen} />
         </Paper>
+      </MuiPopup>
+
+      <MuiPopup
+        props={{
+          open: Boolean(deleteList),
+          onClose: () => {
+            setDeleteList(null);
+          },
+        }}
+      >
+        <ClearHistory
+          onClickCancel={{
+            onClick: () => {
+              setDeleteList(null);
+            },
+          }}
+          onClickClearHistory={{
+            onClick: () => {
+              handleDeleteList();
+            },
+          }}
+        />
       </MuiPopup>
       <MuiPopup
         props={{

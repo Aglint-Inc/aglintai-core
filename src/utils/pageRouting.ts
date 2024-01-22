@@ -8,6 +8,7 @@ export const pageRoutes = Object.freeze({
   EDITJOBS: '/jobs/edit',
   COMPANY: '/company',
   CANDIDATES: '/candidates/history',
+  AGLINTDB: '/candidates/aglintdb',
   NOTIFICATIONS: '/notifications',
   SETTINGS: '/settings',
   PROFILE: '/profile',

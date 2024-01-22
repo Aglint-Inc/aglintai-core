@@ -125,11 +125,11 @@
       border: 1px solid var(--button-border);
       transition: all 0.2s ease;
 
-      &:hover {
-        border-color: var(--button-border-hover);
-        background-color: transparent;
-        color: var(--button-fg-hover);
-      }
+      // &:hover {
+      //   border-color: var(--button-border-hover);
+      //   background-color: transparent;
+      //   color: var(--button-fg-hover);
+      // }
 
       &.cancel-button {
         --cancel-button-bg: none;

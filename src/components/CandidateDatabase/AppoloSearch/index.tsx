@@ -15,7 +15,6 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -28,9 +27,11 @@ import ListDropdown from './ListDropdown';
 import { Candidate, CandidateSearchHistoryType } from './types';
 import { processCandidatesInBatches, updateCredits } from './utils';
 import ViewSavedList from './ViewSavedList';
+import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
+import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 
 function AppoloSearch() {
   const router = useRouter();
@@ -63,18 +64,24 @@ function AppoloSearch() {
 
   const [text, setText] = useState('');
   const [isEditVisible, setIsEditVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
 
   useEffect(() => {
     if (router.isReady && recruiter?.id) {
+      if (!loading) {
+        setLoading(true);
+      }
       (async () => {
         if (router.query.id) {
           await fetchCandidates(Number(router.query.id));
+          setLoading(false);
         }
         if (router.query.list) {
           await fetchList(String(router.query.list));
+          setLoading(false);
         }
       })();
     }
@@ -321,33 +328,6 @@ function AppoloSearch() {
     }
   };
 
-  const handleMultipleBookmark = async (selectedCandidates: Candidate[]) => {
-    if (selectedCandidates.length === 0) return;
-    const bookmarkedResults = candidateHistory.bookmarked_candidates;
-
-    const updatedBookmarkedResults = [
-      ...bookmarkedResults,
-      ...selectedCandidates
-        .filter((candidate) => !bookmarkedResults.includes(candidate.id))
-        .map((candidate) => candidate.id),
-    ];
-
-    const { data, error } = await supabase
-      .from('candidate_search_history')
-      .update({
-        bookmarked_candidates: updatedBookmarkedResults as any,
-      })
-      .eq('id', Number(router.query.id))
-      .select();
-
-    if (!error) {
-      setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
-      toast.success('Candidates bookmarked successfully');
-    }
-    setSelectedCandidates([]);
-    setIsSelectAll(false);
-  };
-
   const updateHandler = async () => {
     const { data, error } = await supabase
       .from('candidate_list')
@@ -433,9 +413,7 @@ function AppoloSearch() {
         }}
         onClickBack={{
           onClick: () => {
-            router.push(
-              `${pageRoutes.CANDIDATES}?currentTab=aglint+candidates`,
-            );
+            window.history.back();
           },
         }}
         slotInput={
@@ -461,11 +439,6 @@ function AppoloSearch() {
         isListHeaderVisible={Boolean(router.query.list)}
         slotSavetoList={<AddToListComp isSaveToList={true} />}
         isEditQueryVisible={router.query.id ? true : false}
-        onClickBookmark={{
-          onClick: () => {
-            handleMultipleBookmark(selectedCandidates);
-          },
-        }}
         slotViewSaveList={<ViewSavedList />}
         textNoCandidateSelected={`${selectedCandidates.length} candidate selected`}
         textHeader={
@@ -512,123 +485,135 @@ function AppoloSearch() {
         }
         slotCdTableAglint={
           <Stack overflow={'auto'} height={'calc(100vh - 112px)'}>
-            {candidates?.length === 0 && (
+            {loading && <Loader />}
+            {!loading && candidates?.length === 0 && (
               <CdAglintEmptyTable
                 slotLottie={<EmptyStateCandidateSearchAglint />}
               />
             )}
-            {candidates?.map((candidate) => (
-              <CdTableAglint
-                onClickEmailReachOut={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    setSelectedCandidate(candidate);
-                    emailOutReachHandler(candidate);
-                  },
-                }}
-                slotCheckbox={
-                  <Checkbox
-                    isChecked={selectedCandidates?.includes(candidate)}
-                    onClickCheck={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        if (selectedCandidates?.includes(candidate)) {
-                          setSelectedCandidates(
-                            selectedCandidates.filter(
-                              (c) => c.id !== candidate.id,
-                            ),
-                          );
-                        } else {
-                          setSelectedCandidates([
-                            ...selectedCandidates,
-                            candidate,
-                          ]);
-                        }
-                      },
-                    }}
-                  />
-                }
-                onClickBookmark={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    handleBookmark(candidate);
-                  },
-                }}
-                onClickBookMarked={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    handleBookmark(candidate);
-                  },
-                }}
-                onClickCard={{
-                  onClick: () => {
-                    setSelectedCandidate(candidate);
-                  },
-                }}
-                key={candidate.id}
-                textName={candidate.name}
-                textRole={candidate.title}
-                textLocation={[
-                  candidate.city,
-                  candidate.state,
-                  candidate.country,
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
-                slotCdExperienceCard={
-                  <>
-                    {candidate.employment_history
-                      .slice(0, 3)
-                      .map((exp, ind) => {
-                        return (
-                          <CdExperienceCard
-                            key={exp.id}
-                            textRole={exp.organization_name}
-                            isLogoVisible={
-                              candidate?.organization?.id ===
-                              exp?.organization_id
-                            }
-                            isActive={ind === 0}
-                            slotLogo={
-                              <Avatar
-                                variant='rounded'
-                                src={candidate?.organization?.logo_url}
-                                sx={{ height: 40, width: 40 }}
-                              />
-                            }
-                            textDate={`${dayjs(exp.start_date).format(
-                              'MMM YYYY',
-                            )} - ${
-                              exp.end_date
-                                ? dayjs(exp.end_date).format('MMM YYYY')
-                                : 'Present'
-                            }`}
-                          />
-                        );
-                      })}
-                  </>
-                }
-                slotProfileImage={
-                  <>
-                    <MuiAvatar
-                      level={getFullName(
-                        candidate.first_name,
-                        candidate.last_name,
-                      )}
-                      src={
-                        candidate.photo_url?.includes('static')
-                          ? null
-                          : candidate.photo_url
-                      }
-                      variant={'rounded'}
-                      width={'80px'}
-                      height={'80px'}
-                      fontSize={'30px'}
+            {!loading &&
+              candidates?.map((candidate) => (
+                <CdTableAglint
+                  onClickEmailReachOut={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      setSelectedCandidate(candidate);
+                      emailOutReachHandler(candidate);
+                    },
+                  }}
+                  slotCheckbox={
+                    <Checkbox
+                      isChecked={selectedCandidates?.includes(candidate)}
+                      onClickCheck={{
+                        onClick: (e) => {
+                          e.stopPropagation();
+                          if (selectedCandidates?.includes(candidate)) {
+                            setSelectedCandidates(
+                              selectedCandidates.filter(
+                                (c) => c.id !== candidate.id,
+                              ),
+                            );
+                          } else {
+                            setSelectedCandidates([
+                              ...selectedCandidates,
+                              candidate,
+                            ]);
+                          }
+                        },
+                      }}
                     />
-                  </>
-                }
-              />
-            ))}
+                  }
+                  onClickBookmark={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      handleBookmark(candidate);
+                    },
+                  }}
+                  onClickBookMarked={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      handleBookmark(candidate);
+                    },
+                  }}
+                  onClickCard={{
+                    onClick: () => {
+                      setSelectedCandidate(candidate);
+                    },
+                  }}
+                  key={candidate.id}
+                  textName={candidate.name}
+                  textRole={candidate.title}
+                  textLocation={[
+                    candidate.city,
+                    candidate.state,
+                    candidate.country,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                  slotCdExperienceCard={
+                    <>
+                      {candidate.employment_history
+                        .slice(0, 3)
+                        .map((exp, ind) => {
+                          return (
+                            <CdExperienceCard
+                              key={exp.id}
+                              textRole={exp.organization_name}
+                              isLogoVisible={
+                                candidate?.organization?.id ===
+                                exp?.organization_id
+                              }
+                              isActive={ind === 0}
+                              slotLogo={
+                                <Avatar
+                                  variant='rounded'
+                                  src={candidate?.organization?.logo_url}
+                                  sx={{ height: 40, width: 40 }}
+                                >
+                                  <CompanyLogo
+                                    companyName={
+                                      exp.organization_name
+                                        ? exp.organization_name
+                                            .trim()
+                                            .toLowerCase()
+                                        : null
+                                    }
+                                  />
+                                </Avatar>
+                              }
+                              textDate={`${dayjs(exp.start_date).format(
+                                'MMM YYYY',
+                              )} - ${
+                                exp.end_date
+                                  ? dayjs(exp.end_date).format('MMM YYYY')
+                                  : 'Present'
+                              }`}
+                            />
+                          );
+                        })}
+                    </>
+                  }
+                  slotProfileImage={
+                    <>
+                      <MuiAvatar
+                        level={getFullName(
+                          candidate.first_name,
+                          candidate.last_name,
+                        )}
+                        src={
+                          candidate.photo_url?.includes('static')
+                            ? null
+                            : candidate.photo_url
+                        }
+                        variant={'rounded'}
+                        width={'80px'}
+                        height={'80px'}
+                        fontSize={'30px'}
+                      />
+                    </>
+                  }
+                />
+              ))}
           </Stack>
         }
       />
