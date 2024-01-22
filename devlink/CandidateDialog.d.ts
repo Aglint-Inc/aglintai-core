@@ -9,7 +9,6 @@ declare function CandidateDialog(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotAvatar?: Types.Devlink.Slot;
   textName?: React.ReactNode;
-  textMail?: React.ReactNode;
   onClickLinkedin?: Types.Devlink.RuntimeProps;
   textOverview?: React.ReactNode;
   isOverviewVisible?: Types.Visibility.VisibilityConditions;
@@ -31,13 +30,7 @@ declare function CandidateDialog(props: {
   isCloseButtonVisible?: Types.Visibility.VisibilityConditions;
   isCopyLinkVisible?: Types.Visibility.VisibilityConditions;
   onClickPhone?: Types.Devlink.RuntimeProps;
-  onClickMail?: Types.Devlink.RuntimeProps;
-  isCopiedTooltipVisible?: Types.Visibility.VisibilityConditions;
-  isCopiedMailTooltipVisible?: Types.Visibility.VisibilityConditions;
-  onClickEmailOutreach?: Types.Devlink.RuntimeProps;
-  isEmailOutreachVisible?: Types.Visibility.VisibilityConditions;
   isViewResumeVisible?: Types.Visibility.VisibilityConditions;
-  isEmailVisible?: Types.Visibility.VisibilityConditions;
   isPhoneVisible?: Types.Visibility.VisibilityConditions;
   textPhone?: React.ReactNode;
   onClickGit?: Types.Devlink.RuntimeProps;
@@ -46,4 +39,7 @@ declare function CandidateDialog(props: {
   isFacebookVisible?: Types.Visibility.VisibilityConditions;
   onClickTwitter?: Types.Devlink.RuntimeProps;
   isTwitterVisible?: Types.Visibility.VisibilityConditions;
+  slotEmailOutReach?: Types.Devlink.Slot;
+  slotAddtoList?: Types.Devlink.Slot;
+  isAddListVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

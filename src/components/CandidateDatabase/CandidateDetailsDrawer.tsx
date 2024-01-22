@@ -9,9 +9,11 @@ import {
   CandidateEducation,
   CandidateEducationCard,
   CandidateExperienceCard,
+  EmailOutReach,
 } from '@/devlink';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
+import toast from '@/src/utils/toast';
 
 import AddToJobOptions from './CandAddToJobMenu';
 import { CandidateSearchRes } from './context/CandidateSearchProvider';
@@ -30,7 +32,6 @@ const CandidateDrawer = ({
   showBookmark = true,
   showClose = true,
   onClickEmailOutreach = () => {},
-  isEmailOutreachVisible = false,
 }: {
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
@@ -97,34 +98,28 @@ const CandidateDrawer = ({
       window.removeEventListener('keyup', onkeyUp);
     };
   }, [onClickNext, onClickPrev]);
-  const [tooltip, setTooltip] = useState('');
   return (
     <>
       <CandidateDialog
-        onClickMail={{
-          onClick: () => {
-            navigator.clipboard.writeText(candidate.json_resume.basics.email);
-            setTooltip('mail');
-            setTimeout(() => {
-              setTooltip('');
-            }, 1500);
-          },
-        }}
         onClickPhone={{
           onClick: () => {
             navigator.clipboard.writeText(candidate.json_resume.basics.phone);
-            setTooltip('phone');
-            setTimeout(() => {
-              setTooltip('');
-            }, 1500);
+            toast.success('Phone number copied');
           },
         }}
-        onClickEmailOutreach={{
-          onClick: onClickEmailOutreach,
-        }}
-        isEmailOutreachVisible={isEmailOutreachVisible}
-        isCopiedTooltipVisible={tooltip === 'phone'}
-        isCopiedMailTooltipVisible={tooltip === 'mail'}
+        isGitVisible={false}
+        isFacebookVisible={false}
+        isTwitterVisible={false}
+        isPhoneVisible={Boolean(candidate.json_resume.basics.phone)}
+        textPhone={candidate.json_resume.basics.phone}
+        slotEmailOutReach={
+          candidate.json_resume.basics.email && (
+          <EmailOutReach
+            onClickEmailOutreach={{
+              onClick: onClickEmailOutreach,
+            }}
+          />)
+        }
         isCloseButtonVisible={!showClose}
         onClickDownloadResume={{
           onClick: () => {
@@ -140,7 +135,6 @@ const CandidateDrawer = ({
         isLinkedinVisible={Boolean(linkedin)}
         isLocationVisible={Boolean(location)}
         textJobRoleAtCompany={candidate.json_resume.basics.currentJobTitle}
-        textMail={candidate.json_resume.basics.email}
         textOverview={candidate.json_resume.overview}
         textLocation={location}
         isOverviewVisible={Boolean(candidate.json_resume.overview)}

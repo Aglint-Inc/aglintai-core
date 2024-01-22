@@ -109,7 +109,6 @@ const EmailOutReach = ({ onClose }) => {
   const setLocalStorage = () => {
     localStorage.setItem('redirect-candidate', router.asPath);
   };
-  
 
   return (
     <>

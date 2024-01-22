@@ -1,18 +1,19 @@
 import { CircularProgress, Paper, Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   CandidateDatabaseSearch,
   CandidateHistoryCard,
   ClearHistory,
   NavSublink,
+  SavedList,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { SearchHistoryType } from '@/src/types/data.types';
+import { CandidateListTypeDB, SearchHistoryType } from '@/src/types/data.types';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -46,6 +47,7 @@ function CandidateSearchHistory() {
       router.push('/candidates/history?currentTab=aglint+candidates');
     }
     getHistory();
+    fetchList();
   }, [recruiter]);
 
   const getHistory = async () => {
@@ -169,6 +171,11 @@ function CandidateSearchHistory() {
             search_query: searchQuery,
             db_search: 'aglint',
             candidates: fetchedIds,
+            used_credits: {
+              export_credits: 1,
+              phone_credits: 0,
+              email_credits: 0,
+            },
           })
           .select(),
       );
@@ -182,8 +189,63 @@ function CandidateSearchHistory() {
     //
   };
 
+  const [list, setList] = useState<CandidateListTypeDB[]>([]);
+  const [editText, setEditText] = useState('');
+  const [text, setText] = useState('');
+  const [editList, setEditList] = useState<CandidateListTypeDB>(null);
+  const [isInputVisible, setIsInputVisible] = useState(false);
+
+  const fetchList = async (): Promise<boolean> => {
+    const { data, error } = await supabase
+      .from('candidate_list')
+      .select('*')
+      .eq('recruiter_id', recruiter.id);
+    if (!error) {
+      setList(data);
+    }
+    return true;
+  };
+
+  const submitHandler = async () => {
+    const { data, error } = await supabase
+      .from('candidate_list')
+      .insert({ name: text, recruiter_id: recruiter.id })
+      .select();
+    if (!error) {
+      setList([...list, data[0]]);
+      setText('');
+      setIsInputVisible(false);
+    } else {
+      toast.error('Something went wrong. Please try again later.');
+    }
+  };
+
+  const updateHandler = async () => {
+    const { data, error } = await supabase
+      .from('candidate_list')
+      .update({ name: editText })
+      .eq('id', editList.id)
+      .select();
+    if (!error) {
+      setList(
+        list.map((list) => {
+          if (list.id === editList.id) {
+            return data[0];
+          }
+          return list;
+        }),
+      );
+      setEditText('');
+      setEditList(null);
+    } else {
+      toast.error('Something went wrong. Please try again later.');
+    }
+  };
+
   let currentTab: 'aglint candidates' | 'my Candidates' | 'book mark' = router
     .query.currentTab as any;
+
+  const multiTextFieldRef = useRef(null);
 
   return (
     <>
@@ -191,6 +253,8 @@ function CandidateSearchHistory() {
         isSearchByJdVisible={currentTab === 'my Candidates'}
         isSearchInAglintVisible={currentTab === 'aglint candidates'}
         isSearchInAllVisible={currentTab === 'my Candidates'}
+        isSavedListVisible={currentTab === 'aglint candidates'}
+        isInputVisible={isInputVisible}
         slotNavSublink={
           <>
             <NavSublink
@@ -213,14 +277,8 @@ function CandidateSearchHistory() {
                 },
               }}
             />
-            {/* <NavSublink
-              textLink='All Bookmarks'
-              isActive={true}
-              onClickNav={{ onClick: () => {} }}
-            /> */}
           </>
         }
-        // onClickClearHistory={}
         slotInputSearch={
           <Stack pl={0.5}>
             <UITextField
@@ -236,13 +294,101 @@ function CandidateSearchHistory() {
               InputProps={{
                 onKeyDown: (e) => {
                   if (e.code === 'Enter') {
-                    getMatchingCandsFromQry();
+                    if (currentTab === 'my Candidates') {
+                      getMatchingCandsFromQry();
+                    } else {
+                      getCandsFromApi();
+                    }
                   }
                 },
               }}
             />
           </Stack>
         }
+        isSavedListEmpty={list.length === 0}
+        slotInput={
+          <UITextField
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+          />
+        }
+        onClickSubmit={{
+          onClick: () => {
+            submitHandler();
+          },
+        }}
+        onClickCreateNewList={{
+          onClick: () => {
+            setIsInputVisible(true);
+          },
+        }}
+        onClickClose={{
+          onClick: () => {
+            setText('');
+            setIsInputVisible(false);
+          },
+        }}
+        slotSavedList={list.map((list) => (
+          <SavedList
+            isCheckboxVisible={false}
+            slotInputTextSavedList={
+              <Stack
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <UITextField
+                  ref={multiTextFieldRef}
+                  // rest={{
+                  //   sx: { border: 'none', '& fieldset': { border: 'none' } },
+                  //   inputProps: { style: { fontSize: '14px' } },
+                  // }}
+                  value={editText}
+                  onChange={(e) => {
+                    setEditText(e.target.value);
+                  }}
+                />
+              </Stack>
+            }
+            isSavedListInputVisible={editList?.id === list.id}
+            isSavedListTextVisible={editList?.id !== list.id}
+            onClickClose={{
+              onClick: (e) => {
+                e.stopPropagation();
+                setEditList(null);
+              },
+            }}
+            onClickSubmit={{
+              onClick: (e) => {
+                e.stopPropagation();
+                updateHandler();
+              },
+            }}
+            onClickEdit={{
+              onClick: (e) => {
+                e.stopPropagation();
+                setEditText(list.name);
+                setEditList(list);
+                setTimeout(() => {
+                  if (multiTextFieldRef.current) {
+                    multiTextFieldRef.current.focus();
+                  }
+                }, 100);
+              },
+            }}
+            isEditVisible={editList?.id !== list.id}
+            key={list.id}
+            textRole={list.name}
+            textCountCandidate={`(${list.candidates.length} candidates)`}
+            onClickList={{
+              onClick: () => {
+                router.push(`/candidates/aglintdb?list=${list.id}`);
+              },
+            }}
+          />
+        ))}
         slotCandidateHistoryCard={
           <>
             {history
@@ -378,20 +524,18 @@ Thank you,
           },
         }}
       >
-        <Paper>
-          <ClearHistory
-            onClickCancel={{
-              onClick: () => {
-                setDeleteHistoryId(-1);
-              },
-            }}
-            onClickClearHistory={{
-              onClick: () => {
-                handleDeleteHistory();
-              },
-            }}
-          />
-        </Paper>
+        <ClearHistory
+          onClickCancel={{
+            onClick: () => {
+              setDeleteHistoryId(-1);
+            },
+          }}
+          onClickClearHistory={{
+            onClick: () => {
+              handleDeleteHistory();
+            },
+          }}
+        />
       </MuiPopup>
     </>
   );

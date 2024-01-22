@@ -1,13 +1,18 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
+import { CdSavedList } from "./CdSavedList";
 import { CdTableAglint } from "./CdTableAglint";
 import * as _utils from "./utils";
 import _styles from "./CdAglintDb.module.css";
 
+const _interactionsData = JSON.parse(
+  '{"events":{"e-1352":{"id":"e-1352","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1353"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365602},"e-1353":{"id":"e-1353","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1352"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365605},"e-1382":{"id":"e-1382","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-489","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1383"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1383":{"id":"e-1383","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-490","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1382"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1386":{"id":"e-1386","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1387"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976388},"e-1387":{"id":"e-1387","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1386"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976390}},"actionLists":{"a-471":{"id":"a-471","title":"Email Interaction Hover In","actionItemGroups":[{"actionItems":[{"id":"a-471-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-471-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-471-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-471-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-471-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-471-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-472":{"id":"a-472","title":"Email Interaction Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-472-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-472-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-472-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-489":{"id":"a-489","title":"Email Interaction Hover In 2","actionItemGroups":[{"actionItems":[{"id":"a-489-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-489-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-489-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-489-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-489-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-489-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-490":{"id":"a-490","title":"Email Interaction Hover Out 2","actionItemGroups":[{"actionItems":[{"id":"a-490-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-490-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-490-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
+
 export function CdAglintDb({
   as: _Component = _Builtin.Block,
   onClickEditQuery = {},
-  slotToggle,
   onClickCandidateData = {},
   textHeader = "Software Enginner in Texas with 6 to 8 years experience",
   slotCheckbox,
@@ -19,53 +24,138 @@ export function CdAglintDb({
   isHeaderVisible = true,
   slotViewSaveList,
   slotEmailOut,
+  slotSavetoList,
+  onClickEmailOutReach = {},
+  isEditQueryVisible = true,
+  onClickList = {},
+  onClickEdit = {},
+  isEditVisible = true,
+  slotInput,
+  onClickSubmit = {},
+  onClickClose = {},
+  isSubmitVisible = true,
+  onClickBack = {},
+  isListHeaderVisible = false,
+  isCdHeaderVisible = true,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component className={_utils.cx(_styles, "cd-table")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-680")} tag="div">
+      {isCdHeaderVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-679")}
+          className={_utils.cx(_styles, "div-block-680")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-blue-600",
-              "fw-semibold",
-              "cursor-pointer"
-            )}
+            className={_utils.cx(_styles, "div-block-679")}
             tag="div"
-            {...onClickCandidateData}
           >
-            {"Candidate database"}
-          </_Builtin.Block>
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "icons")}
-            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3.64645%2010.3536C3.47288%2010.18%203.4536%209.91056%203.58859%209.71569L3.64645%209.64645L7.293%206L3.64645%202.35355C3.47288%202.17999%203.4536%201.91056%203.58859%201.71569L3.64645%201.64645C3.82001%201.47288%204.08944%201.4536%204.28431%201.58859L4.35355%201.64645L8.35355%205.64645C8.52712%205.82001%208.5464%206.08944%208.41141%206.28431L8.35355%206.35355L4.35355%2010.3536C4.15829%2010.5488%203.84171%2010.5488%203.64645%2010.3536Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-          <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "edit-query-btn", "cursor-pointer")}
-            tag="div"
-            {...onClickEditQuery}
-          >
-            {"Edit Query"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-681")}
-          tag="div"
-        >
-          {slotViewSaveList ?? (
-            <>
-              <_Builtin.Block tag="div">{slotToggle}</_Builtin.Block>
-              <_Builtin.Block tag="div">
-                {"Show only bookmarked"}
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-blue-600",
+                "fw-semibold",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickCandidateData}
+            >
+              {"Candidate database"}
+            </_Builtin.Block>
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3.64645%2010.3536C3.47288%2010.18%203.4536%209.91056%203.58859%209.71569L3.64645%209.64645L7.293%206L3.64645%202.35355C3.47288%202.17999%203.4536%201.91056%203.58859%201.71569L3.64645%201.64645C3.82001%201.47288%204.08944%201.4536%204.28431%201.58859L4.35355%201.64645L8.35355%205.64645C8.52712%205.82001%208.5464%206.08944%208.41141%206.28431L8.35355%206.35355L4.35355%2010.3536C4.15829%2010.5488%203.84171%2010.5488%203.64645%2010.3536Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
+            {isEditQueryVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "edit-query-btn",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickEditQuery}
+              >
+                {"Edit Query"}
               </_Builtin.Block>
-            </>
-          )}
+            ) : null}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-681")}
+            tag="div"
+          >
+            {slotViewSaveList ?? <CdSavedList />}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
+      {isListHeaderVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "list-header-view")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-739", "cursor-pointer")}
+            tag="div"
+            {...onClickBack}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.35355%201.64645C8.52712%201.82001%208.5464%202.08944%208.41141%202.28431L8.35355%202.35355L4.707%206L8.35355%209.64645C8.52712%209.82001%208.5464%2010.0894%208.41141%2010.2843L8.35355%2010.3536C8.17999%2010.5271%207.91056%2010.5464%207.71569%2010.4114L7.64645%2010.3536L3.64645%206.35355C3.47288%206.17999%203.4536%205.91056%203.58859%205.71569L3.64645%205.64645L7.64645%201.64645C7.84171%201.45118%208.15829%201.45118%208.35355%201.64645Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+              tag="div"
+            >
+              {"Back"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-740")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-741")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
+              {isSubmitVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-742")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons", "cursor-pointer")}
+                    value="%3Csvg%20width%3D%2225%22%20height%3D%2226%22%20viewBox%3D%220%200%2025%2026%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M21.0547%206.94531C21.3151%207.23177%2021.3151%207.51823%2021.0547%207.80469L10.4297%2018.4297C10.1432%2018.6901%209.85677%2018.6901%209.57031%2018.4297L3.94531%2012.8047C3.6849%2012.5182%203.6849%2012.2318%203.94531%2011.9453C4.23177%2011.6849%204.51823%2011.6849%204.80469%2011.9453L10%2017.1016L20.1953%206.94531C20.4818%206.6849%2020.7682%206.6849%2021.0547%206.94531Z%22%20fill%3D%22%23228F67%22%2F%3E%0A%3C%2Fsvg%3E"
+                    {...onClickSubmit}
+                  />
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons", "cursor-pointer")}
+                    value="%3Csvg%20width%3D%2225%22%20height%3D%2226%22%20viewBox%3D%220%200%2025%2026%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17.6953%2019.0547L12.5%2013.8984L7.34375%2019.0547C7.03125%2019.2891%206.73177%2019.2891%206.44531%2019.0547C6.21094%2018.7682%206.21094%2018.4818%206.44531%2018.1953L11.6016%2013L6.44531%207.84375C6.21094%207.53125%206.21094%207.23177%206.44531%206.94531C6.73177%206.71094%207.03125%206.71094%207.34375%206.94531L12.5%2012.1016L17.6953%206.94531C17.9818%206.71094%2018.2682%206.71094%2018.5547%206.94531C18.7891%207.23177%2018.7891%207.53125%2018.5547%207.84375L13.3984%2013L18.5547%2018.1953C18.7891%2018.4818%2018.7891%2018.7682%2018.5547%2019.0547C18.2682%2019.2891%2017.9818%2019.2891%2017.6953%2019.0547Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
+                    {...onClickClose}
+                  />
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+            {isEditVisible ? (
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons", "cursor-pointer")}
+                value="%3Csvg%20width%3D%2213%22%20height%3D%2212%22%20viewBox%3D%220%200%2013%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.8359%201.38281C10.5703%201.16406%2010.3047%201.16406%2010.0391%201.38281L9.35938%202.0625L10.4375%203.14062L11.1172%202.46094C11.3359%202.19531%2011.3359%201.92969%2011.1172%201.66406L10.8359%201.38281ZM5.42188%206C5.34375%206.07812%205.29688%206.16406%205.28125%206.25781L4.88281%207.61719L6.24219%207.21875C6.33594%207.20312%206.42188%207.15625%206.5%207.07812L9.64062%203.9375L8.5625%202.85938L5.42188%206ZM9.24219%200.585938C9.58594%200.257812%209.98438%200.09375%2010.4375%200.09375C10.8906%200.09375%2011.2891%200.257812%2011.6328%200.585938L11.9141%200.867188C12.2422%201.21094%2012.4062%201.60938%2012.4062%202.0625C12.4062%202.51562%2012.2422%202.91406%2011.9141%203.25781L7.29688%207.875C7.09375%208.07812%206.85156%208.21875%206.57031%208.29688L4.22656%208.97656C4.00781%209.02344%203.82031%208.97656%203.66406%208.83594C3.50781%208.67969%203.46094%208.49219%203.52344%208.27344L4.20312%205.92969C4.28125%205.66406%204.42188%205.42188%204.625%205.20312L9.24219%200.585938ZM2.5625%201.5H5.1875C5.53125%201.53125%205.71875%201.71875%205.75%202.0625C5.71875%202.40625%205.53125%202.59375%205.1875%202.625H2.5625C2.29688%202.625%202.07812%202.71875%201.90625%202.90625C1.71875%203.07812%201.625%203.29688%201.625%203.5625V9.9375C1.625%2010.2031%201.71875%2010.4219%201.90625%2010.5938C2.07812%2010.7812%202.29688%2010.875%202.5625%2010.875H8.9375C9.20312%2010.875%209.42188%2010.7812%209.59375%2010.5938C9.78125%2010.4219%209.875%2010.2031%209.875%209.9375V7.3125C9.90625%206.96875%2010.0938%206.78125%2010.4375%206.75C10.7812%206.78125%2010.9688%206.96875%2011%207.3125V9.9375C10.9844%2010.5156%2010.7812%2011%2010.3906%2011.3906C10%2011.7812%209.51562%2011.9844%208.9375%2012H2.5625C1.98438%2011.9844%201.5%2011.7812%201.10938%2011.3906C0.71875%2011%200.515625%2010.5156%200.5%209.9375V3.5625C0.515625%202.98437%200.71875%202.5%201.10938%202.10938C1.5%201.71875%201.98438%201.51563%202.5625%201.5Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                {...onClickEdit}
+              />
+            ) : null}
+            <_Builtin.Block tag="div">
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons", "cursor-pointer")}
+                id="drop"
+                value="%3Csvg%20width%3D%2219%22%20height%3D%2220%22%20viewBox%3D%220%200%2019%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.75%22%20width%3D%2218.5%22%20height%3D%2218.5%22%20rx%3D%223.75%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.75%22%20width%3D%2218.5%22%20height%3D%2218.5%22%20rx%3D%223.75%22%20stroke%3D%22%23E9EBED%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M9.10156%2013.3984L4.60156%208.89844C4.38281%208.63281%204.38281%208.36719%204.60156%208.10156C4.86719%207.88281%205.13281%207.88281%205.39844%208.10156L9.5%2012.2031L13.6016%208.10156C13.8672%207.88281%2014.1328%207.88281%2014.3984%208.10156C14.6172%208.36719%2014.6172%208.63281%2014.3984%208.89844L9.89844%2013.3984C9.63281%2013.6172%209.36719%2013.6172%209.10156%2013.3984Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                {...onClickList}
+              />
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cd-table-wrap-aglint")}
         tag="div"
@@ -125,12 +215,13 @@ export function CdAglintDb({
                   >
                     {textNoCandidateSelected}
                   </_Builtin.Block>
-                  <_Builtin.Block tag="div" />
+                  <_Builtin.Block tag="div">{slotSavetoList}</_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(
                       _styles,
                       "div-block-694",
-                      "cursor-pointer"
+                      "cursor-pointer",
+                      "hide"
                     )}
                     tag="div"
                     {...onClickBookmark}
@@ -145,6 +236,26 @@ export function CdAglintDb({
                     >
                       {"Bookmark Selected"}
                     </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "save-list-wrap-cd",
+                      "pink-btn"
+                    )}
+                    tag="div"
+                    {...onClickEmailOutReach}
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "text-block-30")}
+                      tag="div"
+                    >
+                      {"Email outreach"}
+                    </_Builtin.Block>
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icons")}
+                      value="%3Csvg%20width%3D%229%22%20height%3D%228%22%20viewBox%3D%220%200%209%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.875%200.25C8.10938%200.265625%208.23438%200.390625%208.25%200.625V5.875C8.23438%206.10938%208.10938%206.23438%207.875%206.25C7.64062%206.23438%207.51562%206.10938%207.5%205.875V1.53906L1.38281%207.63281C1.21094%207.78906%201.03906%207.78906%200.867188%207.63281C0.710938%207.46094%200.710938%207.28906%200.867188%207.11719L6.96094%201H2.625C2.39062%200.984375%202.26562%200.859375%202.25%200.625C2.26562%200.390625%202.39062%200.265625%202.625%200.25H7.875Z%22%20fill%3D%22%23A81897%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
                   </_Builtin.Block>
                 </_Builtin.Block>
               ) : null}

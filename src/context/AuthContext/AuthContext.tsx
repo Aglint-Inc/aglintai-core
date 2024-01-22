@@ -48,6 +48,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
+  setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
   role: RoleType;
 }
 
@@ -70,6 +71,7 @@ const defaultProvider = {
   },
   recruiterUser: null,
   role: null,
+  setRecruiterUser: () => {},
 };
 
 // supabase.auth.onAuthStateChange((event, session) => {
@@ -166,7 +168,7 @@ const AuthProvider = ({ children }) => {
           } else {
             toast.error('Something went wrong. Please contact aglint support.');
           }
-        } 
+        }
       }
     } catch (err) {
       router.push(pageRoutes.LOGIN);
@@ -272,6 +274,7 @@ const AuthProvider = ({ children }) => {
         role,
         allrecruterRelation,
         setAllrecruterRelation,
+        setRecruiterUser,
       }}
     >
       {loading ? <AuthLoader /> : children}

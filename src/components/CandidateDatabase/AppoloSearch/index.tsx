@@ -1,32 +1,45 @@
-import { Avatar, Stack, Switch } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   CdAglintDb,
+  CdAglintEmptyTable,
   CdExperienceCard,
   CdTableAglint,
   Checkbox,
 } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import CandidateDetail from './CandidateDetail';
+import AddToListComp from './AddToList';
+import CandidateDetail from './CandidateDetails';
 import EditFilter from './EditFilter';
 import EmailOutReachComp from './EmailOutReach';
+import { EmptyStateCandidateSearchAglint } from './EmptyLottie';
+import ListDropdown from './ListDropdown';
 import { Candidate, CandidateSearchHistoryType } from './types';
-import { processCandidatesInBatches } from './utils';
+import { processCandidatesInBatches, updateCredits } from './utils';
+import ViewSavedList from './ViewSavedList';
 import MuiAvatar from '../../Common/MuiAvatar';
+import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
 
 function AppoloSearch() {
   const router = useRouter();
-  const bookmark = useBoundStore((state) => state.bookmark);
-  const setBookmark = useBoundStore((state) => state.setBookmark);
+  const { recruiter } = useAuthDetails();
+  const setCandidateLists = useBoundStore((state) => state.setLists);
+  const list = useBoundStore((state) => state.list);
+  const setList = useBoundStore((state) => state.setList);
+  const lists = useBoundStore((state) => state.lists);
+  const setLists = useBoundStore((state) => state.setLists);
   const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
   const filters = useBoundStore((state) => state.filters);
   const setFilters = useBoundStore((state) => state.setFilters);
@@ -45,16 +58,27 @@ function AppoloSearch() {
   const setCandidateHistory = useBoundStore(
     (state) => state.setCandidateHistory,
   );
-  const dbCandidates = useBoundStore((state) => state.candidates);
+  const candidates = useBoundStore((state) => state.candidates);
   const setCandidates = useBoundStore((state) => state.setCandidates);
 
+  const [text, setText] = useState('');
+  const [isEditVisible, setIsEditVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && recruiter?.id) {
       (async () => {
-        await fetchCandidates(Number(router.query.id));
+        if (router.query.id) {
+          await fetchCandidates(Number(router.query.id));
+        }
+        if (router.query.list) {
+          await fetchList(String(router.query.list));
+        }
       })();
     }
-  }, [router]);
+  }, [router, recruiter]);
 
   useEffect(() => {
     if (!candidateHistory?.id) return;
@@ -71,6 +95,22 @@ function AppoloSearch() {
     setFilters(cand);
   }, [candidateHistory?.id]);
 
+  const fetchList = async (id: string): Promise<boolean> => {
+    const { data, error } = await supabase
+      .from('candidate_list')
+      .select('*')
+      .eq('recruiter_id', recruiter.id);
+    if (!error) {
+      setCandidateLists(data.filter((l) => l.id !== id));
+      const list = data.find((l) => l.id === id);
+      setList(list);
+      const uniqueCand = [...new Set(list.candidates)];
+      const resCand = await processCandidatesInBatches(uniqueCand);
+      setCandidates(resCand as unknown as Candidate[]);
+    }
+    return true;
+  };
+
   const fetchCandidates = async (id: number): Promise<boolean> => {
     const { data, error } = await supabase
       .from('candidate_search_history')
@@ -82,12 +122,15 @@ function AppoloSearch() {
       const uniqueCand = [...new Set(cand)];
       const resCand = await processCandidatesInBatches(uniqueCand);
       setCandidates(resCand as unknown as Candidate[]);
+      const { data: cdList, error: cdError } = await supabase
+        .from('candidate_list')
+        .select()
+        .eq('recruiter_id', recruiter.id);
+      if (!cdError) {
+        setCandidateLists(cdList);
+      }
     }
     return true;
-  };
-
-  const handleBookmarkToogle = async () => {
-    setBookmark(!bookmark);
   };
 
   const handleBookmark = async (candidate: Candidate) => {
@@ -126,82 +169,97 @@ function AppoloSearch() {
     }
   };
 
-  let candidates: Candidate[] = [];
-
-  if (Boolean(candidateHistory) && bookmark) {
-    candidates = dbCandidates.filter((candidate) =>
-      candidateHistory.bookmarked_candidates.includes(candidate.id),
-    );
-  } else {
-    candidates = dbCandidates || [];
-  }
-
   // console.log(candidateHistory);
 
   const handlePillRemove = (path, index) => {
-    setFilters((p) => {
-      const updated = cloneDeep(p);
-      updated[String(path)] = filters[String(path)].filter(
-        (s, idx) => idx !== index,
-      );
-      return updated;
-    });
+    const updated = cloneDeep(filters);
+    updated[String(path)] = filters[String(path)].filter(
+      (s, idx) => idx !== index,
+    );
+    setFilters(updated);
   };
 
   const handleUpdatePillInput = (path: string, inputText: string) => {
     if (!inputText) return;
     const inputVals = inputText.split(',').filter((s) => Boolean(s.trim()));
-    setFilters((p) => {
-      const updated = cloneDeep(p);
-      set(updated, path, [...filters[String(path)], ...inputVals]);
-      return updated;
-    });
+    const updated = cloneDeep(filters);
+    set(updated, path, [...filters[String(path)], ...inputVals]);
+    setFilters(updated);
   };
 
   const handleApplyFilters = async () => {
-    setIsFilterLoading(true);
+    try {
+      setIsFilterLoading(true);
 
-    const resCand = await axios.post('/api/candidatedb/search', {
-      page: 1,
-      per_page: 50,
-      person_titles: filters.jobTitles,
-      person_locations: filters.locations,
-    });
+      let org_ids = [];
 
-    if (!resCand.data.people) {
+      if (filters.companies.length > 0) {
+        await Promise.all(
+          filters.companies.map(async (company) => {
+            const resComp = await axios.post('/api/candidatedb/get-company', {
+              name: company,
+            });
+            if (resComp.data.organizations) {
+              org_ids = [
+                ...org_ids,
+                ...resComp.data.organizations.map((c) => c.id),
+              ];
+            }
+          }),
+        );
+      }
+
+      const resCand = await axios.post('/api/candidatedb/search', {
+        page: 1,
+        per_page: 50,
+        person_titles: filters.jobTitles,
+        person_locations: filters.locations,
+        organization_num_employees_ranges: [filters.companySize],
+        organization_ids: org_ids,
+      });
+
+      if (!resCand.data.people) {
+        toast.error('Something went wrong! Please try again later.');
+        setIsFilterLoading(false);
+      }
+
+      let fetchedCandidates: Candidate[] = resCand.data.people;
+      const fetchedIds = fetchedCandidates.map((c) => c.id);
+
+      const { data, error } = await supabase
+        .from('candidate_search_history')
+        .update({
+          query_json: {
+            page: 1,
+            per_page: 50,
+            person_titles: filters.jobTitles,
+            person_locations: filters.locations,
+          },
+          candidates: fetchedIds,
+          used_credits: {
+            export_credits: candidateHistory.used_credits.export_credits + 1,
+            ...candidateHistory.used_credits,
+          },
+        })
+        .eq('id', Number(router.query.id))
+        .select();
+
+      if (!error) {
+        setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+        setCandidates(fetchedCandidates);
+      }
+      setIsFilterLoading(false);
+      setIsFilterOpen(false);
+    } catch (e) {
       toast.error('Something went wrong! Please try again later.');
       setIsFilterLoading(false);
     }
-
-    let fetchedCandidates: Candidate[] = resCand.data.people;
-    const fetchedIds = fetchedCandidates.map((c) => c.id);
-
-    const { data, error } = await supabase
-      .from('candidate_search_history')
-      .update({
-        query_json: {
-          page: 1,
-          per_page: 50,
-          person_titles: filters.jobTitles,
-          person_locations: filters.locations,
-        },
-        candidates: fetchedIds,
-      })
-      .eq('id', Number(router.query.id))
-      .select();
-
-    if (!error) {
-      setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
-      setCandidates(fetchedCandidates);
-    }
-    setIsFilterLoading(false);
-    setIsFilterOpen(false);
   };
 
-  const emailOutReachHandler = async (selCandidate: Candidate) => {
+  const emailOutReachHandler = async (
+    selCandidate: Candidate,
+  ): Promise<boolean> => {
     if (selCandidate.email?.includes('email_not_unlocked')) {
-
-      
       const resEmail = await axios.post('/api/candidatedb/get-email', {
         id: selCandidate.id,
       });
@@ -210,6 +268,14 @@ function AppoloSearch() {
         toast.error('Unable to fetch email. Please try again later.');
         return;
       }
+
+      updateCredits(
+        {
+          ...candidateHistory.used_credits,
+          email_credits: candidateHistory.used_credits.email_credits + 1,
+        },
+        candidateHistory.id,
+      );
 
       if (resEmail.data.person?.email) {
         const updatedSelectedCandidate = {
@@ -241,11 +307,17 @@ function AppoloSearch() {
         if (!error) {
           // Update the candidate history in state
           setCandidates(updatedSearchResults);
+          setEmailOutReach('single');
+          return true;
         }
+      } else {
+        toast.error('Unable to fetch email for this candidate.');
+        return false;
       }
-      setEmailOutReach(true);
     } else {
-      setEmailOutReach(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setEmailOutReach('single');
+      return true;
     }
   };
 
@@ -276,6 +348,39 @@ function AppoloSearch() {
     setIsSelectAll(false);
   };
 
+  const updateHandler = async () => {
+    const { data, error } = await supabase
+      .from('candidate_list')
+      .update({ name: text })
+      .eq('id', list.id)
+      .select();
+    if (!error) {
+      setList(data[0]);
+      setLists(
+        lists.map((l) => {
+          if (l.id === list.id) {
+            return data[0];
+          }
+          return l;
+        }),
+      );
+      setText('');
+      setIsEditVisible(false);
+    } else {
+      toast.error('Something went wrong. Please try again later.');
+    }
+  };
+
+  const handleOpenDropdownList = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseDropdownList = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Stack overflow={'hidden'}>
       <EditFilter
@@ -286,14 +391,86 @@ function AppoloSearch() {
 
       <EmailOutReachComp />
 
+      <ListDropdown
+        anchorEl={anchorEl}
+        handleClose={handleCloseDropdownList}
+        setAnchorEl={setAnchorEl}
+      />
+
       <CdAglintDb
+        onClickList={{
+          onClick: (e) => {
+            handleOpenDropdownList(e);
+          },
+        }}
+        isSubmitVisible={isEditVisible}
+        isEditVisible={!isEditVisible}
+        onClickEdit={{
+          onClick: () => {
+            setText(list.name);
+            setIsEditVisible(true);
+          },
+        }}
+        onClickClose={{
+          onClick: () => {
+            setIsEditVisible(false);
+          },
+        }}
+        onClickSubmit={{
+          onClick: () => {
+            updateHandler();
+          },
+        }}
+        onClickEmailOutReach={{
+          onClick: () => {
+            if (selectedCandidates.length === 0) {
+              toast.warning('Please select atleast one candidate');
+              return;
+            } else {
+              setEmailOutReach('multiple');
+            }
+          },
+        }}
+        onClickBack={{
+          onClick: () => {
+            router.push(
+              `${pageRoutes.CANDIDATES}?currentTab=aglint+candidates`,
+            );
+          },
+        }}
+        slotInput={
+          isEditVisible ? (
+            <UITextField
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+            />
+          ) : (
+            <Stack direction={'row'} spacing={1} pr={1}>
+              <UITypography fontBold='normal' type='small'>
+                {list?.name}
+              </UITypography>
+              <UITypography fontBold='normal' type='small' variant='caption'>
+                {`(${list?.candidates.length} candidates)`}
+              </UITypography>
+            </Stack>
+          )
+        }
+        isCdHeaderVisible={Boolean(router.query.id)}
+        isListHeaderVisible={Boolean(router.query.list)}
+        slotSavetoList={<AddToListComp isSaveToList={true} />}
+        isEditQueryVisible={router.query.id ? true : false}
         onClickBookmark={{
           onClick: () => {
             handleMultipleBookmark(selectedCandidates);
           },
         }}
+        slotViewSaveList={<ViewSavedList />}
         textNoCandidateSelected={`${selectedCandidates.length} candidate selected`}
-        textHeader={candidateHistory?.search_query}
+        textHeader={
+          (router.query.id ? candidateHistory?.search_query : list?.name) || ''
+        }
         onClickCloseSelected={{
           onClick: () => {
             setSelectedCandidates([]);
@@ -327,14 +504,6 @@ function AppoloSearch() {
             setIsFilterOpen(true);
           },
         }}
-        slotToggle={
-          <Switch
-            color='secondary'
-            size='small'
-            checked={bookmark}
-            onChange={handleBookmarkToogle}
-          />
-        }
         slotEmailOut={
           <CandidateDetail
             handleBookmark={handleBookmark}
@@ -343,7 +512,12 @@ function AppoloSearch() {
         }
         slotCdTableAglint={
           <Stack overflow={'auto'} height={'calc(100vh - 112px)'}>
-            {candidates.map((candidate) => (
+            {candidates?.length === 0 && (
+              <CdAglintEmptyTable
+                slotLottie={<EmptyStateCandidateSearchAglint />}
+              />
+            )}
+            {candidates?.map((candidate) => (
               <CdTableAglint
                 onClickEmailReachOut={{
                   onClick: (e) => {
@@ -374,14 +548,6 @@ function AppoloSearch() {
                     }}
                   />
                 }
-                notBookmark={
-                  !candidateHistory.bookmarked_candidates?.includes(
-                    candidate.id,
-                  )
-                }
-                isBookMarked={candidateHistory.bookmarked_candidates?.includes(
-                  candidate.id,
-                )}
                 onClickBookmark={{
                   onClick: (e) => {
                     e.stopPropagation();

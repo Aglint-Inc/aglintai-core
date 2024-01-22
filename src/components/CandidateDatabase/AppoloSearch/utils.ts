@@ -2,6 +2,8 @@ import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { UsedCredits } from './types';
+
 export const employeeRange = [
   { value: '10001', show: '10001+' },
   { value: '5001,10000', show: '5001-10000' },
@@ -54,11 +56,11 @@ const processBatch = async (
   }
 };
 
-export const updateCredits = async () => {
+export const updateCredits = async (used_credits: UsedCredits, id: number) => {
   const { error } = await supabase
     .from('candidate_search_history')
-    .update({ used_credits: {} })
-    .eq('id', 1);
+    .update({ used_credits: used_credits as any })
+    .eq('id', id);
   if (error) {
     toast.error(error.message);
   }

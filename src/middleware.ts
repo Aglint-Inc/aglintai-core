@@ -107,6 +107,7 @@ const allowedPaths = new Set([
   '/api/phone-screening/get-application-info',
   '/api/candidatedb/search',
   '/api/candidatedb/query',
+  '/api/candidatedb/get-company',
   '/api/assessment/access_applications',
   '/api/assessment/access_public_jobs',
   '/api/assessment/access_recruiter',

@@ -23,4 +23,5 @@ declare function CdEmailOutreach(props: {
   onClickAddFollowUp?: Types.Devlink.RuntimeProps;
   onClickOpenInbox?: Types.Devlink.RuntimeProps;
   slotEmailSuccessCard?: Types.Devlink.Slot;
+  isRegenerateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
