@@ -26,7 +26,7 @@ export function JobEmptyState({
         >
           {"No jobs found"}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
           {"Click here to "}
           <_Builtin.Span
             className={_utils.cx(

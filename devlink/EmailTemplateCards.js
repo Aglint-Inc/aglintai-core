@@ -24,9 +24,7 @@ export function EmailTemplateCards({
       {...onClickApplicationRecieved}
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-486")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textTitle}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textTitle}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "text-sm", "color-blue-600")}
           tag="div"
@@ -35,10 +33,7 @@ export function EmailTemplateCards({
           {"Edit"}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "color-grey-600")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "text-grey-500")} tag="div">
         {textDescription}
       </_Builtin.Block>
     </_Component>

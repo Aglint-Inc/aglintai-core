@@ -5,7 +5,7 @@
   width: 100%;
   margin-top: 0px;
   margin-bottom: 12px;
-  padding: 10px 20px;
+  padding: 0px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -390,6 +390,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -438,6 +444,21 @@
 
 .relative {
   position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .div-block-554 {
@@ -510,17 +531,6 @@
 
 .cursor-pointer-audio-indi:hover {
   opacity: 0.7;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .cursor-pointer-audio-indi.grow-job-wishlist {

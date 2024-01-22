@@ -28,7 +28,9 @@ export function CandidateHistoryCard({
       tag="div"
       {...onClickCard}
     >
-      <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "text-block-32")} tag="div">
+        {textHeader}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "search-by-wrap")}
         tag="div"

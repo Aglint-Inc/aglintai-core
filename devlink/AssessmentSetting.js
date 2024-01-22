@@ -23,7 +23,7 @@ export function AssessmentSetting({
           id="assessment_mode"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Assessment Mode"}
@@ -60,7 +60,7 @@ export function AssessmentSetting({
           id="validity"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Assessment Validity"}

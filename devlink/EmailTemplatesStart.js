@@ -57,7 +57,12 @@ export function EmailTemplatesStart({
         )}
         tag="div"
       >
-        {slotEmailTemplateCards ?? <EmailTemplateCards />}
+        {slotEmailTemplateCards ?? (
+          <>
+            <EmailTemplateCards />
+            <EmailTemplateCards />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

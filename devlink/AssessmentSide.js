@@ -9,7 +9,7 @@ export function AssessmentSide({
   onClickDisableAssessment = {},
   isDisableAssessmentVisible = true,
   textPreview = "Preview how candidates will be taking interview in real time.",
-  textPreviewButton = "Preview",
+  textPreviewButton = "Preview screening form",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-719")} tag="div">

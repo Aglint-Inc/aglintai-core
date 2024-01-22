@@ -7,4 +7,7 @@ declare function EnableAssessment(props: {
   isAddJob?: Types.Visibility.VisibilityConditions;
   onClickProceed?: Types.Devlink.RuntimeProps;
   isProceedDisable?: Types.Visibility.VisibilityConditions;
+  isEnableAssessmentVisible?: Types.Visibility.VisibilityConditions;
+  isPhoneScreeningEnable?: Types.Visibility.VisibilityConditions;
+  onClickEnablePhoneScreening?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

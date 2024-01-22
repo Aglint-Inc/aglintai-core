@@ -100,8 +100,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         ? '/images/dashboard/active.svg'
                         : '/images/dashboard/closed.svg'
                     }
-                    width={14}
-                    height={14}
+                    width={24}
+                    height={24}
                     alt=''
                   />
                 }

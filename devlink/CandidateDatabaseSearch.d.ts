@@ -12,10 +12,17 @@ declare function CandidateDatabaseSearch(props: {
   slotCandidateHistoryCard?: Types.Devlink.Slot;
   onClickSearch?: Types.Devlink.RuntimeProps;
   slotLottieSearch?: Types.Devlink.Slot;
-  textCandidateCount?: React.ReactNode;
   isSearchInAglintVisible?: Types.Visibility.VisibilityConditions;
   isSearchInAllVisible?: Types.Visibility.VisibilityConditions;
   slotNavSublink?: Types.Devlink.Slot;
   isSearchJdVisible?: Types.Visibility.VisibilityConditions;
   isSearchByJdVisible?: Types.Visibility.VisibilityConditions;
+  isSavedListVisible?: Types.Visibility.VisibilityConditions;
+  slotSavedList?: Types.Devlink.Slot;
+  slotInput?: Types.Devlink.Slot;
+  onClickSubmit?: Types.Devlink.RuntimeProps;
+  onClickClose?: Types.Devlink.RuntimeProps;
+  onClickCreateNewList?: Types.Devlink.RuntimeProps;
+  isSavedListEmpty?: Types.Visibility.VisibilityConditions;
+  isInputVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

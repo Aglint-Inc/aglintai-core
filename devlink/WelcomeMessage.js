@@ -20,7 +20,7 @@ export function WelcomeMessage({
           id="welcome"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Welcome Message"}

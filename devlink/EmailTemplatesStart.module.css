@@ -1,5 +1,5 @@
 .div-block-508 {
-  max-width: 780px;
+  max-width: 850px;
 }
 
 .div-block-507 {
@@ -258,6 +258,10 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -301,12 +305,11 @@
 
 .email-start-wrap {
   display: grid;
-  max-width: 780px;
   margin-right: auto;
   margin-left: auto;
   grid-auto-columns: 1fr;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
 }

@@ -278,9 +278,13 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
 .div-block-544 {
   display: flex;
-  padding-top: 16px;
+  padding: 10px 20px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -347,6 +351,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -391,6 +401,10 @@
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.icons.hide {
+  display: none;
 }
 
 .add-tool-tip-wrap {

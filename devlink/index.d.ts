@@ -311,6 +311,7 @@ export * from "./RevertChangesModal";
 export * from "./RolesPill";
 export * from "./SaveDraft";
 export * from "./SavedChanges";
+export * from "./SavedList";
 export * from "./ScoreCard";
 export * from "./ScoreCardEdit";
 export * from "./ScorePercentage";

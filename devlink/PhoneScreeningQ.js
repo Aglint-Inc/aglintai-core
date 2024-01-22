@@ -94,7 +94,7 @@ export function PhoneScreeningQ({
               className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
-              {"Back"}
+              {"Prev"}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
@@ -105,7 +105,7 @@ export function PhoneScreeningQ({
               tag="div"
               {...onClickOk}
             >
-              <_Builtin.Block tag="div">{"Ok"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Next"}</_Builtin.Block>
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icons")}
                 value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M4.86189%2013.8047C4.63047%2013.5733%204.60475%2013.2141%204.78475%2012.9543L4.86189%2012.8619L9.72396%208L4.86189%203.13807C4.63047%202.90665%204.60475%202.54742%204.78475%202.28759L4.86189%202.19526C5.09331%201.96384%205.45254%201.93813%205.71237%202.11812L5.8047%202.19526L11.138%207.5286C11.3695%207.76002%2011.3952%208.11925%2011.2152%208.37907L11.138%208.4714L5.8047%2013.8047C5.54435%2014.0651%205.12224%2014.0651%204.86189%2013.8047Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
@@ -116,7 +116,7 @@ export function PhoneScreeningQ({
                 className={_utils.cx(_styles, "ok-button-ps", "disable-ok")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Ok"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Next"}</_Builtin.Block>
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icons")}
                   value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M4.86189%2013.8047C4.63047%2013.5733%204.60475%2013.2141%204.78475%2012.9543L4.86189%2012.8619L9.72396%208L4.86189%203.13807C4.63047%202.90665%204.60475%202.54742%204.78475%202.28759L4.86189%202.19526C5.09331%201.96384%205.45254%201.93813%205.71237%202.11812L5.8047%202.19526L11.138%207.5286C11.3695%207.76002%2011.3952%208.11925%2011.2152%208.37907L11.138%208.4714L5.8047%2013.8047C5.54435%2014.0651%205.12224%2014.0651%204.86189%2013.8047Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
