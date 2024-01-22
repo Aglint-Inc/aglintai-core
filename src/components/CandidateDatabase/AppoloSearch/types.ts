@@ -36,10 +36,17 @@ export interface Candidate {
 
 export type CandidateSearchHistoryType = Omit<
   Database['public']['Tables']['candidate_search_history']['Row'],
-  'search_results' 
+  'search_results' | 'used_credits'
 > & {
   search_results: Candidate[] | null;
+  used_credits: UsedCredits;
 };
+
+export interface UsedCredits {
+  mobile_credits: number;
+  export_credits: number;
+  email_credits: number;
+}
 
 interface EmploymentHistory {
   created_at: string | null;

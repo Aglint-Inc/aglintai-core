@@ -16,12 +16,12 @@ function EditFilter({
   handleApplyFilters,
   handleUpdatePillInput,
 }) {
-
   const isfilterOpen = useBoundStore((state) => state.isfilterOpen);
   const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
   const filters = useBoundStore((state) => state.filters);
   const setFilters = useBoundStore((state) => state.setFilters);
   const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
+
   return (
     <Dialog
       open={isfilterOpen}

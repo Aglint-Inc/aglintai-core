@@ -1,5 +1,7 @@
 import { StateCreator } from 'zustand';
 
+import { CandidateListTypeDB } from '@/src/types/data.types';
+
 import { Candidate, CandidateSearchHistoryType } from './types';
 import { initialQuery } from './utils';
 
@@ -14,15 +16,13 @@ export const createCandidateDatabaseSlice: StateCreator<
     set((state) => ({ ...state, candidateHistory })),
   candidates: null,
   setCandidates: (candidates) => set((state) => ({ ...state, candidates })),
-  bookmark: false,
-  setBookmark: (bookmark) => set((state) => ({ ...state, bookmark })),
   isfilterOpen: false,
   setIsFilterOpen: (isfilterOpen) =>
     set((state) => ({ ...state, isfilterOpen })),
   isFilterLoading: false,
   setIsFilterLoading: (isFilterLoading) =>
     set((state) => ({ ...state, isFilterLoading })),
-  emailOutReach: false,
+  emailOutReach: null,
   setEmailOutReach: (emailOutReach) =>
     set((state) => ({ ...state, emailOutReach })),
   selectedCandidate: null,
@@ -35,6 +35,10 @@ export const createCandidateDatabaseSlice: StateCreator<
   setIsSelectAll: (isSelectAll) => set((state) => ({ ...state, isSelectAll })),
   filters: initialQuery(),
   setFilters: (filters) => set((state) => ({ ...state, filters })),
+  lists: [],
+  setLists: (lists) => set((state) => ({ ...state, lists })),
+  list: null,
+  setList: (list) => set((state) => ({ ...state, list })),
 });
 
 export type CandidateDatabaseSlice = {
@@ -47,18 +51,15 @@ export type CandidateDatabaseSlice = {
   candidates: Candidate[] | null;
   // eslint-disable-next-line no-unused-vars
   setCandidates: (candidates: Candidate[] | null) => void;
-  bookmark: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setBookmark: (bookmark: boolean) => void;
   isfilterOpen: boolean;
   // eslint-disable-next-line no-unused-vars
   setIsFilterOpen: (isfilterOpen: boolean) => void;
   isFilterLoading: boolean;
   // eslint-disable-next-line no-unused-vars
   setIsFilterLoading: (isFilterLoading: boolean) => void;
-  emailOutReach: boolean;
+  emailOutReach: 'single' | 'multiple' | null;
   // eslint-disable-next-line no-unused-vars
-  setEmailOutReach: (emailOutReach: boolean) => void;
+  setEmailOutReach: (emailOutReach: 'single' | 'multiple' | null) => void;
   selectedCandidate: Candidate | null;
   // eslint-disable-next-line no-unused-vars
   setSelectedCandidate: (selectedCandidate: Candidate | null) => void;
@@ -71,4 +72,10 @@ export type CandidateDatabaseSlice = {
   filters: any;
   // eslint-disable-next-line no-unused-vars
   setFilters: (filters: any) => void;
+  lists: CandidateListTypeDB[];
+  // eslint-disable-next-line no-unused-vars
+  setLists: (lists: CandidateListTypeDB[]) => void;
+  list: CandidateListTypeDB;
+  // eslint-disable-next-line no-unused-vars
+  setList: (lists: CandidateListTypeDB) => void;
 };

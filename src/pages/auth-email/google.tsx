@@ -4,11 +4,16 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
-import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+// import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 const AuthHoc = () => {
@@ -24,9 +29,9 @@ const AuthHoc = () => {
 const Google = () => {
   const router = useRouter();
 
-  const { recruiter } = useAuthDetails();
+  const { recruiterUser, setRecruiterUser } = useAuthDetails();
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && recruiterUser) {
       const { code } = router.query;
       if (!code) return;
 
@@ -38,25 +43,42 @@ const Google = () => {
           if (!access_token || !refresh_token)
             throw new Error('no tokens found');
           const email = await getUserEmail({ access_token, refresh_token });
-          localStorage.setItem(
-            `email-outreach${recruiter.id}`,
-            JSON.stringify({
-              access_token,
-              refresh_token,
-              email,
-              provider: 'google',
-              exp: '',
-              expiry_date,
-            }),
+          const authEmailDetails = {
+            access_token,
+            refresh_token,
+            email,
+            provider: 'google',
+            exp: '',
+            expiry_date,
+          };
+
+          setRecruiterUser((prev) => ({
+            ...prev,
+            email_auth: authEmailDetails,
+          }));
+
+          supabaseWrap(
+            await supabase
+              .from('recruiter_user')
+              .update({
+                email_auth: authEmailDetails,
+              })
+              .eq('user_id', recruiterUser.user_id),
           );
-          return router.replace('/candidates');
+
+          const path = localStorage.getItem('gmail-redirect-path');
+          if (path) {
+            return router.replace(path);
+          } else {
+            return router.replace('/jobs');
+          }
         } catch (err) {
           toast.error(API_FAIL_MSG);
-          router.replace('/candidates');
         }
       })();
     }
-  }, [router.isReady, recruiter]);
+  }, [router.isReady]);
+
   return (
     <>
       <Stack

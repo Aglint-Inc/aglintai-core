@@ -123,7 +123,7 @@ export function AshbyModalComp() {
           ...prev,
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}`);
+        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
       }
     } catch (error) {
       toast.error(

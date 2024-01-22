@@ -21,6 +21,9 @@ export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 
 export type AglintCandidatesTypeDB =
   Database['public']['Tables']['aglint_candidates']['Row'];
+
+export type CandidateListTypeDB =
+  Database['public']['Tables']['candidate_list']['Row'];
 //TODO: Draft?
 
 export type JobApplcationDB =

@@ -119,7 +119,7 @@ export function LeverModalComp() {
           ...prev,
           lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}`);
+        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
       } else {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',

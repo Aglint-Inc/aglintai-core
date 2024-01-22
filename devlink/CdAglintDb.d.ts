@@ -4,7 +4,6 @@ import * as Types from "./types";
 declare function CdAglintDb(props: {
   as?: React.ElementType;
   onClickEditQuery?: Types.Devlink.RuntimeProps;
-  slotToggle?: Types.Devlink.Slot;
   onClickCandidateData?: Types.Devlink.RuntimeProps;
   textHeader?: React.ReactNode;
   slotCheckbox?: Types.Devlink.Slot;
@@ -16,4 +15,17 @@ declare function CdAglintDb(props: {
   isHeaderVisible?: Types.Visibility.VisibilityConditions;
   slotViewSaveList?: Types.Devlink.Slot;
   slotEmailOut?: Types.Devlink.Slot;
+  slotSavetoList?: Types.Devlink.Slot;
+  onClickEmailOutReach?: Types.Devlink.RuntimeProps;
+  isEditQueryVisible?: Types.Visibility.VisibilityConditions;
+  onClickList?: Types.Devlink.RuntimeProps;
+  onClickEdit?: Types.Devlink.RuntimeProps;
+  isEditVisible?: Types.Visibility.VisibilityConditions;
+  slotInput?: Types.Devlink.Slot;
+  onClickSubmit?: Types.Devlink.RuntimeProps;
+  onClickClose?: Types.Devlink.RuntimeProps;
+  isSubmitVisible?: Types.Visibility.VisibilityConditions;
+  onClickBack?: Types.Devlink.RuntimeProps;
+  isListHeaderVisible?: Types.Visibility.VisibilityConditions;
+  isCdHeaderVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

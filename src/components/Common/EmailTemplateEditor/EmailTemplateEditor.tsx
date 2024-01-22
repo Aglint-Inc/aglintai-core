@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
 
@@ -50,8 +50,8 @@ const EmailTemplateEditor = ({
   });
 
   useEffect(() => {
-    if (defaultJson) editor.commands.setContent(defaultJson);
-  }, [defaultJson]);
+    if (editor && defaultJson) editor.commands.setContent(defaultJson);
+  }, [editor, defaultJson]);
 
   return (
     <>

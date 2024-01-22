@@ -23,6 +23,7 @@ export interface OutReachCtxType {
   genEmailFromTempJson: (templateJson: any) => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   saveEmail: (email: OutreachedEmail) => Promise<void>;
+  isMutiple: boolean;
 }
 
 type CandEmailData = {
@@ -147,59 +148,70 @@ const OutReachCtx = React.createContext<OutReachCtxType>({
   genEmailFromTempJson: async (templateJson: any) => {},
   // eslint-disable-next-line no-unused-vars
   saveEmail: async (email: OutreachedEmail) => {},
+  isMutiple: false,
 });
 
 // Provider component
 const OutReachCtxProvider = ({
   children,
   selcandidate,
+  // selCandidates,
+  isMutiple = false,
 }: {
   selcandidate: OutReachCandDetailsType;
   children: React.ReactNode;
+  // selCandidates?: OutReachCandDetailsType[];
+  isMutiple?: boolean;
 }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const { recruiter, recruiterUser } = useAuthDetails();
 
   useEffect(() => {
     // related to auth token
-    const str = localStorage.getItem(`email-outreach${recruiter.id}`);
-    const candInfo = JSON.parse(str) as CandEmailData;
+    if (!recruiterUser) return;
+    (async () => {
+      try {
+        const candInfo = recruiterUser.email_auth as null | CandEmailData;
 
-    if (candInfo) {
-      const isDateExpired = candInfo.expiry_date - Date.now();
-      if (isDateExpired <= 0) {
-        (async () => {
-          const { data: newAcessTOken } = await axios.post(
-            '/api/email-outreach/getNewAcessToken',
-            {
-              refresh_token: candInfo.refresh_token,
-            },
-          );
-          candInfo.access_token = newAcessTOken;
-          localStorage.setItem(
-            `email-outreach${recruiter.id}`,
-            JSON.stringify(candInfo),
-          );
-          dispatch({
-            type: 'updateState',
-            payload: {
-              path: 'candEmailData',
-              value: candInfo,
-            },
-          });
-        })();
-        // localStorage.removeItem(`email-outreach${recruiter.id}`);
-      } else {
-        dispatch({
-          type: 'updateState',
-          payload: {
-            path: 'candEmailData',
-            value: candInfo,
-          },
-        });
+        if (candInfo) {
+          const isDateExpired = candInfo.expiry_date - Date.now();
+          if (isDateExpired <= 0) {
+            (async () => {
+              const { data: newAcessTOken } = await axios.post(
+                '/api/email-outreach/getNewAcessToken',
+                {
+                  refresh_token: candInfo.refresh_token,
+                },
+              );
+              candInfo.access_token = newAcessTOken;
+              localStorage.setItem(
+                `email-outreach${recruiter.id}`,
+                JSON.stringify(candInfo),
+              );
+              dispatch({
+                type: 'updateState',
+                payload: {
+                  path: 'candEmailData',
+                  value: candInfo,
+                },
+              });
+            })();
+            // localStorage.removeItem(`email-outreach${recruiter.id}`);
+          } else {
+            dispatch({
+              type: 'updateState',
+              payload: {
+                path: 'candEmailData',
+                value: candInfo,
+              },
+            });
+          }
+        }
+      } catch (err) {
+        // console.log(err);
       }
-    }
-  }, []);
+    })();
+  }, [recruiterUser]);
 
   useEffect(() => {
     (async () => {
@@ -229,9 +241,10 @@ const OutReachCtxProvider = ({
   }, [recruiter, dispatch]);
 
   useEffect(() => {
-    if (!selcandidate) return;
-    genEmailTempToemail();
-    getOutreachedEmails();
+    if (selcandidate) {
+      genEmailTempToemail();
+      getOutreachedEmails();
+    }
   }, [recruiterUser, selcandidate, dispatch]);
 
   const genEmailTempToemail = async () => {
@@ -258,6 +271,7 @@ const OutReachCtxProvider = ({
           .select('email_outreach_templates')
           .eq('id', recruiterUser.recruiter_id),
       ) as { email_outreach_templates: TemplateType[] }[];
+
       let temps = emailTemps?.email_outreach_templates
         ? emailTemps.email_outreach_templates
         : outReachTemplates;
@@ -303,39 +317,56 @@ const OutReachCtxProvider = ({
 
   const getOutreachedEmails = async () => {
     try {
-      const outreachedMails = supabaseWrap(
-        await supabase
-          .from('outreached_emails')
-          .select()
-          .eq('candidate_id', selcandidate.candidateId)
-          .eq('recruiter_id', recruiter.id),
-      ) as OutreachEmailDbType[];
+      if (!isMutiple) {
+        const outreachedMails = supabaseWrap(
+          await supabase
+            .from('outreached_emails')
+            .select()
+            .eq('candidate_id', selcandidate?.candidateId)
+            .eq('recruiter_user_id', recruiterUser.user_id),
+        ) as OutreachEmailDbType[];
 
-      let newEMails: OutreachedEmail[] = outreachedMails
-        .map((e: any) => ({
-          ...e.email,
-        }))
-        .sort((e1, e2) => {
-          const d1 = new Date(e1.createdAt);
-          const d2 = new Date(e2.createdAt);
-          return d2.getTime() - d1.getTime();
+        let newEMails: OutreachedEmail[] = outreachedMails
+          .map((e: any) => ({
+            ...e.email,
+          }))
+          .sort((e1, e2) => {
+            const d1 = new Date(e1.createdAt);
+            const d2 = new Date(e2.createdAt);
+            return d2.getTime() - d1.getTime();
+          });
+
+        dispatch({
+          type: 'UpdateMultiStates',
+          payload: [
+            {
+              path: 'outReachedEmails',
+              value: newEMails,
+            },
+            {
+              path: 'showEmailEditor',
+              value: newEMails.length === 0,
+            },
+          ],
         });
-
-      dispatch({
-        type: 'UpdateMultiStates',
-        payload: [
-          {
-            path: 'outReachedEmails',
-            value: newEMails,
-          },
-          {
-            path: 'showEmailEditor',
-            value: newEMails.length === 0,
-          },
-        ],
-      });
+      } else {
+        dispatch({
+          type: 'UpdateMultiStates',
+          payload: [
+            {
+              path: 'outReachedEmails',
+              value: [],
+            },
+            {
+              path: 'showEmailEditor',
+              value: true,
+            },
+          ],
+        });
+      }
     } catch (err) {
-      //
+      // console.log(err);
+      toast.error(API_FAIL_MSG);
     }
   };
 
@@ -425,8 +456,8 @@ const OutReachCtxProvider = ({
     genEmailTempToemail,
     genEmailFromTempJson,
     saveEmail,
+    isMutiple,
   };
-  if (!selcandidate) return <></>;
   return <OutReachCtx.Provider value={value}>{children}</OutReachCtx.Provider>;
 };
 
@@ -436,7 +467,7 @@ export const useOutReachCtx = () => {
 
 export { OutReachCtx, OutReachCtxProvider };
 
-const handleGenEmail = async (
+export const handleGenEmail = async (
   templateJson,
   recruiterName,
   candidateName,

@@ -180,6 +180,12 @@
   flex: 0 0 auto;
 }
 
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
 .cd-experience-active {
   position: absolute;
   left: 0%;
