@@ -1,6 +1,6 @@
 .side-nav-bottom {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   grid-column-gap: 7px;
   grid-row-gap: 7px;
@@ -51,6 +51,12 @@
 
 .icons.cursor-pointer.p-4 {
   padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
 }
 
 .icons.curser-hover-pointer {
@@ -107,6 +113,21 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .nav-bar-icon-hover {
   position: absolute;
   left: 45px;
@@ -138,6 +159,14 @@
 
 .nav-bar-icon-hover.logout {
   width: 65px;
+}
+
+.nav-bar-icon-hover.ticket {
+  width: 70px;
+}
+
+.nav-bar-icon-hover.message {
+  width: 83px;
 }
 
 .div-block-676 {

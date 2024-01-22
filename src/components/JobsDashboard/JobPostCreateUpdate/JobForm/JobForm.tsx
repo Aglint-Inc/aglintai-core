@@ -717,7 +717,7 @@ const SideSection = () => {
     return (
       <>
         <div style={{ height: '60px' }}>
-          {formWarnings.resumeScore.err.length > 0 && (
+          {formWarnings.resumeScore.rightErr.length > 0 && (
             <JobEditWarning
               slotWarningList={
                 <>

@@ -30,6 +30,11 @@ export function CandidateDatabaseSearch({
   onClickCreateNewList = {},
   isSavedListEmpty = false,
   isInputVisible = true,
+  isViewAllCandidateVisible = false,
+  onClickViewAllCandidate = {},
+  isSearchDbVisible = true,
+  isEmpty = false,
+  slotEmptyLottie,
 }) {
   return (
     <_Component
@@ -59,172 +64,250 @@ export function CandidateDatabaseSearch({
           className={_utils.cx(_styles, "div-block-697")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "search-left-wrap-candidate")}
-            tag="div"
-          >
-            {isSearchInAglintVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "db--request")}
-                tag="div"
-                {...onClickDbRequest}
-              >
+          {isSearchDbVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "search-left-wrap-candidate")}
+              tag="div"
+            >
+              {isSearchInAglintVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "db-req-icon-wrap")}
+                  className={_utils.cx(_styles, "db--request")}
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "relative")}
+                    className={_utils.cx(_styles, "div-block-747")}
                     tag="div"
                   >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icons")}
-                      value="%3Csvg%20width%3D%2220%22%20height%3D%2222%22%20viewBox%3D%220%200%2020%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17.877%203.90625C17.877%203.8789%2017.7949%203.7832%2017.6309%203.61914C17.3301%203.37305%2016.8105%203.11328%2016.0723%202.83984C14.5137%202.26562%2012.4902%201.96484%2010.002%201.9375C7.51367%201.96484%205.49023%202.26562%203.93164%202.83984C3.19336%203.11328%202.67383%203.37305%202.37305%203.61914C2.20898%203.7832%202.12695%203.8789%202.12695%203.90625V8.08984C2.72851%208.52734%203.67187%208.91016%204.95703%209.23828C6.40625%209.62109%208.08789%209.8125%2010.002%209.8125C11.916%209.8125%2013.5977%209.62109%2015.0469%209.23828C16.332%208.91016%2017.2754%208.52734%2017.877%208.08984V3.90625ZM17.877%209.64844C17.166%2010.0039%2016.332%2010.3047%2015.375%2010.5508C13.7891%2010.9336%2011.998%2011.125%2010.002%2011.125C8.00586%2011.125%206.21484%2010.9199%204.62891%2010.5098C3.67187%2010.291%202.83789%2010.0039%202.12695%209.64844V13.3398C2.72851%2013.8047%203.67187%2014.1875%204.95703%2014.4883C6.40625%2014.8711%208.08789%2015.0625%2010.002%2015.0625C11.916%2015.0625%2013.5977%2014.8711%2015.0469%2014.4883C16.332%2014.1602%2017.2754%2013.7773%2017.877%2013.3398V9.64844ZM2.12695%2018.3437C2.12695%2018.3711%202.20898%2018.4668%202.37305%2018.6309C2.67383%2018.877%203.19336%2019.1367%203.93164%2019.4102C5.49023%2019.9844%207.51367%2020.2852%2010.002%2020.3125C12.4902%2020.2852%2014.5137%2019.9844%2016.0723%2019.4102C16.8105%2019.1367%2017.3301%2018.877%2017.6309%2018.6309C17.7949%2018.4668%2017.877%2018.3711%2017.877%2018.3437V14.8984C17.166%2015.2539%2016.332%2015.5547%2015.375%2015.8008C13.7891%2016.1836%2011.998%2016.375%2010.002%2016.375C8.00586%2016.375%206.21484%2016.1836%204.62891%2015.8008C3.67187%2015.5547%202.83789%2015.2539%202.12695%2014.8984V18.3437ZM2.12695%203.94726C2.12695%203.91992%202.12695%203.91992%202.12695%203.94726V3.94726ZM19.1895%2018.3437C19.1348%2019.2734%2018.2324%2020.0527%2016.4824%2020.6816C14.7598%2021.2832%2012.5996%2021.5977%2010.002%2021.625C7.4043%2021.5977%205.24414%2021.2832%203.52148%2020.6816C1.77148%2020.0527%200.86914%2019.2734%200.814452%2018.3437V3.90625C0.86914%202.97656%201.77148%202.19726%203.52148%201.56836C5.24414%200.966795%207.4043%200.652342%2010.002%200.624998C12.5996%200.652342%2014.7598%200.966795%2016.4824%201.56836C18.2324%202.19726%2019.1348%202.97656%2019.1895%203.90625V18.3437Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icons", "db-star-icons")}
-                      value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.63477%204.66871C6.73685%204.44371%206.28685%204.33329%205.97643%204.02288C5.66602%203.71038%205.5556%203.26246%205.3306%202.36454L4.99935%201.04163L4.6681%202.36454C4.4431%203.26246%204.33268%203.71246%204.02227%204.02288C3.70977%204.33329%203.26185%204.44371%202.36393%204.66871L1.04102%204.99996L2.36393%205.33121C3.26185%205.55621%203.71185%205.66663%204.02227%205.97704C4.33268%206.28954%204.4431%206.73746%204.6681%207.63538L4.99935%208.95829L5.3306%207.63538C5.5556%206.73746%205.66602%206.28746%205.97643%205.97704C6.28893%205.66663%206.73685%205.55621%207.63477%205.33121L8.95768%204.99996L7.63477%204.66871Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "db-req-icon-wrap")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "relative")}
+                        tag="div"
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2220%22%20height%3D%2222%22%20viewBox%3D%220%200%2020%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17.877%203.90625C17.877%203.8789%2017.7949%203.7832%2017.6309%203.61914C17.3301%203.37305%2016.8105%203.11328%2016.0723%202.83984C14.5137%202.26562%2012.4902%201.96484%2010.002%201.9375C7.51367%201.96484%205.49023%202.26562%203.93164%202.83984C3.19336%203.11328%202.67383%203.37305%202.37305%203.61914C2.20898%203.7832%202.12695%203.8789%202.12695%203.90625V8.08984C2.72851%208.52734%203.67187%208.91016%204.95703%209.23828C6.40625%209.62109%208.08789%209.8125%2010.002%209.8125C11.916%209.8125%2013.5977%209.62109%2015.0469%209.23828C16.332%208.91016%2017.2754%208.52734%2017.877%208.08984V3.90625ZM17.877%209.64844C17.166%2010.0039%2016.332%2010.3047%2015.375%2010.5508C13.7891%2010.9336%2011.998%2011.125%2010.002%2011.125C8.00586%2011.125%206.21484%2010.9199%204.62891%2010.5098C3.67187%2010.291%202.83789%2010.0039%202.12695%209.64844V13.3398C2.72851%2013.8047%203.67187%2014.1875%204.95703%2014.4883C6.40625%2014.8711%208.08789%2015.0625%2010.002%2015.0625C11.916%2015.0625%2013.5977%2014.8711%2015.0469%2014.4883C16.332%2014.1602%2017.2754%2013.7773%2017.877%2013.3398V9.64844ZM2.12695%2018.3437C2.12695%2018.3711%202.20898%2018.4668%202.37305%2018.6309C2.67383%2018.877%203.19336%2019.1367%203.93164%2019.4102C5.49023%2019.9844%207.51367%2020.2852%2010.002%2020.3125C12.4902%2020.2852%2014.5137%2019.9844%2016.0723%2019.4102C16.8105%2019.1367%2017.3301%2018.877%2017.6309%2018.6309C17.7949%2018.4668%2017.877%2018.3711%2017.877%2018.3437V14.8984C17.166%2015.2539%2016.332%2015.5547%2015.375%2015.8008C13.7891%2016.1836%2011.998%2016.375%2010.002%2016.375C8.00586%2016.375%206.21484%2016.1836%204.62891%2015.8008C3.67187%2015.5547%202.83789%2015.2539%202.12695%2014.8984V18.3437ZM2.12695%203.94726C2.12695%203.91992%202.12695%203.91992%202.12695%203.94726V3.94726ZM19.1895%2018.3437C19.1348%2019.2734%2018.2324%2020.0527%2016.4824%2020.6816C14.7598%2021.2832%2012.5996%2021.5977%2010.002%2021.625C7.4043%2021.5977%205.24414%2021.2832%203.52148%2020.6816C1.77148%2020.0527%200.86914%2019.2734%200.814452%2018.3437V3.90625C0.86914%202.97656%201.77148%202.19726%203.52148%201.56836C5.24414%200.966795%207.4043%200.652342%2010.002%200.624998C12.5996%200.652342%2014.7598%200.966795%2016.4824%201.56836C18.2324%202.19726%2019.1348%202.97656%2019.1895%203.90625V18.3437Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(
+                            _styles,
+                            "icons",
+                            "db-star-icons"
+                          )}
+                          value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.63477%204.66871C6.73685%204.44371%206.28685%204.33329%205.97643%204.02288C5.66602%203.71038%205.5556%203.26246%205.3306%202.36454L4.99935%201.04163L4.6681%202.36454C4.4431%203.26246%204.33268%203.71246%204.02227%204.02288C3.70977%204.33329%203.26185%204.44371%202.36393%204.66871L1.04102%204.99996L2.36393%205.33121C3.26185%205.55621%203.71185%205.66663%204.02227%205.97704C4.33268%206.28954%204.4431%206.73746%204.6681%207.63538L4.99935%208.95829L5.3306%207.63538C5.5556%206.73746%205.66602%206.28746%205.97643%205.97704C6.28893%205.66663%206.73685%205.55621%207.63477%205.33121L8.95768%204.99996L7.63477%204.66871Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    </_Builtin.Block>
                   </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "db-req-text-wrap")}
-                  tag="div"
-                >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Search in Aglint Db"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "color-grey-600")}
-                    tag="div"
-                  >
-                    {"Search across 400M+ candidates from aglint"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-            {isSearchInAllVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "db--request")}
-                tag="div"
-                {...onClickAllCandidate}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "candidate-all-icon-wrap")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "relative")}
-                    tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icons")}
-                      value="%3Csvg%20width%3D%2220%22%20height%3D%2222%22%20viewBox%3D%220%200%2020%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17.877%203.90625C17.877%203.8789%2017.7949%203.7832%2017.6309%203.61914C17.3301%203.37305%2016.8105%203.11328%2016.0723%202.83984C14.5137%202.26562%2012.4902%201.96484%2010.002%201.9375C7.51367%201.96484%205.49023%202.26562%203.93164%202.83984C3.19336%203.11328%202.67383%203.37305%202.37305%203.61914C2.20898%203.7832%202.12695%203.8789%202.12695%203.90625V8.08984C2.72851%208.52734%203.67187%208.91016%204.95703%209.23828C6.40625%209.62109%208.08789%209.8125%2010.002%209.8125C11.916%209.8125%2013.5977%209.62109%2015.0469%209.23828C16.332%208.91016%2017.2754%208.52734%2017.877%208.08984V3.90625ZM17.877%209.64844C17.166%2010.0039%2016.332%2010.3047%2015.375%2010.5508C13.7891%2010.9336%2011.998%2011.125%2010.002%2011.125C8.00586%2011.125%206.21484%2010.9199%204.62891%2010.5098C3.67187%2010.291%202.83789%2010.0039%202.12695%209.64844V13.3398C2.72851%2013.8047%203.67187%2014.1875%204.95703%2014.4883C6.40625%2014.8711%208.08789%2015.0625%2010.002%2015.0625C11.916%2015.0625%2013.5977%2014.8711%2015.0469%2014.4883C16.332%2014.1602%2017.2754%2013.7773%2017.877%2013.3398V9.64844ZM2.12695%2018.3437C2.12695%2018.3711%202.20898%2018.4668%202.37305%2018.6309C2.67383%2018.877%203.19336%2019.1367%203.93164%2019.4102C5.49023%2019.9844%207.51367%2020.2852%2010.002%2020.3125C12.4902%2020.2852%2014.5137%2019.9844%2016.0723%2019.4102C16.8105%2019.1367%2017.3301%2018.877%2017.6309%2018.6309C17.7949%2018.4668%2017.877%2018.3711%2017.877%2018.3437V14.8984C17.166%2015.2539%2016.332%2015.5547%2015.375%2015.8008C13.7891%2016.1836%2011.998%2016.375%2010.002%2016.375C8.00586%2016.375%206.21484%2016.1836%204.62891%2015.8008C3.67187%2015.5547%202.83789%2015.2539%202.12695%2014.8984V18.3437ZM2.12695%203.94726C2.12695%203.91992%202.12695%203.91992%202.12695%203.94726V3.94726ZM19.1895%2018.3437C19.1348%2019.2734%2018.2324%2020.0527%2016.4824%2020.6816C14.7598%2021.2832%2012.5996%2021.5977%2010.002%2021.625C7.4043%2021.5977%205.24414%2021.2832%203.52148%2020.6816C1.77148%2020.0527%200.86914%2019.2734%200.814452%2018.3437V3.90625C0.86914%202.97656%201.77148%202.19726%203.52148%201.56836C5.24414%200.966795%207.4043%200.652342%2010.002%200.624998C12.5996%200.652342%2014.7598%200.966795%2016.4824%201.56836C18.2324%202.19726%2019.1348%202.97656%2019.1895%203.90625V18.3437Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "db-req-text-wrap")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-604")}
+                    className={_utils.cx(_styles, "db-req-text-wrap")}
                     tag="div"
                   >
                     <_Builtin.Block
                       className={_utils.cx(_styles, "fw-semibold")}
                       tag="div"
                     >
-                      {
-                        "Search in all candidates applied to job that you posted"
-                      }
+                      {"Search in Aglint Db"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "color-grey-600")}
+                      tag="div"
+                    >
+                      {"Search across 400M+ candidates from aglint"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              {isSearchInAllVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "db--request")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-747")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "candidate-all-icon-wrap")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "relative")}
+                        tag="div"
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2220%22%20height%3D%2222%22%20viewBox%3D%220%200%2020%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M17.877%203.90625C17.877%203.8789%2017.7949%203.7832%2017.6309%203.61914C17.3301%203.37305%2016.8105%203.11328%2016.0723%202.83984C14.5137%202.26562%2012.4902%201.96484%2010.002%201.9375C7.51367%201.96484%205.49023%202.26562%203.93164%202.83984C3.19336%203.11328%202.67383%203.37305%202.37305%203.61914C2.20898%203.7832%202.12695%203.8789%202.12695%203.90625V8.08984C2.72851%208.52734%203.67187%208.91016%204.95703%209.23828C6.40625%209.62109%208.08789%209.8125%2010.002%209.8125C11.916%209.8125%2013.5977%209.62109%2015.0469%209.23828C16.332%208.91016%2017.2754%208.52734%2017.877%208.08984V3.90625ZM17.877%209.64844C17.166%2010.0039%2016.332%2010.3047%2015.375%2010.5508C13.7891%2010.9336%2011.998%2011.125%2010.002%2011.125C8.00586%2011.125%206.21484%2010.9199%204.62891%2010.5098C3.67187%2010.291%202.83789%2010.0039%202.12695%209.64844V13.3398C2.72851%2013.8047%203.67187%2014.1875%204.95703%2014.4883C6.40625%2014.8711%208.08789%2015.0625%2010.002%2015.0625C11.916%2015.0625%2013.5977%2014.8711%2015.0469%2014.4883C16.332%2014.1602%2017.2754%2013.7773%2017.877%2013.3398V9.64844ZM2.12695%2018.3437C2.12695%2018.3711%202.20898%2018.4668%202.37305%2018.6309C2.67383%2018.877%203.19336%2019.1367%203.93164%2019.4102C5.49023%2019.9844%207.51367%2020.2852%2010.002%2020.3125C12.4902%2020.2852%2014.5137%2019.9844%2016.0723%2019.4102C16.8105%2019.1367%2017.3301%2018.877%2017.6309%2018.6309C17.7949%2018.4668%2017.877%2018.3711%2017.877%2018.3437V14.8984C17.166%2015.2539%2016.332%2015.5547%2015.375%2015.8008C13.7891%2016.1836%2011.998%2016.375%2010.002%2016.375C8.00586%2016.375%206.21484%2016.1836%204.62891%2015.8008C3.67187%2015.5547%202.83789%2015.2539%202.12695%2014.8984V18.3437ZM2.12695%203.94726C2.12695%203.91992%202.12695%203.91992%202.12695%203.94726V3.94726ZM19.1895%2018.3437C19.1348%2019.2734%2018.2324%2020.0527%2016.4824%2020.6816C14.7598%2021.2832%2012.5996%2021.5977%2010.002%2021.625C7.4043%2021.5977%205.24414%2021.2832%203.52148%2020.6816C1.77148%2020.0527%200.86914%2019.2734%200.814452%2018.3437V3.90625C0.86914%202.97656%201.77148%202.19726%203.52148%201.56836C5.24414%200.966795%207.4043%200.652342%2010.002%200.624998C12.5996%200.652342%2014.7598%200.966795%2016.4824%201.56836C18.2324%202.19726%2019.1348%202.97656%2019.1895%203.90625V18.3437Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    {isViewAllCandidateVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "div-block-746",
+                          "cursor-pointer"
+                        )}
+                        tag="div"
+                        {...onClickViewAllCandidate}
+                      >
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-745")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.96195%204.84578C4.72637%204.84578%204.53286%204.9215%204.38142%205.07294C4.22998%205.22438%204.15426%205.41789%204.15426%205.65347V7.26885H15.462V5.65347C15.462%205.41789%2015.3862%205.22438%2015.2348%205.07294C15.0833%204.9215%2014.8898%204.84578%2014.6543%204.84578H4.96195ZM4.15426%208.07655V10.9035H9.40426V8.07655H4.15426ZM10.212%208.07655V10.9035H15.462V8.07655H10.212ZM9.40426%2011.7112H4.15426V13.7304C4.15426%2013.966%204.22998%2014.1595%204.38142%2014.3109C4.53286%2014.4624%204.72637%2014.5381%204.96195%2014.5381H9.40426V11.7112ZM10.212%2014.5381H14.6543C14.8898%2014.5381%2015.0833%2014.4624%2015.2348%2014.3109C15.3862%2014.1595%2015.462%2013.966%2015.462%2013.7304V11.7112H10.212V14.5381ZM3.34657%205.65347C3.36339%205.19914%203.52325%204.82054%203.82613%204.51765C4.12902%204.21477%204.50762%204.05491%204.96195%204.03809H14.6543C15.1086%204.05491%2015.4872%204.21477%2015.7901%204.51765C16.093%204.82054%2016.2528%205.19914%2016.2696%205.65347V13.7304C16.2528%2014.1847%2016.093%2014.5633%2015.7901%2014.8662C15.4872%2015.1691%2015.1086%2015.329%2014.6543%2015.3458H4.96195C4.50762%2015.329%204.12902%2015.1691%203.82613%2014.8662C3.52325%2014.5633%203.36339%2014.1847%203.34657%2013.7304V5.65347Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        </_Builtin.Block>
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "fw-semibold")}
+                          tag="div"
+                        >
+                          {"View All Candidates"}
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    ) : null}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "db-req-text-wrap")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-604")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "fw-semibold")}
+                        tag="div"
+                      >
+                        {
+                          "Search in all candidates applied to job that you posted"
+                        }
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "search-candidate-wrap")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-597")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "input-search-candidate")}
+                    tag="div"
+                  >
+                    {slotInputSearch}
+                  </_Builtin.Block>
+                  <_Builtin.Block tag="div">
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "candidate-search-btn")}
+                      tag="div"
+                      {...onClickSearch}
+                    >
+                      <_Builtin.Block tag="div">{"Search"}</_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "icons")}
+                        tag="div"
+                      >
+                        {slotLottieSearch}
+                      </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
+              {isSearchByJdVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "search-job-desc")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-375")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">
+                      <_Builtin.Span
+                        className={_utils.cx(_styles, "text-grey-400", "mr-4")}
+                      >
+                        {"OR"}
+                      </_Builtin.Span>
+                      {" Search candidates by uploading the job description"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "color-grey-600",
+                        "width-588"
+                      )}
+                      tag="div"
+                    >
+                      {
+                        "Discover potential candidates by simply uploading the job description. Effortlessly find the right matches for your requirements through this streamlined process."
+                      }
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  {isSearchJdVisible ? (
+                    <_Builtin.Block tag="div" {...onClickSearchJobDescription}>
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "text-blue-600",
+                          "text-underline",
+                          "cursor-pointer"
+                        )}
+                        tag="div"
+                      >
+                        {"Search with job description"}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+          ) : null}
+          {isEmpty ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "search-candidate-wrap")}
+              className={_utils.cx(_styles, "div-block-749")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-597")}
+                className={_utils.cx(_styles, "div-block-751")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "input-search-candidate")}
+                  className={_utils.cx(_styles, "div-block-750")}
                   tag="div"
                 >
-                  {slotInputSearch}
+                  {slotEmptyLottie}
                 </_Builtin.Block>
-                <_Builtin.Block tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-748")}
+                  tag="div"
+                >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "candidate-search-btn")}
+                    className={_utils.cx(_styles, "fw-semibold")}
                     tag="div"
-                    {...onClickSearch}
                   >
-                    <_Builtin.Block tag="div">{"Search"}</_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "icons")}
-                      tag="div"
-                    >
-                      {slotLottieSearch}
-                    </_Builtin.Block>
+                    {"Candidate list is empty"}
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-grey-600")}
+                    tag="div"
+                  >
+                    {
+                      "Candidates who applied to your job will be part of this search"
+                    }
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-            {isSearchByJdVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "search-job-desc")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-375")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Span
-                      className={_utils.cx(_styles, "text-grey-400", "mr-4")}
-                    >
-                      {"OR"}
-                    </_Builtin.Span>
-                    {" Search candidates by uploading the job description"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(
-                      _styles,
-                      "color-grey-600",
-                      "width-588"
-                    )}
-                    tag="div"
-                  >
-                    {
-                      "Discover potential candidates by simply uploading the job description. Effortlessly find the right matches for your requirements through this streamlined process."
-                    }
-                  </_Builtin.Block>
-                </_Builtin.Block>
-                {isSearchJdVisible ? (
-                  <_Builtin.Block tag="div" {...onClickSearchJobDescription}>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-blue-600",
-                        "text-underline",
-                        "cursor-pointer"
-                      )}
-                      tag="div"
-                    >
-                      {"Search with job description"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
+          ) : null}
           {isSavedListVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "cd-saved-list")}

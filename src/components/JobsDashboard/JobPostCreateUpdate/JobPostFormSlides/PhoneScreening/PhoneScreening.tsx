@@ -46,7 +46,7 @@ const ScreeningComp = () => {
     <>
       {!jobForm.formFields.isPhoneScreenEnabled && (
         <EnableAssessment
-          onClickEnableAssessment={{
+          onClickEnablePhoneScreening={{
             onClick: () => {
               handleUpdateFormFields({
                 path: 'isPhoneScreenEnabled',
@@ -54,6 +54,8 @@ const ScreeningComp = () => {
               });
             },
           }}
+          isPhoneScreeningEnable
+          isEnableAssessmentVisible={false}
         />
       )}
       {jobForm.formFields.isPhoneScreenEnabled && (

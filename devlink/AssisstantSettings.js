@@ -17,15 +17,7 @@ export function AssisstantSettings({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "cb-as-main")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-color-black"
-          )}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Assistant"}
         </_Builtin.Block>
         <_Builtin.Block
@@ -40,13 +32,11 @@ export function AssisstantSettings({
               className={_utils.cx(_styles, "cb-as-main-top-content")}
               tag="div"
             >
+              <_Builtin.Block tag="div">{"Assistant Name"}</_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
-                {"Assistant Name"}
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">
                 {
                   "Choose a name for your assistant. This will be displayed as the assistant's name, for example, 'Company's Bot'."
                 }
@@ -62,13 +52,13 @@ export function AssisstantSettings({
               className={_utils.cx(_styles, "cb-as-main-top-content")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
+              <_Builtin.Block tag="div">
                 {"Assistant Instructions"}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-grey-600")}
+                tag="div"
+              >
                 {
                   "These instructions will guide the behavior of your company's assistant."
                 }

@@ -71,14 +71,14 @@ const SocialComp = ({ setIsSaving }) => {
       socialName == 'facebook'
         ? validateFacebookUrl(recruiter.socials[socialName])
         : socialName == 'linkedin'
-          ? validateLinkedInUrl(recruiter.socials[socialName])
-          : socialName == 'youtube'
-            ? validateYouTubeUrl(recruiter.socials[socialName])
-            : socialName == 'twitter'
-              ? validateTwitterUrl(recruiter.socials[socialName])
-              : socialName == 'instagram'
-                ? validateInstagramUrl(recruiter.socials[socialName])
-                : true
+        ? validateLinkedInUrl(recruiter.socials[socialName])
+        : socialName == 'youtube'
+        ? validateYouTubeUrl(recruiter.socials[socialName])
+        : socialName == 'twitter'
+        ? validateTwitterUrl(recruiter.socials[socialName])
+        : socialName == 'instagram'
+        ? validateInstagramUrl(recruiter.socials[socialName])
+        : true
     ) {
       if (
         !custom ||
@@ -245,12 +245,20 @@ const SocialComp = ({ setIsSaving }) => {
               alignItems={'center'}
               spacing={2}
             >
-              <Image
-                src={`/images/logo/${socialName}.svg`}
-                height={20}
-                width={20}
-                alt=''
-              />
+              <Stack
+                style={{
+                  border: `1px solid ${palette.grey[200]}`,
+                  padding: '9px',
+                  borderRadius: '4px',
+                }}
+              >
+                <Image
+                  src={`/images/logo/${socialName}.svg`}
+                  height={20}
+                  width={20}
+                  alt=''
+                />
+              </Stack>
               <UITextField
                 labelSize='small'
                 fullWidth
