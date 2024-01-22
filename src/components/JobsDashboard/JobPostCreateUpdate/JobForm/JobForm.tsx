@@ -73,6 +73,7 @@ export type FormErrorParams = Record<
   {
     title: string;
     err: string[];
+    rightErr: string[];
   }
 > | null;
 
@@ -205,9 +206,17 @@ function JobForm() {
   const isJobMarketingEnabled = posthog.isFeatureEnabled(
     'isJobMarketingEnabled',
   );
+
+  const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+    'isPhoneScreeningEnabled',
+  );
+
   let allSlides = jobSlides.filter((slide) => {
     if (slide.path === 'workflow' || slide.path === 'screening') {
       return isAssesEnabled;
+    }
+    if (slide.path === 'phoneScreening') {
+      return isPhoneScreeningEnabled;
     }
     return true;
   });
@@ -237,7 +246,8 @@ function JobForm() {
           </>
         }
         isProceedVisible={
-          jobForm.formType === 'new' && currSlide !== 'templates'
+          (jobForm.formType === 'new' || router.query.ats === 'true') &&
+          currSlide !== 'templates'
         }
         isProceedDisable={false}
         textProceed={`Proceed to ${allSlides[slidePathToNum[String(currSlide)]]
@@ -458,9 +468,16 @@ const SideNavs = ({ changeSlide }) => {
   const currentAssTab = jobForm.currentAssmSlides;
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+    'isPhoneScreeningEnabled',
+  );
+
   let allSlides = jobSlides.filter((slide) => {
     if (slide.path === 'workflow' || slide.path === 'screening') {
       return isAssesEnabled;
+    }
+    if (slide.path === 'phoneScreening') {
+      return isPhoneScreeningEnabled;
     }
     return true;
   });
@@ -624,11 +641,24 @@ const SideSection = () => {
     });
   };
 
-  if (currSlide === 'phoneScreening') {
+  if (
+    currSlide === 'phoneScreening' &&
+    jobForm.formFields.isPhoneScreenEnabled
+  ) {
     return (
       <AssessmentSide
-        isDisableAssessmentVisible={false}
+        isDisableAssessmentVisible
+        textDisableButton={'Disable Phone Screening'}
         textPreview='Preview how candidates will be taking the screening questions'
+        textDescDisable='Disable this process if you don’t want to use Phone Screening for the candidate .'
+        onClickDisableAssessment={{
+          onClick: () => {
+            handleUpdateFormFields({
+              path: 'isPhoneScreenEnabled',
+              value: false,
+            });
+          },
+        }}
         onClickAssessmentPreview={{
           onClick: () => {
             window.open(
@@ -691,7 +721,7 @@ const SideSection = () => {
             <JobEditWarning
               slotWarningList={
                 <>
-                  {formWarnings.resumeScore.err.map((er, index) => (
+                  {formWarnings.resumeScore.rightErr.map((er, index) => (
                     <JobWarningList key={index} textWarning={er} />
                   ))}
                 </>

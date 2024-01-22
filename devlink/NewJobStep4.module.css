@@ -92,11 +92,11 @@
 .enable-assessment-wrap {
   display: flex;
   max-width: 624px;
-  padding: 20px 24px 20px 20px;
+  padding: 0px;
   flex-direction: column;
   align-items: flex-start;
 
-  border: 1px solid #e9ebed;
+  border: 1px none #e9ebed;
   border-radius: 10px;
 }
 

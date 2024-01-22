@@ -56,6 +56,7 @@ export type EmailDetails = {
 export type jsonItemType = {
   field: string;
   isMustHave: boolean;
+  id: string;
 };
 
 export type JdJsonType = {
@@ -143,6 +144,7 @@ export type FormJobType = {
   isDraftCleared: boolean;
   interviewInstrctions: string;
   assessment: boolean;
+  isPhoneScreenEnabled: boolean;
   isjdChanged: boolean;
   phoneScreening: {
     startMessage: string;
@@ -349,46 +351,58 @@ const initialContextValue: JobsContextType = {
     details: {
       err: [],
       title: '',
+      rightErr: [],
     },
     phoneScreening: {
       err: [],
       title: '',
+      rightErr: [],
     },
     screening: {
       err: [],
       title: '',
+      rightErr: [],
     },
+
     templates: {
       err: [],
       title: '',
+      rightErr: [],
     },
     workflow: {
       err: [],
       title: '',
+      rightErr: [],
     },
     resumeScore: {
       err: [],
       title: '',
+      rightErr: [],
     },
     assesqns: {
       err: [],
       title: '',
+      rightErr: [],
     },
     epilogue: {
       err: [],
       title: '',
+      rightErr: [],
     },
     instructions: {
       err: [],
       title: '',
+      rightErr: [],
     },
     settings: {
       err: [],
       title: '',
+      rightErr: [],
     },
     welcome: {
       err: [],
       title: '',
+      rightErr: [],
     },
   },
 };

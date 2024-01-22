@@ -163,6 +163,7 @@ export const getSeedJobFormData = (
           'Thank you for taking your time. We will get back to you shortly',
         questions: [],
       },
+      isPhoneScreenEnabled: false,
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -352,6 +353,9 @@ export const dbToClientjobPostForm = (
         (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
       isjdChanged:
         (jobPost.jd_changed as any) || seedData.formFields.isjdChanged,
+      isPhoneScreenEnabled:
+        (jobPost.phone_screen_enabled as any) ||
+        seedData.formFields.isPhoneScreenEnabled,
     },
     jobPostStatus: jobPostStatus as any,
   };

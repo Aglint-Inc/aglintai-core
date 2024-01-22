@@ -3,7 +3,12 @@ import Slider from '@mui/material/Slider';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import { NewJobStep4, WorkflowRadioItem } from '@/devlink';
+import {
+  JobEditWarning,
+  JobWarningList,
+  NewJobStep4,
+  WorkflowRadioItem,
+} from '@/devlink';
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
 
 import { useJobForm } from '../JobPostFormProvider';
@@ -12,14 +17,29 @@ function Assessment() {
 
   return (
     <NewJobStep4
-      isWorkflowContentVisible={jobForm.formFields.assessment}
-      isWorkflowInfoVisible={!jobForm.formFields.assessment}
-      isAssessmentScoringVisible={jobForm.formFields.assessment}
-      isEmailScheduleVisible={jobForm.formFields.assessment}
+      slotWarning={
+        <>
+          <JobEditWarning
+            slotWarningList={
+              <>
+                <JobWarningList
+                  textWarning={
+                    'Workflow is configurable only when assessment is enabled'
+                  }
+                />
+              </>
+            }
+          />
+        </>
+      }
       slotApplicationWorkflow={<WorkFlow flow='screening' />}
       slotInterviewWorkflow={<WorkFlow flow='interview' />}
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}
       slotDisqualifyEmail={<EmailSchedule flow='disqualifiedMail' />}
+      isAssessmentScoringVisible={jobForm.formFields.assessment}
+      isEmailScheduleVisible={jobForm.formFields.assessment}
+      isWarningVisible={!jobForm.formFields.assessment}
+      showDetails={jobForm.formFields.assessment}
     />
   );
 }

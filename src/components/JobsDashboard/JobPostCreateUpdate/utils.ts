@@ -105,6 +105,7 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     jd_json: jobForm.formFields.jdJson,
     phone_screening: jobForm.formFields.phoneScreening,
     jd_changed: jobForm.formFields.isjdChanged,
+    phone_screen_enabled: jobForm.formFields.isPhoneScreenEnabled,
   };
 
   return updateJobData;
@@ -117,47 +118,58 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     details: {
       err: [],
       title: '',
+      rightErr: [],
     },
     phoneScreening: {
       err: [],
       title: '',
+      rightErr: [],
     },
     screening: {
       err: [],
       title: '',
+      rightErr: [],
     },
 
     templates: {
       err: [],
       title: '',
+      rightErr: [],
     },
     workflow: {
       err: [],
       title: '',
+      rightErr: [],
     },
     resumeScore: {
       err: [],
       title: '',
+      rightErr: [],
     },
     assesqns: {
       err: [],
       title: '',
+      rightErr: [],
     },
     epilogue: {
       err: [],
       title: '',
+      rightErr: [],
     },
     instructions: {
       err: [],
       title: '',
+      rightErr: [],
     },
     settings: {
       err: [],
       title: '',
+      rightErr: [],
     },
     welcome: {
       err: [],
       title: '',
+      rightErr: [],
     },
   };
 
@@ -176,6 +188,11 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     !jobForm.jobDescription || jobForm.jobDescription.split(' ').length <= 10;
   if (isJdTooShort) {
     warnings.details.err.push('Job description incomplete');
+    warnings.resumeScore.rightErr.push('Job description incomplete');
+  }
+
+  if (jobForm.isjdChanged) {
+    warnings.resumeScore.err.push('Job description altered');
   }
 
   if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
@@ -243,7 +260,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     0,
   );
   if (totalResScore !== 100) {
-    warnings.resumeScore.err.push('Total sections score should be 100');
+    warnings.resumeScore.rightErr.push('Total sections score should be 100');
   }
   return warnings;
 };

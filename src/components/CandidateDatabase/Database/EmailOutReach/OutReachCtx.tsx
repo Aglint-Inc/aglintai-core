@@ -394,7 +394,7 @@ const OutReachCtxProvider = ({
         .from('outreached_emails')
         .insert({
           candidate_id: selcandidate.candidateId,
-          recruiter_id: recruiter.id,
+          recruiter_user_id: recruiterUser.user_id,
           email: email,
         })
         .select(),

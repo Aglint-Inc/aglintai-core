@@ -20,10 +20,11 @@ export function EmailTemplatesStart({
   slotBasicButton,
   slotWarning,
   isWarningVisible = true,
+  slotEmailDetails,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-508")} tag="div">
-      {isAddJob ? (
+      <_Builtin.Block tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-507")}
           tag="div"
@@ -43,27 +44,28 @@ export function EmailTemplatesStart({
             }
           </_Builtin.Block>
         </_Builtin.Block>
-      ) : null}
-      {isWarningVisible ? (
-        <_Builtin.Block className={_utils.cx(_styles, "mb-20")} tag="div">
-          {slotWarning}
+        {isWarningVisible ? (
+          <_Builtin.Block className={_utils.cx(_styles, "mb-20")} tag="div">
+            {slotWarning}
+          </_Builtin.Block>
+        ) : null}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "email-start-wrap")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91"
+          )}
+          tag="div"
+        >
+          {slotEmailTemplateCards ?? (
+            <>
+              <EmailTemplateCards />
+              <EmailTemplateCards />
+            </>
+          )}
         </_Builtin.Block>
-      ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "email-start-wrap")}
-        id={_utils.cx(
-          _styles,
-          "w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91"
-        )}
-        tag="div"
-      >
-        {slotEmailTemplateCards ?? (
-          <>
-            <EmailTemplateCards />
-            <EmailTemplateCards />
-          </>
-        )}
       </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotEmailDetails}</_Builtin.Block>
     </_Component>
   );
 }

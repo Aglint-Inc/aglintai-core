@@ -1,6 +1,7 @@
 import { Popover } from '@mui/material';
 import axios from 'axios';
 import { get } from 'lodash';
+import { nanoid } from 'nanoid';
 import { useEffect, useRef, useState } from 'react';
 
 import {
@@ -25,7 +26,7 @@ type ScoreParam = {
   paramKey: string;
   value: string;
   isMustHave: boolean;
-  index: number;
+  id: string;
 } | null;
 
 type newField = {
@@ -84,13 +85,13 @@ ${jobForm.formFields.jobDescription}
       const j: JdJsonType = {
         title: jobForm.formFields.jobTitle,
         level: json.jobLevel,
-        rolesResponsibilities: [
+        rolesResponsibilities: arrItemToReactArr([
           ...json.roles,
           ...json.responsibilities,
           ...json.requirements,
-        ],
-        skills: [...json.skills],
-        educations: [...json.educations],
+        ]),
+        skills: arrItemToReactArr([...json.skills]),
+        educations: arrItemToReactArr([...json.educations]),
       };
 
       handleUpdateFormFields({
@@ -137,12 +138,12 @@ ${jobForm.formFields.jobDescription}
     };
   }, [jobForm]);
 
-  const handleClickEdit = (paramKey: string, index: number, s, e) => {
+  const handleClickEdit = (paramKey: string, id: string, s, e) => {
     setEditParam({
       paramKey: paramKey,
       isMustHave: s.isMustHave,
       value: s.field,
-      index,
+      id,
     });
     setPopUpEl(e.currentTarget);
   };
@@ -192,7 +193,7 @@ ${jobForm.formFields.jobDescription}
                                     textDetails={s.field}
                                     onClickEditText={{
                                       onClick: (e) =>
-                                        handleClickEdit(p.paramKey, idx, s, e),
+                                        handleClickEdit(p.paramKey, s.id, s, e),
                                     }}
                                   />
                                 );
@@ -207,7 +208,7 @@ ${jobForm.formFields.jobDescription}
                                     textDetails={s.field}
                                     onClickEditText={{
                                       onClick: (e) =>
-                                        handleClickEdit(p.paramKey, idx, s, e),
+                                        handleClickEdit(p.paramKey, s.id, s, e),
                                     }}
                                   />
                                 );
@@ -281,6 +282,7 @@ ${jobForm.formFields.jobDescription}
                                               {
                                                 field: newField.value,
                                                 isMustHave: newField.isMustHave,
+                                                id: nanoid(),
                                               },
                                             ],
                                           });
@@ -344,120 +346,8 @@ ${jobForm.formFields.jobDescription}
                 })}
               </>
             }
-            // slotScoreWeight={
-            //   <ScoreWeightage
-            //     slotScoreWheel={
-            //       <>
-            //         <Stack
-            //           direction={'row'}
-            //           width={'60%'}
-            //           justifyContent={'center'}
-            //           alignItems={'center'}
-            //           gap={'40px'}
-            //         >
-            //           <ScoreWheel
-            //             id={'ScoreWheelSetting'}
-            //             parameter_weights={
-            //               jobForm.formFields.resumeScoreSettings
-            //             }
-            //           />
-            //         </Stack>
-            //       </>
-            //     }
-            //     slotScorePercent={
-            //       <>
-            //         <ScorePercentage
-            //           colorPropsBg={{
-            //             style: {
-            //               backgroundColor: '#30AABC',
-            //             },
-            //           }}
-            //           textTitle={'Experience'}
-            //           slotInputPercent={
-            //             <>
-            //               <UITextField
-            //                 type='number'
-            //                 width='50px'
-            //                 value={
-            //                   jobForm.formFields.resumeScoreSettings.experience
-            //                 }
-            //                 onChange={(e) => {
-            //                   onChangeScore(e, 'experience');
-            //                 }}
-            //               />
-            //             </>
-            //           }
-            //         />
-            //         <ScorePercentage
-            //           colorPropsBg={{
-            //             style: {
-            //               backgroundColor: '#886BD8',
-            //             },
-            //           }}
-            //           textTitle={'Skill'}
-            //           slotInputPercent={
-            //             <>
-            //               <UITextField
-            //                 type='number'
-            //                 width='50px'
-            //                 value={
-            //                   jobForm.formFields.resumeScoreSettings.skills
-            //                 }
-            //                 onChange={(e) => {
-            //                   onChangeScore(e, 'skills');
-            //                 }}
-            //               />
-            //             </>
-            //           }
-            //         />
-            //         <ScorePercentage
-            //           colorPropsBg={{
-            //             style: {
-            //               backgroundColor: '#5D7DF5',
-            //             },
-            //           }}
-            //           textTitle={'Education'}
-            //           slotInputPercent={
-            //             <>
-            //               <UITextField
-            //                 type='number'
-            //                 width='50px'
-            //                 value={
-            //                   jobForm.formFields.resumeScoreSettings.education
-            //                 }
-            //                 onChange={(e) => {
-            //                   onChangeScore(e, 'education');
-            //                 }}
-            //               />
-            //             </>
-            //           }
-            //         />
-            //       </>
-            //     }
-            //     onClickEqualize={{
-            //       onClick: () => {
-            //         handleUpdateFormFields({
-            //           path: `resumeScoreSettings`,
-            //           value: {
-            //             skills: 34,
-            //             experience: 33,
-            //             education: 33,
-            //           },
-            //         });
-            //       },
-            //     }}
-            //   />
-            // }
             slotButtonPrimaryRegular={<></>}
             isProceedDisable={false}
-            // onClickDone={{
-            //   onClick: () => {
-            //     handleUpdateFormFields({
-            //       path: 'isjdChanged',
-            //       value: false,
-            //     });
-            //   },
-            // }}
             onClickRegenerate={{
               onClick: handleGenerate,
             }}
@@ -469,8 +359,6 @@ ${jobForm.formFields.jobDescription}
                 });
               },
             }}
-
-            // slotBasicButton={<></>}
           />
 
           <Popover
@@ -509,7 +397,7 @@ ${jobForm.formFields.jobDescription}
                         jobForm.formFields.jdJson,
                         `${editParam.paramKey}`,
                         [],
-                      ).filter((_, idx) => idx !== editParam.index),
+                      ).filter((it) => it.id !== editParam.id),
                     });
                     setPopUpEl(null);
                   },
@@ -521,11 +409,18 @@ ${jobForm.formFields.jobDescription}
                       onClick={() => {
                         if (editParam.value.length === 0) return;
                         handleUpdateFormFields({
-                          path: `jdJson.${editParam.paramKey}[${editParam.index}]`,
-                          value: {
-                            field: editParam.value,
-                            isMustHave: editParam.isMustHave,
-                          },
+                          path: `jdJson.${editParam.paramKey}`,
+                          value: jobForm.formFields.jdJson[
+                            String(editParam.paramKey)
+                          ].map((item) => {
+                            if (item.id === editParam.id)
+                              return {
+                                ...editParam,
+                                field: editParam.value,
+                                isMustHave: editParam.isMustHave,
+                              };
+                            return item;
+                          }),
                         });
                         setPopUpEl(null);
                       }}
@@ -561,7 +456,7 @@ ${jobForm.formFields.jobDescription}
                       onClick: () => {
                         setEditParam((prev) => ({
                           ...prev,
-                          isMustHave: !editParam?.isMustHave,
+                          isMustHave: !editParam.isMustHave,
                         }));
                       },
                     }}
@@ -610,4 +505,8 @@ export const getBalancedScore = (
   }
 
   return scoreSetting;
+};
+
+const arrItemToReactArr = (arr: any[]) => {
+  return arr.map((a) => ({ ...a, id: nanoid() }));
 };

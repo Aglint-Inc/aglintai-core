@@ -7,16 +7,16 @@ import Image from 'next/image';
 import posthog from 'posthog-js';
 import React, { useState } from 'react';
 
-import { palette } from '@/src/context/Theme/Theme';
+// import { palette } from '@/src/context/Theme/Theme';
 
 const MenuBtn = styled(IconButton)({
   borderRadius: '4px',
   padding: '1px',
   '&.is-active': {
-    backgroundColor: palette.grey['200'],
+    // backgroundColor: palette.grey['200'],
   },
   '&:hover': {
-    backgroundColor: palette.grey['200'],
+    // backgroundColor: palette.grey['200'],
   },
 });
 
@@ -44,6 +44,7 @@ function MenuBtns() {
       direction={'row'}
       justifyContent={'space-between'}
       borderBottom={'1px solid #D8DCDE'}
+      pr={'10px'}
     >
       <TipTapMenus />
       <TipTapUndoRedo />
@@ -253,11 +254,18 @@ const TipTapUndoRedo = () => {
           onClick={() => {
             editor?.chain().focus().undo().run();
           }}
+          sx={{
+            cursor: 'pointer',
+          }}
         >
           <Image
             unoptimized
             alt='undo'
-            src={'/images/svg/undo.svg'}
+            src={
+              editor?.can().undo()
+                ? '/images/svg/undo-active.svg'
+                : '/images/svg/undo-disabled.svg'
+            }
             width={22}
             height={22}
             priority
@@ -272,11 +280,18 @@ const TipTapUndoRedo = () => {
           onClick={() => {
             editor?.chain().focus().redo().run();
           }}
+          sx={{
+            cursor: 'pointer',
+          }}
         >
           <Image
             unoptimized
             alt='redo'
-            src={'/images/svg/redo.svg'}
+            src={
+              editor?.can().redo()
+                ? '/images/svg/redo-active.svg'
+                : '/images/svg/redo-disabled.svg'
+            }
             width={22}
             height={22}
             priority

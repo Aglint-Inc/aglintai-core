@@ -1,5 +1,6 @@
 .div-block-508 {
-  max-width: 850px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .div-block-507 {
@@ -11,7 +12,7 @@
 }
 
 .div-block-507.remove-bottom {
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .fw-semibold {

@@ -8,4 +8,7 @@ declare function AssessmentSide(props: {
   isDisableAssessmentVisible?: Types.Visibility.VisibilityConditions;
   textPreview?: React.ReactNode;
   textPreviewButton?: React.ReactNode;
+  isPreviewFormVisible?: Types.Visibility.VisibilityConditions;
+  textDescDisable?: React.ReactNode;
+  textDisableButton?: React.ReactNode;
 }): React.JSX.Element;
