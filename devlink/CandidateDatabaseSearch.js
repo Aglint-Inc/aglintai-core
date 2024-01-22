@@ -73,7 +73,6 @@ export function CandidateDatabaseSearch({
                 <_Builtin.Block
                   className={_utils.cx(_styles, "db--request")}
                   tag="div"
-                  {...onClickDbRequest}
                 >
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-747")}

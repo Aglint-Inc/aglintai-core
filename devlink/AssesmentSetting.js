@@ -23,10 +23,7 @@ export function AssesmentSetting({
         className={_utils.cx(_styles, "ai-assessment-setting-wrap")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold", "mb-15")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Avatar settings"}
         </_Builtin.Block>
         <_Builtin.Block
