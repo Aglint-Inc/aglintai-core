@@ -25,4 +25,9 @@ declare function CandidateDatabaseSearch(props: {
   onClickCreateNewList?: Types.Devlink.RuntimeProps;
   isSavedListEmpty?: Types.Visibility.VisibilityConditions;
   isInputVisible?: Types.Visibility.VisibilityConditions;
+  isViewAllCandidateVisible?: Types.Visibility.VisibilityConditions;
+  onClickViewAllCandidate?: Types.Devlink.RuntimeProps;
+  isSearchDbVisible?: Types.Visibility.VisibilityConditions;
+  isEmpty?: Types.Visibility.VisibilityConditions;
+  slotEmptyLottie?: Types.Devlink.Slot;
 }): React.JSX.Element;

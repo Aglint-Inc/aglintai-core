@@ -188,6 +188,7 @@ function CandidateSearchHistory() {
   return (
     <>
       <CandidateDatabaseSearch
+        isViewAllCandidateVisible={true}
         isSearchByJdVisible={currentTab === 'my Candidates'}
         isSearchInAglintVisible={currentTab === 'aglint candidates'}
         isSearchInAllVisible={currentTab === 'my Candidates'}
@@ -311,6 +312,11 @@ function CandidateSearchHistory() {
         onClickSearchJobDescription={{
           onClick: () => {
             setIsJdPopUPopOpen(true);
+          },
+        }}
+        onClickViewAllCandidate={{
+          onClick: () => {
+            router.push('/candidates');
           },
         }}
         onClickSearch={{
