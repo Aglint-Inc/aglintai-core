@@ -9,7 +9,7 @@ import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import JobsList from './JobsList';
-import { searchJobs } from './utils';
+import { searchJobs, sortJobs } from './utils';
 import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
@@ -43,9 +43,11 @@ const DashboardComp = () => {
     }
   }, [recruiter, router, jobsData]);
 
+
+
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
-      setFilteredJobs(jobsData.jobs);
+      setFilteredJobs(sortJobs(jobsData.jobs));
     } else if (router.query.status == 'published') {
       const filter = jobsData.jobs.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
@@ -118,10 +120,10 @@ const DashboardComp = () => {
                   router.query.status == 'published'
                     ? 'Published Jobs'
                     : router.query.status == 'draft'
-                    ? 'Draft Jobs'
-                    : router.query.status == 'closed'
-                    ? 'Closed Jobs'
-                    : 'All Jobs'
+                      ? 'Draft Jobs'
+                      : router.query.status == 'closed'
+                        ? 'Closed Jobs'
+                        : 'All Jobs'
                 }
               />
             </Stack>

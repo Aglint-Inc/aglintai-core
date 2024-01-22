@@ -86,8 +86,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       job.status == 'draft'
                         ? StatusColor['inactive']
                         : job.status == 'published'
-                        ? StatusColor['active']
-                        : StatusColor['closed'],
+                          ? StatusColor['active']
+                          : StatusColor['closed'],
                   },
                 }}
                 textJobsStatus={job.status}
@@ -97,11 +97,11 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       job.status == 'draft'
                         ? '/images/dashboard/inactive.svg'
                         : job.status == 'published'
-                        ? '/images/dashboard/active.svg'
-                        : '/images/dashboard/closed.svg'
+                          ? '/images/dashboard/active.svg'
+                          : '/images/dashboard/closed.svg'
                     }
-                    width={24}
-                    height={24}
+                    width={20}
+                    height={20}
                     alt=''
                   />
                 }
