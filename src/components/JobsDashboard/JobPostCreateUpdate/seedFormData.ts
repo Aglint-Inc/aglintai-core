@@ -348,7 +348,9 @@ export const dbToClientjobPostForm = (
       interviewSetting:
         jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
       assessment: jobPost.assessment || false,
-      jdJson: (jobPost.jd_json as any) || seedData.formFields.jdJson,
+      jdJson: jdJsonToItems(
+        (jobPost.jd_json as any) || seedData.formFields.jdJson,
+      ),
       phoneScreening:
         (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
       isjdChanged:
@@ -397,4 +399,15 @@ let emailTemps = {
     subject: 'We received your application for a position at [companyName]',
     fromName: 'aglint',
   },
+};
+
+const jdJsonToItems = (jdJson: JobFormState['formFields']['jdJson']) => {
+  jdJson.educations = jdJson.educations.map((e) => ({ ...e, id: nanoid() }));
+  jdJson.skills = jdJson.skills.map((e) => ({ ...e, id: nanoid() }));
+  jdJson.rolesResponsibilities = jdJson.rolesResponsibilities.map((e) => ({
+    ...e,
+    id: nanoid(),
+  }));
+
+  return jdJson;
 };
