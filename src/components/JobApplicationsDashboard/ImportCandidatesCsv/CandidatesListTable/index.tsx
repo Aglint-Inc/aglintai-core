@@ -68,7 +68,7 @@ function TableHeader() {
 
 const headerObject = [
   { heading: 'Candidate', icon: <IconCandidate /> },
-  { heading: 'Eail', icon: <IconMail /> },
+  { heading: 'Email', icon: <IconMail /> },
   { heading: 'Phone', icon: <IconPhone /> },
 ];
 
