@@ -196,8 +196,16 @@ function AppoloSearch() {
 
   const handleApplyFilters = async () => {
     try {
-      setIsFilterLoading(true);
+      if (
+        filters.jobTitles.length === 0 &&
+        filters.locations.length === 0 &&
+        filters.companies.length === 0
+      ) {
+        toast.warning('Please add at least one filter');
+        return;
+      }
 
+      setIsFilterLoading(true);
       let org_ids = [];
 
       if (filters.companies.length > 0) {
