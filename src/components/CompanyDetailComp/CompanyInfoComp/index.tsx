@@ -27,6 +27,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
+  const [isVideoAssessment, setIsVideoAssessment] = useState(false);
+
   useEffect(() => {
     setLogo(recruiter?.logo);
   }, [recruiter]);
@@ -64,7 +66,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   // useEffect(() => {
   //   if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
   // }, [logo]);
-
+  useEffect(() => {
+    if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
+  }, [recruiter]);
   return (
     <Stack
       sx={{ overflowY: 'scroll', height: 'calc(100vh - 60px)', pb: '20px' }}
@@ -323,7 +327,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           </>
         )}
         {router.query?.tab === 'assessment' && (
-          <AssessmentSettings setIsSaving={setIsSaving} />
+          <AssessmentSettings
+            isVideoAssessment={isVideoAssessment}
+            setIsVideoAssessment={setIsVideoAssessment}
+            setIsSaving={setIsSaving}
+          />
         )}
         {router.query?.tab === 'job-assistant' && (
           <Assistant setIsSaving={setIsSaving} />

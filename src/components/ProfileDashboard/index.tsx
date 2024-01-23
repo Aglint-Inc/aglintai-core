@@ -305,7 +305,7 @@ const ProfileDashboard = () => {
                   router.push(router);
                 },
               }}
-              textLink='Your Detail'
+              textLink='Your Details'
             />
             <NavSublink
               isActive={currTab === 'Change Email'}
