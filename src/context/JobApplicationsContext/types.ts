@@ -16,12 +16,21 @@ import useProviderJobApplicationActions from './hooks';
 
 export enum JobApplicationSections {
   NEW = 'new',
-  ASSESSMENT = 'assessment',
   SCREENING = 'screening',
+  ASSESSMENT = 'assessment',
   QUALIFIED = 'qualified',
   DISQUALIFIED = 'disqualified',
 }
 
+export type CardStateManager = {
+  [key in JobApplicationSections]?: {
+    checkList: {
+      list: Set<string>;
+      disabled: boolean;
+    };
+    disabledList: Set<string>;
+  };
+};
 export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 
 export type JobApplication = Applications & {

@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 import {
   JobApplication,
@@ -86,8 +88,15 @@ export enum ApiLogState {
   PROCESSING = 'processing',
 }
 
-export const intactConditionFilter = (application: JobApplication) => {
-  switch (application.processing_status) {
+export type ApplicantionProcessState =
+  | 'unavailable'
+  | 'fetching'
+  | 'processing'
+  | 'unparsable'
+  | 'processed';
+
+export const processingFilter = (application: JobApplication) => {
+  switch (application?.processing_status) {
     case 'failed':
       return ApiLogState.FAILED;
     case 'success':
@@ -95,6 +104,37 @@ export const intactConditionFilter = (application: JobApplication) => {
     default:
       return ApiLogState.PROCESSING;
   }
+};
+
+export const getApplicationProcessState = (
+  application: JobApplication,
+): ApplicantionProcessState => {
+  if (
+    application?.candidate_files?.resume_json ||
+    application?.candidate_files?.file_url
+  ) {
+    if (!application?.is_resume_fetching) {
+      if (processingFilter(application) !== ApiLogState.PROCESSING) {
+        if (application?.score_json) return 'processed';
+        return 'unparsable';
+      }
+      return 'processing';
+    }
+    return 'fetching';
+  }
+  return 'unavailable';
+};
+
+export const candidateEmailValidity = (application: JobApplication) => {
+  const value = application?.candidates?.email;
+  return (
+    value &&
+    value !== application.candidate_id &&
+    value.trim() !== '' &&
+    /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+      value.trim(),
+    )
+  );
 };
 
 export function getInterviewScore(feedback) {
@@ -162,25 +202,21 @@ export const getUpdateParameterName = (str: string) => {
   }
 };
 
-export const applicationValidity = (application: JobApplication) => {
-  return (
-    intactConditionFilter(application) !== ApiLogState.PROCESSING &&
-    application.candidate_files.resume_json &&
-    application.score_json
-  );
-};
-
-export const getScreeningStatus = (application: JobApplication) => {
-  const emails = (application?.status_emails_sent ?? null) as {
+export const getScreeningStatus = (
+  status_emails_sent: JobApplication['status_emails_sent'],
+  phone_screening: JobApplication['phone_screening'],
+) => {
+  const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
     [id in keyof EmailTemplateType]: boolean;
   };
 
-  const phoneScreening = ((application?.phone_screening as any)?.response ??
+  const phoneScreening = ((phone_screening as any)?.response ??
     null) as PhoneScreeningResponseType[];
 
-  const isNotInvited = (emails?.phone_screen ?? false) === false;
-  const isPending = (emails?.phone_screen ?? false) === true && !phoneScreening;
+  const isNotInvited = (emails?.phone_screening ?? false) === false;
+  const isPending =
+    (emails?.phone_screening ?? false) === true && !phoneScreening;
   const isSubmitted = !isNotInvited && !isPending;
 
   const screeningStatus = isNotInvited
@@ -198,6 +234,72 @@ export const getScreeningStatus = (application: JobApplication) => {
     isSubmitted,
     screeningStatus,
   };
+};
+
+export const getAssessmentStatus = (
+  status_emails_sent: JobApplication['status_emails_sent'],
+  feedback: JobApplication['assessment_results']['feedback'],
+) => {
+  const emails = (status_emails_sent ?? null) as {
+    // eslint-disable-next-line no-unused-vars
+    [id in keyof EmailTemplateType]: boolean;
+  };
+
+  const safeFeedback =
+    feedback && (feedback as any).length > 0 ? feedback : null;
+
+  const isNotInvited = (emails?.interview ?? false) === false;
+  const isPending = (emails?.interview ?? false) === true && !safeFeedback;
+  const isSubmitted = !isNotInvited && !isPending;
+
+  const assessmentStatus = isNotInvited
+    ? 'Not Invited'
+    : isPending
+      ? 'Invited'
+      : isSubmitted
+        ? 'Submitted'
+        : '';
+
+  return {
+    feedback: safeFeedback,
+    isNotInvited,
+    isPending,
+    isSubmitted,
+    assessmentStatus,
+  };
+};
+
+export const getDisqualificationStatus = (
+  status_emails_sent: JobApplication['status_emails_sent'],
+) => {
+  const emails = (status_emails_sent ?? null) as {
+    // eslint-disable-next-line no-unused-vars
+    [id in keyof EmailTemplateType]: boolean;
+  };
+
+  const isNotInvited = (emails?.rejection ?? false) === false;
+  const isPending = false;
+  const isSubmitted = false;
+
+  return {
+    isNotInvited,
+    isPending,
+    isSubmitted,
+  };
+};
+
+export const getAllApplicationStatus = (
+  status_emails_sent: JobApplication['status_emails_sent'],
+  phone_screening: JobApplication['phone_screening'],
+  feedback: JobApplication['assessment_results']['feedback'],
+) => {
+  const screeningStatus = getScreeningStatus(
+    status_emails_sent,
+    phone_screening,
+  );
+  const assessmentStatus = getAssessmentStatus(status_emails_sent, feedback);
+  const disqualificationStatus = getDisqualificationStatus(status_emails_sent);
+  return { screeningStatus, assessmentStatus, disqualificationStatus };
 };
 
 export const getReasonings = (reasoning: ScoreJson['reasoning']) => {

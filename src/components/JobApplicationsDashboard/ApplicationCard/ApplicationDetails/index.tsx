@@ -2,7 +2,7 @@
 import { Dialog, Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
 import posthog from 'posthog-js';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -59,18 +59,17 @@ import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
-import { useKeyPress } from '../../hooks';
 import {
-  ApiLogState,
-  applicationValidity,
+  candidateEmailValidity,
   capitalize,
   formatTimeStamp,
+  getApplicationProcessState,
+  getAssessmentStatus,
   getCandidateName,
   getInterviewScore,
   getReasonings,
   getScreeningStatus,
   handleOngoingWarning,
-  intactConditionFilter,
 } from '../../utils';
 
 const ApplicationDetails = ({
@@ -143,7 +142,6 @@ const ApplicationDetails = ({
       {application ? (
         !openFeedback ? (
           <NewJobApplicationSideDrawer
-            open={open}
             application={application}
             onClose={() => handleClose()}
             setOpenFeedback={setOpenFeedback}
@@ -274,7 +272,6 @@ export const DetailedInterviewFeedbackParams = ({
 };
 
 const NewJobApplicationSideDrawer = ({
-  open,
   application,
   onClose,
   setOpenFeedback,
@@ -282,7 +279,6 @@ const NewJobApplicationSideDrawer = ({
   handleSelectNextApplication,
   handleSelectPrevApplication,
 }: {
-  open: boolean;
   application: JobApplication;
   onClose: () => void;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
@@ -296,11 +292,7 @@ const NewJobApplicationSideDrawer = ({
       `${application.candidates.last_name || ''}`,
   );
   const creationDate = formatTimeStamp(application.applied_at);
-  const { pressed: shift } = useKeyPress('Shift');
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
-  const leftShift = shift && left;
-  const rightShift = shift && right;
+
   const handleProfileRedirect = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`,
@@ -315,15 +307,6 @@ const NewJobApplicationSideDrawer = ({
       toast.success(`${tag} copied to clipboard`);
     });
   };
-  useEffect(() => {
-    if (open) {
-      if (leftShift) {
-        handleSelectPrevApplication();
-      } else if (rightShift) {
-        handleSelectNextApplication();
-      }
-    }
-  }, [leftShift, rightShift]);
 
   return (
     <CandidateSideDrawer
@@ -360,10 +343,7 @@ const NewJobApplicationSideDrawer = ({
       onClickLinkedin={{
         onClick: () => handleLinkedInRedirect(),
       }}
-      isMailIconVisible={
-        application.candidates.email &&
-        application.candidates.email.trim() !== ''
-      }
+      isMailIconVisible={candidateEmailValidity(application)}
       isPhoneIconVisible={
         application.candidates.phone &&
         application.candidates.phone.trim() !== ''
@@ -388,79 +368,40 @@ const NewCandidateDetails = ({
   application: JobApplication;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const {
-    cardStates: {
-      disabledList,
-      checkList: { list, disabled },
-    },
-  } = useJobApplications();
-  const disable =
-    disabledList.has(application.id) || (disabled && list.has(application.id));
   const resume = application.candidate_files?.resume_json as any;
-  const styles = disable
-    ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
-    : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
+  const validity = getApplicationProcessState(application);
+  const validApplication = validity === 'processed';
   return (
     <CandidateDetails
       slotInterviewScore={
         <>
           <NewResumeSection application={application} />
-          <Stack style={styles}>
-            <PhoneScreeningSection application={application} />
-          </Stack>
-          <>
-            {application.assessment_results?.feedback ? (
-              <NewInterviewScoreDetails
-                application={application}
-                setOpenFeedback={setOpenFeedback}
-              />
-            ) : application.status === 'assessment' ? (
-              <NewInterviewStatus application={application} />
-            ) : (
-              <></>
-            )}
-          </>
-          {applicationValidity(application) ? (
+          <AssessmentSection
+            application={application}
+            setOpenFeedback={setOpenFeedback}
+          />
+          <PhoneScreening application={application} />
+          {validApplication && (
             <>
-              {resume.positions &&
-              resume.positions instanceof Array &&
-              resume.positions.length !== 0 ? (
-                <NewExperienceDetails
-                  positions={resume.positions}
-                  relevance={
-                    (application.score_json as ScoreJson)?.relevance?.positions
-                  }
-                />
-              ) : (
-                <></>
-              )}
-              {resume.schools &&
-              resume.schools instanceof Array &&
-              resume.schools.length !== 0 ? (
-                <NewEducationDetails
-                  schools={resume.schools}
-                  relevance={
-                    (application.score_json as ScoreJson)?.relevance?.schools
-                  }
-                />
-              ) : (
-                <></>
-              )}
-              {resume.skills &&
-              resume.skills instanceof Array &&
-              resume.skills.length !== 0 ? (
-                <NewSkillDetails
-                  skills={resume.skills}
-                  relevance={
-                    (application.score_json as ScoreJson)?.relevance?.skills
-                  }
-                />
-              ) : (
-                <></>
-              )}
+              <NewExperienceDetails
+                positions={resume.positions}
+                relevance={
+                  (application.score_json as ScoreJson)?.relevance?.positions
+                }
+              />
+              <NewEducationDetails
+                schools={resume.schools}
+                relevance={
+                  (application.score_json as ScoreJson)?.relevance?.schools
+                }
+              />
+              <NewSkillDetails
+                skills={resume.skills}
+                relevance={
+                  (application.score_json as ScoreJson)?.relevance?.skills
+                }
+              />
             </>
-          ) : (
-            <></>
           )}
         </>
       }
@@ -468,36 +409,88 @@ const NewCandidateDetails = ({
   );
 };
 
+const AssessmentSection: React.FC<{
+  application: JobApplication;
+  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ application, setOpenFeedback }) => {
+  const { section } = useJobApplications();
+  const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
+    application.status_emails_sent,
+    application.assessment_results?.feedback ?? null,
+  );
+  if (isNotInvited && section === JobApplicationSections.ASSESSMENT)
+    return <NewInterviewStatus application={application} pending={false} />;
+  if (isPending && section === JobApplicationSections.ASSESSMENT)
+    return <NewInterviewStatus application={application} pending={true} />;
+  if (isSubmitted)
+    return (
+      <NewInterviewScoreDetails
+        application={application}
+        setOpenFeedback={setOpenFeedback}
+      />
+    );
+};
+
 const NewInterviewStatus = ({
   application,
+  pending,
 }: {
   application: JobApplication;
+  pending: boolean;
 }) => {
-  const [loading, setLoading] = useState(false);
-  const invited =
-    application.status_emails_sent[JobApplicationSections.ASSESSMENT] ?? false;
+  const {
+    section,
+    handleJobApplicationSectionUpdate,
+    setCardStates,
+    cardStates: {
+      checkList: { disabled, list },
+      disabledList,
+    },
+  } = useJobApplications();
   const status = {
-    bgColor: invited ? '#CEE2F2' : '#FFF7ED',
-    text: invited ? 'Invited' : 'Pending Invite',
-    color: invited ? '#0F3554' : '#703815',
-    description: invited
+    bgColor: pending ? '#CEE2F2' : '#FFF7ED',
+    text: pending ? 'Invited' : 'Pending Invite',
+    color: pending ? '#0F3554' : '#703815',
+    description: pending
       ? 'Candidate has been invited to take the interview.'
       : 'Candidate has not been invited to take the interview.',
-    btnText: invited ? 'Resend link' : 'Invite now',
+    btnText: pending ? 'Resend link' : 'Invite now',
   };
-  const handleSendLink = async () => {
-    setLoading(true);
-    const confirmation = true;
-    if (confirmation) toast.success('Mail sent successfully');
-    else toast.error('Mail not sent');
-    setLoading(false);
+  const disable =
+    disabledList.has(application.id) || (disabled && list.has(application.id));
+  const handleInvite = async () => {
+    if (!disable) {
+      const purpose = pending ? 'interview_resend' : 'interview';
+      setCardStates((prev) => ({
+        ...prev,
+        disabledList: new Set([...prev.disabledList, application.id]),
+      }));
+      await handleJobApplicationSectionUpdate(
+        {
+          source: section,
+          destination: null,
+        },
+        [purpose],
+        new Set([application.id]),
+      );
+      setCardStates((prev) => {
+        return {
+          ...prev,
+          disabledList: new Set(
+            [...prev.disabledList].filter((e) => e === application.id),
+          ),
+        };
+      });
+    } else {
+      handleOngoingWarning();
+    }
   };
   return (
     <Stack
       style={{
-        opacity: loading ? 0.4 : 1,
+        opacity: disable ? 0.4 : 1,
         transition: '0.5s',
-        pointerEvents: loading ? 'none' : 'auto',
+        pointerEvents: disable ? 'none' : 'auto',
       }}
     >
       <InterviewResultStatus
@@ -519,7 +512,7 @@ const NewInterviewStatus = ({
         slotResendButton={
           <ButtonPrimaryOutlinedRegular
             buttonText={status.btnText}
-            buttonProps={{ onClick: async () => await handleSendLink() }}
+            buttonProps={{ onClick: async () => await handleInvite() }}
           />
         }
       />
@@ -640,41 +633,58 @@ const NewResumeSection = ({ application }: { application: JobApplication }) => {
           <ResumePreviewer url={application.candidate_files?.file_url} />
         </Stack>
       </Dialog>
-      {application.score_json || application.candidate_files?.file_url ? (
-        intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-          application.score_json ? (
-            <NewResumeScoreDetails
-              application={application}
-              job={job}
-              feedback={false}
-              setOpenResume={setOpenResume}
-            />
-          ) : (
-            <UnableFetchResume
-              propsLink={{ href: application.candidate_files.file_url }}
-              onClickViewResume={{
-                onClick: () => {
-                  setOpenResume(true);
-                },
-              }}
-              onClickDownloadResume={{
-                onClick: async () => await handleDownload(),
-              }}
-            />
-          )
-        ) : (
-          <ResumeErrorBlock
-            slotLottie={<ResumeWait />}
-            onclickView={{ onClick: () => setOpenResume(true) }}
-          />
-        )
-      ) : application.is_resume_fetching ? (
-        <ResumeErrorBlock2 slotLottie={<ResumeWait />} />
-      ) : (
-        <ResAbsentError />
-      )}
+      <ResumeBlock
+        application={application}
+        setOpenResume={setOpenResume}
+        handleDownload={handleDownload}
+        job={job}
+      />
     </>
   );
+};
+
+const ResumeBlock: React.FC<{
+  application: JobApplication;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+  handleDownload: () => Promise<void>;
+  job: JobTypeDashboard;
+}> = ({ application, setOpenResume, handleDownload, job }) => {
+  switch (getApplicationProcessState(application)) {
+    case 'unavailable':
+      return <ResAbsentError />;
+    case 'fetching':
+      return <ResumeErrorBlock2 slotLottie={<ResumeWait />} />;
+    case 'processing':
+      return (
+        <ResumeErrorBlock
+          slotLottie={<ResumeWait />}
+          onclickView={{ onClick: () => setOpenResume(true) }}
+        />
+      );
+    case 'unparsable':
+      return (
+        <UnableFetchResume
+          propsLink={{ href: application.candidate_files.file_url }}
+          onClickViewResume={{
+            onClick: () => {
+              setOpenResume(true);
+            },
+          }}
+          onClickDownloadResume={{
+            onClick: async () => await handleDownload(),
+          }}
+        />
+      );
+    case 'processed':
+      return (
+        <NewResumeScoreDetails
+          application={application}
+          job={job}
+          feedback={false}
+          setOpenResume={setOpenResume}
+        />
+      );
+  }
 };
 
 export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
@@ -789,29 +799,50 @@ export const ResumeFeedbackParams = ({
   );
 };
 
-const PhoneScreeningSection = ({
+const PhoneScreening: React.FC<{ application: JobApplication }> = ({
   application,
-}: {
-  application: JobApplication;
 }) => {
   const {
     section,
-    handleJobApplicationSectionUpdate,
-    setCardStates,
     cardStates: {
       disabledList,
-      checkList: { disabled, list },
+      checkList: { list, disabled },
     },
   } = useJobApplications();
 
-  const showComponent = section !== JobApplicationSections.NEW;
+  const { isSubmitted } = getScreeningStatus(
+    application.status_emails_sent,
+    application.phone_screening,
+  );
+  const showComponent =
+    (section === JobApplicationSections.SCREENING || isSubmitted) &&
+    candidateEmailValidity(application);
   if (!showComponent) return <></>;
-
   const disable =
     disabledList.has(application.id) || (disabled && list.has(application.id));
+  const styles = disable
+    ? { opacity: 0.5, pointerEvent: 'none', transition: '0.5s' }
+    : { opacity: 1, pointerEvent: 'auto', transition: '0.5s' };
+  return (
+    <Stack style={styles}>
+      <PhoneScreeningSection application={application} disable={disable} />
+    </Stack>
+  );
+};
 
-  const handleInvite = async () => {
+const PhoneScreeningSection = ({
+  application,
+  disable,
+}: {
+  application: JobApplication;
+  disable: boolean;
+}) => {
+  const { section, handleJobApplicationSectionUpdate, setCardStates } =
+    useJobApplications();
+
+  const handleInvite = async (resend: boolean = false) => {
     if (!disable) {
+      const purpose = resend ? 'phone_screening_resend' : 'phone_screening';
       setCardStates((prev) => ({
         ...prev,
         disabledList: new Set([...prev.disabledList, application.id]),
@@ -821,8 +852,8 @@ const PhoneScreeningSection = ({
           source: section,
           destination: null,
         },
-        'phone_screen',
-        new Set(application.id),
+        [purpose],
+        new Set([application.id]),
       );
       setCardStates((prev) => {
         return {
@@ -837,8 +868,10 @@ const PhoneScreeningSection = ({
     }
   };
 
-  const { isNotInvited, isPending, phoneScreening } =
-    getScreeningStatus(application);
+  const { isNotInvited, isPending, phoneScreening } = getScreeningStatus(
+    application.status_emails_sent,
+    application.phone_screening,
+  );
 
   if (isNotInvited)
     return (
@@ -934,9 +967,8 @@ const NewEducationDetails = ({
   schools;
   relevance: ScoreJson['relevance']['schools'];
 }) => {
-  const educationList =
-    Array.isArray(schools) &&
-    schools
+  if (schools && schools instanceof Array && schools.length !== 0) {
+    const educationList = schools
       .filter((e) => e.institution !== null && e.institution !== '')
       .map((e, i) => {
         const startDate = timeFormat(e.start);
@@ -962,7 +994,9 @@ const NewEducationDetails = ({
           />
         );
       });
-  return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
+    return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
+  }
+  return <></>;
 };
 
 const NewExperienceDetails = ({
@@ -972,32 +1006,35 @@ const NewExperienceDetails = ({
   positions;
   relevance: ScoreJson['relevance']['positions'];
 }) => {
-  const workList = positions.reduce((acc, w, i) => {
-    const startDate = timeFormat(w.start);
-    const endDate = timeFormat(w.end);
-    if (w.title) {
-      acc.push(
-        <CandidateExperienceCard
-          key={i}
-          slotLogo={
-            <CompanyLogo
-              companyName={w.org ? w.org.trim().toLowerCase() : null}
-            />
-          }
-          textRole={w.title}
-          textCompany={w.org}
-          textDate={timeRange(startDate, endDate)}
-          isBadgeVisible={relevance && relevance[i] && relevance[i] === 'high'}
-        />,
-      );
-    }
-    return acc;
-  }, []);
-  return workList.length !== 0 ? (
-    <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />
-  ) : (
-    <></>
-  );
+  if (positions && positions instanceof Array && positions.length !== 0) {
+    const workList = positions.reduce((acc, w, i) => {
+      const startDate = timeFormat(w.start);
+      const endDate = timeFormat(w.end);
+      if (w.title) {
+        acc.push(
+          <CandidateExperienceCard
+            key={i}
+            slotLogo={
+              <CompanyLogo
+                companyName={w.org ? w.org.trim().toLowerCase() : null}
+              />
+            }
+            textRole={w.title}
+            textCompany={w.org}
+            textDate={timeRange(startDate, endDate)}
+            isBadgeVisible={
+              relevance && relevance[i] && relevance[i] === 'high'
+            }
+          />,
+        );
+      }
+      return acc;
+    }, []);
+    return (
+      <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />
+    );
+  }
+  return <></>;
 };
 
 const timeFormat = (
@@ -1030,53 +1067,56 @@ const NewSkillDetails = ({
   skills;
   relevance: ScoreJson['relevance']['skills'];
 }) => {
-  if (!relevance) {
-    const skillList = skills
-      .filter((s) => s !== null && s !== '')
-      .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
+  if (skills && skills instanceof Array && skills.length !== 0) {
+    if (!relevance) {
+      const skillList = skills
+        .filter((s) => s !== null && s !== '')
+        .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
+      return (
+        <CandidateSkill
+          slotOtherSkill={<>{skillList}</>}
+          isNumberVisible={false}
+        />
+      );
+    }
+    const { relevant, others } = Object.entries(relevance).reduce(
+      (acc, [key, value], i) => {
+        if (value === 'high')
+          return {
+            ...acc,
+            relevant: [
+              ...acc.relevant,
+              <CandidateSkillPills key={i} textSkill={key} />,
+            ],
+          };
+        return {
+          ...acc,
+          others: [
+            ...acc.others,
+            <CandidateSkillPills
+              key={i}
+              textSkill={key}
+              propsBgColor={{
+                style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+              }}
+            />,
+          ],
+        };
+      },
+      { relevant: [], others: [] },
+    );
+    const relevanceCount = relevant.length;
+    const otherCount = others.length;
     return (
       <CandidateSkill
-        slotOtherSkill={<>{skillList}</>}
-        isNumberVisible={false}
+        slotCandidateSkill={relevanceCount !== 0 ? relevant : null}
+        textSkillCount={relevanceCount}
+        isNumberVisible={relevanceCount !== 0}
+        slotOtherSkill={otherCount !== 0 ? others : null}
       />
     );
   }
-  const { relevant, others } = Object.entries(relevance).reduce(
-    (acc, [key, value], i) => {
-      if (value === 'high')
-        return {
-          ...acc,
-          relevant: [
-            ...acc.relevant,
-            <CandidateSkillPills key={i} textSkill={key} />,
-          ],
-        };
-      return {
-        ...acc,
-        others: [
-          ...acc.others,
-          <CandidateSkillPills
-            key={i}
-            textSkill={key}
-            propsBgColor={{
-              style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
-            }}
-          />,
-        ],
-      };
-    },
-    { relevant: [], others: [] },
-  );
-  const relevanceCount = relevant.length;
-  const otherCount = others.length;
-  return (
-    <CandidateSkill
-      slotCandidateSkill={relevanceCount !== 0 ? relevant : null}
-      textSkillCount={relevanceCount}
-      isNumberVisible={relevanceCount !== 0}
-      slotOtherSkill={otherCount !== 0 ? others : null}
-    />
-  );
+  return <></>;
 };
 
 export function Transcript({

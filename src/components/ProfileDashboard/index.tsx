@@ -551,7 +551,9 @@ const ProfileForm = ({
   // eslint-disable-next-line no-unused-vars
   onChange: (e: any, key: string, phoneFormat?: any) => void;
 }) => {
-  const [defaultCountry, setDefaultCountry] = React.useState('');
+  const { userCountry } = useAuthDetails();
+  const defaultCountry =
+    value.validation === 'phone' && !value.value ? userCountry : null;
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleMouseDownPassword = (event) => {
@@ -561,26 +563,6 @@ const ProfileForm = ({
     if (value.value) setShowPassword(!showPassword);
   };
 
-  const fetchUserLocation = async () => {
-    try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
-
-      const country = data.country; // Extract the country code from the response
-      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
-    } catch (error) {
-      // Handle any errors that occur during the API call
-    }
-  };
-  React.useEffect(() => {
-    if (value.validation === 'phone' && !value.value) {
-      fetchUserLocation();
-    }
-  }, []);
   switch (value.validation) {
     case 'phone': {
       return (

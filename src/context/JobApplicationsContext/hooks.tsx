@@ -8,6 +8,7 @@ import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
   checkSyncCand,
   FilterParameter,
+  getDisqualificationStatus,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
@@ -17,6 +18,7 @@ import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import {
+  CardStateManager,
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
@@ -29,6 +31,8 @@ import { CountJobs } from '../JobsContext/types';
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
   READ,
+  // eslint-disable-next-line no-unused-vars
+  NOT_FOUND,
   // eslint-disable-next-line no-unused-vars
   SECTION_READ,
   // eslint-disable-next-line no-unused-vars
@@ -44,6 +48,9 @@ type Action =
       };
     }
   | {
+      type: ActionType.NOT_FOUND;
+    }
+  | {
       type: ActionType.SECTION_READ;
       payload: {
         applicationData: JobApplicationsData;
@@ -56,6 +63,8 @@ type Action =
 
 const reducer = (state: JobApplicationsData, action: Action) => {
   switch (action.type) {
+    case ActionType.NOT_FOUND:
+      return null;
     case ActionType.READ: {
       const newState: JobApplicationsData = action.payload.applicationData
         ? Object.entries(action.payload.applicationData).reduce(
@@ -123,7 +132,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     JobApplicationSections.NEW,
   );
 
-  const paginationLimit = 100;
+  const paginationLimit = 50;
   const longPolling = 600000;
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
@@ -185,79 +194,40 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     ...initialParameters,
   });
 
-  const showInterview =
-    section !== JobApplicationSections.NEW &&
-    section !== JobApplicationSections.SCREENING &&
-    initialJobLoad &&
-    job?.assessment;
-
-  const activeSections = Object.values(JobApplicationSections).reduce(
-    (acc, curr) => {
-      if (
-        curr === JobApplicationSections.ASSESSMENT &&
-        !(initialJobLoad && job?.assessment)
-      )
-        return acc;
-      acc.push(curr);
-      return acc;
-    },
-    [] as JobApplicationSections[],
-  );
-
   const [allApplicationsDisabled, setAllApplicationsDisabled] = useState(false);
-  const [cardStateManager, setCardStateManager] = useState(
-    Object.assign(
-      {},
-      ...activeSections.map((a) => ({
-        [a]: {
-          checkList: {
-            list: new Set<string>(),
-            disabled: false,
-          },
-          disabledList: new Set<string>(),
-        },
-      })),
-    ) as {
-      // eslint-disable-next-line no-unused-vars
-      [key in JobApplicationSections]?: {
-        checkList: {
-          list: Set<string>;
-          disabled: boolean;
-        };
-        disabledList: Set<string>;
-      };
-    },
-  );
-  const cardStates = cardStateManager[section];
-  const setCardStates = (
-    // eslint-disable-next-line no-unused-vars
-    callBack: (prev: typeof cardStates) => typeof cardStates,
-  ) => {
-    const newValue = callBack(cardStates);
-    setCardStateManager((prev) => {
-      return {
-        ...prev,
-        [section]: cloneDeep(newValue),
-      };
-    });
-  };
+  const [cardStateManager, setCardStateManager] =
+    useState<CardStateManager>(undefined);
+  const activeSections = cardStateManager
+    ? (Object.keys(cardStateManager) as JobApplicationSections[])
+    : undefined;
+  const cardStates = cardStateManager ? cardStateManager[section] : undefined;
+  const setCardStates = cardStates
+    ? (
+        // eslint-disable-next-line no-unused-vars
+        callBack: (prev: typeof cardStates) => typeof cardStates,
+      ) => {
+        const newValue = callBack(cardStates);
+        setCardStateManager((prev) => {
+          return {
+            ...prev,
+            [section]: cloneDeep(newValue),
+          };
+        });
+      }
+    : undefined;
 
   //PRIMARY
   const handleJobApplicationRead = async (
-    request: Omit<ReadJobApplicationApi['request'], 'sections'>,
+    request: ReadJobApplicationApi['request'],
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
       const { data, error, filteredCount, unFilteredCount } =
-        await handleJobApplicationApi(
-          'read',
-          { ...request, sections: activeSections },
-          signal,
-        );
+        await handleJobApplicationApi('read', { ...request }, signal);
       if (data) {
         const action: Action = {
           type: ActionType.READ,
-          payload: { applicationData: data, activeSections },
+          payload: { applicationData: data, activeSections: request.sections },
         };
         if (job.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
@@ -275,6 +245,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       };
     }
   };
+
+  const showDisqualificationEmailComponent = applications
+    ? applications[JobApplicationSections.DISQUALIFIED]?.filter(
+        (a) => getDisqualificationStatus(a.status_emails_sent).isNotInvited,
+      )?.length > 0 ?? false
+    : false;
 
   //PRIMARY
   const handleJobApplicationSectionRead = async (
@@ -311,6 +287,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       const request = {
         job_id: jobId,
         ranges: ranges,
+        sections: activeSections,
         ...searchParameters,
       };
       const { confirmation } = await handleJobApplicationRead(request);
@@ -354,27 +331,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
-    purpose?: JobApplicationEmails['request']['purpose'],
+    purposes?: JobApplicationEmails['request']['purposes'],
     applicationIdSet?: Set<string>,
     updateAll: boolean = false,
   ) => {
     if (recruiter) {
-      const candidates = !updateAll
-        ? applications[section].reduce(
-            (acc, curr) => {
-              if (applicationIdSet.has(curr.id))
-                acc.push({
-                  application_id: curr.id,
-                  email: curr.candidates.email,
-                  first_name: curr.candidates.first_name,
-                  last_name: curr.candidates.last_name,
-                  status_emails_sent: curr.status_emails_sent,
-                });
-              return acc;
-            },
-            [] as JobApplicationEmails['request']['candidates'],
-          )
-        : null;
+      const applicationIds = !updateAll ? [...applicationIdSet] : null;
       const { data, error, filteredCount, unFilteredCount } =
         await handleJobApplicationApi('candidateEmail', {
           job: {
@@ -387,8 +349,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             ...searchParameters,
           },
           sections,
-          candidates,
-          purpose,
+          applicationIds,
+          purposes,
         });
       if (data) {
         const action: Action = {
@@ -446,6 +408,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       {
         job_id: jobId,
         ranges: ranges,
+        sections: activeSections,
         ...parameters,
       },
       signal,
@@ -462,30 +425,129 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     };
   };
 
+  const handleSelectSection = (section: JobApplicationSections) => {
+    setSection(section);
+  };
+
+  const handleSelectNextSection = () => {
+    setSection(
+      (prev) =>
+        activeSections[
+          (activeSections.indexOf(prev) + 1) % activeSections.length
+        ],
+    );
+  };
+
+  const handleSelectPrevSection = () => {
+    setSection((prev) => {
+      const pos = activeSections.indexOf(prev) - 1;
+      return pos < 0
+        ? activeSections[activeSections.length]
+        : activeSections[pos];
+    });
+  };
+
   //SECONDARY
   const handleJobApplicationInit = async () => {
-    const confirmation = await handleJobApplicationRefresh();
-    if (!confirmation) {
-      const action: Action = {
-        type: ActionType.READ,
-        payload: {
-          activeSections,
-          applicationData: Object.assign(
-            {},
-            ...Object.values(JobApplicationSections).map((section) => ({
-              [section]: [],
-            })),
-          ) as {
-            // eslint-disable-next-line no-unused-vars
-            [key in JobApplicationSections]: JobApplication[];
+    if (job) {
+      const currentActiveSections = Object.values(
+        JobApplicationSections,
+      ).filter((section) => {
+        switch (section) {
+          case JobApplicationSections.NEW:
+            return true;
+          case JobApplicationSections.SCREENING:
+            return true;
+          case JobApplicationSections.ASSESSMENT:
+            return job?.assessment ?? false;
+          case JobApplicationSections.QUALIFIED:
+            return true;
+          case JobApplicationSections.DISQUALIFIED:
+            return true;
+        }
+      });
+      setCardStateManager(
+        Object.assign(
+          {},
+          ...currentActiveSections.map((a) => ({
+            [a]: {
+              checkList: {
+                list: new Set<string>(),
+                disabled: false,
+              },
+              disabledList: new Set<string>(),
+            },
+          })),
+        ),
+      );
+      const confirmation = await handleJobApplicationRead({
+        job_id: jobId,
+        ranges: ranges,
+        sections: currentActiveSections,
+        ...searchParameters,
+      });
+      if (!confirmation) {
+        const action: Action = {
+          type: ActionType.READ,
+          payload: {
+            activeSections: currentActiveSections,
+            applicationData: Object.assign(
+              {},
+              ...currentActiveSections.map((section) => ({
+                [section]: [],
+              })),
+            ) as {
+              // eslint-disable-next-line no-unused-vars
+              [key in JobApplicationSections]: JobApplication[];
+            },
           },
-        },
-      };
-      dispatch(action);
-      return false;
+        };
+        dispatch(action);
+        return false;
+      }
+      return true;
+    } else {
+      handleJobApplicationNotFound();
     }
-    return true;
   };
+
+  const handleJobApplicationNotFound = () => {
+    const action: Action = {
+      type: ActionType.NOT_FOUND,
+    };
+    dispatch(action);
+  };
+
+  const getSectionVisibilities = () => {
+    return Object.assign(
+      {},
+      ...Object.values(JobApplicationSections).map((s) => {
+        switch (s) {
+          case JobApplicationSections.NEW:
+            return { [s]: initialJobLoad };
+          case JobApplicationSections.SCREENING:
+            return {
+              [s]: initialJobLoad && section !== JobApplicationSections.NEW,
+            };
+          case JobApplicationSections.ASSESSMENT:
+            return {
+              [s]:
+                initialJobLoad &&
+                section !== JobApplicationSections.NEW &&
+                section !== JobApplicationSections.SCREENING &&
+                job?.assessment,
+            };
+          case JobApplicationSections.QUALIFIED:
+            return { [s]: initialJobLoad };
+          case JobApplicationSections.DISQUALIFIED:
+            return { [s]: initialJobLoad };
+        }
+      }),
+      // eslint-disable-next-line no-unused-vars
+    ) as { [key in JobApplicationSections]: boolean };
+  };
+
+  const views = getSectionVisibilities();
 
   const refreshRef = useRef(true);
 
@@ -517,6 +579,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const value = {
     applications,
+    activeSections,
     setCardStates,
     cardStates,
     allApplicationsDisabled,
@@ -532,10 +595,14 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     handleJobApplicationSectionUpdate,
     handleJobApplicationFilter,
     handleManualRefresh,
+    handleSelectPrevSection,
+    handleSelectSection,
+    handleSelectNextSection,
     defaultFilters,
     searchParameters,
     initialLoad,
-    showInterview,
+    views,
+    showDisqualificationEmailComponent,
   };
 
   return value;

@@ -19,7 +19,6 @@ import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
-  JobApplicationSections,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 
@@ -39,7 +38,6 @@ const ApplicationCard = ({
   application,
   index,
   handleSelect,
-  isInterview,
   handleOpenDetails,
   isSelected = false,
 }: {
@@ -48,17 +46,15 @@ const ApplicationCard = ({
   index: number;
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
-  isInterview: boolean;
   // eslint-disable-next-line no-unused-vars
   handleOpenDetails: () => void;
   isSelected: boolean;
 }) => {
   const {
-    section,
     cardStates: {
       checkList: { list },
     },
-    showInterview,
+    views,
   } = useJobApplications();
   const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
@@ -66,7 +62,7 @@ const ApplicationCard = ({
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
   const resumeScore = <ResumeScore application={application} />;
-  const interviewScore = showInterview ? (
+  const interviewScore = views.assessment ? (
     <InterviewScore application={application} />
   ) : (
     <></>
@@ -81,8 +77,10 @@ const ApplicationCard = ({
   const analysis = getReasonings(
     (application?.score_json as ScoreJson)?.reasoning || null,
   );
-  const { isNotInvited, isPending, isSubmitted } =
-    getScreeningStatus(application);
+  const { isNotInvited, isPending, isSubmitted } = getScreeningStatus(
+    application.status_emails_sent,
+    application.phone_screening,
+  );
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
     [list.has(application.id)],
@@ -113,7 +111,7 @@ const ApplicationCard = ({
           : '---'
       }
       slotResumeScore={resumeScore}
-      isInterviewVisible={isInterview}
+      isInterviewVisible={views.assessment}
       slotAssessmentScore={interviewScore}
       appliedDate={creationDate}
       onclickCandidate={{
@@ -127,7 +125,7 @@ const ApplicationCard = ({
         (application.candidate_files?.resume_json as any)?.basics
           ?.totalExperience,
       )}
-      isScreeningVisible={section !== JobApplicationSections.NEW}
+      isScreeningVisible={views.screening}
       isScreenStatusPending={isPending}
       isScreenStatusSubmitted={isSubmitted}
       isScreeningStatusNotInvited={isNotInvited}

@@ -140,12 +140,17 @@ export default SlideDetailsTwo;
 export function CompanyDetails() {
   const router = useRouter();
   const { setStep } = useSignupDetails();
-  const { recruiter, setRecruiter, recruiterUser, setRecruiterUser } =
-    useAuthDetails();
+  const {
+    recruiter,
+    setRecruiter,
+    recruiterUser,
+    setRecruiterUser,
+    userCountry,
+  } = useAuthDetails();
   const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
-  const [defaultCountry, setDefaultCountry] = useState('us'); // State to store the default country
+  const defaultCountry = recruiter?.phone_number ? null : userCountry;
   const [error, setError] = useState<Error1>({
     phone: {
       error: false,
@@ -162,29 +167,8 @@ export function CompanyDetails() {
   });
 
   useEffect(() => {
-    if (!recruiter.phone_number) {
-      fetchUserLocation(); // Call the function to fetch user's location when the component mounts
-    }
-    // setLogo(recruiter.logo);
     setPhone(recruiter.phone_number);
   }, [recruiter]);
-
-  // Function to fetch the user's location information based on IP address
-  const fetchUserLocation = async () => {
-    try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
-
-      const country = data.country; // Extract the country code from the response
-      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
-    } catch (error) {
-      // Handle any errors that occur during the API call
-    }
-  };
 
   const phoneValidation = (format) => {
     if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {
@@ -432,10 +416,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                ? `Invalid phone number. Please use the ${
-                    phonePattern?.replaceAll('.', 'x') || 'correct'
-                  } format.`
-                : ''
+                  ? `Invalid phone number. Please use the ${
+                      phonePattern?.replaceAll('.', 'x') || 'correct'
+                    } format.`
+                  : ''
             }
           />
           <Stack

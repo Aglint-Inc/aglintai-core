@@ -8,6 +8,7 @@
 .cv-list-row-2.item {
   position: relative;
   z-index: 1;
+  flex: auto;
   transition: all 300ms ease;
   cursor: pointer;
 }
@@ -44,6 +45,10 @@
 
 .cv-list-row-2.top.bg-grey-100 {
   background-color: #f8f9f9;
+}
+
+.cv-list-row-2.top.bg-grey-100.height-60 {
+  height: 60px;
 }
 
 .cv-list-item-highlight {

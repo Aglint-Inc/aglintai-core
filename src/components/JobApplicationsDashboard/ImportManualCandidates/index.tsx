@@ -3,9 +3,10 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack, TextField, Typography } from '@mui/material';
 import posthog from 'posthog-js';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
@@ -223,6 +224,7 @@ const FormBody = ({
   applicant: FormEntries;
   setApplicant: Dispatch<SetStateAction<FormEntries>>;
 }) => {
+  const { userCountry } = useAuthDetails();
   const fileTypes = ['PDF', 'DOCX', 'TXT'];
   const handleChange = (e, key) => {
     setApplicant((prev) => {
@@ -237,25 +239,7 @@ const FormBody = ({
       };
     });
   };
-  const [defaultCountry, setDefaultCountry] = useState('');
-  const fetchUserLocation = async () => {
-    try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
-
-      const country = data.country; // Extract the country code from the response
-      setDefaultCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
-    } catch (error) {
-      // Handle any errors that occur during the API call
-    }
-  };
-  useEffect(() => {
-    if (defaultCountry === '') fetchUserLocation();
-  }, []);
+  const defaultCountry = applicant.phone.value ? null : userCountry;
   return (
     <Stack gap={3}>
       <Stack flexDirection={'row'} gap={3}>

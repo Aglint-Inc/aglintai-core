@@ -48,6 +48,7 @@
 
 .job-sidebar-main-block.cj-step-1.height-auto {
   height: auto;
+  padding-top: 20px;
 }
 
 .job-sidebar-main-block.cj-step-3 {
@@ -69,6 +70,7 @@
 
 .job-sidebar-main-block.cj-step-5 {
   display: flex;
+  padding-top: 20px;
 }
 
 .job-sidebar-main-block.success {
@@ -98,7 +100,7 @@
 }
 
 .div-block-507.remove-bottom {
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .fw-semibold {
@@ -345,6 +347,14 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -387,12 +397,11 @@
 
   display: flex;
   width: 100%;
-  max-width: 780px;
-  margin-top: 16px;
+  max-width: 843px;
   flex-direction: column;
   flex: 1;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .cj-main-wrapper.pb-200 {

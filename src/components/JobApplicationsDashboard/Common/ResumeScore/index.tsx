@@ -5,15 +5,36 @@ import { CalculatingResumeScore } from '@/src/components/Common/Lotties/Calculat
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
 import { ResumeScoreTag } from '../../ResumeScoreTag';
-import { ApiLogState, intactConditionFilter } from '../../utils';
+import { getApplicationProcessState } from '../../utils';
 
 const ResumeScore = ({ application }: { application: JobApplication }) => {
-  return application.candidate_files?.resume_json ||
-    application.candidate_files?.file_url ? (
-    intactConditionFilter(application) !== ApiLogState.PROCESSING ? (
-      application.score_json ? (
-        <ResumeScoreTag score={application.overall_score} />
-      ) : (
+  switch (getApplicationProcessState(application)) {
+    case 'unavailable':
+      return (
+        <Tooltip title='No resume available.' placement='right' arrow={true}>
+          <Stack>
+            <ResumeTag slotText={<ErrorIcon />} />
+          </Stack>
+        </Tooltip>
+      );
+    case 'fetching':
+      return (
+        <Tooltip title='Fetching resume' placement='right' arrow={true}>
+          <Stack>
+            <ResumeTag slotText={<Calculating />} />
+          </Stack>
+        </Tooltip>
+      );
+    case 'processing':
+      return (
+        <Tooltip title='Ongoing scoring' placement='right' arrow={true}>
+          <Stack>
+            <ResumeTag slotText={<Calculating />} />
+          </Stack>
+        </Tooltip>
+      );
+    case 'unparsable':
+      return (
         <Tooltip
           title="Oops! It looks like we're having trouble reading the resume. This could be because the PDF file contains an image instead of text. Please make sure the file is in a supported format and try again."
           placement='right'
@@ -23,27 +44,10 @@ const ResumeScore = ({ application }: { application: JobApplication }) => {
             <ResumeTag slotText={<WarningIcon />} />
           </Stack>
         </Tooltip>
-      )
-    ) : (
-      <Tooltip title='Ongoing scoring' placement='right' arrow={true}>
-        <Stack>
-          <ResumeTag slotText={<Calculating />} />
-        </Stack>
-      </Tooltip>
-    )
-  ) : application.is_resume_fetching ? (
-    <Tooltip title='Fetching resume' placement='right' arrow={true}>
-      <Stack>
-        <ResumeTag slotText={<Calculating />} />
-      </Stack>
-    </Tooltip>
-  ) : (
-    <Tooltip title='No resume available.' placement='right' arrow={true}>
-      <Stack>
-        <ResumeTag slotText={<ErrorIcon />} />
-      </Stack>
-    </Tooltip>
-  );
+      );
+    case 'processed':
+      return <ResumeScoreTag score={application.overall_score} />;
+  }
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -1,3 +1,7 @@
+.score-setting-wrap {
+  padding-top: 20px;
+}
+
 .div-block-713 {
   display: flex;
   max-width: 650px;
@@ -250,6 +254,14 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .max-width-500 {

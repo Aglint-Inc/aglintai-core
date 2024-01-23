@@ -15,7 +15,7 @@ export function EnableAssessment({
   onClickEnablePhoneScreening = {},
 }) {
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "div-block-758")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "enable-assessment-wrap")}
         tag="div"

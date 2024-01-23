@@ -149,12 +149,12 @@ const CandidateSortInput = ({
   // eslint-disable-next-line no-unused-vars
   handleModify: (newParameter: SortParameter['parameter']) => void;
 }) => {
-  const { showInterview } = useJobApplications();
+  const { views } = useJobApplications();
   return (
     <Stack>
       <Select
         value={
-          !showInterview && parameter === 'interview_score'
+          !views.assessment && parameter === 'interview_score'
             ? 'resume_score'
             : parameter
         }
@@ -166,7 +166,7 @@ const CandidateSortInput = ({
         }
       >
         {CANDIDATE_SORT.reduce((acc, curr, i) => {
-          if (!(curr === 'interview_score' && !showInterview))
+          if (!(curr === 'interview_score' && !views.assessment))
             acc.push(
               <MenuItem key={i} value={curr} className={'SORTBODY-Include'}>
                 {capitalize(getUpdateParameterName(curr))}
