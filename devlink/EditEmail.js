@@ -26,7 +26,7 @@ export function EditEmail({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-regular", "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {textEmailName}
@@ -38,7 +38,7 @@ export function EditEmail({
             {editEmailDescription}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "header-right-button--company")}
             tag="div"

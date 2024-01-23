@@ -1,6 +1,12 @@
 .div-block-508 {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+.div-block-757 {
+  width: 440px;
+  padding-top: 20px;
+  padding-right: 20px;
 }
 
 .div-block-507 {
@@ -263,6 +269,10 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -305,9 +315,10 @@
 }
 
 .email-start-wrap {
-  display: grid;
+  display: flex;
   margin-right: auto;
   margin-left: auto;
+  flex-direction: column;
   grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

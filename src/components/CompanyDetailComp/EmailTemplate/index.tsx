@@ -1,10 +1,15 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
-import { Drawer, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import posthog from 'posthog-js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { EditEmail, EmailTemplateCards } from '@/devlink';
+import {
+  EditEmail,
+  EmailTemplateCards,
+  EmailTemplatesStart,
+  LoaderSvg,
+} from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
@@ -13,45 +18,38 @@ import { debouncedSave } from '../utils';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
+import { emailTempKeys } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
 
 const EmailTemplate = () => {
   const { recruiter } = useAuthDetails();
-  const [open, setOpen] = useState(false);
   // const [openTest, setOpenTest] = useState(false);
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const [isEditorLoad, setIsEditorLoad] = useState(true);
   const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
     'isPhoneScreeningEnabled',
   );
-  const templateEntries = Object.entries(recruiter.email_template).filter(
-    (path) => {
-      if (path[0] === 'phone_screening' || path[0] === 'phonescreen_resend') {
-        return isPhoneScreeningEnabled;
-      } else if (path[0] === 'interview' || path[0] === 'interview-resend') {
-        return isAssesEnabled;
-      } else {
-        return true;
-      }
-    },
-  );
-  // const [email, setEmail] = useState({
-  //   first_name: '',
-  //   last_name: '',
-  //   company_name: recruiter?.name,
-  //   job_title: '',
-  //   email: recruiter?.email,
-  // });
-  const [selectedTemplate, setSelectedTemplate] = useState({
-    fromName: '',
-    name: '',
-    body: '',
-    default: false,
-    subject: '',
+  const templateEntries = emailTempKeys.filter((path) => {
+    if (path === 'phone_screening' || path === 'phonescreen_resend') {
+      return isPhoneScreeningEnabled;
+    } else if (path === 'interview' || path === 'interview-resend') {
+      return isAssesEnabled;
+    } else {
+      return true;
+    }
   });
+  useEffect(() => {
+    if (recruiter && recruiter.email_template) {
+      setSelectedTemplate({
+        name: 'application_recieved',
+        ...recruiter.email_template['application_recieved'],
+      });
+      setTimeout(() => {
+        setIsEditorLoad(false);
+      }, 500);
+    }
+  }, [recruiter]);
 
-  const handleDrawerClose = () => {
-    // setOpenTest(false);
-    setOpen(false);
-  };
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   const handlerSave = () => {
     recruiter.email_template[selectedTemplate.name] = {
@@ -61,121 +59,150 @@ const EmailTemplate = () => {
       fromName: selectedTemplate.fromName,
     };
     debouncedSave({ ...recruiter }, recruiter.id);
-    setOpen(false);
     toast.success('Saved successfully');
   };
 
   return (
     <>
-      <Stack gap={2} width={'500px'}>
-        {templateEntries.map(([templateName, templateData], ind) => (
+      <EmailTemplatesStart
+        // slotEmailTemplateCards={templateEntries.map(
+        //   ([templateName, templateData], ind) => (
+        //     <EmailTemplateCards
+        //       key={ind}
+        //       textDescription={templateObj[templateName].trigger}
+        //       textTitle={templateObj[templateName].listing}
+        //       onClickApplicationRecieved={{
+        //         onClick: () => {
+        //           setSelectedTemplate({ ...templateData, name: templateName });
+        //         },
+        //       }}
+        //     />
+        //   ),
+        // )}
+        slotEmailTemplateCards={templateEntries.map((emailPath) => (
           <EmailTemplateCards
-            key={ind}
-            textDescription={templateObj[templateName].trigger}
-            textTitle={templateObj[templateName].listing}
+            key={emailPath}
+            textDescription={templateObj[emailPath].trigger}
+            textTitle={templateObj[emailPath].listing}
             onClickApplicationRecieved={{
               onClick: () => {
-                setSelectedTemplate({ ...templateData, name: templateName });
-                setOpen(true);
+                setSelectedTemplate({
+                  ...recruiter.email_template[String(emailPath)],
+                  name: emailPath,
+                });
               },
             }}
           />
         ))}
-      </Stack>
-
-      <Drawer anchor='right' open={open} onClose={handleDrawerClose}>
-        <Stack mb={'10px'}>
-          <EditEmail
-            editEmailDescription={
-              templateObj[selectedTemplate?.name]?.description
-            }
-            onClickSaveChanges={{
-              onClick: () => {
-                handlerSave();
-              },
-            }}
-            onClickClose={{
-              onClick: () => {
-                handleDrawerClose();
-              },
-            }}
-            textEmailName={templateObj[selectedTemplate?.name]?.heading}
-            slotForm={
-              <Stack spacing={'20px'}>
+        slotEmailDetails={
+          <>
+            {isEditorLoad && (
+              <>
                 <Stack
-                  spacing={1}
-                  sx={{ bgcolor: palette.grey[100], p: 2, borderRadius: '8px' }}
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  width={'500px'}
+                  height={'100vh'}
                 >
-                  <Typography variant='h5'>
-                    Pro Tip: Customize Your Message
-                  </Typography>
-                  <Typography variant='body2'>
-                    For dynamic content, utilize placeholders like [firstName],
-                    [lastName], [companyName], [jobTitle] and [supportLink].
-                  </Typography>
+                  <LoaderSvg />
                 </Stack>
-                <UITextField
-                  labelSize='small'
-                  fullWidth
-                  label='Sender Name'
-                  secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
-                  value={selectedTemplate.fromName}
-                  onChange={(e) => {
-                    setSelectedTemplate((prev) => ({
-                      ...prev,
-                      fromName: e.target.value,
-                    }));
-                  }}
-                />
-                <UITextField
-                  labelSize='small'
-                  fullWidth
-                  placeholder={
-                    templateObj[selectedTemplate?.name]?.subjectPlaceHolder
-                  }
-                  label='Email Subject'
-                  value={selectedTemplate.subject}
-                  onChange={(e) => {
-                    setSelectedTemplate((prev) => ({
-                      ...prev,
-                      subject: e.target.value,
-                    }));
-                  }}
-                  minRows={1}
-                  multiline
-                />
-                <Stack>
-                  <UITypography type='small' fontBold='normal'>
-                    Email Body
-                  </UITypography>
-                  <Stack
-                    sx={{
-                      mt: '8px',
-                      border: '1px solid',
-                      borderColor: palette.grey[300],
-                      borderRadius: '4px',
-                    }}
-                  >
-                    <TipTapAIEditor
-                      enablAI={false}
-                      placeholder={
-                        templateObj[selectedTemplate?.name]?.bodyPlaceHolder
-                      }
-                      handleChange={(html) => {
+              </>
+            )}
+            {!isEditorLoad && (
+              <EditEmail
+                editEmailDescription={
+                  templateObj[selectedTemplate?.name]?.description
+                }
+                onClickSaveChanges={{
+                  onClick: () => {
+                    handlerSave();
+                  },
+                }}
+                textEmailName={templateObj[selectedTemplate?.name]?.heading}
+                slotForm={
+                  <Stack spacing={'20px'}>
+                    <Stack
+                      spacing={1}
+                      sx={{
+                        bgcolor: palette.grey[100],
+                        p: 2,
+                        borderRadius: '8px',
+                      }}
+                    >
+                      <Typography variant='h5'>
+                        Pro Tip: Customize Your Message
+                      </Typography>
+                      <Typography variant='body2'>
+                        For dynamic content, utilize placeholders like
+                        [firstName], [lastName], [companyName], [jobTitle] and
+                        [supportLink].
+                      </Typography>
+                    </Stack>
+                    <UITextField
+                      labelSize='small'
+                      fullWidth
+                      label='Sender Name'
+                      secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
+                      value={selectedTemplate.fromName}
+                      onChange={(e) => {
                         setSelectedTemplate((prev) => ({
                           ...prev,
-                          body: html,
+                          fromName: e.target.value,
                         }));
                       }}
-                      initialValue={selectedTemplate.body}
                     />
+                    <UITextField
+                      labelSize='small'
+                      fullWidth
+                      placeholder={
+                        templateObj[selectedTemplate?.name]?.subjectPlaceHolder
+                      }
+                      label='Email Subject'
+                      value={selectedTemplate.subject}
+                      onChange={(e) => {
+                        setSelectedTemplate((prev) => ({
+                          ...prev,
+                          subject: e.target.value,
+                        }));
+                      }}
+                      minRows={1}
+                      multiline
+                    />
+                    <Stack>
+                      <UITypography type='small' fontBold='normal'>
+                        Email Body
+                      </UITypography>
+                      <Stack
+                        sx={{
+                          mt: '8px',
+                          border: '1px solid',
+                          borderColor: palette.grey[300],
+                          borderRadius: '4px',
+                        }}
+                      >
+                        <TipTapAIEditor
+                          enablAI={false}
+                          placeholder={
+                            templateObj[selectedTemplate?.name]?.bodyPlaceHolder
+                          }
+                          handleChange={(html) => {
+                            setSelectedTemplate((prev) => ({
+                              ...prev,
+                              body: html,
+                            }));
+                          }}
+                          initialValue={selectedTemplate.body}
+                        />
+                      </Stack>
+                    </Stack>
                   </Stack>
-                </Stack>
-              </Stack>
-            }
-          />
-        </Stack>
-      </Drawer>
+                }
+              />
+            )}
+          </>
+        }
+      />
     </>
   );
 };
