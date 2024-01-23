@@ -107,6 +107,7 @@ const allowedPaths = new Set([
   '/api/phone-screening/get-application-info',
   '/api/candidatedb/cron',
   '/api/candidatedb/save-cron',
+  '/api/candidatedb/cron-email-sender',
   '/api/email-outreach/send-email',
   '/api/assessment/access_applications',
   '/api/assessment/access_public_jobs',
