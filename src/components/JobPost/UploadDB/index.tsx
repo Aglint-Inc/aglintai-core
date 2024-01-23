@@ -246,7 +246,8 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       last_name: string;
       job_title: string;
       company_name: string;
-      support_link: string;
+      support_link?: string;
+      phone_screening_link?: string;
     },
   ) {
     let filledTemplate = template;
@@ -256,6 +257,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       '[jobTitle]': email.job_title,
       '[companyName]': email.company_name,
       '[supportLink]': email.support_link,
+      '[phoneScreeningLink]': email.phone_screening_link,
     };
     for (const [placeholder, value] of Object.entries(placeholders)) {
       // eslint-disable-next-line security/detect-non-literal-regexp
