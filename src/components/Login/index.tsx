@@ -120,7 +120,7 @@ function Login() {
       });
       if (!authdata.error) {
         posthog.identify(details.email, { Email: details.email });
-        router.push(pageRoutes.JOBS);
+        router.push((router?.query?.redirect as string) || pageRoutes.JOBS);
       } else {
         setErrorCheck({
           ...errorCheck,
@@ -134,6 +134,10 @@ function Login() {
   };
 
   const oauthHandler = async (provider) => {
+    const redirectURL = router?.query?.redirect as string;
+    if (redirectURL) {
+      localStorage.setItem('redirectURL', redirectURL);
+    }
     if (typeof window !== 'undefined')
       try {
         const { error } = await supabase.auth.signInWithOAuth({
