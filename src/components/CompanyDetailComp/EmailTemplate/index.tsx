@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
 import { Drawer, Stack, Typography } from '@mui/material';
+import posthog from 'posthog-js';
 import { useState } from 'react';
 
 import { EditEmail, EmailTemplateCards } from '@/devlink';
@@ -17,7 +18,21 @@ const EmailTemplate = () => {
   const { recruiter } = useAuthDetails();
   const [open, setOpen] = useState(false);
   // const [openTest, setOpenTest] = useState(false);
-  const templateEntries = Object.entries(recruiter.email_template);
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+    'isPhoneScreeningEnabled',
+  );
+  const templateEntries = Object.entries(recruiter.email_template).filter(
+    (path) => {
+      if (path[0] === 'phone_screening' || path[0] === 'phonescreen_resend') {
+        return isPhoneScreeningEnabled;
+      } else if (path[0] === 'interview' || path[0] === 'interview-resend') {
+        return isAssesEnabled;
+      } else {
+        return true;
+      }
+    },
+  );
   // const [email, setEmail] = useState({
   //   first_name: '',
   //   last_name: '',
@@ -49,40 +64,6 @@ const EmailTemplate = () => {
     setOpen(false);
     toast.success('Saved successfully');
   };
-
-  // function fillEmailTemplate(template, email) {
-  //   let filledTemplate = template;
-
-  //   const placeholders = {
-  //     '[firstName]': email.first_name,
-  //     '[lastName]': email.last_name,
-  //     '[jobTitle]': email.job_title,
-  //     '[companyName]': email.company_name,
-  //   };
-
-  //   for (const [placeholder, value] of Object.entries(placeholders)) {
-  //     const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-  //     filledTemplate = filledTemplate.replace(regex, value);
-  //   }
-
-  //   return filledTemplate;
-  // }
-
-  // const emailHandler = async () => {
-  //   await axios
-  //     .post('/api/sendgrid', {
-  //       fromEmail: `messenger@aglinthq.com`,
-  //       fromName: selectedTemplate?.fromName || recruiter?.name,
-  //       email: email?.email,
-  //       subject: fillEmailTemplate(selectedTemplate.subject, email),
-  //       text: fillEmailTemplate(selectedTemplate.body, email),
-  //     })
-  //     .then((res) => {
-  //       if (res.status === 200 && res.data.data === 'Email sent') {
-  //         toast.success('Mail sent successfully');
-  //       }
-  //     });
-  // };
 
   return (
     <>
@@ -192,123 +173,6 @@ const EmailTemplate = () => {
                 </Stack>
               </Stack>
             }
-            // slotBottom={
-            //   <Stack
-            //     sx={{
-            //       bgcolor: palette.grey[100],
-            //       p: 2,
-            //       borderRadius: '8px',
-            //     }}
-            //     spacing={2}
-            //   >
-            //     <Collapse
-            //       in={openTest}
-            //       translate='yes'
-            //       unmountOnExit
-            //       mountOnEnter
-            //     >
-            //       <Stack>
-            //         <Grid container spacing={1.5}>
-            //           <Grid item xs={6}>
-            //             <TextField
-            //               fullWidth
-            //               margin='none'
-            //               label='First Name'
-            //               value={email?.first_name}
-            //               onChange={(e) => {
-            //                 setEmail((prev) => ({
-            //                   ...prev,
-            //                   first_name: e.target.value,
-            //                 }));
-            //               }}
-            //             />
-            //           </Grid>
-            //           <Grid item xs={6}>
-            //             <TextField
-            //               fullWidth
-            //               margin='none'
-            //               label='Last Name'
-            //               value={email?.last_name}
-            //               onChange={(e) => {
-            //                 setEmail((prev) => ({
-            //                   ...prev,
-            //                   last_name: e.target.value,
-            //                 }));
-            //               }}
-            //             />
-            //           </Grid>
-            //           <Grid item xs={6}>
-            //             <TextField
-            //               fullWidth
-            //               margin='none'
-            //               label='Job Title'
-            //               value={email.job_title}
-            //               onChange={(e) => {
-            //                 setEmail((prev) => ({
-            //                   ...prev,
-            //                   job_title: e.target.value,
-            //                 }));
-            //               }}
-            //             />
-            //           </Grid>
-            //           <Grid item xs={6}>
-            //             <TextField
-            //               fullWidth
-            //               margin='none'
-            //               label='Company Name'
-            //               defaultValue={recruiter?.name}
-            //               onChange={(e) => {
-            //                 setEmail((prev) => ({
-            //                   ...prev,
-            //                   company_name: e.target.value,
-            //                 }));
-            //               }}
-            //             />
-            //           </Grid>
-            //           <Grid item xs={12}>
-            //             <TextField
-            //               fullWidth
-            //               margin='none'
-            //               label='Email'
-            //               value={email?.email}
-            //               onChange={(e) => {
-            //                 setEmail((prev) => ({
-            //                   ...prev,
-            //                   email: e.target.value,
-            //                 }));
-            //               }}
-            //             />
-            //           </Grid>
-            //         </Grid>
-            //       </Stack>
-            //     </Collapse>
-            //     <Stack
-            //       justifyContent={!openTest ? 'space-between' : 'flex-end'}
-            //     >
-            //       {!openTest && (
-            //         <Typography variant='body2'>
-            //           See it in Action: Request a Test Mail Input the name and
-            //           job title, then use your email to see the feature
-            //           firsthand.
-            //         </Typography>
-            //       )}
-            //       <Stack direction={'row'} justifyContent={'flex-end'}>
-            //         <AUIButton
-            //           size='small'
-            //           variant={openTest ? 'outlined' : 'text'}
-            //           onClick={() => {
-            //             setOpenTest(true);
-            //             if (openTest) {
-            //               emailHandler();
-            //             }
-            //           }}
-            //         >
-            //           Request a Test Mail
-            //         </AUIButton>
-            //       </Stack>
-            //     </Stack>
-            //   </Stack>
-            // }
           />
         </Stack>
       </Drawer>
@@ -321,7 +185,7 @@ export default EmailTemplate;
 export const templateObj: Record<string, any> = {
   interview: {
     listing: 'Assessment Email',
-    heading: 'Assessment Email Settings',
+    heading: 'Assessment Email',
     triggerInfo: 'Triggered when the candidate selected for assessment.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
@@ -338,7 +202,7 @@ export const templateObj: Record<string, any> = {
   },
   interview_resend: {
     listing: 'Follow Up Assessment',
-    heading: 'Follow Up Assessment Email Settings',
+    heading: 'Follow Up Assessment Email ',
     triggerInfo: 'Triggered for resending the assessment invite.',
 
     description:
@@ -355,7 +219,7 @@ export const templateObj: Record<string, any> = {
   },
   rejection: {
     listing: 'Disqualified Email',
-    heading: 'Disqualified Email Settings',
+    heading: 'Disqualified Email ',
     triggerInfo: 'Triggered when the candidate moved to disqualified state.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
@@ -370,7 +234,7 @@ export const templateObj: Record<string, any> = {
   },
   application_recieved: {
     listing: 'Application Received Email',
-    heading: 'Application Received Email Settings',
+    heading: 'Application Received Email ',
     triggerInfo: 'Triggered instantly when candidate applied to this job.',
     description:
       'Set up a default interview email template. You can make specific changes for individual job posts later.',
@@ -385,7 +249,7 @@ export const templateObj: Record<string, any> = {
   },
   phone_screening: {
     listing: 'Phone Screen Email',
-    heading: 'Phone Screen Email Setting',
+    heading: 'Phone Screen Email',
     triggerInfo: 'Triggered instantly when you move candidate to screening',
     description: 'Set up a default Phone Screening email template',
     subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
@@ -396,5 +260,19 @@ export const templateObj: Record<string, any> = {
     Best regards,
     [senderName]`,
     trigger: 'Triggered instantly when you move candidate to screening',
+  },
+  phonescreen_resend: {
+    listing: 'Phone Screen Follow-up Email',
+    heading: 'Phone Screen Follow-up Email',
+    triggerInfo: 'Triggered for resending the phone screening invite.',
+    description: 'Set up a default Phone Screening follow-up email template',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+Best regards,
+[senderName]`,
+    trigger: 'Triggered instantly when you move the candidate to screening',
   },
 };

@@ -33,12 +33,10 @@ const Emails = () => {
   const [editTemplate, setEditTemplate] = useState('application_recieved');
   const emails: EmailTemplateParams[] = emailTempKeys
     .filter((path) => {
-      if (!jobForm.formFields.assessment) {
-        return (
-          path === 'application_recieved' ||
-          path === 'rejection' ||
-          path === 'phone_screening'
-        );
+      if (path === 'interview' || path === 'interview_resend') {
+        return jobForm.formFields.assessment;
+      } else if (path === 'phone_screening' || path === 'phonescreen_resend') {
+        return jobForm.formFields.isPhoneScreenEnabled;
       } else {
         return true;
       }
@@ -190,6 +188,10 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
       toast.error('Something went wrong please try again');
     }
   };
+
+  // console.log(
+  //   jobForm.formFields.screeningEmail.emailTemplates['phonescreen_resend'],
+  // );
 
   return (
     <>
@@ -418,9 +420,10 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
   );
 };
 
-const emailTempKeys = [
+export const emailTempKeys = [
   'application_recieved',
   'phone_screening',
+  'phonescreen_resend',
   'interview',
   'interview_resend',
   'rejection',
