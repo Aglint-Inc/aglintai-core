@@ -146,6 +146,7 @@ function CandidateSearchHistory() {
         page: 1,
         per_page: 25,
         ...aiSearchQuery,
+        organization_ids: [],
       });
 
       if (resCand.data.error) {

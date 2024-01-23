@@ -55,18 +55,18 @@ export default async function handler(
       organization_ids: requestData.organization_ids,
     };
 
-    if (requestData.person_locations.length === 0) {
+    if (requestData?.person_locations?.length === 0) {
       delete query.person_locations;
     }
 
-    if (requestData.organization_ids.length === 0) {
+    if (requestData?.organization_ids?.length === 0) {
       delete query.organization_ids;
     }
 
     const response = await axios.post(
       apiUrl,
       {
-        api_key: 'AMw7kom6e0a7EUhSuLJF4A',
+        api_key: process.env.APPOLO_API,
         ...query,
       },
       { headers },
