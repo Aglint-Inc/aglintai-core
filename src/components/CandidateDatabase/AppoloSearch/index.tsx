@@ -563,7 +563,11 @@ function AppoloSearch() {
                                 candidate?.organization?.id ===
                                 exp?.organization_id
                               }
-                              isActive={ind === 0}
+                              isActive={
+                                ind === 0 &&
+                                candidate?.organization?.id ===
+                                  exp?.organization_id
+                              }
                               slotLogo={
                                 <Avatar
                                   variant='rounded'
