@@ -33,7 +33,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   } = useOutReachCtx();
   const { candEmailData, emailTemplates, outReachedEmails, isMailAuthOpen } =
     OutreachState;
-
+  const [defaultTemplate, setDefaultTemplate] = useState(null);
   const [selectedEmailTemplate, setSelectedEmailTemp] = useState(0);
   const [isEditorLoading, setIsEditorLoading] = useState(false);
   const [editorJson, setEditoJson] = useState({
@@ -45,8 +45,9 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
     if (emailTemplates.length > 0) {
       setEditoJson({
         subject: emailTemplates[0].subject,
-        templateJson: emailTemplates[0].templateJson,
+        templateJson: '',
       });
+      setDefaultTemplate(emailTemplates[0].templateJson);
     }
   }, [emailTemplates]);
 
@@ -153,20 +154,22 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
                 direction={'row'}
                 alignItems={'center'}
                 width={'100%'}
-                height={'300px'}
+                height={'250px'}
                 justifyContent={'center'}
               >
                 <LoaderSvg />
               </Stack>
             )}
-            {!isEditorLoading && emailTemplates.length > 0 && (
-              <EmailTemplateEditor
-                defaultJson={editorJson.templateJson}
-                onChangeUpdateJson={(s) => {
-                  setEditoJson((prev) => ({ ...prev, templateJson: s }));
-                }}
-              />
-            )}
+            {defaultTemplate &&
+              !isEditorLoading &&
+              emailTemplates.length > 0 && (
+                <EmailTemplateEditor
+                  defaultJson={defaultTemplate}
+                  onChangeUpdateJson={(s) => {
+                    setEditoJson((prev) => ({ ...prev, templateJson: s }));
+                  }}
+                />
+              )}
           </>
         }
         slotLinkMail={
@@ -208,10 +211,12 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
               defaultValue={0}
               onChange={(e) => {
                 setIsEditorLoading(true);
+                setDefaultTemplate(
+                  emailTemplates[Number(e.target.value)].templateJson,
+                );
                 setEditoJson({
                   subject: emailTemplates[Number(e.target.value)].subject,
-                  templateJson:
-                    emailTemplates[Number(e.target.value)].templateJson,
+                  templateJson: '',
                 });
                 setSelectedEmailTemp(Number(e.target.value));
                 setTimeout(() => {
