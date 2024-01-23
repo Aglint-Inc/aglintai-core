@@ -109,9 +109,9 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        if (!isRoutePublic(router.route)) {
-          router.push(pageRoutes.LOGIN);
-        }
+        // if (!isRoutePublic(router.route)) {
+        //   router.push(pageRoutes.LOGIN);
+        // }
         loading && setLoading(false);
         return;
       }
@@ -251,8 +251,8 @@ const AuthProvider = ({ children }) => {
     if (router.isReady) {
       const redirect = window.location.href;
       if (isRoutePublic(router.route)) return;
-      else if (!loading && !userDetails)
-        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+      else if (!loading && !userDetails?.user)
+      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
 

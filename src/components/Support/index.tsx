@@ -61,9 +61,10 @@ function Support() {
   useEffect(() => {
     if (router.isReady) {
       if (!router.query.status) {
-        router.push(`?status=all`, undefined, {
-          shallow: true,
-        });
+        // router.push(`?status=all`, undefined, {
+        //   shallow: true,
+        // });
+        router.query = { ...router.query, status: 'all' };
       }
     }
   }, [router.isReady]);
@@ -599,8 +600,8 @@ const CustomAvatar = ({
         ...(backgroundColor
           ? { backgroundColor }
           : isRandomColor
-          ? { backgroundColor: getRandomColor() }
-          : {}),
+            ? { backgroundColor: getRandomColor() }
+            : {}),
       }}
     >
       {alt.toLocaleUpperCase().slice(0, 1)}

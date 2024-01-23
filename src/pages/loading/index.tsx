@@ -122,7 +122,10 @@ export default function Loading() {
               .select()
               .eq('id', data[0].recruiter_id);
             if (!recruiter_error && recruiter[0].industry) {
-              router.push(pageRoutes.JOBS);
+              router.push(
+                localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+              );
+              localStorage.removeItem('redirectURL');
             } else {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
             }
