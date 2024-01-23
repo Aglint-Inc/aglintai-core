@@ -19,8 +19,13 @@ import Loader from '../Loader/Index';
 const SlideTwoSignUp = () => {
   const router = useRouter();
   const { setStep, flow } = useSignupDetails();
-  const { setUserDetails, setRecruiter, userDetails, recruiter } =
-    useAuthDetails();
+  const {
+    setUserDetails,
+    setRecruiter,
+    userDetails,
+    recruiter,
+    setRecruiterUser,
+  } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
     first_name: '',
     last_name: '',
@@ -112,7 +117,10 @@ const SlideTwoSignUp = () => {
     });
     if (!authdata.error) {
       setUserDetails(authdata.data.session);
-      const { error: erroruser } = await supabase
+      const {
+        error: erroruser,
+        data: [recruiter_user],
+      } = await supabase
         .from('recruiter_user')
         .insert({
           user_id: authdata.data.user.id,
@@ -120,9 +128,11 @@ const SlideTwoSignUp = () => {
           first_name: details.first_name,
           last_name: details.last_name || '',
           role: 'admin',
-        });
+        })
+        .select();
 
       if (!erroruser) {
+        setRecruiterUser(recruiter_user);
         const { data, error } = await supabase
           .from('recruiter')
           .insert({

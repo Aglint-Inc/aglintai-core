@@ -15,6 +15,7 @@ import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import UITypography from '../../Common/UITypography';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
+import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 interface Details {
   website: string;
@@ -153,32 +154,50 @@ export function FetchCompanyDetails() {
     if ((await formValidation()) && recruiter?.id) {
       const url = details.website.replace(/^https?:\/\//i, '');
       setLoading(true);
-      const { data: companyDetails } = await axios.post(
-        `/api/fetchCompanyDetails`,
-        {
-          domain_name: url,
-        },
+      let [result] = supabaseWrap(
+        await supabase
+          .from('company_search_cache')
+          .select()
+          .eq('website_url', url),
       );
+      let companyDetails;
+      if (result) {
+        companyDetails = result.search_result;
+      } else {
+        const { data } = await axios.post(`/api/fetchCompanyDetails`, {
+          domain_name: url,
+        });
+        companyDetails = data;
+        if (companyDetails) {
+          supabaseWrap(
+            await supabase.from('company_search_cache').insert({
+              company_name: companyDetails.name,
+              search_result: companyDetails,
+              website_url: url,
+            }),
+          );
+        }
+      }
 
       const company_size =
         companyDetails?.estimated_num_employees > 1 &&
         companyDetails?.estimated_num_employees < 5
           ? sizes[0]
           : companyDetails?.estimated_num_employees > 5 &&
-              companyDetails?.estimated_num_employees < 50
-            ? sizes[1]
-            : companyDetails?.estimated_num_employees > 50 &&
-                companyDetails?.estimated_num_employees < 100
-              ? sizes[2]
-              : companyDetails?.estimated_num_employees > 100 &&
-                  companyDetails?.estimated_num_employees < 1000
-                ? sizes[3]
-                : companyDetails?.estimated_num_employees > 1000 &&
-                    companyDetails?.estimated_num_employees < 5000
-                  ? sizes[4]
-                  : companyDetails?.estimated_num_employees > 5000
-                    ? sizes[5]
-                    : '';
+            companyDetails?.estimated_num_employees < 50
+          ? sizes[1]
+          : companyDetails?.estimated_num_employees > 50 &&
+            companyDetails?.estimated_num_employees < 100
+          ? sizes[2]
+          : companyDetails?.estimated_num_employees > 100 &&
+            companyDetails?.estimated_num_employees < 1000
+          ? sizes[3]
+          : companyDetails?.estimated_num_employees > 1000 &&
+            companyDetails?.estimated_num_employees < 5000
+          ? sizes[4]
+          : companyDetails?.estimated_num_employees > 5000
+          ? sizes[5]
+          : '';
       const { data, error } = await supabase
         .from('recruiter')
         .update({
@@ -205,13 +224,17 @@ export function FetchCompanyDetails() {
           company_overview: companyDetails?.short_description || '',
           // technology_score: companyDetails.technologies || [],
           socials: {
-            custom: {},
+            custom: {
+              crunchbase: companyDetails?.crunchbase_url || '',
+              angellist: companyDetails?.angellist_url || '',
+            },
             twitter: companyDetails?.twitter_url || '',
             youtube: companyDetails?.youtube_url || '',
             facebook: companyDetails?.facebook_url || '',
             linkedin: companyDetails?.linkedin_url || '',
             instagram: companyDetails?.instagram_url || '',
           },
+          departments: companyDetails?.keywords || [],
         })
         .eq('id', recruiter.id)
         .select();

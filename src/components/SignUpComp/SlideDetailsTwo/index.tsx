@@ -1,10 +1,12 @@
 import { Autocomplete, Stack } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { BackButton, RcInfoForm, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
+import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 import { industries } from '@/src/utils/industries';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -16,6 +18,7 @@ import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
+import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 type phone = {
   countryCode: string;
   dialCode: string;
@@ -137,7 +140,8 @@ export default SlideDetailsTwo;
 export function CompanyDetails() {
   const router = useRouter();
   const { setStep } = useSignupDetails();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter, setRecruiter, recruiterUser, setRecruiterUser } =
+    useAuthDetails();
   const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
@@ -236,16 +240,88 @@ export function CompanyDetails() {
           industry: recruiter.industry,
         })
         .eq('id', recruiter.id);
-      const { error: e2 } = await supabase
-        .from('recruiter_user')
-        .update({ phone: phone })
-        .eq('recruiter_id', recruiter.id);
-      if (!(e1 && e2)) {
+      cacheUserInfo(recruiterUser.email, recruiterUser.user_id);
+
+      if (!e1) {
         router.push(`?step=${stepObj.atsSystem}`, undefined, {
           shallow: true,
         });
         setStep(stepObj.atsSystem);
       }
+    }
+  };
+
+  const cacheUserInfo = async (email: string, rec_user_id: string) => {
+    try {
+      let [cand] = supabaseWrap(
+        await supabase.from('aglint_candidates').select().eq('email', email),
+      ) as AglintCandidatesTypeDB[];
+
+      let profile_img;
+      let position;
+      if (!cand) {
+        const {
+          data: { person },
+        } = await axios.post('/api/candidatedb/get-email', {
+          email: email,
+        });
+        supabaseWrap(
+          await supabase.from('aglint_candidates').insert({
+            city: person.city,
+            country: person.country,
+            departments: person.departments,
+            email: person.email,
+            email_status: person.email_status,
+            employment_history: person.employment_history,
+            extrapolated_email_confidence: person.extrapolated_email_confidence,
+            facebook_url: person.facebook_url,
+            first_name: person.first_name,
+            functions: person.functions,
+            intent_strength: person.intent_strength,
+            github_url: person.github_url,
+            headline: person.headline,
+            id: person.id,
+            is_likely_to_engage: person.is_likely_to_engage,
+            last_name: person.last_name,
+            linkedin_url: person.linkedin_url,
+            name: person.name,
+            organization: person.organization,
+            organization_id: person.organization_id,
+            phone_numbers: person.phone_numbers,
+            photo_url: person.photo_url,
+            revealed_for_current_team: person.revealed_for_current_team,
+            seniority: person.seniority,
+            show_intent: person.show_intent,
+            state: person.state,
+            subdepartments: person.subdepartments,
+            title: person.title,
+            twitter_url: person.twitter_url,
+            search_query: {},
+          }),
+        );
+        profile_img = person.photo_url;
+        position = person.title;
+      } else {
+        profile_img = cand.photo_url;
+        position = cand.title;
+      }
+
+      supabaseWrap(
+        await supabase
+          .from('recruiter_user')
+          .update({
+            profile_image: profile_img,
+            position: position,
+          })
+          .eq('user_id', rec_user_id),
+      );
+      setRecruiterUser((prev) => ({
+        ...prev,
+        position: position,
+        profile_image: profile_img,
+      }));
+    } catch (err) {
+      //
     }
   };
   return (
@@ -356,10 +432,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                  ? `Invalid phone number. Please use the ${
-                      phonePattern?.replaceAll('.', 'x') || 'correct'
-                    } format.`
-                  : ''
+                ? `Invalid phone number. Please use the ${
+                    phonePattern?.replaceAll('.', 'x') || 'correct'
+                  } format.`
+                : ''
             }
           />
           <Stack

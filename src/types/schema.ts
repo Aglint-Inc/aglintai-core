@@ -489,6 +489,30 @@ export interface Database {
           }
         ]
       }
+      company_search_cache: {
+        Row: {
+          company_name: string
+          created_at: string
+          id: string
+          search_result: Json
+          website_url: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          id?: string
+          search_result: Json
+          website_url: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          id?: string
+          search_result?: Json
+          website_url?: string
+        }
+        Relationships: []
+      }
       env: {
         Row: {
           created_at: string
@@ -542,6 +566,82 @@ export interface Database {
           resume_saved?: boolean
         }
         Relationships: []
+      }
+      job_assiatan_chat: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string
+          last_message: string | null
+          name: string | null
+          thread_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id: string
+          last_message?: string | null
+          name?: string | null
+          thread_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string
+          last_message?: string | null
+          name?: string | null
+          thread_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_assiatan_chat_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      job_assiatan_chat_messages: {
+        Row: {
+          content: Json
+          created_at: string
+          id: number
+          job_assiatan_chat_id: string
+          message_id: string
+          sender: string
+          type: string
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          id?: number
+          job_assiatan_chat_id: string
+          message_id: string
+          sender: string
+          type: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: number
+          job_assiatan_chat_id?: string
+          message_id?: string
+          sender?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_assiatan_chat_messages_job_assiatan_chat_id_fkey"
+            columns: ["job_assiatan_chat_id"]
+            isOneToOne: false
+            referencedRelation: "job_assiatan_chat"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       job_reference: {
         Row: {
@@ -1357,75 +1457,6 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      calc_cosine_sim: {
-        Args: {
-          emb1: string
-          emb2: string
-        }
-        Returns: {
-          similarity: number
-        }[]
-      }
-      calc_sim_score: {
-        Args: {
-          job_ids: string[]
-          skill_qry_emb: string
-          edu_qry_emb: string
-          exp_qry_emb: string
-          resume_qry_emb: string
-          max_records?: number
-          ts_query?: string
-          filter_companies?: string
-        }
-        Returns: {
-          application_id: string
-          created_at: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume_link: string
-          json_resume: Json
-          profile_image: string
-          candidate_id: string
-          job_id: string
-          similarity: number
-          sim_exp: number
-          sim_res: number
-          sim_skills: number
-          sim_educ: number
-        }[]
-      }
-      calc_sim_score2: {
-        Args: {
-          job_ids: string[]
-          skill_qry_emb: string
-          edu_qry_emb: string
-          exp_qry_emb: string
-          resume_qry_emb: string
-          max_records?: number
-          ts_query?: string
-          filter_companies?: string
-        }
-        Returns: {
-          application_id: string
-          created_at: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume_link: string
-          json_resume: Json
-          profile_image: string
-          candidate_id: string
-          job_id: string
-          similarity: number
-          sim_exp: number
-          sim_res: number
-          sim_skills: number
-          sim_educ: number
-        }[]
-      }
       calc_sim_score3: {
         Args: {
           job_ids: string[]
@@ -1521,36 +1552,13 @@ export interface Database {
           total_records: number
         }[]
       }
+      emailhandlercandidatedb: {
+        Args: Record<PropertyKey, never>
+        Returns: unknown
+      }
       embeddingresume: {
         Args: Record<PropertyKey, never>
         Returns: Json
-      }
-      filter_candidates2: {
-        Args: {
-          rec_id: string
-          max_records?: number
-          offset_records?: number
-          location_filter?: string
-          name_filter?: string
-          job_title_filter?: string
-          is_location_desc?: boolean
-          is_name_desc?: boolean
-          is_job_title_desc?: boolean
-        }
-        Returns: {
-          application_id: string
-          created_at: string
-          first_name: string
-          last_name: string
-          job_title: string
-          email: string
-          resume_link: string
-          json_resume: Json
-          profile_image: string
-          candidate_id: string
-          job_id: string
-          total_results: number
-        }[]
       }
       get_combined_resume_score: {
         Args: {
@@ -1601,6 +1609,10 @@ export interface Database {
           status: string
           count: number
         }[]
+      }
+      getoutreachemails: {
+        Args: Record<PropertyKey, never>
+        Returns: unknown
       }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
@@ -1658,6 +1670,10 @@ export interface Database {
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      outreachhandler: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       overviewgenerate: {
         Args: Record<PropertyKey, never>

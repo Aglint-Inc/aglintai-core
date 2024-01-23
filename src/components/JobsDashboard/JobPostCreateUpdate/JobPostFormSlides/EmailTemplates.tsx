@@ -31,9 +31,7 @@ const Emails = () => {
   const { jobForm, formWarnings } = useJobForm();
   const [isLoading, setIsLoading] = useState(false);
   const [editTemplate, setEditTemplate] = useState('application_recieved');
-  const emails: EmailTemplateParams[] = Object.keys(
-    jobForm.formFields.screeningEmail.emailTemplates,
-  )
+  const emails: EmailTemplateParams[] = emailTempKeys
     .filter((path) => {
       if (!jobForm.formFields.assessment) {
         return (
@@ -419,3 +417,11 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
     </>
   );
 };
+
+const emailTempKeys = [
+  'application_recieved',
+  'phone_screening',
+  'interview',
+  'interview_resend',
+  'rejection',
+];

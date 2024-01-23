@@ -520,9 +520,17 @@ const SideNavs = ({ changeSlide }) => {
         }
 
         if (sl.path === 'screening') {
+          let isWarnShow = isShoWWarn(
+            jobForm.formType,
+            formWarnings,
+            sl.path,
+            slidePathToNum[sl.path],
+            jobForm.jobPostId,
+          );
           return (
             <SublinkSubMenu
               key={sl.path}
+              isWarningVisible={isWarnShow}
               isActive={currSlide === sl.path}
               textLink={allSlides.find((s) => s.path === 'screening').title}
               onClickLink={{
