@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     res.status(200).send(emptyThread);
   } catch (error) {
     // console.log(error);
-    return error
+    return error;
   }
 }
 

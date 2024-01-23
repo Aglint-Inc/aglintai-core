@@ -122,8 +122,8 @@ function VideoCandidatePanel() {
                   {speaking
                     ? 'Listening to the question'
                     : listening && !senderRef?.current?.value
-                    ? `Start speaking or click 'edit' to type your answer`
-                    : senderRef?.current?.value}
+                      ? `Start speaking or click 'edit' to type your answer`
+                      : senderRef?.current?.value}
                 </Typography>
               </Stack>
               <Stack

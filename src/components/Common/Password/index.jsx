@@ -28,15 +28,15 @@ const Password = ({ passwordRef, label, error, onChange }) => {
         error?.password?.error
           ? error?.password?.error
           : error?.password?.userError
-          ? error?.password?.userError
-          : false
+            ? error?.password?.userError
+            : false
       }
       helperText={
         error.password.error
           ? error.password.msg
           : error.password.userError
-          ? error.password.userMsg
-          : ''
+            ? error.password.userMsg
+            : ''
       }
       InputProps={{
         disableUnderline: true,

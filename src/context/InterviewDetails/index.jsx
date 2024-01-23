@@ -37,7 +37,7 @@ function InterviewDetailsContextProvider({ children }) {
       const job_Details = await getJobDetails(candidate_details?.job_id);
       if (!job_Details.assessment) {
         router.push('/404');
-        return
+        return;
       }
       if (candidate_details?.length === 0 || job_Details?.length === 0) {
         router.push('/404');
@@ -45,7 +45,8 @@ function InterviewDetailsContextProvider({ children }) {
       }
       if (
         router.pathname.includes(pageRoutes.MOCKTEST) &&
-        candidate_details?.feedback !== null && candidate_details?.feedback !== undefined
+        candidate_details?.feedback !== null &&
+        candidate_details?.feedback !== undefined
       ) {
         router.push(`/thanks-page?id=${application_id}`);
         return;

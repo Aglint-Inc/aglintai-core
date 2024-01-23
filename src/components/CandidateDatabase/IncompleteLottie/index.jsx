@@ -12,7 +12,6 @@ function InCompleteLottie() {
         animationData={incomplete_lottie}
         loop={true}
         autoplay={true}
-        
       />
     </div>
   );

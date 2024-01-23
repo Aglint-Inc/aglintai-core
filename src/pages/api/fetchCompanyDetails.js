@@ -16,7 +16,6 @@
 //   }
 // }
 
-
 import axios from 'axios';
 
 export default async function handler(req, res) {
@@ -27,7 +26,6 @@ export default async function handler(req, res) {
         `https://api.apollo.io/v1/organizations/enrich?api_key=${process.env.APPOLO_API}&domain=${company_domain}`,
       );
       res.status(200).send(data.organization);
-
     } catch (error) {
       res.status(500).send({ data: null, error: error });
     }

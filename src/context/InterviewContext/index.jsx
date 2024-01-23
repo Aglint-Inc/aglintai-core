@@ -45,11 +45,11 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
   const { jobDetails, candidateDetails } = useInterviewDetailsContext();
-  const [recruiter, setRecruiter] = useState({})
+  const [recruiter, setRecruiter] = useState({});
   useEffect(() => {
     getRecruiter(jobDetails?.recruiter_id).then((data) => {
       // console.log(data.video_assessment);
-      setRecruiter(data)
+      setRecruiter(data);
       interviewerIndex = data?.audio_avatar_id;
 
       video_Ids = [];
@@ -608,19 +608,20 @@ function InterviewContextProvider({ children }) {
         data: context,
       },
     );
-    const result = JSON.parse(feedback_response?.response?.content)
+    const result = JSON.parse(feedback_response?.response?.content);
     // *************** Updating tockens ******************
-    axios.post("https://us-central1-aglint-cloud-381414.cloudfunctions.net/token_counter_v1",
+    axios.post(
+      'https://us-central1-aglint-cloud-381414.cloudfunctions.net/token_counter_v1',
       {
         total_token: feedback_response?.token?.total_tokens,
         prompt_token: feedback_response?.token?.prompt_tokens,
         completion_token: feedback_response?.token?.completion_tokens,
-        api: "interview_feedback",
+        api: 'interview_feedback',
         model: 'gpt-3.5-turbo-1106',
-        env: "dev",
+        env: 'dev',
         company_name: recruiter?.name,
-      }
-    )
+      },
+    );
     const convertedArray = Object.entries(result).map(([key, value]) => {
       return { [key]: value };
     });
@@ -640,7 +641,6 @@ function InterviewContextProvider({ children }) {
         rating,
       };
     });
-
 
     const res = await updateFeedbackOnJobApplications(
       router.query.id,

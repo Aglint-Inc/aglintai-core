@@ -18,7 +18,7 @@ function Assistant({ setIsSaving }) {
   const instructionRef = useRef(null);
   const nameRef = useRef(null);
   async function handleClick() {
-    handleChange()
+    handleChange();
     if (recruiter?.assistant_id) {
       updateAssistant();
     } else {
@@ -43,7 +43,6 @@ function Assistant({ setIsSaving }) {
   }
 
   async function updateAssistant() {
-
     await axios.post('/api/assistant/updateAssistant', {
       instructions: instructionRef.current.value,
       name: nameRef.current.value,

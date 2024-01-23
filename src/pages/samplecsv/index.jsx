@@ -1,13 +1,8 @@
 // can be deleted this file : using for testing
 
 import { faker } from '@faker-js/faker';
-import {
-  Button,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { useRef, } from 'react';
+import { Button, Stack, TextField, Typography } from '@mui/material';
+import React, { useRef } from 'react';
 
 import { AppLogo } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
@@ -37,16 +32,9 @@ const CSVGenerator = () => {
       const phone = faker.number.int(9999999999);
       const resume =
         'https://aetdssowoezhaepzhzag.supabase.co/storage/v1/object/public/resume-job-post/public/729ddd04-ea4f-43af-a1f1-d88e1ca9f06a?t=2023-10-04T15:25:41.344Z'; // You can change this if needed
-      const linkedIn = 'https://www.linkedin.com/in/dheerajkumar518/'
+      const linkedIn = 'https://www.linkedin.com/in/dheerajkumar518/';
 
-      const person = [
-        firstName,
-        lastName,
-        email,
-        phone,
-        resume,
-        linkedIn
-      ];
+      const person = [firstName, lastName, email, phone, resume, linkedIn];
       data.push(person);
     }
 

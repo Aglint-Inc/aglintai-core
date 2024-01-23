@@ -4,12 +4,12 @@ module.exports = {
   jsxSingleQuote: true,
   tabWidth: 2,
   semi: true,
-  "overrides": [
+  overrides: [
     {
-      "files": ["*.sql"],
-      "options": {
-        "parser": "none"
-      }
-    }
-  ]
+      files: ['*.sql'],
+      options: {
+        parser: 'none',
+      },
+    },
+  ],
 };

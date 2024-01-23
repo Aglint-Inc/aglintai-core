@@ -6,7 +6,6 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
 export default async function handler(req, res) {
   const application_id = req.body.application_id;
   console.log(application_id);
@@ -28,6 +27,4 @@ export default async function handler(req, res) {
     console.log(error.message);
     res.status(500).send(error.message);
   }
-};
-
-
+}
