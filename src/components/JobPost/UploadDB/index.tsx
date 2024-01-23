@@ -249,7 +249,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       support_link?: string;
       phone_screening_link?: string;
     },
-  ) {
+  ): string {
     let filledTemplate = template;
     const placeholders = {
       '[firstName]': email.first_name,
