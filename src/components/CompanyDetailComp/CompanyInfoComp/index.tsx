@@ -213,13 +213,27 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <>
                   <ImageUpload
                     image={logo}
+                    setImage={(newLogo) => {
+                      setLogo(newLogo);
+                      if (recruiter) {
+                        handleChange({
+                          ...recruiter,
+                          logo: newLogo,
+                        } as RecruiterType);
+                      }
+                    }}
+                    size={70}
+                    table='company-logo'
+                  />
+                  {/* <ImageUpload
+                    image={logo}
                     setImage={setLogo}
                     size={70}
                     table='company-logo'
-                    changeCallback={(data: any) => {
-                      handleChange({ ...recruiter, logo: data });
-                    }}
-                  />
+                    changeCallback={(logo: any) => {
+                      handleChange({ ...recruiter, logo: logo });
+                    }} 
+                  />*/}
                 </>
               }
               onClickChangeLogo={{

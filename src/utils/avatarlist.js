@@ -170,7 +170,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_fe47f8af254b469a87de5b02983736f7_1699180624233.mp4',
     voice_id: '1bd001e7e50f421d891986aad5158bc8',
     normal_preview:
-      'https://files.movio.la/avatar/v3/b596c0849b7942778ad27f63c5995e33_2626/preview_talk_1.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Jessica.png',
     avatar_id: 'Lily_public_lite1_20230601',
     name: 'Leah',
     audio_url:
@@ -227,7 +227,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_f7e0ad1514954fce8ed0a5e80d0d5e20_1699188689078.mp4',
     voice_id: '131a436c47064f708210df6628ef8f32',
     normal_preview:
-      'https://files.movio.la/avatar/v3/dc4c9111fa61481c9c09aad80d697fb2_1053/preview_talk_4.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Emily.png',
     avatar_id: 'Angela-insuit-20220820',
     name: 'Angela',
     audio_url:
@@ -339,7 +339,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_d68875fbf0c14b83842ee7ba5c85dd01_1699186037781.mp4',
     voice_id: '2f72ee82b83d4b00af16c4771d611752',
     normal_preview:
-      'https://files.movio.la/avatar/v3/d99ba541a2c9413b941fa7efe90a1130_1059/preview_target.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Sarah.png',
     avatar_id: 'Daisy-insuit-20220818',
     name: 'Daisy',
     audio_url:
@@ -540,7 +540,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_423236fd645844479be32fdde63853a1_1699186077386.mp4',
     voice_id: 'ec4aa6ac882147ffb679176d49f3e41f',
     normal_preview:
-      'https://files.movio.la/avatar/v3/a43b84ae994d4776a64aba7dc40ad9c9_1126/preview_talk_6.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/John.png',
     avatar_id: 'Jeff-incasualsuit-20220722',
     name: 'Jeff',
     audio_url:
@@ -585,7 +585,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_7e35e4df36c9446ea9f52b1f33f15a6a_1699197263442.mp4',
     voice_id: '3fbd2cac3ddd4c109e17296e324845ec',
     normal_preview:
-      'https://files.movio.la/avatar/v3/05c935f6bd9b48d696f75cfa7efb2714_1065/preview_talk_3.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/William.png',
     avatar_id: 'Jerome-insuit-20220722',
     name: 'Jerome',
     audio_url:
@@ -630,7 +630,7 @@ export const avatar_list = [
       'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/ai_videos/avatar_video/ai_video_2de712ffa0b14633bb6b265d0a443118_1699188990602.mp4',
     voice_id: 'beaa640abaa24c32bea33b280d2f5ea3',
     normal_preview:
-      'https://files.movio.la/avatar/v3/f4712d6634514500b2cbcacd3aaef64b_1058/preview_talk_4.webp',
+      'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/avatar_voice/avatars/Michael.png',
     avatar_id: 'Joon-insuit-20220821',
     name: 'Joon',
     audio_url:

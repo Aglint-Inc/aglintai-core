@@ -50,7 +50,7 @@ const JobPublishButton = () => {
       }
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       await handleUIJobUpdate({ ...job });
-      toast.success('Job Published SuccessFully');
+      toast.success('Job Published Successfully');
       posthog.capture('Publish Job Button Clicked');
     } catch (err) {
       toast.error(API_FAIL_MSG);

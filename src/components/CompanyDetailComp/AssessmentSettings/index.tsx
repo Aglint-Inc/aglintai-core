@@ -85,9 +85,9 @@ function AssessmentSettings({ setIsSaving }) {
       <AssesmentSetting
         textChooseAvatar={
           isVideoAssessment
-            ? `Choose your avatar, this avatar will be featured in AI-generated videos.By default an avatar is selected by aglint
+            ? `Choose your avatar; this avatar will be featured in AI-generated videos. By default, an avatar is selected by Aglint.
       `
-            : `Choose your avatar, this avatar image be shown in the assessment process (audio only)`
+            : `Choose your avatar; this avatar image will be shown in the assessment process (audio only).`
         }
         slotToggleButton={
           <ToggleBtn

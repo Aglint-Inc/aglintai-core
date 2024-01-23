@@ -234,7 +234,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
           setThank(true);
         }
       } else {
-        toast.error('Something went wrong. Please try again later');
+        toast.error('Something went wrong! Please try again later');
       }
     }
   };

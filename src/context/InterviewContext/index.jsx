@@ -559,7 +559,7 @@ function InterviewContextProvider({ children }) {
   // handle listening
   const handleListing = () => {
     if (!browserSupportsSpeechRecognition) {
-      toast.error(`Brawser does't suppert`);
+      toast.error(`Browser does't support`);
       return null;
     }
     if (!listening) {
@@ -579,7 +579,7 @@ function InterviewContextProvider({ children }) {
 
   function stopListening() {
     if (!browserSupportsSpeechRecognition) {
-      toast.error(`Brawser does't suppert`);
+      toast.error(`Browser does't suppoert`);
       return null;
     }
 

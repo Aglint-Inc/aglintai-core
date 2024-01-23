@@ -152,7 +152,7 @@ function JobAssistantProvider({ children }) {
       assistant_id: companyDetails?.assistant_id,
     });
     if (!data) {
-      toast.error('something went wrong!');
+      toast.error('Something went wrong!');
       listMessages();
     } else {
       // intervalId = setInterval(listMessages, 2000);

@@ -58,7 +58,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       setCandidateLists([...candidateLists, data[0]]);
       setIsInputVisible(false);
     } else {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 
@@ -81,7 +81,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       setCandidateLists([...oldList, ...data]);
       setSelectedList([]);
     } else {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 
@@ -123,10 +123,10 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
           timeout: 3000,
         });
       } else {
-        toast.error('Something went wrong. Please try again later.');
+        toast.error('Something went wrong! Please try again later.');
       }
     } catch {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     } finally {
       setIsSaving(false);
     }

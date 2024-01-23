@@ -162,11 +162,11 @@ const AuthProvider = ({ children }) => {
               }
             } else {
               toast.error(
-                'Something went wrong. Please contact aglint support.',
+                'Something went wrong! Please contact aglint support.',
               );
             }
           } else {
-            toast.error('Something went wrong. Please contact aglint support.');
+            toast.error('Something went wrong! Please contact aglint support.');
           }
         }
       }

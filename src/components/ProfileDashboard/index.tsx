@@ -85,14 +85,14 @@ const ProfileDashboard = () => {
       ...initialFormValues,
       value: recruiterUser.first_name,
       required: true,
-      label: 'First name',
+      label: 'First Name',
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
       value: recruiterUser.last_name,
       required: true,
-      label: 'Last name',
+      label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
     phone: {
@@ -135,7 +135,7 @@ const ProfileDashboard = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Repeat New Password',
+      label: 'Re-enter New Password',
       placeholder: 'Re-enter the new password for confirmation.',
     },
   };
@@ -632,6 +632,9 @@ const ProfileForm = ({
                 </IconButton>
               </InputAdornment>
             ),
+            sx: {
+              width: '360px',
+            },
           }}
         />
       );

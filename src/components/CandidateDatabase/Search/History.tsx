@@ -205,7 +205,7 @@ function CandidateSearchHistory() {
       setText('');
       setIsInputVisible(false);
     } else {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 
@@ -227,7 +227,7 @@ function CandidateSearchHistory() {
       setEditText('');
       setEditList(null);
     } else {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 

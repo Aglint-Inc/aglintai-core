@@ -293,7 +293,7 @@ const AddMember = ({
                       inviteUser(form, id).then(({ error, users }) => {
                         if (!error && users) {
                           addMembers(users);
-                          toast.success('Invite send');
+                          toast.success('Invite sent');
                           return onClose();
                         }
                         // @ts-ignore
@@ -335,7 +335,7 @@ const AddMember = ({
                       reinviteUser(member.email, id).then(
                         ({ error, emailSend }) => {
                           if (!error && emailSend) {
-                            return toast.success('Invite send');
+                            return toast.success('Invite sent');
                           }
                           // @ts-ignore
                           return toast.error(error || error?.message);
@@ -551,7 +551,7 @@ function UserRoleManagement({ roles }: { roles: UserRoleManagementType }) {
     delete roles[String(name).toLocaleLowerCase()];
     updateRecruiter({ roles }).then((data) => {
       if (data) {
-        toast.success('Role delete');
+        toast.success('Role deleted');
         setMenu({ edit: false, open: false });
       } else {
         toast.error('Role delete failed');

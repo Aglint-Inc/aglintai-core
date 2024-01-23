@@ -66,7 +66,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
 
     if (res.status === 200) {
       toast.success(
-        'Email are fetching in background. Once done, email will be sent to candidates',
+        'Emails are fetching in the background. Once done, emails will be sent to candidates.',
       );
     } else {
       toast.error('Error sending emails');

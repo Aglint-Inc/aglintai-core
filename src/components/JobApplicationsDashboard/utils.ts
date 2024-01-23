@@ -11,7 +11,7 @@ import toast from '@/src/utils/toast';
 import { PhoneScreeningResponseType } from '../KnockOffQns/ScreeningCtxProvider';
 
 export const handleOngoingWarning = () => {
-  toast.warning('Please wait till the ongoing process has finished');
+  toast.warning('Please wait untill the ongoing process has finished');
 };
 
 export const capitalize = (str: string) => {

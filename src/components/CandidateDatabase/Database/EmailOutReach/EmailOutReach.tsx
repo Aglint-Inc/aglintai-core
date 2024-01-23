@@ -70,7 +70,7 @@ const EmailOutReach = ({
     try {
       if (!candEmailData) return;
       if (email && !email.toEmail && !email.subject && !email.body) {
-        toast.error('please enter correct email, subject and body');
+        toast.error('Please enter the correct email, subject and body.');
         return;
       }
       dispatch({

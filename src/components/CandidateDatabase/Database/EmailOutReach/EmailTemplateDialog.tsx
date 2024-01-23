@@ -92,7 +92,7 @@ const EmailTemplateModalComp = ({
 
       genEmailFromTempJson(newOutReachTemp.templateJson);
       onClose();
-      toast.success('template updated sucessfully');
+      toast.success('Template updated successfully.');
     } catch (err) {
       toast.error(API_FAIL_MSG);
     } finally {

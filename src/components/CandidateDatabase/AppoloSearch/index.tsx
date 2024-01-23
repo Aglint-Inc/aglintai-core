@@ -347,7 +347,7 @@ function AppoloSearch() {
       setText('');
       setIsEditVisible(false);
     } else {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 

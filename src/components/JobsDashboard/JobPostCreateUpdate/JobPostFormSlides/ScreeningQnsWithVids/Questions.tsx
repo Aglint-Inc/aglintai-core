@@ -151,7 +151,7 @@ export const Question = ({
       });
     } catch (err) {
       setIsApiError(true);
-      toast.error('Something went wrong please try again');
+      toast.error('Something went wrong. Please try again');
     }
   };
 

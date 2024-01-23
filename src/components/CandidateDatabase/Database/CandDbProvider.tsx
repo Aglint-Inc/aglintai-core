@@ -96,7 +96,7 @@ const CandDbProvider = ({ children }) => {
         value: updaCandState,
       });
       supabaseWrap(await supabase.from('applications').insert([...newJobApps]));
-      toast.success('Applied to job/s sucessfully');
+      toast.success('Applied to job(s) successfully');
     } catch (er) {
       toast.error(API_FAIL_MSG);
     }
