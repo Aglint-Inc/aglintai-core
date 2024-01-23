@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import {
   CandidateDialog,
   CandidateExperience,
-  CandidateExperienceCard,
-  EmailOutReach,
+  CdExperienceCard,
+  EmailOutReach
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
@@ -57,7 +57,7 @@ function CandidateDetail({
             slotEmailOutReach={
               <EmailOutReach
                 slotLoaderIcon={
-                  <Stack>
+                  <Stack sx={{ mt: '-4px' }}>
                     <LoaderGrey />
                   </Stack>
                 }
@@ -121,45 +121,40 @@ function CandidateDetail({
             slotDetails={
               <CandidateExperience
                 slotCandidateExperienceCard={selectedCandidate?.employment_history.map(
-                  (exp) => (
-                    <CandidateExperienceCard
-                      key={exp.id}
-                      textCompany={exp.organization_name}
-                      textRole={exp.title}
-                      slotLogo={
-                        selectedCandidate?.organization &&
-                        selectedCandidate.organization.id !==
-                          exp.organization_id ? (
-                          <CompanyLogo
-                            companyName={
-                              exp.organization_name
-                                ? exp.organization_name.trim().toLowerCase()
-                                : null
-                            }
-                          />
-                        ) : (
+                  (exp, ind) => {
+                    return (
+                      <CdExperienceCard
+                        key={exp.id}
+                        textRole={exp.organization_name}
+                        isLogoVisible={
+                          selectedCandidate?.organization?.id === exp?.organization_id
+                        }
+                        isActive={ind === 0}
+                        slotLogo={
                           <Avatar
-                            variant='square'
-                            src={
-                              selectedCandidate?.organization &&
-                              selectedCandidate.organization.id ===
-                                exp.organization_id
-                                ? selectedCandidate.organization.logo_url
-                                : ''
-                            }
+                            variant='rounded'
+                            src={selectedCandidate?.organization?.logo_url}
                             sx={{ height: 40, width: 40 }}
-                          />
-                        )
-                      }
-                      textDate={`${dayjs(exp.start_date).format(
-                        'MMM YYYY',
-                      )} - ${
-                        exp.end_date
-                          ? dayjs(exp.end_date).format('MMM YYYY')
-                          : 'Present'
-                      }`}
-                    />
-                  ),
+                          >
+                            <CompanyLogo
+                              companyName={
+                                exp.organization_name
+                                  ? exp.organization_name.trim().toLowerCase()
+                                  : null
+                              }
+                            />
+                          </Avatar>
+                        }
+                        textDate={`${dayjs(exp.start_date).format(
+                          'MMM YYYY',
+                        )} - ${
+                          exp.end_date
+                            ? dayjs(exp.end_date).format('MMM YYYY')
+                            : 'Present'
+                        }`}
+                      />
+                    );
+                  },
                 )}
               />
             }

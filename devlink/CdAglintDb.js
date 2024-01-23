@@ -241,7 +241,8 @@ export function CdAglintDb({
                     className={_utils.cx(
                       _styles,
                       "save-list-wrap-cd",
-                      "pink-btn"
+                      "pink-btn",
+                      "cursor-pointer"
                     )}
                     tag="div"
                     {...onClickEmailOutReach}

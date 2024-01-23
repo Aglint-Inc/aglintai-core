@@ -258,3 +258,7 @@
 .text-grey-400 {
   color: var(--grey400-863ed4b5);
 }
+
+.text-grey-400.mr-4 {
+  margin-right: 4px;
+}

@@ -23,7 +23,6 @@ export interface OutReachCtxType {
   genEmailFromTempJson: (templateJson: any) => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   saveEmail: (email: OutreachedEmail) => Promise<void>;
-  isMutiple: boolean;
 }
 
 type CandEmailData = {
@@ -148,7 +147,6 @@ const OutReachCtx = React.createContext<OutReachCtxType>({
   genEmailFromTempJson: async (templateJson: any) => {},
   // eslint-disable-next-line no-unused-vars
   saveEmail: async (email: OutreachedEmail) => {},
-  isMutiple: false,
 });
 
 // Provider component
@@ -456,7 +454,6 @@ const OutReachCtxProvider = ({
     genEmailTempToemail,
     genEmailFromTempJson,
     saveEmail,
-    isMutiple,
   };
   return <OutReachCtx.Provider value={value}>{children}</OutReachCtx.Provider>;
 };

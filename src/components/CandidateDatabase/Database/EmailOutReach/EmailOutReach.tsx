@@ -26,7 +26,11 @@ import toast from '@/src/utils/toast';
 import EmailTemplateModalComp from './EmailTemplateDialog';
 import { useOutReachCtx } from './OutReachCtx';
 
-const EmailOutReach = ({ onClose }) => {
+const EmailOutReach = ({
+  onClose,
+  isRegenerateVisible = true,
+  isAddFieldEditorVisible = false,
+}) => {
   const {
     state: OutreachState,
     dispatch,
@@ -113,6 +117,8 @@ const EmailOutReach = ({ onClose }) => {
   return (
     <>
       <CdEmailOutreach
+        isAddFieldEditorVisible={isAddFieldEditorVisible}
+        isRegenerateVisible={isRegenerateVisible}
         isEmailBodyVisible={!OutreachState.isEmailLoading}
         isLoading={OutreachState.isEmailLoading}
         isEmailInputVisible={showEmailEditor}

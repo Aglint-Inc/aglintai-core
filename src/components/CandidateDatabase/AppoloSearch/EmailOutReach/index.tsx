@@ -37,7 +37,12 @@ function EmailOutReachComp() {
             // selCandidates={selCands}
             selcandidate={null}
           >
-            <EmailOutReachMultiple selCandidates={selCands} />
+            <EmailOutReachMultiple
+              selCandidates={selCands}
+              onClose={() => {
+                setEmailOutReach(null);
+              }}
+            />
           </OutReachCtxProvider>
         ) : (
           <OutReachCtxProvider
@@ -56,6 +61,7 @@ function EmailOutReachComp() {
             }
           >
             <EmailOutReach
+              isRegenerateVisible={false}
               onClose={() => {
                 setEmailOutReach(null);
               }}

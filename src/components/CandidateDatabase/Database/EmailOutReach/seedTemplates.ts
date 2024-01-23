@@ -27,13 +27,6 @@ export const outReachTemplates: TemplateType[] = [
           ],
         },
         {
-          type: 'AiPrompt',
-          attrs: {
-            aiPrompt:
-              'Add one sentence on why the candidate is a good fit for this company and also mention candidates strength',
-          },
-        },
-        {
           type: 'paragraph',
           content: [
             {
@@ -80,13 +73,6 @@ export const outReachTemplates: TemplateType[] = [
           ],
         },
         {
-          type: 'AiPrompt',
-          attrs: {
-            aiPrompt:
-              'Add one sentence on why the individual would be a great person to expand the network to . mention specific reasons.',
-          },
-        },
-        {
           type: 'paragraph',
           content: [
             {
@@ -131,13 +117,6 @@ export const outReachTemplates: TemplateType[] = [
               type: 'text',
             },
           ],
-        },
-        {
-          type: 'AiPrompt',
-          attrs: {
-            aiPrompt:
-              'Add one sentence on why the candidate is a good fit for this company and also mention candidates strength',
-          },
         },
         {
           type: 'paragraph',

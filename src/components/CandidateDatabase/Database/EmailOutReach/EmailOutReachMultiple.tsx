@@ -23,7 +23,7 @@ import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
 
-const EmailOutReachMultiple = ({ selCandidates }) => {
+const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
@@ -89,9 +89,17 @@ const EmailOutReachMultiple = ({ selCandidates }) => {
   return (
     <>
       <CdEmailOutreach
+        isEditVisible={false}
+        tipsAutoFilledVisible={true}
+        isToEmailHeaderVisible={false}
         isRegenerateVisible={false}
         isEmailInputVisible={true}
         isEmailSuccess={false}
+        onClickBack={{
+          onClick: () => {
+            onClose();
+          },
+        }}
         slotEmailSuccessCard={
           <>
             {outReachedEmails.map((eSent, idx) => {

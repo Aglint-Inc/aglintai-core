@@ -35,16 +35,16 @@
   left: -3px;
   top: auto;
   right: 0%;
-  bottom: -6px;
+  bottom: -3px;
   z-index: 2;
 
   width: 56px;
   padding: 3px 10px;
 
-  border: 1px solid #e9ebed;
+  border: 1px solid #cee2f2;
   border-radius: 100px;
 
-  background-color: white;
+  background-color: #edf7ff;
 }
 
 .text-xsm {
