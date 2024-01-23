@@ -47,12 +47,27 @@ export default async function handler(
   };
 
   try {
+    let query = {
+      page: requestData.page,
+      per_page: requestData.per_page,
+      person_titles: requestData.person_titles,
+      person_locations: requestData.person_locations,
+      organization_ids: requestData.organization_ids,
+    };
+
+    if (requestData.person_locations.length === 0) {
+      delete query.person_locations;
+    }
+
+    if (requestData.organization_ids.length === 0) {
+      delete query.organization_ids;
+    }
+
     const response = await axios.post(
       apiUrl,
       {
         api_key: 'AMw7kom6e0a7EUhSuLJF4A',
-        contact_email_status: ['verified'],
-        ...requestData,
+        ...query,
       },
       { headers },
     );

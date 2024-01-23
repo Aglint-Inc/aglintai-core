@@ -4,7 +4,6 @@ import * as _interactions from "./interactions";
 import { ButtonOutlinedRegular } from "./ButtonOutlinedRegular";
 import { SortButton } from "./SortButton";
 import { FilterButton } from "./FilterButton";
-import { AiIcon } from "./AiIcon";
 import { CandidateDatabaseRow } from "./CandidateDatabaseRow";
 import { Pagination } from "./Pagination";
 import * as _utils from "./utils";
@@ -47,36 +46,55 @@ export function CandidateDatabaseTable({
           tag="div"
         >
           <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-761", "cursor-pointer")}
+            tag="div"
+            {...onClickAiSearch}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M8.35355%201.64645C8.52712%201.82001%208.5464%202.08944%208.41141%202.28431L8.35355%202.35355L4.707%206L8.35355%209.64645C8.52712%209.82001%208.5464%2010.0894%208.41141%2010.2843L8.35355%2010.3536C8.17999%2010.5271%207.91056%2010.5464%207.71569%2010.4114L7.64645%2010.3536L3.64645%206.35355C3.47288%206.17999%203.4536%205.91056%203.58859%205.71569L3.64645%205.64645L7.64645%201.64645C7.84171%201.45118%208.15829%201.45118%208.35355%201.64645Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {"Back to search"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Candidate Database"}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
+            className={_utils.cx(_styles, "div-block-760")}
             tag="div"
           >
-            {"-"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
-            tag="div"
-          >
-            {textCandidateCount}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"("}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"500"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {")"}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cd-right-wrap-btn")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-626", "cursor-pointer")}
-            tag="div"
-            {...onClickReset}
-          >
-            <_Builtin.HtmlEmbed value="%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M9%202.17769V0.5C9%200.223858%209.22386%200%209.5%200C9.77614%200%2010%200.223858%2010%200.5V3C10%203.57614%209.57614%204%209%204H6.5C6.22386%204%206%203.77614%206%203.5C6%203.22386%206.22386%203%206.5%203H8.37537C7.33852%201.65831%206.34847%201%204.9%201C2.69893%201%201%202.75286%201%205C1%207.20995%202.76251%209%204.9%209C6.01159%209%207.0891%208.49716%207.8263%207.66782C8.00975%207.46143%208.32579%207.44284%208.53218%207.6263C8.73857%207.80975%208.75716%208.12579%208.5737%208.33218C7.65014%209.37119%206.30269%2010%204.9%2010C2.20672%2010%200%207.7588%200%205C0%202.20745%202.13953%200%204.9%200C6.64331%200%207.84267%200.74845%209%202.17769Z%22%20fill%3D%22%231F73B7%22%20style%3D%22fill%3A%231F73B7%3Bfill%3Acolor(display-p3%200.1216%200.4510%200.7176)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E" />
-            <_Builtin.Block tag="div">{"Reset"}</_Builtin.Block>
-          </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
             {slotButtonOutlinedPrimary ?? (
               <ButtonOutlinedRegular textLabel="Import Candidate" />
@@ -87,17 +105,6 @@ export function CandidateDatabaseTable({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             {slotFilter ?? <FilterButton />}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div" {...onClickAiSearch}>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "generate-btn-cd", "kale-200")}
-              tag="div"
-            >
-              <_Builtin.Block className={_utils.cx(_styles, "icons")} tag="div">
-                <AiIcon />
-              </_Builtin.Block>
-              <_Builtin.Block tag="div">{"AI Search"}</_Builtin.Block>
-            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

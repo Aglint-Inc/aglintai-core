@@ -144,7 +144,7 @@ function CandidateSearchHistory() {
 
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
-        per_page: 50,
+        per_page: 25,
         ...aiSearchQuery,
       });
 
@@ -161,7 +161,7 @@ function CandidateSearchHistory() {
           .from('candidate_search_history')
           .insert({
             recruiter_id: recruiter.id,
-            query_json: { page: 1, per_page: 50, ...aiSearchQuery },
+            query_json: { page: 1, per_page: 25, ...aiSearchQuery },
             search_results: resCand.data.people,
             search_query: searchQuery,
             db_search: 'aglint',

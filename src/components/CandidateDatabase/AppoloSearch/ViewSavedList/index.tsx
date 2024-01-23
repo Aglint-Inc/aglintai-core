@@ -11,6 +11,11 @@ function ViewSavedList() {
   const setSelectedCandidate = useBoundStore(
     (state) => state.setSelectedCandidate,
   );
+  const setSelectedCandidates = useBoundStore(
+    (state) => state.setSelectedCandidates,
+  );
+  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -62,8 +67,10 @@ function ViewSavedList() {
                   textCountCandidate={`(${list.candidates.length} candidates)`}
                   onClickList={{
                     onClick: () => {
-                      setSelectedCandidate(null);
                       router.push(`/candidates/aglintdb?list=${list.id}`);
+                      setSelectedCandidates([]);
+                      setIsSelectAll(false);
+                      setSelectedCandidate(null);
                     },
                   }}
                 />

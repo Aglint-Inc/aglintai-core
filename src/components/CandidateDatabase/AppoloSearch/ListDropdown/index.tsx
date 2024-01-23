@@ -8,6 +8,13 @@ import { useBoundStore } from '@/src/store';
 function ListDropdown({ anchorEl, handleClose, setAnchorEl }) {
   const router = useRouter();
   const lists = useBoundStore((state) => state.lists);
+  const setSelectedCandidate = useBoundStore(
+    (state) => state.setSelectedCandidate,
+  );
+  const setSelectedCandidates = useBoundStore(
+    (state) => state.setSelectedCandidates,
+  );
+  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
 
   const open = Boolean(anchorEl);
   const id = open ? 'drop' : undefined;
@@ -48,6 +55,9 @@ function ListDropdown({ anchorEl, handleClose, setAnchorEl }) {
                   onClick: () => {
                     setAnchorEl(null);
                     router.push(`/candidates/aglintdb?list=${list.id}`);
+                    setSelectedCandidates([]);
+                    setIsSelectAll(false);
+                    setSelectedCandidate(null);
                   },
                 }}
               />

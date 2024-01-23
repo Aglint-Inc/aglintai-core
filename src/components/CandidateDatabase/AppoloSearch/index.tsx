@@ -218,10 +218,9 @@ function AppoloSearch() {
 
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
-        per_page: 50,
+        per_page: 25,
         person_titles: filters.jobTitles,
         person_locations: filters.locations,
-        organization_num_employees_ranges: [filters.companySize],
         organization_ids: org_ids,
       });
 
@@ -238,9 +237,10 @@ function AppoloSearch() {
         .update({
           query_json: {
             page: 1,
-            per_page: 50,
+            per_page: 25,
             person_titles: filters.jobTitles,
             person_locations: filters.locations,
+            organization_ids: org_ids,
           },
           candidates: fetchedIds,
           used_credits: {
@@ -414,6 +414,9 @@ function AppoloSearch() {
         onClickBack={{
           onClick: () => {
             window.history.back();
+            setSelectedCandidates([]);
+            setIsSelectAll(false);
+            setSelectedCandidate(null);
           },
         }}
         slotInput={
@@ -456,11 +459,13 @@ function AppoloSearch() {
             isChecked={isSelectAll}
             onClickCheck={{
               onClick: () => {
-                setIsSelectAll(!isSelectAll);
-                if (isSelectAll) {
-                  setSelectedCandidates([]);
-                } else {
-                  setSelectedCandidates(candidates);
+                if (candidates.length > 0) {
+                  setIsSelectAll(!isSelectAll);
+                  if (isSelectAll) {
+                    setSelectedCandidates([]);
+                  } else {
+                    setSelectedCandidates(candidates);
+                  }
                 }
               },
             }}
@@ -470,6 +475,10 @@ function AppoloSearch() {
         onClickCandidateData={{
           onClick: () => {
             router.push('/candidates/history?currentTab=aglint+candidates');
+            setSelectedCandidates([]);
+            setIsSelectAll(false);
+            setCandidateHistory(null);
+            setSelectedCandidate(null);
           },
         }}
         onClickEditQuery={{
