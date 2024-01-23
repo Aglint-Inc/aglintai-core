@@ -252,7 +252,7 @@ const AuthProvider = ({ children }) => {
       const redirect = window.location.href;
       if (isRoutePublic(router.route)) return;
       else if (!loading && !userDetails)
-        router.push(`/signup?redirect=${encodeURIComponent(redirect)}`);
+        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
 

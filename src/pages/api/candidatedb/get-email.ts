@@ -22,7 +22,7 @@ export default async function handler(
   try {
     const response = await axios.post(
       apiUrl,
-      { api_key: 'AMw7kom6e0a7EUhSuLJF4A', ...requestData },
+      { api_key: process.env.APPOLO_API, ...requestData },
       { headers },
     );
 
