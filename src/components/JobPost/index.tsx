@@ -92,9 +92,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           <InterviewCompleted
             onClickSupport={{
               onClick: () => {
-                application?.application_id &&
+                application?.id &&
                   window.open(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application?.application_id}`,
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application?.id}`,
                   );
               },
             }}
