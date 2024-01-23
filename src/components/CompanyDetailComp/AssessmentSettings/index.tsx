@@ -17,7 +17,11 @@ import { supabase } from '@/src/utils/supabaseClient';
 import MuiPopup from '../../Common/MuiPopup';
 
 let tempObj = avatar_list[0];
-function AssessmentSettings({ setIsSaving }) {
+function AssessmentSettings({
+  setIsSaving,
+  isVideoAssessment,
+  setIsVideoAssessment,
+}) {
   const [index, setIndex] = useState(null);
   const { recruiter } = useAuthDetails();
 
@@ -67,11 +71,9 @@ function AssessmentSettings({ setIsSaving }) {
     }
   }
 
-  const [isVideoAssessment, setIsVideoAssessment] = useState(false);
   const [audioAvatarIndex, setAudioAvatarIndex] = useState(0);
 
   useEffect(() => {
-    setIsVideoAssessment(recruiter?.video_assessment);
     setAudioAvatarIndex(recruiter?.audio_avatar_id);
   }, [recruiter]);
 
@@ -79,7 +81,6 @@ function AssessmentSettings({ setIsSaving }) {
     updateRecruiter(recruiter?.id, value);
     setIsVideoAssessment(value);
   }
-
   return (
     <div>
       <AssesmentSetting
