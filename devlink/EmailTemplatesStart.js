@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { EmailTemplateCards } from "./EmailTemplateCards";
+import { EditEmail } from "./EditEmail";
 import * as _utils from "./utils";
 import _styles from "./EmailTemplatesStart.module.css";
 
@@ -24,7 +25,7 @@ export function EmailTemplatesStart({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-508")} tag="div">
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-757")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-507")}
           tag="div"
@@ -65,7 +66,9 @@ export function EmailTemplatesStart({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotEmailDetails}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotEmailDetails ?? <EditEmail />}
+      </_Builtin.Block>
     </_Component>
   );
 }

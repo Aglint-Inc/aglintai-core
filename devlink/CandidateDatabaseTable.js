@@ -15,7 +15,7 @@ const _interactionsData = JSON.parse(
 
 export function CandidateDatabaseTable({
   as: _Component = _Builtin.Block,
-  textCandidateCount = "This is some text inside of a div block.",
+  textCandidateCount = "20",
   slotButtonOutlinedPrimary,
   slotCandidateRows,
   onClickCheck = {},
@@ -81,7 +81,7 @@ export function CandidateDatabaseTable({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"500"}
+              {textCandidateCount}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "fw-semibold")}
@@ -110,7 +110,7 @@ export function CandidateDatabaseTable({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "cdcard-wrap")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "cdcard-sub-wrap")}
+          className={_utils.cx(_styles, "cdcard-sub-wrap", "no-wrapp")}
           tag="div"
         >
           <_Builtin.Block
@@ -122,7 +122,8 @@ export function CandidateDatabaseTable({
                 _styles,
                 "cv-list-row-2",
                 "top",
-                "bg-grey-100"
+                "bg-grey-100",
+                "height-60"
               )}
               tag="div"
             >
@@ -288,41 +289,46 @@ export function CandidateDatabaseTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-620")}
+            className={_utils.cx(_styles, "div-block-763")}
             tag="div"
-            {...propsOpacity}
           >
-            {slotCandidateRows ?? (
-              <>
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-                <CandidateDatabaseRow />
-              </>
-            )}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-620")}
+              tag="div"
+              {...propsOpacity}
+            >
+              {slotCandidateRows ?? (
+                <>
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                  <CandidateDatabaseRow />
+                </>
+              )}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "job-page-nav-bar")}
@@ -330,7 +336,6 @@ export function CandidateDatabaseTable({
           >
             {slotPagination ?? <Pagination />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-616")}

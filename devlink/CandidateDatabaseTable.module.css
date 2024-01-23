@@ -457,11 +457,14 @@
   flex: 1;
 }
 
+.cdcard-sub-wrap.no-wrapp {
+  flex: 1;
+}
+
 .div-block-627 {
   position: sticky;
   top: 0px;
   z-index: 3;
-  align-self: baseline;
 }
 
 .cv-list-row-2 {
@@ -474,6 +477,7 @@
 .cv-list-row-2.item {
   position: relative;
   z-index: 1;
+  flex: auto;
   transition: all 300ms ease;
   cursor: pointer;
 }
@@ -510,6 +514,10 @@
 
 .cv-list-row-2.top.bg-grey-100 {
   background-color: #f8f9f9;
+}
+
+.cv-list-row-2.top.bg-grey-100.height-60 {
+  height: 60px;
 }
 
 .cv-list-item-highlight {
@@ -710,7 +718,15 @@
   right: 0%;
   bottom: 0%;
 
+  display: flex;
+  align-items: center;
+
   background-color: #f8f9f9;
+}
+
+.div-block-763 {
+  display: flex;
+  align-items: center;
 }
 
 .div-block-620 {
@@ -719,6 +735,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  flex: 0 0 auto;
 }
 
 .job-page-nav-bar {
