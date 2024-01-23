@@ -25,7 +25,6 @@ import {
   JobDetailsFilterBlock,
   JobDetailsTabs,
   SelectActionBar,
-  SelectActionsDropdown,
   // SortArrows,
   TopApplicantsTable,
 } from '@/devlink2';
@@ -37,11 +36,12 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
+import MailCandidate from './CandidateActions/mailCandidate';
+import MoveCandidate from './CandidateActions/moveCandidate';
 import FilterJobApplications from './Common/FilterJobApplications';
 import SortJobApplications from './Common/SortJobApplications';
 import ResumeUpload from './FileUpload';
@@ -49,7 +49,6 @@ import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
 import ImportCandidatesCSV from './ImportCandidatesCsv';
 import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
-import { MoveCandidateDialog } from './MoveCandidateDialog';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 import Loader from '../Common/Loader';
@@ -78,6 +77,8 @@ const JobApplicationComponent = () => {
     allApplicationsDisabled,
     section,
     handleManualRefresh,
+    handleSelectNextSection,
+    handleSelectPrevSection,
   } = useJobApplications();
   const router = useRouter();
 
@@ -89,6 +90,16 @@ const JobApplicationComponent = () => {
   const [applicationLimit, setApplicationLimit] = useState(job.count);
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
+
+  const { pressed: shift } = useKeyPress('Shift');
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+  const { pressed: up } = useKeyPress('ArrowUp');
+  const { pressed: down } = useKeyPress('ArrowDown');
+  const upShift = shift && up;
+  const downShift = shift && down;
+  const leftShift = shift && left;
+  const rightShift = shift && right;
 
   const handleSelectCurrentApplication = (i: number) => {
     setCurrentApplication(i);
@@ -108,6 +119,25 @@ const JobApplicationComponent = () => {
   useEffect(() => {
     setApplicationLimit(job.count);
   }, [...Object.values(job.count)]);
+
+  useEffect(() => {
+    if (sectionApplications.length !== 0) {
+      if (upShift) {
+        handleSelectPrevApplication();
+        return;
+      } else if (downShift) {
+        handleSelectNextApplication();
+        return;
+      }
+    }
+    if (rightShift) {
+      handleSelectNextSection();
+      return;
+    }
+    if (leftShift) {
+      handleSelectPrevSection();
+    }
+  }, [upShift, downShift, rightShift, leftShift]);
 
   return (
     <>
@@ -219,7 +249,7 @@ const ApplicationTable = ({
     section,
     job,
     atsSync,
-    showInterview,
+    views,
     cardStates: {
       checkList: { list, disabled },
     },
@@ -283,9 +313,9 @@ const ApplicationTable = ({
     <AllApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
       isAllChecked={isAllChecked}
-      isInterviewVisible={showInterview}
+      isInterviewVisible={views.assessment}
       slotCandidatesList={applicantsList}
-      isScreeningVisible={section !== JobApplicationSections.NEW}
+      isScreeningVisible={views.screening}
     />
   ) : (
     <TopApplicantsTable
@@ -566,7 +596,7 @@ const AddCandidates = ({
 };
 
 const NewJobDetailsTabs = () => {
-  const { job, section, setSection } = useJobApplications();
+  const { job, section, handleSelectSection } = useJobApplications();
   const count = job.count;
 
   return (
@@ -574,28 +604,28 @@ const NewJobDetailsTabs = () => {
       isNewSelected={section === JobApplicationSections.NEW}
       countNew={count.new}
       onClickNew={{
-        onClick: () => setSection(JobApplicationSections.NEW),
+        onClick: () => handleSelectSection(JobApplicationSections.NEW),
       }}
       isAssessmentSelected={section === JobApplicationSections.ASSESSMENT}
       countAssessment={count.assessment}
       isAssessmentVisible={job.assessment}
       onClickAssessment={{
-        onClick: () => setSection(JobApplicationSections.ASSESSMENT),
+        onClick: () => handleSelectSection(JobApplicationSections.ASSESSMENT),
       }}
       isScreeningSelected={section === JobApplicationSections.SCREENING}
       countScreening={count.screening}
       onClickScreening={{
-        onClick: () => setSection(JobApplicationSections.SCREENING),
+        onClick: () => handleSelectSection(JobApplicationSections.SCREENING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
       countDisqualified={count.disqualified}
       onClickDisqualified={{
-        onClick: () => setSection(JobApplicationSections.DISQUALIFIED),
+        onClick: () => handleSelectSection(JobApplicationSections.DISQUALIFIED),
       }}
       isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
       countQualified={count.qualified}
       onClickQualified={{
-        onClick: () => setSection(JobApplicationSections.QUALIFIED),
+        onClick: () => handleSelectSection(JobApplicationSections.QUALIFIED),
       }}
     />
   );
@@ -614,7 +644,6 @@ const ApplicantsList = ({
   currentApplication: number;
 }) => {
   const {
-    showInterview,
     allApplicationsDisabled,
     cardStates: {
       checkList: { list, disabled },
@@ -710,7 +739,6 @@ const ApplicantsList = ({
               application={application}
               index={i}
               handleSelect={handleSelect}
-              isInterview={showInterview}
               handleOpenDetails={() => handleSelectCurrentApplication(i)}
               isSelected={currentApplication === i}
             />
@@ -740,8 +768,6 @@ const EmptyList = ({ section }: { section: JobApplicationSections }) => {
 
 const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
   const {
-    handleJobApplicationSectionUpdate,
-    job,
     section,
     applications,
     paginationLimit,
@@ -749,42 +775,10 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
       checkList: { list, disabled },
     },
     setCardStates,
+    showDisqualificationEmailComponent,
   } = useJobApplications();
 
-  const [open, setOpen] = useState(false);
-  const [destination, setDestination] = useState<JobApplicationSections>(null);
-
   const [selectAll, setSelectAll] = useState(false);
-  const [purpose, setPurpose] = useState<
-    JobApplicationEmails['request']['purpose']
-  >(getPurpose(destination));
-
-  const handleUpdateSection = async () => {
-    if (!disabled) {
-      setOpen(false);
-      setCardStates((prev) => ({
-        ...prev,
-        checkList: { ...prev.checkList, disabled: true },
-      }));
-      await handleJobApplicationSectionUpdate(
-        {
-          source: section,
-          destination,
-        },
-        purpose,
-        list,
-        selectAll,
-      );
-      setCardStates((prev) => ({
-        ...prev,
-        checkList: {
-          disabled: false,
-          list: new Set(),
-        },
-      }));
-      setSelectAll(false);
-    }
-  };
 
   const handleSelectAll = () => {
     if (!disabled) {
@@ -801,58 +795,39 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
     }
   };
 
+  const showDisqualify = showDisqualificationEmailComponent || selectAll;
+
+  const [openMail, setOpenMail] = useState(false);
+
   useEffect(() => {
     if (list.size !== applications[section].length) setSelectAll(false);
   }, [list.size]);
 
-  const isChecked = list.size !== 0;
-  const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
-  const showScreening = isChecked && section === JobApplicationSections.NEW;
-  const showInterview =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING) &&
-    job.assessment;
-  const showQualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT);
-  const showDisqualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT ||
-      section === JobApplicationSections.QUALIFIED);
-  const checkListCount = selectAll ? applicationLimit[section] : list.size;
-
-  const handleOpen = (destination: JobApplicationSections) => {
-    setOpen(true);
-    setDestination(destination);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setTimeout(() => setDestination(null), 100);
-  };
-
   return (
     <>
-      <MoveCandidateDialog
-        open={open}
-        onClose={() => handleClose()}
-        destination={destination}
-        onSubmit={async () => await handleUpdateSection()}
-        checked={purpose !== null}
-        checkAction={async () =>
-          setPurpose((prev) => (prev ? null : getPurpose(destination)))
-        }
-        count={selectAll ? applicationLimit[section] : list.size}
-      />
+      {openMail && (
+        <MailCandidate
+          open={openMail}
+          setOpen={setOpenMail}
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
+        />
+      )}
       <SelectActionBar
         isSendScreeningVisible={section === JobApplicationSections.SCREENING}
-        // onclickSendScreening={{
-        //   onClick: handleSendBulkPhoneScreeningEmail,
-        // }}
+        onclickSendScreening={{
+          onClick: () => setOpenMail(true),
+        }}
+        isAssessmentVisible={section === JobApplicationSections.ASSESSMENT}
+        onclickAssessment={{
+          onClick: () => setOpenMail(true),
+        }}
+        isDisqualifyVisible={
+          section === JobApplicationSections.DISQUALIFIED && showDisqualify
+        }
+        onclickDisqualify={{
+          onClick: () => setOpenMail(true),
+        }}
         onClickClear={{
           onClick: () =>
             setCardStates((prev) => ({
@@ -863,62 +838,24 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
               },
             })),
         }}
-        textSelected={`${checkListCount} candidate${
-          checkListCount !== 1 ? 's' : ''
-        } selected`}
+        textSelected={`${
+          selectAll ? applicationLimit[section] : list.size
+        } candidate${list.size !== 1 ? 's' : ''} selected`}
         selectAllText={`Select all ${applicationLimit[section]} candidates`}
         isSelectAllVisible={
           !selectAll && applicationLimit[section] > paginationLimit
         }
         onclickSelectAll={{ onClick: () => handleSelectAll() }}
         slotDropdown={
-          <>
-            <SelectActionsDropdown
-              isInterview={showInterview}
-              onClickInterview={{
-                onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
-              }}
-              isQualified={showQualified}
-              onClickQualified={{
-                onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
-              }}
-              isDisqualified={showDisqualified}
-              onClickDisqualified={{
-                onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
-              }}
-              onClickMoveNew={{
-                onClick: () => handleOpen(JobApplicationSections.NEW),
-              }}
-              isMoveNew={showNew}
-              onClickScreening={{
-                onClick: () => handleOpen(JobApplicationSections.SCREENING),
-              }}
-              isScreening={showScreening}
-            />
-          </>
+          <MoveCandidate
+            applicationLimit={applicationLimit}
+            selectAll={selectAll}
+            setSelectAll={setSelectAll}
+          />
         }
       />
     </>
   );
-};
-
-const getPurpose = (
-  destination: JobApplicationSections,
-): JobApplicationEmails['request']['purpose'] => {
-  switch (destination) {
-    case JobApplicationSections.NEW:
-      return null;
-    case JobApplicationSections.ASSESSMENT:
-      return 'interview';
-    case JobApplicationSections.SCREENING:
-      return 'phone_screen';
-    case JobApplicationSections.QUALIFIED:
-      return null;
-    case JobApplicationSections.DISQUALIFIED:
-      return 'rejection';
-    default:
-      return null;
-  }
 };
 
 export default JobApplicationsDashboard;

@@ -9,6 +9,12 @@ export const useKeyPress = (key: KeyboardEvent['key']) => {
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     if (key === event.key) setPressed(false);
   }, []);
+  const handleKeyLeft = useCallback((event: KeyboardEvent) => {
+    if (key === event.key) setPressed(true);
+  }, []);
+  const handleKeyRight = useCallback((event: KeyboardEvent) => {
+    if (key === event.key) setPressed(false);
+  }, []);
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown, false);
     return () => {
@@ -21,6 +27,18 @@ export const useKeyPress = (key: KeyboardEvent['key']) => {
       document.removeEventListener('keyup', handleKeyUp, false);
     };
   }, [handleKeyUp]);
+  useEffect(() => {
+    document.addEventListener('keyleft', handleKeyLeft, false);
+    return () => {
+      document.removeEventListener('keyleft', handleKeyLeft, false);
+    };
+  }, [handleKeyLeft]);
+  useEffect(() => {
+    document.addEventListener('keyright', handleKeyRight, false);
+    return () => {
+      document.removeEventListener('keyright', handleKeyRight, false);
+    };
+  }, [handleKeyRight]);
   return { pressed };
 };
 

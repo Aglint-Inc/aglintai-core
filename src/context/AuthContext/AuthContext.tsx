@@ -27,6 +27,7 @@ import { Session } from './types';
 
 interface ContextValue {
   userDetails: Session | null;
+  userCountry: string | null;
   // eslint-disable-next-line no-unused-vars
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
@@ -54,6 +55,7 @@ interface ContextValue {
 
 const defaultProvider = {
   userDetails: null,
+  userCountry: 'us',
   setUserDetails: () => {},
   handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
@@ -102,6 +104,7 @@ const AuthProvider = ({ children }) => {
   );
   const [allrecruterRelation, setAllrecruterRelation] =
     useState<RecruiterRelationsType>(null);
+  const [userCountry, setUserCountry] = useState('us');
 
   const [loading, setLoading] = useState<boolean>(true);
   const [role, setRole] = useState<RoleType>(null);
@@ -186,6 +189,22 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchUserLocation = async () => {
+    try {
+      const response = await fetch('https://ipinfo.io/json', {
+        headers: {
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
+      });
+      const data = await response.json();
+
+      const country = data.country; // Extract the country code from the response
+      setUserCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
+    } catch (error) {
+      // Handle any errors that occur during the API call
+    }
+  };
+
   const handleUpdateProfile = async (
     details: Partial<RecruiterUserType>,
     id?: string,
@@ -244,7 +263,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getSupabaseSession();
+    Promise.all([getSupabaseSession(), fetchUserLocation()]);
   }, []);
 
   useEffect(() => {
@@ -260,6 +279,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         userDetails,
+        userCountry,
         setUserDetails,
         recruiter,
         handleUpdateProfile,

@@ -11,4 +11,8 @@ declare function SelectActionBar(props: {
   slotDropdown?: Types.Devlink.Slot;
   isSendScreeningVisible?: Types.Visibility.VisibilityConditions;
   onclickSendScreening?: Types.Devlink.RuntimeProps;
+  isAssessmentVisible?: Types.Visibility.VisibilityConditions;
+  onclickAssessment?: Types.Devlink.RuntimeProps;
+  isDisqualifyVisible?: Types.Visibility.VisibilityConditions;
+  onclickDisqualify?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

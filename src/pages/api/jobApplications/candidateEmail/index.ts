@@ -6,11 +6,17 @@ import {
 } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { readCandidates, sendMails, updateApplication } from './utils';
+import {
+  readCandidates,
+  readSomeCandidates,
+  sendMails,
+  updateApplication,
+} from './utils';
 import { type ReadJobApplicationApi } from '../read';
 import { handleRead } from '../read/utils';
 
@@ -36,37 +42,50 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         },
       },
     );
-    const { job, purpose, candidates, sections, parameter } =
+    const { job, purposes, applicationIds, sections, parameter } =
       req.body as JobApplicationEmails['request'];
-    if (candidates && candidates.length !== 0) {
-      const results = await updateSomeApplications(
+    const errorMessages = purposes.reduce((acc, curr) => {
+      if (!job?.email_template[curr])
+        acc.push(
+          `Missing email template for ${capitalize(curr).replace(
+            'resend',
+            'follow up',
+          )}`,
+        );
+      return acc;
+    }, []);
+    if (errorMessages.length !== 0) {
+      res.status(200).json({ confrmation: false, error: errorMessages });
+    }
+    if (applicationIds && applicationIds.length !== 0) {
+      const { results, candidates } = await updateSomeApplications(
         supabase,
-        candidates,
-        purpose,
+        applicationIds,
+        purposes,
         sections,
         job,
         parameter,
       );
+      res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
-        sendMails(job, purpose, candidates, sgMail);
+        sendMails(supabase, job, purposes, candidates, sgMail);
       } catch (e) {
         //do nothing
       }
-      res.status(200).send(results as ReadJobApplicationApi['response']);
     } else {
-      const results = await updateAllApplications(
+      const { results, candidates } = await updateAllApplications(
         supabase,
-        purpose,
+        purposes,
         sections,
         job,
         parameter,
       );
+      res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
-        sendMails(job, purpose, candidates, sgMail);
+        sendMails(supabase, job, purposes, candidates, sgMail);
       } catch (e) {
         //do nothing
       }
-      res.status(200).send(results as ReadJobApplicationApi['response']);
     }
     return;
   } catch (e) {
@@ -77,18 +96,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
 const updateSomeApplications = async (
   supabase: ReturnType<typeof createServerClient<Database>>,
-  candidates: JobApplicationEmails['request']['candidates'],
-  purpose: JobApplicationEmails['request']['purpose'],
+  candidateIds: JobApplicationEmails['request']['applicationIds'],
+  purposes: JobApplicationEmails['request']['purposes'],
   sections: JobApplicationEmails['request']['sections'],
   job: JobApplicationEmails['request']['job'],
   parameter: JobApplicationEmails['request']['parameter'],
 ) => {
   const { ranges, sort, filter, search } = parameter;
+  const candidates = await readSomeCandidates(supabase, candidateIds);
   await updateApplication(
     supabase,
     job,
     candidates,
-    purpose,
+    purposes,
     sections.destination,
   );
   const results = await handleRead(
@@ -100,12 +120,12 @@ const updateSomeApplications = async (
     filter,
     search,
   );
-  return results;
+  return { results, candidates };
 };
 
 const updateAllApplications = async (
   supabase: ReturnType<typeof createServerClient<Database>>,
-  purpose: JobApplicationEmails['request']['purpose'],
+  purposes: JobApplicationEmails['request']['purposes'],
   sections: JobApplicationEmails['request']['sections'],
   job: JobApplicationEmails['request']['job'],
   parameter: JobApplicationEmails['request']['parameter'],
@@ -123,7 +143,7 @@ const updateAllApplications = async (
     supabase,
     job,
     candidates,
-    purpose,
+    purposes,
     sections.destination,
   );
   const results = await handleRead(
@@ -135,7 +155,7 @@ const updateAllApplications = async (
     filter,
     search,
   );
-  return results;
+  return { results, candidates };
 };
 
 export type JobApplicationEmails = {
@@ -147,8 +167,8 @@ export type JobApplicationEmails = {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     };
-    purpose?: keyof EmailTemplateType;
-    candidates?: Awaited<ReturnType<typeof readCandidates>>;
+    purposes: (keyof EmailTemplateType)[];
+    applicationIds?: string[]; //Awaited<ReturnType<typeof readCandidates>>;
     parameter: Omit<
       ReadJobApplicationApi['request'],
       'job_id' | 'sections' | 'apiStatus'

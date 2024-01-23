@@ -27,13 +27,13 @@ const FilterJobApplications = ({
 }: {
   setApplicationLimit: Dispatch<SetStateAction<CountJobs>>;
 }) => {
-  const { searchParameters, section, showInterview } = useJobApplications();
+  const { searchParameters, section, views } = useJobApplications();
   const [filterVisibility, setFilterVisibility] = useState(false);
   const [filters, setFilters] = useState(searchParameters.filter);
   const filterCount = Object.entries(searchParameters.filter).reduce(
     (acc, [key, value]) => {
       if (
-        !(key === 'interview_score' && !showInterview) &&
+        !(key === 'interview_score' && !views.assessment) &&
         (value as any).active
       )
         acc += 1;
@@ -92,7 +92,7 @@ const ApplicationFilterBody = ({
     handleJobApplicationFilter,
     allApplicationsDisabled,
     setAllApplicationsDisabled,
-    showInterview,
+    views,
   } = useJobApplications();
 
   const handleResetSection = (section: keyof FilterParameter) => {
@@ -121,11 +121,11 @@ const ApplicationFilterBody = ({
       setAllApplicationsDisabled(false);
     }
   };
-  const isDefault = captureChanges(filters, defaultFilters, showInterview);
+  const isDefault = captureChanges(filters, defaultFilters, views.assessment);
   const hasChanges = captureChanges(
     filters,
     searchParameters.filter,
-    showInterview,
+    views.assessment,
   );
   const filterButtons = (
     <Stack
@@ -248,11 +248,11 @@ const CandidateFilters = ({
   // eslint-disable-next-line no-unused-vars
   handleResetSection: (section: keyof FilterParameter) => void;
 }) => {
-  const { showInterview } = useJobApplications();
+  const { views } = useJobApplications();
   return (
     <Stack gap={'40px'}>
       {Object.entries(filters).map(([key, val], i) =>
-        !showInterview && key === 'interview_score' ? (
+        !views.assessment && key === 'interview_score' ? (
           <></>
         ) : (
           <CandidateFilterCheckbox
