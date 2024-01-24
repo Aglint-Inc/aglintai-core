@@ -18,7 +18,6 @@
   width: 516px;
   padding-right: 20px;
   align-items: center;
-  flex: 0 0 auto;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -40,6 +39,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 0 0 auto;
 
   border-radius: 100%;
 }

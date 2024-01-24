@@ -10,6 +10,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import { companyType } from '@/src/utils/userRoles';
 
 import AddNewCompany from './AddNewCompany';
+import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 function CompanyList() {
   // const router = useRouter();
@@ -115,7 +116,14 @@ function CompanyList() {
                 objectFit: 'contain',
               },
             }}
-          />
+          >
+            <Icon
+              variant='CompanyOutlined'
+              height='24'
+              width='24'
+              color='#87929D'
+            />
+          </Avatar>
         }
         isDropdownBodyVisible={openCompanyList}
         slotCompanyList={allCompanies.map((ele, i) => {

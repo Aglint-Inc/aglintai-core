@@ -19,11 +19,8 @@ import MuiAvatar from '../../../Common/MuiAvatar';
 import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 
 function CandidateDetail({
-  handleBookmark,
   emailOutReachHandler,
 }: {
-  // eslint-disable-next-line no-unused-vars
-  handleBookmark: (candidate: Candidate) => void;
   // eslint-disable-next-line no-unused-vars
   emailOutReachHandler: (selCandidate: Candidate) => Promise<boolean>;
 }) {
@@ -117,11 +114,6 @@ function CandidateDetail({
             isStarActive={candidateHistory?.bookmarked_candidates?.includes(
               selectedCandidate?.id,
             )}
-            onClickStar={{
-              onClick: () => {
-                handleBookmark(selectedCandidate);
-              },
-            }}
             isLinkedinVisible={Boolean(selectedCandidate?.linkedin_url)}
             isPhoneVisible={false}
             isViewResumeVisible={false}

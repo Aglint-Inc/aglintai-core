@@ -77,7 +77,7 @@ export function CdTableAglint({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
                 tag="div"
               >
                 {textName}
@@ -89,9 +89,14 @@ export function CdTableAglint({
                 />
               ) : null}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
+              className={_utils.cx(_styles, "one-line-clamp")}
+              tag="div"
+            >
+              {textRole}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
               tag="div"
             >
               {textLocation}

@@ -21,7 +21,7 @@ export function AddToList({
       {...onClickAddtoList}
     >
       <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
-        {"Add to list"}
+        {"Save to list"}
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "icons")}

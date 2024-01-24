@@ -1,4 +1,4 @@
-import { Avatar, Stack } from '@mui/material';
+import { Avatar, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep, set } from 'lodash';
@@ -140,42 +140,6 @@ function AppoloSearch() {
     return true;
   };
 
-  const handleBookmark = async (candidate: Candidate) => {
-    if (!candidateHistory.bookmarked_candidates.includes(candidate.id)) {
-      setCandidateHistory({
-        ...candidateHistory,
-        bookmarked_candidates: [
-          ...candidateHistory.bookmarked_candidates,
-          candidate.id,
-        ],
-      });
-      await supabase
-        .from('candidate_search_history')
-        .update({
-          bookmarked_candidates: [
-            ...candidateHistory.bookmarked_candidates,
-            candidate.id,
-          ],
-        })
-        .eq('id', Number(router.query.id));
-    } else {
-      setCandidateHistory({
-        ...candidateHistory,
-        bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
-          (id) => id !== candidate.id,
-        ),
-      });
-      await supabase
-        .from('candidate_search_history')
-        .update({
-          bookmarked_candidates: candidateHistory.bookmarked_candidates.filter(
-            (id) => id !== candidate.id,
-          ),
-        })
-        .eq('id', Number(router.query.id));
-    }
-  };
-
   // console.log(candidateHistory);
 
   const handlePillRemove = (path, index) => {
@@ -206,6 +170,8 @@ function AppoloSearch() {
       }
 
       setIsFilterLoading(true);
+      setSelectedCandidates([]);
+      setSelectedCandidate(null);
       let org_ids = [];
 
       if (filters.companies.length > 0) {
@@ -291,7 +257,12 @@ function AppoloSearch() {
 
       if (!error) {
         setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
-        setCandidates(fetchedCandidates);
+        setCandidates(
+          fetchedCandidates.map((cand) => ({
+            ...cand,
+            email_fetch_status: 'not fetched',
+          })),
+        );
       }
       setIsFilterLoading(false);
       setIsFilterOpen(false);
@@ -326,6 +297,7 @@ function AppoloSearch() {
         const updatedSelectedCandidate = {
           ...selCandidate,
           email: resEmail.data.person?.email,
+          email_fetch_status: 'success',
         };
 
         // Update the selected candidate array
@@ -353,7 +325,7 @@ function AppoloSearch() {
 
         if (!error) {
           // Update the candidate history in state
-          setCandidates(updatedSearchResults);
+          setCandidates(updatedSearchResults as unknown as Candidate[]);
           setEmailOutReach('single');
           return true;
         }
@@ -588,13 +560,15 @@ function AppoloSearch() {
           },
         }}
         slotEmailOut={
-          <CandidateDetail
-            handleBookmark={handleBookmark}
-            emailOutReachHandler={emailOutReachHandler}
-          />
+          <CandidateDetail emailOutReachHandler={emailOutReachHandler} />
         }
         slotCdTableAglint={
-          <Stack overflow={'auto'} height={'calc(100vh - 112px)'}>
+          <Stack
+            overflow={'auto'}
+            height={'calc(100vh - 112px)'}
+            width={'100%'}
+            pt={'2px'}
+          >
             {loading && <Loader />}
             {!loading && candidates?.length === 0 && (
               <CdAglintEmptyTable
@@ -637,18 +611,6 @@ function AppoloSearch() {
                         }}
                       />
                     }
-                    onClickBookmark={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        handleBookmark(candidate);
-                      },
-                    }}
-                    onClickBookMarked={{
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        handleBookmark(candidate);
-                      },
-                    }}
                     onClickCard={{
                       onClick: () => {
                         setSelectedCandidate(candidate);
@@ -729,6 +691,10 @@ function AppoloSearch() {
                               />
                             );
                           })}
+                        <Typography variant='body2'>
+                          {candidate.employment_history.length > 3 &&
+                            `+ ${candidate.employment_history.length - 3} more`}
+                        </Typography>
                       </>
                     }
                     slotProfileImage={
@@ -753,7 +719,8 @@ function AppoloSearch() {
                   />
                 </ScrollList>
               ))}
-            {!loading &&
+            {router.query.id &&
+              !loading &&
               candidates?.length > 0 &&
               candidateHistory?.query_json.pagination.page <
                 candidateHistory?.query_json.pagination.total_pages && (
