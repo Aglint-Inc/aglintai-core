@@ -11,6 +11,7 @@ import {
   CdAglintEmptyTable,
   CdExperienceCard,
   CdTableAglint,
+  CdTableLoader,
   Checkbox,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -33,7 +34,6 @@ import {
   updateCredits,
 } from './utils';
 import ViewSavedList from './ViewSavedList';
-import Loader from '../../Common/Loader';
 import LoaderGrey from '../../Common/LoaderGrey';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
@@ -569,7 +569,6 @@ function AppoloSearch() {
             width={'100%'}
             pt={'2px'}
           >
-            {loading && <Loader />}
             {!loading && candidates?.length === 0 && (
               <CdAglintEmptyTable
                 slotLottie={<EmptyStateCandidateSearchAglint />}
@@ -617,7 +616,7 @@ function AppoloSearch() {
                       },
                     }}
                     key={candidate.id}
-                    textName={candidate.name}
+                    textName={candidate.name || '--'}
                     textRole={
                       candidate.title +
                       (candidate.employment_history
@@ -718,6 +717,10 @@ function AppoloSearch() {
                     }
                   />
                 </ScrollList>
+              ))}
+            {(loading || fetchingNextPage) &&
+              Array.from({ length: 25 }, (_, index) => (
+                <CdTableLoader key={index} />
               ))}
             {router.query.id &&
               !loading &&

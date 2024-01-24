@@ -28,4 +28,5 @@ declare function CdAglintDb(props: {
   onClickBack?: Types.Devlink.RuntimeProps;
   isListHeaderVisible?: Types.Visibility.VisibilityConditions;
   isCdHeaderVisible?: Types.Visibility.VisibilityConditions;
+  isLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

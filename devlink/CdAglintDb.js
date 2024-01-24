@@ -37,6 +37,7 @@ export function CdAglintDb({
   onClickBack = {},
   isListHeaderVisible = false,
   isCdHeaderVisible = true,
+  isLoading = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
