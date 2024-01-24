@@ -205,6 +205,7 @@ const CandDatabase = () => {
                     style={{
                       opacity: isLoading ? 0.5 : 1,
                       transition: 'all 0.5s ease 0s',
+                      display: 'flex',
                     }}
                   >
                     <CandidateDatabaseRow

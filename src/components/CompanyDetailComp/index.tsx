@@ -98,7 +98,7 @@ const CompanyDetailComp = () => {
               />
             )}
             <NavSublink
-              textLink={'Email Settings'}
+              textLink={'Email Templates'}
               isActive={router.query?.tab === 'email'}
               onClickNav={{
                 onClick: () => {

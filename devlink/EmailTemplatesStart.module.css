@@ -7,6 +7,7 @@
   width: 440px;
   padding-top: 20px;
   padding-right: 20px;
+  flex: 0 0 auto;
 }
 
 .div-block-507 {
@@ -324,6 +325,10 @@
   grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+}
+
+.div-block-772 {
+  width: 100%;
 }
 
 #w-node-_7a13e008-ea54-7273-6b2d-06ecde60cc59-adb6be91 {

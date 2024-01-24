@@ -359,6 +359,14 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .slot-saved {
   display: flex;
   align-items: center;
@@ -522,10 +530,6 @@
 
 .text-sm.color-emial {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 0.36);
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-kale-600 {
@@ -786,6 +790,10 @@
 
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
+}
+
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
 .rd-company-edit-btns {
@@ -1103,6 +1111,7 @@
 .rd-company-primary-info-2 {
   display: flex;
   max-width: 870px;
+  padding-top: 20px;
   padding-bottom: 40px;
   flex-direction: column;
   align-items: stretch;
@@ -1669,6 +1678,5 @@
 
 .div-block-698 {
   width: 100%;
-  padding-top: 20px;
   padding-left: 20px;
 }

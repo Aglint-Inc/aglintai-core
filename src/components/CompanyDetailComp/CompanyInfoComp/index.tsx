@@ -71,7 +71,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   }, [recruiter]);
   return (
     <Stack
-      sx={{ overflowY: 'scroll', height: 'calc(100vh - 60px)', pb: '20px' }}
+      sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
       width={'100%'}
     >
       <YTransform uniqueKey={router.query.tab}>
