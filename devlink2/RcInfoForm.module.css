@@ -115,6 +115,10 @@
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
 
+.fw-semibold.text-blue-600.text-dec-none {
+  text-decoration: none;
+}
+
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
@@ -164,7 +168,7 @@
   border-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
   border-radius: 10px;
 
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .sl-com-title-info-block {

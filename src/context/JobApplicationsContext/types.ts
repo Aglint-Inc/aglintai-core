@@ -39,6 +39,10 @@ export type JobApplication = Applications & {
   assessment_results: Partial<AssessmentResults> & {
     id: AssessmentResults['id'];
   };
+  emailValidity?: {
+    isFetching: boolean;
+    isValidEmail: boolean;
+  };
 };
 
 export type Parameters = {

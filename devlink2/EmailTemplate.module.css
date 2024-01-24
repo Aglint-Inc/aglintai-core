@@ -67,8 +67,8 @@
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+.text-gray-500 {
+  color: var(--gray-500);
 }
 
 .fw-semibold.z-index-5 {
@@ -107,10 +107,6 @@
   }
 }
 
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
 .hide {
   display: none;
   flex-direction: row;
@@ -124,6 +120,10 @@
 
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.fw-semibold.text-blue-600.text-dec-none {
+  text-decoration: none;
 }
 
 .text-red-500 {
@@ -148,6 +148,10 @@
 
 .text-black-100 {
   color: var(--black-100);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .rd-company-sidebar {
@@ -186,6 +190,14 @@
 
 .text-green-600 {
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-lg.text-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-gray-400 {
+  color: var(--gray-400);
 }
 
 .rd-company-edit-btns {
@@ -587,6 +599,15 @@
   opacity: 0.7;
 }
 
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
 .text-blue-500.ml-12 {
   margin-left: 8px;
 }
@@ -609,15 +630,6 @@
   border-width: 1px;
   border-color: rgba(31, 115, 183, 1);
   border-radius: 4px;
-}
-
-.clickable {
-  transition: all 300ms ease;
-  cursor: pointer;
-}
-
-.clickable:hover {
-  opacity: 0.8;
 }
 
 .label-8 {

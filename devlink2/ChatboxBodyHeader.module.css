@@ -46,8 +46,8 @@
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+.text-gray-500 {
+  color: var(--gray-500);
 }
 
 .fw-semibold.z-index-5 {
@@ -86,10 +86,6 @@
   }
 }
 
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
 .hide {
   display: none;
   flex-direction: row;
@@ -103,6 +99,10 @@
 
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.fw-semibold.text-blue-600.text-dec-none {
+  text-decoration: none;
 }
 
 .text-red-500 {
@@ -127,6 +127,10 @@
 
 .text-black-100 {
   color: var(--black-100);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .cb-bh-top-right {
@@ -213,14 +217,6 @@
   background-color: hsla(0, 0.00%, 33.73%, 1.00);
 }
 
-.icon-block.screening {
-  width: 100%;
-  height: 100%;
-  padding: 2px;
-  border-radius: 2px;
-  background-color: var(--grey-200);
-}
-
 .icon-block._12x12 {
   width: 12px;
   height: 12px;
@@ -267,13 +263,13 @@
   min-width: 40px;
 }
 
-.grey-200 {
-  background-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
-}
-
 .icon-block._40x40.cs-add {
   border-radius: 12px;
-  background-color: var(--grey-200);
+  background-color: var(--gray-200);
+}
+
+.icon-block.height-12 {
+  height: 12px;
 }
 
 .icon-block._50x50 {
@@ -283,13 +279,13 @@
   min-width: 50px;
 }
 
-.icon-block._50x50.cs-add {
-  border-radius: 12px;
-  background-color: var(--grey-200);
+.icon-block._50x50.contain.relative {
+  position: relative;
+  z-index: 5;
 }
 
-.icon-block.height-12 {
-  height: 12px;
+.icon-block.contain {
+  object-fit: contain;
 }
 
 .svg-icon {
@@ -321,18 +317,6 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.text-green-700 {
-  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
-}
-
-.text-blue-700 {
-  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -341,4 +325,8 @@
 
 .text-no-wrap {
   white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
 }

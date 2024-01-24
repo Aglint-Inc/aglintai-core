@@ -20,14 +20,6 @@
   margin-bottom: 90px;
 }
 
-.sl-logo-block.absolute {
-  position: absolute;
-  left: 50px;
-  top: 32px;
-  right: auto;
-  bottom: auto;
-}
-
 .svg-icon {
   display: flex;
   width: 100%;
@@ -57,16 +49,8 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.text-green-700 {
-  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
-}
-
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
-}
-
-.text-blue-700 {
-  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
 }
 
 .text-blue-500 {
@@ -89,11 +73,6 @@
   flex-direction: column;
   grid-column-gap: 22px;
   grid-row-gap: 22px;
-}
-
-.sl-login-block.gap-80 {
-  grid-column-gap: 80px;
-  grid-row-gap: 80px;
 }
 
 .sl-login-main-wrapper {
@@ -141,8 +120,8 @@
   text-align: center;
 }
 
-.text-grey-700 {
-  color: hsla(205.26315789473685, 11.52%, 32.35%, 1.00);
+.text-gray-700 {
+  color: var(--gray-700);
 }
 
 .text-gray-600 {
@@ -163,6 +142,10 @@
 
 .text-no-wrap {
   white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
 }
 
 .sl-login-form {

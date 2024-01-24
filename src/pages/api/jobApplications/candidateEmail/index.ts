@@ -56,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
     }, []);
     if (errorMessages.length !== 0) {
       res.status(200).json({ confrmation: false, error: errorMessages });
+      return;
     }
     if (applicationIds && applicationIds.length !== 0) {
       const { results, candidates } = await updateSomeApplications(
@@ -101,7 +102,10 @@ const updateSomeApplications = async (
   sections: JobApplicationEmails['request']['sections'],
   job: JobApplicationEmails['request']['job'],
   parameter: JobApplicationEmails['request']['parameter'],
-) => {
+): Promise<{
+  results: Awaited<ReturnType<typeof handleRead>>;
+  candidates: Awaited<ReturnType<typeof readCandidates>>;
+}> => {
   const { ranges, sort, filter, search } = parameter;
   const candidates = await readSomeCandidates(supabase, candidateIds);
   await updateApplication(

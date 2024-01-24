@@ -5,4 +5,6 @@ declare function AssessmentScore(props: {
   as?: React.ElementType;
   textScore?: React.ReactNode;
   props?: Types.Devlink.RuntimeProps;
+  isError?: Types.Visibility.VisibilityConditions;
+  isScoreVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -8,7 +8,12 @@ import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
   checkSyncCand,
   FilterParameter,
+  getAssessmentStatus,
   getDisqualificationStatus,
+  getScreeningStatus,
+  // getAssessmentStatus,
+  // getDisqualificationStatus,
+  // getScreeningStatus,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
@@ -247,10 +252,44 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   };
 
   const showDisqualificationEmailComponent = applications
-    ? applications[JobApplicationSections.DISQUALIFIED]?.filter(
-        (a) => getDisqualificationStatus(a.status_emails_sent).isNotInvited,
-      )?.length > 0 ?? false
+    ? applications[JobApplicationSections.DISQUALIFIED]
+        ?.filter(
+          (a) => getDisqualificationStatus(a.status_emails_sent).isNotInvited,
+        )
+        ?.filter((a) => cardStateManager.disqualified.checkList.list.has(a.id))
+        .length > 0 ?? false
     : false;
+
+  const showAssessmentEmailComponent =
+    applications && applications[JobApplicationSections.ASSESSMENT]
+      ? applications[JobApplicationSections.ASSESSMENT]
+          ?.filter((a) => {
+            const { isNotInvited, isPending } = getAssessmentStatus(
+              a.status_emails_sent,
+              {
+                created_at: a.assessment_results?.created_at ?? null,
+                feedback: a.assessment_results?.feedback ?? null,
+              },
+            );
+            return isNotInvited || isPending;
+          })
+          ?.filter((a) => cardStateManager.assessment.checkList.list.has(a.id))
+          .length > 0 ?? false
+      : false;
+
+  const showScreeningEmailComponent =
+    applications && applications[JobApplicationSections.SCREENING]
+      ? applications[JobApplicationSections.SCREENING]
+          ?.filter((a) => {
+            const { isNotInvited, isPending } = getScreeningStatus(
+              a.status_emails_sent,
+              a.phone_screening,
+            );
+            return isNotInvited || isPending;
+          })
+          ?.filter((a) => cardStateManager.screening.checkList.list.has(a.id))
+          .length > 0 ?? false
+      : false;
 
   //PRIMARY
   const handleJobApplicationSectionRead = async (
@@ -540,7 +579,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           case JobApplicationSections.QUALIFIED:
             return { [s]: initialJobLoad };
           case JobApplicationSections.DISQUALIFIED:
-            return { [s]: initialJobLoad };
+            return {
+              [s]:
+                initialJobLoad &&
+                section === JobApplicationSections.DISQUALIFIED,
+            };
         }
       }),
       // eslint-disable-next-line no-unused-vars
@@ -603,6 +646,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     initialLoad,
     views,
     showDisqualificationEmailComponent,
+    showAssessmentEmailComponent,
+    showScreeningEmailComponent,
   };
 
   return value;

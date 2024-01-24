@@ -57,3 +57,7 @@
 .text-no-wrap {
   white-space: nowrap;
 }
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}

@@ -3,11 +3,15 @@ import { MailService } from '@sendgrid/mail';
 import { createServerClient } from '@supabase/ssr';
 
 import {
+  candidateEmailValidity,
   FilterParameter,
   getAllApplicationStatus,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
+import {
+  JobApplication,
+  JobApplicationSections,
+} from '@/src/context/JobApplicationsContext/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -25,7 +29,7 @@ export const readSomeCandidates = async (
   const { data, error } = await supabase
     .from('applications')
     .select(
-      'id, status_emails_sent, phone_screening, candidates (first_name, last_name, email), assessment_results!assessment_results_application_id_fkey(feedback)',
+      'id, status_emails_sent, phone_screening, candidate_id,  candidates (first_name, last_name, email), assessment_results!assessment_results_application_id_fkey(feedback, created_at)',
     )
     .in('id', applicationIds);
   if (error) throw new Error(error.message);
@@ -36,14 +40,21 @@ export const readSomeCandidates = async (
       id,
       status_emails_sent,
       phone_screening,
+      candidate_id,
     }) => ({
       first_name,
       last_name,
       email,
+      candidate_id,
       application_id: id,
       status_emails_sent,
       phone_screening,
-      feedback: assessment_results[0]?.feedback ?? null,
+      assessment_results: {
+        feedback: (assessment_results[0]?.feedback ??
+          null) as JobApplication['assessment_results']['feedback'],
+        created_at: (assessment_results[0]?.created_at ??
+          null) as JobApplication['assessment_results']['created_at'],
+      },
     }),
   );
   return candidates;
@@ -73,6 +84,7 @@ export const readCandidates = async (
       id,
       status_emails_sent,
       phone_screening,
+      candidate_id,
     }) => ({
       first_name,
       last_name,
@@ -80,7 +92,13 @@ export const readCandidates = async (
       application_id: id,
       status_emails_sent,
       phone_screening,
-      feedback: assessment_results?.feedback ?? null,
+      candidate_id,
+      assessment_results: {
+        feedback: (assessment_results?.feedback ??
+          null) as JobApplication['assessment_results']['feedback'],
+        created_at: (assessment_results?.created_at ??
+          null) as JobApplication['assessment_results']['created_at'],
+      },
     }),
   );
   return candidates;
@@ -199,40 +217,56 @@ const getUpdateEmailStatus = (
   purposes: JobApplicationEmails['request']['purposes'],
   candidate: Candidates[number],
 ) => {
+  const { isValidEmail } = candidateEmailValidity(
+    candidate.email,
+    candidate.candidate_id,
+  );
   const { assessmentStatus, screeningStatus, disqualificationStatus } =
     getAllApplicationStatus(
       candidate.status_emails_sent,
       candidate.phone_screening,
-      candidate.feedback,
+      candidate.assessment_results,
     );
+  const timeStamp = new Date().toISOString();
   return Object.assign(
     {},
     ...purposes.reduce((acc, curr) => {
       switch (curr) {
         case 'rejection':
           {
-            if (disqualificationStatus.isNotInvited) acc.push({ [curr]: true });
+            if (isValidEmail && disqualificationStatus.isNotInvited)
+              acc.push({ [curr]: timeStamp });
           }
           break;
         case 'interview':
           {
-            if (assessmentStatus.isNotInvited) acc.push({ [curr]: true });
+            if (isValidEmail && assessmentStatus.isNotInvited)
+              acc.push({ [curr]: timeStamp });
           }
           break;
         case 'interview_resend':
           {
-            if (!assessmentStatus.isNotInvited && assessmentStatus.isPending)
-              acc.push({ [curr]: true });
+            if (
+              isValidEmail &&
+              !assessmentStatus.isNotInvited &&
+              assessmentStatus.isPending
+            )
+              acc.push({ [curr]: timeStamp });
           }
           break;
         case 'phone_screening':
           {
-            if (screeningStatus.isNotInvited) acc.push({ [curr]: true });
+            if (isValidEmail && screeningStatus.isNotInvited)
+              acc.push({ [curr]: timeStamp });
           }
           break;
         case 'phone_screening_resend': {
-          if (!screeningStatus.isNotInvited && screeningStatus.isPending) {
-            acc.push({ [curr]: true });
+          if (
+            isValidEmail &&
+            !screeningStatus.isNotInvited &&
+            screeningStatus.isPending
+          ) {
+            acc.push({ [curr]: timeStamp });
           }
         }
       }
@@ -240,7 +274,7 @@ const getUpdateEmailStatus = (
     }, []),
   ) as {
     // eslint-disable-next-line no-unused-vars
-    [key in JobApplicationEmails['request']['purposes'][number]]: boolean;
+    [key in JobApplicationEmails['request']['purposes'][number]]: string;
   };
 };
 

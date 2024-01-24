@@ -9,7 +9,7 @@
   position: sticky;
   top: 0px;
   padding: 16px;
-  border-bottom: 1px solid var(--grey-200);
+  border-bottom: 1px solid var(--gray-200);
 }
 
 .text-lg {
@@ -33,10 +33,6 @@
   font-weight: 600;
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
-}
-
 .text-color-black {
   color: var(--black-9b0fc3fc);
 }
@@ -49,6 +45,18 @@
   display: inline;
   margin-right: 2px;
   margin-left: 2px;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-lg.text-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-gray-400 {
+  color: var(--gray-400);
 }
 
 .cb-body-wrapper {

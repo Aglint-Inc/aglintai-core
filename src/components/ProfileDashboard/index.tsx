@@ -478,9 +478,7 @@ const validateMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
-    /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-      value.trim(),
-    )
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(value.trim())
   );
 };
 const validatePhone = (value: string) => {

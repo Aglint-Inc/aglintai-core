@@ -16,8 +16,8 @@ declare function AllCandidateListItem(props: {
   onclickCandidate?: Types.Devlink.RuntimeProps;
   experience?: React.ReactNode;
   location?: React.ReactNode;
-  isScreenStatusPending?: Types.Visibility.VisibilityConditions;
-  isScreenStatusSubmitted?: Types.Visibility.VisibilityConditions;
-  isScreeningStatusNotInvited?: Types.Visibility.VisibilityConditions;
   isScreeningVisible?: Types.Visibility.VisibilityConditions;
+  slotScreening?: Types.Devlink.Slot;
+  isDisqualifiedVisible?: Types.Visibility.VisibilityConditions;
+  slotDisqualified?: Types.Devlink.Slot;
 }): React.JSX.Element;
