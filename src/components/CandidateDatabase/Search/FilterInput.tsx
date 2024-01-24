@@ -42,7 +42,7 @@ const FilterInput = ({
       <div style={{ position: 'relative' }}>
         <Popover
           disableAutoFocus
-          id='add-job'
+          id='filter-input'
           open={open}
           anchorEl={anchorEl}
           onClose={handleClosePop}
