@@ -43,6 +43,13 @@
   margin-top: 12px;
 }
 
+.relative.mt-12.flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .relative.width-inc {
   width: 162.1171875px;
 }
@@ -326,6 +333,10 @@
 
 .mt-5 {
   margin-top: 5px;
+}
+
+.div-block-764 {
+  margin-top: 12px;
 }
 
 .accessment-toggle-wrap {

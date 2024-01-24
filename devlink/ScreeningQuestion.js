@@ -14,6 +14,8 @@ export function ScreeningQuestion({
   isUploadChecked = false,
   slotToggleInstructionVideo,
   isUploadVisible = true,
+  slotWarning,
+  isWarningVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-562")} tag="div">
@@ -45,6 +47,14 @@ export function ScreeningQuestion({
               }
             </_Builtin.Block>
           </_Builtin.Block>
+          {isWarningVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-764")}
+              tag="div"
+            >
+              {slotWarning}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "accessment-toggle-wrap", "mt-28")}
             tag="div"

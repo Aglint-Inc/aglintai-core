@@ -11,4 +11,6 @@ declare function ScreeningQuestion(props: {
   isUploadChecked?: Types.Visibility.VisibilityConditions;
   slotToggleInstructionVideo?: Types.Devlink.Slot;
   isUploadVisible?: Types.Visibility.VisibilityConditions;
+  slotWarning?: Types.Devlink.Slot;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -9,6 +9,8 @@ import {
   AssessmentSetting,
   AudioSwitcherCard,
   EnableAssessment,
+  JobEditWarning,
+  JobWarningList,
   ScreeningQuestion,
   VideoSwitcherCard,
   WelcomeMessage,
@@ -28,7 +30,7 @@ import { QuestionType, useJobForm } from '../../JobPostFormProvider';
 
 const ScreeningQns = () => {
   const { recruiter } = useAuthDetails();
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { jobForm, handleUpdateFormFields, formWarnings } = useJobForm();
   const totalQns = jobForm.formFields.interviewConfig.reduce((agg, curr) => {
     return agg + curr.questions.length;
   }, 0);
@@ -152,6 +154,20 @@ const ScreeningQns = () => {
                 </>
               }
               textQuestionCount={totalQns}
+              isWarningVisible={formWarnings.assesqns.err.length > 0}
+              slotWarning={
+                formWarnings.assesqns.err.length !== 0 && (
+                  <JobEditWarning
+                    slotWarningList={
+                      <>
+                        {formWarnings.assesqns.err.map((er, index) => (
+                          <JobWarningList key={index} textWarning={er} />
+                        ))}
+                      </>
+                    }
+                  />
+                )
+              }
             />
           )}
           {currentAssTab === 'welcome' && (
@@ -170,6 +186,20 @@ const ScreeningQns = () => {
           )}
           {currentAssTab === 'instructions' && (
             <ScreeningQuestion
+              slotWarning={
+                formWarnings.instructions.err.length !== 0 && (
+                  <JobEditWarning
+                    slotWarningList={
+                      <>
+                        {formWarnings.instructions.err.map((er, index) => (
+                          <JobWarningList key={index} textWarning={er} />
+                        ))}
+                      </>
+                    }
+                  />
+                )
+              }
+              isWarningVisible={formWarnings.instructions.err.length > 0}
               slotInstructionsBrief={
                 <>
                   <TipTapAIEditor

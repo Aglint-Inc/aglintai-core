@@ -6,4 +6,5 @@ declare function SubMenu(props: {
   textSubMenu?: React.ReactNode;
   isActive?: Types.Visibility.VisibilityConditions;
   onClickMenu?: Types.Devlink.RuntimeProps;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

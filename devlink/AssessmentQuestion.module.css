@@ -306,6 +306,10 @@
   margin-top: 5px;
 }
 
+.mt-13 {
+  margin-top: 13px;
+}
+
 .skill-based-question-wrap {
   display: flex;
   margin-top: 30px;

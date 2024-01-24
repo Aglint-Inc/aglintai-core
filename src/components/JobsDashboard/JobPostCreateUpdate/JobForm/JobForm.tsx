@@ -485,7 +485,7 @@ const SideNavs = ({ changeSlide }) => {
   return (
     <>
       {allSlides.map((sl) => {
-        let isShowWarn = isShoWWarn(
+        let isWarn = isShoWWarn(
           jobForm.formType,
           formWarnings,
           sl.path,
@@ -494,7 +494,7 @@ const SideNavs = ({ changeSlide }) => {
         );
 
         if (sl.path === 'resumeScore') {
-          isShowWarn =
+          isWarn =
             isShoWWarn(
               jobForm.formType,
               formWarnings,
@@ -510,7 +510,7 @@ const SideNavs = ({ changeSlide }) => {
               jobForm.jobPostId,
             );
         } else {
-          isShowWarn = isShoWWarn(
+          isWarn = isShoWWarn(
             jobForm.formType,
             formWarnings,
             sl.path,
@@ -526,6 +526,7 @@ const SideNavs = ({ changeSlide }) => {
             sl.path,
             slidePathToNum[sl.path],
             jobForm.jobPostId,
+            true,
           );
           return (
             <SublinkSubMenu
@@ -564,6 +565,9 @@ const SideNavs = ({ changeSlide }) => {
                               },
                             }}
                             isActive={currentAssTab === assM.path}
+                            isWarningVisible={
+                              formWarnings[assM.path].err.length > 0
+                            }
                           />
                         );
                       })}
@@ -577,7 +581,7 @@ const SideNavs = ({ changeSlide }) => {
           return (
             <NavSublink
               key={sl.path}
-              isWarningVisible={isShowWarn}
+              isWarningVisible={isWarn}
               isActive={currSlide === sl.path}
               onClickNav={{
                 onClick: () => {

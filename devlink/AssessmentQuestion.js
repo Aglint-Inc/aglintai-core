@@ -8,6 +8,8 @@ export function AssessmentQuestion({
   as: _Component = _Builtin.Block,
   textQuestionCount = "06",
   slotAssessmentQuestion,
+  slotWarning,
+  isWarningVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-562")} tag="div">
@@ -44,6 +46,11 @@ export function AssessmentQuestion({
           >
             {"Please set at least 10 Questions for an ideal assessment"}
           </_Builtin.Block>
+          {isWarningVisible ? (
+            <_Builtin.Block className={_utils.cx(_styles, "mt-13")} tag="div">
+              {slotWarning}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "skill-based-question-wrap")}
             tag="div"

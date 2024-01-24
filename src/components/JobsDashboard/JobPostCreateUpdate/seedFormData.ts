@@ -111,7 +111,7 @@ export const getSeedJobFormData = (
       startVideo: {
         id: '',
         question:
-          "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences.Let's get started.",
+          "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences. Let's get started.",
         videoId: '',
         videoQn: '',
         videoUrl: '',

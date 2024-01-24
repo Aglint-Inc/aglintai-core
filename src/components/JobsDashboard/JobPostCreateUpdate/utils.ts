@@ -5,6 +5,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 
 import { FormErrorParams } from './JobForm/JobForm';
 import {
+  AssesMenusType,
   FormJobType,
   InterviewParam,
   JobFormState,
@@ -188,7 +189,6 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     !jobForm.jobDescription || jobForm.jobDescription.split(' ').length <= 10;
   if (isJdTooShort) {
     warnings.details.err.push('Job description incomplete');
-    warnings.resumeScore.rightErr.push('Job description incomplete');
   }
 
   if (jobForm.isjdChanged) {
@@ -298,17 +298,39 @@ export const jobSlides: { path: JobFormState['currSlide']; title: string }[] = [
 
 export const isShoWWarn = (
   formType,
-  formWarnings,
+  formWarnings: FormErrorParams,
   path,
   slideNum,
   jobPostId,
+  isAssesment = false,
 ) => {
-  const isShowWarn =
-    (formType === 'edit' && formWarnings[String(path)].err.length > 0) ||
-    (formType === 'new' &&
-      slideNum <=
-        Number(localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1) &&
-      formWarnings[String(path)].err.length > 0);
+  if (!isAssesment) {
+    const isShowWarn =
+      (formType === 'edit' && formWarnings[String(path)].err.length > 0) ||
+      (formType === 'new' &&
+        slideNum <=
+          Number(
+            localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1,
+          ) &&
+        formWarnings[String(path)].err.length > 0);
 
-  return isShowWarn;
+    return isShowWarn;
+  } else {
+    if (formType === 'edit') {
+      let slides: AssesMenusType[] = [
+        'assesqns',
+        'epilogue',
+        'instructions',
+        'settings',
+        'welcome',
+      ];
+      let isErr = false;
+      slides.forEach((slide) => {
+        if (formWarnings[String(slide)].err.length > 0) {
+          isErr = true;
+        }
+      });
+      return isErr;
+    }
+  }
 };

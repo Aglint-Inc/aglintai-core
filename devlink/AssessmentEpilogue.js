@@ -7,6 +7,8 @@ import _styles from "./AssessmentEpilogue.module.css";
 export function AssessmentEpilogue({
   as: _Component = _Builtin.Block,
   slotEndingMessageVideo,
+  slotWarning,
+  isWarningVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-562")} tag="div">
@@ -33,6 +35,11 @@ export function AssessmentEpilogue({
               "The candidate will see this once they have answered all the questions."
             }
           </_Builtin.Block>
+          {isWarningVisible ? (
+            <_Builtin.Block className={_utils.cx(_styles, "mt-13")} tag="div">
+              {slotWarning}
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-555")}
             tag="div"
