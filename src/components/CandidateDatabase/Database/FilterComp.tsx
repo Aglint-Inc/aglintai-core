@@ -10,7 +10,7 @@ import UITextField from '../../Common/UITextField';
 
 type FilterType = {
   id: string;
-  label: 'Name' | 'Location' | 'Job Role';
+  label: 'Name' | 'Location' | 'Current Job Title';
   type: 'name' | 'location' | 'job_role';
   comparision_type: 'equals';
   filterVal: string;
@@ -60,7 +60,7 @@ const FilterComp = () => {
         comparision_type: 'equals',
         filterVal: job_role,
         id: nanoid(),
-        label: 'Job Role',
+        label: 'Current Job Title',
       });
     }
     setFilters(qryFilters);
@@ -195,7 +195,7 @@ const allFilters: FilterType[] = [
   },
   {
     type: 'job_role',
-    label: 'Job Role',
+    label: 'Current Job Title',
     filterVal: '',
     comparision_type: 'equals',
     id: nanoid(),

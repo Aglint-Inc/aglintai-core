@@ -234,7 +234,7 @@ const CandDatabase = () => {
                       }
                       isSelected={selectedCandidate === index}
                       textLocation={detail.json_resume.basics.location || '--'}
-                      textPhone={detail.json_resume.basics.phone || '--'}
+                      textPhone={detail.json_resume.basics.phone?.length > 10 ? detail.json_resume.basics.phone : '--'}
                       onClickCheck={{
                         onClick: (e) => {
                           e.stopPropagation();

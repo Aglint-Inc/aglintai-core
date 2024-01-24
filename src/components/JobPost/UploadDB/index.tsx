@@ -585,11 +585,11 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
             />
 
             <Stack direction={'row'} spacing={'4px'}>
-              <Typography variant='caption' color={!checked && 'error.main'}>
+              <Typography variant='caption' color={!checked && 'error.main'} sx={{cursor:'default'}}>
                 By applying, you are agreeing to the
               </Typography>
               <Typography
-                sx={{ textDecoration: 'underline' }}
+                sx={{ textDecoration: 'underline',cursor:'pointer' }}
                 variant='caption'
                 color={!checked && 'error.main'}
                 onClick={() => {

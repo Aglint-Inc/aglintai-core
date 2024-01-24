@@ -553,7 +553,7 @@ const ProfileForm = ({
 }) => {
   const { userCountry } = useAuthDetails();
   const defaultCountry =
-    value.validation === 'phone' && !value.value ? userCountry : null;
+    value.validation === 'phone' && !value.value ? userCountry : '+1';
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleMouseDownPassword = (event) => {

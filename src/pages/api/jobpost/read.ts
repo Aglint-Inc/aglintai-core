@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const { data: rec } = await supabase
       .from('recruiter')
-      .select('id, logo, name, office_locations')
+      .select('id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry')
       .eq('id', data[0].recruiter_id);
 
     const { data: jobs } = await supabase
