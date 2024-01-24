@@ -24,7 +24,7 @@ const EmailTemplateModalComp = ({
   selectedTemplate: number;
   onClose: () => void;
 }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const [email, setEmail] = useState({ subject: '', body: null, name: '' });
   const [editorJson, setEditorJson] = useState(null);
   const [showEditName, setShowditName] = useState(false);
@@ -32,7 +32,7 @@ const EmailTemplateModalComp = ({
   const { dispatch, state, genEmailFromTempJson } = useOutReachCtx();
 
   useEffect(() => {
-    if (!recruiter || selectedTemplate === -1) return;
+    if (!recruiterUser || selectedTemplate === -1) return;
 
     const templates = state.emailTemplates;
 
@@ -43,7 +43,7 @@ const EmailTemplateModalComp = ({
       name: selectedMail.name,
     });
     setEditorJson(selectedMail.templateJson);
-  }, [recruiter, selectedTemplate]);
+  }, [recruiterUser, selectedTemplate]);
 
   const submitHandler = async () => {
     try {
@@ -53,9 +53,9 @@ const EmailTemplateModalComp = ({
       setIsSaving(true);
       const [{ email_outreach_templates }] = supabaseWrap(
         await supabase
-          .from('recruiter')
+          .from('recruiter_user')
           .select('email_outreach_templates')
-          .eq('id', recruiter.id),
+          .eq('user_id', recruiterUser.user_id),
       ) as { email_outreach_templates: null | TemplateType[] }[];
 
       const newOutReachTemp: TemplateType = {
@@ -76,11 +76,11 @@ const EmailTemplateModalComp = ({
       });
       supabaseWrap(
         await supabase
-          .from('recruiter')
+          .from('recruiter_user')
           .update({
             email_outreach_templates: updatedTemps,
           })
-          .eq('id', recruiter.id),
+          .eq('user_id', recruiterUser.user_id),
       );
       dispatch({
         type: 'updateState',

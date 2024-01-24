@@ -1,7 +1,7 @@
 export const outReachTemplates: TemplateType[] = [
   {
     id: 0,
-    name: 'template 1',
+    name: 'Recruitment Inquiry',
     subject: "We're looking for talent to join our team",
     templateHtml: '',
     templateJson: {
@@ -47,7 +47,7 @@ export const outReachTemplates: TemplateType[] = [
   },
   {
     id: 1,
-    name: 'template 2',
+    name: 'Networking Connection',
     subject: 'Connection Request',
     templateHtml: '',
     templateJson: {
@@ -93,7 +93,7 @@ export const outReachTemplates: TemplateType[] = [
   },
   {
     id: 2,
-    name: 'template 3',
+    name: 'Research Study Invitation',
     subject: 'Research study into the future of work',
     templateHtml: '',
     templateJson: {

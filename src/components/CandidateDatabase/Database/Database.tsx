@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
   CandidateDatabaseRow,
   CandidateDatabaseTable,
+  CandidateEmpty,
   Pagination,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -20,6 +21,7 @@ import SelectedCandidate from './SelectedCandidate';
 import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
 import AddToJobOptions from '../CandAddToJobMenu';
+import InCompleteLottie from '../IncompleteLottie';
 import { newCandJob } from '../Search/Search';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -251,6 +253,15 @@ const CandDatabase = () => {
                 </>
               );
             })}
+            {!isLoading && candidates.length === 0 && (
+              <Stack
+                height={'70vh'}
+                alignItems={'center'}
+                justifyContent={'center'}
+              >
+                <CandidateEmpty slotLottie={<InCompleteLottie />} />
+              </Stack>
+            )}
           </>
         }
         slotFilter={

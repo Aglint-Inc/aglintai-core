@@ -1143,6 +1143,7 @@ export interface Database {
           created_at: string
           email: string | null
           email_auth: Json | null
+          email_outreach_templates: Json[] | null
           first_name: string | null
           is_deactivated: boolean | null
           join_status: string
@@ -1159,6 +1160,7 @@ export interface Database {
           created_at?: string
           email?: string | null
           email_auth?: Json | null
+          email_outreach_templates?: Json[] | null
           first_name?: string | null
           is_deactivated?: boolean | null
           join_status?: string
@@ -1175,6 +1177,7 @@ export interface Database {
           created_at?: string
           email?: string | null
           email_auth?: Json | null
+          email_outreach_templates?: Json[] | null
           first_name?: string | null
           is_deactivated?: boolean | null
           join_status?: string
@@ -1551,6 +1554,10 @@ export interface Database {
         Returns: {
           total_records: number
         }[]
+      }
+      emailcroncandidatedb: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       emailhandlercandidatedb: {
         Args: Record<PropertyKey, never>

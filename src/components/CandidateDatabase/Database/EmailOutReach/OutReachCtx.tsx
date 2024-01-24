@@ -162,7 +162,7 @@ const OutReachCtxProvider = ({
   isMutiple?: boolean;
 }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
 
   useEffect(() => {
     // related to auth token
@@ -216,13 +216,14 @@ const OutReachCtxProvider = ({
       try {
         const [emailTemps] = supabaseWrap(
           await supabase
-            .from('recruiter')
+            .from('recruiter_user')
             .select('email_outreach_templates')
-            .eq('id', recruiterUser.recruiter_id),
+            .eq('user_id', recruiterUser.user_id),
         ) as { email_outreach_templates: TemplateType[] }[];
         let temps = emailTemps?.email_outreach_templates
           ? emailTemps.email_outreach_templates
           : outReachTemplates;
+
         dispatch({
           type: 'updateState',
           payload: {
@@ -230,13 +231,13 @@ const OutReachCtxProvider = ({
             value: temps,
           },
         });
-      } catch {
-        //
+      } catch (err) {
+        toast.error(API_FAIL_MSG);
       } finally {
         //
       }
     })();
-  }, [recruiter, dispatch]);
+  }, [recruiterUser, dispatch]);
 
   useEffect(() => {
     if (selcandidate) {
@@ -265,14 +266,15 @@ const OutReachCtxProvider = ({
 
       const [emailTemps] = supabaseWrap(
         await supabase
-          .from('recruiter')
+          .from('recruiter_user')
           .select('email_outreach_templates')
-          .eq('id', recruiterUser.recruiter_id),
+          .eq('user_id', recruiterUser.user_id),
       ) as { email_outreach_templates: TemplateType[] }[];
 
       let temps = emailTemps?.email_outreach_templates
         ? emailTemps.email_outreach_templates
         : outReachTemplates;
+
       const emailBodyJson = await handleGenEmail(
         temps[0].templateJson,
         recruiterUser.first_name,

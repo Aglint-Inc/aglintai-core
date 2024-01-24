@@ -6,17 +6,17 @@ import CommandsList from './CommandsList';
 const Suggestion = {
   items: () => {
     return [
-      {
-        title: 'AI Command',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .insertContent('<ai-prompt></ai-prompt>')
-            .run();
-        },
-      },
+      // {
+      //   title: 'AI Command',
+      //   command: ({ editor, range }) => {
+      //     editor
+      //       .chain()
+      //       .focus()
+      //       .deleteRange(range)
+      //       .insertContent('<ai-prompt></ai-prompt>')
+      //       .run();
+      //   },
+      // },
       {
         title: 'Candidate Label',
         command: ({ editor, range }) => {
