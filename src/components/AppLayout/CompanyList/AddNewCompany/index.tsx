@@ -1,9 +1,14 @@
-import { Autocomplete, Stack, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  CircularProgress,
+  Stack,
+  TextField,
+} from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { AddCompany } from '@/devlink2';
+import { AddCompany, AddCompanyDetails, AddCompanyWebsite } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
@@ -13,7 +18,10 @@ import { sizes } from '@/src/components/CompanyDetailComp/CompanyInfoComp';
 import Loader from '@/src/components/SignUpComp/Loader/Index';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 interface Error {
   website: ErrorField;
@@ -34,6 +42,9 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
   const { recruiter } = useAuthDetails();
 
   const [details, setDetails] = useState({} as any);
+  const [searchStatus, setSearchStatus] = useState<'' | 'success' | 'failed'>(
+    '',
+  );
   const [error, setError] = useState<Error>({
     website: {
       error: false,
@@ -85,69 +96,80 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
   };
 
   const submitHandler = async () => {
-    if ((await formValidation()) && recruiter?.id) {
+    try {
       setLoading(true);
-      const url = details.company_website.replace(/^https?:\/\//i, '');
-      const { data: companyDetails } = await axios.post(
-        `/api/fetchCompanyDetails`,
-        {
-          domain_name: url,
-        },
-      );
-      setLogo(companyDetails.logo_url);
-      const company_size =
-        companyDetails?.estimated_num_employees > 1 &&
-        companyDetails?.estimated_num_employees < 5
-          ? sizes[0]
-          : companyDetails?.estimated_num_employees > 5 &&
+      if ((await formValidation()) && recruiter?.id) {
+        const url = details.company_website.replace(/^https?:\/\//i, '');
+        const { data: companyDetails } = await axios.post(
+          `/api/fetchCompanyDetails`,
+          {
+            domain_name: url,
+          },
+        );
+        setLogo(companyDetails.logo_url);
+        const company_size =
+          companyDetails?.estimated_num_employees > 1 &&
+          companyDetails?.estimated_num_employees < 5
+            ? sizes[0]
+            : companyDetails?.estimated_num_employees > 5 &&
               companyDetails?.estimated_num_employees < 50
             ? sizes[1]
             : companyDetails?.estimated_num_employees > 50 &&
-                companyDetails?.estimated_num_employees < 100
-              ? sizes[2]
-              : companyDetails?.estimated_num_employees > 100 &&
-                  companyDetails?.estimated_num_employees < 1000
-                ? sizes[3]
-                : companyDetails?.estimated_num_employees > 1000 &&
-                    companyDetails?.estimated_num_employees < 5000
-                  ? sizes[4]
-                  : companyDetails?.estimated_num_employees > 5000
-                    ? sizes[5]
-                    : '';
-      setDetails((pre: any) => ({
-        ...pre,
-        company_website: details?.company_website || '',
-        name: companyDetails?.name || '',
-        phone_number: companyDetails?.primary_phone?.number || '',
-        industry:
-          capitalize(companyDetails?.industry?.replaceAll('-', ' ')) || '',
-        employee_size: company_size || '',
-        logo: companyDetails.logo_url || null,
-        office_locations:
-          [
-            {
-              city: companyDetails?.city || '',
-              line1: companyDetails.city?.street_address || '',
-              line2: '',
-              region: companyDetails?.state || '',
-              country: companyDetails?.country || '',
-              zipcode: companyDetails?.postal_code,
-              full_address: companyDetails?.raw_address,
-              is_headquarter: true,
-            },
-          ] || [],
-        company_overview: companyDetails?.short_description || '',
-        // technology_score: companyDetails.technologies || [],
-        socials: {
-          custom: {},
-          twitter: companyDetails?.twitter_url || '',
-          youtube: companyDetails?.youtube_url || '',
-          facebook: companyDetails?.facebook_url || '',
-          linkedin: companyDetails?.linkedin_url || '',
-          instagram: companyDetails?.instagram_url || '',
-        },
-      }));
-
+              companyDetails?.estimated_num_employees < 100
+            ? sizes[2]
+            : companyDetails?.estimated_num_employees > 100 &&
+              companyDetails?.estimated_num_employees < 1000
+            ? sizes[3]
+            : companyDetails?.estimated_num_employees > 1000 &&
+              companyDetails?.estimated_num_employees < 5000
+            ? sizes[4]
+            : companyDetails?.estimated_num_employees > 5000
+            ? sizes[5]
+            : '';
+        setDetails((pre: any) => ({
+          ...pre,
+          company_website: details?.company_website || '',
+          name: companyDetails?.name || '',
+          phone_number: companyDetails?.primary_phone?.number || '',
+          industry:
+            capitalize(companyDetails?.industry?.replaceAll('-', ' ')) || '',
+          employee_size: company_size || '',
+          logo: companyDetails.logo_url || null,
+          office_locations:
+            [
+              {
+                city: companyDetails?.city || '',
+                line1: companyDetails.city?.street_address || '',
+                line2: '',
+                region: companyDetails?.state || '',
+                country: companyDetails?.country || '',
+                zipcode: companyDetails?.postal_code,
+                full_address: companyDetails?.raw_address,
+                is_headquarter: true,
+              },
+            ] || [],
+          company_overview: companyDetails?.short_description || '',
+          // technology_score: companyDetails.technologies || [],
+          socials: {
+            custom: {},
+            twitter: companyDetails?.twitter_url || '',
+            youtube: companyDetails?.youtube_url || '',
+            facebook: companyDetails?.facebook_url || '',
+            linkedin: companyDetails?.linkedin_url || '',
+            instagram: companyDetails?.instagram_url || '',
+          },
+          technology_score: companyDetails?.keywords || [],
+          departments: Object.keys(
+            companyDetails?.departmental_head_count || {},
+          ),
+        }));
+        setLoading(false);
+        setSearchStatus('success');
+      }
+      setLoading(false);
+    } catch (err) {
+      setSearchStatus('failed');
+    } finally {
       setLoading(false);
     }
   };
@@ -250,83 +272,119 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
 
   //   return userURL;
   // }
+
   return (
-    <Stack width={600}>
+    <Stack width={'600px'}>
       <AddCompany
-        // onclickClose={{
-        //   onClick: closeDrawer,
-        // }}
-        slotWebsiteInput={
+        slotBody={
           <>
-            <Stack
-              width={'100%'}
-              // direction={'row'}
-              justifyContent={'center'}
-              alignItems={'start'}
-              spacing={'20px'}
-            >
-              <TextField
-                margin='none'
-                required
-                fullWidth
-                id='name'
-                label='Company Website'
-                placeholder='https://companydomain.com'
-                value={details?.company_website}
-                onChange={(e) => {
-                  setDetails({ ...details, company_website: e.target.value });
-                }}
-                error={error.website.error}
-                helperText={error.website.error ? error.website.msg : ''}
-                inputProps={{
-                  autoCapitalize: 'true',
-                  style: {
-                    fontSize: '14px',
-                  },
-                }}
-              />
-              <AUIButton
-                disabled={loading}
-                onClick={submitHandler}
-                variant='outlined'
-              >
-                Continue
-              </AUIButton>
-            </Stack>
+            {searchStatus === '' && (
+              <YTransform uniqueKey={'search-input'}>
+                <AddCompanyWebsite
+                  slotWebsiteInput={
+                    <>
+                      <Stack
+                        width={'100%'}
+                        // direction={'row'}
+                        justifyContent={'center'}
+                        alignItems={'start'}
+                        spacing={'20px'}
+                      >
+                        <TextField
+                          margin='none'
+                          required
+                          fullWidth
+                          id='name'
+                          label='Company Website'
+                          placeholder='https://companydomain.com'
+                          value={details?.company_website}
+                          onChange={(e) => {
+                            setDetails({
+                              ...details,
+                              company_website: e.target.value,
+                            });
+                          }}
+                          error={error.website.error}
+                          helperText={
+                            error.website.error ? error.website.msg : ''
+                          }
+                          inputProps={{
+                            autoCapitalize: 'true',
+                            style: {
+                              fontSize: '14px',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </>
+                  }
+                  slotButtons={
+                    <>
+                      <AUIButton
+                        disabled={loading}
+                        onClick={submitHandler}
+                        variant='outlined'
+                        endIcon={
+                          loading && (
+                            <CircularProgress
+                              color='inherit'
+                              size={'15px'}
+                              sx={{ color: palette.grey[400] }}
+                            />
+                          )
+                        }
+                      >
+                        {loading ? 'Fetching...' : 'Continue'}
+                      </AUIButton>
+                    </>
+                  }
+                />
+              </YTransform>
+            )}
+            {searchStatus !== '' && (
+              <YTransform uniqueKey={'details'}>
+                <AddCompanyDetails
+                  isCompanyLogo={logo}
+                  isFetchFailed={searchStatus === 'failed'}
+                  isFetchSuccessful={searchStatus === 'success'}
+                  slotLogo={
+                    <ImageUpload
+                      image={logo}
+                      setImage={setLogo}
+                      size={80}
+                      dynamic
+                      table='company-logo'
+                    />
+                  }
+                  slotCompanyDetails={
+                    loading ? (
+                      <Stack
+                        direction={'row'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        flexDirection={'column'}
+                      >
+                        <Loader />
+                        <UITypography color='grey.600'>
+                          Hold on, Fetching company info from the website.
+                        </UITypography>
+                      </Stack>
+                    ) : (
+                      <>
+                        <CompanyDetails
+                          setDetails={setDetails}
+                          details={details}
+                          logo={logo}
+                          setOpenSideBar={setOpenSideBar}
+                          getCompanies={getCompanies}
+                        />
+                      </>
+                    )
+                  }
+                />
+              </YTransform>
+            )}
           </>
-        }
-        isCompanyLogo={!loading}
-        slotLogo={
-          <ImageUpload
-            image={logo}
-            setImage={setLogo}
-            size={80}
-            dynamic
-            table='company-logo'
-          />
-        }
-        slotCompanyDetails={
-          loading ? (
-            <Stack
-              direction={'row'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              flexDirection={'column'}
-            >
-              <Loader />
-              <UITypography color='grey.600'>
-                Hold on, Fetching company info from the website.
-              </UITypography>
-            </Stack>
-          ) : (
-            <CompanyDetails
-              setDetails={setDetails}
-              details={details}
-              logo={logo}
-              setOpenSideBar={setOpenSideBar}
-              getCompanies={getCompanies}
-            />
-          )
         }
       />
     </Stack>
@@ -437,6 +495,7 @@ function CompanyDetails({
         setRecruiter(data[0] as any);
         setOpenSideBar(false);
         getCompanies();
+        toast.success('Added company sucessfully');
       }
     }
   };
@@ -528,20 +587,20 @@ function CompanyDetails({
           !phone
             ? 'Please enter your phone number.'
             : error.phone.error
-              ? `Invalid phone number. Please use the ${
-                  phonePattern?.replaceAll('.', 'x') || 'correct'
-                } format.`
-              : ''
+            ? `Invalid phone number. Please use the ${
+                phonePattern?.replaceAll('.', 'x') || 'correct'
+              } format.`
+            : ''
         }
       />
       <Stack
         mt={'50px !important'}
         direction={'row'}
         alignItems={'center'}
-        justifyContent={'center'}
+        justifyContent={'right'}
       >
         <AUIButton disabled={false} onClick={submitHandler}>
-          Continue
+          Add Company
         </AUIButton>
       </Stack>
     </Stack>

@@ -39,7 +39,7 @@ const SignupProvider = ({ children }) => {
     if (router.isReady) {
       if (router.query.step) {
         setStep(router.query.step as string);
-      } 
+      }
     }
   }, [router]);
   return (

@@ -416,10 +416,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                  ? `Invalid phone number. Please use the ${
-                      phonePattern?.replaceAll('.', 'x') || 'correct'
-                    } format.`
-                  : ''
+                ? `Invalid phone number. Please use the ${
+                    phonePattern?.replaceAll('.', 'x') || 'correct'
+                  } format.`
+                : ''
             }
           />
           <Stack

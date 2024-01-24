@@ -7,6 +7,8 @@ export * from "./utils";
 export * from "./devlink";
 export * from "./AddCandidateDropdown";
 export * from "./AddCompany";
+export * from "./AddCompanyDetails";
+export * from "./AddCompanyWebsite";
 export * from "./AllApplicantsTable";
 export * from "./AllCandidateListItem";
 export * from "./ApplicantsListEmpty";
