@@ -7,4 +7,5 @@ declare function EmailTemplateCards(props: {
   onClickEdit?: Types.Devlink.RuntimeProps;
   textDescription?: React.ReactNode;
   textTitle?: React.ReactNode;
+  isActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

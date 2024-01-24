@@ -1,7 +1,12 @@
 .email-temp-wrap {
+  position: relative;
+
+  overflow: hidden;
   padding: 20px;
+
   border: 1px solid #e9ebed;
   border-radius: 10px;
+
   cursor: pointer;
 }
 
@@ -13,6 +18,9 @@
 }
 
 .div-block-486 {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   margin-bottom: 8px;
   align-items: center;
@@ -207,4 +215,19 @@
 
 .text-color-white {
   color: white;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.active-state-email {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #f8f9f9;
 }

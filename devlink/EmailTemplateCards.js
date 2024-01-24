@@ -14,6 +14,7 @@ export function EmailTemplateCards({
   onClickEdit = {},
   textDescription = "Triggered instantly when candidate applied to this job.",
   textTitle = "Application recieved",
+  isActive = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -33,9 +34,18 @@ export function EmailTemplateCards({
           {"Edit"}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-500")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "text-grey-500", "relative-1")}
+        tag="div"
+      >
         {textDescription}
       </_Builtin.Block>
+      {isActive ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "active-state-email")}
+          tag="div"
+        />
+      ) : null}
     </_Component>
   );
 }

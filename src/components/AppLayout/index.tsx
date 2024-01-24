@@ -32,7 +32,7 @@ export default function AppLayout({ children }) {
   const profileImage = recruiterUser?.profile_image;
 
   useEffect(() => {
-    if (windowSize.innerWidth > 991) {
+    if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
       if (
         router.pathname === pageRoutes.JOBS ||
         router.pathname === pageRoutes.COMPANY ||
@@ -68,7 +68,7 @@ export default function AppLayout({ children }) {
       }, 1000);
     }
   }, [router]);
-  if (windowSize?.innerWidth < 1000) {
+  if (process.env.NODE_ENV === 'production' && windowSize?.innerWidth < 1000) {
     return <ResponsiveBanner />;
   }
   return (
