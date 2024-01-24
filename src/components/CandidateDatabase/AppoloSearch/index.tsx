@@ -6,13 +6,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import {
-  ButtonPrimaryRegular,
   CdAglintDb,
   CdAglintEmptyTable,
   CdExperienceCard,
+  CdLoadMore,
   CdTableAglint,
   CdTableLoader,
-  Checkbox,
+  Checkbox
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
@@ -34,7 +34,6 @@ import {
   updateCredits,
 } from './utils';
 import ViewSavedList from './ViewSavedList';
-import LoaderGrey from '../../Common/LoaderGrey';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
@@ -733,19 +732,12 @@ function AppoloSearch() {
                   justifyContent={'center'}
                   p={4}
                 >
-                  <ButtonPrimaryRegular
-                    textLabel='Load More'
-                    onClickButton={{
+                  <CdLoadMore
+                    onClickLoad={{
                       onClick: () => {
                         handleNextPage();
                       },
                     }}
-                    isStartIcon={fetchingNextPage}
-                    slotStartIcon={
-                      <Stack sx={{ mb: '-4px' }}>
-                        <LoaderGrey />
-                      </Stack>
-                    }
                   />
                 </Stack>
               )}
