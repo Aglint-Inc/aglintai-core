@@ -1,4 +1,10 @@
-import { Autocomplete, CircularProgress, Dialog, Stack } from '@mui/material';
+import {
+  Autocomplete,
+  CircularProgress,
+  Dialog,
+  Paper,
+  Stack,
+} from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -46,6 +52,7 @@ function EditFilter({
         setIsFilterOpen(false);
       }}
     >
+      <Paper></Paper>
       <CdEditQuerry
         onClickResetQuery={{
           onClick: () => {
