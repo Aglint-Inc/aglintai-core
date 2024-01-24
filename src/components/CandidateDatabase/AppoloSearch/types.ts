@@ -2,44 +2,21 @@ import { Json } from '@trigger.dev/sdk';
 
 import { Database } from '@/src/types/schema';
 
-export interface Candidate {
-  city: string;
-  country: string;
-  departments: string[];
-  email: string | null;
-  email_status: string;
-  employment_history: EmploymentHistory[];
-  extrapolated_email_confidence: null;
-  facebook_url: string | null;
-  first_name: string;
-  functions: string[];
-  github_url: string | null;
-  headline: string;
-  id: string;
-  intent_strength: null;
-  is_likely_to_engage: boolean;
-  last_name: string;
-  linkedin_url: string;
-  name: string;
-  organization: Organization;
-  organization_id: string;
-  phone_numbers: PhoneNumber[];
-  photo_url: string;
-  revealed_for_current_team: boolean;
-  seniority: string;
-  show_intent: boolean;
-  state: string;
-  subdepartments: string[];
-  title: string;
-  twitter_url: string | null;
-}
+export type Candidate = Omit<
+  Database['public']['Tables']['aglint_candidates']['Row'],
+  'phone_numbers' | 'employment_history' | 'organization'
+> & {
+  phone_numbers: PhoneNumber[] | null;
+  employment_history: EmploymentHistory[] | null;
+  organization: Organization | null;
+};
 
 export type CandidateSearchHistoryType = Omit<
   Database['public']['Tables']['candidate_search_history']['Row'],
-  'search_results' | 'used_credits'
+  'used_credits' | 'query_json'
 > & {
-  search_results: Candidate[] | null;
   used_credits: UsedCredits;
+  query_json: FetchCandidatesParams;
 };
 
 export interface UsedCredits {
@@ -48,7 +25,7 @@ export interface UsedCredits {
   email_credits: number;
 }
 
-interface EmploymentHistory {
+export interface EmploymentHistory {
   created_at: string | null;
   current: boolean;
   degree: string | null;
@@ -103,8 +80,17 @@ interface Organization {
 }
 
 export interface FetchCandidatesParams {
-  q_keywords: string;
-  organization_locations: string[];
+  person_locations: string[];
   person_seniorities: string[];
   person_titles: string[];
+  organization_ids: string[];
+  pagination: Pagination;
+  companies: string[];
+}
+
+export interface Pagination {
+  page: number;
+  per_page: number;
+  total_entries: number;
+  total_pages: number;
 }

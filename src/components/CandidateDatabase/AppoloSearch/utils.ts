@@ -2,30 +2,107 @@ import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { UsedCredits } from './types';
+import { EmploymentHistory, FetchCandidatesParams, UsedCredits } from './types';
 
 export const employeeRange = [
-  { value: '10001', show: '10001+' },
-  { value: '5001,10000', show: '5001-10000' },
-  { value: '2001,5000', show: '2001-5000' },
-  { value: '1001,2000', show: '1001-2000' },
-  { value: '501,1000', show: '501-1000' },
-  { value: '201,500', show: '201-500' },
-  { value: '101,200', show: '101-200' },
-  { value: '51,100', show: '51-100' },
-  { value: '21,50', show: '21-50' },
-  { value: '11,20', show: '11-20' },
-  { value: '1,10', show: '1-10' },
+  {
+    value: 'owner',
+    display_name: 'Owner',
+  },
+  {
+    value: 'founder',
+    display_name: 'Founder',
+  },
+  {
+    value: 'c_suite',
+    display_name: 'C suite',
+  },
+  {
+    value: 'partner',
+    display_name: 'Partner',
+  },
+  {
+    value: 'vp',
+    display_name: 'Vp',
+  },
+  {
+    value: 'head',
+    display_name: 'Head',
+  },
+  {
+    value: 'director',
+    display_name: 'Director',
+  },
+  {
+    value: 'manager',
+    display_name: 'Manager',
+  },
+  {
+    value: 'senior',
+    display_name: 'Senior',
+  },
+  {
+    value: 'entry',
+    display_name: 'Entry',
+  },
+  {
+    value: 'intern',
+    display_name: 'Intern',
+  },
 ];
 
 export const initialQuery = () => {
   return {
     companies: [],
-    jobTitles: [],
-    locations: [],
-    companySize: '',
-  };
+    pagination: {
+      page: 1,
+      per_page: 25,
+      total_pages: 0,
+      total_entries: 0,
+    },
+    person_titles: [],
+    organization_ids: [],
+    person_locations: [],
+    person_seniorities: [],
+  } as FetchCandidatesParams;
 };
+
+export function calculateTotalExperience(
+  employmentHistory: EmploymentHistory[],
+): number {
+  try {
+    const currentDate = new Date();
+
+    // Calculate the total experience in milliseconds
+    const totalExperienceInMs: number = employmentHistory.reduce(
+      (acc: number, job: EmploymentHistory) => {
+        const startDate: Date | null = job.start_date
+          ? new Date(job.start_date)
+          : null;
+
+        const endDate: Date = job.end_date
+          ? new Date(job.end_date)
+          : currentDate;
+
+        // If start date is null, consider it as 0 years of experience
+        const jobExperienceInMs: number =
+          startDate !== null ? endDate.getTime() - startDate.getTime() : 0;
+
+        return acc + jobExperienceInMs;
+      },
+      0,
+    );
+
+    // Convert milliseconds to years
+    const totalExperienceInYears: number =
+      totalExperienceInMs / (365 * 24 * 60 * 60 * 1000);
+
+    // Round to two decimal places
+    return Math.floor(Math.round(totalExperienceInYears * 100) / 100);
+  } catch (e) {
+    return 0;
+  }
+}
 
 export const processCandidatesInBatches = async (
   ids: string[],

@@ -254,11 +254,6 @@ const SlideTwoSignUp = () => {
                   oauthHandler('google');
                 },
               }}
-              onClickRegisterLinkedIn={{
-                onClick: () => {
-                  oauthHandler('linkedin_oidc');
-                },
-              }}
               onClickBack={{
                 onClick: () => {
                   router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);

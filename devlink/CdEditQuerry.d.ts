@@ -11,7 +11,7 @@ declare function CdEditQuerry(props: {
   slotJobInput?: Types.Devlink.Slot;
   slotJobSuggestion?: Types.Devlink.Slot;
   slotLevelInput?: Types.Devlink.Slot;
-  slotCompanySizeInput?: Types.Devlink.Slot;
   slotPreferredCompaniesInput?: Types.Devlink.Slot;
   slotPreferredCompanySuggestion?: Types.Devlink.Slot;
+  slotSeniorityInput?: Types.Devlink.Slot;
 }): React.JSX.Element;

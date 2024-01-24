@@ -52,14 +52,28 @@ export default async function handler(
       per_page: requestData.per_page,
       person_titles: requestData.person_titles,
       person_locations: requestData.person_locations,
+      person_seniorities: requestData.person_seniorities,
       organization_ids: requestData.organization_ids,
     };
 
-    if (requestData?.person_locations?.length === 0) {
+    if (
+      requestData?.person_locations?.length === 0 ||
+      Boolean(requestData?.person_locations) == false
+    ) {
       delete query.person_locations;
     }
 
-    if (requestData?.organization_ids?.length === 0) {
+    if (
+      requestData?.person_seniorities?.length === 0 ||
+      Boolean(requestData?.person_seniorities) == false
+    ) {
+      delete query.person_seniorities;
+    }
+
+    if (
+      requestData?.organization_ids?.length === 0 ||
+      Boolean(requestData?.organization_ids) == false
+    ) {
       delete query.organization_ids;
     }
 

@@ -18,4 +18,5 @@ declare function CdTableAglint(props: {
   onClickSaveToList?: Types.Devlink.RuntimeProps;
   onClickEmailReachOut?: Types.Devlink.RuntimeProps;
   slotSavetoList?: Types.Devlink.Slot;
+  isActiveSelectVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

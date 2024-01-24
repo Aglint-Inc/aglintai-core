@@ -2,7 +2,7 @@ import { StateCreator } from 'zustand';
 
 import { CandidateListTypeDB } from '@/src/types/data.types';
 
-import { Candidate, CandidateSearchHistoryType } from './types';
+import { Candidate, CandidateSearchHistoryType, FetchCandidatesParams } from './types';
 import { initialQuery } from './utils';
 
 export const createCandidateDatabaseSlice: StateCreator<
@@ -69,9 +69,9 @@ export type CandidateDatabaseSlice = {
   isSelectAll: boolean;
   // eslint-disable-next-line no-unused-vars
   setIsSelectAll: (isSelectAll: boolean) => void;
-  filters: any;
+  filters: FetchCandidatesParams;
   // eslint-disable-next-line no-unused-vars
-  setFilters: (filters: any) => void;
+  setFilters: (filters: FetchCandidatesParams) => void;
   lists: CandidateListTypeDB[];
   // eslint-disable-next-line no-unused-vars
   setLists: (lists: CandidateListTypeDB[]) => void;

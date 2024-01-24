@@ -11,6 +11,9 @@
 }
 
 .div-block-684 {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   width: 516px;
   padding-right: 20px;
@@ -391,6 +394,14 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -459,6 +470,9 @@
 }
 
 .div-block-690 {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -514,4 +528,16 @@
 
 .text-block-30 {
   color: #a81897;
+}
+
+.active-bg-blue-cd {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  width: 100%;
+
+  background-color: var(--blue-100);
 }

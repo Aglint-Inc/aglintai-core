@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import {
+  ButtonPrimaryRegular,
   CdAglintDb,
   CdAglintEmptyTable,
   CdExperienceCard,
@@ -14,6 +15,7 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
+import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -25,9 +27,14 @@ import EmailOutReachComp from './EmailOutReach';
 import { EmptyStateCandidateSearchAglint } from './EmptyLottie';
 import ListDropdown from './ListDropdown';
 import { Candidate, CandidateSearchHistoryType } from './types';
-import { processCandidatesInBatches, updateCredits } from './utils';
+import {
+  calculateTotalExperience,
+  processCandidatesInBatches,
+  updateCredits,
+} from './utils';
 import ViewSavedList from './ViewSavedList';
 import Loader from '../../Common/Loader';
+import LoaderGrey from '../../Common/LoaderGrey';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
@@ -49,6 +56,7 @@ function AppoloSearch() {
   const setSelectedCandidate = useBoundStore(
     (state) => state.setSelectedCandidate,
   );
+  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
   const setSelectedCandidates = useBoundStore(
     (state) => state.setSelectedCandidates,
@@ -68,6 +76,7 @@ function AppoloSearch() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
+  const [fetchingNextPage, setFetchingNextPage] = useState(false);
 
   useEffect(() => {
     if (router.isReady && recruiter?.id) {
@@ -90,16 +99,7 @@ function AppoloSearch() {
   useEffect(() => {
     if (!candidateHistory?.id) return;
 
-    let cand = {
-      companies: [],
-      jobTitles: (candidateHistory.query_json as { person_titles: string[] })
-        .person_titles,
-      locations: (candidateHistory.query_json as { person_locations: string[] })
-        .person_locations,
-      companySize: '10001',
-    };
-
-    setFilters(cand);
+    setFilters(candidateHistory.query_json);
   }, [candidateHistory?.id]);
 
   const fetchList = async (id: string): Promise<boolean> => {
@@ -197,8 +197,8 @@ function AppoloSearch() {
   const handleApplyFilters = async () => {
     try {
       if (
-        filters.jobTitles.length === 0 &&
-        filters.locations.length === 0 &&
+        filters.person_locations.length === 0 &&
+        filters.person_titles.length === 0 &&
         filters.companies.length === 0
       ) {
         toast.warning('Please add at least one filter');
@@ -209,16 +209,48 @@ function AppoloSearch() {
       let org_ids = [];
 
       if (filters.companies.length > 0) {
+        const { data: dbCompanies, error: errorCompanies } = await supabase
+          .from('company_search_cache')
+          .select()
+          .in(
+            'company_name',
+            filters.companies.map((c) => c.toLowerCase()),
+          );
+
+        if (errorCompanies) {
+          toast.error('Something went wrong! Please try again later.');
+          setIsFilterLoading(false);
+          return;
+        }
+
+        const remainingCompanies = filters.companies.filter(
+          (c) =>
+            !dbCompanies.map((d) => d.company_name).includes(c.toLowerCase()),
+        );
+
+        org_ids = [
+          ...org_ids,
+          ...dbCompanies.map((c) => (c.search_result as any).id),
+        ];
+
         await Promise.all(
-          filters.companies.map(async (company) => {
+          remainingCompanies.map(async (company) => {
             const resComp = await axios.post('/api/candidatedb/get-company', {
               name: company,
             });
             if (resComp.data.organizations) {
+              const dbCompanies = resComp.data.organizations.map((org) => {
+                return {
+                  company_name: org.name.toLowerCase(),
+                  search_result: org,
+                  website_url: org.website_url,
+                };
+              });
               org_ids = [
                 ...org_ids,
                 ...resComp.data.organizations.map((c) => c.id),
               ];
+              await supabase.from('company_search_cache').insert(dbCompanies);
             }
           }),
         );
@@ -227,9 +259,10 @@ function AppoloSearch() {
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
         per_page: 25,
-        person_titles: filters.jobTitles,
-        person_locations: filters.locations,
+        person_titles: filters.person_titles,
+        person_locations: filters.person_locations,
         organization_ids: org_ids,
+        person_seniorities: filters.person_seniorities,
       });
 
       if (!resCand.data.people) {
@@ -244,11 +277,8 @@ function AppoloSearch() {
         .from('candidate_search_history')
         .update({
           query_json: {
-            page: 1,
-            per_page: 25,
-            person_titles: filters.jobTitles,
-            person_locations: filters.locations,
-            organization_ids: org_ids,
+            ...filters,
+            pagination: resCand.data.pagination,
           },
           candidates: fetchedIds,
           used_credits: {
@@ -274,7 +304,7 @@ function AppoloSearch() {
   const emailOutReachHandler = async (
     selCandidate: Candidate,
   ): Promise<boolean> => {
-    if (selCandidate.email?.includes('email_not_unlocked')) {
+    if (selCandidate.email_fetch_status == 'not fetched') {
       const resEmail = await axios.post('/api/candidatedb/get-email', {
         id: selCandidate.id,
       });
@@ -309,12 +339,14 @@ function AppoloSearch() {
         setSelectedCandidate({
           ...selCandidate,
           email: resEmail.data.person?.email,
+          email_fetch_status: 'success',
         });
 
         const { error } = await supabase
           .from('aglint_candidates')
           .update({
             email: resEmail.data.person?.email,
+            email_fetch_status: 'success',
           })
           .eq('id', selCandidate.id)
           .select();
@@ -326,6 +358,17 @@ function AppoloSearch() {
           return true;
         }
       } else {
+        await supabase
+          .from('aglint_candidates')
+          .update({
+            email_fetch_status: 'unable to fetch',
+          })
+          .eq('id', selCandidate.id)
+          .select();
+        setSelectedCandidate({
+          ...selCandidate,
+          email_fetch_status: 'unable to fetch',
+        });
         toast.error('Unable to fetch email for this candidate.');
         return false;
       }
@@ -367,6 +410,56 @@ function AppoloSearch() {
 
   const handleCloseDropdownList = () => {
     setAnchorEl(null);
+  };
+
+  const handleNextPage = async () => {
+    try {
+      setFetchingNextPage(true);
+      if (
+        candidateHistory.query_json.pagination.page >=
+        candidateHistory.query_json.pagination.total_pages
+      ) {
+        return;
+      }
+
+      const resCand = await axios.post('/api/candidatedb/search', {
+        page: candidateHistory.query_json.pagination.page + 1,
+        per_page: 25,
+        person_titles: filters.person_titles,
+        person_locations: filters.person_locations,
+        organization_ids: filters.organization_ids,
+        person_seniorities: filters.person_seniorities,
+      });
+      if (!resCand.data.people) {
+        toast.error('Something went wrong! Please try again later.');
+      }
+      let fetchedCandidates: Candidate[] = resCand.data.people;
+      const fetchedIds = fetchedCandidates.map((c) => c.id);
+
+      const { data, error } = await supabase
+        .from('candidate_search_history')
+        .update({
+          query_json: {
+            ...filters,
+            pagination: resCand.data.pagination,
+          },
+          candidates: [...candidateHistory.candidates, ...fetchedIds],
+          used_credits: {
+            export_credits: candidateHistory.used_credits.export_credits + 1,
+            ...candidateHistory.used_credits,
+          },
+        })
+        .eq('id', Number(router.query.id))
+        .select();
+      if (!error) {
+        setCandidateHistory(data[0] as unknown as CandidateSearchHistoryType);
+        setCandidates([...candidates, ...fetchedCandidates]);
+      }
+      setFetchingNextPage(false);
+    } catch (e) {
+      toast.error('Something went wrong! Please try again later.');
+      setFetchingNextPage(false);
+    }
   };
 
   return (
@@ -509,132 +602,183 @@ function AppoloSearch() {
               />
             )}
             {!loading &&
-              candidates?.map((candidate) => (
-                <CdTableAglint
-                  onClickEmailReachOut={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      setSelectedCandidate(candidate);
-                      emailOutReachHandler(candidate);
-                    },
-                  }}
-                  slotCheckbox={
-                    <Checkbox
-                      isChecked={selectedCandidates?.includes(candidate)}
-                      onClickCheck={{
-                        onClick: (e) => {
-                          e.stopPropagation();
-                          if (selectedCandidates?.includes(candidate)) {
-                            setSelectedCandidates(
-                              selectedCandidates.filter(
-                                (c) => c.id !== candidate.id,
-                              ),
-                            );
-                          } else {
-                            setSelectedCandidates([
-                              ...selectedCandidates,
-                              candidate,
-                            ]);
-                          }
-                        },
-                      }}
-                    />
-                  }
-                  onClickBookmark={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      handleBookmark(candidate);
-                    },
-                  }}
-                  onClickBookMarked={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      handleBookmark(candidate);
-                    },
-                  }}
-                  onClickCard={{
-                    onClick: () => {
-                      setSelectedCandidate(candidate);
-                    },
-                  }}
-                  key={candidate.id}
-                  textName={candidate.name}
-                  textRole={candidate.title}
-                  textLocation={[
-                    candidate.city,
-                    candidate.state,
-                    candidate.country,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
-                  slotCdExperienceCard={
-                    <>
-                      {candidate.employment_history
-                        .slice(0, 3)
-                        .map((exp, ind) => {
-                          return (
-                            <CdExperienceCard
-                              key={exp.id}
-                              textRole={exp.organization_name}
-                              isLogoVisible={
-                                candidate?.organization?.id ===
-                                exp?.organization_id
-                              }
-                              isActive={
-                                ind === 0 &&
-                                candidate?.organization?.id ===
-                                  exp?.organization_id
-                              }
-                              slotLogo={
-                                <Avatar
-                                  variant='rounded'
-                                  src={candidate?.organization?.logo_url}
-                                  sx={{ height: 40, width: 40 }}
-                                >
-                                  <CompanyLogo
-                                    companyName={
-                                      exp.organization_name
-                                        ? exp.organization_name
-                                            .trim()
-                                            .toLowerCase()
-                                        : null
-                                    }
-                                  />
-                                </Avatar>
-                              }
-                              textDate={`${dayjs(exp.start_date).format(
-                                'MMM YYYY',
-                              )} - ${
-                                exp.end_date
-                                  ? dayjs(exp.end_date).format('MMM YYYY')
-                                  : 'Present'
-                              }`}
-                            />
-                          );
-                        })}
-                    </>
-                  }
-                  slotProfileImage={
-                    <>
-                      <MuiAvatar
-                        level={getFullName(
-                          candidate.first_name,
-                          candidate.last_name,
-                        )}
-                        src={
-                          candidate.photo_url?.includes('static')
-                            ? null
-                            : candidate.photo_url
-                        }
-                        variant={'rounded'}
-                        width={'80px'}
-                        height={'80px'}
-                        fontSize={'30px'}
+              candidates?.map((candidate, index) => (
+                <ScrollList uniqueKey={index} key={index}>
+                  <CdTableAglint
+                    isActiveSelectVisible={
+                      selectedCandidate?.id === candidate.id
+                    }
+                    onClickEmailReachOut={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        setSelectedCandidate(candidate);
+                        emailOutReachHandler(candidate);
+                      },
+                    }}
+                    slotCheckbox={
+                      <Checkbox
+                        isChecked={selectedCandidates?.includes(candidate)}
+                        onClickCheck={{
+                          onClick: (e) => {
+                            e.stopPropagation();
+                            if (selectedCandidates?.includes(candidate)) {
+                              setSelectedCandidates(
+                                selectedCandidates.filter(
+                                  (c) => c.id !== candidate.id,
+                                ),
+                              );
+                            } else {
+                              setSelectedCandidates([
+                                ...selectedCandidates,
+                                candidate,
+                              ]);
+                            }
+                          },
+                        }}
                       />
-                    </>
-                  }
-                />
+                    }
+                    onClickBookmark={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        handleBookmark(candidate);
+                      },
+                    }}
+                    onClickBookMarked={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        handleBookmark(candidate);
+                      },
+                    }}
+                    onClickCard={{
+                      onClick: () => {
+                        setSelectedCandidate(candidate);
+                      },
+                    }}
+                    key={candidate.id}
+                    textName={candidate.name}
+                    textRole={
+                      candidate.title +
+                      (candidate.employment_history
+                        ? ` (${calculateTotalExperience(candidate.employment_history)} years)`
+                        : '')
+                    }
+                    textLocation={[
+                      candidate.city,
+                      candidate.state,
+                      candidate.country,
+                    ]
+                      .filter(Boolean)
+                      .join(', ')}
+                    slotCdExperienceCard={
+                      <>
+                        {candidate.employment_history
+                          .slice(0, 3)
+                          .map((exp, ind) => {
+                            return (
+                              <CdExperienceCard
+                                key={exp.id}
+                                textRole={exp.organization_name}
+                                isLogoVisible={
+                                  candidate?.organization?.id ===
+                                  exp?.organization_id
+                                }
+                                bgColorProps={{
+                                  style: {
+                                    backgroundColor:
+                                      selectedCandidate?.id === candidate.id
+                                        ? ind === 0
+                                          ? 'rgba(206, 226, 242, 0.50)'
+                                          : 'rgba(206, 226, 242, 0.30)'
+                                        : ind === 0
+                                          ? 'rgba(233, 235, 237, 0.50)'
+                                          : '#F7F9FB',
+                                  },
+                                }}
+                                isActive={
+                                  ind === 0 &&
+                                  candidate?.organization?.id ===
+                                    exp?.organization_id
+                                }
+                                slotLogo={
+                                  <Avatar
+                                    variant='rounded'
+                                    src={candidate?.organization?.logo_url}
+                                    sx={{ height: 40, width: 40 }}
+                                  >
+                                    <CompanyLogo
+                                      companyName={
+                                        exp.organization_name
+                                          ? exp.organization_name
+                                              .trim()
+                                              .toLowerCase()
+                                          : null
+                                      }
+                                    />
+                                  </Avatar>
+                                }
+                                textDate={`${
+                                  exp.start_date
+                                    ? dayjs(exp.start_date).format('MMM YYYY') +
+                                      ' - '
+                                    : ''
+                                }  ${
+                                  exp.end_date
+                                    ? dayjs(exp.end_date).format('MMM YYYY')
+                                    : 'Present'
+                                }`}
+                              />
+                            );
+                          })}
+                      </>
+                    }
+                    slotProfileImage={
+                      <>
+                        <MuiAvatar
+                          level={getFullName(
+                            candidate.first_name,
+                            candidate.last_name,
+                          )}
+                          src={
+                            candidate.photo_url?.includes('static')
+                              ? null
+                              : candidate.photo_url
+                          }
+                          variant={'rounded'}
+                          width={'80px'}
+                          height={'80px'}
+                          fontSize={'30px'}
+                        />
+                      </>
+                    }
+                  />
+                </ScrollList>
               ))}
+            {!loading &&
+              candidates?.length > 0 &&
+              candidateHistory?.query_json.pagination.page <
+                candidateHistory?.query_json.pagination.total_pages && (
+                <Stack
+                  direction={'row'}
+                  width={'100%'}
+                  justifyContent={'center'}
+                  p={4}
+                >
+                  <ButtonPrimaryRegular
+                    textLabel='Load More'
+                    onClickButton={{
+                      onClick: () => {
+                        handleNextPage();
+                      },
+                    }}
+                    isStartIcon={fetchingNextPage}
+                    slotStartIcon={
+                      <Stack sx={{ mb: '-4px' }}>
+                        <LoaderGrey />
+                      </Stack>
+                    }
+                  />
+                </Stack>
+              )}
           </Stack>
         }
       />

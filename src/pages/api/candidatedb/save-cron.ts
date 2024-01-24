@@ -98,13 +98,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const email = response.data.person?.email;
 
       if (!email) {
+        await supabase
+          .from('aglint_candidates')
+          .update({ email_fetch_status: 'unable to fetch' })
+          .eq('id', application.ag_candidate.id)
+          .select();
         console.log('no email');
         return res.status(200).send('no email');
       }
 
       const { data: candidateAg, error: errorAg } = await supabase
         .from('aglint_candidates')
-        .update({ email: email })
+        .update({ email: email, email_fetch_status: 'success' })
         .eq('id', application.ag_candidate.id)
         .select();
 

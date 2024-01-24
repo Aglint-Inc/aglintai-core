@@ -1,6 +1,6 @@
-import { CircularProgress, Dialog, MenuItem } from '@mui/material';
+import { Autocomplete, CircularProgress, Dialog, Stack } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -21,6 +21,21 @@ function EditFilter({
   const filters = useBoundStore((state) => state.filters);
   const setFilters = useBoundStore((state) => state.setFilters);
   const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
+  const [value, setValue] = useState([]);
+
+  const handleDelete = (index) => {
+    setValue(value.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+    if (filters?.person_seniorities) {
+      setValue(
+        employeeRange.filter((v) =>
+          filters.person_seniorities.includes(v.value),
+        ),
+      );
+    }
+  }, [filters?.person_seniorities]);
 
   return (
     <Dialog
@@ -37,23 +52,56 @@ function EditFilter({
             setFilters(initialQuery());
           },
         }}
-        slotCompanySizeInput={
-          <UITextField
-            select
-            defaultValue={'10001'}
-            onChange={(e) => {
-              setFilters((p) => ({
-                ...p,
-                companySize: e.target.value,
-              }));
-            }}
-          >
-            {employeeRange.map((range) => (
-              <MenuItem key={range.value} value={range.value}>
-                {range.show}
-              </MenuItem>
-            ))}
-          </UITextField>
+        slotSeniorityInput={
+          <>
+            <Autocomplete
+              multiple
+              id='tags-standard'
+              options={employeeRange}
+              getOptionLabel={(option) => option.display_name}
+              value={value}
+              onChange={(event, value) => {
+                if (value) {
+                  setValue(value);
+                  setFilters({
+                    ...filters,
+                    person_seniorities: value.map((v) => v.value),
+                  });
+                }
+              }}
+              renderInput={(params) => (
+                <UITextField
+                  rest={{ ...params }}
+                  fullWidth
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                  placeholder='Choose mutiple seniorities from the list'
+                />
+              )}
+              renderTags={(value) =>
+                value.map((option, index) => (
+                  <Stack key={index} pl={'4px'}>
+                    <JobPills
+                      onClickDelete={{
+                        onClick: () => {
+                          handleDelete(index);
+                          setFilters({
+                            ...filters,
+                            person_seniorities:
+                              filters.person_seniorities.filter(
+                                (v) => v !== option.value,
+                              ),
+                          });
+                        },
+                      }}
+                      textJob={option.display_name}
+                    />
+                  </Stack>
+                ))
+              }
+            />
+          </>
         }
         slotPreferredCompanySuggestion={filters.companies.map(
           (title, index) => {
@@ -70,20 +118,20 @@ function EditFilter({
             );
           },
         )}
-        slotJobSuggestion={filters.jobTitles.map((title, index) => {
+        slotJobSuggestion={filters.person_titles.map((title, index) => {
           return (
             <JobPills
               key={index}
               onClickDelete={{
                 onClick: () => {
-                  handlePillRemove('jobTitles', index);
+                  handlePillRemove('person_titles', index);
                 },
               }}
               textJob={title}
             />
           );
         })}
-        slotLocationSuggestion={filters.locations.map((title, index) => {
+        slotLocationSuggestion={filters.person_locations.map((title, index) => {
           return (
             <JobPills
               key={index}

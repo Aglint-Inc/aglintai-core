@@ -10,9 +10,14 @@ export function CdExperienceCard({
   textRole = "Marketing manager @Apple",
   textDate = "3 years (Jan 2017 - Dec 2023)",
   isActive = true,
+  bgColorProps = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "cd-experience-card")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "cd-experience-card")}
+      tag="div"
+      {...bgColorProps}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "logo-current")} tag="div">
         {isLogoVisible ? (
           <_Builtin.Block

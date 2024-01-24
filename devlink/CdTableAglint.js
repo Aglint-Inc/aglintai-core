@@ -26,6 +26,7 @@ export function CdTableAglint({
   onClickSaveToList = {},
   onClickEmailReachOut = {},
   slotSavetoList,
+  isActiveSelectVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -106,6 +107,12 @@ export function CdTableAglint({
           </>
         )}
       </_Builtin.Block>
+      {isActiveSelectVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "active-bg-blue-cd")}
+          tag="div"
+        />
+      ) : null}
     </_Component>
   );
 }

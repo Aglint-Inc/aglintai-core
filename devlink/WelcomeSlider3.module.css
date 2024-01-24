@@ -721,6 +721,16 @@
   background-color: var(--blue100-d2a1a159);
 }
 
+.su-cta-btn.hide {
+  display: none;
+}
+
+.su-cta-btn.single {
+  width: auto;
+  height: auto;
+  padding: 10px 14px;
+}
+
 .su-cta-btn-block {
   display: flex;
   justify-content: center;
@@ -728,6 +738,11 @@
   flex: 0 auto;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
+}
+
+.su-cta-btn-block.single {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .div-block-659 {
@@ -942,6 +957,20 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
 }
 
 .basic-link-style {

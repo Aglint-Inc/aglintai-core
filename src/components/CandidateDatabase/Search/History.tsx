@@ -1,4 +1,4 @@
-import { CircularProgress, Paper, Stack } from '@mui/material';
+import { CircularProgress, Paper, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
@@ -6,25 +6,27 @@ import { useEffect, useRef, useState } from 'react';
 import {
   CandidateDatabaseSearch,
   CandidateHistoryCard,
+  CdSearchHistoryLoader,
   ClearHistory,
-  LoaderSvg,
   NavSublink,
   SavedList,
+  SavedListLoader,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { CandidateListTypeDB, SearchHistoryType } from '@/src/types/data.types';
+import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import EmptyState from './EmptyState';
 import { Candidate } from '../AppoloSearch/types';
 import { CandidateSearchState } from '../context/CandidateSearchProvider';
 import { JDSearchModal } from '../JDSearchModal';
 import { getRelevantCndidates } from '../utils';
-import Loader from '../../Common/Loader';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
 import {
@@ -145,8 +147,10 @@ function CandidateSearchHistory() {
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
         per_page: 25,
-        ...aiSearchQuery,
+        person_titles: aiSearchQuery.person_titles,
+        person_locations: aiSearchQuery.person_locations,
         organization_ids: [],
+        person_seniorities: aiSearchQuery.person_seniorities,
       });
 
       if (resCand.data.error) {
@@ -162,8 +166,14 @@ function CandidateSearchHistory() {
           .from('candidate_search_history')
           .insert({
             recruiter_id: recruiter.id,
-            query_json: { page: 1, per_page: 25, ...aiSearchQuery },
-            search_results: resCand.data.people,
+            query_json: {
+              person_titles: aiSearchQuery.person_titles,
+              person_locations: aiSearchQuery.person_locations,
+              organization_ids: [],
+              person_seniorities: aiSearchQuery.person_seniorities,
+              companies: aiSearchQuery.companies,
+              pagination: resCand.data.pagination,
+            },
             search_query: searchQuery,
             db_search: 'aglint',
             candidates: fetchedIds,
@@ -337,78 +347,100 @@ function CandidateSearchHistory() {
         slotSavedList={
           isHistoryLoading ? (
             <>
-              <LoaderSvg />
+              <SavedListLoader /> <SavedListLoader /> <SavedListLoader />
             </>
           ) : (
-            list.map((list) => (
-              <SavedList
-                isCheckboxVisible={false}
-                slotInputTextSavedList={
-                  <Stack
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <UITextField
-                      ref={multiTextFieldRef}
-                      // rest={{
-                      //   sx: { border: 'none', '& fieldset': { border: 'none' } },
-                      //   inputProps: { style: { fontSize: '14px' } },
-                      // }}
-                      value={editText}
-                      onChange={(e) => {
-                        setEditText(e.target.value);
+            list.map((list, index) => (
+              <ScrollList uniqueKey={index} key={index}>
+                <SavedList
+                  isCheckboxVisible={false}
+                  slotInputTextSavedList={
+                    <Stack
+                      onClick={(e) => {
+                        e.stopPropagation();
                       }}
-                    />
-                  </Stack>
-                }
-                onClickDelete={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    setDeleteList(list);
-                  },
-                }}
-                isSavedListInputVisible={editList?.id === list.id}
-                isSavedListTextVisible={editList?.id !== list.id}
-                onClickClose={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    setEditList(null);
-                  },
-                }}
-                onClickSubmit={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateHandler();
-                  },
-                }}
-                onClickEdit={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    setEditText(list.name);
-                    setEditList(list);
-                    setTimeout(() => {
-                      if (multiTextFieldRef.current) {
-                        multiTextFieldRef.current.focus();
-                      }
-                    }, 100);
-                  },
-                }}
-                isEditVisible={editList?.id !== list.id}
-                key={list.id}
-                textRole={list.name}
-                textCountCandidate={`(${list.candidates.length} candidates)`}
-                onClickList={{
-                  onClick: () => {
-                    router.push(`/candidates/aglintdb?list=${list.id}`);
-                  },
-                }}
-              />
+                    >
+                      <UITextField
+                        ref={multiTextFieldRef}
+                        // rest={{
+                        //   sx: { border: 'none', '& fieldset': { border: 'none' } },
+                        //   inputProps: { style: { fontSize: '14px' } },
+                        // }}
+                        value={editText}
+                        onChange={(e) => {
+                          setEditText(e.target.value);
+                        }}
+                      />
+                    </Stack>
+                  }
+                  onClickDelete={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      setDeleteList(list);
+                    },
+                  }}
+                  isSavedListInputVisible={editList?.id === list.id}
+                  isSavedListTextVisible={editList?.id !== list.id}
+                  onClickClose={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      setEditList(null);
+                    },
+                  }}
+                  onClickSubmit={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      updateHandler();
+                    },
+                  }}
+                  onClickEdit={{
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      setEditText(list.name);
+                      setEditList(list);
+                      setTimeout(() => {
+                        if (multiTextFieldRef.current) {
+                          multiTextFieldRef.current.focus();
+                        }
+                      }, 100);
+                    },
+                  }}
+                  isEditVisible={editList?.id !== list.id}
+                  key={list.id}
+                  textRole={list.name}
+                  textCountCandidate={`(${list.candidates.length} candidates)`}
+                  onClickList={{
+                    onClick: () => {
+                      router.push(`/candidates/aglintdb?list=${list.id}`);
+                    },
+                  }}
+                />
+              </ScrollList>
             ))
           )
         }
         slotCandidateHistoryCard={
           <>
+            {isHistoryLoading && (
+              <>
+                <CdSearchHistoryLoader />
+                <CdSearchHistoryLoader />
+                <CdSearchHistoryLoader />
+                <CdSearchHistoryLoader />
+                <CdSearchHistoryLoader />
+              </>
+            )}
+            {!isHistoryLoading && history.length === 0 && (
+              <Stack
+                alignItems={'center'}
+                height={'100%'}
+                justifyContent={'center'}
+                pt={10}
+              >
+                <EmptyState />
+                <Typography variant='body2'>No search history</Typography>
+              </Stack>
+            )}
             {history
               .sort((h1, h2) => {
                 const d1 = new Date(h1.created_at);
@@ -421,55 +453,50 @@ function CandidateSearchHistory() {
                   new Date().toISOString(),
                 );
                 return (
-                  <CandidateHistoryCard
-                    colorPropsCategory={{
-                      style: {
-                        backgroundColor:
-                          hist.db_search == 'candidate'
-                            ? '#EDF7FF'
-                            : '#FF622433',
-                      },
-                    }}
-                    key={index}
-                    textCategory={
-                      hist.db_search == 'candidate'
-                        ? 'My Candidates'
-                        : 'Aglint DB'
-                    }
-                    isSearchByJobVisible={true}
-                    onClickDelete={{
-                      onClick: (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setDeleteHistoryId(hist.id);
-                      },
-                    }}
-                    textHeader={
-                      hist.search_query ??
-                      queryJsonToTitle(hist.query_json as any)
-                    }
-                    textPosted={diffrence}
-                    onClickCard={{
-                      onClick: () => {
-                        if (hist.db_search === 'aglint') {
-                          router.push(`/candidates/aglintdb?id=${hist.id}`);
-                          return;
-                        }
-                        router.push(
-                          `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
-                        );
-                      },
-                    }}
-                  />
+                  <ScrollList uniqueKey={index} key={index}>
+                    <CandidateHistoryCard
+                      colorPropsCategory={{
+                        style: {
+                          backgroundColor:
+                            hist.db_search == 'candidate'
+                              ? '#EDF7FF'
+                              : '#FF622433',
+                        },
+                      }}
+                      key={index}
+                      textCategory={
+                        hist.db_search == 'candidate'
+                          ? 'My Candidates'
+                          : 'Aglint DB'
+                      }
+                      isSearchByJobVisible={true}
+                      onClickDelete={{
+                        onClick: (e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setDeleteHistoryId(hist.id);
+                        },
+                      }}
+                      textHeader={
+                        hist.search_query ??
+                        queryJsonToTitle(hist.query_json as any)
+                      }
+                      textPosted={diffrence}
+                      onClickCard={{
+                        onClick: () => {
+                          if (hist.db_search === 'aglint') {
+                            router.push(`/candidates/aglintdb?id=${hist.id}`);
+                            return;
+                          }
+                          router.push(
+                            `/candidates/search?searchQryId=${hist.id}&search_title=${hist.search_query}`,
+                          );
+                        },
+                      }}
+                    />
+                  </ScrollList>
                 );
               })}
-            {isHistoryLoading && (
-              <>
-                <Stack>
-                  <Loader />
-                </Stack>
-              </>
-            )}
           </>
         }
         onClickSearchJobDescription={{

@@ -171,7 +171,7 @@ export function FetchCompanyDetails() {
         if (companyDetails) {
           supabaseWrap(
             await supabase.from('company_search_cache').insert({
-              company_name: companyDetails.name,
+              company_name: companyDetails.name.toLowerCase(),
               search_result: companyDetails,
               website_url: url,
             }),
@@ -184,20 +184,20 @@ export function FetchCompanyDetails() {
         companyDetails?.estimated_num_employees < 5
           ? sizes[0]
           : companyDetails?.estimated_num_employees > 5 &&
-            companyDetails?.estimated_num_employees < 50
-          ? sizes[1]
-          : companyDetails?.estimated_num_employees > 50 &&
-            companyDetails?.estimated_num_employees < 100
-          ? sizes[2]
-          : companyDetails?.estimated_num_employees > 100 &&
-            companyDetails?.estimated_num_employees < 1000
-          ? sizes[3]
-          : companyDetails?.estimated_num_employees > 1000 &&
-            companyDetails?.estimated_num_employees < 5000
-          ? sizes[4]
-          : companyDetails?.estimated_num_employees > 5000
-          ? sizes[5]
-          : '';
+              companyDetails?.estimated_num_employees < 50
+            ? sizes[1]
+            : companyDetails?.estimated_num_employees > 50 &&
+                companyDetails?.estimated_num_employees < 100
+              ? sizes[2]
+              : companyDetails?.estimated_num_employees > 100 &&
+                  companyDetails?.estimated_num_employees < 1000
+                ? sizes[3]
+                : companyDetails?.estimated_num_employees > 1000 &&
+                    companyDetails?.estimated_num_employees < 5000
+                  ? sizes[4]
+                  : companyDetails?.estimated_num_employees > 5000
+                    ? sizes[5]
+                    : '';
       const { data, error } = await supabase
         .from('recruiter')
         .update({

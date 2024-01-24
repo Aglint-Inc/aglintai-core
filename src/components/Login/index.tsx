@@ -169,11 +169,6 @@ function Login() {
             oauthHandler('google');
           },
         }}
-        onclickLinkedIn={{
-          onClick: () => {
-            oauthHandler('linkedin_oidc');
-          },
-        }}
         onclickSignup={{
           onClick: () => {
             router.push(`${pageRoutes.SIGNUP}`);

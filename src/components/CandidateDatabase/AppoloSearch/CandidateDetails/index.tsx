@@ -6,7 +6,7 @@ import {
   CandidateDialog,
   CandidateExperience,
   CdExperienceCard,
-  EmailOutReach
+  EmailOutReach,
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
@@ -61,8 +61,15 @@ function CandidateDetail({
                     <LoaderGrey />
                   </Stack>
                 }
-                isEmailOutreachVisible={!emailFetch && !emailError}
-                isUnableFetch={emailError}
+                isEmailOutreachVisible={
+                  !emailFetch &&
+                  !emailError &&
+                  selectedCandidate?.email_fetch_status !== 'unable to fetch'
+                }
+                isUnableFetch={
+                  emailError ||
+                  selectedCandidate?.email_fetch_status === 'unable to fetch'
+                }
                 isFetchingVisible={emailFetch}
                 onClickEmailOutreach={{
                   onClick: async () => {
@@ -127,7 +134,8 @@ function CandidateDetail({
                         key={exp.id}
                         textRole={exp.organization_name}
                         isLogoVisible={
-                          selectedCandidate?.organization?.id === exp?.organization_id
+                          selectedCandidate?.organization?.id ===
+                          exp?.organization_id
                         }
                         isActive={ind === 0}
                         slotLogo={

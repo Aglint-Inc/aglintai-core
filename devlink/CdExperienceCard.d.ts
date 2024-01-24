@@ -8,4 +8,5 @@ declare function CdExperienceCard(props: {
   textRole?: React.ReactNode;
   textDate?: React.ReactNode;
   isActive?: Types.Visibility.VisibilityConditions;
+  bgColorProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
