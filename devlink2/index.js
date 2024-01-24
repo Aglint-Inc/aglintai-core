@@ -72,6 +72,7 @@ export * from "./RecSideNavProfileBlock";
 export * from "./RefreshButton";
 export * from "./ResAbsentError";
 export * from "./ResImportListItem";
+export * from "./ResponsiveBanner";
 export * from "./ResumeErrorBlock";
 export * from "./ResumeErrorBlock2";
 export * from "./ResumeImportBody";

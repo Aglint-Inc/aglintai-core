@@ -6,7 +6,11 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
 import { NavBottom } from '@/devlink';
-import { CompanyProfileHeader, NavProfileBlock } from '@/devlink2';
+import {
+  CompanyProfileHeader,
+  NavProfileBlock,
+  ResponsiveBanner,
+} from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
@@ -64,7 +68,9 @@ export default function AppLayout({ children }) {
       }, 1000);
     }
   }, [router]);
-  // console.log(router, pageRoutes.JOBS);
+  if (windowSize?.innerWidth < 1000) {
+    return <ResponsiveBanner />;
+  }
   return (
     <Stack zIndex={2000} direction={'row'}>
       <Stack
