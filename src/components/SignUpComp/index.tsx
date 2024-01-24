@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { SignupSlider } from '@/devlink';
@@ -22,7 +23,7 @@ import AUIButton from '../Common/AUIButton';
 const SignUpComp = () => {
   const router = useRouter();
   const { step, setStep, setFlow } = useSignupDetails();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   async function updateAuthDetails(type: string) {
     await supabase.auth.updateUser({
@@ -35,6 +36,7 @@ const SignUpComp = () => {
       })
       .eq('id', recruiter.id);
   }
+
   return (
     <>
       {router.asPath === pageRoutes.SIGNUP && (
@@ -124,6 +126,10 @@ const SignUpComp = () => {
                         router.push(`${pageRoutes.JOBS}/new`, undefined, {
                           shallow: true,
                         });
+                        sendOnboardingMail(
+                          recruiterUser.email,
+                          recruiterUser.first_name,
+                        );
                       }}
                     >
                       Post your first job
@@ -132,6 +138,10 @@ const SignUpComp = () => {
                       variant='outlined'
                       onClick={() => {
                         router.push(pageRoutes.JOBS);
+                        sendOnboardingMail(
+                          recruiterUser.email,
+                          recruiterUser.first_name,
+                        );
                       }}
                     >
                       Go to Dashboard
@@ -143,17 +153,36 @@ const SignUpComp = () => {
           />
         </YTransform>
       ) : (
-        <Stack
-          justifyContent={'center'}
-          alignItems={'center'}
-          height={'100vh'}
-          width={'100vw'}
-        >
-          <Loader />
-        </Stack>
+        <YTransform uniqueKey={'loader-signup'}>
+          <Stack
+            justifyContent={'center'}
+            alignItems={'center'}
+            height={'100vh'}
+            width={'100vw'}
+          >
+            <Loader />
+          </Stack>
+        </YTransform>
       )}
     </>
   );
 };
 
 export default SignUpComp;
+
+const sendOnboardingMail = async (email: string, name: string) => {
+  try {
+    await axios.post(
+      'https://us-central1-aglint-cloud-381414.cloudfunctions.net/mails-sender',
+      {
+        mail_type: 'recruiter-onboarding',
+        recipient_email: email,
+        payload: {
+          name: name,
+        },
+      },
+    );
+  } catch (err) {
+    //
+  }
+};

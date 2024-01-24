@@ -108,23 +108,48 @@ function SelectAtsSystem() {
             <LoginAtsInfo
               slotRadioButtons={
                 <>
-                  {object.map((ele, i) => {
-                    return (
-                      <RcFormRadio
-                        isClicked={selectedObject === ele.name}
-                        onclickRadio={{
-                          onClick: () => {
-                            setSelectedObject(ele.name);
-                          },
-                        }}
-                        key={i}
-                        isImageAvailabe={ele.image ? true : false}
-                        text={ele.name}
-                        isTextVisible={ele.image ? false : true}
-                        slotLogo={ele.image}
-                      />
-                    );
-                  })}
+                  {object
+                    .filter((ele) => ele.image)
+                    .map((ele, i) => {
+                      return (
+                        <RcFormRadio
+                          isClicked={selectedObject === ele.name}
+                          onclickRadio={{
+                            onClick: () => {
+                              setSelectedObject(ele.name);
+                            },
+                          }}
+                          key={i}
+                          isImageAvailabe={ele.image ? true : false}
+                          text={ele.name}
+                          isTextVisible={ele.image ? false : true}
+                          slotLogo={ele.image}
+                        />
+                      );
+                    })}
+                </>
+              }
+              slotOthers={
+                <>
+                  {object
+                    .filter((ele) => !ele.image)
+                    .map((ele, i) => {
+                      return (
+                        <RcFormRadio
+                          isClicked={selectedObject === ele.name}
+                          onclickRadio={{
+                            onClick: () => {
+                              setSelectedObject(ele.name);
+                            },
+                          }}
+                          key={i}
+                          isImageAvailabe={ele.image ? true : false}
+                          text={ele.name}
+                          isTextVisible={ele.image ? false : true}
+                          slotLogo={ele.image}
+                        />
+                      );
+                    })}
                 </>
               }
               slotAdditionalInfo={
@@ -133,7 +158,7 @@ function SelectAtsSystem() {
                     <>
                       <YTransform uniqueKey={selectedObject}>
                         <Stack spacing={'13px'}>
-                          <UITypography variant='body1' >
+                          <UITypography variant='body1'>
                             Kindly provide the name of the ATS system you are
                             using.
                           </UITypography>
