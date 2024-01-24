@@ -90,6 +90,7 @@ const FilterInput = ({
             onKeyDown: (e) => {
               if (e.code === 'Enter') {
                 handleSubmit();
+                handleClosePop();
               }
             },
           }}
