@@ -82,6 +82,7 @@ const EmailTemplate = () => {
         slotEmailTemplateCards={templateEntries.map((emailPath) => (
           <EmailTemplateCards
             key={emailPath}
+            isActive={selectedTemplate?.name === emailPath}
             textDescription={templateObj[emailPath].trigger}
             textTitle={templateObj[emailPath].listing}
             onClickApplicationRecieved={{

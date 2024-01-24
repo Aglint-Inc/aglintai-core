@@ -80,6 +80,7 @@ const Emails = () => {
                   key={email.path}
                   textTitle={email.title.heading}
                   textDescription={templateObj[email.path].triggerInfo}
+                  isActive={editTemplate === email.path}
                   onClickEdit={{
                     onClick: () => {
                       handleChangeTemplate(email.path);
