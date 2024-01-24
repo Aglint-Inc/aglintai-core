@@ -144,12 +144,61 @@ function CandidateSearchHistory() {
 
       let aiSearchQuery = JSON.parse(res.data);
 
+      let org_ids = [];
+
+      if (aiSearchQuery?.companies?.length > 0) {
+        const { data: dbCompanies, error: errorCompanies } = await supabase
+          .from('company_search_cache')
+          .select()
+          .in(
+            'company_name',
+            aiSearchQuery.companies.map((c) => c.toLowerCase()),
+          );
+
+        if (errorCompanies) {
+          toast.error('Something went wrong! Please try again later.');
+          return;
+        }
+
+        const remainingCompanies = aiSearchQuery.companies.filter(
+          (c) =>
+            !dbCompanies.map((d) => d.company_name).includes(c.toLowerCase()),
+        );
+
+        org_ids = [
+          ...org_ids,
+          ...dbCompanies.map((c) => (c.search_result as any).id),
+        ];
+
+        await Promise.all(
+          remainingCompanies.map(async (company) => {
+            const resComp = await axios.post('/api/candidatedb/get-company', {
+              name: company,
+            });
+            if (resComp.data.organizations) {
+              const dbCompanies = resComp.data.organizations.map((org) => {
+                return {
+                  company_name: org.name.toLowerCase(),
+                  search_result: org,
+                  website_url: org.website_url,
+                };
+              });
+              org_ids = [
+                ...org_ids,
+                ...resComp.data.organizations.map((c) => c.id),
+              ];
+              await supabase.from('company_search_cache').insert(dbCompanies);
+            }
+          }),
+        );
+      }
+
       const resCand = await axios.post('/api/candidatedb/search', {
         page: 1,
         per_page: 25,
         person_titles: aiSearchQuery.person_titles,
         person_locations: aiSearchQuery.person_locations,
-        organization_ids: [],
+        organization_ids: org_ids,
         person_seniorities: aiSearchQuery.person_seniorities,
       });
 
