@@ -137,7 +137,7 @@ function EditFilter({
               key={index}
               onClickDelete={{
                 onClick: () => {
-                  handlePillRemove('locations', index);
+                  handlePillRemove('person_locations', index);
                 },
               }}
               textJob={title}
@@ -186,7 +186,7 @@ function EditFilter({
         slotJobInput={
           <FilterInput
             handleAdd={(s) => {
-              handleUpdatePillInput('jobTitles', s);
+              handleUpdatePillInput('person_titles', s);
             }}
             path='jobTitles'
           />
@@ -194,7 +194,7 @@ function EditFilter({
         slotLocationInput={
           <FilterInput
             handleAdd={(s) => {
-              handleUpdatePillInput('locations', s);
+              handleUpdatePillInput('person_locations', s);
             }}
             path='location'
           />
