@@ -12,13 +12,13 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import { companyType } from '@/src/utils/userRoles';
 
-import Loader from './Loader/Index';
 import SelectAtsSystem from './SelectAtsSystem';
 import SlideDetailsOne from './SlideDetailsOne';
 import SlideDetailsTwo from './SlideDetailsTwo';
 import SlideTwoSignUp from './SlideSignup';
 import { stepObj } from './SlideSignup/utils';
 import AUIButton from '../Common/AUIButton';
+import Loader from '../Common/Loader';
 
 const SignUpComp = () => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const SignUpComp = () => {
       .update({
         recruiter_type: type,
       })
-      .eq('id', recruiter.id);
+      .eq('id', recruiter?.id);
   }
 
   return (
@@ -53,7 +53,7 @@ const SignUpComp = () => {
                   onClick: () => {
                     setFlow(companyType.AGENCY);
                     localStorage.setItem('flow', companyType.AGENCY);
-                    setStep(stepObj.signup);
+                    setStep(stepObj.detailsOne);
                     updateAuthDetails(companyType.AGENCY);
                     router.push(`?step=${stepObj.detailsOne}`, undefined, {
                       shallow: true,
@@ -64,7 +64,7 @@ const SignUpComp = () => {
                   onClick: () => {
                     setFlow(companyType.COMPANY);
                     localStorage.setItem('flow', companyType.COMPANY);
-                    setStep(stepObj.signup);
+                    setStep(stepObj.detailsOne);
                     updateAuthDetails(companyType.COMPANY);
                     router.push(`?step=${stepObj.detailsOne}`, undefined, {
                       shallow: true,
@@ -75,7 +75,7 @@ const SignUpComp = () => {
                   onClick: () => {
                     setFlow(companyType.CONSULTANT);
                     localStorage.setItem('flow', companyType.CONSULTANT);
-                    setStep(stepObj.signup);
+                    setStep(stepObj.detailsOne);
                     updateAuthDetails(companyType.CONSULTANT);
                     router.push(
                       `?step=${stepObj.detailsOne}&category=consultant`,
@@ -86,19 +86,11 @@ const SignUpComp = () => {
                     );
                   },
                 }}
-                onClickSignIn={{
-                  onClick: () => {
-                    router.push(pageRoutes.LOGIN, undefined, {
-                      shallow: true,
-                    });
-                  },
-                }}
               />
             </YTransform>
           }
         />
       )}
-
       {step == stepObj.detailsOne ? (
         <YTransform uniqueKey={step}>
           <SlideDetailsOne />

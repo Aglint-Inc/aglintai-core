@@ -27,7 +27,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import ThankYou from './ThankYou';
+import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
 import Icon from '../Common/Icons/Icon';
 
@@ -61,6 +61,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 job_title: post.job_title,
               })
               .select();
+            setEmail('');
             toast.success(
               'Thank you for subscribing! You will be notified via email.',
             );

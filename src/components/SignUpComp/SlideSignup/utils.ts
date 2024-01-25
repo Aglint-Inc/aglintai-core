@@ -54,7 +54,6 @@ export const handleEmail = (email): FieldError => {
 
 export const stepObj = {
   type: 'type',
-  signup: 'signup',
   signin: 'login',
   detailsOne: 'details-one',
   detailsTwo: 'details-two',

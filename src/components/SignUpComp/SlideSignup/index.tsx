@@ -14,7 +14,7 @@ import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
-import Loader from '../Loader/Index';
+import Loader from '../../Common/Loader';
 
 const SlideTwoSignUp = () => {
   const router = useRouter();

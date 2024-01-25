@@ -146,6 +146,7 @@ export function CompanyDetails() {
     recruiterUser,
     setRecruiterUser,
     userCountry,
+    userDetails,
   } = useAuthDetails();
   const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
@@ -167,8 +168,8 @@ export function CompanyDetails() {
   });
 
   useEffect(() => {
-    setPhone(recruiter.phone_number);
-  }, [recruiter]);
+    if (userDetails?.user) setPhone(recruiter.phone_number);
+  }, [userDetails]);
 
   const phoneValidation = (format) => {
     if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {
@@ -308,6 +309,7 @@ export function CompanyDetails() {
       //
     }
   };
+
   return (
     <RcInfoForm
       slotLogo={
@@ -416,10 +418,10 @@ export function CompanyDetails() {
               !phone
                 ? 'Please enter your phone number.'
                 : error.phone.error
-                ? `Invalid phone number. Please use the ${
-                    phonePattern?.replaceAll('.', 'x') || 'correct'
-                  } format.`
-                : ''
+                  ? `Invalid phone number. Please use the ${
+                      phonePattern?.replaceAll('.', 'x') || 'correct'
+                    } format.`
+                  : ''
             }
           />
           <Stack

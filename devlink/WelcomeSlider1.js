@@ -189,23 +189,6 @@ export function WelcomeSlider1({
             />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "ju-right-top", "align-left")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ju-redirect-text")}
-            tag="div"
-          >
-            {"Already have an account? "}
-            <_Builtin.Span
-              className={_utils.cx(_styles, "sign-in-text")}
-              {...onClickSignIn}
-            >
-              {"Sign In"}
-            </_Builtin.Span>
-          </_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

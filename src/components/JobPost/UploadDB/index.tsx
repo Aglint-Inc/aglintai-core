@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,6 +20,7 @@ import toast from '@/src/utils/toast';
 
 import { jobOpenings } from '..';
 import Icon from '../../Common/Icons/Icon';
+import LoaderGrey from '../../Common/LoaderGrey';
 
 const initialError = () => {
   return {
@@ -67,7 +68,6 @@ const initialError = () => {
 };
 
 function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
-  const isSubmitRef = useRef(false);
   const [profile, setProfile] = useState<any>({
     firstName: null,
     lastName: null,
@@ -84,6 +84,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
   const [checked, setChecked] = useState(true);
   const [error, setError] = useState(initialError());
   const [file, setFile] = useState<any>();
+  const [isDisabled, setIsDisabled] = useState(false);
   // eslint-disable-next-line no-unused-vars
 
   const router = useRouter();
@@ -180,6 +181,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
 
   const submitHandler = async () => {
     if (checked && validate()) {
+      setIsDisabled(true);
       let fileId = uuidv4();
       let uploadUrl = null;
       const { data } = await supabase.storage
@@ -216,7 +218,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
 
       if (response.status === 200 && response.data) {
         if (response.data.applied) {
-          isSubmitRef.current = false;
           setLoading(false);
           toast.error('You have already applied for this job');
         } else {
@@ -236,6 +237,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       } else {
         toast.error('Something went wrong! Please try again later');
       }
+      setIsDisabled(false);
     }
   };
 
@@ -300,6 +302,10 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       //}
     }
   };
+
+  useEffect(() => {
+    if (isDisabled) setIsDisabled(false);
+  }, [profile]);
 
   return (
     <Stack
@@ -388,7 +394,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
                 error={error.usn.error}
                 helperText={error.usn.error ? error.usn.msg : null}
                 onChange={(e) => {
-                  isSubmitRef.current = false;
                   setProfile({ ...profile, usn: e.target.value });
                 }}
               />
@@ -407,7 +412,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
                   error.college_name.error ? error.college_name.msg : null
                 }
                 onChange={(e) => {
-                  isSubmitRef.current = false;
                   setProfile({ ...profile, college_name: e.target.value });
                 }}
               />
@@ -424,7 +428,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
                 error={error.branch.error}
                 helperText={error.branch.error ? error.branch.msg : null}
                 onChange={(e) => {
-                  isSubmitRef.current = false;
                   setProfile({ ...profile, branch: e.target.value });
                 }}
               />
@@ -442,7 +445,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
                 error={error.cgpa.error}
                 helperText={error.cgpa.error ? error.cgpa.msg : null}
                 onChange={(e) => {
-                  isSubmitRef.current = false;
                   setProfile({ ...profile, cgpa: e.target.value });
                 }}
               />
@@ -457,7 +459,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
                 label={'Job Role'}
                 value={profile?.role || jobOpenings[0]}
                 onChange={(e) => {
-                  isSubmitRef.current = false;
                   setProfile({ ...profile, role: e.target.value });
                 }}
               >
@@ -585,11 +586,15 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
             />
 
             <Stack direction={'row'} spacing={'4px'}>
-              <Typography variant='caption' color={!checked && 'error.main'} sx={{cursor:'default'}}>
+              <Typography
+                variant='caption'
+                color={!checked && 'error.main'}
+                sx={{ cursor: 'default' }}
+              >
                 By applying, you are agreeing to the
               </Typography>
               <Typography
-                sx={{ textDecoration: 'underline',cursor:'pointer' }}
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                 variant='caption'
                 color={!checked && 'error.main'}
                 onClick={() => {
@@ -603,13 +608,16 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
         </Grid>
         <Grid item xs={12}>
           <ButtonPrimaryRegular
-            isDisabled={isSubmitRef.current}
+            isDisabled={Boolean(router.query.preview)}
+            slotEndIcon={
+              <Stack justifyContent={'center'} alignItems={'center'}>
+                <LoaderGrey />
+              </Stack>
+            }
+            isEndIcon={isDisabled}
             onClickButton={{
               onClick: () => {
-                if (!isSubmitRef.current) {
-                  isSubmitRef.current = true;
-                  submitHandler();
-                }
+                if (!isDisabled) submitHandler();
               },
             }}
             textLabel='Apply Now'
