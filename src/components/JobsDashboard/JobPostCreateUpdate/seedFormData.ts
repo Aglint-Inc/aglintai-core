@@ -341,7 +341,9 @@ export const dbToClientjobPostForm = (
       startVideo:
         jobPost.start_video || (seedData.formFields.startVideo as any),
       endVideo: jobPost.end_video || (seedData.formFields.endVideo as any),
-      interviewInstrctions: jobPost.interview_instructions,
+      interviewInstrctions:
+        jobPost.interview_instructions ||
+        seedData.formFields.interviewInstrctions,
       isDraftCleared: isUndefined(jobPost.draft)
         ? false
         : isEmpty(jobPost.draft),
@@ -367,10 +369,10 @@ export const dbToClientjobPostForm = (
 
 let emailTemps = {
   interview: {
-    body: "<p>Dear [firstName],</p><p>Thank you for submitting your application for the [jobTitle] at [companyName]. We''''re pleased to announce that you''''ve been selected for an interview.</p><p>You''''re welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards</p>",
+    body: "<p>Dear [firstName],</p><p>Thank you for submitting your application for the [jobTitle] at [companyName]. We're pleased to announce that you've been selected for an interview.</p><p>You're welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We wish you the best of luck and are eager to hear your insights!</p><p>Warm regards</p>",
     default: true,
     subject:
-      "Congratulations! You''''ve Been Selected for an Interview with [companyName]",
+      "Congratulations! You've Been Selected for an Interview with [companyName]",
     fromName: 'aglint',
   },
   rejection: {
@@ -380,23 +382,31 @@ let emailTemps = {
     fromName: 'aglint',
   },
   phone_screening: {
-    body: '<p>Dear [CandidateName],</p><p>I hope this message finds you well. We appreciate your interest in the [Role] position at [CompanyName], and we are excited to move forward with your application.</p><p>After reviewing your application, we would like to invite you to participate in a phone screening interview. This initial conversation will give us the opportunity to learn more about your experiences, skills, and how they align with the requirements of the role.</p><p>Please click on the following link to access the phone screening interview: [PhoneScreeningLink]</p><p>Best regards,</p><p>[Your Full Name]</p><p>[Your Company]</p>',
+    body: '<p>Dear [firstName],</p><p>I hope this message finds you well. We appreciate your interest in the [jobTitle] position at [companyName], and we are excited to move forward with your application.</p><p>After reviewing your application, we would like to invite you to participate in a phone screening interview. This initial conversation will give us the opportunity to learn more about your experiences, skills, and how they align with the requirements of the role.</p><p>Please click on the following link to access the phone screening interview: [phoneScreeningLink]</p><p>Best regards ,</p><p>[companyName]</p>',
     default: true,
     subject:
-      "Invitation to Phone Screening Interview for [Candidate''''s Name] - [Role] Position at [Your Company]",
+      'Invitation to Phone Screening Interview for [firstName] - [jobTitle] Position at [companyName]',
     fromName: 'aglint',
   },
   interview_resend: {
-    body: "<p>Dear [firstName],</p><p>We noticed that you haven''''t given your interview for the [jobTitle] position at [companyName]. Don''''t miss this opportunity!</p><p>You''''re welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We''''re looking forward to hearing from you soon!</p><p>Warm regards</p>",
+    body: "<p>Dear [firstName],</p><p>We noticed that you haven't given your interview for the [jobTitle] position at [companyName]. Don't miss this opportunity!</p><p>You're welcome to choose an interview time that suits your schedule.</p><p>[interviewLink]</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>We're looking forward to hearing from you soon!</p><p>Warm regards</p>",
     default: true,
     subject:
       'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
     fromName: 'aglint',
   },
   application_recieved: {
-    body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position:</p><p>[jobTitle]</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p> <p>[supportLink]</p> <p>Sincerely,</p><p>[companyName]</p>',
+    body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position [jobTitle]:</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
     default: true,
-    subject: 'We received your application for a position at [companyName]',
+    subject:
+      'We received your application for a position [jobTitle] at [companyName]',
+    fromName: 'aglint',
+  },
+  phone_screening_resend: {
+    body: "<p>Dear [firstName],</p><p>We hope this message finds you well. We wanted to bring to your attention that we have not yet received your screening form submission for the [jobTitle] position at [companyName]. We wouldn't want you to miss out on this exciting opportunity!</p><p>Please click on the link below to initiate the phone screening process:</p><p>[phoneScreeningLink]</p><p>We're looking forward to hearing from you soon!</p><p>Warm regards,</p><p>[<span>companyName</span>]</p>",
+    default: true,
+    subject:
+      'Reminder: Complete Your Phone Screening for [jobTitle] Position at [companyName]',
     fromName: 'aglint',
   },
 };

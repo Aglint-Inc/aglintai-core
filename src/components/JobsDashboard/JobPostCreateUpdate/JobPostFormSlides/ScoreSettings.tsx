@@ -138,6 +138,27 @@ ${jobForm.formFields.jobDescription}
     };
   }, [jobForm]);
 
+  useEffect(() => {
+    if (jobForm.formFields.jdJson.skills.length === 0) {
+      handleUpdateFormFields({
+        path: 'resumeScoreSettings.skills',
+        value: 0,
+      });
+    }
+    if (jobForm.formFields.jdJson.educations.length === 0) {
+      handleUpdateFormFields({
+        path: 'resumeScoreSettings.education',
+        value: 0,
+      });
+    }
+    if (jobForm.formFields.jdJson.rolesResponsibilities.length === 0) {
+      handleUpdateFormFields({
+        path: 'resumeScoreSettings.experience',
+        value: 0,
+      });
+    }
+  }, [jobForm.formFields.jdJson]);
+
   const handleClickEdit = (paramKey: string, id: string, s, e) => {
     setEditParam({
       paramKey: paramKey,
@@ -171,11 +192,7 @@ ${jobForm.formFields.jobDescription}
                       key={p.paramKey}
                       textHeading={
                         <>
-                          <UITypography
-                            fontBold='normal'
-                            type='small'
-                            color={p.color}
-                          >
+                          <UITypography fontBold='normal' type='small'>
                             {p.label}
                           </UITypography>
                         </>

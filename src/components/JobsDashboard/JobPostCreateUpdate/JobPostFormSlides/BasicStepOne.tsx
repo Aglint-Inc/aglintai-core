@@ -38,6 +38,7 @@ const BasicStepOne = () => {
     slidePathToNum['details'],
     jobPostId,
   );
+
   return (
     <>
       <NewJobStep1

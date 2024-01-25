@@ -531,7 +531,7 @@ const SideNavs = ({ changeSlide }) => {
           return (
             <SublinkSubMenu
               key={sl.path}
-              isWarningVisible={isWarnShow}
+              isWarningVisible={currSlide !== 'screening' && isWarnShow}
               isActive={currSlide === sl.path}
               textLink={allSlides.find((s) => s.path === 'screening').title}
               onClickLink={{
@@ -726,6 +726,10 @@ const SideSection = () => {
       />
     );
   } else if (currSlide === 'resumeScore') {
+    const disableExp =
+      jobForm.formFields.jdJson.rolesResponsibilities.length === 0;
+    const disableEdu = jobForm.formFields.jdJson.educations.length === 0;
+    const disableSkills = jobForm.formFields.jdJson.skills.length === 0;
     return (
       <>
         <div style={{ height: '60px' }}>
@@ -776,6 +780,7 @@ const SideSection = () => {
                       onChange={(e) => {
                         onChangeScore(e, 'experience');
                       }}
+                      disabled={disableExp}
                     />
                   </>
                 }
@@ -796,6 +801,7 @@ const SideSection = () => {
                       onChange={(e) => {
                         onChangeScore(e, 'skills');
                       }}
+                      disabled={disableSkills}
                     />
                   </>
                 }
@@ -816,6 +822,7 @@ const SideSection = () => {
                       onChange={(e) => {
                         onChangeScore(e, 'education');
                       }}
+                      disabled={disableEdu}
                     />
                   </>
                 }

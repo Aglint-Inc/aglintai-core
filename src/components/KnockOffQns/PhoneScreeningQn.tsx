@@ -148,7 +148,7 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
           fullWidth
           multiline
           minRows={1}
-          maxRows={3}
+          maxRows={10}
           placeholder='Type Your Answer'
           sx={{ width: '100%', borderBottom: 1, mb: 2 }}
           variant='standard'
@@ -180,7 +180,12 @@ const PhoneScreeningQn = ({ path, qnNo }) => {
       currentQuestionNo={qnNo}
       isQuestionImp={qn.isRequired}
       slotLogo={<CompanyLogo />}
-      textQuestion={qn.question}
+      textQuestion={
+        <>
+          {qn.question}
+          <span style={{ color: 'red' }}> *</span>
+        </>
+      }
       totalQuestionNo={state.phoneScreen.length}
       isSubmitButtonVisible={state.phoneScreen.length === qnNo}
       isOkButtonVisible={state.phoneScreen.length !== qnNo}
