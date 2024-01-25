@@ -3,18 +3,16 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { WelcomeSlider2 } from '@/devlink';
-import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from '../SlideSignup/types';
-import { handleEmail, handlePassword, stepObj } from '../SlideSignup/utils';
+import { handleEmail, handlePassword } from '../SlideSignup/utils';
 import Icon from '../../Common/Icons/Icon';
 
 const SlideLogin = () => {
   const router = useRouter();
-  const { setStep } = useSignupDetails();
   const [details, setDetails] = useState<
     Omit<Details, 'first_name' | 'last_name'>
   >({
@@ -120,10 +118,9 @@ const SlideLogin = () => {
       <WelcomeSlider2
         onClickSignUp={{
           onClick: () => {
-            router.push(`?step=${stepObj.signup}`, undefined, {
+            router.push(pageRoutes.SIGNUP, undefined, {
               shallow: true,
             });
-            setStep(stepObj.signup);
           },
         }}
         onClickLogInGoogle={{
