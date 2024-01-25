@@ -7,11 +7,23 @@ import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
 
 import AddNewCompany from './AddNewCompany';
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+
+type CompanyTYpe = {
+  recName: string;
+  recId: string;
+  isActive: boolean;
+  logo: string;
+};
 function CompanyList() {
   // const router = useRouter();
   const {
@@ -21,28 +33,38 @@ function CompanyList() {
     allrecruterRelation,
     setAllrecruterRelation,
   } = useAuthDetails();
-  const [allCompanies, setAllCompanies] = useState([]);
+  const [allCompanies, setAllCompanies] = useState<CompanyTYpe[]>([]);
   const [anchorlEl, setAnchorEl] = useState(null);
   async function getCompanies() {
-    setAllCompanies([]);
-    setAllrecruterRelation([] as any);
-    const { data: recruiter_relation, error: recruiter_relation_error } =
-      await supabase
-        .from('recruiter_relation')
-        .select()
-        .eq('user_id', userDetails?.user.id);
-    setAllrecruterRelation(recruiter_relation as any);
-    if (!recruiter_relation_error)
-      recruiter_relation.map(async (ele) => {
-        const { data } = await supabase
-          .from('recruiter')
-          .select()
-          .eq('id', ele.recruiter_id);
-        setAllCompanies((pre) => [...pre, data[0]]);
-        if (ele.is_active) {
-          setRecruiter(data[0] as any);
-        }
-      });
+    try {
+      setAllCompanies([]);
+      setAllrecruterRelation([] as any);
+      const relations = supabaseWrap(
+        await supabase
+          .from('recruiter_relation')
+          .select('*, recruiter(*)')
+          .eq('user_id', userDetails?.user.id),
+      );
+      setAllCompanies(
+        relations.map((reln) => ({
+          recName: reln.recruiter?.name,
+          recId: reln.recruiter_id,
+          isActive: reln.is_active,
+          logo: reln.recruiter?.logo,
+        })),
+      );
+      setAllrecruterRelation(() =>
+        relations.map((reln) => ({
+          created_at: reln.created_at,
+          id: reln.id,
+          is_active: reln.is_active,
+          recruiter_id: reln.recruiter_id,
+          user_id: userDetails.user.id,
+        })),
+      );
+    } catch (error) {
+      toast.error(API_FAIL_MSG);
+    }
   }
 
   useEffect(() => {
@@ -59,34 +81,33 @@ function CompanyList() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [companyUpdateLoader, setCompanyUploadLoader] = useState(null);
 
-  async function handleClick(ele: any) {
-    setCompanyUploadLoader(ele.id);
-    for (const recruterRelation of allrecruterRelation as any) {
+  async function handleClick(ele: CompanyTYpe) {
+    for (const recruterRelation of allrecruterRelation) {
       await updateStatus(
         recruterRelation?.recruiter_id,
-        ele.id === recruterRelation?.recruiter_id,
-        ele,
+        ele.recId === recruterRelation?.recruiter_id,
       );
       setAnchorEl(null);
     }
   }
 
-  async function updateStatus(id: any, status: boolean, ele: any) {
+  async function updateStatus(id: any, status: boolean) {
     await supabase
       .from('recruiter_relation')
       .update({
         is_active: status,
       })
       .eq('recruiter_id', id)
-      .select()
+      .select('*, recruiter(*)')
       .then(({ data }) => {
         if (data[0]?.is_active) {
-          setRecruiter(ele);
+          setRecruiter(data[0].recruiter as any);
         }
         setCompanyUploadLoader(null);
       });
   }
 
+  const role = userDetails?.user.user_metadata.role?.toLowerCase();
   return (
     <>
       <SidePanelDrawer
@@ -105,7 +126,13 @@ function CompanyList() {
       <Avatar
         src={recruiter?.logo}
         onClick={(e) => {
-          setAnchorEl(e.currentTarget);
+          if (
+            role &&
+            (role === companyType.AGENCY?.toLowerCase() ||
+              role === companyType.CONSULTANT?.toLowerCase())
+          ) {
+            setAnchorEl(e.currentTarget);
+          }
         }}
         variant='rounded'
         sx={{
@@ -155,7 +182,7 @@ function CompanyList() {
                     px={'5px'}
                     borderRadius={'10px'}
                     key={i}
-                    bgcolor={ele.name === recruiter.name && 'grey.100'}
+                    bgcolor={ele.recName === recruiter?.name && 'grey.100'}
                     onClick={() => {
                       handleClick(ele);
                     }}
@@ -187,9 +214,9 @@ function CompanyList() {
                           handleClick(ele);
                         },
                       }}
-                      companyName={ele?.name}
+                      companyName={ele?.recName}
                     />
-                    {ele.id === companyUpdateLoader && (
+                    {ele.recId === companyUpdateLoader && (
                       <Stack
                         sx={{
                           '& svg': {
@@ -215,8 +242,6 @@ function CompanyList() {
           }}
         />
       </Popover>
-
-      {}
     </>
   );
 }
