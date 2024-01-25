@@ -19,7 +19,10 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
+import {
+  EmailTempPath,
+  templateObj,
+} from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -35,7 +38,10 @@ const Emails = () => {
     .filter((path) => {
       if (path === 'interview' || path === 'interview_resend') {
         return jobForm.formFields.assessment;
-      } else if (path === 'phone_screening' || path === 'phonescreen_resend') {
+      } else if (
+        path === 'phone_screening' ||
+        path === 'phone_screening_resend'
+      ) {
         return jobForm.formFields.isPhoneScreenEnabled;
       } else {
         return true;
@@ -78,7 +84,7 @@ const Emails = () => {
               return (
                 <EmailTemplateCards
                   key={email.path}
-                  textTitle={email.title.heading}
+                  textTitle={email.title.listing}
                   textDescription={templateObj[email.path].triggerInfo}
                   isActive={editTemplate === email.path}
                   onClickEdit={{
@@ -127,7 +133,7 @@ const Emails = () => {
 export default Emails;
 
 type EmailTemplateParams = {
-  title: { heading: string; description: string };
+  title: { heading: string; listing: string; description: string };
   excerpt: string;
   path: string;
 };
@@ -190,17 +196,13 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
     }
   };
 
-  // console.log(
-  //   jobForm.formFields.screeningEmail.emailTemplates['phonescreen_resend'],
-  // );
-
   return (
     <>
       {Boolean(templatePath) && (
         <Stack mb={'10px'}>
           <EditEmail
             editEmailDescription={
-              templateObj[String(templatePath)]?.description
+              templateObj[String(templatePath)]?.descriptionInJob
             }
             onClickSaveChanges={{
               onClick: () => {
@@ -421,10 +423,10 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
   );
 };
 
-export const emailTempKeys = [
+export const emailTempKeys: EmailTempPath[] = [
   'application_recieved',
   'phone_screening',
-  'phonescreen_resend',
+  'phone_screening_resend',
   'interview',
   'interview_resend',
   'rejection',

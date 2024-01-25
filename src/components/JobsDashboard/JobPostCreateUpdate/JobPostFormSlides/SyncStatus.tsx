@@ -16,7 +16,7 @@ const SyncStatus = ({ status }: { status: JobFormState['syncStatus'] }) => {
     } else if (status === 'saved') {
       setTimeout(() => {
         setShow(false);
-      }, 5000);
+      }, 10000);
     }
   }, [status]);
 

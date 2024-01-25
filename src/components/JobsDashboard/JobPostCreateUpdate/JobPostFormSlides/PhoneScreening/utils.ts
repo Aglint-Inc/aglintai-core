@@ -18,7 +18,7 @@ export const seedQns: PhoneScreenQuestion[] = [
     options: [],
     question:
       'Are you willing to undergo a background check, in accordance with local law/regulations ?',
-    questionLabel: 'Backgound check',
+    questionLabel: 'Backgound Check',
   },
   {
     id: nanoid(),
@@ -49,7 +49,7 @@ export const seedQns: PhoneScreenQuestion[] = [
       },
     ],
     question: `Do you have a valid driver's license ?`,
-    questionLabel: 'Drivers licence',
+    questionLabel: 'Drivers Licence',
   },
   {
     id: nanoid(),
@@ -171,7 +171,7 @@ export const seedQns: PhoneScreenQuestion[] = [
       },
     ],
     question: ` Will you now or in the future require sponsorship for employment visa status ?`,
-    questionLabel: 'Visa status',
+    questionLabel: 'Visa Status',
   },
   {
     id: nanoid(),
@@ -181,7 +181,7 @@ export const seedQns: PhoneScreenQuestion[] = [
     isRequired: true,
     options: [],
     question: `Can you confirm your work authorization and eligibility to work remotely without any restrictions in the USA ?`,
-    questionLabel: 'Work authorisation',
+    questionLabel: 'Work Authorisation',
   },
   {
     id: nanoid(),
