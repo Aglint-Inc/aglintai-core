@@ -10,11 +10,10 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
-import AddTechnologyDialog from './AddTechnologyDialog';
+import AddSpecialityDialog from './AddSpecialityDialog';
 import SocialComp from './SocialComp';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
-// import Assistant from '../Assistant';
 import CompanyJdComp from '../CompanyJdComp';
 import EmailTemplate from '../EmailTemplate';
 import TeamManagement from '../TeamManagement';
@@ -69,13 +68,14 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
   }, [recruiter]);
+
   return (
     <Stack
       sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
       width={'100%'}
     >
       <YTransform uniqueKey={router.query.tab}>
-        <AddTechnologyDialog
+        <AddSpecialityDialog
           handleClose={handleClose}
           open={dialog.stacks}
           handleChange={handleChange}
@@ -200,7 +200,10 @@ const CompanyInfoComp = ({ setIsSaving }) => {
             }}
             onClickAddDepartments={{
               onClick: () => {
-                setDialog({ ...dialog, departments: true });
+                setDialog((prev) => ({
+                  ...prev,
+                  departments: true,
+                }));
               },
             }}
             onClickAddTechStacks={{

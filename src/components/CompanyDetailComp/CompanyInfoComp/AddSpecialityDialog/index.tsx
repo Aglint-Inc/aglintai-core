@@ -18,7 +18,7 @@ interface StacksProps {
   handleChange: (recruiter: RecruiterType) => void;
 }
 
-const AddTechnologyDialog: React.FC<StacksProps> = ({
+const AddSpecialityDialog: React.FC<StacksProps> = ({
   handleClose,
   open,
   handleChange,
@@ -112,7 +112,9 @@ const AddTechnologyDialog: React.FC<StacksProps> = ({
                       spacing={'4px'}
                     >
                       <Typography variant='body1'>{option}</Typography>
-                      <Typography variant='caption'>- Add Role</Typography>
+                      <Typography variant='caption'>
+                        - Add Speciality
+                      </Typography>
                     </Stack>
                   </li>
                 );
@@ -169,4 +171,4 @@ const AddTechnologyDialog: React.FC<StacksProps> = ({
   );
 };
 
-export default AddTechnologyDialog;
+export default AddSpecialityDialog;

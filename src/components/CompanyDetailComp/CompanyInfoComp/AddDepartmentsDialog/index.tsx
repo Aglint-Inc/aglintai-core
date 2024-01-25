@@ -13,7 +13,7 @@ import { RecruiterType } from '@/src/types/data.types';
 
 interface DepartmentsProps {
   handleClose: () => void;
-  open: boolean;
+  open: any;
   // eslint-disable-next-line no-unused-vars
   handleChange: (recruiter: RecruiterType) => void;
 }
@@ -42,9 +42,10 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   };
 
   useEffect(() => {
-    if (recruiter?.departments && open)
+    if (recruiter?.departments && open) {
       setDepartmentState(recruiter?.departments);
-  }, [recruiter?.departments]);
+    }
+  }, [recruiter?.departments, open]);
 
   let initialDepartments = [];
   if (localStorage?.getItem('departments')) {
@@ -117,7 +118,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                       spacing={'4px'}
                     >
                       <Typography variant='body1'>{option}</Typography>
-                      <Typography variant='caption'>- Add Role</Typography>
+                      <Typography variant='caption'>
+                        - Add Department
+                      </Typography>
                     </Stack>
                   </li>
                 );

@@ -48,12 +48,12 @@ const technologies = {
   ],
 };
 
-export const generateTechnologies = async (industry: string) => {
+export const generateSpecialities = async (industry: string) => {
   const prompt = [
     {
       role: 'system',
       content: requestJson(
-        'Your a Helpfull Assistant. Generate 10 technologies used for the given Industry.',
+        'Your a Helpfull Assistant. Generate 10 specialities used for the given Industry.',
         technologies,
       ),
     },
@@ -64,9 +64,9 @@ export const generateTechnologies = async (industry: string) => {
   ] as MessageType[];
 
   const resp = await getAIResponse(prompt);
-  const jsonData = JSON.parse(resp) as { technologies: string[] };
-  if (Array.isArray(jsonData.technologies))
-    localStorage.setItem('technologies', JSON.stringify(jsonData.technologies));
+  const jsonData = JSON.parse(resp) as { specialities: string[] };
+  if (Array.isArray(jsonData.specialities))
+    localStorage.setItem('specialities', JSON.stringify(jsonData.specialities));
 };
 
 const roles = {

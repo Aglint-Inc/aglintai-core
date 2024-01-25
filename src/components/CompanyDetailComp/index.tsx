@@ -10,7 +10,7 @@ import CompanyInfoComp from './CompanyInfoComp';
 import {
   generateDepartments,
   generateRoles,
-  generateTechnologies,
+  generateSpecialities,
 } from './utils';
 import LoaderGrey from '../Common/LoaderGrey';
 
@@ -24,8 +24,8 @@ const CompanyDetailComp = () => {
       if (!localStorage?.getItem('departments')) {
         generateDepartments(recruiter.industry);
       }
-      if (!localStorage?.getItem('technologies')) {
-        generateTechnologies(recruiter.industry);
+      if (!localStorage?.getItem('specialities')) {
+        generateSpecialities(recruiter.industry);
       }
       if (!localStorage?.getItem('roles')) {
         generateRoles(recruiter.industry);
