@@ -68,14 +68,15 @@
   z-index: 5;
 
   width: 100%;
-  padding: 16px 12px;
+  padding: 16px 10px;
   align-self: stretch;
 
   border-bottom: 1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
 .cv-list-column-wrapper.top {
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-bottom-style: none;
   background-color: #f8f9f9;
 }
@@ -226,8 +227,15 @@
 }
 
 .cv-list-column.screening {
-  width: 150px;
-  min-width: 150px;
+  width: 220px;
+  min-width: 220px;
+}
+
+.cv-list-column.disqualified {
+  width: 220px;
+  min-width: 220px;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
 .cv-list-checkbox {
@@ -383,6 +391,10 @@
 
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.fw-semibold.text-blue-600.text-dec-none {
+  text-decoration: none;
 }
 
 .text-red-500 {

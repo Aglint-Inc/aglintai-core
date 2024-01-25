@@ -125,16 +125,28 @@ export const getApplicationProcessState = (
   return 'unavailable';
 };
 
-export const candidateEmailValidity = (application: JobApplication) => {
-  const value = application?.candidates?.email;
-  return (
-    value &&
-    value !== application.candidate_id &&
-    value.trim() !== '' &&
-    /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-      value.trim(),
-    )
-  );
+export const candidateEmailValidity = (
+  email: JobApplication['candidates']['email'],
+  candidate_id: JobApplication['candidate_id'],
+) => {
+  const isFetching = email ? email === candidate_id : false;
+  if (isFetching) {
+    return {
+      isFetching,
+      isValidEmail: false,
+    };
+  }
+  return {
+    isFetching: false,
+    isValidEmail:
+      email.trim() !== '' &&
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(email.trim()),
+    // THIS CODE BROKE THE APPLICATION, BAD REGEX AND SCREW THINGS UP. KEEPING THIS AS A SOUVENIER
+    // value.trim() !== '' &&
+    // /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+    //   value.trim(),
+    // ),
+  };
 };
 
 export function getInterviewScore(feedback) {
@@ -208,16 +220,25 @@ export const getScreeningStatus = (
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
-    [id in keyof EmailTemplateType]: boolean;
+    [id in keyof EmailTemplateType]: string;
   };
 
   const phoneScreening = ((phone_screening as any)?.response ??
     null) as PhoneScreeningResponseType[];
 
-  const isNotInvited = (emails?.phone_screening ?? false) === false;
+  const isNotInvited = (emails?.phone_screening ?? null) === null;
   const isPending =
-    (emails?.phone_screening ?? false) === true && !phoneScreening;
+    (emails?.phone_screening ?? null) !== null && !phoneScreening;
   const isSubmitted = !isNotInvited && !isPending;
+  const elapsedTime = isPending
+    ? emails?.phone_screening_resend
+      ? getTimeInfo(emails.phone_screening_resend)
+      : getTimeInfo(emails.phone_screening)
+    : isSubmitted
+      ? getTimeInfo((phone_screening as any).applied_at)
+      : null;
+
+  const timeInfo = getTimeText(elapsedTime);
 
   const screeningStatus = isNotInvited
     ? 'Not Invited'
@@ -232,25 +253,50 @@ export const getScreeningStatus = (
     isNotInvited,
     isPending,
     isSubmitted,
+    timeInfo,
     screeningStatus,
   };
 };
 
+const getTimeText = (hours: number) => {
+  if (hours === 0) return 'Less than an hour ago';
+  const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(months / 12);
+  if (years > 0) return `${years} year${years === 1 ? '' : 's'} ago`;
+  else if (months > 0) return `${months} month${months === 1 ? '' : 's'} ago`;
+  else if (days > 0) return `${days} day${days === 1 ? '' : 's'} ago`;
+  else if (hours > 0) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+};
+
 export const getAssessmentStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
-  feedback: JobApplication['assessment_results']['feedback'],
+  assessment_results: {
+    feedback: JobApplication['assessment_results']['feedback'];
+    created_at: JobApplication['assessment_results']['created_at'];
+  },
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
-    [id in keyof EmailTemplateType]: boolean;
+    [id in keyof EmailTemplateType]: string;
   };
+  const { feedback, created_at } = assessment_results;
 
   const safeFeedback =
     feedback && (feedback as any).length > 0 ? feedback : null;
 
-  const isNotInvited = (emails?.interview ?? false) === false;
-  const isPending = (emails?.interview ?? false) === true && !safeFeedback;
+  const isNotInvited = (emails?.interview ?? null) === null;
+  const isPending = (emails?.interview ?? null) !== null && !safeFeedback;
   const isSubmitted = !isNotInvited && !isPending;
+  const elapstimedTime = isPending
+    ? emails?.interview_resend ?? null
+      ? getTimeInfo(emails.interview_resend)
+      : getTimeInfo(emails.interview)
+    : isSubmitted
+      ? getTimeInfo(created_at)
+      : null;
+
+  const timeInfo = getTimeText(elapstimedTime);
 
   const assessmentStatus = isNotInvited
     ? 'Not Invited'
@@ -265,6 +311,7 @@ export const getAssessmentStatus = (
     isNotInvited,
     isPending,
     isSubmitted,
+    timeInfo,
     assessmentStatus,
   };
 };
@@ -274,30 +321,48 @@ export const getDisqualificationStatus = (
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
-    [id in keyof EmailTemplateType]: boolean;
+    [id in keyof EmailTemplateType]: string;
   };
 
-  const isNotInvited = (emails?.rejection ?? false) === false;
+  const isNotInvited = (emails?.rejection ?? null) === null;
   const isPending = false;
-  const isSubmitted = false;
+  const isSubmitted = !isNotInvited;
+  const elapstimedTime = !isNotInvited ? getTimeInfo(emails.rejection) : null;
+  const timeInfo = getTimeText(elapstimedTime);
+  const disqualificationStatus = isNotInvited ? 'Email not sent' : 'Email sent';
 
   return {
     isNotInvited,
     isPending,
     isSubmitted,
+    timeInfo,
+    disqualificationStatus,
   };
+};
+
+const getTimeInfo = (timeStamp: string) => {
+  if (timeStamp) {
+    const currentTime = new Date().getTime();
+    const incomingTime = new Date(timeStamp).getTime();
+    const elapsedTime = new Date(currentTime - incomingTime).getTime();
+    return Math.floor(elapsedTime / 1000 / 60 / 60);
+  }
+  return null;
 };
 
 export const getAllApplicationStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
-  phone_screening: JobApplication['phone_screening'],
-  feedback: JobApplication['assessment_results']['feedback'],
+  phone_screening: Parameters<typeof getScreeningStatus>[1],
+  assessment_results: Parameters<typeof getAssessmentStatus>[1],
 ) => {
   const screeningStatus = getScreeningStatus(
     status_emails_sent,
     phone_screening,
   );
-  const assessmentStatus = getAssessmentStatus(status_emails_sent, feedback);
+  const assessmentStatus = getAssessmentStatus(
+    status_emails_sent,
+    assessment_results,
+  );
   const disqualificationStatus = getDisqualificationStatus(status_emails_sent);
   return { screeningStatus, assessmentStatus, disqualificationStatus };
 };

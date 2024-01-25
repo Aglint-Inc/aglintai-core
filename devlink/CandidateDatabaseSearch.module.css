@@ -440,6 +440,13 @@
   margin-top: 12px;
 }
 
+.relative.mt-12.flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .relative.width-inc {
   width: 162.1171875px;
 }
@@ -850,6 +857,8 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  cursor: pointer;
 }
 
 .div-block-728.cursor-pointer.width-auto {
@@ -864,6 +873,10 @@
 .div-block-728.plr-10 {
   padding-right: 10px;
   padding-left: 10px;
+}
+
+.div-block-728.width-auto {
+  width: auto;
 }
 
 .div-block-729 {

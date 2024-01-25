@@ -71,14 +71,14 @@ const SocialComp = ({ setIsSaving }) => {
       socialName == 'facebook'
         ? validateFacebookUrl(recruiter.socials[socialName])
         : socialName == 'linkedin'
-        ? validateLinkedInUrl(recruiter.socials[socialName])
-        : socialName == 'youtube'
-        ? validateYouTubeUrl(recruiter.socials[socialName])
-        : socialName == 'twitter'
-        ? validateTwitterUrl(recruiter.socials[socialName])
-        : socialName == 'instagram'
-        ? validateInstagramUrl(recruiter.socials[socialName])
-        : true
+          ? validateLinkedInUrl(recruiter.socials[socialName])
+          : socialName == 'youtube'
+            ? validateYouTubeUrl(recruiter.socials[socialName])
+            : socialName == 'twitter'
+              ? validateTwitterUrl(recruiter.socials[socialName])
+              : socialName == 'instagram'
+                ? validateInstagramUrl(recruiter.socials[socialName])
+                : true
     ) {
       if (
         !custom ||
@@ -298,7 +298,16 @@ const SocialComp = ({ setIsSaving }) => {
               alignItems={'center'}
               spacing={2}
             >
-              <SocialLogo socialName={socialName} />
+              <Stack
+                style={{
+                  border: `1px solid ${palette.grey[200]}`,
+                  padding: '9px',
+                  borderRadius: '4px',
+                  alignItems:'start'
+                }}
+              >
+                <SocialLogo socialName={socialName} />
+              </Stack>
               <UITextField
                 labelSize='medium'
                 fullWidth
@@ -328,6 +337,7 @@ const SocialComp = ({ setIsSaving }) => {
                     true,
                   );
                 }}
+                
                 error={error.custom[socialName].error}
                 helperText={error.custom[socialName].msg}
               />

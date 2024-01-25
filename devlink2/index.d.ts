@@ -87,6 +87,7 @@ export * from "./ScoreErrorIcon";
 export * from "./ScrCheckmarkIcon";
 export * from "./ScrDropdown";
 export * from "./ScreeningLink";
+export * from "./ScreeningStatus";
 export * from "./ScreeningWelcome";
 export * from "./ScrQuestion";
 export * from "./ScrQuestionDefault";

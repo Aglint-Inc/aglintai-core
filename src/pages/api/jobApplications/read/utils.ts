@@ -4,6 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import {
+  candidateEmailValidity,
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
@@ -289,6 +290,11 @@ const rpcDataFormatter = (
       curr.assres as JobApplication['assessment_results'];
     (curr.job_app as unknown as JobApplication).candidate_files =
       curr.candfiles as JobApplication['candidate_files'];
+    (curr.job_app as unknown as JobApplication).emailValidity =
+      candidateEmailValidity(
+        (curr.cand as unknown as JobApplication['candidates']).email,
+        (curr.cand as unknown as JobApplication['candidates']).id,
+      );
     acc.push(curr.job_app as unknown as JobApplication);
     return acc;
   }, [] as JobApplication[]);

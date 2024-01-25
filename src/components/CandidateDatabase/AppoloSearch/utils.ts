@@ -15,7 +15,7 @@ export const employeeRange = [
   },
   {
     value: 'c_suite',
-    display_name: 'C suite',
+    display_name: 'C Suite',
   },
   {
     value: 'partner',
@@ -23,7 +23,7 @@ export const employeeRange = [
   },
   {
     value: 'vp',
-    display_name: 'Vp',
+    display_name: 'VP',
   },
   {
     value: 'head',

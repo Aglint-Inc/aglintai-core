@@ -75,6 +75,10 @@
   white-space: nowrap;
 }
 
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
 .cl-filters-buttons {
   display: flex;
   padding: 16px 32px 24px 24px;

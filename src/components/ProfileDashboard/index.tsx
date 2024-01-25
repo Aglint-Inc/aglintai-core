@@ -100,12 +100,14 @@ const ProfileDashboard = () => {
       value: recruiterUser.phone,
       validation: 'phone',
       label: 'Contact Number',
+      required:false
     },
     position: {
       ...initialFormValues,
       value: recruiterUser.position,
       label: 'Position',
       blocked: false,
+      required:false,
       placeholder: 'Enter your job title.',
     },
   };
@@ -350,25 +352,27 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     (acc, [key, curr]) => {
       let value = curr.value;
       let error = false;
-      switch (curr.validation) {
-        case 'string':
-          {
-            if (validateString(value)) value = value.trim();
-            else error = true;
-          }
-          break;
-        case 'mail':
-          {
-            if (validateMail(value)) value = value.trim();
-            else error = true;
-          }
-          break;
-        case 'phone':
-          {
-            if (validatePhone(value)) value = value.trim();
-            else error = true;
-          }
-          break;
+      if(curr.required){
+        switch (curr.validation) {
+          case 'string':
+            {
+              if (validateString(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+          case 'mail':
+            {
+              if (validateMail(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+          case 'phone':
+            {
+              if (validatePhone(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+        }
       }
       return {
         newProfile: {
@@ -478,9 +482,7 @@ const validateMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
-    /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-      value.trim(),
-    )
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(value.trim())
   );
 };
 const validatePhone = (value: string) => {
@@ -553,7 +555,7 @@ const ProfileForm = ({
 }) => {
   const { userCountry } = useAuthDetails();
   const defaultCountry =
-    value.validation === 'phone' && !value.value ? userCountry : null;
+    value.validation === 'phone' && !value.value ? userCountry : '+1';
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleMouseDownPassword = (event) => {

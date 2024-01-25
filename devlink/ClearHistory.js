@@ -8,6 +8,8 @@ export function ClearHistory({
   as: _Component = _Builtin.Block,
   onClickCancel = {},
   onClickClearHistory = {},
+  textDesc = "Are you sure you want to delete this search? It will delete any bookmarks within this result.",
+  textHeader = "Delete Search",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "clear-history-wrap")} tag="div">
@@ -15,8 +17,11 @@ export function ClearHistory({
         className={_utils.cx(_styles, "clear-history-head")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Delete Search"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+          tag="div"
+        >
+          {textHeader}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cursor-pointer")}
@@ -33,11 +38,7 @@ export function ClearHistory({
         className={_utils.cx(_styles, "clear-hisitory-text-wrap")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {
-            "Are you sure you want to delete this search? It will delete any bookmarks within this result."
-          }
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "clear-btn-wrap")}
           tag="div"

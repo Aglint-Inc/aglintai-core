@@ -78,13 +78,13 @@ function CandidateSearchHistory() {
 
   const handleDeleteHistory = async () => {
     try {
-      setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
       supabaseWrap(
         await supabase
           .from('candidate_search_history')
           .delete()
           .eq('id', deleteHistoryId),
       ) as SearchHistoryType[];
+      setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
       toast.error(API_FAIL_MSG);
@@ -607,6 +607,10 @@ function CandidateSearchHistory() {
         }}
       >
         <ClearHistory
+          textDesc={
+            'Are you sure you want to delete this list? Once deleted, it cannot be recovered.'
+          }
+          textHeader={`Delete ${list.filter((l) => l.id === deleteList?.id)[0]?.name}`}
           onClickCancel={{
             onClick: () => {
               setDeleteList(null);
@@ -628,6 +632,12 @@ function CandidateSearchHistory() {
         }}
       >
         <ClearHistory
+          textDesc={
+            'Are you sure you want to delete this search history? Once deleted, it cannot be recovered.'
+          }
+          textHeader={`Delete ${
+            history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
+          }`}
           onClickCancel={{
             onClick: () => {
               setDeleteHistoryId(-1);

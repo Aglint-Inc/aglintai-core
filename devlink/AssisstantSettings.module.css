@@ -1,6 +1,7 @@
 .cb-assisstant-settings-wrapper {
   display: flex;
   max-width: 660px;
+  padding-top: 20px;
   flex-direction: column;
   grid-column-gap: 64px;
   grid-row-gap: 64px;

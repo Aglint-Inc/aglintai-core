@@ -61,11 +61,13 @@ function CandidateDetail({
                 isEmailOutreachVisible={
                   !emailFetch &&
                   !emailError &&
-                  selectedCandidate?.email_fetch_status !== 'unable to fetch'
+                  selectedCandidate?.email_fetch_status !== 'unable to fetch' &&
+                  selectedCandidate?.email_status !== 'unavailable'
                 }
                 isUnableFetch={
                   emailError ||
-                  selectedCandidate?.email_fetch_status === 'unable to fetch'
+                  selectedCandidate?.email_fetch_status === 'unable to fetch' ||
+                  selectedCandidate?.email_status === 'unavailable'
                 }
                 isFetchingVisible={emailFetch}
                 onClickEmailOutreach={{
@@ -158,7 +160,7 @@ function CandidateDetail({
                 )}
               />
             }
-            textName={selectedCandidate?.name}
+            textName={selectedCandidate?.name || '--'}
             textJobRoleAtCompany={selectedCandidate?.title}
             textLocation={[
               selectedCandidate?.city,

@@ -315,6 +315,7 @@ const ApplicationTable = ({
       isAllChecked={isAllChecked}
       isInterviewVisible={views.assessment}
       slotCandidatesList={applicantsList}
+      isDisqualifiedVisible={views.disqualified}
       isScreeningVisible={views.screening}
     />
   ) : (
@@ -776,6 +777,8 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
     },
     setCardStates,
     showDisqualificationEmailComponent,
+    showAssessmentEmailComponent,
+    showScreeningEmailComponent,
   } = useJobApplications();
 
   const [selectAll, setSelectAll] = useState(false);
@@ -796,6 +799,8 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
   };
 
   const showDisqualify = showDisqualificationEmailComponent || selectAll;
+  const showAssessment = showAssessmentEmailComponent || selectAll;
+  const showScreening = showScreeningEmailComponent || selectAll;
 
   const [openMail, setOpenMail] = useState(false);
 
@@ -814,11 +819,15 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
         />
       )}
       <SelectActionBar
-        isSendScreeningVisible={section === JobApplicationSections.SCREENING}
+        isSendScreeningVisible={
+          section === JobApplicationSections.SCREENING && showScreening
+        }
         onclickSendScreening={{
           onClick: () => setOpenMail(true),
         }}
-        isAssessmentVisible={section === JobApplicationSections.ASSESSMENT}
+        isAssessmentVisible={
+          section === JobApplicationSections.ASSESSMENT && showAssessment
+        }
         onclickAssessment={{
           onClick: () => setOpenMail(true),
         }}

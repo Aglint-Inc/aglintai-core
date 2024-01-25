@@ -60,7 +60,6 @@ import ResumePreviewer from './ResumePreviewer';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import {
-  candidateEmailValidity,
   capitalize,
   formatTimeStamp,
   getApplicationProcessState,
@@ -343,7 +342,7 @@ const NewJobApplicationSideDrawer = ({
       onClickLinkedin={{
         onClick: () => handleLinkedInRedirect(),
       }}
-      isMailIconVisible={candidateEmailValidity(application)}
+      isMailIconVisible={application.emailValidity.isValidEmail}
       isPhoneIconVisible={
         application.candidates.phone &&
         application.candidates.phone.trim() !== ''
@@ -416,8 +415,12 @@ const AssessmentSection: React.FC<{
   const { section } = useJobApplications();
   const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
     application.status_emails_sent,
-    application.assessment_results?.feedback ?? null,
+    {
+      feedback: application.assessment_results?.feedback ?? null,
+      created_at: application.assessment_results?.created_at ?? null,
+    },
   );
+  // if (!isValidEmail) return <></>;
   if (isNotInvited && section === JobApplicationSections.ASSESSMENT)
     return <NewInterviewStatus application={application} pending={false} />;
   if (isPending && section === JobApplicationSections.ASSESSMENT)
@@ -814,9 +817,10 @@ const PhoneScreening: React.FC<{ application: JobApplication }> = ({
     application.status_emails_sent,
     application.phone_screening,
   );
+
   const showComponent =
-    (section === JobApplicationSections.SCREENING || isSubmitted) &&
-    candidateEmailValidity(application);
+    // isValidEmail &&
+    section === JobApplicationSections.SCREENING || isSubmitted;
   if (!showComponent) return <></>;
   const disable =
     disabledList.has(application.id) || (disabled && list.has(application.id));
@@ -873,6 +877,7 @@ const PhoneScreeningSection = ({
     application.phone_screening,
   );
 
+  // if (!isValidEmail) return <></>;
   if (isNotInvited)
     return (
       <SidebarScreening
@@ -885,7 +890,7 @@ const PhoneScreeningSection = ({
     return (
       <SidebarScreening
         isPending={true}
-        onclickResend={{ onClick: async () => await handleInvite() }}
+        onclickResend={{ onClick: async () => await handleInvite(true) }}
       />
     );
 

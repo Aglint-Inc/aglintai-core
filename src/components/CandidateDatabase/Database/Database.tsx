@@ -205,6 +205,7 @@ const CandDatabase = () => {
                     style={{
                       opacity: isLoading ? 0.5 : 1,
                       transition: 'all 0.5s ease 0s',
+                      display: 'flex',
                     }}
                   >
                     <CandidateDatabaseRow
@@ -234,7 +235,7 @@ const CandDatabase = () => {
                       }
                       isSelected={selectedCandidate === index}
                       textLocation={detail.json_resume.basics.location || '--'}
-                      textPhone={detail.json_resume.basics.phone || '--'}
+                      textPhone={detail.json_resume.basics.phone?.length > 10 ? detail.json_resume.basics.phone : '--'}
                       onClickCheck={{
                         onClick: (e) => {
                           e.stopPropagation();

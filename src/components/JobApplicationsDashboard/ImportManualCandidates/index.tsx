@@ -109,7 +109,7 @@ const ImportManualCandidates = ({
               if (
                 value &&
                 value.trim() !== '' &&
-                /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(
                   value.trim(),
                 )
               )

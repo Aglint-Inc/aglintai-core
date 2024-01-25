@@ -66,7 +66,7 @@ export function EmailTemplatesStart({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-772")} tag="div">
         {slotEmailDetails ?? <EditEmail />}
       </_Builtin.Block>
     </_Component>

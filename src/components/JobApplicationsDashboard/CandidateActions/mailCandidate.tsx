@@ -135,7 +135,7 @@ const getEmailProps = (
   const type =
     section === JobApplicationSections.DISQUALIFIED ? 'mail' : 'invite';
   if (selectAll) {
-    const initialPurpose = [getPurpose(section), getSubPurpose(section)].filter(
+    const initialPurpose = [getPurpose(section)].filter(
       (f) => f,
     ) as JobApplicationEmails['request']['purposes'];
     return {
@@ -148,7 +148,7 @@ const getEmailProps = (
       subTitle:
         section === JobApplicationSections.DISQUALIFIED
           ? `Resend ${type}s to all disqualified candidates who have recieved a rejection email`
-          : `Send ${type}s to all uninvited candidates`,
+          : `Resend ${type}s to all invited candidates`,
       showCheck: section === JobApplicationSections.DISQUALIFIED ? false : true,
       buttonText: `Send ${type}s`,
     };
@@ -213,10 +213,10 @@ const getStatus = (
         application.phone_screening,
       );
     case JobApplicationSections.ASSESSMENT:
-      return getAssessmentStatus(
-        application.status_emails_sent,
-        application.assessment_results?.feedback ?? null,
-      );
+      return getAssessmentStatus(application.status_emails_sent, {
+        created_at: application.assessment_results?.created_at ?? null,
+        feedback: application.assessment_results?.feedback ?? null,
+      });
     case JobApplicationSections.DISQUALIFIED:
       return getDisqualificationStatus(application.status_emails_sent);
   }

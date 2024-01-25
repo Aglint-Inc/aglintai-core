@@ -14,14 +14,19 @@ import {
   InsightTagReliable,
   // InsightTagReliable,
   InsightTagSkilled,
+  ScreeningStatus,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
+  JobApplicationSections,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 
+import { InvitedIcon } from './Icons/invited';
+import { SubmittedIcon } from './Icons/submitted';
+import { UninvitedIcon } from './Icons/uninvited';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
 import ResumeScore from '../Common/ResumeScore';
@@ -29,6 +34,7 @@ import {
   capitalize,
   formatTimeStamp,
   getCandidateName,
+  getDisqualificationStatus,
   getReasonings,
   getScreeningStatus,
 } from '../utils';
@@ -55,6 +61,7 @@ const ApplicationCard = ({
       checkList: { list },
     },
     views,
+    section,
   } = useJobApplications();
   const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
@@ -62,11 +69,7 @@ const ApplicationCard = ({
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
   const resumeScore = <ResumeScore application={application} />;
-  const interviewScore = views.assessment ? (
-    <InterviewScore application={application} />
-  ) : (
-    <></>
-  );
+  const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const name = getCandidateName(
     application.candidates.first_name,
@@ -76,10 +79,6 @@ const ApplicationCard = ({
     (application?.candidate_files?.resume_json as any)?.overview ?? '---';
   const analysis = getReasonings(
     (application?.score_json as ScoreJson)?.reasoning || null,
-  );
-  const { isNotInvited, isPending, isSubmitted } = getScreeningStatus(
-    application.status_emails_sent,
-    application.phone_screening,
   );
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
@@ -126,9 +125,9 @@ const ApplicationCard = ({
           ?.totalExperience,
       )}
       isScreeningVisible={views.screening}
-      isScreenStatusPending={isPending}
-      isScreenStatusSubmitted={isSubmitted}
-      isScreeningStatusNotInvited={isNotInvited}
+      slotScreening={<ScreeningStatusComponent application={application} />}
+      isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
+      slotDisqualified={<DisqualificationComponent application={application} />}
     />
   ) : (
     <TopCandidateListItem
@@ -141,7 +140,7 @@ const ApplicationCard = ({
       slotScores={
         <>
           {resumeScore}
-          {interviewScore}
+          {/* {interviewScore} */}
         </>
       }
       overview={overview}
@@ -152,6 +151,87 @@ const ApplicationCard = ({
         },
       }}
       slotInsights={<Insights application={application} />}
+    />
+  );
+};
+
+const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const {
+    emailValidity: { isFetching, isValidEmail },
+  } = application;
+  const { views } = useJobApplications();
+  const { isNotInvited, timeInfo, disqualificationStatus } = useMemo(
+    () => getDisqualificationStatus(application.status_emails_sent),
+    [
+      ...Object.values(application?.status_emails_sent ?? {}),
+      application.phone_screening,
+    ],
+  );
+  if (!views.disqualified) return <></>;
+  if (isFetching) return <FetchingEmail />;
+  if (!isValidEmail) return <InavlidEmail />;
+  if (isNotInvited)
+    return (
+      <ScreeningStatus
+        slotIcon={<UninvitedIcon />}
+        isDurationVisible={false}
+        textStatus={disqualificationStatus}
+      />
+    );
+  return (
+    <ScreeningStatus
+      slotIcon={<InvitedIcon />}
+      isDurationVisible={true}
+      textStatus={disqualificationStatus}
+      textDuration={timeInfo}
+    />
+  );
+};
+
+const ScreeningStatusComponent: React.FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const {
+    emailValidity: { isFetching, isValidEmail },
+  } = application;
+  const { isNotInvited, isPending, timeInfo, screeningStatus } = useMemo(
+    () =>
+      getScreeningStatus(
+        application.status_emails_sent,
+        application.phone_screening,
+      ),
+    [
+      ...Object.values(application?.status_emails_sent ?? {}),
+      application.phone_screening,
+    ],
+  );
+  if (isFetching) return <FetchingEmail />;
+  if (!isValidEmail) return <InavlidEmail />;
+  if (isNotInvited)
+    return (
+      <ScreeningStatus
+        slotIcon={<UninvitedIcon />}
+        isDurationVisible={false}
+        textStatus={screeningStatus}
+      />
+    );
+  if (isPending)
+    return (
+      <ScreeningStatus
+        slotIcon={<InvitedIcon />}
+        isDurationVisible={true}
+        textStatus={screeningStatus}
+        textDuration={timeInfo}
+      />
+    );
+  return (
+    <ScreeningStatus
+      slotIcon={<SubmittedIcon />}
+      isDurationVisible={true}
+      textStatus={screeningStatus}
+      textDuration={timeInfo}
     />
   );
 };
@@ -309,6 +389,20 @@ const getBadge = (key: string, count: number, pills: any) => {
     case 'careerGrowth':
       return count >= 90 ? <InsightTagAmbitious /> : null;
   }
+};
+
+export const FetchingEmail = () => {
+  return <>---</>;
+};
+
+export const InavlidEmail = () => {
+  return (
+    <ScreeningStatus
+      slotIcon={<UninvitedIcon />}
+      isDurationVisible={false}
+      textStatus={'Invalid email'}
+    />
+  );
 };
 
 export default ApplicationCard;

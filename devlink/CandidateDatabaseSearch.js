@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { BetaComp } from "./BetaComp";
 import { SavedList } from "./SavedList";
 import { CandidateHistoryCard } from "./CandidateHistoryCard";
 import * as _utils from "./utils";
@@ -48,7 +47,6 @@ export function CandidateDatabaseSearch({
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Candidate Database"}
         </_Builtin.Block>
-        <BetaComp />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate-empty-landing-wrappers")}

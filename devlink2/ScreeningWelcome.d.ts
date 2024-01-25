@@ -10,4 +10,5 @@ declare function ScreeningWelcome(props: {
   onclickClose?: Types.Devlink.RuntimeProps;
   isCloseVisible?: Types.Visibility.VisibilityConditions;
   isEditButtonVisible?: Types.Visibility.VisibilityConditions;
+  slotWarnings?: Types.Devlink.Slot;
 }): React.JSX.Element;

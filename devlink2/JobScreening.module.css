@@ -130,6 +130,10 @@
   color: var(--black-9b0fc3fc);
 }
 
+.inline-block.text-decoration-none {
+  text-decoration: none;
+}
+
 .div-block-283 {
   display: flex;
   justify-content: center;
@@ -193,8 +197,8 @@
   color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
-.text-grey-500 {
-  color: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+.text-gray-500 {
+  color: var(--gray-500);
 }
 
 .fw-semibold.z-index-5 {
@@ -216,10 +220,6 @@
   }
 }
 
-.text-grey-400 {
-  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
-}
-
 .hide {
   display: none;
   flex-direction: row;
@@ -233,6 +233,10 @@
 
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+}
+
+.fw-semibold.text-blue-600.text-dec-none {
+  text-decoration: none;
 }
 
 .text-red-500 {
@@ -259,6 +263,10 @@
   color: var(--black-100);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;
@@ -267,6 +275,15 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
 }
 
 .text-blue-500.ml-12 {
@@ -330,38 +347,6 @@
   background-color: #edf7ff;
 }
 
-.select-action-btn.blue-100:hover {
-  background-color: hsla(206.66666666666666, 100.00%, 88.22%, 1.00);
-}
-
-.blue-100 {
-  background-color: hsla(206.66666666666666, 100.00%, 96.47%, 1.00);
-}
-
-.select-action-btn.green-100:hover {
-  background-color: #d1e8df;
-}
-
-.green-100 {
-  background-color: hsla(158.18181818181827, 44.00%, 95.10%, 1.00);
-}
-
-.select-action-btn.red-100:hover {
-  background-color: hsla(356, 100.00%, 93.33%, 1.00);
-}
-
-.red-100 {
-  background-color: hsla(356, 100.00%, 97.06%, 1.00);
-}
-
-.select-action-btn.grey-100:hover {
-  background-color: hsla(180, 0.00%, 91.03%, 1.00);
-}
-
-.grey-100 {
-  background-color: hsla(180, 7.69%, 97.45%, 1.00);
-}
-
 .select-action-btn.blue-500:hover {
   background-color: var(--blue700-44d5e20c);
 }
@@ -409,14 +394,6 @@
   z-index: 99;
 
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-green-700 {
-  color: hsla(157.8082191780822, 60.33%, 23.73%, 1.00);
-}
-
-.text-blue-700 {
-  color: hsla(206.59793814432987, 70.80%, 26.86%, 1.00);
 }
 
 .rd-jobs-wrapper {
@@ -624,10 +601,6 @@
   border-radius: 4px;
 }
 
-.grey-600 {
-  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .blue-600 {
   background-color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
@@ -647,10 +620,6 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
-}
-
-.grey-700 {
-  background-color: hsla(205.26315789473685, 11.52%, 32.35%, 1.00);
 }
 
 .blue-700 {
@@ -917,7 +886,7 @@
 @media screen and (max-width: 991px) {
   .list-main-info.top-bar {
     width: auto;
-    background-color: var(--grey-100);
+    background-color: var(--gray-100);
   }
 }
 
@@ -939,14 +908,14 @@
   justify-content: flex-end;
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
   }
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
 }
 
 .cdd-content-main {

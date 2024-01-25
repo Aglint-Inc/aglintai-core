@@ -767,7 +767,6 @@
 }
 
 .slot-create-job-new-wrapper {
-  padding-right: 20px;
   padding-left: 20px;
 }
 
@@ -796,6 +795,7 @@
   top: auto;
   right: 0%;
   bottom: 0%;
+  z-index: 3;
 
   padding: 20px;
 }
@@ -816,6 +816,13 @@
 
 .relative.mt-12 {
   margin-top: 12px;
+}
+
+.relative.mt-12.flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .relative.width-inc {
