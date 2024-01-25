@@ -216,10 +216,11 @@ export function FetchCompanyDetails() {
               linkedin: companyDetails?.linkedin_url || '',
               instagram: companyDetails?.instagram_url || '',
             },
-            technology_score: companyDetails?.keywords || [],
+            technology_score:
+              companyDetails?.keywords.map((sp) => sp.toUpperCase()) || [],
             departments: Object.keys(
               companyDetails?.departmental_head_count || {},
-            ),
+            ).map((dep) => dep.split('_').join(' ').toUpperCase()),
           })
           .eq('id', recruiter.id)
           .select();

@@ -72,6 +72,7 @@ const StartSlide = () => {
 
 const EndMessage = () => {
   const { state } = useScreeningCtx();
+
   return (
     <>
       <PhoneScreenSuccess
@@ -87,6 +88,14 @@ const EndMessage = () => {
           </>
         }
         textSuccess={state.endMessage}
+        onClickSupport={{
+          onClick: () => {
+            if (!state.isPreview)
+              window.open(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${state.applicationId}`,
+              );
+          },
+        }}
       />
     </>
   );

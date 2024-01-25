@@ -19,8 +19,8 @@ export type JsonItemType = {
 
 export type JdJson = {
   roles: JsonItemType[]; // previous roles and number of years.
-  responsibilities: JsonItemType[]; // Responsibilities mentioned in the job description .
-  requirements: JsonItemType[]; // Requirements mentioned in the job description .
+  responsibilities: JsonItemType[]; // responsibilities mentioned in job description.
+  requirements: JsonItemType[]; // requirements ( exclude degree or skill mentioned in the requirements ) .
   jobLevel:enum // 'Fresher-level', 'Associate-level', 'Mid-level', 'Senior-level', 'Executive-level',
   skills: JsonItemType[]; // Each Skill mentioned in roles, reponsibilities and requirements and whether they are a must-have.
   educations: JsonItemType[]; // Each Education degree mentioned in roles, reponsibilities and requirements and whether they are a must-have .

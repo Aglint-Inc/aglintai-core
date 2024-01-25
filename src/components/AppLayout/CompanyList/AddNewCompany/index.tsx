@@ -53,7 +53,6 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
   });
   const [loading, setLoading] = useState(false);
   const [logo, setLogo] = useState(null);
-
   const formValidation = async (): Promise<boolean> => {
     let isValid = true;
     if (!details?.company_website) {
@@ -158,10 +157,10 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
             linkedin: companyDetails?.linkedin_url || '',
             instagram: companyDetails?.instagram_url || '',
           },
-          technology_score: companyDetails?.keywords || [],
+          technology_score: companyDetails?.keywords.map(capitalize) || [],
           departments: Object.keys(
             companyDetails?.departmental_head_count || {},
-          ),
+          ).map((dep) => capitalize(dep.split('_').join(' '))),
         }));
         setLoading(false);
         setSearchStatus('success');

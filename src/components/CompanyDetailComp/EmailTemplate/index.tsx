@@ -29,9 +29,9 @@ const EmailTemplate = () => {
     'isPhoneScreeningEnabled',
   );
   const templateEntries = emailTempKeys.filter((path) => {
-    if (path === 'phone_screening' || path === 'phonescreen_resend') {
+    if (path === 'phone_screening' || path === 'phone_screening_resend') {
       return isPhoneScreeningEnabled;
-    } else if (path === 'interview' || path === 'interview-resend') {
+    } else if (path === 'interview' || path === 'interview_resend') {
       return isAssesEnabled;
     } else {
       return true;
@@ -210,13 +210,72 @@ const EmailTemplate = () => {
 
 export default EmailTemplate;
 
-export const templateObj: Record<string, any> = {
-  interview: {
-    listing: 'Assessment Email',
-    heading: 'Assessment Email',
-    triggerInfo: 'Triggered when the candidate selected for assessment.',
+export type EmailTempPath =
+  | 'interview'
+  | 'interview_resend'
+  | 'rejection'
+  | 'phone_screening'
+  | 'phone_screening_resend'
+  | 'application_recieved';
+
+export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
+  application_recieved: {
+    listing: 'Application Recieved',
+    heading: 'Application Received Email Template',
+    triggerInfo: 'Triggered instantly when candidate applied to this job.',
     description:
-      'Set up a default interview email template. You can make specific changes for individual job posts later.',
+      'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
+    descriptionInJob:
+      'Customise application recieved email template for this job',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+    Best regards,
+    [senderName]`,
+    trigger: 'Triggered instantly when candidate apply for a job',
+  },
+  phone_screening: {
+    listing: 'Phone Screen',
+    heading: 'Phone Screening Email Template',
+    triggerInfo: 'Triggered instantly when you move candidate to screening',
+    descriptionInJob: 'Customise phone screening email template for this job',
+    description:
+      'Set up a default Phone Screening email template. You can make specific changes for individual job posts later.',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+    Best regards,
+    [senderName]`,
+    trigger: 'Triggered instantly when you move candidate to screening',
+  },
+  phone_screening_resend: {
+    listing: 'Follow-up Phone Screening',
+    heading: 'Follow-up Phone Screening Email Template',
+    triggerInfo: 'Triggered for resending the phone screening invite.',
+    descriptionInJob:
+      'Customise follow-up phone screening email template for this job',
+    description:
+      'Set up a default phone screening follow-up email template. You can make specific changes for individual job posts later.',
+    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
+
+Best regards,
+[senderName]`,
+    trigger: 'Triggered instantly when you move the candidate to screening',
+  },
+  interview: {
+    listing: 'Assessment',
+    heading: 'Assessment Email Template',
+    triggerInfo: 'Triggered when the candidate selected for assessment.',
+    descriptionInJob: 'Customise assesment email template for this job',
+    description:
+      'Set up a default assessment email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
     bodyPlaceHolder: `Dear [firstName],
 
@@ -230,11 +289,12 @@ export const templateObj: Record<string, any> = {
   },
   interview_resend: {
     listing: 'Follow Up Assessment',
-    heading: 'Follow Up Assessment Email ',
+    heading: 'Follow Up Assessment Email Template',
     triggerInfo: 'Triggered for resending the assessment invite.',
-
+    descriptionInJob:
+      'Customise follow-up assesment email template for this job',
     description:
-      'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
+      'Set up a default follow-up assessment email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Interview Invitation for [jobTitle] at [companyName]',
     bodyPlaceHolder: `Dear [firstName],
 
@@ -246,11 +306,12 @@ export const templateObj: Record<string, any> = {
     trigger: 'Triggered when you click resend assessment link',
   },
   rejection: {
-    listing: 'Disqualified Email',
-    heading: 'Disqualified Email ',
+    listing: 'Disqualified',
+    heading: 'Disqualified Email Template',
     triggerInfo: 'Triggered when the candidate moved to disqualified state.',
+    descriptionInJob: 'Customise disqualified email template for this job',
     description:
-      'Set up a default interview email template. You can make specific changes for individual job posts later.',
+      'Set up a default disqualified email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Update on your [jobTitle] interview at [companyName]',
     bodyPlaceHolder: `Dear [firstName], 
     
@@ -260,47 +321,15 @@ export const templateObj: Record<string, any> = {
     [senderName]`,
     trigger: 'Triggered when candidate moved to disqualified state',
   },
-  application_recieved: {
-    listing: 'Application Received Email',
-    heading: 'Application Received Email ',
-    triggerInfo: 'Triggered instantly when candidate applied to this job.',
-    description:
-      'Set up a default interview email template. You can make specific changes for individual job posts later.',
-    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
-    bodyPlaceHolder: `Dear [firstName],
+};
 
-    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
-
-    Best regards,
-    [senderName]`,
-    trigger: 'Triggered instantly when candidate apply for a job',
-  },
-  phone_screening: {
-    listing: 'Phone Screen Email',
-    heading: 'Phone Screen Email',
-    triggerInfo: 'Triggered instantly when you move candidate to screening',
-    description: 'Set up a default Phone Screening email template',
-    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
-    bodyPlaceHolder: `Dear [firstName],
-
-    Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
-
-    Best regards,
-    [senderName]`,
-    trigger: 'Triggered instantly when you move candidate to screening',
-  },
-  phonescreen_resend: {
-    listing: 'Phone Screen Follow-up Email',
-    heading: 'Phone Screen Follow-up Email',
-    triggerInfo: 'Triggered for resending the phone screening invite.',
-    description: 'Set up a default Phone Screening follow-up email template',
-    subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
-    bodyPlaceHolder: `Dear [firstName],
-
-Thank you for applying for the [jobTitle] position at [companyName]. We have received your application and will review it shortly. We'll be in touch with the next steps.
-
-Best regards,
-[senderName]`,
-    trigger: 'Triggered instantly when you move the candidate to screening',
-  },
+type EmailTemplatInfoType = {
+  listing: string;
+  heading: string;
+  triggerInfo: string;
+  description: string;
+  descriptionInJob: string; // Note: You might want to specify the type for this property
+  subjectPlaceHolder: string;
+  bodyPlaceHolder: string;
+  trigger: string;
 };
