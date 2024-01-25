@@ -186,6 +186,9 @@ const ScreeningQns = () => {
           )}
           {currentAssTab === 'instructions' && (
             <ScreeningQuestion
+              isUploadVisible={
+                jobForm.formFields.interviewSetting.showInstructionVideo
+              }
               slotWarning={
                 formWarnings.instructions.err.length !== 0 && (
                   <JobEditWarning
@@ -214,6 +217,28 @@ const ScreeningQns = () => {
                   />
                 </>
               }
+              isGenerateWithAiChecked={
+                jobForm.formFields.interviewSetting.isVideoAiGenerated
+              }
+              isUploadChecked={
+                !jobForm.formFields.interviewSetting.isVideoAiGenerated
+              }
+              onClickGenerateAi={{
+                onClick: () => {
+                  handleUpdateFormFields({
+                    path: 'interviewSetting.isVideoAiGenerated',
+                    value: true,
+                  });
+                },
+              }}
+              onClickUpload={{
+                onClick: () => {
+                  handleUpdateFormFields({
+                    path: 'interviewSetting.isVideoAiGenerated',
+                    value: false,
+                  });
+                },
+              }}
               slotToggleInstructionVideo={
                 <ToggleBtn
                   handleChange={() => {

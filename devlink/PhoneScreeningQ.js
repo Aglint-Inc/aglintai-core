@@ -46,19 +46,6 @@ export function PhoneScreeningQ({
           >
             {textQuestion}
           </_Builtin.Block>
-          {isQuestionImp ? (
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text-lg",
-                "fw-semibold",
-                "text-red-500"
-              )}
-              tag="div"
-            >
-              {" *"}
-            </_Builtin.Block>
-          ) : null}
         </_Builtin.Block>
         {isDescriptionVisible ? (
           <_Builtin.Block

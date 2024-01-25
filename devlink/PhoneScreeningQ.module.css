@@ -304,6 +304,10 @@
   letter-spacing: 0px;
 }
 
+.mt-10 {
+  margin-top: 10px;
+}
+
 .slot-input-phone {
   margin-top: 32px;
 }
@@ -430,12 +434,15 @@
   margin-top: 12px;
 }
 
-.relative.width-inc {
-  width: 162.1171875px;
+.relative.mt-12.flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
-.mt-10 {
-  margin-top: 10px;
+.relative.width-inc {
+  width: 162.1171875px;
 }
 
 .ok-button-ps {

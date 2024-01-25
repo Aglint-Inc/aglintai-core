@@ -65,20 +65,6 @@ const EmailTemplate = () => {
   return (
     <>
       <EmailTemplatesStart
-        // slotEmailTemplateCards={templateEntries.map(
-        //   ([templateName, templateData], ind) => (
-        //     <EmailTemplateCards
-        //       key={ind}
-        //       textDescription={templateObj[templateName].trigger}
-        //       textTitle={templateObj[templateName].listing}
-        //       onClickApplicationRecieved={{
-        //         onClick: () => {
-        //           setSelectedTemplate({ ...templateData, name: templateName });
-        //         },
-        //       }}
-        //     />
-        //   ),
-        // )}
         slotEmailTemplateCards={templateEntries.map((emailPath) => (
           <EmailTemplateCards
             key={emailPath}
