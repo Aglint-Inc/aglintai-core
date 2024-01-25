@@ -33,8 +33,8 @@ interface ContextValue {
   recruiter: RecruiterType | null;
   // eslint-disable-next-line no-unused-vars
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
-  allrecruterRelation: RecruiterRelationsType | null;
-  setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType>>;
+  allrecruterRelation: RecruiterRelationsType[];
+  setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
   // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
@@ -103,7 +103,7 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const [allrecruterRelation, setAllrecruterRelation] =
-    useState<RecruiterRelationsType>(null);
+    useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -271,7 +271,7 @@ const AuthProvider = ({ children }) => {
       const redirect = window.location.href;
       if (isRoutePublic(router.route)) return;
       else if (!loading && !userDetails?.user)
-      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
 
