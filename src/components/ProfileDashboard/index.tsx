@@ -100,12 +100,14 @@ const ProfileDashboard = () => {
       value: recruiterUser.phone,
       validation: 'phone',
       label: 'Contact Number',
+      required:false
     },
     position: {
       ...initialFormValues,
       value: recruiterUser.position,
       label: 'Position',
       blocked: false,
+      required:false,
       placeholder: 'Enter your job title.',
     },
   };
@@ -350,25 +352,27 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     (acc, [key, curr]) => {
       let value = curr.value;
       let error = false;
-      switch (curr.validation) {
-        case 'string':
-          {
-            if (validateString(value)) value = value.trim();
-            else error = true;
-          }
-          break;
-        case 'mail':
-          {
-            if (validateMail(value)) value = value.trim();
-            else error = true;
-          }
-          break;
-        case 'phone':
-          {
-            if (validatePhone(value)) value = value.trim();
-            else error = true;
-          }
-          break;
+      if(curr.required){
+        switch (curr.validation) {
+          case 'string':
+            {
+              if (validateString(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+          case 'mail':
+            {
+              if (validateMail(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+          case 'phone':
+            {
+              if (validatePhone(value)) value = value.trim();
+              else error = true;
+            }
+            break;
+        }
       }
       return {
         newProfile: {
