@@ -1,12 +1,12 @@
 import Seo from '@components/Common/Seo';
 import { Stack, Typography } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/src/components/Common/Loader';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
 
 function JobPost() {
   const router = useRouter();
@@ -18,31 +18,28 @@ function JobPost() {
 
   useEffect(() => {
     if (router.isReady && jobId) {
-      supabase
-        .from('recruiter')
-        .select('*')
-        .eq('id', jobId)
-        .then(({ data, error }) => {
-          if (!error && data?.length > 0) {
-            setRecruiter(data[0]);
-            setLoading(false);
+      let jobId = router.query.id;
+      (async () => {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/company`,
+          {
+            job_id: jobId,
+          },
+        );
+        if (response.data) {
+          setRecruiter(response.data.recruiter);
+          setJobs(response.data.jobs);
+          if (response.data.recruiter) {
             setValid(true);
-            supabase
-              .from('public_jobs')
-              .select('*')
-              .eq('recruiter_id', data[0].id)
-              .then(({ data, error }) => {
-                if (!error) {
-                  setJobs(data);
-                }
-              });
+            setLoading(false);
           }
-        });
+        }
+      })();
     }
   }, [router.isReady]);
 
   return (
-    <Stack minHeight={'100vh'}>
+    <Stack height={'100vh'}>
       <Seo
         title={recruiter?.name || 'Company'}
         description='Explore exciting career opportunities and find your perfect job match on our job listing page'
