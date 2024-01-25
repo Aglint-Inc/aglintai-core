@@ -102,6 +102,25 @@ ${jobForm.formFields.jobDescription}
           j.skills.length === 0,
         ),
       });
+      if (j.skills.length === 0) {
+        handleUpdateFormFields({
+          path: 'resumeScoreSettings.skills',
+          value: 0,
+        });
+      }
+      if (j.educations.length === 0) {
+        handleUpdateFormFields({
+          path: 'resumeScoreSettings.education',
+          value: 0,
+        });
+      }
+
+      if (j.rolesResponsibilities.length === 0) {
+        handleUpdateFormFields({
+          path: 'resumeScoreSettings.experience',
+          value: 0,
+        });
+      }
 
       handleUpdateFormFields({
         path: 'isjdChanged',
@@ -119,6 +138,7 @@ ${jobForm.formFields.jobDescription}
       setIsJsonLoading(false);
     }
   };
+
   useEffect(() => {
     (async () => {
       const areAllFieldsEmpty =
@@ -136,27 +156,6 @@ ${jobForm.formFields.jobDescription}
     return () => {
       sourceRef.current.cancel('Pervious request canceled');
     };
-  }, [jobForm]);
-
-  useEffect(() => {
-    if (jobForm.formFields.jdJson.skills.length === 0) {
-      handleUpdateFormFields({
-        path: 'resumeScoreSettings.skills',
-        value: 0,
-      });
-    }
-    if (jobForm.formFields.jdJson.educations.length === 0) {
-      handleUpdateFormFields({
-        path: 'resumeScoreSettings.education',
-        value: 0,
-      });
-    }
-    if (jobForm.formFields.jdJson.rolesResponsibilities.length === 0) {
-      handleUpdateFormFields({
-        path: 'resumeScoreSettings.experience',
-        value: 0,
-      });
-    }
   }, [jobForm.formFields.jdJson]);
 
   const handleClickEdit = (paramKey: string, id: string, s, e) => {
@@ -408,14 +407,39 @@ ${jobForm.formFields.jobDescription}
                 isDeleteVisible={true}
                 onClickDelete={{
                   onClick: () => {
+                    let arr = get(
+                      jobForm.formFields.jdJson,
+                      `${editParam.paramKey}`,
+                      [],
+                    ).filter((it) => it.id !== editParam.id);
                     handleUpdateFormFields({
                       path: `jdJson.${editParam.paramKey}`,
-                      value: get(
-                        jobForm.formFields.jdJson,
-                        `${editParam.paramKey}`,
-                        [],
-                      ).filter((it) => it.id !== editParam.id),
+                      value: arr,
                     });
+                    // jobForm.formFields.resumeScoreSettings.education;
+                    // jobForm.formFields.resumeScoreSettings.skills;
+                    // jobForm.formFields.resumeScoreSettings.experience;
+                    if (arr.length === 0) {
+                      if (editParam.paramKey === 'skills') {
+                        handleUpdateFormFields({
+                          path: `resumeScoreSettings.skills`,
+                          value: 0,
+                        });
+                      } else if (
+                        editParam.paramKey === 'rolesResponsibilities'
+                      ) {
+                        handleUpdateFormFields({
+                          path: `resumeScoreSettings.experience`,
+                          value: 0,
+                        });
+                      } else if (editParam.paramKey === 'educations') {
+                        handleUpdateFormFields({
+                          path: `resumeScoreSettings.education`,
+                          value: 0,
+                        });
+                      }
+                    }
+
                     setPopUpEl(null);
                   },
                 }}
@@ -500,19 +524,21 @@ export const getBalancedScore = (
     skills: 20,
   };
 
-  if (
-    (isExpZero && isEduZero && isSkillZero) ||
-    (!isExpZero && !isEduZero && !isSkillZero)
-  ) {
+  if (isExpZero && isEduZero && isSkillZero) {
+    scoreSetting.education = 0;
+    scoreSetting.skills = 0;
+    scoreSetting.experience = 0;
     return scoreSetting;
   }
-
+  if (!isExpZero && !isEduZero && !isSkillZero) {
+    return scoreSetting;
+  }
   if (isExpZero) {
     scoreSetting.experience = 0;
     scoreSetting.skills = isEduZero ? 100 : 50;
     scoreSetting.education = isEduZero ? 0 : 50;
   } else if (isEduZero) {
-    scoreSetting.experience = 50;
+    scoreSetting.experience = isSkillZero ? 100 : 50;
     scoreSetting.skills = isSkillZero ? 0 : 50;
     scoreSetting.education = 0;
   } else if (isSkillZero) {

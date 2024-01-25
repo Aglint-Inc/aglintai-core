@@ -40,7 +40,9 @@ import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
 import Emails from '../JobPostFormSlides/EmailTemplates';
 import ScreeningComp from '../JobPostFormSlides/PhoneScreening/PhoneScreening';
 import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
-import ScoreSettings from '../JobPostFormSlides/ScoreSettings';
+import ScoreSettings, {
+  getBalancedScore,
+} from '../JobPostFormSlides/ScoreSettings';
 import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import {
@@ -831,13 +833,14 @@ const SideSection = () => {
           }
           onClickEqualize={{
             onClick: () => {
+              const jdJson = jobForm.formFields.jdJson;
               handleUpdateFormFields({
                 path: `resumeScoreSettings`,
-                value: {
-                  skills: 34,
-                  experience: 33,
-                  education: 33,
-                },
+                value: getBalancedScore(
+                  jdJson.rolesResponsibilities.length === 0,
+                  jdJson.educations.length === 0,
+                  jdJson.skills.length === 0,
+                ),
               });
             },
           }}
