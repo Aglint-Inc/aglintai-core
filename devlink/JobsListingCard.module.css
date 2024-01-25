@@ -352,6 +352,10 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;
@@ -592,10 +596,6 @@
 
 .text-sm.color-emial {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 0.36);
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-kale-600 {

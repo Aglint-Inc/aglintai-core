@@ -80,6 +80,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 newCount={job?.count?.new}
                 qualifiedCount={job?.count?.qualified}
                 assessmentCount={job?.count?.assessment}
+                disqualifiedCount={job?.count?.disqualified}
+                screeningCount={job?.count?.screening}
                 bgColorProps={{
                   style: {
                     backgroundColor:

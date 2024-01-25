@@ -32,6 +32,8 @@ export function JobsListingCard({
   isStatusVisible = true,
   textStatus = "This is some text inside of a div block.",
   isJobWarningVisible = true,
+  screeningCount = "0",
+  disqualifiedCount = "0",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -193,6 +195,26 @@ export function JobsListingCard({
               }}
               tag="div"
             >
+              {screeningCount}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "", "color-grey-600")}
+              tag="div"
+            >
+              {"Screening"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "applicants-number")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              dyn={{
+                bind: {},
+              }}
+              tag="div"
+            >
               {assessmentCount}
             </_Builtin.Block>
             <_Builtin.Block
@@ -220,6 +242,26 @@ export function JobsListingCard({
               tag="div"
             >
               {"Qualified"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "applicants-number")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              dyn={{
+                bind: {},
+              }}
+              tag="div"
+            >
+              {disqualifiedCount}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {"Disqualified"}
             </_Builtin.Block>
           </_Builtin.Block>
           {isStatusVisible ? (
