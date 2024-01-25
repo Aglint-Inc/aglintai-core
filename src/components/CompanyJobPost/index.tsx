@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -23,11 +23,9 @@ interface CompanyJobPostType {
 const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
   const router = useRouter();
 
-  const filteredJobs = jobs.filter(
-    (job: any) => job.active_status.sourcing.isActive,
-  );
+  const filteredJobs = jobs.filter((job: any) => job.status === 'published');
   return (
-    <div>
+    <Stack sx={{ overflow: 'auto' }}>
       <CompanyListing
         slotCompanyImage={
           <Avatar
@@ -104,21 +102,20 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               <OfficeLocationCard
                 key={ind}
                 textAddress={
-                  [loc.line1, loc.region, loc.city]
-                    .filter(Boolean)
-                    .join(', ') || ''
+                  [loc.region, loc.city].filter(Boolean).join(', ') || ''
                 }
                 textCountry={loc.country}
                 textHeadquater={'asda'}
                 textJobPostCount={`${
-                  jobs.filter((job) => job.location.includes(loc.city)).length
+                  jobs?.filter((job) => job?.location?.includes(loc.city))
+                    .length
                 } Jobs`}
               />
             );
           },
         )}
       />
-    </div>
+    </Stack>
   );
 };
 

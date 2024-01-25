@@ -103,6 +103,7 @@ const allowedPaths = new Set([
   '/api/trigger',
   '/api/jobpost/read',
   '/api/jobpost/write',
+  '/api/jobpost/company',
   '/api/phone-screening/submit',
   '/api/phone-screening/get-application-info',
   '/api/candidatedb/cron',
