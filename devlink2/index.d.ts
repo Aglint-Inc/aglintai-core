@@ -105,6 +105,7 @@ export * from "./SidebarScreening";
 export * from "./SkeletalUnit";
 export * from "./SortArrows";
 export * from "./SummaryBlock";
+export * from "./SwitchComp";
 export * from "./ToggleButton";
 export * from "./ToggleSelectDropdown";
 export * from "./TopApplicantsTable";
