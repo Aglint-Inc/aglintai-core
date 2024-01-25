@@ -15,10 +15,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       {
         role: 'system',
         content: `extract from the given text and respond in this strict json format:{
-          person_locations: string[] ( extract city if mentioned in the text orelse empty array),
-          person_titles : string[],
-          person_seniorities: enum [entry, senior, manager, director, executive, intern, owner, founder, c_suite, partner, vp, head][],
-          companies: string[],
+          person_locations: string[] ( extract city or state or country if mentioned in the text or else empty array),
+          person_titles : string[] (extract job title mentioned in the text),
+          person_seniorities: enum [entry, senior, manager, director, executive, intern, owner, founder, c_suite, partner, vp, head][](extract seniority mentioned in the text or else empty array),
+          companies: string[] (extract company name mentioned in the text or else empty array),
           }.
           
           dont add any place holder state     

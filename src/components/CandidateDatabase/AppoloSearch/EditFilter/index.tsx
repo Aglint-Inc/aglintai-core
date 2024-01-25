@@ -2,8 +2,8 @@ import {
   Autocomplete,
   CircularProgress,
   Dialog,
-  Paper,
   Stack,
+  TextField,
 } from '@mui/material';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 
 import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import UITextField from '@/src/components/Common/UITextField';
 import { palette } from '@/src/context/Theme/Theme';
 import { useBoundStore } from '@/src/store';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -210,161 +209,170 @@ function EditFilter() {
         setIsFilterOpen(false);
       }}
     >
-      <Paper></Paper>
-      <CdEditQuerry
-        onClickResetQuery={{
-          onClick: () => {
-            setFilters(initialQuery());
-          },
-        }}
-        slotSeniorityInput={
-          <>
-            <Autocomplete
-              multiple
-              id='tags-standard'
-              options={employeeRange}
-              getOptionLabel={(option) => option.display_name}
-              value={value}
-              onChange={(event, value) => {
-                if (value) {
-                  setValue(value);
-                  setFilters({
-                    ...filters,
-                    person_seniorities: value.map((v) => v.value),
-                  });
+      {filters && (
+        <CdEditQuerry
+          onClickResetQuery={{
+            onClick: () => {
+              setFilters(initialQuery());
+            },
+          }}
+          slotSeniorityInput={
+            <>
+              <Autocomplete
+                multiple
+                id='tags-standard'
+                options={employeeRange}
+                getOptionLabel={(option) => option.display_name}
+                value={value}
+                onChange={(event, value) => {
+                  if (value) {
+                    setValue(value);
+                    setFilters({
+                      ...filters,
+                      person_seniorities: value.map((v) => v.value),
+                    });
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    InputProps={{
+                      ...params.InputProps,
+                      disableUnderline: true,
+                    }}
+                    sx={{
+                      '& .MuiFilledInput-root': {
+                        padding: '6px 12px 6px 12px !important',
+                      },
+                    }}
+                    placeholder='Choose mutiple seniorities from the list'
+                  />
+                )}
+                renderTags={(value) =>
+                  value.map((option, index) => (
+                    <Stack key={index} p={'0px 4px 0px 4px'}>
+                      <JobPills
+                        onClickDelete={{
+                          onClick: () => {
+                            handleDelete(index);
+                            setFilters({
+                              ...filters,
+                              person_seniorities:
+                                filters.person_seniorities.filter(
+                                  (v) => v !== option.value,
+                                ),
+                            });
+                          },
+                        }}
+                        textJob={option.display_name}
+                      />
+                    </Stack>
+                  ))
                 }
-              }}
-              renderInput={(params) => (
-                <UITextField
-                  rest={{ ...params }}
-                  fullWidth
-                  InputProps={{
-                    ...params.InputProps,
+              />
+            </>
+          }
+          slotPreferredCompanySuggestion={filters.companies.map(
+            (title, index) => {
+              return (
+                <JobPills
+                  key={index}
+                  onClickDelete={{
+                    onClick: () => {
+                      handlePillRemove('companies', index);
+                    },
                   }}
-                  placeholder='Choose mutiple seniorities from the list'
+                  textJob={title}
                 />
-              )}
-              renderTags={(value) =>
-                value.map((option, index) => (
-                  <Stack key={index} pl={'4px'}>
-                    <JobPills
-                      onClickDelete={{
-                        onClick: () => {
-                          handleDelete(index);
-                          setFilters({
-                            ...filters,
-                            person_seniorities:
-                              filters.person_seniorities.filter(
-                                (v) => v !== option.value,
-                              ),
-                          });
-                        },
-                      }}
-                      textJob={option.display_name}
-                    />
-                  </Stack>
-                ))
-              }
-            />
-          </>
-        }
-        slotPreferredCompanySuggestion={filters.companies.map(
-          (title, index) => {
+              );
+            },
+          )}
+          slotJobSuggestion={filters.person_titles.map((title, index) => {
             return (
               <JobPills
                 key={index}
                 onClickDelete={{
                   onClick: () => {
-                    handlePillRemove('companies', index);
+                    handlePillRemove('person_titles', index);
                   },
                 }}
                 textJob={title}
               />
             );
-          },
-        )}
-        slotJobSuggestion={filters.person_titles.map((title, index) => {
-          return (
-            <JobPills
-              key={index}
-              onClickDelete={{
-                onClick: () => {
-                  handlePillRemove('person_titles', index);
-                },
-              }}
-              textJob={title}
-            />
-          );
-        })}
-        slotLocationSuggestion={filters.person_locations.map((title, index) => {
-          return (
-            <JobPills
-              key={index}
-              onClickDelete={{
-                onClick: () => {
-                  handlePillRemove('person_locations', index);
-                },
-              }}
-              textJob={title}
-            />
-          );
-        })}
-        slotApplyFilterButton={
-          <>
-            <AUIButton
-              variant='primary'
-              size='small'
-              onClick={() => {
-                !isFilterLoading && handleApplyFilters();
-              }}
-              endIcon={
-                isFilterLoading && (
-                  <CircularProgress
-                    color='inherit'
-                    size={'15px'}
-                    sx={{ color: palette.grey[400] }}
-                  />
-                )
-              }
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image
-                  width={12}
-                  height={12}
-                  alt=''
-                  src={'/images/svg/graphUp.svg'}
-                  style={{ marginRight: '10px' }}
+          })}
+          slotLocationSuggestion={filters.person_locations.map(
+            (title, index) => {
+              return (
+                <JobPills
+                  key={index}
+                  onClickDelete={{
+                    onClick: () => {
+                      handlePillRemove('person_locations', index);
+                    },
+                  }}
+                  textJob={title}
                 />
-                <p> Apply </p>
-              </div>
-            </AUIButton>
-          </>
-        }
-        slotPreferredCompaniesInput={
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdatePillInput('companies', s);
-            }}
-            path='excludedCompanies'
-          />
-        }
-        slotJobInput={
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdatePillInput('person_titles', s);
-            }}
-            path='jobTitles'
-          />
-        }
-        slotLocationInput={
-          <FilterInput
-            handleAdd={(s) => {
-              handleUpdatePillInput('person_locations', s);
-            }}
-            path='location'
-          />
-        }
-      />
+              );
+            },
+          )}
+          slotApplyFilterButton={
+            <>
+              <AUIButton
+                variant='primary'
+                size='small'
+                onClick={() => {
+                  !isFilterLoading && handleApplyFilters();
+                }}
+                endIcon={
+                  isFilterLoading && (
+                    <CircularProgress
+                      color='inherit'
+                      size={'15px'}
+                      sx={{ color: palette.grey[400] }}
+                    />
+                  )
+                }
+              >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Image
+                    width={12}
+                    height={12}
+                    alt=''
+                    src={'/images/svg/graphUp.svg'}
+                    style={{ marginRight: '10px' }}
+                  />
+                  <p> Apply </p>
+                </div>
+              </AUIButton>
+            </>
+          }
+          slotPreferredCompaniesInput={
+            <FilterInput
+              handleAdd={(s) => {
+                handleUpdatePillInput('companies', s);
+              }}
+              path='excludedCompanies'
+            />
+          }
+          slotJobInput={
+            <FilterInput
+              handleAdd={(s) => {
+                handleUpdatePillInput('person_titles', s);
+              }}
+              path='jobTitles'
+            />
+          }
+          slotLocationInput={
+            <FilterInput
+              handleAdd={(s) => {
+                handleUpdatePillInput('person_locations', s);
+              }}
+              path='location'
+            />
+          }
+        />
+      )}
     </Dialog>
   );
 }

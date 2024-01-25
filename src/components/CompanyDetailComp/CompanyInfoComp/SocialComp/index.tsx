@@ -303,7 +303,7 @@ const SocialComp = ({ setIsSaving }) => {
                   border: `1px solid ${palette.grey[200]}`,
                   padding: '9px',
                   borderRadius: '4px',
-                  alignItems:'start'
+                  alignItems: 'start',
                 }}
               >
                 <SocialLogo socialName={socialName} />
@@ -329,6 +329,7 @@ const SocialComp = ({ setIsSaving }) => {
                       socials: {
                         ...recruiter.socials,
                         custom: {
+                          ...(recruiter.socials.custom as any),
                           [socialName]: e.target.value,
                         } as any,
                       },
@@ -337,7 +338,6 @@ const SocialComp = ({ setIsSaving }) => {
                     true,
                   );
                 }}
-                
                 error={error.custom[socialName].error}
                 helperText={error.custom[socialName].msg}
               />

@@ -207,8 +207,8 @@ const UITextField = React.forwardRef(
               {error
                 ? helperText
                 : contentExceeded
-                ? errorMessages.maxCharExceeded
-                : ''}
+                  ? errorMessages.maxCharExceeded
+                  : ''}
             </UITypography>
           </Stack>
         )}

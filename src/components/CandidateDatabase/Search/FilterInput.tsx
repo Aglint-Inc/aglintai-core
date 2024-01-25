@@ -22,6 +22,7 @@ const FilterInput = ({
   );
 
   const handleSubmit = () => {
+    handleClosePop();
     if (String(input).length === 0) return;
     handleAdd(input);
     type === 'string' && setInput('');

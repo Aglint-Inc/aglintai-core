@@ -44,7 +44,7 @@ export function CdEditQuerry({
             tag="div"
             {...onClickResetQuery}
           >
-            {"Reset Query"}
+            {"Reset"}
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotApplyFilterButton}</_Builtin.Block>
         </_Builtin.Block>
