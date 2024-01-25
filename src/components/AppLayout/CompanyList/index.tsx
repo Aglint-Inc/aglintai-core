@@ -1,9 +1,9 @@
-import { Avatar, Stack } from '@mui/material';
+import { Avatar, Popover, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { LoaderSvg } from '@/devlink';
-import { CompanyProfileHeader, CompanySwitchDropdown } from '@/devlink2';
+import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -22,7 +22,7 @@ function CompanyList() {
     setAllrecruterRelation,
   } = useAuthDetails();
   const [allCompanies, setAllCompanies] = useState([]);
-
+  const [anchorlEl, setAnchorEl] = useState(null);
   async function getCompanies() {
     setAllCompanies([]);
     setAllrecruterRelation([] as any);
@@ -56,7 +56,6 @@ function CompanyList() {
     }
   }, [userDetails]);
 
-  const [openCompanyList, setOpenCompanyList] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
   const [companyUpdateLoader, setCompanyUploadLoader] = useState(null);
 
@@ -68,6 +67,7 @@ function CompanyList() {
         ele.id === recruterRelation?.recruiter_id,
         ele,
       );
+      setAnchorEl(null);
     }
   }
 
@@ -82,7 +82,6 @@ function CompanyList() {
       .then(({ data }) => {
         if (data[0]?.is_active) {
           setRecruiter(ele);
-          setOpenCompanyList(false);
         }
         setCompanyUploadLoader(null);
       });
@@ -103,100 +102,121 @@ function CompanyList() {
         />
       </SidePanelDrawer>
 
-      <CompanySwitchDropdown
-        slotCurrentCompany={
-          <Avatar
-            src={recruiter?.logo}
-            variant='rounded'
-            sx={{
-              width: '100%',
-              height: '100%',
-              background: '#fff',
-              '& .MuiAvatar-img ': {
-                objectFit: 'contain',
-              },
-            }}
-          >
-            <Icon
-              variant='CompanyOutlined'
-              height='24'
-              width='24'
-              color='#87929D'
-            />
-          </Avatar>
-        }
-        isDropdownBodyVisible={openCompanyList}
-        slotCompanyList={allCompanies.map((ele, i) => {
-          return (
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              px={'5px'}
-              borderRadius={'10px'}
-              key={i}
-              bgcolor={ele.name === recruiter.name && 'grey.100'}
-              onClick={() => {
-                handleClick(ele);
-              }}
-              sx={{
-                cursor: 'pointer',
-                // '&:hover': {
-                //   bgcolor: 'grey.100',
-                // },
-              }}
-            >
-              <CompanyProfileHeader
-                slotLogo={
-                  <Avatar
-                    src={ele?.logo}
-                    variant='rounded'
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#fff',
-                      '& .MuiAvatar-img ': {
-                        objectFit: 'contain',
-                      },
+      <Avatar
+        src={recruiter?.logo}
+        onClick={(e) => {
+          setAnchorEl(e.currentTarget);
+        }}
+        variant='rounded'
+        sx={{
+          width: '100%',
+          height: '100%',
+          background: '#fff',
+          '& .MuiAvatar-img ': {
+            objectFit: 'contain',
+          },
+        }}
+      >
+        <Icon
+          variant='CompanyOutlined'
+          height='24'
+          width='24'
+          color='#87929D'
+        />
+      </Avatar>
+      <Popover
+        open={Boolean(anchorlEl)}
+        anchorEl={anchorlEl}
+        onClose={() => {
+          setAnchorEl(false);
+        }}
+        anchorOrigin={{
+          horizontal: 'left',
+          vertical: 'bottom',
+        }}
+        sx={{
+          mt: 0.5,
+          ml: -1,
+          '& .MuiPaper-root': {
+            border: 'none !important',
+            overflow: 'visible !important',
+          },
+        }}
+      >
+        <SwitchComp
+          slotCompanyList={
+            <>
+              {allCompanies.map((ele, i) => {
+                return (
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                    px={'5px'}
+                    borderRadius={'10px'}
+                    key={i}
+                    bgcolor={ele.name === recruiter.name && 'grey.100'}
+                    onClick={() => {
+                      handleClick(ele);
                     }}
-                  />
-                }
-                onclickCompany={{
-                  onClick: () => {
-                    // router.push(pageRoutes.COMPANY);
-                    handleClick(ele);
-                  },
-                }}
-                companyName={ele?.name}
-              />
-              {ele.id === companyUpdateLoader && (
-                <Stack
-                  sx={{
-                    '& svg': {
-                      width: '24px',
-                      height: '24px',
-                    },
-                    px: '10px',
-                  }}
-                >
-                  <LoaderSvg />
-                </Stack>
-              )}
-            </Stack>
-          );
-        })}
-        onclickAddButton={{
-          onClick: () => {
-            setOpenCompanyList(false);
-            setOpenSideBar(true);
-          },
-        }}
-        onclickDropdown={{
-          onClick: () => {
-            setOpenCompanyList(true);
-          },
-        }}
-      />
+                    sx={{
+                      cursor: 'pointer',
+                      // '&:hover': {
+                      //   bgcolor: 'grey.100',
+                      // },
+                    }}
+                  >
+                    <CompanyProfileHeader
+                      slotLogo={
+                        <Avatar
+                          src={ele?.logo}
+                          variant='rounded'
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            background: '#fff',
+                            '& .MuiAvatar-img ': {
+                              objectFit: 'contain',
+                            },
+                          }}
+                        />
+                      }
+                      onclickCompany={{
+                        onClick: () => {
+                          // router.push(pageRoutes.COMPANY);
+                          handleClick(ele);
+                        },
+                      }}
+                      companyName={ele?.name}
+                    />
+                    {ele.id === companyUpdateLoader && (
+                      <Stack
+                        sx={{
+                          '& svg': {
+                            width: '24px',
+                            height: '24px',
+                          },
+                          px: '10px',
+                        }}
+                      >
+                        <LoaderSvg />
+                      </Stack>
+                    )}
+                  </Stack>
+                );
+              })}
+            </>
+          }
+          onclickAddButton={{
+            onClick: () => {
+              setOpenSideBar(true);
+              setAnchorEl(null);
+            },
+          }}
+        />
+      </Popover>
+
+      {}
     </>
   );
 }

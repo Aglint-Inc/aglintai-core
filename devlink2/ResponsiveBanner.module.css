@@ -18,6 +18,13 @@
   text-align: center;
 }
 
+@media screen and (max-width: 767px) {
+  .banner_wrap {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
 .banner_text {
   display: flex;
   flex-direction: column;
