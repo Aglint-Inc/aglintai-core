@@ -5,6 +5,8 @@ import React, { useMemo } from 'react';
 import { CandidateSkillPills } from '@/devlink';
 import {
   AllCandidateListItem,
+  AnalysisBlock,
+  AnalysisPill,
   InsightTagAmbitious,
   InsightTagEmpty,
   // InsightTagAmbitious,
@@ -31,12 +33,13 @@ import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
 import ResumeScore from '../Common/ResumeScore';
 import {
+  analysisRatings,
   capitalize,
   formatTimeStamp,
-  getCandidateName,
+  getCandidateDetails,
   getDisqualificationStatus,
-  getReasonings,
   getScreeningStatus,
+  mapScoreToAnalysis,
 } from '../utils';
 
 const ApplicationCard = ({
@@ -71,44 +74,25 @@ const ApplicationCard = ({
   const resumeScore = <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
-  const name = getCandidateName(
-    application.candidates.first_name,
-    application.candidates.last_name,
-  );
   const overview =
     (application?.candidate_files?.resume_json as any)?.overview ?? '---';
-  const analysis = getReasonings(
-    (application?.score_json as ScoreJson)?.reasoning || null,
-  );
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
     [list.has(application.id)],
   );
+
+  const name = getCandidateDetails(application, 'name');
+  const jobTitle = getCandidateDetails(application, 'job_title');
+  const location = getCandidateDetails(application, 'location');
   return !detailedView ? (
     <AllCandidateListItem
       key={key1}
       onclickSelect={{ onClick: handleCheck }}
       isChecked={isChecked}
       slotProfileImage={profile}
-      name={name}
-      jobTitle={
-        (application.candidate_files?.resume_json as any)?.basics
-          ?.currentJobTitle
-          ? capitalize(
-              (application.candidate_files?.resume_json as any).basics
-                .currentJobTitle,
-            )
-          : '---'
-      }
-      location={
-        (application.candidate_files?.resume_json as any)?.basics?.location
-          ?.city
-          ? capitalize(
-              (application.candidate_files?.resume_json as any).basics.location
-                .city,
-            )
-          : '---'
-      }
+      name={name.value}
+      jobTitle={jobTitle.value}
+      location={location.value}
       slotResumeScore={resumeScore}
       isInterviewVisible={views.assessment}
       slotAssessmentScore={interviewScore}
@@ -134,7 +118,7 @@ const ApplicationCard = ({
       key={key2}
       slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
-      name={name}
+      name={name.value}
       isChecked={isChecked}
       isHighlighted={isSelected}
       slotScores={
@@ -144,15 +128,45 @@ const ApplicationCard = ({
         </>
       }
       overview={overview}
-      analysis={analysis}
       onclickCandidate={{
         onClick: () => {
           handleOpenDetails();
         },
       }}
       slotInsights={<Insights application={application} />}
+      slotAnalysis={
+        <AnalysisSection score_json={application.score_json as ScoreJson} />
+      }
     />
   );
+};
+
+const AnalysisSection: React.FC<{ score_json: ScoreJson }> = ({
+  score_json,
+}) => {
+  const reasoning = score_json?.reasoning ?? null;
+  const scores = score_json?.scores ?? null;
+  if (!reasoning || !scores) return <>---</>;
+  const analyses = Object.entries(score_json.scores).map(([key, value], i) => {
+    const reasoningKey = mapScoreToAnalysis(key as keyof ScoreJson['scores']);
+    if (
+      key &&
+      typeof value === 'number' &&
+      (score_json?.reasoning[reasoningKey] ?? null)
+    ) {
+      return (
+        <>
+          <AnalysisBlock
+            slotAnalysisPill={<AnalysisPillComponent score={value} />}
+            key={i}
+            description={reasoning[reasoningKey]}
+            title={capitalize(key)}
+          />
+        </>
+      );
+    }
+  });
+  return <>{analyses}</>;
 };
 
 const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
@@ -190,9 +204,9 @@ const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
   );
 };
 
-const ScreeningStatusComponent: React.FC<{ application: JobApplication }> = ({
-  application,
-}) => {
+export const ScreeningStatusComponent: React.FC<{
+  application: JobApplication;
+}> = ({ application }) => {
   const {
     emailValidity: { isFetching, isValidEmail },
   } = application;
@@ -348,6 +362,22 @@ const getPositionPills = (
         return acc;
       }, []);
   return positionsList;
+};
+
+export const AnalysisPillComponent: React.FC<{ score: number }> = ({
+  score,
+}) => {
+  if (typeof score !== 'number') return <></>;
+  const { color, high, low, medium, value: text } = analysisRatings(score);
+  return (
+    <AnalysisPill
+      isPoor={low}
+      isAverage={medium}
+      isHigh={high}
+      score={text}
+      scoreProps={{ style: { color } }}
+    />
+  );
 };
 
 const badgePriority = [

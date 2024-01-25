@@ -35,7 +35,7 @@ export function AllApplicantsTable({
           className={_utils.cx(
             _styles,
             "cv-list-column-wrapper",
-            "top",
+            "header",
             "width-auto"
           )}
           tag="div"
@@ -71,23 +71,23 @@ export function AllApplicantsTable({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "name")}
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "name",
+                "overflow-visible"
+              )}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column-wrapper",
-              "top",
-              "resume"
-            )}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
@@ -104,12 +104,7 @@ export function AllApplicantsTable({
           </_Builtin.Block>
           {isScreeningVisible ? (
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column-wrapper",
-                "top",
-                "screening"
-              )}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
               <_Builtin.Block
@@ -127,11 +122,16 @@ export function AllApplicantsTable({
           ) : null}
           {isInterviewVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column", "assessment")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column",
+                  "assessment",
+                  "overflow-visible"
+                )}
                 tag="div"
               >
                 <_Builtin.Block tag="div">{"Assessment Score"}</_Builtin.Block>
@@ -140,11 +140,16 @@ export function AllApplicantsTable({
           ) : null}
           {isDisqualifiedVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cv-list-column", "disqualified")}
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column",
+                  "disqualified",
+                  "overflow-visible"
+                )}
                 tag="div"
               >
                 <_Builtin.Block tag="div">
@@ -154,33 +159,48 @@ export function AllApplicantsTable({
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "job")}
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "job",
+                "overflow-visible"
+              )}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Current Job Title"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "location")}
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "location",
+                "overflow-visible"
+              )}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Location"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "date")}
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "date",
+                "overflow-visible"
+              )}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Applied Date"}</_Builtin.Block>

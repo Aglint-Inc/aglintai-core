@@ -7,12 +7,10 @@ declare function TopCandidateListItem(props: {
   isChecked?: Types.Visibility.VisibilityConditions;
   slotScores?: Types.Devlink.Slot;
   name?: React.ReactNode;
-  strength?: React.ReactNode;
-  weakness?: React.ReactNode;
   overview?: React.ReactNode;
   onclickCandidate?: Types.Devlink.RuntimeProps;
   isHighlighted?: Types.Visibility.VisibilityConditions;
   slotInsights?: Types.Devlink.Slot;
   slotProfileImage?: Types.Devlink.Slot;
-  analysis?: React.ReactNode;
+  slotAnalysis?: Types.Devlink.Slot;
 }): React.JSX.Element;

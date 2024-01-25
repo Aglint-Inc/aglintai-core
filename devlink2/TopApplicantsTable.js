@@ -26,7 +26,7 @@ export function TopApplicantsTable({
           className={_utils.cx(
             _styles,
             "cv-list-column-wrapper",
-            "top",
+            "header",
             "width-auto"
           )}
           tag="div"
@@ -60,7 +60,7 @@ export function TopApplicantsTable({
             className={_utils.cx(
               _styles,
               "cv-list-column-wrapper",
-              "top",
+              "header",
               "name"
             )}
             tag="div"
@@ -69,45 +69,29 @@ export function TopApplicantsTable({
               className={_utils.cx(_styles, "cv-list-column", "name")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Candidate Info"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "overview3")}
+              className={_utils.cx(_styles, "cv-list-column", "overview")}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Overview"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "top")}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "analysis2")}
+              className={_utils.cx(_styles, "cv-list-column", "analysis")}
               tag="div"
             >
               <_Builtin.Block tag="div">{"Analysis"}</_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column-wrapper",
-              "top",
-              "insights"
-            )}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column", "insights")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Insights"}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

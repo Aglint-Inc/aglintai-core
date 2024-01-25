@@ -6,12 +6,15 @@ import _styles from "./SidebarScreening.module.css";
 
 export function SidebarScreening({
   as: _Component = _Builtin.Block,
-  isPending = false,
+  isInvited = false,
   isSubmitted = false,
   onclickResend = {},
   slotQuestions,
   isNotInvited = false,
   onclickInvite = {},
+  slotStatus,
+  onclickCopyLink = {},
+  onclickArrow = {},
 }) {
   return (
     <_Component
@@ -22,83 +25,131 @@ export function SidebarScreening({
         className={_utils.cx(_styles, "sc-scr-header-block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Screening"}
-        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "sb-scr-status-block")}
+          className={_utils.cx(_styles, "flex-h", "gap-8", "align-center")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
+            className={_utils.cx(_styles, "icon-block", "_16x16")}
             tag="div"
           >
-            {"Status:"}
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "svg-icon")}
+              value="%3Csvg%20width%3D%2215%22%20height%3D%2213%22%20viewBox%3D%220%200%2015%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.875%208C1.89062%208.23438%202.01562%208.35938%202.25%208.375C2.48438%208.35938%202.60938%208.23438%202.625%208C2.60938%207.76562%202.48438%207.64062%202.25%207.625C2.01562%207.64062%201.89062%207.76562%201.875%208ZM3.75%208C3.73438%208.5625%203.48438%208.99219%203%209.28906C2.5%209.57031%202%209.57031%201.5%209.28906C1.01562%208.99219%200.765625%208.5625%200.75%208C0.765625%207.4375%201.01562%207.00781%201.5%206.71094C2%206.42969%202.5%206.42969%203%206.71094C3.48438%207.00781%203.73438%207.4375%203.75%208ZM1.5%2010.25H3C3.42188%2010.2656%203.77344%2010.4141%204.05469%2010.6953C4.33594%2010.9766%204.48438%2011.3281%204.5%2011.75C4.5%2011.9688%204.42969%2012.1484%204.28906%2012.2891C4.14844%2012.4297%203.96875%2012.5%203.75%2012.5H0.75C0.53125%2012.5%200.351562%2012.4297%200.210938%2012.2891C0.0703125%2012.1484%200%2011.9688%200%2011.75C0.015625%2011.3281%200.164062%2010.9766%200.445312%2010.6953C0.726562%2010.4141%201.07812%2010.2656%201.5%2010.25ZM7.125%208C7.14062%208.23438%207.26562%208.35938%207.5%208.375C7.73438%208.35938%207.85938%208.23438%207.875%208C7.85938%207.76562%207.73438%207.64062%207.5%207.625C7.26562%207.64062%207.14062%207.76562%207.125%208ZM9%208C8.98438%208.5625%208.73438%208.99219%208.25%209.28906C7.75%209.57031%207.25%209.57031%206.75%209.28906C6.26562%208.99219%206.01562%208.5625%206%208C6.01562%207.4375%206.26562%207.00781%206.75%206.71094C7.25%206.42969%207.75%206.42969%208.25%206.71094C8.73438%207.00781%208.98438%207.4375%209%208ZM6.75%2010.25H8.25C8.67188%2010.2656%209.02344%2010.4141%209.30469%2010.6953C9.58594%2010.9766%209.73438%2011.3281%209.75%2011.75C9.75%2011.9688%209.67969%2012.1484%209.53906%2012.2891C9.39844%2012.4297%209.21875%2012.5%209%2012.5H6C5.78125%2012.5%205.60156%2012.4297%205.46094%2012.2891C5.32031%2012.1484%205.25%2011.9688%205.25%2011.75C5.26562%2011.3281%205.41406%2010.9766%205.69531%2010.6953C5.97656%2010.4141%206.32812%2010.2656%206.75%2010.25ZM12.75%207.625C12.5156%207.64062%2012.3906%207.76562%2012.375%208C12.3906%208.23438%2012.5156%208.35938%2012.75%208.375C12.9844%208.35938%2013.1094%208.23438%2013.125%208C13.1094%207.76562%2012.9844%207.64062%2012.75%207.625ZM12.75%209.5C12.1875%209.48438%2011.7578%209.23438%2011.4609%208.75C11.1797%208.25%2011.1797%207.75%2011.4609%207.25C11.7578%206.76562%2012.1875%206.51562%2012.75%206.5C13.3125%206.51562%2013.7422%206.76562%2014.0391%207.25C14.3203%207.75%2014.3203%208.25%2014.0391%208.75C13.7422%209.23438%2013.3125%209.48438%2012.75%209.5ZM10.5%2011.75C10.5156%2011.3281%2010.6641%2010.9766%2010.9453%2010.6953C11.2266%2010.4141%2011.5781%2010.2656%2012%2010.25H13.5C13.9219%2010.2656%2014.2734%2010.4141%2014.5547%2010.6953C14.8359%2010.9766%2014.9844%2011.3281%2015%2011.75C15%2011.9688%2014.9297%2012.1484%2014.7891%2012.2891C14.6484%2012.4297%2014.4688%2012.5%2014.25%2012.5H11.25C11.0312%2012.5%2010.8516%2012.4297%2010.7109%2012.2891C10.5703%2012.1484%2010.5%2011.9688%2010.5%2011.75ZM12.75%201.625C12.9844%201.64063%2013.1094%201.76562%2013.125%202V5.77344C13.5625%205.85156%2013.9375%206.03125%2014.25%206.3125V2C14.2344%201.57812%2014.0859%201.22656%2013.8047%200.945312C13.5234%200.664062%2013.1719%200.515625%2012.75%200.5H2.25C1.82812%200.515625%201.47656%200.664062%201.19531%200.945312C0.914062%201.22656%200.765625%201.57812%200.75%202V6.3125C1.0625%206.03125%201.4375%205.85156%201.875%205.77344V2C1.89062%201.76562%202.01562%201.64063%202.25%201.625H12.75Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {isNotInvited ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-red-500")}
-                tag="div"
-              >
-                {"Not Invited"}
-              </_Builtin.Block>
-            ) : null}
-            {isPending ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-yellow-500")}
-                tag="div"
-              >
-                {"Pending"}
-              </_Builtin.Block>
-            ) : null}
-            {isSubmitted ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-green-500")}
-                tag="div"
-              >
-                {"Submitted"}
-              </_Builtin.Block>
-            ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Screening"}
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "flex-h", "gap-10", "align-center")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "sb-scr-status-block")}
+            tag="div"
+          >
+            {slotStatus}
+          </_Builtin.Block>
+          {isSubmitted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "sidebar-block-arrow")}
+              tag="div"
+              {...onclickArrow}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "icon-block", "_12x12")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "svg-icon")}
+                  value="%3Csvg%20width%3D%2212%22%20height%3D%227%22%20viewBox%3D%220%200%2012%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L1.10156%201.89844C0.882812%201.63281%200.882812%201.36719%201.10156%201.10156C1.36719%200.882812%201.63281%200.882812%201.89844%201.10156L6%205.20312L10.1016%201.10156C10.3672%200.882812%2010.6328%200.882812%2010.8984%201.10156C11.1172%201.36719%2011.1172%201.63281%2010.8984%201.89844L6.39844%206.39844Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "sb-scr-body")} tag="div">
         {isNotInvited ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "sb-scr-pending")}
+            className={_utils.cx(_styles, "sb-scr-invited")}
             tag="div"
           >
             <_Builtin.Block tag="div">
-              {
-                "The candidate has not been invited for screening yet. click below to invite"
-              }
+              {"The candidate has not been invited for screening yet."}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500", "text-underline")}
+              className={_utils.cx(_styles, "flex-h", "gap-20")}
               tag="div"
-              {...onclickInvite}
             >
-              {"Invite candidate"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-blue", "outline")}
+                tag="div"
+                {...onclickInvite}
+              >
+                <_Builtin.Block tag="div">{"Invite Now"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-blue", "text")}
+                tag="div"
+                {...onclickCopyLink}
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "icon-block", "_16x16")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "svg-icon")}
+                    value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.25%207.875C9.48438%207.85938%209.60938%207.73438%209.625%207.5V2.71875L8.03125%201.125H4.75C4.51562%201.14063%204.39062%201.26562%204.375%201.5V7.5C4.39062%207.73438%204.51562%207.85938%204.75%207.875H9.25ZM4.75%209C4.32812%208.98438%203.97656%208.83594%203.69531%208.55469C3.41406%208.27344%203.26562%207.92188%203.25%207.5V1.5C3.26562%201.07812%203.41406%200.726562%203.69531%200.445312C3.97656%200.164062%204.32812%200.015625%204.75%200H8.03125C8.34375%200%208.60938%200.109375%208.82812%200.328125L10.4219%201.92188C10.6406%202.14062%2010.75%202.40625%2010.75%202.71875V7.5C10.7344%207.92188%2010.5859%208.27344%2010.3047%208.55469C10.0234%208.83594%209.67188%208.98438%209.25%209H4.75ZM1.75%203H2.5V4.125H1.75C1.51562%204.14062%201.39062%204.26562%201.375%204.5V10.5C1.39062%2010.7344%201.51562%2010.8594%201.75%2010.875H6.25C6.48438%2010.8594%206.60938%2010.7344%206.625%2010.5V9.75H7.75V10.5C7.73438%2010.9219%207.58594%2011.2734%207.30469%2011.5547C7.02344%2011.8359%206.67188%2011.9844%206.25%2012H1.75C1.32812%2011.9844%200.976562%2011.8359%200.695312%2011.5547C0.414062%2011.2734%200.265625%2010.9219%200.25%2010.5V4.5C0.265625%204.07812%200.414062%203.72656%200.695312%203.44531C0.976562%203.16406%201.32812%203.01563%201.75%203Z%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">{"Invite link"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
-        {isPending ? (
+        {isInvited ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "sb-scr-pending")}
+            className={_utils.cx(_styles, "sb-scr-invited")}
             tag="div"
           >
             <_Builtin.Block tag="div">
               {
-                "The candidate havent submitted the form yet. click below to resend it"
+                "The candidate has received an screening invitation but has not yet taken the screening."
               }
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500", "text-underline")}
+              className={_utils.cx(_styles, "flex-h", "gap-20")}
               tag="div"
-              {...onclickResend}
             >
-              {"Resend Invite"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-blue", "outline")}
+                tag="div"
+                {...onclickResend}
+              >
+                <_Builtin.Block tag="div">{"Resend Invite"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "button-blue", "text")}
+                tag="div"
+                {...onclickCopyLink}
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "icon-block", "_16x16")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "svg-icon")}
+                    value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.25%207.875C9.48438%207.85938%209.60938%207.73438%209.625%207.5V2.71875L8.03125%201.125H4.75C4.51562%201.14063%204.39062%201.26562%204.375%201.5V7.5C4.39062%207.73438%204.51562%207.85938%204.75%207.875H9.25ZM4.75%209C4.32812%208.98438%203.97656%208.83594%203.69531%208.55469C3.41406%208.27344%203.26562%207.92188%203.25%207.5V1.5C3.26562%201.07812%203.41406%200.726562%203.69531%200.445312C3.97656%200.164062%204.32812%200.015625%204.75%200H8.03125C8.34375%200%208.60938%200.109375%208.82812%200.328125L10.4219%201.92188C10.6406%202.14062%2010.75%202.40625%2010.75%202.71875V7.5C10.7344%207.92188%2010.5859%208.27344%2010.3047%208.55469C10.0234%208.83594%209.67188%208.98438%209.25%209H4.75ZM1.75%203H2.5V4.125H1.75C1.51562%204.14062%201.39062%204.26562%201.375%204.5V10.5C1.39062%2010.7344%201.51562%2010.8594%201.75%2010.875H6.25C6.48438%2010.8594%206.60938%2010.7344%206.625%2010.5V9.75H7.75V10.5C7.73438%2010.9219%207.58594%2011.2734%207.30469%2011.5547C7.02344%2011.8359%206.67188%2011.9844%206.25%2012H1.75C1.32812%2011.9844%200.976562%2011.8359%200.695312%2011.5547C0.414062%2011.2734%200.265625%2010.9219%200.25%2010.5V4.5C0.265625%204.07812%200.414062%203.72656%200.695312%203.44531C0.976562%203.16406%201.32812%203.01563%201.75%203Z%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">{"Invite link"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

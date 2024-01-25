@@ -1,6 +1,10 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { JdAnalysis } from "./JdAnalysis";
+import { JdScreening } from "./JdScreening";
+import { CandidateInterviewScore } from "./CandidateInterviewScore";
+import { CandidateExperience } from "./CandidateExperience";
 import { CandidateDetails } from "./CandidateDetails";
 import * as _utils from "./utils";
 import _styles from "./CandidateSideDrawer.module.css";
@@ -13,13 +17,11 @@ export function CandidateSideDrawer({
   as: _Component = _Builtin.Block,
   onClickPrev = {},
   onClickNext = {},
-  onClickCopyProfile = {},
   onClickClose = {},
   slotCandidateImage,
   textName = "Dianne Russell",
   slotCandidateDetails,
   isLinkedInVisible = true,
-  isCopiedMessageVisible = false,
   onClickLinkedin = {},
   onClickCopyMail = {},
   onClickCopyPhone = {},
@@ -29,6 +31,12 @@ export function CandidateSideDrawer({
   textAppliedOn = "This is some text inside of a div block.",
   isAppliedOnVisible = true,
   slotOverview,
+  onClickResume = {},
+  textRole = "Senior Software Engineer",
+  textLocation = "Belarus, Belgium",
+  isLocationVisible = true,
+  isRoleVisible = true,
+  isResumeVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -43,9 +51,27 @@ export function CandidateSideDrawer({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-643")}
+            className={_utils.cx(_styles, "div-block-787")}
             tag="div"
           >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cvs-intro-profile-image")}
+              tag="div"
+            >
+              {slotCandidateImage}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {textName}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-644")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "cvs-header-nav-wrapper")}
               tag="div"
@@ -98,46 +124,6 @@ export function CandidateSideDrawer({
             <_Builtin.Block
               className={_utils.cx(
                 _styles,
-                "cvs-header-copy-block",
-                "clickable",
-                "hide"
-              )}
-              tag="div"
-              {...onClickCopyProfile}
-            >
-              <_Builtin.Block tag="div">{"View Profile"}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-header-copy-icon")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M11.5%202C11.7455%202%2011.9496%202.17688%2011.9919%202.41012L12%202.5V5.5C12%205.77614%2011.7761%206%2011.5%206C11.2545%206%2011.0504%205.82312%2011.0081%205.58988L11%205.5V3.706L6.85355%207.85355C6.67999%208.02712%206.41056%208.0464%206.21569%207.91141L6.14645%207.85355L4.5%206.207L0.853553%209.85355C0.679987%2010.0271%200.410563%2010.0464%200.215695%209.91141L0.146447%209.85355C-0.0271197%209.67999%20-0.0464049%209.41056%200.0885912%209.21569L0.146447%209.14645L4.14645%205.14645C4.32001%204.97288%204.58944%204.9536%204.78431%205.08859L4.85355%205.14645L6.5%206.793L10.292%203H8.5C8.25454%203%208.05039%202.82312%208.00806%202.58988L8%202.5C8%202.25454%208.17688%202.05039%208.41012%202.00806L8.5%202H11.5Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
-              {isCopiedMessageVisible ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "toss-copied", "hide")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "text-xsm")}
-                    tag="div"
-                  >
-                    {"Copied!"}
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              ) : null}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-644")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
                 "cvs-header-close-button",
                 "cursor-pointer"
               )}
@@ -146,7 +132,7 @@ export function CandidateSideDrawer({
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icon-embed")}
-                value="%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M2.64645%2013.3536C2.84171%2013.5488%203.15829%2013.5488%203.35355%2013.3536L8%208.70711L12.6464%2013.3536C12.8417%2013.5488%2013.1583%2013.5488%2013.3536%2013.3536C13.5488%2013.1583%2013.5488%2012.8417%2013.3536%2012.6464L8.70711%208L13.3536%203.35355C13.5488%203.15829%2013.5488%202.84171%2013.3536%202.64645C13.1583%202.45118%2012.8417%202.45118%2012.6464%202.64645L8%207.29289L3.35355%202.64645C3.15829%202.45118%202.84171%202.45118%202.64645%202.64645C2.45118%202.84171%202.45118%203.15829%202.64645%203.35355L7.29289%208L2.64645%2012.6464C2.45118%2012.8417%202.45118%2013.1583%202.64645%2013.3536Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%20%20%3Cmask%20id%3D%22mask0_3498_23410%22%20style%3D%22mask-type%3Aluminance%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%222%22%20y%3D%222%22%20width%3D%2212%22%20height%3D%2212%22%3E%0A%20%20%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M2.64645%2013.3536C2.84171%2013.5488%203.15829%2013.5488%203.35355%2013.3536L8%208.70711L12.6464%2013.3536C12.8417%2013.5488%2013.1583%2013.5488%2013.3536%2013.3536C13.5488%2013.1583%2013.5488%2012.8417%2013.3536%2012.6464L8.70711%208L13.3536%203.35355C13.5488%203.15829%2013.5488%202.84171%2013.3536%202.64645C13.1583%202.45118%2012.8417%202.45118%2012.6464%202.64645L8%207.29289L3.35355%202.64645C3.15829%202.45118%202.84171%202.45118%202.64645%202.64645C2.45118%202.84171%202.45118%203.15829%202.64645%203.35355L7.29289%208L2.64645%2012.6464C2.45118%2012.8417%202.45118%2013.1583%202.64645%2013.3536Z%22%20fill%3D%22white%22%2F%3E%0A%20%20%3C%2Fmask%3E%0A%20%20%3Cg%20mask%3D%22url(%23mask0_3498_23410)%22%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.14082%209.76016L5.4002%206.04766L1.6877%209.76016C1.4627%209.92891%201.24707%209.92891%201.04082%209.76016C0.872071%209.55391%200.872071%209.34766%201.04082%209.14141L4.75332%205.40078L1.04082%201.68828C0.872071%201.46328%200.872071%201.24766%201.04082%201.04141C1.24707%200.872656%201.4627%200.872656%201.6877%201.04141L5.4002%204.75391L9.14082%201.04141C9.34707%200.872656%209.55332%200.872656%209.75957%201.04141C9.92832%201.24766%209.92832%201.46328%209.75957%201.68828L6.04707%205.40078L9.75957%209.14141C9.92832%209.34766%209.92832%209.55391%209.75957%209.76016C9.55332%209.92891%209.34707%209.92891%209.14082%209.76016Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
           </_Builtin.Block>
@@ -165,26 +151,48 @@ export function CandidateSideDrawer({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-intro-profile-image")}
+                  className={_utils.cx(_styles, "div-block-789")}
                   tag="div"
                 >
-                  {slotCandidateImage}
+                  {isRoleVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-788")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%2212%22%20height%3D%2216%22%20viewBox%3D%220%200%2012%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.9%203.25V4.3H8.1V3.25C8.08542%203.03125%207.96875%202.91458%207.75%202.9H4.25C4.03125%202.91458%203.91458%203.03125%203.9%203.25ZM3.2%204.3V3.25C3.21458%202.95833%203.31667%202.71042%203.50625%202.50625C3.71042%202.31667%203.95833%202.21458%204.25%202.2H7.75C8.04167%202.21458%208.28958%202.31667%208.49375%202.50625C8.68333%202.71042%208.78542%202.95833%208.8%203.25V4.3H10.2C10.5938%204.31458%2010.9219%204.45312%2011.1844%204.71562C11.4469%204.97812%2011.5854%205.30625%2011.6%205.7V11.3C11.5854%2011.6937%2011.4469%2012.0219%2011.1844%2012.2844C10.9219%2012.5469%2010.5938%2012.6854%2010.2%2012.7H1.8C1.40625%2012.6854%201.07812%2012.5469%200.815625%2012.2844C0.553125%2012.0219%200.414583%2011.6937%200.4%2011.3V5.7C0.414583%205.30625%200.553125%204.97812%200.815625%204.71562C1.07812%204.45312%201.40625%204.31458%201.8%204.3H3.2ZM8.45%205H3.55H1.8C1.59583%205%201.42812%205.06562%201.29687%205.19687C1.16562%205.32812%201.1%205.49583%201.1%205.7V7.8H4.25H4.95H7.05H7.75H10.9V5.7C10.9%205.49583%2010.8344%205.32812%2010.7031%205.19687C10.5719%205.06562%2010.4042%205%2010.2%205H8.45ZM10.9%208.5H7.75V9.55C7.75%209.75417%207.68438%209.92187%207.55313%2010.0531C7.42188%2010.1844%207.25417%2010.25%207.05%2010.25H4.95C4.74583%2010.25%204.57812%2010.1844%204.44687%2010.0531C4.31562%209.92187%204.25%209.75417%204.25%209.55V8.5H1.1V11.3C1.1%2011.5042%201.16562%2011.6719%201.29687%2011.8031C1.42812%2011.9344%201.59583%2012%201.8%2012H10.2C10.4042%2012%2010.5719%2011.9344%2010.7031%2011.8031C10.8344%2011.6719%2010.9%2011.5042%2010.9%2011.3V8.5ZM4.95%208.5V9.55H7.05V8.5H4.95Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-grey-600")}
+                        tag="div"
+                      >
+                        {textRole}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                  {isLocationVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-788")}
+                      tag="div"
+                    >
+                      <_Builtin.HtmlEmbed
+                        className={_utils.cx(_styles, "icons")}
+                        value="%3Csvg%20width%3D%229%22%20height%3D%2216%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%206.4C7.97083%205.40833%207.62813%204.58437%206.97188%203.92812C6.31563%203.27187%205.49167%202.92917%204.5%202.9C3.50833%202.92917%202.68437%203.27187%202.02812%203.92812C1.37187%204.58437%201.02917%205.40833%201%206.4C1%206.75%201.12396%207.20937%201.37187%207.77812C1.61979%208.36146%201.93333%208.96667%202.3125%209.59375C2.69167%2010.2062%203.07812%2010.775%203.47187%2011.3C3.86562%2011.8396%204.20833%2012.2917%204.5%2012.6563C4.79167%2012.2917%205.13438%2011.8396%205.52813%2011.3C5.92188%2010.775%206.30833%2010.2062%206.6875%209.59375C7.08125%208.96667%207.40208%208.36146%207.65%207.77812C7.88333%207.20937%208%206.75%208%206.4ZM8.7%206.4C8.67083%207.05625%208.4375%207.81458%208%208.675C7.54792%209.53542%207.0375%2010.3667%206.46875%2011.1687C5.9%2011.9854%205.41875%2012.6344%205.025%2013.1156C4.87917%2013.2906%204.70417%2013.3781%204.5%2013.3781C4.29583%2013.3781%204.12083%2013.2906%203.975%2013.1156C3.58125%2012.6344%203.1%2011.9854%202.53125%2011.1687C1.9625%2010.3667%201.45208%209.53542%201%208.675C0.5625%207.81458%200.329166%207.05625%200.3%206.4C0.329166%205.20417%200.7375%204.2125%201.525%203.425C2.3125%202.6375%203.30417%202.22917%204.5%202.2C5.69583%202.22917%206.6875%202.6375%207.475%203.425C8.2625%204.2125%208.67083%205.20417%208.7%206.4ZM3.45%206.4C3.46458%206.79375%203.63958%207.1%203.975%207.31875C4.325%207.49375%204.675%207.49375%205.025%207.31875C5.36042%207.1%205.53542%206.79375%205.55%206.4C5.53542%206.00625%205.36042%205.7%205.025%205.48125C4.675%205.30625%204.325%205.30625%203.975%205.48125C3.63958%205.7%203.46458%206.00625%203.45%206.4ZM4.5%208.15C3.84375%208.13542%203.34062%207.84375%202.99062%207.275C2.66979%206.69167%202.66979%206.10833%202.99062%205.525C3.34062%204.95625%203.84375%204.66458%204.5%204.65C5.15625%204.66458%205.65938%204.95625%206.00938%205.525C6.33021%206.10833%206.33021%206.69167%206.00938%207.275C5.65938%207.84375%205.15625%208.13542%204.5%208.15Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      />
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-grey-600")}
+                        tag="div"
+                      >
+                        {textLocation}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(_styles, "cvs-intro-profile-info")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-490")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "fw-semibold")}
-                      tag="div"
-                    >
-                      {textName}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-629")}
                     tag="div"
@@ -197,36 +205,8 @@ export function CandidateSideDrawer({
                       >
                         <_Builtin.HtmlEmbed
                           className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%2222%22%20height%3D%2222%22%20viewBox%3D%220%200%2022%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2222%22%20height%3D%2222%22%20rx%3D%223%22%20fill%3D%22%23347FBC%22%20style%3D%22fill%3A%23347FBC%3Bfill%3Acolor(display-p3%200.2039%200.4980%200.7373)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2216%22%20height%3D%2215%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_6323_44447)%22%3E%0A%3Cpath%20d%3D%22M19.2857%202H3.32552C2.5942%202%202%202.60251%202%203.34214V19.2732C2%2020.0129%202.5942%2020.6154%203.32552%2020.6154H19.2857C20.017%2020.6154%2020.6154%2020.0129%2020.6154%2019.2732V3.34214C20.6154%202.60251%2020.017%202%2019.2857%202ZM7.62617%2017.956H4.8671V9.07218H7.63032V17.956H7.62617ZM6.24663%207.85886C5.36157%207.85886%204.64687%207.14001%204.64687%206.2591C4.64687%205.37819%205.36157%204.65934%206.24663%204.65934C7.12754%204.65934%207.84639%205.37819%207.84639%206.2591C7.84639%207.14416%207.1317%207.85886%206.24663%207.85886ZM17.9685%2017.956H15.2094V13.6346C15.2094%2012.6041%2015.1887%2011.2786%2013.7759%2011.2786C12.3382%2011.2786%2012.118%2012.4005%2012.118%2013.5598V17.956H9.35889V9.07218H12.0058V10.2855H12.0432C12.413%209.58743%2013.3147%208.85196%2014.6568%208.85196C17.4491%208.85196%2017.9685%2010.6927%2017.9685%2013.0861V17.956Z%22%20fill%3D%22%23347FBC%22%20style%3D%22fill%3A%23347FBC%3Bfill%3Acolor(display-p3%200.2039%200.4980%200.7373)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_6323_44447%22%3E%0A%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2218.6154%22%20height%3D%2218.6154%22%20rx%3D%221.69231%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
+                          value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2022%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_3396_4622)%22%3E%0A%3Crect%20x%3D%220.845215%22%20y%3D%220.84375%22%20width%3D%2220.3077%22%20height%3D%2220.3077%22%20rx%3D%221.84615%22%20fill%3D%22white%22%2F%3E%0A%3Cpath%20d%3D%22M19.7028%200.84375H2.29172C1.49392%200.84375%200.845703%201.50103%200.845703%202.3079V19.6873C0.845703%2020.4942%201.49392%2021.1514%202.29172%2021.1514H19.7028C20.5006%2021.1514%2021.1534%2020.4942%2021.1534%2019.6873V2.3079C21.1534%201.50103%2020.5006%200.84375%2019.7028%200.84375ZM6.98334%2018.2503H3.97345V8.55886H6.98787V18.2503H6.98334ZM5.4784%207.23523C4.51287%207.23523%203.7332%206.45103%203.7332%205.49004C3.7332%204.52905%204.51287%203.74485%205.4784%203.74485C6.43938%203.74485%207.22359%204.52905%207.22359%205.49004C7.22359%206.45556%206.44392%207.23523%205.4784%207.23523ZM18.2659%2018.2503H15.256V13.5361C15.256%2012.4119%2015.2333%2010.9659%2013.6921%2010.9659C12.1237%2010.9659%2011.8835%2012.1898%2011.8835%2013.4545V18.2503H8.87359V8.55886H11.7611V9.88249H11.8019C12.2053%209.12095%2013.189%208.31861%2014.6531%208.31861C17.6993%208.31861%2018.2659%2010.3267%2018.2659%2012.9377V18.2503Z%22%20fill%3D%22%23347FBC%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_3396_4622%22%3E%0A%3Crect%20x%3D%220.845215%22%20y%3D%220.84375%22%20width%3D%2220.3077%22%20height%3D%2220.3077%22%20rx%3D%221.84615%22%20fill%3D%22white%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
                         />
-                      </_Builtin.Block>
-                    ) : null}
-                    {isPhoneIconVisible ? (
-                      <_Builtin.Block
-                        className={_utils.cx(
-                          _styles,
-                          "phone-icon-wraps",
-                          "pointer"
-                        )}
-                        data-w-id="2ae2704c-30c1-b568-9799-4c8f3b24e366"
-                        tag="div"
-                        {...onClickCopyPhone}
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%2212%22%20height%3D%2211%22%20viewBox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.21042%200.851952L5.0125%202.77695C5.13281%203.13789%205.0526%203.44535%204.77187%203.69935L3.78932%204.50143C4.12352%205.20994%204.56467%205.84492%205.11276%206.40638C5.67422%206.95447%206.3092%207.39562%207.01771%207.72982L7.81979%206.74727C8.07379%206.46654%208.38125%206.38633%208.74219%206.50664L10.6672%207.30872C10.8677%207.38893%2011.0081%207.51593%2011.0883%207.68971C11.1685%207.87687%2011.1885%208.0707%2011.1484%208.27122L10.6672%2010.0358C10.5335%2010.3967%2010.2728%2010.5906%209.88516%2010.6173C8.21415%2010.6039%206.70356%2010.1962%205.35339%209.39414C4.00321%208.59206%202.92708%207.51593%202.125%206.16575C1.32292%204.81558%200.91519%203.30499%200.901822%201.63398C0.928558%201.24631%201.1224%200.985632%201.48333%200.851952L3.24792%200.370702C3.44844%200.330598%203.64227%200.35065%203.82943%200.430858C4.00321%200.511066%204.13021%200.651431%204.21042%200.851952Z%22%20fill%3D%22black%22%20style%3D%22fill%3Ablack%3Bfill%3Ablack%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "devlink-copy-text")}
-                          tag="div"
-                        >
-                          <_Builtin.Block
-                            className={_utils.cx(_styles, "text-xsm")}
-                            tag="div"
-                          >
-                            {"Copy Phone"}
-                          </_Builtin.Block>
-                        </_Builtin.Block>
                       </_Builtin.Block>
                     ) : null}
                     {isMailIconVisible ? (
@@ -257,6 +237,59 @@ export function CandidateSideDrawer({
                         </_Builtin.Block>
                       </_Builtin.Block>
                     ) : null}
+                    {isPhoneIconVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "phone-icon-wraps",
+                          "pointer"
+                        )}
+                        data-w-id="2ae2704c-30c1-b568-9799-4c8f3b24e366"
+                        tag="div"
+                        {...onClickCopyPhone}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2212%22%20height%3D%2211%22%20viewBox%3D%220%200%2012%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.21042%200.851952L5.0125%202.77695C5.13281%203.13789%205.0526%203.44535%204.77187%203.69935L3.78932%204.50143C4.12352%205.20994%204.56467%205.84492%205.11276%206.40638C5.67422%206.95447%206.3092%207.39562%207.01771%207.72982L7.81979%206.74727C8.07379%206.46654%208.38125%206.38633%208.74219%206.50664L10.6672%207.30872C10.8677%207.38893%2011.0081%207.51593%2011.0883%207.68971C11.1685%207.87687%2011.1885%208.0707%2011.1484%208.27122L10.6672%2010.0358C10.5335%2010.3967%2010.2728%2010.5906%209.88516%2010.6173C8.21415%2010.6039%206.70356%2010.1962%205.35339%209.39414C4.00321%208.59206%202.92708%207.51593%202.125%206.16575C1.32292%204.81558%200.91519%203.30499%200.901822%201.63398C0.928558%201.24631%201.1224%200.985632%201.48333%200.851952L3.24792%200.370702C3.44844%200.330598%203.64227%200.35065%203.82943%200.430858C4.00321%200.511066%204.13021%200.651431%204.21042%200.851952Z%22%20fill%3D%22black%22%20style%3D%22fill%3Ablack%3Bfill%3Ablack%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "devlink-copy-text")}
+                          tag="div"
+                        >
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-xsm")}
+                            tag="div"
+                          >
+                            {"Copy Phone"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    ) : null}
+                    {isResumeVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "resume-candidate-details"
+                        )}
+                        tag="div"
+                        {...onClickResume}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icons")}
+                          value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%201.5C1.51562%201.07812%201.66406%200.726562%201.94531%200.445312C2.22656%200.164062%202.57812%200.015625%203%200H6.75V3C6.75%203.21875%206.82031%203.39844%206.96094%203.53906C7.10156%203.67969%207.28125%203.75%207.5%203.75H10.5V10.5C10.4844%2010.9219%2010.3359%2011.2734%2010.0547%2011.5547C9.77344%2011.8359%209.42188%2011.9844%209%2012H3C2.57812%2011.9844%202.22656%2011.8359%201.94531%2011.5547C1.66406%2011.2734%201.51562%2010.9219%201.5%2010.5V1.5ZM10.5%203H7.5V0L10.5%203Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "text-sm",
+                            "text-blue-800"
+                          )}
+                          tag="div"
+                        >
+                          {"Resume"}
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    ) : null}
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
@@ -270,10 +303,22 @@ export function CandidateSideDrawer({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-775")}
+          tag="div"
+        />
+        <_Builtin.Block
           className={_utils.cx(_styles, "slot-candidate-details")}
           tag="div"
         >
-          {slotCandidateDetails ?? <CandidateDetails />}
+          {slotCandidateDetails ?? (
+            <>
+              <JdAnalysis />
+              <JdScreening />
+              <CandidateInterviewScore />
+              <CandidateExperience />
+              <CandidateDetails />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
       {isAppliedOnVisible ? (

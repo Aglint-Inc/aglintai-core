@@ -3,7 +3,7 @@ import { Slider, Stack } from '@mui/material';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { ButtonOutlinedRegular, Checkbox } from '@/devlink';
+import { ButtonOutlinedRegular } from '@/devlink';
 import { CandidateFilter, CandidateFilterBody } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import RefreshBtn from '@/src/components/Common/RefreshButton';
@@ -201,9 +201,8 @@ const validateFilters = (
       switch (safeKey) {
         case 'location': {
           if (
-            (val as FilterParameter['location']).active &&
             (val as FilterParameter['location']).name ===
-              defaultFilters[key].name
+            defaultFilters[key].name
           ) {
             return { ...acc, [key]: { ...defaultFilters[key] } };
           }
@@ -282,10 +281,10 @@ const CandidateFilters = ({
 
 const CandidateFilterCheckbox = ({
   keyString,
-  valObj,
-  setFilters,
+  // valObj,
+  // setFilters,
   children,
-  handleResetSection,
+  // handleResetSection,
 }: {
   keyString: keyof FilterParameter;
   valObj: ValueOf<FilterParameter>;
@@ -294,26 +293,26 @@ const CandidateFilterCheckbox = ({
   handleResetSection: (section: keyof FilterParameter) => void;
   children: React.JSX.Element;
 }) => {
-  const handleCheck = () => {
-    valObj.active
-      ? handleResetSection(keyString)
-      : setFilters((prev) => ({
-          ...prev,
-          [keyString]: { ...prev[keyString], active: !prev[keyString].active },
-        }));
-  };
+  // const handleCheck = () => {
+  //   valObj.active
+  //     ? handleResetSection(keyString)
+  //     : setFilters((prev) => ({
+  //         ...prev,
+  //         [keyString]: { ...prev[keyString], active: !prev[keyString].active },
+  //       }));
+  // };
   return (
     <Stack>
       <Stack flexDirection={'row'} alignItems={'center'} gap={'10px'}>
-        <Checkbox
+        {/* <Checkbox
           onClickCheck={{ onClick: () => handleCheck() }}
           isChecked={valObj.active}
-        />
+        /> */}
         <Stack
           style={{
             fontWeight: '600',
             transform: 'translateY(-1px)',
-            opacity: valObj.active ? 1 : 0.4,
+            // opacity: valObj.active ? 1 : 0.4,
           }}
         >
           {`${capitalize(getUpdateParameterName(keyString))} ${getUnit(
@@ -321,7 +320,11 @@ const CandidateFilterCheckbox = ({
           )}`}
         </Stack>
       </Stack>
-      <Stack style={{ opacity: valObj.active ? 1 : 0.4 }}>{children}</Stack>
+      <Stack
+      // style={{ opacity: valObj.active ? 1 : 0.4 }}
+      >
+        {children}
+      </Stack>
     </Stack>
   );
 };

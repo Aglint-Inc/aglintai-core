@@ -47,7 +47,6 @@
   display: flex;
   width: 240px;
   min-width: 240px;
-  margin-top: 60px;
   padding: 10px;
   flex-direction: column;
 
@@ -191,6 +190,13 @@
 
 .icon-block.contain {
   object-fit: contain;
+}
+
+.icon-block._8x8 {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
 }
 
 .svg-icon {

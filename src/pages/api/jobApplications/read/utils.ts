@@ -200,7 +200,9 @@ export const newReadNewJobApplicationDbAction = async (
       .eq('job_id', job_id)
       .eq('status', status),
   ]);
-  if (response[0].status === 'rejected') throw new Error(response[0].reason);
+  if (response[0].status === 'rejected') {
+    throw new Error(response[0].reason);
+  }
   if (response[1].status === 'rejected') {
     throw new Error(response[1].reason);
   }
@@ -233,36 +235,25 @@ export const readNewJobApplicationDbAction = async (
   const coordinates = await getBoundingBox(
     filter.location.name,
     filter.location.value,
-    filter.location.active,
   );
+  // console.log(searchFormatter(search));
   const { data, error } = await supabase
     .rpc('job_application_filter_sort', {
       jb_id: job_id,
       j_status: status,
-
       sort_column_text: sort.parameter,
       is_sort_desc: !sort.ascending,
-
       min_interview_score:
-        status !== JobApplicationSections.NEW && filter.interview_score.active
-          ? filter.interview_score.min
-          : 0,
+        status !== JobApplicationSections.NEW ? filter.interview_score.min : 0,
       max_interview_score:
-        status !== JobApplicationSections.NEW && filter.interview_score.active
+        status !== JobApplicationSections.NEW
           ? filter.interview_score.max
           : 100,
-      min_resume_score: filter.overall_score.active
-        ? filter.overall_score.min === 0
-          ? -1
-          : filter.overall_score.min
-        : -1,
-      max_resume_score: filter.overall_score.active
-        ? filter.overall_score.max
-        : 100,
-
-      text_search_qry: search || '',
-
-      is_locat_filter_on: filter.location.active,
+      min_resume_score:
+        filter.overall_score.min === 0 ? -1 : filter.overall_score.min,
+      max_resume_score: filter.overall_score.max,
+      text_search_qry: searchFormatter(search),
+      is_locat_filter_on: locationValidity(filter?.location?.name ?? null),
       max_lat: coordinates?.latitude?.max ?? null,
       min_lat: coordinates?.latitude?.min ?? null,
       max_long: coordinates?.longitude?.max ?? null,
@@ -271,7 +262,6 @@ export const readNewJobApplicationDbAction = async (
       end_rec_num: range?.end + 1 ?? null,
     })
     .abortSignal(controller.signal);
-
   if (error) throw new Error(`RPC function failure : ${error.message}`);
   const safeData = rpcDataFormatter(data);
   return {
@@ -335,12 +325,17 @@ const getLocation = async (address: string) => {
     };
   return { lat: null, long: null };
 };
-export const getBoundingBox = async (
-  name: string,
-  range: number,
-  active: boolean,
-) => {
-  if (!active)
+const locationValidity = (name: string) => {
+  if (name && name.trim() !== '') return true;
+  return false;
+};
+const searchFormatter = (search: string) => {
+  if (search && search.trim() !== '')
+    return search.trim().replace(/ +/g, ' | ');
+  return '';
+};
+export const getBoundingBox = async (name: string, range: number) => {
+  if (!locationValidity(name))
     return {
       latitude: {
         min: null,

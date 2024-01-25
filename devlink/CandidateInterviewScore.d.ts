@@ -3,10 +3,10 @@ import * as Types from "./types";
 
 declare function CandidateInterviewScore(props: {
   as?: React.ElementType;
-  textScore?: React.ReactNode;
-  propsTextColor?: Types.Devlink.RuntimeProps;
-  textInterviewScoreState?: React.ReactNode;
   onClickDetailedFeedback?: Types.Devlink.RuntimeProps;
-  propsBgColorScore?: Types.Devlink.RuntimeProps;
   slotInterviewFeedbackScore?: Types.Devlink.Slot;
+  slotAssessmentScore?: Types.Devlink.Slot;
+  propsCollapse?: Types.Devlink.RuntimeProps;
+  onClickCard?: Types.Devlink.RuntimeProps;
+  onClickIcons?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

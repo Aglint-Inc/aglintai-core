@@ -311,6 +311,13 @@
   object-fit: contain;
 }
 
+.icon-block._8x8 {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;
@@ -493,18 +500,6 @@
   line-height: 1.4;
 }
 
-.jdet-tabs {
-  position: relative;
-  top: -1px;
-}
-
-@media screen and (max-width: 767px) {
-  .jdet-tabs {
-    display: flex;
-    width: 100%;
-  }
-}
-
 .candidates-view-wrapper {
   display: flex;
   overflow: hidden;
@@ -516,6 +511,25 @@
 @media screen and (max-width: 991px) {
   .candidates-view-wrapper {
     position: relative;
+  }
+}
+
+.div-block-426 {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  flex-direction: column;
+}
+
+.jdet-tabs {
+  position: relative;
+  top: -1px;
+}
+
+@media screen and (max-width: 767px) {
+  .jdet-tabs {
+    display: flex;
+    width: 100%;
   }
 }
 

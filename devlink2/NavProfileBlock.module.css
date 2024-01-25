@@ -285,3 +285,10 @@
 .icon-block.contain {
   object-fit: contain;
 }
+
+.icon-block._8x8 {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+}

@@ -7,6 +7,6 @@ declare function CandidateExperienceCard(props: {
   textRole?: React.ReactNode;
   textCompany?: React.ReactNode;
   textDate?: React.ReactNode;
-  textLocations?: React.ReactNode;
   isBadgeVisible?: Types.Visibility.VisibilityConditions;
+  isCurrentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack, Tooltip } from '@mui/material';
+import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import posthog from 'posthog-js';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -28,10 +28,12 @@ import {
   UnableFetchResume,
 } from '@/devlink';
 import {
+  AnalysisBlock,
   ResAbsentError,
   ResumeErrorBlock,
   ResumeErrorBlock2,
   ScrQuestionListItem,
+  SidebarAnalysisBlock,
   SidebarScreening,
   SummaryBlock,
 } from '@/devlink2';
@@ -57,18 +59,21 @@ import toast from '@/src/utils/toast';
 
 import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
+import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
+import ResumeScore from '../../Common/ResumeScore';
 import {
   capitalize,
   formatTimeStamp,
   getApplicationProcessState,
   getAssessmentStatus,
-  getCandidateName,
-  getInterviewScore,
-  getReasonings,
+  getCandidateDetails,
+  // getInterviewScore,
+  // getReasonings,
   getScreeningStatus,
   handleOngoingWarning,
+  mapScoreToAnalysis,
 } from '../../utils';
 
 const ApplicationDetails = ({
@@ -175,6 +180,7 @@ const NewDetailedFeedback = ({
   candidateImage: React.JSX.Element;
   onClose: () => void;
 }) => {
+  const name = getCandidateDetails(application, 'name');
   return (
     <InterviewDetailedFeedback
       onClickClose={{
@@ -183,13 +189,10 @@ const NewDetailedFeedback = ({
         },
       }}
       slotCandidateImage={candidateImage}
-      textName={getCandidateName(
-        application.candidates.first_name,
-        application.candidates.last_name,
-      )}
-      textMail={
-        application.candidates.email ? application.candidates.email : '--'
-      }
+      textName={name.value}
+      // textMail={
+      //   application.candidates.email ? application.candidates.email : '--'
+      // }
       slotDetailedFeedback={
         <DetailedInterviewFeedbackParams
           feedbackParamsObj={application.assessment_results.feedback}
@@ -292,12 +295,14 @@ const NewJobApplicationSideDrawer = ({
   );
   const creationDate = formatTimeStamp(application.applied_at);
 
-  const handleProfileRedirect = () => {
-    window.open(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`,
-      '_blank',
-    );
-  };
+  const jobTitle = getCandidateDetails(application, 'job_title');
+  const location = getCandidateDetails(application, 'location');
+  const linkedin = getCandidateDetails(application, 'linkedin');
+  const phone = getCandidateDetails(application, 'phone');
+  const overview = getCandidateDetails(application, 'overview');
+
+  const [openResume, setOpenResume] = useState(false);
+
   const handleLinkedInRedirect = () => {
     window.open(application.candidates.linkedin, '_blank');
   };
@@ -307,66 +312,66 @@ const NewJobApplicationSideDrawer = ({
     });
   };
 
+  const processState = getApplicationProcessState(application);
+
   return (
     <CandidateSideDrawer
+      slotCandidateImage={candidateImage}
+      textName={name}
       onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
       onClickNext={{ onClick: () => handleSelectNextApplication() }}
-      onClickCopyProfile={{
-        onClick: () => handleProfileRedirect(),
-        style: {
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none',
-        },
-      }}
       onClickClose={{
         onClick: () => onClose(),
       }}
-      slotCandidateImage={candidateImage}
-      textName={name}
+      isRoleVisible={jobTitle.valid}
+      textRole={jobTitle.value}
+      isLocationVisible={location.valid}
+      textLocation={location.value}
+      isMailIconVisible={application.emailValidity.isValidEmail}
+      onClickCopyMail={{
+        onClick: () => handleCopy(application.candidates.email.trim(), 'Email'),
+      }}
+      isPhoneIconVisible={phone.valid}
+      onClickCopyPhone={{
+        onClick: () =>
+          handleCopy(application.candidates.phone.trim(), 'Phone number'),
+      }}
+      isLinkedInVisible={linkedin.valid}
+      onClickLinkedin={{
+        onClick: () => handleLinkedInRedirect(),
+      }}
+      isResumeVisible={
+        processState !== 'unavailable' && processState !== 'fetching'
+      }
+      onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
+      slotMoveTo={<></>}
       slotOverview={
-        <OverviewBlocks key={application.id} application={application} />
+        overview.valid && (
+          <OverviewBlock title={'Overview'} description={overview.value} />
+        )
       }
       slotCandidateDetails={
         <>
           <NewCandidateDetails
             application={application}
             setOpenFeedback={setOpenFeedback}
+            openResume={openResume}
+            setOpenResume={setOpenResume}
           />
         </>
       }
-      isLinkedInVisible={
-        application.candidates.linkedin !== null &&
-        application.candidates.linkedin !== ''
-      }
-      onClickLinkedin={{
-        onClick: () => handleLinkedInRedirect(),
-      }}
-      isMailIconVisible={application.emailValidity.isValidEmail}
-      isPhoneIconVisible={
-        application.candidates.phone &&
-        application.candidates.phone.trim() !== ''
-      }
-      onClickCopyMail={{
-        onClick: () => handleCopy(application.candidates.email.trim(), 'Email'),
-      }}
-      onClickCopyPhone={{
-        onClick: () =>
-          handleCopy(application.candidates.phone.trim(), 'Phone number'),
-      }}
-      textAppliedOn={creationDate}
       isAppliedOnVisible={true}
+      textAppliedOn={creationDate}
     />
   );
 };
 
-const NewCandidateDetails = ({
-  application,
-  setOpenFeedback,
-}: {
+const NewCandidateDetails: React.FC<{
   application: JobApplication;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  openResume: boolean;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, setOpenFeedback, openResume, setOpenResume }) => {
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
   const validApplication = validity === 'processed';
@@ -374,7 +379,11 @@ const NewCandidateDetails = ({
     <CandidateDetails
       slotInterviewScore={
         <>
-          <NewResumeSection application={application} />
+          <NewResumeSection
+            application={application}
+            openResume={openResume}
+            setOpenResume={setOpenResume}
+          />
           <AssessmentSection
             application={application}
             setOpenFeedback={setOpenFeedback}
@@ -387,22 +396,75 @@ const NewCandidateDetails = ({
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.positions
                 }
+                score={
+                  (application.score_json as ScoreJson)?.scores?.experience
+                }
               />
               <NewEducationDetails
                 schools={resume.schools}
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.schools
                 }
+                score={(application.score_json as ScoreJson)?.scores?.education}
               />
               <NewSkillDetails
                 skills={resume.skills}
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.skills
                 }
+                score={(application.score_json as ScoreJson)?.scores?.skills}
               />
             </>
           )}
         </>
+      }
+    />
+  );
+};
+
+const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const score_json = application.score_json as ScoreJson;
+  const [collapse, setCollapse] = useState(false);
+  const reasoning = score_json?.reasoning ?? null;
+  const scores = score_json?.scores ?? null;
+  if (!reasoning || !scores) return <></>;
+  const analyses = Object.entries(score_json.scores).map(([key, value], i) => {
+    const reasoningKey = mapScoreToAnalysis(key as keyof ScoreJson['scores']);
+    if (
+      key &&
+      typeof value === 'number' &&
+      (score_json?.reasoning[reasoningKey] ?? null)
+    ) {
+      return (
+        <>
+          <AnalysisBlock
+            slotAnalysisPill={<AnalysisPillComponent score={value} />}
+            key={i}
+            description={reasoning[reasoningKey]}
+            title={capitalize(key)}
+          />
+        </>
+      );
+    }
+  });
+  return (
+    <SidebarAnalysisBlock
+      slotPill={<ResumeScore application={application} />}
+      onclickArrow={{
+        onClick: () => setCollapse((prev) => !prev),
+        style: {
+          cursor: 'pointer',
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+        },
+      }}
+      slotBody={
+        <Collapse in={collapse}>
+          <Stack gap={'20px'} marginTop={'20px'}>
+            {analyses}
+          </Stack>
+        </Collapse>
       }
     />
   );
@@ -524,16 +586,16 @@ const NewInterviewStatus = ({
 };
 
 const NewInterviewScoreDetails = ({ application, setOpenFeedback }) => {
-  const interviewScore = getInterviewScore(application.feedback);
-  const feedbackObj = giveRateInWordToResume(interviewScore);
+  // const interviewScore = getInterviewScore(application.feedback);
+  // const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
     <CandidateInterviewScore
-      textScore={`${interviewScore}/100`}
-      textInterviewScoreState={
-        <Stack style={{ color: feedbackObj.color }}>{feedbackObj.text}</Stack>
-      }
-      propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
-      propsTextColor={{ style: { color: feedbackObj.color } }}
+      // textScore={`${interviewScore}/100`}
+      // textInterviewScoreState={
+      //   <Stack style={{ color: feedbackObj.color }}>{feedbackObj.text}</Stack>
+      // }
+      // propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
+      // propsTextColor={{ style: { color: feedbackObj.color } }}
       onClickDetailedFeedback={{
         onClick: () => setOpenFeedback(true),
       }}
@@ -543,32 +605,6 @@ const NewInterviewScoreDetails = ({ application, setOpenFeedback }) => {
         )
       }
     />
-  );
-};
-
-const OverviewBlocks = ({ application }: { application: JobApplication }) => {
-  const overview =
-    (application?.candidate_files.resume_json as any)?.overview ?? null;
-  const analysis = getReasonings(
-    (application?.score_json as ScoreJson)?.reasoning || null,
-  );
-  return (
-    <>
-      {overview ? (
-        <OverviewBlock title={'Overview'} description={overview} />
-      ) : (
-        <></>
-      )}
-      {analysis ? (
-        <OverviewBlock
-          title={'Analysis'}
-          description={analysis}
-          bgColor='#fff7ee'
-        />
-      ) : (
-        <></>
-      )}
-    </>
   );
 };
 
@@ -583,16 +619,19 @@ const OverviewBlock = ({
 }) => {
   const [expand, setExpand] = useState(false);
   const displayText = (
-    <Tooltip title={`View ${expand ? 'less' : 'more'}`} arrow>
-      <Stack
-        className={`job_application_overview_${expand ? 'un' : ''}clamped`}
-      >
-        {description}
-      </Stack>
-    </Tooltip>
+    <Stack className={`job_application_overview_${expand ? 'un' : ''}clamped`}>
+      {description}
+    </Stack>
   );
   return (
     <SummaryBlock
+      arrowProps={{
+        onClick: () => setExpand((prev) => !prev),
+        style: {
+          cursor: 'pointer',
+          transform: `rotate(${expand ? '0deg' : '180deg'})`,
+        },
+      }}
       title={title}
       description={displayText}
       descriptionTextProps={{
@@ -604,9 +643,12 @@ const OverviewBlock = ({
   );
 };
 
-const NewResumeSection = ({ application }: { application: JobApplication }) => {
+const NewResumeSection: React.FC<{
+  application: JobApplication;
+  openResume: boolean;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, openResume, setOpenResume }) => {
   const { job } = useJobApplications();
-  const [openResume, setOpenResume] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const handleDownload = async () => {
     if (!downloading) {
@@ -617,25 +659,11 @@ const NewResumeSection = ({ application }: { application: JobApplication }) => {
   };
   return (
     <>
-      <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            borderRadius: '0px !important',
-            border: 'none !important',
-          },
-          '.MuiDialog-container': {
-            height: 'auto',
-          },
-        }}
-        fullWidth
-        maxWidth={'lg'}
-        open={openResume}
-        onClose={() => setOpenResume(false)}
-      >
-        <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-          <ResumePreviewer url={application.candidate_files?.file_url} />
-        </Stack>
-      </Dialog>
+      <ResumeViewer
+        application={application}
+        openResume={openResume}
+        setOpenResume={setOpenResume}
+      />
       <ResumeBlock
         application={application}
         setOpenResume={setOpenResume}
@@ -646,12 +674,40 @@ const NewResumeSection = ({ application }: { application: JobApplication }) => {
   );
 };
 
+const ResumeViewer: React.FC<{
+  application: JobApplication;
+  openResume: boolean;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, openResume, setOpenResume }) => {
+  return (
+    <Dialog
+      sx={{
+        '& .MuiDialog-paper': {
+          borderRadius: '0px !important',
+          border: 'none !important',
+        },
+        '.MuiDialog-container': {
+          height: 'auto',
+        },
+      }}
+      fullWidth
+      maxWidth={'lg'}
+      open={openResume}
+      onClose={() => setOpenResume(false)}
+    >
+      <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
+        <ResumePreviewer url={application.candidate_files?.file_url} />
+      </Stack>
+    </Dialog>
+  );
+};
+
 const ResumeBlock: React.FC<{
   application: JobApplication;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
   handleDownload: () => Promise<void>;
   job: JobTypeDashboard;
-}> = ({ application, setOpenResume, handleDownload, job }) => {
+}> = ({ application, setOpenResume, handleDownload }) => {
   switch (getApplicationProcessState(application)) {
     case 'unavailable':
       return <ResAbsentError />;
@@ -679,14 +735,7 @@ const ResumeBlock: React.FC<{
         />
       );
     case 'processed':
-      return (
-        <NewResumeScoreDetails
-          application={application}
-          job={job}
-          feedback={false}
-          setOpenResume={setOpenResume}
-        />
-      );
+      return <AnalysisBlockSection application={application} />;
   }
 };
 
@@ -877,27 +926,53 @@ const PhoneScreeningSection = ({
     application.phone_screening,
   );
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/assessment?id=${application.id}`,
+    );
+    toast.success('Interview link copied!');
+  };
+
+  const [collapse, setCollapse] = useState(false);
+
   // if (!isValidEmail) return <></>;
   if (isNotInvited)
     return (
       <SidebarScreening
         isNotInvited={true}
         onclickInvite={{ onClick: async () => await handleInvite() }}
+        slotStatus={<ScreeningStatusComponent application={application} />}
+        onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
 
   if (isPending)
     return (
       <SidebarScreening
-        isPending={true}
+        isInvited={true}
         onclickResend={{ onClick: async () => await handleInvite(true) }}
+        slotStatus={<ScreeningStatusComponent application={application} />}
+        onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
-
   return (
     <SidebarScreening
       isSubmitted={true}
-      slotQuestions={<ScreeningQuestions phoneScreening={phoneScreening} />}
+      slotQuestions={
+        <Collapse in={collapse}>
+          <Stack gap={'20px'} marginTop={'20px'}>
+            <ScreeningQuestions phoneScreening={phoneScreening} />
+          </Stack>
+        </Collapse>
+      }
+      slotStatus={<ScreeningStatusComponent application={application} />}
+      onclickArrow={{
+        onClick: () => setCollapse((prev) => !prev),
+        style: {
+          cursor: 'pointer',
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+        },
+      }}
     />
   );
 };
@@ -968,10 +1043,13 @@ const fetchFile = async (application: JobApplication) => {
 const NewEducationDetails = ({
   schools,
   relevance,
+  score,
 }: {
   schools;
   relevance: ScoreJson['relevance']['schools'];
+  score: number;
 }) => {
+  const [collapse, setCollapse] = useState(false);
   if (schools && schools instanceof Array && schools.length !== 0) {
     const educationList = schools
       .filter((e) => e.institution !== null && e.institution !== '')
@@ -999,7 +1077,25 @@ const NewEducationDetails = ({
           />
         );
       });
-    return <CandidateEducation slotEducationCard={<>{educationList}</>} />;
+    return (
+      <CandidateEducation
+        slotEducationScore={<AnalysisPillComponent score={score} />}
+        onClickIcons={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+          },
+        }}
+        slotEducationCard={
+          <Collapse in={collapse}>
+            <Stack gap={'20px'} marginTop={'20px'}>
+              {educationList}
+            </Stack>
+          </Collapse>
+        }
+      />
+    );
   }
   return <></>;
 };
@@ -1007,10 +1103,13 @@ const NewEducationDetails = ({
 const NewExperienceDetails = ({
   positions,
   relevance,
+  score,
 }: {
   positions;
   relevance: ScoreJson['relevance']['positions'];
+  score: number;
 }) => {
+  const [collapse, setCollapse] = useState(false);
   if (positions && positions instanceof Array && positions.length !== 0) {
     const workList = positions.reduce((acc, w, i) => {
       const startDate = timeFormat(w.start);
@@ -1036,7 +1135,23 @@ const NewExperienceDetails = ({
       return acc;
     }, []);
     return (
-      <CandidateExperience slotCandidateExperienceCard={<>{workList}</>} />
+      <CandidateExperience
+        onClickIcons={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+          },
+        }}
+        slotExperienceScore={<AnalysisPillComponent score={score} />}
+        slotCandidateExperienceCard={
+          <Collapse in={collapse} style={{ gap: '2px' }}>
+            <Stack gap={'20px'} marginTop={'20px'}>
+              {workList}
+            </Stack>
+          </Collapse>
+        }
+      />
     );
   }
   return <></>;
@@ -1068,22 +1183,14 @@ const timeRange = (startDate: string, endDate: string) => {
 const NewSkillDetails = ({
   skills,
   relevance,
+  score,
 }: {
   skills;
   relevance: ScoreJson['relevance']['skills'];
+  score: number;
 }) => {
+  const [collapse, setCollapse] = useState(false);
   if (skills && skills instanceof Array && skills.length !== 0) {
-    if (!relevance) {
-      const skillList = skills
-        .filter((s) => s !== null && s !== '')
-        .map((s, i) => <CandidateSkillPills key={i} textSkill={s} />);
-      return (
-        <CandidateSkill
-          slotOtherSkill={<>{skillList}</>}
-          isNumberVisible={false}
-        />
-      );
-    }
     const { relevant, others } = Object.entries(relevance).reduce(
       (acc, [key, value], i) => {
         if (value === 'high')
@@ -1110,14 +1217,30 @@ const NewSkillDetails = ({
       },
       { relevant: [], others: [] },
     );
-    const relevanceCount = relevant.length;
-    const otherCount = others.length;
     return (
       <CandidateSkill
-        slotCandidateSkill={relevanceCount !== 0 ? relevant : null}
-        textSkillCount={relevanceCount}
-        isNumberVisible={relevanceCount !== 0}
-        slotOtherSkill={otherCount !== 0 ? others : null}
+        slotSkillsScore={<AnalysisPillComponent score={score} />}
+        onClickIcons={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+          },
+        }}
+        slotCandidateSkill={
+          <Collapse in={collapse}>
+            <Stack
+              display={'flex'}
+              flexDirection={'row'}
+              flexWrap={'wrap'}
+              gap={'6px'}
+              marginTop={'20px'}
+            >
+              {relevant}
+              {others}
+            </Stack>
+          </Collapse>
+        }
       />
     );
   }

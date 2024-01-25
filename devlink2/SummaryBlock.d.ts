@@ -7,4 +7,5 @@ declare function SummaryBlock(props: {
   description?: React.ReactNode;
   descriptionTextProps?: Types.Devlink.RuntimeProps;
   wrapperProps?: Types.Devlink.RuntimeProps;
+  arrowProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

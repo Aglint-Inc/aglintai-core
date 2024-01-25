@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { InsightTagEmpty } from "./InsightTagEmpty";
+import { AnalysisBlock } from "./AnalysisBlock";
 import * as _utils from "./utils";
 import _styles from "./TopCandidateListItem.module.css";
 
@@ -15,14 +16,12 @@ export function TopCandidateListItem({
   isChecked = false,
   slotScores,
   name = "Dianne Russell",
-  strength = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
-  weakness = "Eike led software as a Senior System Software Engineer at NVIDIA Corporation, specializing in autonomous vehicles.",
   overview = "--",
   onclickCandidate = {},
   isHighlighted = false,
   slotInsights,
   slotProfileImage,
-  analysis = "--",
+  slotAnalysis,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -42,12 +41,7 @@ export function TopCandidateListItem({
         tag="div"
       />
       <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "cv-list-column-wrapper",
-          "width-auto",
-          "pv-12"
-        )}
+        className={_utils.cx(_styles, "cv-list-column-wrapper", "width-auto")}
         tag="div"
       >
         {isHighlighted ? (
@@ -89,12 +83,7 @@ export function TopCandidateListItem({
         {...onclickCandidate}
       >
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column-wrapper",
-            "name",
-            "pv-12"
-          )}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "name")}
           tag="div"
         >
           {isHighlighted ? (
@@ -134,10 +123,16 @@ export function TopCandidateListItem({
             >
               {slotScores}
             </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "top-can-info", "insights")}
+              tag="div"
+            >
+              {slotInsights ?? <InsightTagEmpty />}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper", "pv-12")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper")}
           tag="div"
         >
           {isHighlighted ? (
@@ -151,7 +146,7 @@ export function TopCandidateListItem({
             tag="div"
           />
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "overview3")}
+            className={_utils.cx(_styles, "cv-list-column", "overview")}
             tag="div"
           >
             <_Builtin.Block
@@ -163,7 +158,7 @@ export function TopCandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper", "pv-12")}
+          className={_utils.cx(_styles, "cv-list-column-wrapper", "z-10")}
           tag="div"
         >
           {isHighlighted ? (
@@ -177,42 +172,15 @@ export function TopCandidateListItem({
             tag="div"
           />
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "overview3")}
+            className={_utils.cx(_styles, "cv-list-column", "analysis")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
-              tag="div"
-            >
-              {analysis}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column-wrapper",
-            "z-10",
-            "insights",
-            "pv-12"
-          )}
-          tag="div"
-        >
-          {isHighlighted ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "top-can-highlight")}
-              tag="div"
-            />
-          ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-hover-bg")}
-            tag="div"
-          />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column", "insights")}
-            tag="div"
-          >
-            {slotInsights ?? <InsightTagEmpty />}
+            {slotAnalysis ?? (
+              <AnalysisBlock
+                description="The candidate's prior work experiences align closely with the job requirements, showcasing leadership, community engagement, content creation, and strategic planning, which are essential for the Head of Developer Experience role. "
+                title="Experience"
+              />
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

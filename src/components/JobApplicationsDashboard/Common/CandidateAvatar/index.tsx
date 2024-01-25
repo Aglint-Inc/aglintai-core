@@ -1,7 +1,7 @@
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
-import { getCandidateName } from '../../utils';
+import { getCandidateDetails } from '../../utils';
 
 const CandidateAvatar = ({
   application,
@@ -12,10 +12,7 @@ const CandidateAvatar = ({
 }) => {
   return (
     <MuiAvatar
-      level={getCandidateName(
-        application.candidates.first_name,
-        application.candidates.last_name,
-      )}
+      level={getCandidateDetails(application, 'name').value}
       src={application.candidates.avatar}
       variant={'circular'}
       width={'100%'}

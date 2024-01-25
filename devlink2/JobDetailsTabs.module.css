@@ -1,5 +1,5 @@
 .cv-tab-links-wrapper {
-  display: grid;
+  display: flex;
   padding: 6px;
   grid-auto-columns: 1fr;
   grid-column-gap: 6px;
@@ -21,9 +21,10 @@
   position: relative;
 
   display: flex;
-  min-width: 180px;
+  min-width: 160px;
   padding: 12px 13px;
   align-items: center;
+  flex: 1;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
@@ -234,6 +235,13 @@
 
 .icon-block.contain {
   object-fit: contain;
+}
+
+.icon-block._8x8 {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
 }
 
 .svg-icon {

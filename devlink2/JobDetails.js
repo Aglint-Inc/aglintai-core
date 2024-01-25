@@ -281,46 +281,51 @@ export function JobDetails({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
-        {slotTabs ?? <JobDetailsTabs />}
-      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidates-view-wrapper")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "candidates-view-main")}
+          className={_utils.cx(_styles, "div-block-426")}
           tag="div"
         >
+          <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
+            {slotTabs ?? <JobDetailsTabs />}
+          </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-tab-content-wrapper")}
+            className={_utils.cx(_styles, "candidates-view-main")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-actions-bar")}
+              className={_utils.cx(_styles, "cv-tab-content-wrapper")}
               tag="div"
             >
-              {slotFilters ?? (
-                <>
-                  <SelectActionBar />
-                  <JobDetailsFilterBlock
-                    isAllApplicants={true}
-                    isTopApplicants={false}
-                  />
-                </>
-              )}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jdet-table")}
-              tag="div"
-            >
-              {slotTable}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "job-page-nav-bar")}
-              tag="div"
-            >
-              {slotPagination ?? <CandidatesListPagination />}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "jdet-actions-bar")}
+                tag="div"
+              >
+                {slotFilters ?? (
+                  <>
+                    <SelectActionBar />
+                    <JobDetailsFilterBlock
+                      isAllApplicants={true}
+                      isTopApplicants={false}
+                    />
+                  </>
+                )}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "jdet-table")}
+                tag="div"
+              >
+                {slotTable}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "job-page-nav-bar")}
+                tag="div"
+              >
+                {slotPagination ?? <CandidatesListPagination />}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

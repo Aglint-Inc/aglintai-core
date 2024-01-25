@@ -176,17 +176,14 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     interview_score: {
       max: 100,
       min: 0,
-      active: false,
     },
     overall_score: {
       max: 100,
       min: 0,
-      active: false,
     },
     location: {
       name: null,
       value: 10,
-      active: false,
     },
   };
 

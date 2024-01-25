@@ -50,17 +50,14 @@ export const formatTimeStamp = (timeStamp: string) => {
 
 export type FilterParameter = {
   overall_score?: {
-    active: boolean;
     min: number;
     max: number;
   };
   interview_score?: {
-    active: boolean;
     min: number;
     max: number;
   };
   location?: {
-    active: boolean;
     name: string;
     value: number;
   };
@@ -168,12 +165,6 @@ export function getInterviewScore(feedback) {
     : 0;
   return overAllScore;
 }
-
-export const getCandidateName = (first_name: string, last_name: string) => {
-  return first_name || last_name
-    ? capitalize((first_name || '') + ' ' + (last_name || ''))
-    : '---';
-};
 
 export const checkSyncCand = async (job: JobTypeDashboard) => {
   let is_sync = true;
@@ -379,4 +370,112 @@ export const getReasonings = (reasoning: ScoreJson['reasoning']) => {
         return acc;
       }, '')
     : null;
+};
+export const getCandidateDetails = (
+  application: JobApplication,
+  type: 'location' | 'job_title' | 'name' | 'linkedin' | 'phone' | 'overview',
+) => {
+  const fallback = '---';
+  let value = fallback;
+  switch (type) {
+    case 'job_title':
+      {
+        value = (application.candidate_files?.resume_json as any)?.basics
+          ?.currentJobTitle
+          ? capitalize(
+              (application.candidate_files?.resume_json as any).basics
+                .currentJobTitle,
+            )
+          : fallback;
+      }
+      break;
+    case 'location':
+      {
+        value = (application.candidate_files?.resume_json as any)?.basics
+          ?.location?.city
+          ? capitalize(
+              (application.candidate_files?.resume_json as any).basics.location
+                .city,
+            )
+          : fallback;
+      }
+      break;
+    case 'name':
+      {
+        const first_name = application?.candidates?.first_name ?? null;
+        const last_name = application?.candidates?.last_name ?? null;
+        value =
+          first_name || last_name
+            ? capitalize((first_name || '') + ' ' + (last_name || ''))
+            : fallback;
+      }
+      break;
+    case 'linkedin':
+      {
+        value =
+          (application?.candidates?.linkedin ?? null) !== null &&
+          application.candidates.linkedin !== ''
+            ? application.candidates.linkedin
+            : fallback;
+      }
+      break;
+    case 'phone':
+      {
+        value =
+          (application?.candidates?.phone ?? null) &&
+          application.candidates.phone.trim() !== ''
+            ? application.candidates.phone
+            : fallback;
+      }
+      break;
+    case 'overview': {
+      const overview =
+        (application?.candidate_files.resume_json as any)?.overview ?? null;
+      value = overview && overview.trim() !== '' ? overview : fallback;
+    }
+  }
+  return {
+    valid: value !== fallback,
+    value,
+  };
+};
+
+export const mapScoreToAnalysis = (
+  key: keyof ScoreJson['scores'],
+): keyof ScoreJson['reasoning'] => {
+  switch (key) {
+    case 'skills':
+      return 'skills';
+    case 'experience':
+      return 'positions';
+    case 'education':
+      return 'schools';
+  }
+};
+
+export const analysisRatings = (score: number) => {
+  if (score > 66)
+    return {
+      value: `High - ${score}%`,
+      color: '#228F67',
+      high: true,
+      medium: false,
+      low: false,
+    };
+  else if (score > 33)
+    return {
+      value: `Average - ${score}%`,
+      color: '#ED8F1C',
+      high: false,
+      medium: true,
+      low: false,
+    };
+  else
+    return {
+      value: `Low - ${score}%`,
+      color: '#D93F4C',
+      high: false,
+      medium: false,
+      low: true,
+    };
 };
