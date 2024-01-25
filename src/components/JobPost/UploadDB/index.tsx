@@ -175,7 +175,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
     }
 
     setError({ ...error });
-
+    
     return isValid;
   };
 
@@ -237,7 +237,8 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       } else {
         toast.error('Something went wrong! Please try again later');
       }
-      setIsDisabled(false);
+    } else {
+      isSubmitRef.current = false;
     }
   };
 

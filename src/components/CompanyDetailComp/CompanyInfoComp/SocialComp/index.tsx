@@ -99,19 +99,23 @@ const SocialComp = ({ setIsSaving }) => {
     const facebookUrlPattern =
       // eslint-disable-next-line security/detect-unsafe-regex
       /^(https?:\/\/)?(www\.)?facebook\.com\/(profile\.php\?id=\d+|[A-Za-z0-9_.-]+)\/?$/;
-    if (!facebookUrlPattern.test(url)) {
-      setError({
-        ...error,
-        facebook: {
-          error: true,
-          msg: 'Please enter valid facebook url',
-        },
-      });
+    if (url.length !== 0) {
+      if (!facebookUrlPattern.test(url)) {
+        setError({
+          ...error,
+          facebook: {
+            error: true,
+            msg: 'Please enter valid facebook url',
+          },
+        });
+      } else {
+        setError({
+          ...error,
+          facebook: { error: false, msg: '' },
+        });
+      }
     } else {
-      setError({
-        ...error,
-        facebook: { error: false, msg: '' },
-      });
+      return null;
     }
 
     return facebookUrlPattern.test(url);
@@ -121,19 +125,23 @@ const SocialComp = ({ setIsSaving }) => {
     const linkedinUrlPattern =
       // eslint-disable-next-line security/detect-unsafe-regex
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in\/[A-Za-z0-9_-]+|company\/[A-Za-z0-9_-]+)\/?$/;
-    if (!linkedinUrlPattern.test(url)) {
-      setError({
-        ...error,
-        linkedin: {
-          error: true,
-          msg: 'Please enter valid linkedin url',
-        },
-      });
+    if (url.length !== 0) {
+      if (!linkedinUrlPattern.test(url)) {
+        setError({
+          ...error,
+          linkedin: {
+            error: true,
+            msg: 'Please enter valid linkedin url',
+          },
+        });
+      } else {
+        setError({
+          ...error,
+          linkedin: { error: false, msg: '' },
+        });
+      }
     } else {
-      setError({
-        ...error,
-        linkedin: { error: false, msg: '' },
-      });
+      return null;
     }
     return linkedinUrlPattern.test(url);
   }
@@ -142,20 +150,23 @@ const SocialComp = ({ setIsSaving }) => {
     const youtubeUrlPattern =
       // eslint-disable-next-line security/detect-unsafe-regex
       /^(https?:\/\/)?(www\.)?youtube\.com\/.*$/;
-
-    if (!youtubeUrlPattern.test(url)) {
-      setError({
-        ...error,
-        youtube: {
-          error: true,
-          msg: 'Please enter valid youtube id',
-        },
-      });
+    if (url.length !== 0) {
+      if (!youtubeUrlPattern.test(url)) {
+        setError({
+          ...error,
+          youtube: {
+            error: true,
+            msg: 'Please enter valid youtube id',
+          },
+        });
+      } else {
+        setError({
+          ...error,
+          youtube: { error: false, msg: '' },
+        });
+      }
     } else {
-      setError({
-        ...error,
-        youtube: { error: false, msg: '' },
-      });
+      return null;
     }
     return youtubeUrlPattern.test(url);
   }
@@ -164,19 +175,23 @@ const SocialComp = ({ setIsSaving }) => {
     const twitterUrlPattern =
       // eslint-disable-next-line security/detect-unsafe-regex
       /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/;
-    if (!twitterUrlPattern.test(url)) {
-      setError({
-        ...error,
-        twitter: {
-          error: true,
-          msg: 'Please enter valid twitter url',
-        },
-      });
+    if (url.length !== 0) {
+      if (!twitterUrlPattern.test(url)) {
+        setError({
+          ...error,
+          twitter: {
+            error: true,
+            msg: 'Please enter valid twitter url',
+          },
+        });
+      } else {
+        setError({
+          ...error,
+          twitter: { error: false, msg: '' },
+        });
+      }
     } else {
-      setError({
-        ...error,
-        twitter: { error: false, msg: '' },
-      });
+      return null;
     }
     return twitterUrlPattern.test(url);
   }
@@ -185,49 +200,57 @@ const SocialComp = ({ setIsSaving }) => {
     const instagramUrlPattern =
       // eslint-disable-next-line security/detect-unsafe-regex
       /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.-]+\/?$/;
-    if (!instagramUrlPattern.test(url)) {
-      setError({
-        ...error,
-        instagram: {
-          error: true,
-          msg: 'Please enter valid instagram url',
-        },
-      });
+    if (url.length !== 0) {
+      if (!instagramUrlPattern.test(url)) {
+        setError({
+          ...error,
+          instagram: {
+            error: true,
+            msg: 'Please enter valid instagram url',
+          },
+        });
+      } else {
+        setError({
+          ...error,
+          instagram: { error: false, msg: '' },
+        });
+      }
     } else {
-      setError({
-        ...error,
-        instagram: { error: false, msg: '' },
-      });
+      return null;
     }
     return instagramUrlPattern.test(url);
   }
 
   function validateCustomUrl(url: string, socialName: string) {
-    if (!validateUrl(url)) {
-      setError((prev) => {
-        return {
-          ...prev,
-          custom: {
-            ...prev.custom,
-            [socialName]: {
-              error: true,
-              msg: 'Please enter valid url',
+    if (url.length !== 0) {
+      if (!validateUrl(url)) {
+        setError((prev) => {
+          return {
+            ...prev,
+            custom: {
+              ...prev.custom,
+              [socialName]: {
+                error: true,
+                msg: 'Please enter valid url',
+              },
             },
-          },
-        };
-      });
-      return false;
+          };
+        });
+        return false;
+      } else {
+        setError((prev) => {
+          return {
+            ...prev,
+            custom: {
+              ...prev.custom,
+              [socialName]: { error: false, msg: '' },
+            },
+          };
+        });
+        return true;
+      }
     } else {
-      setError((prev) => {
-        return {
-          ...prev,
-          custom: {
-            ...prev.custom,
-            [socialName]: { error: false, msg: '' },
-          },
-        };
-      });
-      return true;
+      return null;
     }
   }
 

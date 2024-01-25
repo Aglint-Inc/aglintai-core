@@ -108,7 +108,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             }}
             slotLottie={<ThankYou />}
             textTitle={'Application submitted successfully.'}
-            textDescription={`Thank you for taking your time to take apply for this role. We will be in touch with you soon.If you have any questions please `}
+            textDescription={`Thank you for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
             slotCompanyLogo={
               <Stack alignItems={'center'} spacing={1} width={'100%'}>
                 <Avatar

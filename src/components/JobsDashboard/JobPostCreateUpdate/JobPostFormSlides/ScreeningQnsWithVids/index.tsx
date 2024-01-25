@@ -249,7 +249,7 @@ const ScreeningQns = () => {
                           .showInstructionVideo,
                     });
                   }}
-                  isChecked={interviewSetting.showInstructionVideo}
+                  isChecked={!interviewSetting.showInstructionVideo}
                 />
               }
               slotUpload={
