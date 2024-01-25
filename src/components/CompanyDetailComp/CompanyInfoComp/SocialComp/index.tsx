@@ -242,7 +242,7 @@ const SocialComp = ({ setIsSaving }) => {
             <Stack
               key={socialName}
               direction={'row'}
-              alignItems={'center'}
+              alignItems={'start'}
               spacing={2}
             >
               <Stack

@@ -269,9 +269,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   multiline
                 />
                 <Stack>
-                  <UITypography type='small' fontBold='normal'>
-                    Email Body
-                  </UITypography>
+                  <UITypography type='small'>Email Body</UITypography>
                   <Stack
                     sx={{
                       mt: '8px',

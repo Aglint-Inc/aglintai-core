@@ -2,6 +2,8 @@
   position: relative;
 
   display: flex;
+  width: 300px;
+  max-width: 300px;
   min-width: 210px;
   padding: 12px 16px;
   align-items: center;
@@ -11,6 +13,14 @@
   border-radius: 10px;
 
   background-color: rgba(248, 249, 249, 0.8);
+}
+
+.cd-experience-card.loader-details {
+  overflow: hidden;
+  height: 74px;
+  padding: 0px;
+  background-color: transparent;
+  cursor: auto;
 }
 
 .logo-current {
@@ -184,6 +194,10 @@
   font-size: 12px;
   line-height: 1.3333333333333333;
   letter-spacing: 0px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }
 
 .cd-experience-active {

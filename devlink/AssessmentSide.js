@@ -9,7 +9,7 @@ export function AssessmentSide({
   onClickDisableAssessment = {},
   isDisableAssessmentVisible = true,
   textPreview = "Preview how candidates will be taking interview in real time.",
-  textPreviewButton = "Preview screening form",
+  textPreviewButton = "Preview Phone Screening",
   isPreviewFormVisible = true,
   textDescDisable = "Disable this process if you don’t want to use assessment for the candidate.",
   textDisableButton = "Disable Assesment",

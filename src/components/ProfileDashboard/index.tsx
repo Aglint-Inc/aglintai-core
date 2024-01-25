@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import {
+  ButtonPrimaryRegular,
   NavSublink,
   ProfileEmailPop,
   UserChangeEmail,
@@ -190,10 +191,10 @@ const ProfileDashboard = () => {
                         zIndex: 0,
                       }}
                     >
-                      <ButtonPrimaryOutlinedRegular
-                        buttonText={'Save Changes'}
+                      <ButtonPrimaryRegular
+                        textLabel={'Save Changes'}
                         isDisabled={!profileChange}
-                        buttonProps={{
+                        onClickButton={{
                           onClick: async () => {
                             setLoading((prev) => {
                               return { ...prev, password: true };

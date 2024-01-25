@@ -128,6 +128,7 @@ export * from "./CdSavedList";
 export * from "./CdSearchHistoryLoader";
 export * from "./CdTableAglint";
 export * from "./CdTableLoader";
+export * from "./CddProfileInfo";
 export * from "./ChatBox";
 export * from "./ChatIcon";
 export * from "./ChatInput";

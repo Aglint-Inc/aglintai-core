@@ -31,17 +31,17 @@ export function WelcomeSlider1({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-xxl", "fw-semibold")}
+            className={_utils.cx(_styles, "text-xl", "fw-semibold")}
             tag="div"
           >
-            {"Join the future of hiring today!"}
+            {"Streamline Recruitment with Aglint AI"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "ju-header-description")}
             tag="div"
           >
             {
-              "Signup for Aglint's Screening Co-Pilot and find the perfect match."
+              "Transform how you find and connect with talent using our advanced AI for simplified and effective hiring."
             }
           </_Builtin.Block>
         </_Builtin.Block>

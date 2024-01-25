@@ -325,7 +325,7 @@ const SlideTwoSignUp = () => {
                     required
                     fullWidth
                     id='email'
-                    label='Work Email ID'
+                    label='Work Email'
                     name='email'
                     autoComplete='email'
                     value={details.email}
@@ -356,7 +356,7 @@ const SlideTwoSignUp = () => {
                     fullWidth
                     name='password'
                     type={showPassword ? 'text' : 'password'}
-                    label={'Create password'}
+                    label={'Create Password'}
                     autoComplete='current-password'
                     id='password'
                     error={

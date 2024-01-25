@@ -171,6 +171,10 @@
   color: white;
 }
 
+.beta-wrap.hide {
+  display: none;
+}
+
 .text-xsm {
   font-size: 10px;
   line-height: 12px;

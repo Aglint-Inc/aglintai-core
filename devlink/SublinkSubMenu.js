@@ -38,7 +38,10 @@ export function SublinkSubMenu({
           {textLink}
         </_Builtin.Block>
         {isBetaVisible ? (
-          <_Builtin.Block className={_utils.cx(_styles, "beta-wrap")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "beta-wrap", "hide")}
+            tag="div"
+          >
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xsm")}
               tag="div"

@@ -730,6 +730,10 @@
   color: white;
 }
 
+.beta-wrap.hide {
+  display: none;
+}
+
 .text-xsm {
   font-size: 10px;
   line-height: 12px;
@@ -757,7 +761,7 @@
 
 .height-scroll {
   display: flex;
-  overflow: scroll;
+  overflow: auto;
   flex-direction: column;
   justify-content: space-between;
 }
