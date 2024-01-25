@@ -1,4 +1,5 @@
 import { Avatar, Collapse, Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -12,23 +13,23 @@ import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import AddToListComp from '../AddToList';
 import { Candidate } from '../types';
+import { updateCredits } from '../utils';
 import MuiAvatar from '../../../Common/MuiAvatar';
 import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 
-function CandidateDetail({
-  emailOutReachHandler,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  emailOutReachHandler: (selCandidate: Candidate) => Promise<boolean>;
-}) {
+function CandidateDetail() {
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
   const setSelectedCandidate = useBoundStore(
     (state) => state.setSelectedCandidate,
   );
+  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
   const candidates = useBoundStore((state) => state.candidates);
+  const setCandidates = useBoundStore((state) => state.setCandidates);
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
   const [emailFetch, setEmailFetch] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -39,6 +40,85 @@ function CandidateDetail({
       setEmailError(false);
     }
   }, [selectedCandidate]);
+
+  const emailOutReachHandler = async (
+    selCandidate: Candidate,
+  ): Promise<boolean> => {
+    if (selCandidate.email_fetch_status == 'not fetched') {
+      const resEmail = await axios.post('/api/candidatedb/get-email', {
+        id: selCandidate.id,
+      });
+
+      if (resEmail.status !== 200) {
+        toast.error('Unable to fetch email. Please try again later.');
+        return;
+      }
+
+      updateCredits(
+        {
+          ...candidateHistory.used_credits,
+          email_credits: candidateHistory.used_credits.email_credits + 1,
+        },
+        candidateHistory.id,
+      );
+
+      if (resEmail.data.person?.email) {
+        const updatedSelectedCandidate = {
+          ...selCandidate,
+          email: resEmail.data.person?.email,
+          email_fetch_status: 'success',
+        };
+
+        // Update the selected candidate array
+        const updatedSearchResults = candidates.map((candidate) => {
+          if (candidate.id === selCandidate.id) {
+            return updatedSelectedCandidate;
+          }
+          return candidate;
+        });
+
+        setSelectedCandidate({
+          ...selCandidate,
+          email: resEmail.data.person?.email,
+          email_fetch_status: 'success',
+        });
+
+        const { error } = await supabase
+          .from('aglint_candidates')
+          .update({
+            email: resEmail.data.person?.email,
+            email_fetch_status: 'success',
+          })
+          .eq('id', selCandidate.id)
+          .select();
+
+        if (!error) {
+          // Update the candidate history in state
+          setCandidates(updatedSearchResults as unknown as Candidate[]);
+          setEmailOutReach('single');
+          return true;
+        }
+      } else {
+        await supabase
+          .from('aglint_candidates')
+          .update({
+            email_fetch_status: 'unable to fetch',
+          })
+          .eq('id', selCandidate.id)
+          .select();
+        setSelectedCandidate({
+          ...selCandidate,
+          email_fetch_status: 'unable to fetch',
+        });
+        toast.error('Unable to fetch email for this candidate.');
+        return false;
+      }
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setEmailOutReach('single');
+      return true;
+    }
+  };
 
   return (
     <Stack
