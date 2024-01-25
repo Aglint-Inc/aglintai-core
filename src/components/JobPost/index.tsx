@@ -1,5 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { Avatar, Chip, Stack, TextField, Typography } from '@mui/material';
+import { Avatar, Stack, TextField, Typography } from '@mui/material';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -44,6 +46,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const [thank, setThank] = useState(false);
   const [loading, setLoading] = useState(false);
   const [application, setApplication] = useState<any>();
+  const editor = useEditor({
+    editable: false,
+    content: post?.description,
+    extensions: [StarterKit],
+  });
 
   const notifyMe = () => {
     if (email) {
@@ -230,98 +237,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           textEmployeeCount={recruiter?.employee_size || '--'}
           slotDescription={
             <>
-              <Typography
-                pt='4px'
-                variant='body2'
-                color={palette.grey[800]}
-                sx={{
-                  whiteSpace: 'pre-wrap',
-                  fontSize: '14px',
-                  h5: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  strong: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  h6: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  h4: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  h3: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  h2: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  h1: {
-                    color: palette.grey[600],
-                    pt: '20px',
-                    pb: '10px',
-                    m: 0,
-                    fontWeight: 600,
-                    fontSize: '16px',
-                  },
-                  li: {
-                    margin: '10px 0', // Add margin between list items (top and bottom)
-                  },
-                }}
-                dangerouslySetInnerHTML={{ __html: post?.description }}
-              />
-
-              {post?.skills?.length > 0 && (
-                <>
-                  <Typography
-                    variant='h5'
-                    color={palette.grey[600]}
-                    sx={{ pt: '20px', fontWeight: 600 }}
-                  >
-                    Skills
-                  </Typography>
-                  <Stack
-                    mt={'10px'}
-                    gap={2}
-                    direction='row'
-                    alignItems='stretch'
-                    flexWrap='wrap'
-                  >
-                    {post?.skills?.map((skill, index) => (
-                      <Chip label={skill} key={index} />
-                    ))}
-                  </Stack>
-                </>
-              )}
+              <EditorContent editor={editor} />
             </>
           }
           slotApplyForThisJob={
