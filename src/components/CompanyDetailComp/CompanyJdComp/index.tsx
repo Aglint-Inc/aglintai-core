@@ -123,7 +123,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         <UITypography
           type={'small'}
           color={palette.grey[800]}
-          fontBold='normal'
+          fontBold='default'
         >
           Employment Type
         </UITypography>
@@ -172,7 +172,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         <UITypography
           type={'small'}
           color={palette.grey[800]}
-          fontBold='normal'
+          fontBold='default'
         >
           Workplace Type
         </UITypography>

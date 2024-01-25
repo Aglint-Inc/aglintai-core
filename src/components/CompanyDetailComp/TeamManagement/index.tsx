@@ -91,6 +91,7 @@ const TeamManagement = () => {
       // setAllRoles(tempRoles.map((role) => capitalizeAll(role)));
     }
   }, [role]);
+
   return (
     <>
       <TeamUsersList
@@ -148,7 +149,7 @@ const TeamManagement = () => {
         }
         slotUsersRoleList={
           <>
-            {role.manage_roles && (
+            {role?.manage_roles && (
               <UserRoleManagement
                 roles={recruiter.roles as UserRoleManagementType}
               />
@@ -175,7 +176,7 @@ const TeamManagement = () => {
           pendingList?.length,
         )} pending invites awaiting your response.`}
       />
-      {role.manage_users && (
+      {role?.manage_users && (
         <AddMember
           id={userDetails.user.id}
           // allRoles={allRoles}
