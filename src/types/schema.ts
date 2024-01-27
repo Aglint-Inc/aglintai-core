@@ -17,6 +17,7 @@ export interface Database {
           created_at: string
           departments: string[] | null
           email: string | null
+          email_fetch_status: Database["public"]["Enums"]["email_fetch_status"]
           email_status: string | null
           employment_history: Json[] | null
           extrapolated_email_confidence: string | null
@@ -51,6 +52,7 @@ export interface Database {
           created_at?: string
           departments?: string[] | null
           email?: string | null
+          email_fetch_status?: Database["public"]["Enums"]["email_fetch_status"]
           email_status?: string | null
           employment_history?: Json[] | null
           extrapolated_email_confidence?: string | null
@@ -85,6 +87,7 @@ export interface Database {
           created_at?: string
           departments?: string[] | null
           email?: string | null
+          email_fetch_status?: Database["public"]["Enums"]["email_fetch_status"]
           email_status?: string | null
           employment_history?: Json[] | null
           extrapolated_email_confidence?: string | null
@@ -495,21 +498,21 @@ export interface Database {
           created_at: string
           id: string
           search_result: Json
-          website_url: string
+          website_url: string | null
         }
         Insert: {
           company_name: string
           created_at?: string
           id?: string
           search_result: Json
-          website_url: string
+          website_url?: string | null
         }
         Update: {
           company_name?: string
           created_at?: string
           id?: string
           search_result?: Json
-          website_url?: string
+          website_url?: string | null
         }
         Relationships: []
       }
@@ -1099,6 +1102,7 @@ export interface Database {
       recruiter_relation: {
         Row: {
           created_at: string
+          created_by: string
           id: number
           is_active: boolean
           recruiter_id: string
@@ -1106,6 +1110,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
+          created_by?: string
           id?: number
           is_active?: boolean
           recruiter_id: string
@@ -1113,12 +1118,20 @@ export interface Database {
         }
         Update: {
           created_at?: string
+          created_by?: string
           id?: number
           is_active?: boolean
           recruiter_id?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "recruiter_relation_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "recruiter_relation_recruiter_id_fkey"
             columns: ["recruiter_id"]
@@ -1740,6 +1753,7 @@ export interface Database {
         | "disqualified"
         | "screening"
       db_search_type: "aglint" | "candidate"
+      email_fetch_status: "not fetched" | "success" | "unable to fetch"
       file_type: "resume" | "coverletter" | "cv" | "image"
       recruiter_roles: "admin" | "member"
     }
