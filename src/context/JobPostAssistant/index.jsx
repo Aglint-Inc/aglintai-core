@@ -13,10 +13,10 @@ import toast from '@/src/utils/toast';
 let intervalId = null;
 // let setTime;
 
-const JobAssistantContext = createContext();
-const useJobAssistantContext = () => useContext(JobAssistantContext);
+const JobPostAssistantContext = createContext();
+const useJobPostAssistantContext = () => useContext(JobPostAssistantContext);
 const firstMessage = 'Yes, please';
-function JobAssistantProvider({ children }) {
+function JobPostAssistantProvider({ children }) {
   // const {recruiter}
   const [companyDetails, setCompanyDetails] = useState({});
   const [messages, setMessages] = useState([]);
@@ -348,7 +348,7 @@ function JobAssistantProvider({ children }) {
     }
   }
   return (
-    <JobAssistantContext.Provider
+    <JobPostAssistantContext.Provider
       value={{
         companyDetails,
         messages,
@@ -361,9 +361,9 @@ function JobAssistantProvider({ children }) {
       }}
     >
       {children}
-    </JobAssistantContext.Provider>
+    </JobPostAssistantContext.Provider>
   );
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export { JobAssistantProvider, useJobAssistantContext };
+export { JobPostAssistantProvider, useJobPostAssistantContext };

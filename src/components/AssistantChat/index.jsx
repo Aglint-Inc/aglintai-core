@@ -11,7 +11,7 @@ import {
   UserChat,
   UserChatIcon,
 } from '@/devlink';
-import { useJobAssistantContext } from '@/src/context/JobAssistant';
+import { useJobPostAssistantContext } from '@/src/context/JobPostAssistant';
 
 import ChatMessageLoader from './ChatMessageLoader';
 import MuiAvatar from '../Common/MuiAvatar';
@@ -25,7 +25,7 @@ function ChatMessages() {
     selectedFile,
     setSelectedFile,
     closeChat,
-  } = useJobAssistantContext();
+  } = useJobPostAssistantContext();
   const [openChat, setOpenChat] = useState(false);
 
   const handleFileRemove = () => {
@@ -53,9 +53,8 @@ function ChatMessages() {
             transform: !openChat ? 'translateY(50px)' : 'none',
             height: openChat ? '100%' : 0,
             opacity: openChat ? 1 : 0,
-            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${
-              openChat ? '0.4s' : '0.2s'
-            }, opacity ${openChat ? '0.4s' : '0.2s'} `,
+            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${openChat ? '0.4s' : '0.2s'
+              }, opacity ${openChat ? '0.4s' : '0.2s'} `,
           }}
           pr={'30px'}
         >
@@ -156,7 +155,7 @@ export default ChatMessages;
 
 export function ChatConversation() {
   const { companyDetails, messages, setMessages, createNewMessage } =
-    useJobAssistantContext();
+    useJobPostAssistantContext();
 
   function startNewChat() {
     setMessages((pre) => [
@@ -224,7 +223,7 @@ export function ChatConversation() {
 }
 
 const FileUpload = () => {
-  const { setSelectedFile, inputRef } = useJobAssistantContext();
+  const { setSelectedFile, inputRef } = useJobPostAssistantContext();
 
   const handleFileChange = (e) => {
     inputRef.current.value = 'Resume';

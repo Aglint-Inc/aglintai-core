@@ -1,0 +1,408 @@
+/* eslint-disable no-unused-vars */
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+
+import { JobAssistantChats, JobTypeDB } from '@/src/types/data.types';
+import { supabase } from '@/src/utils/supabaseClient';
+
+import { reasons } from './utils';
+import { useAuthDetails } from '../AuthContext/AuthContext';
+
+// let setTime;
+
+interface ContextValue {
+  companyDetails: JobTypeDB | null;
+  setCompanyDetails: (details: JobTypeDB | null) => void;
+  candidates: any[] | null;
+  setCandidates: (candidates: null) => void;
+  candidatesFiles: any[] | null;
+  setCandidatesFiles: (candidates: null) => void;
+  applications: any[] | null;
+  setApplications: (applications: null) => void;
+  messages: any[] | null;
+  setMessages: (message: null) => void;
+  handleChat: () => void;
+  textMessage: string;
+  setTextMessage: (textMessage: string) => void;
+  inputRef: any | null;
+  resLoading: true | false;
+  setResLoading: (resLoading: boolean) => void;
+  createNewChat: () => void;
+  jobAssistantChats: any[] | null;
+  setJobAssistantChats: (jobAssistantChats: any[]) => void;
+  currentChat: JobAssistantChats | null;
+  setCurrentChat: (jobAssistantChats: JobAssistantChats) => void;
+  switchChat: (job_id: string) => void;
+}
+
+const defaultProvider: ContextValue = {
+  companyDetails: null,
+  setCompanyDetails: () => {},
+  candidates: null,
+  setCandidates: () => {},
+  candidatesFiles: null,
+  setCandidatesFiles: () => {},
+  applications: null,
+  setApplications: () => {},
+  messages: null,
+  setMessages: () => {},
+  handleChat: null,
+  textMessage: '',
+  setTextMessage: () => {},
+  inputRef: null,
+  resLoading: false,
+  setResLoading: () => {},
+  createNewChat: null,
+  jobAssistantChats: null,
+  setJobAssistantChats: () => {},
+  currentChat: null,
+  setCurrentChat: () => {},
+  switchChat: null,
+};
+const JobAssistantContext = createContext<ContextValue>(defaultProvider);
+const useJobAssistantContext = () => useContext(JobAssistantContext);
+function JobAssistantProvider({ children }) {
+  const router = useRouter();
+  const { recruiter } = useAuthDetails();
+
+  const [companyDetails, setCompanyDetails] = useState<JobTypeDB | null>(null);
+  const [candidates, setCandidates] = useState([]);
+  const [applications, setApplications] = useState<any[] | null>(null);
+  const [candidatesFiles, setCandidatesFiles] = useState([]);
+  const [jobAssistantChats, setJobAssistantChats] = useState([]);
+  const [currentChat, setCurrentChat] = useState<JobAssistantChats | null>(
+    null,
+  );
+
+  const [textMessage, setTextMessage] = useState('');
+  const [messages, setMessages] = useState<any[] | null>([]);
+  const [resLoading, setResLoading] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const job_id = router.query?.id as string;
+    if (job_id) {
+      getCompanyDetails(job_id);
+      getApplications(job_id);
+      getCandidates();
+      getJobAssistantChat(job_id);
+    }
+  }, [router.isReady]);
+  ////////////////////////// Create New Chat and Messages ///////////////////////////////////
+  async function createNewChat() {
+    // console.log(messages);
+    const { data: thread } = await axios.post('/api/assistant/createThread');
+    localStorage.setItem('thread_id', thread.id);
+    const currentDate = new Date();
+    const { data: jobAssistantChats, error: chatsError } = await supabase
+      .from('job_assiatan_chat')
+      .select()
+      .eq('job_id', router.query?.id)
+      .order('created_at', {
+        ascending: false,
+      });
+
+    if (!chatsError) {
+      const { data: jobAssiatanChat, error } = await supabase
+        .from('job_assiatan_chat')
+        .insert({
+          job_id: router.query?.id as string,
+          updated_at: currentDate.toISOString(),
+          thread_id: thread.id,
+        })
+        .select();
+      if (!error) {
+        router.query.chat_id = jobAssiatanChat[0].id;
+        router.push(router);
+        setJobAssistantChats([...jobAssiatanChat, ...jobAssistantChats]);
+        setCurrentChat(jobAssiatanChat[0]);
+        setMessages([]);
+      }
+    }
+  }
+  async function createMessage(content: {
+    message_id: any;
+    sender: string;
+    content:
+      | { message: string; active: boolean }
+      | {
+          message: any;
+          active: boolean;
+          result_candidates: any[];
+          searchArguments: any;
+        };
+  }) {
+    const { data: jobAssiatanChatMessages, error } = await supabase
+      .from('job_assiatan_chat_messages')
+      .insert({
+        ...content,
+        job_assiatan_chat_id: currentChat.id,
+        type: '',
+      })
+      .select();
+    if (!error) {
+      return jobAssiatanChatMessages[0];
+    }
+  }
+  //////////////////////////// get JobAssistant Chat //////////////////////////////
+  async function getJobAssistantChat(job_id: string) {
+    const { data: jobAssistantChats, error } = await supabase
+      .from('job_assiatan_chat')
+      .select()
+      .eq('job_id', job_id)
+      .order('created_at', {
+        ascending: false,
+      });
+    if (!error) {
+      // console.log(jobAssistantChats);
+      const currectChat = jobAssistantChats.filter(
+        (ele) => ele.thread_id === localStorage.getItem('thread_id'),
+      );
+      if (currectChat.length) {
+        getMessages(currectChat[0].id);
+        setCurrentChat(currectChat[0]);
+        setJobAssistantChats(jobAssistantChats);
+        router.query.chat_id = currectChat[0].id;
+        router.push(router);
+      } else {
+        createNewChat();
+        return;
+      }
+    }
+  }
+  async function updateJobAssistantChat(last_message) {
+    await supabase
+      .from('job_assiatan_chat')
+      .update({
+        last_message,
+      })
+      .eq('id', currentChat.id);
+    getJobAssistantChat(currentChat.job_id);
+  }
+  async function getMessages(chat_id: string) {
+    const { data: messages, error } = await supabase
+      .from('job_assiatan_chat_messages')
+      .select()
+      .eq('job_assiatan_chat_id', chat_id)
+      .order('created_at', {
+        ascending: true,
+      });
+    if (!error) {
+      setMessages(messages);
+    }
+  }
+
+  function switchChat(chat_id: any) {
+    const currect_Chat = jobAssistantChats.filter((ele) => ele.id === chat_id);
+    localStorage.setItem('thread_id', currect_Chat[0].thread_id);
+    setCurrentChat(currect_Chat[0]);
+    getMessages(chat_id);
+    router.query.chat_id = chat_id;
+    router.push(router);
+  }
+
+  /////////////////////////// Send message /////////////////////////////////////
+
+  const handleChat = async () => {
+    setResLoading(true);
+    const tempMessage = textMessage;
+    setTextMessage('');
+    const userMessage = {
+      sender: 'You',
+      content: { message: tempMessage, active: true },
+    };
+    const assistantMEssage = {
+      sender: 'Assistant',
+      content: {
+        active: true,
+      },
+    };
+    setMessages((pre) => [...pre, userMessage, assistantMEssage]);
+    const { data: response } = await axios.post(
+      '/api/job-assistant/cluoud-functions/assistant',
+      {
+        message: tempMessage,
+        chat_id: currentChat.id,
+      },
+    );
+
+    const message = response.result?.message;
+    const result =
+      response.result?.runResult?.get_applications ||
+      response.result?.runResult?.get_applications_extra_details;
+    let activeMessage = true;
+    const application_data = result
+      ? (result?.data as any[])
+      : (result?.data as any[]);
+
+    const application_ids = application_data
+      ? application_data.map((ele) => ele.applications_id)
+      : [];
+    const result_candidates = [];
+    if (application_ids.length) {
+      applications
+        .filter((ele) => application_ids.includes(ele.id))
+        .map((application) => {
+          const candidate = candidates.filter(
+            (candidate) => candidate.id === application.candidate_id,
+          );
+          // const candidateFile = candidatesFiles.filter(
+          //   (candidateFile) =>
+          //     candidateFile.candidate_id === application.candidate_id,
+          // );
+          result_candidates.push({
+            ...application,
+            ...candidate[0],
+            // candidateFile,
+          });
+        });
+    }
+    const searchArguments = response.result?.runResult;
+
+    //////////////////////////// hide original message and show the candidate cards//////
+    if (
+      response.result?.runResult?.get_applications_extra_details?.reason ===
+        reasons.compare ||
+      result?.data.length === 0
+    ) {
+      activeMessage = true;
+    } else if (
+      response.result?.runResult?.get_applications?.reason === reasons.filter &&
+      response.result?.runResult?.get_applications_extra_details?.reason !==
+        reasons.compare
+    ) {
+      activeMessage = false;
+    }
+
+    setMessages((pre: any) => {
+      pre[messages.length + 1].sender = 'Assistant';
+      pre[messages.length + 1].content.message = message;
+      pre[messages.length + 1].content.active = activeMessage;
+      pre[messages.length + 1].content.result_candidates = result_candidates;
+      pre[messages.length + 1].content.searchArguments = searchArguments;
+      return [...pre];
+    });
+    await createMessage({
+      ...userMessage,
+      message_id: response.result?.userMessageId,
+    });
+
+    await createMessage({
+      sender: 'Assistant',
+      content: {
+        message: message,
+        active: activeMessage,
+        result_candidates: result_candidates,
+        searchArguments: searchArguments,
+      },
+      message_id: response.result?.assistantMessageId,
+    });
+    const lastMessage = (message as string) || '';
+    updateJobAssistantChat(
+      lastMessage?.length > 50 ? lastMessage.slice(0, 50) : lastMessage,
+    );
+
+    setResLoading(false);
+  };
+
+  ///////////////////////Fetch Company details//////////////////////////////////
+  async function getCompanyDetails(job_id: string | string[]) {
+    const { data: job, error } = await supabase
+      .from('public_jobs')
+      .select()
+      .eq('id', job_id);
+    if (!error) {
+      setCompanyDetails(job[0]);
+    }
+  }
+
+  ////////////////////////////Fetch candidates and applications/////////////////////////////////////
+  async function getCandidates() {
+    const { data: candidates } = await supabase
+      .from('candidates')
+      .select()
+      .eq('recruiter_id', recruiter?.id);
+    setCandidates(candidates);
+  }
+  async function getApplications(job_id: string) {
+    const { data: applications, error } = await supabase
+      .from('applications')
+      .select()
+      .eq('job_id', job_id);
+    setApplications(applications);
+  }
+  // async function getCandidatesFiles() {
+  //   console.log('kj');
+  //   const { data: candidatesFiles, error } = await supabase
+  //     .from('candidate_files')
+  //     .select();
+  //   console.log(candidatesFiles, error);
+  //   setCandidatesFiles(candidatesFiles);
+  // }
+  // getCandidatesFiles();
+
+  ////////////////////////////// Create a thred id //////////////////////////////////////////////////
+
+  return (
+    <JobAssistantContext.Provider
+      value={{
+        companyDetails,
+        setCompanyDetails,
+        candidates,
+        setCandidates,
+        candidatesFiles,
+        setCandidatesFiles,
+        applications,
+        setApplications,
+        createNewChat,
+        messages,
+        setMessages,
+        handleChat,
+        resLoading,
+        setResLoading,
+        textMessage,
+        setTextMessage,
+        inputRef,
+        jobAssistantChats,
+        setJobAssistantChats,
+        currentChat,
+        setCurrentChat,
+        switchChat,
+      }}
+    >
+      {children}
+    </JobAssistantContext.Provider>
+  );
+}
+
+export { JobAssistantProvider, useJobAssistantContext };
+
+//   {
+//     "message": "The top 3 candidates based on the overall score are:\n\n1. Application ID: 697cd8c4-ad6f-4230-a8a1-ddd30aa8fc16\n2. Application ID: 2dd1f051-1e85-40ff-9116-1f96c6c576c4\n3. Application ID: 9760544e-b345-4c47-842e-4de94e45d7ae\n\nWould you like more details about these candidates?",
+//     "runResult": {
+//         "get_applications": {
+//             "reason": "filtered_result",
+//             "data": [
+//                 {
+//                     "applications_id": "697cd8c4-ad6f-4230-a8a1-ddd30aa8fc16"
+//                 },
+//                 {
+//                     "applications_id": "2dd1f051-1e85-40ff-9116-1f96c6c576c4"
+//                 },
+//                 {
+//                     "applications_id": "9760544e-b345-4c47-842e-4de94e45d7ae"
+//                 }
+//             ]
+//         }
+//     }
+// }
+
+//   {
+//     "get_applications_extra_details": {
+//         "reason": "compared_result",
+//         "data": [
+
+//         ]
+//     }
+// }

@@ -1,0 +1,10 @@
+.initial-prompt-block {
+  padding: 16px 21px;
+  border-radius: 10px;
+  background-color: #f8f9f9;
+  cursor: pointer;
+}
+
+.initial-prompt-block.small {
+  padding: 10px;
+}
