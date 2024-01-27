@@ -237,8 +237,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       } else {
         toast.error('Something went wrong! Please try again later');
       }
-    } else {
-      isSubmitRef.current = false;
     }
   };
 
