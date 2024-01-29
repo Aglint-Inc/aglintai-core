@@ -663,7 +663,8 @@ const SideSection = () => {
     return (
       <AssessmentSide
         isDisableAssessmentVisible
-        textDisableButton={'Disable Phone Screening'}
+        textDisableButton={'Disable'}
+        textPreviewButton={'Preview'}
         textPreview='Preview how candidates will be taking the screening questions'
         textDescDisable='Disable this process if you don’t want to use Phone Screening for the candidate .'
         onClickDisableAssessment={{

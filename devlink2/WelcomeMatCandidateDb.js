@@ -1,9 +1,12 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
-import _styles from "./WelcomeMatTickets.module.css";
+import _styles from "./WelcomeMatCandidateDb.module.css";
 
-export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
+export function WelcomeMatCandidateDb({
+  as: _Component = _Builtin.Block,
+  onClickFind = {},
+}) {
   return (
     <_Component className={_utils.cx(_styles, "welcome_mat")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "top_bar")} tag="div">
@@ -11,7 +14,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
           className={_utils.cx(_styles, "text-md", "fw-semibold")}
           tag="div"
         >
-          {"Tickets"}
+          {"Candidate Database"}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -26,15 +29,22 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
-            {"Streamline Candidate Conversations"}
+            {"Your Gateway to Top Talent!"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-md", "text-gray-600")}
             tag="div"
           >
             {
-              "Enhance candidate interaction effortlessly! Manage inquiries, respond swiftly, and track every journey seamlessly. Streamline communication, collaborate hassle-free with your team. Elevate candidate support with ease!"
+              "Effortlessly build your dream team using our Candidate Database. Craft intelligent queries, connect seamlessly, and organize candidates for efficient hiring. Plus, conveniently access a separate table containing all candidates who have applied to your jobs. Streamline your hiring process like never before!"
             }
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "custom_btn")}
+            tag="div"
+            {...onClickFind}
+          >
+            <_Builtin.Block tag="div">{"Find Candidates"}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -42,12 +52,12 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
           tag="div"
         >
           <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img")}
+            className={_utils.cx(_styles, "wm_img", "mx_wd_600")}
             loading="lazy"
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b272a889384bd23e05dc32_candidate_database_welcome_mat.png"
+            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b74873bb47859d70a3da92_CD_1.png"
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
@@ -55,7 +65,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             className={_utils.cx(_styles, "wm_card")}
             id={_utils.cx(
               _styles,
-              "w-node-_88fc74d0-858f-0030-5c7a-82182aa30778-2aa3076f"
+              "w-node-_36f1adf0-16df-51c6-25d7-1866c8c00a28-c8c00a1d"
             )}
             tag="div"
           >
@@ -63,14 +73,14 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Effortless Communication"}
+              {"Smart Candidate Search"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {
-                "Streamline candidate queries in one place. Send and receive messages effortlessly, ensuring every interaction is tracked and managed seamlessly."
+                'Find your ideal candidates effortlessly by entering queries like "Software Engineer in San Francisco." Our intelligent search system delivers precise results tailored to your hiring needs.'
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -78,7 +88,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             className={_utils.cx(_styles, "wm_card")}
             id={_utils.cx(
               _styles,
-              "w-node-_88fc74d0-858f-0030-5c7a-82182aa3077d-2aa3076f"
+              "w-node-_36f1adf0-16df-51c6-25d7-1866c8c00a2d-c8c00a1d"
             )}
             tag="div"
           >
@@ -86,14 +96,14 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Team Collaboration"}
+              {"Seamless Outreach"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {
-                "Enhance teamwork by assigning tickets to your teammates. Collaborate in real-time, share insights, and collectively ensure a unified and effective response."
+                "Connect with potential candidates directly within the system. Streamline your communication and make the hiring process more efficient by reaching out to promising talents effortlessly."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -101,7 +111,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             className={_utils.cx(_styles, "wm_card")}
             id={_utils.cx(
               _styles,
-              "w-node-_88fc74d0-858f-0030-5c7a-82182aa30782-2aa3076f"
+              "w-node-_36f1adf0-16df-51c6-25d7-1866c8c00a32-c8c00a1d"
             )}
             tag="div"
           >
@@ -109,14 +119,14 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Status Tracking"}
+              {"Strategic List Building"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {
-                "Keep tabs on every ticket's status – pending, resolved, or in progress. Stay organized and never miss a beat when managing candidate interactions."
+                "Organize your candidates efficiently by creating lists. Save and categorize individuals based on skills, experience, or any criteria that suits your hiring strategy."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -124,7 +134,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
             className={_utils.cx(_styles, "wm_card")}
             id={_utils.cx(
               _styles,
-              "w-node-_88fc74d0-858f-0030-5c7a-82182aa30787-2aa3076f"
+              "w-node-_36f1adf0-16df-51c6-25d7-1866c8c00a37-c8c00a1d"
             )}
             tag="div"
           >
@@ -132,20 +142,20 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Candidate Details at a Glance"}
+              {"Efficiency in Action"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-gray-600")}
               tag="div"
             >
               {
-                "View comprehensive candidate details alongside ticket conversations. Make informed decisions and provide personalized support."
+                "Access a centralized table for a quick overview of all candidates who've applied to your jobs, streamlining your hiring process with efficiency and ease."
               }
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%20%20%5Bclass%3D%22WelcomeMatTickets_welcome_mat_wm__sKlul%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%20%20%5Bclass%3D%22WelcomeMatCandidateDb_welcome_mat_wm__CiaIz%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

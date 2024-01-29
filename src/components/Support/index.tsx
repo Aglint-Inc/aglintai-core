@@ -73,7 +73,9 @@ function Support() {
   }, [router.isReady]);
   return (
     <>
-      {loading?<Loader/>:(tickets.length == 0 ? (
+      {loading ? (
+        <Loader />
+      ) : tickets.length == 0 ? (
         <WelcomeMatTickets />
       ) : (
         <AllTickets
@@ -197,7 +199,7 @@ function Support() {
           }
           textHeaderStatus={capitalize(filters.status)}
         />
-      ))}
+      )}
 
       <Drawer
         open={Boolean(openTicket)}

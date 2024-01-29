@@ -12,7 +12,7 @@ export function AssessmentSide({
   textPreviewButton = "Preview Phone Screening",
   isPreviewFormVisible = true,
   textDescDisable = "Disable this process if you don’t want to use assessment for the candidate.",
-  textDisableButton = "Disable Assesment",
+  textDisableButton = "Disable Assessment",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-719")} tag="div">
