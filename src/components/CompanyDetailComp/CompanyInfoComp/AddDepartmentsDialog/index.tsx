@@ -88,7 +88,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: departmentState.length > 0 ? '20px' : '0px' }}
+            sx={{ mt: departmentState.length > 0 ? '8px' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'

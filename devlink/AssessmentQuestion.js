@@ -44,7 +44,9 @@ export function AssessmentQuestion({
             className={_utils.cx(_styles, "color-grey-600")}
             tag="div"
           >
-            {"Please set at least 10 Questions for an ideal assessment"}
+            {
+              "Setup on the questions you want to ask the candidate during the assessment process."
+            }
           </_Builtin.Block>
           {isWarningVisible ? (
             <_Builtin.Block className={_utils.cx(_styles, "mt-13")} tag="div">

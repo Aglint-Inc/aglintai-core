@@ -1,7 +1,7 @@
 .avatar-default-wrap {
   display: flex;
-  margin-top: 26px;
-  margin-bottom: 90px;
+  margin-top: 10px;
+  margin-bottom: 40px;
   align-items: center;
   grid-column-gap: 14px;
   grid-row-gap: 14px;

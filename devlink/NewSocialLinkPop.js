@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./NewSocialLinkPop.module.css";
 
@@ -16,14 +16,11 @@ export function NewSocialLinkPop({
       className={_utils.cx(_styles, "social-link-pop-wrappers")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold", "color-black")}
-        tag="div"
-      >
-        {"Add new social link"}
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        {"Add New Social Link"}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "color-black", "mt-10")}
+        className={_utils.cx(_styles, "color-black", "mt-4")}
         tag="div"
       >
         {"Enter name and url of the social media of your choice"}
@@ -35,22 +32,22 @@ export function NewSocialLinkPop({
         {slotSocialForms}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "social-btn-wrappers-pop")}
+        className={_utils.cx(_styles, "roles-btn-wrappers-pop")}
         tag="div"
       >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-blue-600", "cursor-pointer")}
+          tag="div"
+          {...onClickCancel}
+        >
+          {"Cancel"}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "pop-button-wrappers")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cancel-text")}
-            tag="div"
-            {...onClickCancel}
-          >
-            {"Cancel"}
-          </_Builtin.Block>
           <_Builtin.Block tag="div" {...onClickAdd}>
-            <ButtonOutlinedSmall textLabel="Add" />
+            <ButtonPrimaryRegular textLabel="Add" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { VideoSwitcherCard } from "./VideoSwitcherCard";
+import { AudioSwitcherCard } from "./AudioSwitcherCard";
 import * as _utils from "./utils";
 import _styles from "./AssessmentSetting.module.css";
 
@@ -51,7 +52,12 @@ export function AssessmentSetting({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {slotSwitchAudioVideo ?? <VideoSwitcherCard />}
+            {slotSwitchAudioVideo ?? (
+              <>
+                <VideoSwitcherCard />
+                <AudioSwitcherCard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -74,19 +80,14 @@ export function AssessmentSetting({
             }
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "expiration-duration-wrap", "mt-17")}
+            className={_utils.cx(_styles, "expiration-duration-wrap", "mt-10")}
             tag="div"
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "width-210", "flex-expiration")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Expiration duration"}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"Expiration duration"}</_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
@@ -115,10 +116,7 @@ export function AssessmentSetting({
               className={_utils.cx(_styles, "width-210", "flex-expiration")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
+              <_Builtin.Block tag="div">
                 {"No of retries per candidate"}
               </_Builtin.Block>
               <_Builtin.Block

@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./AddLocationPop.module.css";
 
@@ -11,7 +11,7 @@ export function AddLocationPop({
   onClickAdd = {},
   isChecked = false,
   onClickCheck = {},
-  headerText = "Addnew location",
+  headerText = "Add New Location",
 }) {
   return (
     <_Component
@@ -19,18 +19,10 @@ export function AddLocationPop({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-454")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "color-black"
-          )}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {headerText}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block className={_utils.cx(_styles, "mt-4")} tag="div">
           {"Fill in the address of your company"}
         </_Builtin.Block>
       </_Builtin.Block>
@@ -56,25 +48,22 @@ export function AddLocationPop({
         <_Builtin.Block tag="div">{"Is this the headquarter?"}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "social-btn-wrappers-pop")}
+        className={_utils.cx(_styles, "roles-btn-wrappers-pop")}
         tag="div"
       >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-blue-600", "cursor-pointer")}
+          tag="div"
+          {...onClickCancel}
+        >
+          {"Cancel"}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "pop-button-wrappers")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cancel-text")}
-            macro={{
-              guid: "99c6f417-b3f5-bb36-07f0-edae28e9bf00",
-            }}
-            tag="div"
-            {...onClickCancel}
-          >
-            {"Cancel"}
-          </_Builtin.Block>
           <_Builtin.Block tag="div" {...onClickAdd}>
-            <ButtonOutlinedSmall textLabel="Save" />
+            <ButtonPrimaryRegular textLabel="Add" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

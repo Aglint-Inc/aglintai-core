@@ -48,7 +48,7 @@ export function CompanyInfo({
           {slotAdditionalInfoForm}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper")}
           tag="div"
         >
           <_Builtin.Block
@@ -88,13 +88,13 @@ export function CompanyInfo({
                 className={_utils.cx(_styles, "label-13")}
                 tag="div"
               >
-                {"Add location"}
+                {"Add Location"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper")}
           tag="div"
         >
           <_Builtin.Block
@@ -134,13 +134,13 @@ export function CompanyInfo({
                 className={_utils.cx(_styles, "label-13")}
                 tag="div"
               >
-                {"Add departments"}
+                {"Add Departments"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper")}
           tag="div"
         >
           <_Builtin.Block
@@ -180,13 +180,13 @@ export function CompanyInfo({
                 className={_utils.cx(_styles, "label-13")}
                 tag="div"
               >
-                {"Add specialities"}
+                {"Add Specialities"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper", "margin-0")}
+          className={_utils.cx(_styles, "cs-info-wrapper")}
           tag="div"
         >
           <_Builtin.Block
@@ -226,7 +226,7 @@ export function CompanyInfo({
                 className={_utils.cx(_styles, "label-13")}
                 tag="div"
               >
-                {"Add roles"}
+                {"Add Roles"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

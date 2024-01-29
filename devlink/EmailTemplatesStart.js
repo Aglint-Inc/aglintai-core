@@ -40,9 +40,7 @@ export function EmailTemplatesStart({
             className={_utils.cx(_styles, "color-grey-600")}
             tag="div"
           >
-            {
-              "Emails will be triggered in mentioned events. Click on the card to customize emails"
-            }
+            {"Emails will be triggered in mentioned events."}
           </_Builtin.Block>
         </_Builtin.Block>
         {isWarningVisible ? (
