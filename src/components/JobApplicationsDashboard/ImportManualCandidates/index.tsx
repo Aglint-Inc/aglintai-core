@@ -244,18 +244,18 @@ const FormBody = ({
       <Stack flexDirection={'row'} gap={3}>
         <TextField
           margin='none'
-          label={'First name'}
+          label={'First Name'}
           fullWidth
           required
           id={'first_name'}
           value={applicant.first_name.value}
           error={applicant.first_name.error}
-          helperText={applicant.first_name.error && getHelper('first name')}
+          helperText={applicant.first_name.error && getHelper('first Name')}
           onChange={(e) => handleChange(e, 'first_name')}
         />
         <TextField
           margin='none'
-          label={'Last name'}
+          label={'Last Name'}
           fullWidth
           required
           id={'last_name'}
@@ -304,7 +304,7 @@ const FormBody = ({
       </Stack>
       <TextField
         margin='none'
-        label={'LinkedIn url'}
+        label={'LinkedIn URL'}
         fullWidth
         id={'linkedin'}
         value={applicant.linkedin.value}
@@ -319,7 +319,7 @@ const FormBody = ({
           flexDirection={'row'}
           gap={'4px'}
         >
-          Upload resume
+          Upload Resume
           <Stack style={{ color: 'red' }}>*</Stack>
         </Stack>
         <Stack pb={2}>

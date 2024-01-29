@@ -114,4 +114,5 @@ export * from "./ToggleButton";
 export * from "./ToggleSelectDropdown";
 export * from "./TopApplicantsTable";
 export * from "./TopCandidateListItem";
+export * from "./WelcomeMatCandidateDb";
 export * from "./WelcomeMatTickets";
