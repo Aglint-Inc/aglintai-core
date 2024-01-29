@@ -235,7 +235,7 @@ export const getScreeningStatus = (
   const screeningStatus = isNotInvited
     ? 'Not Invited'
     : isPending
-      ? 'Pending'
+      ? 'Invited'
       : isSubmitted
         ? 'Submitted'
         : '';

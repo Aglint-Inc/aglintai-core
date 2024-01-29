@@ -177,10 +177,7 @@ const sendMail = async (
   };
   const templates = job.email_template[candidate.purpose];
   const mail = {
-    to:
-      process.env.NEXT_PUBLIC_HOST_NAME === process.env.NEXT_PUBLIC_WEBSITE
-        ? candidate.email
-        : 'punithg@aglinthq.com',
+    to: candidate.email,
     from: {
       name: job.email_template[candidate.purpose]?.fromName ?? job.company,
       email: 'messenger@aglinthq.com',

@@ -72,8 +72,6 @@ import {
   getApplicationProcessState,
   getAssessmentStatus,
   getCandidateDetails,
-  // getInterviewScore,
-  // getReasonings,
   getScreeningStatus,
   handleOngoingWarning,
   mapScoreToAnalysis,
@@ -193,9 +191,6 @@ const NewDetailedFeedback = ({
       }}
       slotCandidateImage={candidateImage}
       textName={name.value}
-      // textMail={
-      //   application.candidates.email ? application.candidates.email : '--'
-      // }
       slotDetailedFeedback={
         <DetailedInterviewFeedbackParams
           feedbackParamsObj={application.assessment_results.feedback}
@@ -429,7 +424,7 @@ const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
   application,
 }) => {
   const score_json = application.score_json as ScoreJson;
-  const [collapse, setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(true);
   const reasoning = score_json?.reasoning ?? null;
   const scores = score_json?.scores ?? null;
   if (!reasoning || !scores) return <></>;
@@ -485,7 +480,6 @@ const AssessmentSection: React.FC<{
       created_at: application.assessment_results?.created_at ?? null,
     },
   );
-  // if (!isValidEmail) return <></>;
   if (isNotInvited && section === JobApplicationSections.ASSESSMENT)
     return <NewInterviewStatus application={application} pending={false} />;
   if (isPending && section === JobApplicationSections.ASSESSMENT)
@@ -609,15 +603,8 @@ const NewInterviewScoreDetails: React.FC<{
 }> = ({ application, setOpenFeedback }) => {
   const [collapse, setCollapse] = useState(false);
   const interviewScore = <InterviewScore application={application} />;
-  // const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
     <CandidateInterviewScore
-      // textScore={`${interviewScore}/100`}
-      // textInterviewScoreState={
-      //   <Stack style={{ color: feedbackObj.color }}>{feedbackObj.text}</Stack>
-      // }
-      // propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
-      // propsTextColor={{ style: { color: feedbackObj.color } }}
       slotAssessmentScore={interviewScore}
       onClickIcons={{
         onClick: () => setCollapse((prev) => !prev),
@@ -656,25 +643,27 @@ const OverviewBlock = ({
   description: string;
   bgColor?: string;
 }) => {
-  const [expand, setExpand] = useState(false);
+  const [collapse, setCollapse] = useState(true);
   const displayText = (
-    <Stack className={`job_application_overview_${expand ? 'un' : ''}clamped`}>
+    <Stack
+      className={`job_application_overview_${collapse ? 'un' : ''}clamped`}
+    >
       {description}
     </Stack>
   );
   return (
     <SummaryBlock
       arrowProps={{
-        onClick: () => setExpand((prev) => !prev),
+        onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${expand ? '0deg' : '180deg'})`,
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
         },
       }}
       title={title}
       description={displayText}
       descriptionTextProps={{
-        onClick: () => setExpand((prev) => !prev),
+        onClick: () => setCollapse((prev) => !prev),
         style: { cursor: 'pointer' },
       }}
       wrapperProps={{ style: { backgroundColor: bgColor } }}
@@ -907,7 +896,6 @@ const PhoneScreening: React.FC<{ application: JobApplication }> = ({
   );
 
   const showComponent =
-    // isValidEmail &&
     section === JobApplicationSections.SCREENING || isSubmitted;
   if (!showComponent) return <></>;
   const disable =
@@ -974,7 +962,7 @@ const PhoneScreeningSection = ({
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/assessment?id=${application.id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${application.job_id}&application_id=${application.id}`,
     );
     toast.success('Interview link copied!');
   };
@@ -1000,12 +988,9 @@ const PhoneScreeningSection = ({
     </Collapse>
   );
 
-  // if (!isValidEmail) return <></>;
   if (isNotInvited)
     return (
       <SidebarScreening
-        // isNotInvited={true}
-        // onclickInvite={{ onClick: async () => await handleInvite() }}
         slotStatus={<ScreeningStatusComponent application={application} />}
         slotBody={slotBody}
         onclickArrow={{
@@ -1015,15 +1000,12 @@ const PhoneScreeningSection = ({
             transform: `rotate(${collapse ? '180deg' : '0deg'})`,
           },
         }}
-        // onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
 
   if (isPending)
     return (
       <SidebarScreening
-        // isInvited={true}
-        // onclickResend={{ onClick: async () => await handleInvite(true) }}
         slotStatus={<ScreeningStatusComponent application={application} />}
         slotBody={slotBody}
         onclickArrow={{
@@ -1033,7 +1015,6 @@ const PhoneScreeningSection = ({
             transform: `rotate(${collapse ? '180deg' : '0deg'})`,
           },
         }}
-        // onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
   return (
@@ -1083,7 +1064,7 @@ const getScreeningAnswer = (question: PhoneScreeningResponseType) => {
     case 'multiSelect':
       return question.options
         .reduce((acc, curr) => {
-          if (curr.option) acc.push(curr.option);
+          if (curr.isChecked) acc.push(curr.option);
           return acc;
         }, [])
         .join(', ');

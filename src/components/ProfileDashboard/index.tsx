@@ -3,16 +3,15 @@
 /* eslint-disable security/detect-object-injection */
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Autocomplete, Dialog, Stack } from '@mui/material';
+import { Autocomplete, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import {
   ButtonPrimaryRegular,
   NavSublink,
-  ProfileEmailPop,
   UserChangeEmail,
   UserDetails,
   UserPasswordChange,
@@ -60,12 +59,13 @@ type PasswordFormFields = {
 };
 const ProfileDashboard = () => {
   const {
-    userDetails,
+    // userDetails,
     handleUpdateProfile,
     recruiterUser,
     handleUpdatePassword,
+    handleUpdateEmail,
   } = useAuthDetails();
-  const userMail = userDetails.user.email;
+  // const userMail = userDetails.user.email;
   const router = useRouter();
   const initialFormValues: FormValues = {
     value: null,
@@ -115,11 +115,10 @@ const ProfileDashboard = () => {
   const initialEmail: EmailFormFields = {
     email: {
       ...initialFormValues,
-      value: userMail,
+      value: '',
       validation: 'mail',
       placeholder: 'john.doe@example.com',
-      specialForm: true,
-      blocked: true,
+      blocked: false,
     },
   };
   const initialPassword: PasswordFormFields = {
@@ -226,10 +225,14 @@ const ProfileDashboard = () => {
               <>
                 <UserChangeEmail
                   onClickEmailChange={{
-                    onClick: () => {
-                      document
-                        .getElementById('job-profile-change-email')
-                        .click();
+                    onClick: async () => {
+                      setLoading((prev) => ({ ...prev, email: true }));
+                      await handleSubmitEmail(
+                        email,
+                        setEmail,
+                        handleUpdateEmail,
+                      );
+                      setLoading((prev) => ({ ...prev, email: false }));
                     },
                   }}
                   slotEmail={
@@ -415,6 +418,15 @@ const handleValidatePassword = (password: PasswordFormFields) => {
     };
 };
 
+const handleValidateMail = (email: EmailFormFields) => {
+  if (validateMail(email.email.value)) {
+    return {
+      newEmail: email.email.value.trim(),
+      error: null,
+    };
+  } else return { newEmail: null, error: 'Enter a valid email' };
+};
+
 const handleSubmit = async (
   profile: any,
   setProfile: any,
@@ -467,6 +479,29 @@ const handleSubmitPassword = async (
     });
   }
 };
+const handleSubmitEmail = async (
+  email: EmailFormFields,
+  setEmail: Dispatch<SetStateAction<EmailFormFields>>,
+  // eslint-disable-next-line no-unused-vars
+  handleUpdateEmail: (email: string) => Promise<boolean>,
+) => {
+  const { newEmail, error } = handleValidateMail(email);
+  if (!error) {
+    const confirmation = await handleUpdateEmail(newEmail);
+    if (confirmation) {
+      setEmail((prev) => ({ ...prev, email: { ...prev.email, value: '' } }));
+      return true;
+    } else return false;
+  } else {
+    setEmail((prev) => {
+      return {
+        ...prev,
+        email: { ...prev.email, error: true, helperText: error },
+      };
+    });
+  }
+};
+
 const validateString = (value: string) => {
   return value && value.trim() !== '';
 };
@@ -655,103 +690,23 @@ const ProfileForm = ({
         );
       }
       return (
-        <Stack>
-          {value.specialForm && (
-            <SpecialForm name={id} validation={value.validation} />
-          )}
-          <UITextField
-            labelBold='default'
-            labelSize='small'
-            fullWidth
-            label={value.label}
-            placeholder={value.placeholder}
-            required={value.required}
-            value={value.value}
-            disabled={value.blocked}
-            error={value.error}
-            helperText={
-              value.helperText ?? `Please enter a valid ${capitalize(id)}`
-            }
-            onChange={(e) => onChange(e, id)}
-          />
-        </Stack>
+        <UITextField
+          labelBold='default'
+          labelSize='small'
+          fullWidth
+          label={value.label}
+          placeholder={value.placeholder}
+          required={value.required}
+          value={value.value}
+          disabled={value.blocked}
+          error={value.error}
+          helperText={
+            value.helperText ?? `Please enter a valid ${capitalize(id)}`
+          }
+          onChange={(e) => onChange(e, id)}
+        />
       );
     }
   }
-};
-const SpecialForm = ({
-  name,
-  validation,
-}: {
-  name: string;
-  validation: FormValues['validation'];
-}) => {
-  const { handleUpdateEmail } = useAuthDetails();
-  const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [value, setValue] = React.useState('');
-  const [error, setError] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setValue('');
-    setError(false);
-  };
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    setError(false);
-  };
-  const handleValidate = (value: string, phoneFormat: string = null) => {
-    switch (validation) {
-      case 'string':
-        return { newValue: value.trim(), error: !validateString(value) };
-      case 'mail':
-        return { newValue: value.trim(), error: !validateMail(value) };
-      case 'phone':
-        return {
-          newValue: value.trim(),
-          error: !validatePhone(phoneFormat),
-        };
-    }
-  };
-  const handleSubmit = async () => {
-    setLoading(true);
-    const { newValue, error } = handleValidate(value);
-    if (!error) {
-      // triggerChange({ target: { value: newValue } });
-      if (validation === 'mail') await handleUpdateEmail(newValue);
-      handleClose();
-    } else {
-      setError(true);
-    }
-    setLoading(false);
-  };
-  const inputSlot = (
-    <UITextField
-      labelBold='default'
-      labelSize='small'
-      fullWidth
-      value={value}
-      error={error}
-      helperText={`Please enter a valid ${capitalize(name)}`}
-      onChange={(e) => handleChange(e)}
-    />
-  );
-  return (
-    <>
-      <Dialog open={open} onClose={() => handleClose()}>
-        <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
-          <ProfileEmailPop
-            onClickClose={{ onClick: () => handleClose() }}
-            slotInput={inputSlot}
-            onClickSendLink={{ onClick: () => handleSubmit() }}
-          />
-        </Stack>
-      </Dialog>
-      <Stack id={`job-profile-change-${name}`} onClick={() => handleOpen()} />
-    </>
-  );
 };
 export default ProfileDashboard;
