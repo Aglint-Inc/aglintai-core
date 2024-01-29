@@ -81,7 +81,7 @@ ${jobForm.formFields.jobDescription}
 `,
         sourceRef.current,
       );
-
+    
       const j: JdJsonType = {
         title: jobForm.formFields.jobTitle,
         level: json.jobLevel,
@@ -182,7 +182,7 @@ ${jobForm.formFields.jobDescription}
         <>
           <ScoreSetting
             // isRegenerateVisible={showRegen}
-            isRegenerateVisible={jobForm.jobPostStatus === "closed" ? false : showRegen}  
+            isRegenerateVisible={showRegen}  
             isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={
               <>

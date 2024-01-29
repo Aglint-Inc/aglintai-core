@@ -584,7 +584,7 @@ const SideNavs = ({ changeSlide }) => {
             <NavSublink
               key={sl.path}
               // isWarningVisible={isWarn}
-              isWarningVisible={jobForm.jobPostStatus === "closed" ? false : isWarn}
+              isWarningVisible={isWarn}
               isActive={currSlide === sl.path}
               onClickNav={{
                 onClick: () => {
