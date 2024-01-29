@@ -388,7 +388,8 @@ const SupportProvider = ({ children }) => {
     }
     // }
     // });
-  }, [recruiter]);
+  }, [recruiter?.id]);
+
   useEffect(() => {
     if (openTicketIndex === null) {
       return;
@@ -399,6 +400,7 @@ const SupportProvider = ({ children }) => {
       setOpenTicket(tickets[Number(openTicketIndex)]);
     }
   }, [openTicketIndex]);
+
   return (
     <SupportContext.Provider
       value={{

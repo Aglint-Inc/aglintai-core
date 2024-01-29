@@ -1,12 +1,17 @@
 import debounce from 'lodash/debounce';
 
+import { RecruiterDB } from '@/src/types/data.types';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
 import { MessageType } from '@/src/utils/prompts/types';
 import { requestJson } from '@/src/utils/prompts/utils';
 import { supabase } from '@/src/utils/supabaseClient';
 
-export const saveToDatabase = async (recruit, id) => {
+export const saveToDatabase = async (
+  recruit: RecruiterDB,
+  id: string,
+): Promise<boolean> => {
   await supabase.from('recruiter').update(recruit).eq('id', id).select();
+  return true;
 };
 
 export const debouncedSave = debounce(saveToDatabase, 1000);

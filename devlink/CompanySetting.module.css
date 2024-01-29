@@ -52,7 +52,7 @@
 
 .height-scroll {
   display: flex;
-  overflow: scroll;
+  overflow: auto;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -99,6 +99,8 @@
 }
 
 .rd-jobs-header-wrapper {
+  position: relative;
+
   display: flex;
   min-height: 60px;
   padding: 10px 20px;
@@ -374,79 +376,14 @@
   grid-row-gap: 6px;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
-}
-
-.icons.cursor-pointer.three-dot {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
+.slot-saved.compna {
   position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.icons.hide {
-  display: none;
+  justify-content: center;
 }
 
 .loading-saved {

@@ -1,10 +1,11 @@
-import { Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
-import { CompanySetting, NavSublink } from '@/devlink';
+import { CompanySetting, NavSublink, SavedChanges } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import {tabs} from './utils'
@@ -19,6 +20,7 @@ const CompanyDetailComp = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -40,9 +42,13 @@ const CompanyDetailComp = () => {
     }
   }, [router]);
 
-  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled ');
   const isTeamEnabled = posthog.isFeatureEnabled('isTeamEnabled');
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
+
+  useEffect(() => {
+    if (!isSaved && isSaving) setIsSaved(true);
+  }, [isSaving]);
 
   return (
     <Stack overflow={'hidden'}>
@@ -120,9 +126,23 @@ const CompanyDetailComp = () => {
             )}
           </>
         }
+        slotSavedChanges={
+          <SavedChanges
+            slotLoaderIcon={
+              <>
+                <CircularProgress
+                  color='inherit'
+                  size={'15px'}
+                  sx={{ color: palette.grey[400] }}
+                />
+              </>
+            }
+            isSaved={!isSaving}
+            isSaving={isSaving}
+          />
+        }
         slotSavingLottie={<LoaderGrey />}
-        isSaving={isSaving}
-        isSaved={!isSaving}
+        isSaved={isSaved}
         slotCompany={<CompanyInfoComp setIsSaving={setIsSaving} />}
       />
     </Stack>

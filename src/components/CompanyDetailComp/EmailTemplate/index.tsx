@@ -12,7 +12,8 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import toast from '@/src/utils/toast';
+import { RecruiterType } from '@/src/types/data.types';
+import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import { debouncedSave } from '../utils';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
@@ -20,8 +21,8 @@ import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { emailTempKeys } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
 
-const EmailTemplate = () => {
-  const { recruiter } = useAuthDetails();
+const EmailTemplate = ({ setIsSaving }) => {
+  const { recruiter, setRecruiter } = useAuthDetails();
   // const [openTest, setOpenTest] = useState(false);
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const [isEditorLoad, setIsEditorLoad] = useState(true);
@@ -38,156 +39,177 @@ const EmailTemplate = () => {
     }
   });
   useEffect(() => {
-    if (recruiter && recruiter.email_template) {
-      setSelectedTemplate({
-        name: 'application_recieved',
-        ...recruiter.email_template['application_recieved'],
-      });
+    if (recruiter?.email_template) {
+      setSelectedTemplate('application_recieved');
       setTimeout(() => {
         setIsEditorLoad(false);
       }, 500);
     }
-  }, [recruiter]);
+  }, []);
 
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
-  const handlerSave = () => {
-    recruiter.email_template[selectedTemplate.name] = {
-      body: selectedTemplate.body,
-      default: selectedTemplate.default,
-      subject: selectedTemplate.subject,
-      fromName: selectedTemplate.fromName,
-    };
-    debouncedSave({ ...recruiter }, recruiter.id);
-    toast.success('Saved successfully');
+  const handlerSave = (recruiter: RecruiterType) => {
+    setIsSaving(true);
+    setRecruiter(recruiter);
+    debouncedSave(recruiter, recruiter.id);
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 1500);
   };
 
   return (
     <>
-      <EmailTemplatesStart
-        slotEmailTemplateCards={templateEntries.map((emailPath) => (
-          <EmailTemplateCards
-            key={emailPath}
-            isActive={selectedTemplate?.name === emailPath}
-            textDescription={templateObj[emailPath].trigger}
-            textTitle={templateObj[emailPath].listing}
-            onClickApplicationRecieved={{
-              onClick: () => {
-                setSelectedTemplate({
-                  ...recruiter.email_template[String(emailPath)],
-                  name: emailPath,
-                });
-              },
-            }}
-          />
-        ))}
-        slotEmailDetails={
-          <>
-            {isEditorLoad && (
-              <>
-                <Stack
-                  direction={'row'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  width={'500px'}
-                  height={'100vh'}
-                >
-                  <LoaderSvg />
-                </Stack>
-              </>
-            )}
-            {!isEditorLoad && (
-              <EditEmail
-                editEmailDescription={
-                  templateObj[selectedTemplate?.name]?.description
-                }
-                onClickSaveChanges={{
-                  onClick: () => {
-                    handlerSave();
-                  },
-                }}
-                textEmailName={templateObj[selectedTemplate?.name]?.heading}
-                slotForm={
-                  <Stack spacing={'20px'}>
-                    <Stack
-                      spacing={1}
-                      sx={{
-                        bgcolor: palette.grey[100],
-                        p: 2,
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <Typography variant='h5'>
-                        Pro Tip: Customize Your Message
-                      </Typography>
-                      <Typography variant='body2'>
-                        For dynamic content, utilize placeholders like
-                        [firstName], [lastName], [companyName], [jobTitle] and
-                        [supportLink].
-                      </Typography>
-                    </Stack>
-                    <UITextField
-                      labelSize='small'
-                      fullWidth
-                      label='Sender Name'
-                      secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
-                      value={selectedTemplate.fromName}
-                      onChange={(e) => {
-                        setSelectedTemplate((prev) => ({
-                          ...prev,
-                          fromName: e.target.value,
-                        }));
-                      }}
-                    />
-                    <UITextField
-                      labelSize='small'
-                      fullWidth
-                      placeholder={
-                        templateObj[selectedTemplate?.name]?.subjectPlaceHolder
-                      }
-                      label='Email Subject'
-                      value={selectedTemplate.subject}
-                      onChange={(e) => {
-                        setSelectedTemplate((prev) => ({
-                          ...prev,
-                          subject: e.target.value,
-                        }));
-                      }}
-                      minRows={1}
-                      multiline
-                    />
-                    <Stack>
-                      <UITypography type='small'>Email Body</UITypography>
-                      <Stack
-                        sx={{
-                          mt: '8px',
-                          border: '1px solid',
-                          borderColor: palette.grey[300],
-                          borderRadius: '4px',
-                        }}
-                      >
-                        <TipTapAIEditor
-                          enablAI={false}
-                          placeholder={
-                            templateObj[selectedTemplate?.name]?.bodyPlaceHolder
-                          }
-                          handleChange={(html) => {
-                            setSelectedTemplate((prev) => ({
-                              ...prev,
-                              body: html,
-                            }));
-                          }}
-                          initialValue={selectedTemplate.body}
-                        />
-                      </Stack>
-                    </Stack>
+      {recruiter?.id && (
+        <EmailTemplatesStart
+          slotEmailTemplateCards={templateEntries.map((emailPath) => (
+            <EmailTemplateCards
+              key={emailPath}
+              isActive={selectedTemplate === emailPath}
+              textDescription={templateObj[emailPath].trigger}
+              textTitle={templateObj[emailPath].listing}
+              onClickApplicationRecieved={{
+                onClick: () => {
+                  setSelectedTemplate(emailPath);
+                },
+              }}
+            />
+          ))}
+          slotEmailDetails={
+            <>
+              {isEditorLoad && (
+                <>
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    width={'500px'}
+                    height={'100vh'}
+                  >
+                    <LoaderSvg />
                   </Stack>
-                }
-              />
-            )}
-          </>
-        }
-      />
+                </>
+              )}
+              {!isEditorLoad && (
+                <YTransform uniqueKey={selectedTemplate}>
+                  <EditEmail
+                    editEmailDescription={
+                      templateObj[selectedTemplate]?.description
+                    }
+                    isSaveChangesButtonVisible={false}
+                    textEmailName={templateObj[selectedTemplate]?.heading}
+                    slotForm={
+                      <Stack spacing={'20px'}>
+                        <Stack
+                          spacing={1}
+                          sx={{
+                            bgcolor: palette.grey[100],
+                            p: 2,
+                            borderRadius: '8px',
+                          }}
+                        >
+                          <Typography variant='h5'>
+                            Pro Tip: Customize Your Message
+                          </Typography>
+                          <Typography variant='body2'>
+                            {templateObj[selectedTemplate]?.dynamicContent}
+                          </Typography>
+                        </Stack>
+                        <UITextField
+                          labelSize='small'
+                          fullWidth
+                          label='Sender Name'
+                          secondaryText={`This name appears as the "From" name in emails to candidates. Choose a representative name for your company or recruiter.`}
+                          value={
+                            recruiter.email_template[selectedTemplate]?.fromName
+                          }
+                          onChange={(e) => {
+                            recruiter.email_template[selectedTemplate] = {
+                              body: recruiter.email_template[selectedTemplate]
+                                .body,
+                              default:
+                                recruiter.email_template[selectedTemplate]
+                                  .default,
+                              subject:
+                                recruiter.email_template[selectedTemplate]
+                                  .subject,
+                              fromName: e.target.value,
+                            };
+                            handlerSave({ ...recruiter });
+                          }}
+                        />
+                        <UITextField
+                          labelSize='small'
+                          fullWidth
+                          placeholder={
+                            templateObj[selectedTemplate]?.subjectPlaceHolder
+                          }
+                          label='Email Subject'
+                          value={
+                            recruiter.email_template[selectedTemplate]?.subject
+                          }
+                          onChange={(e) => {
+                            recruiter.email_template[selectedTemplate] = {
+                              body: recruiter.email_template[selectedTemplate]
+                                .body,
+                              default:
+                                recruiter.email_template[selectedTemplate]
+                                  .default,
+                              subject: e.target.value,
+                              fromName:
+                                recruiter.email_template[selectedTemplate]
+                                  .fromName,
+                            };
+                            handlerSave({ ...recruiter });
+                          }}
+                          minRows={1}
+                          multiline
+                        />
+                        <Stack>
+                          <UITypography type='small'>Email Body</UITypography>
+                          <Stack
+                            sx={{
+                              mt: '8px',
+                              border: '1px solid',
+                              borderColor: palette.grey[300],
+                              borderRadius: '4px',
+                            }}
+                          >
+                            <TipTapAIEditor
+                              enablAI={false}
+                              placeholder={
+                                templateObj[selectedTemplate]?.bodyPlaceHolder
+                              }
+                              handleChange={(html) => {
+                                recruiter.email_template[selectedTemplate] = {
+                                  body: html,
+                                  default:
+                                    recruiter.email_template[selectedTemplate]
+                                      .default,
+                                  subject:
+                                    recruiter.email_template[selectedTemplate]
+                                      .subject,
+                                  fromName:
+                                    recruiter.email_template[selectedTemplate]
+                                      .fromName,
+                                };
+                                handlerSave({ ...recruiter });
+                              }}
+                              initialValue={
+                                recruiter.email_template[selectedTemplate].body
+                              }
+                            />
+                          </Stack>
+                        </Stack>
+                      </Stack>
+                    }
+                  />
+                </YTransform>
+              )}
+            </>
+          }
+        />
+      )}
     </>
   );
 };
@@ -206,6 +228,9 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
   application_recieved: {
     listing: 'Application Recieved',
     heading: 'Application Received Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle]
+    and [supportLink].`,
     triggerInfo: 'Triggered instantly when candidate applied to this job.',
     description:
       'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
@@ -224,6 +249,9 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
     listing: 'Phone Screen',
     heading: 'Phone Screening Email Template',
     triggerInfo: 'Triggered instantly when you move candidate to screening',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [phoneScreeningLink]
+    and [supportLink].`,
     descriptionInJob: 'Customise phone screening email template for this job',
     description:
       'Set up a default Phone Screening email template. You can make specific changes for individual job posts later.',
@@ -239,6 +267,9 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
   phone_screening_resend: {
     listing: 'Follow-up Phone Screening',
     heading: 'Follow-up Phone Screening Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [phoneScreeningLink]
+    and [supportLink].`,
     triggerInfo: 'Triggered for resending the phone screening invite.',
     descriptionInJob:
       'Customise follow-up phone screening email template for this job',
@@ -257,6 +288,9 @@ Best regards,
     listing: 'Assessment',
     heading: 'Assessment Email Template',
     triggerInfo: 'Triggered when the candidate selected for assessment.',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle]
+    and [supportLink].`,
     descriptionInJob: 'Customise assesment email template for this job',
     description:
       'Set up a default assessment email template. You can make specific changes for individual job posts later.',
@@ -274,6 +308,9 @@ Best regards,
   interview_resend: {
     listing: 'Follow Up Assessment',
     heading: 'Follow Up Assessment Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle]
+    and [supportLink].`,
     triggerInfo: 'Triggered for resending the assessment invite.',
     descriptionInJob:
       'Customise follow-up assesment email template for this job',
@@ -292,6 +329,9 @@ Best regards,
   rejection: {
     listing: 'Disqualified',
     heading: 'Disqualified Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle]
+    and [supportLink].`,
     triggerInfo: 'Triggered when the candidate moved to disqualified state.',
     descriptionInJob: 'Customise disqualified email template for this job',
     description:
@@ -316,4 +356,5 @@ type EmailTemplatInfoType = {
   subjectPlaceHolder: string;
   bodyPlaceHolder: string;
   trigger: string;
+  dynamicContent: string;
 };

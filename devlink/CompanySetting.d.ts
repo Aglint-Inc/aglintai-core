@@ -22,4 +22,5 @@ declare function CompanySetting(props: {
   isAssistantBetaVisible?: Types.Visibility.VisibilityConditions;
   slotNavSublink?: Types.Devlink.Slot;
   slotCompany?: Types.Devlink.Slot;
+  slotSavedChanges?: Types.Devlink.Slot;
 }): React.JSX.Element;

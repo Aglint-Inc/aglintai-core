@@ -17,7 +17,9 @@ const CompanyJdComp = ({ setIsSaving }) => {
     setIsSaving(true);
     debouncedSave(recruit, recruiter.id);
     setRecruiter(recruit);
-    setIsSaving(false);
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 1500);
   };
 
   return (

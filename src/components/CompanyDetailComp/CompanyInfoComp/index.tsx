@@ -62,9 +62,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     });
   };
 
-  // useEffect(() => {
-  //   if (recruiter?.logo !== logo) handleChange({ ...recruiter, logo: logo });
-  // }, [logo]);
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
   }, [recruiter]);
@@ -249,7 +246,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 },
               }}
               slotBasicForm={
-                <Stack spacing={2}>
+                <Stack spacing={2} p={'4px'}>
                   <UITextField
                     labelBold='default'
                     labelSize='small'
@@ -341,7 +338,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         )}
         {router.query?.tab === 'email' && (
           <>
-            <EmailTemplate />
+            <EmailTemplate setIsSaving={setIsSaving} />
           </>
         )}
         {router.query?.tab === 'team' && <TeamManagement />}
