@@ -85,7 +85,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
 
   const filteredJobs = jobs
     .filter((job) => job.id !== post.id)
-    .filter((job: any) => job.active_status.sourcing.isActive);
+    .filter((job: JobTypeDB) => job.status === 'published');
 
   return (
     <Stack width={'100%'} position={'relative'} minHeight={'100vh'}>

@@ -175,7 +175,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
     }
 
     setError({ ...error });
-    
+
     return isValid;
   };
 
@@ -305,6 +305,8 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
   useEffect(() => {
     if (isDisabled) setIsDisabled(false);
   }, [profile]);
+
+  
 
   return (
     <Stack
@@ -607,7 +609,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
         </Grid>
         <Grid item xs={12}>
           <ButtonPrimaryRegular
-            isDisabled={isDisabled}
+            isDisabled={Boolean(router.query.preview)}
             slotEndIcon={
               <Stack justifyContent={'center'} alignItems={'center'}>
                 <LoaderGrey />
