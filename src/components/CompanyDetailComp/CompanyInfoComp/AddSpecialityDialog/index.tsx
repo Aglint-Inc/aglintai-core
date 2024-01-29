@@ -83,7 +83,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: stacks.length > 0 ? '20px' : '0px' }}
+            sx={{ mt: stacks.length > 0 ? '8px' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'

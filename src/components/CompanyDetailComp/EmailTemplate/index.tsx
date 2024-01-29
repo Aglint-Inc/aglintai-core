@@ -216,7 +216,7 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle]
     and [supportLink].`,
-    triggerInfo: 'Triggered instantly when candidate applied to this job.',
+    triggerInfo: 'Triggered when candidate moved to screening',
     description:
       'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
     descriptionInJob:
@@ -233,7 +233,7 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
   phone_screening: {
     listing: 'Phone Screen',
     heading: 'Phone Screening Email Template',
-    triggerInfo: 'Triggered instantly when you move candidate to screening',
+    triggerInfo: 'Used while sending screening invite.',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [phoneScreeningLink]
     and [supportLink].`,
@@ -247,7 +247,7 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
 
     Best regards,
     [senderName]`,
-    trigger: 'Triggered instantly when you move candidate to screening',
+    trigger: 'Used while sending screening invite.',
   },
   phone_screening_resend: {
     listing: 'Follow-up Phone Screening',
@@ -267,7 +267,7 @@ Thank you for applying for the [jobTitle] position at [companyName]. We have rec
 
 Best regards,
 [senderName]`,
-    trigger: 'Triggered instantly when you move the candidate to screening',
+    trigger: 'Used while resending phone screening invite.',
   },
   interview: {
     listing: 'Assessment',
@@ -288,7 +288,7 @@ Best regards,
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when candidate moved to assessment state',
+    trigger: 'Used while sending assesment invite.',
   },
   interview_resend: {
     listing: 'Follow Up Assessment',
@@ -309,7 +309,7 @@ Best regards,
     You're welcome to choose an interview time that suits your schedule.
     
     [interviewLink]`,
-    trigger: 'Triggered when you click resend assessment link',
+    trigger: 'Used while resending assesment invite.',
   },
   rejection: {
     listing: 'Disqualified',
@@ -317,7 +317,7 @@ Best regards,
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle]
     and [supportLink].`,
-    triggerInfo: 'Triggered when the candidate moved to disqualified state.',
+    triggerInfo: 'Used while sending disqualified emails.',
     descriptionInJob: 'Customise disqualified email template for this job',
     description:
       'Set up a default disqualified email template. You can make specific changes for individual job posts later.',
@@ -328,7 +328,7 @@ Best regards,
     
     Best regards,
     [senderName]`,
-    trigger: 'Triggered when candidate moved to disqualified state',
+    trigger: 'Used while sending disqualified emails.',
   },
 };
 

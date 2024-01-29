@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
+import { ButtonPrimaryRegular } from "./ButtonPrimaryRegular";
 import * as _utils from "./utils";
 import _styles from "./AddDepartmentPop.module.css";
 
@@ -16,14 +16,11 @@ export function AddDepartmentPop({
       className={_utils.cx(_styles, "available-roles-pop-wrappers")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold", "color-black")}
-        tag="div"
-      >
-        {"Add departments"}
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        {"Add Departments"}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "text-grey-600", "mt-17")}
+        className={_utils.cx(_styles, "text-grey-600", "mt-4")}
         tag="div"
       >
         {"Choose from the list or type your own and press enter"}
@@ -45,11 +42,18 @@ export function AddDepartmentPop({
         tag="div"
       >
         <_Builtin.Block
+          className={_utils.cx(_styles, "text-blue-600", "cursor-pointer")}
+          tag="div"
+          {...onClickCancel}
+        >
+          {"Cancel"}
+        </_Builtin.Block>
+        <_Builtin.Block
           className={_utils.cx(_styles, "pop-button-wrappers")}
           tag="div"
         >
           <_Builtin.Block tag="div" {...onClickDone}>
-            <ButtonOutlinedSmall textLabel="Save" />
+            <ButtonPrimaryRegular textLabel="Add" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -155,7 +155,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
-          headerText={edit === -1 ? 'Add location' : 'Edit location'}
+          headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           slotForm={
             <Stack>
               <TextField

@@ -1,6 +1,7 @@
 .screening-content-block {
   display: flex;
   max-width: 740px;
+  padding-top: 20px;
   padding-bottom: 32px;
   flex-direction: column;
   grid-column-gap: 20px;

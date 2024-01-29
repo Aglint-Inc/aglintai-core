@@ -24,7 +24,7 @@ const CloseJobPopup = ({ onClose }) => {
       if (confirmJobTitle.value !== jobForm.formFields.jobTitle) {
         setConfirmJobTitle((p) => ({
           ...p,
-          error: 'incorrect job title',
+          error: 'Incorrect job title',
         }));
         return;
       }

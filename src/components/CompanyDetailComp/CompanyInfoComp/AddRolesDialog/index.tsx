@@ -83,7 +83,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
         })}
         slotInput={
           <Autocomplete
-            sx={{ mt: roles.length > 0 ? '20px' : '0px' }}
+            sx={{ mt: roles.length > 0 ? '8px' : '0px' }}
             fullWidth
             freeSolo
             id='free-solo-2-demo'
