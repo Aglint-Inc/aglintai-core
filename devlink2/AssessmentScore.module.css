@@ -1,3 +1,11 @@
+.assessment-score-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
 .assessment-score {
   display: flex;
   height: 30px;
@@ -286,4 +294,12 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-kale-800 {
+  color: var(--kale-800);
 }

@@ -1,20 +1,13 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ScrQuestionListItem } from "./ScrQuestionListItem";
 import * as _utils from "./utils";
 import _styles from "./SidebarScreening.module.css";
 
 export function SidebarScreening({
   as: _Component = _Builtin.Block,
-  isInvited = false,
-  isSubmitted = false,
-  onclickResend = {},
-  slotQuestions,
-  isNotInvited = false,
-  onclickInvite = {},
   slotStatus,
-  onclickCopyLink = {},
   onclickArrow = {},
+  slotBody,
 }) {
   return (
     <_Component
@@ -55,112 +48,25 @@ export function SidebarScreening({
           >
             {slotStatus}
           </_Builtin.Block>
-          {isSubmitted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "sidebar-block-arrow")}
+            tag="div"
+            {...onclickArrow}
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "sidebar-block-arrow")}
+              className={_utils.cx(_styles, "icon-block", "_12x12")}
               tag="div"
-              {...onclickArrow}
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "icon-block", "_12x12")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "svg-icon")}
-                  value="%3Csvg%20width%3D%2212%22%20height%3D%227%22%20viewBox%3D%220%200%2012%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L1.10156%201.89844C0.882812%201.63281%200.882812%201.36719%201.10156%201.10156C1.36719%200.882812%201.63281%200.882812%201.89844%201.10156L6%205.20312L10.1016%201.10156C10.3672%200.882812%2010.6328%200.882812%2010.8984%201.10156C11.1172%201.36719%2011.1172%201.63281%2010.8984%201.89844L6.39844%206.39844Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "svg-icon")}
+                value="%3Csvg%20width%3D%2212%22%20height%3D%227%22%20viewBox%3D%220%200%2012%207%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L1.10156%201.89844C0.882812%201.63281%200.882812%201.36719%201.10156%201.10156C1.36719%200.882812%201.63281%200.882812%201.89844%201.10156L6%205.20312L10.1016%201.10156C10.3672%200.882812%2010.6328%200.882812%2010.8984%201.10156C11.1172%201.36719%2011.1172%201.63281%2010.8984%201.89844L6.39844%206.39844Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
             </_Builtin.Block>
-          ) : null}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "sb-scr-body")} tag="div">
-        {isNotInvited ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "sb-scr-invited")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">
-              {"The candidate has not been invited for screening yet."}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "flex-h", "gap-20")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button-blue", "outline")}
-                tag="div"
-                {...onclickInvite}
-              >
-                <_Builtin.Block tag="div">{"Invite Now"}</_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button-blue", "text")}
-                tag="div"
-                {...onclickCopyLink}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "icon-block", "_16x16")}
-                  tag="div"
-                >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "svg-icon")}
-                    value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.25%207.875C9.48438%207.85938%209.60938%207.73438%209.625%207.5V2.71875L8.03125%201.125H4.75C4.51562%201.14063%204.39062%201.26562%204.375%201.5V7.5C4.39062%207.73438%204.51562%207.85938%204.75%207.875H9.25ZM4.75%209C4.32812%208.98438%203.97656%208.83594%203.69531%208.55469C3.41406%208.27344%203.26562%207.92188%203.25%207.5V1.5C3.26562%201.07812%203.41406%200.726562%203.69531%200.445312C3.97656%200.164062%204.32812%200.015625%204.75%200H8.03125C8.34375%200%208.60938%200.109375%208.82812%200.328125L10.4219%201.92188C10.6406%202.14062%2010.75%202.40625%2010.75%202.71875V7.5C10.7344%207.92188%2010.5859%208.27344%2010.3047%208.55469C10.0234%208.83594%209.67188%208.98438%209.25%209H4.75ZM1.75%203H2.5V4.125H1.75C1.51562%204.14062%201.39062%204.26562%201.375%204.5V10.5C1.39062%2010.7344%201.51562%2010.8594%201.75%2010.875H6.25C6.48438%2010.8594%206.60938%2010.7344%206.625%2010.5V9.75H7.75V10.5C7.73438%2010.9219%207.58594%2011.2734%207.30469%2011.5547C7.02344%2011.8359%206.67188%2011.9844%206.25%2012H1.75C1.32812%2011.9844%200.976562%2011.8359%200.695312%2011.5547C0.414062%2011.2734%200.265625%2010.9219%200.25%2010.5V4.5C0.265625%204.07812%200.414062%203.72656%200.695312%203.44531C0.976562%203.16406%201.32812%203.01563%201.75%203Z%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block tag="div">{"Invite link"}</_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
-        {isInvited ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "sb-scr-invited")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">
-              {
-                "The candidate has received an screening invitation but has not yet taken the screening."
-              }
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "flex-h", "gap-20")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button-blue", "outline")}
-                tag="div"
-                {...onclickResend}
-              >
-                <_Builtin.Block tag="div">{"Resend Invite"}</_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "button-blue", "text")}
-                tag="div"
-                {...onclickCopyLink}
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "icon-block", "_16x16")}
-                  tag="div"
-                >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "svg-icon")}
-                    value="%3Csvg%20width%3D%2211%22%20height%3D%2212%22%20viewBox%3D%220%200%2011%2012%22%20fill%3DcurrentColor%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.25%207.875C9.48438%207.85938%209.60938%207.73438%209.625%207.5V2.71875L8.03125%201.125H4.75C4.51562%201.14063%204.39062%201.26562%204.375%201.5V7.5C4.39062%207.73438%204.51562%207.85938%204.75%207.875H9.25ZM4.75%209C4.32812%208.98438%203.97656%208.83594%203.69531%208.55469C3.41406%208.27344%203.26562%207.92188%203.25%207.5V1.5C3.26562%201.07812%203.41406%200.726562%203.69531%200.445312C3.97656%200.164062%204.32812%200.015625%204.75%200H8.03125C8.34375%200%208.60938%200.109375%208.82812%200.328125L10.4219%201.92188C10.6406%202.14062%2010.75%202.40625%2010.75%202.71875V7.5C10.7344%207.92188%2010.5859%208.27344%2010.3047%208.55469C10.0234%208.83594%209.67188%208.98438%209.25%209H4.75ZM1.75%203H2.5V4.125H1.75C1.51562%204.14062%201.39062%204.26562%201.375%204.5V10.5C1.39062%2010.7344%201.51562%2010.8594%201.75%2010.875H6.25C6.48438%2010.8594%206.60938%2010.7344%206.625%2010.5V9.75H7.75V10.5C7.73438%2010.9219%207.58594%2011.2734%207.30469%2011.5547C7.02344%2011.8359%206.67188%2011.9844%206.25%2012H1.75C1.32812%2011.9844%200.976562%2011.8359%200.695312%2011.5547C0.414062%2011.2734%200.265625%2010.9219%200.25%2010.5V4.5C0.265625%204.07812%200.414062%203.72656%200.695312%203.44531C0.976562%203.16406%201.32812%203.01563%201.75%203Z%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block tag="div">{"Invite link"}</_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
-        {isSubmitted ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "sb-scr-submitted")}
-            tag="div"
-          >
-            {slotQuestions ?? <ScrQuestionListItem isMultiselect={true} />}
-          </_Builtin.Block>
-        ) : null}
+        {slotBody}
       </_Builtin.Block>
     </_Component>
   );

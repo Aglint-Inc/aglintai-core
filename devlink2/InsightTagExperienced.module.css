@@ -1,11 +1,11 @@
 .insight-tag {
   position: relative;
-  z-index: 5;
+  z-index: 6;
   display: flex;
 }
 
 .insight-tag:hover {
-  z-index: 7;
+  z-index: 9;
 }
 
 .insight-tag-block {

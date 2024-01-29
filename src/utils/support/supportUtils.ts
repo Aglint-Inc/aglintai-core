@@ -74,7 +74,6 @@ export function fillEmailTemplate(
   },
 ) {
   let filledTemplate = template;
-
   const placeholders = {
     '[firstName]': email.first_name,
     '[lastName]': email.last_name,
@@ -89,7 +88,7 @@ export function fillEmailTemplate(
   for (const [placeholder, value] of Object.entries(placeholders)) {
     // eslint-disable-next-line security/detect-non-literal-regexp
     const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-    filledTemplate = filledTemplate.replace(regex, value);
+    filledTemplate = filledTemplate.replaceAll(regex, value);
   }
 
   return filledTemplate;

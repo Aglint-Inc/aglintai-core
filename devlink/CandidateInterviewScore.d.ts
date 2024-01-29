@@ -3,7 +3,6 @@ import * as Types from "./types";
 
 declare function CandidateInterviewScore(props: {
   as?: React.ElementType;
-  onClickDetailedFeedback?: Types.Devlink.RuntimeProps;
   slotInterviewFeedbackScore?: Types.Devlink.Slot;
   slotAssessmentScore?: Types.Devlink.Slot;
   propsCollapse?: Types.Devlink.RuntimeProps;

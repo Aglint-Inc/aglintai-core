@@ -199,9 +199,9 @@ const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       const country = data.country; // Extract the country code from the response
-      setUserCountry(country?.toLowerCase() || 'us'); // Set the default country based on the user's location
+      setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
-      // Handle any errors that occur during the API call
+      setUserCountry('us');
     }
   };
 

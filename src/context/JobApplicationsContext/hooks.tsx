@@ -377,6 +377,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         await handleJobApplicationApi('candidateEmail', {
           job: {
             id: job.id,
+            job_title: job.job_title,
             company: job.company,
             email_template: job.email_template as EmailTemplateType,
           },
@@ -478,7 +479,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     setSection((prev) => {
       const pos = activeSections.indexOf(prev) - 1;
       return pos < 0
-        ? activeSections[activeSections.length]
+        ? activeSections[activeSections.length - 1]
         : activeSections[pos];
     });
   };

@@ -239,7 +239,6 @@ const FormBody = ({
       };
     });
   };
-  const defaultCountry = applicant.phone.value ? null : userCountry;
   return (
     <Stack gap={3}>
       <Stack flexDirection={'row'} gap={3}>
@@ -291,7 +290,7 @@ const FormBody = ({
         >
           <UIPhoneInput
             labelSize='small'
-            defaultCountry={defaultCountry}
+            defaultCountry={userCountry}
             placeholder={'Phone number'}
             value={applicant.phone.value}
             error={applicant.phone.error}

@@ -22,7 +22,7 @@
 
   display: flex;
   min-width: 160px;
-  padding: 12px 13px;
+  padding: 14px 13px;
   align-items: center;
   flex: 1;
   grid-column-gap: 8px;
@@ -116,6 +116,11 @@
   .text-xxl {
     font-size: 22px;
   }
+}
+
+.flex-h.gap-20 {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .icon-block {

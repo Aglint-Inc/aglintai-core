@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { createBatches } from '@/src/pages/api/jobApplications/candidateEmail/utils';
 import {
@@ -9,7 +10,8 @@ import { CandidateInsert } from '@/src/types/candidates.types';
 import toast from '@/src/utils/toast';
 
 const useUploadCandidate = () => {
-  const { job } = useJobApplications();
+  const { job, handleJobApplicationPaginate, pageNumber, section } =
+    useJobApplications();
 
   const handleUploadCandidate = async (
     candidate: Omit<CandidateInsert, 'recruiter_id'>,
@@ -35,8 +37,10 @@ const useUploadCandidate = () => {
       request,
       signal,
     );
-    if (response.confirmation) toast.success('Candidates uploaded');
-    else if (response.error) toast.error(response.error);
+    if (response.confirmation) {
+      await handleJobApplicationPaginate(pageNumber[section], section);
+      toast.success('Candidates uploaded');
+    } else if (response.error) toast.error(response.error);
     return response;
   };
 
@@ -74,6 +78,7 @@ const useUploadCandidate = () => {
     }, 0);
     const failedCount = files.length - successCount;
     if (successCount > 0) {
+      await handleJobApplicationPaginate(pageNumber[section], section);
       toast.success(
         `${successCount} resume${
           successCount === 1 ? '' : 's'
@@ -102,8 +107,10 @@ const useUploadCandidate = () => {
       formData,
       signal,
     );
-    if (response.confirmation) toast.success('Candidates uploaded');
-    else if (response.error) toast.error(response.error);
+    if (response.confirmation) {
+      await handleJobApplicationPaginate(pageNumber[section], section);
+      toast.success('Candidates uploaded');
+    } else if (response.error) toast.error(response.error);
     return response;
   };
 

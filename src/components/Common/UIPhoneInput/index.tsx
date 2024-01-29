@@ -66,6 +66,7 @@ const UIPhoneInput = ({
         </UITypography>
       )}
       <PhoneInput
+        autoFormat={true}
         onlyCountries={countries.map((c) => c.code)}
         enableLongNumbers
         copyNumbersOnly={false}

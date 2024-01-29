@@ -18,8 +18,10 @@ export type RecruiterType = Omit<
 > & { socials: SocialsType | null };
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
-export type JobAssistantChats=Database['public']['Tables']['job_assiatan_chat']['Row']
-export type JobAssistantChatMessages=Database['public']['Tables']['job_assiatan_chat_messages']['Row']
+export type JobAssistantChats =
+  Database['public']['Tables']['job_assiatan_chat']['Row'];
+export type JobAssistantChatMessages =
+  Database['public']['Tables']['job_assiatan_chat_messages']['Row'];
 
 export type AglintCandidatesTypeDB =
   Database['public']['Tables']['aglint_candidates']['Row'];
@@ -90,6 +92,7 @@ export type ApplicationReceived = {
   body: string;
   default: boolean;
   subject: string;
+  fromName: string;
 };
 
 export type EmailTemplateType = {

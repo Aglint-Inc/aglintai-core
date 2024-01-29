@@ -164,7 +164,7 @@ const updateAllApplications = async (
 
 export type JobApplicationEmails = {
   request: {
-    job: Pick<JobType, 'company' | 'id'> & {
+    job: Pick<JobType, 'company' | 'id' | 'job_title'> & {
       email_template: EmailTemplateType;
     };
     sections: {

@@ -32,7 +32,7 @@ export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
       .join('&');
     const { data } = await axios<ApiRouteTypes[T]['response']>({
       method: 'post',
-      url: `/api/${route}?${params}`,
+      url: `/api/jobApplications/${route}?${params}`,
       data: payload[UploadApiFormData.FILES],
       timeout: 60000,
       signal: signal,

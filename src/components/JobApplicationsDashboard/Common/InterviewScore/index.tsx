@@ -65,6 +65,8 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
     <AssessmentScore
       textScore={interviewScore}
       props={{ style: { color: color, borderColor: color } }}
+      isDurationVisible={true}
+      textDuration={timeInfo}
     />
   );
 };

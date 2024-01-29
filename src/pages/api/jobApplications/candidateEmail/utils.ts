@@ -166,11 +166,14 @@ const sendMail = async (
     return;
   const emailMeta: Parameters<typeof fillEmailTemplate>[1] = {
     company_name: job.company,
-    job_title: job.company,
+    job_title: job.job_title,
     first_name: candidate.first_name,
     last_name: candidate.last_name,
     interview_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/assessment?id=${candidate.application_id}`,
-    support_link: process.env.NEXT_PUBLIC_WEBSITE,
+    phone_screening_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${job.id}&application_id=${candidate.application_id}`,
+    support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${job.id}`,
+    recruter_name:
+      job.email_template[candidate.purpose]?.fromName ?? job.company,
   };
   const templates = job.email_template[candidate.purpose];
   const mail = {
@@ -179,7 +182,7 @@ const sendMail = async (
         ? candidate.email
         : 'punithg@aglinthq.com',
     from: {
-      name: job.company,
+      name: job.email_template[candidate.purpose]?.fromName ?? job.company,
       email: 'messenger@aglinthq.com',
     },
     subject: fillEmailTemplate(templates.subject, emailMeta),

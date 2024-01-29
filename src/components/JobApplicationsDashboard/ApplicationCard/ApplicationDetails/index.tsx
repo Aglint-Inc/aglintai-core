@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
 
 import {
+  AssessmentInvite,
   CandidateDetails,
   CandidateEducation,
   CandidateEducationCard,
@@ -17,6 +18,7 @@ import {
   CandidateSkill,
   CandidateSkillPills,
   DetailedFeedback,
+  DetailedFeedbackButton,
   DetailedFeedbackCard,
   DetailedFeedbackCardSmall,
   FeedbackScore,
@@ -62,6 +64,7 @@ import ResumePreviewer from './ResumePreviewer';
 import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
+import InterviewScore from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import {
   capitalize,
@@ -456,7 +459,7 @@ const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+          transform: `rotate(${collapse ? '180deg' : '0deg'})`,
         },
       }}
       slotBody={
@@ -512,13 +515,12 @@ const NewInterviewStatus = ({
       disabledList,
     },
   } = useJobApplications();
+  const [collapse, setCollapse] = useState(false);
   const status = {
-    bgColor: pending ? '#CEE2F2' : '#FFF7ED',
     text: pending ? 'Invited' : 'Pending Invite',
-    color: pending ? '#0F3554' : '#703815',
     description: pending
-      ? 'Candidate has been invited to take the interview.'
-      : 'Candidate has not been invited to take the interview.',
+      ? 'The candidate has received an assessment invitation but has not yet taken the assessment.'
+      : 'The candidate has not been invited for assesment yet. ',
     btnText: pending ? 'Resend link' : 'Invite now',
   };
   const disable =
@@ -552,6 +554,7 @@ const NewInterviewStatus = ({
   };
   return (
     <Stack
+      key={application.id}
       style={{
         opacity: disable ? 0.4 : 1,
         transition: '0.5s',
@@ -559,34 +562,53 @@ const NewInterviewStatus = ({
       }}
     >
       <InterviewResultStatus
-        bgColorInterviewTag={{ style: { backgroundColor: status.bgColor } }}
-        textStatus={status.text}
-        colorPropsTextStatus={{ style: { color: status.color } }}
-        textDescription={status.description}
-        onClickCopyInterviewLink={{
-          onClick: () => {
-            navigator.clipboard
-              .writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${application.id}`,
-              )
-              .then(() => {
-                toast.success('Interview link copied');
-              });
+        slotAssessmentScore={
+          <InterviewScore key={application.id} application={application} />
+        }
+        slotAssessmentInvite={
+          <Collapse in={collapse}>
+            <Stack marginTop={'10px'}>
+              <AssessmentInvite
+                textDescription={status.description}
+                onClickCopyInterviewLink={{
+                  onClick: () => {
+                    navigator.clipboard
+                      .writeText(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${application.id}`,
+                      )
+                      .then(() => {
+                        toast.success('Interview link copied');
+                      });
+                  },
+                }}
+                slotResendButton={
+                  <ButtonPrimaryOutlinedRegular
+                    buttonText={status.btnText}
+                    buttonProps={{ onClick: async () => await handleInvite() }}
+                  />
+                }
+              />
+            </Stack>
+          </Collapse>
+        }
+        onClickIcons={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
           },
         }}
-        slotResendButton={
-          <ButtonPrimaryOutlinedRegular
-            buttonText={status.btnText}
-            buttonProps={{ onClick: async () => await handleInvite() }}
-          />
-        }
       />
     </Stack>
   );
 };
 
-const NewInterviewScoreDetails = ({ application, setOpenFeedback }) => {
-  // const interviewScore = getInterviewScore(application.feedback);
+const NewInterviewScoreDetails: React.FC<{
+  application: JobApplication;
+  setOpenFeedback: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, setOpenFeedback }) => {
+  const [collapse, setCollapse] = useState(false);
+  const interviewScore = <InterviewScore application={application} />;
   // const feedbackObj = giveRateInWordToResume(interviewScore);
   return (
     <CandidateInterviewScore
@@ -596,12 +618,29 @@ const NewInterviewScoreDetails = ({ application, setOpenFeedback }) => {
       // }
       // propsBgColorScore={{ style: { backgroundColor: feedbackObj.bgColor } }}
       // propsTextColor={{ style: { color: feedbackObj.color } }}
-      onClickDetailedFeedback={{
-        onClick: () => setOpenFeedback(true),
+      slotAssessmentScore={interviewScore}
+      onClickIcons={{
+        onClick: () => setCollapse((prev) => !prev),
+        style: {
+          cursor: 'pointer',
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+        },
       }}
       slotInterviewFeedbackScore={
-        application.feedback && (
-          <InterviewFeedbackParams feedbackParamsObj={application.feedback} />
+        application.assessment_results.feedback && (
+          <Collapse in={collapse}>
+            <Stack gap={'12px'} marginTop={'12px'}>
+              <InterviewFeedbackParams
+                feedbackParamsObj={application.assessment_results.feedback}
+              />
+              <DetailedFeedbackButton
+                onClickDetailedFeedback={{
+                  onClick: () => setOpenFeedback(true),
+                  style: { paddingTop: '16px' },
+                }}
+              />
+            </Stack>
+          </Collapse>
         )
       }
     />
@@ -926,6 +965,13 @@ const PhoneScreeningSection = ({
     application.phone_screening,
   );
 
+  const status = {
+    description: isPending
+      ? 'The candidate has received a screening invitation but has not yet taken the screening.'
+      : 'The candidate has not been invited for screening yet. ',
+    btnText: isPending ? 'Resend Invite' : 'Invite now',
+  };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/assessment?id=${application.id}`,
@@ -935,30 +981,64 @@ const PhoneScreeningSection = ({
 
   const [collapse, setCollapse] = useState(false);
 
+  const slotBody = (
+    <Collapse in={collapse}>
+      <Stack marginTop={'10px'}>
+        <AssessmentInvite
+          textDescription={status.description}
+          onClickCopyInterviewLink={{
+            onClick: () => handleCopy(),
+          }}
+          slotResendButton={
+            <ButtonPrimaryOutlinedRegular
+              buttonText={status.btnText}
+              buttonProps={{ onClick: async () => await handleInvite() }}
+            />
+          }
+        />
+      </Stack>
+    </Collapse>
+  );
+
   // if (!isValidEmail) return <></>;
   if (isNotInvited)
     return (
       <SidebarScreening
-        isNotInvited={true}
-        onclickInvite={{ onClick: async () => await handleInvite() }}
+        // isNotInvited={true}
+        // onclickInvite={{ onClick: async () => await handleInvite() }}
         slotStatus={<ScreeningStatusComponent application={application} />}
-        onclickCopyLink={{ onClick: () => handleCopy() }}
+        slotBody={slotBody}
+        onclickArrow={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '180deg' : '0deg'})`,
+          },
+        }}
+        // onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
 
   if (isPending)
     return (
       <SidebarScreening
-        isInvited={true}
-        onclickResend={{ onClick: async () => await handleInvite(true) }}
+        // isInvited={true}
+        // onclickResend={{ onClick: async () => await handleInvite(true) }}
         slotStatus={<ScreeningStatusComponent application={application} />}
-        onclickCopyLink={{ onClick: () => handleCopy() }}
+        slotBody={slotBody}
+        onclickArrow={{
+          onClick: () => setCollapse((prev) => !prev),
+          style: {
+            cursor: 'pointer',
+            transform: `rotate(${collapse ? '180deg' : '0deg'})`,
+          },
+        }}
+        // onclickCopyLink={{ onClick: () => handleCopy() }}
       />
     );
   return (
     <SidebarScreening
-      isSubmitted={true}
-      slotQuestions={
+      slotBody={
         <Collapse in={collapse}>
           <Stack gap={'20px'} marginTop={'20px'}>
             <ScreeningQuestions phoneScreening={phoneScreening} />
@@ -970,7 +1050,7 @@ const PhoneScreeningSection = ({
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+          transform: `rotate(${collapse ? '180deg' : '0deg'})`,
         },
       }}
     />

@@ -7,4 +7,6 @@ declare function AssessmentScore(props: {
   props?: Types.Devlink.RuntimeProps;
   isError?: Types.Visibility.VisibilityConditions;
   isScoreVisible?: Types.Visibility.VisibilityConditions;
+  isDurationVisible?: Types.Visibility.VisibilityConditions;
+  textDuration?: React.ReactNode;
 }): React.JSX.Element;

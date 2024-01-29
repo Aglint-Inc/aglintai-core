@@ -101,14 +101,14 @@ const ProfileDashboard = () => {
       value: recruiterUser.phone,
       validation: 'phone',
       label: 'Contact Number',
-      required:false
+      required: false,
     },
     position: {
       ...initialFormValues,
       value: recruiterUser.position,
       label: 'Position',
       blocked: false,
-      required:false,
+      required: false,
       placeholder: 'Enter your job title.',
     },
   };
@@ -353,7 +353,7 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     (acc, [key, curr]) => {
       let value = curr.value;
       let error = false;
-      if(curr.required){
+      if (curr.required) {
         switch (curr.validation) {
           case 'string':
             {

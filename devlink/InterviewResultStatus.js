@@ -1,72 +1,60 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
-import { ButtonOutlinedSmall } from "./ButtonOutlinedSmall";
+import { AssessmentInvite } from "./AssessmentInvite";
 import * as _utils from "./utils";
 import _styles from "./InterviewResultStatus.module.css";
 
-const _interactionsData = JSON.parse(
-  '{"events":{"e-1352":{"id":"e-1352","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1353"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365602},"e-1353":{"id":"e-1353","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1352"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"0064b8cf-9479-2476-c6a2-f47e4400269f","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697459365605},"e-1382":{"id":"e-1382","name":"","animationType":"preset","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-489","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1383"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1383":{"id":"e-1383","name":"","animationType":"preset","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-490","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1382"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"},"targets":[{"selector":".email-temp-wrap","originalId":"a79fecd5-634e-0ac6-7d1c-48e52d7d03d9","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697550948479},"e-1386":{"id":"e-1386","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-471","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1387"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976388},"e-1387":{"id":"e-1387","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-472","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1386"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6f093b60-cbb7-c451-fc49-a51ba7c34eb3","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1697701976390}},"actionLists":{"a-471":{"id":"a-471","title":"Email Interaction Hover In","actionItemGroups":[{"actionItems":[{"id":"a-471-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-471-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-471-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-471-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-471-n-6","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-471-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-472":{"id":"a-472","title":"Email Interaction Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-472-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-472-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-472-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737},"a-489":{"id":"a-489","title":"Email Interaction Hover In 2","actionItemGroups":[{"actionItems":[{"id":"a-489-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-489-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-489-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]},{"actionItems":[{"id":"a-489-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":1,"unit":""}},{"id":"a-489-n-5","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-489-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"flex"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1697459378737},"a-490":{"id":"a-490","title":"Email Interaction Hover Out 2","actionItemGroups":[{"actionItems":[{"id":"a-490-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":0,"unit":""}},{"id":"a-490-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".email-temp-wrap","selectorGuids":["9f457289-11ac-9035-e0da-78b37faff5f5"]},"globalSwatchId":"","rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-490-n-3","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".text-sm.color-blue-600","selectorGuids":["dc76774b-0be0-98ff-0afc-63b29c34e7b8","b60a7de9-41b3-cc43-d25a-3f8dab06d524"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1697459378737}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
-
 export function InterviewResultStatus({
   as: _Component = _Builtin.Block,
-  bgColorInterviewTag = {},
-  textStatus = "This is some text inside of a div block.",
-  colorPropsTextStatus = {},
-  textDescription = "This is some text inside of a div block.",
-  slotResendButton,
-  onClickCopyInterviewLink = {},
+  slotAssessmentScore,
+  slotAssessmentInvite,
+  onClickIcons = {},
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
-    <_Component
-      className={_utils.cx(_styles, "interview-result-status")}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "jd-analysis-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold", "mb-14")}
+        className={_utils.cx(_styles, "div-block-774", "width-100")}
         tag="div"
-      >
-        {"Interview Status"}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "interview-status-tag")}
-        tag="div"
-        {...bgColorInterviewTag}
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-sm", "fw-semibold")}
+          className={_utils.cx(_styles, "div-block-781")}
           tag="div"
-          {...colorPropsTextStatus}
         >
-          {textStatus}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block tag="div">{textDescription}</_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-385")} tag="div">
-        <_Builtin.Block tag="div">
-          {slotResendButton ?? <ButtonOutlinedSmall textLabel="Resend Link" />}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "cj-add-skill-btn-new")}
+            className={_utils.cx(_styles, "div-block-773")}
             tag="div"
-            {...onClickCopyInterviewLink}
           >
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M2.625%207.5C2.83211%207.5%203%207.66789%203%207.875C3%208.08211%202.83211%208.25%202.625%208.25H0.75C0.335786%208.25%200%207.91421%200%207.5V0.75C0%200.335786%200.335786%200%200.75%200H7.5C7.91421%200%208.25%200.335786%208.25%200.75V2.625C8.25%202.83211%208.08211%203%207.875%203C7.66789%203%207.5%202.83211%207.5%202.625V0.75H0.75V7.5H2.625ZM4.5%204.5V11.25H11.25V4.5H4.5ZM4.5%203.75H11.25C11.6642%203.75%2012%204.08579%2012%204.5V11.25C12%2011.6642%2011.6642%2012%2011.25%2012H4.5C4.08579%2012%203.75%2011.6642%203.75%2011.25V4.5C3.75%204.08579%204.08579%203.75%204.5%203.75Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
+              value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.125%203.00391C2.86979%203.00391%202.66016%203.08594%202.49609%203.25C2.33203%203.41406%202.25%203.6237%202.25%203.87891V12.6289C2.25%2012.8841%202.33203%2013.0938%202.49609%2013.2578C2.66016%2013.4219%202.86979%2013.5039%203.125%2013.5039H11.875C12.1302%2013.5039%2012.3398%2013.4219%2012.5039%2013.2578C12.668%2013.0938%2012.75%2012.8841%2012.75%2012.6289V3.87891C12.75%203.6237%2012.668%203.41406%2012.5039%203.25C12.3398%203.08594%2012.1302%203.00391%2011.875%203.00391H3.125ZM1.375%203.87891C1.39323%203.38672%201.56641%202.97656%201.89453%202.64844C2.22266%202.32031%202.63281%202.14714%203.125%202.12891H11.875C12.3672%202.14714%2012.7773%202.32031%2013.1055%202.64844C13.4336%202.97656%2013.6068%203.38672%2013.625%203.87891V12.6289C13.6068%2013.1211%2013.4336%2013.5312%2013.1055%2013.8594C12.7773%2014.1875%2012.3672%2014.3607%2011.875%2014.3789H3.125C2.63281%2014.3607%202.22266%2014.1875%201.89453%2013.8594C1.56641%2013.5312%201.39323%2013.1211%201.375%2012.6289V3.87891ZM5.75%208.47266H7.0625C7.22656%208.47266%207.35417%208.53646%207.44531%208.66406C7.51823%208.8099%207.52734%208.95573%207.47266%209.10156L6.92578%2010.25L9.25%208.03516H7.9375C7.77344%208.03516%207.65495%207.97135%207.58203%207.84375C7.49089%207.69792%207.48177%207.55208%207.55469%207.40625L8.07422%206.25781L5.75%208.47266ZM9.08594%204.31641C9.28646%204.33464%209.44141%204.41667%209.55078%204.5625C9.64193%204.72656%209.65104%204.90885%209.57812%205.10938L8.62109%207.16016H9.96094C10.3255%207.19661%2010.526%207.39714%2010.5625%207.76172C10.5625%207.92578%2010.4987%208.0625%2010.3711%208.17188L6.29688%2012.0547C6.1875%2012.1458%206.0599%2012.1914%205.91406%2012.1914C5.71354%2012.1732%205.55859%2012.0911%205.44922%2011.9453C5.35807%2011.7812%205.34896%2011.6081%205.42188%2011.4258L6.37891%209.34766H5.03906C4.67448%209.3112%204.47396%209.11068%204.4375%208.74609C4.4375%208.58203%204.5013%208.44531%204.62891%208.33594L8.70312%204.48047C8.8125%204.37109%208.9401%204.31641%209.08594%204.31641Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
             />
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "text-blue-600")}
+              className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Copy Interview Link"}
+              {"Assesment"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-782")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">{slotAssessmentScore}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-780")}
+            tag="div"
+            {...onClickIcons}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.60156%204.60156C7.86719%204.38281%208.13281%204.38281%208.39844%204.60156L12.8984%209.10156C13.1172%209.36719%2013.1172%209.63281%2012.8984%209.89844C12.6328%2010.1172%2012.3672%2010.1172%2012.1016%209.89844L8%205.79688L3.89844%209.89844C3.63281%2010.1172%203.36719%2010.1172%203.10156%209.89844C2.88281%209.63281%202.88281%209.36719%203.10156%209.10156L7.60156%204.60156Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+          </_Builtin.Block>
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotAssessmentInvite ?? <AssessmentInvite />}
       </_Builtin.Block>
     </_Component>
   );

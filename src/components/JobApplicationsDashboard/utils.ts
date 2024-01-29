@@ -217,7 +217,8 @@ export const getScreeningStatus = (
   const phoneScreening = ((phone_screening as any)?.response ??
     null) as PhoneScreeningResponseType[];
 
-  const isNotInvited = (emails?.phone_screening ?? null) === null;
+  const isNotInvited =
+    (emails?.phone_screening ?? null) === null && !phoneScreening;
   const isPending =
     (emails?.phone_screening ?? null) !== null && !phoneScreening;
   const isSubmitted = !isNotInvited && !isPending;
@@ -276,7 +277,7 @@ export const getAssessmentStatus = (
   const safeFeedback =
     feedback && (feedback as any).length > 0 ? feedback : null;
 
-  const isNotInvited = (emails?.interview ?? null) === null;
+  const isNotInvited = (emails?.interview ?? null) === null && !safeFeedback;
   const isPending = (emails?.interview ?? null) !== null && !safeFeedback;
   const isSubmitted = !isNotInvited && !isPending;
   const elapstimedTime = isPending

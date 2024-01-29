@@ -1,8 +1,13 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { ButtonPrimarySmall } from "./ButtonPrimarySmall";
 import * as _utils from "./utils";
 import _styles from "./UnableFetchResume.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-948":{"id":"e-948","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-386","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-949"}},"mediaQueries":["main","medium","small","tiny"],"target":{"selector":".aui-button-wrap.email","originalId":"650c129b14ba3ec43089005f|f3340951-3b1b-ee78-4e07-92dd67f04da8","appliesTo":"CLASS"},"targets":[{"selector":".aui-button-wrap.email","originalId":"650c129b14ba3ec43089005f|f3340951-3b1b-ee78-4e07-92dd67f04da8","appliesTo":"CLASS"}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1694910129600}},"actionLists":{"a-386":{"id":"a-386","title":"email-temp-editor-[close]","actionItemGroups":[{"actionItems":[{"id":"a-386-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"PARENT","selector":".rd-company-sidebar","selectorGuids":["5acd8927-8dc5-556d-8bbb-b45e8eb0ffa7"]},"value":0,"unit":""}},{"id":"a-386-n-3","actionTypeId":"TRANSFORM_MOVE","config":{"delay":0,"easing":"outExpo","duration":800,"target":{"selector":".rd-email-edit-wrapper","selectorGuids":["2295ead5-85e1-b9a6-3337-5728082f803c"]},"xValue":500,"xUnit":"px","yUnit":"PX","zUnit":"PX"}},{"id":"a-386-n-2","actionTypeId":"GENERAL_DISPLAY","config":{"delay":600,"easing":"","duration":0,"target":{"useEventTarget":"PARENT","selector":".rd-company-sidebar","selectorGuids":["5acd8927-8dc5-556d-8bbb-b45e8eb0ffa7"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1694910134507}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function UnableFetchResume({
   as: _Component = _Builtin.Block,
@@ -15,6 +20,8 @@ export function UnableFetchResume({
 
   slotDownload,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "padding-left-right-fetch")}
@@ -57,24 +64,29 @@ export function UnableFetchResume({
             {...onClickDownloadResume}
           >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cvs-view-res-btn",
-                "cursor-pointer"
-              )}
+              className={_utils.cx(_styles, "aui-button-wrap")}
               tag="div"
+              tabIndex="0"
             >
-              <_Builtin.Block tag="div">
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.5%208.19509L9.04645%205.64864C9.24171%205.45338%209.55829%205.45338%209.75355%205.64864C9.94882%205.84391%209.94882%206.16049%209.75355%206.35575L6.65355%209.45575C6.25829%209.85101%205.64171%209.85101%205.24645%209.45575L2.14645%206.35575C1.95118%206.16049%201.95118%205.84391%202.14645%205.64864C2.34171%205.45338%202.65829%205.45338%202.85355%205.64864L5.5%208.29509V1.0022C5.5%200.726055%205.72386%200.502197%206%200.502197C6.27614%200.502197%206.5%200.726055%206.5%201.0022V8.19509ZM1.5%2012.5022C1.22386%2012.5022%201%2012.2783%201%2012.0022C1%2011.7261%201.22386%2011.5022%201.5%2011.5022H10.5C10.7761%2011.5022%2011%2011.7261%2011%2012.0022C11%2012.2783%2010.7761%2012.5022%2010.5%2012.5022H1.5Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-600-2")}
+                className={_utils.cx(
+                  _styles,
+                  "aui-button",
+                  "is-button-outlined"
+                )}
                 tag="div"
+                tabIndex="0"
               >
-                {"Download Resume"}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "button-icon", "is-large")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons")}
+                    value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5.625%208.84467V0.375C5.625%200.167893%205.79289%200%206%200C6.20711%200%206.375%200.167893%206.375%200.375V8.76967L9.03483%206.10984C9.18128%205.96339%209.41872%205.96339%209.56516%206.10984C9.71161%206.25628%209.71161%206.49372%209.56516%206.64016L6.49016%209.71517C6.19372%2010.0116%205.73128%2010.0116%205.43483%209.71517L2.35983%206.64016C2.21339%206.49372%202.21339%206.25628%202.35983%206.10984C2.50628%205.96339%202.74372%205.96339%202.89017%206.10984L5.625%208.84467ZM1.125%2012C0.917893%2012%200.75%2011.8321%200.75%2011.625C0.75%2011.4179%200.917893%2011.25%201.125%2011.25H10.875C11.0821%2011.25%2011.25%2011.4179%2011.25%2011.625C11.25%2011.8321%2011.0821%2012%2010.875%2012H1.125Z%22%20fill%3D%22%231F73B7%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">{"Download Resume"}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
