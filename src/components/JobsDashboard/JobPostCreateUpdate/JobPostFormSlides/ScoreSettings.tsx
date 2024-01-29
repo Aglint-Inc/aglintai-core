@@ -175,13 +175,14 @@ ${jobForm.formFields.jobDescription}
   if (!isJsonLoading && !isJdTooShort) {
     showRegen = jobForm.formFields.isjdChanged;
   }
-
+  
   return (
     <>
       {
         <>
           <ScoreSetting
-            isRegenerateVisible={showRegen}
+            // isRegenerateVisible={showRegen}
+            isRegenerateVisible={jobForm.jobPostStatus === "closed" ? false : showRegen}  
             isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={
               <>

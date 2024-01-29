@@ -27,4 +27,6 @@ declare function JobsListingCard(props: {
   isJobWarningVisible?: Types.Visibility.VisibilityConditions;
   screeningCount?: React.ReactNode;
   disqualifiedCount?: React.ReactNode;
+  isScreeningPillsVisible?: Types.Visibility.VisibilityConditions;
+  isAssessmentPillVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

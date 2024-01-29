@@ -19,6 +19,17 @@ const departments = {
   ],
 };
 
+export const tabs = { 
+    'basicinfo':'basic-info',
+    'additionalinfo':'additional-info',
+    'about':'about',
+    'assessment':'assessment',
+    'jobassistant':'job-assistant',
+    'email':'email',
+    'team':'team',
+}
+
+
 export const generateDepartments = async (industry: string) => {
   const prompt = [
     {

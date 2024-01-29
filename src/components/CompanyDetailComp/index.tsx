@@ -7,6 +7,7 @@ import { CompanySetting, NavSublink } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import CompanyInfoComp from './CompanyInfoComp';
+import {tabs} from './utils'
 import {
   generateDepartments,
   generateRoles,
@@ -53,7 +54,7 @@ const CompanyDetailComp = () => {
               textLink={'Basic Info'}
               onClickNav={{
                 onClick: () => {
-                  router.replace('/company?tab=basic-info');
+                  router.replace(`/company?tab=${tabs.basicinfo}`);
                 },
               }}
             />
@@ -62,7 +63,7 @@ const CompanyDetailComp = () => {
               isActive={router.query?.tab === 'additional-info'}
               onClickNav={{
                 onClick: () => {
-                  router.replace('/company?tab=additional-info');
+                  router.replace(`/company?tab=${tabs.additionalinfo}`);
                 },
               }}
             />
@@ -71,7 +72,7 @@ const CompanyDetailComp = () => {
               isActive={router.query?.tab === 'about'}
               onClickNav={{
                 onClick: () => {
-                  router.replace('/company?tab=about');
+                  router.replace(`/company?tab=${tabs.about}`);
                 },
               }}
             />
@@ -81,7 +82,7 @@ const CompanyDetailComp = () => {
                 isActive={router.query?.tab === 'assessment'}
                 onClickNav={{
                   onClick: () => {
-                    router.replace('/company?tab=assessment');
+                    router.replace(`/company?tab=${tabs.assessment}`);
                   },
                 }}
               />
@@ -92,7 +93,7 @@ const CompanyDetailComp = () => {
                 isActive={router.query?.tab === 'job-assistant'}
                 onClickNav={{
                   onClick: () => {
-                    router.replace('/company?tab=job-assistant');
+                    router.replace(`/company?tab=${tabs.jobassistant}`);
                   },
                 }}
               />
@@ -102,7 +103,7 @@ const CompanyDetailComp = () => {
               isActive={router.query?.tab === 'email'}
               onClickNav={{
                 onClick: () => {
-                  router.replace('/company?tab=email');
+                  router.replace(`/company?tab=${tabs.email}`);
                 },
               }}
             />

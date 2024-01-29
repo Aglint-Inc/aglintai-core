@@ -28,4 +28,5 @@ declare function JobListing(props: {
   slotDescription?: Types.Devlink.Slot;
   slotSocialLink?: Types.Devlink.Slot;
   isDiscriptionEmpty?: Types.Visibility.VisibilityConditions;
+  isOtherOpenJobVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

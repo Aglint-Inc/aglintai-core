@@ -536,9 +536,11 @@ const NewJobFilterBlock = ({
             isTopApplicants={!detailedView}
             slotFilter={
               <Stack flexDirection={'row'} alignItems={'center'} gap={2}>
-                <SortJobApplications
-                  setApplicationLimit={setApplicationLimit}
-                />
+                {detailedView === false ? (
+                  <SortJobApplications
+                    setApplicationLimit={setApplicationLimit}
+                  />
+                ) : null}
                 <FilterJobApplications
                   setApplicationLimit={setApplicationLimit}
                 />

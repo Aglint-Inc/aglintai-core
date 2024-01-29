@@ -607,7 +607,7 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
         </Grid>
         <Grid item xs={12}>
           <ButtonPrimaryRegular
-            isDisabled={Boolean(router.query.preview)}
+            isDisabled={isDisabled}
             slotEndIcon={
               <Stack justifyContent={'center'} alignItems={'center'}>
                 <LoaderGrey />

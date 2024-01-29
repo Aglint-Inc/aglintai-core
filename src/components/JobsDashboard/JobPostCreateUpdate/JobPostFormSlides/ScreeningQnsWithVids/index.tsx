@@ -17,6 +17,7 @@ import {
 } from '@/devlink';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
+import { tabs } from '@/src/components/CompanyDetailComp/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
@@ -138,7 +139,7 @@ const ScreeningQns = () => {
                         </>
                       }
                       onClickCompanySetting={{
-                        onClick: () => router.replace(pageRoutes.COMPANY),
+                        onClick: () => router.replace(`${pageRoutes.COMPANY}?tab=${tabs.assessment}`),
                       }}
                     />
                   )}
