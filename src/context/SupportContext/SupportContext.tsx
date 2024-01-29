@@ -73,6 +73,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   setOpenTicketIndex: (x: number) => void;
   randomColors: { [key: string]: string };
+  loading: boolean;
 }
 
 const defaultProvider: ContextValue = {
@@ -120,6 +121,7 @@ const defaultProvider: ContextValue = {
     x;
   },
   randomColors: {},
+  loading: false,
 };
 
 const SupportContext = createContext<ContextValue>(defaultProvider);
@@ -215,7 +217,7 @@ const SupportProvider = ({ children }) => {
     }
     return filteredTickets;
   }, [filteredTickets, sort, sortOrder]);
-
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState<string>();
   const tickets = useMemo(() => {
     if (!search) return sortedTicket || [];
@@ -384,6 +386,7 @@ const SupportProvider = ({ children }) => {
             setAllTickets(ticketsDetail);
           });
         }
+        setLoading(false);
       });
     }
     // }
@@ -405,6 +408,7 @@ const SupportProvider = ({ children }) => {
     <SupportContext.Provider
       value={{
         tickets,
+        loading,
         openTicket,
         // setOpenTicket,
         allChecked,

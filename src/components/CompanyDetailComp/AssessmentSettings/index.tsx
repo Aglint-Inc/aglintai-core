@@ -10,6 +10,7 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateRecruiter } from '@/src/context/InterviewContext/utils';
+import { RecruiterType } from '@/src/types/data.types';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -23,7 +24,7 @@ function AssessmentSettings({
   setIsVideoAssessment,
 }) {
   const [index, setIndex] = useState(null);
-  const { recruiter } = useAuthDetails();
+  const { recruiter, setRecruiter } = useAuthDetails();
 
   const [selectedAvatar, setSelectedAvatar] = useState(
     recruiter?.ai_avatar || avatar_list[0],
@@ -47,6 +48,7 @@ function AssessmentSettings({
       .eq('id', recruiter.id)
       .select();
     if (!error) {
+      setRecruiter(data[0] as RecruiterType);
       return data[0];
     }
   }
@@ -67,6 +69,7 @@ function AssessmentSettings({
       .eq('id', recruiter.id)
       .select();
     if (!error) {
+      setRecruiter(data[0] as RecruiterType);
       return data[0];
     }
   }

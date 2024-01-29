@@ -19,6 +19,7 @@ import { InboxTickets } from '@/devlink/InboxTickets';
 import { Priority } from '@/devlink/Priority';
 import { StatusPill } from '@/devlink/StatusPill';
 import { TicketEmptyState } from '@/devlink/TicketEmptyState';
+import { WelcomeMatTickets } from '@/devlink2';
 import {
   getPriorityIcon,
   useSupportContext,
@@ -36,6 +37,7 @@ import { capitalizeAll, getRandomColor } from '@/src/utils/text/textUtils';
 
 import SupportEmptyLottie from './EmptyLottie';
 import SupportTicketDetails from './SupportTicket';
+import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
 dayjs.extend(relativeTime);
 
@@ -55,6 +57,7 @@ function Support() {
     search,
     setSearch,
     randomColors,
+    loading,
   } = useSupportContext();
   const router = useRouter();
 
@@ -70,127 +73,132 @@ function Support() {
   }, [router.isReady]);
   return (
     <>
-      <AllTickets
-        slotTicketList={
-          tickets.length ? (
-            tickets.map((ticket, index) => (
-              <Ticket
-                key={ticket.id}
-                ticket={ticket}
-                index={index}
-                candidateBackgroundColor={randomColors[ticket.id]}
-              />
-            ))
-          ) : (
-            <TicketEmptyState slotLottie={<SupportEmptyLottie />} />
-          )
-        }
-        onClickAllTicketCheck={{
-          onClick: () => {
-            setAllChecked(!allChecked);
-          },
-        }}
-        isAllTicketChecked={allChecked}
-        onClickPriority={{
-          onClick: () => {
-            if (sort === 'priority') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('priority');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortPriorityArrowVisible={sort === 'priority'}
-        onClickSortCandidateName={{
-          onClick: () => {
-            if (sort === 'name') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('name');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortCandidateArrowVisible={sort === 'name'}
-        onClickSortAssignee={{
-          onClick: () => {
-            if (sort === 'assignee') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('assignee');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortAssigneeArrowVisible={sort === 'assignee'}
-        onClickSortStatus={{
-          onClick: () => {
-            if (sort === 'status') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('status');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortStatusVisible={sort === 'status'}
-        onClickSortLastUpdate={{
-          onClick: () => {
-            if (sort === 'lastUpdate') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('lastUpdate');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortUpdateArrowVisible={sort === 'lastUpdate'}
-        onClickSortJobInfo={{
-          onClick: () => {
-            if (sort === 'jobInfo') {
-              // @ts-ignore
-              setSortOrder(-1 * sortOrder);
-            } else {
-              setSort('jobInfo');
-              setSortOrder(1);
-            }
-          },
-        }}
-        isSortJobArrowVisible={sort === 'jobInfo'}
-        slotSearch={
-          <CustomTextField
-            placeholder='Search'
-            value={search}
-            name='search'
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            sx={{ height: '32px', width: '245px' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  position='start'
-                  sx={{
-                    '&': {
-                      margin: '0!important',
-                      paddingRight: '8px',
-                    },
-                  }}
-                >
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        }
-        textHeaderStatus={capitalize(filters.status)}
-      />
+      {loading?<Loader/>:(tickets.length == 0 ? (
+        <WelcomeMatTickets />
+      ) : (
+        <AllTickets
+          slotTicketList={
+            tickets.length ? (
+              tickets.map((ticket, index) => (
+                <Ticket
+                  key={ticket.id}
+                  ticket={ticket}
+                  index={index}
+                  candidateBackgroundColor={randomColors[ticket.id]}
+                />
+              ))
+            ) : (
+              <TicketEmptyState slotLottie={<SupportEmptyLottie />} />
+            )
+          }
+          onClickAllTicketCheck={{
+            onClick: () => {
+              setAllChecked(!allChecked);
+            },
+          }}
+          isAllTicketChecked={allChecked}
+          onClickPriority={{
+            onClick: () => {
+              if (sort === 'priority') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('priority');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortPriorityArrowVisible={sort === 'priority'}
+          onClickSortCandidateName={{
+            onClick: () => {
+              if (sort === 'name') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('name');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortCandidateArrowVisible={sort === 'name'}
+          onClickSortAssignee={{
+            onClick: () => {
+              if (sort === 'assignee') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('assignee');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortAssigneeArrowVisible={sort === 'assignee'}
+          onClickSortStatus={{
+            onClick: () => {
+              if (sort === 'status') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('status');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortStatusVisible={sort === 'status'}
+          onClickSortLastUpdate={{
+            onClick: () => {
+              if (sort === 'lastUpdate') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('lastUpdate');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortUpdateArrowVisible={sort === 'lastUpdate'}
+          onClickSortJobInfo={{
+            onClick: () => {
+              if (sort === 'jobInfo') {
+                // @ts-ignore
+                setSortOrder(-1 * sortOrder);
+              } else {
+                setSort('jobInfo');
+                setSortOrder(1);
+              }
+            },
+          }}
+          isSortJobArrowVisible={sort === 'jobInfo'}
+          slotSearch={
+            <CustomTextField
+              placeholder='Search'
+              value={search}
+              name='search'
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              sx={{ height: '32px', width: '245px' }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position='start'
+                    sx={{
+                      '&': {
+                        margin: '0!important',
+                        paddingRight: '8px',
+                      },
+                    }}
+                  >
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          }
+          textHeaderStatus={capitalize(filters.status)}
+        />
+      ))}
+
       <Drawer
         open={Boolean(openTicket)}
         onClose={() => {

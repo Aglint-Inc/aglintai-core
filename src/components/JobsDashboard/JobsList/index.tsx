@@ -39,6 +39,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <>
             <ScrollList uniqueKey={job.id}>
               <JobsListingCard
+                isAssessmentPillVisible={job.assessment}
+                isScreeningPillsVisible={job.phone_screen_enabled}
                 slotAtsBadge={
                   job.posted_by == POSTED_BY.LEVER ? (
                     <AtsBadge
