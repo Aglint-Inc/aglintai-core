@@ -217,22 +217,6 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
             textEmailName={templateObj[String(templatePath)]?.heading}
             slotForm={
               <Stack spacing={'20px'}>
-                <Stack
-                  spacing={1}
-                  sx={{
-                    bgcolor: palette.grey[100],
-                    p: 2,
-                    borderRadius: '8px',
-                  }}
-                >
-                  <Typography variant='h5'>
-                    Pro Tip: Customize Your Message
-                  </Typography>
-                  <Typography variant='body2'>
-                    For dynamic content, utilize placeholders like [firstName],
-                    [lastName], [companyName], and [jobTitle].
-                  </Typography>
-                </Stack>
                 <UITextField
                   labelSize='small'
                   fullWidth

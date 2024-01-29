@@ -2,16 +2,18 @@ import { NewJobStep2 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
-// import UITextField from '../../../Common/UITextField';
 
 const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
   const {
     handleUpdateFormFields,
-    jobForm: { formFields, formType },
+    jobForm: { formFields, formType, jobPostId },
   } = useJobForm();
 
   const handleChangeTipTap = (s: string) => {
     if (showWarnOnEdit) showWarnOnEdit();
+    if (formType === 'new' && formFields.jobDescription.length === 0) {
+      autoGenJson(jobPostId);
+    }
     handleUpdateFormFields({
       path: 'jobDescription',
       value: s,
@@ -49,3 +51,14 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
 };
 
 export default BasicStepTwo;
+
+const autoGenJson = (jobId: string) => {
+  localStorage.setItem(`auto-gen-${jobId}`, 'true');
+};
+export const isAutoGenJson = (jobId: string) => {
+  return localStorage.getItem(`auto-gen-${jobId}`) === 'true';
+};
+
+export const removeAutogenJson = (jobId: string) => {
+  localStorage.removeItem(`auto-gen-${jobId}`);
+};

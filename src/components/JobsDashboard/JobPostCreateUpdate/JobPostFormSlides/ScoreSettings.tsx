@@ -1,8 +1,7 @@
 import { Popover } from '@mui/material';
-import axios from 'axios';
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Checkbox,
@@ -19,6 +18,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
 
+import { isAutoGenJson, removeAutogenJson } from './BasicStepTwo';
 import { JdJsonType, JobFormState, useJobForm } from '../JobPostFormProvider';
 import { API_FAIL_MSG } from '../utils';
 
@@ -68,20 +68,20 @@ const ScoreSettings = () => {
   const [isJsonLoading, setIsJsonLoading] = useState(false);
   const [newField, setNewField] = useState<newField>(null);
   const [newFieldEv, setNewFieldEv] = useState(null);
-  const sourceRef = useRef(axios.CancelToken.source());
 
   const handleGenerate = async () => {
     try {
       setIsJsonLoading(true);
+      removeAutogenJson(jobForm.jobPostId);
+
       const json = await generatejdToScoreJson(
         `
 Job Role : ${jobForm.formFields.jobTitle}
 
 ${jobForm.formFields.jobDescription}
 `,
-        sourceRef.current,
       );
-    
+
       const j: JdJsonType = {
         title: jobForm.formFields.jobTitle,
         level: json.jobLevel,
@@ -131,9 +131,7 @@ ${jobForm.formFields.jobDescription}
         value: j,
       });
     } catch (err) {
-      if (!axios.isCancel(err)) {
-        toast.error(API_FAIL_MSG);
-      }
+      toast.error(API_FAIL_MSG);
     } finally {
       setIsJsonLoading(false);
     }
@@ -148,14 +146,12 @@ ${jobForm.formFields.jobDescription}
       if (
         areAllFieldsEmpty &&
         jobForm.formFields.jobDescription &&
-        jobForm.formFields.jobDescription.split(' ').length > 10
+        jobForm.formFields.jobDescription.split(' ').length > 10 &&
+        isAutoGenJson(jobForm.jobPostId)
       ) {
         handleGenerate();
       }
     })();
-    return () => {
-      sourceRef.current.cancel('Pervious request canceled');
-    };
   }, [jobForm.formFields.jdJson]);
 
   const handleClickEdit = (paramKey: string, id: string, s, e) => {
@@ -175,14 +171,14 @@ ${jobForm.formFields.jobDescription}
   if (!isJsonLoading && !isJdTooShort) {
     showRegen = jobForm.formFields.isjdChanged;
   }
-  
+
   return (
     <>
       {
         <>
           <ScoreSetting
             // isRegenerateVisible={showRegen}
-            isRegenerateVisible={showRegen}  
+            isRegenerateVisible={showRegen}
             isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={
               <>

@@ -139,7 +139,10 @@ const ScreeningQns = () => {
                         </>
                       }
                       onClickCompanySetting={{
-                        onClick: () => router.replace(`${pageRoutes.COMPANY}?tab=${tabs.assessment}`),
+                        onClick: () =>
+                          router.replace(
+                            `${pageRoutes.COMPANY}?tab=${tabs.assessment}`,
+                          ),
                       }}
                     />
                   )}
@@ -250,7 +253,7 @@ const ScreeningQns = () => {
                           .showInstructionVideo,
                     });
                   }}
-                  isChecked={!interviewSetting.showInstructionVideo}
+                  isChecked={interviewSetting.showInstructionVideo}
                 />
               }
               slotUpload={

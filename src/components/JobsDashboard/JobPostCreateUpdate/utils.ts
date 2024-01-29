@@ -266,7 +266,10 @@ export const findDisclaimers = (jobForm: FormJobType) => {
 export const isWarningsCleared = (warnings: FormErrorParams) => {
   let flag = true;
   Object.keys(warnings).forEach((key: JobFormState['currSlide']) => {
-    if (warnings[String(key)].err.length > 0) {
+    if (
+      warnings[String(key)].err.length > 0 ||
+      warnings[String(key)]?.rightErr.length > 0
+    ) {
       flag = false;
     }
   });

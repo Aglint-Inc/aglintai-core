@@ -118,7 +118,7 @@ const TipTapAIEditor = ({
               wordBreak: 'break-word',
             },
             '& .ProseMirror *::selection': {
-              background: '#b100af30',
+              background: '#EDF8F4',
             },
             '.tiptap p.is-editor-empty:first-child::before ': {
               color: '#adb5bd',

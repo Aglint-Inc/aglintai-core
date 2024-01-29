@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
@@ -100,21 +100,6 @@ const EmailTemplate = ({ setIsSaving }) => {
                     textEmailName={templateObj[selectedTemplate]?.heading}
                     slotForm={
                       <Stack spacing={'20px'}>
-                        <Stack
-                          spacing={1}
-                          sx={{
-                            bgcolor: palette.grey[100],
-                            p: 2,
-                            borderRadius: '8px',
-                          }}
-                        >
-                          <Typography variant='h5'>
-                            Pro Tip: Customize Your Message
-                          </Typography>
-                          <Typography variant='body2'>
-                            {templateObj[selectedTemplate]?.dynamicContent}
-                          </Typography>
-                        </Stack>
                         <UITextField
                           labelSize='small'
                           fullWidth
