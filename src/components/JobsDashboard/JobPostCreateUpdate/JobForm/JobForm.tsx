@@ -697,6 +697,7 @@ const SideSection = () => {
   } else if (currSlide === 'screening') {
     return (
       <AssessmentSide
+      textDisableButton={'Disable'}
         onClickDisableAssessment={{
           onClick: async () => {
             const { count } = await supabase
