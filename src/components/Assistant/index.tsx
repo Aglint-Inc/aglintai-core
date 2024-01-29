@@ -9,6 +9,7 @@ import {
   ChatboxBodyHeader,
   ChatboxCandidateListItem,
   ChatboxPage,
+  WelcomeMatAssistant,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -106,110 +107,119 @@ function Assistant() {
     );
   } else
     return (
-      <ChatboxPage
-        slotChatHeader={
-          listOfThreads.length ? (
-            <ChatboxBodyHeader
-              date={selectedObj.time}
-              email={selectedObj.email}
-              phoneNumber={selectedObj.phone}
-              name={capitalize(selectedObj.name)}
-            />
-          ) : (
-            <></>
-          )
-        }
-        slotSearch={
-          <Stack p={'20px'}>
-            <Stack spacing={'20px'}>
-              <UITypography>Candidates</UITypography>
-              {!viewSeach ? (
-                <Stack
-                  direction={'row'}
-                  alignItems={'center'}
-                  justifyContent={'space-between'}
-                >
-                  <FilterButtons status={status} setStatus={setStatus} />
-                  <IconButton
-                    onClick={() => {
-                      setViewSearch(true);
-                      setTimeout(() => {
-                        inputSearch.current.focus();
-                      }, 100);
-                    }}
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Stack>
+      <>
+        {listOfThreads.length > 0 ? (
+          <ChatboxPage
+            slotChatHeader={
+              listOfThreads.length ? (
+                <ChatboxBodyHeader
+                  date={selectedObj.time}
+                  email={selectedObj.email}
+                  phoneNumber={selectedObj.phone}
+                  name={capitalize(selectedObj.name)}
+                />
               ) : (
-                <TextField
-                  inputRef={inputSearch}
-                  onBlur={() => {
-                    if (inputSearch.current.value === '') setViewSearch(false);
-                  }}
-                  variant='outlined'
-                  onChange={(e) => {
-                    setSelectedName(e.target.value);
-                  }}
-                />
-              )}
-            </Stack>
-          </Stack>
-        }
-        slotChatBody={
-          listOfThreads.length ? (
-            <Conversation messages={selectedObj?.messages} />
-          ) : (
-            <Stack
-              height={'80vh'}
-              width={'100%'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              flexDirection={'column'}
-              spacing={'10px'}
-            >
-              <ChatIcon />
+                <></>
+              )
+            }
+            slotSearch={
+              <Stack p={'20px'}>
+                <Stack spacing={'20px'}>
+                  <UITypography>Candidates</UITypography>
+                  {!viewSeach ? (
+                    <Stack
+                      direction={'row'}
+                      alignItems={'center'}
+                      justifyContent={'space-between'}
+                    >
+                      <FilterButtons status={status} setStatus={setStatus} />
+                      <IconButton
+                        onClick={() => {
+                          setViewSearch(true);
+                          setTimeout(() => {
+                            inputSearch.current.focus();
+                          }, 100);
+                        }}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </Stack>
+                  ) : (
+                    <TextField
+                      inputRef={inputSearch}
+                      onBlur={() => {
+                        if (inputSearch.current.value === '')
+                          setViewSearch(false);
+                      }}
+                      variant='outlined'
+                      onChange={(e) => {
+                        setSelectedName(e.target.value);
+                      }}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+            }
+            slotChatBody={
+              listOfThreads.length ? (
+                <Conversation messages={selectedObj?.messages} />
+              ) : (
+                <Stack
+                  height={'80vh'}
+                  width={'100%'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  flexDirection={'column'}
+                  spacing={'10px'}
+                >
+                  <ChatIcon />
 
-              <UITypography color={'grey.600'}>No messages found</UITypography>
-            </Stack>
-          )
-        }
-        slotCandidateList={
-          listOfThreads.length ? (
-            filteredCandidates.map((thread, i) => {
-              return (
-                <ChatboxCandidateListItem
-                  isApplied={thread.applied}
-                  isSelected={selectedObj.email === thread.candidate_email}
-                  onclickProps={{
-                    onClick: () => {
-                      handleCardClick(thread);
-                    },
-                  }}
-                  key={i}
-                  name={capitalize(thread.candidate_name)}
-                  email={thread.candidate_email}
-                  date={formatTimeStamp(thread.created_at)}
-                />
-              );
-            })
-          ) : (
-            <Stack
-              height={'80vh'}
-              width={'100%'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              flexDirection={'column'}
-              spacing={'10px'}
-            >
-              <ChatIcon />
-              <UITypography color={'grey.600'}>
-                No candidates found
-              </UITypography>
-            </Stack>
-          )
-        }
-      />
+                  <UITypography color={'grey.600'}>
+                    No messages found
+                  </UITypography>
+                </Stack>
+              )
+            }
+            slotCandidateList={
+              listOfThreads.length ? (
+                filteredCandidates.map((thread, i) => {
+                  return (
+                    <ChatboxCandidateListItem
+                      isApplied={thread.applied}
+                      isSelected={selectedObj.email === thread.candidate_email}
+                      onclickProps={{
+                        onClick: () => {
+                          handleCardClick(thread);
+                        },
+                      }}
+                      key={i}
+                      name={capitalize(thread.candidate_name)}
+                      email={thread.candidate_email}
+                      date={formatTimeStamp(thread.created_at)}
+                    />
+                  );
+                })
+              ) : (
+                <Stack
+                  height={'80vh'}
+                  width={'100%'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  flexDirection={'column'}
+                  spacing={'10px'}
+                >
+                  <ChatIcon />
+                  <UITypography color={'grey.600'}>
+                    No candidates found
+                  </UITypography>
+                </Stack>
+              )
+            }
+          />
+        ) : (
+          <WelcomeMatAssistant />
+        )}
+      </>
     );
 }
 
