@@ -8,7 +8,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 
 import CompanyInfoComp from './CompanyInfoComp';
-import {tabs} from './utils'
+import { tabs } from './utils';
 import {
   generateDepartments,
   generateRoles,
@@ -42,7 +42,7 @@ const CompanyDetailComp = () => {
     }
   }, [router]);
 
-  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled ');
+  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const isTeamEnabled = posthog.isFeatureEnabled('isTeamEnabled');
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
 
