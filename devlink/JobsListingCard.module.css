@@ -625,7 +625,7 @@
 
 .rd-status-badge {
   display: flex;
-  padding: 4px 14px;
+  padding: 4px 14px 4px 8px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 4px;

@@ -207,7 +207,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                 }
               />
               <TextField
-                label='Zip code'
+                label='Zip Code'
                 defaultValue={location.zipcode.value}
                 required={location.zipcode.required}
                 onChange={(e) => handleChange(e, 'zipcode')}

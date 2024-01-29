@@ -44,6 +44,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   useEffect(() => {
     if (recruiter?.departments && open) {
       setDepartmentState(recruiter?.departments);
+      setOptions(initialDepartments);
     }
   }, [recruiter?.departments, open]);
 
@@ -117,7 +118,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                       alignItems={'center'}
                       spacing={'4px'}
                     >
-                      <Typography variant='body1'>{option}</Typography>
+                      <Typography variant='body2'>{option}</Typography>
                       <Typography variant='caption'>
                         - Add Department
                       </Typography>

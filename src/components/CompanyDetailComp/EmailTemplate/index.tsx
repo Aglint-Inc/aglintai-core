@@ -254,7 +254,7 @@ export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
     and [supportLink].`,
     descriptionInJob: 'Customise phone screening email template for this job',
     description:
-      'Set up a default Phone Screening email template. You can make specific changes for individual job posts later.',
+      'Set up a default phone screening email template. You can make specific changes for individual job posts later.',
     subjectPlaceHolder: 'Application Received for [jobTitle] at [companyName]',
     bodyPlaceHolder: `Dear [firstName],
 

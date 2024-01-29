@@ -39,8 +39,10 @@ const AddRolesDialog: React.FC<RolesProps> = ({
   };
 
   useEffect(() => {
-    if (recruiter?.available_roles && open)
+    if (recruiter?.available_roles && open) {
       setRoles(recruiter?.available_roles);
+      setOptions(initialRoles);
+    }
   }, [recruiter?.available_roles, open]);
 
   let initialRoles = [];

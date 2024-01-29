@@ -39,8 +39,10 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
   };
 
   useEffect(() => {
-    if (recruiter?.technology_score && open)
+    if (recruiter?.technology_score && open) {
       setStacks(recruiter?.technology_score);
+      setOptions(initialStacks);
+    }
   }, [recruiter?.technology_score, open]);
 
   let initialStacks = [];
