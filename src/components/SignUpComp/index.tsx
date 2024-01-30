@@ -2,9 +2,8 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-import { SignupSlider } from '@/devlink';
+import { OnboardingFinalState, SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
-import { RcSuccessBlock, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -17,7 +16,6 @@ import SlideDetailsOne from './SlideDetailsOne';
 import SlideDetailsTwo from './SlideDetailsTwo';
 import SlideTwoSignUp from './SlideSignup';
 import { stepObj } from './SlideSignup/utils';
-import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 
 const SignUpComp = () => {
@@ -107,41 +105,25 @@ const SignUpComp = () => {
         </YTransform>
       ) : step == stepObj.allSet ? (
         <YTransform uniqueKey={step}>
-          <RecCompanyDetails
-            slotMain={
-              <RcSuccessBlock
-                message='You are all set'
-                slotButton={
-                  <Stack direction={'row'} spacing={'10px'}>
-                    <AUIButton
-                      onClick={() => {
-                        router.push(`${pageRoutes.JOBS}/new`, undefined, {
-                          shallow: true,
-                        });
-                        sendOnboardingMail(
-                          recruiterUser.email,
-                          recruiterUser.first_name,
-                        );
-                      }}
-                    >
-                      Post your first job
-                    </AUIButton>
-                    <AUIButton
-                      variant='outlined'
-                      onClick={() => {
-                        router.push(pageRoutes.JOBS);
-                        sendOnboardingMail(
-                          recruiterUser.email,
-                          recruiterUser.first_name,
-                        );
-                      }}
-                    >
-                      Go to Dashboard
-                    </AUIButton>
-                  </Stack>
-                }
-              />
-            }
+          <OnboardingFinalState
+            onClickImportJob={{
+              onClick: () => {
+                router.push(pageRoutes.JOBS);
+                sendOnboardingMail(
+                  recruiterUser.email,
+                  recruiterUser.first_name,
+                );
+              },
+            }}
+            onClickSourceCandidates={{
+              onClick: () => {
+                router.push(pageRoutes.CANDIDATES);
+                sendOnboardingMail(
+                  recruiterUser.email,
+                  recruiterUser.first_name,
+                );
+              },
+            }}
           />
         </YTransform>
       ) : (

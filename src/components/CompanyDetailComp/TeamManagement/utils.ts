@@ -17,6 +17,7 @@ export const getMembersFromDB = async (
     const { data: users, error: userError } = await supabase
       .from('recruiter_user')
       .select()
+      .eq('is_deactivated', false)
       .in('user_id', userIds);
     if (!userError && users.length) {
       return users;

@@ -304,6 +304,7 @@ export * from "./NotificationInfo";
 export * from "./NotificationSuccess";
 export * from "./NotificationWarning";
 export * from "./OfficeLocationCard";
+export * from "./OnboardingFinalState";
 export * from "./OpenJobListingCard";
 export * from "./Page404";
 export * from "./PageNothing";
