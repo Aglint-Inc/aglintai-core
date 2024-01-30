@@ -211,7 +211,11 @@ function CandidateDetail() {
                           selectedCandidate?.organization?.id ===
                           exp?.organization_id
                         }
-                        isActive={ind === 0}
+                        isActive={
+                          ind === 0 &&
+                          selectedCandidate?.organization?.id ===
+                            exp?.organization_id
+                        }
                         slotLogo={
                           <Avatar
                             variant='rounded'
