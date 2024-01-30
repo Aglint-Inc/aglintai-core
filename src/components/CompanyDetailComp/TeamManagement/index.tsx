@@ -217,7 +217,7 @@ const AddMember = ({
     name: string;
     email: string;
     role: string;
-  }>({ name: null, email: null, role: 'recruiter' });
+  }>({ name: null, email: null, role: 'member' });
 
   const [formError, setFormError] = useState<{
     name: boolean;

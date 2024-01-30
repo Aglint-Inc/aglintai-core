@@ -115,7 +115,7 @@ const CompanyDetailComp = () => {
             />
             {isTeamEnabled && (
               <NavSublink
-                textLink={'Team Settings'}
+                textLink={'Teams'}
                 isActive={router.query?.tab === 'team'}
                 onClickNav={{
                   onClick: () => {

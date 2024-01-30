@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import React, { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
@@ -48,7 +49,7 @@ export default function Loading() {
     }
   };
 
-  const createUser = () => {
+  const createUser = async () => {
     supabase
       .from('recruiter_relation')
       .select('*')
@@ -86,30 +87,37 @@ export default function Loading() {
                 .select();
 
               if (!erroruser) {
-                const { data: dataRecruiter, error: errorRecruiter } =
-                  await supabase
-                    .from('recruiter')
-                    .insert({
-                      email: userDetails.user.email,
-                      name:
-                        userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                          '.com',
-                          '',
-                        ) || '',
-                    })
-                    .select();
-                if (!errorRecruiter) {
-                  await supabase
-                    .from('recruiter_user')
-                    .update({ recruiter_id: dataRecruiter[0].id })
-                    .eq('user_id', userDetails.user.id);
-                  await supabase.from('recruiter_relation').insert({
-                    user_id: userDetails.user.id,
-                    recruiter_id: dataRecruiter[0].id,
-                    is_active: true,
-                  });
-                  router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+                const rec_id = uuidv4();
+
+                await supabase.from('recruiter').insert({
+                  email: userDetails.user.email,
+                  name:
+                    userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                      '.com',
+                      '',
+                    ) || '',
+                  id: rec_id,
+                });
+
+                const { error } = await supabase.rpc(
+                  'createrecuriterrelation',
+                  {
+                    in_recruiter_id: rec_id,
+                    in_user_id: userDetails.user.id,
+                    in_is_active: true,
+                  },
+                );
+
+                if (error) {
+                  throw new Error(error.message);
                 }
+
+                await supabase
+                  .from('recruiter_user')
+                  .update({ recruiter_id: rec_id })
+                  .eq('user_id', userDetails.user.id);
+
+                router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
               }
             })();
           } else {
