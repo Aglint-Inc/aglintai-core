@@ -366,7 +366,7 @@ function CandidateSearchHistory() {
             </>
           }
           slotInputSearch={
-            <Stack pl={0.5}>
+            <Stack>
               <UITextField
                 value={searchQuery}
                 placeholder={
