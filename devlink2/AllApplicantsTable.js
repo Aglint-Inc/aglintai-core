@@ -36,7 +36,8 @@ export function AllApplicantsTable({
             _styles,
             "cv-list-column-wrapper",
             "header",
-            "width-auto"
+            "width-auto",
+            "no_border-copy"
           )}
           tag="div"
         >

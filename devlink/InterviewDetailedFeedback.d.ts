@@ -9,4 +9,7 @@ declare function InterviewDetailedFeedback(props: {
   slotDetailedFeedback?: Types.Devlink.Slot;
   slotTranscript?: Types.Devlink.Slot;
   onClickClose?: Types.Devlink.RuntimeProps;
+  onClickNext?: Types.Devlink.RuntimeProps;
+  onClickPrev?: Types.Devlink.RuntimeProps;
+  onClickBack?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

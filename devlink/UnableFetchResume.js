@@ -52,7 +52,7 @@ export function UnableFetchResume({
           }
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "button-wrappers-unable-fetch")}
+          className={_utils.cx(_styles, "button-wrappers-unable-fetch", "hide")}
           tag="div"
         >
           <_Builtin.Block tag="div" {...onClickViewResume}>

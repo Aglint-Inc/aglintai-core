@@ -36,7 +36,6 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
-import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
@@ -147,6 +146,16 @@ const JobApplicationComponent = () => {
             ? true
             : false
         }
+        slotRefresh={
+          job?.status === 'published' && (
+            <RefreshButton
+              isDisabled={allApplicationsDisabled}
+              text={'Refresh'}
+              onClick={async () => await handleManualRefresh()}
+            />
+          )
+        }
+        isImportCandidates={job?.status === 'published'}
         slotLoadingLottie={
           <CircularProgress
             style={{
@@ -157,9 +166,15 @@ const JobApplicationComponent = () => {
           />
         }
         isFetchingPillVisible={atsSync}
-        textJobStatus={null}
+        textJobStatus={capitalize(job?.status ?? 'all')}
         textRole={capitalize(job.job_title)}
         textApplicantsNumber={``}
+        onclickHeaderJobs={{
+          onClick: () => {
+            router.push(`/jobs?status=${job?.status ?? 'all'}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
         onClickEditJobs={{
           onClick: () => {
             router.push(`/jobs/edit?job_id=${job.id}`);
@@ -193,9 +208,6 @@ const JobApplicationComponent = () => {
             setApplicationLimit={setApplicationLimit}
           />
         }
-        onclickHeaderJobs={{
-          href: `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.JOBS}`,
-        }}
         onclickAddCandidates={{
           onClick: () => {
             setOpenImportCandidates(true);
@@ -208,13 +220,6 @@ const JobApplicationComponent = () => {
             sectionApplications={sectionApplications}
             handleSelectCurrentApplication={handleSelectCurrentApplication}
             currentApplication={currentApplication}
-          />
-        }
-        slotRefresh={
-          <RefreshButton
-            isDisabled={allApplicationsDisabled}
-            text={'Refresh'}
-            onClick={async () => await handleManualRefresh()}
           />
         }
         slotPagination={
@@ -601,7 +606,6 @@ const AddCandidates = ({
 const NewJobDetailsTabs = () => {
   const { job, section, handleSelectSection } = useJobApplications();
   const count = job.count;
-
   return (
     <JobDetailsTabs
       isNewSelected={section === JobApplicationSections.NEW}
@@ -609,16 +613,19 @@ const NewJobDetailsTabs = () => {
       onClickNew={{
         onClick: () => handleSelectSection(JobApplicationSections.NEW),
       }}
+      isScreeningVisible={job.phone_screen_enabled}
+      isScreeningSelected={section === JobApplicationSections.SCREENING}
+      countScreening={count.screening}
+      onClickScreening={{
+        onClick: () =>
+          job.phone_screen_enabled &&
+          handleSelectSection(JobApplicationSections.SCREENING),
+      }}
       isAssessmentSelected={section === JobApplicationSections.ASSESSMENT}
       countAssessment={count.assessment}
       isAssessmentVisible={job.assessment}
       onClickAssessment={{
         onClick: () => handleSelectSection(JobApplicationSections.ASSESSMENT),
-      }}
-      isScreeningSelected={section === JobApplicationSections.SCREENING}
-      countScreening={count.screening}
-      onClickScreening={{
-        onClick: () => handleSelectSection(JobApplicationSections.SCREENING),
       }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
       countDisqualified={count.disqualified}

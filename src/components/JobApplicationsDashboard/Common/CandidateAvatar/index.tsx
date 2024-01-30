@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 
@@ -11,14 +13,16 @@ const CandidateAvatar = ({
   fontSize?: number;
 }) => {
   return (
-    <MuiAvatar
-      level={getCandidateDetails(application, 'name').value}
-      src={application.candidates.avatar}
-      variant={'circular'}
-      width={'100%'}
-      height={'100%'}
-      fontSize={`${fontSize}px`}
-    />
+    <Stack width={'100%'} sx={{ aspectRatio: 1 }}>
+      <MuiAvatar
+        level={getCandidateDetails(application, 'name').value}
+        src={`${application.candidates.avatar}?d=404`}
+        variant={'circular'}
+        width={'100%'}
+        height={'100%'}
+        fontSize={`${fontSize}px`}
+      />
+    </Stack>
   );
 };
 

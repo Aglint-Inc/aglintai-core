@@ -8,6 +8,7 @@ export function UserChangeEmail({
   as: _Component = _Builtin.Block,
   slotEmail,
   onClickEmailChange = {},
+  texDesc = "Your current email is raimon@aglinthq.com. To update your email, enter the new email address. We will send a verification link to the new email; please confirm it to complete the email change.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "profile-block")} tag="div">
@@ -17,6 +18,14 @@ export function UserChangeEmail({
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Change Email"}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-802")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-grey-600")}
+          tag="div"
+        >
+          {texDesc}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

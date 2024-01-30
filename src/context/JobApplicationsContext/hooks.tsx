@@ -2,7 +2,7 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
@@ -157,12 +157,46 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const [pageNumber, setPageNumber] = useState(
     initialJobApplicationPageNumbers,
   );
+
+  const [cardStateManager, setCardStateManager] =
+    useState<CardStateManager>(undefined);
+  const cardStates = cardStateManager ? cardStateManager[section] : undefined;
+  const setCardStates = cardStates
+    ? (
+        // eslint-disable-next-line no-unused-vars
+        callBack: (prev: typeof cardStates) => typeof cardStates,
+      ) => {
+        const newValue = callBack(cardStates);
+        setCardStateManager((prev) => {
+          return {
+            ...prev,
+            [section]: cloneDeep(newValue),
+          };
+        });
+      }
+    : undefined;
+
+  const activeSections = useMemo(
+    () =>
+      Object.values(JobApplicationSections).filter((section) => {
+        switch (section) {
+          case JobApplicationSections.NEW:
+            return true;
+          case JobApplicationSections.SCREENING:
+            return job?.phone_screen_enabled ?? false;
+          case JobApplicationSections.ASSESSMENT:
+            return job?.assessment ?? false;
+          case JobApplicationSections.QUALIFIED:
+            return true;
+          case JobApplicationSections.DISQUALIFIED:
+            return true;
+        }
+      }),
+    [job],
+  );
+
   const ranges = Object.values(JobApplicationSections)
-    .filter(
-      (section) =>
-        section !== JobApplicationSections.ASSESSMENT ||
-        (initialJobLoad && job?.assessment),
-    )
+    .filter((section) => initialJobLoad && activeSections.includes(section))
     .reduce((acc, curr) => {
       return {
         ...acc,
@@ -197,26 +231,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   });
 
   const [allApplicationsDisabled, setAllApplicationsDisabled] = useState(false);
-  const [cardStateManager, setCardStateManager] =
-    useState<CardStateManager>(undefined);
-  const activeSections = cardStateManager
-    ? (Object.keys(cardStateManager) as JobApplicationSections[])
-    : undefined;
-  const cardStates = cardStateManager ? cardStateManager[section] : undefined;
-  const setCardStates = cardStates
-    ? (
-        // eslint-disable-next-line no-unused-vars
-        callBack: (prev: typeof cardStates) => typeof cardStates,
-      ) => {
-        const newValue = callBack(cardStates);
-        setCardStateManager((prev) => {
-          return {
-            ...prev,
-            [section]: cloneDeep(newValue),
-          };
-        });
-      }
-    : undefined;
 
   //PRIMARY
   const handleJobApplicationRead = async (
@@ -487,26 +501,10 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   //SECONDARY
   const handleJobApplicationInit = async () => {
     if (job) {
-      const currentActiveSections = Object.values(
-        JobApplicationSections,
-      ).filter((section) => {
-        switch (section) {
-          case JobApplicationSections.NEW:
-            return true;
-          case JobApplicationSections.SCREENING:
-            return true;
-          case JobApplicationSections.ASSESSMENT:
-            return job?.assessment ?? false;
-          case JobApplicationSections.QUALIFIED:
-            return true;
-          case JobApplicationSections.DISQUALIFIED:
-            return true;
-        }
-      });
       setCardStateManager(
         Object.assign(
           {},
-          ...currentActiveSections.map((a) => ({
+          ...activeSections.map((a) => ({
             [a]: {
               checkList: {
                 list: new Set<string>(),
@@ -520,17 +518,17 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       const confirmation = await handleJobApplicationRead({
         job_id: jobId,
         ranges: ranges,
-        sections: currentActiveSections,
+        sections: activeSections,
         ...searchParameters,
       });
       if (!confirmation) {
         const action: Action = {
           type: ActionType.READ,
           payload: {
-            activeSections: currentActiveSections,
+            activeSections: activeSections,
             applicationData: Object.assign(
               {},
-              ...currentActiveSections.map((section) => ({
+              ...activeSections.map((section) => ({
                 [section]: [],
               })),
             ) as {
@@ -564,7 +562,10 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             return { [s]: initialJobLoad };
           case JobApplicationSections.SCREENING:
             return {
-              [s]: initialJobLoad && section !== JobApplicationSections.NEW,
+              [s]:
+                initialJobLoad &&
+                section !== JobApplicationSections.NEW &&
+                job?.phone_screen_enabled,
             };
           case JobApplicationSections.ASSESSMENT:
             return {

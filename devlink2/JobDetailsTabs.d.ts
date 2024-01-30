@@ -19,4 +19,5 @@ declare function JobDetailsTabs(props: {
   onClickScreening?: Types.Devlink.RuntimeProps;
   countScreening?: React.ReactNode;
   isScreeningSelected?: Types.Visibility.VisibilityConditions;
+  isScreeningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

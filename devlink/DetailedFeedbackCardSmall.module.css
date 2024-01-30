@@ -27,8 +27,6 @@
   grid-row-gap: 4px;
 
   border-radius: 100px;
-
-  background-color: var(--white-80449ce7);
 }
 
 .div-block-304 {
@@ -245,6 +243,17 @@
   color: var(--blue600-aad8d97e);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -304,4 +313,34 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }

@@ -35,13 +35,6 @@ export function ResumeErrorBlock({
         >
           {"This may take a while."}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cl-res-error-btn", "clickable")}
-          tag="div"
-          {...onclickView}
-        >
-          <_Builtin.Block tag="div">{"View Resume"}</_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

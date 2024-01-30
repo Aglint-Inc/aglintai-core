@@ -1,3 +1,4 @@
+import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
 
 import { JobApplicationSections } from '../JobApplicationsContext/types';
@@ -38,6 +39,7 @@ export type JobContext = {
 };
 
 export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
+  jd_json: JdJsonType;
   active_status: StatusJobs | null;
   count: CountJobs;
 };
