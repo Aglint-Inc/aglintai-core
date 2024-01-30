@@ -11,4 +11,5 @@ declare function ScreeningWelcome(props: {
   isCloseVisible?: Types.Visibility.VisibilityConditions;
   isEditButtonVisible?: Types.Visibility.VisibilityConditions;
   slotWarnings?: Types.Devlink.Slot;
+  isEnd?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -663,6 +663,8 @@ const SideSection = () => {
   ) {
     return (
       <AssessmentSide
+        isPhoneScreeningImageVisible={true}
+        isAssessmentImageVisible={false}
         isDisableAssessmentVisible
         textDisableButton={'Disable'}
         textPreviewButton={'Preview'}
@@ -698,6 +700,8 @@ const SideSection = () => {
   } else if (currSlide === 'screening') {
     return (
       <AssessmentSide
+        isPhoneScreeningImageVisible={false}
+        isAssessmentImageVisible={true}
         textDisableButton={'Disable'}
         onClickDisableAssessment={{
           onClick: async () => {

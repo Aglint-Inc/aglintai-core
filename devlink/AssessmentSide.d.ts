@@ -11,4 +11,6 @@ declare function AssessmentSide(props: {
   isPreviewFormVisible?: Types.Visibility.VisibilityConditions;
   textDescDisable?: React.ReactNode;
   textDisableButton?: React.ReactNode;
+  isAssessmentImageVisible?: Types.Visibility.VisibilityConditions;
+  isPhoneScreeningImageVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

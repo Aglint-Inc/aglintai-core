@@ -9,6 +9,7 @@ export * from "./AddCandidateDropdown";
 export * from "./AddCompany";
 export * from "./AddCompanyDetails";
 export * from "./AddCompanyWebsite";
+export * from "./AddCustomQuestion";
 export * from "./AllApplicantsTable";
 export * from "./AllCandidateListItem";
 export * from "./AnalysisBlock";

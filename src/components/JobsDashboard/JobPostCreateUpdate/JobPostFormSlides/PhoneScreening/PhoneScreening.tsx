@@ -1,9 +1,10 @@
-import { Collapse } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 
 import { EnableAssessment } from '@/devlink';
 import {
+  AddCustomQuestion,
   PhoneScreening,
   ScrCheckmarkIcon,
   ScreeningWelcome,
@@ -14,6 +15,7 @@ import {
 } from '@/devlink2';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
+import { palette } from '@/src/context/Theme/Theme';
 
 import KnowOffQn from './KnowOffQn';
 import { seedQns } from './utils';
@@ -63,6 +65,7 @@ const ScreeningComp = () => {
           slotWelcomeText={
             <>
               <ScreeningWelcome
+                isEnd={false}
                 isCloseVisible={messageOpen.start}
                 isEditButtonVisible={!messageOpen.start}
                 editHeading={'Start Message'}
@@ -86,9 +89,15 @@ const ScreeningComp = () => {
                       unmountOnExit
                       translate='yes'
                     >
-                      <UITypography type='small' fontBold='normal'>
-                        {phoneScreening.startMessage}
-                      </UITypography>
+                      <Stack
+                        p={1.5}
+                        bgcolor={palette.grey[100]}
+                        borderRadius={'10px'}
+                      >
+                        <UITypography type='small' fontBold='normal'>
+                          {phoneScreening.startMessage}
+                        </UITypography>
+                      </Stack>
                     </Collapse>
                     <Collapse
                       in={messageOpen.start}
@@ -98,13 +107,16 @@ const ScreeningComp = () => {
                       <UITextField
                         multiline
                         maxRows={5}
-                        minRows={1}
+                        minRows={2}
                         value={phoneScreening.startMessage}
                         onChange={(e) => {
                           handleUpdateFormFields({
                             path: 'phoneScreening.startMessage',
                             value: e.target.value,
                           });
+                        }}
+                        InputProps={{
+                          autoFocus: true,
                         }}
                       />
                     </Collapse>
@@ -178,12 +190,8 @@ const ScreeningComp = () => {
                         />
                       );
                     })}
-                    <ScrQuestionOption
-                      text='Add Custom Question'
-                      isTicked={false}
-                      isAddIconVisible={true}
-                      slotIcon={qnTypeToIcon('shortAnswer')}
-                      onclickOption={{
+                    <AddCustomQuestion
+                      onClickAdd={{
                         onClick: () => {
                           let newQn: PhoneScreenQuestion = {
                             description: '',
@@ -211,6 +219,7 @@ const ScreeningComp = () => {
           slotEndText={
             <>
               <ScreeningWelcome
+                isEnd={true}
                 editHeading={'End Message'}
                 tooltipText='Thank you for taking your time. We will get back to you shortly'
                 onclickEdit={{
@@ -232,9 +241,15 @@ const ScreeningComp = () => {
                       unmountOnExit
                       translate='yes'
                     >
-                      <UITypography type='small' fontBold='normal'>
-                        {phoneScreening.endMessage}
-                      </UITypography>
+                      <Stack
+                        p={1.5}
+                        bgcolor={palette.grey[100]}
+                        borderRadius={'10px'}
+                      >
+                        <UITypography type='small' fontBold='normal'>
+                          {phoneScreening.endMessage}
+                        </UITypography>
+                      </Stack>
                     </Collapse>
                     <Collapse
                       in={messageOpen.end}
@@ -244,13 +259,16 @@ const ScreeningComp = () => {
                       <UITextField
                         multiline
                         maxRows={5}
-                        minRows={1}
+                        minRows={2}
                         value={phoneScreening.endMessage}
                         onChange={(e) => {
                           handleUpdateFormFields({
                             path: 'phoneScreening.endMessage',
                             value: e.target.value,
                           });
+                        }}
+                        InputProps={{
+                          autoFocus: true,
                         }}
                       />
                     </Collapse>

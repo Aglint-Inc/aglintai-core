@@ -13,6 +13,8 @@ export function AssessmentSide({
   isPreviewFormVisible = true,
   textDescDisable = "Disable this process if you don’t want to use assessment for the candidate.",
   textDisableButton = "Disable Assessment",
+  isAssessmentImageVisible = false,
+  isPhoneScreeningImageVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-719")} tag="div">
@@ -21,6 +23,26 @@ export function AssessmentSide({
           className={_utils.cx(_styles, "div-block-711")}
           tag="div"
         >
+          <_Builtin.Block tag="div">
+            {isAssessmentImageVisible ? (
+              <_Builtin.Image
+                loading="lazy"
+                width="auto"
+                height="auto"
+                alt=""
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65b8da9d6d94f7c55dfb6301_Browser.svg"
+              />
+            ) : null}
+            {isPhoneScreeningImageVisible ? (
+              <_Builtin.Image
+                loading="lazy"
+                width="auto"
+                height="auto"
+                alt=""
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65b8db11b2938dda55c166a4_Browser.svg"
+              />
+            ) : null}
+          </_Builtin.Block>
           <_Builtin.Block tag="div">{textPreview}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-712", "cursor-pointer")}
