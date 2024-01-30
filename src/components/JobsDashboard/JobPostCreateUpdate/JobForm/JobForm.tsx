@@ -158,7 +158,7 @@ function JobForm() {
     try {
       const isDeleted = await handleJobDelete(jobForm.jobPostId);
       if (!isDeleted) throw new Error('Job delete fail');
-      router.replace('/jobs');
+      router.replace('/jobs?status=draft');
       toast.error('Deleted draft job ');
       posthog.capture('Deleted Draft job');
     } catch (err) {

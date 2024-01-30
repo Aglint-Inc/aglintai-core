@@ -31,7 +31,7 @@ export function ScreeningWelcome({
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%22120%22%20height%3D%22120%22%20rx%3D%228.13008%22%20fill%3D%22%23F7F9FB%22%2F%3E%0A%3Cpath%20d%3D%22M30.0015%2043.4622C30.0015%2038.3642%2034.1342%2034.2314%2039.2322%2034.2314H62.3092V85.0007H39.2322C34.1342%2085.0007%2030.0015%2080.8679%2030.0015%2075.7699V43.4622Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2266.9243%22%20y%3D%2238.8467%22%20width%3D%224.61538%22%20height%3D%2241.5385%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2276.1553%22%20y%3D%2243.4619%22%20width%3D%224.61538%22%20height%3D%2232.3077%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2285.3857%22%20y%3D%2248.0762%22%20width%3D%224.61538%22%20height%3D%2223.0769%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            value="%3Csvg%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20120%20120%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%22120%22%20height%3D%22120%22%20rx%3D%228.13008%22%20fill%3D%22%23F7F9FB%22%2F%3E%0A%3Cpath%20d%3D%22M30.0015%2043.4622C30.0015%2038.3642%2034.1342%2034.2314%2039.2322%2034.2314H62.3092V85.0007H39.2322C34.1342%2085.0007%2030.0015%2080.8679%2030.0015%2075.7699V43.4622Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2266.9243%22%20y%3D%2238.8467%22%20width%3D%224.61538%22%20height%3D%2241.5385%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2276.1553%22%20y%3D%2243.4619%22%20width%3D%224.61538%22%20height%3D%2232.3077%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2285.3857%22%20y%3D%2248.0762%22%20width%3D%224.61538%22%20height%3D%2223.0769%22%20rx%3D%222.30769%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
           />
           {isEnd ? (
             <_Builtin.Block
@@ -40,7 +40,7 @@ export function ScreeningWelcome({
             >
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "embed_flex")}
-                value="%3Csvg%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%22120%22%20height%3D%22120%22%20rx%3D%228.13008%22%20fill%3D%22%23F7F9FB%22%2F%3E%0A%3Cpath%20d%3D%22M90.0001%2075.7683C90.0001%2080.8663%2085.8674%2084.999%2080.7694%2084.999H57.6924L57.6924%2034.2298L80.7693%2034.2298C85.8674%2034.2298%2090.0001%2038.3626%2090.0001%2043.4606V75.7683Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2253.0773%22%20y%3D%2280.3838%22%20width%3D%224.61538%22%20height%3D%2241.5385%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2053.0773%2080.3838)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2243.8467%22%20y%3D%2275.7686%22%20width%3D%224.61538%22%20height%3D%2232.3077%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2043.8467%2075.7686)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2234.6158%22%20y%3D%2271.1543%22%20width%3D%224.61538%22%20height%3D%2223.0769%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2034.6158%2071.1543)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                value="%3Csvg%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20120%20120%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%22120%22%20height%3D%22120%22%20rx%3D%228.13008%22%20fill%3D%22%23F7F9FB%22%2F%3E%0A%3Cpath%20d%3D%22M90.0001%2075.7683C90.0001%2080.8663%2085.8674%2084.999%2080.7694%2084.999H57.6924L57.6924%2034.2298L80.7693%2034.2298C85.8674%2034.2298%2090.0001%2038.3626%2090.0001%2043.4606V75.7683Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2253.0773%22%20y%3D%2280.3838%22%20width%3D%224.61538%22%20height%3D%2241.5385%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2053.0773%2080.3838)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2243.8467%22%20y%3D%2275.7686%22%20width%3D%224.61538%22%20height%3D%2232.3077%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2043.8467%2075.7686)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3Crect%20x%3D%2234.6158%22%20y%3D%2271.1543%22%20width%3D%224.61538%22%20height%3D%2223.0769%22%20rx%3D%222.30769%22%20transform%3D%22rotate(-180%2034.6158%2071.1543)%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
           ) : null}
@@ -56,13 +56,20 @@ export function ScreeningWelcome({
             >
               {editHeading}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{tooltipText}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-gray-600")}
+              tag="div"
+            >
+              {tooltipText}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text_update_div")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotInput}</_Builtin.Block>
+            <_Builtin.Block className={_utils.cx(_styles, "slot")} tag="div">
+              {slotInput}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "edit_close")}
               tag="div"

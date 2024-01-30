@@ -221,7 +221,7 @@ const ScreeningComp = () => {
               <ScreeningWelcome
                 isEnd={true}
                 editHeading={'End Message'}
-                tooltipText='Thank you for taking your time. We will get back to you shortly'
+                tooltipText='This message will show to the candidate after taking phone screening'
                 onclickEdit={{
                   onClick: () => {
                     setMessageOpen((p) => ({ ...p, end: !p.end }));

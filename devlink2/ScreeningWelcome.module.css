@@ -25,8 +25,13 @@
 .icon_wrap {
   position: relative;
   z-index: 1;
+
   overflow: hidden;
+  width: 100px;
+  height: 100px;
+
   border-radius: 10px;
+
   background-color: #f7f9fb;
 }
 
@@ -182,34 +187,55 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
 .text_update_div {
   position: relative;
+  display: flex;
   padding: 0px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.slot {
+  width: 100%;
 }
 
 .edit_close {
-  position: absolute;
-  left: auto;
-  top: 4px;
-  right: 2px;
-  bottom: auto;
   z-index: 4;
 
   display: flex;
   height: 30px;
   margin-left: auto;
+  justify-content: center;
   align-items: center;
 }
 
 .scr-header-edit-icon-block {
   display: flex;
-  width: 23px;
-  height: 23px;
+  width: 30px;
+  height: 30px;
   min-height: 23px;
   min-width: 23px;
   margin-left: auto;
   justify-content: center;
   align-items: center;
+
+  border-radius: 6px;
+
+  background-color: #f8f9f9;
 
   transition: all 200ms ease;
 
@@ -253,12 +279,17 @@
 
 .scr-close-btn {
   display: flex;
+  width: 30px;
+  height: 30px;
   padding: 4px;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  border-radius: 100px;
+  border-radius: 6px;
+
+  background-color: #f8f9f9;
 }
 
 .clickable {
