@@ -62,6 +62,14 @@ function AppoloSearch() {
     if (router.isReady && recruiter?.id) {
       initialFetch();
     }
+    return () => {
+      setFilters(null);
+      setList(null);
+      setCandidateHistory(null);
+      setSelectedCandidates([]);
+      setIsSelectAll(false);
+      setSelectedCandidate(null);
+    };
   }, [router, recruiter]);
 
   const initialFetch = async () => {
