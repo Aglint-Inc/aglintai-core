@@ -11,7 +11,7 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
           className={_utils.cx(_styles, "text-md", "fw-semibold")}
           tag="div"
         >
-          {"Candidate Database"}
+          {"Assistant"}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -47,7 +47,7 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b74873bb47859d70a3da92_CD_1.png"
+            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b88d5185be51921784ba37_assistant.png"
           />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
@@ -145,7 +145,7 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%20%20%5Bclass%3D%22WelcomeMatCandidateDb_welcome_mat_wm__CiaIz%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%20%20%5Bclass%3D%22WelcomeMatAssistant_welcome_mat_wm__WlLzA%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

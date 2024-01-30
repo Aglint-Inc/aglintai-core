@@ -13,6 +13,7 @@ export function PwResetForm({
 
   onclickReset = {},
   onclickBack = {},
+  isDisable = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-main-wrapper")} tag="div">
@@ -67,16 +68,31 @@ export function PwResetForm({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "sl-button")}
+                className={_utils.cx(_styles, "div-block-427")}
                 tag="div"
-                {...onclickReset}
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-color-white")}
+                  className={_utils.cx(_styles, "sl-button")}
                   tag="div"
+                  {...onclickReset}
                 >
-                  {"Send reset link"}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-color-white")}
+                    tag="div"
+                  >
+                    {"Send reset link"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
+                {isDisable ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "sl-button", "disable")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">
+                      {"Send reset link"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "sl-button", "basic")}

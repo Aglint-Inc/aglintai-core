@@ -250,7 +250,7 @@ const FormBody = ({
           id={'first_name'}
           value={applicant.first_name.value}
           error={applicant.first_name.error}
-          helperText={applicant.first_name.error && getHelper('first Name')}
+          helperText={applicant.first_name.error && getHelper('First Name')}
           onChange={(e) => handleChange(e, 'first_name')}
         />
         <TextField
@@ -261,7 +261,7 @@ const FormBody = ({
           id={'last_name'}
           value={applicant.last_name.value}
           error={applicant.last_name.error}
-          helperText={applicant.last_name.error && getHelper('last name')}
+          helperText={applicant.last_name.error && getHelper('Last Name')}
           onChange={(e) => handleChange(e, 'last_name')}
         />
       </Stack>
@@ -274,7 +274,7 @@ const FormBody = ({
           id={'email'}
           value={applicant.email.value}
           error={applicant.email.error}
-          helperText={applicant.email.error && getHelper('email')}
+          helperText={applicant.email.error && getHelper('Email')}
           onChange={(e) => handleChange(e, 'email')}
         />
         <Stack
@@ -291,14 +291,14 @@ const FormBody = ({
           <UIPhoneInput
             labelSize='small'
             defaultCountry={userCountry}
-            placeholder={'Phone number'}
+            placeholder={'Phone Number'}
             value={applicant.phone.value}
             error={applicant.phone.error}
             required={false}
             onChange={(value, data: TPhone, event, formattedValue) => {
               handleChange({ target: { value: formattedValue } }, 'phone');
             }}
-            helperText={applicant.phone.error && getHelper('phone number')}
+            helperText={applicant.phone.error && getHelper('Phone Number')}
           />
         </Stack>
       </Stack>

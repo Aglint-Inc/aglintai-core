@@ -162,6 +162,7 @@ const Member = ({
   // const [editRole, setEditRole] = useState(false);
   return (
     <TeamListItem
+      isDeleteVisible={member.role === 'admin' ? false : true}
       key={1}
       dateText={dayjs(member.joined_at).fromNow()}
       slotProfileImage={

@@ -8,7 +8,7 @@ import UISelect from '../../Common/Uiselect';
 const sortdisplay = [
   { name: 'Name', value: 'first_name' },
   { name: 'Location', value: 'location' },
-  { name: 'Current job title', value: 'job_title' },
+  { name: 'Current Job Title', value: 'job_title' },
 ];
 const SortComp = () => {
   const [anchorlEl, setAnchorEl] = useState(null);
