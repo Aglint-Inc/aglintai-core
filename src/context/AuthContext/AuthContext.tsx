@@ -39,7 +39,7 @@ interface ContextValue {
   // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
-  handleUpdateEmail: (email: string) => Promise<boolean>;
+  handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   handleUpdatePassword: (password: string) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
@@ -223,7 +223,10 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleUpdateEmail = async (email: string): Promise<boolean> => {
+  const handleUpdateEmail = async (
+    email: string,
+    showToast: boolean = false,
+  ): Promise<boolean> => {
     const { error } = await supabase.auth.updateUser(
       {
         email: email,
@@ -231,10 +234,11 @@ const AuthProvider = ({ children }) => {
       { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
+      showToast &&
+        toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
-      toast.success(`Confirmation email sent`);
+      showToast && toast.success(`Confirmation email sent`);
       return true;
     }
   };

@@ -3,25 +3,27 @@
 /* eslint-disable security/detect-object-injection */
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Autocomplete, Stack } from '@mui/material';
+import { Autocomplete, Dialog, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 import {
   ButtonPrimaryRegular,
+  EmailChangePop,
   NavSublink,
+  PasswordUpdated,
   UserChangeEmail,
   UserDetails,
   UserPasswordChange,
   UserProfile,
 } from '@/devlink';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
+import AUIButton from '../Common/AUIButton';
 import ImageUpload from '../Common/ImageUpload';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
@@ -39,6 +41,7 @@ type FormValues = {
   disabled: boolean;
   specialForm: boolean;
   options: string[];
+  modal: boolean;
 };
 type FormFields = {
   first_name: FormValues;
@@ -59,13 +62,13 @@ type PasswordFormFields = {
 };
 const ProfileDashboard = () => {
   const {
-    // userDetails,
+    userDetails,
     handleUpdateProfile,
     recruiterUser,
     handleUpdatePassword,
     handleUpdateEmail,
   } = useAuthDetails();
-  // const userMail = userDetails.user.email;
+  const userMail = userDetails.user.email;
   const router = useRouter();
   const initialFormValues: FormValues = {
     value: null,
@@ -80,6 +83,7 @@ const ProfileDashboard = () => {
     disabled: false,
     specialForm: false,
     options: null,
+    modal: false,
   };
   const initalProfileFormFields: FormFields = {
     first_name: {
@@ -164,6 +168,88 @@ const ProfileDashboard = () => {
   } else if (router.query?.update === 'Change password') {
     currTab = 'Change password';
   }
+
+  const handleValidatePassword = () => {
+    if (
+      validatePassword(password.password.value) &&
+      validatePassword(password.confirmPassword.value)
+    ) {
+      if (
+        password.password.value.trim() === password.confirmPassword.value.trim()
+      ) {
+        return {
+          newPassword: password.password.value.trim(),
+          error: null,
+        };
+      } else
+        return {
+          newPassword: null,
+          error: 'Passwords do not match',
+        };
+    } else
+      return {
+        newPassword: null,
+        error:
+          'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
+      };
+  };
+  const handleValidateMail = () => {
+    if (validateMail(email.email.value)) {
+      return {
+        newEmail: email.email.value.trim(),
+        error: null,
+      };
+    } else return { newEmail: null, error: 'Enter a valid email' };
+  };
+  const handleSubmitPassword = async () => {
+    const { newPassword, error } = handleValidatePassword();
+    if (!error) {
+      await handleUpdatePassword(newPassword);
+      setPassword((prev) => ({
+        ...prev,
+        password: { ...prev.password, modal: true },
+      }));
+      setPasswordChange(true);
+    } else {
+      setPassword((prev) => {
+        return {
+          ...prev,
+          password: { ...prev.password, error: true, helperText: error },
+          confirmPassword: {
+            ...prev.confirmPassword,
+            error: true,
+            helperText: error,
+          },
+        };
+      });
+    }
+  };
+  const handleSubmitEmail = async () => {
+    const { newEmail, error } = handleValidateMail();
+    if (!error) {
+      const confirmation = await handleUpdateEmail(newEmail);
+      if (confirmation) {
+        setEmail((prev) => ({
+          ...prev,
+          email: { ...prev.email, modal: true },
+        }));
+        return true;
+      } else return false;
+    } else {
+      setEmail((prev) => {
+        return {
+          ...prev,
+          email: { ...prev.email, error: true, helperText: error },
+        };
+      });
+    }
+  };
+  const handleClosePassword = () => {
+    setPassword(initialPassword);
+  };
+  const handleCloseEmail = () => {
+    setEmail(initialEmail);
+  };
   return (
     <Stack>
       <UserProfile
@@ -223,15 +309,43 @@ const ProfileDashboard = () => {
             )}
             {currTab === 'Change Email' && (
               <>
+                <Dialog
+                  open={email.email.modal}
+                  onClose={() => handleCloseEmail()}
+                >
+                  <EmailChangePop
+                    textDesc={
+                      <>
+                        <>A confirmation link has been sent to </>
+                        <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                          {email.email.value}
+                        </span>
+                        <>. Please confirm it to update your email ID.</>
+                      </>
+                    }
+                    onClickClose={{
+                      onClick: () => handleCloseEmail(),
+                    }}
+                  />
+                </Dialog>
                 <UserChangeEmail
+                  texDesc={
+                    <>
+                      <>Your current email is </>
+                      <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                        {userMail}
+                      </span>
+                      <>
+                        . To update your email, enter the new email address. We
+                        will send a verification link to the new email. Please
+                        confirm it to complete the email change.
+                      </>
+                    </>
+                  }
                   onClickEmailChange={{
                     onClick: async () => {
                       setLoading((prev) => ({ ...prev, email: true }));
-                      await handleSubmitEmail(
-                        email,
-                        setEmail,
-                        handleUpdateEmail,
-                      );
+                      await handleSubmitEmail();
                       setLoading((prev) => ({ ...prev, email: false }));
                     },
                   }}
@@ -247,55 +361,58 @@ const ProfileDashboard = () => {
             )}
             <>
               {currTab === 'Change password' && (
-                <UserPasswordChange
-                  slotPassword={
-                    <>
-                      <ProfileForms
-                        profile={password}
-                        setProfile={setPassword}
-                        setChanges={() => setPasswordChange(true)}
-                      />
-                    </>
-                  }
-                  slotSavePassword={
-                    <>
-                      <Stack
-                        style={{
-                          pointerEvents: loading.password ? 'none' : 'auto',
-                          zIndex: 0,
-                        }}
-                      >
-                        <ButtonPrimaryOutlinedRegular
-                          buttonText={'Update Password'}
-                          isDisabled={
-                            !passwordChange ||
-                            password.password.value === '' ||
-                            password.confirmPassword.value === ''
-                          }
-                          buttonProps={{
-                            onClick: async () => {
+                <>
+                  <Dialog
+                    open={password.password.modal}
+                    onClose={() => handleClosePassword()}
+                  >
+                    <PasswordUpdated
+                      onClickClose={{
+                        onClick: () => handleClosePassword(),
+                      }}
+                    />
+                  </Dialog>
+                  <UserPasswordChange
+                    slotPassword={
+                      <>
+                        <ProfileForms
+                          profile={password}
+                          setProfile={setPassword}
+                          setChanges={() => setPasswordChange(true)}
+                        />
+                      </>
+                    }
+                    slotSavePassword={
+                      <>
+                        <Stack
+                          style={{
+                            pointerEvents: loading.password ? 'none' : 'auto',
+                            zIndex: 0,
+                          }}
+                        >
+                          <AUIButton
+                            disabled={
+                              !passwordChange ||
+                              password.password.value === '' ||
+                              password.confirmPassword.value === ''
+                            }
+                            onClick={async () => {
                               setLoading((prev) => {
                                 return { ...prev, profile: true };
                               });
-                              const confirmation = await handleSubmitPassword(
-                                password,
-                                setPassword,
-                                handleUpdatePassword,
-                              );
-                              if (confirmation) {
-                                setPasswordChange(true);
-                                setPassword(initialPassword);
-                              }
+                              await handleSubmitPassword();
                               setLoading((prev) => {
                                 return { ...prev, password: false };
                               });
-                            },
-                          }}
-                        />
-                      </Stack>
-                    </>
-                  }
-                />
+                            }}
+                          >
+                            Update Password
+                          </AUIButton>
+                        </Stack>
+                      </>
+                    }
+                  />
+                </>
               )}
             </>
           </>
@@ -393,40 +510,6 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
   );
 };
 
-const handleValidatePassword = (password: PasswordFormFields) => {
-  if (
-    validatePassword(password.password.value) &&
-    validatePassword(password.confirmPassword.value)
-  ) {
-    if (
-      password.password.value.trim() === password.confirmPassword.value.trim()
-    ) {
-      return {
-        newPassword: password.password.value.trim(),
-        error: null,
-      };
-    } else
-      return {
-        newPassword: null,
-        error: 'Passwords do not match',
-      };
-  } else
-    return {
-      newPassword: null,
-      error:
-        'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
-    };
-};
-
-const handleValidateMail = (email: EmailFormFields) => {
-  if (validateMail(email.email.value)) {
-    return {
-      newEmail: email.email.value.trim(),
-      error: null,
-    };
-  } else return { newEmail: null, error: 'Enter a valid email' };
-};
-
 const handleSubmit = async (
   profile: any,
   setProfile: any,
@@ -452,53 +535,6 @@ const handleSubmit = async (
       setProfile(newProfile);
       return false;
     }
-  }
-};
-
-const handleSubmitPassword = async (
-  password: any,
-  setPassword: any,
-  // eslint-disable-next-line no-unused-vars
-  handleUpdatePassword: (password: string) => Promise<boolean>,
-) => {
-  const { newPassword, error } = handleValidatePassword(password);
-  if (!error) {
-    await handleUpdatePassword(newPassword);
-    return true;
-  } else {
-    setPassword((prev) => {
-      return {
-        ...prev,
-        password: { ...prev.password, error: true, helperText: error },
-        confirmPassword: {
-          ...prev.confirmPassword,
-          error: true,
-          helperText: error,
-        },
-      };
-    });
-  }
-};
-const handleSubmitEmail = async (
-  email: EmailFormFields,
-  setEmail: Dispatch<SetStateAction<EmailFormFields>>,
-  // eslint-disable-next-line no-unused-vars
-  handleUpdateEmail: (email: string) => Promise<boolean>,
-) => {
-  const { newEmail, error } = handleValidateMail(email);
-  if (!error) {
-    const confirmation = await handleUpdateEmail(newEmail);
-    if (confirmation) {
-      setEmail((prev) => ({ ...prev, email: { ...prev.email, value: '' } }));
-      return true;
-    } else return false;
-  } else {
-    setEmail((prev) => {
-      return {
-        ...prev,
-        email: { ...prev.email, error: true, helperText: error },
-      };
-    });
   }
 };
 

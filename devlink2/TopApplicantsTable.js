@@ -27,7 +27,8 @@ export function TopApplicantsTable({
             _styles,
             "cv-list-column-wrapper",
             "header",
-            "width-auto"
+            "width-auto",
+            "no_border"
           )}
           tag="div"
         >

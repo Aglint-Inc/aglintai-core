@@ -138,7 +138,7 @@ const BasicStepOne = () => {
                   renderInput={(params) => (
                     <UITextField
                       rest={{ ...params }}
-                      label='Department '
+                      label='Department (Optional) '
                       placeholder='Ex : Marketing'
                       onChange={(e) => {
                         handleUpdateFormFields({

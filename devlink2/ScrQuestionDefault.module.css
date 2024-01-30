@@ -85,10 +85,16 @@
 
 .scr-question-edit-icon {
   display: flex;
+  width: 30px;
+  height: 30px;
   margin-left: auto;
   padding: 2px;
   justify-content: center;
   align-items: center;
+
+  border-radius: 6px;
+
+  background-color: #f8f9f9;
 
   transition: all 250ms ease;
 

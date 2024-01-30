@@ -2,12 +2,8 @@ import { cloneDeep, debounce, get, isNull, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
-import {
-  JobTypeDB,
-  PublicJobsType,
-  RecruiterDB,
-  StatusJobs,
-} from '@/src/types/data.types';
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { JobTypeDB, PublicJobsType, RecruiterDB } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { FormErrorParams } from './JobForm/JobForm';
@@ -438,15 +434,17 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
         handleUIJobUpdate({
           ...updatedJobDb,
-          active_status: updatedJobDb.active_status as unknown as StatusJobs,
-          count: uiJob
+          jd_json: updatedJobDb.jd_json as JobTypeDashboard['jd_json'],
+          active_status:
+            updatedJobDb.active_status as JobTypeDashboard['active_status'],
+          count: (uiJob
             ? uiJob.count
             : {
                 new: 0,
                 assessment: 0,
                 qualified: 0,
                 disqualified: 0,
-              },
+              }) as JobTypeDashboard['count'],
         });
       }
 

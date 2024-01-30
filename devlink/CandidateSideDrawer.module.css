@@ -9,6 +9,11 @@
   justify-content: flex-start;
 }
 
+.candiate-side-drawer-wrapper.justify-start.dialog {
+  width: 424px;
+  padding-bottom: 30px;
+}
+
 .div-block-714 {
   display: flex;
   flex-direction: column;
@@ -359,8 +364,6 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-
-  object-fit: contain;
 }
 
 .icon-embed.absolute {
@@ -779,22 +782,13 @@
   grid-row-gap: 18px;
 }
 
-.div-block-775 {
-  display: flex;
-  padding-right: 16px;
-  padding-left: 16px;
-  flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
 .slot-candidate-details {
   display: flex;
   padding-right: 16px;
   padding-left: 16px;
   flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
 .slot-candidate-details.cd-details {

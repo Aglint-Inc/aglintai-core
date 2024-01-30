@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScrQuestionOption } from "./ScrQuestionOption";
+import { AddCustomQuestion } from "./AddCustomQuestion";
 import * as _utils from "./utils";
 import _styles from "./ScrQuestionsWrapper.module.css";
 
@@ -47,6 +48,7 @@ export function ScrQuestionsWrapper({
             <>
               <ScrQuestionOption />
               <ScrQuestionOption isAddIconVisible={false} isTicked={true} />
+              <AddCustomQuestion />
             </>
           )}
         </_Builtin.Block>

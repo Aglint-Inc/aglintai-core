@@ -29,10 +29,17 @@
 
 .scr-close-btn {
   display: flex;
+  width: 30px;
+  height: 30px;
   padding: 4px;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+
+  border-radius: 6px;
+
+  background-color: #f8f9f9;
 }
 
 .icon-block {
@@ -195,10 +202,6 @@
 
 .text-fuschia-600 {
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
-}
-
-.text-gray-700 {
-  color: var(--gray-700);
 }
 
 .scr-question-input-wrapper {

@@ -521,6 +521,7 @@ export const SocialLogo = ({ socialName }: { socialName: string }) => {
         bgcolor: 'white.700',
         width: '20px',
         height: '20px',
+        color: 'inherit',
       }}
       src={`https://logo.clearbit.com/${socialName
         .toLowerCase()

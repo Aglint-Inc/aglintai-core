@@ -23,4 +23,6 @@ declare function JobDetails(props: {
   slotLoadingLottie?: Types.Devlink.Slot;
   isEmptyTextVisible?: Types.Visibility.VisibilityConditions;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
+  onClickJobs?: Types.Devlink.RuntimeProps;
+  isImportCandidates?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

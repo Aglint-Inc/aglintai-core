@@ -1,8 +1,3 @@
-.padding-left-right-fetch {
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .unable-fetch {
   display: flex;
   padding: 20px;
@@ -386,11 +381,19 @@
   margin-top: 5px;
 }
 
+.color-grey-600.mt-6 {
+  margin-top: 6px;
+}
+
 .button-wrappers-unable-fetch {
   display: flex;
   margin-top: 10px;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.button-wrappers-unable-fetch.hide {
+  display: none;
 }
 
 .div-block-557 {

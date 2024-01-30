@@ -33,7 +33,6 @@ import {
   AnalysisBlock,
   ResAbsentError,
   ResumeErrorBlock,
-  ResumeErrorBlock2,
   ScrQuestionListItem,
   SidebarAnalysisBlock,
   SidebarScreening,
@@ -126,6 +125,10 @@ const ApplicationDetails = ({
     }
   }, [application === undefined]);
 
+  useEffect(() => {
+    setOpenFeedback(false);
+  }, [application?.id ?? null]);
+
   const handleClose = () => {
     setDrawerOpen(false);
     setTimeout(() => {
@@ -155,13 +158,18 @@ const ApplicationDetails = ({
             handleSelectPrevApplication={handleSelectPrevApplication}
           />
         ) : (
-          <NewDetailedFeedback
-            application={application}
-            candidateImage={candidateImage}
-            onClose={() => {
-              setOpenFeedback(false);
-            }}
-          />
+          application?.assessment_results?.feedback && (
+            <NewDetailedFeedback
+              application={application}
+              candidateImage={candidateImage}
+              onNext={handleSelectNextApplication}
+              onPrev={handleSelectPrevApplication}
+              onBack={() => {
+                setOpenFeedback(false);
+              }}
+              onClose={() => handleClose()}
+            />
+          )
         )
       ) : (
         <></>
@@ -175,19 +183,32 @@ export default ApplicationDetails;
 const NewDetailedFeedback = ({
   application,
   candidateImage,
+  onNext,
+  onPrev,
+  onBack,
   onClose,
 }: {
   application: JobApplication;
   candidateImage: React.JSX.Element;
+  onNext: () => void;
+  onPrev: () => void;
+  onBack: () => void;
   onClose: () => void;
 }) => {
   const name = getCandidateDetails(application, 'name');
   return (
     <InterviewDetailedFeedback
+      onClickBack={{
+        onClick: () => onBack(),
+      }}
+      onClickNext={{
+        onClick: () => onNext(),
+      }}
+      onClickPrev={{
+        onClick: () => onPrev(),
+      }}
       onClickClose={{
-        onClick: () => {
-          onClose();
-        },
+        onClick: () => onClose(),
       }}
       slotCandidateImage={candidateImage}
       textName={name.value}
@@ -321,6 +342,8 @@ const NewJobApplicationSideDrawer = ({
       onClickClose={{
         onClick: () => onClose(),
       }}
+      isOverviewVisible={overview.valid}
+      isLocationRoleVisible={jobTitle.valid || location.valid}
       isRoleVisible={jobTitle.valid}
       textRole={jobTitle.value}
       isLocationVisible={location.valid}
@@ -394,23 +417,18 @@ const NewCandidateDetails: React.FC<{
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.positions
                 }
-                score={
-                  (application.score_json as ScoreJson)?.scores?.experience
-                }
               />
               <NewEducationDetails
                 schools={resume.schools}
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.schools
                 }
-                score={(application.score_json as ScoreJson)?.scores?.education}
               />
               <NewSkillDetails
                 skills={resume.skills}
                 relevance={
                   (application.score_json as ScoreJson)?.relevance?.skills
                 }
-                score={(application.score_json as ScoreJson)?.scores?.skills}
               />
             </>
           )}
@@ -740,14 +758,9 @@ const ResumeBlock: React.FC<{
     case 'unavailable':
       return <ResAbsentError />;
     case 'fetching':
-      return <ResumeErrorBlock2 slotLottie={<ResumeWait />} />;
+      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'processing':
-      return (
-        <ResumeErrorBlock
-          slotLottie={<ResumeWait />}
-          onclickView={{ onClick: () => setOpenResume(true) }}
-        />
-      );
+      return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'unparsable':
       return (
         <UnableFetchResume
@@ -1104,11 +1117,9 @@ const fetchFile = async (application: JobApplication) => {
 const NewEducationDetails = ({
   schools,
   relevance,
-  score,
 }: {
   schools;
   relevance: ScoreJson['relevance']['schools'];
-  score: number;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (schools && schools instanceof Array && schools.length !== 0) {
@@ -1140,7 +1151,6 @@ const NewEducationDetails = ({
       });
     return (
       <CandidateEducation
-        slotEducationScore={<AnalysisPillComponent score={score} />}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
@@ -1164,11 +1174,9 @@ const NewEducationDetails = ({
 const NewExperienceDetails = ({
   positions,
   relevance,
-  score,
 }: {
   positions;
   relevance: ScoreJson['relevance']['positions'];
-  score: number;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (positions && positions instanceof Array && positions.length !== 0) {
@@ -1204,7 +1212,6 @@ const NewExperienceDetails = ({
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
           },
         }}
-        slotExperienceScore={<AnalysisPillComponent score={score} />}
         slotCandidateExperienceCard={
           <Collapse in={collapse} style={{ gap: '2px' }}>
             <Stack gap={'20px'} marginTop={'20px'}>
@@ -1244,43 +1251,76 @@ const timeRange = (startDate: string, endDate: string) => {
 const NewSkillDetails = ({
   skills,
   relevance,
-  score,
 }: {
   skills;
   relevance: ScoreJson['relevance']['skills'];
-  score: number;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (skills && skills instanceof Array && skills.length !== 0) {
-    const { relevant, others } = Object.entries(relevance).reduce(
-      (acc, [key, value], i) => {
-        if (value === 'high')
+    if (relevance) {
+      const { relevant, others } = Object.entries(relevance).reduce(
+        (acc, [key, value], i) => {
+          if (value === 'high')
+            return {
+              ...acc,
+              relevant: [
+                ...acc.relevant,
+                <CandidateSkillPills key={i} textSkill={key} />,
+              ],
+            };
           return {
             ...acc,
-            relevant: [
-              ...acc.relevant,
-              <CandidateSkillPills key={i} textSkill={key} />,
+            others: [
+              ...acc.others,
+              <CandidateSkillPills
+                key={i}
+                textSkill={key}
+                propsBgColor={{
+                  style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+                }}
+              />,
             ],
           };
-        return {
-          ...acc,
-          others: [
-            ...acc.others,
-            <CandidateSkillPills
-              key={i}
-              textSkill={key}
-              propsBgColor={{
-                style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
-              }}
-            />,
-          ],
-        };
-      },
-      { relevant: [], others: [] },
-    );
+        },
+        { relevant: [], others: [] },
+      );
+      return (
+        <CandidateSkill
+          onClickIcons={{
+            onClick: () => setCollapse((prev) => !prev),
+            style: {
+              cursor: 'pointer',
+              transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+            },
+          }}
+          slotCandidateSkill={
+            <Collapse in={collapse}>
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                flexWrap={'wrap'}
+                gap={'6px'}
+                marginTop={'20px'}
+              >
+                {relevant}
+                {others}
+              </Stack>
+            </Collapse>
+          }
+        />
+      );
+    }
+    const others = skills.map((skill, i) => (
+      <CandidateSkillPills
+        key={i}
+        textSkill={skill}
+        propsBgColor={{
+          style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+        }}
+      />
+    ));
     return (
       <CandidateSkill
-        slotSkillsScore={<AnalysisPillComponent score={score} />}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
@@ -1297,7 +1337,6 @@ const NewSkillDetails = ({
               gap={'6px'}
               marginTop={'20px'}
             >
-              {relevant}
               {others}
             </Stack>
           </Collapse>

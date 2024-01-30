@@ -4,10 +4,9 @@ import toast from '@utils/toast';
 import { get } from 'lodash';
 import { useEffect, useReducer } from 'react';
 
-import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { CountJobs, JobsData, JobTypeDashboard } from './types';
+import { JobsData, JobTypeDashboard } from './types';
 import {
   deleteJobDbAction,
   initialJobContext,
@@ -134,8 +133,10 @@ const useJobActions = () => {
         const fechedJobs = data.map((job) => {
           return {
             ...job,
-            active_status: job.active_status as unknown as StatusJobs,
-            count: job.count as unknown as CountJobs,
+            jd_json: job.jd_json as JobTypeDashboard['jd_json'],
+            active_status:
+              job.active_status as JobTypeDashboard['active_status'],
+            count: job.count as JobTypeDashboard['count'],
           };
         });
 
