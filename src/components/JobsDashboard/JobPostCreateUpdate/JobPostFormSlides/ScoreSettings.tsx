@@ -164,6 +164,68 @@ ${jobForm.formFields.jobDescription}
     setPopUpEl(e.currentTarget);
   };
 
+  const handleAddFeild = (paramKey: newField['paramKey']) => {
+    const isFeildValExist = get(
+      jobForm.formFields,
+      `jdJson.${paramKey}`,
+      [],
+    ).find(
+      (s) =>
+        s.field.trim().toLowerCase() === newField.value.trim().toLowerCase(),
+    );
+    if (isFeildValExist) {
+      toast.warning(`Field already exist`);
+      setNewField(null);
+
+      return;
+    }
+    if (newField.value.length === 0) return;
+    handleUpdateFormFields({
+      path: `jdJson.${paramKey}`,
+      value: [
+        ...get(jobForm.formFields, `jdJson.${paramKey}`, []),
+        {
+          field: newField.value,
+          isMustHave: newField.isMustHave,
+          id: nanoid(),
+        },
+      ],
+    });
+    setNewField(null);
+  };
+
+  const handleEdit = () => {
+    if (editParam.value.length === 0) return;
+    const existedItem = jobForm.formFields.jdJson[
+      String(editParam.paramKey)
+    ].find(
+      (it) =>
+        it.id !== editParam.id &&
+        it.field.trim().toLowerCase() === editParam.value.trim().toLowerCase(),
+    );
+    if (existedItem) {
+      toast.warning(`Field already exist`);
+      setPopUpEl(null);
+      return;
+    }
+
+    handleUpdateFormFields({
+      path: `jdJson.${editParam.paramKey}`,
+      value: jobForm.formFields.jdJson[String(editParam.paramKey)].map(
+        (item) => {
+          if (item.id === editParam.id)
+            return {
+              ...editParam,
+              field: editParam.value,
+              isMustHave: editParam.isMustHave,
+            };
+          return item;
+        },
+      ),
+    });
+    setPopUpEl(null);
+  };
+
   let isJdTooShort =
     !jobForm.formFields.jobDescription ||
     jobForm.formFields.jobDescription.split(' ').length <= 10;
@@ -185,6 +247,11 @@ ${jobForm.formFields.jobDescription}
                 {params.map((p) => {
                   return (
                     <ScoreCard
+                      colorPropsHeading={{
+                        style: {
+                          backgroundColor: p.color,
+                        },
+                      }}
                       key={p.paramKey}
                       textHeading={
                         <>
@@ -282,24 +349,7 @@ ${jobForm.formFields.jobDescription}
                                       <AUIButton
                                         size='small'
                                         onClick={() => {
-                                          if (newField.value.length === 0)
-                                            return;
-                                          handleUpdateFormFields({
-                                            path: `jdJson.${p.paramKey}`,
-                                            value: [
-                                              ...get(
-                                                jobForm.formFields,
-                                                `jdJson.${p.paramKey}`,
-                                                [],
-                                              ),
-                                              {
-                                                field: newField.value,
-                                                isMustHave: newField.isMustHave,
-                                                id: nanoid(),
-                                              },
-                                            ],
-                                          });
-                                          setNewField(null);
+                                          handleAddFeild(p.paramKey);
                                         }}
                                       >
                                         Add
@@ -445,22 +495,7 @@ ${jobForm.formFields.jobDescription}
                     <AUIButton
                       size='small'
                       onClick={() => {
-                        if (editParam.value.length === 0) return;
-                        handleUpdateFormFields({
-                          path: `jdJson.${editParam.paramKey}`,
-                          value: jobForm.formFields.jdJson[
-                            String(editParam.paramKey)
-                          ].map((item) => {
-                            if (item.id === editParam.id)
-                              return {
-                                ...editParam,
-                                field: editParam.value,
-                                isMustHave: editParam.isMustHave,
-                              };
-                            return item;
-                          }),
-                        });
-                        setPopUpEl(null);
+                        handleEdit();
                       }}
                     >
                       Update

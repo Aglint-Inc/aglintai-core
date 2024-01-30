@@ -8,6 +8,19 @@
   border-radius: 10px;
 }
 
+.div-block-800 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.div-block-801 {
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -250,6 +263,14 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
 }
 
 .skills-wrap-details {

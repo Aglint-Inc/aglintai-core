@@ -277,7 +277,7 @@ function InterviewFeedbackPage() {
                   `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`,
                 )
                 .then(() => {
-                  toast.success('Link Copied');
+                  toast.success('Link copied');
                 });
             },
           }}
