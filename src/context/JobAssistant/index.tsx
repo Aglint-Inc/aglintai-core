@@ -6,11 +6,11 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { JobAssistantChats, JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 
+import { AssistantMessageInterface, ChatInput } from './type';
 import { reasons } from './utils';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
 // let setTime;
-
 interface ContextValue {
   companyDetails: JobTypeDB | null;
   setCompanyDetails: (details: JobTypeDB | null) => void;
@@ -20,11 +20,13 @@ interface ContextValue {
   setCandidatesFiles: (candidates: null) => void;
   applications: any[] | null;
   setApplications: (applications: null) => void;
-  messages: any[] | null;
+  messages: AssistantMessageInterface[] | null;
   setMessages: (message: null) => void;
   handleChat: () => void;
-  textMessage: string;
-  setTextMessage: (textMessage: string) => void;
+  textMessage: ChatInput;
+  setTextMessage: (textMessage: ChatInput) => void;
+  backEndText: string;
+  setBackEndText: (backEndText: string) => void;
   inputRef: any | null;
   resLoading: true | false;
   setResLoading: (resLoading: boolean) => void;
@@ -34,6 +36,10 @@ interface ContextValue {
   currentChat: JobAssistantChats | null;
   setCurrentChat: (jobAssistantChats: JobAssistantChats) => void;
   switchChat: (job_id: string) => void;
+  fetching: boolean;
+  setFetching: (fetching: boolean) => void;
+  isPopUpOpen: boolean;
+  setIsPopUpOpen: (isPopUpOpen: boolean) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -48,8 +54,14 @@ const defaultProvider: ContextValue = {
   messages: null,
   setMessages: () => {},
   handleChat: null,
-  textMessage: '',
+  textMessage: {
+    html: '',
+    text: '',
+    wordCount: 0,
+  },
   setTextMessage: () => {},
+  backEndText: null,
+  setBackEndText: () => {},
   inputRef: null,
   resLoading: false,
   setResLoading: () => {},
@@ -59,6 +71,10 @@ const defaultProvider: ContextValue = {
   currentChat: null,
   setCurrentChat: () => {},
   switchChat: null,
+  fetching: null,
+  setFetching: () => {},
+  isPopUpOpen: null,
+  setIsPopUpOpen: () => {},
 };
 const JobAssistantContext = createContext<ContextValue>(defaultProvider);
 const useJobAssistantContext = () => useContext(JobAssistantContext);
@@ -74,18 +90,27 @@ function JobAssistantProvider({ children }) {
   const [currentChat, setCurrentChat] = useState<JobAssistantChats | null>(
     null,
   );
+  let [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
-  const [textMessage, setTextMessage] = useState('');
+  const [textMessage, setTextMessage] = useState<ChatInput>({
+    html: '',
+    text: '',
+    wordCount: 0,
+  });
+  const [backEndText, setBackEndText] = useState('');
+
   const [messages, setMessages] = useState<any[] | null>([]);
   const [resLoading, setResLoading] = useState(false);
+  const [fetching, setFetching] = useState(false);
+
   const inputRef = useRef(null);
 
   useEffect(() => {
+    setFetching(true);
     const job_id = router.query?.id as string;
     if (job_id) {
       getCompanyDetails(job_id);
       getApplications(job_id);
-      getCandidates();
       getJobAssistantChat(job_id);
     }
   }, [router.isReady]);
@@ -125,7 +150,7 @@ function JobAssistantProvider({ children }) {
     message_id: any;
     sender: string;
     content:
-      | { message: string; active: boolean }
+      | { message: ChatInput; active: boolean }
       | {
           message: any;
           active: boolean;
@@ -206,11 +231,13 @@ function JobAssistantProvider({ children }) {
 
   const handleChat = async () => {
     setResLoading(true);
-    const tempMessage = textMessage;
-    setTextMessage('');
+    const tempMessage = backEndText;
+    const uisideText = textMessage;
+    setTextMessage(null);
+    setBackEndText('');
     const userMessage = {
       sender: 'You',
-      content: { message: tempMessage, active: true },
+      content: { message: uisideText, active: true },
     };
     const assistantMEssage = {
       sender: 'Assistant',
@@ -251,9 +278,12 @@ function JobAssistantProvider({ children }) {
           //   (candidateFile) =>
           //     candidateFile.candidate_id === application.candidate_id,
           // );
+
           result_candidates.push({
-            ...application,
             ...candidate[0],
+            application: {
+              ...application,
+            },
             // candidateFile,
           });
         });
@@ -277,7 +307,11 @@ function JobAssistantProvider({ children }) {
 
     setMessages((pre: any) => {
       pre[messages.length + 1].sender = 'Assistant';
-      pre[messages.length + 1].content.message = message;
+      pre[messages.length + 1].content.message = {
+        html: message,
+        text: message,
+        wordCount: message.length,
+      };
       pre[messages.length + 1].content.active = activeMessage;
       pre[messages.length + 1].content.result_candidates = result_candidates;
       pre[messages.length + 1].content.searchArguments = searchArguments;
@@ -291,7 +325,7 @@ function JobAssistantProvider({ children }) {
     await createMessage({
       sender: 'Assistant',
       content: {
-        message: message,
+        message: { html: message, text: message, wordCount: message.length },
         active: activeMessage,
         result_candidates: result_candidates,
         searchArguments: searchArguments,
@@ -318,19 +352,35 @@ function JobAssistantProvider({ children }) {
   }
 
   ////////////////////////////Fetch candidates and applications/////////////////////////////////////
-  async function getCandidates() {
+  async function getCandidates(applications) {
     const { data: candidates } = await supabase
       .from('candidates')
       .select()
       .eq('recruiter_id', recruiter?.id);
-    setCandidates(candidates);
+
+    let tempCandidates = [];
+    applications.map((application) => {
+      // console.log(application.candidate_id);
+      candidates.map((candiadte) => {
+        if (candiadte.id === application.candidate_id)
+          tempCandidates.push({
+            ...candiadte,
+            application: { ...application },
+          });
+      });
+    });
+    setCandidates([...tempCandidates]);
+    setFetching(false);
   }
   async function getApplications(job_id: string) {
     const { data: applications, error } = await supabase
       .from('applications')
       .select()
       .eq('job_id', job_id);
-    setApplications(applications);
+    if (!error) {
+      setApplications(applications);
+      getCandidates(applications);
+    }
   }
   // async function getCandidatesFiles() {
   //   console.log('kj');
@@ -363,12 +413,18 @@ function JobAssistantProvider({ children }) {
         setResLoading,
         textMessage,
         setTextMessage,
+        backEndText,
+        setBackEndText,
         inputRef,
         jobAssistantChats,
         setJobAssistantChats,
         currentChat,
         setCurrentChat,
         switchChat,
+        fetching,
+        setFetching,
+        isPopUpOpen,
+        setIsPopUpOpen,
       }}
     >
       {children}

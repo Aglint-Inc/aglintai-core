@@ -205,3 +205,41 @@ textarea::placeholder {
   max-height: 1000px;
   word-wrap: break-word;
 }
+
+// assistant chat text field
+
+.mention {
+  color: #ff6224;
+  background-color: #ff910043;
+
+  padding: 2px;
+  border-radius: 4px;
+  // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
+  margin: 1px;
+}
+
+#list-popup {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0px 10px 20px rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1rem;
+  max-height: 250px;
+  overflow: auto;
+  position: relative;
+  // padding: 5px 0px;
+  // width: 300px;
+}
+
+#list-popup .item {
+  margin: 0;
+  padding: 0.3rem 3rem 0.3rem 0.5rem;
+  width: 100%;
+}
+
+#list-popup .is-selected {
+  // border-color: #000;
+  background-color: #ff910043;
+}

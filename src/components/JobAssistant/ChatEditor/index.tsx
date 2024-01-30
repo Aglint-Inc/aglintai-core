@@ -1,34 +1,57 @@
 import { Divider, IconButton, Stack } from '@mui/material';
-import { Extension } from '@tiptap/core';
 import Mention from '@tiptap/extension-mention';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import suggestion from '../utils/suggetions';
-function ChatEditor({ value, handleChat, onChange, resetText, onKeyDown }) {
-  // console.log(value);
-  let DisableEnter = Extension.create({
-    addKeyboardShortcuts() {
-      return {
-        Enter: () => false,
-      };
-    },
-  });
+import { useJobAssistantContext } from '@/src/context/JobAssistant';
+
+import suggetion from '../utils/suggetions';
+
+let shiftEnabled = false;
+// let isPopUpOpen = null;
+function ChatEditor({
+  value,
+  onClick,
+  onChange,
+  getEditorRef,
+  dataList,
+}: {
+  value: string;
+  onClick: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (x: { text: string; html: string; wordCount: number }) => void;
+  getEditorRef: any;
+  dataList: any[];
+}) {
+  let { isPopUpOpen, setIsPopUpOpen } = useJobAssistantContext();
   let editor = useEditor({
+    autofocus: 0,
     extensions: [
       StarterKit,
+
       Mention.configure({
         HTMLAttributes: {
           class: 'mention',
         },
-        suggestion,
+        suggestion: {
+          ...suggetion,
+          items: ({ query }) => {
+            return dataList.filter((item) =>
+              String(item.first_name)
+                .toLowerCase()
+                .startsWith(query.toLowerCase()),
+            );
+          },
+          allowSpaces: true,
+        },
       }),
       Placeholder.configure({
         placeholder: 'Chat with assistant',
         emptyEditorClass: 'is-editor-empty',
       }),
-      DisableEnter,
+
+      // DisableEnter,
     ],
     onUpdate({ editor }) {
       if (onChange) {
@@ -52,17 +75,18 @@ function ChatEditor({ value, handleChat, onChange, resetText, onKeyDown }) {
         onChange(value);
       }
     },
+    content: value,
   });
 
   if (!editor) {
     return null;
   }
 
-  resetText(() => {
-    // console.log('bind');
+  const resetText = () => {
     editor.commands.clearContent(true);
-  });
+  };
 
+  getEditorRef(() => editor);
   return (
     <Stack
       border={`1px solid`}
@@ -73,7 +97,7 @@ function ChatEditor({ value, handleChat, onChange, resetText, onKeyDown }) {
         },
         '& .tiptap p': {
           fontSize: '1rem',
-          margin: '0px',
+          // margin: '1px',
           // p: '3px',
         },
         '& .ProseMirror-focused': {
@@ -102,14 +126,43 @@ function ChatEditor({ value, handleChat, onChange, resetText, onKeyDown }) {
       maxHeight={`${5}rem`}
       px={'15px'}
     >
-      <EditorContent content={value} onKeyDown={onKeyDown} editor={editor} />
+      <EditorContent
+        inputMode='text'
+        onKeyDown={(e) => {
+          if (e.key === '@') {
+            setIsPopUpOpen(true);
+          }
+          if (e.key === 'Enter' && isPopUpOpen) {
+            setIsPopUpOpen(false);
+            return null;
+          }
+          if (e.key === 'Shift') {
+            shiftEnabled = true;
+          }
+          if (!shiftEnabled && e.key === 'Enter' && value.trim().length !== 0) {
+            // console.log('message sent');
+            onClick();
+            resetText();
+
+            if (!shiftEnabled) {
+              e.preventDefault();
+            }
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === 'Shift') {
+            shiftEnabled = false;
+          }
+        }}
+        editor={editor}
+      />
       <Divider sx={{ height: 28, m: 0.5 }} orientation='vertical' />
       <IconButton
         type='button'
         sx={{ p: '10px' }}
         aria-label='search'
         disabled={!value.trim()}
-        onClick={handleChat}
+        onClick={onClick}
       >
         <SendIcon />
       </IconButton>
@@ -119,7 +172,7 @@ function ChatEditor({ value, handleChat, onChange, resetText, onKeyDown }) {
 
 export default ChatEditor;
 
-function SendIcon() {
+export function SendIcon() {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
