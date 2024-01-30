@@ -193,3 +193,14 @@ export type GreenhouseType = Pick<
 
 export type OutreachEmailDbType =
   Database['public']['Tables']['outreached_emails']['Row'];
+
+  export type InviteUserAPIType = {
+    in: {
+      users: { name: string; email: string; role: string }[];
+      id: string;
+    };
+    out: {
+      created: boolean;
+      error: string;
+    };
+  };

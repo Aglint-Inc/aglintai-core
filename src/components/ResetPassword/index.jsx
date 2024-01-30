@@ -3,7 +3,7 @@ import { errorMessages } from '@utils/errorMessages';
 import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ResetPassword } from '@/devlink';
 import toast from '@/src/utils/toast';
@@ -138,6 +138,25 @@ export default function ResetPasswordComponent() {
       // toast.error('The two passwords that you entered do not match!');
     }
   };
+
+  useEffect(() => {
+    try {
+      const tempObj =
+        router.asPath
+          .slice(router.asPath.indexOf('#'))
+          .replaceAll('=', '":"')
+          .replaceAll('&', '","')
+          .replaceAll('#', '{"') + '"}';
+      const tempCreds = JSON.parse(tempObj);
+      tempCreds.access_token &&
+        supabase.auth.setSession({
+          access_token: tempCreds.access_token,
+          refresh_token: tempCreds.refresh_token,
+        });
+    } catch (e) {
+      //
+    }
+  }, []);
 
   return (
     <>
