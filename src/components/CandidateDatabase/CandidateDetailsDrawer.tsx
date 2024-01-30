@@ -1,4 +1,4 @@
-import { Dialog, Stack } from '@mui/material';
+import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -46,6 +46,9 @@ const CandidateDrawer = ({
   isEmailOutreachVisible?: boolean;
 }) => {
   const [resume, setResume] = useState(false);
+  const [isEducationShow, setIseducationShow] = useState(false);
+  const [isExperienceShow, setIsExperienceShow] = useState(false);
+
   const keyPressedRef = useRef({});
   let location = candidate.json_resume.basics.location;
   const linkedin = candidate.json_resume.basics.linkedIn;
@@ -101,12 +104,6 @@ const CandidateDrawer = ({
   return (
     <>
       <CandidateDialog
-        onClickPhone={{
-          onClick: () => {
-            navigator.clipboard.writeText(candidate.json_resume.basics.phone);
-            toast.success('Phone number copied');
-          },
-        }}
         isGitVisible={false}
         isFacebookVisible={false}
         isTwitterVisible={false}
@@ -114,11 +111,12 @@ const CandidateDrawer = ({
         textPhone={candidate.json_resume.basics.phone}
         slotEmailOutReach={
           candidate.json_resume.basics.email && (
-          <EmailOutReach
-            onClickEmailOutreach={{
-              onClick: onClickEmailOutreach,
-            }}
-          />)
+            <EmailOutReach
+              onClickEmailOutreach={{
+                onClick: onClickEmailOutreach,
+              }}
+            />
+          )
         }
         isCloseButtonVisible={!showClose}
         onClickDownloadResume={{
@@ -142,6 +140,12 @@ const CandidateDrawer = ({
         onClickStar={{
           onClick: () => {
             toggleBookMark();
+          },
+        }}
+        onClickPhone={{
+          onClick: () => {
+            navigator.clipboard.writeText(candidate.json_resume.basics.phone);
+            toast.success('Phone number copied');
           },
         }}
         slotAddJob={
@@ -202,41 +206,67 @@ const CandidateDrawer = ({
         slotDetails={
           <>
             <CandidateExperience
+              onClickIcons={{
+                onClick: () => {
+                  setIsExperienceShow((prev) => !prev);
+                },
+                style: {
+                  transform: isExperienceShow
+                    ? 'rotate(180deg)'
+                    : 'rotate(0deg)',
+                  'transition-duration': '500ms',
+                },
+              }}
               slotCandidateExperienceCard={
                 <>
-                  {candidate.json_resume?.positions?.map((exp, index) => {
-                    return (
-                      <CandidateExperienceCard
-                        key={index}
-                        textCompany={exp.org}
-                        textRole={exp.title}
-                        textDate={getformatedDate(exp.start, exp.end)}
-                        slotLogo={
-                          <CompanyLogo
-                            companyName={
-                              exp.org ? exp.org.trim().toLowerCase() : null
-                            }
-                          />
-                        }
-                      />
-                    );
-                  })}
+                  <Collapse in={isExperienceShow} translate='yes'>
+                    {candidate.json_resume?.positions?.map((exp, index) => {
+                      return (
+                        <CandidateExperienceCard
+                          key={index}
+                          textCompany={exp.org}
+                          textRole={exp.title}
+                          textDate={getformatedDate(exp.start, exp.end)}
+                          slotLogo={
+                            <CompanyLogo
+                              companyName={
+                                exp.org ? exp.org.trim().toLowerCase() : null
+                              }
+                            />
+                          }
+                        />
+                      );
+                    })}
+                  </Collapse>
                 </>
               }
             />
             <CandidateEducation
+              onClickIcons={{
+                onClick: () => {
+                  setIseducationShow((prev) => !prev);
+                },
+                style: {
+                  transform: isEducationShow
+                    ? 'rotate(180deg)'
+                    : 'rotate(0deg)',
+                  'transition-duration': '500ms',
+                },
+              }}
               slotEducationCard={
                 <>
-                  {candidate.json_resume.schools?.map((ed, index) => {
-                    return (
-                      <CandidateEducationCard
-                        key={index}
-                        slotEducationLogo={<></>}
-                        textUniversityName={ed.institution}
-                        textDate={getformatedDate(ed.start, ed.end)}
-                      />
-                    );
-                  })}
+                  <Collapse in={isEducationShow} translate='yes'>
+                    {candidate.json_resume.schools?.map((ed, index) => {
+                      return (
+                        <CandidateEducationCard
+                          key={index}
+                          slotEducationLogo={<></>}
+                          textUniversityName={ed.institution}
+                          textDate={getformatedDate(ed.start, ed.end)}
+                        />
+                      );
+                    })}
+                  </Collapse>
                 </>
               }
             />

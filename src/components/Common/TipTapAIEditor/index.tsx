@@ -209,7 +209,7 @@ function convertTextToProseMirrorJSON(text) {
   lines.forEach((line) => {
     const trimmedLine = line.trim();
 
-    if (trimmedLine.startsWith('•')) {
+    if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
       // Start or continue a bullet list
       if (!isInBulletList) {
         isInBulletList = true;

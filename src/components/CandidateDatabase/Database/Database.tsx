@@ -157,6 +157,7 @@ const CandDatabase = () => {
 
   const totalPageCount = Math.ceil(totalResults / 100);
   const currPageNo = Number(router.query.page_no);
+
   return (
     <>
       <CandidateDatabaseTable
@@ -292,7 +293,7 @@ const CandDatabase = () => {
         }}
         onClickAiSearch={{
           onClick: () => {
-            router.push('/candidates/history');
+            router.back();
           },
         }}
         slotCandidateDetails={

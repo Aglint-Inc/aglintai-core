@@ -126,7 +126,7 @@ const TeamManagement = () => {
                 // }}
                 removeMember={() => {
                   if (recruiterUser?.user_id === member.user_id) {
-                    toast.error('Cannot Remove Admin Account');
+                    toast.error('Cannot remove admin account');
                   } else {
                     handleMemberUpdate(
                       { is_deactivated: true },
@@ -138,7 +138,7 @@ const TeamManagement = () => {
                             (mem) => mem.user_id !== member.user_id,
                           ),
                         );
-                        toast.success('Member Removed');
+                        toast.success('Member removed');
                       }
                     });
                   }

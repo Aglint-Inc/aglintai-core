@@ -94,7 +94,7 @@ export default function ResetPasswordComponent() {
         password: confirmpassword?.current?.value,
       });
       if (!error) {
-        toast.success('Password Reset Successfully');
+        toast.success('Password reset successfull');
         router.push(pageRoutes.JOBS);
       } else {
         if (error == 'AuthApiError: Password should be at least 8 characters') {

@@ -58,7 +58,7 @@ export function CandidateDatabaseTable({
               className={_utils.cx(_styles, "text-grey-600")}
               tag="div"
             >
-              {"Back to search"}
+              {"Back"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

@@ -21,12 +21,15 @@ export function ScoreCard({
       className={_utils.cx(_styles, "score-card-detail-wrap")}
       tag="div"
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold")}
-        tag="div"
-        {...colorPropsHeading}
-      >
-        {textHeading}
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-800")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-801")}
+          tag="div"
+          {...colorPropsHeading}
+        />
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {textHeading}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "skills-wrap-details")}

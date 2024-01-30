@@ -309,11 +309,14 @@
 
 .auth-header-block {
   display: flex;
+  max-width: 470px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  text-align: center;
 }
 
 @media screen and (max-width: 991px) {
@@ -462,7 +465,6 @@
 .ju-header-description {
   color: #68737d;
   font-weight: 400;
-  text-align: left;
 }
 
 @media screen and (max-width: 991px) {

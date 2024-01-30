@@ -95,6 +95,7 @@ export function CandidateDetails({
               <CandidateResumeScore />
               <CandidateExperience />
               <CandidateEducation />
+              <CandidateEducation />
               <CandidateSkill />
             </>
           )}

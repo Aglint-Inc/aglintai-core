@@ -159,7 +159,7 @@ function JobForm() {
       const isDeleted = await handleJobDelete(jobForm.jobPostId);
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs');
-      toast.error('Deleted Draft job ');
+      toast.error('Deleted draft job ');
       posthog.capture('Deleted Draft job');
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -194,7 +194,7 @@ function JobForm() {
         job: publishedJobPost,
         recruiter,
       });
-      toast.success('Reverted Successfully');
+      toast.success('Reverted successfully');
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);
@@ -262,8 +262,9 @@ function JobForm() {
           },
         }}
         isAssessmentPreviewVisible={
-          currSlide === 'phoneScreening' ||
           currSlide === 'resumeScore' ||
+          (currSlide === 'phoneScreening' &&
+            jobForm.formFields.isPhoneScreenEnabled) ||
           (currSlide === 'screening' && jobForm.formFields.assessment)
         }
         slotSideSection={
@@ -697,7 +698,7 @@ const SideSection = () => {
   } else if (currSlide === 'screening') {
     return (
       <AssessmentSide
-      textDisableButton={'Disable'}
+        textDisableButton={'Disable'}
         onClickDisableAssessment={{
           onClick: async () => {
             const { count } = await supabase

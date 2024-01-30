@@ -32,7 +32,7 @@ function PublishDesclaimer() {
         job: publishedJobPost,
         recruiter,
       });
-      toast.success('Reverted Successfully');
+      toast.success('Reverted successfully');
     } catch (err) {
       // console.log(err);
       toast.error(API_FAIL_MSG);

@@ -466,7 +466,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         },
       });
     } catch (err) {
-      toast.error('Something went Wrong! Please Check Your Network');
+      toast.error('Something went wrong! Please Check Your Network');
     }
   };
 
