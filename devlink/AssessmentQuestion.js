@@ -41,7 +41,7 @@ export function AssessmentQuestion({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "color-grey-600")}
+            className={_utils.cx(_styles, "color-grey-600", "mt-6")}
             tag="div"
           >
             {

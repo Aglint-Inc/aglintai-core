@@ -16,7 +16,6 @@ import AUIButton from '../../Common/AUIButton';
 import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
-import UITypography from '../../Common/UITypography';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 type phone = {
@@ -53,59 +52,59 @@ function SlideDetailsTwo() {
   }, []);
   return (
     <RecCompanyDetails
-      slotStatusText={
-        router.query?.api_fetch &&
-        (router.query?.api_fetch == 'true' ? (
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            spacing={'10px'}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='16'
-              height='16'
-              viewBox='0 0 16 16'
-              fill='none'
-            >
-              <path
-                fill-rule='evenodd'
-                clip-rule='evenodd'
-                d='M8 0C3.58667 0 0 3.58667 0 8C0 12.4133 3.58667 16 8 16C12.4133 16 16 12.4133 16 8C16 3.58667 12.4133 0 8 0ZM12.5865 6.58651L7.91984 11.2532C7.75984 11.4132 7.54651 11.4932 7.33318 11.4932C7.11984 11.4932 6.90651 11.4132 6.74651 11.2532L4.07984 8.58651C3.75984 8.26651 3.75984 7.73318 4.07984 7.41318C4.39984 7.09318 4.93318 7.09318 5.25318 7.41318L7.33318 9.49318L11.4132 5.41318C11.7332 5.09318 12.2665 5.09318 12.5865 5.41318C12.9198 5.73318 12.9198 6.26651 12.5865 6.58651Z'
-                fill='#228F67'
-              />
-            </svg>
-            <UITypography>
-              Company details fetched successfully. Kindly confirm and continue.
-            </UITypography>
-          </Stack>
-        ) : (
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            spacing={'10px'}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='16'
-              height='16'
-              viewBox='0 0 16 16'
-              fill='none'
-            >
-              <path
-                fill-rule='evenodd'
-                clip-rule='evenodd'
-                d='M7.33333 15.9997C3.28 15.9997 0 12.7197 0 8.66634C0 4.61301 3.28 1.33301 7.33333 1.33301C11.3867 1.33301 14.6667 4.61301 14.6667 8.66634C14.6667 12.7197 11.3867 15.9997 7.33333 15.9997ZM6.66667 12.6662C6.66667 13.0395 6.96 13.3328 7.33333 13.3328C7.70667 13.3328 8 13.0395 8 12.6662V8.66618C8 8.29285 7.70667 7.99951 7.33333 7.99951C6.96 7.99951 6.66667 8.29285 6.66667 8.66618V12.6662ZM7.33333 3.99951C6.6 3.99951 6 4.59951 6 5.33285C6 6.06618 6.6 6.66618 7.33333 6.66618C8.06667 6.66618 8.66667 6.06618 8.66667 5.33285C8.66667 4.59951 8.06667 3.99951 7.33333 3.99951Z'
-                fill='#ED8F1C'
-              />
-            </svg>
-            <UITypography>
-              Unable to fetch company information. Kindly input the details
-              manually.
-            </UITypography>
-          </Stack>
-        ))
-      }
+      // slotStatusText={
+      //   router.query?.api_fetch &&
+      //   (router.query?.api_fetch == 'true' ? (
+      //     <Stack
+      //       direction={'row'}
+      //       justifyContent={'space-between'}
+      //       spacing={'10px'}
+      //     >
+      //       <svg
+      //         xmlns='http://www.w3.org/2000/svg'
+      //         width='16'
+      //         height='16'
+      //         viewBox='0 0 16 16'
+      //         fill='none'
+      //       >
+      //         <path
+      //           fill-rule='evenodd'
+      //           clip-rule='evenodd'
+      //           d='M8 0C3.58667 0 0 3.58667 0 8C0 12.4133 3.58667 16 8 16C12.4133 16 16 12.4133 16 8C16 3.58667 12.4133 0 8 0ZM12.5865 6.58651L7.91984 11.2532C7.75984 11.4132 7.54651 11.4932 7.33318 11.4932C7.11984 11.4932 6.90651 11.4132 6.74651 11.2532L4.07984 8.58651C3.75984 8.26651 3.75984 7.73318 4.07984 7.41318C4.39984 7.09318 4.93318 7.09318 5.25318 7.41318L7.33318 9.49318L11.4132 5.41318C11.7332 5.09318 12.2665 5.09318 12.5865 5.41318C12.9198 5.73318 12.9198 6.26651 12.5865 6.58651Z'
+      //           fill='#228F67'
+      //         />
+      //       </svg>
+      //       <UITypography>
+      //         Company details fetched successfully. Kindly confirm and continue.
+      //       </UITypography>
+      //     </Stack>
+      //   ) : (
+      //     <Stack
+      //       direction={'row'}
+      //       justifyContent={'space-between'}
+      //       spacing={'10px'}
+      //     >
+      //       <svg
+      //         xmlns='http://www.w3.org/2000/svg'
+      //         width='16'
+      //         height='16'
+      //         viewBox='0 0 16 16'
+      //         fill='none'
+      //       >
+      //         <path
+      //           fill-rule='evenodd'
+      //           clip-rule='evenodd'
+      //           d='M7.33333 15.9997C3.28 15.9997 0 12.7197 0 8.66634C0 4.61301 3.28 1.33301 7.33333 1.33301C11.3867 1.33301 14.6667 4.61301 14.6667 8.66634C14.6667 12.7197 11.3867 15.9997 7.33333 15.9997ZM6.66667 12.6662C6.66667 13.0395 6.96 13.3328 7.33333 13.3328C7.70667 13.3328 8 13.0395 8 12.6662V8.66618C8 8.29285 7.70667 7.99951 7.33333 7.99951C6.96 7.99951 6.66667 8.29285 6.66667 8.66618V12.6662ZM7.33333 3.99951C6.6 3.99951 6 4.59951 6 5.33285C6 6.06618 6.6 6.66618 7.33333 6.66618C8.06667 6.66618 8.66667 6.06618 8.66667 5.33285C8.66667 4.59951 8.06667 3.99951 7.33333 3.99951Z'
+      //           fill='#ED8F1C'
+      //         />
+      //       </svg>
+      //       <UITypography>
+      //         Unable to fetch company information. Kindly input the details
+      //         manually.
+      //       </UITypography>
+      //     </Stack>
+      //   ))
+      // }
       slotMain={
         <>
           {recruiter?.company_website ? (

@@ -403,6 +403,10 @@
   }
 }
 
+.auth-cta-block.tab-edit {
+  align-items: center;
+}
+
 @media screen and (max-width: 991px) {
   .auth-cta-block.tab-edit {
     align-items: center;
@@ -411,11 +415,14 @@
 
 .auth-header-block {
   display: flex;
+  max-width: 470px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  text-align: center;
 }
 
 @media screen and (max-width: 991px) {
@@ -977,8 +984,20 @@
   margin-top: 10px;
 }
 
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
 .basic-link-style {
-  color: var(--grey-600);
+  color: #337fbd;
 }
 
 .text-underline {
@@ -993,6 +1012,10 @@
 
 .text-underline.ml-5 {
   margin-left: 5px;
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
 }
 
 .ju-redirect-text {

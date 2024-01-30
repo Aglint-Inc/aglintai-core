@@ -65,19 +65,6 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
-.sl-form-status-block {
-  display: flex;
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: 36px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  text-align: center;
-}
-
 .sl-main-block {
   display: flex;
   width: 100%;
