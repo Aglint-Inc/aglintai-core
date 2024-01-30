@@ -1,26 +1,50 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/display-name */
 
-import React, {
+import { Stack, Typography } from '@mui/material';
+import {
     forwardRef, useEffect, useImperativeHandle,
     useState,
-} from 'react'
+} from 'react';
 
-export default forwardRef((props, ref) => {
+import { useJobAssistantContext } from '@/src/context/JobAssistant';
+
+import MuiAvatar from '../../Common/MuiAvatar';
+
+
+export default forwardRef((props, ref,) => {
+    const { setIsPopUpOpen } = useJobAssistantContext()
+    let listOfUsers = props.items
+    // let listOfUsers = props.items.filter(ele => String(ele.first_name + ' ' + ele.last_name).toLowerCase().includes(String(props.text).toLowerCase().replaceAll('@', '')))
     const [selectedIndex, setSelectedIndex] = useState(null)
     const selectItem = index => {
-        const item = props.items[Number(index)]
+        const level = listOfUsers[Number(index)]?.first_name + ' ' + listOfUsers[Number(index)]?.last_name
+        const item = listOfUsers[Number(index)]?.application?.id
 
         if (item) {
-            props.command({ id: item })
+            props.command({ id: item, label: level })
+
         }
     }
 
     const upHandler = () => {
-        setSelectedIndex((selectedIndex + props.items.length - 1) % props.items.length)
+        setSelectedIndex((selectedIndex + listOfUsers.length - 1) % listOfUsers.length)
+        if (selectedIndex === 0) {
+            document.getElementById('list-popup').scrollTop = document.getElementById('list-popup').scrollHeight
+        } else {
+            document.getElementById('list-popup').scrollTop -= 28.47
+        }
+
     }
 
     const downHandler = () => {
-        setSelectedIndex((selectedIndex + 1) % props.items.length)
+        setSelectedIndex((selectedIndex + 1) % listOfUsers.length)
+        if (selectedIndex + 1 === listOfUsers.length) {
+            document.getElementById('list-popup').scrollTop = 0
+        } else {
+            document.getElementById('list-popup').scrollTop += 28.47
+        }
+
     }
 
     const enterHandler = () => {
@@ -48,52 +72,31 @@ export default forwardRef((props, ref) => {
 
             return false
         },
+
     }))
     return (
-        <div className="items">
-            <style>
-
-
-                {
-                    `.items {
-  background: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0px 10px 20px rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.8);
-  font-size: 0.9rem;
-  overflow: hidden;
-  padding: 0.2rem;
-  position: relative;
-}
-
-.item {
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 0.4rem;
-  display: block;
-  margin: 0;
-  padding: 0.2rem 0.4rem;
-  text-align: left;
-  width: 100%;
-
-  &.is-selected {
-    border-color: #000;
-  }
-}`
-                }
-            </style>
-            {props.items.length
-                ? props.items.map((item, index) => (
-                    <button
+        <Stack spacing={'10px'} id='list-popup' className="items">
+            {listOfUsers.length
+                ? listOfUsers.map((item, index) => (
+                    <Stack
                         className={`item ${index === selectedIndex ? 'is-selected' : ''}`}
+                        direction={'row'} spacing={'8px'}
                         key={index}
-                        onClick={() => selectItem(index)}
+                        onClick={() => { selectItem(index); setIsPopUpOpen(false); }}
+                        sx={{
+                            cursor: 'pointer'
+                        }}
                     >
-                        {item}
-                    </button>
+                        <MuiAvatar fontSize='12px' width={20} height={20} level={item?.first_name} src={item.avater} />
+                        <Stack >
+                            <Typography variant='body1'>
+                                {item.first_name + ' ' + item.last_name}
+                            </Typography>
+                        </Stack>
+                    </Stack>
                 ))
                 : <div className="item">No result</div>
             }
-        </div>
+        </Stack>
     )
 })
