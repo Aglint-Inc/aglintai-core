@@ -2,7 +2,7 @@ import { Avatar, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   CdAglintEmptyTable,
@@ -15,7 +15,6 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { useBoundStore } from '@/src/store';
-import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -98,128 +97,118 @@ function CdTableRecords({ loading }) {
         <CdAglintEmptyTable slotLottie={<EmptyStateCandidateSearchAglint />} />
       )}
       {!loading &&
-        candidates?.map((candidate, index) => (
-          <ScrollList uniqueKey={index} key={index}>
-            <CdTableAglint
-              isActiveSelectVisible={selectedCandidate?.id === candidate.id}
-              slotCheckbox={
-                <Checkbox
-                  isChecked={selectedCandidates?.includes(candidate)}
-                  onClickCheck={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      if (selectedCandidates?.includes(candidate)) {
-                        setSelectedCandidates(
-                          selectedCandidates.filter(
-                            (c) => c.id !== candidate.id,
-                          ),
-                        );
-                      } else {
-                        setSelectedCandidates([
-                          ...selectedCandidates,
-                          candidate,
-                        ]);
-                      }
-                    },
-                  }}
-                />
-              }
-              onClickCard={{
-                onClick: () => {
-                  setSelectedCandidate(candidate);
-                },
-              }}
-              key={candidate.id}
-              textName={candidate.name || '--'}
-              textRole={
-                candidate.title +
-                (candidate.employment_history
-                  ? ` (${calculateTotalExperience(candidate.employment_history)} years)`
-                  : '')
-              }
-              textLocation={[candidate.city, candidate.state, candidate.country]
-                .filter(Boolean)
-                .join(', ')}
-              slotCdExperienceCard={
-                <>
-                  {candidate.employment_history.slice(0, 3).map((exp, ind) => {
-                    return (
-                      <CdExperienceCard
-                        key={exp.id}
-                        textRole={exp.organization_name}
-                        isLogoVisible={
-                          candidate?.organization?.id === exp?.organization_id
-                        }
-                        bgColorProps={{
-                          style: {
-                            backgroundColor:
-                              selectedCandidate?.id === candidate.id
-                                ? ind === 0
-                                  ? 'rgba(206, 226, 242, 0.50)'
-                                  : 'rgba(206, 226, 242, 0.30)'
-                                : ind === 0
-                                  ? 'rgba(233, 235, 237, 0.50)'
-                                  : '#F7F9FB',
-                          },
-                        }}
-                        isActive={
-                          ind === 0 &&
-                          candidate?.organization?.id === exp?.organization_id
-                        }
-                        slotLogo={
-                          <Avatar
-                            variant='rounded'
-                            src={candidate?.organization?.logo_url}
-                            sx={{ height: 40, width: 40 }}
-                          >
-                            <CompanyLogo
-                              companyName={
-                                exp.organization_name
-                                  ? exp.organization_name.trim().toLowerCase()
-                                  : null
-                              }
-                            />
-                          </Avatar>
-                        }
-                        textDate={`${
-                          exp.start_date
-                            ? dayjs(exp.start_date).format('MMM YYYY') + ' - '
-                            : ''
-                        }  ${
-                          exp.end_date
-                            ? dayjs(exp.end_date).format('MMM YYYY')
-                            : 'Present'
-                        }`}
-                      />
-                    );
-                  })}
-                  <Typography variant='body2'>
-                    {candidate.employment_history.length > 3 &&
-                      `+ ${candidate.employment_history.length - 3} more`}
-                  </Typography>
-                </>
-              }
-              slotProfileImage={
-                <>
-                  <MuiAvatar
-                    level={getFullName(
-                      candidate.first_name,
-                      candidate.last_name,
-                    )}
-                    src={
-                      candidate.photo_url?.includes('static')
-                        ? null
-                        : candidate.photo_url
+        candidates?.map((candidate) => (
+          <CdTableAglint
+            isActiveSelectVisible={selectedCandidate?.id === candidate.id}
+            slotCheckbox={
+              <Checkbox
+                isChecked={selectedCandidates?.includes(candidate)}
+                onClickCheck={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    if (selectedCandidates?.includes(candidate)) {
+                      setSelectedCandidates(
+                        selectedCandidates.filter((c) => c.id !== candidate.id),
+                      );
+                    } else {
+                      setSelectedCandidates([...selectedCandidates, candidate]);
                     }
-                    variant={'rounded'}
-                    width={'80px'}
-                    height={'80px'}
-                    fontSize={'30px'}
-                  />
-                </>
-              }
-            />
-          </ScrollList>
+                  },
+                }}
+              />
+            }
+            onClickCard={{
+              onClick: () => {
+                setSelectedCandidate(candidate);
+              },
+            }}
+            key={candidate.id}
+            textName={candidate.name || '--'}
+            textRole={
+              candidate.title +
+              (candidate.employment_history
+                ? ` (${calculateTotalExperience(candidate.employment_history)} years)`
+                : '')
+            }
+            textLocation={[candidate.city, candidate.state, candidate.country]
+              .filter(Boolean)
+              .join(', ')}
+            slotCdExperienceCard={
+              <>
+                {candidate.employment_history.slice(0, 3).map((exp, ind) => {
+                  return (
+                    <CdExperienceCard
+                      key={exp.id}
+                      textRole={exp.organization_name}
+                      isLogoVisible={
+                        candidate?.organization?.id === exp?.organization_id
+                      }
+                      bgColorProps={{
+                        style: {
+                          backgroundColor:
+                            selectedCandidate?.id === candidate.id
+                              ? ind === 0
+                                ? 'rgba(206, 226, 242, 0.50)'
+                                : 'rgba(206, 226, 242, 0.30)'
+                              : ind === 0
+                                ? 'rgba(233, 235, 237, 0.50)'
+                                : '#F7F9FB',
+                        },
+                      }}
+                      isActive={
+                        ind === 0 &&
+                        candidate?.organization?.id === exp?.organization_id
+                      }
+                      slotLogo={
+                        <Avatar
+                          variant='rounded'
+                          src={candidate?.organization?.logo_url}
+                          sx={{ height: 40, width: 40 }}
+                        >
+                          <CompanyLogo
+                            companyName={
+                              exp.organization_name
+                                ? exp.organization_name.trim().toLowerCase()
+                                : null
+                            }
+                          />
+                        </Avatar>
+                      }
+                      textDate={`${
+                        exp.start_date
+                          ? dayjs(exp.start_date).format('MMM YYYY') + ' - '
+                          : ''
+                      }  ${
+                        exp.end_date
+                          ? dayjs(exp.end_date).format('MMM YYYY')
+                          : 'Present'
+                      }`}
+                    />
+                  );
+                })}
+                <Typography variant='body2'>
+                  {candidate.employment_history.length > 3 &&
+                    `+ ${candidate.employment_history.length - 3} more`}
+                </Typography>
+              </>
+            }
+            slotProfileImage={
+              <>
+                <MuiAvatar
+                  level={getFullName(candidate.first_name, candidate.last_name)}
+                  src={
+                    candidate.photo_url?.includes('static')
+                      ? null
+                      : candidate.photo_url
+                  }
+                  variant={'rounded'}
+                  width={'80px'}
+                  height={'80px'}
+                  fontSize={'30px'}
+                />
+              </>
+            }
+          />
         ))}
       {(loading || fetchingNextPage) &&
         Array.from({ length: 25 }, (_, index) => <CdTableLoader key={index} />)}
