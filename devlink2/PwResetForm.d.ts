@@ -7,4 +7,5 @@ declare function PwResetForm(props: {
   contactLink?: Types.Basic.Link;
   onclickReset?: Types.Devlink.RuntimeProps;
   onclickBack?: Types.Devlink.RuntimeProps;
+  isDisable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

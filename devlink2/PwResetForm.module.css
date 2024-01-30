@@ -162,6 +162,10 @@
   grid-row-gap: 12px;
 }
 
+.div-block-427 {
+  position: relative;
+}
+
 .sl-button {
   display: flex;
   padding: 10px 16px;
@@ -214,6 +218,21 @@
 
 .sl-button.simple:hover {
   color: hsla(206.8421052631579, 78.72%, 53.00%, 1.00);
+}
+
+.sl-button.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
+
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+
+  cursor: auto;
 }
 
 .text-color-white {

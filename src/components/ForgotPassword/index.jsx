@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 export default function ForgotPasswordComponent() {
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,7 @@ export default function ForgotPasswordComponent() {
     }
   };
   const handleSubmit = async (event) => {
-    if (!loading) {
+    if (!loading && email.current?.value.length !== 0) {
       event.preventDefault();
       setLoading(true);
       const currentEmail = email.current?.value
@@ -72,6 +73,8 @@ export default function ForgotPasswordComponent() {
       } else {
         setLoading(false);
       }
+    } else {
+      toast.error("Please Enter Email Address")
     }
   };
 

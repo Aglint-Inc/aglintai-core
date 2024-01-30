@@ -159,10 +159,10 @@ function SelectAtsSystem() {
                       <YTransform uniqueKey={selectedObject}>
                         <Stack spacing={'13px'}>
                           <UITypography variant='body1' type='small'>
-                            Please share your current Application Tracking
-                            System (ATS) name.
+                            Enter ATS Name.
                           </UITypography>
                           <UITextField
+                            InputProps={{autoFocus:true}}
                             ref={inputRef}
                             //   onChange={(ele) => {
                             //     console.log('error');
@@ -171,7 +171,7 @@ function SelectAtsSystem() {
                             //       return pre;
                             //     });
                             //   }}
-                            placeholder='ATS system name'
+                            placeholder='Ex : Indeed'
                             error={textCheck}
                             helperText='Please fill this field'
                           />

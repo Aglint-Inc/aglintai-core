@@ -113,7 +113,10 @@ export function RecLoginPage({
               className={_utils.cx(_styles, "div-block-390")}
               tag="div"
             >
-              <_Builtin.Block tag="div">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-428")}
+                tag="div"
+              >
                 <_Builtin.Block
                   className={_utils.cx(_styles, "sl-inline-block")}
                   tag="div"

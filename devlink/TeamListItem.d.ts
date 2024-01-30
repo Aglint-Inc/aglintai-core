@@ -11,4 +11,5 @@ declare function TeamListItem(props: {
   userName?: React.ReactNode;
   userEmail?: React.ReactNode;
   slotProfileImage?: Types.Devlink.Slot;
+  isDeleteVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
