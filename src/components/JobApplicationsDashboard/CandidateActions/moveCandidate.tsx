@@ -22,13 +22,13 @@ const MoveCandidate: React.FC<{
   setSelectAll: Dispatch<SetStateAction<boolean>>;
 }> = ({ applicationLimit, selectAll, setSelectAll }) => {
   const {
-    job,
     section,
     cardStates: {
       checkList: { list, disabled },
     },
     setCardStates,
     handleJobApplicationSectionUpdate,
+    activeSections,
   } = useJobApplications();
   const [props, setProps] = useState({
     open: false,
@@ -36,24 +36,32 @@ const MoveCandidate: React.FC<{
   });
   const [purposes, setPurposes] = useState([]);
   const isChecked = list.size !== 0;
-  const showNew = isChecked && section === JobApplicationSections.DISQUALIFIED;
-  const showScreening = isChecked && section === JobApplicationSections.NEW;
+  const showNew =
+    isChecked &&
+    section === JobApplicationSections.DISQUALIFIED &&
+    activeSections.includes(JobApplicationSections.NEW);
+  const showScreening =
+    isChecked &&
+    section === JobApplicationSections.NEW &&
+    activeSections.includes(JobApplicationSections.SCREENING);
   const showInterview =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING) &&
-    job.assessment;
+    activeSections.includes(JobApplicationSections.ASSESSMENT);
   const showQualified =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT);
+      section === JobApplicationSections.ASSESSMENT) &&
+    activeSections.includes(JobApplicationSections.QUALIFIED);
   const showDisqualified =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT ||
-      section === JobApplicationSections.QUALIFIED);
+      section === JobApplicationSections.QUALIFIED) &&
+    activeSections.includes(JobApplicationSections.DISQUALIFIED);
 
   const handlePopUpCheck = () => {
     setPurposes((prev) =>

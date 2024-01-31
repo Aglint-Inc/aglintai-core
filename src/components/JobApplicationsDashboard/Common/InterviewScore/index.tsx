@@ -33,7 +33,9 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
       <ScreeningStatus
         slotIcon={<UninvitedIcon />}
         isDurationVisible={false}
-        textStatus={assessmentStatus}
+        textStatus={
+          <Stack style={{ color: '#68737D' }}>{assessmentStatus}</Stack>
+        }
       />
     );
   if (isPending)

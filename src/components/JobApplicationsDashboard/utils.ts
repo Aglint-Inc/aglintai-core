@@ -137,7 +137,9 @@ export const candidateEmailValidity = (
     isFetching: false,
     isValidEmail:
       email.trim() !== '' &&
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(email.trim()),
+      /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
+        email.trim(),
+      ),
     // THIS CODE BROKE THE APPLICATION, BAD REGEX AND SCREW THINGS UP. KEEPING THIS AS A SOUVENIER
     // value.trim() !== '' &&
     // /^\w+([\.-]?\w+)*((\+)?\w+([\.-]?\w+)*)?@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(

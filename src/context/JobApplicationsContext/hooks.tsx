@@ -557,31 +557,26 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     return Object.assign(
       {},
       ...Object.values(JobApplicationSections).map((s) => {
+        const defaults = initialJobLoad && activeSections.includes(s);
         switch (s) {
           case JobApplicationSections.NEW:
-            return { [s]: initialJobLoad };
+            return { [s]: defaults };
           case JobApplicationSections.SCREENING:
             return {
-              [s]:
-                initialJobLoad &&
-                section !== JobApplicationSections.NEW &&
-                job?.phone_screen_enabled,
+              [s]: defaults && section !== JobApplicationSections.NEW,
             };
           case JobApplicationSections.ASSESSMENT:
             return {
               [s]:
-                initialJobLoad &&
+                defaults &&
                 section !== JobApplicationSections.NEW &&
-                section !== JobApplicationSections.SCREENING &&
-                job?.assessment,
+                section !== JobApplicationSections.SCREENING,
             };
           case JobApplicationSections.QUALIFIED:
-            return { [s]: initialJobLoad };
+            return { [s]: defaults };
           case JobApplicationSections.DISQUALIFIED:
             return {
-              [s]:
-                initialJobLoad &&
-                section === JobApplicationSections.DISQUALIFIED,
+              [s]: defaults && section === JobApplicationSections.DISQUALIFIED,
             };
         }
       }),

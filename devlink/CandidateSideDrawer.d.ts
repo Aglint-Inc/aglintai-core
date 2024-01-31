@@ -9,12 +9,6 @@ declare function CandidateSideDrawer(props: {
   slotCandidateImage?: Types.Devlink.Slot;
   textName?: React.ReactNode;
   slotCandidateDetails?: Types.Devlink.Slot;
-  isLinkedInVisible?: Types.Visibility.VisibilityConditions;
-  onClickLinkedin?: Types.Devlink.RuntimeProps;
-  onClickCopyMail?: Types.Devlink.RuntimeProps;
-  onClickCopyPhone?: Types.Devlink.RuntimeProps;
-  isPhoneIconVisible?: Types.Visibility.VisibilityConditions;
-  isMailIconVisible?: Types.Visibility.VisibilityConditions;
   slotMoveTo?: Types.Devlink.Slot;
   textAppliedOn?: React.ReactNode;
   isAppliedOnVisible?: Types.Visibility.VisibilityConditions;
@@ -27,4 +21,5 @@ declare function CandidateSideDrawer(props: {
   isResumeVisible?: Types.Visibility.VisibilityConditions;
   isOverviewVisible?: Types.Visibility.VisibilityConditions;
   isLocationRoleVisible?: Types.Visibility.VisibilityConditions;
+  slotSocialLink?: Types.Devlink.Slot;
 }): React.JSX.Element;
