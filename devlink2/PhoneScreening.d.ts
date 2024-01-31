@@ -6,4 +6,5 @@ declare function PhoneScreening(props: {
   slotWelcomeText?: Types.Devlink.Slot;
   slotQuestions?: Types.Devlink.Slot;
   slotEndText?: Types.Devlink.Slot;
+  slotInfo?: Types.Devlink.Slot;
 }): React.JSX.Element;

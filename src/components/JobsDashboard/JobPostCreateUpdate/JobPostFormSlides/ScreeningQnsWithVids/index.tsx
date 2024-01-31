@@ -42,6 +42,7 @@ const ScreeningQns = () => {
   const videAvatar = recruiter.ai_avatar as any;
   const isAssessmentOn = jobForm.formFields.assessment;
   const currentAssTab = jobForm.currentAssmSlides;
+
   return (
     <>
       {!isAssessmentOn ? (

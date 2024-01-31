@@ -12,7 +12,7 @@ function PublishDesclaimer() {
   const { jobForm, handleInitializeForm, handleUpdateRevertStatus } =
     useJobForm();
 
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   const handleRevertChanges = async () => {
     try {
@@ -31,6 +31,7 @@ function PublishDesclaimer() {
         currSlide: jobForm.currSlide,
         job: publishedJobPost,
         recruiter,
+        recruiterUser,
       });
       toast.success('Reverted successfully');
     } catch (err) {

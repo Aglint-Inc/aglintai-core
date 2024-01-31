@@ -207,6 +207,14 @@ export const findDisclaimers = (jobForm: FormJobType) => {
   ) {
     warnings.instructions.err.push('Please add instruction video');
   }
+
+  if (jobForm.isPhoneScreenEnabled) {
+    if (jobForm.phoneScreening.questions.length === 0) {
+      warnings.phoneScreening.err.push(
+        'Please provide atleast 1 screening questions',
+      );
+    }
+  }
   // screening qns
   const totalQns = Object.keys(jobForm.interviewConfig)
     .map((key: InterviewParam) => {
@@ -217,10 +225,12 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     }, 0);
 
   if (jobForm.assessment && totalQns < 1) {
-    warnings.assesqns.err.push('Please provide minimum 1 screening questions');
+    warnings.assesqns.err.push('Please provide atleast 1 assessment questions');
   }
   if (jobForm.assessment && totalQns > 20) {
-    warnings.assesqns.err.push('Please provide maximum 20 screening questions');
+    warnings.assesqns.err.push(
+      'Please provide maximum 20 assessment questions',
+    );
   }
 
   Object.keys(get(jobForm, 'screeningEmail.emailTemplates', {})).map(

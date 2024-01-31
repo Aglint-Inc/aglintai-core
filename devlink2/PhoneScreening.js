@@ -8,6 +8,7 @@ export function PhoneScreening({
   slotWelcomeText,
   slotQuestions,
   slotEndText,
+  slotInfo,
 }) {
   return (
     <_Component
@@ -29,6 +30,7 @@ export function PhoneScreening({
             "These are the screening questions will be presented to the candidates, allowing them to complete the form with the questions listed below."
           }
         </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotInfo}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "screening-body")}

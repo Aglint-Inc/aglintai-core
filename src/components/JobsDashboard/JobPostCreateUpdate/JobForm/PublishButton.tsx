@@ -59,7 +59,8 @@ const JobPublishButton = () => {
     }
   };
 
-  const isJobPublished = jobForm.formFields.isDraftCleared;
+  const isJobPublished =
+    jobForm.formFields.isDraftCleared && jobForm.jobPostStatus === 'published';
 
   return (
     <>

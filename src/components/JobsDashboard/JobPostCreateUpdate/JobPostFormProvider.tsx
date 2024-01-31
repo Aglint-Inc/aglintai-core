@@ -3,7 +3,12 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
-import { JobTypeDB, PublicJobsType, RecruiterDB } from '@/src/types/data.types';
+import {
+  JobTypeDB,
+  PublicJobsType,
+  RecruiterDB,
+  RecruiterUserType,
+} from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { FormErrorParams } from './JobForm/JobForm';
@@ -349,6 +354,7 @@ export type JobsContextType = {
   }: {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
+    recruiterUser?: RecruiterUserType | null;
     job?: JobTypeDB;
     currSlide?: JobFormState['currSlide'];
   }) => void;
@@ -535,9 +541,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     recruiter,
     job,
     currSlide,
+    recruiterUser,
   }) => {
     try {
-      const seedFormData = getSeedJobFormData(recruiter);
+      const seedFormData = getSeedJobFormData(recruiterUser, recruiter);
       seedFormData.formType = type;
       if (type === 'new') {
         dispatch({
@@ -552,6 +559,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
               isNull(job.draft) ? job : (job.draft as PublicJobsType),
               recruiter,
               job.status,
+              recruiterUser,
             ),
             currSlide,
           },

@@ -2,7 +2,7 @@ import { Collapse, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 
-import { EnableAssessment } from '@/devlink';
+import { EnableAssessment, JobEditWarning, JobWarningList } from '@/devlink';
 import {
   AddCustomQuestion,
   PhoneScreening,
@@ -26,7 +26,7 @@ const ScreeningComp = () => {
     start: boolean;
     end: boolean;
   }>({ end: false, start: false });
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { jobForm, handleUpdateFormFields, formWarnings } = useJobForm();
 
   const phoneScreening = jobForm.formFields.phoneScreening;
   const [isqnsModeEdit, setIsqnsModeEdit] = useState([]);
@@ -276,6 +276,19 @@ const ScreeningComp = () => {
                 }
               />
             </>
+          }
+          slotInfo={
+            formWarnings.phoneScreening.err.length !== 0 && (
+              <JobEditWarning
+                slotWarningList={
+                  <>
+                    {formWarnings.phoneScreening.err.map((er, index) => (
+                      <JobWarningList key={index} textWarning={er} />
+                    ))}
+                  </>
+                }
+              />
+            )
           }
         />
       )}

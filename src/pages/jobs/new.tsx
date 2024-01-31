@@ -28,7 +28,7 @@ function Hoc() {
 }
 
 function New() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const { handleInitializeForm, jobForm } = useJobForm();
 
   const router = useRouter();
@@ -40,6 +40,7 @@ function New() {
           type: 'new',
           currSlide: 'details',
           recruiter,
+          recruiterUser,
         });
       }
     }

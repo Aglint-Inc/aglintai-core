@@ -80,7 +80,7 @@ export type FormErrorParams = Record<
 > | null;
 
 function JobForm() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   const { handleJobDelete } = useJobs();
   const { jobForm, dispatch, handleUpdateRevertStatus, handleInitializeForm } =
@@ -193,6 +193,7 @@ function JobForm() {
         currSlide: jobForm.currSlide,
         job: publishedJobPost,
         recruiter,
+        recruiterUser,
       });
       toast.success('Reverted successfully');
     } catch (err) {
@@ -635,7 +636,11 @@ const PublishButton = () => {
   const { jobForm } = useJobForm();
 
   useEffect(() => {
-    if (slidePathToNum[jobForm.currSlide] >= 3 || jobForm.formType === 'edit') {
+    if (
+      slidePathToNum[jobForm.currSlide] >= 3 ||
+      jobForm.formType === 'edit' ||
+      jobForm.jobPostStatus === 'closed'
+    ) {
       setShowBtn(true);
     }
   }, [jobForm.currSlide]);

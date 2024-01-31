@@ -5,7 +5,7 @@ import { useJobForm } from '../JobPostFormProvider';
 
 const FormOne = () => {
   const { handleInitializeForm } = useJobForm();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   return (
     <>
@@ -15,6 +15,7 @@ const FormOne = () => {
             handleInitializeForm({
               type: 'new',
               recruiter,
+              recruiterUser,
               currSlide: 'details',
             });
           },

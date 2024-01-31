@@ -2,12 +2,13 @@ import { get, isEmpty, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
-import { JobTypeDB } from '@/src/types/data.types';
+import { JobTypeDB, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { JobFormState } from './JobPostFormProvider';
 
 export const getSeedJobFormData = (
+  recruiterUser: RecruiterUserType,
   recruiter?: Database['public']['Tables']['recruiter']['Row'],
 ) => {
   const seedFormState: JobFormState = {
@@ -244,11 +245,10 @@ export const getSeedJobFormData = (
     seedFormState.formFields.defaultAddress = defaultAddress;
     seedFormState.formFields.screeningEmail = {
       ...seedFormState.formFields.screeningEmail,
-      emailTemplates: get(
-        recruiter,
-        'email_template',
-        {},
-      ) as JobFormState['formFields']['screeningEmail']['emailTemplates'],
+      emailTemplates: assignEmailTemplate(
+        [recruiterUser.first_name, recruiterUser.last_name].join(' '),
+        get(recruiter, 'email_template', {}) as any,
+      ),
     };
     seedFormState.formFields.defaultDepartments = get(
       recruiter,
@@ -263,8 +263,9 @@ export const dbToClientjobPostForm = (
   jobPost: Partial<JobTypeDB>,
   recruiter: Database['public']['Tables']['recruiter']['Row'],
   jobPostStatus: string,
+  recruiterUser: RecruiterUserType,
 ) => {
-  const seedData = getSeedJobFormData(recruiter);
+  const seedData = getSeedJobFormData(recruiterUser, recruiter);
   const jp: JobFormState = {
     ...seedData,
     createdAt: jobPost.created_at,
@@ -423,4 +424,14 @@ const jdJsonToItems = (jdJson: JobFormState['formFields']['jdJson']) => {
   }));
 
   return jdJson;
+};
+
+const assignEmailTemplate = (
+  recruiterName: string,
+  emailTemps: JobFormState['formFields']['screeningEmail']['emailTemplates'],
+) => {
+  Object.keys(emailTemps).map(
+    (emailPath) => (emailTemps[String(emailPath)].fromName = recruiterName),
+  );
+  return emailTemps;
 };

@@ -26,7 +26,7 @@ function Hoc() {
 
 function Edit() {
   const [isFormInit, setIsFormInit] = useState(true);
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const { handleInitializeForm } = useJobForm();
 
   const router = useRouter();
@@ -46,6 +46,7 @@ function Edit() {
           job: jobApp,
           type: 'edit',
           recruiter,
+          recruiterUser,
           currSlide: 'details',
         });
         setIsFormInit(false);
