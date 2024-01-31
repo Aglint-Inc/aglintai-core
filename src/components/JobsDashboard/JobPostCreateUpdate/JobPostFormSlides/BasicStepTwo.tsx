@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
 import { NewJobStep2 } from '@/devlink';
 
 import { useJobForm } from '../JobPostFormProvider';
@@ -8,7 +11,7 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
     handleUpdateFormFields,
     jobForm: { formFields, formType, jobPostId },
   } = useJobForm();
-
+  const router = useRouter();
   const handleChangeTipTap = (s: string) => {
     if (showWarnOnEdit) showWarnOnEdit();
     if (formType === 'new' && formFields.jobDescription.length === 0) {
@@ -23,6 +26,18 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
       value: true,
     });
   };
+
+  useEffect(() => {
+    if (
+      router.query.ats === 'true' &&
+      formFields.jobDescription.length > 0 &&
+      formFields.jdJson.rolesResponsibilities.length === 0 &&
+      formFields.jdJson.skills.length === 0 &&
+      formFields.jdJson.educations.length === 0
+    ) {
+      autoGenJson(jobPostId);
+    }
+  }, []);
 
   return (
     <NewJobStep2
