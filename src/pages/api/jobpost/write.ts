@@ -1,10 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Database } from '@/src/types/schema';
+import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
@@ -104,7 +106,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .select();
 
         application = newApplication[0];
-
+        await mailHandler(newApplication[0].id, profile, post);
         return res.status(200).send({ application: application });
       } else {
         return res.status(200).send({ application: null, applied: true });
@@ -157,5 +159,39 @@ const insertCandidate = async (
     return newApplication[0];
   } else {
     console.log(errorCandidate);
+  }
+};
+
+const mailHandler = async (application_id: string, profile, post) => {
+  try {
+    const email = {
+      first_name: profile.firstName,
+      last_name: profile.lastName,
+      job_title: post.job_title,
+      company_name: post.company,
+      support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
+    };
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+        fromEmail: `messenger@aglinthq.com`,
+        fromName:
+          post.email_template.application_recieved.fromName || post.company,
+        email: profile?.email,
+        subject: fillEmailTemplate(
+          post.email_template.application_recieved.subject,
+          email,
+        ),
+        text: fillEmailTemplate(
+          post.email_template.application_recieved.body,
+          email,
+        ),
+      })
+      .then((res) => {
+        if (res.status === 200 && res.data.data === 'Email sent') {
+          return true;
+        }
+      });
+  } catch (err) {
+    //}
   }
 };

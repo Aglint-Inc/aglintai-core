@@ -222,7 +222,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
           toast.error('You have already applied for this job');
         } else {
           setApplication(response.data.application);
-          await mailHandler(response.data.application.id);
           setProfile({
             firstName: '',
             lastName: '',
@@ -240,73 +239,9 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
     }
   };
 
-  function fillEmailTemplate(
-    template: string,
-    email: {
-      first_name: string;
-      last_name: string;
-      job_title: string;
-      company_name: string;
-      support_link?: string;
-      phone_screening_link?: string;
-    },
-  ): string {
-    let filledTemplate = template;
-    const placeholders = {
-      '[firstName]': email.first_name,
-      '[lastName]': email.last_name,
-      '[jobTitle]': email.job_title,
-      '[companyName]': email.company_name,
-      '[supportLink]': email.support_link,
-      '[phoneScreeningLink]': email.phone_screening_link,
-    };
-    for (const [placeholder, value] of Object.entries(placeholders)) {
-      // eslint-disable-next-line security/detect-non-literal-regexp
-      const regex = new RegExp(placeholder.replace(/\[|\]/g, '\\$&'), 'g');
-      filledTemplate = filledTemplate.replace(regex, value);
-    }
-    return filledTemplate;
-  }
-
-  const mailHandler = async (application_id: string) => {
-    try {
-      const email = {
-        first_name: profile.firstName,
-        last_name: profile.lastName,
-        job_title: post.job_title,
-        company_name: post.company,
-        support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
-      };
-      await axios
-        .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName:
-            post.email_template.application_recieved.fromName || post.company,
-          email: profile?.email,
-          subject: fillEmailTemplate(
-            post.email_template.application_recieved.subject,
-            email,
-          ),
-          text: fillEmailTemplate(
-            post.email_template.application_recieved.body,
-            email,
-          ),
-        })
-        .then((res) => {
-          if (res.status === 200 && res.data.data === 'Email sent') {
-            return true;
-          }
-        });
-    } catch (err) {
-      //}
-    }
-  };
-
   useEffect(() => {
     if (isDisabled) setIsDisabled(false);
   }, [profile]);
-
-  
 
   return (
     <Stack
