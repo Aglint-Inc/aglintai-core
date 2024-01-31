@@ -24,37 +24,38 @@ const MyApp = ({ Component, pageProps }) => {
     return Component.getLayout(
       <>
         <PHProvider>
-        <DevlinkMainProvider>
-          <Theme>{getProvider(<Component {...pageProps} />)}</Theme>
-        </DevlinkMainProvider>
+          <DevlinkMainProvider>
+            <Theme>{getProvider(<Component {...pageProps} />)}</Theme>
+          </DevlinkMainProvider>
         </PHProvider>
       </>,
     );
   }
 
   return (
-    <><PHProvider>
-      <ErrorBoundary>
-        <Suspense fallback={'Loading'}>
-          <DevlinkMainProvider>
-            <Theme>
-              <ScreenSizeProvider>
-                <AuthProvider>
-                  <NotificationsContextProvider>
-                    <JobsProvider>
-                      <SupportProvider>
-                        <AppLayout>
-                          {getProvider(<Component {...pageProps} />)}
-                        </AppLayout>
-                      </SupportProvider>
-                    </JobsProvider>
-                  </NotificationsContextProvider>
-                </AuthProvider>
-              </ScreenSizeProvider>
-            </Theme>
-          </DevlinkMainProvider>
-        </Suspense>
-      </ErrorBoundary>
+    <>
+      <PHProvider>
+        <ErrorBoundary>
+          <Suspense fallback={'Loading'}>
+            <DevlinkMainProvider>
+              <Theme>
+                <ScreenSizeProvider>
+                  <AuthProvider>
+                    <NotificationsContextProvider>
+                      <JobsProvider>
+                        <SupportProvider>
+                          <AppLayout>
+                            {getProvider(<Component {...pageProps} />)}
+                          </AppLayout>
+                        </SupportProvider>
+                      </JobsProvider>
+                    </NotificationsContextProvider>
+                  </AuthProvider>
+                </ScreenSizeProvider>
+              </Theme>
+            </DevlinkMainProvider>
+          </Suspense>
+        </ErrorBoundary>
       </PHProvider>
     </>
   );

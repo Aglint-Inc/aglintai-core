@@ -32,11 +32,8 @@ export function AtsJobs({
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
       <_Builtin.Block tag="div">
-        {
-          "These jobs are retrieved from your Lever account. You can view/edit api key in Integrations>Lever."
-        }
+        {"Select a job from Lever to import."}
         <br />
-        {"Choose one or multiple jobs to import from Lever."}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}

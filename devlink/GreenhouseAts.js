@@ -32,13 +32,7 @@ export function GreenhouseAts({
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
       <_Builtin.Block tag="div">
-        {
-          "These jobs are retrieved from your Greenhouse account. You can view/edit api key in "
-        }
-        <br />
-        {
-          "Integrations > Greenhouse. Choose one or multiple jobs to import from Greenhouse."
-        }
+        {"Select a job from Greenhouse for import."}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}

@@ -17,6 +17,7 @@ import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 import CompanyList from './CompanyList';
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
+import Icon from '../Common/Icons/Icon';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
@@ -107,14 +108,19 @@ export default function AppLayout({ children }) {
                     src={logo}
                     variant='rounded'
                     sx={{
-                      // width: '100%',
-                      // height: '100%',
                       background: '#fff',
                       '& .MuiAvatar-img ': {
                         objectFit: 'contain',
                       },
                     }}
-                  />
+                  >
+                    <Icon
+                      variant='CompanyOutlined'
+                      height='24'
+                      width='24'
+                      color='#87929D'
+                    />
+                  </Avatar>
                 </Stack>
               ) : (
                 <Stack direction={'row'} mb={'20px !important'}>

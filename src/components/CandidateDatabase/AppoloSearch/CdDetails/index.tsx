@@ -204,41 +204,44 @@ function CandidateDetail() {
                 slotCandidateExperienceCard={selectedCandidate?.employment_history.map(
                   (exp, ind) => {
                     return (
-                      <CdExperienceCard
-                        key={exp.id}
-                        textRole={exp.organization_name}
-                        isLogoVisible={
-                          selectedCandidate?.organization?.id ===
-                          exp?.organization_id
-                        }
-                        isActive={
-                          ind === 0 &&
-                          selectedCandidate?.organization?.id ===
+                      <>
+                        {ind === 0 && <Stack pt={'10px'}></Stack>}
+                        <CdExperienceCard
+                          key={exp.id}
+                          textRole={exp.organization_name}
+                          isLogoVisible={
+                            selectedCandidate?.organization?.id ===
                             exp?.organization_id
-                        }
-                        slotLogo={
-                          <Avatar
-                            variant='rounded'
-                            src={selectedCandidate?.organization?.logo_url}
-                            sx={{ height: 40, width: 40 }}
-                          >
-                            <CompanyLogo
-                              companyName={
-                                exp.organization_name
-                                  ? exp.organization_name.trim().toLowerCase()
-                                  : null
-                              }
-                            />
-                          </Avatar>
-                        }
-                        textDate={`${dayjs(exp.start_date).format(
-                          'MMM YYYY',
-                        )} - ${
-                          exp.end_date
-                            ? dayjs(exp.end_date).format('MMM YYYY')
-                            : 'Present'
-                        }`}
-                      />
+                          }
+                          isActive={
+                            ind === 0 &&
+                            selectedCandidate?.organization?.id ===
+                              exp?.organization_id
+                          }
+                          slotLogo={
+                            <Avatar
+                              variant='rounded'
+                              src={selectedCandidate?.organization?.logo_url}
+                              sx={{ height: 40, width: 40 }}
+                            >
+                              <CompanyLogo
+                                companyName={
+                                  exp.organization_name
+                                    ? exp.organization_name.trim().toLowerCase()
+                                    : null
+                                }
+                              />
+                            </Avatar>
+                          }
+                          textDate={`${dayjs(exp.start_date).format(
+                            'MMM YYYY',
+                          )} - ${
+                            exp.end_date
+                              ? dayjs(exp.end_date).format('MMM YYYY')
+                              : 'Present'
+                          }`}
+                        />
+                      </>
                     );
                   },
                 )}
