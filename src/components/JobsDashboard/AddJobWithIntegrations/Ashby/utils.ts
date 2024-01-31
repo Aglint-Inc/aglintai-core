@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   GreenhouseRefDbType,
   GreenhouseType,
-  RecruiterDB
+  RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -86,9 +86,9 @@ export const createJobObject = async (
         skills: [],
         status: 'draft',
         parameter_weights: {
-          skills: 45,
-          education: 5,
-          experience: 50,
+          skills: 0,
+          education: 0,
+          experience: 0,
         },
       },
       location: post.location,

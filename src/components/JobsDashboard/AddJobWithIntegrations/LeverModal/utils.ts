@@ -233,9 +233,9 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
         skills: [],
         status: 'draft',
         parameter_weights: {
-          skills: 45,
-          education: 5,
-          experience: 50,
+          skills: 0,
+          education: 0,
+          experience: 0,
         },
       },
       location: post.categories.location,
