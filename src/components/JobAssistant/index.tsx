@@ -26,10 +26,11 @@ import {
   getSuggestedPrompts,
   suggestions,
 } from '@/src/context/JobAssistant/utils';
-import { ScrollList } from '@/src/utils/framer-motions/Animation';
+import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ChatEditor, { SendIcon } from './ChatEditor';
 import LeftPanel from './LeftPannel';
+import Loader from '../Common/Loader';
 import { CalculatingResumeScore } from '../Common/Lotties/Calculating';
 import MuiAvatar from '../Common/MuiAvatar';
 function JobAssistant() {
@@ -43,8 +44,8 @@ function JobAssistant() {
     currentChat,
     resLoading,
     candidates,
+    fetching,
   } = useJobAssistantContext();
-
   let [candidatesList, setCandidateList] = useState<
     CandidateDetailsInterface[]
   >([]);
@@ -76,6 +77,30 @@ function JobAssistant() {
     const finalUser = candidates.filter((ele) => filtered.includes(ele.id));
     setCandidateList(finalUser);
   }, [candidates, messages]);
+  const loadingMessages = [
+    'Please wait, job assistant is creating!',
+    'Job assistant created!',
+    'Passing the job descriptions to assistant',
+    'Plase wait we are almost done!',
+  ];
+  const [loadingMessage, setLoadingMessage] = useState(loadingMessages[0]);
+
+  useEffect(() => {
+    let i = 0;
+    if (fetching) {
+      const timeint = setInterval(() => {
+        if (i === loadingMessages.length - 1) {
+          setLoadingMessage(
+            loadingMessages[Number(loadingMessages.length - 1)],
+          );
+          clearInterval(timeint);
+        }
+        setLoadingMessage(loadingMessages[Number(i)]);
+        i = i + 1;
+      }, 3000);
+    }
+  }, [fetching]);
+
   return (
     <Stack direction={'row'} height={'100vh'} width={'100%'}>
       <LeftPanel />
@@ -89,153 +114,172 @@ function JobAssistant() {
             slotLogo={
               <MuiAvatar
                 variant='rounded'
-                src={recruiter.logo}
-                level={recruiter.name}
+                src={recruiter?.logo}
+                level={recruiter?.name}
               />
             }
             slotChat={
-              !loading &&
-              messages.length &&
-              messages.map((ele, i) => {
-                const { sender, content } = ele;
-                const { searchArguments, active, message, result_candidates } =
-                  content;
-                const tempCandidates = result_candidates;
-                if (searchArguments) {
-                  suggestionsPrompts = getSuggestedPrompts(
-                    searchArguments,
-                    tempCandidates,
-                  );
-                }
-                return (
-                  <ChatMessage
-                    key={i}
-                    slotProfile={
-                      sender == chatusers.recruiter ? (
-                        <MuiAvatar
-                          variant='rounded'
-                          src={recruiterUser.profile_image}
-                          level={recruiterUser.first_name}
-                          fontSize='20px'
-                        />
-                      ) : (
-                        <AssistantLogo width={40} height={40} />
-                      )
+              <>
+                {fetching ? (
+                  <>
+                    <Stack gap={'20px'} alignItems={'center'} mt={'40px'}>
+                      <Loader />
+                      <YTransform uniqueKey={loadingMessage}>
+                        <Typography>{loadingMessage}</Typography>
+                      </YTransform>
+                    </Stack>
+                  </>
+                ) : (
+                  !loading &&
+                  messages.length &&
+                  messages.map((ele, i) => {
+                    const { sender, content } = ele;
+                    const {
+                      searchArguments,
+                      active,
+                      message,
+                      result_candidates,
+                    } = content;
+                    const tempCandidates = result_candidates;
+                    if (searchArguments) {
+                      suggestionsPrompts = getSuggestedPrompts(
+                        searchArguments,
+                        tempCandidates,
+                      );
                     }
-                    slotMessages={
-                      active && (
-                        <>
-                          {sender === chatusers.assistant &&
-                          resLoading &&
-                          i === messages.length - 1 ? (
-                            <Stack
-                              position={'relative'}
-                              height={'100px'}
-                              width={'30px'}
-                            >
-                              <Stack
-                                top={'-32px'}
-                                left={'-35px'}
-                                width={'110px'}
-                                position={'absolute'}
-                              >
-                                <CalculatingResumeScore />
-                              </Stack>
-                            </Stack>
-                          ) : (
-                            message && (
-                              <Typography
-                                variant='body2'
-                                dangerouslySetInnerHTML={{
-                                  __html: marked(
-                                    message.html?.replaceAll(
-                                      /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
-                                      '',
-                                    ),
-                                  ),
-                                }}
-                              ></Typography>
-                            )
-                          )}
-                        </>
-                      )
-                    }
-                    textHeading={sender}
-                    isMessageCardVisible={
-                      sender === chatusers.assistant &&
-                      tempCandidates &&
-                      tempCandidates.length !== 0
-                    }
-                    slotMessageCard={
-                      sender === chatusers.assistant &&
-                      !active &&
-                      tempCandidates
-                        .sort(
-                          (a, b) =>
-                            b.application?.overall_score -
-                            a.application?.overall_score,
-                        )
-                        .map((candidate, i) => {
-                          const {
-                            city,
-                            state,
-                            country,
-                            experience_in_months,
-                            first_name,
-                            last_name,
-                            application,
-                          } = candidate;
-
-                          const overall_score = application?.overall_score;
-                          const resume_match = getResumeMatched(
-                            overall_score,
-                          ) as any;
-
-                          return (
-                            <AssistantCandidateDetails
-                              key={i}
-                              slotProfile={
-                                <MuiAvatar
-                                  variant='rounded'
-                                  fontSize='10px'
-                                  width='16px'
-                                  height='16px'
-                                  src={'/recruiter.logo'}
-                                  level={'name'}
-                                />
-                              }
-                              colorPropsMatch={{
-                                style: {
-                                  color: resume_match?.bgColor,
-                                },
-                              }}
-                              textMatchCount={`${resume_match?.text}-${overall_score}%`}
-                              textName={`${first_name} ${last_name || ''}`}
-                              textLocation={`${city || ''},${state || ''},${
-                                country || ''
-                              }`}
-                              textExperience={
-                                (experience_in_months
-                                  ? (experience_in_months / 12).toFixed(1)
-                                  : 0) +
-                                (Number(
-                                  (experience_in_months / 12).toFixed(1),
-                                ) > 1
-                                  ? ' years'
-                                  : ' year')
-                              }
-                              isTopMatchVisible={overall_score > 0}
-                              isOverviewVisible={false}
-                              isLocationVisible={!!city || !!state || !!country}
-                              // isExperienceVisible={experience_in_months}
-                              isRelevantSkillVisible={false}
+                    return (
+                      <ChatMessage
+                        key={i}
+                        slotProfile={
+                          sender == chatusers.recruiter ? (
+                            <MuiAvatar
+                              variant='rounded'
+                              src={recruiterUser.profile_image}
+                              level={recruiterUser.first_name}
+                              fontSize='20px'
                             />
-                          );
-                        })
-                    }
-                  />
-                );
-              })
+                          ) : (
+                            <AssistantLogo width={40} height={40} />
+                          )
+                        }
+                        slotMessages={
+                          active && (
+                            <>
+                              {sender === chatusers.assistant &&
+                              resLoading &&
+                              i === messages.length - 1 ? (
+                                <Stack
+                                  position={'relative'}
+                                  height={'100px'}
+                                  width={'30px'}
+                                >
+                                  <Stack
+                                    top={'-32px'}
+                                    left={'-35px'}
+                                    width={'110px'}
+                                    position={'absolute'}
+                                  >
+                                    <CalculatingResumeScore />
+                                  </Stack>
+                                </Stack>
+                              ) : (
+                                message && (
+                                  <Typography
+                                    variant='body2'
+                                    dangerouslySetInnerHTML={{
+                                      __html: marked(
+                                        message.html?.replaceAll(
+                                          /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
+                                          '',
+                                        ),
+                                      ),
+                                    }}
+                                  ></Typography>
+                                )
+                              )}
+                            </>
+                          )
+                        }
+                        textHeading={sender}
+                        isMessageCardVisible={
+                          sender === chatusers.assistant &&
+                          tempCandidates &&
+                          tempCandidates.length !== 0
+                        }
+                        slotMessageCard={
+                          sender === chatusers.assistant &&
+                          !active &&
+                          tempCandidates
+                            .sort(
+                              (a, b) =>
+                                b.application?.overall_score -
+                                a.application?.overall_score,
+                            )
+                            .map((candidate, i) => {
+                              const {
+                                city,
+                                state,
+                                country,
+                                experience_in_months,
+                                first_name,
+                                last_name,
+                                application,
+                              } = candidate;
+
+                              const overall_score = application?.overall_score;
+                              const resume_match = getResumeMatched(
+                                overall_score,
+                              ) as any;
+
+                              return (
+                                <AssistantCandidateDetails
+                                  key={i}
+                                  slotProfile={
+                                    <MuiAvatar
+                                      variant='rounded'
+                                      fontSize='10px'
+                                      width='16px'
+                                      height='16px'
+                                      src={'/recruiter.logo'}
+                                      level={'name'}
+                                    />
+                                  }
+                                  colorPropsMatch={{
+                                    style: {
+                                      color: resume_match?.bgColor,
+                                    },
+                                  }}
+                                  textMatchCount={`${resume_match?.text}-${overall_score}%`}
+                                  textName={`${first_name} ${last_name || ''}`}
+                                  textLocation={`${city || ''},${state || ''},${
+                                    country || ''
+                                  }`}
+                                  textExperience={
+                                    (experience_in_months
+                                      ? (experience_in_months / 12).toFixed(1)
+                                      : 0) +
+                                    (Number(
+                                      (experience_in_months / 12).toFixed(1),
+                                    ) > 1
+                                      ? ' years'
+                                      : ' year')
+                                  }
+                                  isTopMatchVisible={overall_score > 0}
+                                  isOverviewVisible={false}
+                                  isLocationVisible={
+                                    !!city || !!state || !!country
+                                  }
+                                  // isExperienceVisible={experience_in_months}
+                                  isRelevantSkillVisible={false}
+                                />
+                              );
+                            })
+                        }
+                      />
+                    );
+                  })
+                )}
+              </>
             }
             slotAssistCards={
               messages &&
@@ -281,7 +325,7 @@ function JobAssistant() {
             }
             slotInput={
               <>
-                {!loading && !resLoading ? (
+                {!fetching && !loading && !resLoading ? (
                   <ChatEditor
                     onChange={(event) => {
                       const div = document.createElement('div');

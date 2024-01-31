@@ -114,11 +114,23 @@ function JobAssistantProvider({ children }) {
       getJobAssistantChat(job_id);
     }
   }, [router.isReady]);
+
   ////////////////////////// Create New Chat and Messages ///////////////////////////////////
   async function createNewChat() {
+    setFetching(true);
     // console.log(messages);
-    const { data: thread } = await axios.post('/api/assistant/createThread');
-    localStorage.setItem('thread_id', thread.id);
+    const { data: thread } = await axios.post(
+      '/api/job-assistant/createThread',
+      {
+        job_id: companyDetails?.id,
+      },
+    );
+    if (thread?.error) {
+      return;
+    }
+    const thread_id = thread?.result?.thread_id as string;
+
+    localStorage.setItem('thread_id', thread_id);
     const currentDate = new Date();
     const { data: jobAssistantChats, error: chatsError } = await supabase
       .from('job_assiatan_chat')
@@ -134,7 +146,7 @@ function JobAssistantProvider({ children }) {
         .insert({
           job_id: router.query?.id as string,
           updated_at: currentDate.toISOString(),
-          thread_id: thread.id,
+          thread_id: thread_id,
         })
         .select();
       if (!error) {
@@ -145,6 +157,7 @@ function JobAssistantProvider({ children }) {
         setMessages([]);
       }
     }
+    setFetching(false);
   }
   async function createMessage(content: {
     message_id: any;
@@ -370,7 +383,6 @@ function JobAssistantProvider({ children }) {
       });
     });
     setCandidates([...tempCandidates]);
-    setFetching(false);
   }
   async function getApplications(job_id: string) {
     const { data: applications, error } = await supabase
