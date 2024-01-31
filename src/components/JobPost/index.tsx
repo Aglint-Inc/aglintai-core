@@ -24,7 +24,13 @@ import {
   OpenJobListingCard,
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
+import {
+  CandidateType,
+  JobApplcationDB,
+  JobTypeDB,
+  RecruiterDB,
+  RecruiterType,
+} from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -39,13 +45,22 @@ interface JobsListProps {
   jobs: JobTypeDB[];
 }
 
-const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
+const JobPostPublic: React.FC<JobsListProps> = ({
+  post,
+  recruiter,
+  jobs,
+}: {
+  post: JobTypeDB;
+  recruiter: RecruiterType;
+  jobs: JobTypeDB[];
+}) => {
   const router = useRouter();
   const [email, setEmail] = useState<string>();
-  const [error, setError] = useState(false);
-  const [thank, setThank] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [application, setApplication] = useState<any>();
+  const [error, setError] = useState<boolean>(false);
+  const [thank, setThank] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [application, setApplication] = useState<JobApplcationDB>();
+  const [candidate, setCandidate] = useState<CandidateType>();
   const editor = useEditor({
     editable: false,
     content: post?.description,
@@ -108,7 +123,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             }}
             slotLottie={<ThankYou />}
             textTitle={'Application submitted successfully.'}
-            textDescription={`Thank you for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
+            textDescription={`Thank you ${candidate?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
             slotCompanyLogo={
               <Stack alignItems={'center'} spacing={1} width={'100%'}>
                 <Avatar
@@ -174,7 +189,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
         <Stack
           height={'100vh'}
           position={'absolute'}
-          zIndex={10000}
+          zIndex={10}
           width={'100%'}
           bgcolor={'#fff'}
         >
@@ -209,7 +224,6 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 },
                 height: '78px',
                 width: '78px',
-                // background: palette.grey[100],
               }}
             >
               <Icon variant='CompanyOutlinedBig' />
@@ -247,6 +261,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               setLoading={setLoading}
               setApplication={setApplication}
               recruiter={recruiter}
+              setCandidate={setCandidate}
             />
           }
           slotLinks={
@@ -395,16 +410,3 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
 };
 
 export default JobPostPublic;
-
-export const jobOpenings = [
-  'Frontend Developer',
-  'Software Engineer',
-  'Designer',
-  'Tester',
-  'Data Analyst',
-  'HR',
-  'Project manager',
-  'Business Analyst',
-  'React developer',
-  'NodeJs developer',
-];

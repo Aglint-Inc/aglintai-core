@@ -73,9 +73,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       profile,
     );
 
-    application = response;
-    await mailHandler(application.id, profile, post);
-    return res.status(200).send({ application: application });
+    await mailHandler(response.application.id, profile, post);
+    return res
+      .status(200)
+      .send({
+        application: response.application,
+        candidate: response.candidate,
+      });
   } else {
     const { data: checkApplication, error: errorCheck } = await supabase
       .from('applications')
@@ -106,7 +110,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         application = newApplication[0];
         await mailHandler(newApplication[0].id, profile, post);
-        return res.status(200).send({ application: application });
+        return res
+          .status(200)
+          .send({ application: application, candidate: checkCand[0] });
       } else {
         return res.status(200).send({ application: null, applied: true });
       }
@@ -126,13 +132,16 @@ const insertCandidate = async (
   fileId: string,
   profile: any,
 ) => {
-  const { error: errorCandidate } = await supabase.from('candidates').insert({
-    first_name: profile.firstName,
-    last_name: profile.lastName || '',
-    email: profile.email,
-    recruiter_id: recruiterId,
-    id: candidateId,
-  });
+  const { data: candidate, error: errorCandidate } = await supabase
+    .from('candidates')
+    .insert({
+      first_name: profile.firstName,
+      last_name: profile.lastName || '',
+      email: profile.email,
+      recruiter_id: recruiterId,
+      id: candidateId,
+    })
+    .select();
 
   if (!errorCandidate) {
     await supabase
@@ -155,7 +164,7 @@ const insertCandidate = async (
       })
       .select();
 
-    return newApplication[0];
+    return { application: newApplication[0], candidate: candidate };
   } else {
     console.log(errorCandidate);
   }

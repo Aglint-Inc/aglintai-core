@@ -1,24 +1,22 @@
-import {
-  Grid,
-  IconButton,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
+import {
+  CandidateType,
+  JobApplcationDB,
+  JobTypeDB,
+  RecruiterType,
+} from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { jobOpenings } from '..';
 import Icon from '../../Common/Icons/Icon';
 import LoaderGrey from '../../Common/LoaderGrey';
 
@@ -67,7 +65,21 @@ const initialError = () => {
   };
 };
 
-function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
+function UploadDB({
+  post,
+  setThank,
+  setLoading,
+  setApplication,
+  recruiter,
+  setCandidate,
+}: {
+  post: JobTypeDB;
+  setThank: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setApplication: Dispatch<SetStateAction<JobApplcationDB>>;
+  recruiter: RecruiterType;
+  setCandidate: Dispatch<SetStateAction<CandidateType>>;
+}) {
   const [profile, setProfile] = useState<any>({
     firstName: null,
     lastName: null,
@@ -75,11 +87,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
     phoneNumber: null,
     resume: null,
     linkedin: null,
-    usn: null,
-    college_name: null,
-    branch: null,
-    cgpa: null,
-    role: jobOpenings[0],
   });
   const [checked, setChecked] = useState(true);
   const [error, setError] = useState(initialError());
@@ -110,33 +117,6 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
       isValid = false;
     } else {
       error.firstName.error = false;
-    }
-
-    if (post?.is_campus && !profile?.usn) {
-      error.usn.error = true;
-      isValid = false;
-    } else {
-      error.usn.error = false;
-    }
-
-    if (post?.is_campus && !profile?.college_name) {
-      error.college_name.error = true;
-      isValid = false;
-    } else {
-      error.college_name.error = false;
-    }
-
-    if (post?.is_campus && !profile?.branch) {
-      error.branch.error = true;
-      isValid = false;
-    } else {
-      error.branch.error = false;
-    }
-    if (post?.is_campus && !profile?.cgpa) {
-      error.cgpa.error = true;
-      isValid = false;
-    } else {
-      error.cgpa.error = false;
     }
 
     if (!file) {
@@ -221,15 +201,8 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
           setLoading(false);
           toast.error('You have already applied for this job');
         } else {
+          setCandidate(response.data.candidate);
           setApplication(response.data.application);
-          setProfile({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            resume: '',
-            linkedin: '',
-          });
           setLoading(false);
           setThank(true);
         }
@@ -316,126 +289,22 @@ function UploadDB({ post, setThank, setLoading, setApplication, recruiter }) {
           />
         </Grid>
 
-        {post?.is_campus ? (
-          <>
-            <Grid item xs={6}>
-              <TextField
-                required
-                sx={{ px: '3px' }}
-                margin='none'
-                value={profile.usn}
-                fullWidth
-                id='usn'
-                label='University Number'
-                error={error.usn.error}
-                helperText={error.usn.error ? error.usn.msg : null}
-                onChange={(e) => {
-                  setProfile({ ...profile, usn: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                sx={{ px: '3px' }}
-                margin='none'
-                value={profile.college_name}
-                fullWidth
-                id='college_name'
-                label='College Name'
-                error={error.college_name.error}
-                helperText={
-                  error.college_name.error ? error.college_name.msg : null
-                }
-                onChange={(e) => {
-                  setProfile({ ...profile, college_name: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                sx={{ px: '3px' }}
-                margin='none'
-                value={profile.branch}
-                fullWidth
-                id='branch'
-                label='Branch or department'
-                error={error.branch.error}
-                helperText={error.branch.error ? error.branch.msg : null}
-                onChange={(e) => {
-                  setProfile({ ...profile, branch: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                sx={{ px: '3px' }}
-                margin='none'
-                value={profile.cgpa}
-                fullWidth
-                type='number'
-                id='cgpa'
-                label='CGPA'
-                error={error.cgpa.error}
-                helperText={error.cgpa.error ? error.cgpa.msg : null}
-                onChange={(e) => {
-                  setProfile({ ...profile, cgpa: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                margin='none'
-                select
-                fullWidth
-                id={'job'}
-                label={'Job Role'}
-                value={profile?.role || jobOpenings[0]}
-                onChange={(e) => {
-                  setProfile({ ...profile, role: e.target.value });
-                }}
-              >
-                {jobOpenings?.map((e, i) => (
-                  <MenuItem
-                    key={i}
-                    value={e}
-                    sx={{
-                      '&.Mui-selected': {
-                        background: palette.grey[200],
-                      },
-                    }}
-                    id={`date-${e}`}
-                    className='menuItem'
-                  >
-                    {e}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </>
-        ) : (
-          <Grid item xs={12}>
-            <TextField
-              sx={{ px: '3px' }}
-              value={profile.usn}
-              fullWidth
-              margin='none'
-              id='linkedIn-url'
-              label='LinkedIn URL'
-              placeholder='https://www.linkedin.com/in/your-id'
-              error={error.linkedinUrl.error}
-              helperText={
-                error.linkedinUrl.error ? error.linkedinUrl.msg : null
-              }
-              onChange={(e) => {
-                setProfile({ ...profile, linkedin: e.target.value });
-              }}
-            />
-          </Grid>
-        )}
+        <Grid item xs={12}>
+          <TextField
+            sx={{ px: '3px' }}
+            value={profile.usn}
+            fullWidth
+            margin='none'
+            id='linkedIn-url'
+            label='LinkedIn URL'
+            placeholder='https://www.linkedin.com/in/your-id'
+            error={error.linkedinUrl.error}
+            helperText={error.linkedinUrl.error ? error.linkedinUrl.msg : null}
+            onChange={(e) => {
+              setProfile({ ...profile, linkedin: e.target.value });
+            }}
+          />
+        </Grid>
 
         <Grid item xs={12}>
           <Stack position={'relative'}>
