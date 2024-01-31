@@ -24,13 +24,7 @@ export function AshbyAtsJob({
   return (
     <_Component className={_utils.cx(_styles, "ats-wrappers-outer")} tag="div">
       <_Builtin.Block tag="div">
-        {
-          "These jobs are retrieved from your ashby account. You can view/edit api key in "
-        }
-        <_Builtin.Strong>{"Integrations > "}</_Builtin.Strong>
-        <br />
-        <_Builtin.Strong>{"Ashby."}</_Builtin.Strong>
-        {" Choose one or multiple jobs to import from Lever."}
+        {"Select a job from Ashby to import."}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-import-wrappers")}

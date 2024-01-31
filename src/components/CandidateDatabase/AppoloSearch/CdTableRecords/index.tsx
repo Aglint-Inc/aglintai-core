@@ -186,7 +186,7 @@ function CdTableRecords({ loading }) {
                     />
                   );
                 })}
-                <Typography variant='body2'>
+                <Typography variant='body2' sx={{ textWrap: 'nowrap' }}>
                   {candidate.employment_history.length > 3 &&
                     `+ ${candidate.employment_history.length - 3} more`}
                 </Typography>

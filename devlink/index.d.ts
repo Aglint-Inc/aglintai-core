@@ -10,7 +10,6 @@ export * from "./AddButton";
 export * from "./AddCommandInput";
 export * from "./AddDepartmentPop";
 export * from "./AddedJobList";
-export * from "./AddedJobList";
 export * from "./AddJob";
 export * from "./AddJobButton";
 export * from "./AddJobList";
