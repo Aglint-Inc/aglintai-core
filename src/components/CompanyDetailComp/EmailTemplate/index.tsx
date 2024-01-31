@@ -2,6 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -29,11 +30,16 @@ const EmailTemplate = ({ setIsSaving }) => {
   const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
     'isPhoneScreeningEnabled',
   );
+  const isJobMarketingEnabled = useFeatureFlagEnabled('isJobMarketingEnabled');
+
   const templateEntries = emailTempKeys.filter((path) => {
     if (path === 'phone_screening' || path === 'phone_screening_resend') {
       return isPhoneScreeningEnabled;
     } else if (path === 'interview' || path === 'interview_resend') {
       return isAssesEnabled;
+    }
+    if (path == 'application_recieved') {
+      return isJobMarketingEnabled;
     } else {
       return true;
     }

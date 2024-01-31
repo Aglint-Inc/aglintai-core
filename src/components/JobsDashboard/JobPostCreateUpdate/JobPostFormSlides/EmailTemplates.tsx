@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { get } from 'lodash';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useState } from 'react';
 
 import {
@@ -34,6 +35,7 @@ const Emails = () => {
   const { jobForm, formWarnings } = useJobForm();
   const [isLoading, setIsLoading] = useState(false);
   const [editTemplate, setEditTemplate] = useState('application_recieved');
+  const isJobMarketingEnabled = useFeatureFlagEnabled('isJobMarketingEnabled');
   const emails: EmailTemplateParams[] = emailTempKeys
     .filter((path) => {
       if (path === 'interview' || path === 'interview_resend') {
@@ -43,6 +45,9 @@ const Emails = () => {
         path === 'phone_screening_resend'
       ) {
         return jobForm.formFields.isPhoneScreenEnabled;
+      }
+      if (path == 'application_recieved') {
+        return isJobMarketingEnabled;
       } else {
         return true;
       }
