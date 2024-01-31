@@ -60,11 +60,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let candidateId;
   let application;
-  console.log(checkCand, 'checkCand');
 
   if (!errorCheck && checkCand.length == 0) {
     candidateId = uuidv4();
-    console.log(uploadUrl, post.id, candidateId, recruiter.id, fileId, profile);
 
     const response = await insertCandidate(
       uploadUrl,
@@ -76,6 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     application = response;
+    await mailHandler(application.id, profile, post);
     return res.status(200).send({ application: application });
   } else {
     const { data: checkApplication, error: errorCheck } = await supabase
@@ -171,6 +170,8 @@ const mailHandler = async (application_id: string, profile, post) => {
       company_name: post.company,
       support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
     };
+    console.log(email, 'email');
+
     await axios
       .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
         fromEmail: `messenger@aglinthq.com`,
@@ -187,6 +188,8 @@ const mailHandler = async (application_id: string, profile, post) => {
         ),
       })
       .then((res) => {
+        console.log(res, 'res');
+
         if (res.status === 200 && res.data.data === 'Email sent') {
           return true;
         }
