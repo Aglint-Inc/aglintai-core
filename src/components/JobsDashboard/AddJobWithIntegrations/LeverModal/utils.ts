@@ -237,6 +237,7 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
           education: 0,
           experience: 0,
         },
+        video_assessment: false,
       },
       location: post.categories.location,
       job_title: post.text,
