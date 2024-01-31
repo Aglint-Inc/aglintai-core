@@ -87,12 +87,16 @@ function Support() {
     if (router.isReady) {
       const id = router.query.id as string | null;
       if (id) {
-        getApplicationDetails(id).then((data) => {
-          setJobDetails(data);
-          if (data?.email && data.email.trim() !== '') {
-            setDetails({ ...details, email: data.email });
-          }
-        });
+        getApplicationDetails(id)
+          .then((data) => {
+            setJobDetails(data);
+            if (data?.email && data.email.trim() !== '') {
+              setDetails({ ...details, email: data.email });
+            }
+          })
+          .catch((e) => {
+            toast.error(e.message);
+          });
         setApplicationId(id);
       }
       // getJobTitle(id).then((data) => {
@@ -192,21 +196,34 @@ function Support() {
 export default Support;
 
 const getApplicationDetails = async (id: string) => {
-  const { data, error } = await supabase
-    .from('applications')
-    .select()
-    .eq('id', id);
-  if (!error && data.length) {
-    const {
-      data: [candidate],
-      error: candidateError,
-    } = await supabase
+  try {
+    const applicationData = await supabase
+      .from('applications')
+      .select()
+      .eq('id', id)
+      .single()
+      .then(({ error, data }) => {
+        if (error) throw new Error(error.message);
+        return data;
+      })
+      // @ts-ignore
+      .catch(() => {
+        throw new Error('Application data not found');
+      });
+    const candidate = await supabase
       .from('candidates')
       .select()
-      .eq('id', data[0].candidate_id);
+      .eq('id', applicationData.candidate_id)
+      .single()
+      .then(({ data, error }) => {
+        if (error) throw new Error(error.message);
+        if (data) throw new Error('Candidate data not found');
+        return data;
+      });
 
-    const tempData =
-      !candidateError && candidate ? { ...data[0], ...candidate } : data[0];
+    const tempData = !candidate
+      ? { ...applicationData, ...candidate }
+      : applicationData;
     // @ts-ignore
     tempData.jobDetails = await getJobTitle(tempData.job_id);
     // @ts-ignore
@@ -229,8 +246,9 @@ const getApplicationDetails = async (id: string) => {
           logo: string;
         };
       };
+  } catch (e) {
+    throw new Error(e.message);
   }
-  return null;
 };
 
 const getCompanyDetails = async (id: string) => {
