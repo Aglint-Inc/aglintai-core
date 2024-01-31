@@ -275,6 +275,11 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -380,8 +385,6 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-
-  object-fit: contain;
 }
 
 .icon-embed.absolute {
@@ -401,7 +404,7 @@
 
 .div-block-796 {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }
@@ -479,6 +482,14 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
 }
 
 .slot-company-email-form {

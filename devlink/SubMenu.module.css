@@ -34,8 +34,8 @@
 .relative.mt-12.flex {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .relative.width-inc {
@@ -147,4 +147,8 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
 }

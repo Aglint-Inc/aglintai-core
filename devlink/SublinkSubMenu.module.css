@@ -153,6 +153,10 @@
   }
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
 .beta-wrap {
   position: relative;
   z-index: 5;
@@ -222,6 +226,10 @@
 
 .text-xsm.l-9px {
   line-height: 9px;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
 }
 
 .div-block-710 {

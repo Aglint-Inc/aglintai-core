@@ -253,8 +253,9 @@ function JobForm() {
           currSlide !== 'templates'
         }
         isProceedDisable={false}
-        textProceed={`Proceed to ${allSlides[slidePathToNum[String(currSlide)]]
-          ?.title}`}
+        textProceed={`Proceed to ${
+          allSlides[slidePathToNum[String(currSlide)]]?.title
+        }`}
         onClickProceed={{
           onClick: () => {
             const nextSlide =
@@ -622,7 +623,7 @@ const assmSubmenus: {
     path: 'welcome',
   },
   {
-    label: 'Assessment Questions',
+    label: 'Questions',
     path: 'assesqns',
   },
   {
@@ -673,8 +674,8 @@ const SideSection = () => {
         isDisableAssessmentVisible
         textDisableButton={'Disable'}
         textPreviewButton={'Preview'}
-        textPreview='Preview how candidates will be taking the screening questions'
-        textDescDisable='Disable this process if you don’t want to use Phone Screening for the candidate .'
+        textPreview='See How Candidates Will Experience the Screening Questions'
+        textDescDisable='Disable Phone Screening for this job.'
         onClickDisableAssessment={{
           onClick: () => {
             handleUpdateFormFields({
@@ -705,6 +706,10 @@ const SideSection = () => {
   } else if (currSlide === 'screening') {
     return (
       <AssessmentSide
+        textPreview={
+          'See How Candidates Will Experience the Assessment Questions'
+        }
+        textDescDisable={'Disable Assessment Questions for this job.'}
         isPhoneScreeningImageVisible={false}
         isAssessmentImageVisible={true}
         textDisableButton={'Disable'}

@@ -56,6 +56,23 @@ export function ScreeningQuestion({
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-569")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Instructions Brief"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot-brief-intro")}
+              tag="div"
+            >
+              {slotInstructionsBrief}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
             className={_utils.cx(_styles, "accessment-toggle-wrap", "mt-28")}
             tag="div"
           >
@@ -74,7 +91,7 @@ export function ScreeningQuestion({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             <_Builtin.Block
-              className={_utils.cx(_styles, "color-grey-600", "mt-12")}
+              className={_utils.cx(_styles, "color-grey-600")}
               tag="div"
             >
               {
@@ -138,23 +155,6 @@ export function ScreeningQuestion({
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-569")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Instructions Brief"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot-brief-intro")}
-              tag="div"
-            >
-              {slotInstructionsBrief}
-            </_Builtin.Block>
-          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "fake-div-trigger")}
             tag="div"

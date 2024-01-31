@@ -129,6 +129,18 @@
   }
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
 .text-red-500 {
   color: var(--red500-2e806c7d);
 }

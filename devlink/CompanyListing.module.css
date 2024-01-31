@@ -163,6 +163,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -215,6 +221,33 @@
 
 .relative {
   position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
 }
 
 .text-lg {
@@ -276,17 +309,6 @@
 
 .text-green-800 {
   color: var(--green800-a83af583);
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .text-color-black {
@@ -385,6 +407,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .company-list-link-wrappers {
   display: flex;
   margin-top: 20px;
@@ -403,7 +429,6 @@
   padding-top: 50px;
   padding-right: 40px;
   padding-left: 40px;
-  background-color: var(--gray100-3a86b552);
 }
 
 @media screen and (max-width: 767px) {
@@ -616,11 +641,24 @@
   text-transform: capitalize;
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .cl-wrapper {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 48px;
-  grid-row-gap: 48px;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
 }
 
 .cl-block {
@@ -633,6 +671,7 @@
   grid-column-gap: 32px;
   grid-row-gap: 32px;
 
+  border: 1px solid #e9ebed;
   border-radius: 20px;
 
   background-color: var(--white-80449ce7);
@@ -726,6 +765,10 @@
 .text-xl.fw-semibold.text-grey-600.inline-start {
   display: inline;
   margin-left: 5px;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .text-xl.color-orange {
@@ -876,10 +919,6 @@
 
 .text-sm.color-emial {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 0.36);
-}
-
-.text-blue-600 {
-  color: var(--blue600-aad8d97e);
 }
 
 .text-kale-600 {

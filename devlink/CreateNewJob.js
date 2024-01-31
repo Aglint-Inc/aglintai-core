@@ -410,7 +410,12 @@ export function CreateNewJob({
             {slotNavSublink}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "height-scroll", "width-100")}
+            className={_utils.cx(
+              _styles,
+              "height-scroll",
+              "width-100",
+              "scroll-hidden"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -454,19 +459,24 @@ export function CreateNewJob({
               {...onClickProceed}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "text-blue-800")}
+                className={_utils.cx(_styles, "fw-semibold")}
                 tag="div"
               >
                 {textProceed}
               </_Builtin.Block>
               <_Builtin.HtmlEmbed
                 className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2210%22%20height%3D%2216%22%20viewBox%3D%220%200%2010%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.53125%207.46875C9.82292%207.82292%209.82292%208.17708%209.53125%208.53125L3.53125%2014.5312C3.17708%2014.8229%202.82292%2014.8229%202.46875%2014.5312C2.17708%2014.1771%202.17708%2013.8229%202.46875%2013.4688L7.9375%208L2.46875%202.53125C2.17708%202.17708%202.17708%201.82292%202.46875%201.46875C2.82292%201.17708%203.17708%201.17708%203.53125%201.46875L9.53125%207.46875Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+                value="%3Csvg%20width%3D%2210%22%20height%3D%2216%22%20viewBox%3D%220%200%2010%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.53125%207.46875C9.82292%207.82292%209.82292%208.17708%209.53125%208.53125L3.53125%2014.5312C3.17708%2014.8229%202.82292%2014.8229%202.46875%2014.5312C2.17708%2014.1771%202.17708%2013.8229%202.46875%2013.4688L7.9375%208L2.46875%202.53125C2.17708%202.17708%202.17708%201.82292%202.46875%201.46875C2.82292%201.17708%203.17708%201.17708%203.53125%201.46875L9.53125%207.46875Z%22%20fill%3D%22%23fff%22%2F%3E%0A%3C%2Fsvg%3E"
               />
             </_Builtin.Block>
             {isProceedDisable ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "proceed-to-btn", "disable")}
+                className={_utils.cx(
+                  _styles,
+                  "proceed-to-btn",
+                  "disable",
+                  "hide"
+                )}
                 tag="div"
               >
                 <_Builtin.Block

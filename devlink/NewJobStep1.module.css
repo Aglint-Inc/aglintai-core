@@ -355,6 +355,11 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -390,6 +395,14 @@
 
 .mt-5 {
   margin-top: 5px;
+}
+
+.color-grey-600.mt-6 {
+  margin-top: 6px;
+}
+
+.div-block-816 {
+  padding-bottom: 20px;
 }
 
 .cj-main-wrapper {

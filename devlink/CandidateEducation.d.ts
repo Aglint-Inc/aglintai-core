@@ -8,4 +8,5 @@ declare function CandidateEducation(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   propsCollapse?: Types.Devlink.RuntimeProps;
   slotEducationScore?: Types.Devlink.Slot;
+  isArrowVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

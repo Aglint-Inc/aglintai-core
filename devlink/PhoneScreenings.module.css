@@ -212,6 +212,17 @@
   color: var(--blue600-aad8d97e);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -237,6 +248,12 @@
 
 .icons.cursor-pointer.p-4 {
   padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
 }
 
 .icons.curser-hover-pointer {
@@ -293,15 +310,16 @@
   display: none;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
+.icons.mb-63 {
+  margin-bottom: 63px;
 }
 
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
 }
 
 .next-wrap-cand {

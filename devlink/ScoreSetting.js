@@ -34,7 +34,7 @@ export function ScoreSetting({
           tag="div"
         >
           {
-            "Setup the scoring criteria for this job, which will be automatically extracted from the job description. A score will be generated for each candidate based on these criteria."
+            "Setup scoring criteria encompassing experience, skills, and education. Specify necessary criteria in each section, and our system will generate a candidate score by comparing it with the details provided in their resume."
           }
         </_Builtin.Block>
       </_Builtin.Block>

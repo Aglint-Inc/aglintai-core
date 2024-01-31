@@ -37,7 +37,12 @@ export function NewJobStep1({
         </_Builtin.Block>
       </_Builtin.Block>
       {isWarningVisible ? (
-        <_Builtin.Block tag="div">{slotWarning}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-816")}
+          tag="div"
+        >
+          {slotWarning}
+        </_Builtin.Block>
       ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cj-main-wrapper", "height-auto")}

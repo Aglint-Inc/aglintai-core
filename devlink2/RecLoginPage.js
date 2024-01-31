@@ -46,7 +46,7 @@ export function RecLoginPage({
             )}
             tag="div"
           >
-            {"Login to Aglint for Employers"}
+            {"Welcome to Aglint"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "sl-login-form")}
@@ -121,7 +121,7 @@ export function RecLoginPage({
                   className={_utils.cx(_styles, "sl-inline-block")}
                   tag="div"
                 >
-                  {"Don’t have an account?"}
+                  {"New to Aglint?"}
                 </_Builtin.Block>
                 <_Builtin.Block
                   className={_utils.cx(
@@ -132,7 +132,7 @@ export function RecLoginPage({
                   tag="div"
                   {...onclickSignup}
                 >
-                  {"Sign up now"}
+                  {"Sign Up Here"}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block tag="div">
