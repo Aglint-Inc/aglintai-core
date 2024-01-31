@@ -90,6 +90,7 @@ export const createJobObject = async (
           education: 0,
           experience: 0,
         },
+        video_assessment: false,
       },
       location: post.location,
       job_title: post.title,

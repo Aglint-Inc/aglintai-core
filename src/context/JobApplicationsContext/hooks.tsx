@@ -245,7 +245,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           type: ActionType.READ,
           payload: { applicationData: data, activeSections: request.sections },
         };
-        if (job.posted_by == POSTED_BY.ASHBY) {
+        if (job?.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
           setAtsSync(is_sync);
         }
