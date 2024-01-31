@@ -137,53 +137,55 @@ function CdTableRecords({ loading }) {
               <>
                 {candidate.employment_history.slice(0, 3).map((exp, ind) => {
                   return (
-                    <CdExperienceCard
-                      key={exp.id}
-                      textRole={exp.organization_name}
-                      isLogoVisible={
-                        candidate?.organization?.id === exp?.organization_id
-                      }
-                      bgColorProps={{
-                        style: {
-                          backgroundColor:
-                            selectedCandidate?.id === candidate.id
-                              ? ind === 0
-                                ? 'rgba(206, 226, 242, 0.50)'
-                                : 'rgba(206, 226, 242, 0.30)'
-                              : ind === 0
-                                ? 'rgba(233, 235, 237, 0.50)'
-                                : '#F7F9FB',
-                        },
-                      }}
-                      isActive={
-                        ind === 0 &&
-                        candidate?.organization?.id === exp?.organization_id
-                      }
-                      slotLogo={
-                        <Avatar
-                          variant='rounded'
-                          src={candidate?.organization?.logo_url}
-                          sx={{ height: 40, width: 40 }}
-                        >
-                          <CompanyLogo
-                            companyName={
-                              exp.organization_name
-                                ? exp.organization_name.trim().toLowerCase()
-                                : null
-                            }
-                          />
-                        </Avatar>
-                      }
-                      textDate={`${
-                        exp.start_date
-                          ? dayjs(exp.start_date).format('MMM YYYY') + ' - '
-                          : ''
-                      }  ${
-                        exp.end_date
-                          ? dayjs(exp.end_date).format('MMM YYYY')
-                          : 'Present'
-                      }`}
-                    />
+                    <Stack key={ind} maxWidth={'300px'} width='100%'>
+                      <CdExperienceCard
+                        key={exp.id}
+                        textRole={exp.organization_name}
+                        isLogoVisible={
+                          candidate?.organization?.id === exp?.organization_id
+                        }
+                        bgColorProps={{
+                          style: {
+                            backgroundColor:
+                              selectedCandidate?.id === candidate.id
+                                ? ind === 0
+                                  ? 'rgba(206, 226, 242, 0.50)'
+                                  : 'rgba(206, 226, 242, 0.30)'
+                                : ind === 0
+                                  ? 'rgba(233, 235, 237, 0.50)'
+                                  : '#F7F9FB',
+                          },
+                        }}
+                        isActive={
+                          ind === 0 &&
+                          candidate?.organization?.id === exp?.organization_id
+                        }
+                        slotLogo={
+                          <Avatar
+                            variant='rounded'
+                            src={candidate?.organization?.logo_url}
+                            sx={{ height: 40, width: 40 }}
+                          >
+                            <CompanyLogo
+                              companyName={
+                                exp.organization_name
+                                  ? exp.organization_name.trim().toLowerCase()
+                                  : null
+                              }
+                            />
+                          </Avatar>
+                        }
+                        textDate={`${
+                          exp.start_date
+                            ? dayjs(exp.start_date).format('MMM YYYY') + ' - '
+                            : ''
+                        }  ${
+                          exp.end_date
+                            ? dayjs(exp.end_date).format('MMM YYYY')
+                            : 'Present'
+                        }`}
+                      />
+                    </Stack>
                   );
                 })}
                 <Typography variant='body2' sx={{ textWrap: 'nowrap' }}>

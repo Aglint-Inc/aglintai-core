@@ -10,6 +10,7 @@ export function CandidateExperience({
   onClickCards = {},
   onClickIcons = {},
   slotExperienceScore,
+  isArrowVisible = true,
 }) {
   return (
     <_Component
@@ -43,16 +44,18 @@ export function CandidateExperience({
           tag="div"
         >
           <_Builtin.Block tag="div">{slotExperienceScore}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-780")}
-            tag="div"
-            {...onClickIcons}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.60156%204.60156C7.86719%204.38281%208.13281%204.38281%208.39844%204.60156L12.8984%209.10156C13.1172%209.36719%2013.1172%209.63281%2012.8984%209.89844C12.6328%2010.1172%2012.3672%2010.1172%2012.1016%209.89844L8%205.79688L3.89844%209.89844C3.63281%2010.1172%203.36719%2010.1172%203.10156%209.89844C2.88281%209.63281%202.88281%209.36719%203.10156%209.10156L7.60156%204.60156Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-          </_Builtin.Block>
+          {isArrowVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-780")}
+              tag="div"
+              {...onClickIcons}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.60156%204.60156C7.86719%204.38281%208.13281%204.38281%208.39844%204.60156L12.8984%209.10156C13.1172%209.36719%2013.1172%209.63281%2012.8984%209.89844C12.6328%2010.1172%2012.3672%2010.1172%2012.1016%209.89844L8%205.79688L3.89844%209.89844C3.63281%2010.1172%203.36719%2010.1172%203.10156%209.89844C2.88281%209.63281%202.88281%209.36719%203.10156%209.10156L7.60156%204.60156Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

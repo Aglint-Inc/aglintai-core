@@ -2,8 +2,8 @@
   position: relative;
 
   display: flex;
-  width: 300px;
-  max-width: 300px;
+  width: 100%;
+  max-width: 100%;
   min-width: 210px;
   padding: 12px 16px;
   align-items: center;
@@ -106,6 +106,10 @@
   line-height: 9px;
 }
 
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
 .div-block-689 {
   position: relative;
   z-index: 2;
@@ -118,10 +122,6 @@
 
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
 }
 
 .max-width-500 {
@@ -198,6 +198,18 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
 .cd-experience-active {

@@ -143,6 +143,18 @@
   }
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -367,6 +379,11 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .div-block-782 {
   display: flex;
   align-items: center;
@@ -386,6 +403,8 @@
   border-radius: 100px;
 
   background-color: #f8f9f9;
+
+  cursor: pointer;
 }
 
 .cvs-experiences-wrapper {

@@ -201,6 +201,7 @@ function CandidateDetail() {
             isViewResumeVisible={false}
             slotDetails={
               <CandidateExperience
+                isArrowVisible={false}
                 slotCandidateExperienceCard={selectedCandidate?.employment_history.map(
                   (exp, ind) => {
                     return (

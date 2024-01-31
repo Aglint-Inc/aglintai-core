@@ -7,4 +7,5 @@ declare function CandidateExperience(props: {
   onClickCards?: Types.Devlink.RuntimeProps;
   onClickIcons?: Types.Devlink.RuntimeProps;
   slotExperienceScore?: Types.Devlink.Slot;
+  isArrowVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
