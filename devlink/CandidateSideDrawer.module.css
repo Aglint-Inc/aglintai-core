@@ -541,6 +541,14 @@
   margin-bottom: 63px;
 }
 
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -616,10 +624,6 @@
   margin-top: 4px;
 }
 
-.mt-4 {
-  margin-top: 4px;
-}
-
 .text-grey-600.mt-8 {
   margin-top: 8px;
 }
@@ -638,67 +642,11 @@
   grid-row-gap: 6px;
 }
 
-.phone-icon-wraps {
-  position: relative;
-
+.div-block-818 {
   display: flex;
-  width: 24px;
-  height: 24px;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  border: 1px solid #e9ebed;
-  border-radius: 4px;
-
-  background-color: #e9ebed;
-}
-
-.devlink-copy-text {
-  position: absolute;
-  left: -18px;
-  top: auto;
-  right: 0%;
-  bottom: -23px;
-  z-index: 3;
-
-  display: none;
-  width: 72px;
-  padding: 4px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 100px;
-
-  background-color: #49545c;
-
-  color: white;
-}
-
-.text-xsm {
-  font-size: 10px;
-  line-height: 12px;
-}
-
-.text-xsm.color-grey-600.inline-text {
-  display: inline-block;
-}
-
-.text-blue-500 {
-  color: var(--blue500-72579298);
-}
-
-.text-kale-600 {
-  color: var(--kale600-c60cbc05);
-}
-
-.text-green-700 {
-  color: var(--green700-a1b0a24f);
-}
-
-.text-xsm.l-9px {
-  line-height: 9px;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .resume-candidate-details {
@@ -755,6 +703,14 @@
   text-transform: capitalize;
 }
 
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
+.text-green-700 {
+  color: var(--green700-a1b0a24f);
+}
+
 .text-sm.color-grey-400 {
   color: var(--grey400-863ed4b5);
 }
@@ -777,6 +733,10 @@
 
 .text-sm.color-emial {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 0.36);
+}
+
+.text-kale-600 {
+  color: var(--kale600-c60cbc05);
 }
 
 .text-red-600 {
@@ -810,11 +770,11 @@
 
 .slot-candidate-details.cd-details {
   display: flex;
-  margin-top: 30px;
+  margin-top: 20px;
   padding-bottom: 20px;
   flex-direction: column;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .div-block-645 {

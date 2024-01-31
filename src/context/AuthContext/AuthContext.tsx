@@ -234,8 +234,7 @@ const AuthProvider = ({ children }) => {
       { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
-      showToast &&
-        toast.error(`Oops! Something went wrong. (${error.message})`);
+      toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
       showToast && toast.success(`Confirmation email sent`);

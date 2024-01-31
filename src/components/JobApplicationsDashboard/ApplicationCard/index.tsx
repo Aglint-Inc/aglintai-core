@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import React, { useMemo } from 'react';
 
@@ -191,7 +192,9 @@ const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
       <ScreeningStatus
         slotIcon={<UninvitedIcon />}
         isDurationVisible={false}
-        textStatus={disqualificationStatus}
+        textStatus={
+          <Stack style={{ color: '#68737D' }}>{disqualificationStatus}</Stack>
+        }
       />
     );
   return (
@@ -228,7 +231,9 @@ export const ScreeningStatusComponent: React.FC<{
       <ScreeningStatus
         slotIcon={<UninvitedIcon />}
         isDurationVisible={false}
-        textStatus={screeningStatus}
+        textStatus={
+          <Stack style={{ color: '#68737D' }}>{screeningStatus}</Stack>
+        }
       />
     );
   if (isPending)
@@ -430,7 +435,7 @@ export const InavlidEmail = () => {
     <ScreeningStatus
       slotIcon={<UninvitedIcon />}
       isDurationVisible={false}
-      textStatus={'Invalid email'}
+      textStatus={<Stack style={{ color: '#68737D' }}>{'Invalid email'}</Stack>}
     />
   );
 };

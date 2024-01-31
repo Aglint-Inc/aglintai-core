@@ -63,8 +63,13 @@ import ResumePreviewer from './ResumePreviewer';
 import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
+import EmailIcon from '../../Common/Icons/emailIcon';
+import LinkedInIcon from '../../Common/Icons/linkedinIcon';
+import PhoneIcon from '../../Common/Icons/phoneIcon';
 import InterviewScore from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
+import CopyWrapper from '../../Common/Wrappers/copyWrapper';
+import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import {
   capitalize,
   formatTimeStamp,
@@ -92,22 +97,13 @@ const ApplicationDetails = ({
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
 
-  const copyAppId = async () => {
-    navigator.clipboard.writeText(application.id).then(() => {
-      toast.success('Application ID copied');
-    });
-  };
-
   const candidateImage = application ? (
-    <Stack
-      onClick={() => {
-        copyAppId();
-        posthog.capture('Application ID copied');
-      }}
-      style={{ cursor: 'pointer' }}
+    <RedirectWrapper
+      toast='Open application in Supabase'
+      primaryUrl={`https://supabase.com/dashboard/project/plionpfmgvenmdwwjzac/editor/232210?filter=id:eq:${application.id}`}
     >
       <CandidateAvatar application={application} fontSize={12} />
-    </Stack>
+    </RedirectWrapper>
   ) : (
     <></>
   );
@@ -316,20 +312,9 @@ const NewJobApplicationSideDrawer = ({
 
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
-  const linkedin = getCandidateDetails(application, 'linkedin');
-  const phone = getCandidateDetails(application, 'phone');
   const overview = getCandidateDetails(application, 'overview');
 
   const [openResume, setOpenResume] = useState(false);
-
-  const handleLinkedInRedirect = () => {
-    window.open(application.candidates.linkedin, '_blank');
-  };
-  const handleCopy = (str: string, tag: 'Phone number' | 'Email') => {
-    navigator.clipboard.writeText(str).then(() => {
-      toast.success(`${tag} copied to clipboard`);
-    });
-  };
 
   const processState = getApplicationProcessState(application);
 
@@ -342,25 +327,13 @@ const NewJobApplicationSideDrawer = ({
       onClickClose={{
         onClick: () => onClose(),
       }}
+      slotSocialLink={<SocialsBlock application={application} />}
       isOverviewVisible={overview.valid}
       isLocationRoleVisible={jobTitle.valid || location.valid}
       isRoleVisible={jobTitle.valid}
       textRole={jobTitle.value}
       isLocationVisible={location.valid}
       textLocation={location.value}
-      isMailIconVisible={application.emailValidity.isValidEmail}
-      onClickCopyMail={{
-        onClick: () => handleCopy(application.candidates.email.trim(), 'Email'),
-      }}
-      isPhoneIconVisible={phone.valid}
-      onClickCopyPhone={{
-        onClick: () =>
-          handleCopy(application.candidates.phone.trim(), 'Phone number'),
-      }}
-      isLinkedInVisible={linkedin.valid}
-      onClickLinkedin={{
-        onClick: () => handleLinkedInRedirect(),
-      }}
       isResumeVisible={
         processState !== 'unavailable' && processState !== 'fetching'
       }
@@ -384,6 +357,34 @@ const NewJobApplicationSideDrawer = ({
       isAppliedOnVisible={true}
       textAppliedOn={creationDate}
     />
+  );
+};
+
+const SocialsBlock: React.FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const linkedin = getCandidateDetails(application, 'linkedin');
+  const phone = getCandidateDetails(application, 'phone');
+  return (
+    <>
+      {linkedin.valid && (
+        <CopyWrapper content={linkedin.value}>
+          <LinkedInIcon />
+        </CopyWrapper>
+      )}
+      {phone.valid && (
+        <CopyWrapper content={phone.value}>
+          <PhoneIcon />
+        </CopyWrapper>
+      )}
+      {((application.emailValidity.isValidEmail &&
+        application?.candidates?.email) ??
+        null) && (
+        <CopyWrapper content={application.candidates.email}>
+          <EmailIcon />
+        </CopyWrapper>
+      )}
+    </>
   );
 };
 

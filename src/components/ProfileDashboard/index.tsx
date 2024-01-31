@@ -195,11 +195,16 @@ const ProfileDashboard = () => {
   };
   const handleValidateMail = () => {
     if (validateMail(email.email.value)) {
+      if (validateGMail(email.email.value))
+        return {
+          newEmail: null,
+          error: 'Enter a valid work email',
+        };
       return {
         newEmail: email.email.value.trim(),
         error: null,
       };
-    } else return { newEmail: null, error: 'Enter a valid email' };
+    } else return { newEmail: null, error: 'Enter a valid work email' };
   };
   const handleSubmitPassword = async () => {
     const { newPassword, error } = handleValidatePassword();
@@ -554,7 +559,18 @@ const validateMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]{2,}$/.test(value.trim())
+    /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
+      value.trim(),
+    )
+  );
+};
+const validateGMail = (value: string) => {
+  return (
+    value &&
+    value.trim() !== '' &&
+    /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@g(oogle)?mail([\.])com/g.test(
+      value.trim(),
+    )
   );
 };
 const validatePhone = (value: string) => {
