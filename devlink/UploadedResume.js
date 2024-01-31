@@ -9,6 +9,9 @@ export function UploadedResume({
   textCountDocument = "24 documents",
   slotPrimaryButton,
   slotUploadResumeList,
+  slotSecondaryButton,
+  onClickAddMore = {},
+  isAddMoreVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "upload-resume-list")} tag="div">
@@ -19,13 +22,19 @@ export function UploadedResume({
         className={_utils.cx(_styles, "resume-upload-bottom")}
         tag="div"
       >
+        <_Builtin.Block tag="div">{slotSecondaryButton}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600")}
+          className={_utils.cx(_styles, "div-block-817")}
           tag="div"
         >
-          {textCountDocument}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600")}
+            tag="div"
+          >
+            {textCountDocument}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

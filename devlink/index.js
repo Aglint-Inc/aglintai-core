@@ -14,6 +14,7 @@ export * from "./AddJob";
 export * from "./AddJobButton";
 export * from "./AddJobList";
 export * from "./AddLocationPop";
+export * from "./AddMoreResumeButton";
 export * from "./AddNewJob";
 export * from "./AddPreference";
 export * from "./AddRolesPop";

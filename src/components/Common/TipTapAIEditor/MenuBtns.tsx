@@ -186,9 +186,9 @@ const TipTapMenus = () => {
         }}
       >
         <Stack
-          gap={0.2}
+          gap={0.4}
           direction={'column'}
-          width={'90px'}
+          width={'100px'}
           minHeight={'100px'}
         >
           <MenuBtn
@@ -199,7 +199,7 @@ const TipTapMenus = () => {
               setAnchorEl(null);
             }}
           >
-            <UITypography type='medium'>Paragraph</UITypography>
+            <UITypography type='small'>Paragraph</UITypography>
           </MenuBtn>
           <MenuBtn
             className={
@@ -211,7 +211,7 @@ const TipTapMenus = () => {
               setAnchorEl(null);
             }}
           >
-            <UITypography type='medium'>Heading 1</UITypography>
+            <UITypography type='small'>Heading 1</UITypography>
           </MenuBtn>
           <MenuBtn
             className={
@@ -223,7 +223,7 @@ const TipTapMenus = () => {
               setAnchorEl(null);
             }}
           >
-            <UITypography type='medium'>Heading 2</UITypography>
+            <UITypography type='small'>Heading 2</UITypography>
           </MenuBtn>
           <MenuBtn
             className={
@@ -235,7 +235,7 @@ const TipTapMenus = () => {
               setAnchorEl(null);
             }}
           >
-            <UITypography type='medium'>Heading 3</UITypography>
+            <UITypography type='small'>Heading 3</UITypography>
           </MenuBtn>
         </Stack>
       </Popover>

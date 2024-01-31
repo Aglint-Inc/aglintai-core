@@ -1,4 +1,4 @@
-import { Autocomplete, Stack } from '@mui/material';
+import { Autocomplete, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -348,6 +348,15 @@ export function CompanyDetails() {
               }
             }}
             getOptionLabel={(option) => option}
+            renderOption={(props, option) => {
+              return (
+                <li {...props}>
+                  <Typography variant='body2' color={'#000'}>
+                    {option}
+                  </Typography>
+                </li>
+              );
+            }}
             renderInput={(params) => {
               return (
                 <UITextField
@@ -381,6 +390,15 @@ export function CompanyDetails() {
             }}
             value={recruiter.employee_size}
             getOptionLabel={(option) => option}
+            renderOption={(props, option) => {
+              return (
+                <li {...props}>
+                  <Typography variant='body2' color={'#000'}>
+                    {option}
+                  </Typography>
+                </li>
+              );
+            }}
             renderInput={(params) => (
               <UITextField
                 rest={{ ...params }}

@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import {
+  AddMoreResumeButton,
   ImportResume,
   LoaderSvg,
   UploadedResume,
@@ -129,6 +130,19 @@ const ResumeUpload = ({
                       />
                     );
                   })}
+                  slotSecondaryButton={
+                    <FileUploader
+                      handleChange={InputChange}
+                      classes='outline-none'
+                      multiple={true}
+                      name='file'
+                      types={fileTypes}
+                    >
+                      <Stack style={{ fontWeight: '400' }}>
+                        <AddMoreResumeButton />
+                      </Stack>
+                    </FileUploader>
+                  }
                   textCountDocument={selectedfile.length + ' documents'}
                   slotPrimaryButton={
                     selectedfile.length !== 0 && (

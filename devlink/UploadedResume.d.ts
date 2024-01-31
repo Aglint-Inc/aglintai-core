@@ -6,4 +6,7 @@ declare function UploadedResume(props: {
   textCountDocument?: React.ReactNode;
   slotPrimaryButton?: Types.Devlink.Slot;
   slotUploadResumeList?: Types.Devlink.Slot;
+  slotSecondaryButton?: Types.Devlink.Slot;
+  onClickAddMore?: Types.Devlink.RuntimeProps;
+  isAddMoreVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

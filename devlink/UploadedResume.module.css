@@ -17,7 +17,14 @@
 .resume-upload-bottom {
   display: flex;
   padding-top: 17px;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.div-block-817 {
+  display: flex;
   align-items: center;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -75,4 +82,8 @@
 
 .mt-5 {
   margin-top: 5px;
+}
+
+.color-grey-600.mt-6 {
+  margin-top: 6px;
 }
