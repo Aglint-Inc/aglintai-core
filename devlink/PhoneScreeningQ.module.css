@@ -2,6 +2,7 @@
   display: flex;
   width: 778px;
   margin-bottom: 70px;
+  margin-left: -40px;
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -306,6 +307,18 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
 .slot-input-phone {

@@ -84,7 +84,7 @@ const CompanyDetailComp = () => {
             />
             {isAssesEnabled && (
               <NavSublink
-                textLink={'Assessment Settings'}
+                textLink={'Assessment'}
                 isActive={router.query?.tab === 'assessment'}
                 onClickNav={{
                   onClick: () => {
@@ -115,7 +115,7 @@ const CompanyDetailComp = () => {
             />
             {isTeamEnabled && (
               <NavSublink
-                textLink={'Teams'}
+                textLink={'Team'}
                 isActive={router.query?.tab === 'team'}
                 onClickNav={{
                   onClick: () => {

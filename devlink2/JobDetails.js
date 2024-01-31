@@ -95,7 +95,7 @@ export function JobDetails({
               />
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-blue-600")}
+              className={_utils.cx(_styles, "fw-semibold")}
               dyn={{
                 bind: {},
               }}

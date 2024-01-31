@@ -41,6 +41,12 @@
   border-bottom: 1px solid #e9ebed;
 }
 
+.div-block-815 {
+  display: flex;
+  width: 390px;
+  justify-content: space-between;
+}
+
 .div-block-787 {
   display: flex;
   align-items: center;
@@ -310,6 +316,11 @@
   color: var(--blue600-aad8d97e);
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .div-block-644 {
   display: flex;
   align-items: center;
@@ -425,6 +436,7 @@
 
 .cvs-intro-profile-block {
   display: flex;
+  width: 390px;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 10px;
@@ -523,6 +535,10 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
 }
 
 .max-width-500 {
@@ -777,6 +793,7 @@
 
 .div-block-673 {
   display: flex;
+  width: 390px;
   flex-direction: column;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
