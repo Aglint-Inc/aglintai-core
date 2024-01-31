@@ -245,7 +245,14 @@ type JobsAction =
         tab: JobFormState['currentAssmSlides'];
       };
     }
-  | null;
+  | {
+      type: 'UpdateMultiStates';
+      payload: {
+        path: string;
+        value: any;
+      }[];
+    };
+null;
 
 const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
   const newState = cloneDeep(state);
@@ -304,6 +311,15 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       set(newState, 'currentAssmSlides', tab);
       return newState;
     }
+    case 'UpdateMultiStates': {
+      const updStates = action.payload;
+      for (let singState of updStates) {
+        set(newState.formFields, singState.path, singState.value);
+      }
+      set(newState, 'formFields.isDraftCleared', false);
+      set(newState, 'updatedAt', new Date().toISOString());
+      return newState;
+    }
     default:
       return state;
   }
@@ -317,9 +333,15 @@ export type JobsContextType = {
     path,
     // eslint-disable-next-line no-unused-vars
     value,
+    // eslint-disable-next-line no-unused-vars
+    multipayload,
   }: {
-    path: string;
-    value: any;
+    path?: string;
+    value?: any;
+    multipayload?: {
+      path: string;
+      value: any;
+    }[];
   }) => Promise<void>;
   handleInitializeForm: ({
     // eslint-disable-next-line no-unused-vars
@@ -472,28 +494,41 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     debounce(updateFormTodb, SYNC_TIME),
   ).current;
 
-  const handleUpdateFormFields = async ({
-    path,
-    value,
-  }: {
-    path: string;
-    value: any;
-  }) => {
-    try {
-      dispatch({
-        type: 'editJobField',
-        payload: {
-          path,
-          value,
-        },
-      });
-      const updatedState = cloneDeep(state);
-      set(updatedState.formFields, path, value);
-      formSyncTODB(updatedState);
-    } catch {
-      //
-    }
-  };
+  const handleUpdateFormFields: JobsContextType['handleUpdateFormFields'] =
+    async ({ path, value, multipayload }) => {
+      try {
+        if (multipayload) {
+          dispatch({
+            type: 'UpdateMultiStates',
+            payload: multipayload,
+          });
+
+          const updatedState = cloneDeep(state);
+
+          const updStates = multipayload;
+          for (let singState of updStates) {
+            set(updatedState.formFields, singState.path, singState.value);
+          }
+          set(updatedState, 'formFields.isDraftCleared', false);
+          set(updatedState, 'updatedAt', new Date().toISOString());
+          formSyncTODB(updatedState);
+        } else {
+          dispatch({
+            type: 'editJobField',
+            payload: {
+              path,
+              value,
+            },
+          });
+
+          const updatedState = cloneDeep(state);
+          set(updatedState.formFields, path, value);
+          formSyncTODB(updatedState);
+        }
+      } catch {
+        //
+      }
+    };
 
   const handleInitializeForm: JobsContextType['handleInitializeForm'] = ({
     type = 'new',

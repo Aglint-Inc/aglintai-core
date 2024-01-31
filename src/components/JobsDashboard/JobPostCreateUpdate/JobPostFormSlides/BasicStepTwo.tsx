@@ -17,13 +17,18 @@ const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
     if (formType === 'new' && formFields.jobDescription.length === 0) {
       autoGenJson(jobPostId);
     }
+
     handleUpdateFormFields({
-      path: 'jobDescription',
-      value: s,
-    });
-    handleUpdateFormFields({
-      path: 'isjdChanged',
-      value: true,
+      multipayload: [
+        {
+          path: 'jobDescription',
+          value: s,
+        },
+        {
+          path: 'isjdChanged',
+          value: true,
+        },
+      ],
     });
   };
 

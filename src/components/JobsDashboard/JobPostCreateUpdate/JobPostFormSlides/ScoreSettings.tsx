@@ -95,41 +95,41 @@ ${jobForm.formFields.jobDescription}
       };
 
       handleUpdateFormFields({
-        path: `resumeScoreSettings`,
-        value: getBalancedScore(
-          j.rolesResponsibilities.length === 0,
-          j.educations.length === 0,
-          j.skills.length === 0,
-        ),
+        multipayload: [
+          {
+            path: `resumeScoreSettings`,
+            value: getBalancedScore(
+              j.rolesResponsibilities.length === 0,
+              j.educations.length === 0,
+              j.skills.length === 0,
+            ),
+          },
+          {
+            path: 'isjdChanged',
+            value: false,
+          },
+          {
+            path: 'jdJson',
+            value: j,
+          },
+        ],
       });
-      if (j.skills.length === 0) {
-        handleUpdateFormFields({
-          path: 'resumeScoreSettings.skills',
-          value: 0,
-        });
-      }
-      if (j.educations.length === 0) {
-        handleUpdateFormFields({
-          path: 'resumeScoreSettings.education',
-          value: 0,
-        });
-      }
-
-      if (j.rolesResponsibilities.length === 0) {
-        handleUpdateFormFields({
-          path: 'resumeScoreSettings.experience',
-          value: 0,
-        });
-      }
-
-      handleUpdateFormFields({
-        path: 'isjdChanged',
-        value: false,
-      });
-      handleUpdateFormFields({
-        path: 'jdJson',
-        value: j,
-      });
+      // handleUpdateFormFields({
+      //   path: `resumeScoreSettings`,
+      //   value: getBalancedScore(
+      //     j.rolesResponsibilities.length === 0,
+      //     j.educations.length === 0,
+      //     j.skills.length === 0,
+      //   ),
+      // });
+      // handleUpdateFormFields({
+      //   path: 'isjdChanged',
+      //   value: false,
+      // });
+      // handleUpdateFormFields({
+      //   path: 'jdJson',
+      //   value: j,
+      // });
     } catch (err) {
       toast.error(API_FAIL_MSG);
     } finally {
@@ -459,32 +459,58 @@ ${jobForm.formFields.jobDescription}
                       `${editParam.paramKey}`,
                       [],
                     ).filter((it) => it.id !== editParam.id);
-                    handleUpdateFormFields({
-                      path: `jdJson.${editParam.paramKey}`,
-                      value: arr,
-                    });
+
                     // jobForm.formFields.resumeScoreSettings.education;
                     // jobForm.formFields.resumeScoreSettings.skills;
                     // jobForm.formFields.resumeScoreSettings.experience;
                     if (arr.length === 0) {
                       if (editParam.paramKey === 'skills') {
                         handleUpdateFormFields({
-                          path: `resumeScoreSettings.skills`,
-                          value: 0,
+                          multipayload: [
+                            {
+                              path: `resumeScoreSettings.skills`,
+                              value: 0,
+                            },
+                            {
+                              path: `jdJson.${editParam.paramKey}`,
+                              value: arr,
+                            },
+                          ],
                         });
                       } else if (
                         editParam.paramKey === 'rolesResponsibilities'
                       ) {
                         handleUpdateFormFields({
-                          path: `resumeScoreSettings.experience`,
-                          value: 0,
+                          multipayload: [
+                            {
+                              path: `resumeScoreSettings.experience`,
+                              value: 0,
+                            },
+                            {
+                              path: `jdJson.${editParam.paramKey}`,
+                              value: arr,
+                            },
+                          ],
                         });
                       } else if (editParam.paramKey === 'educations') {
                         handleUpdateFormFields({
-                          path: `resumeScoreSettings.education`,
-                          value: 0,
+                          multipayload: [
+                            {
+                              path: `resumeScoreSettings.education`,
+                              value: 0,
+                            },
+                            {
+                              path: `jdJson.${editParam.paramKey}`,
+                              value: arr,
+                            },
+                          ],
                         });
                       }
+                    } else {
+                      handleUpdateFormFields({
+                        path: `jdJson.${editParam.paramKey}`,
+                        value: arr,
+                      });
                     }
 
                     setPopUpEl(null);
