@@ -64,77 +64,6 @@
   grid-row-gap: 40px;
 }
 
-.wm_header_wrapper {
-  display: flex;
-  width: 100%;
-  max-width: 760px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  text-align: center;
-}
-
-@media screen and (max-width: 479px) {
-  .wm_header_wrapper {
-    align-items: flex-start;
-    text-align: left;
-  }
-}
-
-.wm_header_wrapper.max_width_500 {
-  max-width: 500px;
-}
-
-.wm_header_wrapper.max_width_800 {
-  max-width: 800px;
-}
-
-.wm_header_wrapper.max_width_580 {
-  max-width: 580px;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 1.33;
-}
-
-@media screen and (max-width: 991px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .text-lg {
-    font-size: 16px;
-  }
-}
-
-.text-color-black {
-  color: var(--black-9b0fc3fc);
-}
-
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.text-lg.text-gray-400 {
-  color: var(--gray-400);
-}
-
-.text-gray-400 {
-  color: var(--gray-400);
-}
-
 .wm_image_wrapper {
   display: flex;
   width: 100%;
@@ -168,6 +97,48 @@
 
 .wm_img.max_width_800 {
   max-width: 800px;
+}
+
+.wm_img.max_width_900 {
+  max-width: 900px;
+}
+
+.wm_header_wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 760px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  text-align: center;
+}
+
+@media screen and (max-width: 479px) {
+  .wm_header_wrapper {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.wm_header_wrapper.max_width_500 {
+  max-width: 500px;
+}
+
+.wm_header_wrapper.max_width_800 {
+  max-width: 800px;
+}
+
+.wm_header_wrapper.max_width_580 {
+  max-width: 580px;
+}
+
+.welcome_mat_header {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 600;
 }
 
 .wm_cards {
@@ -213,6 +184,16 @@
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
 
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
 .text-kale-600 {
   color: var(--kale-600);
 }
@@ -237,6 +218,23 @@
 
 .text-blue-800 {
   color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
 }
 
 .text-yellow-600 {

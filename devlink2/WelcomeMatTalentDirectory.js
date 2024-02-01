@@ -25,28 +25,23 @@ export function WelcomeMatTalentDirectory({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "wm_header_wrapper")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-            tag="div"
-          >
-            {"Your Central Hub for Candidate Information"}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
           className={_utils.cx(_styles, "wm_image_wrapper")}
           tag="div"
         >
           <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img", "max_width_700")}
+            className={_utils.cx(_styles, "wm_img", "max_width_800")}
             loading="lazy"
             width="auto"
             height="auto"
             alt=""
             src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65bb5eacd718d145190af7c6_Browser.png"
           />
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "welcome_mat_header")}
+          tag="div"
+        >
+          {"Your Central Hub for Candidate Information"}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
           <_Builtin.Block

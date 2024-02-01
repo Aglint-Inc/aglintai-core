@@ -484,6 +484,8 @@ function CandidateSearchHistory() {
                       isSavedListEmpty={!isHistoryLoading && list.length === 0}
                       slotInput={
                         <UITextField
+                          rest={{ autoFocus: true }}
+                          placeholder='Enter list name'
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
@@ -523,6 +525,7 @@ function CandidateSearchHistory() {
                                   }}
                                 >
                                   <UITextField
+                                    placeholder='Enter list name'
                                     ref={multiTextFieldRef}
                                     value={editListText}
                                     onChange={(e) => {

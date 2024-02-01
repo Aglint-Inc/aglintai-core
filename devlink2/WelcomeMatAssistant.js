@@ -19,11 +19,24 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
         tag="div"
       >
         <_Builtin.Block
+          className={_utils.cx(_styles, "wm_image_wrapper")}
+          tag="div"
+        >
+          <_Builtin.Image
+            className={_utils.cx(_styles, "wm_img", "max_width_900")}
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b88d5185be51921784ba37_assistant.png"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
           className={_utils.cx(_styles, "wm_header_wrapper", "max_width_800")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "welcome_mat_header")}
             tag="div"
           >
             {"Welcome to AI-Assisted Hiring!"}
@@ -36,19 +49,6 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
               "Revolutionize your hiring process with an AI assistant guiding candidates through interactive chats, offering a personalized and efficient experience. Say goodbye to forms and levate your hiring game with cutting-edge technology."
             }
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "wm_image_wrapper")}
-          tag="div"
-        >
-          <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img", "max_width_800")}
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt=""
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b88d5185be51921784ba37_assistant.png"
-          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
           <_Builtin.Block

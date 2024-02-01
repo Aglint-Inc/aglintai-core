@@ -19,11 +19,24 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
         tag="div"
       >
         <_Builtin.Block
+          className={_utils.cx(_styles, "wm_image_wrapper")}
+          tag="div"
+        >
+          <_Builtin.Image
+            className={_utils.cx(_styles, "wm_img", "max_width_700")}
+            loading="lazy"
+            width="auto"
+            height="auto"
+            alt=""
+            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b272a889384bd23e05dc32_candidate_database_welcome_mat.png"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
           className={_utils.cx(_styles, "wm_header_wrapper")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+            className={_utils.cx(_styles, "welcome_mat_header")}
             tag="div"
           >
             {"Streamline Candidate Conversations"}
@@ -36,19 +49,6 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
               "Enhance candidate interaction effortlessly! Manage inquiries, respond swiftly, and track every journey seamlessly. Streamline communication, collaborate hassle-free with your team. Elevate candidate support with ease!"
             }
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "wm_image_wrapper")}
-          tag="div"
-        >
-          <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img", "max_width_700")}
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt=""
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/65b272a889384bd23e05dc32_candidate_database_welcome_mat.png"
-          />
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wm_cards")} tag="div">
           <_Builtin.Block
