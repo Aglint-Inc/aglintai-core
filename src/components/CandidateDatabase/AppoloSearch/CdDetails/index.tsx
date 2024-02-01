@@ -234,9 +234,11 @@ function CandidateDetail() {
                               />
                             </Avatar>
                           }
-                          textDate={`${dayjs(exp.start_date).format(
-                            'MMM YYYY',
-                          )} - ${
+                          textDate={`${
+                            exp.start_date
+                              ? dayjs(exp.start_date).format('MMM YYYY') + ' - '
+                              : ''
+                          }  ${
                             exp.end_date
                               ? dayjs(exp.end_date).format('MMM YYYY')
                               : 'Present'

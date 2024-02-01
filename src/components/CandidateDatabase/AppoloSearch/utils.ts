@@ -72,26 +72,20 @@ export function calculateTotalExperience(
 ): number {
   try {
     const currentDate = new Date();
+    let oldestStartDate = currentDate; // Initialize with current date
+
+    // Find the oldest start date
+    employmentHistory.forEach((job) => {
+      const startDate = job.start_date ? new Date(job.start_date) : null;
+      if (startDate && startDate < oldestStartDate) {
+        oldestStartDate = startDate;
+      }
+    });
 
     // Calculate the total experience in milliseconds
-    const totalExperienceInMs: number = employmentHistory.reduce(
-      (acc: number, job: EmploymentHistory) => {
-        const startDate: Date | null = job.start_date
-          ? new Date(job.start_date)
-          : null;
-
-        const endDate: Date = job.end_date
-          ? new Date(job.end_date)
-          : currentDate;
-
-        // If start date is null, consider it as 0 years of experience
-        const jobExperienceInMs: number =
-          startDate !== null ? endDate.getTime() - startDate.getTime() : 0;
-
-        return acc + jobExperienceInMs;
-      },
-      0,
-    );
+    const totalExperienceInMs: number = oldestStartDate
+      ? currentDate.getTime() - oldestStartDate.getTime()
+      : 0;
 
     // Convert milliseconds to years
     const totalExperienceInYears: number =
