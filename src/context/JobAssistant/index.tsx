@@ -122,7 +122,7 @@ function JobAssistantProvider({ children }) {
     const { data: thread } = await axios.post(
       '/api/job-assistant/createThread',
       {
-        job_id: companyDetails?.id,
+        job_id: router.query?.id as string,
       },
     );
     if (thread?.error) {
@@ -204,6 +204,9 @@ function JobAssistantProvider({ children }) {
         router.query.chat_id = currectChat[0].id;
         router.push(router);
       } else {
+        setCurrentChat({
+          job_id: router.query?.id as string,
+        } as JobAssistantChats);
         createNewChat();
         return;
       }

@@ -30,9 +30,9 @@ import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ChatEditor, { SendIcon } from './ChatEditor';
 import LeftPanel from './LeftPannel';
-import Loader from '../Common/Loader';
-import { CalculatingResumeScore } from '../Common/Lotties/Calculating';
-import MuiAvatar from '../Common/MuiAvatar';
+import Loader from '../../Common/Loader';
+import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
+import MuiAvatar from '../../Common/MuiAvatar';
 function JobAssistant() {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
@@ -109,8 +109,8 @@ function JobAssistant() {
           <JobAssist
             isMinimizeIconVisible={false}
             isViewMoreVisible={false}
-            isStartingScreenVisible={!messages.length}
-            isChatBody={!!messages.length}
+            isStartingScreenVisible={!fetching && !messages.length}
+            isChatBody={fetching || !!messages.length}
             slotLogo={
               <MuiAvatar
                 variant='rounded'

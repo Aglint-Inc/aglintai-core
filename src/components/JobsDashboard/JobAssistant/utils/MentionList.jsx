@@ -9,7 +9,7 @@ import {
 
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 
-import MuiAvatar from '../../Common/MuiAvatar';
+import MuiAvatar from '../../../Common/MuiAvatar';
 
 
 export default forwardRef((props, ref,) => {

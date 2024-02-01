@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 
-import AUIButton from '../../Common/AUIButton';
+import AUIButton from '../../../Common/AUIButton';
 
 function LeftPanel() {
   const {
