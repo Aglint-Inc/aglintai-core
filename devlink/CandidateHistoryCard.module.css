@@ -13,15 +13,159 @@
   cursor: pointer;
 }
 
+.div-block-820 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .text-block-32 {
   text-transform: capitalize;
 }
 
-.search-by-wrap {
+.text-block-32.width-90 {
+  max-width: 93%;
+}
+
+.div-block-821 {
+  padding-right: 8px;
+}
+
+.icons {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
+}
+
+.relative {
+  position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
+.delete-icons-history {
+  position: absolute;
+  left: auto;
+  top: 40px;
+  right: 14px;
+  bottom: auto;
+
+  display: none;
+  padding: 6px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 4px;
+
+  background-color: #f8f9f9;
 }
 
 .text-sm {
@@ -123,10 +267,6 @@
   color: var(--grey500-0d508ad8);
 }
 
-.color-white {
-  color: var(--white-80449ce7);
-}
-
 .color-grey-600 {
   color: #68737d;
 }
@@ -171,15 +311,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.cursor-pointer {
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  opacity: 0.7;
-}
-
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
 }
@@ -213,6 +344,13 @@
   color: white;
 }
 
+.search-by-wrap {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .search-by-wrappers {
   display: flex;
   flex-direction: column;
@@ -229,104 +367,4 @@
   padding: 6px 20px;
   border-radius: 100px;
   background-color: #e9ebed;
-}
-
-.delete-icons-history {
-  position: absolute;
-  left: auto;
-  top: 21px;
-  right: 21px;
-  bottom: auto;
-
-  display: none;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer.width-28 {
-  width: 28px;
-}
-
-.icons.cursor-pointer.height-28 {
-  height: 28px;
-}
-
-.icons.cursor-pointer.p-4 {
-  padding: 4px;
-}
-
-.icons.cursor-pointer.three-dot {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.pause {
-  display: none;
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.relative {
-  position: relative;
-}
-
-.icons.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }

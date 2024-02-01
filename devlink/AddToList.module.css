@@ -1,15 +1,16 @@
 .div-block-732 {
   display: flex;
-  padding: 6px 12px;
+  padding: 3px 7px 3px 9px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
+  border: 0.5px solid #cee2f2;
   border-radius: 4px;
 
-  background-color: #1f73b7;
+  background-color: #edf7ff;
 
-  color: white;
+  color: #0f3554;
 }
 
 .cursor-pointer {
@@ -193,6 +194,17 @@
   color: var(--blue600-aad8d97e);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }
@@ -280,13 +292,18 @@
   display: none;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
+.icons.mb-63 {
+  margin-bottom: 63px;
 }
 
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
