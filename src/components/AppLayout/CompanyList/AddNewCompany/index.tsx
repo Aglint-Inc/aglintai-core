@@ -514,7 +514,7 @@ function CompanyDetails({
     <Stack spacing={2}>
       <UITextField
         label='Company Name'
-        labelSize='medium'
+        labelSize='small'
         fullWidth
         value={details?.name}
         placeholder={'Ex. Google'}

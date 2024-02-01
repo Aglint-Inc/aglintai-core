@@ -336,14 +336,14 @@ const ProfileDashboard = () => {
                 <UserChangeEmail
                   texDesc={
                     <>
-                      <>Your current email is </>
+                      <>Your registered email is </>
                       <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
                         {userMail}
                       </span>
                       <>
-                        . To update your email, enter the new email address. We
-                        will send a verification link to the new email. Please
-                        confirm it to complete the email change.
+                        . To change your email, enter the new email address
+                        below. A verification link will be sent to this new
+                        address.
                       </>
                     </>
                   }

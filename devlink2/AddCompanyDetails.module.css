@@ -5,17 +5,6 @@
   grid-row-gap: 20px;
 }
 
-.cs-details-warning-block {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.cs-details-warning-block.hide {
-  display: none;
-}
-
 .hide {
   display: none;
   flex-direction: row;
@@ -25,6 +14,17 @@
   .hide {
     display: none;
   }
+}
+
+.cs-details-warning-block {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.cs-details-warning-block.hide {
+  display: none;
 }
 
 .icon-block {
@@ -198,6 +198,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .text-yellow-500 {
   color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
 }
@@ -339,7 +343,8 @@
 
 .cs-change-button {
   margin-left: -10px;
-  padding: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 
   border-radius: 6px;
 
@@ -352,8 +357,12 @@
   cursor: pointer;
 }
 
-.cs-change-button:hover {
-  background-color: var(--blue-100);
+.pointer_events_none {
+  pointer-events: none;
+}
+
+.cs-change-button.chang-btn:hover {
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 767px) {

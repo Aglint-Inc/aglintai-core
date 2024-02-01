@@ -30,7 +30,7 @@ export function AssessmentSide({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65b8da9d6d94f7c55dfb6301_Browser.svg"
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65bb902790cc33c57cd639a2_Assesment_preview.png"
               />
             ) : null}
             {isPhoneScreeningImageVisible ? (
@@ -39,7 +39,7 @@ export function AssessmentSide({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65b8db11b2938dda55c166a4_Browser.svg"
+                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/65bb9002947bcf7c76b8deee_Screening_Preview.png"
               />
             ) : null}
           </_Builtin.Block>

@@ -18,7 +18,7 @@ export function AddCompanyDetails({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "cs-details-warning-wrapper")}
+        className={_utils.cx(_styles, "cs-details-warning-wrapper", "hide")}
         tag="div"
       >
         {isFetchSuccessful ? (
@@ -92,7 +92,7 @@ export function AddCompanyDetails({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cs-change-button")}
+                className={_utils.cx(_styles, "cs-change-button", "chang-btn")}
                 tag="div"
                 {...onclickChangeLogo}
               >

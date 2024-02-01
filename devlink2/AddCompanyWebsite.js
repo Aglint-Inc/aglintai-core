@@ -17,10 +17,7 @@ export function AddCompanyWebsite({
         className={_utils.cx(_styles, "cs-sidebar-website-info")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Enter company website"}
         </_Builtin.Block>
         <_Builtin.Block

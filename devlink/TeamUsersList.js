@@ -35,7 +35,7 @@ export function TeamUsersList({
               className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
-              {"Users"}
+              {"Manage Team Members"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-463")}
@@ -46,11 +46,7 @@ export function TeamUsersList({
                 tag="div"
               >
                 {
-                  "Below, you'll find a list of users, their associated permissions, and their current status. "
-                }
-                <br />
-                {
-                  "To make changes to user roles, simply click on the action button provided for each user."
+                  "Add, manage, and organize your team's roles and permissions here."
                 }
               </_Builtin.Block>
               <_Builtin.Block tag="div">{slotInviteBtn}</_Builtin.Block>

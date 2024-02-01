@@ -141,6 +141,10 @@
   margin-top: 3px;
 }
 
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .text-red-500 {
   color: var(--red500-2e806c7d);
 }

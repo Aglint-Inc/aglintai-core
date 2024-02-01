@@ -21,7 +21,7 @@ export function VideoSwitcherCard({
           className={_utils.cx(_styles, "color-grey-600")}
           tag="div"
         >
-          {"This avatar will be used to generate video."}
+          {"This avatar will be used in assessment"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "color-grey-600")}
