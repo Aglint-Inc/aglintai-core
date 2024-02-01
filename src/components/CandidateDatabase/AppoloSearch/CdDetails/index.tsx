@@ -268,7 +268,7 @@ function CandidateDetail() {
                     ? null
                     : selectedCandidate?.photo_url
                 }
-                variant={'rounded'}
+                variant={'circular'}
                 width={'100%'}
                 height={'100%'}
                 fontSize={'12px'}
