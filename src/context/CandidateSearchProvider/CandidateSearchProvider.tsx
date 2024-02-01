@@ -11,7 +11,7 @@ import toast from '@/src/utils/toast';
 import {
   API_FAIL_MSG,
   supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+} from '../../components/JobsDashboard/JobPostCreateUpdate/utils';
 
 export interface CandidateSearchRes {
   application_id: string;

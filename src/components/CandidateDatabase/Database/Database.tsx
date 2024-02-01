@@ -13,6 +13,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import AddToJobOptions from './CandAddToJobMenu';
 import { useCandFilter } from './CandDbProvider';
 import EmailOutReach from './EmailOutReach/EmailOutReach';
 import { OutReachCtxProvider } from './EmailOutReach/OutReachCtx';
@@ -20,7 +21,6 @@ import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
 import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
-import AddToJobOptions from '../CandAddToJobMenu';
 import InCompleteLottie from '../IncompleteLottie';
 import { newCandJob } from '../Search/Search';
 import Loader from '../../Common/Loader';

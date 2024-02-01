@@ -21,12 +21,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';
 import SelectedCandidate from './SelectedCandidate';
-import AddToJobOptions from '../CandAddToJobMenu';
-import {
-  CandidateSearchRes,
-  initialState,
-  useCandidateSearchCtx,
-} from '../context/CandidateSearchProvider';
+import AddToJobOptions from '../Database/CandAddToJobMenu';
 import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
 import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
 import InCompleteLottie from '../IncompleteLottie';
@@ -34,6 +29,11 @@ import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  CandidateSearchRes,
+  initialState,
+  useCandidateSearchCtx,
+} from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 export type newCandJob = {
   title: string;

@@ -1,6 +1,6 @@
 import { JsonResume } from '@/src/types/resume_json.types';
 
-import { CandJobPost } from '../context/CandidateSearchProvider';
+import { CandJobPost } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 export interface Candidate {
   candidate_id: string;

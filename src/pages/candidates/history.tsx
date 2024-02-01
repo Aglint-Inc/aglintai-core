@@ -1,4 +1,4 @@
-import CandidateSearchHistory from '@/src/components/CandidateDatabase/Search/History';
+import CandidateSearchHistory from '@/src/components/CandidateDatabase';
 import Seo from '@/src/components/Common/Seo';
 
 const history = () => {

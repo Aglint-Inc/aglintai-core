@@ -11,13 +11,13 @@ import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { getRelevantCndidates } from './utils';
-import AUIButton from '../Common/AUIButton';
-import UITextField from '../Common/UITextField';
+import { getRelevantCndidates } from '../utils';
+import AUIButton from '../../Common/AUIButton';
+import UITextField from '../../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
   const defaultValue = '';

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { AddPreference } from '@/devlink';
 
-import { dialogFormContent } from '../data';
+import { dialogFormContent } from '../utils';
 import UITextField from '../../Common/UITextField';
 
 const FilterInput = ({

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useJobs } from '@/src/context/JobsContext';
 
 import { newCandJob } from './Search';
-import CandidateDrawer from '../CandidateDetailsDrawer';
+import CandidateDrawer from '../Database/CandidateDetailsDrawer';
 import {
   CandidateSearchRes,
   useCandidateSearchCtx,
-} from '../context/CandidateSearchProvider';
+} from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 const SelectedCandidate = ({
   candidate,

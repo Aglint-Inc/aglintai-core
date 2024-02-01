@@ -16,10 +16,10 @@ import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import AddToJobOptions from './CandAddToJobMenu';
-import { CandidateSearchRes } from './context/CandidateSearchProvider';
-import MuiAvatar from '../Common/MuiAvatar';
-import ResumePreviewer from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
-import CompanyLogo from '../JobApplicationsDashboard/Common/CompanyLogo';
+import MuiAvatar from '../../Common/MuiAvatar';
+import ResumePreviewer from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
+import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
+import { CandidateSearchRes } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 const CandidateDrawer = ({
   candidate,

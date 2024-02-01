@@ -23,35 +23,37 @@ import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import EmptyState from './EmptyState';
-import { Candidate } from '../AppoloSearch/types';
-import { CandidateSearchState } from '../context/CandidateSearchProvider';
-import { JDSearchModal } from '../JDSearchModal';
-import { getRelevantCndidates } from '../utils';
-import MuiPopup from '../../Common/MuiPopup';
-import UITextField from '../../Common/UITextField';
+import { Candidate } from './AppoloSearch/types';
+import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
+import EmptyState from './Search/EmptyState';
+import { getRelevantCndidates } from './utils';
+import MuiPopup from '../Common/MuiPopup';
+import UITextField from '../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 function CandidateSearchHistory() {
+  const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
-  const [isHistoryLoading, setIsHistoryLoading] = useState(true);
+  const [text, setText] = useState<string>(''); //this is search input
+  const [isHistoryLoading, setIsHistoryLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isQrySearching, setIsQrySearching] = useState(false);
+  const [isQrySearching, setIsQrySearching] = useState<boolean>(false);
   const [deleteHistoryId, setDeleteHistoryId] = useState(-1);
-  const [list, setList] = useState<CandidateListTypeDB[]>([]);
-  const [editText, setEditText] = useState('');
-  const [text, setText] = useState('');
+  const [list, setList] = useState<CandidateListTypeDB[]>([]); //this is saved list
+  const [editListText, setEditListText] = useState<string>('');
   const [editList, setEditList] = useState<CandidateListTypeDB>(null);
-  const [isInputVisible, setIsInputVisible] = useState(false);
-  const [deleteList, setDeleteList] = useState(null);
+  const [isInputVisible, setIsInputVisible] = useState<boolean>(false); //in list page edit list input visible or not
+  const [deleteList, setDeleteList] = useState<CandidateListTypeDB>(null); 
   const { jobsData } = useJobs();
-  const router = useRouter();
-  const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState(false);
-  const [isWelcomeMatVisible, setIsWelcomeMatVisible] = useState(false);
+  const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState<boolean>(false);
+  const [isWelcomeMatVisible, setIsWelcomeMatVisible] =
+    useState<boolean>(false);
+  const [deleteHistory, setDeleteHistory] = useState<boolean>(false);
 
   useEffect(() => {
     if (router.isReady && !router.query.currentTab) {
@@ -279,7 +281,7 @@ function CandidateSearchHistory() {
   const updateHandler = async () => {
     const { data, error } = await supabase
       .from('candidate_list')
-      .update({ name: editText })
+      .update({ name: editListText })
       .eq('id', editList.id)
       .select();
     if (!error) {
@@ -291,7 +293,7 @@ function CandidateSearchHistory() {
           return list;
         }),
       );
-      setEditText('');
+      setEditListText('');
       setEditList(null);
     } else {
       toast.error('Something went wrong! Please try again later.');
@@ -434,13 +436,9 @@ function CandidateSearchHistory() {
                       >
                         <UITextField
                           ref={multiTextFieldRef}
-                          // rest={{
-                          //   sx: { border: 'none', '& fieldset': { border: 'none' } },
-                          //   inputProps: { style: { fontSize: '14px' } },
-                          // }}
-                          value={editText}
+                          value={editListText}
                           onChange={(e) => {
-                            setEditText(e.target.value);
+                            setEditListText(e.target.value);
                           }}
                         />
                       </Stack>
@@ -468,7 +466,7 @@ function CandidateSearchHistory() {
                     onClickEdit={{
                       onClick: (e) => {
                         e.stopPropagation();
-                        setEditText(list.name);
+                        setEditListText(list.name);
                         setEditList(list);
                         setTimeout(() => {
                           if (multiTextFieldRef.current) {
@@ -544,9 +542,9 @@ function CandidateSearchHistory() {
                         isSearchByJobVisible={true}
                         onClickDelete={{
                           onClick: (e) => {
-                            e.preventDefault();
                             e.stopPropagation();
                             setDeleteHistoryId(hist.id);
+                            setDeleteHistory(true);
                           },
                         }}
                         textHeader={
@@ -635,7 +633,7 @@ function CandidateSearchHistory() {
           textDesc={
             'Are you sure you want to delete this list? Once deleted, it cannot be recovered.'
           }
-          textHeader={`Delete ${list.filter((l) => l.id === deleteList?.id)[0]?.name}`}
+          textHeader={`Delete ${list.filter((l) => l.id === deleteList?.id)[0]?.name || ''}`}
           onClickCancel={{
             onClick: () => {
               setDeleteList(null);
@@ -648,11 +646,15 @@ function CandidateSearchHistory() {
           }}
         />
       </MuiPopup>
+
       <MuiPopup
         props={{
-          open: Boolean(deleteHistoryId !== -1),
+          open: deleteHistory,
           onClose: () => {
-            setDeleteHistoryId(-1);
+            setDeleteHistory(false);
+            setTimeout(() => {
+              setDeleteHistoryId(-1);
+            }, 500);
           },
         }}
       >
@@ -665,7 +667,10 @@ function CandidateSearchHistory() {
           }`}
           onClickCancel={{
             onClick: () => {
-              setDeleteHistoryId(-1);
+              setDeleteHistory(false);
+              setTimeout(() => {
+                setDeleteHistoryId(-1);
+              }, 500);
             },
           }}
           onClickClearHistory={{

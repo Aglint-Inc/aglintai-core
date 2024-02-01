@@ -21,13 +21,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import FilterInput from './FilterInput';
-import {
-  CandidateSearchState,
-  initialState,
-  useCandidateSearchCtx,
-} from '../context/CandidateSearchProvider';
-import { dialogFormContent } from '../data';
-import { getRelevantCndidates } from '../utils';
+import { dialogFormContent, getRelevantCndidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
@@ -35,6 +29,11 @@ import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  CandidateSearchState,
+  initialState,
+  useCandidateSearchCtx,
+} from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 type FilterType = {
   profileLimit: number;

@@ -1,30 +1,24 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { ReactRenderer } from '@tiptap/react'
-import tippy from 'tippy.js'
+import { ReactRenderer } from '@tiptap/react';
+import tippy from 'tippy.js';
 
-import MentionList from './MentionList'
+import mentionList from './mentionList';
 
-
-
-
-export var setEnterProps = false
+export var setEnterProps = false;
 
 export default {
-
-
   render: () => {
-    let component
-    let popup
+    let component;
+    let popup;
     return {
-
-      onStart: props => {
-        component = new ReactRenderer(MentionList, {
+      onStart: (props) => {
+        component = new ReactRenderer(mentionList, {
           props,
           editor: props.editor,
-        })
+        });
 
         if (!props.clientRect) {
-          return
+          return;
         }
 
         popup = tippy('body', {
@@ -35,38 +29,35 @@ export default {
           interactive: true,
           trigger: 'manual',
           placement: 'bottom-start',
-
-        })
-
+        });
       },
 
       onUpdate(props) {
-        component.updateProps(props)
+        component.updateProps(props);
 
         if (!props.clientRect) {
-          return
+          return;
         }
 
         popup[0].setProps({
           getReferenceClientRect: props.clientRect,
-        })
+        });
       },
 
       onKeyDown(props) {
         if (props.event.key === 'Escape') {
-          popup[0].hide()
+          popup[0].hide();
 
-          return true
+          return true;
         }
 
-        return component.ref?.onKeyDown(props)
+        return component.ref?.onKeyDown(props);
       },
 
       onExit() {
-        popup[0].destroy()
-        component.destroy()
+        popup[0].destroy();
+        component.destroy();
       },
-    }
+    };
   },
-
-}
+};

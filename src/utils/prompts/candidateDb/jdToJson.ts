@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { CandidateSearchState } from '@/src/components/CandidateDatabase/context/CandidateSearchProvider';
+import { CandidateSearchState } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 
 import { similarJobs } from './similarJobs';
 import { similarSkills } from './similarSkills';
