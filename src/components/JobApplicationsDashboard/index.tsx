@@ -813,6 +813,7 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
   const showScreening = showScreeningEmailComponent || selectAll;
 
   const [openMail, setOpenMail] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   useEffect(() => {
     if (list.size !== applications[section].length) setSelectAll(false);
@@ -834,6 +835,9 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
         }
         onclickSendScreening={{
           onClick: () => setOpenMail(true),
+        }}
+        onClickDelete={{
+          onClick: () => setOpenDelete(true),
         }}
         isAssessmentVisible={
           section === JobApplicationSections.ASSESSMENT && showAssessment
@@ -873,6 +877,8 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
               setSelectAll={setSelectAll}
             />
             <DeleteCandidate
+              open={openDelete}
+              setOpen={setOpenDelete}
               applicationLimit={applicationLimit}
               selectAll={selectAll}
               setSelectAll={setSelectAll}

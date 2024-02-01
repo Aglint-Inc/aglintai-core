@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { LoaderSvg } from '@/devlink';
 import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterType } from '@/src/types/data.types';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -26,13 +27,8 @@ type CompanyTYpe = {
 };
 function CompanyList() {
   // const router = useRouter();
-  const {
-    userDetails,
-    setRecruiter,
-    recruiter,
-    allrecruterRelation,
-    setAllrecruterRelation,
-  } = useAuthDetails();
+  const { userDetails, setRecruiter, recruiter, setAllrecruterRelation } =
+    useAuthDetails();
   const [allCompanies, setAllCompanies] = useState<CompanyTYpe[]>([]);
   const [anchorlEl, setAnchorEl] = useState(null);
   async function getCompanies() {
@@ -81,30 +77,17 @@ function CompanyList() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [companyUpdateLoader, setCompanyUploadLoader] = useState(null);
 
-  async function handleClick(ele: CompanyTYpe) {
-    for (const recruterRelation of allrecruterRelation) {
-      await updateStatus(
-        recruterRelation?.recruiter_id,
-        ele.recId === recruterRelation?.recruiter_id,
-      );
-      setAnchorEl(null);
-    }
-  }
-
-  async function updateStatus(id: any, status: boolean) {
-    await supabase
-      .from('recruiter_relation')
-      .update({
-        is_active: status,
-      })
-      .eq('recruiter_id', id)
-      .select('*, recruiter(*)')
-      .then(({ data }) => {
-        if (data[0]?.is_active) {
-          setRecruiter(data[0].recruiter as any);
-        }
-        setCompanyUploadLoader(null);
-      });
+  async function updateStatus(id: any) {
+    await supabase.rpc('set_active_rec', {
+      in_recruiter_id: id,
+      in_user_id: userDetails.user.id,
+    });
+    const { data: rec } = await supabase
+      .from('recruiter')
+      .select()
+      .eq('id', id);
+    setRecruiter(rec[0] as RecruiterType);
+    setCompanyUploadLoader(null);
   }
 
   const role = userDetails?.user.user_metadata.role?.toLowerCase();
@@ -184,7 +167,7 @@ function CompanyList() {
                     key={i}
                     bgcolor={ele.recName === recruiter?.name && 'grey.100'}
                     onClick={() => {
-                      handleClick(ele);
+                      updateStatus(ele.recId);
                     }}
                     sx={{
                       cursor: 'pointer',
@@ -211,7 +194,7 @@ function CompanyList() {
                       onclickCompany={{
                         onClick: () => {
                           // router.push(pageRoutes.COMPANY);
-                          handleClick(ele);
+                          updateStatus(ele.recId);
                         },
                       }}
                       companyName={ele?.recName}

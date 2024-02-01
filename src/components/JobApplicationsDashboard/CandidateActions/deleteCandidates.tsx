@@ -3,17 +3,18 @@ import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { CandidateSelectionPopup } from '@/devlink2';
-import { ButtonDangerBasicRegular } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 import AUIButton from '../../Common/AUIButton';
 
 const DeleteCandidate: React.FC<{
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
   applicationLimit: CountJobs;
   selectAll: boolean;
   setSelectAll: Dispatch<SetStateAction<boolean>>;
-}> = ({ applicationLimit, selectAll, setSelectAll }) => {
+}> = ({ open, setOpen, applicationLimit, selectAll, setSelectAll }) => {
   const {
     section,
     cardStates: {
@@ -22,7 +23,6 @@ const DeleteCandidate: React.FC<{
     setCardStates,
     handleJobApplicationDelete,
   } = useJobApplications();
-  const [open, setOpen] = useState(false);
   const [check, setCheck] = useState(false);
   const handleDeleteApplications = async () => {
     if (!disabled) {
@@ -42,9 +42,6 @@ const DeleteCandidate: React.FC<{
       setSelectAll(false);
     }
   };
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -55,14 +52,10 @@ const DeleteCandidate: React.FC<{
 
   const count = selectAll ? applicationLimit[section] : list.size;
 
-  const title = `Delete application${count === 1 ? '' : 's'}`;
+  const title = `Delete Application${count === 1 ? '' : 's'}`;
 
   return (
     <>
-      <ButtonDangerBasicRegular
-        buttonText={title}
-        buttonProps={{ onClick: () => handleOpen() }}
-      />
       <DeleteCandidateDialog
         open={open}
         onClose={() => handleClose()}
@@ -104,6 +97,10 @@ const DeleteCandidateDialog = ({
     <Dialog open={open} onClose={() => onClose()}>
       <CandidateSelectionPopup
         isCheckVisible={true}
+        isWarningVisible={true}
+        textWarning={`By clicking 'Delete', the application${
+          count === 1 ? '' : 's'
+        } will be removed from this job, and it cannot be undone.`}
         textHeader={title}
         textDescription={description}
         isChecked={checked}
@@ -120,8 +117,8 @@ const DeleteCandidateDialog = ({
             <AUIButton onClick={() => onClose()} variant='text'>
               Cancel
             </AUIButton>
-            <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-              {title}
+            <AUIButton onClick={() => onSubmit()} variant={'error'}>
+              Delete
             </AUIButton>
           </Stack>
         }
@@ -132,7 +129,7 @@ const DeleteCandidateDialog = ({
 
 const getDescription = (count: number = 0, name: string = null) => {
   if (name) return `Delete ${name}'s job application?`;
-  return `Delete ${count} job application${count !== 1 ? 's' : ''}`;
+  return `Delete ${count} application${count !== 1 ? 's' : ''}`;
 };
 
 const getSubTitle = (count: number = 0, name: string = null) => {

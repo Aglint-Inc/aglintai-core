@@ -15,4 +15,5 @@ declare function SelectActionBar(props: {
   onclickAssessment?: Types.Devlink.RuntimeProps;
   isDisqualifyVisible?: Types.Visibility.VisibilityConditions;
   onclickDisqualify?: Types.Devlink.RuntimeProps;
+  onClickDelete?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

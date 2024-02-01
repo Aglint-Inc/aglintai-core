@@ -182,12 +182,36 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .cansel-popup-body {
   display: flex;
   padding: 22px 28px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+}
+
+.delete_warning {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 10px;
+
+  background-color: #fff7ed;
+
+  color: #703815;
+}
+
+.embed_flex {
+  display: flex;
 }
 
 .cansel-popup-check {

@@ -854,6 +854,7 @@ export interface Database {
           draft: Json | null
           email_template: Json
           end_video: Json | null
+          experience_in_months: number | null
           id: string
           interview_instructions: string | null
           intro_videos: Json | null
@@ -861,9 +862,11 @@ export interface Database {
           jd_changed: boolean | null
           jd_json: Json | null
           job_criteria: Json | null
+          job_details_embedding: string | null
           job_title: string | null
           job_type: string | null
           location: string | null
+          location_json: Json | null
           logo: string | null
           new_screening_setting: Json
           overview: string | null
@@ -893,6 +896,7 @@ export interface Database {
           draft?: Json | null
           email_template?: Json
           end_video?: Json | null
+          experience_in_months?: number | null
           id?: string
           interview_instructions?: string | null
           intro_videos?: Json | null
@@ -900,9 +904,11 @@ export interface Database {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
+          job_details_embedding?: string | null
           job_title?: string | null
           job_type?: string | null
           location?: string | null
+          location_json?: Json | null
           logo?: string | null
           new_screening_setting?: Json
           overview?: string | null
@@ -932,6 +938,7 @@ export interface Database {
           draft?: Json | null
           email_template?: Json
           end_video?: Json | null
+          experience_in_months?: number | null
           id?: string
           interview_instructions?: string | null
           intro_videos?: Json | null
@@ -939,9 +946,11 @@ export interface Database {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
+          job_details_embedding?: string | null
           job_title?: string | null
           job_type?: string | null
           location?: string | null
+          location_json?: Json | null
           logo?: string | null
           new_screening_setting?: Json
           overview?: string | null
@@ -1719,6 +1728,13 @@ export interface Database {
       secondretrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
         Returns: unknown
+      }
+      set_active_rec: {
+        Args: {
+          in_user_id: string
+          in_recruiter_id: string
+        }
+        Returns: boolean
       }
       test_filter3: {
         Args: {

@@ -217,6 +217,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;
@@ -296,4 +300,12 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.delet_candidate {
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }

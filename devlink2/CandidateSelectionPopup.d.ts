@@ -11,4 +11,6 @@ declare function CandidateSelectionPopup(props: {
   textCheck?: React.ReactNode;
   onclickCheck?: Types.Devlink.RuntimeProps;
   isCheckVisible?: Types.Visibility.VisibilityConditions;
+  textWarning?: React.ReactNode;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

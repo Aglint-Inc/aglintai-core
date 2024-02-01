@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { AddCompany, AddCompanyDetails, AddCompanyWebsite } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -19,6 +20,7 @@ import Loader from '@/src/components/SignUpComp/Loader/Index';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -385,6 +387,7 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
             )}
           </>
         }
+        onclickClose={{ onClick: () => setOpenSideBar(false) }}
       />
     </Stack>
   );
@@ -399,13 +402,8 @@ function CompanyDetails({
   setOpenSideBar,
   getCompanies,
 }) {
-  const {
-    setRecruiter,
-    recruiterUser,
-    userDetails,
-    allrecruterRelation,
-    userCountry,
-  } = useAuthDetails();
+  const { setRecruiter, recruiterUser, userDetails, userCountry } =
+    useAuthDetails();
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const defaultCountry = details.phone_number ? null : userCountry;
@@ -472,26 +470,32 @@ function CompanyDetails({
 
   const submitHandler = async () => {
     if (formValidation(details?.name)) {
-      const { data, error: e1 } = await supabase
-        .from('recruiter')
-        .insert({
-          ...details,
-          logo: logo,
-          phone_number: phone,
-          employee_size: details.employee_size,
-          name: details.name,
-          industry: details.industry,
-          recruiter_user_id: recruiterUser.user_id,
-        })
-        .select();
-      if (!e1) {
-        update_companies_status();
-        await supabase.from('recruiter_relation').insert({
-          user_id: userDetails.user.id,
-          recruiter_id: data[0]?.id as any,
-          is_active: true,
+      const rec_id = uuidv4();
+      const { error } = await supabase.from('recruiter').insert({
+        ...details,
+        logo: logo,
+        phone_number: phone,
+        employee_size: details.employee_size,
+        name: details.name,
+        industry: details.industry,
+        recruiter_user_id: recruiterUser.user_id,
+        id: rec_id,
+      });
+      if (!error) {
+        // update_companies_status();
+        await supabase.rpc('createrecuriterrelation', {
+          in_recruiter_id: rec_id,
+          in_user_id: userDetails.user.id,
+          in_is_active: true,
         });
-        setRecruiter(data[0] as any);
+        const { data: rec, error: recError } = await supabase
+          .from('recruiter')
+          .select()
+          .eq('id', rec_id);
+        if (recError) {
+          throw new Error(recError.message);
+        }
+        setRecruiter(rec[0] as RecruiterType);
         setOpenSideBar(false);
         getCompanies();
         toast.success('Added company sucessfully');
@@ -499,17 +503,17 @@ function CompanyDetails({
     }
   };
   // update_companies_status();
-  async function update_companies_status() {
-    const all_Recruiter_relation = allrecruterRelation as unknown as Array<[]>;
-    all_Recruiter_relation.map(async (ele: any) => {
-      await supabase
-        .from('recruiter_relation')
-        .update({
-          is_active: false,
-        })
-        .eq('recruiter_id', ele.recruiter_id);
-    });
-  }
+  // async function update_companies_status() {
+  //   const all_Recruiter_relation = allrecruterRelation as unknown as Array<[]>;
+  //   all_Recruiter_relation.map(async (ele: any) => {
+  //     await supabase
+  //       .from('recruiter_relation')
+  //       .update({
+  //         is_active: false,
+  //       })
+  //       .eq('recruiter_id', ele.recruiter_id);
+  //   });
+  // }
   return (
     <Stack spacing={2}>
       <UITextField
