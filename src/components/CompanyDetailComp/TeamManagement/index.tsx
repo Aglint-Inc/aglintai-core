@@ -10,6 +10,7 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import converter from 'number-to-words';
@@ -30,7 +31,7 @@ import toast from '@/src/utils/toast';
 
 import AddMember from './AddMemberDialog';
 import { UserRoleManagementType } from './types';
-import { getMembersFromDB, setMemberInDb } from './utils';
+import { getMembersFromDB } from './utils';
 import AUIButton from '../../Common/AUIButton';
 dayjs.extend(relativeTime);
 
@@ -48,12 +49,7 @@ const TeamManagement = () => {
     (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
-  const handleMemberUpdate = async (
-    details: Partial<RecruiterUserType>,
-    id: string,
-  ) => {
-    return await setMemberInDb(details, id);
-  };
+
   useEffect(() => {
     if (role) {
       getMembersFromDB(recruiter.id, userDetails.user.id).then((data) => {
@@ -71,23 +67,16 @@ const TeamManagement = () => {
               <Member
                 key={member.user_id}
                 member={member}
-                removeMember={() => {
+                removeMember={async () => {
                   if (recruiterUser?.user_id === member.user_id) {
                     toast.error('Cannot remove admin account');
                   } else {
-                    handleMemberUpdate(
-                      { is_deactivated: true },
-                      member.user_id,
-                    ).then((result) => {
-                      if (result) {
-                        setMembers((members) =>
-                          members.filter(
-                            (mem) => mem.user_id !== member.user_id,
-                          ),
-                        );
-                        toast.success('Member removed');
-                      }
+                    await axios.post('/api/supabase/deleteuser', {
+                      user_id: member.user_id,
                     });
+                    setMembers((members) =>
+                      members.filter((mem) => mem.user_id !== member.user_id),
+                    );
                   }
                 }}
               />

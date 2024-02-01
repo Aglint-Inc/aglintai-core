@@ -42,7 +42,7 @@ export function WelcomeMatAssistant({ as: _Component = _Builtin.Block }) {
           tag="div"
         >
           <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img", "mx_wd_600")}
+            className={_utils.cx(_styles, "wm_img", "max_width_800")}
             loading="lazy"
             width="auto"
             height="auto"

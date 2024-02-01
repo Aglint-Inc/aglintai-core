@@ -111,20 +111,20 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
           companyDetails?.estimated_num_employees < 5
             ? sizes[0]
             : companyDetails?.estimated_num_employees > 5 &&
-              companyDetails?.estimated_num_employees < 50
-            ? sizes[1]
-            : companyDetails?.estimated_num_employees > 50 &&
-              companyDetails?.estimated_num_employees < 100
-            ? sizes[2]
-            : companyDetails?.estimated_num_employees > 100 &&
-              companyDetails?.estimated_num_employees < 1000
-            ? sizes[3]
-            : companyDetails?.estimated_num_employees > 1000 &&
-              companyDetails?.estimated_num_employees < 5000
-            ? sizes[4]
-            : companyDetails?.estimated_num_employees > 5000
-            ? sizes[5]
-            : '';
+                companyDetails?.estimated_num_employees < 50
+              ? sizes[1]
+              : companyDetails?.estimated_num_employees > 50 &&
+                  companyDetails?.estimated_num_employees < 100
+                ? sizes[2]
+                : companyDetails?.estimated_num_employees > 100 &&
+                    companyDetails?.estimated_num_employees < 1000
+                  ? sizes[3]
+                  : companyDetails?.estimated_num_employees > 1000 &&
+                      companyDetails?.estimated_num_employees < 5000
+                    ? sizes[4]
+                    : companyDetails?.estimated_num_employees > 5000
+                      ? sizes[5]
+                      : '';
         setDetails((pre: any) => ({
           ...pre,
           company_website: details?.company_website || '',
@@ -586,10 +586,10 @@ function CompanyDetails({
           !phone
             ? 'Please enter your phone number.'
             : error.phone.error
-            ? `Invalid phone number. Please use the ${
-                phonePattern?.replaceAll('.', 'x') || 'correct'
-              } format.`
-            : ''
+              ? `Invalid phone number. Please use the ${
+                  phonePattern?.replaceAll('.', 'x') || 'correct'
+                } format.`
+              : ''
         }
       />
       <Stack

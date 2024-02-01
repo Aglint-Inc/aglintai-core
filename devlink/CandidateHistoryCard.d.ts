@@ -11,4 +11,5 @@ declare function CandidateHistoryCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   textCategory?: React.ReactNode;
   colorPropsCategory?: Types.Devlink.RuntimeProps;
+  onClickKebab?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

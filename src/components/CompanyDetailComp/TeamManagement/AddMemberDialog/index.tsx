@@ -1,4 +1,4 @@
-import { Avatar, Drawer, Stack } from '@mui/material';
+import { Avatar, Drawer, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
 import { TeamInvite, TeamInvitesBlock, TeamPendingInvites } from '@/devlink';
@@ -7,7 +7,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
-import { CustomTextField } from '..';
 import { inviteUser, reinviteUser } from '../utils';
 
 const AddMember = ({
@@ -56,10 +55,10 @@ const AddMember = ({
         {menu === 'addMember' ? (
           <TeamInvite
             slotForm={
-              <Stack gap={2}>
-                <CustomTextField
+              <Stack spacing={2}>
+                <TextField
                   value={form.name}
-                  placeholder='Name'
+                  label='Name'
                   error={formError.name}
                   onFocus={() => {
                     setFormError({ ...formError, name: false });
@@ -68,9 +67,9 @@ const AddMember = ({
                     setForm({ ...form, name: e.target.value });
                   }}
                 />
-                <CustomTextField
+                <TextField
                   value={form.email}
-                  placeholder='Email ID'
+                  label='Email'
                   error={formError.email}
                   onFocus={() => {
                     setFormError({ ...formError, email: false });

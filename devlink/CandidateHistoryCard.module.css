@@ -1,5 +1,6 @@
 .candidate-history-card {
   position: relative;
+  z-index: 2;
 
   display: flex;
   padding: 16px;
@@ -28,7 +29,13 @@
 }
 
 .div-block-821 {
+  position: relative;
+  z-index: 4;
   padding-right: 8px;
+}
+
+.div-block-821.pointer-auto {
+  cursor: auto;
 }
 
 .icons {
@@ -153,8 +160,8 @@
 .delete-icons-history {
   position: absolute;
   left: auto;
-  top: 40px;
-  right: 14px;
+  top: 25px;
+  right: 5px;
   bottom: auto;
 
   display: none;

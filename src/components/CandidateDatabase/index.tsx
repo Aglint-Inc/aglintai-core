@@ -118,6 +118,7 @@ function CandidateSearchHistory() {
       toast.error(API_FAIL_MSG);
     } finally {
       setDeleteHistoryId(-1);
+      setDeleteHistory(false);
     }
   };
 
@@ -339,6 +340,14 @@ function CandidateSearchHistory() {
 
   const multiTextFieldRef = useRef(null);
 
+  const isWelMatVisible = () => {
+    if (currentTab === 'talent rediscovery') {
+      return localStorage.getItem('talentRediscovery') === 'true';
+    } else if (currentTab === 'discover talent') {
+      return localStorage.getItem('discoverTalent') === 'true';
+    }
+  };
+
   return (
     <>
       <CandidateDatabaseSearch
@@ -349,11 +358,7 @@ function CandidateSearchHistory() {
             ) : (
               <YTransform uniqueKey={router.query.currentTab}>
                 {currentTab === 'discover talent' &&
-                  history.filter((h) => {
-                    {
-                      return h.db_search === 'aglint';
-                    }
-                  }).length === 0 && (
+                  localStorage.getItem('discoverTalent') !== 'true' && (
                     <WelcomeMatDiscoverTalent
                       slotSearch={
                         <UITextField
@@ -363,9 +368,10 @@ function CandidateSearchHistory() {
                             setSearchQuery(e.target.value);
                           }}
                           InputProps={{
-                            onKeyDown: (e) => {
+                            onKeyDown: async (e) => {
                               if (e.code === 'Enter') {
-                                getCandsFromApi();
+                                await getCandsFromApi();
+                                localStorage.setItem('discoverTalent', 'true');
                               }
                             },
                           }}
@@ -379,15 +385,17 @@ function CandidateSearchHistory() {
                         />
                       }
                       isLoading={isQrySearching}
+                      onClickSearch={{
+                        onClick: async () => {
+                          await getCandsFromApi();
+                          localStorage.setItem('discoverTalent', 'true');
+                        },
+                      }}
                     />
                   )}
 
                 {currentTab === 'talent rediscovery' &&
-                  history.filter((h) => {
-                    {
-                      return h.db_search === 'candidate';
-                    }
-                  }).length === 0 && (
+                  localStorage.getItem('talentRediscovery') !== 'true' && (
                     <WelcomeMatTalentRediscovery
                       isSearchVisible={isCandidates}
                       isLoading={isQrySearching}
@@ -398,21 +406,35 @@ function CandidateSearchHistory() {
                           sx={{ color: palette.grey[400] }}
                         />
                       }
-                      slotInput={
+                      onclickSearch={{
+                        onClick: async () => {
+                          await getMatchingCandsFromQry();
+                          localStorage.setItem('talentRediscovery', 'true');
+                        },
+                      }}
+                      slotSearch={
                         <UITextField
                           value={searchQuery}
                           placeholder={
-                            currentTab === 'talent rediscovery'
-                              ? 'Ex: Software engineer with 2 years of experience'
-                              : 'Software Engineer in San Francisco'
+                            'Ex: Software engineer with 2 years of experience'
                           }
                           onChange={(e) => {
                             setSearchQuery(e.target.value);
                           }}
                           InputProps={{
-                            onKeyDown: (e) => {
+                            onKeyDown: async (e) => {
                               if (e.code === 'Enter') {
-                                getMatchingCandsFromQry();
+                                if (isCandidates) {
+                                  await getMatchingCandsFromQry();
+                                  localStorage.setItem(
+                                    'talentRediscovery',
+                                    'true',
+                                  );
+                                } else {
+                                  toast.error(
+                                    'None of the jobs have candidates. Please add candidates to the jobs.',
+                                  );
+                                }
                               }
                             },
                           }}
@@ -427,13 +449,7 @@ function CandidateSearchHistory() {
 
                 {(currentTab === 'talent rediscovery' ||
                   currentTab === 'discover talent') &&
-                  history.filter((h) => {
-                    if (currentTab === 'talent rediscovery') {
-                      return h.db_search === 'candidate';
-                    } else {
-                      return h.db_search === 'aglint';
-                    }
-                  }).length > 0 && (
+                  isWelMatVisible() && (
                     <SearchAglintCd
                       isViewAllCandidateVisible={true}
                       isSearchByJdVisible={currentTab === 'talent rediscovery'}
@@ -613,6 +629,11 @@ function CandidateSearchHistory() {
                               );
                               return (
                                 <CandidateHistoryCard
+                                  onClickKebab={{
+                                    onClick: (e) => {
+                                      e.stopPropagation();
+                                    },
+                                  }}
                                   colorPropsCategory={{
                                     style: {
                                       backgroundColor:

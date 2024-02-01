@@ -30,15 +30,19 @@ export default function Loading() {
   const handleUser = async () => {
     try {
       if (userDetails?.user?.id) {
-        if (handleEmail(userDetails.user.email).error) {
+        if (
+          handleEmail(userDetails.user.email).error &&
+          (await checkRelation())
+        ) {
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails?.user?.id,
           });
           toast.error('Please signup/login with company email');
           await handleLogout();
           return;
+        } else {
+          await createUser();
         }
-        await createUser();
       } else {
         toast.error('Unable to login. Please try again later');
         router.push(pageRoutes.LOGIN);
@@ -46,6 +50,22 @@ export default function Loading() {
     } catch (error) {
       toast.error('Unable to login. Please try again later');
       router.push(pageRoutes.LOGIN);
+    }
+  };
+
+  const checkRelation = async () => {
+    const { data, error } = await supabase
+      .from('recruiter_relation')
+      .select('*')
+      .eq('user_id', userDetails?.user?.id);
+    if (error) {
+      throw new Error(error.message);
+    } else {
+      if (data.length == 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
 

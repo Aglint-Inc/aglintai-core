@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { CdAglintDb, Checkbox } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBoundStore } from '@/src/store';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -276,7 +277,7 @@ function AppoloSearch() {
         isSelectedVisible={selectedCandidates.length > 0}
         onClickCandidateData={{
           onClick: () => {
-            router.push('/candidates/history?currentTab=aglint+candidates');
+            router.push(pageRoutes.CANDIDATES);
             setSelectedCandidates([]);
             setIsSelectAll(false);
             setFilters(null);

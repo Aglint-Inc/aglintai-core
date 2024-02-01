@@ -273,6 +273,10 @@
   max-width: 700px;
 }
 
+.wm_img.max_width_800 {
+  max-width: 800px;
+}
+
 .wm_cards {
   display: grid;
   width: 100%;

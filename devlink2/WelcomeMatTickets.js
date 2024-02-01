@@ -42,7 +42,7 @@ export function WelcomeMatTickets({ as: _Component = _Builtin.Block }) {
           tag="div"
         >
           <_Builtin.Image
-            className={_utils.cx(_styles, "wm_img")}
+            className={_utils.cx(_styles, "wm_img", "max_width_700")}
             loading="lazy"
             width="auto"
             height="auto"

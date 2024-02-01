@@ -5,11 +5,11 @@ import _styles from "./WelcomeMatTalentRediscovery.module.css";
 
 export function WelcomeMatTalentRediscovery({
   as: _Component = _Builtin.Block,
-  onClickImport = {},
-  slotInput,
+  slotSearch,
   isLoading = false,
   slotLoader,
   isSearchVisible = false,
+  onclickSearch = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "welcome_mat")} tag="div">
@@ -47,11 +47,12 @@ export function WelcomeMatTalentRediscovery({
                 className={_utils.cx(_styles, "input_slot")}
                 tag="div"
               >
-                {slotInput}
+                {slotSearch}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "search_icon_block")}
                 tag="div"
+                {...onclickSearch}
               >
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "embed_flex")}
