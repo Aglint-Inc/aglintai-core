@@ -23,7 +23,7 @@ export function AddCompanyDetails({
       >
         {isFetchSuccessful ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "cs-details-warning-block")}
+            className={_utils.cx(_styles, "cs-details-warning-block", "hide")}
             tag="div"
           >
             <_Builtin.Block

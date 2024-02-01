@@ -659,9 +659,7 @@ function CandidateSearchHistory() {
         }}
       >
         <ClearHistory
-          textDesc={
-            'Are you sure you want to delete this search history? Once deleted, it cannot be recovered.'
-          }
+          textDesc={`By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.`}
           textHeader={`Delete ${
             history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
           }`}

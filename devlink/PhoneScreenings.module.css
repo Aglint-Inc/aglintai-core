@@ -322,6 +322,10 @@
   margin-top: 3px;
 }
 
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .next-wrap-cand {
   position: fixed;
   left: 0%;

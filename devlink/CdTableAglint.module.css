@@ -15,6 +15,7 @@
   z-index: 2;
 
   display: flex;
+  max-width: 516px;
   min-width: 516px;
   padding-right: 20px;
   align-items: center;
@@ -174,6 +175,10 @@
 
 .icons.mt-3 {
   margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .div-block-686 {
@@ -416,6 +421,10 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
 }
 
 .text-no-wrap {

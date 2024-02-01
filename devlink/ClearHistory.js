@@ -8,7 +8,7 @@ export function ClearHistory({
   as: _Component = _Builtin.Block,
   onClickCancel = {},
   onClickClearHistory = {},
-  textDesc = "Are you sure you want to delete this search? It will delete any bookmarks within this result.",
+  textDesc = "By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.",
   textHeader = "Delete Search",
 }) {
   return (

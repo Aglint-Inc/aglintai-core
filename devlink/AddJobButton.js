@@ -9,17 +9,13 @@ export function AddJobButton({
 }) {
   return (
     <_Component
-      className={_utils.cx(
-        _styles,
-        "cdb-select-btn",
-        "clickable",
-        "py-5",
-        "gap-8"
-      )}
+      className={_utils.cx(_styles, "div-block-732")}
       tag="div"
       {...onClickAddJob}
     >
-      <_Builtin.Block tag="div">{"Add to Job"}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
+        {"Add to Job"}
+      </_Builtin.Block>
       <_Builtin.Block tag="div">
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icon-embed")}

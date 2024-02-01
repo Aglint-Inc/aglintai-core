@@ -5,15 +5,26 @@
   grid-row-gap: 20px;
 }
 
-.cs-details-warning-wrapper {
-  padding-bottom: 10px;
-}
-
 .cs-details-warning-block {
   display: flex;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.cs-details-warning-block.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .icon-block {
@@ -270,17 +281,6 @@
 @media screen and (max-width: 767px) {
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
-  }
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
   }
 }
 
