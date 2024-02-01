@@ -46,7 +46,7 @@ const EmailTemplate = ({ setIsSaving }) => {
   });
   useEffect(() => {
     if (recruiter?.email_template) {
-      setSelectedTemplate('application_recieved');
+      setSelectedTemplate(templateEntries[0]);
       setTimeout(() => {
         setIsEditorLoad(false);
       }, 500);

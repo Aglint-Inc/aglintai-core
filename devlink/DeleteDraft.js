@@ -8,6 +8,8 @@ export function DeleteDraft({
   as: _Component = _Builtin.Block,
   onClickCancel = {},
   onClickClear = {},
+  textDeleteDraft = "Are you sure you want to delete this draft? This action cannot be undone.",
+  textHeader = "Delete Draft",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "clear-history-wrap")} tag="div">
@@ -16,7 +18,7 @@ export function DeleteDraft({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Delete Draft"}
+          {textHeader}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cursor-pointer")}
@@ -33,11 +35,7 @@ export function DeleteDraft({
         className={_utils.cx(_styles, "clear-hisitory-text-wrap")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {
-            "Are you sure you want to delete this draft? This action cannot be undone."
-          }
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textDeleteDraft}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "clear-btn-wrap")}
           tag="div"

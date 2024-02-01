@@ -11,6 +11,9 @@ export function AssessmentSetting({
   slotRetrysCount,
   slotSwitchAudioVideo,
   slotToggleAssessment,
+  isSwitchAudioVideoVisible = true,
+  textDesc = "Configure screening questions and welcome/ending messages. Activate the toggle if you wish to utilize AI-generated videos in the assessment.",
+  textMode = "Assessment Mode",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-562")} tag="div">
@@ -27,30 +30,30 @@ export function AssessmentSetting({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Assessment Mode"}
+            {textMode}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "accessment-desc")}
             tag="div"
           >
-            {
-              "Configure screening questions and welcome/ending messages. Activate the toggle if you wish to utilize AI-generated videos in the assessment."
-            }
+            {textDesc}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "accessment-toggle-wrap")}
-            tag="div"
-          >
+          {isSwitchAudioVideoVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-toggle-screening")}
+              className={_utils.cx(_styles, "accessment-toggle-wrap")}
               tag="div"
             >
-              {slotToggleAssessment}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-toggle-screening")}
+                tag="div"
+              >
+                {slotToggleAssessment}
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                {"Use AI generated videos for assessment"}
+              </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              {"Use AI generated videos for assessment"}
-            </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
           <_Builtin.Block tag="div">
             {slotSwitchAudioVideo ?? (
               <>

@@ -5,4 +5,6 @@ declare function DeleteDraft(props: {
   as?: React.ElementType;
   onClickCancel?: Types.Devlink.RuntimeProps;
   onClickClear?: Types.Devlink.RuntimeProps;
+  textDeleteDraft?: React.ReactNode;
+  textHeader?: React.ReactNode;
 }): React.JSX.Element;

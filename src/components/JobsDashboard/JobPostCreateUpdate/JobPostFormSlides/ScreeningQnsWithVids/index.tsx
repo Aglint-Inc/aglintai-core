@@ -2,6 +2,7 @@ import { pageRoutes } from '@utils/pageRouting';
 import { get } from 'lodash';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 import {
   AssessmentEpilogue,
@@ -27,6 +28,7 @@ import Categories from './Categories';
 import { Question } from './Questions';
 import UploadInstructionVideo from './UploadInstructionVideo';
 import ToggleBtn from '../utils/UIToggle';
+import { copyJobForm } from '../../copies/copyJobForm';
 import { QuestionType, useJobForm } from '../../JobPostFormProvider';
 
 const ScreeningQns = () => {
@@ -42,6 +44,10 @@ const ScreeningQns = () => {
   const videAvatar = recruiter.ai_avatar as any;
   const isAssessmentOn = jobForm.formFields.assessment;
   const currentAssTab = jobForm.currentAssmSlides;
+
+  const isEnableVideoAssesment = useFeatureFlagEnabled(
+    'isEnableVideoAssesment',
+  );
 
   return (
     <>
@@ -60,6 +66,17 @@ const ScreeningQns = () => {
         <>
           {currentAssTab === 'settings' && (
             <AssessmentSetting
+              textMode={
+                isEnableVideoAssesment
+                  ? copyJobForm.assesMent.setting.title.withVideo
+                  : copyJobForm.assesMent.setting.title.withoutVideo
+              }
+              isSwitchAudioVideoVisible={isEnableVideoAssesment}
+              textDesc={
+                isEnableVideoAssesment
+                  ? copyJobForm.assesMent.setting.description.withVideo
+                  : copyJobForm.assesMent.setting.description.withoutVideo
+              }
               slotExpirationInput={
                 <UITextField
                   type='number'
@@ -207,6 +224,7 @@ const ScreeningQns = () => {
                   />
                 )
               }
+              isRadioVisible={isEnableVideoAssesment}
               isWarningVisible={formWarnings.instructions.err.length > 0}
               slotInstructionsBrief={
                 <>

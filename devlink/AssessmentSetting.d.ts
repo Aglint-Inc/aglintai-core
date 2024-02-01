@@ -7,4 +7,7 @@ declare function AssessmentSetting(props: {
   slotRetrysCount?: Types.Devlink.Slot;
   slotSwitchAudioVideo?: Types.Devlink.Slot;
   slotToggleAssessment?: Types.Devlink.Slot;
+  isSwitchAudioVideoVisible?: Types.Visibility.VisibilityConditions;
+  textDesc?: React.ReactNode;
+  textMode?: React.ReactNode;
 }): React.JSX.Element;

@@ -13,6 +13,8 @@ export function AssesmentSetting({
   slotToggleButton,
   onClickToggle = {},
   textChooseAvatar = "Choose your avatar, this avatar will be featured in AI-generated videos.By default an avatar is selected by aglint",
+  textDesc = "Activate the toggle to enable the use of AI-generated videos for the assessment. You can also set this option at the job level. If configured here, it will serve as the default setting",
+  isSwitchVisible = true,
 }) {
   return (
     <_Component
@@ -30,34 +32,36 @@ export function AssesmentSetting({
           className={_utils.cx(_styles, "color-grey-600")}
           tag="div"
         >
-          {
-            "Activate the toggle to enable the use of AI-generated videos for the assessment. You can also set this option at the job level. If configured here, it will serve as the default setting"
-          }
+          {textDesc}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "toggle-ai-assesment")}
-          tag="div"
-        >
+        {isSwitchVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot-toggle-screening")}
+            className={_utils.cx(_styles, "toggle-ai-assesment")}
             tag="div"
-            {...onClickToggle}
           >
-            {slotToggleButton}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot-toggle-screening")}
+              tag="div"
+              {...onClickToggle}
+            >
+              {slotToggleButton}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {"Use AI generated videos for assessment"}
+            </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {"Use AI generated videos for assessment"}
+        ) : null}
+      </_Builtin.Block>
+      {isSwitchVisible ? (
+        <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "color-grey-600", "mt-10")}
+            tag="div"
+          >
+            {textChooseAvatar}
           </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "color-grey-600", "mt-10")}
-          tag="div"
-        >
-          {textChooseAvatar}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "mt-26")} tag="div">
         {slotAvatarVideo ?? (
           <>

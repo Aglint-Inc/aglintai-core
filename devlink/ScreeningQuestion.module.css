@@ -302,6 +302,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
@@ -491,6 +495,10 @@
 
 .icons.mt-3 {
   margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .slot-drag-drop-video {
