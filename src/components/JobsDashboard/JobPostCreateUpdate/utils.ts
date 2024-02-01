@@ -319,13 +319,16 @@ export const isShoWWarn = (
 ) => {
   if (!isAssesment) {
     const isShowWarn =
-      (formType === 'edit' && formWarnings[String(path)].err.length > 0) ||
+      (formType === 'edit' &&
+        (formWarnings[String(path)].err.length > 0 ||
+          formWarnings[String(path)].rightErr.length > 0)) ||
       (formType === 'new' &&
         slideNum <=
           Number(
             localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1,
           ) &&
-        formWarnings[String(path)].err.length > 0);
+        (formWarnings[String(path)].err.length > 0 ||
+          formWarnings[String(path)].rightErr.length > 0));
 
     return isShowWarn;
   } else {

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useRef, useState } from 'react';
 
 import {
@@ -16,6 +17,7 @@ import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabaseClient';
 
 import MuiPopup from '../../Common/MuiPopup';
+import { copyCompanySetting } from '../../JobsDashboard/JobPostCreateUpdate/copies/copyCompanySetting';
 
 let tempObj = avatar_list[0];
 function AssessmentSettings({
@@ -84,6 +86,10 @@ function AssessmentSettings({
     updateRecruiter(recruiter?.id, value);
     setIsVideoAssessment(value);
   }
+
+  const isEnableVideoAssesment = useFeatureFlagEnabled(
+    'isEnableVideoAssesment',
+  );
   return (
     <div>
       <AssesmentSetting
@@ -98,6 +104,12 @@ function AssessmentSettings({
             isVideoAssessment={isVideoAssessment}
             handleCheck={handleCheck}
           />
+        }
+        isSwitchVisible={isEnableVideoAssesment}
+        textDesc={
+          isEnableVideoAssesment
+            ? copyCompanySetting.assesment.withVideoAssesmentDesc
+            : copyCompanySetting.assesment.withoutVideoAssesmentDesc
         }
         textAvatarName={avatar_list[0].name}
         slotAvatarVideo={

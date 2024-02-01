@@ -29,6 +29,7 @@ import toast from '@/src/utils/toast';
 
 import CloseJobPopup from './CloseJobPopup';
 import JobPublishButton from './PublishButton';
+import { copyJobForm } from '../copies/copyJobForm';
 import {
   AssesMenusType,
   JobFormState,
@@ -91,6 +92,27 @@ function JobForm() {
   const [jdWarn, setJdWarn] = useState<'' | 'show' | 'shown'>('');
   const [popupEl, setPopupEl] = useState(null);
   const [discardPop, setDiscardPop] = useState(false);
+  const [isJobHasAppls, setIsJobHasAppls] = useState(true);
+
+  useEffect(() => {
+    if (jobForm.formType === 'edit') {
+      (async () => {
+        try {
+          const applications = supabaseWrap(
+            await supabase
+              .from('applications')
+              .select()
+              .eq('job_id', jobForm.jobPostId),
+          ) as any[];
+          if (applications.length === 0) {
+            setIsJobHasAppls(false);
+          }
+        } catch (error) {
+          toast.error(API_FAIL_MSG);
+        }
+      })();
+    }
+  }, []);
 
   let formSlide = <></>;
   const { currSlide } = jobForm;
@@ -133,14 +155,6 @@ function JobForm() {
     handleUpdateMaxVisitedSlideNo(slidePathToNum[String(nextSlide)]);
   };
 
-  let formTitle = `Create Job - ${
-    jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
-  }`;
-  if (jobForm.formType === 'edit') {
-    formTitle = `Edit Job - ${
-      jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
-    }`;
-  }
   const handleUpdateMaxVisitedSlideNo = (slideNo: number) => {
     if (jobForm.formType === 'edit') return;
     const currMax = Number(
@@ -154,13 +168,25 @@ function JobForm() {
     }
   };
 
-  const handleDeleteJob = async () => {
+  const handleDeleteDraft = async () => {
     try {
       const isDeleted = await handleJobDelete(jobForm.jobPostId);
       if (!isDeleted) throw new Error('Job delete fail');
       router.replace('/jobs?status=draft');
       toast.error('Deleted draft job ');
       posthog.capture('Deleted Draft job');
+    } catch (err) {
+      toast.error(API_FAIL_MSG);
+    }
+  };
+
+  const handleDeleteJob = async () => {
+    try {
+      const isDeleted = await handleJobDelete(jobForm.jobPostId);
+      if (!isDeleted) throw new Error('Job delete failed');
+      router.replace('/jobs');
+      toast.error('Deleted job');
+      posthog.capture('Deleted job');
     } catch (err) {
       toast.error(API_FAIL_MSG);
     }
@@ -223,12 +249,24 @@ function JobForm() {
     }
     return true;
   });
+
+  let formTitle = `Create Job - ${
+    jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
+  }`;
+  if (jobForm.formType === 'edit') {
+    formTitle = `Edit Job - ${
+      jobForm.formFields.jobTitle ? jobForm.formFields.jobTitle : 'Untitled'
+    }`;
+  }
+
   return (
     <div style={{ height: '100vh', overflow: 'hidden' }}>
       <CreateNewJob
         isPreviewVisible={isJobMarketingEnabled}
         isDotButtonVisible={
-          jobForm.formType === 'edit' && jobForm.jobPostStatus !== 'closed'
+          jobForm.jobPostStatus === 'published' ||
+          jobForm.jobPostStatus === 'draft' ||
+          (jobForm.jobPostStatus === 'closed' && !isJobHasAppls)
         }
         slotCreateJob={<>{formSlide}</>}
         isDetailsActive={currSlide === 'details'}
@@ -253,9 +291,8 @@ function JobForm() {
           currSlide !== 'templates'
         }
         isProceedDisable={false}
-        textProceed={`Proceed to ${
-          allSlides[slidePathToNum[String(currSlide)]]?.title
-        }`}
+        textProceed={`Proceed to ${allSlides[slidePathToNum[String(currSlide)]]
+          ?.title}`}
         onClickProceed={{
           onClick: () => {
             const nextSlide =
@@ -352,7 +389,11 @@ function JobForm() {
             <CloseJobButton
               onClickClose={{
                 onClick: (e) => {
-                  setPopupEl(e.currentTarget);
+                  if (jobForm.jobPostStatus === 'closed') {
+                    setShowDraftPopup(true);
+                  } else {
+                    setPopupEl(e.currentTarget);
+                  }
                 },
               }}
             />
@@ -387,6 +428,16 @@ function JobForm() {
         }}
       >
         <DeleteDraft
+          textHeader={
+            jobForm.jobPostStatus === 'closed'
+              ? copyJobForm.Muipopup.deleteJob.title
+              : copyJobForm.Muipopup.deleteDraft.title
+          }
+          textDeleteDraft={
+            jobForm.jobPostStatus === 'closed'
+              ? copyJobForm.Muipopup.deleteJob.description
+              : copyJobForm.Muipopup.deleteDraft.description
+          }
           onClickCancel={{
             onClick: () => {
               setShowDraftPopup(false);
@@ -394,7 +445,11 @@ function JobForm() {
           }}
           onClickClear={{
             onClick: () => {
-              handleDeleteJob();
+              if (jobForm.jobPostStatus === 'closed') {
+                handleDeleteJob();
+              } else {
+                handleDeleteDraft();
+              }
             },
           }}
         />

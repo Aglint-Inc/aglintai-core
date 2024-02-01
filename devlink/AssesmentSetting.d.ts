@@ -9,4 +9,6 @@ declare function AssesmentSetting(props: {
   slotToggleButton?: Types.Devlink.Slot;
   onClickToggle?: Types.Devlink.RuntimeProps;
   textChooseAvatar?: React.ReactNode;
+  textDesc?: React.ReactNode;
+  isSwitchVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

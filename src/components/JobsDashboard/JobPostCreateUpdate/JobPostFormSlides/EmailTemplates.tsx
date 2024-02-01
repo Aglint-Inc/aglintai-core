@@ -34,7 +34,6 @@ import { EmailDetails, useJobForm } from '../JobPostFormProvider';
 const Emails = () => {
   const { jobForm, formWarnings } = useJobForm();
   const [isLoading, setIsLoading] = useState(false);
-  const [editTemplate, setEditTemplate] = useState('application_recieved');
   const isJobMarketingEnabled = useFeatureFlagEnabled('isJobMarketingEnabled');
   const emails: EmailTemplateParams[] = emailTempKeys
     .filter((path) => {
@@ -46,7 +45,7 @@ const Emails = () => {
       ) {
         return jobForm.formFields.isPhoneScreenEnabled;
       }
-      if (path == 'application_recieved') {
+      if (path === 'application_recieved') {
         return isJobMarketingEnabled;
       } else {
         return true;
@@ -57,6 +56,7 @@ const Emails = () => {
       excerpt: '',
       path: email,
     }));
+  const [editTemplate, setEditTemplate] = useState(emails[0].path);
 
   const handleChangeTemplate = (path: string) => {
     setEditTemplate(path);
