@@ -39,6 +39,7 @@ import NotFoundPage from '@/src/pages/404';
 
 import ApplicationCard from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
+import DeleteCandidate from './CandidateActions/deleteCandidates';
 import MailCandidate from './CandidateActions/mailCandidate';
 import MoveCandidate from './CandidateActions/moveCandidate';
 import FilterJobApplications from './Common/FilterJobApplications';
@@ -865,11 +866,18 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
         }
         onclickSelectAll={{ onClick: () => handleSelectAll() }}
         slotDropdown={
-          <MoveCandidate
-            applicationLimit={applicationLimit}
-            selectAll={selectAll}
-            setSelectAll={setSelectAll}
-          />
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
+            <MoveCandidate
+              applicationLimit={applicationLimit}
+              selectAll={selectAll}
+              setSelectAll={setSelectAll}
+            />
+            <DeleteCandidate
+              applicationLimit={applicationLimit}
+              selectAll={selectAll}
+              setSelectAll={setSelectAll}
+            />
+          </Stack>
         }
       />
     </>

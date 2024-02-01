@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
 
+import { JobApplicationDelete } from './candidateDelete';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
@@ -16,6 +17,7 @@ type ApiRouteTypes = {
   'candidateUpload/csvUpload': CsvUploadApi;
   'candidateUpload/manualUpload': ManualUploadApi;
   'candidateUpload/resumeUpload': ResumeUploadApi;
+  candidateDelete: JobApplicationDelete;
 };
 
 export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(

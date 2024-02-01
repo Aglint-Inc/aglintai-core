@@ -11,11 +11,9 @@ import {
   getAssessmentStatus,
   getDisqualificationStatus,
   getScreeningStatus,
-  // getAssessmentStatus,
-  // getDisqualificationStatus,
-  // getScreeningStatus,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
+import { JobApplicationDelete } from '@/src/pages/api/jobApplications/candidateDelete';
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
 import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { handleJobApplicationApi } from '@/src/pages/api/jobApplications/utils';
@@ -428,6 +426,63 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     }
   };
 
+  //SECONDARY
+  const handleJobApplicationDelete = async (
+    applicationIdSet: Set<string>,
+    deleteAll: boolean = false,
+    clearCandidate: boolean = false,
+  ) => {
+    if (recruiter) {
+      const safeApplications = !deleteAll
+        ? applications[section].reduce(
+            (acc, curr) => {
+              if (applicationIdSet.has(curr.id))
+                acc.push({
+                  id: curr.id,
+                  candidate_id: curr.candidate_id,
+                  email: curr.candidates.email,
+                });
+              return acc;
+            },
+            [] as JobApplicationDelete['request']['applications'],
+          )
+        : null;
+      const { data, error, filteredCount, unFilteredCount } =
+        await handleJobApplicationApi('candidateDelete', {
+          jobId: job.id,
+          applications: safeApplications,
+          section,
+          clearCandidate,
+          parameter: {
+            ranges,
+            ...searchParameters,
+          },
+        });
+      if (data) {
+        const action: Action = {
+          type: ActionType.SECTION_READ,
+          payload: { applicationData: data },
+        };
+        handleUIJobUpdate({
+          ...job,
+          count: { ...job.count, ...unFilteredCount },
+        });
+        dispatch(action);
+        return {
+          confirmation: true,
+          filteredCount,
+          unFilteredCount,
+        };
+      }
+      handleJobApplicationError(error);
+      return {
+        confirmation: false,
+        filteredCount: null as CountJobs,
+        unFilteredCount: null as CountJobs,
+      };
+    }
+  };
+
   //TERTIARY
   const handleJobApplicationError = (error) => {
     if (typeof error === 'string') {
@@ -629,6 +684,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     setSection,
     handleJobApplicationPaginate,
     handleJobApplicationRefresh,
+    handleJobApplicationDelete,
     handleJobApplicationSectionUpdate,
     handleJobApplicationFilter,
     handleManualRefresh,
