@@ -48,7 +48,7 @@ function CandidateSearchHistory() {
   const [editListText, setEditListText] = useState<string>('');
   const [editList, setEditList] = useState<CandidateListTypeDB>(null);
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false); //in list page edit list input visible or not
-  const [deleteList, setDeleteList] = useState<CandidateListTypeDB>(null); 
+  const [deleteList, setDeleteList] = useState<CandidateListTypeDB>(null);
   const { jobsData } = useJobs();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState<boolean>(false);
   const [isWelcomeMatVisible, setIsWelcomeMatVisible] =

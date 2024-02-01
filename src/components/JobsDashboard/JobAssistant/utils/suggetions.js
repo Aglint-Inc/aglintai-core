@@ -2,7 +2,8 @@
 import { ReactRenderer } from '@tiptap/react';
 import tippy from 'tippy.js';
 
-import mentionList from './mentionList';
+import mentionList from './MentionList';
+
 
 export var setEnterProps = false;
 

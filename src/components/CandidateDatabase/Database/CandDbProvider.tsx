@@ -4,7 +4,11 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { ActionType, candDbContextType,CandidateStateType } from './candfilter.type';
+import {
+  ActionType,
+  candDbContextType,
+  CandidateStateType,
+} from './candFilter.type';
 import {
   API_FAIL_MSG,
   supabaseWrap,
