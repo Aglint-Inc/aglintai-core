@@ -106,7 +106,6 @@ function JobAssistantProvider({ children }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    setFetching(true);
     const job_id = router.query?.id as string;
     if (job_id) {
       getCompanyDetails(job_id);

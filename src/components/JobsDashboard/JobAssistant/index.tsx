@@ -74,7 +74,9 @@ function JobAssistant() {
         tempList.push(...message.content.result_candidates);
     });
     const filtered = [...new Set(tempList.map((ele) => ele.id))];
-    const finalUser = candidates.filter((ele) => filtered.includes(ele.id));
+    const finalUser = filtered.length
+      ? candidates.filter((ele) => filtered.includes(ele.id))
+      : candidates;
     setCandidateList(finalUser);
   }, [candidates, messages]);
   const loadingMessages = [
