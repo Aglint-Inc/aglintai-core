@@ -59,7 +59,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       const newValue = inputValue.trim();
       if (!departmentState.includes(newValue)) {
-        setDepartmentState([...departmentState, newValue]);
+        setDepartmentState([
+          ...new Set([...departmentState, newValue.toLocaleLowerCase()]),
+        ]);
       }
       setTimeout(() => {
         setInputValue('');
@@ -107,9 +109,12 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                       direction={'row'}
                       width={'100%'}
                       onClick={() => {
-                        if (!departmentState.includes(option)) {
-                          departmentState.push(option);
-                        }
+                        setDepartmentState([
+                          ...new Set([
+                            ...departmentState,
+                            option.toLocaleLowerCase(),
+                          ]),
+                        ]);
                         setTimeout(() => {
                           setInputValue('');
                           setOptions(initialDepartments);
@@ -132,7 +137,12 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                     width={'100%'}
                     onClick={() => {
                       if (!departmentState.includes(option)) {
-                        departmentState.push(option);
+                        setDepartmentState([
+                          ...new Set([
+                            ...departmentState,
+                            option.toLocaleLowerCase(),
+                          ]),
+                        ]);
                         setTimeout(() => {
                           setInputValue('');
                         }, 50);

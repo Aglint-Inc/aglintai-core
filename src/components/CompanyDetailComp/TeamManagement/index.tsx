@@ -166,7 +166,7 @@ const Member = ({
         />
       }
       userEmail={member.email}
-      userName={`${member.first_name || ''} ${member.last_name || ''}`}
+      userName={member.role === 'admin' ? `${member.first_name || ''} ${member.last_name || ''} (You)` :`${member.first_name || ''} ${member.last_name || ''}`}
       slotUserRole={
         // canUpdate && editRole ? (
         //   <CustomAutocomplete

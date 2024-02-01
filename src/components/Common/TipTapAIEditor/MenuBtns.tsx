@@ -45,6 +45,7 @@ function MenuBtns() {
       justifyContent={'space-between'}
       borderBottom={'1px solid #D8DCDE'}
       pr={'10px'}
+      style={{ position: 'sticky', top: 0, backgroundColor: '#fff', zIndex: 2 }}
     >
       <TipTapMenus />
       <TipTapUndoRedo />
@@ -68,7 +69,13 @@ const TipTapMenus = () => {
 
   if (!editor) return <></>;
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={0.5} p={1}>
+    <Stack
+      direction={'row'}
+      alignItems={'center'}
+      gap={0.5}
+      p={1}
+      sx={{ position: 'sticky', top: '0', zIndex: '111' }}
+    >
       <Button
         endIcon={
           <Image

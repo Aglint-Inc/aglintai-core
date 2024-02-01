@@ -56,7 +56,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       const newValue = inputValue.trim();
       if (!roles.includes(newValue)) {
-        setRoles([...roles, newValue]);
+        setRoles([...new Set([...roles, newValue.toLocaleLowerCase()])]);
       }
       setTimeout(() => {
         setInputValue('');
@@ -102,9 +102,9 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                       direction={'row'}
                       width={'100%'}
                       onClick={() => {
-                        if (!roles.includes(option)) {
-                          roles.push(option);
-                        }
+                        setRoles([
+                          ...new Set([...roles, option.toLocaleLowerCase()]),
+                        ]);
                         setTimeout(() => {
                           setInputValue('');
                           setOptions(initialRoles);
@@ -125,7 +125,9 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                     width={'100%'}
                     onClick={() => {
                       if (!roles.includes(option)) {
-                        roles.push(option);
+                        setRoles([
+                          ...new Set([...roles, option.toLocaleLowerCase()]),
+                        ]);
                         setTimeout(() => {
                           setInputValue('');
                         }, 50);

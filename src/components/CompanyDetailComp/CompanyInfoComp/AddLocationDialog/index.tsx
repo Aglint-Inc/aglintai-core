@@ -60,7 +60,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       value: initialValue?.zipcode ?? '',
       error: false,
       validation: 'string',
-      required: true,
+      required: false,
     },
     is_headquarter: {
       value: initialValue?.is_headquarter ?? false,
@@ -209,12 +209,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               <TextField
                 label='Zip Code'
                 defaultValue={location.zipcode.value}
-                required={location.zipcode.required}
                 onChange={(e) => handleChange(e, 'zipcode')}
-                error={location.zipcode.error}
-                helperText={
-                  location.zipcode.error && 'Please enter a valid zipcode'
-                }
               />
             </Stack>
           }
