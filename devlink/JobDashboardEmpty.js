@@ -311,9 +311,7 @@ export function JobDashboardEmpty({
                 >
                   {"request integration"}
                 </_Builtin.Span>
-                {
-                  ". In addition to ATS, we also support integrations with a variety of other tools such as Slack, Dropbox, Google Drive, and more to enhance your workflow and improve efficiency."
-                }
+                {"."}
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
