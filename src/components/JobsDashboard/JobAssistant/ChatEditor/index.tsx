@@ -1,7 +1,7 @@
 import { Divider, IconButton, Stack } from '@mui/material';
 import Mention from '@tiptap/extension-mention';
 import { Placeholder } from '@tiptap/extension-placeholder';
-import { EditorContent, useEditor } from '@tiptap/react';
+import { EditorContent, mergeAttributes, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
@@ -44,6 +44,17 @@ function ChatEditor({
             );
           },
           allowSpaces: true,
+        },
+        renderHTML({ node, options }) {
+          const { HTMLAttributes } = options;
+          return [
+            'span',
+            mergeAttributes(this.options?.HTMLAttributes, {
+              'data-id': node.attrs.id,
+              ...HTMLAttributes,
+            }),
+            `@${node.attrs.label}`, // <----
+          ];
         },
       }),
       Placeholder.configure({
