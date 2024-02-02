@@ -132,9 +132,7 @@ export function EmailTemplateModal({
               className={_utils.cx(_styles, "text-kale-600")}
               tag="div"
             >
-              {
-                "Press ‘ / ’ to add an AI command or dynamic field in the editor"
-              }
+              {"Press ‘ / ’ to add a dynamic field in the editor"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

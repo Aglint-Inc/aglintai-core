@@ -71,6 +71,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -123,6 +129,37 @@
 
 .relative {
   position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .text-grey-600 {
@@ -180,6 +217,32 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
 .apply-button-icon {

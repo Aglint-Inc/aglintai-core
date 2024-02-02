@@ -12,4 +12,6 @@ declare function ImportCsv(props: {
   slotImportCandidatesCsv?: Types.Devlink.Slot;
   slotReuploadButton?: Types.Devlink.Slot;
   isExistWarningVisible?: Types.Visibility.VisibilityConditions;
+  onClickImport?: Types.Devlink.RuntimeProps;
+  isImportButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

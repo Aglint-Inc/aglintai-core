@@ -16,6 +16,21 @@
   color: white;
 }
 
+.beta-wrap.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-xsm {
   font-size: 10px;
   line-height: 12px;
@@ -59,4 +74,12 @@
 
 .text-green-700 {
   color: var(--green700-a1b0a24f);
+}
+
+.text-xsm.l-9px {
+  line-height: 9px;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
 }

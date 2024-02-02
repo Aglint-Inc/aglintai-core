@@ -9,7 +9,6 @@ export function JdScreening({
   slotSubmitted,
   onClickIcon = {},
   slotQandA,
-  propsCollapse = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jd-analysis-wrap")} tag="div">
@@ -51,11 +50,7 @@ export function JdScreening({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-786")}
-        tag="div"
-        {...propsCollapse}
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-786")} tag="div">
         {slotQandA ?? <JdQandACard />}
       </_Builtin.Block>
     </_Component>

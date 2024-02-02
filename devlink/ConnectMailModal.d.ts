@@ -6,4 +6,5 @@ declare function ConnectMailModal(props: {
   onClickGmail?: Types.Devlink.RuntimeProps;
   onClickOutlook?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
+  isSoonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

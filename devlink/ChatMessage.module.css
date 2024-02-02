@@ -276,6 +276,15 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .chat-content-block {
   display: flex;
   flex-direction: column;

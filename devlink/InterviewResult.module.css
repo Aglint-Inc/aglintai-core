@@ -259,6 +259,23 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .aui-button-wrap {
   position: relative;
   display: inline-block;
@@ -299,7 +316,7 @@
   position: relative;
 
   display: flex;
-  padding: 10px 16px;
+  padding: 6px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 8px;

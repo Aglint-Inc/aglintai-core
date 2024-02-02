@@ -202,3 +202,7 @@
 .text-kale-700 {
   color: var(--kale700-f5e4c087);
 }
+
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}

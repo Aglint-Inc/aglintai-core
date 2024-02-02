@@ -16,6 +16,8 @@ export function ImportCsv({
   slotImportCandidatesCsv,
   slotReuploadButton,
   isExistWarningVisible = true,
+  onClickImport = {},
+  isImportButtonVisible = false,
 }) {
   return (
     <_Component tag="div">
@@ -81,6 +83,21 @@ export function ImportCsv({
             {...onClickImportRemaining}
           >
             <ButtonPrimaryRegular textLabel="Import Remaining" />
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
+      {isImportButtonVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-725")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-730")}
+            tag="div"
+            {...onClickImport}
+          >
+            <ButtonPrimaryRegular textLabel="Import" />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

@@ -211,6 +211,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -255,6 +259,14 @@
 
 .mt-5 {
   margin-top: 5px;
+}
+
+.color-grey-600.mt-6 {
+  margin-top: 6px;
+}
+
+.mt-4 {
+  margin-top: 4px;
 }
 
 .aglint-powered-footer-invalid {

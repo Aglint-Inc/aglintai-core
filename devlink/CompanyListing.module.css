@@ -250,6 +250,10 @@
   margin-top: 3px;
 }
 
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -647,6 +651,10 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
 }
 
 .text-no-wrap {

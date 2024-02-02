@@ -148,6 +148,22 @@
   }
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;

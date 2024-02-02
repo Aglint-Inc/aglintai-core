@@ -41,6 +41,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -95,6 +101,37 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -129,17 +166,6 @@
 
 .text-align-center {
   text-align: center;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .fw-semibold.color-blue-800 {
@@ -320,4 +346,21 @@
 
 .text-red-500 {
   color: var(--red500-2e806c7d);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
 }

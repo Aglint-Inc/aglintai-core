@@ -84,6 +84,14 @@
   margin-top: 5px;
 }
 
+.color-grey-600.mt-6 {
+  margin-top: 6px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
 .div-block-602 {
   display: flex;
   align-items: center;
@@ -253,6 +261,17 @@
 
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .text-sm.text-first-capital {

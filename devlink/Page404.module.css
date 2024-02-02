@@ -239,6 +239,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 #w-node-_8f2cfa19-00d6-d9eb-a7b1-f3f7cdbabd27-cdbabd24 {
   grid-column-start: span 1;
   grid-column-end: span 1;

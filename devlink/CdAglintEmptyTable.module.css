@@ -112,3 +112,19 @@
   line-height: 1.3333333333333333;
   letter-spacing: 0px;
 }
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
+}

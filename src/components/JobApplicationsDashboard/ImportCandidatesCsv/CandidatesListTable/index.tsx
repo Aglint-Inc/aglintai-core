@@ -1,7 +1,6 @@
 import { Stack, Typography } from '@mui/material';
-import React from 'react';
 
-import { IconCandidate, IconMail, IconPhone } from '@/devlink';
+import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -67,9 +66,12 @@ function TableHeader() {
 }
 
 const headerObject = [
-  { heading: 'Candidate', icon: <IconCandidate /> },
-  { heading: 'Email', icon: <IconMail /> },
-  { heading: 'Phone', icon: <IconPhone /> },
+  {
+    heading: 'Candidate',
+    icon: <Icon variant='Person' width='14' height='14' />,
+  },
+  { heading: 'Email', icon: <Icon variant='Mail' width='14' height='14' /> },
+  { heading: 'Phone', icon: <Icon variant='phone' width='14' height='14' /> },
 ];
 
 function TableRow({ name, email, phone, profile_image, index }) {

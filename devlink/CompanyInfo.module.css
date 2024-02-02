@@ -300,6 +300,15 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

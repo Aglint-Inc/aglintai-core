@@ -5,7 +5,7 @@
   width: 100%;
   margin-top: 0px;
   margin-bottom: 12px;
-  padding: 10px 20px;
+  padding: 0px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -124,6 +124,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -176,6 +182,26 @@
 
 .relative {
   position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .video-icon-wrapper {
@@ -272,6 +298,10 @@
 
 .mt-5 {
   margin-top: 5px;
+}
+
+.color-grey-600.mt-6 {
+  margin-top: 6px;
 }
 
 .active-screening-card {

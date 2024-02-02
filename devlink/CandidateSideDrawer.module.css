@@ -316,6 +316,10 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
@@ -337,7 +341,7 @@
 
 .cvs-header-nav-icon {
   display: flex;
-  padding: 4px 8px;
+  padding: 4px;
   justify-content: center;
   align-items: center;
 
@@ -547,6 +551,10 @@
 
 .icons.mt-3 {
   margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .max-width-500 {

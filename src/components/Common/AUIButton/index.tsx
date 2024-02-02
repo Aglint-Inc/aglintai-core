@@ -9,9 +9,6 @@ import {
   ButtonDangerLarge,
   ButtonDangerRegular,
   ButtonDangerSmall,
-  ButtonDarkLarge,
-  ButtonDarkRegular,
-  ButtonDarkSmall,
   ButtonOutlinedLarge,
   ButtonOutlinedRegular,
   ButtonOutlinedSmall,
@@ -27,14 +24,7 @@ import {
   // @ts-ignore
 } from '@/devlink';
 
-type Variant =
-  | 'primary'
-  | 'dark'
-  | 'outlined'
-  | 'success'
-  | 'text'
-  | 'error'
-  | 'ai';
+type Variant = 'primary' | 'outlined' | 'success' | 'text' | 'error' | 'ai';
 type Size = 'large' | 'medium' | 'small';
 
 type AuiButtonProps = {
@@ -155,83 +145,7 @@ const AUIButton = ({
         />
       ),
     },
-    dark: {
-      large: (
-        <ButtonDarkLarge
-          tabIndex={disabled ? -1 : 0}
-          wrapperProps={{
-            onKeyUp: (e) => {
-              handleKeyup(e);
-            },
-            onFocus: (e) => {
-              handleFocus(e);
-            },
-            style: { overflow: disabled ? 'hidden' : 'visible' },
-          }}
-          isStartIcon={startIcon ? true : false}
-          isDisabled={disabled}
-          slotStartIcon={startIcon}
-          slotEndIcon={endIcon}
-          isEndIcon={endIcon ? true : false}
-          textLabel={children}
-          onClickButton={{
-            onClick,
-            id,
-          }}
-          {...props}
-        />
-      ),
-      medium: (
-        <ButtonDarkRegular
-          tabIndex={disabled ? -1 : 0}
-          wrapperProps={{
-            onKeyUp: (e) => {
-              handleKeyup(e);
-            },
-            onFocus: (e) => {
-              handleFocus(e);
-            },
-            style: { overflow: disabled ? 'hidden' : 'visible' },
-          }}
-          isStartIcon={startIcon ? true : false}
-          isDisabled={disabled}
-          slotStartIcon={startIcon}
-          slotEndIcon={endIcon}
-          isEndIcon={endIcon ? true : false}
-          textLabel={children}
-          onClickButton={{
-            onClick,
-            id,
-          }}
-          {...props}
-        />
-      ),
-      small: (
-        <ButtonDarkSmall
-          tabIndex={disabled ? -1 : 0}
-          wrapperProps={{
-            onKeyUp: (e) => {
-              handleKeyup(e);
-            },
-            onFocus: (e) => {
-              handleFocus(e);
-            },
-            style: { overflow: disabled ? 'hidden' : 'visible' },
-          }}
-          isStartIcon={startIcon ? true : false}
-          isDisabled={disabled}
-          slotStartIcon={startIcon}
-          slotEndIcon={endIcon}
-          isEndIcon={endIcon ? true : false}
-          textLabel={children}
-          onClickButton={{
-            onClick,
-            id,
-          }}
-          {...props}
-        />
-      ),
-    },
+
     success: {
       large: (
         <ButtonSuccessLarge

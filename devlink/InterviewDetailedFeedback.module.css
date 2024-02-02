@@ -288,6 +288,15 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .div-block-644 {
   display: flex;
   align-items: center;
@@ -304,7 +313,7 @@
 
 .cvs-header-nav-icon {
   display: flex;
-  padding: 4px 8px;
+  padding: 4px;
   justify-content: center;
   align-items: center;
 
@@ -342,8 +351,6 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-
-  object-fit: contain;
 }
 
 .icon-embed.absolute {
@@ -405,6 +412,7 @@
 
 .cvs-intro-profile-block {
   display: flex;
+  width: 390px;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 10px;
@@ -500,6 +508,22 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .cvs-intro-profile-info {

@@ -192,6 +192,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -248,4 +252,34 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }

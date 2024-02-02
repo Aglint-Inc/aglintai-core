@@ -45,6 +45,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -99,6 +105,37 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .nav-bar-icon-active {
   position: absolute;
   left: 0%;
@@ -133,7 +170,7 @@
 }
 
 .nav-bar-icon-hover.cd {
-  width: 150px;
+  width: 110px;
 }
 
 .nav-bar-icon-hover.csetting {
@@ -142,4 +179,12 @@
 
 .nav-bar-icon-hover.logout {
   width: 65px;
+}
+
+.nav-bar-icon-hover.ticket {
+  width: 170px;
+}
+
+.nav-bar-icon-hover.message {
+  width: 160px;
 }

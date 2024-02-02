@@ -88,6 +88,10 @@
   color: var(--black-0fdbd865);
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .text-xl.color-orange {
   color: var(--yellow500-c095f0f1);
 }
@@ -291,6 +295,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .interview-tag-wrapper {
   position: absolute;
   left: 16px;
@@ -353,6 +361,10 @@
   color: var(--green700-a1b0a24f);
 }
 
+.text-xsm.l-9px {
+  line-height: 9px;
+}
+
 .terms-interview-wrapper {
   display: flex;
   margin-top: 16px;
@@ -410,7 +422,7 @@
   position: relative;
 
   display: flex;
-  padding: 10px 16px;
+  padding: 6px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 8px;

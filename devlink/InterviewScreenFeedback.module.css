@@ -101,7 +101,7 @@
   position: relative;
 
   display: flex;
-  padding: 10px 16px;
+  padding: 6px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 8px;
@@ -576,6 +576,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .profile-card-wrappers-left {
   display: flex;
   align-items: center;
@@ -762,6 +766,23 @@
   text-transform: capitalize;
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .profile-mail-wrappers {
   display: flex;
   align-items: center;
@@ -825,6 +846,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -869,6 +896,26 @@
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .max-width-500 {
@@ -918,6 +965,32 @@
 
 .mt-15 {
   margin-top: 15px;
+}
+
+.text-grey-600.text-grow {
+  white-space: nowrap;
+}
+
+.text-grow {
+  flex: 0 0 auto;
+}
+
+.text-sm-default {
+  font-size: 12px;
+  line-height: 1.3333333333333333;
+  letter-spacing: 0px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
 .slot-detailed-feedback {

@@ -201,6 +201,17 @@
   color: var(--blue600-aad8d97e);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-sm.text-first-capital {
   text-transform: capitalize;
 }

@@ -1,5 +1,6 @@
 .candidate-history-card {
   position: relative;
+  z-index: 2;
 
   display: flex;
   padding: 16px;
@@ -16,6 +17,10 @@
 .skeleton-width-100 {
   width: 100%;
   height: 16px;
+}
+
+.skeleton-width-100.mb-10 {
+  margin-bottom: 10px;
 }
 
 .skeleton-item {
@@ -44,14 +49,27 @@
   height: 28px;
 }
 
+.skeleton-width-40.mtb-10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .delete-icons-history {
   position: absolute;
   left: auto;
-  top: 21px;
-  right: 21px;
+  top: 25px;
+  right: 5px;
   bottom: auto;
 
   display: none;
+  padding: 6px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 4px;
+
+  background-color: #f8f9f9;
 }
 
 .icons {
@@ -155,4 +173,20 @@
   .hide {
     display: none;
   }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }

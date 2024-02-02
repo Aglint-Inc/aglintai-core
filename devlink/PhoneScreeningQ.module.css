@@ -429,6 +429,18 @@
   display: none;
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .relative.upload-video-wrap {
   overflow: hidden;
   border-radius: 10px;
@@ -450,8 +462,8 @@
 .relative.mt-12.flex {
   display: flex;
   align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .relative.width-inc {

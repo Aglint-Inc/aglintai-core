@@ -133,7 +133,7 @@ export function NewInterviewScreen({
               className={_utils.cx(_styles, "text-xsm", "color-grey-600")}
               tag="div"
             >
-              {"© 2024 Aglint Inc. All Rights Reserved"}
+              {"© 2023 Aglint Inc. All Rights Reserved"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

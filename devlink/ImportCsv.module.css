@@ -91,6 +91,22 @@
   letter-spacing: 0px;
 }
 
+.mt-10 {
+  margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
 .div-block-524 {
   margin-bottom: 12px;
 }
@@ -213,6 +229,18 @@
   .hide {
     display: none;
   }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .text-yellow-800 {

@@ -117,6 +117,18 @@
   margin-top: 10px;
 }
 
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
 .text-blue-500 {
   color: var(--blue500-72579298);
 }

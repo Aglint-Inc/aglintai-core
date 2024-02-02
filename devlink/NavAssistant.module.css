@@ -120,6 +120,22 @@
   }
 }
 
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .nav-bar-icon-active {
   position: absolute;
   left: 0%;
@@ -154,7 +170,7 @@
 }
 
 .nav-bar-icon-hover.cd {
-  width: 150px;
+  width: 110px;
 }
 
 .nav-bar-icon-hover.csetting {

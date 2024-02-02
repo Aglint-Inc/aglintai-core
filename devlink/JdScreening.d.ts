@@ -6,5 +6,4 @@ declare function JdScreening(props: {
   slotSubmitted?: Types.Devlink.Slot;
   onClickIcon?: Types.Devlink.RuntimeProps;
   slotQandA?: Types.Devlink.Slot;
-  propsCollapse?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -19,6 +19,7 @@
 
 .cvs-company-logo {
   display: flex;
+  overflow: hidden;
   width: 60px;
   height: 60px;
   min-height: 60px;
@@ -28,7 +29,7 @@
   align-items: center;
   flex: 0 0 auto;
 
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 .div-block-790 {
@@ -94,6 +95,10 @@
   line-height: 9px;
 }
 
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
 .cvs-company-info-block {
   display: flex;
   flex-direction: column;
@@ -103,10 +108,6 @@
 
 .text-capitalize-word {
   text-transform: capitalize;
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
 }
 
 .max-width-500 {
@@ -183,6 +184,18 @@
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
 }
 
 .text-sm {
@@ -315,6 +328,17 @@
 
 .color-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .text-sm.text-first-capital {

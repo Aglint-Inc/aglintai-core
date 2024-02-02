@@ -289,6 +289,23 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 #w-node-_51170ec6-82cc-9cdc-eb5c-1666d3a16dca-d3a16dca {
   grid-column-start: span 1;
   grid-column-end: span 1;

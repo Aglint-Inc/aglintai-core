@@ -192,6 +192,10 @@
   color: var(--kale700-f5e4c087);
 }
 
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
 .close-pop-email {
   position: static;
   left: auto;
@@ -238,6 +242,12 @@
 
 .icons.cursor-pointer.p-4 {
   padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
 }
 
 .icons.curser-hover-pointer {
@@ -292,6 +302,26 @@
 
 .relative {
   position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .email-input-wrappers {

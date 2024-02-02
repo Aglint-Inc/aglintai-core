@@ -45,6 +45,12 @@
   padding: 4px;
 }
 
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
 .icons.curser-hover-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -99,8 +105,43 @@
   position: relative;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .text-underline {
@@ -117,6 +158,10 @@
   margin-left: 5px;
 }
 
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
 .div-block-558 {
   position: relative;
 
@@ -125,17 +170,6 @@
   align-items: center;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .cursor-pointer.grow-job-wishlist {
@@ -160,8 +194,4 @@
 
 .text-blue-600.ml-8 {
   margin-left: 8px;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }

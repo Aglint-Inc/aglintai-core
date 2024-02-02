@@ -1,6 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Reupload } from "./Reupload";
+import { UploadedResume } from "./UploadedResume";
 import { ImportCsv } from "./ImportCsv";
 import * as _utils from "./utils";
 import _styles from "./ImportCandidates.module.css";
@@ -96,7 +96,7 @@ export function ImportCandidates({
               className={_utils.cx(_styles, "slot-import")}
               tag="div"
             >
-              {slotImportResume ?? <Reupload />}
+              {slotImportResume ?? <UploadedResume />}
             </_Builtin.Block>
           </_Builtin.TabsPane>
           <_Builtin.TabsPane tag="div" data-w-tab="Tab 2">

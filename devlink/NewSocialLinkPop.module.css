@@ -264,6 +264,15 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 @media screen and (max-width: 479px) {
   .color-black.fw-semibold.mobile-grow {
     flex: 0 0 auto;
@@ -413,4 +422,16 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }

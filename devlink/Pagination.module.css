@@ -59,8 +59,6 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-
-  object-fit: contain;
 }
 
 .icon-embed.absolute {
@@ -69,6 +67,15 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .jb-nav-page-count {
@@ -100,4 +107,10 @@
 
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
+}
+
+@media screen and (max-width: 767px) {
+  .inline-block.ml-0-mobile {
+    margin-left: 0px;
+  }
 }

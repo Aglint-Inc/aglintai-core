@@ -148,6 +148,18 @@
   margin-bottom: 63px;
 }
 
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }
@@ -228,10 +240,6 @@
 }
 
 .text-grey-600.mt-4 {
-  margin-top: 4px;
-}
-
-.mt-4 {
   margin-top: 4px;
 }
 
@@ -460,6 +468,10 @@
 
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
 }
 
 .text-no-wrap {

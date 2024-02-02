@@ -12,16 +12,10 @@ export function JdAnalysis({
   textSkillDesc = "The candidate's prior work experiences align closely with the job requirements, showcasing leadership, community engagement, content creation, and strategic planning, which are essential for the Head of Developer Experience role.",
   textExperienceDesc = "The candidate's prior work experiences align closely with the job requirements, showcasing leadership, community engagement, content creation, and strategic planning, which are essential for the Head of Developer Experience role.",
   textEducationDesc = "The candidate's prior work experiences align closely with the job requirements, showcasing leadership, community engagement, content creation, and strategic planning, which are essential for the Head of Developer Experience role.",
-  propsCollapse = {},
   onClickIcons = {},
-  onClickCard = {},
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "jd-analysis-wrap")}
-      tag="div"
-      {...onClickCard}
-    >
+    <_Component className={_utils.cx(_styles, "jd-analysis-wrap")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "div-block-774")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-781")}
@@ -61,11 +55,7 @@ export function JdAnalysis({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-779")}
-        tag="div"
-        {...propsCollapse}
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-779")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-778")}
           tag="div"

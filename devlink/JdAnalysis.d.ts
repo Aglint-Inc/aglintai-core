@@ -10,7 +10,5 @@ declare function JdAnalysis(props: {
   textSkillDesc?: React.ReactNode;
   textExperienceDesc?: React.ReactNode;
   textEducationDesc?: React.ReactNode;
-  propsCollapse?: Types.Devlink.RuntimeProps;
   onClickIcons?: Types.Devlink.RuntimeProps;
-  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

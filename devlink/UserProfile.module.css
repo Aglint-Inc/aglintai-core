@@ -52,7 +52,7 @@
 
 .height-scroll {
   display: flex;
-  overflow: scroll;
+  overflow: auto;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -73,6 +73,14 @@
 .rd-main-wrapper.height-scroll-company {
   overflow: auto;
   height: 100vh;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.rd-main-wrapper.no-scroll {
+  overflow: visible;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .div-block-271 {
@@ -107,6 +115,8 @@
 }
 
 .rd-jobs-header-wrapper {
+  position: relative;
+
   display: flex;
   min-height: 60px;
   padding: 10px 20px;
@@ -367,6 +377,23 @@
   color: var(--red500-2e806c7d);
 }
 
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-blue-600 {
+  color: var(--blue600-aad8d97e);
+}
+
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .profile-new-layout {
   display: flex;
   height: 100%;
@@ -397,8 +424,8 @@
 .profile-block {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .profile-block.hide {
@@ -523,6 +550,10 @@
 
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
+}
+
+.text-lg.text-gray-400 {
+  color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
 .profile-inputs-wrapper {

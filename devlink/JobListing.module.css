@@ -340,6 +340,18 @@
   margin-top: 10px;
 }
 
+.text-grey-600.mt-4 {
+  margin-top: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.text-grey-600.mt-8 {
+  margin-top: 8px;
+}
+
 .div-block-434 {
   padding: 8px 16px;
 
@@ -470,6 +482,10 @@
 .text-xl.fw-semibold.text-grey-600.inline-start {
   display: inline;
   margin-left: 5px;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .text-xl.color-orange {
@@ -603,6 +619,18 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }
 
 .fw-semibold.one-line-clamp.mx-width-662 {
@@ -765,6 +793,15 @@
   color: var(--blue600-aad8d97e);
 }
 
+.fw-semibold.text-blue-600.no-underline {
+  text-decoration: none;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
 .company-list-link-wrappers {
   display: flex;
   margin-top: 20px;
@@ -924,6 +961,10 @@
 
 .color-grey-600.width-588 {
   max-width: 588px;
+}
+
+.color-grey-600.mt-6 {
+  margin-top: 6px;
 }
 
 .div-block-443 {
