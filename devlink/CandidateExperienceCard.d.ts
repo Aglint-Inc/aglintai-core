@@ -9,4 +9,5 @@ declare function CandidateExperienceCard(props: {
   textDate?: React.ReactNode;
   isBadgeVisible?: Types.Visibility.VisibilityConditions;
   isCurrentVisible?: Types.Visibility.VisibilityConditions;
+  isLogoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

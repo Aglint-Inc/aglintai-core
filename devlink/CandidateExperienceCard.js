@@ -11,33 +11,39 @@ export function CandidateExperienceCard({
   textDate = "May 2017",
   isBadgeVisible = false,
   isCurrentVisible = false,
+  isLogoVisible = true,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "cvs-experiences-block")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-791")} tag="div">
+      {isLogoVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "cvs-company-logo")}
+          className={_utils.cx(_styles, "div-block-791")}
           tag="div"
         >
-          {slotLogo}
-        </_Builtin.Block>
-        {isCurrentVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-790")}
+            className={_utils.cx(_styles, "cvs-company-logo")}
             tag="div"
           >
+            {slotLogo}
+          </_Builtin.Block>
+          {isCurrentVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-xsm")}
+              className={_utils.cx(_styles, "div-block-790")}
               tag="div"
             >
-              {"Current"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xsm")}
+                tag="div"
+              >
+                {"Current"}
+              </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cvs-company-info-block")}
         tag="div"

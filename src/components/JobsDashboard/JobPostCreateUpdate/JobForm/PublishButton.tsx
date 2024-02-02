@@ -1,4 +1,5 @@
 import { CircularProgress } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useState } from 'react';
@@ -50,6 +51,7 @@ const JobPublishButton = () => {
       }
       await handleUIJobUpdate({ ...job });
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
+      axios.post('/api/editjob/publishjob', { job: job });
       toast.success('Job published successfully');
       posthog.capture('Publish Job Button Clicked');
     } catch (err) {
