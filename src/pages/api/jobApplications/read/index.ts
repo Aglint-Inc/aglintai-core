@@ -18,7 +18,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
-import { handleRead } from './utils';
+import { handleRead, resumeMatchRPCFormatter } from './utils';
 
 const handler = async (
   req: NextApiRequest,
@@ -84,6 +84,12 @@ export type ReadJobApplicationApi = {
       [key in JobApplicationSections]: JobApplication[];
     };
     error: PostgrestError;
+    matchCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: ReturnType<
+        typeof resumeMatchRPCFormatter
+      >['matchCount'];
+    };
     filteredCount: {
       // eslint-disable-next-line no-unused-vars
       [key in JobApplicationSections]: number;

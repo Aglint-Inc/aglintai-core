@@ -1622,6 +1622,19 @@ export interface Database {
           name: string
         }[]
       }
+      get_resume_match: {
+        Args: {
+          job_id: string
+          top_match?: number
+          good_match?: number
+          average_match?: number
+          poor_match?: number
+        }
+        Returns: {
+          match_category: string
+          count: number
+        }[]
+      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -1655,6 +1668,20 @@ export interface Database {
       getoutreachemails: {
         Args: Record<PropertyKey, never>
         Returns: unknown
+      }
+      getresumematch: {
+        Args: {
+          jobid: string
+          section: Database["public"]["Enums"]["application_status"]
+          topmatch?: number
+          goodmatch?: number
+          averagematch?: number
+          poormatch?: number
+        }
+        Returns: {
+          match: string
+          count: number
+        }[]
       }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>

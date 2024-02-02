@@ -2,7 +2,7 @@
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
 import { Stack } from '@mui/material';
-import countries from '@utils/CountryUtils';
+// import countries from '@utils/CountryUtils';
 import React from 'react';
 import PhoneInput, { CountryData } from 'react-phone-input-2';
 
@@ -67,7 +67,7 @@ const UIPhoneInput = ({
       )}
       <PhoneInput
         autoFormat={true}
-        onlyCountries={countries.map((c) => c.code)}
+        // onlyCountries={countries.map((c) => c.code)}
         enableLongNumbers
         copyNumbersOnly={false}
         country={defaultCountry ? defaultCountry.toLowerCase() : null}

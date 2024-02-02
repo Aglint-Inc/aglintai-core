@@ -131,6 +131,19 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
+  const [matchCount, setMatchCount] =
+    useState<ReadJobApplicationApi['response']['matchCount']>(undefined);
+  const matches = {
+    total:
+      matchCount &&
+      (Object.values(matchCount).reduce((acc, curr) => {
+        Object.entries(curr).forEach(([key, value]) => {
+          acc[key] = acc[key] ? acc[key] + value : value;
+        });
+        return acc;
+      }, {}) as ReadJobApplicationApi['response']['matchCount']['new']),
+    sections: matchCount,
+  };
   const [section, setSection] = useState<JobApplicationSections>(
     JobApplicationSections.NEW,
   );
@@ -236,17 +249,21 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
-      const { data, error, filteredCount, unFilteredCount } =
-        await handleJobApplicationApi('read', { ...request }, signal);
+      const { data, error, filteredCount, unFilteredCount, matchCount } =
+        await handleJobApplicationApi('read', request, signal);
       if (data) {
         const action: Action = {
           type: ActionType.READ,
-          payload: { applicationData: data, activeSections: request.sections },
+          payload: {
+            applicationData: data,
+            activeSections: request.sections,
+          },
         };
         if (job?.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
           setAtsSync(is_sync);
         }
+        setMatchCount(matchCount);
         handleUIJobUpdate({ ...job, count: unFilteredCount });
         dispatch(action);
         return { confirmation: true, filteredCount, unFilteredCount };
@@ -306,7 +323,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
-      const { data, error, filteredCount, unFilteredCount } =
+      const { data, error, filteredCount, unFilteredCount, matchCount } =
         await handleJobApplicationApi('read', request, signal);
       if (data) {
         const action: Action = {
@@ -317,6 +334,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           const is_sync = await checkSyncCand(job);
           setAtsSync(is_sync);
         }
+        setMatchCount((prev) => ({ ...prev, ...matchCount }));
         dispatch(action);
         return { confirmation: true, filteredCount, unFilteredCount };
       }
@@ -672,6 +690,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const value = {
     applications,
     activeSections,
+    matches,
     setCardStates,
     cardStates,
     allApplicationsDisabled,

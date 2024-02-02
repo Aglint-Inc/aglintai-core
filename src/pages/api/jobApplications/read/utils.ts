@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { createServerClient } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import {
@@ -67,12 +66,7 @@ const createMultiPromise = (
 
 const handleSinglePromiseValidation = (
   // eslint-disable-next-line no-undef
-  responses: PromiseSettledResult<{
-    data: JobApplication[];
-    error: PostgrestError;
-    filteredCount: number;
-    unFilteredCount: number;
-  }>,
+  responses: Parameters<typeof handleMultiPromiseValidation>[0][number],
   status: JobApplicationSections,
 ) => {
   if (responses.status === 'fulfilled')
@@ -81,28 +75,27 @@ const handleSinglePromiseValidation = (
       error: null,
       filteredCount: { [status]: responses.value.filteredCount },
       unFilteredCount: { [status]: responses.value.unFilteredCount },
+      matchCount: { [status]: responses.value.matchCount },
     };
   return {
     data: null,
     error: { [status]: responses.reason.message },
     filteredCount: null,
     unFilteredCount: null,
+    matchCount: null,
   };
 };
 
 const handleMultiPromiseValidation = (
   // eslint-disable-next-line no-undef
-  responses: PromiseSettledResult<{
-    data: JobApplication[];
-    error: PostgrestError;
-    filteredCount: number;
-    unFilteredCount: number;
-  }>[],
+  responses: PromiseSettledResult<
+    Awaited<ReturnType<typeof newReadNewJobApplicationDbAction>>
+  >[],
   sections: ReadJobApplicationApi['request']['sections'],
-) => {
+): ReadJobApplicationApi['response'] => {
   const response = sections.reduce(
     (acc, curr, i) => {
-      const { data, error, filteredCount, unFilteredCount } =
+      const { data, error, filteredCount, unFilteredCount, matchCount } =
         handleSinglePromiseValidation(
           responses[i],
           curr as JobApplicationSections,
@@ -122,6 +115,10 @@ const handleMultiPromiseValidation = (
             ...acc.unFilteredCount,
             ...unFilteredCount,
           },
+          matchCount: {
+            ...acc.matchCount,
+            ...matchCount,
+          },
         };
       return {
         ...acc,
@@ -136,22 +133,9 @@ const handleMultiPromiseValidation = (
       error: null,
       filteredCount: null,
       unFilteredCount: null,
+      matchCount: null,
     },
-  ) as {
-    data: {
-      // eslint-disable-next-line no-unused-vars
-      [key in JobApplicationSections]: JobApplication[];
-    };
-    error: PostgrestError;
-    filteredCount: {
-      // eslint-disable-next-line no-unused-vars
-      [key in JobApplicationSections]: number;
-    };
-    unFilteredCount: {
-      // eslint-disable-next-line no-unused-vars
-      [key in JobApplicationSections]: number;
-    };
-  };
+  );
   if (response.error !== null) response.data = null;
   return response;
 };
@@ -194,11 +178,7 @@ export const newReadNewJobApplicationDbAction = async (
       search,
       filter,
     ),
-    supabase
-      .from('applications')
-      .select('*', { count: 'exact', head: true })
-      .eq('job_id', job_id)
-      .eq('status', status),
+    getResumeMatch(job_id, supabase, status),
   ]);
   if (response[0].status === 'rejected') {
     throw new Error(response[0].reason);
@@ -206,16 +186,38 @@ export const newReadNewJobApplicationDbAction = async (
   if (response[1].status === 'rejected') {
     throw new Error(response[1].reason);
   }
-  if (response[1].value.error || response[1].value.count === null) {
-    throw new Error('Count function failure');
-  }
   const safeData = response[0].value;
+  const safeMatchData = response[1].value;
   return {
     data: safeData.data,
     error: null,
+    matchCount: safeMatchData.matchCount,
     filteredCount: safeData.filteredCount,
-    unFilteredCount: response[1].value.count,
+    unFilteredCount: safeMatchData.total,
   };
+};
+
+export const getResumeMatch = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
+  status: JobApplicationSections,
+) => {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 60000);
+  const { data, error } = await supabase
+    .rpc('getresumematch', {
+      jobid: job_id,
+      section: status,
+      topmatch: 80,
+      goodmatch: 60,
+      averagematch: 40,
+      poormatch: 20,
+    })
+    .abortSignal(controller.signal);
+  if (error)
+    throw new Error(`Resume match RPC function failure : ${error.message}`);
+  const safeData = resumeMatchRPCFormatter(data);
+  return safeData;
 };
 
 export const readNewJobApplicationDbAction = async (
@@ -262,15 +264,37 @@ export const readNewJobApplicationDbAction = async (
       end_rec_num: range?.end + 1 ?? null,
     })
     .abortSignal(controller.signal);
-  if (error) throw new Error(`RPC function failure : ${error.message}`);
-  const safeData = rpcDataFormatter(data);
+  if (error)
+    throw new Error(`Job application RPC function failure : ${error.message}`);
+  const safeData = jobApplicationRPCFormatter(data);
   return {
     data: safeData.data,
     filteredCount: safeData.filteredCount,
   };
 };
 
-const rpcDataFormatter = (
+export const resumeMatchRPCFormatter = (
+  unsafeData: Database['public']['Functions']['getresumematch']['Returns'],
+) => {
+  const initialData = {
+    matchCount: {
+      unknownMatch: 0,
+      noMatch: 0,
+      poorMatch: 0,
+      averageMatch: 0,
+      goodMatch: 0,
+      topMatch: 0,
+    },
+    total: 0,
+  };
+  return unsafeData.reduce((acc, { match, count }) => {
+    acc.matchCount[match] = count;
+    acc.total += count;
+    return acc;
+  }, initialData);
+};
+
+const jobApplicationRPCFormatter = (
   unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
