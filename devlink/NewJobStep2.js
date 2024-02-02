@@ -27,7 +27,8 @@ export function NewJobStep2({
         _styles,
         "job-sidebar-main-block",
         "cj-step-2",
-        "height-auto"
+        "height-auto",
+        "width-780"
       )}
       tag="div"
     >
