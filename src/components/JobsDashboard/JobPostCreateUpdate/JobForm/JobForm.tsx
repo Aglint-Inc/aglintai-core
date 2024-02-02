@@ -291,8 +291,9 @@ function JobForm() {
           currSlide !== 'templates'
         }
         isProceedDisable={false}
-        textProceed={`Proceed to ${allSlides[slidePathToNum[String(currSlide)]]
-          ?.title}`}
+        textProceed={`Proceed to ${
+          allSlides[slidePathToNum[String(currSlide)]]?.title
+        }`}
         onClickProceed={{
           onClick: () => {
             const nextSlide =
@@ -807,7 +808,7 @@ const SideSection = () => {
     const disableSkills = jobForm.formFields.jdJson.skills.length === 0;
     return (
       <>
-        <div style={{ height: '60px' }}>
+        <Stack spacing={2}>
           {formWarnings.resumeScore.rightErr.length > 0 && (
             <JobEditWarning
               slotWarningList={
@@ -819,105 +820,107 @@ const SideSection = () => {
               }
             />
           )}
-        </div>
-        <ScoreWeightage
-          slotScoreWheel={
-            <>
-              <Stack
-                direction={'row'}
-                width={'60%'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                gap={'40px'}
-              >
-                <ScoreWheel
-                  id={'ScoreWheelSetting'}
-                  parameter_weights={jobForm.formFields.resumeScoreSettings}
+          <ScoreWeightage
+            slotScoreWheel={
+              <>
+                <Stack
+                  direction={'row'}
+                  width={'60%'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  gap={'40px'}
+                >
+                  <ScoreWheel
+                    id={'ScoreWheelSetting'}
+                    parameter_weights={jobForm.formFields.resumeScoreSettings}
+                  />
+                </Stack>
+              </>
+            }
+            slotScorePercent={
+              <>
+                <ScorePercentage
+                  colorPropsBg={{
+                    style: {
+                      backgroundColor: '#30AABC',
+                    },
+                  }}
+                  textTitle={'Experience'}
+                  slotInputPercent={
+                    <>
+                      <UITextField
+                        type='number'
+                        width='50px'
+                        value={
+                          jobForm.formFields.resumeScoreSettings.experience
+                        }
+                        onChange={(e) => {
+                          onChangeScore(e, 'experience');
+                        }}
+                        disabled={disableExp}
+                      />
+                    </>
+                  }
                 />
-              </Stack>
-            </>
-          }
-          slotScorePercent={
-            <>
-              <ScorePercentage
-                colorPropsBg={{
-                  style: {
-                    backgroundColor: '#30AABC',
-                  },
-                }}
-                textTitle={'Experience'}
-                slotInputPercent={
-                  <>
-                    <UITextField
-                      type='number'
-                      width='50px'
-                      value={jobForm.formFields.resumeScoreSettings.experience}
-                      onChange={(e) => {
-                        onChangeScore(e, 'experience');
-                      }}
-                      disabled={disableExp}
-                    />
-                  </>
-                }
-              />
-              <ScorePercentage
-                colorPropsBg={{
-                  style: {
-                    backgroundColor: '#886BD8',
-                  },
-                }}
-                textTitle={'Skill'}
-                slotInputPercent={
-                  <>
-                    <UITextField
-                      type='number'
-                      width='50px'
-                      value={jobForm.formFields.resumeScoreSettings.skills}
-                      onChange={(e) => {
-                        onChangeScore(e, 'skills');
-                      }}
-                      disabled={disableSkills}
-                    />
-                  </>
-                }
-              />
-              <ScorePercentage
-                colorPropsBg={{
-                  style: {
-                    backgroundColor: '#5D7DF5',
-                  },
-                }}
-                textTitle={'Education'}
-                slotInputPercent={
-                  <>
-                    <UITextField
-                      type='number'
-                      width='50px'
-                      value={jobForm.formFields.resumeScoreSettings.education}
-                      onChange={(e) => {
-                        onChangeScore(e, 'education');
-                      }}
-                      disabled={disableEdu}
-                    />
-                  </>
-                }
-              />
-            </>
-          }
-          onClickEqualize={{
-            onClick: () => {
-              const jdJson = jobForm.formFields.jdJson;
-              handleUpdateFormFields({
-                path: `resumeScoreSettings`,
-                value: getBalancedScore(
-                  jdJson.rolesResponsibilities.length === 0,
-                  jdJson.educations.length === 0,
-                  jdJson.skills.length === 0,
-                ),
-              });
-            },
-          }}
-        />
+                <ScorePercentage
+                  colorPropsBg={{
+                    style: {
+                      backgroundColor: '#886BD8',
+                    },
+                  }}
+                  textTitle={'Skill'}
+                  slotInputPercent={
+                    <>
+                      <UITextField
+                        type='number'
+                        width='50px'
+                        value={jobForm.formFields.resumeScoreSettings.skills}
+                        onChange={(e) => {
+                          onChangeScore(e, 'skills');
+                        }}
+                        disabled={disableSkills}
+                      />
+                    </>
+                  }
+                />
+                <ScorePercentage
+                  colorPropsBg={{
+                    style: {
+                      backgroundColor: '#5D7DF5',
+                    },
+                  }}
+                  textTitle={'Education'}
+                  slotInputPercent={
+                    <>
+                      <UITextField
+                        type='number'
+                        width='50px'
+                        value={jobForm.formFields.resumeScoreSettings.education}
+                        onChange={(e) => {
+                          onChangeScore(e, 'education');
+                        }}
+                        disabled={disableEdu}
+                      />
+                    </>
+                  }
+                />
+              </>
+            }
+            onClickEqualize={{
+              onClick: () => {
+                const jdJson = jobForm.formFields.jdJson;
+                handleUpdateFormFields({
+                  path: `resumeScoreSettings`,
+                  value: getBalancedScore(
+                    jdJson.rolesResponsibilities.length === 0,
+                    jdJson.educations.length === 0,
+                    jdJson.skills.length === 0,
+                  ),
+                });
+              },
+            }}
+          />
+        </Stack>
       </>
     );
   }
