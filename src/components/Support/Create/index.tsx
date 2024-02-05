@@ -9,6 +9,7 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -24,7 +25,6 @@ import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabaseClient';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
-import axios from 'axios';
 
 function Support() {
   const router = useRouter();
