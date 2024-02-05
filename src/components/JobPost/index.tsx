@@ -60,7 +60,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
   const [thank, setThank] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [application, setApplication] = useState<JobApplcationDB>();
-  const [candidate, setCandidate] = useState<CandidateType>();
+  const [candidate, setCandidate] = useState<CandidateType[]>([]);
   const editor = useEditor({
     editable: false,
     content: post?.description,
@@ -123,7 +123,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             }}
             slotLottie={<ThankYou />}
             textTitle={'Application submitted successfully.'}
-            textDescription={`Thank you ${candidate?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
+            textDescription={`Thank you ${candidate[0]?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
             slotCompanyLogo={
               <Stack alignItems={'center'} spacing={1} width={'100%'}>
                 <Avatar

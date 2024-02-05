@@ -3,6 +3,7 @@ import { Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { errorMessages } from '@utils/errorMessages';
 import { supabase } from '@utils/supabaseClient';
+import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
 import { PwResetConfirm, PwResetForm } from '@/devlink2';
@@ -70,6 +71,8 @@ export default function ForgotPasswordComponent() {
         setLoading(false);
         tempEmail = email.current?.value;
         setchangetext('Sent');
+        posthog.identify(tempEmail, { Email: tempEmail });
+        posthog.capture("Send reset linked Clicked")
       } else {
         setLoading(false);
       }

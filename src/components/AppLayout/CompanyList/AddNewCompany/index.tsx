@@ -9,7 +9,12 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { AddCompany, AddCompanyDetails, AddCompanyWebsite } from '@/devlink2';
+import {
+  AddCompany,
+  AddCompanyDetails,
+  AddCompanyWebsite,
+  BackButton,
+} from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
@@ -378,6 +383,9 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                           logo={logo}
                           setOpenSideBar={setOpenSideBar}
                           getCompanies={getCompanies}
+                          onClickBack={() => {
+                            setSearchStatus('');
+                          }}
                         />
                       </>
                     )
@@ -401,6 +409,7 @@ function CompanyDetails({
   logo,
   setOpenSideBar,
   getCompanies,
+  onClickBack,
 }) {
   const { setRecruiter, recruiterUser, userDetails, userCountry } =
     useAuthDetails();
@@ -600,8 +609,15 @@ function CompanyDetails({
         mt={'50px !important'}
         direction={'row'}
         alignItems={'center'}
-        justifyContent={'right'}
+        justifyContent={'space-between'}
       >
+        <BackButton
+          onclickProps={{
+            onClick: () => {
+              onClickBack();
+            },
+          }}
+        />
         <AUIButton disabled={false} onClick={submitHandler}>
           Add Company
         </AUIButton>

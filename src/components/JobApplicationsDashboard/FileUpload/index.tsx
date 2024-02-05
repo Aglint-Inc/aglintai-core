@@ -70,7 +70,7 @@ const ResumeUpload = ({
 
   return (
     <>
-      <Stack spacing={2} height={'100%'} overflow={'auto'} p={'1px'}>
+      <Stack spacing={2} height={'100%'} p={'1px'}>
         {selectedfile.length == 0 && (
           <FileUploader
             handleChange={InputChange}
@@ -84,7 +84,7 @@ const ResumeUpload = ({
           </FileUploader>
         )}
         {selectedfile.length !== 0 && (
-          <Stack spacing={2} overflow={'scroll'} position={'relative'}>
+          <Stack spacing={2} position={'relative'}>
             {loading && (
               <Stack
                 sx={{

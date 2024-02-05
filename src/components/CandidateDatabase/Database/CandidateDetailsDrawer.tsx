@@ -212,8 +212,8 @@ const CandidateDrawer = ({
                 },
                 style: {
                   transform: isExperienceShow
-                    ? 'rotate(180deg)'
-                    : 'rotate(0deg)',
+                    ? 'rotate(0deg)'
+                    : 'rotate(180deg)',
                   'transition-duration': '500ms',
                 },
               }}
@@ -248,8 +248,8 @@ const CandidateDrawer = ({
                 },
                 style: {
                   transform: isEducationShow
-                    ? 'rotate(180deg)'
-                    : 'rotate(0deg)',
+                    ? 'rotate(0deg)'
+                    : 'rotate(180deg)',
                   'transition-duration': '500ms',
                 },
               }}

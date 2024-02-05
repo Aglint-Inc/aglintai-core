@@ -280,6 +280,9 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (router.isReady) {
       const redirect = window.location.href;
+      allrecruterRelation?.forEach((item) => {
+        posthog.identify(item.recruiter_id, { CompanyId: item.recruiter_id });
+      });
       if (isRoutePublic(router.route)) return;
       else if (!loading && !userDetails?.user)
         router.push(`/login?redirect=${encodeURIComponent(redirect)}`);

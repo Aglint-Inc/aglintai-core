@@ -78,7 +78,7 @@ function UploadDB({
   setLoading: Dispatch<SetStateAction<boolean>>;
   setApplication: Dispatch<SetStateAction<JobApplcationDB>>;
   recruiter: RecruiterType;
-  setCandidate: Dispatch<SetStateAction<CandidateType>>;
+  setCandidate: Dispatch<SetStateAction<CandidateType[]>>;
 }) {
   const [profile, setProfile] = useState<any>({
     firstName: null,

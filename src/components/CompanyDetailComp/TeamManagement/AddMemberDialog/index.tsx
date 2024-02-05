@@ -36,6 +36,9 @@ const AddMember = ({
     role: boolean;
   }>({ name: null, email: null, role: null });
 
+  const [isDisable, setIsDisable] = useState(false);
+  const [isResendDisable, setResendDisable] = useState(false)
+
   const checkValidation = () => {
     if (!form.name || form.name.trim() === '') {
       setFormError({ ...formError, name: true });
@@ -84,18 +87,26 @@ const AddMember = ({
               <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
                 <AUIButton
                   variant='outlined'
+                  disabled={isDisable}
                   size='medium'
                   onClick={() => {
+                    setIsDisable(true);
                     if (checkValidation()) {
                       inviteUser(form, userDetails.user.id).then(
                         ({ error, created }) => {
                           if (!error && created) {
                             updateMemberList();
                             toast.success('Invite sent');
+                            setIsDisable(false);
+                            form.name = null;
+                            form.email = null;
                             return onClose();
+                          } else {
+                            toast.error('User allready exists');
+                            setIsDisable(false);
                           }
                           // @ts-ignore
-                          return toast.error(error?.message || error);
+                          return null;
                         },
                       );
                     }
@@ -129,8 +140,10 @@ const AddMember = ({
                 }
                 slotButton={
                   <AUIButton
+                    disabled={isResendDisable}
                     size='small'
                     onClick={() => {
+                      setResendDisable(true);
                       reinviteUser(member.email, userDetails.user.id).then(
                         ({ error, emailSend }) => {
                           if (!error && emailSend) {
