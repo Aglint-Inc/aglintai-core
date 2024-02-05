@@ -151,6 +151,7 @@ const Member = ({
   // const [editRole, setEditRole] = useState(false);
   return (
     <TeamListItem
+      isDeleteDisable={member.role === 'admin' ? true : false}
       isDeleteVisible={member.role === 'admin' ? false : true}
       key={1}
       dateText={dayjs(member.joined_at).fromNow()}
@@ -166,7 +167,11 @@ const Member = ({
         />
       }
       userEmail={member.email}
-      userName={member.role === 'admin' ? `${member.first_name || ''} ${member.last_name || ''} (You)` :`${member.first_name || ''} ${member.last_name || ''}`}
+      userName={
+        member.role === 'admin'
+          ? `${member.first_name || ''} ${member.last_name || ''} (You)`
+          : `${member.first_name || ''} ${member.last_name || ''}`
+      }
       slotUserRole={
         // canUpdate && editRole ? (
         //   <CustomAutocomplete
