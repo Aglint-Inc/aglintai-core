@@ -201,11 +201,18 @@ const ProfileDashboard = () => {
           error: 'Enter a valid work email',
         };
       return {
-        newEmail: email.email.value.trim(),
+        newEmail: refactorEmail(email.email.value).trim(),
         error: null,
       };
     } else return { newEmail: null, error: 'Enter a valid work email' };
   };
+
+  const refactorEmail = (email: string) => {
+    const regex = /\+.*@/;
+    if (regex.test(email)) return email.replace(regex, '@');
+    return email;
+  };
+
   const handleSubmitPassword = async () => {
     const { newPassword, error } = handleValidatePassword();
     if (!error) {
