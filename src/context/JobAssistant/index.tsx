@@ -81,7 +81,7 @@ const useJobAssistantContext = () => useContext(JobAssistantContext);
 function JobAssistantProvider({ children }) {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-
+  let job_descriptions = '';
   const [companyDetails, setCompanyDetails] = useState<JobTypeDB | null>(null);
   const [candidates, setCandidates] = useState([]);
   const [applications, setApplications] = useState<any[] | null>(null);
@@ -110,7 +110,6 @@ function JobAssistantProvider({ children }) {
     if (job_id) {
       getCompanyDetails(job_id);
       getApplications(job_id);
-      getJobAssistantChat(job_id);
     }
   }, [router.isReady]);
 
@@ -121,13 +120,14 @@ function JobAssistantProvider({ children }) {
     const { data: thread } = await axios.post(
       '/api/job-assistant/createThread',
       {
-        job_id: router.query?.id as string,
+        job_descriptions: job_descriptions,
       },
     );
+
     if (thread?.error) {
       return;
     }
-    const thread_id = thread?.result?.thread_id as string;
+    const thread_id = thread?.id as string;
 
     localStorage.setItem('thread_id', thread_id);
     const currentDate = new Date();
@@ -325,7 +325,7 @@ function JobAssistantProvider({ children }) {
       pre[messages.length + 1].content.message = {
         html: message,
         text: message,
-        wordCount: message.length,
+        wordCount: message?.length,
       };
       pre[messages.length + 1].content.active = activeMessage;
       pre[messages.length + 1].content.result_candidates = result_candidates;
@@ -340,14 +340,18 @@ function JobAssistantProvider({ children }) {
     await createMessage({
       sender: 'Assistant',
       content: {
-        message: { html: message, text: message, wordCount: message.length },
+        message: {
+          html: message,
+          text: message,
+          wordCount: String(message).length,
+        },
         active: activeMessage,
         result_candidates: result_candidates,
         searchArguments: searchArguments,
       },
       message_id: response.result?.assistantMessageId,
     });
-    const lastMessage = (message as string) || '';
+    const lastMessage = message || '';
     updateJobAssistantChat(
       lastMessage?.length > 50 ? lastMessage.slice(0, 50) : lastMessage,
     );
@@ -362,6 +366,8 @@ function JobAssistantProvider({ children }) {
       .select()
       .eq('id', job_id);
     if (!error) {
+      job_descriptions = job[0].description as string;
+      getJobAssistantChat(job[0].id);
       setCompanyDetails(job[0]);
     }
   }

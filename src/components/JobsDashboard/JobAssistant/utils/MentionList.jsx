@@ -18,12 +18,10 @@ export default forwardRef((props, ref,) => {
     // let listOfUsers = props.items.filter(ele => String(ele.first_name + ' ' + ele.last_name).toLowerCase().includes(String(props.text).toLowerCase().replaceAll('@', '')))
     const [selectedIndex, setSelectedIndex] = useState(null)
     const selectItem = index => {
-        const level = listOfUsers[Number(index)]?.first_name + ' ' + listOfUsers[Number(index)]?.last_name
+        const label = listOfUsers[Number(index)]?.first_name + ' ' + listOfUsers[Number(index)]?.last_name
         const item = listOfUsers[Number(index)]?.application?.id
-
         if (item) {
-            props.command({ id: item, label: level })
-
+            props.command({ id: item, label, })
         }
     }
 

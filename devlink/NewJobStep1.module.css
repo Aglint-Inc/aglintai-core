@@ -29,6 +29,11 @@
   height: auto;
 }
 
+.job-sidebar-main-block.cj-step-2.height-auto.width-780 {
+  max-width: 780px;
+  margin-top: 20px;
+}
+
 .job-sidebar-main-block.cj-step-1 {
   display: flex;
   max-width: 780px;

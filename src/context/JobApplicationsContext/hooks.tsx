@@ -685,7 +685,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     if (initialJobLoad) {
       handleJobApplicationInit();
     }
-  }, [initialJobLoad]);
+  }, [initialJobLoad, job?.id]);
 
   const value = {
     applications,

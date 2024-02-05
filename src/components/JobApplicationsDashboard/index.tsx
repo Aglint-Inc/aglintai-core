@@ -565,7 +565,7 @@ const NewJobFilterBlock = ({
   );
 };
 
-const AddCandidates = ({
+export const AddCandidates = ({
   openImportCandidates,
   setOpenImportCandidates,
 }: {

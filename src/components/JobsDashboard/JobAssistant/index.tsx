@@ -28,12 +28,13 @@ import {
 } from '@/src/context/JobAssistant/utils';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
+import AssistantChatMessage from './AssistantChatMessage';
 import ChatEditor, { SendIcon } from './ChatEditor';
 import LeftPanel from './LeftPannel';
 import Loader from '../../Common/Loader';
 import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
-function JobAssistant() {
+function JobAssistant({ setMaximizeChat, maximizeChat }) {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     handleChat,
@@ -46,10 +47,9 @@ function JobAssistant() {
     candidates,
     fetching,
   } = useJobAssistantContext();
-  let [candidatesList, setCandidateList] = useState<
-    CandidateDetailsInterface[]
-  >([]);
+
   let suggestionsPrompts = [];
+  let candidatesList = [] as CandidateDetailsInterface[];
 
   let getEditorRef: () => Editor = null;
 
@@ -59,26 +59,26 @@ function JobAssistant() {
       TypoElement.scrollTop = TypoElement && TypoElement.scrollHeight;
   }, [messages]);
 
-  const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    });
-  }, [candidatesList]);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   });
+  // }, [candidatesList]);
 
-  useEffect(() => {
-    const tempList = [];
-    messages.map((message) => {
-      if (message.content.result_candidates)
-        tempList.push(...message.content.result_candidates);
-    });
-    const filtered = [...new Set(tempList.map((ele) => ele.id))];
-    const finalUser = filtered.length
-      ? candidates.filter((ele) => filtered.includes(ele.id))
-      : candidates;
-    setCandidateList(finalUser);
-  }, [candidates, messages]);
+  // useEffect(() => {
+  //   const tempList = [];
+  //   messages.map((message) => {
+  //     if (message.content.result_candidates)
+  //       tempList.push(...message.content.result_candidates);
+  //   });
+  //   const filtered = [...new Set(tempList.map((ele) => ele.id))];
+  //   const finalUser = filtered.length
+  //     ? candidates.filter((ele) => filtered.includes(ele.id))
+  //     : candidates;
+  //   setCandidateList(finalUser);
+  // }, [candidates, messages]);
   const loadingMessages = [
     'Please wait, job assistant is creating!',
     'Job assistant created!',
@@ -104,13 +104,23 @@ function JobAssistant() {
   }, [fetching]);
 
   return (
-    <Stack direction={'row'} height={'100vh'} width={'100%'}>
-      <LeftPanel />
-      <Stack width={'80%'} spacing={'10px'}>
+    <Stack direction={'row'} height={'100%'} width={'100%'}>
+      {maximizeChat && <LeftPanel />}
+      <Stack width={maximizeChat ? '80%' : '100%'} spacing={'10px'}>
         {currentChat && (
           <JobAssist
-            isMinimizeIconVisible={false}
+            isMinimizeIconVisible={true}
             isViewMoreVisible={false}
+            // onClickMaximize={{
+            //   onClick: () => {
+            //     setMaximizeChat((pre) => !pre);
+            //   },
+            // }}
+            onClickMinimize={{
+              onClick: () => {
+                setMaximizeChat((pre) => !pre);
+              },
+            }}
             isStartingScreenVisible={!fetching && !messages.length}
             isChatBody={fetching || !!messages.length}
             slotLogo={
@@ -132,7 +142,6 @@ function JobAssistant() {
                     </Stack>
                   </>
                 ) : (
-                  !loading &&
                   messages.length &&
                   messages.map((ele, i) => {
                     const { sender, content } = ele;
@@ -142,13 +151,14 @@ function JobAssistant() {
                       message,
                       result_candidates,
                     } = content;
-                    const tempCandidates = result_candidates;
+                    candidatesList = result_candidates;
                     if (searchArguments) {
                       suggestionsPrompts = getSuggestedPrompts(
                         searchArguments,
-                        tempCandidates,
+                        candidatesList,
                       );
                     }
+
                     return (
                       <ChatMessage
                         key={i}
@@ -186,17 +196,19 @@ function JobAssistant() {
                                 </Stack>
                               ) : (
                                 message && (
-                                  <Typography
-                                    variant='body2'
-                                    dangerouslySetInnerHTML={{
-                                      __html: marked(
-                                        message.html?.replaceAll(
-                                          /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
-                                          '',
-                                        ),
-                                      ),
-                                    }}
-                                  ></Typography>
+                                  <>
+                                    <AssistantChatMessage
+                                      message={marked(
+                                        message.html
+                                          .replaceAll('<p></p>', '')
+                                          ?.replaceAll('```', '')
+                                          .replaceAll(
+                                            /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
+                                            '',
+                                          ),
+                                      )}
+                                    />
+                                  </>
                                 )
                               )}
                             </>
@@ -205,13 +217,13 @@ function JobAssistant() {
                         textHeading={sender}
                         isMessageCardVisible={
                           sender === chatusers.assistant &&
-                          tempCandidates &&
-                          tempCandidates.length !== 0
+                          candidatesList &&
+                          candidatesList.length !== 0
                         }
                         slotMessageCard={
                           sender === chatusers.assistant &&
                           !active &&
-                          tempCandidates
+                          candidatesList
                             .sort(
                               (a, b) =>
                                 b.application?.overall_score -
@@ -318,16 +330,14 @@ function JobAssistant() {
             }
             isSuggestionVisible={true}
             slotSuggestion={
-              !loading && (
-                <SuggestedPrompts
-                  getEditorRef={() => getEditorRef()}
-                  suggestionsPrompts={suggestionsPrompts}
-                />
-              )
+              <SuggestedPrompts
+                getEditorRef={() => getEditorRef()}
+                suggestionsPrompts={suggestionsPrompts}
+              />
             }
             slotInput={
               <>
-                {!fetching && !loading && !resLoading ? (
+                {candidates.length && !resLoading ? (
                   <ChatEditor
                     onChange={(event) => {
                       const div = document.createElement('div');
@@ -344,8 +354,8 @@ function JobAssistant() {
                     }}
                     getEditorRef={(func) => (getEditorRef = func)}
                     onClick={handleChat}
-                    value={textMessage.text}
-                    dataList={candidatesList}
+                    value={textMessage?.text}
+                    dataList={candidates}
                   />
                 ) : (
                   <FakeInput />

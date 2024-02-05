@@ -38,12 +38,11 @@ function ChatEditor({
           ...suggetion,
           items: ({ query }) => {
             return dataList.filter((item) =>
-              String(item.first_name)
+              String(item.first_name + ' ' + item.last_name)
                 .toLowerCase()
-                .startsWith(query.toLowerCase()),
+                .includes(query.toLowerCase()),
             );
           },
-          allowSpaces: true,
         },
         renderHTML({ node, options }) {
           const { HTMLAttributes } = options;
@@ -78,15 +77,15 @@ function ChatEditor({
         if (!editor.isEmpty) {
           const text = editor.getText();
           value = {
-            text,
-            html: editor.getHTML(),
+            text: text.trim(),
+            html: editor.getHTML().trim(),
             wordCount: text.length,
           };
         }
         onChange(value);
       }
     },
-    content: value,
+    content: value.trim(),
   });
 
   if (!editor) {
