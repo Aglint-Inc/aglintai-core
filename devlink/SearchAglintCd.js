@@ -76,16 +76,24 @@ export function SearchAglintCd({
                         />
                       </_Builtin.Block>
                     </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "db-req-text-wrap")}
-                    tag="div"
-                  >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "fw-semibold")}
+                      className={_utils.cx(_styles, "db-req-text-wrap")}
                       tag="div"
                     >
-                      {"Search in Aglint Db"}
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "fw-semibold")}
+                        tag="div"
+                      >
+                        {"Discover Talent"}
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-grey-600")}
+                        tag="div"
+                      >
+                        {
+                          "Find, Connect, and Engage with Potential Candidates Efficiently"
+                        }
+                      </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -141,21 +149,22 @@ export function SearchAglintCd({
                         </_Builtin.Block>
                       </_Builtin.Block>
                     ) : null}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "db-req-text-wrap")}
-                    tag="div"
-                  >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-604")}
+                      className={_utils.cx(_styles, "db-req-text-wrap")}
                       tag="div"
                     >
                       <_Builtin.Block
                         className={_utils.cx(_styles, "fw-semibold")}
                         tag="div"
                       >
+                        {"Talent Rediscovery"}
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-grey-600")}
+                        tag="div"
+                      >
                         {
-                          "Search in all candidates applied to job that you posted"
+                          "Reconnect with Previous Applicants Using Smart Technology"
                         }
                       </_Builtin.Block>
                     </_Builtin.Block>

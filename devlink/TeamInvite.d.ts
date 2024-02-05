@@ -6,4 +6,6 @@ declare function TeamInvite(props: {
   slotForm?: Types.Devlink.Slot;
   slotButtons?: Types.Devlink.Slot;
   onClickClose?: Types.Devlink.RuntimeProps;
+  slotInviteTeamCard?: Types.Devlink.Slot;
+  isInviteTeamCardVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
