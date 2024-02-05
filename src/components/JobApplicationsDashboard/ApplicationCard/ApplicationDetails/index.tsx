@@ -868,12 +868,12 @@ export const ResumeFeedbackParams = ({
     return e === 100
       ? 'Perfect'
       : e >= 75
-        ? 'High'
-        : e >= 50
-          ? 'Average'
-          : e >= 25
-            ? 'Low'
-            : 'Poor';
+      ? 'High'
+      : e >= 50
+      ? 'Average'
+      : e >= 25
+      ? 'Low'
+      : 'Poor';
   };
   return (
     <>
@@ -1405,10 +1405,10 @@ export function Transcript({
                         rating >= 90
                           ? '#228F67'
                           : rating >= 70
-                            ? '#f79a3e'
-                            : rating >= 50
-                              ? '#de701d'
-                              : '#d93f4c',
+                          ? '#f79a3e'
+                          : rating >= 50
+                          ? '#de701d'
+                          : '#d93f4c',
                     },
                   }}
                   textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
@@ -1421,19 +1421,19 @@ export function Transcript({
                         rating >= 90
                           ? '#228F67'
                           : rating >= 70
-                            ? '#f79a3e'
-                            : rating >= 50
-                              ? '#de701d'
-                              : '#d93f4c'
+                          ? '#f79a3e'
+                          : rating >= 50
+                          ? '#de701d'
+                          : '#d93f4c'
                       }
                       bgFill={
                         rating >= 90
                           ? '#edf8f4'
                           : rating >= 70
-                            ? '#fff7ed'
-                            : rating >= 50
-                              ? '#ffeedb'
-                              : '#fff0f1'
+                          ? '#fff7ed'
+                          : rating >= 50
+                          ? '#ffeedb'
+                          : '#fff0f1'
                       }
                       size={5}
                       progress={rating}
@@ -1470,18 +1470,18 @@ export function giveRateInWordForInterview(overAllScore: number) {
   return overAllScore > 90
     ? `Absolutely incredible! 🌟😍`
     : overAllScore > 70
-      ? `Truly outstanding! 🤩`
-      : overAllScore > 50
-        ? `Excellent job! 👏`
-        : `Not up to mark! 😑`;
+    ? `Truly outstanding! 🤩`
+    : overAllScore > 50
+    ? `Excellent job! 👏`
+    : `Not up to mark! 😑`;
 }
 
 export function giveColorForInterviewScore(rating) {
   return rating >= 90
     ? '#228F67'
     : rating >= 70
-      ? '#f79a3e'
-      : rating >= 50
-        ? '#de701d'
-        : '#d93f4c';
+    ? '#f79a3e'
+    : rating >= 50
+    ? '#de701d'
+    : '#d93f4c';
 }

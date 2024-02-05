@@ -304,7 +304,7 @@ export function JobListing({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "share-job-wrappers", "hide")}
+                  className={_utils.cx(_styles, "share-job-wrappers")}
                   tag="div"
                 >
                   <_Builtin.Block

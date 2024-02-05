@@ -15,7 +15,7 @@ export function RecCompanyDetails({
   return (
     <_Component className={_utils.cx(_styles, "sl-main-wrapper")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "sl-logo-block", "margin-b-50")}
+        className={_utils.cx(_styles, "sl-logo-block", "margin-v")}
         tag="div"
       >
         <_Builtin.HtmlEmbed

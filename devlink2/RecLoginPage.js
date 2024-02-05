@@ -42,8 +42,7 @@ export function RecLoginPage({
               "text-xxl",
               "fw-semibold",
               "text-align-center",
-              "text-gray-700",
-              "no-cap"
+              "text-gray-700"
             )}
             tag="div"
           >

@@ -904,10 +904,6 @@
   background-color: var(--gray100-3a86b552);
 }
 
-.share-job-wrappers.hide {
-  display: none;
-}
-
 .div-block-436 {
   margin-top: 18px;
   grid-column-gap: 10px;

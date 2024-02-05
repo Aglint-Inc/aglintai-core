@@ -247,6 +247,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           textCompanyType={recruiter?.industry}
           textAboutJob={'Ask your queries about this job to the recruiter. '}
           textCompanyDescription={recruiter?.company_overview}
+          isDiscriptionEmpty={Boolean(recruiter?.company_overview)}
           textCompanyLocation={post?.location}
           textEmployeeCount={recruiter?.employee_size || '--'}
           slotDescription={
