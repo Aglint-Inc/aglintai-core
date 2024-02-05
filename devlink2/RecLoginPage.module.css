@@ -19,6 +19,15 @@
   margin-bottom: 90px;
 }
 
+.sl-logo-block.margin-b-50 {
+  margin-top: 18px;
+  margin-bottom: 50px;
+}
+
+.sl-logo-block.margin-b-50.mb-90 {
+  margin-bottom: 90px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;
@@ -64,6 +73,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .sl-login-block {
   display: flex;
   width: 100%;
@@ -106,8 +119,8 @@
   text-align: center;
 }
 
-.text-gray-700 {
-  color: var(--gray-700);
+.text-xxl.fw-semibold.text-align-center.text-gray-700.no-cap {
+  text-transform: none;
 }
 
 .sl-login-form {

@@ -28,6 +28,12 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .job-listing-wrappers {
+    padding-top: 50px;
+  }
+}
+
 .div-block-456 {
   max-width: 65%;
   flex: 1;
@@ -206,6 +212,12 @@
   color: var(--red500-2e806c7d);
 }
 
+@media screen and (max-width: 767px) {
+  .text-lg.fw-semibold.responsive-text {
+    font-size: 14px;
+  }
+}
+
 .text-blue-800 {
   color: var(--blue800-09c1dfbf);
 }
@@ -254,6 +266,12 @@
 
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg.text-grey-700.responsive-text {
+    font-size: 14px;
+  }
 }
 
 .text-kale-700 {
@@ -813,6 +831,14 @@
 @media screen and (max-width: 767px) {
   .company-list-link-wrappers {
     margin-top: 0px;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .company-list-link-wrappers {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -855,6 +881,15 @@
   align-items: center;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-445 {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -902,6 +937,10 @@
   border-radius: 8px;
 
   background-color: var(--gray100-3a86b552);
+}
+
+.share-job-wrappers.hide {
+  display: none;
 }
 
 .div-block-436 {

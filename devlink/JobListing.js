@@ -74,13 +74,23 @@ export function JobListing({
                     tag="div"
                   >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg", "text-grey-700")}
+                      className={_utils.cx(
+                        _styles,
+                        "text-lg",
+                        "text-grey-700",
+                        "responsive-text"
+                      )}
                       tag="div"
                     >
                       {textCompanyName}
                     </_Builtin.Block>
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+                      className={_utils.cx(
+                        _styles,
+                        "text-lg",
+                        "fw-semibold",
+                        "responsive-text"
+                      )}
                       tag="div"
                     >
                       {textRole}
@@ -304,7 +314,7 @@ export function JobListing({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "share-job-wrappers")}
+                  className={_utils.cx(_styles, "share-job-wrappers", "hide")}
                   tag="div"
                 >
                   <_Builtin.Block
