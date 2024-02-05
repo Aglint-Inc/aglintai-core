@@ -22,7 +22,7 @@ export function OnboardingFinalState({
           {"Welcome to the Future of Recruiting"}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "text-grey-600")}
+          className={_utils.cx(_styles, "text-grey-600")}
           tag="div"
         >
           {"Kickstart your hiring journey by choosing your best starting point"}

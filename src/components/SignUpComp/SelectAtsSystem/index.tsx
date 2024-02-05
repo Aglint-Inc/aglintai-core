@@ -162,7 +162,7 @@ function SelectAtsSystem() {
                             Enter ATS Name.
                           </UITypography>
                           <UITextField
-                            InputProps={{autoFocus:true}}
+                            InputProps={{ autoFocus: true }}
                             ref={inputRef}
                             //   onChange={(ele) => {
                             //     console.log('error');
@@ -228,7 +228,7 @@ function SelectAtsSystem() {
                 }}
               />
 
-              <Stack direction={'row'}>
+              <Stack direction={'row'} alignItems={'center'} gap={'8px'}>
                 <AUIButton
                   onClick={() => {
                     router.push(`?step=${stepObj.allSet}`, undefined, {

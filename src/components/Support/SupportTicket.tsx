@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
+// import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';
@@ -20,7 +20,7 @@ import { AssigneeSmall } from '@/devlink/AssigneeSmall';
 import { PrioritySmall } from '@/devlink/PrioritySmall';
 import { StatusPillSmall } from '@/devlink/StatusPillSmall';
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
-import { TicketMessageSuggestion } from '@/devlink/TicketMessageSuggestion';
+// import { TicketMessageSuggestion } from '@/devlink/TicketMessageSuggestion';
 import { TicketSideDrawer } from '@/devlink/TicketSideDrawer';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
@@ -32,11 +32,11 @@ import {
 import { palette } from '@/src/context/Theme/Theme';
 import {
   CandidateType,
-  EmailTemplateType,
+  // EmailTemplateType,
   JobApplicationType,
   Public_jobsType,
   Support_ticketType,
-  SupportEmailAPIType,
+  // SupportEmailAPIType,
 } from '@/src/types/data.types';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -44,7 +44,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import {
   allPriority,
   allStatus,
-  fillEmailTemplate,
+  // fillEmailTemplate,
   getCandidateStatusColor,
   mapPriorityColor,
   mapStatusColor,
@@ -81,7 +81,7 @@ function SupportTicketDetails({
   const [application, setApplication] = useState<
     JobApplicationType & CandidateType & { company: string; job_title: string }
   >(null);
-  const [emailTemplates, setEmailTemplates] = useState<EmailTemplateType>(null);
+  // const [emailTemplates, setEmailTemplates] = useState<EmailTemplateType>(null);
 
   const sendMessage = (message: string) => {
     if (
@@ -139,11 +139,11 @@ function SupportTicketDetails({
     // });
     if (ticketProp) {
       setTicket(ticketProp);
-      setEmailTemplates(
-        // @ts-ignore
-        ticketProp.jobsDetails.screening_setting?.screeningEmail
-          ?.emailTemplates,
-      );
+      // setEmailTemplates(
+      //   // @ts-ignore
+      //   ticketProp.jobsDetails.screening_setting?.screeningEmail
+      //     ?.emailTemplates,
+      // );
       ticketProp?.application_id &&
         getApplicationDetails(ticketProp.application_id).then((data) => {
           return data && setApplication(data);
@@ -246,99 +246,101 @@ function SupportTicketDetails({
               )}
             </>
           }
-          slotMessageSuggestion={[
-            {
-              type: 'Invitation mail',
-              function: () =>
-                sendEmail({
-                  application_id: ticket.application_id,
-                  email: application.email,
-                  email_type: 'qualified',
-                  details: {
-                    fromEmail: recruiter.email,
-                    fromName: recruiter.name,
-                    temples: {
-                      subject: fillEmailTemplate(
-                        emailTemplates.interview.subject,
-                        {
-                          first_name: application.first_name,
-                          last_name: application.last_name,
-                          job_title: application.job_title,
-                          company_name: application.company,
-                        },
-                      ),
-                      body: fillEmailTemplate(emailTemplates.interview.body, {
-                        first_name: application.first_name,
-                        last_name: application.last_name,
-                        job_title: application.job_title,
-                        company_name: application.company,
-                      }).replace(
-                        '[interviewLink]',
-                        getInterviewUrl(ticket.application_id),
-                      ),
-                    },
-                  },
-                }),
-            },
-            {
-              type: 'Disqualified mail',
-              function: () =>
-                sendEmail({
-                  application_id: ticket.application_id,
-                  email: application.email,
-                  email_type: 'qualified',
-                  details: {
-                    fromEmail: recruiter.email,
-                    fromName: recruiter.name,
-                    temples: {
-                      subject: fillEmailTemplate(
-                        emailTemplates.rejection.subject,
-                        {
-                          first_name: application.first_name,
-                          last_name: application.last_name,
-                          job_title: application.job_title,
-                          company_name: application.company,
-                        },
-                      ),
-                      body: fillEmailTemplate(emailTemplates.rejection.body, {
-                        first_name: application.first_name,
-                        last_name: application.last_name,
-                        job_title: application.job_title,
-                        company_name: application.company,
-                      }),
-                    },
-                  },
-                }),
-            },
-          ].map((item, index) => (
-            <TicketMessageSuggestion
-              textMessageSuggestion={item.type}
-              key={index}
-              onClickSuggestion={{
-                onClick: () => {
-                  item.function().then(({ emailSend }) => {
-                    if (emailSend) {
-                      callUpdateTicket({
-                        // @ts-ignore
-                        content: [
-                          ...(ticket?.content ? ticket.content : []),
-                          {
-                            type: 'update',
-                            from: 'it_support',
-                            id: userDetails.user.id,
-                            name: recruiter?.name,
-                            text: `${item.type} Email Sent`,
-                            timeStamp: new Date().toISOString(),
-                          },
-                        ],
-                      });
-                      toast.success('Email sent');
-                    } else toast.error('Email not sent');
-                  });
-                },
-              }}
-            />
-          ))}
+          slotMessageSuggestion={''
+          //   [
+          //   {
+          //     type: 'Invitation mail',
+          //     function: () =>
+          //       sendEmail({
+          //         application_id: ticket.application_id,
+          //         email: application.email,
+          //         email_type: 'qualified',
+          //         details: {
+          //           fromEmail: recruiter.email,
+          //           fromName: recruiter.name,
+          //           temples: {
+          //             subject: fillEmailTemplate(
+          //               emailTemplates.interview.subject,
+          //               {
+          //                 first_name: application.first_name,
+          //                 last_name: application.last_name,
+          //                 job_title: application.job_title,
+          //                 company_name: application.company,
+          //               },
+          //             ),
+          //             body: fillEmailTemplate(emailTemplates.interview.body, {
+          //               first_name: application.first_name,
+          //               last_name: application.last_name,
+          //               job_title: application.job_title,
+          //               company_name: application.company,
+          //             }).replace(
+          //               '[interviewLink]',
+          //               getInterviewUrl(ticket.application_id),
+          //             ),
+          //           },
+          //         },
+          //       }),
+          //   },
+          //   {
+          //     type: 'Disqualified mail',
+          //     function: () =>
+          //       sendEmail({
+          //         application_id: ticket.application_id,
+          //         email: application.email,
+          //         email_type: 'qualified',
+          //         details: {
+          //           fromEmail: recruiter.email,
+          //           fromName: recruiter.name,
+          //           temples: {
+          //             subject: fillEmailTemplate(
+          //               emailTemplates.rejection.subject,
+          //               {
+          //                 first_name: application.first_name,
+          //                 last_name: application.last_name,
+          //                 job_title: application.job_title,
+          //                 company_name: application.company,
+          //               },
+          //             ),
+          //             body: fillEmailTemplate(emailTemplates.rejection.body, {
+          //               first_name: application.first_name,
+          //               last_name: application.last_name,
+          //               job_title: application.job_title,
+          //               company_name: application.company,
+          //             }),
+          //           },
+          //         },
+          //       }),
+          //   },
+          // ].map((item, index) => (
+          //   <TicketMessageSuggestion
+          //     textMessageSuggestion={item.type}
+          //     key={index}
+          //     onClickSuggestion={{
+          //       onClick: () => {
+          //         item.function().then(({ emailSend }) => {
+          //           if (emailSend) {
+          //             callUpdateTicket({
+          //               // @ts-ignore
+          //               content: [
+          //                 ...(ticket?.content ? ticket.content : []),
+          //                 {
+          //                   type: 'update',
+          //                   from: 'it_support',
+          //                   id: userDetails.user.id,
+          //                   name: recruiter?.name,
+          //                   text: `${item.type} Email Sent`,
+          //                   timeStamp: new Date().toISOString(),
+          //                 },
+          //               ],
+          //             });
+          //             toast.success('Email sent');
+          //           } else toast.error('Email not sent');
+          //         });
+          //       },
+          //     }}
+          //   />
+          // ))
+        }
           slotTypeMessage={<AddNewMessage sendMessage={sendMessage} />}
           onClickInterviewLink={{
             onClick: () => {
@@ -598,23 +600,23 @@ const getInterviewUrl = (application_id: string) => {
   return `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${application_id}`;
 };
 
-const sendEmail = ({
-  application_id,
-  email,
-  email_type,
-  details,
-}: SupportEmailAPIType) => {
-  return axios
-    .post('/api/support/email', {
-      application_id,
-      email,
-      email_type,
-      details,
-    })
-    .then(({ data }) => {
-      return data as { emailSend: boolean; error: string };
-    });
-};
+// const sendEmail = ({
+//   application_id,
+//   email,
+//   email_type,
+//   details,
+// }: SupportEmailAPIType) => {
+//   return axios
+//     .post('/api/support/email', {
+//       application_id,
+//       email,
+//       email_type,
+//       details,
+//     })
+//     .then(({ data }) => {
+//       return data as { emailSend: boolean; error: string };
+//     });
+// };
 
 const AssignmentComponent = ({
   assign_to,

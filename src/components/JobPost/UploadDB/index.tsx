@@ -390,7 +390,7 @@ function UploadDB({
               }}
             />
 
-            <Stack direction={'row'} spacing={'4px'}>
+            <Stack direction={'row'} spacing={'4px'} sx={{ flexWrap: 'wrap' }}>
               <Typography
                 variant='caption'
                 color={!checked && 'error.main'}
