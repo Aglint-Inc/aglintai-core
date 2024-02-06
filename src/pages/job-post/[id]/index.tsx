@@ -85,7 +85,7 @@ function JobPost() {
     hiringOrganization: {
       '@type': 'Organization',
       name: post?.company || '',
-      logo: post?.logo,
+      logo: recruiter?.logo,
     },
     occupationalCategory: '15-1132.00 Software Developers, Application',
     salaryCurrency: post?.location?.split(', ')[2] == 'India' ? 'INR' : 'USD',

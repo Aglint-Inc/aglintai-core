@@ -36,7 +36,7 @@ export default async function handler(
       },
       data: {
         url: req.body.url, // Replace with your actual job URL
-        type: 'URL_UPDATED',
+        type: req.body?.type === 'delete' ? 'URL_DELETED' : 'URL_UPDATED',
       },
     };
 
