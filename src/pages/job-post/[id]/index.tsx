@@ -113,6 +113,7 @@ function JobPost() {
             ? `${post?.job_title} | ${post?.company}`
             : 'Job posting'
         }
+        url={`${process.env.NEXT_PUBLIC_WEBSITE}${router.asPath}`}
         description='AI Powered Talent Development Platform.'
       />
       {loading ? (
