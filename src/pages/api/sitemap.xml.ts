@@ -44,7 +44,8 @@ const fetchJobIds = async (): Promise<JobType[] | null> => {
   const { data, error } = await supabase
     .from('public_jobs')
     .select('*')
-    .eq('status', 'published');
+    .eq('status', 'published')
+    .eq('posted_by', 'Aglint');
   if (!error) {
     return data as JobType[];
   } else {
