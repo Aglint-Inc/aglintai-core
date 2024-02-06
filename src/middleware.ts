@@ -120,10 +120,10 @@ const allowedPaths = new Set([
   '/api/jobApplications/candidateUpload/manualUpload',
   '/api/jobApplications/candidateUpload/resumeUpload',
   '/api/jobApplications/read',
-
   '/api/job-assistant/createThread',
-
   '/api/job-assistant/cluoud-functions/assistant',
+  '/api/jobpost/indexing',
+  '/api/sitemap.xml',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {
