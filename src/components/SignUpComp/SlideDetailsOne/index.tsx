@@ -165,20 +165,20 @@ export function FetchCompanyDetails() {
           companyDetails?.estimated_num_employees < 5
             ? sizes[0]
             : companyDetails?.estimated_num_employees > 5 &&
-              companyDetails?.estimated_num_employees < 50
-            ? sizes[1]
-            : companyDetails?.estimated_num_employees > 50 &&
-              companyDetails?.estimated_num_employees < 100
-            ? sizes[2]
-            : companyDetails?.estimated_num_employees > 100 &&
-              companyDetails?.estimated_num_employees < 1000
-            ? sizes[3]
-            : companyDetails?.estimated_num_employees > 1000 &&
-              companyDetails?.estimated_num_employees < 5000
-            ? sizes[4]
-            : companyDetails?.estimated_num_employees > 5000
-            ? sizes[5]
-            : '';
+                companyDetails?.estimated_num_employees < 50
+              ? sizes[1]
+              : companyDetails?.estimated_num_employees > 50 &&
+                  companyDetails?.estimated_num_employees < 100
+                ? sizes[2]
+                : companyDetails?.estimated_num_employees > 100 &&
+                    companyDetails?.estimated_num_employees < 1000
+                  ? sizes[3]
+                  : companyDetails?.estimated_num_employees > 1000 &&
+                      companyDetails?.estimated_num_employees < 5000
+                    ? sizes[4]
+                    : companyDetails?.estimated_num_employees > 5000
+                      ? sizes[5]
+                      : '';
         const { data, error } = await supabase
           .from('recruiter')
           .update({
@@ -257,9 +257,11 @@ export function FetchCompanyDetails() {
       setLoading(false);
     }
   }
+  const Agency = localStorage.getItem('flow');
 
   return (
     <RcInfoStep1
+      textheader={`Let's create your ${Agency} profile.`}
       slotInput={
         <Stack width={'100%'} spacing={'10px'}>
           <TextField
