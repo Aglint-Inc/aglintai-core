@@ -85,7 +85,7 @@ function ChatEditor({
         onChange(value);
       }
     },
-    content: value.trim(),
+    content: value,
   });
 
   if (!editor) {
@@ -158,6 +158,13 @@ function ChatEditor({
               e.preventDefault();
             }
           }
+
+          if (e.key === 'Backspace') {
+            const pop_id = document.getElementById('list-popup');
+            if (pop_id) {
+              setIsPopUpOpen(false);
+            }
+          }
         }}
         onKeyUp={(e) => {
           if (e.key === 'Shift') {
@@ -171,7 +178,7 @@ function ChatEditor({
         type='button'
         sx={{ p: '10px' }}
         aria-label='search'
-        disabled={!value.trim()}
+        disabled={!value}
         onClick={onClick}
       >
         <SendIcon />

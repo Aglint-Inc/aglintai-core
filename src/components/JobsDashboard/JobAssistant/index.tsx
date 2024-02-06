@@ -109,13 +109,13 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
       <Stack width={maximizeChat ? '80%' : '100%'} spacing={'10px'}>
         {currentChat && (
           <JobAssist
-            isMinimizeIconVisible={true}
-            isViewMoreVisible={false}
-            // onClickMaximize={{
-            //   onClick: () => {
-            //     setMaximizeChat((pre) => !pre);
-            //   },
-            // }}
+            isMinimizeIconVisible={!maximizeChat}
+            isMaxIconVisible={maximizeChat}
+            onClickMaximize={{
+              onClick: () => {
+                setMaximizeChat((pre) => !pre);
+              },
+            }}
             onClickMinimize={{
               onClick: () => {
                 setMaximizeChat((pre) => !pre);
@@ -195,12 +195,12 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                                   </Stack>
                                 </Stack>
                               ) : (
-                                message && (
+                                message.html && (
                                   <>
                                     <AssistantChatMessage
                                       message={marked(
                                         message.html
-                                          .replaceAll('<p></p>', '')
+                                          ?.replaceAll('<p></p>', '')
                                           ?.replaceAll('```', '')
                                           .replaceAll(
                                             /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
@@ -304,9 +304,10 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                     onClick={() => {
                       setTextMessage({
                         text: ele,
-                        html: '',
+                        html: `<p>${ele}</p>`,
                         wordCount: ele.length,
                       });
+                      setBackEndText(`<p>${ele}</p>`);
                       getEditorRef().commands.setContent(ele);
                       getEditorRef().commands.focus(ele.length + 1);
                       const firstBacktickPos = ele.indexOf('`');
@@ -354,7 +355,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                     }}
                     getEditorRef={(func) => (getEditorRef = func)}
                     onClick={handleChat}
-                    value={textMessage?.text}
+                    value={textMessage?.text?.trim()}
                     dataList={candidates}
                   />
                 ) : (
@@ -372,7 +373,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
 export default JobAssistant;
 
 function SuggestedPrompts({ suggestionsPrompts, getEditorRef }) {
-  const { messages, textMessage, setTextMessage, resLoading } =
+  const { messages, textMessage, setTextMessage, resLoading, setBackEndText } =
     useJobAssistantContext();
   return (
     <>
@@ -386,10 +387,11 @@ function SuggestedPrompts({ suggestionsPrompts, getEditorRef }) {
                   onClickCard={{
                     onClick: () => {
                       setTextMessage({
-                        html: '',
+                        html: `<p>${ele}</p>`,
                         text: ele,
                         wordCount: ele.length,
                       });
+                      setBackEndText(`<p>${ele}</p>`);
 
                       getEditorRef().commands.setContent(ele);
                       getEditorRef().commands.focus(ele.length + 1);

@@ -104,14 +104,13 @@ function JobAssistantProvider({ children }) {
   const [fetching, setFetching] = useState(false);
 
   const inputRef = useRef(null);
-
+  const job_id = router.query?.id as string;
   useEffect(() => {
-    const job_id = router.query?.id as string;
     if (job_id) {
       getCompanyDetails(job_id);
       getApplications(job_id);
     }
-  }, [router.isReady]);
+  }, [job_id]);
 
   ////////////////////////// Create New Chat and Messages ///////////////////////////////////
   async function createNewChat() {
@@ -129,7 +128,6 @@ function JobAssistantProvider({ children }) {
     }
     const thread_id = thread?.id as string;
 
-    localStorage.setItem('thread_id', thread_id);
     const currentDate = new Date();
     const { data: jobAssistantChats, error: chatsError } = await supabase
       .from('job_assiatan_chat')
@@ -193,21 +191,20 @@ function JobAssistantProvider({ children }) {
       });
     if (!error) {
       // console.log(jobAssistantChats);
-      const currectChat = jobAssistantChats.filter(
-        (ele) => ele.thread_id === localStorage.getItem('thread_id'),
-      );
-      if (currectChat.length) {
-        getMessages(currectChat[0].id);
-        setCurrentChat(currectChat[0]);
-        setJobAssistantChats(jobAssistantChats);
-        router.query.chat_id = currectChat[0].id;
-        router.push(router);
-      } else {
+      if (!jobAssistantChats.length) {
         setCurrentChat({
           job_id: router.query?.id as string,
         } as JobAssistantChats);
         createNewChat();
         return;
+      }
+      const currectChat = jobAssistantChats[0];
+      if (currectChat.id) {
+        getMessages(currectChat.id);
+        setCurrentChat(currectChat);
+        setJobAssistantChats(jobAssistantChats);
+        router.query.chat_id = currectChat.id;
+        router.push(router);
       }
     }
   }
@@ -235,7 +232,6 @@ function JobAssistantProvider({ children }) {
 
   function switchChat(chat_id: any) {
     const currect_Chat = jobAssistantChats.filter((ele) => ele.id === chat_id);
-    localStorage.setItem('thread_id', currect_Chat[0].thread_id);
     setCurrentChat(currect_Chat[0]);
     getMessages(chat_id);
     router.query.chat_id = chat_id;
@@ -254,13 +250,18 @@ function JobAssistantProvider({ children }) {
       sender: 'You',
       content: { message: uisideText, active: true },
     };
-    const assistantMEssage = {
+    const assistantMessage = {
       sender: 'Assistant',
       content: {
+        message: {
+          html: '',
+          text: '',
+          wordCount: 0,
+        } as ChatInput,
         active: true,
       },
     };
-    setMessages((pre) => [...pre, userMessage, assistantMEssage]);
+    setMessages((pre) => [...pre, userMessage, assistantMessage]);
     const { data: response } = await axios.post(
       '/api/job-assistant/cluoud-functions/assistant',
       {
