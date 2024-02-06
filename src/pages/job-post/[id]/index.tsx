@@ -67,7 +67,7 @@ function JobPost() {
     employmentType: 'Full-time',
     experienceRequirements: {
       '@type': 'OccupationalExperienceRequirements',
-      monthsOfExperience: post.experience_in_months || 0,
+      monthsOfExperience: post?.experience_in_months || 0,
     },
     incentiveCompensation:
       'Performance-based annual bonus plan, project-completion bonuses',
