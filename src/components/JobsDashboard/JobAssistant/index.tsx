@@ -377,7 +377,7 @@ function SuggestedPrompts({ suggestionsPrompts, getEditorRef }) {
     useJobAssistantContext();
   return (
     <>
-      {!resLoading && messages.length && !textMessage.text
+      {!resLoading && messages.length && !textMessage?.text
         ? [...suggestionsPrompts].map((ele, i) => {
             return (
               <ScrollList key={i} uniqueKey={i}>
