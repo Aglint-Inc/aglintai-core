@@ -44,32 +44,6 @@ export async function saveJobPostToDb(jobForm: JobFormState) {
   return updatedJob as JobTypeDB;
 }
 
-const getjobPostSlug = (
-  jobId: string,
-  jobTitle: string,
-  company: string,
-  location: string,
-) => {
-  if (!jobId || !jobTitle || !company || !location) return '';
-
-  const convertedJobTitle = jobTitle
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '')
-    .replace(/\//g, '-')
-    .replace(/[()]/g, '');
-  const convertedCompany = company
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  const convertedJobLocation = location
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  let slug = `${convertedJobTitle}-at-${convertedCompany}-${convertedJobLocation}-${jobId}`;
-  return slug;
-};
-
 export const getjobformToDbcolumns = (jobForm: JobFormState) => {
   const updateJobData = {
     id: jobForm.jobPostId,
@@ -80,14 +54,14 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     job_type: jobForm.formFields.jobType,
     workplace_type: jobForm.formFields.workPlaceType,
     department: jobForm.formFields.department,
-    slug: jobForm.createdAt
-      ? undefined
-      : getjobPostSlug(
-          jobForm.jobPostId,
-          jobForm.formFields.jobTitle,
-          jobForm.formFields.company,
-          jobForm.formFields.jobLocation,
-        ),
+    // slug: jobForm.createdAt
+    //   ? undefined
+    //   : getjobPostSlug(
+    //       jobForm.jobPostId,
+    //       jobForm.formFields.jobTitle,
+    //       jobForm.formFields.company,
+    //       jobForm.formFields.jobLocation,
+    //     ),
     recruiter_id: jobForm.formFields.recruiterId,
     location: jobForm.formFields.jobLocation,
     email_template: jobForm.formFields.screeningEmail.emailTemplates,

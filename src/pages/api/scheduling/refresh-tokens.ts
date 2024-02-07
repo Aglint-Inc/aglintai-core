@@ -9,8 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { refresh_token } = req.body as BodyParams;
     const newAccessToken = await refreshAccessToken(
       refresh_token,
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_SCHEDULE_CLIENT_ID,
+      process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
     );
     res.status(200).send(newAccessToken);
   } catch (error) {
@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-export async function refreshAccessToken(refreshToken, clientId, clientSecret) {
+async function refreshAccessToken(refreshToken, clientId, clientSecret) {
   const tokenEndpoint = 'https://oauth2.googleapis.com/token';
 
   const requestBody = new URLSearchParams();

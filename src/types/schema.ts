@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       aglint_candidates: {
@@ -1173,6 +1173,7 @@ export interface Database {
           profile_image: string | null
           recruiter_id: string | null
           role: Database["public"]["Enums"]["recruiter_roles"]
+          schedule_auth: Json | null
           user_id: string
         }
         Insert: {
@@ -1190,6 +1191,7 @@ export interface Database {
           profile_image?: string | null
           recruiter_id?: string | null
           role?: Database["public"]["Enums"]["recruiter_roles"]
+          schedule_auth?: Json | null
           user_id: string
         }
         Update: {
@@ -1207,6 +1209,7 @@ export interface Database {
           profile_image?: string | null
           recruiter_id?: string | null
           role?: Database["public"]["Enums"]["recruiter_roles"]
+          schedule_auth?: Json | null
           user_id?: string
         }
         Relationships: [
@@ -1622,19 +1625,6 @@ export interface Database {
           name: string
         }[]
       }
-      get_resume_match: {
-        Args: {
-          job_id: string
-          top_match?: number
-          good_match?: number
-          average_match?: number
-          poor_match?: number
-        }
-        Returns: {
-          match_category: string
-          count: number
-        }[]
-      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -1665,6 +1655,13 @@ export interface Database {
           count: number
         }[]
       }
+      getlocationspool: {
+        Args: {
+          jobid: string
+          section: Database["public"]["Enums"]["application_status"]
+        }
+        Returns: Json
+      }
       getoutreachemails: {
         Args: Record<PropertyKey, never>
         Returns: unknown
@@ -1682,6 +1679,24 @@ export interface Database {
           match: string
           count: number
         }[]
+      }
+      getresumematches: {
+        Args: {
+          jobid: string
+          section: Database["public"]["Enums"]["application_status"]
+          topmatch?: number
+          goodmatch?: number
+          averagematch?: number
+          poormatch?: number
+        }
+        Returns: Json
+      }
+      getskillspool: {
+        Args: {
+          jobid: string
+          section: Database["public"]["Enums"]["application_status"]
+        }
+        Returns: Json
       }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
@@ -1817,7 +1832,16 @@ export interface Database {
       recruiter_roles: "admin" | "recruiter" | "human resource"
     }
     CompositeTypes: {
-      [_ in never]: never
+      location_type: {
+        city: string
+        state: string
+        country: string
+      }
+      my_table_type: {
+        name: string
+        age: number
+        city: string
+      }
     }
   }
 }

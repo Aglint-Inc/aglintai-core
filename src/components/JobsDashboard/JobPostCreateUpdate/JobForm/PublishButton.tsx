@@ -7,6 +7,7 @@ import { useState } from 'react';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -20,7 +21,7 @@ import {
 
 const JobPublishButton = () => {
   const { jobForm, dispatch, formWarnings } = useJobForm();
-  const { handleUIJobUpdate } = useJobs();
+  const { handleUIJobUpdate, jobsData } = useJobs();
   const [isPublishing, setIsPublishing] = useState(false);
   const router = useRouter();
 
@@ -39,7 +40,24 @@ const JobPublishButton = () => {
           })
           .eq('id', jobForm.jobPostId)
           .select(),
-      );
+      ) as PublicJobsType[];
+
+      if (!job.slug) {
+        supabaseWrap(
+          await supabase
+            .from('public_jobs')
+            .update({
+              slug: getjobPostSlug(
+                job.id,
+                job.job_title,
+                job.company,
+                job.location,
+              ),
+            })
+            .eq('id', jobForm.jobPostId),
+        );
+      }
+
       dispatch({
         type: 'updateJobPublishstatus',
         payload: {
@@ -49,7 +67,12 @@ const JobPublishButton = () => {
       if (jobForm.formType === 'new') {
         router.replace(`/jobs/${jobForm.jobPostId}`);
       }
-      await handleUIJobUpdate({ ...job });
+      await handleUIJobUpdate({
+        ...(job as any),
+        count: {
+          ...jobsData.jobs.find((j) => j.id === job.id)?.count,
+        },
+      });
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       axios.post('/api/editjob/publishjob', { job: job });
       toast.success('Job published successfully');
@@ -88,3 +111,29 @@ const JobPublishButton = () => {
 };
 
 export default JobPublishButton;
+
+const getjobPostSlug = (
+  jobId: string,
+  jobTitle: string,
+  company: string,
+  location: string,
+) => {
+  if (!jobId || !jobTitle || !company || !location) return '';
+
+  const convertedJobTitle = jobTitle
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/,/g, '')
+    .replace(/\//g, '-')
+    .replace(/[()]/g, '');
+  const convertedCompany = company
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/,/g, '');
+  const convertedJobLocation = location
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/,/g, '');
+  let slug = `${convertedJobTitle}-at-${convertedCompany}-${convertedJobLocation}-${jobId}`;
+  return slug;
+};

@@ -124,6 +124,9 @@ const allowedPaths = new Set([
   '/api/job-assistant/cluoud-functions/assistant',
   '/api/jobpost/indexing',
   '/api/sitemap.xml',
+  // remove below 2 after testing done
+  '/api/scheduling/google-consent',
+  '/api/scheduling/list-events',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {
