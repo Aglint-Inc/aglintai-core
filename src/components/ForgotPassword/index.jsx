@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { createClient } from '@supabase/supabase-js';
 import { errorMessages } from '@utils/errorMessages';
-import { supabase } from '@utils/supabaseClient';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
@@ -14,6 +14,11 @@ import { useRouter } from 'next/router';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+);
 
 export default function ForgotPasswordComponent() {
   const [loading, setLoading] = useState(false);
@@ -66,18 +71,19 @@ export default function ForgotPasswordComponent() {
         {
           redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
         },
+        
       );
       if (!error) {
         setLoading(false);
         tempEmail = email.current?.value;
         setchangetext('Sent');
         posthog.identify(tempEmail, { Email: tempEmail });
-        posthog.capture("Send reset linked Clicked")
+        posthog.capture('Send reset linked Clicked');
       } else {
         setLoading(false);
       }
     } else {
-      toast.error("Please Enter Email Address")
+      toast.error('Please Enter Email Address');
     }
   };
 

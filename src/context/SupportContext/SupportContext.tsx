@@ -488,8 +488,7 @@ const getAllAdmins = async (recruiter_ids: string[]) => {
     .from('recruiter_user')
     .select('user_id,first_name,last_name,profile_image, recruiter_id')
     .in('recruiter_id', recruiter_ids)
-    .neq('join_status', 'invited')
-    .eq('is_deactivated', false);
+    .neq('join_status', 'invited');
   if (!error) {
     const temp: {
       [key: string]: [
@@ -542,8 +541,7 @@ const getAllEmployee = async (recruiter_id: string) => {
     .from('recruiter_user')
     .select('user_id,first_name,last_name,profile_image')
     .eq('recruiter_id', recruiter_id)
-    .neq('join_status', 'invited')
-    .eq('is_deactivated', false);
+    .neq('join_status', 'invited');
   if (!error) {
     return data;
   }

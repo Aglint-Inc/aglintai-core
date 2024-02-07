@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import { useRouter } from 'next/router';
@@ -17,45 +18,32 @@ import {
   RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
-  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+import { updateRecruiterInDb } from './utils';
 
 interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
-  // eslint-disable-next-line no-unused-vars
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
-  // eslint-disable-next-line no-unused-vars
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   allrecruterRelation: RecruiterRelationsType[];
   setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
-  // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
-  handleUpdatePassword: (
-    // eslint-disable-next-line no-unused-vars
-    password: string,
-    // eslint-disable-next-line no-unused-vars
-    showToast?: boolean,
-  ) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   handleLogout: () => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
   updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
-  role: RoleType;
+  members: RecruiterUserType[];
+  setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
 }
 
 const defaultProvider = {
@@ -77,26 +65,10 @@ const defaultProvider = {
     return true;
   },
   recruiterUser: null,
-  role: null,
   setRecruiterUser: () => {},
+  members: [],
+  setMembers: () => {},
 };
-
-// supabase.auth.onAuthStateChange((event, session) => {
-//   // console.log('session event: ', {
-//   //   event,
-//   //   time: new Date().toLocaleString(),
-//   //   session: session.access_token,
-//   //   cookie: Cookie.get('access_token'),
-//   // });
-//   if (event === 'SIGNED_OUT') {
-//     // delete cookies on sign out
-//     const expires = new Date(0).toUTCString();
-//     document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
-//   } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-//     const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
-//     document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
-//   }
-// });
 
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
@@ -110,81 +82,101 @@ const AuthProvider = ({ children }) => {
   const [allrecruterRelation, setAllrecruterRelation] =
     useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
-
   const [loading, setLoading] = useState<boolean>(true);
-  const [role, setRole] = useState<RoleType>(null);
+  const [members, setMembers] = useState<RecruiterUserType[]>([]);
+
+  useEffect(() => {
+    Promise.all([getSupabaseSession(), fetchUserLocation()]);
+  }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const redirect = window.location.href;
+      allrecruterRelation?.forEach((item) => {
+        posthog.identify(item.recruiter_id, { CompanyId: item.recruiter_id });
+      });
+      if (isRoutePublic(router.route)) return;
+      else if (!loading && !userDetails?.user)
+        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+    }
+  }, [router.isReady, loading]);
+
+  useEffect(() => {
+    if (recruiter?.id && recruiterUser?.role === 'admin') {
+      getMembersFromDB(recruiter?.id, userDetails.user.id);
+    }
+  }, [recruiter?.id]);
+
+  const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
+    const { data, error } = await supabase
+      .from('recruiter_relation')
+      .select()
+      .eq('recruiter_id', recruiter_id)
+      .or(`user_id.eq.${user_id},created_by.eq.${user_id}`);
+    if (!error && data.length) {
+      const userIds = data.map((item) => item.user_id);
+      const { data: users, error: userError } = await supabase
+        .from('recruiter_user')
+        .select()
+        .in('user_id', userIds);
+      if (!userError && users.length) {
+        setMembers(users);
+      }
+    }
+    return [];
+  };
+
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        // if (!isRoutePublic(router.route)) {
-        //   router.push(pageRoutes.LOGIN);
-        // }
         loading && setLoading(false);
-        return;
       }
       if (data.session.user.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
           setUserDetails(newData.session);
         }
-      }
-
-      if (!error) {
+      } else {
         setUserDetails(data.session);
-        const { data: recruiterUser, error: errorUser } = await supabase
-          .from('recruiter_user')
-          .select('*')
-          .eq('user_id', data.session.user.id);
-        if (!errorUser && recruiterUser.length > 0) {
-          if (recruiterUser[0].is_deactivated) {
-            // route something don't login
-          }
-          (recruiterUser[0].join_status || '').toLocaleLowerCase() ===
-            'invited' &&
-            handleUpdateProfile(
-              { join_status: 'joined' },
-              data.session.user.id,
-            );
-          setRecruiterUser(recruiterUser[0]);
-
-          const { data: recruiterRel, error: errorRel } = await supabase
-            .from('recruiter_relation')
-            .select('*')
-            .match({ user_id: data.session.user.id, is_active: true });
-
-          if (!errorRel) {
-            if (recruiterRel.length > 0) {
-              const { data: recruiter, error } = await supabase
-                .from('recruiter')
-                .select('*')
-                .eq('id', recruiterRel[0].recruiter_id);
-              if (!error && recruiter.length > 0) {
-                setRecruiter({
-                  ...recruiter[0],
-                  socials: recruiter[0]?.socials as unknown as SocialsType,
-                });
-                const temp =
-                  recruiter[0]?.roles[String(recruiterUser[0]?.role)];
-                temp && setRole(temp as RoleType);
-              }
-            } else {
-              toast.error(
-                'Something went wrong! Please contact aglint support.',
-              );
-            }
-          } else {
-            toast.error('Something went wrong! Please contact aglint support.');
-          }
-        }
+      }
+      if (router.route !== pageRoutes.LOADING) {
+        await getRecruiterDetails(data.session.user.id);
       }
     } catch (err) {
       router.push(pageRoutes.LOGIN);
-      //
+      handleLogout();
     } finally {
       setLoading(false);
     }
   }
+
+  const getRecruiterDetails = async (user_id: string) => {
+    const { data: recruiterUser, error: errorUser } = await supabase
+      .from('recruiter_user')
+      .select('*')
+      .eq('user_id', user_id);
+    if (!errorUser && recruiterUser.length > 0) {
+      setRecruiterUser(recruiterUser[0]);
+      (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
+        handleUpdateProfile({ join_status: 'joined' }, user_id);
+      const { data: recruiterRel, error: errorRel } = await supabase
+        .from('recruiter_relation')
+        .select('* , recruiter(*)')
+        .match({ user_id: user_id, is_active: true });
+
+      if (!errorRel && recruiterRel.length > 0) {
+        setRecruiter({
+          ...recruiterRel[0].recruiter,
+          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
+        });
+      } else {
+        toast.error('Something went wrong! Please contact aglint support.');
+      }
+    } else {
+      toast.error('Something went wrong! Please contact aglint support.');
+    }
+  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -202,7 +194,6 @@ const AuthProvider = ({ children }) => {
         },
       });
       const data = await response.json();
-
       const country = data.country; // Extract the country code from the response
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
@@ -247,22 +238,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleUpdatePassword = async (
-    password: string,
-    showToast: boolean = false,
-  ): Promise<boolean> => {
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    });
-    if (error) {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
-    } else {
-      showToast && toast.success(`Password reset successfully`);
-      return true;
-    }
-  };
-
   const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
     return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
       if (data) {
@@ -273,22 +248,6 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  useEffect(() => {
-    Promise.all([getSupabaseSession(), fetchUserLocation()]);
-  }, []);
-
-  useEffect(() => {
-    if (router.isReady) {
-      const redirect = window.location.href;
-      allrecruterRelation?.forEach((item) => {
-        posthog.identify(item.recruiter_id, { CompanyId: item.recruiter_id });
-      });
-      if (isRoutePublic(router.route)) return;
-      else if (!loading && !userDetails?.user)
-        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-    }
-  }, [router.isReady, loading]);
-
   return (
     <AuthContext.Provider
       value={{
@@ -298,17 +257,17 @@ const AuthProvider = ({ children }) => {
         recruiter,
         handleUpdateProfile,
         handleUpdateEmail,
-        handleUpdatePassword,
         setRecruiter,
         loading,
         setLoading,
         handleLogout,
         updateRecruiter,
         recruiterUser,
-        role,
         allrecruterRelation,
         setAllrecruterRelation,
         setRecruiterUser,
+        members,
+        setMembers,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -338,20 +297,4 @@ const isRoutePublic = (path = '') => {
       return true;
     }
   }
-};
-
-const updateRecruiterInDb = async (
-  updateData: Partial<RecruiterDB>,
-  id: string,
-) => {
-  const { data, error } = await supabase
-    .from('recruiter')
-    .update(updateData)
-    .eq('id', id)
-    .select();
-  if (!error && data.length) {
-    delete data[0].socials;
-    return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
-  }
-  return null;
 };

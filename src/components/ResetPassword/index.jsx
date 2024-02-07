@@ -92,13 +92,13 @@ export default function ResetPasswordComponent() {
     if (newpassword?.current?.value == confirmpassword?.current?.value) {
       const { error } = await supabase.auth.updateUser({
         password: confirmpassword?.current?.value,
+        data: { is_invite: 'false' }, // for invite user flow this is needed
       });
       if (!error) {
         toast.success('Password reset successfull');
         router.push(pageRoutes.JOBS);
       } else {
         if (error == 'AuthApiError: Password should be at least 8 characters') {
-          // toast.error('Password should be at least 8 characters');
           setPasswordError({
             ...passwordError,
             password: {
@@ -119,7 +119,6 @@ export default function ResetPasswordComponent() {
         }
       }
     } else {
-      // toast.error('The Two Passwords That You Entered Do Not Match!');
       setPasswordError({
         ...passwordError,
         password: {
@@ -135,7 +134,6 @@ export default function ResetPasswordComponent() {
           error: true,
         },
       });
-      // toast.error('The two passwords that you entered do not match!');
     }
   };
 

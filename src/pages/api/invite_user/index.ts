@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { InviteUserAPIType, RecruiterUserType } from '@/src/types/data.types';
+import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
+import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { companyType } from '@/src/utils/userRoles';
 
@@ -16,7 +17,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { users, id } = req.body as unknown as InviteUserAPIType['in'];
+    const { users, id, recruiter_user } =
+      req.body as unknown as InviteUserAPIType['in'];
     if (!users && !id) {
       return res
         .status(400)
@@ -28,21 +30,22 @@ export default async function handler(
       let user_id: string = null;
       try {
         for (let user of users) {
-          const { data, error } = await supabase.auth.signUp({
+          const { data, error } = await supabase.auth.admin.createUser({
             email: user.email,
-            password: 'Aglint@123',
-            options: {
-              data: {
-                role: companyType.COMPANY,
-              },
+            password: 'password',
+            user_metadata: {
+              name: user.name,
+              role: companyType.COMPANY,
+              is_invite: 'true',
+              invite_user: recruiter_user,
             },
           });
-          user_id = data.user.id;
-          await supabase.auth.signOut();
+
           if (error) throw new Error(error.message);
+          user_id = data.user.id;
           const email = data.user.email;
           const userId = data.user.id;
-          await supabase
+          const { data: recUser, error: errorRecUser } = await supabase
             .from('recruiter_user')
             .insert({
               user_id: userId,
@@ -51,9 +54,8 @@ export default async function handler(
               email: email,
               join_status: 'invited',
             } as RecruiterUserType)
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
-            });
+            .select();
+          if (errorRecUser) throw new Error(error.message);
 
           await supabase
             .from('recruiter_relation')
@@ -63,9 +65,7 @@ export default async function handler(
               is_active: true,
               created_by: id,
             })
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
-            });
+            .select('*');
 
           await supabase.auth
             .resetPasswordForEmail(email, {
@@ -74,8 +74,13 @@ export default async function handler(
             .then(({ error }) => {
               if (error) throw new Error(error.message);
             });
+
+          res.status(200).send({
+            created: true,
+            error: null,
+            user: recUser[0],
+          });
         }
-        res.status(200).send({ created: true, error: null });
       } catch (error: any) {
         user_id && supabase.auth.admin.deleteUser(user_id);
         return res.status(200).send({ created: null, error: error.message });

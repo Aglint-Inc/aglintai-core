@@ -20,6 +20,7 @@ import {
   UserProfile,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -61,13 +62,8 @@ type PasswordFormFields = {
   confirmPassword: FormValues;
 };
 const ProfileDashboard = () => {
-  const {
-    userDetails,
-    handleUpdateProfile,
-    recruiterUser,
-    handleUpdatePassword,
-    handleUpdateEmail,
-  } = useAuthDetails();
+  const { userDetails, handleUpdateProfile, recruiterUser, handleUpdateEmail } =
+    useAuthDetails();
   const userMail = userDetails.user.email;
   const router = useRouter();
   const initialFormValues: FormValues = {

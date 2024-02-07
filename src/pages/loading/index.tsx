@@ -46,10 +46,12 @@ export default function Loading() {
       } else {
         toast.error('Unable to login. Please try again later');
         router.push(pageRoutes.LOGIN);
+        await handleLogout();
       }
     } catch (error) {
       toast.error('Unable to login. Please try again later');
       router.push(pageRoutes.LOGIN);
+      await handleLogout();
     }
   };
 
@@ -82,8 +84,6 @@ export default function Loading() {
           });
           if (data.length == 0) {
             (async () => {
-              await refershAccessToken();
-
               const { error: erroruser } = await supabase
                 .from('recruiter_user')
                 .insert({
@@ -162,12 +162,6 @@ export default function Loading() {
           router.push(pageRoutes.LOGIN);
         }
       });
-  };
-
-  const refershAccessToken = async () => {
-    await supabase.auth.refreshSession({
-      refresh_token: userDetails?.refresh_token,
-    });
   };
 
   return (

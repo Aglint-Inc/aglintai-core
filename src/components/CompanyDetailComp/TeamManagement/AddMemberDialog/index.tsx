@@ -1,34 +1,32 @@
-import { Avatar, Drawer, Stack, TextField } from '@mui/material';
+import { Avatar, Drawer, MenuItem, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
 import { TeamInvite, TeamInvitesBlock, TeamPendingInvites } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
+import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { inviteUser, reinviteUser } from '../utils';
+import { inviteUserApi, reinviteUser } from '../utils';
 
 const AddMember = ({
   open,
   menu,
   pendingList,
   onClose,
-  updateMemberList,
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
   pendingList: RecruiterUserType[];
   onClose: () => void;
-  // eslint-disable-next-line no-unused-vars
-  updateMemberList: () => void;
 }) => {
-  const { userDetails } = useAuthDetails();
+  const { userDetails, setMembers, recruiterUser } = useAuthDetails();
   const [form, setForm] = useState<{
     name: string;
     email: string;
     role: RecruiterUserType['role'];
-  }>({ name: null, email: null, role: 'recruiter' });
+  }>({ name: null, email: null, role: 'member' });
 
   const [formError, setFormError] = useState<{
     name: boolean;
@@ -37,7 +35,7 @@ const AddMember = ({
   }>({ name: null, email: null, role: null });
 
   const [isDisable, setIsDisable] = useState(false);
-  const [isResendDisable, setResendDisable] = useState(false)
+  const [isResendDisable, setResendDisable] = useState(false);
 
   const checkValidation = () => {
     if (!form.name || form.name.trim() === '') {
@@ -52,6 +50,27 @@ const AddMember = ({
     }
     return true;
   };
+  const inviteUser = async () => {
+    const res = await inviteUserApi(form, userDetails.user.id, {
+      name: recruiterUser.first_name,
+      email: recruiterUser.email,
+    });
+
+    if (res.status === 200) {
+      let { error, created, user } = res.data;
+      if (!error && created) {
+        setMembers((prev) => [...prev, user]);
+        toast.success('Invite sent');
+        setIsDisable(false);
+        setForm({ ...form, name: null, email: null });
+        return onClose();
+      } else {
+        toast.error('User allready exists');
+        setIsDisable(false);
+      }
+    }
+  };
+
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
       <Stack sx={{ width: '500px' }}>
@@ -81,6 +100,30 @@ const AddMember = ({
                     setForm({ ...form, email: e.target.value });
                   }}
                 />
+                <TextField
+                  value={form.role}
+                  label='Role'
+                  error={formError.role}
+                  onFocus={() => {
+                    setFormError({ ...formError, role: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({
+                      ...form,
+                      role: e.target.value as
+                        | 'admin'
+                        | 'member'
+                        | 'interviewer',
+                    });
+                  }}
+                  select
+                >
+                  {['member', 'admin', 'interviewer'].map((role) => (
+                    <MenuItem key={role} value={role}>
+                      {capitalize(role)}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Stack>
             }
             slotButtons={
@@ -92,23 +135,7 @@ const AddMember = ({
                   onClick={() => {
                     setIsDisable(true);
                     if (checkValidation()) {
-                      inviteUser(form, userDetails.user.id).then(
-                        ({ error, created }) => {
-                          if (!error && created) {
-                            updateMemberList();
-                            toast.success('Invite sent');
-                            setIsDisable(false);
-                            form.name = null;
-                            form.email = null;
-                            return onClose();
-                          } else {
-                            toast.error('User allready exists');
-                            setIsDisable(false);
-                          }
-                          // @ts-ignore
-                          return null;
-                        },
-                      );
+                      inviteUser();
                     }
                   }}
                 >
@@ -149,8 +176,7 @@ const AddMember = ({
                           if (!error && emailSend) {
                             return toast.success('Invite sent');
                           }
-                          // @ts-ignore
-                          return toast.error(error || error?.message);
+                          return toast.error(error);
                         },
                       );
                     }}
