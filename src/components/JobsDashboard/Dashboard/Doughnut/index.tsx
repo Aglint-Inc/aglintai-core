@@ -63,9 +63,11 @@ const DoughnutChart: React.FC<{
 
 const DashboardDoughnutChart = () => {
   const {
-    locationPool: { city: locations },
+    locationPool,
     job: { count },
   } = useJobApplications();
+  const locations = locationPool?.city ?? null;
+  if (!locations) return <></>;
   const totalCount = Object.values(count).reduce((acc, curr) => {
     acc += curr;
     return acc;

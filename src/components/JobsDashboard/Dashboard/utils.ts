@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { CountJobs } from '@/src/context/JobsContext/types';
 
 export const totalCount = (data: CountJobs) =>
@@ -44,13 +45,18 @@ export const countMatches = (inputData) => {
 
 export const grapDependencies = {
   colors: ['#95A4FC', '#BAEDBD', '#B1E3FF', '#A8C5DA', '#A1E3CB'],
-  defer: 'others',
+  defer: ['others', 'unknown'],
 };
 
 export const getOrderedGraphValues = (data: { [id: string]: number }) => {
   const safeData = { ...data };
-  const others = safeData[grapDependencies.defer] ?? null;
-  if (others) delete safeData[grapDependencies.defer];
+  const deferedValues = grapDependencies.defer.reduce((acc, curr) => {
+    if (safeData[curr]) {
+      acc[curr] = safeData[curr];
+      delete safeData[curr];
+    }
+    return acc;
+  }, {}) as { [id: string]: number };
   const result = Object.entries(safeData)
     .sort((a, b) => b[1] - a[1])
     .reduce((acc, curr, i) => {
@@ -61,13 +67,15 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
       });
       return acc;
     }, []) as { name: string; count: number; color: string }[];
-  if (others) {
-    const colorPosition = (result.length + 1) % grapDependencies.colors.length;
+  (result.length + 1) % grapDependencies.colors.length;
+  Object.entries(deferedValues).forEach(([key, value], i) => {
+    const colorPosition =
+      (result.length + 1 + i) % grapDependencies.colors.length;
     result.push({
-      name: grapDependencies.defer,
-      count: others,
-      color: grapDependencies.colors[colorPosition === 0 ? 1 : colorPosition],
+      name: key,
+      count: value,
+      color: grapDependencies.colors[colorPosition],
     });
-  }
+  });
   return result;
 };

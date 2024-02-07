@@ -39,9 +39,9 @@ const JobDashboard = () => {
   );
 };
 
-function Dashboard() {
+const Dashboard = () => {
   const [maximizeChat, setMaximizeChat] = useState(false);
-  const { job, matches, locationPool, skillPool } = useJobApplications();
+  const { job, matches } = useJobApplications();
   const router = useRouter();
 
   const score_matches = countMatches(matches.total);
@@ -92,8 +92,8 @@ function Dashboard() {
                 },
               }}
             />
-            {locationPool && <DashboardDoughnutChart />}
-            {skillPool && <DashboardBarChart />}
+            <DashboardDoughnutChart />
+            <DashboardBarChart />
           </>
         }
         slotStatus={
@@ -121,6 +121,6 @@ function Dashboard() {
       />
     </>
   );
-}
+};
 
 export default JobDashboard;

@@ -75,6 +75,13 @@ export default DashboardBarChart;
 
 function DashboardBarChart() {
   const { skillPool } = useJobApplications();
+  const total = skillPool
+    ? Object.values(skillPool).reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0)
+    : 0;
+  if (total === 0) return <></>;
   const safeSkills = getOrderedGraphValues(skillPool);
   return (
     <Stack
