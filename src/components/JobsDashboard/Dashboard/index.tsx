@@ -41,39 +41,11 @@ const JobDashboard = () => {
 
 function Dashboard() {
   const [maximizeChat, setMaximizeChat] = useState(false);
-  const { job, matches, applications } = useJobApplications();
+  const { job, matches, locationPool, skillPool } = useJobApplications();
   const router = useRouter();
 
-  let score_matches = countMatches(matches.total);
+  const score_matches = countMatches(matches.total);
 
-  let totalCandidaetes = [];
-  let locationCounts = {};
-  let skillsCounts = {};
-  let JdSkills = job.jd_json.skills.map((ele) => ele.field);
-  Object.values(applications).forEach((ele) => {
-    totalCandidaetes.push(...ele);
-    ele.forEach((item) => {
-      const city = item?.candidates?.state;
-      const canSkills =
-        //@ts-ignore
-        (item.candidate_files.resume_json?.skills as any[]) || [];
-      canSkills.forEach((canskill) => {
-        if (JdSkills.includes(canskill)) {
-          const skill = canskill;
-          skillsCounts[skill] = (skillsCounts[skill] || 0) + 1;
-        }
-      });
-      if (city) {
-        const location =
-          city.toLowerCase() === 'ka'
-            ? 'karnataka'
-            : city.toLowerCase() === 'tn'
-              ? 'Tamilnadu'
-              : city.toLowerCase();
-        locationCounts[location] = (locationCounts[location] || 0) + 1;
-      }
-    });
-  });
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   return (
     <>
@@ -120,12 +92,8 @@ function Dashboard() {
                 },
               }}
             />
-            {Object.values(locationCounts).length ? (
-              <DashboardDoughnutChart data={locationCounts} />
-            ) : null}
-            {Object.values(skillsCounts).length ? (
-              <DashboardBarChart data={skillsCounts} />
-            ) : null}
+            {locationPool && <DashboardDoughnutChart />}
+            {skillPool && <DashboardBarChart />}
           </>
         }
         slotStatus={

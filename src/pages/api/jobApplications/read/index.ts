@@ -90,6 +90,14 @@ export type ReadJobApplicationApi = {
         typeof resumeMatchRPCFormatter
       >['matchCount'];
     };
+    skillCount: {
+      [id: string]: number;
+    };
+    locationCount: {
+      city: { [id: string]: number };
+      state: { [id: string]: number };
+      country: { [id: string]: number };
+    };
     filteredCount: {
       // eslint-disable-next-line no-unused-vars
       [key in JobApplicationSections]: number;

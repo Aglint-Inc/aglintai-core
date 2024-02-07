@@ -26,9 +26,46 @@ export const handleRead = async (
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
   search?: ReadJobApplicationApi['request']['search'],
+): Promise<ReadJobApplicationApi['response']> => {
+  const promises = [
+    handleApplicationsRead(
+      sections,
+      job_id,
+      supabase,
+      ranges,
+      sort,
+      filter,
+      search,
+    ),
+    getLocationPool(job_id, supabase),
+    getSkillsPool(job_id, supabase),
+  ];
+  const responses = await Promise.allSettled(promises);
+  if (responses[0].status === 'rejected') throw new Error(responses[0].reason);
+  if (responses[1].status === 'rejected') throw new Error(responses[1].reason);
+  if (responses[2].status === 'rejected') throw new Error(responses[2].reason);
+  return {
+    ...(responses[0].value as Awaited<
+      ReturnType<typeof handleApplicationsRead>
+    >),
+    locationCount: responses[1].value as Awaited<
+      ReturnType<typeof getLocationPool>
+    >,
+    skillCount: responses[2].value as Awaited<ReturnType<typeof getSkillsPool>>,
+  };
+};
+
+export const handleApplicationsRead = async (
+  sections: ReadJobApplicationApi['request']['sections'],
+  job_id: ReadJobApplicationApi['request']['job_id'],
+  supabase: ReturnType<typeof createServerClient<Database>>,
+  ranges?: ReadJobApplicationApi['request']['ranges'],
+  sort?: ReadJobApplicationApi['request']['sort'],
+  filter?: ReadJobApplicationApi['request']['filter'],
+  search?: ReadJobApplicationApi['request']['search'],
 ) => {
   const safeSections = [...new Set(sections.filter((s) => s))];
-  const promises = await createMultiPromise(
+  const promises = createMultiPromise(
     safeSections,
     job_id,
     supabase,
@@ -37,7 +74,8 @@ export const handleRead = async (
     filter ?? null,
     search ?? null,
   );
-  const responses = await Promise.allSettled([...promises]);
+
+  const responses = await Promise.allSettled(promises);
   const result = await handleMultiPromiseValidation(responses, safeSections);
   return result;
 };
@@ -92,7 +130,7 @@ const handleMultiPromiseValidation = (
     Awaited<ReturnType<typeof newReadNewJobApplicationDbAction>>
   >[],
   sections: ReadJobApplicationApi['request']['sections'],
-): ReadJobApplicationApi['response'] => {
+): Omit<ReadJobApplicationApi['response'], 'skillCount' | 'locationCount'> => {
   const response = sections.reduce(
     (acc, curr, i) => {
       const { data, error, filteredCount, unFilteredCount, matchCount } =
@@ -180,6 +218,10 @@ export const newReadNewJobApplicationDbAction = async (
     ),
     getResumeMatch(job_id, supabase, status),
   ]);
+  // response.forEach((r)=>{
+  //   if(r.status==='rejected')
+  //     throw new Error(r.reason)
+  // })
   if (response[0].status === 'rejected') {
     throw new Error(response[0].reason);
   }
@@ -197,6 +239,36 @@ export const newReadNewJobApplicationDbAction = async (
   };
 };
 
+export const getSkillsPool = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
+) => {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 60000);
+  const { data, error } = await supabase.rpc('getskillspool', {
+    jobid: job_id,
+  });
+  if (error)
+    throw new Error(`Skill pool RPC function failure: ${error.message}`);
+  return data as ReadJobApplicationApi['response']['skillCount'];
+};
+
+export const getLocationPool = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
+) => {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 60000);
+  const { data, error } = await supabase.rpc('getlocationspool', {
+    jobid: job_id,
+  });
+  if (error)
+    throw new Error(
+      `Location pool RPC function failure: ${error.message}, ${error.details}, ${error.hint}`,
+    );
+  return data as ReadJobApplicationApi['response']['locationCount'];
+};
+
 export const getResumeMatch = async (
   job_id: string,
   supabase: ReturnType<typeof createServerClient<Database>>,
@@ -205,7 +277,7 @@ export const getResumeMatch = async (
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
   const { data, error } = await supabase
-    .rpc('getresumematch', {
+    .rpc('getresumematches', {
       jobid: job_id,
       section: status,
       topmatch: 80,
@@ -274,22 +346,14 @@ export const readNewJobApplicationDbAction = async (
 };
 
 export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematch']['Returns'],
+  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
 ) => {
   const initialData = {
-    matchCount: {
-      unknownMatch: 0,
-      noMatch: 0,
-      poorMatch: 0,
-      averageMatch: 0,
-      goodMatch: 0,
-      topMatch: 0,
-    },
+    matchCount: unsafeData,
     total: 0,
   };
-  return unsafeData.reduce((acc, { match, count }) => {
-    acc.matchCount[match] = count;
-    acc.total += count;
+  return Object.values(unsafeData).reduce((acc, curr) => {
+    acc.total += curr;
     return acc;
   }, initialData);
 };

@@ -1164,7 +1164,6 @@ export type Database = {
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           first_name: string | null
-          is_deactivated: boolean | null
           join_status: string
           joined_at: string | null
           last_name: string | null
@@ -1182,7 +1181,6 @@ export type Database = {
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           first_name?: string | null
-          is_deactivated?: boolean | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
@@ -1200,7 +1198,6 @@ export type Database = {
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           first_name?: string | null
-          is_deactivated?: boolean | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
@@ -1409,8 +1406,10 @@ export type Database = {
           candidate_phone: string | null
           chat_end: boolean | null
           created_at: string
+          designation: string | null
+          document_text: string | null
+          file_url: string | null
           id: number
-          linkedin_url: string | null
           thread_id: string | null
         }
         Insert: {
@@ -1421,8 +1420,10 @@ export type Database = {
           candidate_phone?: string | null
           chat_end?: boolean | null
           created_at?: string
+          designation?: string | null
+          document_text?: string | null
+          file_url?: string | null
           id?: number
-          linkedin_url?: string | null
           thread_id?: string | null
         }
         Update: {
@@ -1433,8 +1434,10 @@ export type Database = {
           candidate_phone?: string | null
           chat_end?: boolean | null
           created_at?: string
+          designation?: string | null
+          document_text?: string | null
+          file_url?: string | null
           id?: number
-          linkedin_url?: string | null
           thread_id?: string | null
         }
         Relationships: []
@@ -1658,7 +1661,6 @@ export type Database = {
       getlocationspool: {
         Args: {
           jobid: string
-          section: Database["public"]["Enums"]["application_status"]
         }
         Returns: Json
       }
@@ -1694,7 +1696,6 @@ export type Database = {
       getskillspool: {
         Args: {
           jobid: string
-          section: Database["public"]["Enums"]["application_status"]
         }
         Returns: Json
       }
@@ -1829,7 +1830,7 @@ export type Database = {
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       file_type: "resume" | "coverletter" | "cv" | "image"
-      recruiter_roles: "admin" | "recruiter" | "human resource"
+      recruiter_roles: "admin" | "member" | "interviewer"
     }
     CompositeTypes: {
       location_type: {

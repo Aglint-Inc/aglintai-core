@@ -10,17 +10,30 @@ import { capitalize } from 'lodash';
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import { stringToColor } from '../utils';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
+
+import { getOrderedGraphValues } from '../utils';
+
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
-function DoughnutChart({ data }) {
+
+const DoughnutChart: React.FC<{
+  locations: ReturnType<typeof getOrderedGraphValues>;
+}> = ({ locations }) => {
+  const { names, counts, colors } = locations.reduce(
+    (acc, { color, name, count }) => {
+      acc.names.push(name);
+      acc.counts.push(count);
+      acc.colors.push(color);
+      return acc;
+    },
+    { names: [], counts: [], colors: [] },
+  );
   const dataBar = {
-    labels: Object.keys(data),
+    labels: names,
     datasets: [
       {
-        data: Object.values(data),
-        backgroundColor: Object.keys(data).map(
-          (ele) => ele && stringToColor(String(ele)),
-        ),
+        data: counts,
+        backgroundColor: colors,
       },
     ],
   };
@@ -46,14 +59,18 @@ function DoughnutChart({ data }) {
       data={dataBar}
     />
   );
-}
+};
 
-export default DashboardDoughnutChart;
-let totalCount = 0;
-function DashboardDoughnutChart({ data }) {
-  Object.values(data).map((ele) => {
-    totalCount = totalCount + Number(ele);
-  });
+const DashboardDoughnutChart = () => {
+  const {
+    locationPool: { city: locations },
+    job: { count },
+  } = useJobApplications();
+  const totalCount = Object.values(count).reduce((acc, curr) => {
+    acc += curr;
+    return acc;
+  }, 0);
+  const safeLocations = getOrderedGraphValues(locations);
   return (
     <Stack
       sx={{
@@ -68,10 +85,10 @@ function DashboardDoughnutChart({ data }) {
       <Typography variant='subtitle2'>Candidates by Locations</Typography>
       <Stack direction={'row'} spacing={'80px'} alignItems={'center'}>
         <Stack width={'50%'}>
-          <DoughnutChart data={data} />
+          <DoughnutChart locations={safeLocations} />
         </Stack>
         <Stack spacing={'20px'} width={'50%'}>
-          {Object.entries(data).map((locationCount, i) => {
+          {safeLocations.map(({ color, count, name }, i) => {
             return (
               <Stack
                 direction={'row'}
@@ -83,18 +100,16 @@ function DashboardDoughnutChart({ data }) {
                 <Stack direction={'row'} spacing={'10px'} alignItems={'center'}>
                   <Stack
                     sx={{
-                      bgcolor: stringToColor(locationCount[0]),
+                      bgcolor: color,
                       width: '5px',
                       height: '5px',
                       borderRadius: '50%',
                     }}
                   ></Stack>
-                  <Typography variant='body2'>
-                    {capitalize(locationCount[0])}
-                  </Typography>
+                  <Typography variant='body2'>{capitalize(name)}</Typography>
                 </Stack>
                 <Typography variant='body2'>
-                  {((Number(locationCount[1]) / totalCount) * 100).toFixed(0)}%
+                  {((count / totalCount) * 100).toFixed(0)}%
                 </Typography>
               </Stack>
             );
@@ -103,4 +118,6 @@ function DashboardDoughnutChart({ data }) {
       </Stack>
     </Stack>
   );
-}
+};
+
+export default DashboardDoughnutChart;

@@ -9,16 +9,31 @@ import {
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { stringToColor } from '../utils';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
+
+import { getOrderedGraphValues } from '../utils';
+
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
-function BarChart({ data }) {
+
+const BarChart: React.FC<{
+  skills: ReturnType<typeof getOrderedGraphValues>;
+}> = ({ skills }) => {
+  const { names, counts, colors } = skills.reduce(
+    (acc, { color, name, count }) => {
+      acc.names.push(name);
+      acc.counts.push(count);
+      acc.colors.push(color);
+      return acc;
+    },
+    { names: [], counts: [], colors: [] },
+  );
   const dataBar = {
-    labels: Object.keys(data),
+    labels: names,
     datasets: [
       {
         label: 'Count',
-        data: Object.values(data),
-        backgroundColor: Object.keys(data).map((ele) => stringToColor(ele)),
+        data: counts,
+        backgroundColor: colors,
         borderRadius: 8,
         borderSkipped: false,
       },
@@ -54,11 +69,13 @@ function BarChart({ data }) {
       data={dataBar}
     />
   );
-}
+};
 
 export default DashboardBarChart;
 
-function DashboardBarChart({ data }) {
+function DashboardBarChart() {
+  const { skillPool } = useJobApplications();
+  const safeSkills = getOrderedGraphValues(skillPool);
   return (
     <Stack
       sx={{
@@ -71,7 +88,7 @@ function DashboardBarChart({ data }) {
       spacing={'16px'}
     >
       <Typography variant='subtitle2'>Candidates with skills</Typography>
-      <BarChart data={data} />
+      <BarChart skills={safeSkills} />
     </Stack>
   );
 }

@@ -42,23 +42,32 @@ export const countMatches = (inputData) => {
   return convertData(inputData);
 };
 
+export const grapDependencies = {
+  colors: ['#95A4FC', '#BAEDBD', '#B1E3FF', '#A8C5DA', '#A1E3CB'],
+  defer: 'others',
+};
 
-
-export function stringToColor(string: string): string {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+export const getOrderedGraphValues = (data: { [id: string]: number }) => {
+  const safeData = { ...data };
+  const others = safeData[grapDependencies.defer] ?? null;
+  if (others) delete safeData[grapDependencies.defer];
+  const result = Object.entries(safeData)
+    .sort((a, b) => b[1] - a[1])
+    .reduce((acc, curr, i) => {
+      acc.push({
+        name: curr[0],
+        count: curr[1],
+        color: grapDependencies.colors[i % grapDependencies.colors.length],
+      });
+      return acc;
+    }, []) as { name: string; count: number; color: string }[];
+  if (others) {
+    const colorPosition = (result.length + 1) % grapDependencies.colors.length;
+    result.push({
+      name: grapDependencies.defer,
+      count: others,
+      color: grapDependencies.colors[colorPosition === 0 ? 1 : colorPosition],
+    });
   }
-
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-  return color + 'cc';
-}
+  return result;
+};
