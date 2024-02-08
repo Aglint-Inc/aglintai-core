@@ -20,26 +20,22 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { EmptyStateCandidateSearchAglint } from '../EmptyLottie';
+import {
+  setCandidateHistory,
+  setCandidates,
+  setSelectedCandidate,
+  setSelectedCandidates,
+} from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { calculateTotalExperience } from '../utils';
 
 function CdTableRecords({ loading }) {
   const router = useRouter();
   const filters = useBoundStore((state) => state.filters);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
   const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
   const [fetchingNextPage, setFetchingNextPage] = useState(false);
 
   const handleNextPage = async () => {

@@ -194,4 +194,5 @@ export type GreenhouseType = Pick<
 export type OutreachEmailDbType =
   Database['public']['Tables']['outreached_emails']['Row'];
 
-
+export type InterviewPanelType =
+  Database['public']['Tables']['interview_panel']['Row'];

@@ -17,6 +17,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import AddToListComp from '../AddToList';
+import { setCandidates, setEmailOutReach, setSelectedCandidate } from '../store';
 import { Candidate } from '../types';
 import { updateCredits } from '../utils';
 import MuiAvatar from '../../../Common/MuiAvatar';
@@ -24,12 +25,7 @@ import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 
 function CandidateDetail() {
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
-  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
   const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
   const [emailFetch, setEmailFetch] = useState(false);
   const [emailError, setEmailError] = useState(false);

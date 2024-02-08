@@ -2,13 +2,13 @@ import { Drawer, Stack } from '@mui/material';
 
 import { useBoundStore } from '@/src/store';
 
+import { setEmailOutReach } from '../store';
 import EmailOutReach from '../../Database/EmailOutReach/EmailOutReach';
 import EmailOutReachMultiple from '../../Database/EmailOutReach/EmailOutReachMultiple';
 import { OutReachCtxProvider } from '../../Database/EmailOutReach/OutReachCtx';
 
 function EmailOutReachComp() {
   const emailOutReach = useBoundStore((state) => state.emailOutReach);
-  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
 

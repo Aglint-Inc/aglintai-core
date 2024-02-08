@@ -4,7 +4,14 @@ import {
   CandidateDatabaseSlice,
   createCandidateDatabaseSlice,
 } from './components/CandidateDatabase/AppoloSearch/store';
+import {
+  createSchedulingSlice,
+  SchedulingSlice,
+} from './components/Scheduling/store';
 
-export const useBoundStore = create<CandidateDatabaseSlice>((...a) => ({
-  ...createCandidateDatabaseSlice(...a),
-}));
+export const useBoundStore = create<CandidateDatabaseSlice & SchedulingSlice>(
+  (...a) => ({
+    ...createCandidateDatabaseSlice(...a),
+    ...createSchedulingSlice(...a),
+  }),
+);

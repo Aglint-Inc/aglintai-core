@@ -5,16 +5,11 @@ import { useState } from 'react';
 import { CdSavedList, SavedList, SavedListMenu } from '@/devlink';
 import { useBoundStore } from '@/src/store';
 
+import { setIsSelectAll, setSelectedCandidate, setSelectedCandidates } from '../store';
+
 function ViewSavedList() {
   const router = useRouter();
   const candidateLists = useBoundStore((state) => state.lists);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
-  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

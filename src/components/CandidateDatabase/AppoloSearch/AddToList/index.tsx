@@ -20,6 +20,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { setIsSelectAll, setLists, setSelectedCandidate, setSelectedCandidates } from '../store';
+
 function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
@@ -32,17 +34,11 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
     setAnchorEl(null);
   };
   const candidateLists = useBoundStore((state) => state.lists);
-  const setCandidateLists = useBoundStore((state) => state.setLists);
   const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
+
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
+
   const isSelectAll = useBoundStore((state) => state.isSelectAll);
-  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
   const [text, setText] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [selectedList, setSelectedList] = useState<CandidateListTypeDB[]>([]);
@@ -55,7 +51,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       .select();
     if (!error) {
       setText('');
-      setCandidateLists([...candidateLists, data[0]]);
+      setLists([...candidateLists, data[0]]);
       setIsInputVisible(false);
     } else {
       toast.error('Something went wrong! Please try again later.');
@@ -78,7 +74,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       const oldList = candidateLists.filter((list) => {
         return !selectedList.find((l) => l.id === list.id);
       });
-      setCandidateLists([...oldList, ...data]);
+      setLists([...oldList, ...data]);
       setSelectedList([]);
     } else {
       toast.error('Something went wrong! Please try again later.');
@@ -104,7 +100,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
         const oldList = candidateLists.filter((list) => {
           return !selectedList.find((l) => l.id === list.id);
         });
-        setCandidateLists([...oldList, ...data]);
+        setLists([...oldList, ...data]);
         setSelectedCandidates([]);
         setSelectedList([]);
         if (isSelectAll) {

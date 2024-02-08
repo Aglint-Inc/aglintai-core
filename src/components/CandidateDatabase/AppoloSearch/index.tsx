@@ -16,6 +16,18 @@ import EditFilter from './EditFilter';
 import EmailOutReachComp from './EmailOutReach';
 import ListDropdown from './ListDropdown';
 import {
+  setCandidateHistory,
+  setCandidates,
+  setEmailOutReach,
+  setFilters,
+  setIsFilterOpen,
+  setIsSelectAll,
+  setList,
+  setLists,
+  setSelectedCandidate,
+  setSelectedCandidates,
+} from './store';
+import {
   Candidate,
   CandidateSearchHistoryType,
   FetchCandidatesParams,
@@ -28,30 +40,12 @@ import UITypography from '../../Common/UITypography';
 function AppoloSearch() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const setCandidateLists = useBoundStore((state) => state.setLists);
   const list = useBoundStore((state) => state.list);
-  const setList = useBoundStore((state) => state.setList);
   const lists = useBoundStore((state) => state.lists);
-  const setLists = useBoundStore((state) => state.setLists);
-  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
-  const setFilters = useBoundStore((state) => state.setFilters);
-  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
   const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
   const isSelectAll = useBoundStore((state) => state.isSelectAll);
-  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
   const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
-
   const [text, setText] = useState('');
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -104,12 +98,12 @@ function AppoloSearch() {
       const uniqueCand = [...new Set(cand)];
       const resCand = await processCandidatesInBatches(uniqueCand);
       setCandidates(resCand as unknown as Candidate[]);
-      const { data: cdList, error: cdError } = await supabase
+      const { data: cdLists, error: cdError } = await supabase
         .from('candidate_list')
         .select()
         .eq('recruiter_id', recruiter.id);
       if (!cdError) {
-        setCandidateLists(cdList);
+        setLists(cdLists);
       }
     }
     return true;
@@ -123,7 +117,7 @@ function AppoloSearch() {
       .select('*')
       .eq('recruiter_id', recruiter.id);
     if (!error) {
-      setCandidateLists(data.filter((l) => l.id !== id));
+      setLists(data.filter((l) => l.id !== id));
       const list = data.find((l) => l.id === id);
       setList(list);
       const uniqueCand = [...new Set(list.candidates)];

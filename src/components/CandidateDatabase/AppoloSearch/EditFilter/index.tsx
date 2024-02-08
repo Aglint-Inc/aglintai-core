@@ -18,6 +18,7 @@ import { useBoundStore } from '@/src/store';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { setCandidateHistory, setCandidates, setFilters, setIsFilterLoading, setIsFilterOpen, setSelectedCandidate, setSelectedCandidates } from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
 import FilterInput from '../../Search/FilterInput';
@@ -26,21 +27,8 @@ function EditFilter() {
   const router = useRouter();
   const isfilterOpen = useBoundStore((state) => state.isfilterOpen);
   const filters = useBoundStore((state) => state.filters);
-  const setFilters = useBoundStore((state) => state.setFilters);
   const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
-  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
-  const setIsFilterLoading = useBoundStore((state) => state.setIsFilterLoading);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
   const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
-  const setCandidates = useBoundStore((state) => state.setCandidates);
   const [value, setValue] = useState([]);
 
   const handleDelete = (index) => {
