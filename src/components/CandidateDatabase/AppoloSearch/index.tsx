@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import { CdAglintDb, Checkbox } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBoundStore } from '@/src/store';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -26,6 +25,7 @@ import {
   setLists,
   setSelectedCandidate,
   setSelectedCandidates,
+  useCandidateStore,
 } from './store';
 import {
   Candidate,
@@ -40,12 +40,14 @@ import UITypography from '../../Common/UITypography';
 function AppoloSearch() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const list = useBoundStore((state) => state.list);
-  const lists = useBoundStore((state) => state.lists);
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const isSelectAll = useBoundStore((state) => state.isSelectAll);
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const candidates = useBoundStore((state) => state.candidates);
+  const list = useCandidateStore((state) => state.list);
+  const lists = useCandidateStore((state) => state.lists);
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
+  );
+  const isSelectAll = useCandidateStore((state) => state.isSelectAll);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
+  const candidates = useCandidateStore((state) => state.candidates);
   const [text, setText] = useState('');
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [loading, setLoading] = useState(true);

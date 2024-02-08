@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
+import { create } from 'zustand';
 
-import { useBoundStore } from '@/src/store';
 import { CandidateListTypeDB } from '@/src/types/data.types';
 
 import {
@@ -42,39 +42,43 @@ export type CandidateDatabaseSlice = {
   list: CandidateListTypeDB;
 };
 
+export const useCandidateStore = create<CandidateDatabaseSlice>()((...a) => ({
+  ...createCandidateDatabaseSlice(...a),
+}));
+
 export const setList = (list: CandidateListTypeDB) =>
-  useBoundStore.setState({ list });
+  useCandidateStore.setState({ list });
 
 export const setLists = (lists: CandidateListTypeDB[]) =>
-  useBoundStore.setState({ lists });
+  useCandidateStore.setState({ lists });
 
 export const setFilters = (filters: FetchCandidatesParams) =>
-  useBoundStore.setState({ filters });
+  useCandidateStore.setState({ filters });
 
 export const setIsSelectAll = (isSelectAll: boolean) =>
-  useBoundStore.setState({ isSelectAll });
+  useCandidateStore.setState({ isSelectAll });
 
 export const setSelectedCandidates = (selectedCandidates: Candidate[]) =>
-  useBoundStore.setState({ selectedCandidates });
+  useCandidateStore.setState({ selectedCandidates });
 
 export const setSelectedCandidate = (selectedCandidate: Candidate | null) =>
-  useBoundStore.setState({ selectedCandidate });
+  useCandidateStore.setState({ selectedCandidate });
 
 export const setEmailOutReach = (emailOutReach: 'single' | 'multiple' | null) =>
-  useBoundStore.setState({ emailOutReach });
+  useCandidateStore.setState({ emailOutReach });
 
 export const setIsFilterLoading = (isFilterLoading: boolean) =>
-  useBoundStore.setState({ isFilterLoading });
+  useCandidateStore.setState({ isFilterLoading });
 
 export const setIsFilterOpen = (isfilterOpen: boolean) =>
-  useBoundStore.setState({ isfilterOpen });
+  useCandidateStore.setState({ isfilterOpen });
 
 export const setCandidates = (candidates: Candidate[] | null) =>
-  useBoundStore.setState({ candidates });
+  useCandidateStore.setState({ candidates });
 
 export const setCandidateHistory = (
   candidateHistory: CandidateSearchHistoryType,
-) => useBoundStore.setState({ candidateHistory });
+) => useCandidateStore.setState({ candidateHistory });
 
 export const setIsEditDialogOpen = (isEditDialogOpen: boolean) =>
-  useBoundStore.setState({ isEditDialogOpen });
+  useCandidateStore.setState({ isEditDialogOpen });

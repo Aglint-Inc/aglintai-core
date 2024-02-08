@@ -14,7 +14,6 @@ import {
 } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
-import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
@@ -25,17 +24,22 @@ import {
   setCandidates,
   setSelectedCandidate,
   setSelectedCandidates,
+  useCandidateStore,
 } from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { calculateTotalExperience } from '../utils';
 
 function CdTableRecords({ loading }) {
   const router = useRouter();
-  const filters = useBoundStore((state) => state.filters);
-  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const candidates = useBoundStore((state) => state.candidates);
+  const filters = useCandidateStore((state) => state.filters);
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
+  );
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
+  );
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
+  const candidates = useCandidateStore((state) => state.candidates);
   const [fetchingNextPage, setFetchingNextPage] = useState(false);
 
   const handleNextPage = async () => {

@@ -14,21 +14,29 @@ import { useEffect, useState } from 'react';
 import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { palette } from '@/src/context/Theme/Theme';
-import { useBoundStore } from '@/src/store';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { setCandidateHistory, setCandidates, setFilters, setIsFilterLoading, setIsFilterOpen, setSelectedCandidate, setSelectedCandidates } from '../store';
+import {
+  setCandidateHistory,
+  setCandidates,
+  setFilters,
+  setIsFilterLoading,
+  setIsFilterOpen,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
 import FilterInput from '../../Search/FilterInput';
 
 function EditFilter() {
   const router = useRouter();
-  const isfilterOpen = useBoundStore((state) => state.isfilterOpen);
-  const filters = useBoundStore((state) => state.filters);
-  const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
+  const isfilterOpen = useCandidateStore((state) => state.isfilterOpen);
+  const filters = useCandidateStore((state) => state.filters);
+  const isFilterLoading = useCandidateStore((state) => state.isFilterLoading);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
   const [value, setValue] = useState([]);
 
   const handleDelete = (index) => {

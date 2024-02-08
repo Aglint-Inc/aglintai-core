@@ -14,13 +14,18 @@ import {
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBoundStore } from '@/src/store';
 import { CandidateListTypeDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
-import { setIsSelectAll, setLists, setSelectedCandidate, setSelectedCandidates } from '../store';
+import {
+  setIsSelectAll,
+  setLists,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 
 function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const router = useRouter();
@@ -33,12 +38,16 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const handleClosePop = () => {
     setAnchorEl(null);
   };
-  const candidateLists = useBoundStore((state) => state.lists);
-  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
+  const candidateLists = useCandidateStore((state) => state.lists);
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
+  );
 
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
+  );
 
-  const isSelectAll = useBoundStore((state) => state.isSelectAll);
+  const isSelectAll = useCandidateStore((state) => state.isSelectAll);
   const [text, setText] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [selectedList, setSelectedList] = useState<CandidateListTypeDB[]>([]);

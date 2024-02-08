@@ -5,6 +5,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { setInterviewPanels } from './store';
+// import TeamAutoComplete from './TeamTextField';
 
 function ShecdulingMainComp() {
   const { recruiter } = useAuthDetails();
@@ -29,7 +30,8 @@ function ShecdulingMainComp() {
       toast.error('Error fetching interview panel');
     }
   };
-  return <div>ShecdulingMainComp</div>;
+
+  return <>{/* <TeamAutoComplete /> */}</>;
 }
 
 export default ShecdulingMainComp;

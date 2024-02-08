@@ -1,7 +1,13 @@
 import React from 'react';
 
+import ShecdulingMainComp from '@/src/components/Scheduling';
+
 function SchedulingMainPage() {
-  return <div>SchedulingMainPage</div>;
+  return (
+    <>
+      <ShecdulingMainComp />
+    </>
+  );
 }
 
 export default SchedulingMainPage;

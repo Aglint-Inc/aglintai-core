@@ -3,13 +3,17 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { SavedList, SavedListMenu } from '@/devlink';
-import { useBoundStore } from '@/src/store';
 
-import { setIsSelectAll, setSelectedCandidate, setSelectedCandidates } from '../store';
+import {
+  setIsSelectAll,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 
 function ListDropdown({ anchorEl, handleClose, setAnchorEl }) {
   const router = useRouter();
-  const lists = useBoundStore((state) => state.lists);
+  const lists = useCandidateStore((state) => state.lists);
 
   const open = Boolean(anchorEl);
   const id = open ? 'drop' : undefined;

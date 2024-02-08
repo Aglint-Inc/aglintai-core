@@ -11,8 +11,9 @@ import {
   NavTickets,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
+
+import Icon from '../../Common/Icons/Icon';
 
 function SideNavbar() {
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
@@ -61,13 +62,18 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: true,
     },
+    {
+      icon: <Icon variant='Scheduler' width='40' height='40' color='#2F3941' />,
+      text: 'Scheduler',
+      SubComponents: null,
+      route: pageRoutes.SCHEDULING,
+      comingsoon: false,
+      isvisible: true,
+    },
   ];
 
   const newNaveList = useMemo(() => {
     let tempList = navList;
-    // if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
-    //   tempList = tempList.filter((x) => x.route === pageRoutes.SUPPORT);
-    // }
     if (recruiterUser?.role.toLowerCase() !== 'admin')
       tempList = tempList.filter((x) => x.text !== 'Company Settings');
     return tempList;
@@ -107,84 +113,3 @@ function SideNavbar() {
 }
 
 export default SideNavbar;
-
-// function SupportSubNavbar() {
-//   const router = useRouter();
-//   const { allFilter } = useSupportContext();
-//   return (
-//     <>
-//       <TicketSublink
-//         allCount={allFilter.all}
-//         isAllActive={router.query.status === 'all'}
-//         onClickAll={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'all'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=all`);
-//           },
-//         }}
-//         inProgressCount={allFilter['in progress']}
-//         isInProgressActive={router.query.status === 'in progress'}
-//         onClickInProgress={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'in progress'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=in progress`);
-//           },
-//         }}
-//         resolvedCount={allFilter.Resolved}
-//         isResolvedActive={router.query.status === 'resolved'}
-//         onClickResolve={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'resolved'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=resolved`);
-//           },
-//         }}
-//         openCount={allFilter.open}
-//         isOpenActive={router.query.status === 'open'}
-//         onClickOpen={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'open'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=open`);
-//           },
-//         }}
-//         onHoldCount={allFilter['on hold']}
-//         isOnHoldActive={router.query.status === 'on hold'}
-//         onClickOnHold={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'on hold'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=on hold`);
-//           },
-//         }}
-//       />
-//     </>
-//   );
-// }

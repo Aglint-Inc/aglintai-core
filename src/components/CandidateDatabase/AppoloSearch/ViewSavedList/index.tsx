@@ -3,13 +3,12 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { CdSavedList, SavedList, SavedListMenu } from '@/devlink';
-import { useBoundStore } from '@/src/store';
 
-import { setIsSelectAll, setSelectedCandidate, setSelectedCandidates } from '../store';
+import { setIsSelectAll, setSelectedCandidate, setSelectedCandidates, useCandidateStore } from '../store';
 
 function ViewSavedList() {
   const router = useRouter();
-  const candidateLists = useBoundStore((state) => state.lists);
+  const candidateLists = useCandidateStore((state) => state.lists);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

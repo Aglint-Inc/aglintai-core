@@ -1,4 +1,4 @@
-import { Database } from './schema';
+import { Database } from "./schema";
 
 export type AddressType = {
   line1: string;

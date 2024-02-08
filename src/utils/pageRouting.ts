@@ -21,4 +21,5 @@ export const pageRoutes = Object.freeze({
   ASSISTANT: '/assistant',
   PHONESCREEN: '/candidate-phone-screening',
   LOADING: '/loading',
+  SCHEDULING: '/scheduling',
 });
