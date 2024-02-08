@@ -1,6 +1,5 @@
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
 import { RecLoginPage } from '@/devlink2';
@@ -119,7 +118,6 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
-        posthog.identify(details.email, { Email: details.email });
         router.push((router?.query?.redirect as string) || pageRoutes.JOBS);
       } else {
         setErrorCheck({

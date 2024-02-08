@@ -3,8 +3,7 @@ import { pageRoutes } from '@utils/pageRouting';
 import { supabase } from '@utils/supabaseClient';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LoaderSvg } from '@/devlink';
@@ -78,10 +77,6 @@ export default function Loading() {
       .eq('user_id', userDetails?.user?.id)
       .then(async ({ data, error }) => {
         if (!error) {
-          //post hog logging
-          posthog.identify(userDetails.user.email, {
-            Email: userDetails.user.email,
-          });
           if (data.length == 0) {
             (async () => {
               const { error: erroruser } = await supabase

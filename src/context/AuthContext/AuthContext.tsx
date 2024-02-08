@@ -92,9 +92,6 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (router.isReady) {
       const redirect = window.location.href;
-      allrecruterRelation?.forEach((item) => {
-        posthog.identify(item.recruiter_id, { CompanyId: item.recruiter_id });
-      });
       if (isRoutePublic(router.route)) return;
       else if (!loading && !userDetails?.user)
         router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
@@ -141,7 +138,7 @@ const AuthProvider = ({ children }) => {
         setUserDetails(data.session);
       }
       if (router.route !== pageRoutes.LOADING) {
-        await getRecruiterDetails(data.session.user.id);
+        await getRecruiterDetails(data.session);
       }
     } catch (err) {
       router.push(pageRoutes.LOGIN);
@@ -151,21 +148,25 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const getRecruiterDetails = async (user_id: string) => {
+  const getRecruiterDetails = async (userDetails: Session) => {
     const { data: recruiterUser, error: errorUser } = await supabase
       .from('recruiter_user')
       .select('*')
-      .eq('user_id', user_id);
+      .eq('user_id', userDetails.user.id);
     if (!errorUser && recruiterUser.length > 0) {
       setRecruiterUser(recruiterUser[0]);
       (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
-        handleUpdateProfile({ join_status: 'joined' }, user_id);
+        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
       const { data: recruiterRel, error: errorRel } = await supabase
         .from('recruiter_relation')
         .select('* , recruiter(*)')
-        .match({ user_id: user_id, is_active: true });
+        .match({ user_id: userDetails.user.id, is_active: true });
 
       if (!errorRel && recruiterRel.length > 0) {
+        posthog.identify(userDetails.user.email, {
+          Email: userDetails.user.email,
+          CompanyId: recruiterRel[0].recruiter.id,
+        });
         setRecruiter({
           ...recruiterRel[0].recruiter,
           socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
