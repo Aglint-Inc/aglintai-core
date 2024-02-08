@@ -1,37 +1,31 @@
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
-import toast from '@/src/utils/toast';
-
-import { setInterviewPanels } from './store';
-// import TeamAutoComplete from './TeamTextField';
+import { SchedulerDashboard, SchedulerLayout } from '@/devlink2';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 function ShecdulingMainComp() {
-  const { recruiter } = useAuthDetails();
+  const router = useRouter();
 
-  useEffect(() => {
-    if (recruiter?.id) {
-      fetchIntervieWPanel();
-    }
-  }, [recruiter?.id]);
-
-  const fetchIntervieWPanel = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('interview_panel')
-        .select('*')
-        .eq('recruiter_id', recruiter.id);
-      if (error) {
-        throw error;
-      }
-      setInterviewPanels(data);
-    } catch (e) {
-      toast.error('Error fetching interview panel');
-    }
-  };
-
-  return <>{/* <TeamAutoComplete /> */}</>;
+  return (
+    <>
+      <SchedulerLayout
+        slotBody={
+          <SchedulerDashboard
+            onClickAllInterviews={{
+              onClick: () => {
+                router.push(pageRoutes.SCHEDULINGINTERVIEW);
+              },
+            }}
+            onClickInterviewPanel={{
+              onClick: () => {
+                router.push(pageRoutes.SCHEDULINGPANEL);
+              },
+            }}
+          />
+        }
+      />
+    </>
+  );
 }
 
 export default ShecdulingMainComp;

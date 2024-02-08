@@ -1,0 +1,44 @@
+.tr_panel_dashboard {
+  display: flex;
+}
+
+.button_primary {
+  display: flex;
+  padding: 6px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.is_disabled {
+  background-color: #e9ebed;
+  color: #c2c8cc;
+  cursor: auto;
+}
+
+.button_primary.is_enabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.embed_flex {
+  display: flex;
+}

@@ -1,4 +1,4 @@
-import { Database } from "./schema";
+import { Database } from './schema';
 
 export type AddressType = {
   line1: string;
@@ -196,3 +196,9 @@ export type OutreachEmailDbType =
 
 export type InterviewPanelType =
   Database['public']['Tables']['interview_panel']['Row'];
+
+export type InterviewPanelRelationType =
+  Database['public']['Tables']['interview_panel_relation']['Row'];
+
+export type InterviewAvailabilityType =
+  Database['public']['Tables']['interview_availabilties']['Row'];

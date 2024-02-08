@@ -22,4 +22,6 @@ export const pageRoutes = Object.freeze({
   PHONESCREEN: '/candidate-phone-screening',
   LOADING: '/loading',
   SCHEDULING: '/scheduling',
+  SCHEDULINGPANEL: '/scheduling/panel',
+  SCHEDULINGINTERVIEW: '/scheduling/interview',
 });

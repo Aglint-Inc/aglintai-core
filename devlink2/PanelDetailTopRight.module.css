@@ -1,0 +1,30 @@
+.tr_panel_detail {
+  display: flex;
+}
+
+.button_grey {
+  display: flex;
+  padding: 6px 16px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #e9ebed;
+
+  transition: all 200ms ease-in-out;
+
+  color: #2f3941;
+
+  cursor: pointer;
+}
+
+.button_grey:hover {
+  background-color: #d8dcde;
+  color: #2f3941;
+}
+
+.embed_flex {
+  display: flex;
+}
