@@ -1,4 +1,3 @@
-import { StateCreator } from 'zustand';
 import { create } from 'zustand';
 
 import { CandidateListTypeDB } from '@/src/types/data.types';
@@ -9,23 +8,6 @@ import {
   FetchCandidatesParams,
 } from './types';
 import { initialQuery } from './utils';
-
-export const createCandidateDatabaseSlice: StateCreator<
-  CandidateDatabaseSlice
-> = () => ({
-  isEditDialogOpen: false,
-  candidateHistory: null,
-  candidates: null,
-  isfilterOpen: false,
-  isFilterLoading: false,
-  emailOutReach: null,
-  selectedCandidate: null,
-  selectedCandidates: [],
-  isSelectAll: false,
-  filters: initialQuery(),
-  lists: [],
-  list: null,
-});
 
 export type CandidateDatabaseSlice = {
   isEditDialogOpen: boolean;
@@ -42,8 +24,23 @@ export type CandidateDatabaseSlice = {
   list: CandidateListTypeDB;
 };
 
-export const useCandidateStore = create<CandidateDatabaseSlice>()((...a) => ({
-  ...createCandidateDatabaseSlice(...a),
+export let initialCandidateDatabaseState: CandidateDatabaseSlice = {
+  isEditDialogOpen: false,
+  candidateHistory: null,
+  candidates: null,
+  isfilterOpen: false,
+  isFilterLoading: false,
+  emailOutReach: null,
+  selectedCandidate: null,
+  selectedCandidates: [],
+  isSelectAll: false,
+  filters: initialQuery(),
+  lists: [],
+  list: null,
+};
+
+export const useCandidateStore = create<CandidateDatabaseSlice>()(() => ({
+  ...initialCandidateDatabaseState,
 }));
 
 export const setList = (list: CandidateListTypeDB) =>
@@ -82,3 +79,6 @@ export const setCandidateHistory = (
 
 export const setIsEditDialogOpen = (isEditDialogOpen: boolean) =>
   useCandidateStore.setState({ isEditDialogOpen });
+
+export const resetCandidateStore = () =>
+  useCandidateStore.setState({ ...initialCandidateDatabaseState });

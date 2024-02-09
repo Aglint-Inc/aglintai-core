@@ -15,6 +15,7 @@ import EditFilter from './EditFilter';
 import EmailOutReachComp from './EmailOutReach';
 import ListDropdown from './ListDropdown';
 import {
+  resetCandidateStore,
   setCandidateHistory,
   setCandidates,
   setEmailOutReach,
@@ -60,12 +61,7 @@ function AppoloSearch() {
       initialFetch();
     }
     return () => {
-      setFilters(null);
-      setList(null);
-      setCandidateHistory(null);
-      setSelectedCandidates([]);
-      setIsSelectAll(false);
-      setSelectedCandidate(null);
+      resetCandidateStore();
     };
   }, [router, recruiter]);
 
@@ -229,10 +225,10 @@ function AppoloSearch() {
           ) : (
             <Stack direction={'row'} spacing={1} pr={1}>
               <UITypography fontBold='normal' type='small'>
-                {list?.name}
+                {list?.name || '--'}
               </UITypography>
               <UITypography fontBold='normal' type='small' variant='caption'>
-                {`(${list?.candidates.length} candidates)`}
+                {`(${list?.candidates.length || 0} candidates)`}
               </UITypography>
             </Stack>
           )

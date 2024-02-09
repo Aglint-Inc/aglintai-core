@@ -321,25 +321,25 @@ function EditFilter() {
                   !isFilterLoading && handleApplyFilters();
                 }}
                 endIcon={
-                  isFilterLoading && (
+                  isFilterLoading ? (
                     <CircularProgress
                       color='inherit'
                       size={'15px'}
                       sx={{ color: palette.grey[400] }}
                     />
+                  ) : (
+                    <Stack alignItems={'center'} justifyContent={'center'}>
+                      <Image
+                        width={12}
+                        height={12}
+                        alt=''
+                        src={'/images/svg/graphUp.svg'}
+                      />
+                    </Stack>
                   )
                 }
               >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Image
-                    width={12}
-                    height={12}
-                    alt=''
-                    src={'/images/svg/graphUp.svg'}
-                    style={{ marginRight: '10px' }}
-                  />
-                  <p> Apply </p>
-                </div>
+                Apply
               </AUIButton>
             </>
           }
