@@ -10,7 +10,7 @@ import { capitalize } from 'lodash';
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { getOrderedGraphValues } from '../utils';
 
@@ -34,38 +34,41 @@ const DoughnutChart: React.FC<{
       {
         data: counts,
         backgroundColor: colors,
+        borderColor: colors,
       },
     ],
   };
 
   return (
-    <Doughnut
-      options={{
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false, // Set to false to hide the legend
+    <Stack width={'350px'} style={{ aspectRatio: 1 }}>
+      <Doughnut
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false, // Set to false to hide the legend
+            },
           },
-        },
-        scales: {
-          x: {
-            display: false,
+          scales: {
+            x: {
+              display: false,
+            },
+            y: {
+              display: false,
+            },
           },
-          y: {
-            display: false,
-          },
-        },
-      }}
-      data={dataBar}
-    />
+        }}
+        data={dataBar}
+      />
+    </Stack>
   );
 };
 
 const DashboardDoughnutChart = () => {
   const {
-    locationPool,
+    analytics: { locations: locationPool },
     job: { count },
-  } = useJobApplications();
+  } = useJobDashboard();
   const locations = locationPool?.city ?? null;
   if (!locations) return <></>;
   const totalCount = Object.values(count).reduce((acc, curr) => {
@@ -85,29 +88,30 @@ const DashboardDoughnutChart = () => {
       spacing={'16px'}
     >
       <Typography variant='subtitle2'>Candidates by Locations</Typography>
-      <Stack direction={'row'} spacing={'80px'} alignItems={'center'}>
-        <Stack width={'50%'}>
-          <DoughnutChart locations={safeLocations} />
-        </Stack>
-        <Stack spacing={'20px'} width={'50%'}>
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'space-around'}
+      >
+        <DoughnutChart locations={safeLocations} />
+        <Stack gap={3} width={'30%'}>
           {safeLocations.map(({ color, count, name }, i) => {
             return (
               <Stack
                 direction={'row'}
-                alignItems={'center'}
                 justifyContent={'space-between'}
-                spacing={'40px'}
+                gap={5}
                 key={i}
               >
-                <Stack direction={'row'} spacing={'10px'} alignItems={'center'}>
+                <Stack direction={'row'} gap={1} alignItems={'center'}>
                   <Stack
                     sx={{
                       bgcolor: color,
-                      width: '5px',
-                      height: '5px',
-                      borderRadius: '50%',
+                      width: '10px',
+                      aspectRatio: 1,
+                      borderRadius: '100%',
                     }}
-                  ></Stack>
+                  />
                   <Typography variant='body2'>{capitalize(name)}</Typography>
                 </Stack>
                 <Typography variant='body2'>

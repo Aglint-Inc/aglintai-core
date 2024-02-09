@@ -20,6 +20,7 @@ import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
   ApplicantsListEmpty,
+  Breadcrum,
   CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
@@ -167,15 +168,7 @@ const JobApplicationComponent = () => {
           />
         }
         isFetchingPillVisible={atsSync}
-        textJobStatus={capitalize(job?.status ?? 'all')}
-        textRole={capitalize(job.job_title)}
-        textApplicantsNumber={``}
-        onclickHeaderJobs={{
-          onClick: () => {
-            router.push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
+        slotBreadcrumb={<BreadCrumbs />}
         onClickEditJobs={{
           onClick: () => {
             router.push(`/jobs/edit?job_id=${job.id}`);
@@ -234,6 +227,37 @@ const JobApplicationComponent = () => {
         openImportCandidates={openImportCandidates}
         setOpenImportCandidates={setOpenImportCandidates}
       />
+    </>
+  );
+};
+
+const BreadCrumbs = () => {
+  const router = useRouter();
+  const { job } = useJobApplications();
+  return (
+    <>
+      <Breadcrum
+        isLink
+        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        onClickLink={{
+          onClick: () => {
+            router.push(`/jobs?status=${job?.status ?? 'all'}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
+      />
+      <Breadcrum
+        isLink
+        textName={capitalize(job?.job_title ?? 'Job')}
+        onClickLink={{
+          onClick: () => {
+            router.push(`/jobs/${job?.id}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
+        showArrow
+      />
+      <Breadcrum textName={`Candidate list`} showArrow />
     </>
   );
 };

@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { createServerClient } from '@supabase/ssr';
+import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import {
@@ -26,46 +27,9 @@ export const handleRead = async (
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
   search?: ReadJobApplicationApi['request']['search'],
-): Promise<ReadJobApplicationApi['response']> => {
-  const promises = [
-    handleApplicationsRead(
-      sections,
-      job_id,
-      supabase,
-      ranges,
-      sort,
-      filter,
-      search,
-    ),
-    getLocationPool(job_id, supabase),
-    getSkillsPool(job_id, supabase),
-  ];
-  const responses = await Promise.allSettled(promises);
-  if (responses[0].status === 'rejected') throw new Error(responses[0].reason);
-  if (responses[1].status === 'rejected') throw new Error(responses[1].reason);
-  if (responses[2].status === 'rejected') throw new Error(responses[2].reason);
-  return {
-    ...(responses[0].value as Awaited<
-      ReturnType<typeof handleApplicationsRead>
-    >),
-    locationCount: responses[1].value as Awaited<
-      ReturnType<typeof getLocationPool>
-    >,
-    skillCount: responses[2].value as Awaited<ReturnType<typeof getSkillsPool>>,
-  };
-};
-
-export const handleApplicationsRead = async (
-  sections: ReadJobApplicationApi['request']['sections'],
-  job_id: ReadJobApplicationApi['request']['job_id'],
-  supabase: ReturnType<typeof createServerClient<Database>>,
-  ranges?: ReadJobApplicationApi['request']['ranges'],
-  sort?: ReadJobApplicationApi['request']['sort'],
-  filter?: ReadJobApplicationApi['request']['filter'],
-  search?: ReadJobApplicationApi['request']['search'],
 ) => {
   const safeSections = [...new Set(sections.filter((s) => s))];
-  const promises = createMultiPromise(
+  const promises = await createMultiPromise(
     safeSections,
     job_id,
     supabase,
@@ -74,8 +38,7 @@ export const handleApplicationsRead = async (
     filter ?? null,
     search ?? null,
   );
-
-  const responses = await Promise.allSettled(promises);
+  const responses = await Promise.allSettled([...promises]);
   const result = await handleMultiPromiseValidation(responses, safeSections);
   return result;
 };
@@ -104,7 +67,12 @@ const createMultiPromise = (
 
 const handleSinglePromiseValidation = (
   // eslint-disable-next-line no-undef
-  responses: Parameters<typeof handleMultiPromiseValidation>[0][number],
+  responses: PromiseSettledResult<{
+    data: JobApplication[];
+    error: PostgrestError;
+    filteredCount: number;
+    unFilteredCount: number;
+  }>,
   status: JobApplicationSections,
 ) => {
   if (responses.status === 'fulfilled')
@@ -113,27 +81,28 @@ const handleSinglePromiseValidation = (
       error: null,
       filteredCount: { [status]: responses.value.filteredCount },
       unFilteredCount: { [status]: responses.value.unFilteredCount },
-      matchCount: { [status]: responses.value.matchCount },
     };
   return {
     data: null,
     error: { [status]: responses.reason.message },
     filteredCount: null,
     unFilteredCount: null,
-    matchCount: null,
   };
 };
 
 const handleMultiPromiseValidation = (
   // eslint-disable-next-line no-undef
-  responses: PromiseSettledResult<
-    Awaited<ReturnType<typeof newReadNewJobApplicationDbAction>>
-  >[],
+  responses: PromiseSettledResult<{
+    data: JobApplication[];
+    error: PostgrestError;
+    filteredCount: number;
+    unFilteredCount: number;
+  }>[],
   sections: ReadJobApplicationApi['request']['sections'],
-): Omit<ReadJobApplicationApi['response'], 'skillCount' | 'locationCount'> => {
+) => {
   const response = sections.reduce(
     (acc, curr, i) => {
-      const { data, error, filteredCount, unFilteredCount, matchCount } =
+      const { data, error, filteredCount, unFilteredCount } =
         handleSinglePromiseValidation(
           responses[i],
           curr as JobApplicationSections,
@@ -153,10 +122,6 @@ const handleMultiPromiseValidation = (
             ...acc.unFilteredCount,
             ...unFilteredCount,
           },
-          matchCount: {
-            ...acc.matchCount,
-            ...matchCount,
-          },
         };
       return {
         ...acc,
@@ -171,9 +136,22 @@ const handleMultiPromiseValidation = (
       error: null,
       filteredCount: null,
       unFilteredCount: null,
-      matchCount: null,
     },
-  );
+  ) as {
+    data: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: JobApplication[];
+    };
+    error: PostgrestError;
+    filteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
+    };
+    unFilteredCount: {
+      // eslint-disable-next-line no-unused-vars
+      [key in JobApplicationSections]: number;
+    };
+  };
   if (response.error !== null) response.data = null;
   return response;
 };
@@ -216,80 +194,28 @@ export const newReadNewJobApplicationDbAction = async (
       search,
       filter,
     ),
-    getResumeMatch(job_id, supabase, status),
+    supabase
+      .from('applications')
+      .select('*', { count: 'exact', head: true })
+      .eq('job_id', job_id)
+      .eq('status', status),
   ]);
-  // response.forEach((r)=>{
-  //   if(r.status==='rejected')
-  //     throw new Error(r.reason)
-  // })
   if (response[0].status === 'rejected') {
     throw new Error(response[0].reason);
   }
   if (response[1].status === 'rejected') {
     throw new Error(response[1].reason);
   }
+  if (response[1].value.error || response[1].value.count === null) {
+    throw new Error('Count function failure');
+  }
   const safeData = response[0].value;
-  const safeMatchData = response[1].value;
   return {
     data: safeData.data,
     error: null,
-    matchCount: safeMatchData.matchCount,
     filteredCount: safeData.filteredCount,
-    unFilteredCount: safeMatchData.total,
+    unFilteredCount: response[1].value.count,
   };
-};
-
-export const getSkillsPool = async (
-  job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
-) => {
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 60000);
-  const { data, error } = await supabase.rpc('getskillspool', {
-    jobid: job_id,
-  });
-  if (error)
-    throw new Error(`Skill pool RPC function failure: ${error.message}`);
-  return data as ReadJobApplicationApi['response']['skillCount'];
-};
-
-export const getLocationPool = async (
-  job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
-) => {
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 60000);
-  const { data, error } = await supabase.rpc('getlocationspool', {
-    jobid: job_id,
-  });
-  if (error)
-    throw new Error(
-      `Location pool RPC function failure: ${error.message}, ${error.details}, ${error.hint}`,
-    );
-  return data as ReadJobApplicationApi['response']['locationCount'];
-};
-
-export const getResumeMatch = async (
-  job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
-  status: JobApplicationSections,
-) => {
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 60000);
-  const { data, error } = await supabase
-    .rpc('getresumematches', {
-      jobid: job_id,
-      section: status,
-      topmatch: 80,
-      goodmatch: 60,
-      averagematch: 40,
-      poormatch: 20,
-    })
-    .abortSignal(controller.signal);
-  if (error)
-    throw new Error(`Resume match RPC function failure : ${error.message}`);
-  const safeData = resumeMatchRPCFormatter(data);
-  return safeData;
 };
 
 export const readNewJobApplicationDbAction = async (
@@ -336,29 +262,15 @@ export const readNewJobApplicationDbAction = async (
       end_rec_num: range?.end + 1 ?? null,
     })
     .abortSignal(controller.signal);
-  if (error)
-    throw new Error(`Job application RPC function failure : ${error.message}`);
-  const safeData = jobApplicationRPCFormatter(data);
+  if (error) throw new Error(`RPC function failure : ${error.message}`);
+  const safeData = rpcDataFormatter(data);
   return {
     data: safeData.data,
     filteredCount: safeData.filteredCount,
   };
 };
 
-export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
-) => {
-  const initialData = {
-    matchCount: unsafeData,
-    total: 0,
-  };
-  return Object.values(unsafeData).reduce((acc, curr) => {
-    acc.total += curr;
-    return acc;
-  }, initialData);
-};
-
-const jobApplicationRPCFormatter = (
+const rpcDataFormatter = (
   unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {

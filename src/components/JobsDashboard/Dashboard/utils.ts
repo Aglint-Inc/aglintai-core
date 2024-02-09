@@ -44,7 +44,19 @@ export const countMatches = (inputData) => {
 };
 
 export const grapDependencies = {
-  colors: ['#95A4FC', '#BAEDBD', '#B1E3FF', '#A8C5DA', '#A1E3CB'],
+  colors: [
+    '#E9D2F1',
+    '#95A4FC',
+    '#B1E3FF',
+    '#FFD3B6',
+    '#BAEDBD',
+    '#A8C5DA',
+    '#A1E3CB',
+    '#FFCCCB',
+    '#C9FFE5',
+    '#FFDF6B',
+    '#FFAAA5',
+  ],
   defer: ['others', 'unknown'],
 };
 
@@ -52,7 +64,9 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
   const safeData = { ...data };
   const deferedValues = grapDependencies.defer.reduce((acc, curr) => {
     if (safeData[curr]) {
-      acc[curr] = safeData[curr];
+      acc['others'] = acc['others']
+        ? acc['others'] + safeData[curr]
+        : safeData[curr];
       delete safeData[curr];
     }
     return acc;

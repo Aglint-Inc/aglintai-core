@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 
 import { getOrderedGraphValues } from '../utils';
 
@@ -46,12 +46,8 @@ const BarChart: React.FC<{
         responsive: true,
         plugins: {
           legend: {
-            display: false, // Set to false to hide the legend
+            display: false,
           },
-          // title: {
-          //   text: "Interview by company",
-          //   display: true, // Set to false to hide the title
-          // },
         },
         scales: {
           x: {
@@ -74,15 +70,18 @@ const BarChart: React.FC<{
 export default DashboardBarChart;
 
 function DashboardBarChart() {
-  const { skillPool } = useJobApplications();
-  const total = skillPool
-    ? Object.values(skillPool).reduce((acc, curr) => {
+  const {
+    analytics: { skills: skillPool },
+  } = useJobDashboard();
+  const skills = skillPool?.required_skills ?? null;
+  const total = skills
+    ? Object.values(skills).reduce((acc, curr) => {
         acc += curr;
         return acc;
       }, 0)
     : 0;
   if (total === 0) return <></>;
-  const safeSkills = getOrderedGraphValues(skillPool);
+  const safeSkills = getOrderedGraphValues(skills);
   return (
     <Stack
       sx={{

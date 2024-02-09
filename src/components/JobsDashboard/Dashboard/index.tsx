@@ -11,7 +11,7 @@ import {
   AssistStatus,
   DashboardMenu,
 } from '@/devlink';
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { useJobDashboard } from '@/src/context/JobDashboard';
 import NotFoundPage from '@/src/pages/404';
 
 import DashboardBarChart from './BarChart';
@@ -24,7 +24,7 @@ import Loader from '../../Common/Loader';
 import { AddCandidates } from '../../JobApplicationsDashboard';
 
 const JobDashboard = () => {
-  const { initialLoad, job } = useJobApplications();
+  const { initialLoad, job } = useJobDashboard();
 
   return initialLoad ? (
     job !== undefined ? (
@@ -41,10 +41,13 @@ const JobDashboard = () => {
 
 const Dashboard = () => {
   const [maximizeChat, setMaximizeChat] = useState(false);
-  const { job, matches } = useJobApplications();
+  const {
+    job,
+    analytics: { counts },
+  } = useJobDashboard();
   const router = useRouter();
 
-  const score_matches = countMatches(matches.total);
+  const score_matches = countMatches(counts.matches);
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   return (
