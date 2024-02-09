@@ -8,12 +8,12 @@ import {
   NavCd,
   NavCompanySetting,
   NavJobs,
+  NavScheduler,
   NavTickets,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import Icon from '../../Common/Icons/Icon';
 
 function SideNavbar() {
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
@@ -63,7 +63,7 @@ function SideNavbar() {
       isvisible: true,
     },
     {
-      icon: <Icon variant='Scheduler' width='40' height='40' color='#2F3941' />,
+      icon: <NavScheduler isActive={false} />,
       text: 'Scheduler',
       SubComponents: null,
       route: pageRoutes.SCHEDULING,

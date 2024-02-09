@@ -71,7 +71,8 @@ function Panels() {
                 <Stack
                   key={panel.id}
                   onClick={() => {
-                    setIsCreateDialogOpen('edit');
+                    router.push(pageRoutes.SCHEDULINGPANEL + `/${panel.id}`);
+                    // setIsCreateDialogOpen('edit');
                     setPanelName(panel.name);
                     setSelectedUsers(
                       members.filter((member) =>
