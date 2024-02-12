@@ -13,6 +13,7 @@ export const pageRoutes = Object.freeze({
   SETTINGS: '/settings',
   PROFILE: '/profile',
   ProfileLink: '/profile-link',
+  ASSESSMENT: '/assessment-new',
   MOCKTEST: '/assessment',
   JOBPOST: '/job-post/',
   COMPANYPOSTINGS: '/company-postings/',

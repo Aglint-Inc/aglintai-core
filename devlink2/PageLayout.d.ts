@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function SchedulerLayout(props: {
+declare function PageLayout(props: {
   as?: React.ElementType;
   slotTopbarLeft?: Types.Devlink.Slot;
   slotTopbarRight?: Types.Devlink.Slot;

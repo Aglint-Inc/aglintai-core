@@ -1,0 +1,45 @@
+.assesment_landing_search_filters {
+  display: flex;
+  padding: 16px 20px;
+  align-items: center;
+}
+
+.assessment_landing_cards {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  padding: 20px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+@media screen and (min-width: 1920px) {
+  .assessment_landing_cards {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .assessment_landing_cards {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 1440px) {
+  #w-node-_02762ae1-fc6a-acba-3807-0e6f09e14fe5-f5d3a218 {
+    grid-column-start: span 1;
+    grid-column-end: span 1;
+    grid-row-start: span 1;
+    grid-row-end: span 1;
+  }
+}

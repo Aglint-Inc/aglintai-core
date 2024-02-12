@@ -91,6 +91,10 @@
   max-width: 500px;
 }
 
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
 .sl-company-input-wrapper {
   display: flex;
   flex-direction: column;
@@ -183,6 +187,14 @@
 
 .text-black-100 {
   color: var(--black-100);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
 }
 
 .div-block-386 {

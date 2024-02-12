@@ -61,3 +61,11 @@
 .text-gray-600.max-width-500 {
   max-width: 500px;
 }
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}

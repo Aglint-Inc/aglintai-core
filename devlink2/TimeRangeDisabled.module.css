@@ -1,0 +1,52 @@
+.time_range {
+  width: 100%;
+  padding: 4px 10px;
+
+  border: 1px solid black;
+  border-radius: 4px;
+
+  transition: all 200ms ease-in-out;
+
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.time_range.is_available {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-color: #337fbd;
+
+  color: #337fbd;
+
+  cursor: pointer;
+}
+
+.time_range.is_available:hover {
+  border-color: #1f73b7;
+  background-color: #edf7ff;
+}
+
+.time_range.is_confirmed {
+  border-color: #228f67;
+  background-color: #228f67;
+  color: hsla(157.9816513761468, 0.00%, 100.00%, 1.00);
+}
+
+.time_range.is_requested {
+  border-color: #ed8f1c;
+  background-color: #ed8f1c;
+  color: hsla(206.95652173913044, 0.00%, 100.00%, 1.00);
+}
+
+.time_range.is_disabled {
+  border-color: #c2c8cc;
+  background-color: #f8f9f9;
+  color: #c2c8cc;
+}

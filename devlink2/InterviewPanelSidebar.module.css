@@ -5,12 +5,18 @@
   justify-content: space-between;
 }
 
+.sidebar_contents.height_100 {
+  height: 100%;
+}
+
 .sidebar_top {
   display: flex;
   padding: 20px;
   justify-content: space-between;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  border-bottom: 1px solid #e9ebed;
 }
 
 .fw-semibold {
@@ -143,11 +149,34 @@
   text-transform: capitalize;
 }
 
+.sidebar_close {
+  display: flex;
+  align-items: center;
+}
+
 .embed_flex {
   display: flex;
 }
 
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
 .sidebar_body {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   padding: 20px;
   flex-direction: column;
@@ -155,11 +184,24 @@
   grid-row-gap: 30px;
 }
 
+.sidebar_body.height_100 {
+  height: 100%;
+}
+
 .ps_row {
   display: flex;
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.ps_input_slot._3-1grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 .ps_group_title {
@@ -183,6 +225,10 @@
   max-width: 500px;
 }
 
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
 .ps_teams {
   display: flex;
   flex-direction: column;
@@ -204,6 +250,60 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.no_team_member {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+}
+
+.panel_empty {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  padding-top: 100px;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: white;
+}
+
+.no_team_memberfound {
+  display: flex;
+  max-width: 400px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  text-align: center;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
 }
 
 .sidebar_button_wrap {
@@ -273,4 +373,14 @@
   color: #c2c8cc;
 
   cursor: progress;
+}
+
+.button_primary.confirm_availability {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
+}
+
+.button_primary.confirm_availability:hover {
+  background-color: #038153;
 }

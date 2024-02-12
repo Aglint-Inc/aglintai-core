@@ -40,6 +40,14 @@
   max-width: 500px;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
 .cl-sort-option-wrapper {
   position: relative;
   overflow: hidden;
@@ -232,6 +240,10 @@
 
 .text-fuschia-600 {
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-gray-700 {
+  color: var(--gray-700);
 }
 
 .cl-sort-option-bg {

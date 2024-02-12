@@ -15,6 +15,9 @@ export function ScrQuestionsWrapper({
       className={_utils.cx(_styles, "scr-questions-wrapper")}
       tag="div"
     >
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        {"Screening Questions"}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "scr-questions-block")}
         tag="div"
@@ -37,7 +40,10 @@ export function ScrQuestionsWrapper({
         className={_utils.cx(_styles, "scr-options-wrapper")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-gray-600")}
+          tag="div"
+        >
           {"Add screening questions"}
         </_Builtin.Block>
         <_Builtin.Block

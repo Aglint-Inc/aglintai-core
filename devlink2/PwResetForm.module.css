@@ -2,7 +2,6 @@
   position: relative;
 
   display: flex;
-  overflow: auto;
   height: 100vh;
   min-height: 100vh;
   padding: 42px;
@@ -17,6 +16,15 @@
 }
 
 .sl-logo-block.margin-v.mb-90 {
+  margin-bottom: 90px;
+}
+
+.sl-logo-block.margin-b-50 {
+  margin-top: 18px;
+  margin-bottom: 50px;
+}
+
+.sl-logo-block.margin-b-50.mb-90 {
   margin-bottom: 90px;
 }
 
@@ -63,6 +71,10 @@
 
 .text-fuschia-600 {
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-gray-700 {
+  color: var(--gray-700);
 }
 
 .sl-login-block {
@@ -120,8 +132,8 @@
   text-align: center;
 }
 
-.text-gray-700 {
-  color: var(--gray-700);
+.text-xxl.fw-semibold.text-align-center.text-gray-700.no-cap {
+  text-transform: none;
 }
 
 .text-gray-600 {
@@ -146,6 +158,10 @@
 
 .text-gray-600.max-width-500 {
   max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
 }
 
 .sl-login-form {

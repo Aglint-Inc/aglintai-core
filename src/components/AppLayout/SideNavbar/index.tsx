@@ -4,6 +4,7 @@ import posthog from 'posthog-js';
 import { useMemo } from 'react';
 
 import {
+  NavAssessment,
   NavAssistant,
   NavCd,
   NavCompanySetting,
@@ -13,7 +14,6 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
-
 
 function SideNavbar() {
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
@@ -67,6 +67,14 @@ function SideNavbar() {
       text: 'Scheduler',
       SubComponents: null,
       route: pageRoutes.SCHEDULING,
+      comingsoon: false,
+      isvisible: true,
+    },
+    {
+      icon: <NavAssessment isActive={false} />,
+      text: 'Assessment',
+      SubComponents: null,
+      route: pageRoutes.ASSESSMENT,
       comingsoon: false,
       isvisible: true,
     },

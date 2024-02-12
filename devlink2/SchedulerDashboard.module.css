@@ -1,7 +1,6 @@
 .scheduler_cards {
   display: flex;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -43,6 +42,21 @@
 
 .embed_flex {
   display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
 }
 
 .fw-semibold {
@@ -187,6 +201,10 @@
 
 .text-gray-600.max-width-500 {
   max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
 }
 
 .scheduler_arrow {

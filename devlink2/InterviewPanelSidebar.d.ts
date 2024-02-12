@@ -16,4 +16,6 @@ declare function InterviewPanelSidebar(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotLoader?: Types.Devlink.Slot;
   isLoading?: Types.Visibility.VisibilityConditions;
+  onClickInvite?: Types.Devlink.RuntimeProps;
+  isNoTeamFound?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

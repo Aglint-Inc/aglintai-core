@@ -173,6 +173,10 @@
   color: var(--gray-500);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-600 {
   color: var(--kale-600);
 }
@@ -183,6 +187,10 @@
 
 .text-kale-800 {
   color: var(--kale-800);
+}
+
+.text-sm.text-blue-600 {
+  display: flex;
 }
 
 .text-blue-600 {
@@ -446,6 +454,14 @@
 
 .text-color-white {
   color: white;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
 }
 
 .warning-job-wrap {
@@ -733,6 +749,10 @@
 
 .text-gray-600.max-width-500 {
   max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
 }
 
 .cvs-intro-overview-block {

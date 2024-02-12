@@ -134,6 +134,14 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -146,6 +154,10 @@
 
 .text-gray-600.max-width-500 {
   max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
 }
 
 .flex-h {
@@ -193,4 +205,9 @@
   .text-xxl {
     font-size: 22px;
   }
+}
+
+.flex-h.gap-20 {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }

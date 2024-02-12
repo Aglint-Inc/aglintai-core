@@ -418,7 +418,7 @@ export function EmailTemplate({
                       className={_utils.cx(
                         _styles,
                         "text-sm",
-                        "color-grey-600"
+                        "color-gray-600"
                       )}
                       tag="div"
                     >
@@ -562,7 +562,7 @@ export function EmailTemplate({
                         className={_utils.cx(
                           _styles,
                           "text-sm",
-                          "color-grey-600"
+                          "color-gray-600"
                         )}
                         tag="div"
                       >

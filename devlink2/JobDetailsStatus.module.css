@@ -44,6 +44,10 @@
   color: var(--gray-500);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-600 {
   color: var(--kale-600);
 }
@@ -54,6 +58,10 @@
 
 .text-kale-800 {
   color: var(--kale-800);
+}
+
+.text-sm.text-blue-600 {
+  display: flex;
 }
 
 .text-blue-600 {
@@ -118,4 +126,8 @@
 
 .text-green-500 {
   color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.text-gray-700 {
+  color: var(--gray-700);
 }

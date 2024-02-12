@@ -224,6 +224,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .cv-rec-tab-link-bg {
   position: absolute;
   left: 0%;

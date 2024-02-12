@@ -109,6 +109,10 @@
   max-width: 500px;
 }
 
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
 .cb-cli-bg {
   position: absolute;
   left: 0%;

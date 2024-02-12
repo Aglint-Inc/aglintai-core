@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function WelcomeMatCandidateDb(props: {
+declare function PanelDetail(props: {
   as?: React.ElementType;
-  onClickFind?: Types.Devlink.RuntimeProps;
+  slotPanelDetail?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -79,6 +79,14 @@
   max-width: 500px;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
 .text-red-500 {
   color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
@@ -148,15 +156,15 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .scr-description-wrapper {
   display: flex;
   flex-direction: column;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .text-yellow-800 {
@@ -249,6 +257,14 @@
 
 .text-black-100 {
   color: var(--black-100);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
 }
 
 .scr-question-default-content {

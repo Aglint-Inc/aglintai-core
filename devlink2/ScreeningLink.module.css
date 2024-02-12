@@ -158,6 +158,14 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
 .cj-share-via-main {
   display: flex;
   flex-direction: column;
@@ -195,8 +203,16 @@
   color: var(--gray-400);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
+}
+
+.text-sm.text-blue-600 {
+  display: flex;
 }
 
 .cj-copy-icon {

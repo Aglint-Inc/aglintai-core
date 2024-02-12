@@ -40,7 +40,7 @@ export function Breadcrum({
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
             {...onClickLink}
           >

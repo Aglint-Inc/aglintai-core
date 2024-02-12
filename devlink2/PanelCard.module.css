@@ -165,6 +165,10 @@
   color: var(--gray-400);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
 }

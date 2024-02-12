@@ -1,0 +1,34 @@
+.assesment_duration {
+  position: relative;
+
+  display: flex;
+  padding: 0px 8px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.assesment_duration.is_skeleton {
+  width: 113.375px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}

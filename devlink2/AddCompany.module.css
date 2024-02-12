@@ -133,6 +133,14 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
 .icon-block {
   display: flex;
   justify-content: center;
@@ -286,6 +294,10 @@
   z-index: 99;
 
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-gray-700 {
+  color: var(--gray-700);
 }
 
 .cs-sidebar-body {

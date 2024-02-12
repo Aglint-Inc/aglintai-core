@@ -164,6 +164,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .il-dropdown-content {
   position: absolute;
   left: 0%;
@@ -370,6 +374,14 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
 .il-job-info {
   width: 260px;
   margin-left: 32px;
@@ -386,8 +398,16 @@
   color: var(--gray-400);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
+}
+
+.text-sm.text-blue-600 {
+  display: flex;
 }
 
 .ils-dropdown-option {

@@ -1,10 +1,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { SchedulerDashboard } from "./SchedulerDashboard";
 import * as _utils from "./utils";
-import _styles from "./SchedulerLayout.module.css";
+import _styles from "./PageLayout.module.css";
 
-export function SchedulerLayout({
+export function PageLayout({
   as: _Component = _Builtin.Block,
   slotTopbarLeft,
   slotTopbarRight,
@@ -34,17 +33,14 @@ export function SchedulerLayout({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduler_body")}
+        className={_utils.cx(_styles, "slot-body", "height_fixed_calc")}
         tag="div"
       >
         {slotBody ?? (
-          <>
-            <SchedulerDashboard />
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "embed_css")}
-              value="%3Cstyle%3E%0A%20%20%5Bclass%20*%3D%22SchedulerLayout_scheduler_body__%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%20!important%3B%0A%20%20%7D%0A%3C%2Fstyle%3E"
-            />
-          </>
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "embed_css")}
+            value="%3Cstyle%3E%0A%20%20.height_fixed_calc%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%2060px)%20!important%3B%0A%20%20%7D%0A%3C%2Fstyle%3E"
+          />
         )}
       </_Builtin.Block>
     </_Component>

@@ -1,0 +1,156 @@
+.template_card {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  height: 270px;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  transition: all 300ms ease-in-out;
+
+  cursor: pointer;
+}
+
+.template_card:hover {
+  box-shadow: 0 2px 12px -1px hsla(0, 0.00%, 0.00%, 0.11);
+}
+
+.template_card.is_skeleton {
+  z-index: 4;
+  cursor: progress;
+}
+
+.template_card.is_skeleton:hover {
+  box-shadow: none;
+}
+
+.card_top_content {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.card_top_bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.assesment_type_icon {
+  position: relative;
+
+  display: flex;
+  width: 48px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.template_status_block {
+  position: relative;
+  width: 72px;
+  height: 28px;
+  border-radius: 100px;
+}
+
+.card_text_wrapper {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.text_skeleton_wrap {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.text_md_bold_line {
+  position: relative;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.text_md_bold_line._60 {
+  width: 60%;
+}
+
+.text_md_line {
+  position: relative;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.text_md_line._60 {
+  width: 60%;
+}
+
+.text_md_line._80 {
+  width: 80%;
+}
+
+.text_md_line._90 {
+  width: 90%;
+}
+
+.card_bottom_bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.assesment_level {
+  display: flex;
+  padding: 0px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.assesment_level.is_skeleton {
+  position: relative;
+  width: 97.328125px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.assesment_duration {
+  position: relative;
+
+  display: flex;
+  padding: 0px 8px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.assesment_duration.is_skeleton {
+  width: 113.375px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+#w-node-_9bce4c2e-8c8b-5a1f-656f-7948f1c2aee5-f1c2aee5 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

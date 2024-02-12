@@ -39,7 +39,7 @@ export function SummaryBlock({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "cvs-intro-arrow")}
+          className={_utils.cx(_styles, "sidebar-block-arrow")}
           tag="div"
           {...arrowProps}
         >

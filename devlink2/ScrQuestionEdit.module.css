@@ -204,6 +204,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .scr-question-input-wrapper {
   display: flex;
   flex-direction: column;
@@ -261,6 +265,14 @@
 
 .text-gray-600.max-width-500 {
   max-width: 500px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
 }
 
 .scr-question-options-wrapper {

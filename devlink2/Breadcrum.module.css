@@ -175,5 +175,13 @@
 
   background-color: white;
 
+  transition: all 200ms ease-in-out;
+
+  color: #337fbd;
+
   cursor: pointer;
+}
+
+.is_active_link:hover {
+  color: #1f73b7;
 }

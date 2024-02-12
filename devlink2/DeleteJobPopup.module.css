@@ -98,6 +98,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -235,8 +239,24 @@
   color: var(--black-100);
 }
 
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
+}
+
+.text-sm.text-blue-600 {
+  display: flex;
 }
 
 .div-block-331 {

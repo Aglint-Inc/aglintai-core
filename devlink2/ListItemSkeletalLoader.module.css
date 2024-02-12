@@ -42,18 +42,24 @@
   width: 100%;
   padding: 16px 20px;
   align-self: stretch;
-
-  border-bottom: 1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  flex: 1;
 }
 
 .cv-list-column-wrapper.header {
-  border-bottom-style: none;
   background-color: #f8f9f9;
 }
 
 .cv-list-column-wrapper.header.width-auto {
   width: auto;
   align-self: center;
+}
+
+.cv-list-column-wrapper.header.width-auto.no_border {
+  border-bottom-style: none;
+}
+
+.cv-list-column-wrapper.header.width-auto.no_border-copy {
+  border-bottom-style: none;
 }
 
 .cv-list-column-wrapper.header.analysis {
@@ -85,7 +91,9 @@
 }
 
 .cv-list-column-wrapper.name {
-  flex: 0 0 260px;
+  width: 380px;
+  min-width: 380px;
+  flex: 0 0 auto;
 }
 
 .cv-list-column-wrapper.items-v-center {
@@ -96,10 +104,6 @@
 .cv-list-column-wrapper.pv-12 {
   padding-top: 12px;
   padding-bottom: 12px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .skeletal-wrapper {
@@ -183,8 +187,8 @@
 
   display: flex;
   overflow: hidden;
-  margin-right: auto;
-  margin-left: auto;
+  padding-right: 0px;
+  padding-left: 0px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
@@ -213,6 +217,7 @@
 }
 
 .cv-list-column.name.top-can {
+  overflow: visible;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 16px;
@@ -266,8 +271,8 @@
 
 .cv-list-column.analysis {
   overflow: visible;
-  width: 460px;
-  min-width: 460px;
+  width: 100%;
+  min-width: 360px;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -277,29 +282,20 @@
 
 .cv-list-column.overview {
   z-index: -1;
-  width: 410px;
-  min-width: 410px;
+  width: 100%;
+  min-width: 360px;
   align-items: flex-start;
 }
 
 @media screen and (min-width: 1920px) {
   .cv-list-column.overview {
-    width: 600px;
-    min-width: 600px;
+    flex: 1;
   }
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .cv-list-column.analysis2 {
   z-index: -1;
   min-width: 440px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .cv-list-column.screening {

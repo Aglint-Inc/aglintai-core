@@ -197,6 +197,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -303,12 +307,21 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
-.cvs-intro-arrow {
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
+.sidebar-block-arrow {
   display: flex;
   width: 22px;
   height: 22px;
   min-height: 22px;
   min-width: 22px;
+  margin-left: auto;
   justify-content: center;
   align-items: center;
 
@@ -316,4 +329,8 @@
   border-radius: 100px;
 
   background-color: var(--white);
+}
+
+.sidebar-block-arrow.ml-10 {
+  margin-left: 10px;
 }

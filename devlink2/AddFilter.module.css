@@ -1,0 +1,17 @@
+.div-block-829 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-blue-500-2 {
+  color: #337fbd;
+}

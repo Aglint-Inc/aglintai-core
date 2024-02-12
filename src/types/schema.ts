@@ -251,6 +251,121 @@ export type Database = {
           }
         ]
       }
+      assessment: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          level: Database["public"]["Enums"]["question_level"]
+          recruiter_id: string
+          title: string | null
+          type: Database["public"]["Enums"]["template_type"] | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"]
+          recruiter_id: string
+          title?: string | null
+          type?: Database["public"]["Enums"]["template_type"] | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"]
+          recruiter_id?: string
+          title?: string | null
+          type?: Database["public"]["Enums"]["template_type"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      assessment_job_relation: {
+        Row: {
+          assessment_id: string
+          created_at: string
+          id: string
+          job_id: string | null
+        }
+        Insert: {
+          assessment_id: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+        }
+        Update: {
+          assessment_id?: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_job_relation_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_job_relation_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      assessment_question: {
+        Row: {
+          answer: Json | null
+          assessment_id: string | null
+          created_at: string
+          duration: number | null
+          id: string
+          level: Database["public"]["Enums"]["question_level"] | null
+          question: Json | null
+          type: Database["public"]["Enums"]["question_type"] | null
+        }
+        Insert: {
+          answer?: Json | null
+          assessment_id?: string | null
+          created_at?: string
+          duration?: number | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"] | null
+          question?: Json | null
+          type?: Database["public"]["Enums"]["question_type"] | null
+        }
+        Update: {
+          answer?: Json | null
+          assessment_id?: string | null
+          created_at?: string
+          duration?: number | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"] | null
+          question?: Json | null
+          type?: Database["public"]["Enums"]["question_type"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_question_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessment"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       assessment_results: {
         Row: {
           ai_interviewer_id: number
@@ -294,6 +409,33 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      assessment_template: {
+        Row: {
+          created_at: string
+          description: string | null
+          embeddings: string | null
+          id: string
+          title: string | null
+          type: Database["public"]["Enums"]["template_type"] | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          embeddings?: string | null
+          id?: string
+          title?: string | null
+          type?: Database["public"]["Enums"]["template_type"] | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          embeddings?: string | null
+          id?: string
+          title?: string | null
+          type?: Database["public"]["Enums"]["template_type"] | null
+        }
+        Relationships: []
       }
       candidate_files: {
         Row: {
@@ -572,22 +714,22 @@ export type Database = {
       }
       interview_availabilties: {
         Row: {
-          availibility: Json | null
+          slot_availability: Json[] | null
           user_id: string
         }
         Insert: {
-          availibility?: Json | null
+          slot_availability?: Json[] | null
           user_id: string
         }
         Update: {
-          availibility?: Json | null
+          slot_availability?: Json[] | null
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "interview_availabilties_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
           }
@@ -652,6 +794,60 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          }
+        ]
+      }
+      interview_schedule: {
+        Row: {
+          application_id: string
+          created_at: string
+          duration: number
+          id: string
+          interview_panel: string
+          panel_users: Json | null
+          schdeule_name: string
+          schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
+          selected_slots: Json | null
+          status: Database["public"]["Enums"]["interview_schedule_status"]
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          duration: number
+          id?: string
+          interview_panel: string
+          panel_users?: Json | null
+          schdeule_name: string
+          schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
+          selected_slots?: Json | null
+          status?: Database["public"]["Enums"]["interview_schedule_status"]
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          duration?: number
+          id?: string
+          interview_panel?: string
+          panel_users?: Json | null
+          schdeule_name?: string
+          schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
+          selected_slots?: Json | null
+          status?: Database["public"]["Enums"]["interview_schedule_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_interview_panel_fkey"
+            columns: ["interview_panel"]
+            isOneToOne: false
+            referencedRelation: "interview_panel"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -1063,6 +1259,39 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      question_bank: {
+        Row: {
+          answer: Json | null
+          created_at: string
+          duration: number | null
+          embeddings: string | null
+          id: string
+          level: Database["public"]["Enums"]["question_level"] | null
+          question: Json | null
+          type: Database["public"]["Enums"]["question_type"] | null
+        }
+        Insert: {
+          answer?: Json | null
+          created_at?: string
+          duration?: number | null
+          embeddings?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"] | null
+          question?: Json | null
+          type?: Database["public"]["Enums"]["question_type"] | null
+        }
+        Update: {
+          answer?: Json | null
+          created_at?: string
+          duration?: number | null
+          embeddings?: string | null
+          id?: string
+          level?: Database["public"]["Enums"]["question_level"] | null
+          question?: Json | null
+          type?: Database["public"]["Enums"]["question_type"] | null
+        }
+        Relationships: []
       }
       recruiter: {
         Row: {
@@ -1490,6 +1719,42 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      template_question_relation: {
+        Row: {
+          created_at: string
+          id: number
+          question_id: string
+          template_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          question_id: string
+          template_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          question_id?: string
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_question_relation_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "question_bank"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "template_question_relation_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_template"
             referencedColumns: ["id"]
           }
         ]
@@ -1940,10 +2205,29 @@ export type Database = {
         | "qualified"
         | "disqualified"
         | "screening"
+        | "interview"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       file_type: "resume" | "coverletter" | "cv" | "image"
+      interview_schedule_status: "pending" | "confirmed" | "completed"
+      interview_schedule_type:
+        | "in_person_meeting"
+        | "google_meet"
+        | "phone_call"
+        | "zoom"
+      question_level: "basic" | "intermediate" | "advanced"
+      question_type: "code" | "mcq" | "tfq" | "match" | "qna"
       recruiter_roles: "admin" | "member" | "interviewer"
+      template_type:
+        | "cognitive"
+        | "language"
+        | "personality"
+        | "culture"
+        | "programming"
+        | "role"
+        | "situational"
+        | "software"
+        | "typing"
     }
     CompositeTypes: {
       location_type: {

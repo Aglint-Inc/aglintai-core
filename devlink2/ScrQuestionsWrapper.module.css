@@ -9,57 +9,6 @@
   border-radius: 10px;
 }
 
-.scr-questions-block {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-}
-
-.div-block-416 {
-  display: flex;
-  padding: 20px;
-  justify-content: flex-start;
-  align-items: center;
-
-  border-radius: 10px;
-
-  background-color: #f8f9f9;
-
-  text-align: center;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-@media screen and (max-width: 767px) {
-  .text-gray-600.mobile-12 {
-    font-size: 12px;
-  }
-}
-
-.text-no-wrap {
-  white-space: nowrap;
-}
-
-.text-gray-600.max-width-500 {
-  max-width: 500px;
-}
-
-.scr-options-wrapper {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -70,6 +19,12 @@
 
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .text-color-black {
@@ -170,6 +125,63 @@
 
 .text-black-100 {
   color: var(--black-100);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
+}
+
+.scr-questions-block {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.div-block-416 {
+  display: flex;
+  padding: 20px;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: #f8f9f9;
+
+  text-align: center;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.scr-options-wrapper {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 
 .scr-options-block {

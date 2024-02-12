@@ -119,6 +119,8 @@
 
   display: flex;
   overflow: hidden;
+  padding-right: 0px;
+  padding-left: 0px;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
@@ -371,6 +373,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .resume-match-stat-details {
   position: absolute;
   top: 0px;
@@ -538,6 +544,14 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.fw-semibold.text_camel_case {
+  text-transform: capitalize;
 }
 
 .cv-list-body {
