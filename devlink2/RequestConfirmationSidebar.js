@@ -8,6 +8,8 @@ export function RequestConfirmationSidebar({
   as: _Component = _Builtin.Block,
   onClickClose = {},
   slotSelectedSlots,
+  onClickRequest = {},
+  textSelectedInfo = "You have selected 5 slots across 4 panel members. ",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "panel_slidebar")} tag="div">
@@ -46,7 +48,7 @@ export function RequestConfirmationSidebar({
               )}
               tag="div"
             >
-              {"You have selected 5 slots across 4 panel members. "}
+              {textSelectedInfo}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_list")}
@@ -74,6 +76,7 @@ export function RequestConfirmationSidebar({
               "confirm_availability"
             )}
             tag="div"
+            {...onClickRequest}
           >
             <_Builtin.Block tag="div">{"Request Confirmation"}</_Builtin.Block>
           </_Builtin.Block>

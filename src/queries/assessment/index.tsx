@@ -5,7 +5,6 @@ import {
   useMutation,
   useMutationState,
   useQuery,
-  useQueryClient,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
@@ -50,22 +49,9 @@ const useQueryKey = () => {
 
 export const useAssessment = () => {
   const { queryKey, recruiter_id } = useQueryKey();
-  const queryClient = useQueryClient();
-  return {
-    ...useQuery({
-      queryKey,
-      queryFn: () => readAssessmentsDbAction(recruiter_id),
-    }),
-    retry: () => handleAssessmentRetry(queryClient, queryKey),
-  };
-};
-
-const handleAssessmentRetry = (
-  queryClient: QueryClient,
-  queryKey: ReturnType<typeof useQueryKey>['queryKey'],
-) => {
-  queryClient.invalidateQueries({
+  return useQuery({
     queryKey,
+    queryFn: () => readAssessmentsDbAction(recruiter_id),
   });
 };
 

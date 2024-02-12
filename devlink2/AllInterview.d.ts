@@ -10,4 +10,6 @@ declare function AllInterview(props: {
   onClickSort?: Types.Devlink.RuntimeProps;
   slotDate?: Types.Devlink.Slot;
   slotAllInterviewCard?: Types.Devlink.Slot;
+  slotSidebar?: Types.Devlink.Slot;
+  styleSidebarWidth?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

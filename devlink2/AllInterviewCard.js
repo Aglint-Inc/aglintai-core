@@ -19,90 +19,88 @@ export function AllInterviewCard({
   textRelatedJob = "Product Designer",
 }) {
   return (
-    <_Component tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-835")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "allinterview_row_-candidate")}
+      tag="div"
+    >
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-217")}
+          className={_utils.cx(_styles, "div-block-834")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-834")}
-            tag="div"
-          >
-            {slotCandidateImage}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textName}
+          {slotCandidateImage}
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {textName}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "status_pill")}
+          tag="div"
+          {...colorPropsBg}
+        >
+          <_Builtin.Block tag="div" {...colorPropsText}>
+            {textStatus}
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-217")}
+          className={_utils.cx(_styles, "div-block-839")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-837")}
+            className={_utils.cx(_styles, "div-block-838")}
             tag="div"
-            {...colorPropsBg}
           >
-            <_Builtin.Block tag="div" {...colorPropsText}>
-              {textStatus}
-            </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotMeetingIcon}</_Builtin.Block>
+            <_Builtin.Block tag="div">{textMeeting}</_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-217")}
-          tag="div"
-        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-839")}
+            className={_utils.cx(_styles, "text-sm-3", "text-grey-600")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-838")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{slotMeetingIcon}</_Builtin.Block>
-              <_Builtin.Block tag="div">{textMeeting}</_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm-3", "text-grey-600")}
-              tag="div"
-            >
-              {textTimeDate}
-            </_Builtin.Block>
+            {textTimeDate}
           </_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
+        <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-138")}
+          className={_utils.cx(_styles, "div-block-840")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
+          <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
+          <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidate_cell")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-300")}
+          className={_utils.cx(_styles, "div-block-840")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-840")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
-            <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-833", "width-300")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-840")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -1,6 +1,5 @@
 .all-interview-wrap {
   width: 100%;
-  height: 100vh;
 }
 
 .all-interview-sub-head {
@@ -34,22 +33,42 @@
   opacity: 0.7;
 }
 
-.all-interview-table {
-  position: relative;
+.interview_table_layout {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: auto auto;
+}
 
+.interview_table_wrap {
+  position: relative;
   display: flex;
   overflow: auto;
+  width: 100%;
+}
+
+.all-interview-table {
+  position: relative;
+  display: flex;
   width: 100%;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.div-block-832 {
+.allinterview_row {
   position: sticky;
   top: 0px;
 
-  display: flex;
+  display: grid;
+  width: 100%;
   align-items: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 20% 15% 15% 10% 20% 20%;
+  grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
   border-bottom: 1px solid #e9ebed;
@@ -57,23 +76,30 @@
   background-color: #f8f9f9;
 }
 
-.div-block-831 {
+.allinterview_header_cell {
   padding: 10px 20px;
 }
 
-.div-block-831.width-300 {
+.allinterview_header_cell.width-300 {
   width: 300px;
 }
 
-.div-block-831.width-138 {
+.allinterview_header_cell.width-138 {
   width: 138px;
 }
 
-.div-block-831.width-217 {
+.allinterview_header_cell.width-217 {
   width: 217px;
 }
 
-.div-block-836 {
+.slot_candidaterow {
   display: flex;
+  width: 100%;
   flex-direction: column;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
 }

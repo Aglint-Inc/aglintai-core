@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   AssesmentCardLoader,
-  AssessmentEmpty,
+  AssessmentEmpty as AssessmentEmptyDev,
   AssessmentError as AssessmentErrorDev,
   AssessmentLandingBody,
 } from '@/devlink2';
@@ -12,7 +12,7 @@ import {
 } from '@/src/queries/assessment';
 
 import AssessmentCard from './assessmentCard';
-import OptimisticWrapper from '../Common/wrapper/LoadingWapper';
+import OptimisticWrapper from '../Common/wrapper/loadingWapper';
 
 const AssessmentDashboardBody = () => {
   return <AssessmentLandingBody slotAssessmentCards={<AssessmentGroups />} />;
@@ -27,8 +27,13 @@ const AssessmentGroups = () => {
 };
 
 const AssessmentError = () => {
-  const { retry } = useAssessment();
-  return <AssessmentErrorDev onClickRetry={{ onClick: () => retry() }} />;
+  const { refetch } = useAssessment();
+  return <AssessmentErrorDev onClickRetry={{ onClick: () => refetch() }} />;
+};
+
+const AssessmentEmpty = () => {
+  const { refetch } = useAssessment();
+  return <AssessmentEmptyDev onClickCreate={{ onClick: () => refetch() }} />;
 };
 
 const LoadingCards = () => {

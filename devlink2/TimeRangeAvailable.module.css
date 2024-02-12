@@ -51,6 +51,13 @@
   color: #c2c8cc;
 }
 
+.time_range.is_preview {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-style: none;
+  background-color: #f7f9fb;
+}
+
 .pill_text {
   position: relative;
   z-index: 2;

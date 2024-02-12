@@ -18,29 +18,27 @@ export function TableBodyCell({
       )}
       tag="div"
     >
-      {slotTimeRanges ?? (
-        <>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "table_body_cell_inner")}
+        tag="div"
+      >
+        {slotTimeRanges ?? (
+          <_Builtin.Block tag="div">{"No Slots Available"}</_Builtin.Block>
+        )}
+      </_Builtin.Block>
+      {isSelectedCell ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "is_selected_cell")}
+          tag="div"
+        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "table_body_cell_inner")}
+            className={_utils.cx(_styles, "selected_numbers")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"No Slots Available"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{textSelectedCount}</_Builtin.Block>
           </_Builtin.Block>
-          {isSelectedCell ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "is_selected_cell")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "selected_numbers")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{textSelectedCount}</_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-        </>
-      )}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

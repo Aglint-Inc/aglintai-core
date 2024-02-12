@@ -40,6 +40,7 @@ const AssessmentPopup: React.FC<{ handleClose: () => void }> = ({
 }) => {
   const [fields, setFields] = useState<Payload>(initialFields);
   const { mutate } = useCreateAssessment();
+
   const handleChange: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {

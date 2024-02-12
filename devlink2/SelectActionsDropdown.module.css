@@ -289,3 +289,7 @@
 .text-gray-800 {
   color: var(--gray-800);
 }
+
+.fw-semibold {
+  font-weight: 600;
+}

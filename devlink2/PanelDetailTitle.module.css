@@ -246,6 +246,10 @@
   background-color: #edf7ff;
 }
 
+.close_icon {
+  cursor: pointer;
+}
+
 .no_of_slots {
   display: flex;
   grid-column-gap: 6px;

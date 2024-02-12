@@ -17,6 +17,8 @@ export function AllInterview({
   onClickSort = {},
   slotDate,
   slotAllInterviewCard,
+  slotSidebar,
+  styleSidebarWidth = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -56,73 +58,94 @@ export function AllInterview({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interview-table")}
+        className={_utils.cx(_styles, "interview_table_layout")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-832")}
+          className={_utils.cx(_styles, "interview_table_wrap")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-217")}
+            className={_utils.cx(_styles, "all-interview-table")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-217")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-217")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Schedule Type"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-138")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-300")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Interview Panel"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-831", "width-300")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "allinterview_row")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Schedule Type"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Interview Panel"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot_candidaterow")}
+              tag="div"
+            >
+              {slotAllInterviewCard ?? (
+                <>
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                  <AllInterviewCard />
+                </>
+              )}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-836")}
-          tag="div"
-        >
-          {slotAllInterviewCard ?? (
-            <>
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-              <AllInterviewCard />
-            </>
-          )}
+        <_Builtin.Block tag="div" {...styleSidebarWidth}>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_sidebar")}
+            tag="div"
+          >
+            {slotSidebar}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A.all-interview-table%7B%0Aheight%3Acalc(100vh%20-%2060px)%3B%0A%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "embed_css")}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22AllInterview_all-interview-table__%22%5D%7B%0A%20%20%20%20height%3A%20max-content%3B%0A%09%09min-width%3A%20calc(100vw%20-%2078px)%20!important%3B%0A%7D%0A%0A%5Bclass*%3D%22AllInterview_interview_table_wrap__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20121px)%20!important%3B%0A%7D%0A.hide_scrollbar%3A%3A-webkit-scrollbar%7B%0Adisplay%3A%20none%3B%2F*%20Hide%20scrollbar%20for%20Chrome%2C%20Safari%20and%20Opera%20*%2F%0A%7D%0A.hide_scrollbar%7B%0A%09-ms-overflow-style%3A%20none%3B%20%20%2F*%20IE%20and%20Edge%20*%2F%0A%20%20scrollbar-width%3A%20none%3B%20%20%2F*%20Firefox%20*%2F%0A%7D%0A%2F*%0A%5Bclass*%3D%22AllInterview_slot_candidaterow__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%20160px)%20!important%3B%0Aoverflow%3Aauto%3B%0A%7D*%2F%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }
