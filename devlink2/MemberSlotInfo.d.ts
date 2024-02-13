@@ -6,4 +6,8 @@ declare function MemberSlotInfo(props: {
   isCalenderNotConnected?: Types.Visibility.VisibilityConditions;
   onClickConnectCalender?: Types.Devlink.RuntimeProps;
   onClickViewSlots?: Types.Devlink.RuntimeProps;
+  textRequestedSlotNumber?: React.ReactNode;
+  textConfirmedSlotnumber?: React.ReactNode;
+  isRequestedSlots?: Types.Visibility.VisibilityConditions;
+  isConfirmedSlots?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

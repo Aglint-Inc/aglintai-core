@@ -1,9 +1,7 @@
 import React from "react";
-
-import _styles from "./PanelMember.module.css";
-
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
+import _styles from "./PanelMember.module.css";
 
 export function PanelMember({
   as: _Component = _Builtin.Block,
@@ -18,10 +16,7 @@ export function PanelMember({
       >
         {slotMemberAvatar}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
         {textMemberName}
       </_Builtin.Block>
     </_Component>

@@ -164,6 +164,14 @@
   margin-bottom: 10px;
 }
 
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
 .sl-login-form {
   display: flex;
   flex-direction: column;

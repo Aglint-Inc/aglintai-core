@@ -1,7 +1,7 @@
 import { Breadcrum, PageLayout } from '@/devlink2';
 
+import AssessmentDashboardActions from './assessmentDashboardActions';
 import AssessmentDashboardBody from './assessmentDashboardBody';
-import AssessmentDashboardActions from './createAssessmentPopup';
 
 const AssessmentDashboard = () => {
   return (

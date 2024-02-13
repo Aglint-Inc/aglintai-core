@@ -57,18 +57,3 @@
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
-
-.member_calender_connect {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  background-color: #f7f9fb;
-}

@@ -11,7 +11,7 @@
 
 .sidebar_top {
   display: flex;
-  padding: 20px;
+  padding: 16px 20px;
   justify-content: space-between;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

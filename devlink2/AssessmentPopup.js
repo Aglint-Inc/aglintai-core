@@ -12,6 +12,8 @@ export function AssessmentPopup({
   slotSelectionDropdown = "",
   slotInputName = "",
   slotButton,
+  slotAssesmentLevel,
+  onClickClose = {},
 }) {
   return (
     <_Component
@@ -32,6 +34,7 @@ export function AssessmentPopup({
           <_Builtin.Block
             className={_utils.cx(_styles, "sidebar_close")}
             tag="div"
+            {...onClickClose}
           >
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "embed_flex")}
@@ -78,9 +81,13 @@ export function AssessmentPopup({
               className={_utils.cx(_styles, "ps_input_slot", "_3-1grid")}
               tag="div"
             >
-              <SelectionPill />
-              <SelectionPill />
-              <SelectionPill />
+              {slotAssesmentLevel ?? (
+                <>
+                  <SelectionPill />
+                  <SelectionPill />
+                  <SelectionPill />
+                </>
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

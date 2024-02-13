@@ -1,10 +1,8 @@
 import React from "react";
-
-import _styles from "./RequestConfirmationSidebar.module.css";
-
 import * as _Builtin from "./_Builtin";
 import { GroupedSlots } from "./GroupedSlots";
 import * as _utils from "./utils";
+import _styles from "./RequestConfirmationSidebar.module.css";
 
 export function RequestConfirmationSidebar({
   as: _Component = _Builtin.Block,

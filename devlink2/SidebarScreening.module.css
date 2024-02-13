@@ -277,6 +277,11 @@
   color: var(--gray-500);
 }
 
+.fw-semibold.text-gray-500.max_width_custom {
+  max-width: 414px;
+  color: var(--gray-400);
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;

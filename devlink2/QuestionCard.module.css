@@ -22,10 +22,6 @@
   }
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .question_card.is_recommended:hover {
   border-color: #337fbd;
   background-color: #edf7ff;
@@ -33,6 +29,7 @@
 
 .question_card.is_recommended:active {
   border-style: solid;
+  background-color: #edf7ff;
 }
 
 .question_card.is_added {
@@ -51,6 +48,50 @@
   background-color: #f8f9f9;
 }
 
+.question_card.is_loader {
+  position: relative;
+  z-index: 1;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  transition: all 200ms ease-in-out;
+
+  cursor: progress;
+}
+
+.question_card.is_loader-copy {
+  position: relative;
+  z-index: 1;
+
+  border: 1px dashed #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  transition: all 200ms ease-in-out;
+
+  cursor: progress;
+}
+
+.question_card.is_loader-copy-copy {
+  position: relative;
+  z-index: 1;
+
+  width: 500px;
+
+  border: 1px dashed #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  transition: all 200ms ease-in-out;
+
+  cursor: progress;
+}
+
 .question_card_top {
   position: relative;
   z-index: 2;
@@ -62,6 +103,28 @@
   grid-row-gap: 4px;
 }
 
+.question_card_top.nax_width_70 {
+  height: 20px;
+  justify-content: space-between;
+}
+
+@media screen and (min-width: 1920px) {
+  .question_card_top.nax_width_70 {
+    height: 20px;
+  }
+}
+
+.question_card_top.nax_width_70-copy {
+  height: 20px;
+  justify-content: flex-start;
+}
+
+@media screen and (min-width: 1920px) {
+  .question_card_top.nax_width_70-copy {
+    height: 20px;
+  }
+}
+
 .question_info {
   display: flex;
   align-items: center;
@@ -69,7 +132,13 @@
   grid-row-gap: 6px;
 }
 
+.pointer_events_none {
+  pointer-events: none;
+}
+
 .question_typeicon {
+  position: relative;
+
   display: flex;
   width: 20px;
   height: 20px;
@@ -130,6 +199,14 @@
   margin-bottom: 10px;
 }
 
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -141,11 +218,26 @@
   }
 }
 
+.add_btn.fixed_width {
+  position: relative;
+  overflow: hidden;
+  width: 40.4765625px;
+  height: 16px;
+  border-radius: 4px;
+}
+
 .question_card_bottom {
   position: relative;
   z-index: 2;
   width: 100%;
   height: 100%;
+}
+
+.question_card_bottom.skeleton_flex {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .embed_css {

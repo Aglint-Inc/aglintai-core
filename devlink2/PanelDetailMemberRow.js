@@ -1,11 +1,10 @@
 import React from "react";
-
-import _styles from "./PanelDetailMemberRow.module.css";
-
 import * as _Builtin from "./_Builtin";
 import { PanelMember } from "./PanelMember";
+import { MemberSlotInfo } from "./MemberSlotInfo";
 import { TableBodyCell } from "./TableBodyCell";
 import * as _utils from "./utils";
+import _styles from "./PanelDetailMemberRow.module.css";
 
 export function PanelDetailMemberRow({
   as: _Component = _Builtin.Block,
@@ -22,7 +21,21 @@ export function PanelDetailMemberRow({
         )}
         tag="div"
       >
-        {slotMember ?? <PanelMember />}
+        {slotMember ?? (
+          <>
+            <PanelMember />
+            <MemberSlotInfo
+              isRequestedSlots={true}
+              isConfirmedSlots={true}
+              textConfirmedSlotnumber={
+                <>
+                  {"10"}
+                  <br />
+                </>
+              }
+            />
+          </>
+        )}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "table_cells")}
@@ -32,15 +45,7 @@ export function PanelDetailMemberRow({
         )}
         tag="div"
       >
-        {slotBodyCells ?? (
-          <>
-            <TableBodyCell />
-            <TableBodyCell />
-            <TableBodyCell />
-            <TableBodyCell />
-            <TableBodyCell />
-          </>
-        )}
+        {slotBodyCells ?? <TableBodyCell isSelectedCell={true} />}
       </_Builtin.Block>
     </_Component>
   );

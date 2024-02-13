@@ -7,19 +7,24 @@ import {
   AssessmentLandingBody,
 } from '@/devlink2';
 import {
-  useAssessment,
+  useAssessmentDashboard,
   useCreateAssessmentQueue,
-} from '@/src/queries/assessment';
+} from '@/src/queries/assessment/dashboard';
 
 import AssessmentCard from './assessmentCard';
 import OptimisticWrapper from '../Common/wrapper/loadingWapper';
+import { useAssessmentCreateEditModal } from '../Stores/modal';
 
 const AssessmentDashboardBody = () => {
   return <AssessmentLandingBody slotAssessmentCards={<AssessmentGroups />} />;
 };
 
+export default AssessmentDashboardBody;
+
 const AssessmentGroups = () => {
-  const { status, data } = useAssessment();
+  const { status, data } = useAssessmentDashboard();
+  const queue = useCreateAssessmentQueue();
+  if (queue.length !== 0) return <AssessmentCards />;
   if (status === 'pending') return <LoadingCards />;
   if (status === 'error') return <AssessmentError />;
   if (data.length === 0) return <AssessmentEmpty />;
@@ -27,17 +32,19 @@ const AssessmentGroups = () => {
 };
 
 const AssessmentError = () => {
-  const { refetch } = useAssessment();
+  const { refetch } = useAssessmentDashboard();
   return <AssessmentErrorDev onClickRetry={{ onClick: () => refetch() }} />;
 };
 
 const AssessmentEmpty = () => {
-  const { refetch } = useAssessment();
-  return <AssessmentEmptyDev onClickCreate={{ onClick: () => refetch() }} />;
+  const { setOpen } = useAssessmentCreateEditModal();
+  return (
+    <AssessmentEmptyDev onClickCreate={{ onClick: () => setOpen(true) }} />
+  );
 };
 
 const LoadingCards = () => {
-  const cards = [...Array(16)].map((i) => <AssesmentCardLoader key={i} />);
+  const cards = [...Array(16)].map((a, i) => <AssesmentCardLoader key={i} />);
   return <>{cards}</>;
 };
 
@@ -51,9 +58,13 @@ const AssessmentCards = () => {
 };
 
 const OldAssessmentCards = () => {
-  const { data } = useAssessment();
+  const { data } = useAssessmentDashboard();
   const cards = data.map((assessment) => (
-    <AssessmentCard key={assessment.id} assessment={assessment} />
+    <AssessmentCard
+      key={assessment.id}
+      id={assessment.id}
+      assessment={assessment}
+    />
   ));
   return <>{cards}</>;
 };
@@ -62,10 +73,8 @@ const FreshAssessmentCards = () => {
   const queue = useCreateAssessmentQueue();
   const cards = queue.map((queuedAssessment, i) => (
     <OptimisticWrapper key={i}>
-      <AssessmentCard assessment={queuedAssessment} />
+      <AssessmentCard id={`${i}`} assessment={queuedAssessment} />
     </OptimisticWrapper>
   ));
   return <>{cards}</>;
 };
-
-export default AssessmentDashboardBody;

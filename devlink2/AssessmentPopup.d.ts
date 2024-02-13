@@ -8,4 +8,6 @@ declare function AssessmentPopup(props: {
   slotSelectionDropdown?: React.ReactNode;
   slotInputName?: React.ReactNode;
   slotButton?: Types.Devlink.Slot;
+  slotAssesmentLevel?: Types.Devlink.Slot;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

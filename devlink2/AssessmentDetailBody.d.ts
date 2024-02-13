@@ -9,4 +9,5 @@ declare function AssessmentDetailBody(props: {
   textQuestionNumber?: React.ReactNode;
   slotQuestionDetail?: Types.Devlink.Slot;
   slotRecommendedQuestions?: Types.Devlink.Slot;
+  isQuestionTopBar?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

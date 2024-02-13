@@ -248,3 +248,7 @@ textarea::placeholder {
   // border-color: #000;
   background-color: #ff910043;
 }
+
+.slot-body-global {
+  height: calc(100vh - 60px);
+}

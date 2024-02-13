@@ -355,6 +355,14 @@
   margin-bottom: 10px;
 }
 
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
 .sl-link {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
   text-decoration: none;

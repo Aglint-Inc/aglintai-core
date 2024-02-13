@@ -48,6 +48,14 @@
   margin-bottom: 10px;
 }
 
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
 .cl-sort-option-wrapper {
   position: relative;
   overflow: hidden;

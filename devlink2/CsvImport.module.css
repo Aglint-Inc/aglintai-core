@@ -36,6 +36,14 @@
   margin-bottom: 10px;
 }
 
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
 .csv-imp-body {
   padding-top: 6px;
   padding-bottom: 6px;

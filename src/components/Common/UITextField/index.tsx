@@ -28,6 +28,7 @@ type Props = {
   maxRows?: number;
   placeholder?: string;
   fullWidth?: boolean;
+  name?: string;
   rest?: any;
   onSelect?: () => void;
   // eslint-disable-next-line no-unused-vars
@@ -63,6 +64,7 @@ const UITextField = React.forwardRef(
       required,
       value,
       fullWidth = false,
+      name = null,
       multiline = false,
       minRows = 4.7,
       maxRows = 4.7,
@@ -134,6 +136,7 @@ const UITextField = React.forwardRef(
           <Typography variant='body2'>{secondaryText}</Typography>
         )}
         <MuiTextField
+          name={name}
           margin='none'
           select={select}
           fullWidth={fullWidth}

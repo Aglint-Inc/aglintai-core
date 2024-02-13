@@ -1,5 +1,6 @@
 .assessment_detail {
   display: grid;
+  height: 100%;
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
@@ -75,6 +76,11 @@
 
 .text-gray-500 {
   color: var(--gray-500);
+}
+
+.fw-semibold.text-gray-500.max_width_custom {
+  max-width: 414px;
+  color: var(--gray-400);
 }
 
 .fw-semibold.z-index-5 {
@@ -242,7 +248,7 @@
   grid-row-start: span 1;
   grid-row-end: span 1;
 }
-#w-node-c57b9ec5-caab-87a6-2cc9-a31ddff8edb0-dff8edad {
+#w-node-_7fe8426e-1514-f541-9b8a-038b21b7f4cf-dff8edad {
   grid-column-start: span 1;
   grid-column-end: span 1;
   grid-row-start: span 1;

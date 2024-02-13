@@ -64,6 +64,11 @@
   color: var(--gray-500);
 }
 
+.fw-semibold.text-gray-500.max_width_custom {
+  max-width: 414px;
+  color: var(--gray-400);
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -209,4 +214,12 @@
 
 .text-gray-600.margin_bottom_10 {
   margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
 }

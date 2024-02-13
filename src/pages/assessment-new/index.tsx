@@ -4,7 +4,7 @@ import AssessmentDashboard from '@/src/components/NewAssessment';
 import JobsProvider from '@/src/context/JobsContext';
 import { AssementQueryProvider } from '@/src/queries/assessment';
 
-const AssessmentPage = () => {
+const AssessmentDashboardPage = () => {
   return (
     <>
       <Seo
@@ -16,7 +16,7 @@ const AssessmentPage = () => {
   );
 };
 
-AssessmentPage.getProvider = function getProvider(page) {
+AssessmentDashboardPage.getProvider = function getProvider(page) {
   return (
     <JobsProvider>
       <AssementQueryProvider>{page}</AssementQueryProvider>
@@ -24,4 +24,4 @@ AssessmentPage.getProvider = function getProvider(page) {
   );
 };
 
-export default AssessmentPage;
+export default AssessmentDashboardPage;

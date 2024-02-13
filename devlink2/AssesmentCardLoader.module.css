@@ -90,6 +90,18 @@
   width: 60%;
 }
 
+.text_md_bold_line._100 {
+  width: 100%;
+}
+
+.text_md_bold_line._30 {
+  width: 30%;
+}
+
+.text_md_bold_line._40 {
+  width: 40%;
+}
+
 .text_md_line {
   position: relative;
   height: 14px;

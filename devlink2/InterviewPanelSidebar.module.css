@@ -11,7 +11,7 @@
 
 .sidebar_top {
   display: flex;
-  padding: 20px;
+  padding: 16px 20px;
   justify-content: space-between;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -56,6 +56,11 @@
 
 .text-gray-500 {
   color: var(--gray-500);
+}
+
+.fw-semibold.text-gray-500.max_width_custom {
+  max-width: 414px;
+  color: var(--gray-400);
 }
 
 .fw-semibold.z-index-5 {
@@ -204,6 +209,35 @@
   grid-template-rows: auto;
 }
 
+.ps_input_slot.is_flex {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.ps_input_slot.isloard {
+  position: relative;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.ps_input_slot.isloard.textarea {
+  height: 100px;
+}
+
+.ps_input_slot.options {
+  position: relative;
+
+  display: flex;
+  height: 40px;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 4px;
+}
+
 .ps_group_title {
   display: flex;
   flex-direction: column;
@@ -227,6 +261,14 @@
 
 .text-gray-600.margin_bottom_10 {
   margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+@media screen and (min-width: 1440px) {
+
 }
 
 .ps_teams {
