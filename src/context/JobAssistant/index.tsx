@@ -116,11 +116,10 @@ function JobAssistantProvider({ children }) {
   async function createNewChat() {
     setFetching(true);
     // console.log(messages);
-    const { data: thread } = await axios.post(
-      '/api/job-assistant/createThread',
-    );
+    const { data: thread } = await axios.get('/api/job-assistant/createThread');
 
     if (thread?.error) {
+      setFetching(false);
       return;
     }
     const thread_id = thread?.id as string;

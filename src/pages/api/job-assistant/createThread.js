@@ -53,8 +53,10 @@ const openai = new OpenAI({
 
 
 export default async function handler(req, res) {
-
-  const emptyThread = await openai.beta.threads.create();
-  res.status(200).send(emptyThread);
-
+  try {
+    const emptyThread = await openai.beta.threads.create();
+    res.status(200).send(emptyThread);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 }
