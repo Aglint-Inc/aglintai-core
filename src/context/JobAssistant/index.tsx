@@ -118,9 +118,6 @@ function JobAssistantProvider({ children }) {
     // console.log(messages);
     const { data: thread } = await axios.post(
       '/api/job-assistant/createThread',
-      {
-        job_descriptions: job_descriptions,
-      },
     );
 
     if (thread?.error) {
