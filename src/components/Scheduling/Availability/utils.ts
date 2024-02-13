@@ -33,14 +33,14 @@ export const getAvailability = async (
 export const initialiseCheckedInts = (
   interviewers: StateAvailibility['interviewers'],
 ) => {
-  const foo = (slots: InterviewerAvailabliity[]) => {
+  const foo = (slots: InterviewerAvailabliity[]): InterviewerAvailabliity[] => {
     return slots.map((int) => {
       let availClone = {};
       int.timeDuration;
       for (let keyDay of Object.keys(int.availability)) {
         availClone[String(keyDay)] = [];
       }
-      return { timeDuration: int.timeDuration, availability: availClone };
+      return { ...int, availability: availClone };
     });
   };
 
@@ -53,7 +53,9 @@ export const initialiseCheckedInts = (
   }));
 };
 export function mergeInterviewerEvents(
-  interviewers: StateAvailibility['checkedInterSlots'],
+  interviewers:
+    | StateAvailibility['interviewers']
+    | StateAvailibility['checkedInterSlots'],
 ) {
   const mergedEvents: MergedEvents = {};
 
@@ -82,6 +84,39 @@ export function mergeInterviewerEvents(
 
   return mergedEvents;
 }
+
+//date
+//date-time
+export const groupSlots = (
+  interviewer,
+  availabilities: InterviewerAvailabliity['availability'],
+  slotStatus: AvalabilitySlotType['status'],
+) => {
+  const mergedEvents: MergedEvents = {};
+
+  for (const date in availabilities) {
+    if (!mergedEvents[String(date)]) {
+      mergedEvents[String(date)] = {};
+    }
+    availabilities[String(date)].forEach((timeSlot) => {
+      if (timeSlot.status !== slotStatus) return;
+      const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
+      if (!mergedEvents[String(date)][String(timeRange)]) {
+        mergedEvents[String(date)][String(timeRange)] = [];
+      }
+      mergedEvents[String(date)][String(timeRange)].push({
+        startTime: timeSlot.startTime,
+        endTime: timeSlot.endTime,
+        interviewerId: interviewer.interviewerId,
+        interviewerName: interviewer.interviewerName,
+        profileImg: interviewer.profileImg,
+      });
+    });
+  }
+
+  return mergedEvents;
+};
+
 interface MergedEvents {
   [date: string]: {
     [timeRange: string]: {
@@ -134,6 +169,10 @@ export const updateTimeSlotStatusUtil = (
               return intSlot;
             },
           );
+
+          updInterviewers[Number(idx)].slots[Number(idx2)].cntRequested += (
+            get(updCheckedInterSlots, dayPath) as AvalabilitySlotType[]
+          ).length;
           set(updInterviewers, dayPath, updatedIntSlots);
         }
         set(updCheckedInterSlots, dayPath, []);
@@ -144,4 +183,50 @@ export const updateTimeSlotStatusUtil = (
   }
 
   return { updInterviewers, updCheckedInterSlots };
+};
+
+export const countSlotStatus = (
+  interAvail: InterviewerAvailabliity[],
+  status: AvalabilitySlotType['status'],
+  timeSlot: number,
+) => {
+  const availability = interAvail.find(
+    (intA) => intA.timeDuration === timeSlot,
+  ).availability;
+
+  let count = 0;
+  // Loop through each date
+  for (const date in availability) {
+    // Loop through each object for that date
+    for (const obj of availability[String(date)]) {
+      // If the status is "available", increment the count
+      if (obj.status === status) {
+        count++;
+      }
+    }
+  }
+  return count;
+};
+
+export const getTimeRangeStatusSlots = (
+  interAvail: InterviewerAvailabliity[],
+  status: AvalabilitySlotType['status'],
+  timeSlot: number,
+) => {
+  let slots: AvalabilitySlotType[] = [];
+  const availability = interAvail.find(
+    (intA) => intA.timeDuration === timeSlot,
+  ).availability;
+
+  // Loop through each date
+  for (const date in availability) {
+    // Loop through each object for that date
+    for (const obj of availability[String(date)]) {
+      // If the status is "available", increment the count
+      if (obj.status === status) {
+        slots.push({ ...obj });
+      }
+    }
+  }
+  return slots;
 };

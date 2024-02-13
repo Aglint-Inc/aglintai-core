@@ -12,6 +12,8 @@ export type AvalabilitySlotType = {
 export type InterviewerAvailabliity = {
   timeDuration: number;
   availability: Record<string, AvalabilitySlotType[]>;
+  cntConfirmed: number;
+  cntRequested: number;
 };
 
 export type StateAvailibility = {

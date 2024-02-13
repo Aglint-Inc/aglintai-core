@@ -10,4 +10,6 @@ declare function SidebarViewSlots(props: {
   slotRequestedSlots?: Types.Devlink.Slot;
   onClickResendRequest?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
+  isRequestedSlots?: Types.Visibility.VisibilityConditions;
+  isConfirmedSlots?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

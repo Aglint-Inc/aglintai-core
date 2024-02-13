@@ -22,6 +22,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import {
+  AvalabilitySlotType,
   InterviewerAvailabliity,
   StateAvailibility,
 } from './availability.types';
@@ -36,7 +37,12 @@ import {
   uncheckAllSlots,
   useAvailableStore,
 } from './store';
-import { DAYS_LENGTH, getAvailability, mergeInterviewerEvents } from './utils';
+import {
+  countSlotStatus,
+  DAYS_LENGTH,
+  getAvailability,
+  mergeInterviewerEvents,
+} from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
   setIsCreateDialogOpen,
@@ -97,8 +103,21 @@ const Availability = () => {
                   interW.interviewerId,
                   timeSlot,
                 ),
+                cntConfirmed: 0,
+                cntRequested: 0,
               };
               interW.slots = [intAval];
+
+              intAval.cntConfirmed = countSlotStatus(
+                interW.slots,
+                'confirmed',
+                timeSlot,
+              );
+              intAval.cntRequested = countSlotStatus(
+                interW.slots,
+                'requested',
+                timeSlot,
+              );
             }
           });
           await Promise.all(interviewersPromises);

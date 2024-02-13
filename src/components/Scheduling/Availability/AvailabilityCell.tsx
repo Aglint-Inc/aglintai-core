@@ -65,7 +65,12 @@ const AvailabilityCell = ({
                 }
 
                 if (timeRange.status === 'requested') {
-                  return <TimeRangeRequested key={textTimeRange} />;
+                  return (
+                    <TimeRangeRequested
+                      key={textTimeRange}
+                      textTimeRange={textTimeRange}
+                    />
+                  );
                 }
               })}
             {totalSlots - 3 > 0 && (
@@ -138,7 +143,12 @@ const AvailabilityCell = ({
                   }
 
                   if (timeRange.status === 'requested') {
-                    return <TimeRangeRequested key={textTimeRange} />;
+                    return (
+                      <TimeRangeRequested
+                        key={textTimeRange}
+                        textTimeRange={textTimeRange}
+                      />
+                    );
                   }
                 })}
             </>

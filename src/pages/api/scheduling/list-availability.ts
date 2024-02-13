@@ -97,6 +97,8 @@ const save = async (
       {
         timeDuration: timeDuration,
         availability: avail,
+        cntConfirmed: 0,
+        cntRequested: 0,
       },
     ];
   } else {
@@ -118,6 +120,8 @@ const save = async (
           availability: {
             ...avail,
           },
+          cntConfirmed: 0,
+          cntRequested: 0,
         },
       ];
     }
