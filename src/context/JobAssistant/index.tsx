@@ -199,8 +199,9 @@ function JobAssistantProvider({ children }) {
         return;
       }
       const currectChat =
-        jobAssistantChats.filter((item) => item.id === router.query?.chat_id)[0] ||
-        jobAssistantChats[0];
+        jobAssistantChats.filter(
+          (item) => item.id === router.query?.chat_id,
+        )[0] || jobAssistantChats[0];
       if (currectChat.id) {
         getMessages(currectChat.id);
         setCurrentChat(currectChat);
