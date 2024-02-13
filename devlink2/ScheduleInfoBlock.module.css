@@ -1,0 +1,51 @@
+.schedule_info {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.meeting_type {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.schedule_type_logo {
+  width: 24px;
+  height: 24px;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}

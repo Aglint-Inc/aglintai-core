@@ -36,26 +36,19 @@
 .time_range.is_confirmed {
   border-color: #228f67;
   background-color: #228f67;
-  color: hsla(157.9816513761468, 0.00%, 100.00%, 1.00);
+  color: hsla(157.9816513761468, 0%, 100%, 1);
 }
 
 .time_range.is_requested {
   border-color: #ed8f1c;
   background-color: #ed8f1c;
-  color: hsla(206.95652173913044, 0.00%, 100.00%, 1.00);
+  color: hsla(206.95652173913044, 0%, 100%, 1);
 }
 
 .time_range.is_disabled {
   border-color: #c2c8cc;
   background-color: #f8f9f9;
   color: #c2c8cc;
-}
-
-.time_range.is_preview {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-style: none;
-  background-color: #f7f9fb;
 }
 
 .pill_text {

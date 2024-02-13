@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { ScheduleInfoBlock } from "./ScheduleInfoBlock";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewCard.module.css";
 
@@ -10,13 +11,11 @@ export function AllInterviewCard({
   textStatus = "Pending",
   colorPropsText = {},
   colorPropsBg = {},
-  textMeeting = "In Person Meeting",
-  slotMeetingIcon,
-  textTimeDate = "2024 Feb 20 at 09:30 AM",
   textDuration = "1 hour",
   slotPanelImage,
   textInterviewPanel = "This is some text inside of a div block.",
   textRelatedJob = "Product Designer",
+  slotScheduleInfo,
 }) {
   return (
     <_Component
@@ -55,24 +54,7 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-839")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-838")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{slotMeetingIcon}</_Builtin.Block>
-            <_Builtin.Block tag="div">{textMeeting}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm-3", "text-grey-600")}
-            tag="div"
-          >
-            {textTimeDate}
-          </_Builtin.Block>
-        </_Builtin.Block>
+        {slotScheduleInfo ?? <ScheduleInfoBlock />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate_cell")}

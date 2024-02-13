@@ -13,16 +13,15 @@ export default function handler(req, res) {
     }, // Change to your verified sender
     subject: details.subject,
     html: details.text,
-
   };
   sgMail
     .send({
       ...msg,
       mailSettings: {
         sandboxMode: {
-          enable: !isEnvProd()
-        }
-      }
+          enable: !isEnvProd(),
+        },
+      },
     })
     .then(() => {
       res.status(200).json({ data: 'Email sent' });

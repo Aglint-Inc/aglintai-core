@@ -36,9 +36,11 @@ export default async function handler(
             user_metadata: {
               name: user.name,
               role: companyType.COMPANY,
+              roles: companyType.COMPANY,
               is_invite: 'true',
               invite_user: recruiter_user,
             },
+            email_confirm: true,
           });
 
           if (error) throw new Error(error.message);

@@ -78,67 +78,67 @@ export default function Loading() {
       .then(async ({ data, error }) => {
         if (!error) {
           if (data.length == 0) {
-            (async () => {
-              const { error: erroruser } = await supabase
-                .from('recruiter_user')
-                .insert({
-                  user_id: userDetails.user.id,
-                  email: userDetails.user.user_metadata.email,
-                  first_name: splitFullName(
-                    userDetails.user.user_metadata.full_name,
-                  ).firstName,
-                  last_name: !userDetails.user.user_metadata.first_name
-                    ? splitFullName(userDetails.user.user_metadata.full_name)
-                        .lastName
-                    : userDetails.user.user_metadata.last_name,
-                  role: 'admin',
-                  profile_image: !userDetails.user.user_metadata.image_url
-                    ? null
-                    : userDetails.user.user_metadata.image_url,
-                  phone: !userDetails.user.user_metadata.phone
-                    ? ''
-                    : userDetails.user.user_metadata.phone,
-                })
-                .select();
+            const { error: erroruser } = await supabase
+              .from('recruiter_user')
+              .insert({
+                user_id: userDetails.user.id,
+                email: userDetails.user.user_metadata.email,
+                first_name: splitFullName(
+                  userDetails.user.user_metadata.full_name,
+                ).firstName,
+                last_name: !userDetails.user.user_metadata.first_name
+                  ? splitFullName(userDetails.user.user_metadata.full_name)
+                      .lastName
+                  : userDetails.user.user_metadata.last_name,
+                role: 'admin',
+                profile_image: !userDetails.user.user_metadata.image_url
+                  ? null
+                  : userDetails.user.user_metadata.image_url,
+                phone: !userDetails.user.user_metadata.phone
+                  ? ''
+                  : userDetails.user.user_metadata.phone,
+              })
+              .select();
 
-              if (!erroruser) {
-                const rec_id = uuidv4();
+            if (!erroruser) {
+              const rec_id = uuidv4();
 
-                await supabase.from('recruiter').insert({
-                  email: userDetails.user.email,
-                  name:
-                    userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                      '.com',
-                      '',
-                    ) || '',
-                  id: rec_id,
-                });
+              await supabase.from('recruiter').insert({
+                email: userDetails.user.email,
+                name:
+                  userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                    '.com',
+                    '',
+                  ) || '',
+                id: rec_id,
+              });
 
-                const { error } = await supabase.rpc(
-                  'createrecuriterrelation',
-                  {
-                    in_recruiter_id: rec_id,
-                    in_user_id: userDetails.user.id,
-                    in_is_active: true,
-                  },
-                );
+              const { error } = await supabase.rpc('createrecuriterrelation', {
+                in_recruiter_id: rec_id,
+                in_user_id: userDetails.user.id,
+                in_is_active: true,
+              });
 
-                if (error) {
-                  throw new Error(error.message);
-                }
-
-                await supabase
-                  .from('recruiter_user')
-                  .update({ recruiter_id: rec_id })
-                  .eq('user_id', userDetails.user.id);
-
-                router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+              if (error) {
+                throw new Error(error.message);
               }
-            })();
+
+              await supabase
+                .from('recruiter_user')
+                .update({ recruiter_id: rec_id })
+                .eq('user_id', userDetails.user.id);
+
+              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+            }
           } else {
             if (!userDetails?.user.user_metadata?.role) {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
               return;
+            }
+            if (userDetails?.user.user_metadata?.is_invite === 'true') {
+              await supabase.auth.updateUser({
+                data: { is_invite: 'false' }, // for invite user flow this is needed
+              });
             }
             const { data: recruiter, error: recruiter_error } = await supabase
               .from('recruiter')

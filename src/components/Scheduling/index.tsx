@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { SchedulerDashboard, SchedulerLayout } from '@/devlink2';
+import { PageLayout, SchedulerDashboard } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function ShecdulingMainComp() {
@@ -8,7 +8,7 @@ function ShecdulingMainComp() {
 
   return (
     <>
-      <SchedulerLayout
+      <PageLayout
         slotBody={
           <SchedulerDashboard
             onClickAllInterviews={{

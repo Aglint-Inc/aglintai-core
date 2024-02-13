@@ -1,9 +1,11 @@
 import React from "react";
-import * as _Builtin from "./_Builtin";
-import { PanelDetailTitle } from "./PanelDetailTitle";
-import { PanelDetailTable } from "./PanelDetailTable";
-import * as _utils from "./utils";
+
 import _styles from "./PanelDetail.module.css";
+
+import * as _Builtin from "./_Builtin";
+import { PanelDetailTable } from "./PanelDetailTable";
+import { PanelDetailTitle } from "./PanelDetailTitle";
+import * as _utils from "./utils";
 
 export function PanelDetail({
   as: _Component = _Builtin.Block,
@@ -16,10 +18,7 @@ export function PanelDetail({
     >
       {slotPanelDetail ?? (
         <>
-          <PanelDetailTitle
-            textYearMonth="Januarry 2024"
-            isSlotSelected={true}
-          />
+          <PanelDetailTitle textYearMonth="Januarry 2024" />
           <PanelDetailTable />
         </>
       )}

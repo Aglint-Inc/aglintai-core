@@ -4,6 +4,11 @@ import MuiTypography from '@mui/material/Typography';
 import React from 'react';
 
 export const typesDefinition = {
+  extraSmall: {
+    fontSize: '12px',
+    letterSpacing: '0px',
+    lineHeight: '16px',
+  },
   small: {
     fontSize: '14px',
     letterSpacing: '0px',
@@ -36,7 +41,14 @@ const fontWeight = {
 };
 
 type Props = {
-  type?: 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge' | 'xxxLarge';
+  type?:
+    | 'small'
+    | 'medium'
+    | 'large'
+    | 'xLarge'
+    | 'xxLarge'
+    | 'xxxLarge'
+    | 'extraSmall';
   children?: React.ReactNode;
   variant?: Variant;
   fontBold?: 'default' | 'normal';
@@ -59,7 +71,6 @@ const UITypography = ({
       color={color}
       fontWeight={fontBold ? fontWeight[fontBold] : undefined}
       textTransform={textTransform}
-      
     >
       {children}
     </MuiTypography>

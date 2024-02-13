@@ -1,4 +1,5 @@
 import { Drawer, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { InterviewPanelSidebar, PanelMemberPill } from '@/devlink2';
@@ -6,9 +7,11 @@ import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import {
+  setEditPanel,
   setInterviewPanels,
   setIsCreateDialogOpen,
   setPanelName,
@@ -19,7 +22,8 @@ import TeamAutoComplete from './TeamTextField';
 import { createPanel, editPanel } from '../utils';
 
 function CreateDialog() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, members } = useAuthDetails();
+  const router = useRouter();
   const isCreatePanelOpen = useSchedulingStore(
     (state) => state.isCreateDialogOpen,
   );
@@ -60,7 +64,6 @@ function CreateDialog() {
         selectedUsers,
         panel: editPanelDetails,
       });
-
       setInterviewPanels(
         interviewPanels.map((panel) => {
           if (panel.id === editPanelDetails.id) {
@@ -73,6 +76,11 @@ function CreateDialog() {
           return panel;
         }),
       );
+      setEditPanel({
+        ...editPanelDetails,
+        name: res.name,
+        relations: res.updatedRelations,
+      });
       close();
     } catch (e) {
       toast.error('Error creating panel');
@@ -83,9 +91,11 @@ function CreateDialog() {
   };
 
   const close = () => {
+    if (isCreatePanelOpen == 'create') {
+      setSelectedUsers([]);
+      setPanelName('');
+    }
     setIsCreateDialogOpen(null);
-    setSelectedUsers([]);
-    setPanelName('');
   };
 
   return (
@@ -100,6 +110,12 @@ function CreateDialog() {
     >
       <Stack sx={{ width: '450px', overflow: 'hidden' }}>
         <InterviewPanelSidebar
+          isNoTeamFound={members.length === 0}
+          onClickInvite={{
+            onClick: () => {
+              router.push(pageRoutes.COMPANY + '?tab=team');
+            },
+          }}
           slotLoader={
             <Stack width={16} height={16}>
               <LoaderGrey />

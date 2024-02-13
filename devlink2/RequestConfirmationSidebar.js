@@ -1,8 +1,10 @@
 import React from "react";
+
+import _styles from "./RequestConfirmationSidebar.module.css";
+
 import * as _Builtin from "./_Builtin";
 import { GroupedSlots } from "./GroupedSlots";
 import * as _utils from "./utils";
-import _styles from "./RequestConfirmationSidebar.module.css";
 
 export function RequestConfirmationSidebar({
   as: _Component = _Builtin.Block,
@@ -12,7 +14,7 @@ export function RequestConfirmationSidebar({
   textSelectedInfo = "You have selected 5 slots across 4 panel members. ",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "panel_slidebar")} tag="div">
+    <_Component className={_utils.cx(_styles, "panel_slidebar-copy")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "sidebar_contents", "height_100")}
         tag="div"
@@ -65,7 +67,7 @@ export function RequestConfirmationSidebar({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "sidebar_button_wrap")}
+        className={_utils.cx(_styles, "sidebar_button_wrap-copy")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">

@@ -8,11 +8,9 @@ declare function AllInterviewCard(props: {
   textStatus?: React.ReactNode;
   colorPropsText?: Types.Devlink.RuntimeProps;
   colorPropsBg?: Types.Devlink.RuntimeProps;
-  textMeeting?: React.ReactNode;
-  slotMeetingIcon?: Types.Devlink.Slot;
-  textTimeDate?: React.ReactNode;
   textDuration?: React.ReactNode;
   slotPanelImage?: Types.Devlink.Slot;
   textInterviewPanel?: React.ReactNode;
   textRelatedJob?: React.ReactNode;
+  slotScheduleInfo?: Types.Devlink.Slot;
 }): React.JSX.Element;

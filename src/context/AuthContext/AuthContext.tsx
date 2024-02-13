@@ -39,7 +39,6 @@ interface ContextValue {
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
   setLoading: (loading: boolean) => void;
   handleLogout: () => Promise<void>;
-  updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
   members: RecruiterUserType[];
@@ -60,10 +59,6 @@ const defaultProvider = {
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
-  updateRecruiter: async (updateData: Partial<RecruiterDB>) => {
-    updateData;
-    return true;
-  },
   recruiterUser: null,
   setRecruiterUser: () => {},
   members: [],
@@ -98,11 +93,7 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.isReady, loading]);
 
-  useEffect(() => {
-    if (recruiter?.id && recruiterUser?.role === 'admin') {
-      getMembersFromDB(recruiter?.id, userDetails.user.id);
-    }
-  }, [recruiter?.id]);
+  useEffect(() => {}, [recruiter?.id]);
 
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
     const { data, error } = await supabase
@@ -171,6 +162,15 @@ const AuthProvider = ({ children }) => {
           ...recruiterRel[0].recruiter,
           socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
         });
+        if (
+          recruiterUser[0].role === 'admin' ||
+          recruiterUser[0].role === 'member'
+        ) {
+          await getMembersFromDB(
+            recruiterRel[0].recruiter.id,
+            userDetails.user.id,
+          );
+        }
       } else {
         toast.error('Something went wrong! Please contact aglint support.');
       }
@@ -239,16 +239,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
-    return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
-      if (data) {
-        setRecruiter({ ...recruiter, ...data });
-        return true;
-      }
-      return false;
-    });
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -262,7 +252,6 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         handleLogout,
-        updateRecruiter,
         recruiterUser,
         allrecruterRelation,
         setAllrecruterRelation,

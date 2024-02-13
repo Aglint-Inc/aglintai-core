@@ -172,6 +172,12 @@ export type JobApplicationType =
 
 export type CandidateType = Database['public']['Tables']['candidates']['Row'];
 
+export type CandidateFileTypeDB =
+  Database['public']['Tables']['candidate_files']['Row'];
+
+export type InterviewScheduleTypeDB =
+  Database['public']['Tables']['interview_schedule']['Row'];
+
 export type NewCandidateType =
   Database['public']['Tables']['candidates']['Row'];
 

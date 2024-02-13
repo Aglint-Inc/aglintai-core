@@ -7,17 +7,11 @@ import {
 } from '@/src/types/data.types';
 
 interface SchedulingSlice {
-  interviewPanels: (InterviewPanelType & {
-    relations: InterviewPanelRelationType[];
-  })[];
+  interviewPanels: PanelType[];
   isCreateDialogOpen: 'edit' | 'create' | null;
   selectedUsers: RecruiterUserType[];
   panelName: string;
-  editPanel:
-    | (InterviewPanelType & {
-        relations: InterviewPanelRelationType[];
-      })
-    | null;
+  editPanel: PanelType | null;
 }
 
 export const useSchedulingStore = create<SchedulingSlice>()(() => ({
@@ -28,11 +22,8 @@ export const useSchedulingStore = create<SchedulingSlice>()(() => ({
   editPanel: null,
 }));
 
-export const setInterviewPanels = (
-  interviewPanels: (InterviewPanelType & {
-    relations: InterviewPanelRelationType[];
-  })[],
-) => useSchedulingStore.setState({ interviewPanels });
+export const setInterviewPanels = (interviewPanels: PanelType[]) =>
+  useSchedulingStore.setState({ interviewPanels });
 
 export const setIsCreateDialogOpen = (
   isCreateDialogOpen: 'edit' | 'create' | null,
@@ -44,8 +35,9 @@ export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
 export const setPanelName = (panelName: string) =>
   useSchedulingStore.setState({ panelName });
 
-export const setEditPanel = (
-  editPanel: InterviewPanelType & {
-    relations: InterviewPanelRelationType[];
-  },
-) => useSchedulingStore.setState({ editPanel });
+export const setEditPanel = (editPanel: PanelType) =>
+  useSchedulingStore.setState({ editPanel });
+
+export type PanelType = InterviewPanelType & {
+  relations: InterviewPanelRelationType[];
+};

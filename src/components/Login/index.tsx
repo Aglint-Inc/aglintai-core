@@ -118,7 +118,7 @@ function Login() {
         password: details.password,
       });
       if (!authdata.error) {
-        router.push((router?.query?.redirect as string) || pageRoutes.JOBS);
+        router.push(pageRoutes.LOADING);
       } else {
         setErrorCheck({
           ...errorCheck,

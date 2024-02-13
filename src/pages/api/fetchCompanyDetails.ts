@@ -15,7 +15,7 @@
 //     res.status(200).send({ data: null, error: 'url is required in body' });
 //   }
 // }
-export const supabaseAdmin = createClient<Database>(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
