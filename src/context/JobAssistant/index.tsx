@@ -76,12 +76,12 @@ const defaultProvider: ContextValue = {
   isPopUpOpen: null,
   setIsPopUpOpen: () => {},
 };
+let job_descriptions = '';
 const JobAssistantContext = createContext<ContextValue>(defaultProvider);
 const useJobAssistantContext = () => useContext(JobAssistantContext);
 function JobAssistantProvider({ children }) {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  let job_descriptions = '';
   const [companyDetails, setCompanyDetails] = useState<JobTypeDB | null>(null);
   const [candidates, setCandidates] = useState([]);
   const [applications, setApplications] = useState<any[] | null>(null);

@@ -14,6 +14,7 @@ function LeftPanel() {
     currentChat,
     resLoading,
     jobAssistantChats,
+    fetching,
     switchChat,
   } = useJobAssistantContext();
 
@@ -40,7 +41,7 @@ function LeftPanel() {
             }
           }}
           startIcon={<PlusIcon />}
-          disabled={resLoading}
+          disabled={resLoading || fetching}
         >
           Create New Chat
         </AUIButton>
