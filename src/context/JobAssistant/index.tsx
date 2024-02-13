@@ -198,7 +198,9 @@ function JobAssistantProvider({ children }) {
         createNewChat();
         return;
       }
-      const currectChat = jobAssistantChats[0];
+      const currectChat =
+        jobAssistantChats.filter((item) => item.id === router.query?.chat_id)[0] ||
+        jobAssistantChats[0];
       if (currectChat.id) {
         getMessages(currectChat.id);
         setCurrentChat(currectChat);
@@ -215,7 +217,11 @@ function JobAssistantProvider({ children }) {
         last_message,
       })
       .eq('id', currentChat.id);
-    getJobAssistantChat(currentChat.job_id);
+    setCurrentChat((pre) => {
+      pre.last_message = last_message as string;
+      return { ...pre };
+    });
+    // getJobAssistantChat(currentChat.job_id);
   }
   async function getMessages(chat_id: string) {
     const { data: messages, error } = await supabase
