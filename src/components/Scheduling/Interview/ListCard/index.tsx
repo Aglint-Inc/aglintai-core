@@ -116,9 +116,13 @@ function ListCard({ app }: { app: ApplicationList }) {
               <ScheduleInfoBlock
                 textDateTimeOrSlots={
                   app.schedule.schedule_time
-                    ? dayjs(app.schedule.schedule_time).format('YYYY MMM DD') +
+                    ? dayjs(app.schedule.schedule_time.startTime).format(
+                        'YYYY MMM DD',
+                      ) +
                       ' at ' +
-                      dayjs(app.schedule.schedule_time).format('hh:mm A')
+                      dayjs(app.schedule.schedule_time.startTime).format(
+                        'hh:mm A',
+                      )
                     : '--'
                 }
                 slotScheduleTypeIcon={

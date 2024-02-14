@@ -1,7 +1,13 @@
 import React from 'react';
 
+import CandidateInvite from '@/src/components/Scheduling/CandidateInvite';
+
 function CandidateSchedule() {
-  return <div>CandidateSchedule</div>;
+  return (
+    <>
+      <CandidateInvite />
+    </>
+  );
 }
 
 export default CandidateSchedule;

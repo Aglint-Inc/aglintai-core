@@ -128,6 +128,8 @@ const allowedPaths = new Set([
   '/api/scheduling/google-consent',
   '/api/scheduling/list-events',
   '/api/scheduling/list-availability',
+  '/api/scheduling/invite',
+  '/api/scheduling/confirm',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {

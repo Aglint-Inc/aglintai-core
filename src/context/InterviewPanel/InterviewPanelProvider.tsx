@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import {
+  ApplicationList,
   resetInterviewState,
   setApplicationList,
   setInitalLoading,
@@ -76,7 +77,7 @@ const InterviewPanelProvider = ({ children }) => {
               schedule: schedule || null,
             };
           });
-          setApplicationList(appWithSchedule);
+          setApplicationList(appWithSchedule as ApplicationList[]);
         }
       }
     } catch (error) {

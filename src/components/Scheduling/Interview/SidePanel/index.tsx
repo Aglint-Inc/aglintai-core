@@ -10,6 +10,7 @@ import {
   TimeRangePreview,
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import InterviewPanelCardComp from './InterviewPanelCard';
@@ -22,6 +23,7 @@ import {
 import { mailHandler, TimeSlot } from '../utils';
 
 function SidePanel() {
+  const { recruiter } = useAuthDetails();
   const selectedApplication = useInterviewStore(
     (state) => state.selectedApplication,
   );
@@ -32,7 +34,13 @@ function SidePanel() {
   );
 
   const resendInvite = async () => {
-    mailHandler({ id: selectedApplication?.schedule?.id });
+    mailHandler({
+      id: selectedApplication?.schedule?.id,
+      candidate_name: selectedApplication?.candidates.first_name,
+      company_logo: recruiter.logo,
+      company_name: recruiter.name,
+      schedule_name: selectedApplication?.schedule?.schedule_name,
+    });
   };
 
   const schedule = selectedApplication?.schedule?.selected_slots as unknown as {

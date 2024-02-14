@@ -87,9 +87,17 @@ export interface IntersectionResult {
 
 export const mailHandler = async ({
   id,
+  company_name,
+  company_logo,
+  candidate_name,
+  schedule_name,
   mail,
 }: {
   id: string;
+  company_name: string;
+  company_logo: string;
+  candidate_name: string;
+  schedule_name: string;
   mail?: string;
 }) => {
   try {
@@ -98,8 +106,20 @@ export const mailHandler = async ({
         fromEmail: `messenger@aglinthq.com`,
         fromName: 'Aglint',
         email: mail ? mail : 'chinmai@aglinthq.com',
-        subject: 'Interview Schedule Confirmation',
-        text: `<p>Hi, <br> You have been invited for an interview. Please click on the link to schedule your interview. <br> <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}">Click here to schedule</a> </p>`,
+        subject: `You have seletcted for the interview at ${company_name}`,
+        text: `<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
+        <div style="background-color: #ffffff; max-width: 600px; margin: auto; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <img src="${company_logo}" alt="Company Logo" style="width: 60px; height:60px;border-radius:4px; margin-bottom: 20px;">
+            <h1 style="font-size: 18px; color: #333333;">You have selected for the Interview at ${company_name}</h1>
+            <p style="color: #68737D; font-size: 14px; margin-bottom: 30px;">Hi ${candidate_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!</p>
+            <div style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
+                <h2 style="color: #333333; font-size: 16px; margin: 0;">${schedule_name}</h2>
+                <p style="margin: 5px 0 0px; color: #68737D; font-size: 12px;">30 Minutes <img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/company-logo/public/google-meet.png?t=2024-02-13T13%3A08%3A33.200Z" alt="Company Logo" style="height:12px; width:12px;"><span style="margin-left:10px">Google Meet</span></p>
+            </div>
+            <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">Pick Your Slot</a>
+            <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
+        </div>
+    </body>`,
       })
       .then((res) => {
         if (res.status === 200 && res.data.data === 'Email sent') {
@@ -114,3 +134,5 @@ export const mailHandler = async ({
     toast.error('Unable to send mail. Please try again later.');
   }
 };
+
+

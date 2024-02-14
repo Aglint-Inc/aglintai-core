@@ -50,7 +50,7 @@ function InterviewComp() {
 
     if (filter.dateRange) {
       list = list.filter((app) => {
-        const date = new Date(app.schedule.schedule_time);
+        const date = new Date(app.schedule.schedule_time.startTime);
         return date >= filter.dateRange[0] && date <= filter.dateRange[1];
       });
     }
@@ -58,16 +58,16 @@ function InterviewComp() {
     if (filter.sortBy === 'asc') {
       list.sort(
         (a, b) =>
-          new Date(a.schedule.schedule_time).getTime() -
-          new Date(b.schedule.schedule_time).getTime(),
+          new Date(a.schedule.schedule_time.startTime).getTime() -
+          new Date(b.schedule.schedule_time.startTime).getTime(),
       );
     }
 
     if (filter.sortBy === 'desc') {
       list.sort(
         (a, b) =>
-          new Date(b.schedule.schedule_time).getTime() -
-          new Date(a.schedule.schedule_time).getTime(),
+          new Date(b.schedule.schedule_time.startTime).getTime() -
+          new Date(a.schedule.schedule_time.startTime).getTime(),
       );
     }
     return list;

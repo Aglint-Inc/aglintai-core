@@ -16,13 +16,13 @@ function ScheduleInfoBlockComp() {
         textDateTimeOrSlots={
           selectedApplication?.schedule.schedule_time
             ? selectedApplication.schedule.schedule_time
-              ? dayjs(selectedApplication.schedule.schedule_time).format(
-                  'YYYY MMM DD',
-                ) +
+              ? dayjs(
+                  selectedApplication.schedule.schedule_time.startTime,
+                ).format('YYYY MMM DD') +
                 ' at ' +
-                dayjs(selectedApplication.schedule.schedule_time).format(
-                  'hh:mm A',
-                )
+                dayjs(
+                  selectedApplication.schedule.schedule_time.startTime,
+                ).format('hh:mm A')
               : '--'
             : '--'
         }

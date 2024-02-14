@@ -1,4 +1,4 @@
-import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+// import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -17,11 +17,11 @@ export default function handler(req, res) {
   sgMail
     .send({
       ...msg,
-      mailSettings: {
-        sandboxMode: {
-          enable: !isEnvProd(),
-        },
-      },
+      // mailSettings: {
+      //   sandboxMode: {
+      //     enable: !isEnvProd(),
+      //   },
+      // },
     })
     .then(() => {
       res.status(200).json({ data: 'Email sent' });

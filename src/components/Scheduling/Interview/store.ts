@@ -76,6 +76,14 @@ export const resetInterviewState = () =>
 export type ApplicationList = JobApplcationDB & {
   candidates: CandidateType;
   candidate_files: CandidateFileTypeDB;
-  schedule: InterviewScheduleTypeDB | null;
+  schedule:
+    | (InterviewScheduleTypeDB & {
+        schedule_time: {
+          startTime: string;
+          endTime: string;
+          user_ids: string[];
+        } | null;
+      })
+    | null;
   public_jobs: { id: string; job_title: string };
 };

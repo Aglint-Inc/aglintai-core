@@ -25,16 +25,17 @@ import toast from '@/src/utils/toast';
 import TeamAutoComplete from './TeamTextField';
 import IconScheduleType from '../ListCard/Icon';
 import {
+  ApplicationList,
   setApplicationList,
   setIsCreateScheduleOpen,
   setSelectedPanel,
   setSelectedUsers,
   useInterviewStore,
 } from '../store';
-import { findIntersection, mailHandler,TimeSlot } from '../utils';
+import { findIntersection, mailHandler, TimeSlot } from '../utils';
 
 function CreateDialog() {
-  const { members } = useAuthDetails();
+  const { members, recruiter } = useAuthDetails();
   const isCreateScheduleOpen = useInterviewStore(
     (state) => state.isCreateScheduleOpen,
   );
@@ -119,9 +120,16 @@ function CreateDialog() {
       if (error) throw new Error('Error inserting data');
       applicationList.filter(
         (app) => app.id === selectedApplication.id,
-      )[0].schedule = data[0];
+      )[0].schedule = data[0] as ApplicationList['schedule'];
       setApplicationList([...applicationList]);
-      mailHandler({ id: data[0].id });
+
+      mailHandler({
+        id: data[0].id,
+        candidate_name: selectedApplication?.candidates.first_name,
+        company_logo: recruiter.logo,
+        company_name: recruiter.name,
+        schedule_name: selectedApplication?.schedule?.schedule_name,
+      });
       setStep(4);
     } catch (e) {
       toast.error('Error inviting candidate');
