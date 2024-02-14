@@ -2,7 +2,7 @@ import React from 'react';
 
 import UITextField from '@/src/components/Common/UITextField';
 
-import { setFilter } from '../store';
+import { setFilter } from '../../store';
 
 function FilterSearchField() {
   return (

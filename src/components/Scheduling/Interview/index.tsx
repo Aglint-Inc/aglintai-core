@@ -1,76 +1,131 @@
+import { Stack } from '@mui/material';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import {
-  AddFilter,
   AllInterview,
   Breadcrum,
-  ButtonDate,
-  ButtonSchedule,
-  ButtonStatus,
-  PageLayout,
+  CandidatesListPagination,
+  PageLayout
 } from '@/devlink2';
-import { getFullName } from '@/src/utils/jsonResume';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
 
 import CreateDialog from './CreateDialog';
-import FilterSearchField from './FilterSearchField';
+import AddFilterComp from './Filters/AddFilter';
+import DateFilter from './Filters/DateFilter';
+import FilterScheduleType from './Filters/FilterScheduleType';
+import FilterSearchField from './Filters/FilterSearchField';
+import FilterStatus from './Filters/FilterStatus';
 import ListCard from './ListCard';
 import SidePanel from './SidePanel';
-import { useInterviewStore } from './store';
+import {
+  ApplicationList,
+  setApplicationList,
+  setFetching,
+  setPagination,
+  useInterviewStore,
+} from './store';
+import { getPaginationDB } from './utils';
 
 function InterviewComp() {
   const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const applicationList = useInterviewStore((state) => state.applicationList);
-
   const initialLoading = useInterviewStore((state) => state.initialLoading);
+  const pagination = useInterviewStore((state) => state.pagination);
   const filter = useInterviewStore((state) => state.filter);
+  const fetching = useInterviewStore((state) => state.fetching);
 
-  const filterList = () => {
-    if (!applicationList) return [];
-    let list = applicationList;
-    if (filter.textSearch) {
-      list = list.filter((app) =>
-        getFullName(app.candidates.first_name, app.candidates.last_name)
-          .toLocaleLowerCase()
-          .includes(filter.textSearch.toLocaleLowerCase()),
+  // separate useeffect for filter except text search because no need to debounce
+  useEffect(() => {
+    if (!initialLoading) {
+      if (
+        filter.status ||
+        filter.status == null ||
+        filter.job_id ||
+        filter.panel_id ||
+        filter.dateRange ||
+        filter.sortBy ||
+        filter.scheduleType
+      ) {
+        fetchInterviewData({ page: 1 });
+      }
+    }
+  }, [
+    filter.status,
+    filter.job_id,
+    filter.panel_id,
+    filter.dateRange,
+    filter.sortBy,
+    filter.scheduleType,
+  ]);
+  // separate useeffect for filter except text search because no need to debounce
+
+  useEffect(() => {
+    if (!initialLoading) {
+      fetchInterviewData({ page: pagination.page });
+    }
+  }, [pagination.page]);
+
+  useEffect(() => {
+    const debouncedTextSearchFetch = debounce(() => {
+      fetchInterviewData({ page: 1 });
+    }, 1000);
+
+    if (!initialLoading) {
+      debouncedTextSearchFetch();
+    }
+    return () => {
+      debouncedTextSearchFetch.cancel();
+    };
+  }, [filter.textSearch]);
+
+  const fetchInterviewData = async ({ page = 1 }: { page: number }) => {
+    try {
+      setPagination({ page });
+      setFetching(true);
+      getPagination();
+      const { data: appNew, error } = await supabase.rpc(
+        'fetch_interview_data',
+        {
+          rec_id: recruiter.id,
+          status_filter: filter.status.length > 0 ? filter.status : null,
+          text_search_filter: filter.textSearch,
+          sch_type: filter.scheduleType.length > 0 ? filter.scheduleType : null,
+          sort_by: filter.sortBy,
+          page_number: page,
+        },
       );
+      if (error) {
+        throw new Error(error.message);
+      }
+      setApplicationList(appNew as ApplicationList[]);
+    } catch (error) {
+      toast.error('Error fetching interview data');
+    } finally {
+      setFetching(false);
     }
+  };
 
-    if (filter.status) {
-      list = list.filter((app) => app.status === filter.status);
-    }
-
-    if (filter.job_id) {
-      list = list.filter((app) => app.job_id === filter.job_id);
-    }
-
-    if (filter.panel_id) {
-      list = list.filter((app) => app.schedule.panel_id === filter.panel_id);
-    }
-
-    if (filter.dateRange) {
-      list = list.filter((app) => {
-        const date = new Date(app.schedule.schedule_time.startTime);
-        return date >= filter.dateRange[0] && date <= filter.dateRange[1];
+  const getPagination = async () => {
+    try {
+      const totalCount = await getPaginationDB({
+        recruiter: { id: recruiter.id },
+        filter: {
+          status: filter.status,
+          textSearch: filter.textSearch,
+          scheduleType: filter.scheduleType,
+          sortBy: filter.sortBy,
+        },
       });
+      setPagination({ total: totalCount });
+    } catch (error) {
+      toast.error('Error fetching interview data');
     }
-
-    if (filter.sortBy === 'asc') {
-      list.sort(
-        (a, b) =>
-          new Date(a.schedule.schedule_time.startTime).getTime() -
-          new Date(b.schedule.schedule_time.startTime).getTime(),
-      );
-    }
-
-    if (filter.sortBy === 'desc') {
-      list.sort(
-        (a, b) =>
-          new Date(b.schedule.schedule_time.startTime).getTime() -
-          new Date(a.schedule.schedule_time.startTime).getTime(),
-      );
-    }
-    return list;
   };
 
   return (
@@ -92,20 +147,55 @@ function InterviewComp() {
         }
         slotBody={
           <AllInterview
+            slotPagination={
+              <Stack
+                sx={{
+                  opacity: fetching ? 0.5 : 1,
+                  pointerEvents: fetching ? 'none' : 'auto',
+                  zIndex: 3,
+                }}
+              >
+                <CandidatesListPagination
+                  totalCandidatesCount={pagination.total}
+                  currentCandidatesCount={applicationList.length}
+                  totalPageCount={Math.ceil(pagination.total / 10)}
+                  onclickNext={{
+                    onClick: () => {
+                      if (pagination.page < Math.ceil(pagination.total / 10))
+                        setPagination({ page: pagination.page + 1 });
+                    },
+                  }}
+                  onclickPrevious={{
+                    onClick: () => {
+                      if (pagination.page > 1)
+                        setPagination({ page: pagination.page - 1 });
+                    },
+                  }}
+                  slotPageNumber={pagination.page}
+                />
+              </Stack>
+            }
             slotSidebar={<SidePanel />}
-            slotSchedule={<ButtonSchedule />}
-            slotAddFilter={<AddFilter />}
-            slotDate={<ButtonDate />}
+            slotSchedule={<FilterScheduleType />}
+            slotAddFilter={<AddFilterComp />}
+            slotDate={<DateFilter />}
             slotSearch={<FilterSearchField />}
-            slotStatus={<ButtonStatus />}
+            slotStatus={<FilterStatus />}
             slotAllInterviewCard={
-              !initialLoading && (
-                <>
-                  {filterList().map((app) => {
-                    return <ListCard key={app.id} app={app} />;
-                  })}
-                </>
-              )
+              <Stack
+                style={{
+                  opacity: fetching ? 0.5 : 1,
+                  pointerEvents: fetching ? 'none' : 'auto',
+                }}
+              >
+                {!initialLoading && (
+                  <>
+                    {applicationList.map((app) => {
+                      return <ListCard key={app.applications.id} app={app} />;
+                    })}
+                  </>
+                )}
+              </Stack>
             }
           />
         }

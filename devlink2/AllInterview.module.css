@@ -60,6 +60,7 @@
 .allinterview_row {
   position: sticky;
   top: 0px;
+  z-index: 3;
 
   display: grid;
   width: 100%;
@@ -98,8 +99,34 @@
   flex-direction: column;
 }
 
+.job-page-nav-bar {
+  position: sticky;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0px;
+  z-index: 5;
+
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.job-page-nav-bar.bg-color-add {
+  background-color: #f8f9f9;
+}
+
 .embed_css {
   position: absolute;
   z-index: -100;
   pointer-events: none;
+}
+
+#w-node-a2101a74-75c9-d4a3-527f-b366428e8058-c14c1a99 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
 }

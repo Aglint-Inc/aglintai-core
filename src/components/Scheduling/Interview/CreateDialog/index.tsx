@@ -107,7 +107,7 @@ function CreateDialog() {
       const { data, error } = await supabase
         .from('interview_schedule')
         .insert({
-          application_id: selectedApplication.id,
+          application_id: selectedApplication.applications.id,
           schedule_name: name,
           schedule_type: scheduleType,
           panel_id: slelectedPanel.id,
@@ -119,7 +119,7 @@ function CreateDialog() {
         .select();
       if (error) throw new Error('Error inserting data');
       applicationList.filter(
-        (app) => app.id === selectedApplication.id,
+        (app) => app.applications.id === selectedApplication.applications.id,
       )[0].schedule = data[0] as ApplicationList['schedule'];
       setApplicationList([...applicationList]);
 
@@ -271,61 +271,68 @@ function CreateDialog() {
             <ScheduleInterviewLoading />
           ) : step === 3 ? (
             <ScheduleInterviewLoadedSlots
-              slotLoadedSlots={filteredSlots.map((f, ind) => {
-                return (
-                  <LoadedSlots
-                    key={dayjs(f.date).format('DD dddd')}
-                    slotLoadedSlotPill={f.slots.map((slot) => {
+              slotLoadedSlots={
+                filteredSlots.length > 0
+                  ? filteredSlots.map((f, ind) => {
                       return (
-                        <LoadedSlotPill
-                          isNotSelected={!slot.isSelected}
-                          isSelectedActive={slot.isSelected}
-                          onClickPill={{
-                            onClick: () => {
-                              filteredSlots[ind].slots.filter(
-                                (s) => s === slot,
-                              )[0].isSelected = !slot.isSelected;
-                              setFilteredSlots([...filteredSlots]);
-                            },
-                          }}
-                          key={slot.startTime}
-                          textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
-                          slotImage={
-                            <AvatarGroup
-                              sx={{
-                                '& .MuiAvatar-root': {
-                                  width: '24px',
-                                  height: '24px',
-                                  fontSize: '8px',
-                                },
-                              }}
-                              total={slot.user_ids.length}
-                            >
-                              {slot.user_ids.slice(0, 5).map((user_id) => {
-                                const member = members.filter(
-                                  (member) => member.user_id === user_id,
-                                )[0];
-                                return (
-                                  <MuiAvatar
-                                    key={user_id}
-                                    src={member?.profile_image}
-                                    level={member?.first_name}
-                                    variant='circular'
-                                    height='24px'
-                                    width='24px'
-                                    fontSize='8px'
-                                  />
-                                );
-                              })}
-                            </AvatarGroup>
-                          }
+                        <LoadedSlots
+                          key={dayjs(f.date).format('DD dddd')}
+                          slotLoadedSlotPill={f.slots.map((slot) => {
+                            return (
+                              <LoadedSlotPill
+                                isNotSelected={!slot.isSelected}
+                                isSelectedActive={slot.isSelected}
+                                onClickPill={{
+                                  onClick: () => {
+                                    filteredSlots[ind].slots.filter(
+                                      (s) => s === slot,
+                                    )[0].isSelected = !slot.isSelected;
+                                    setFilteredSlots([...filteredSlots]);
+                                  },
+                                }}
+                                key={slot.startTime}
+                                textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                                slotImage={
+                                  <AvatarGroup
+                                    sx={{
+                                      '& .MuiAvatar-root': {
+                                        width: '24px',
+                                        height: '24px',
+                                        fontSize: '8px',
+                                      },
+                                    }}
+                                    total={slot.user_ids.length}
+                                  >
+                                    {slot.user_ids
+                                      .slice(0, 5)
+                                      .map((user_id) => {
+                                        const member = members.filter(
+                                          (member) =>
+                                            member.user_id === user_id,
+                                        )[0];
+                                        return (
+                                          <MuiAvatar
+                                            key={user_id}
+                                            src={member?.profile_image}
+                                            level={member?.first_name}
+                                            variant='circular'
+                                            height='24px'
+                                            width='24px'
+                                            fontSize='8px'
+                                          />
+                                        );
+                                      })}
+                                  </AvatarGroup>
+                                }
+                              />
+                            );
+                          })}
+                          textDay={dayjs(f.date).format('MMM D dddd')}
                         />
                       );
-                    })}
-                    textDay={dayjs(f.date).format('MMM D dddd')}
-                  />
-                );
-              })}
+                    })
+                  : 'No Slots Available'
+              }
             />
           ) : (
             <InvitedCandidate
@@ -345,7 +352,7 @@ function CreateDialog() {
               slotMeetingIcon={<IconScheduleType type={scheduleType} />}
               slotProfileAvatar={
                 <MuiAvatar
-                  key={selectedApplication?.id}
+                  key={selectedApplication?.applications.id}
                   src={selectedApplication?.candidates?.avatar}
                   level={selectedApplication?.candidates?.first_name}
                   variant='circular'

@@ -30,7 +30,7 @@ function SidePanel() {
   const applicationList = useInterviewStore((state) => state.applicationList);
 
   const currentIndex = applicationList.findIndex(
-    (app) => app.id === selectedApplication?.id,
+    (app) => app.applications.id === selectedApplication?.applications.id,
   );
 
   const resendInvite = async () => {

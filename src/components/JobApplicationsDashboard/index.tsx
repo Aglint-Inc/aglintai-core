@@ -420,7 +420,11 @@ const ApplicationPagination = ({
   );
 };
 
-const PageCountSlot = ({ totalPageCount }: { totalPageCount: number }) => {
+export const PageCountSlot = ({
+  totalPageCount,
+}: {
+  totalPageCount: number;
+}) => {
   const { section, handleJobApplicationPaginate, pageNumber } =
     useJobApplications();
   const [value, setValue] = useState(pageNumber[section]);

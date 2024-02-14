@@ -111,7 +111,6 @@ function TeamAutoComplete() {
           );
         })}
       </UITextField>
-      {}
     </Stack>
   );
 }

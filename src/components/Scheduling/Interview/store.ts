@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 import {
-  CandidateFileTypeDB,
   CandidateType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
@@ -20,14 +19,20 @@ interface InterviewSlice {
     must: 'selected' | 'optional' | 'not selected';
   }[];
   filter: {
-    status?: string;
-    job_id?: string;
-    panel_id?: string;
+    status?: (InterviewScheduleTypeDB['status'] | 'not scheduled')[];
+    job_id?: string[];
+    scheduleType?: InterviewScheduleTypeDB['schedule_type'][];
+    panel_id?: string[];
     dateRange?: [Date, Date];
     duration?: number;
     textSearch?: string;
     sortBy?: 'asc' | 'desc';
   };
+  pagination: {
+    page: number;
+    total: number;
+  };
+  fetching: boolean;
 }
 
 const initialState: InterviewSlice = {
@@ -39,7 +44,17 @@ const initialState: InterviewSlice = {
   selectedUsers: [],
   filter: {
     textSearch: '',
+    status: [],
+    sortBy: 'asc',
+    job_id: [],
+    panel_id: [],
+    scheduleType: [],
   },
+  pagination: {
+    page: 1,
+    total: 0,
+  },
+  fetching: false,
 };
 
 export const useInterviewStore = create<InterviewSlice>()(() => ({
@@ -70,12 +85,22 @@ export const setFilter = (filter: InterviewSlice['filter']) =>
     filter: { ...state.filter, ...filter },
   }));
 
+export const setPagination = (
+  pagination: Partial<InterviewSlice['pagination']>,
+) =>
+  useInterviewStore.setState((state) => ({
+    pagination: { ...state.pagination, ...pagination },
+  }));
+
+export const setFetching = (fetching: boolean) =>
+  useInterviewStore.setState({ fetching });
+
 export const resetInterviewState = () =>
   useInterviewStore.setState({ ...initialState });
 
-export type ApplicationList = JobApplcationDB & {
+export type ApplicationList = {
+  applications: JobApplcationDB;
   candidates: CandidateType;
-  candidate_files: CandidateFileTypeDB;
   schedule:
     | (InterviewScheduleTypeDB & {
         schedule_time: {
@@ -86,4 +111,6 @@ export type ApplicationList = JobApplcationDB & {
       })
     | null;
   public_jobs: { id: string; job_title: string };
+  current_page: number;
+  total_candidates: number;
 };

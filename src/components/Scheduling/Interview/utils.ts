@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 /* eslint-disable security/detect-object-injection */
@@ -34,7 +35,7 @@ export function findIntersection(
           const status = slot.status;
 
           // Only consider slots with status "available"
-          if (status === 'available') {
+          if (status === 'confirmed') {
             // Initialize user_ids array for this time slot if it doesn't exist
             if (!intersection[date]) {
               intersection[date] = [];
@@ -135,4 +136,32 @@ export const mailHandler = async ({
   }
 };
 
+export const getPaginationDB = async ({
+  recruiter,
+  filter,
+}: {
+  recruiter: { id: string };
+  filter: {
+    status: string[];
+    textSearch: string;
+    scheduleType: string[];
+    sortBy: string;
+  };
+}) => {
+  try {
+    const { data, error } = await supabase.rpc('get_interview_data_count', {
+      rec_id: recruiter.id,
+      status_filter: filter.status?.length > 0 ? filter.status : null,
+      text_search_filter: filter.textSearch,
+      sch_type: filter.scheduleType?.length > 0 ? filter.scheduleType : null,
+    });
 
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (error) {
+    toast.error('Error fetching interview data');
+  }
+};

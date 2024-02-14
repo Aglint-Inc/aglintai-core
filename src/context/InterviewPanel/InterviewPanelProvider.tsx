@@ -5,6 +5,7 @@ import {
   resetInterviewState,
   setApplicationList,
   setInitalLoading,
+  setPagination
 } from '@/src/components/Scheduling/Interview/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -26,13 +27,11 @@ const InterviewPanelContext =
 
 const InterviewPanelProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (recruiter?.id) {
       initialFetch();
-      initialInterviewFetch();
     }
     return () => {
       setInterviewPanels([]);
@@ -53,37 +52,46 @@ const InterviewPanelProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    if (recruiter?.id) {
+      initialInterviewFetch();
+    }
+    return () => {
+      resetInterviewState();
+    };
+  }, []);
+
   const initialInterviewFetch = async () => {
     try {
-      const { data: app, error: appError } = await supabase
-        .from('applications')
-        .select(
-          `*,candidates (*),candidate_files (*),public_jobs (id,job_title)`,
-        )
-        .eq('status', 'interview');
-      if (!appError) {
-        const { data: intSch, error: intSchError } = await supabase
-          .from('interview_schedule')
-          .select(`*`)
-          .in(
-            'application_id',
-            app.map((a) => a.id),
-          );
-        if (!intSchError) {
-          const appWithSchedule = app.map((a) => {
-            const schedule = intSch.find((i) => i.application_id === a.id);
-            return {
-              ...a,
-              schedule: schedule || null,
-            };
-          });
-          setApplicationList(appWithSchedule as ApplicationList[]);
-        }
+      getPaginationData();
+      const { data: appNew, error } = await supabase.rpc(
+        'fetch_interview_data',
+        {
+          rec_id: recruiter.id,
+        },
+      );
+      if (error) {
+        throw new Error(error.message);
       }
+      setApplicationList(appNew as ApplicationList[]);
     } catch (error) {
       toast.error('Error fetching interview data');
     } finally {
       setInitalLoading(false);
+    }
+  };
+
+  const getPaginationData = async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_interview_data_count', {
+        rec_id: recruiter.id,
+      });
+      setPagination({ total: data });
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (error) {
+      toast.error('Error fetching interview data');
     }
   };
 
