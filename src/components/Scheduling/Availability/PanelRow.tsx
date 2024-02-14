@@ -20,7 +20,9 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 const PanelRow = () => {
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
-  const isPanelLoading = useAvailableStore((state) => state.isloading);
+  const isCalenderLoading = useAvailableStore(
+    (state) => state.isCalenderLoading,
+  );
   const [editedIntId, setEditedIntId] = useState('');
   const interviewers = useAvailableStore((state) => state.interviewers);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
@@ -97,7 +99,7 @@ const PanelRow = () => {
                   }
                   slotBodyCells={
                     <>
-                      {isPanelLoading ? (
+                      {isCalenderLoading ? (
                         <Stack
                           direction={'row'}
                           justifyContent={'center'}

@@ -16,9 +16,18 @@ export type InterviewerAvailabliity = {
   cntRequested: number;
 };
 
+export type InterviewerType = {
+  interviewerName: string;
+  isMailConnected: boolean;
+  interviewerId: string;
+  profileImg: string;
+  slots: InterviewerAvailabliity[];
+};
+
 export type StateAvailibility = {
-  isloading: boolean;
-  interviewPanels: [];
+  isInitialising: boolean;
+  isCalenderLoading: boolean;
+  interviewPanels: InterviewerType[];
   panelName: string;
   interviewers: {
     interviewerName: string;

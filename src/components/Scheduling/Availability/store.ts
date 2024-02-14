@@ -3,16 +3,22 @@ import dayjs from 'dayjs';
 import { cloneDeep, get, set } from 'lodash';
 import { create } from 'zustand';
 
-import Availability from './Availability';
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
+  InterviewerType,
   StateAvailibility,
 } from './availability.types';
-import { DAYS_LENGTH, initialiseCheckedInts } from './utils';
+import {
+  countSlotStatus,
+  DAYS_LENGTH,
+  getAvailability,
+  initialiseCheckedInts,
+} from './utils';
 
 export let initialState: StateAvailibility = {
-  isloading: true,
+  isInitialising: false,
+  isCalenderLoading: false,
   interviewPanels: [],
   panelName: '',
   interviewers: [],
@@ -30,8 +36,11 @@ export const useAvailableStore = create<StateAvailibility>()(() => ({
   ...initialState,
 }));
 
-export const setIsLoading = (isloading: boolean) =>
-  useAvailableStore.setState({ isloading });
+export const setIsisInitialising = (isInitialising: boolean) =>
+  useAvailableStore.setState({ isInitialising });
+
+export const setIsisCalenderLoading = (isCalenderLoading: boolean) =>
+  useAvailableStore.setState({ isCalenderLoading });
 
 export const setIntPanelName = (panelName: string) =>
   useAvailableStore.setState({ panelName });
@@ -106,4 +115,100 @@ export const uncheckAllSlots = () => {
     );
     return updatedState;
   });
+};
+
+// util
+export const useSyncInterviewersCalender = () => {
+  const interviewers = useAvailableStore((state) => state.interviewers);
+  const timeSlot = useAvailableStore((state) => state.timeSlot);
+
+  const handleSync = async (timeSlot: number, monthToSync: string) => {
+    const clonedIntervs = cloneDeep(interviewers);
+    const promises = clonedIntervs.map(
+      async (int) =>
+        await createSingleInterviewPromise(int, timeSlot, monthToSync),
+    );
+    const newIntrs = await Promise.all(promises);
+    setCheckedInterSlots(initialiseCheckedInts(newIntrs));
+    setInterviewers(newIntrs);
+  };
+
+  const initCalenderAvails = async (
+    intervs: StateAvailibility['interviewers'],
+    timeSlot: number,
+  ) => {
+    const currentMonth = new Date().toISOString();
+    const clonedInters = cloneDeep(intervs);
+    let interviewersPromises = clonedInters.map(
+      async (interW) =>
+        await createSingleInterviewPromise(interW, timeSlot, currentMonth),
+    );
+    await Promise.all(interviewersPromises);
+    setInitInterviewers(clonedInters);
+  };
+
+  const handleSyncMonthifNeeded = async (syncDateMonth: string) => {
+    let newInterviewers = cloneDeep(interviewers);
+    let interviewersPromises = [];
+    for (let int of newInterviewers) {
+      for (let slotAvail of int.slots) {
+        if (slotAvail.timeDuration !== timeSlot) continue;
+        const isMonthSlotsExits = Object.keys(slotAvail.availability).some(
+          (dayKey) => dayjs(dayKey).isSame(syncDateMonth, 'month'),
+        );
+
+        if (!isMonthSlotsExits) {
+          interviewersPromises.push(
+            createSingleInterviewPromise(int, timeSlot, syncDateMonth),
+          );
+        }
+      }
+    }
+    await Promise.all(interviewersPromises);
+    setInterviewers(newInterviewers);
+    setCheckedInterSlots(initialiseCheckedInts(newInterviewers));
+  };
+
+  //util
+  const createSingleInterviewPromise = async (
+    interviewer: InterviewerType,
+    timeSlot: number,
+    monthToSync: string,
+  ) => {
+    let intAval: InterviewerAvailabliity = {
+      timeDuration: timeSlot,
+      availability: await getAvailability(
+        monthToSync,
+        interviewer.interviewerId,
+        timeSlot,
+      ),
+      cntConfirmed: 0,
+      cntRequested: 0,
+    };
+    const isTimeSlotExist = interviewer.slots.find(
+      (slot) => slot.timeDuration === timeSlot,
+    );
+    if (!isTimeSlotExist) {
+      interviewer.slots = [...interviewer.slots, intAval];
+    } else {
+      interviewer.slots = interviewer.slots.map((slot) => {
+        if (slot.timeDuration === timeSlot) return intAval;
+        return slot;
+      });
+    }
+
+    intAval.cntConfirmed = countSlotStatus(
+      interviewer.slots,
+      'confirmed',
+      timeSlot,
+    );
+    intAval.cntRequested = countSlotStatus(
+      interviewer.slots,
+      'requested',
+      timeSlot,
+    );
+    return interviewer;
+  };
+
+  return { handleSyncMonthifNeeded, handleSync, initCalenderAvails };
 };

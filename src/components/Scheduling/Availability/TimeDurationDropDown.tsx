@@ -1,69 +1,31 @@
 import { SelectChangeEvent } from '@mui/material';
-import { cloneDeep } from 'lodash';
 import React from 'react';
 
-import { InterviewerAvailabliity } from './availability.types';
+import toast from '@/src/utils/toast';
+
 import {
-  setCheckedInterSlots,
-  setInterviewers,
-  setIsLoading,
+  setIsisCalenderLoading,
   setTimeSlot,
   useAvailableStore,
+  useSyncInterviewersCalender,
 } from './store';
-import {
-  countSlotStatus,
-  getAvailability,
-  initialiseCheckedInts,
-} from './utils';
 import UISelect from '../../Common/Uiselect';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const TimeDurationDropDown = () => {
   const timeSlot = useAvailableStore((state) => state.timeSlot);
-  const interviewers = useAvailableStore((state) => state.interviewers);
+  const { handleSync } = useSyncInterviewersCalender();
   const handleOnchange = async (e: SelectChangeEvent<number>) => {
     try {
-      setIsLoading(true);
+      setIsisCalenderLoading(true);
       const timeSlotReq = Number(e.target.value);
-      const promises = interviewers.map(async (int) => {
-        const newInt = cloneDeep(int);
-        if (
-          newInt.slots.find((slotAv) => slotAv.timeDuration === timeSlotReq)
-        ) {
-          setTimeSlot(timeSlotReq);
-          return newInt;
-        }
-
-        let intAval: InterviewerAvailabliity = {
-          timeDuration: timeSlotReq,
-          availability: await getAvailability(
-            new Date().toISOString(),
-            newInt.interviewerId,
-            timeSlotReq,
-          ),
-          cntConfirmed: 0,
-          cntRequested: 0,
-        };
-        intAval.cntConfirmed = countSlotStatus(
-          newInt.slots,
-          'confirmed',
-          timeSlot,
-        );
-        intAval.cntRequested = countSlotStatus(
-          newInt.slots,
-          'requested',
-          timeSlot,
-        );
-        newInt.slots.push(intAval);
-        return newInt;
-      });
-      const newIntrs = await Promise.all(promises);
-      setCheckedInterSlots(initialiseCheckedInts(newIntrs));
-      setInterviewers(newIntrs);
+      const currMonth = new Date().toISOString();
+      await handleSync(timeSlotReq, currMonth);
       setTimeSlot(timeSlotReq);
     } catch (error) {
-      // console.log(error);
+      toast.error(API_FAIL_MSG);
     } finally {
-      setIsLoading(false);
+      setIsisCalenderLoading(false);
     }
   };
 

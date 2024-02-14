@@ -1,49 +1,38 @@
 /* eslint-disable no-unused-vars */
-import { AvatarGroup, Drawer, Slider, Stack } from '@mui/material';
+import { AvatarGroup, Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { isEmpty } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { LoaderSvg } from '@/devlink';
 import {
   Breadcrum,
-  GroupedSlots,
   PageLayout,
   PanelDetail,
   PanelDetailTitle,
   PanelDetailTopRight,
-  RequestConfirmationSidebar,
 } from '@/devlink2';
-import { TimeRangeAvailable } from '@/devlink2/TimeRangeAvailable';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useInterviewPanel } from '@/src/context/InterviewPanel/InterviewPanelProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import {
-  AvalabilitySlotType,
-  InterviewerAvailabliity,
-  StateAvailibility,
-} from './availability.types';
+import { StateAvailibility } from './availability.types';
 import CalenderHeaderRow from './CalenderHeaderRow';
 import PanelRow from './PanelRow';
 import SideDrawer from './RequestConfirmSideDrawer';
 import {
   resetState,
   setDateRangeView,
-  setInitInterviewers,
-  setIsLoading,
+  setIsisCalenderLoading,
+  setIsisInitialising,
   uncheckAllSlots,
   useAvailableStore,
+  useSyncInterviewersCalender,
 } from './store';
 import TimeDurationDropDown from './TimeDurationDropDown';
-import {
-  countSlotStatus,
-  DAYS_LENGTH,
-  getAvailability,
-  mergeInterviewerEvents,
-} from './utils';
+import { countSlotStatus, DAYS_LENGTH, getAvailability } from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
   setIsCreateDialogOpen,
@@ -55,23 +44,29 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const Availability = () => {
-  const { loading } = useInterviewPanel();
+  const { loading: isInterviewPanelLoading } = useInterviewPanel();
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
+  const { initCalenderAvails, handleSyncMonthifNeeded } =
+    useSyncInterviewersCalender();
+
   const { members } = useAuthDetails();
   const panelName = useSchedulingStore((state) => state.panelName);
-  const isloading = useAvailableStore((state) => state.isloading);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
+  const isInitialising = useAvailableStore((state) => state.isInitialising);
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
-  const router = useRouter();
+  const isCalenderLoading = useAvailableStore(
+    (state) => state.isCalenderLoading,
+  );
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
   const checkedInterSlots = useAvailableStore(
     (state) => state.checkedInterSlots,
   );
+  const router = useRouter();
   useEffect(() => {
-    if (router.isReady && router.query.panel_id && !loading) {
+    if (router.isReady && router.query.panel_id && !isInterviewPanelLoading) {
       (async () => {
         try {
-          setIsLoading(true);
+          setIsisInitialising(true);
           const panel = interviewPanels.find(
             (p) => p.id === router.query.panel_id,
           );
@@ -94,49 +89,54 @@ const Availability = () => {
                 slots: [],
               };
             });
-
-          let interviewersPromises = newInterviewers.map(async (interW) => {
-            if (interW.slots.length === 0) {
-              let intAval: InterviewerAvailabliity = {
-                timeDuration: timeSlot,
-                availability: await getAvailability(
-                  new Date().toISOString(),
-                  interW.interviewerId,
-                  timeSlot,
-                ),
-                cntConfirmed: 0,
-                cntRequested: 0,
-              };
-              interW.slots = [intAval];
-
-              intAval.cntConfirmed = countSlotStatus(
-                interW.slots,
-                'confirmed',
-                timeSlot,
-              );
-              intAval.cntRequested = countSlotStatus(
-                interW.slots,
-                'requested',
-                timeSlot,
-              );
-            }
-          });
-          await Promise.all(interviewersPromises);
-          // console.log(newInterviewers);
-          // const activeTimeSlot = newInterviewers[0].slots
-          setInitInterviewers(newInterviewers);
+          await initCalenderAvails(newInterviewers, timeSlot);
         } catch (err) {
-          // console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
-          setIsLoading(false);
+          setIsisInitialising(false);
         }
       })();
     }
     return () => {
       resetState();
     };
-  }, [router.isReady, router.query, loading]);
+  }, [router.isReady, router.query, isInterviewPanelLoading]);
+
+  const handleClickNext = async () => {
+    if (isCalenderLoading) return;
+    try {
+      let newDateRange: StateAvailibility['dateRangeView'] = {
+        startDate: dayjs(dateRangeView.endDate).add(1, 'day').toDate(),
+        endDate: dayjs(dateRangeView.endDate).add(DAYS_LENGTH, 'day').toDate(),
+      };
+      setDateRangeView(newDateRange);
+      setIsisCalenderLoading(true);
+      await handleSyncMonthifNeeded(newDateRange.endDate.toISOString());
+    } catch (error) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsisCalenderLoading(false);
+    }
+  };
+
+  const handleClickPrev = async () => {
+    if (isCalenderLoading) return;
+    try {
+      let newDateRange: StateAvailibility['dateRangeView'] = {
+        startDate: dayjs(dateRangeView.startDate)
+          .subtract(DAYS_LENGTH, 'day')
+          .toDate(),
+        endDate: dayjs(dateRangeView.startDate).subtract(1, 'day').toDate(),
+      };
+      setDateRangeView(newDateRange);
+      setIsisCalenderLoading(true);
+      await handleSyncMonthifNeeded(newDateRange.startDate.toISOString());
+    } catch (error) {
+      toast.error(API_FAIL_MSG);
+    } finally {
+      setIsisCalenderLoading(false);
+    }
+  };
 
   const calenderLabel = `${dayjs(dateRangeView.startDate).format(
     'DD MMMM',
@@ -196,28 +196,10 @@ const Availability = () => {
                         }
                         textYearMonth={calenderLabel}
                         onClickNext={{
-                          onClick: () => {
-                            setDateRangeView({
-                              startDate: dayjs(dateRangeView.endDate)
-                                .add(1, 'day')
-                                .toDate(),
-                              endDate: dayjs(dateRangeView.endDate)
-                                .add(DAYS_LENGTH, 'day')
-                                .toDate(),
-                            });
-                          },
+                          onClick: handleClickNext,
                         }}
                         onClickPrev={{
-                          onClick: () => {
-                            setDateRangeView({
-                              startDate: dayjs(dateRangeView.startDate)
-                                .subtract(DAYS_LENGTH, 'day')
-                                .toDate(),
-                              endDate: dayjs(dateRangeView.startDate)
-                                .subtract(1, 'day')
-                                .toDate(),
-                            });
-                          },
+                          onClick: handleClickPrev,
                         }}
                         isSlotSelected={countCheckedSlot > 0}
                         slotNumber={countCheckedSlot}
@@ -239,8 +221,19 @@ const Availability = () => {
                       />
                       <>
                         <CalenderHeaderRow />
-
-                        <PanelRow />
+                        {isInitialising ? (
+                          <Stack
+                            direction={'row'}
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                            width={'100vw'}
+                            height={'70vh'}
+                          >
+                            <LoaderSvg />
+                          </Stack>
+                        ) : (
+                          <PanelRow />
+                        )}
                       </>
                     </>
                   }
