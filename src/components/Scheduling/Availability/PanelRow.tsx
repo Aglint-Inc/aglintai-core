@@ -2,6 +2,7 @@ import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
+import { LoaderSvg } from '@/devlink';
 import {
   GroupedSlots,
   MemberSlotInfo,
@@ -19,6 +20,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 const PanelRow = () => {
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
+  const isPanelLoading = useAvailableStore((state) => state.isloading);
   const [editedIntId, setEditedIntId] = useState('');
   const interviewers = useAvailableStore((state) => state.interviewers);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
@@ -31,7 +33,7 @@ const PanelRow = () => {
       <PanelDetailTable
         slotPanelMemberRow={
           <>
-            {interviewers?.map((int, interviewIdx) => {
+            {interviewers.map((int, interviewIdx) => {
               let timeDurSlots = int.slots.find(
                 (t) => t.timeDuration === timeSlot,
               );
@@ -48,8 +50,6 @@ const PanelRow = () => {
               let avail = checkedInterviewer.slots.find(
                 (s) => s.timeDuration === timeSlot,
               )?.availability;
-
-              // // interviewers;
               let timeSlotIdx = interviewers[
                 String(interviewIdx)
               ].slots.findIndex((s) => s.timeDuration === timeSlot);
@@ -63,21 +63,6 @@ const PanelRow = () => {
               return (
                 <PanelDetailMemberRow
                   key={int.interviewerId}
-                  slotBodyCells={
-                    <>
-                      {timeSlotKeys.slice(0, 5).map((day) => {
-                        return (
-                          <AvailabilityCell
-                            key={day}
-                            timeDurSlots={timeDurSlots}
-                            day={day}
-                            cellPath={`checkedInterSlots[${interviewIdx}].slots[${timeSlotIdx}].availability[${day}]`}
-                            checkedTimeDur={avail[String(day)]}
-                          />
-                        );
-                      })}
-                    </>
-                  }
                   slotMember={
                     <>
                       <PanelMember
@@ -107,6 +92,33 @@ const PanelRow = () => {
                             },
                           }}
                         />
+                      )}
+                    </>
+                  }
+                  slotBodyCells={
+                    <>
+                      {isPanelLoading ? (
+                        <Stack
+                          direction={'row'}
+                          justifyContent={'center'}
+                          alignItems={'center'}
+                          width={'80vw'}
+                          height={'100%'}
+                        >
+                          <LoaderSvg />
+                        </Stack>
+                      ) : (
+                        timeSlotKeys.slice(0, 5).map((day) => {
+                          return (
+                            <AvailabilityCell
+                              key={day}
+                              timeDurSlots={timeDurSlots}
+                              day={day}
+                              cellPath={`checkedInterSlots[${interviewIdx}].slots[${timeSlotIdx}].availability[${day}]`}
+                              checkedTimeDur={avail[String(day)]}
+                            />
+                          );
+                        })
                       )}
                     </>
                   }

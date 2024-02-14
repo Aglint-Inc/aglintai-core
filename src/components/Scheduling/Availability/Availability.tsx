@@ -37,6 +37,7 @@ import {
   uncheckAllSlots,
   useAvailableStore,
 } from './store';
+import TimeDurationDropDown from './TimeDurationDropDown';
 import {
   countSlotStatus,
   DAYS_LENGTH,
@@ -122,6 +123,7 @@ const Availability = () => {
           });
           await Promise.all(interviewersPromises);
           // console.log(newInterviewers);
+          // const activeTimeSlot = newInterviewers[0].slots
           setInitInterviewers(newInterviewers);
         } catch (err) {
           // console.log(err);
@@ -187,7 +189,11 @@ const Availability = () => {
                   slotPanelDetail={
                     <>
                       <PanelDetailTitle
-                        slotDurationInput={<>dropdown</>}
+                        slotDurationInput={
+                          <>
+                            <TimeDurationDropDown />
+                          </>
+                        }
                         textYearMonth={calenderLabel}
                         onClickNext={{
                           onClick: () => {
@@ -196,7 +202,7 @@ const Availability = () => {
                                 .add(1, 'day')
                                 .toDate(),
                               endDate: dayjs(dateRangeView.endDate)
-                                .add(DAYS_LENGTH + 1, 'day')
+                                .add(DAYS_LENGTH, 'day')
                                 .toDate(),
                             });
                           },
@@ -205,7 +211,7 @@ const Availability = () => {
                           onClick: () => {
                             setDateRangeView({
                               startDate: dayjs(dateRangeView.startDate)
-                                .subtract(DAYS_LENGTH + 1, 'day')
+                                .subtract(DAYS_LENGTH, 'day')
                                 .toDate(),
                               endDate: dayjs(dateRangeView.startDate)
                                 .subtract(1, 'day')
@@ -233,19 +239,8 @@ const Availability = () => {
                       />
                       <>
                         <CalenderHeaderRow />
-                        {isloading ? (
-                          <Stack
-                            direction={'row'}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                            width={'100vw'}
-                            height={'60vh'}
-                          >
-                            <LoaderSvg />
-                          </Stack>
-                        ) : (
-                          <PanelRow />
-                        )}
+
+                        <PanelRow />
                       </>
                     </>
                   }

@@ -9,18 +9,19 @@ import {
   InterviewerAvailabliity,
   StateAvailibility,
 } from './availability.types';
-import { initialiseCheckedInts } from './utils';
+import { DAYS_LENGTH, initialiseCheckedInts } from './utils';
 
 export let initialState: StateAvailibility = {
   isloading: true,
   interviewPanels: [],
-  isPanelLoading: false,
   panelName: '',
   interviewers: [],
   timeSlot: 30,
   dateRangeView: {
     startDate: new Date(),
-    endDate: dayjs(new Date()).add(5, 'day').toDate(),
+    endDate: dayjs(new Date())
+      .add(DAYS_LENGTH - 1, 'day')
+      .toDate(),
   },
   checkedInterSlots: [],
 };

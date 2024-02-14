@@ -22,7 +22,7 @@ const CalenderHeaderRow = () => {
                     key={idx}
                     textDateMonth={dayjs(dateRangeView.startDate)
                       .add(idx, 'day')
-                      .format('DD MMM')}
+                      .format('dddd DD MMM')}
                   />
                 );
               })}

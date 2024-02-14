@@ -19,7 +19,6 @@ export type InterviewerAvailabliity = {
 export type StateAvailibility = {
   isloading: boolean;
   interviewPanels: [];
-  isPanelLoading: boolean;
   panelName: string;
   interviewers: {
     interviewerName: string;

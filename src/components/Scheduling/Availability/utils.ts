@@ -34,13 +34,17 @@ export const initialiseCheckedInts = (
   interviewers: StateAvailibility['interviewers'],
 ) => {
   const foo = (slots: InterviewerAvailabliity[]): InterviewerAvailabliity[] => {
-    return slots.map((int) => {
+    return slots.map((slot) => {
       let availClone = {};
-      int.timeDuration;
-      for (let keyDay of Object.keys(int.availability)) {
+      for (let keyDay of Object.keys(slot.availability)) {
         availClone[String(keyDay)] = [];
       }
-      return { ...int, availability: availClone };
+      return {
+        timeDuration: slot.timeDuration,
+        cntConfirmed: 0,
+        cntRequested: 0,
+        availability: availClone,
+      };
     });
   };
 
