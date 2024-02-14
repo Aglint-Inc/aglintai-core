@@ -384,6 +384,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;
@@ -558,6 +562,10 @@
 
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
 }
 
 .initial-prompts-wrapper {

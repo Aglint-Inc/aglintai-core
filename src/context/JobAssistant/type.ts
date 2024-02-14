@@ -10,6 +10,8 @@ import {
   JobAssistantChatMessages,
 } from '@/src/types/data.types';
 
+import { JobApplication } from '../JobApplicationsContext/types';
+
 // };
 //@ts-ignore
 export interface AssistantMessageInterface extends JobAssistantChatMessages {
@@ -17,7 +19,7 @@ export interface AssistantMessageInterface extends JobAssistantChatMessages {
   content: {
     active: boolean;
     message: ChatInput;
-    result_candidates: CandidateDetailsInterface[];
+    result_applications: JobApplication[];
     searchArguments: null;
   };
 }

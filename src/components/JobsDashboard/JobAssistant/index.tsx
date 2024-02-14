@@ -1,5 +1,6 @@
 import {
   Divider,
+  Drawer,
   IconButton,
   InputBase,
   Paper,
@@ -11,29 +12,29 @@ import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 
 import {
-  AssistantCandidateDetails,
   ChatMessage,
   JobAssist,
-  JobAssistCards,
   JobAssistCardSmall,
+  JobEmptyState,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
-import { CandidateDetailsInterface } from '@/src/context/JobAssistant/type';
 import {
   chatusers,
-  getResumeMatched,
   getSuggestedPrompts,
-  suggestions,
 } from '@/src/context/JobAssistant/utils';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AssistantChatMessage from './AssistantChatMessage';
+import CandidateCard from './CandidateCard';
 import ChatEditor, { SendIcon } from './ChatEditor';
+import DynamicSuggestion from './DynanicSuggetions';
 import LeftPanel from './LeftPannel';
 import Loader from '../../Common/Loader';
 import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
+import ApplicationDetails from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 function JobAssistant({ setMaximizeChat, maximizeChat }) {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
@@ -46,10 +47,17 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
     resLoading,
     candidates,
     fetching,
+    companyDetails,
+    applicationDetails,
+    setApplicationDetails,
   } = useJobAssistantContext();
-
+  const [open, setOpen] = useState(false);
+  //@ts-ignore
+  const skills = companyDetails?.jd_json?.skills
+    .filter((item) => !item.isMustHave)
+    .map((ele) => ele.field);
   let suggestionsPrompts = [];
-  let candidatesList = [] as CandidateDetailsInterface[];
+  let applicationList = [] as JobApplication[];
 
   let getEditorRef: () => Editor = null;
 
@@ -59,26 +67,6 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
       TypoElement.scrollTop = TypoElement && TypoElement.scrollHeight;
   }, [messages]);
 
-  // const [loading, setLoading] = useState<boolean>(false);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   });
-  // }, [candidatesList]);
-
-  // useEffect(() => {
-  //   const tempList = [];
-  //   messages.map((message) => {
-  //     if (message.content.result_candidates)
-  //       tempList.push(...message.content.result_candidates);
-  //   });
-  //   const filtered = [...new Set(tempList.map((ele) => ele.id))];
-  //   const finalUser = filtered.length
-  //     ? candidates.filter((ele) => filtered.includes(ele.id))
-  //     : candidates;
-  //   setCandidateList(finalUser);
-  // }, [candidates, messages]);
   const loadingMessages = [
     'Please wait, job assistant is creating!',
     'Job assistant created!',
@@ -103,7 +91,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
     }
   }, [fetching]);
 
-  return (
+  return candidates.length ? (
     <Stack direction={'row'} height={'100%'} width={'100%'}>
       {maximizeChat && <LeftPanel />}
       <Stack width={maximizeChat ? '80%' : '100%'} spacing={'10px'}>
@@ -111,6 +99,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
           <JobAssist
             isMinimizeIconVisible={!maximizeChat}
             isMaxIconVisible={maximizeChat}
+            isViewMoreVisible={false}
             onClickMaximize={{
               onClick: () => {
                 setMaximizeChat((pre) => !pre);
@@ -149,13 +138,15 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                       searchArguments,
                       active,
                       message,
-                      result_candidates,
+                      result_applications,
                     } = content;
-                    candidatesList = result_candidates;
+                    applicationList = result_applications;
                     if (searchArguments) {
                       suggestionsPrompts = getSuggestedPrompts(
                         searchArguments,
-                        candidatesList,
+                        applicationList,
+                        companyDetails.location,
+                        skills,
                       );
                     }
 
@@ -217,75 +208,21 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                         textHeading={sender}
                         isMessageCardVisible={
                           sender === chatusers.assistant &&
-                          candidatesList &&
-                          candidatesList.length !== 0
+                          applicationList &&
+                          applicationList.length !== 0
                         }
                         slotMessageCard={
                           sender === chatusers.assistant &&
                           !active &&
-                          candidatesList
-                            .sort(
-                              (a, b) =>
-                                b.application?.overall_score -
-                                a.application?.overall_score,
-                            )
-                            .map((candidate, i) => {
-                              const {
-                                city,
-                                state,
-                                country,
-                                experience_in_months,
-                                first_name,
-                                last_name,
-                                application,
-                              } = candidate;
-
-                              const overall_score = application?.overall_score;
-                              const resume_match = getResumeMatched(
-                                overall_score,
-                              ) as any;
-
+                          applicationList?.sort((a, b) => b?.overall_score - a?.overall_score)
+                            .map((application) => {
                               return (
-                                <AssistantCandidateDetails
-                                  key={i}
-                                  slotProfile={
-                                    <MuiAvatar
-                                      variant='rounded'
-                                      fontSize='10px'
-                                      width='16px'
-                                      height='16px'
-                                      src={'/recruiter.logo'}
-                                      level={'name'}
-                                    />
-                                  }
-                                  colorPropsMatch={{
-                                    style: {
-                                      color: resume_match?.bgColor,
-                                    },
-                                  }}
-                                  textMatchCount={`${resume_match?.text}-${overall_score}%`}
-                                  textName={`${first_name} ${last_name || ''}`}
-                                  textLocation={`${city || ''},${state || ''},${
-                                    country || ''
-                                  }`}
-                                  textExperience={
-                                    (experience_in_months
-                                      ? (experience_in_months / 12).toFixed(1)
-                                      : 0) +
-                                    (Number(
-                                      (experience_in_months / 12).toFixed(1),
-                                    ) > 1
-                                      ? ' years'
-                                      : ' year')
-                                  }
-                                  isTopMatchVisible={overall_score > 0}
-                                  isOverviewVisible={false}
-                                  isLocationVisible={
-                                    !!city || !!state || !!country
-                                  }
-                                  // isExperienceVisible={experience_in_months}
-                                  isRelevantSkillVisible={false}
-                                />
+                                <>
+                                  <CandidateCard
+                                    application={application as JobApplication}
+                                    setOpen={setOpen}
+                                  />
+                                </>
                               );
                             })
                         }
@@ -297,37 +234,14 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
             }
             slotAssistCards={
               messages &&
-              messages.length === 0 &&
-              suggestions.common.map((ele, i) => {
-                return (
-                  <Stack
-                    onClick={() => {
-                      setTextMessage({
-                        text: ele,
-                        html: `<p>${ele}</p>`,
-                        wordCount: ele.length,
-                      });
-                      setBackEndText(`<p>${ele}</p>`);
-                      getEditorRef().commands.setContent(ele);
-                      getEditorRef().commands.focus(ele.length + 1);
-                      const firstBacktickPos = ele.indexOf('`');
-                      const secondBacktickPos = ele.indexOf(
-                        '`',
-                        firstBacktickPos + 1,
-                      );
-
-                      if (firstBacktickPos > 0 && secondBacktickPos > 0)
-                        getEditorRef().commands.setTextSelection({
-                          from: firstBacktickPos + 2,
-                          to: secondBacktickPos + 1,
-                        });
-                    }}
-                    key={i}
-                  >
-                    <JobAssistCards textDesc={ele} />
-                  </Stack>
-                );
-              })
+              messages.length === 0 && (
+                <>
+                  <DynamicSuggestion
+                    getEditorRef={() => getEditorRef()}
+                    skills={skills}
+                  />
+                </>
+              )
             }
             isSuggestionVisible={true}
             slotSuggestion={
@@ -366,7 +280,28 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
           />
         )}
       </Stack>
+
+      <Stack>
+        <Drawer
+          anchor={'right'}
+          open={open}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <ApplicationDetails
+            open={true}
+            onClose={() => {
+              setOpen(false);
+              setApplicationDetails(null);
+            }}
+            application={applicationDetails}
+          />
+        </Drawer>
+      </Stack>
     </Stack>
+  ) : (
+    <JobEmptyState />
   );
 }
 

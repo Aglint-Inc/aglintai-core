@@ -53,45 +53,56 @@ export const getResumeMatched = (score: number) => {
     };
 };
 
-export const suggestions = {
-  initialPrompts: [
-    'Get top 5 applicants by location `San Francisco`.',
-    'View applicants by email `email@domain.com`',
-    'Get top 5 applicants.',
-    'Get top 5 applicants with skill `React`.',
-    'Get top 2 candidates and compare',
-  ],
-  topMatchSuggestion: [
-    'Compare first two applicants.',
-    'Get next top 5 applicants.',
-  ],
-  skillSuggestion: [
-    'Compare first two applicants.',
-    'Get next top 5 applicants.',
-  ],
-  locationSuggestion: [
-    'Compare first two applicants.',
-    'Get next top 5 applicants.',
-    'Near by `Location name`',
-  ],
-  compareSuggestion: ['Select First candidate.', 'Select secound candidate.'],
-  common: [
-    'Get top 5 applicants by location `San Francisco`.',
-    'Get top 5 applicants.',
-    'Get top 5 applicants with skill `React`.',
-  ],
+export const suggestions = (location: string, skills: any[]) => {
+  const skillsPrompts = [];
+  skills.map((item) => {
+    skillsPrompts.push(`Get top 5 applicants with skill ${item}.`);
+  });
+  return {
+    initialPrompts: [
+      `et top 5 applicants by location ${location}.`,
+      'View applicants by email `email@domain.com`',
+      'Get top 5 applicants.',
+      skillsPrompts[0],
+      'Get top 2 candidates and compare',
+    ],
+    topMatchSuggestion: [
+      'Compare first two applicants.',
+      'Get next top 5 applicants.',
+    ],
+    skillSuggestion: [
+      'Compare first two applicants.',
+      'Get next top 5 applicants.',
+    ],
+    locationSuggestion: [
+      'Compare first two applicants.',
+      'Get next top 5 applicants.',
+      `Near by ${location}`,
+    ],
+    compareSuggestion: ['Select First candidate.', 'Select second candidate.'],
+    common: [
+      `Get top 5 applicants by location ${location}.`,
+      'Get top 5 applicants.',
+      ...skillsPrompts,
+    ],
+  };
 };
 
-export function getSuggestedPrompts(searchArguments, result_candidates) {
+export function getSuggestedPrompts(
+  searchArguments: any,
+  result_candidates: any,
+  location: string,
+  skills: any[],
+) {
   return searchArguments.get_applications?.arguments?.sort &&
     result_candidates.length &&
     result_candidates.length
-    ? suggestions.topMatchSuggestion
+    ? suggestions(location, skills).topMatchSuggestion
     : searchArguments.get_applications?.arguments?.location &&
         result_candidates.length
-      ? suggestions.locationSuggestion
+      ? suggestions(location, skills).locationSuggestion
       : searchArguments.get_applications_extra_details?.arguments?.reason ===
           reasons.compare
-        ? suggestions.compareSuggestion
+        ? suggestions(location, skills).compareSuggestion
         : [];
 }

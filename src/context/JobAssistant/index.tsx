@@ -9,6 +9,7 @@ import { supabase } from '@/src/utils/supabaseClient';
 import { AssistantMessageInterface, ChatInput } from './type';
 import { reasons } from './utils';
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import { JobApplication } from '../JobApplicationsContext/types';
 
 // let setTime;
 interface ContextValue {
@@ -40,6 +41,8 @@ interface ContextValue {
   setFetching: (fetching: boolean) => void;
   isPopUpOpen: boolean;
   setIsPopUpOpen: (isPopUpOpen: boolean) => void;
+  applicationDetails: JobApplication;
+  setApplicationDetails: (x: JobApplication) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -75,6 +78,8 @@ const defaultProvider: ContextValue = {
   setFetching: () => {},
   isPopUpOpen: null,
   setIsPopUpOpen: () => {},
+  applicationDetails: null,
+  setApplicationDetails: () => {},
 };
 let job_descriptions = '';
 const JobAssistantContext = createContext<ContextValue>(defaultProvider);
@@ -87,6 +92,8 @@ function JobAssistantProvider({ children }) {
   const [applications, setApplications] = useState<any[] | null>(null);
   const [candidatesFiles, setCandidatesFiles] = useState([]);
   const [jobAssistantChats, setJobAssistantChats] = useState([]);
+  const [applicationDetails, setApplicationDetails] =
+    useState<JobApplication | null>(null);
   const [currentChat, setCurrentChat] = useState<JobAssistantChats | null>(
     null,
   );
@@ -160,7 +167,7 @@ function JobAssistantProvider({ children }) {
       | {
           message: any;
           active: boolean;
-          result_candidates: any[];
+          result_applications: any[];
           searchArguments: any;
         };
   }) {
@@ -285,25 +292,16 @@ function JobAssistantProvider({ children }) {
     const application_ids = application_data
       ? application_data.map((ele) => ele.applications_id)
       : [];
-    const result_candidates = [];
+    const result_applications = [];
     if (application_ids.length) {
       applications
         .filter((ele) => application_ids.includes(ele.id))
         .map((application) => {
-          const candidate = candidates.filter(
-            (candidate) => candidate.id === application.candidate_id,
+          const candidateFiltered = candidates.filter(
+            (candidate) => candidate.candidates.id === application.candidate_id,
           );
-          // const candidateFile = candidatesFiles.filter(
-          //   (candidateFile) =>
-          //     candidateFile.candidate_id === application.candidate_id,
-          // );
-
-          result_candidates.push({
-            ...candidate[0],
-            application: {
-              ...application,
-            },
-            // candidateFile,
+          result_applications.push({
+            ...candidateFiltered[0],
           });
         });
     }
@@ -332,7 +330,8 @@ function JobAssistantProvider({ children }) {
         wordCount: message?.length,
       };
       pre[messages.length + 1].content.active = activeMessage;
-      pre[messages.length + 1].content.result_candidates = result_candidates;
+      pre[messages.length + 1].content.result_applications =
+        result_applications;
       pre[messages.length + 1].content.searchArguments = searchArguments;
       return [...pre];
     });
@@ -350,7 +349,7 @@ function JobAssistantProvider({ children }) {
           wordCount: String(message).length,
         },
         active: activeMessage,
-        result_candidates: result_candidates,
+        result_applications: result_applications,
         searchArguments: searchArguments,
       },
       message_id: response.result?.assistantMessageId,
@@ -384,16 +383,18 @@ function JobAssistantProvider({ children }) {
       .eq('recruiter_id', recruiter?.id);
 
     let tempCandidates = [];
-    applications.map((application) => {
-      // console.log(application.candidate_id);
-      candidates.map((candiadte) => {
-        if (candiadte.id === application.candidate_id)
-          tempCandidates.push({
-            ...candiadte,
-            application: { ...application },
-          });
+    if (candidates?.length) {
+      applications.map((application) => {
+        // console.log(application.candidate_id);
+        candidates.map((candidate) => {
+          if (candidate.id === application.candidate_id)
+            tempCandidates.push({
+              ...application,
+              candidates: { ...candidate },
+            });
+        });
       });
-    });
+    }
     setCandidates([...tempCandidates]);
   }
   async function getApplications(job_id: string) {
@@ -416,7 +417,7 @@ function JobAssistantProvider({ children }) {
   // }
   // getCandidatesFiles();
 
-  ////////////////////////////// Create a thred id //////////////////////////////////////////////////
+  ////////////////////////////// get application details //////////////////////////////////////////////////
 
   return (
     <JobAssistantContext.Provider
@@ -449,6 +450,8 @@ function JobAssistantProvider({ children }) {
         setFetching,
         isPopUpOpen,
         setIsPopUpOpen,
+        applicationDetails,
+        setApplicationDetails,
       }}
     >
       {children}

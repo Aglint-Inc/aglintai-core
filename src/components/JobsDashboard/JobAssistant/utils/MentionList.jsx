@@ -18,8 +18,8 @@ export default forwardRef((props, ref,) => {
     // let listOfUsers = props.items.filter(ele => String(ele.first_name + ' ' + ele.last_name).toLowerCase().includes(String(props.text).toLowerCase().replaceAll('@', '')))
     const [selectedIndex, setSelectedIndex] = useState(null)
     const selectItem = index => {
-        const label = listOfUsers[Number(index)]?.first_name + ' ' + listOfUsers[Number(index)]?.last_name
-        const item = listOfUsers[Number(index)]?.application?.id
+        const label = listOfUsers[Number(index)].candidates?.first_name + ' ' + listOfUsers[Number(index)]?.candidates.last_name
+        const item = listOfUsers[Number(index)]?.id
         if (item) {
             props.command({ id: item, label, })
         }
@@ -85,10 +85,10 @@ export default forwardRef((props, ref,) => {
                             cursor: 'pointer'
                         }}
                     >
-                        <MuiAvatar fontSize='12px' width={20} height={20} level={item?.first_name} src={item.avater} />
+                        <MuiAvatar fontSize='12px' width={20} height={20} level={item.candidates?.first_name} src={item.candidates?.avatar} />
                         <Stack >
                             <Typography variant='body1'>
-                                {item.first_name + ' ' + item.last_name}
+                                {item.candidates?.first_name + ' ' + item.candidates?.last_name}
                             </Typography>
                         </Stack>
                     </Stack>

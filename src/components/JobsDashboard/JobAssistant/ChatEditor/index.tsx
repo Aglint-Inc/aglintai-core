@@ -38,7 +38,7 @@ function ChatEditor({
           ...suggetion,
           items: ({ query }) => {
             return dataList.filter((item) =>
-              String(item.first_name + ' ' + item.last_name)
+              String(item.candidates?.first_name + ' ' + item.candidates?.last_name)
                 .toLowerCase()
                 .includes(query.toLowerCase()),
             );
