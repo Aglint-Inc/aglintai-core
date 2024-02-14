@@ -23,8 +23,6 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-
-  border: 1px solid #e9ebed;
 }
 
 .dash-chat-box-header {

@@ -25,7 +25,7 @@ export function AssistantCandidateDetails({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "res-profile-detailed-block")}
+      className={_utils.cx(_styles, "res-profile-detailed-block", "pointer")}
       tag="div"
       {...onClickCard}
     >

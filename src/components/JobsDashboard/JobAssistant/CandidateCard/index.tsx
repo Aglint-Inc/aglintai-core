@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useState } from 'react';
 
 import { AssistantCandidateDetails } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -23,8 +24,9 @@ function CandidateCard({
   const { setApplicationDetails } = useJobAssistantContext();
   const overall_score = application?.overall_score;
   const resume_match = getResumeMatched(overall_score) as any;
-
+  const [clickEvent, setClickEvent] = useState(false);
   const handleClick = async () => {
+    setClickEvent(true);
     const { data: candidate_files } = await axios.post(
       '/api/supabase/getCandidate-files',
       {
@@ -45,6 +47,7 @@ function CandidateCard({
         isValidEmail: false,
       },
     });
+    setClickEvent(false);
     setOpen(true);
   };
   return (
@@ -55,6 +58,9 @@ function CandidateCard({
         isOverviewVisible={false}
         onClickCard={{
           onClick: handleClick,
+          style: {
+            cursor: clickEvent ? 'wait' : 'pointer',
+          },
         }}
         textOVerview={'sdsd'}
         slotProfile={

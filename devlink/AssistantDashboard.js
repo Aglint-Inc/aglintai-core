@@ -363,7 +363,7 @@ export function AssistantDashboard({
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "dash-chat-wrapper")}
+          className={_utils.cx(_styles, "dash-chat-wrapper", "left-border")}
           tag="div"
         >
           {slotChat ?? (

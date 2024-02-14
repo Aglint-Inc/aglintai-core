@@ -318,6 +318,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .inline-block {
   display: inline;
   margin-right: 2px;
@@ -548,8 +552,10 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
+}
 
-  border: 1px solid #e9ebed;
+.dash-chat-wrapper.left-border {
+  border-left: 1px solid #e9ebed;
 }
 
 .dash-chat-box-header {
@@ -747,6 +753,10 @@
 
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
 }
 
 .initial-prompts-wrapper {

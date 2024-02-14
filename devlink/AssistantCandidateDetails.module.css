@@ -12,6 +12,10 @@
   background-color: white;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .res-profile-top-block {
   display: flex;
   padding: 16px;
@@ -456,10 +460,6 @@
 
 .icons.ml-5 {
   margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
 }
 
 .icons.ml-20 {
