@@ -51,8 +51,8 @@ const ResumeUpload = ({
     }
   };
 
-  const DeleteSelectFile = (name) => {
-    const result = selectedfile.filter((data) => data.name !== name);
+  const DeleteSelectFile = (index) => {
+    const result = selectedfile.filter((data, i) => i !== index);
     setSelectedFile(result);
   };
 
@@ -73,6 +73,12 @@ const ResumeUpload = ({
       <Stack spacing={2} height={'100%'} p={'1px'}>
         {selectedfile.length == 0 && (
           <FileUploader
+            maxSize={5}
+            onSizeError={(file: any) =>
+              file.size > 5
+                ? null
+                : toast.error('Please upload resume less than 5 MB.')
+            }
             handleChange={InputChange}
             multiple={true}
             name='file'
@@ -125,7 +131,7 @@ const ResumeUpload = ({
                         key={index}
                         textName={name}
                         onClickDelete={{
-                          onClick: () => DeleteSelectFile(name),
+                          onClick: () => DeleteSelectFile(index),
                         }}
                       />
                     );
@@ -137,6 +143,12 @@ const ResumeUpload = ({
                       multiple={true}
                       name='file'
                       types={fileTypes}
+                      maxSize={5}
+                      onSizeError={(file: any) =>
+                        file.size > 5
+                          ? null
+                          : toast.error('Please upload resume less than 5 MB.')
+                      }
                     >
                       <Stack style={{ fontWeight: '400' }}>
                         <AddMoreResumeButton />

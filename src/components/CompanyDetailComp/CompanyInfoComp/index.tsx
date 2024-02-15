@@ -1,4 +1,4 @@
-import { Autocomplete, Stack } from '@mui/material';
+import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -65,7 +65,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
   }, [recruiter]);
-
+  const [isError, setError] = useState(false);
   return (
     <Stack
       sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
@@ -213,6 +213,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         {router.query?.tab === 'basic-info' && (
           <>
             <BasicInfo
+              isWarningVisible={isError}
+              slotWarning={
+                <Typography variant='caption' color='error'>
+                  The file you uploaded exceeds the maximum allowed size. Please
+                  ensure that the file size is less than 5 MB
+                </Typography>
+              }
               slotCompanyLogo={
                 <>
                   <ImageUpload
@@ -228,6 +235,14 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                     size={70}
                     table='company-logo'
+                    error={(e) => {
+                      if (e) {
+                        setError(true);
+                      } else {
+                        setError(false);
+                      }
+                      
+                    }}
                   />
                   {/* <ImageUpload
                     image={logo}

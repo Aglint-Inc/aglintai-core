@@ -272,6 +272,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .profile-image-block {
   display: flex;
   align-items: center;
@@ -430,6 +434,10 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.div-block-921 {
+  margin-top: 10px;
 }
 
 .profile-block {

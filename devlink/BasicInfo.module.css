@@ -59,6 +59,10 @@
   max-width: 600px;
 }
 
+.cs-info-header.mb-9 {
+  margin-bottom: 9px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -309,6 +313,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .div-block-348 {
   display: flex;
   align-items: center;
@@ -474,6 +482,10 @@
 
 .text-sm.text-first-capital {
   text-transform: capitalize;
+}
+
+.mt-9 {
+  margin-top: 9px;
 }
 
 .profile-inputs-wrapper {
