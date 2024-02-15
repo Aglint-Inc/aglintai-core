@@ -4,6 +4,7 @@ import React from 'react';
 import { AddFilter, AllInterviewFilter } from '@/devlink2';
 
 import { setFilterVisible, useInterviewStore } from '../../store';
+import { getNextOrderNumber } from '../../utils';
 
 function AddFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -55,27 +56,44 @@ function AddFilterComp() {
             }}
           >
             <AllInterviewFilter
-              isStatusVisible={false}
-              isScheduleTypeVisible={false}
+              isStatusVisible={!filterVisible.status}
+              isScheduleTypeVisible={!filterVisible.scheduleType}
               isDurationVisible={false}
               isDataRangeVisible={!filterVisible.dateRange}
               isInterviewPanelVisible={!filterVisible.interviewPanels}
               isRelatedJobVisible={!filterVisible.relatedJobs}
               onClickRelatedJob={{
                 onClick: () => {
-                  setFilterVisible({ relatedJobs: true });
+                  const num = getNextOrderNumber(filterVisible);
+                  setFilterVisible({ relatedJobs: num });
+                  handleClose();
+                },
+              }}
+              onClickStatus={{
+                onClick: () => {
+                  const num = getNextOrderNumber(filterVisible);
+                  setFilterVisible({ status: num });
+                  handleClose();
+                },
+              }}
+              onClickScheduleType={{
+                onClick: () => {
+                  const num = getNextOrderNumber(filterVisible);
+                  setFilterVisible({ scheduleType: num });
                   handleClose();
                 },
               }}
               onClickInterviewPanel={{
                 onClick: () => {
-                  setFilterVisible({ interviewPanels: true });
+                  const num = getNextOrderNumber(filterVisible);
+                  setFilterVisible({ interviewPanels: num });
                   handleClose();
                 },
               }}
               onClickDateRange={{
                 onClick: () => {
-                  setFilterVisible({ dateRange: true });
+                  const num = getNextOrderNumber(filterVisible);
+                  setFilterVisible({ dateRange: num });
                   handleClose();
                 },
               }}

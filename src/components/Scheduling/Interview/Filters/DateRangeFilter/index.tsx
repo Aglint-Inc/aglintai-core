@@ -6,11 +6,16 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css';
 
-import { ButtonOutlinedSmall, ButtonPrimarySmall } from '@/devlink';
+import {
+  ButtonOutlinedSmall,
+  ButtonPrimarySmall,
+  ButtonTextGrey,
+  ButtonTextSmall,
+} from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, useInterviewStore } from '../../store';
+import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
 
 function DateRangeFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -148,16 +153,17 @@ function DateRangeFilterComp() {
                 },
               }}
             />
-            <ButtonOutlinedSmall
+            <ButtonTextSmall
               wrapperProps={{
                 style: {
                   width: '100%',
                 },
               }}
-              textLabel='Clear'
+              textLabel='Delete'
               onClickButton={{
                 onClick: () => {
                   setFilter({ dateRange: null });
+                  setFilterVisible({ dateRange: 0 });
                   handleClose();
                 },
               }}

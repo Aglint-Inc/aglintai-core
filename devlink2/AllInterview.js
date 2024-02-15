@@ -1,6 +1,5 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonFilter } from "./ButtonFilter";
 import { AddFilter } from "./AddFilter";
 import { AllInterviewCard } from "./AllInterviewCard";
 import * as _utils from "./utils";
@@ -8,9 +7,6 @@ import _styles from "./AllInterview.module.css";
 
 export function AllInterview({
   as: _Component = _Builtin.Block,
-  slotSearch,
-  slotSchedule,
-  slotStatus,
   slotAddFilter,
   onClickSort = {},
   slotDate,
@@ -30,11 +26,6 @@ export function AllInterview({
           className={_utils.cx(_styles, "div-block-828")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
-          <_Builtin.Block tag="div">{slotSchedule}</_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotStatus ?? <ButtonFilter />}
-          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-922")}
             tag="div"

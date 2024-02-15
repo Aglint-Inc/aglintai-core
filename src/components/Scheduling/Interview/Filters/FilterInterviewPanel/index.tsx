@@ -2,10 +2,10 @@ import { Popover, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
-import { ButtonFilter } from '@/devlink2';
+import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, useInterviewStore } from '../../store';
+import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
 import { useSchedulingStore } from '../../../Panels/store';
 
 function FilterInterviewPanel() {
@@ -62,7 +62,9 @@ function FilterInterviewPanel() {
         onClickStatus={{
           style: {
             borderColor:
-              filter.panel_ids.length > 0 ? palette.blue[600] : palette.blue[300],
+              filter.panel_ids.length > 0
+                ? palette.blue[600]
+                : palette.blue[300],
           },
           onClick: handleClick,
         }}
@@ -99,38 +101,52 @@ function FilterInterviewPanel() {
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
+            minWidth: '176px',
           },
         }}
       >
-        {interviewPanels?.map((panel) => {
-          return (
-            <Stack
-              key={panel.id}
-              direction={'row'}
-              sx={{ p: '8px 10px 8px 10px', alignItems: 'center' }}
-              spacing={1}
-            >
-              <Checkbox
-                isChecked={filter.panel_ids.includes(panel.id)}
-                onClickCheck={{
-                  onClick: () => {
-                    handleFilterClick(panel.id);
-                  },
-                }}
-              />
-              <Typography
-                sx={{
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-                onClick={() => handleFilterClick(panel.id)}
+        <FilterDropdown
+          slotOption={interviewPanels?.map((panel) => {
+            return (
+              <Stack
+                key={panel.id}
+                direction={'row'}
+                sx={{ alignItems: 'center' }}
+                spacing={1}
               >
-                {panel.name}
-              </Typography>
-            </Stack>
-          );
-        })}
+                <Checkbox
+                  isChecked={filter.panel_ids.includes(panel.id)}
+                  onClickCheck={{
+                    onClick: () => {
+                      handleFilterClick(panel.id);
+                    },
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleFilterClick(panel.id)}
+                >
+                  {panel.name}
+                </Typography>
+              </Stack>
+            );
+          })}
+          onClickDelete={{
+            onClick: () => {
+              setFilter({ panel_ids: [] });
+              setFilterVisible({ interviewPanels: 0 });
+            },
+          }}
+          onClickReset={{
+            onClick: () => {
+              setFilter({ panel_ids: [] });
+            },
+          }}
+        />
       </Popover>
     </>
   );

@@ -2,11 +2,11 @@ import { Popover, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
-import { ButtonFilter } from '@/devlink2';
+import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, useInterviewStore } from '../../store';
+import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
 
 function FilterJob() {
   const { jobsData } = useJobs();
@@ -99,38 +99,52 @@ function FilterJob() {
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
+            minWidth: '176px',
           },
         }}
       >
-        {jobsData?.jobs?.map((job) => {
-          return (
-            <Stack
-              key={job.id}
-              direction={'row'}
-              sx={{ p: '8px 10px 8px 10px', alignItems: 'center' }}
-              spacing={1}
-            >
-              <Checkbox
-                isChecked={filter.job_ids.includes(job.id)}
-                onClickCheck={{
-                  onClick: () => {
-                    handleFilterClick(job.id);
-                  },
-                }}
-              />
-              <Typography
-                sx={{
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-                onClick={() => handleFilterClick(job.id)}
+        <FilterDropdown
+          slotOption={jobsData?.jobs?.map((job) => {
+            return (
+              <Stack
+                key={job.id}
+                direction={'row'}
+                sx={{ alignItems: 'center' }}
+                spacing={1}
               >
-                {job.job_title}
-              </Typography>
-            </Stack>
-          );
-        })}
+                <Checkbox
+                  isChecked={filter.job_ids.includes(job.id)}
+                  onClickCheck={{
+                    onClick: () => {
+                      handleFilterClick(job.id);
+                    },
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleFilterClick(job.id)}
+                >
+                  {job.job_title}
+                </Typography>
+              </Stack>
+            );
+          })}
+          onClickDelete={{
+            onClick: () => {
+              setFilter({ job_ids: [] });
+              setFilterVisible({ relatedJobs: 0 });
+            },
+          }}
+          onClickReset={{
+            onClick: () => {
+              setFilter({ job_ids: [] });
+            },
+          }}
+        />
       </Popover>
     </>
   );

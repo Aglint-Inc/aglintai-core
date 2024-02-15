@@ -8,7 +8,7 @@ import {
 
 import { PanelType } from '../Panels/store';
 
-interface InterviewSlice {
+export interface InterviewSlice {
   applicationList: ApplicationList[];
   initialLoading: boolean;
   isCreateScheduleOpen: boolean;
@@ -34,10 +34,12 @@ interface InterviewSlice {
   };
   fetching: boolean;
   filterVisible: {
-    relatedJobs: boolean;
-    interviewPanels: boolean;
-    dateRange: boolean;
-    duration: boolean;
+    relatedJobs: number;
+    interviewPanels: number;
+    dateRange: number;
+    duration: number;
+    scheduleType: number;
+    status: number;
   };
 }
 
@@ -55,6 +57,7 @@ const initialState: InterviewSlice = {
     job_ids: [],
     panel_ids: [],
     scheduleType: [],
+    dateRange: null,
   },
   pagination: {
     page: 1,
@@ -62,10 +65,12 @@ const initialState: InterviewSlice = {
   },
   fetching: false,
   filterVisible: {
-    relatedJobs: false,
-    interviewPanels: false,
-    dateRange: false,
-    duration: false,
+    relatedJobs: 0,
+    interviewPanels: 0,
+    dateRange: 0,
+    duration: 0,
+    scheduleType: 0,
+    status: 0,
   },
 };
 

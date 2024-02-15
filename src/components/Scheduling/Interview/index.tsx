@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   AllInterview,
@@ -38,6 +38,7 @@ import { getPaginationDB } from './utils';
 function InterviewComp() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
+  const [pageLoad, setPageLoad] = useState(true);
   const applicationList = useInterviewStore((state) => state.applicationList);
   const initialLoading = useInterviewStore((state) => state.initialLoading);
   const pagination = useInterviewStore((state) => state.pagination);
@@ -47,7 +48,7 @@ function InterviewComp() {
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
-    if (!initialLoading) {
+    if (!initialLoading && router.isReady && !pageLoad) {
       if (
         filter.status ||
         filter.status == null ||
@@ -72,7 +73,7 @@ function InterviewComp() {
   // separate useeffect for filter except text search because no need to debounce
 
   useEffect(() => {
-    if (!initialLoading) {
+    if (!initialLoading && router.isReady && !pageLoad) {
       fetchInterviewData({ page: pagination.page });
     }
   }, [pagination.page]);
@@ -82,13 +83,20 @@ function InterviewComp() {
       fetchInterviewData({ page: 1 });
     }, 1000);
 
-    if (!initialLoading) {
+    if (!initialLoading && router.isReady && !pageLoad) {
       debouncedTextSearchFetch();
     }
     return () => {
       debouncedTextSearchFetch.cancel();
     };
   }, [filter.textSearch]);
+
+  //to avoid other useeffects on initial load
+  useEffect(() => {
+    if (pageLoad) {
+      setPageLoad(false);
+    }
+  }, []);
 
   const fetchInterviewData = async ({ page = 1 }: { page: number }) => {
     try {
@@ -140,6 +148,11 @@ function InterviewComp() {
     }
   };
 
+  const visibleFilters = Object.entries(filterVisible)
+    // eslint-disable-next-line no-unused-vars
+    .filter(([_, order]) => order !== 0) // Filter out filters with order 0 (not visible)
+    .sort((a, b) => a[1] - b[1]);
+
   return (
     <>
       <CreateDialog />
@@ -188,18 +201,29 @@ function InterviewComp() {
               </Stack>
             }
             slotSidebar={<SidePanel />}
-            slotSchedule={<FilterScheduleType />}
             slotAddFilter={<AddFilterComp />}
             slotFilterButton={
               <>
-                {filterVisible.relatedJobs && <FilterJob />}
-                {filterVisible.interviewPanels && <FilterInterviewPanel />}
-                {filterVisible.dateRange && <DateRangeFilterComp />}
+                <FilterSearchField />
+                {visibleFilters.map(([filterKey]) => {
+                  switch (filterKey) {
+                    case 'relatedJobs':
+                      return <FilterJob key={filterKey} />;
+                    case 'interviewPanels':
+                      return <FilterInterviewPanel key={filterKey} />;
+                    case 'dateRange':
+                      return <DateRangeFilterComp key={filterKey} />;
+                    case 'scheduleType':
+                      return <FilterScheduleType key={filterKey} />;
+                    case 'status':
+                      return <FilterStatus key={filterKey} />;
+                    default:
+                      return null;
+                  }
+                })}
               </>
             }
             slotDate={<DateFilter />}
-            slotSearch={<FilterSearchField />}
-            slotStatus={<FilterStatus />}
             slotAllInterviewCard={
               <Stack
                 style={{

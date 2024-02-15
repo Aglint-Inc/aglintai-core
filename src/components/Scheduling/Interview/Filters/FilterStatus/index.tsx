@@ -2,11 +2,11 @@ import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { Checkbox } from '@/devlink';
-import { ButtonFilter } from '@/devlink2';
+import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
-import { setFilter, useInterviewStore } from '../../store';
+import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
 
 function FilterStatus() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -40,11 +40,7 @@ function FilterStatus() {
     label: string,
   ) => {
     return (
-      <Stack
-        direction={'row'}
-        sx={{ p: '8px 10px 8px 10px', alignItems: 'center' }}
-        spacing={1}
-      >
+      <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
         <Checkbox
           isChecked={filter.status.includes(status)}
           onClickCheck={{
@@ -127,13 +123,31 @@ function FilterStatus() {
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
+            minWidth: '176px',
           },
         }}
       >
-        {renderStatus('confirmed', 'Confirmed')}
-        {renderStatus('pending', 'Pending')}
-        {renderStatus('not scheduled', 'Not Scheduled')}
-        {renderStatus('completed', 'Completed')}
+        <FilterDropdown
+          slotOption={
+            <>
+              {renderStatus('confirmed', 'Confirmed')}
+              {renderStatus('pending', 'Pending')}
+              {renderStatus('not scheduled', 'Not Scheduled')}
+              {renderStatus('completed', 'Completed')}
+            </>
+          }
+          onClickDelete={{
+            onClick: () => {
+              setFilter({ status: [] });
+              setFilterVisible({ status: 0 });
+            },
+          }}
+          onClickReset={{
+            onClick: () => {
+              setFilter({ status: [] });
+            },
+          }}
+        />
       </Popover>
     </>
   );

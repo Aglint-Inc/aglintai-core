@@ -3,6 +3,8 @@ import axios from 'axios';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
+import { InterviewSlice } from './store';
+
 /* eslint-disable security/detect-object-injection */
 export function findIntersection(
   availabilities: {
@@ -169,3 +171,17 @@ export const getPaginationDB = async ({
     toast.error('Error fetching interview data');
   }
 };
+
+export function getNextOrderNumber(
+  filterVisible: InterviewSlice['filterVisible'],
+) {
+  let maxOrderNumber = -Infinity;
+
+  for (const order of Object.values(filterVisible)) {
+    if (order > maxOrderNumber) {
+      maxOrderNumber = order;
+    }
+  }
+
+  return maxOrderNumber + 1;
+}
