@@ -124,6 +124,12 @@ function FilterScheduleType() {
           horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
+        sx={{
+          '& .MuiPopover-paper': {
+            borderRadius: '10px',
+            borderColor: '#E9EBED',
+          },
+        }}
       >
         {renderScheduleType('google_meet', 'Google Meet')}
         {renderScheduleType('in_person_meeting', 'In Person Meeting')}

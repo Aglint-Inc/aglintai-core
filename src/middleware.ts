@@ -131,6 +131,7 @@ const allowedPaths = new Set([
   '/api/supabase/getCandidate-files',
   '/api/scheduling/invite',
   '/api/scheduling/confirm',
+  '/api/scheduling/calendar-event',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {

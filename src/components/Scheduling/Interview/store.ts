@@ -20,10 +20,10 @@ interface InterviewSlice {
   }[];
   filter: {
     status?: (InterviewScheduleTypeDB['status'] | 'not scheduled')[];
-    job_id?: string[];
+    job_ids?: string[];
     scheduleType?: InterviewScheduleTypeDB['schedule_type'][];
-    panel_id?: string[];
-    dateRange?: [Date, Date];
+    panel_ids?: string[];
+    dateRange?: string;
     duration?: number;
     textSearch?: string;
     sortBy?: 'asc' | 'desc';
@@ -33,6 +33,12 @@ interface InterviewSlice {
     total: number;
   };
   fetching: boolean;
+  filterVisible: {
+    relatedJobs: boolean;
+    interviewPanels: boolean;
+    dateRange: boolean;
+    duration: boolean;
+  };
 }
 
 const initialState: InterviewSlice = {
@@ -46,8 +52,8 @@ const initialState: InterviewSlice = {
     textSearch: '',
     status: [],
     sortBy: 'asc',
-    job_id: [],
-    panel_id: [],
+    job_ids: [],
+    panel_ids: [],
     scheduleType: [],
   },
   pagination: {
@@ -55,6 +61,12 @@ const initialState: InterviewSlice = {
     total: 0,
   },
   fetching: false,
+  filterVisible: {
+    relatedJobs: false,
+    interviewPanels: false,
+    dateRange: false,
+    duration: false,
+  },
 };
 
 export const useInterviewStore = create<InterviewSlice>()(() => ({
@@ -83,6 +95,13 @@ export const setSelectedUsers = (
 export const setFilter = (filter: InterviewSlice['filter']) =>
   useInterviewStore.setState((state) => ({
     filter: { ...state.filter, ...filter },
+  }));
+
+export const setFilterVisible = (
+  filterVisible: Partial<InterviewSlice['filterVisible']>,
+) =>
+  useInterviewStore.setState((state) => ({
+    filterVisible: { ...state.filterVisible, ...filterVisible },
   }));
 
 export const setPagination = (

@@ -123,6 +123,12 @@ function FilterStatus() {
           horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
+        sx={{
+          '& .MuiPopover-paper': {
+            borderRadius: '10px',
+            borderColor: '#E9EBED',
+          },
+        }}
       >
         {renderStatus('confirmed', 'Confirmed')}
         {renderStatus('pending', 'Pending')}

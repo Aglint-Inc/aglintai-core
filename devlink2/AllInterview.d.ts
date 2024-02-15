@@ -13,4 +13,5 @@ declare function AllInterview(props: {
   slotSidebar?: Types.Devlink.Slot;
   styleSidebarWidth?: Types.Devlink.RuntimeProps;
   slotPagination?: Types.Devlink.Slot;
+  slotFilterButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

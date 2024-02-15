@@ -9,7 +9,7 @@ export function AddFilter({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-829")}
+      className={_utils.cx(_styles, "div-block-829", "cursor-pointer")}
       tag="div"
       {...onClickAddFilter}
     >

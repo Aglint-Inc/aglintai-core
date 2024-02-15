@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 
 import {
   AllInterview,
+  AllInterviewEmpty,
   Breadcrum,
   CandidatesListPagination,
-  PageLayout
+  PageLayout,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -17,6 +18,9 @@ import toast from '@/src/utils/toast';
 import CreateDialog from './CreateDialog';
 import AddFilterComp from './Filters/AddFilter';
 import DateFilter from './Filters/DateFilter';
+import DateRangeFilterComp from './Filters/DateRangeFilter';
+import FilterInterviewPanel from './Filters/FilterInterviewPanel';
+import FilterJob from './Filters/FilterJob';
 import FilterScheduleType from './Filters/FilterScheduleType';
 import FilterSearchField from './Filters/FilterSearchField';
 import FilterStatus from './Filters/FilterStatus';
@@ -39,6 +43,7 @@ function InterviewComp() {
   const pagination = useInterviewStore((state) => state.pagination);
   const filter = useInterviewStore((state) => state.filter);
   const fetching = useInterviewStore((state) => state.fetching);
+  const filterVisible = useInterviewStore((state) => state.filterVisible);
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -46,8 +51,9 @@ function InterviewComp() {
       if (
         filter.status ||
         filter.status == null ||
-        filter.job_id ||
-        filter.panel_id ||
+        filter.job_ids ||
+        filter.panel_ids ||
+        filter.dateRange == null ||
         filter.dateRange ||
         filter.sortBy ||
         filter.scheduleType
@@ -57,8 +63,8 @@ function InterviewComp() {
     }
   }, [
     filter.status,
-    filter.job_id,
-    filter.panel_id,
+    filter.job_ids,
+    filter.panel_ids,
     filter.dateRange,
     filter.sortBy,
     filter.scheduleType,
@@ -97,7 +103,11 @@ function InterviewComp() {
           text_search_filter: filter.textSearch,
           sch_type: filter.scheduleType.length > 0 ? filter.scheduleType : null,
           sort_by: filter.sortBy,
+          job_id_filter: filter.job_ids.length > 0 ? filter.job_ids : null,
+          panel_id_filter:
+            filter.panel_ids.length > 0 ? filter.panel_ids : null,
           page_number: page,
+          date_range_filter: filter.dateRange ? filter.dateRange : null,
         },
       );
       if (error) {
@@ -120,6 +130,8 @@ function InterviewComp() {
           textSearch: filter.textSearch,
           scheduleType: filter.scheduleType,
           sortBy: filter.sortBy,
+          job_ids: filter.job_ids,
+          panel_ids: filter.panel_ids,
         },
       });
       setPagination({ total: totalCount });
@@ -178,6 +190,13 @@ function InterviewComp() {
             slotSidebar={<SidePanel />}
             slotSchedule={<FilterScheduleType />}
             slotAddFilter={<AddFilterComp />}
+            slotFilterButton={
+              <>
+                {filterVisible.relatedJobs && <FilterJob />}
+                {filterVisible.interviewPanels && <FilterInterviewPanel />}
+                {filterVisible.dateRange && <DateRangeFilterComp />}
+              </>
+            }
             slotDate={<DateFilter />}
             slotSearch={<FilterSearchField />}
             slotStatus={<FilterStatus />}
@@ -190,6 +209,7 @@ function InterviewComp() {
               >
                 {!initialLoading && (
                   <>
+                    {applicationList.length === 0 && <AllInterviewEmpty />}
                     {applicationList.map((app) => {
                       return <ListCard key={app.applications.id} app={app} />;
                     })}

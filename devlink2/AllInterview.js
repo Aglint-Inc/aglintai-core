@@ -1,9 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ButtonSchedule } from "./ButtonSchedule";
-import { ButtonStatus } from "./ButtonStatus";
+import { ButtonFilter } from "./ButtonFilter";
 import { AddFilter } from "./AddFilter";
-import { ButtonDate } from "./ButtonDate";
 import { AllInterviewCard } from "./AllInterviewCard";
 import * as _utils from "./utils";
 import _styles from "./AllInterview.module.css";
@@ -20,6 +18,7 @@ export function AllInterview({
   slotSidebar,
   styleSidebarWidth = {},
   slotPagination,
+  slotFilterButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -32,11 +31,15 @@ export function AllInterview({
           tag="div"
         >
           <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
+          <_Builtin.Block tag="div">{slotSchedule}</_Builtin.Block>
           <_Builtin.Block tag="div">
-            {slotSchedule ?? <ButtonSchedule />}
+            {slotStatus ?? <ButtonFilter />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotStatus ?? <ButtonStatus />}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-922")}
+            tag="div"
+          >
+            {slotFilterButton}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             {slotAddFilter ?? <AddFilter />}
@@ -53,9 +56,7 @@ export function AllInterview({
           >
             {"Sort By"}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotDate ?? <ButtonDate />}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

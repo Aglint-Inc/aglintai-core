@@ -76,10 +76,10 @@ function CandidateInvite() {
   return (
     <Stack
       sx={{
-        overflow: 'scroll',
         height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
       }}
     >
       <Dialog

@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_logo: req.body.company_logo,
       company_name: req.body.company_name,
       schedule_name: req.body?.schedule_name,
-      timings: `${dayjs(req.body.selectedSlot.selectedSlot?.startTime).format('hh:mm A')} - ${dayjs(req.body.selectedSlot.selectedSlot?.endTime).format('hh:mm A')}`,
+      timings: `${dayjs(req.body.selectedSlot?.startTime).format('hh:mm A')} - ${dayjs(req.body.selectedSlot?.endTime).format('hh:mm A')}`,
     });
 
     if (error) {
