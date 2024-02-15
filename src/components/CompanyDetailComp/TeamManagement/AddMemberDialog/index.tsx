@@ -1,8 +1,14 @@
 import { Avatar, Drawer, MenuItem, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
-import { TeamInvite, TeamInvitesBlock, TeamPendingInvites } from '@/devlink';
+import {
+  InviteTeamCard,
+  TeamInvite,
+  TeamInvitesBlock,
+  TeamPendingInvites,
+} from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
+import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -28,6 +34,14 @@ const AddMember = ({
     role: RecruiterUserType['role'];
   }>({ name: null, email: null, role: 'member' });
 
+  const [inviteData, setInviteData] = useState<
+    {
+      name: string;
+      email: string;
+      role: RecruiterUserType['role'];
+    }[]
+  >([]);
+
   const [formError, setFormError] = useState<{
     name: boolean;
     email: boolean;
@@ -36,16 +50,20 @@ const AddMember = ({
 
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState(false);
+  const [isInviteCardVisible, setInviteCardVisisble] = useState(false);
 
   const checkValidation = () => {
     if (!form.name || form.name.trim() === '') {
       setFormError({ ...formError, name: true });
+      setIsDisable(false);
       return false;
     } else if (!form.email || form.email.trim() === '') {
       setFormError({ ...formError, email: true });
+      setIsDisable(false);
       return false;
     } else if (!form.role || form.role.trim() === '') {
       setFormError({ ...formError, role: true });
+      setIsDisable(false);
       return false;
     }
     return true;
@@ -60,10 +78,14 @@ const AddMember = ({
       let { error, created, user } = res.data;
       if (!error && created) {
         setMembers((prev) => [...prev, user]);
+        setInviteData((prev) => [
+          ...prev,
+          { name: form.name, email: form.email, role: form.role },
+        ]);
+        setInviteCardVisisble(true);
         toast.success('Invite sent');
         setIsDisable(false);
         setForm({ ...form, name: null, email: null });
-        return onClose();
       } else {
         toast.error('User allready exists');
         setIsDisable(false);
@@ -76,10 +98,23 @@ const AddMember = ({
       <Stack sx={{ width: '500px' }}>
         {menu === 'addMember' ? (
           <TeamInvite
+            isInviteSentVisible={false}
+            isInviteTeamCardVisible={isInviteCardVisible}
+            slotInviteTeamCard={inviteData.map((data) => {
+              return (
+                <>
+                  <InviteTeamCard
+                    textEmail={data.email}
+                    textName={data.name}
+                    slotAvatar={<Icon variant='UserSolo' />}
+                  />
+                </>
+              );
+            })}
             slotForm={
               <Stack spacing={2}>
                 <TextField
-                  value={form.name}
+                  value={form.name ? form.name : ''}
                   label='Name'
                   error={formError.name}
                   onFocus={() => {
@@ -90,7 +125,7 @@ const AddMember = ({
                   }}
                 />
                 <TextField
-                  value={form.email}
+                  value={form.email ? form.email : ''}
                   label='Email'
                   error={formError.email}
                   onFocus={() => {
@@ -144,7 +179,11 @@ const AddMember = ({
               </Stack>
             }
             onClickClose={{
-              onClick: () => onClose(),
+              onClick: () => {
+                onClose(),
+                  setInviteData([]),
+                  setForm({ ...form, name: null, email: null });
+              },
             }}
           />
         ) : menu === 'pendingMember' ? (

@@ -211,6 +211,7 @@ export * from "./InterviewTranscriptCard";
 export * from "./InterviewWelcome";
 export * from "./InvalidJob";
 export * from "./InvitedCandidate";
+export * from "./InviteTeamCard";
 export * from "./JdAnalysis";
 export * from "./JdQandACard";
 export * from "./JdScreening";
