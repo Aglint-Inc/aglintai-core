@@ -65,7 +65,7 @@ function TeamAutoComplete() {
                   setSelectedPanel(option);
                   setSelectedUsers(
                     option.relations.map((user) => {
-                      return { user_id: user.user_id, must: 'not selected' };
+                      return { user_id: user.user_id, must: 'selected' };
                     }),
                   );
                 }}

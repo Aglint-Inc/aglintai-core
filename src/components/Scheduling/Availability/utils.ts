@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { cloneDeep, get, set } from 'lodash';
 
+import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
+
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
@@ -266,4 +269,36 @@ export const getTimeRangeStatusSlots = (
     }
   }
   return slots;
+};
+
+export const handleDelete = async (panel_id: string | string[]) => {
+  try {
+    const { data, error } = await supabase
+      .from('interview_schedule')
+      .select('id')
+      .eq('panel_id', panel_id)
+      .neq('status', 'completed');
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    if (data.length > 0) {
+      toast.error(
+        'This panel has interviews scheduled. Please cancel the interviews before deleting the panel.',
+      );
+      return false;
+    } else {
+      const { error } = await supabase
+        .from('interview_panel')
+        .delete()
+        .eq('id', panel_id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      return true;
+    }
+  } catch (error) {
+    toast.error("Couldn't delete panel. Please try again later.");
+  }
 };

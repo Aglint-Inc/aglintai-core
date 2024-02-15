@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { AvatarGroup, Drawer, Popover, Stack } from '@mui/material';
+import { d } from '@tanstack/react-query-devtools/build/legacy/devtools-dKCOqp9Q';
 import dayjs from 'dayjs';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -17,6 +18,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useInterviewPanel } from '@/src/context/InterviewPanel/InterviewPanelProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { StateAvailibility } from './availability.types';
@@ -33,10 +35,16 @@ import {
   useSyncInterviewersCalender,
 } from './store';
 import TimeDurationDropDown from './TimeDurationDropDown';
-import { countSlotStatus, DAYS_LENGTH, getAvailability } from './utils';
+import {
+  countSlotStatus,
+  DAYS_LENGTH,
+  getAvailability,
+  handleDelete,
+} from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
   setEditPanel,
+  setInterviewPanels,
   setIsCreateDialogOpen,
   setPanelName,
   setSelectedUsers,
@@ -159,6 +167,16 @@ const Availability = () => {
   let profileUrls = checkedInterSlots
     .filter((i) => i.countCheckedSlots > 0)
     .map((i) => ({ name: i.interviewerName, url: i.profileImg }));
+
+  const deleteHandler = async () => {
+    const res = await handleDelete(router.query.panel_id);
+    if (res) {
+      setInterviewPanels(
+        interviewPanels.filter((p) => p.id !== router.query.panel_id),
+      );
+      router.push(pageRoutes.SCHEDULINGPANEL);
+    }
+  };
 
   return (
     <>
@@ -296,8 +314,8 @@ const Availability = () => {
           >
             <ButtonWithShadow
               onClickButton={{
-                onclick: () => {
-                  //
+                onClick: () => {
+                  deleteHandler();
                 },
               }}
             />

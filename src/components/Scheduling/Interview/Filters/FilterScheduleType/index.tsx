@@ -89,7 +89,7 @@ function FilterScheduleType() {
         onClickStatus={{
           style: {
             borderColor:
-              filter.status.length > 0 ? palette.blue[600] : palette.blue[300],
+              filter.scheduleType.length > 0 ? palette.blue[600] : palette.blue[300],
           },
           onClick: handleClick,
         }}

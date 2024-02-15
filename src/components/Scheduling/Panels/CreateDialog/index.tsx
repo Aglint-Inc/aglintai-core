@@ -8,6 +8,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import {
@@ -99,14 +100,29 @@ function CreateDialog() {
     setIsCreateDialogOpen(null);
   };
 
-  const checkCandidate = (user) => {
-    console.log('checkCandidate', user);
+  const checkCandidate = async (user) => {
+    try {
+      const { data, error } = await supabase
+        .from('interview_schedule')
+        .select('id')
+        .eq('panel_id', router.query.panel_id)
+        .neq('status', 'completed');
 
-    // setSelectedUsers(
-    //   selectedUsers.filter(
-    //     (us) => us.user_id !== user.user_id,
-    //   ),
-    // );
+      if (error) {
+        throw new Error(error.message);
+      }
+      if (data.length > 0) {
+        toast.error(
+          'Panel member cannot be removed as interview is scheduled with this panel',
+        );
+        return;
+      }
+      setSelectedUsers(
+        selectedUsers.filter((us) => us.user_id !== user.user_id),
+      );
+    } catch (e) {
+      toast.error('Unable to remove panel member. Please try again later.');
+    }
   };
 
   return (
