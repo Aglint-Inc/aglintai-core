@@ -14,8 +14,7 @@ import { useEffect, useState } from 'react';
 import {
   ChatMessage,
   JobAssist,
-  JobAssistCardSmall,
-  JobEmptyState,
+  JobAssistCardSmall
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
@@ -31,6 +30,7 @@ import CandidateCard from './CandidateCard';
 import ChatEditor, { SendIcon } from './ChatEditor';
 import DynamicSuggestion from './DynanicSuggetions';
 import LeftPanel from './LeftPannel';
+import EmptyState from '../../CandidateDatabase/Search/EmptyState';
 import Loader from '../../Common/Loader';
 import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -91,7 +91,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
     }
   }, [fetching]);
 
-  return candidates.length ? (
+  return candidates.length && !fetching ? (
     <Stack direction={'row'} height={'100%'} width={'100%'}>
       {maximizeChat && <LeftPanel />}
       <Stack width={maximizeChat ? '80%' : '100%'} spacing={'10px'}>
@@ -214,7 +214,10 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                         slotMessageCard={
                           sender === chatusers.assistant &&
                           !active &&
-                          applicationList?.sort((a, b) => b?.overall_score - a?.overall_score)
+                          applicationList
+                            ?.sort(
+                              (a, b) => b?.overall_score - a?.overall_score,
+                            )
                             .map((application) => {
                               return (
                                 <>
@@ -296,12 +299,18 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
               setApplicationDetails(null);
             }}
             application={applicationDetails}
+            hideNextPrev={true}
           />
         </Drawer>
       </Stack>
     </Stack>
   ) : (
-    <JobEmptyState />
+    <Stack direction={'row'} flexDirection={'column'} mt={10}>
+      <Stack>
+        <EmptyState />
+      </Stack>
+      Candidates not found
+    </Stack>
   );
 }
 

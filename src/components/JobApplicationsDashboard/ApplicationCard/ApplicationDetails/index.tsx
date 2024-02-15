@@ -87,12 +87,14 @@ const ApplicationDetails = ({
   application,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  hideNextPrev,
 }: {
   open: boolean;
   onClose: () => void;
   application: JobApplication;
   handleSelectNextApplication?: () => void;
   handleSelectPrevApplication?: () => void;
+  hideNextPrev: boolean;
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(open);
   const [openFeedback, setOpenFeedback] = useState(false);
@@ -152,6 +154,7 @@ const ApplicationDetails = ({
             candidateImage={candidateImage}
             handleSelectNextApplication={handleSelectNextApplication}
             handleSelectPrevApplication={handleSelectPrevApplication}
+            hideNextPrev={hideNextPrev}
           />
         ) : (
           application?.assessment_results?.feedback && (
@@ -295,6 +298,7 @@ const NewJobApplicationSideDrawer = ({
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  hideNextPrev,
 }: {
   application: JobApplication;
   onClose: () => void;
@@ -302,6 +306,7 @@ const NewJobApplicationSideDrawer = ({
   candidateImage: React.JSX.Element;
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
+  hideNextPrev: boolean;
 }) => {
   const name = capitalize(
     application.candidates.first_name +
@@ -322,8 +327,18 @@ const NewJobApplicationSideDrawer = ({
     <CandidateSideDrawer
       slotCandidateImage={candidateImage}
       textName={name}
-      onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
-      onClickNext={{ onClick: () => handleSelectNextApplication() }}
+      onClickPrev={{
+        onClick: () => handleSelectPrevApplication(),
+        style: {
+          display: hideNextPrev ? 'none' : 'block',
+        },
+      }}
+      onClickNext={{
+        onClick: () => handleSelectNextApplication(),
+        style: {
+          display: hideNextPrev ? 'none' : 'block',
+        },
+      }}
       onClickClose={{
         onClick: () => onClose(),
       }}

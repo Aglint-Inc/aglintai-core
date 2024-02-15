@@ -54,8 +54,21 @@ function CandidateCard({
     <>
       <AssistantCandidateDetails
         isOverviewTextVisible={true}
-        isExperienceVisible={false}
+        isExperienceVisible={true}
         isOverviewVisible={false}
+        // slotCheckBox={
+        //   <Stack
+        //     sx={{
+        //       // border: '1px solid',
+        //       borderRadius: '3px',
+        //     }}
+        //     direction={'row'}
+        //     width={14}
+        //     height={14}
+        //   >
+        //     <ScrCheckmarkIcon />
+        //   </Stack>
+        // }
         onClickCard={{
           onClick: handleClick,
           style: {
@@ -70,7 +83,7 @@ function CandidateCard({
             width='16px'
             height='16px'
             src={'/recruiter.logo'}
-            level={'name'}
+            level={`${first_name} ${last_name || ''}`}
           />
         }
         colorPropsMatch={{
