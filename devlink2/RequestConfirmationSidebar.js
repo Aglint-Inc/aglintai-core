@@ -14,7 +14,7 @@ export function RequestConfirmationSidebar({
   return (
     <_Component className={_utils.cx(_styles, "panel_slidebar-copy")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "sidebar_contents", "height_100")}
+        className={_utils.cx(_styles, "sidebar_contents")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "sidebar_top")} tag="div">
@@ -51,7 +51,7 @@ export function RequestConfirmationSidebar({
               {textSelectedInfo}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot_list")}
+              className={_utils.cx(_styles, "slot_list", "no_padding_border")}
               tag="div"
             >
               {slotSelectedSlots ?? (
@@ -82,6 +82,10 @@ export function RequestConfirmationSidebar({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "embed_css")}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22RequestConfirmationSidebar_sidebar_contents__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2075px)%3B%0Aoverflow%3A%20auto%3B%0A%7D%0A%0A%5Bclass*%3D%22RequestConfirmationSidebar_height_100__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2075px)%3B%0Aoverflow%3A%20auto%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

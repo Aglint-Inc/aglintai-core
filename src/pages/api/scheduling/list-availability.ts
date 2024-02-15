@@ -3,17 +3,14 @@ import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import {
-  AvalabilitySlotType,
-  InterviewerAvailabliity,
-} from '@/src/components/Scheduling/Availability/availability.types';
 import { Database } from '@/src/types/schema';
 import { findAvailableTimeSlots } from '@/src/utils/schedule-utils/findAvailableSlots';
 import {
   getBlockedSlots,
+  getCurrentMonthAvailabilities,
   getGroupTimeSlots,
   getRecruiterAuthTokens,
-  getSavedAvailabilities,
+  saveAvailability,
 } from '@/src/utils/schedule-utils/utils';
 
 type BodyParams = {
@@ -39,12 +36,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     if (!record) throw new Error('no availability found');
 
-    const slots = await getSavedAvailabilities(
+    const curr_month_availability = await getCurrentMonthAvailabilities(
       timeDuration,
       dayjs(currentMonth),
       record.slot_availability,
     );
-    if (slots) return res.status(200).json(slots);
+    if (curr_month_availability)
+      return res.status(200).json(curr_month_availability);
 
     let tokenInfo = await getRecruiterAuthTokens(recruiterId);
     let monthStart = dayjs(currentMonth).startOf('month').toISOString();
@@ -67,15 +65,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     const groupedTimeSlots = getGroupTimeSlots(availableSlots, currentMonth);
 
-    let saved_slot_availability =
-      record.slot_availability as InterviewerAvailabliity[];
-    await save(
-      saved_slot_availability,
+    let saved_slot_availability = await saveAvailability(
+      record.slot_availability,
       recruiterId,
       timeDuration,
       groupedTimeSlots,
     );
-    return res.status(200).json(groupedTimeSlots);
+    return res
+      .status(200)
+      .json(
+        saved_slot_availability.find(
+          (slot_avail) => slot_avail.timeDuration === timeDuration,
+        ).availability,
+      );
   } catch (error) {
     // console.log(error);
     res.status(500).send(error.message);
@@ -83,57 +85,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-const save = async (
-  saved_slot_availability: InterviewerAvailabliity[],
-  userId: string,
-  timeDuration: number,
-  avail: Record<string, AvalabilitySlotType[]>,
-) => {
-  let updated_slot_avails: InterviewerAvailabliity[] = [];
-
-  if (!saved_slot_availability || saved_slot_availability.length === 0) {
-    updated_slot_avails = [
-      {
-        timeDuration: timeDuration,
-        availability: avail,
-        cntConfirmed: 0,
-        cntRequested: 0,
-      },
-    ];
-  } else {
-    if (saved_slot_availability.find((s) => s.timeDuration === timeDuration)) {
-      updated_slot_avails = saved_slot_availability.map((slot) => {
-        if (slot.timeDuration === timeDuration) {
-          slot.availability = {
-            ...slot.availability,
-            ...avail,
-          };
-        }
-        return slot;
-      });
-    } else {
-      updated_slot_avails = [
-        ...saved_slot_availability,
-        {
-          timeDuration: timeDuration,
-          availability: {
-            ...avail,
-          },
-          cntConfirmed: 0,
-          cntRequested: 0,
-        },
-      ];
-    }
-  }
-
-  supabaseWrap(
-    await supabaseAdmin
-      .from('interview_availabilties')
-      .update({
-        slot_availability: updated_slot_avails as any,
-        user_id: userId,
-      })
-      .eq('user_id', userId),
-  );
-};

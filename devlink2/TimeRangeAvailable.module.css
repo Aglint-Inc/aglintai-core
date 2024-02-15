@@ -58,6 +58,16 @@
   background-color: #f7f9fb;
 }
 
+.time_range.isskeleton {
+  position: relative;
+  height: 26px;
+  border-style: none;
+}
+
+@media screen and (min-width: 1280px) {
+
+}
+
 .pill_text {
   position: relative;
   z-index: 2;
@@ -70,6 +80,11 @@
 
 .slotavatargroup {
   height: 40px;
+  margin-top: 6px;
+}
+
+.slotavatargroup.remove_height {
+  height: auto;
 }
 
 .selected_bg_pill {

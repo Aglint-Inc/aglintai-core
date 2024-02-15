@@ -21,6 +21,7 @@
 
 .icon_text_flex {
   display: flex;
+  align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }
@@ -44,6 +45,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .text-underline {
   transition: all 250ms ease;
   text-decoration: underline;
@@ -56,4 +62,20 @@
 
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.member_calender_connect {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  background-color: #f7f9fb;
 }

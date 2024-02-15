@@ -65,7 +65,6 @@ const SideDrawer = ({ onClose }) => {
         );
       });
       await Promise.all(promises);
-
       for (let int of checkedInterSlots) {
         if (int.countCheckedSlots > 0) {
           toast.success(
@@ -120,6 +119,7 @@ const SideDrawer = ({ onClose }) => {
                 return (
                   <TimeRangeAvailable
                     key={timeKey}
+                    isSelected
                     textTimeRange={textTime}
                     isAvatarGroup
                     slotAvatarGroup={<InterviewerGroup profileUrls={inters} />}

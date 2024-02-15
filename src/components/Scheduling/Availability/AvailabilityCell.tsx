@@ -111,7 +111,7 @@ const AvailabilityCell = ({
                 })}
             </>
           }
-          textdate={dayjs(day).format('DD MMM')}
+          textdate={dayjs(day).format('dddd DD MMM')}
         />
       </Popover>
     </>

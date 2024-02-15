@@ -113,21 +113,74 @@ export async function getBlockedSlots(
   return events;
 }
 
-///check if todays availibity is available is so return it else return null
-export const getSavedAvailabilities = async (
+///check if current month availibity is exists? if so return it else return null
+export const getCurrentMonthAvailabilities = async (
   timeDuration: number,
   current_date: Dayjs,
   slot_availability: any,
 ) => {
   if (!slot_availability || slot_availability.length === 0) return null;
-  else {
-    let timedur_slots = slot_availability.find(
-      (s) => s.timeDuration === timeDuration,
-    );
-    if (!timedur_slots) return null;
-    let date = current_date.format('YYYY-MM-DD');
-    if (timedur_slots.availability[String(date)]) {
-      return timedur_slots.availability;
+  let timedur_slots = slot_availability.find(
+    (s) => s.timeDuration === timeDuration,
+  );
+  if (!timedur_slots) return null;
+  let date = current_date.format('YYYY-MM-DD');
+  if (timedur_slots.availability[String(date)]) {
+    return timedur_slots.availability;
+  }
+};
+
+export const saveAvailability = async (
+  saved_slot_availability: InterviewerAvailabliity[],
+  userId: string,
+  timeDuration: number,
+  avail: Record<string, AvalabilitySlotType[]>,
+) => {
+  let updated_slot_avails: InterviewerAvailabliity[] = [];
+
+  if (!saved_slot_availability || saved_slot_availability.length === 0) {
+    updated_slot_avails = [
+      {
+        timeDuration: timeDuration,
+        availability: avail,
+        cntConfirmed: 0,
+        cntRequested: 0,
+      },
+    ];
+  } else {
+    if (saved_slot_availability.find((s) => s.timeDuration === timeDuration)) {
+      updated_slot_avails = saved_slot_availability.map((slot) => {
+        if (slot.timeDuration === timeDuration) {
+          slot.availability = {
+            ...slot.availability,
+            ...avail,
+          };
+        }
+        return slot;
+      });
+    } else {
+      updated_slot_avails = [
+        ...saved_slot_availability,
+        {
+          timeDuration: timeDuration,
+          availability: {
+            ...avail,
+          },
+          cntConfirmed: 0,
+          cntRequested: 0,
+        },
+      ];
     }
   }
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_availabilties')
+      .update({
+        slot_availability: updated_slot_avails as any,
+        user_id: userId,
+      })
+      .eq('user_id', userId),
+  );
+  return updated_slot_avails;
 };

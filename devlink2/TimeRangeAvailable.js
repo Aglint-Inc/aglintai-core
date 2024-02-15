@@ -22,7 +22,7 @@ export function TimeRangeAvailable({
       </_Builtin.Block>
       {isAvatarGroup ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "slotavatargroup")}
+          className={_utils.cx(_styles, "slotavatargroup", "remove_height")}
           tag="div"
         >
           {slotAvatarGroup}

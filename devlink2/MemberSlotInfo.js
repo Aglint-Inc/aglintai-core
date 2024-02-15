@@ -6,7 +6,7 @@ import _styles from "./MemberSlotInfo.module.css";
 export function MemberSlotInfo({
   as: _Component = _Builtin.Block,
   isCalenderNotConnected = false,
-  onClickConnectCalender = {},
+  onClickAskToConnectCalender = {},
   onClickViewSlots = {},
   textRequestedSlotNumber = "--",
   textConfirmedSlotnumber = "--",
@@ -59,6 +59,32 @@ export function MemberSlotInfo({
           {"View Slots"}
         </_Builtin.Block>
       </_Builtin.Block>
+      {isCalenderNotConnected ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "member_calender_connect")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "icon_text_flex")}
+            tag="div"
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2218%22%20height%3D%2219%22%20viewBox%3D%220%200%2018%2019%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9%2015.25C7.90625%2015.2344%206.90625%2014.9688%206%2014.4531C5.09375%2013.9219%204.35938%2013.1875%203.79688%2012.25C3.26562%2011.2969%203%2010.2969%203%209.25C3%208.20312%203.26562%207.20312%203.79688%206.25C4.35938%205.3125%205.09375%204.57812%206%204.04688C6.90625%203.53125%207.90625%203.26563%209%203.25C10.0938%203.26563%2011.0938%203.53125%2012%204.04688C12.9062%204.57812%2013.6406%205.3125%2014.2031%206.25C14.7344%207.20312%2015%208.20312%2015%209.25C15%2010.2969%2014.7344%2011.2969%2014.2031%2012.25C13.6406%2013.1875%2012.9062%2013.9219%2012%2014.4531C11.0938%2014.9688%2010.0938%2015.2344%209%2015.25ZM8.0625%2011.125C7.71875%2011.1562%207.53125%2011.3438%207.5%2011.6875C7.53125%2012.0312%207.71875%2012.2188%208.0625%2012.25H9.9375C10.2812%2012.2188%2010.4688%2012.0312%2010.5%2011.6875C10.4688%2011.3438%2010.2812%2011.1562%209.9375%2011.125H9.75V9.0625C9.71875%208.71875%209.53125%208.53125%209.1875%208.5H8.0625C7.71875%208.53125%207.53125%208.71875%207.5%209.0625C7.53125%209.40625%207.71875%209.59375%208.0625%209.625H8.625V11.125H8.0625ZM9%206.25C8.78125%206.25%208.60156%206.32031%208.46094%206.46094C8.32031%206.60156%208.25%206.78125%208.25%207C8.25%207.21875%208.32031%207.39844%208.46094%207.53906C8.60156%207.67969%208.78125%207.75%209%207.75C9.21875%207.75%209.39844%207.67969%209.53906%207.53906C9.67969%207.39844%209.75%207.21875%209.75%207C9.75%206.78125%209.67969%206.60156%209.53906%206.46094C9.39844%206.32031%209.21875%206.25%209%206.25Z%22%20fill%3D%22%23F79A3E%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">
+              {"Calender not connected"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-underline", "text-blue-500")}
+            tag="div"
+            {...onClickAskToConnectCalender}
+          >
+            {"Ask to connect calender"}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }
