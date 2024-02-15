@@ -6,4 +6,5 @@ declare function TableBodyCell(props: {
   slotTimeRanges?: Types.Devlink.Slot;
   textSelectedCount?: React.ReactNode;
   isSelectedCell?: Types.Visibility.VisibilityConditions;
+  isLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

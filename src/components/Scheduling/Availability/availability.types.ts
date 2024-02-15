@@ -18,24 +18,17 @@ export type InterviewerAvailabliity = {
 
 export type InterviewerType = {
   interviewerName: string;
-  isMailConnected: boolean;
   interviewerId: string;
   profileImg: string;
+  email: string;
   slots: InterviewerAvailabliity[];
 };
 
 export type StateAvailibility = {
   isInitialising: boolean;
   isCalenderLoading: boolean;
-  interviewPanels: InterviewerType[];
   panelName: string;
-  interviewers: {
-    interviewerName: string;
-    isMailConnected: boolean;
-    interviewerId: string;
-    profileImg: string;
-    slots: InterviewerAvailabliity[];
-  }[];
+  interviewers: InterviewerType[];
   timeSlot: number;
   dateRangeView: {
     startDate: Date;

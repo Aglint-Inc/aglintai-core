@@ -58,6 +58,7 @@ export * from "./ChatboxPage";
 export * from "./CloseJobBtn";
 export * from "./CompanyProfileHeader";
 export * from "./CompanySwitchDropdown";
+export * from "./ConfirmSlots";
 export * from "./CsvImport";
 export * from "./CsvListItem";
 export * from "./DeleteJobPopup";

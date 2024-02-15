@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Skeleton } from "./Skeleton";
 import * as _utils from "./utils";
 import _styles from "./TableBodyCell.module.css";
 
@@ -8,6 +9,7 @@ export function TableBodyCell({
   slotTimeRanges,
   textSelectedCount = "1",
   isSelectedCell = false,
+  isLoading = false,
 }) {
   return (
     <_Component
@@ -36,6 +38,37 @@ export function TableBodyCell({
             tag="div"
           >
             <_Builtin.Block tag="div">{textSelectedCount}</_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
+      {isLoading ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "table_body_cell", "is_loading")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "time_range", "isskeleton")}
+            tag="div"
+          >
+            <Skeleton />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "time_range", "isskeleton")}
+            tag="div"
+          >
+            <Skeleton />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "time_range", "isskeleton")}
+            tag="div"
+          >
+            <Skeleton />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text_md_line", "_40")}
+            tag="div"
+          >
+            <Skeleton />
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

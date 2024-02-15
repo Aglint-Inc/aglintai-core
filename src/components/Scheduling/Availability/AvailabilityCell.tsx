@@ -5,9 +5,11 @@ import React, { useState } from 'react';
 import {
   TableBodyCell,
   TimeRangeAvailable,
+  TimeRangeDisabled,
   TimeRangeRequested,
   ViewMorePopover,
 } from '@/devlink2';
+import { TimeRangeConfirmed } from '@/devlink2/TimeRangeConfirmed';
 
 import {
   AvalabilitySlotType,
@@ -38,40 +40,19 @@ const AvailabilityCell = ({
             {timeDurSlots.availability[String(day)]
               .slice(0, 3)
               .map((timeRange) => {
-                const textTimeRange = `${dayjs(timeRange.startTime).format(
-                  'hh:mm A',
-                )} - ${dayjs(timeRange.endTime).format('hh:mm A')}`;
                 const isChecked =
                   checkedTimeDur.filter(
                     (c) => c.startTime === timeRange.startTime,
                   ).length > 0;
-                if (timeRange.status === 'available') {
-                  return (
-                    <TimeRangeAvailable
-                      key={textTimeRange}
-                      textTimeRange={textTimeRange}
-                      isSelected={isChecked}
-                      onClickPill={{
-                        onClick: () => {
-                          if (isChecked) {
-                            unCheckSlot(`${cellPath}`, timeRange);
-                          } else {
-                            checkSlot(`${cellPath}`, timeRange);
-                          }
-                        },
-                      }}
-                    />
-                  );
-                }
 
-                if (timeRange.status === 'requested') {
-                  return (
-                    <TimeRangeRequested
-                      key={textTimeRange}
-                      textTimeRange={textTimeRange}
-                    />
-                  );
-                }
+                return (
+                  <TimeRangePill
+                    key={cellPath}
+                    cellPath={cellPath}
+                    isChecked={isChecked}
+                    timeRange={timeRange}
+                  />
+                );
               })}
             {totalSlots - 3 > 0 && (
               <Stack
@@ -115,41 +96,18 @@ const AvailabilityCell = ({
               {timeDurSlots.availability[String(day)]
                 .slice(3)
                 .map((timeRange) => {
-                  const textTimeRange = `${dayjs(timeRange.startTime).format(
-                    'hh:mm A',
-                  )}-${dayjs(timeRange.endTime).format('hh:mm A')}`;
                   const isChecked =
                     checkedTimeDur.filter(
                       (c) => c.startTime === timeRange.startTime,
                     ).length > 0;
-
-                  if (timeRange.status === 'available') {
-                    return (
-                      <TimeRangeAvailable
-                        key={textTimeRange}
-                        textTimeRange={textTimeRange}
-                        isSelected={isChecked}
-                        onClickPill={{
-                          onClick: () => {
-                            if (isChecked) {
-                              unCheckSlot(`${cellPath}`, timeRange);
-                            } else {
-                              checkSlot(`${cellPath}`, timeRange);
-                            }
-                          },
-                        }}
-                      />
-                    );
-                  }
-
-                  if (timeRange.status === 'requested') {
-                    return (
-                      <TimeRangeRequested
-                        key={textTimeRange}
-                        textTimeRange={textTimeRange}
-                      />
-                    );
-                  }
+                  return (
+                    <TimeRangePill
+                      key={cellPath}
+                      cellPath={cellPath}
+                      isChecked={isChecked}
+                      timeRange={timeRange}
+                    />
+                  );
                 })}
             </>
           }
@@ -161,3 +119,44 @@ const AvailabilityCell = ({
 };
 
 export default AvailabilityCell;
+
+const TimeRangePill = ({
+  timeRange,
+  isChecked,
+  cellPath,
+}: {
+  timeRange: AvalabilitySlotType;
+  isChecked: boolean;
+  cellPath: string;
+}) => {
+  const textTimeRange = `${dayjs(timeRange.startTime).format(
+    'hh:mm A',
+  )}-${dayjs(timeRange.endTime).format('hh:mm A')}`;
+
+  if (timeRange.status === 'available') {
+    return (
+      <TimeRangeAvailable
+        textTimeRange={textTimeRange}
+        isSelected={isChecked}
+        onClickPill={{
+          onClick: () => {
+            if (isChecked) {
+              unCheckSlot(`${cellPath}`, timeRange);
+            } else {
+              checkSlot(`${cellPath}`, timeRange);
+            }
+          },
+        }}
+      />
+    );
+  }
+  if (timeRange.status === 'requested') {
+    return <TimeRangeRequested textTimeRange={textTimeRange} />;
+  }
+  if (timeRange.status === 'confirmed') {
+    return <TimeRangeConfirmed textTimeRange={textTimeRange} />;
+  }
+  if (timeRange.status === 'declined') {
+    return <TimeRangeDisabled textTimeRange={textTimeRange} />;
+  }
+};

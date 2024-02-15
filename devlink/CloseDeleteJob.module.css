@@ -271,6 +271,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }

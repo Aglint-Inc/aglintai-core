@@ -281,6 +281,7 @@ const isRoutePublic = (path = '') => {
     pageRoutes.SIGNUP,
     pageRoutes.MOCKTEST,
     pageRoutes.PHONESCREEN,
+    pageRoutes.CONFIRM_SCHEDULE,
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {

@@ -19,7 +19,6 @@ import {
 export let initialState: StateAvailibility = {
   isInitialising: false,
   isCalenderLoading: false,
-  interviewPanels: [],
   panelName: '',
   interviewers: [],
   timeSlot: 30,

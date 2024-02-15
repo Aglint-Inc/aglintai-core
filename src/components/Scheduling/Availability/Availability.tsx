@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { AvatarGroup, Drawer, Stack } from '@mui/material';
+import { AvatarGroup, Drawer, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { CloseDeleteJob, CloseJobButton, LoaderSvg } from '@/devlink';
 import {
   Breadcrum,
+  ButtonWithShadow,
   PageLayout,
   PanelDetail,
   PanelDetailTitle,
@@ -46,6 +47,7 @@ import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const Availability = () => {
   const { loading: isInterviewPanelLoading } = useInterviewPanel();
+  const [showDeletePoppup, setShowDeletePopup] = useState('');
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initCalenderAvails, handleSyncMonthifNeeded } =
     useSyncInterviewersCalender();
@@ -62,6 +64,8 @@ const Availability = () => {
   const checkedInterSlots = useAvailableStore(
     (state) => state.checkedInterSlots,
   );
+  const [popupEl, setPopupEl] = useState(null);
+
   const router = useRouter();
   useEffect(() => {
     if (router.isReady && router.query.panel_id && !isInterviewPanelLoading) {
@@ -87,8 +91,8 @@ const Availability = () => {
                   .join(' '),
                 interviewerId: member?.user_id,
                 profileImg: member?.profile_image ?? '',
-                isMailConnected: Boolean(member?.schedule_auth),
                 slots: [],
+                email: member.email,
               };
             });
           await initCalenderAvails(newInterviewers, timeSlot);
@@ -222,14 +226,13 @@ const Availability = () => {
                         }
                       />
                       <>
-                        <CalenderHeaderRow />
                         {isInitialising ? (
                           <Stack
                             direction={'row'}
                             justifyContent={'center'}
                             alignItems={'center'}
                             width={'100vw'}
-                            height={'70vh'}
+                            height={'75vh'}
                           >
                             <LoaderSvg />
                           </Stack>
@@ -250,6 +253,17 @@ const Availability = () => {
                       setIsCreateDialogOpen('edit');
                     },
                   }}
+                  slotThreeDots={
+                    <>
+                      <CloseJobButton
+                        onClickClose={{
+                          onClick: (e) => {
+                            setPopupEl(e.currentTarget);
+                          },
+                        }}
+                      />
+                    </>
+                  }
                 />
               </>
             }
@@ -262,6 +276,32 @@ const Availability = () => {
           >
             <SideDrawer onClose={() => setOpenSideDrawer(false)} />
           </Drawer>
+          <Popover
+            open={Boolean(popupEl)}
+            anchorEl={popupEl}
+            onClose={() => {
+              setPopupEl(null);
+            }}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            sx={{
+              // mt: 2,
+              '& .MuiPaper-root': {
+                border: 'none !important',
+                overflow: 'visible !important',
+              },
+            }}
+          >
+            <ButtonWithShadow
+              onClickButton={{
+                onclick: () => {
+                  //
+                },
+              }}
+            />
+          </Popover>
         </>
       }
     </>

@@ -1,11 +1,14 @@
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
+import { useRouter } from 'next/router';
 
 import {
   GroupedSlots,
   RequestConfirmationSidebar,
   TimeRangeAvailable,
 } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -22,6 +25,8 @@ import {
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const SideDrawer = ({ onClose }) => {
+  const { recruiterUser } = useAuthDetails();
+  const router = useRouter();
   const checkedInterSlots = useAvailableStore(
     (state) => state.checkedInterSlots,
   );
@@ -51,7 +56,6 @@ const SideDrawer = ({ onClose }) => {
           'requested',
           timeSlot,
         );
-
       const promises = updInterviewers.map(async (int) => {
         supabaseWrap(
           await supabase
@@ -60,11 +64,25 @@ const SideDrawer = ({ onClose }) => {
             .eq('user_id', int.interviewerId),
         );
       });
-
       await Promise.all(promises);
+
+      for (let int of checkedInterSlots) {
+        if (int.countCheckedSlots > 0) {
+          toast.success(
+            `Availability confiramtion email sent to ${int.interviewerName}`,
+          );
+          const formLink = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${router.query.panel_id}?user_id=${int.interviewerId}&req_user_id=${recruiterUser.user_id}&time_duration=${timeSlot}`;
+          await axios.post('/api/sendgrid', {
+            email: interviewers.find(
+              (i) => i.interviewerId === int.interviewerId,
+            ).email,
+            subject: 'Confirm your availability',
+            text: formLink,
+          });
+        }
+      }
       setCheckedInterSlots(updCheckedInterSlots);
       setInterviewers(updInterviewers);
-      toast.success('Email sent  slot confirmation');
       onClose();
     } catch (error) {
       toast.error(API_FAIL_MSG);
@@ -111,57 +129,6 @@ const SideDrawer = ({ onClose }) => {
             />
           );
         })}
-        // slotSelectedSlots={Object.keys(groupedSlots)
-        //   .filter((dateStr) => groupedSlots[String(dateStr)].length > 0)
-        //   .map((dateStr) => {
-        //     return (
-        //       <GroupedSlots
-        //         key={dateStr}
-        //         textDate={dateStr}
-        //         slotTimeRange={
-        //           <>
-        //             <TimeRangeAvailable
-        //               isAvatarGroup
-        //               slotAvatarGroup={
-        //                 <InterviewerGroup
-        //                   profileUrls={[{ name: 'femwkl', url: 'fmewlkm' }]}
-        //                 />
-        //               }
-        //             />
-        //           </>
-        //         }
-        //       />
-        //     );
-        //   })}
-        // slotSelectedSlots={checkedInterSlots.map((int) => {
-        //   const selectedTimeSlots = int.slots.find(
-        //     (s) => s.timeDuration === timeSlot,
-        //   ).availability;
-        //   let groupedSlots = [];
-
-        //   return (
-        //     <GroupedSlots
-        //       key={int.interviewerId}
-        //       textDate
-        //       slotTimeRange={Object.keys(selectedTimeSlots)
-        //         .filter(
-        //           (dayKey) => selectedTimeSlots[String(dayKey)].length > 0,
-        //         )
-        //         .map((dayKey) => {
-        //           return selectedTimeSlots[String(dayKey)].map((timeRange) => {
-        //             return (
-        //               <TimeRangeAvailable
-        //                 key={timeRange.startTime.toString()}
-        //                 textTimeRange={dayjs(timeRange.startTime).format('')}
-        //                 // isAvatarGroup={true}
-        //                 // slotAvatarGroup={<></>}
-        //               />
-        //             );
-        //           });
-        //         })}
-        //     />
-        //   );
-        // })}
         onClickClose={{
           onClick: () => {
             onClose();
