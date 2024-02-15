@@ -191,6 +191,7 @@ const JobApplicationComponent = () => {
                 currentApplication === -1 ? 0 : currentApplication
               ]
             }
+            hideNextPrev={false}
           />
         }
         slotTabs={<NewJobDetailsTabs />}
