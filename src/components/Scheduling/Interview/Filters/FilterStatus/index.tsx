@@ -23,7 +23,7 @@ function FilterStatus() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'filter-status' : undefined;
 
   const handleFilterClick = (
     status: InterviewScheduleTypeDB['status'] | 'not scheduled',

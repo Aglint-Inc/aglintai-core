@@ -24,7 +24,7 @@ function FilterJob() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'jobs-filter' : undefined;
 
   const handleFilterClick = (job_id: string) => {
     if (filter.job_ids.includes(job_id)) {

@@ -24,7 +24,7 @@ function FilterInterviewPanel() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'interview-panels' : undefined;
 
   const handleFilterClick = (panel_id: string) => {
     if (filter.panel_ids.includes(panel_id)) {

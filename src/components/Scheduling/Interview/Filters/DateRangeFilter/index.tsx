@@ -27,7 +27,7 @@ function DateRangeFilterComp() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'date-range' : undefined;
 
   useEffect(() => {
     return () => {

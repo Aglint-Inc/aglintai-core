@@ -23,7 +23,7 @@ function FilterScheduleType() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'filter-schedule-type' : undefined;
 
   const handleFilterClick = (
     scheduleType: InterviewScheduleTypeDB['schedule_type'],
