@@ -8,4 +8,5 @@ declare function LoadedSlotPill(props: {
   onClickPill?: Types.Devlink.RuntimeProps;
   isSelectedActive?: Types.Visibility.VisibilityConditions;
   isNotSelected?: Types.Visibility.VisibilityConditions;
+  isLineBorderActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

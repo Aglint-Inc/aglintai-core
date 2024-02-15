@@ -2,7 +2,6 @@ import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
-import { LoaderSvg } from '@/devlink';
 import {
   GroupedSlots,
   MemberSlotInfo,
@@ -10,10 +9,13 @@ import {
   PanelDetailTable,
   PanelMember,
   SidebarViewSlots,
+  TableBodyCell,
+  TimeRangeConfirmed,
   TimeRangeRequested,
 } from '@/devlink2';
 
 import AvailabilityCell from './AvailabilityCell';
+import CalenderHeaderRow from './CalenderHeaderRow';
 import { useAvailableStore } from './store';
 import { countSlotStatus, groupSlots } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -35,6 +37,8 @@ const PanelRow = () => {
       <PanelDetailTable
         slotPanelMemberRow={
           <>
+            <CalenderHeaderRow />
+
             {interviewers.map((int, interviewIdx) => {
               let timeDurSlots = int.slots.find(
                 (t) => t.timeDuration === timeSlot,
@@ -100,15 +104,13 @@ const PanelRow = () => {
                   slotBodyCells={
                     <>
                       {isCalenderLoading ? (
-                        <Stack
-                          direction={'row'}
-                          justifyContent={'center'}
-                          alignItems={'center'}
-                          width={'80vw'}
-                          height={'100%'}
-                        >
-                          <LoaderSvg />
-                        </Stack>
+                        <>
+                          <TableBodyCell isLoading />
+                          <TableBodyCell isLoading />
+                          <TableBodyCell isLoading />
+                          <TableBodyCell isLoading />
+                          <TableBodyCell isLoading />
+                        </>
                       ) : (
                         timeSlotKeys.slice(0, 5).map((day) => {
                           return (
@@ -164,10 +166,17 @@ const PanelRowDialog = ({ onClose, intId }) => {
   let dateKeys = Object.keys(
     interviewer.slots.find((s) => s.timeDuration === timeSlot).availability,
   );
-  let groupedSlots = groupSlots(
+
+  let reqStatusgroupedSlots = groupSlots(
     interviewer,
     interviewer.slots.find((s) => s.timeDuration === timeSlot).availability,
     'requested',
+  );
+
+  let confirmStatusgroupedSlots = groupSlots(
+    interviewer,
+    interviewer.slots.find((s) => s.timeDuration === timeSlot).availability,
+    'confirmed',
   );
 
   return (
@@ -204,13 +213,15 @@ const PanelRowDialog = ({ onClose, intId }) => {
             />
           </>
         }
-        slotConfirmedSlots={<></>}
-        slotRequestedSlots={
+        slotConfirmedSlots={
           <>
             {dateKeys.map((dateKey) => {
-              let eventsKey = Object.keys(groupedSlots[String(dateKey)]).filter(
+              let eventsKey = Object.keys(
+                confirmStatusgroupedSlots[String(dateKey)],
+              ).filter(
                 (timeKey) =>
-                  groupedSlots[String(dateKey)][String(timeKey)].length > 0,
+                  confirmStatusgroupedSlots[String(dateKey)][String(timeKey)]
+                    .length > 0,
               );
               if (eventsKey.length === 0) return <></>;
 
@@ -220,7 +231,45 @@ const PanelRowDialog = ({ onClose, intId }) => {
                   textDate={dayjs(dateKey).format('MMMM DD YYYY')}
                   slotTimeRange={eventsKey.map((timeKey) => {
                     let timeRange =
-                      groupedSlots[String(dateKey)][String(timeKey)][0];
+                      confirmStatusgroupedSlots[String(dateKey)][
+                        String(timeKey)
+                      ][0];
+                    let textTime = `${dayjs(timeRange?.startTime).format(
+                      'hh:mm A',
+                    )} - ${dayjs(timeRange?.endTime).format('hh:mm A')}`;
+                    return (
+                      <TimeRangeConfirmed
+                        key={textTime}
+                        textTimeRange={textTime}
+                      />
+                    );
+                  })}
+                />
+              );
+            })}
+          </>
+        }
+        slotRequestedSlots={
+          <>
+            {dateKeys.map((dateKey) => {
+              let eventsKey = Object.keys(
+                reqStatusgroupedSlots[String(dateKey)],
+              ).filter(
+                (timeKey) =>
+                  reqStatusgroupedSlots[String(dateKey)][String(timeKey)]
+                    .length > 0,
+              );
+              if (eventsKey.length === 0) return <></>;
+
+              return (
+                <GroupedSlots
+                  key={dateKey}
+                  textDate={dayjs(dateKey).format('MMMM DD YYYY')}
+                  slotTimeRange={eventsKey.map((timeKey) => {
+                    let timeRange =
+                      reqStatusgroupedSlots[String(dateKey)][
+                        String(timeKey)
+                      ][0];
                     let textTime = `${dayjs(timeRange?.startTime).format(
                       'hh:mm A',
                     )} - ${dayjs(timeRange?.endTime).format('hh:mm A')}`;

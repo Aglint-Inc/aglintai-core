@@ -15,11 +15,21 @@
   line-height: 16px;
 }
 
+.table_body_cell.is_loading {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+}
+
 .table_body_cell_inner {
   position: relative;
   z-index: 2;
 
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
   grid-column-gap: 6px;
@@ -30,6 +40,10 @@
   color: #c2c8cc;
   font-size: 12px;
   line-height: 16px;
+}
+
+@media screen and (min-width: 1440px) {
+
 }
 
 .is_selected_cell {
@@ -60,6 +74,102 @@
   background-color: #edf7ff;
 
   color: #1f73b7;
+}
+
+.time_range {
+  width: 100%;
+  padding: 4px 10px;
+
+  border: 1px solid black;
+  border-radius: 4px;
+
+  transition: all 200ms ease-in-out;
+
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.time_range.is_available {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-color: #337fbd;
+
+  color: #337fbd;
+
+  cursor: pointer;
+}
+
+.time_range.is_available:hover {
+  border-color: #1f73b7;
+  background-color: #edf7ff;
+}
+
+.time_range.is_confirmed {
+  border-color: #228f67;
+  background-color: #228f67;
+  color: hsla(157.9816513761468, 0.00%, 100.00%, 1.00);
+}
+
+.time_range.is_requested {
+  border-color: #ed8f1c;
+  background-color: #ed8f1c;
+  color: hsla(206.95652173913044, 0.00%, 100.00%, 1.00);
+}
+
+.time_range.is_disabled {
+  border-color: #c2c8cc;
+  background-color: #f8f9f9;
+  color: #c2c8cc;
+}
+
+.time_range.is_preview {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-style: none;
+  background-color: #f7f9fb;
+}
+
+.time_range.isskeleton {
+  position: relative;
+  height: 26px;
+  border-style: none;
+}
+
+@media screen and (min-width: 1280px) {
+
+}
+
+.text_md_line {
+  position: relative;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.text_md_line._60 {
+  width: 60%;
+}
+
+.text_md_line._80 {
+  width: 80%;
+}
+
+.text_md_line._90 {
+  width: 90%;
+}
+
+.text_md_line._30 {
+  width: 30%;
+}
+
+.text_md_line._40 {
+  width: 40%;
 }
 
 #w-node-c52da277-c925-7ed6-541f-cd820280171c-0280171c {

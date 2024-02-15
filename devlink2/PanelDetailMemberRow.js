@@ -45,7 +45,7 @@ export function PanelDetailMemberRow({
         )}
         tag="div"
       >
-        {slotBodyCells ?? <TableBodyCell isSelectedCell={true} />}
+        {slotBodyCells ?? <TableBodyCell />}
       </_Builtin.Block>
     </_Component>
   );

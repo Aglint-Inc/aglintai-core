@@ -125,6 +125,8 @@ const allowedPaths = new Set([
   '/api/jobpost/indexing',
   '/api/sitemap.xml',
   // remove below 2 after testing done
+  '/api/scheduling/fetch-panel-user-availability',
+  '/api/scheduling/interviewer-confirm-slots',
   '/api/scheduling/google-consent',
   '/api/scheduling/list-events',
   '/api/scheduling/list-availability',

@@ -10,6 +10,7 @@ export function LoadedSlotPill({
   onClickPill = {},
   isSelectedActive = false,
   isNotSelected = true,
+  isLineBorderActive = false,
 }) {
   return (
     <_Component
@@ -35,6 +36,12 @@ export function LoadedSlotPill({
       {isSelectedActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-865")}
+          tag="div"
+        />
+      ) : null}
+      {isLineBorderActive ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-919")}
           tag="div"
         />
       ) : null}

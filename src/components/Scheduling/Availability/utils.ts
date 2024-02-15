@@ -4,6 +4,7 @@ import { cloneDeep, get, set } from 'lodash';
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
+  InterviewerType,
   StateAvailibility,
 } from './availability.types';
 
@@ -89,6 +90,39 @@ export function mergeInterviewerEvents(
   return mergedEvents;
 }
 
+export function mergeInterviewerEventsWithTimeSlot(
+  interviewers: InterviewerType[],
+  timeDuration: number,
+) {
+  const mergedEvents: MergedEvents = {};
+
+  for (let inter of interviewers) {
+    let slotAvail = inter.slots.find((sl) => sl.timeDuration === timeDuration);
+    if (!slotAvail) continue;
+    for (let dayKey in slotAvail.availability) {
+      if (!mergedEvents[String(dayKey)]) {
+        mergedEvents[String(dayKey)] = {};
+      }
+
+      for (let timeSlot of slotAvail.availability[String(dayKey)]) {
+        if (timeSlot.status !== 'requested') continue;
+        const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
+        if (!mergedEvents[String(dayKey)][String(timeRange)]) {
+          mergedEvents[String(dayKey)][String(timeRange)] = [];
+        }
+        mergedEvents[String(dayKey)][String(timeRange)].push({
+          startTime: timeSlot.startTime,
+          endTime: timeSlot.endTime,
+          interviewerId: inter.interviewerId,
+          interviewerName: inter.interviewerName,
+          profileImg: inter.profileImg,
+          status: timeSlot.status,
+        });
+      }
+    }
+  }
+  return mergedEvents;
+}
 //date
 //date-time
 export const groupSlots = (
@@ -120,8 +154,7 @@ export const groupSlots = (
 
   return mergedEvents;
 };
-
-interface MergedEvents {
+export interface MergedEvents {
   [date: string]: {
     [timeRange: string]: {
       startTime: Date;
@@ -129,10 +162,10 @@ interface MergedEvents {
       interviewerId: string;
       interviewerName: string;
       profileImg: string;
+      status?: AvalabilitySlotType['status'];
     }[];
   };
 }
-
 export const updateTimeSlotStatusUtil = (
   interviewers: StateAvailibility['interviewers'],
   checkedInterSlots: StateAvailibility['checkedInterSlots'],
