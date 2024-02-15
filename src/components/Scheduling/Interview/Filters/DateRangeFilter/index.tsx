@@ -7,10 +7,8 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css';
 
 import {
-  ButtonOutlinedSmall,
   ButtonPrimarySmall,
-  ButtonTextGrey,
-  ButtonTextSmall,
+  ButtonTextSmall
 } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
