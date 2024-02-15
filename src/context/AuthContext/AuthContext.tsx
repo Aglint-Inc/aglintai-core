@@ -120,7 +120,7 @@ const AuthProvider = ({ children }) => {
       if (!data?.session) {
         loading && setLoading(false);
       }
-      if (data.session.user.new_email) {
+      if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
           setUserDetails(newData.session);
@@ -128,7 +128,7 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
-      if (router.route !== pageRoutes.LOADING) {
+      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
