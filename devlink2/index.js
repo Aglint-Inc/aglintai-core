@@ -42,6 +42,7 @@ export * from "./ButtonFilter";
 export * from "./ButtonSchedule";
 export * from "./ButtonStatus";
 export * from "./ButtonWide";
+export * from "./ButtonWithShadow";
 export * from "./CandidateDetailSidebar";
 export * from "./CandidateFilter";
 export * from "./CandidateFilterBody";

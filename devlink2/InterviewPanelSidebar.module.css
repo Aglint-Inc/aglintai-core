@@ -1,8 +1,13 @@
 .panel_slidebar {
+  position: relative;
   display: flex;
   height: 100vh;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.sidebar_contents {
+  position: relative;
 }
 
 .sidebar_contents.height_100 {
@@ -10,6 +15,9 @@
 }
 
 .sidebar_top {
+  position: sticky;
+  top: 0px;
+
   display: flex;
   padding: 16px 20px;
   justify-content: space-between;
@@ -25,6 +33,10 @@
 
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+}
+
+.text-grey-600 {
+  color: #68737d;
 }
 
 .color-black {
@@ -59,6 +71,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }
@@ -154,6 +168,17 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.sticky_2 {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+}
+
 .sidebar_close {
   display: flex;
   align-items: center;
@@ -178,6 +203,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .sidebar_body {
   position: relative;
   z-index: 1;
@@ -198,6 +228,10 @@
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.ps_row.is_left_fles {
+  align-items: flex-start;
 }
 
 .ps_input_slot._3-1grid {
@@ -265,10 +299,6 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .ps_teams {
@@ -349,6 +379,7 @@
 }
 
 .sidebar_button_wrap {
+  height: 76px;
   padding: 20px;
 }
 
@@ -425,4 +456,10 @@
 
 .button_primary.confirm_availability:hover {
   background-color: #038153;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
 }

@@ -35,6 +35,7 @@ import TimeDurationDropDown from './TimeDurationDropDown';
 import { countSlotStatus, DAYS_LENGTH, getAvailability } from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
+  setEditPanel,
   setIsCreateDialogOpen,
   setPanelName,
   setSelectedUsers,
@@ -71,6 +72,7 @@ const Availability = () => {
             (p) => p.id === router.query.panel_id,
           );
           setPanelName(panel.name);
+          setEditPanel(panel);
           setSelectedUsers(
             members.filter((m) =>
               panel.relations.map((r) => r.user_id).includes(m.user_id),

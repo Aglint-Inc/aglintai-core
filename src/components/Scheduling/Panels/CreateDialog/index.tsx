@@ -59,6 +59,7 @@ function CreateDialog() {
   const editPanelHandler = async () => {
     try {
       setLoading(true);
+
       const res = await editPanel({
         name: panelName,
         selectedUsers,
@@ -83,7 +84,7 @@ function CreateDialog() {
       });
       close();
     } catch (e) {
-      toast.error('Error creating panel');
+      toast.error('Error editing panel');
       setIsCreateDialogOpen(null);
     } finally {
       setLoading(false);
@@ -96,6 +97,16 @@ function CreateDialog() {
       setPanelName('');
     }
     setIsCreateDialogOpen(null);
+  };
+
+  const checkCandidate = (user) => {
+    console.log('checkCandidate', user);
+
+    // setSelectedUsers(
+    //   selectedUsers.filter(
+    //     (us) => us.user_id !== user.user_id,
+    //   ),
+    // );
   };
 
   return (
@@ -153,9 +164,15 @@ function CreateDialog() {
                 key={user.user_id}
                 onClickClose={{
                   onClick: () => {
-                    setSelectedUsers(
-                      selectedUsers.filter((us) => us.user_id !== user.user_id),
-                    );
+                    if (isCreatePanelOpen == 'edit') {
+                      checkCandidate(user);
+                    } else {
+                      setSelectedUsers(
+                        selectedUsers.filter(
+                          (us) => us.user_id !== user.user_id,
+                        ),
+                      );
+                    }
                   },
                 }}
                 slotImage={
