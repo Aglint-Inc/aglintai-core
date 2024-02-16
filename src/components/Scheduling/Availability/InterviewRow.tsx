@@ -42,9 +42,8 @@ const InterviewerRow = ({
   let timeSlotKeys = getTimeSlotKeys(dateRangeView.startDate);
 
   const checkedInterviewer = checkedInterlots[Number(interviewIdx)];
-  let avail = checkedInterviewer.slots.find(
-    (s) => s.timeDuration === timeSlot,
-  ).availability;
+  let avail = checkedInterviewer.slots.find((s) => s.timeDuration === timeSlot)
+    ?.availability;
   let timeSlotIdx = interviewers[String(interviewIdx)].slots.findIndex(
     (s) => s.timeDuration === timeSlot,
   );

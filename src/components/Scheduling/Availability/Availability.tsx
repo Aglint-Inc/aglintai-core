@@ -25,6 +25,7 @@ import {
   setDateRangeView,
   setIsisCalenderLoading,
   setIsisInitialising,
+  setTimeSlot,
   uncheckAllSlots,
   useAvailableStore,
   useSyncInterviewersCalender,
@@ -51,7 +52,6 @@ const Availability = () => {
 
   const { members } = useAuthDetails();
   const panelName = useSchedulingStore((state) => state.panelName);
-  const timeSlot = useAvailableStore((state) => state.timeSlot);
   const isInitialising = useAvailableStore((state) => state.isInitialising);
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
   const isCalenderLoading = useAvailableStore(
@@ -72,6 +72,10 @@ const Availability = () => {
           const panel = interviewPanels.find(
             (p) => p.id === router.query.panel_id,
           );
+
+          const activeDuration =
+            (panel.duration_available as any)?.activeDuration ?? 30;
+          setTimeSlot(activeDuration);
           setPanelName(panel.name);
           setEditPanel(panel);
           setSelectedUsers(
@@ -93,7 +97,7 @@ const Availability = () => {
                 isMailConnected: false,
               };
             });
-          await initCalenderAvails(newInterviewers, timeSlot);
+          await initCalenderAvails(newInterviewers, activeDuration);
         } catch (err) {
           // console.log(err);
           toast.error(API_FAIL_MSG);

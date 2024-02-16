@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 import dayjs from 'dayjs';
 import { cloneDeep, get, set } from 'lodash';
+import { useRouter } from 'next/router';
 import { create } from 'zustand';
+
+import { supabase } from '@/src/utils/supabaseClient';
 
 import {
   AvalabilitySlotType,
@@ -15,6 +18,7 @@ import {
   getAvailability,
   initialiseCheckedInts,
 } from './utils';
+import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 export let initialState: StateAvailibility = {
   isInitialising: false,
@@ -120,7 +124,8 @@ export const uncheckAllSlots = () => {
 export const useSyncInterviewersCalender = () => {
   const interviewers = useAvailableStore((state) => state.interviewers);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
-
+  const router = useRouter();
+  const panelId = router.query.panel_id;
   const handleSync = async (reqTimeSlot: number, monthToSync: string) => {
     const clonedIntervs = cloneDeep(interviewers);
     const promises = clonedIntervs.map(async (int) => {
@@ -134,6 +139,10 @@ export const useSyncInterviewersCalender = () => {
       return int;
     });
     const newIntrs = await Promise.all(promises);
+    await updateAvailTimeSlots(
+      newIntrs[0].slots.map((sl) => sl.timeDuration),
+      reqTimeSlot,
+    );
     setCheckedInterSlots(initialiseCheckedInts(newIntrs));
     setInterviewers(newIntrs);
   };
@@ -142,16 +151,11 @@ export const useSyncInterviewersCalender = () => {
     intervs: StateAvailibility['interviewers'],
     timeSlot: number,
   ) => {
-    const currentMonth = new Date().toISOString();
     const clonedInters = cloneDeep(intervs);
     let interviewersPromises = clonedInters.map(async (interW) => {
       let interviewer: InterviewerType = interW;
       try {
-        interviewer = await createSingleInterviewPromise(
-          interW,
-          timeSlot,
-          currentMonth,
-        );
+        interviewer.slots = await getSavedAvailabilities(interW.interviewerId);
         interviewer.isMailConnected = true;
       } catch (error) {
         interviewer.isMailConnected = false;
@@ -160,6 +164,10 @@ export const useSyncInterviewersCalender = () => {
       return interviewer;
     });
     await Promise.all(interviewersPromises);
+    await updateAvailTimeSlots(
+      clonedInters[0].slots.map((sl) => sl.timeDuration),
+      timeSlot,
+    );
     setInitInterviewers(clonedInters);
   };
 
@@ -182,6 +190,7 @@ export const useSyncInterviewersCalender = () => {
       }
     }
     await Promise.all(interviewersPromises);
+
     setInterviewers(newInterviewers);
     setCheckedInterSlots(initialiseCheckedInts(newInterviewers));
   };
@@ -225,6 +234,35 @@ export const useSyncInterviewersCalender = () => {
       timeSlot,
     );
     return interviewer;
+  };
+
+  const updateAvailTimeSlots = async (
+    allTimeSlots: number[],
+    currTimeSlot: number,
+  ) => {
+    allTimeSlots = allTimeSlots.filter((t) => t !== currTimeSlot);
+    allTimeSlots.push(currTimeSlot);
+    supabaseWrap(
+      await supabase
+        .from('interview_panel')
+        .update({
+          duration_available: {
+            activeDuration: currTimeSlot,
+            availabletimeSlots: allTimeSlots,
+          },
+        })
+        .eq('id', panelId),
+    );
+  };
+
+  const getSavedAvailabilities = async (interId: string) => {
+    const [rec] = supabaseWrap(
+      await supabase
+        .from('interview_availabilties')
+        .select('slot_availability')
+        .eq('user_id', interId),
+    );
+    return rec.slot_availability;
   };
 
   return { handleSyncMonthifNeeded, handleSync, initCalenderAvails };

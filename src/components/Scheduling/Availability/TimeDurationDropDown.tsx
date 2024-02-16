@@ -21,6 +21,7 @@ const TimeDurationDropDown = () => {
       const timeSlotReq = Number(e.target.value);
       const currMonth = new Date().toISOString();
       await handleSync(timeSlotReq, currMonth);
+
       setTimeSlot(timeSlotReq);
     } catch (error) {
       toast.error(API_FAIL_MSG);
