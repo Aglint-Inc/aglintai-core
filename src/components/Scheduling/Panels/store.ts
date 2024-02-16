@@ -40,4 +40,10 @@ export const setEditPanel = (editPanel: PanelType) =>
 
 export type PanelType = InterviewPanelType & {
   relations: InterviewPanelRelationType[];
+  duration_available: TimeSlotsData;
 };
+
+interface TimeSlotsData {
+  activeDuration: number;
+  availabletimeSlots: number[];
+}
