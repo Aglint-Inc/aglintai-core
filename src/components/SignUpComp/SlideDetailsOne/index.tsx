@@ -19,10 +19,6 @@ interface Details {
   website: string;
 }
 
-interface Error {
-  website: ErrorField;
-}
-
 interface ErrorField {
   error: boolean;
   msg: string;
@@ -67,12 +63,6 @@ export function FetchCompanyDetails() {
   const { recruiter, setRecruiter, userDetails } = useAuthDetails();
   const [details, setDetails] = useState<Details | null>(null);
 
-  const [error, setError] = useState<Error>({
-    website: {
-      error: false,
-      msg: '',
-    },
-  });
   const [loading, setLoading] = useState(false);
 
   async function getRecruiter() {
@@ -112,47 +102,6 @@ export function FetchCompanyDetails() {
       });
     }
   }, [recruiter]);
-
-  const formValidation = async (): Promise<boolean> => {
-    let isValid = true;
-    if (!details?.website) {
-      isValid = false;
-      error.website = {
-        error: true,
-        msg: 'Website is required field',
-      };
-      setError({
-        ...error,
-      });
-    } else {
-      await axios
-        .post('/api/dns/lookup', {
-          url: details?.website,
-        })
-        .then((res) => {
-          if (res.status == 200 && res.data) {
-            error.website = {
-              error: false,
-              msg: '',
-            };
-            setError({
-              ...error,
-            });
-          } else {
-            isValid = false;
-            error.website = {
-              error: true,
-              msg: 'Website is not valid url',
-            };
-            setError({
-              ...error,
-            });
-          }
-        });
-    }
-
-    return isValid;
-  };
 
   async function saveRecruiterDetails() {
     try {
@@ -277,8 +226,6 @@ export function FetchCompanyDetails() {
             value={details?.website}
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={true}
-            error={error.website.error}
-            helperText={error.website.error ? error.website.msg : ''}
             inputProps={{
               autoCapitalize: 'true',
               style: {
