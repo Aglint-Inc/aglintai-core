@@ -20,6 +20,7 @@ export type InterviewerType = {
   interviewerName: string;
   interviewerId: string;
   profileImg: string;
+  isMailConnected: boolean;
   email: string;
   slots: InterviewerAvailabliity[];
 };

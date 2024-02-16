@@ -3,11 +3,11 @@
 /* eslint-disable security/detect-object-injection */
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Autocomplete, Dialog, Stack } from '@mui/material';
+import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   ButtonPrimaryRegular,
@@ -258,6 +258,7 @@ const ProfileDashboard = () => {
   const handleCloseEmail = () => {
     setEmail(initialEmail);
   };
+  const [isError, setError] = useState(false);
   return (
     <Stack>
       <UserProfile
@@ -265,7 +266,28 @@ const ProfileDashboard = () => {
           <>
             {currTab === 'User Detail' && (
               <UserDetails
-                slotUserImage={<ProfileImage />}
+                isWarningVisible={isError}
+                slotWarning={
+                  <Typography variant='caption' color='error'>
+                    The file you uploaded exceeds the maximum allowed size.
+                    Please ensure that the file size is less than 5 MB
+                  </Typography>
+                }
+                slotUserImage={
+                  <ImageUpload
+                    image={recruiterUser.profile_image}
+                    size={80}
+                    table='recruiter-user'
+                    handleUpdateProfile={handleUpdateProfile}
+                    error={(e) => {
+                      if (e) {
+                        setError(true);
+                      } else {
+                        setError(false);
+                      }
+                    }}
+                  />
+                }
                 slotUserForm={
                   <>
                     <ProfileForms
@@ -462,17 +484,6 @@ const ProfileDashboard = () => {
         }
       />
     </Stack>
-  );
-};
-const ProfileImage = () => {
-  const { recruiterUser, handleUpdateProfile } = useAuthDetails();
-  return (
-    <ImageUpload
-      image={recruiterUser.profile_image}
-      size={80}
-      table='recruiter-user'
-      handleUpdateProfile={handleUpdateProfile}
-    />
   );
 };
 

@@ -12,4 +12,7 @@ declare function TeamListItem(props: {
   userEmail?: React.ReactNode;
   slotProfileImage?: Types.Devlink.Slot;
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
+  isDeleteDisable?: Types.Visibility.VisibilityConditions;
+  onClickCancelInvite?: Types.Devlink.RuntimeProps;
+  isCancelInviteVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

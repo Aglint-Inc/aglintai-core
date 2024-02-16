@@ -7,4 +7,6 @@ declare function BasicInfo(props: {
   onClickChangeLogo?: Types.Devlink.RuntimeProps;
   textLogoUpdate?: React.ReactNode;
   slotBasicForm?: Types.Devlink.Slot;
+  slotWarning?: Types.Devlink.Slot;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

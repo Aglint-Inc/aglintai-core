@@ -45,6 +45,9 @@ function TableHeader() {
       direction={'row'}
       alignItems={'center'}
       spacing={'5px'}
+      position={'sticky'}
+      top={0}
+      zIndex={2}
     >
       {headerObject.map((ele, i) => {
         const { heading, icon } = ele;

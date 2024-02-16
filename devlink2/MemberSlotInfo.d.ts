@@ -4,7 +4,7 @@ import * as Types from "./types";
 declare function MemberSlotInfo(props: {
   as?: React.ElementType;
   isCalenderNotConnected?: Types.Visibility.VisibilityConditions;
-  onClickConnectCalender?: Types.Devlink.RuntimeProps;
+  onClickAskToConnectCalender?: Types.Devlink.RuntimeProps;
   onClickViewSlots?: Types.Devlink.RuntimeProps;
   textRequestedSlotNumber?: React.ReactNode;
   textConfirmedSlotnumber?: React.ReactNode;

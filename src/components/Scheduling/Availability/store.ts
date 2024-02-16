@@ -121,12 +121,18 @@ export const useSyncInterviewersCalender = () => {
   const interviewers = useAvailableStore((state) => state.interviewers);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
 
-  const handleSync = async (timeSlot: number, monthToSync: string) => {
+  const handleSync = async (reqTimeSlot: number, monthToSync: string) => {
     const clonedIntervs = cloneDeep(interviewers);
-    const promises = clonedIntervs.map(
-      async (int) =>
-        await createSingleInterviewPromise(int, timeSlot, monthToSync),
-    );
+    const promises = clonedIntervs.map(async (int) => {
+      if (int.isMailConnected) {
+        return await createSingleInterviewPromise(
+          int,
+          reqTimeSlot,
+          monthToSync,
+        );
+      }
+      return int;
+    });
     const newIntrs = await Promise.all(promises);
     setCheckedInterSlots(initialiseCheckedInts(newIntrs));
     setInterviewers(newIntrs);
@@ -138,10 +144,21 @@ export const useSyncInterviewersCalender = () => {
   ) => {
     const currentMonth = new Date().toISOString();
     const clonedInters = cloneDeep(intervs);
-    let interviewersPromises = clonedInters.map(
-      async (interW) =>
-        await createSingleInterviewPromise(interW, timeSlot, currentMonth),
-    );
+    let interviewersPromises = clonedInters.map(async (interW) => {
+      let interviewer: InterviewerType = interW;
+      try {
+        interviewer = await createSingleInterviewPromise(
+          interW,
+          timeSlot,
+          currentMonth,
+        );
+        interviewer.isMailConnected = true;
+      } catch (error) {
+        interviewer.isMailConnected = false;
+        interviewer.slots = [];
+      }
+      return interviewer;
+    });
     await Promise.all(interviewersPromises);
     setInitInterviewers(clonedInters);
   };
@@ -150,6 +167,7 @@ export const useSyncInterviewersCalender = () => {
     let newInterviewers = cloneDeep(interviewers);
     let interviewersPromises = [];
     for (let int of newInterviewers) {
+      if (!int.isMailConnected) continue;
       for (let slotAvail of int.slots) {
         if (slotAvail.timeDuration !== timeSlot) continue;
         const isMonthSlotsExits = Object.keys(slotAvail.availability).some(

@@ -142,7 +142,6 @@ const SlideTwoSignUp = () => {
             email: details.email,
             recruiter_type: flow,
             recruiter_active: true,
-            recruiter_user_id: authdata.data.user.id,
             id: rec_id,
           });
 

@@ -1,12 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { AvatarGroup, Drawer, Popover, Stack } from '@mui/material';
-import { d } from '@tanstack/react-query-devtools/build/legacy/devtools-dKCOqp9Q';
 import dayjs from 'dayjs';
-import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CloseDeleteJob, CloseJobButton, LoaderSvg } from '@/devlink';
+import { CloseJobButton, LoaderSvg } from '@/devlink';
 import {
   Breadcrum,
   ButtonWithShadow,
@@ -18,11 +15,9 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useInterviewPanel } from '@/src/context/InterviewPanel/InterviewPanelProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { StateAvailibility } from './availability.types';
-import CalenderHeaderRow from './CalenderHeaderRow';
 import PanelRow from './PanelRow';
 import SideDrawer from './RequestConfirmSideDrawer';
 import {
@@ -35,12 +30,7 @@ import {
   useSyncInterviewersCalender,
 } from './store';
 import TimeDurationDropDown from './TimeDurationDropDown';
-import {
-  countSlotStatus,
-  DAYS_LENGTH,
-  getAvailability,
-  handleDelete,
-} from './utils';
+import { DAYS_LENGTH, handleDelete } from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
   setEditPanel,
@@ -55,7 +45,6 @@ import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const Availability = () => {
   const { loading: isInterviewPanelLoading } = useInterviewPanel();
-  const [showDeletePoppup, setShowDeletePopup] = useState('');
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initCalenderAvails, handleSyncMonthifNeeded } =
     useSyncInterviewersCalender();
@@ -101,10 +90,12 @@ const Availability = () => {
                 profileImg: member?.profile_image ?? '',
                 slots: [],
                 email: member.email,
+                isMailConnected: false,
               };
             });
           await initCalenderAvails(newInterviewers, timeSlot);
         } catch (err) {
+          // console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
           setIsisInitialising(false);
@@ -336,6 +327,7 @@ export const InterviewerGroup = ({
   return (
     <AvatarGroup
       sx={{
+        justifyContent: 'flex-end',
         '& .MuiAvatar-root': {
           width: '24px',
           height: '24px',

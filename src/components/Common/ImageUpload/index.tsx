@@ -3,13 +3,11 @@ import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { LoaderSvg } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
-import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -21,6 +19,7 @@ function ImageUpload({
   handleUpdateProfile = null,
   dynamic = false,
   changeCallback,
+  error,
 }: {
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
@@ -29,23 +28,21 @@ function ImageUpload({
   handleUpdateProfile?: any;
   dynamic?: boolean;
   changeCallback?: any;
+  error?: any;
 }) {
   const router = useRouter();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
-  const [fileSizeError, setFileSizeError] = useState('');
   const [loading, setLoading] = useState<boolean>();
   const { userDetails } = useAuthDetails();
 
   const setProfilePicture = async (file) => {
     setLoading(true);
     if (file.size > 5 * 1000000) {
-      setFileSizeError(
-        'The file you uploaded exceeds the maximum allowed size. Please ensure that the file size is less than 5 MB',
-      );
+      error && error(true);
+
       setLoading(false);
       return;
     }
-    setFileSizeError('');
     const { data } = await supabase.storage
       .from(table)
       .upload(`public/${userDetails?.user?.id}`, file, {
@@ -54,6 +51,7 @@ function ImageUpload({
         upsert: true,
       });
     if (data?.path) {
+      error && error(false);
       if (setImage)
         setImage(
           `${
@@ -244,22 +242,6 @@ function ImageUpload({
             )}
           </Stack>
         </Stack>
-      </Stack>
-      <Stack alignItems={'center'}>
-        {fileSizeError && (
-          <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            mt={'5px'}
-            textAlign={'center'}
-            maxWidth={'400px'}
-          >
-            <UITypography type='small' color={palette.red[400]}>
-              {fileSizeError}
-            </UITypography>
-          </Stack>
-        )}
       </Stack>
     </>
   );

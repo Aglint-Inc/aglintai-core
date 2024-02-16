@@ -18,7 +18,16 @@ const Member = ({
 }) => {
   return (
     <TeamListItem
-      isDeleteVisible={member.role === 'admin' ? false : true}
+      isDeleteDisable={member.role !== 'admin' ? false : true}
+      isDeleteVisible={
+        member.role === 'admin' || member.join_status === 'invited'
+          ? false
+          : true
+      }
+      onClickCancelInvite={{
+        onClick: removeMember,
+      }}
+      isCancelInviteVisible={member.join_status === 'invited' ? true : false}
       key={1}
       dateText={dayjs(member.joined_at).fromNow()}
       slotProfileImage={
