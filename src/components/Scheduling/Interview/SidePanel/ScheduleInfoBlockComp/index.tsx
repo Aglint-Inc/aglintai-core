@@ -4,6 +4,7 @@ import { ScheduleInfoBlock } from '@/devlink2';
 
 import IconScheduleType from '../../ListCard/Icon';
 import { useInterviewStore } from '../../store';
+import { getScheduleType } from '../../utils';
 
 function ScheduleInfoBlockComp() {
   const selectedApplication = useInterviewStore(
@@ -33,16 +34,9 @@ function ScheduleInfoBlockComp() {
             type={selectedApplication?.schedule.schedule_type}
           />
         }
-        textMeetingType={
-          selectedApplication?.schedule.schedule_type == 'zoom'
-            ? ' Zoom'
-            : selectedApplication?.schedule.schedule_type == 'phone_call'
-              ? 'Phone Call'
-              : selectedApplication?.schedule.schedule_type ==
-                  'in_person_meeting'
-                ? 'In Person Meeting'
-                : 'Google Meet'
-        }
+        textMeetingType={getScheduleType(
+          selectedApplication?.schedule.schedule_type,
+        )}
       />
     </>
   );

@@ -403,7 +403,7 @@ const SocialsBlock: React.FC<{ application: JobApplication }> = ({
   );
 };
 
-const NewCandidateDetails: React.FC<{
+export const NewCandidateDetails: React.FC<{
   application: JobApplication;
   setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
   openResume: boolean;
@@ -454,9 +454,9 @@ const NewCandidateDetails: React.FC<{
   );
 };
 
-const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
-  application,
-}) => {
+export const AnalysisBlockSection: React.FC<{
+  application: JobApplication;
+}> = ({ application }) => {
   const score_json = application.score_json as ScoreJson;
   const [collapse, setCollapse] = useState(true);
   const reasoning = score_json?.reasoning ?? null;
@@ -668,7 +668,7 @@ const NewInterviewScoreDetails: React.FC<{
   );
 };
 
-const OverviewBlock = ({
+export const OverviewBlock = ({
   title,
   description,
   bgColor = '#f5fcfc',
@@ -1130,7 +1130,7 @@ const fetchFile = async (application: JobApplication) => {
   });
 };
 
-const NewEducationDetails = ({
+export const NewEducationDetails = ({
   schools,
   relevance,
 }: {
@@ -1187,7 +1187,7 @@ const NewEducationDetails = ({
   return <></>;
 };
 
-const NewExperienceDetails = ({
+export const NewExperienceDetails = ({
   positions,
   relevance,
 }: {
@@ -1264,7 +1264,7 @@ const timeRange = (startDate: string, endDate: string) => {
   }`;
 };
 
-const NewSkillDetails = ({
+export const NewSkillDetails = ({
   skills,
   relevance,
 }: {

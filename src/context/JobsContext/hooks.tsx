@@ -120,7 +120,7 @@ const reducer = (state: JobsData, action: Action) => {
 };
 
 const useJobActions = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   const [jobsData, dispatch] = useReducer(reducer, initialJobContext.jobsData);
   const initialLoad = recruiter?.id && jobsData.jobs ? true : false;
@@ -220,7 +220,7 @@ const useJobActions = () => {
   };
   useEffect(() => {
     (async () => {
-      await handleJobRead();
+      if (recruiterUser.role !== 'interviewer') await handleJobRead();
     })();
   }, [recruiter?.id]);
 

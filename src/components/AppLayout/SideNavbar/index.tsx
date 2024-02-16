@@ -79,11 +79,26 @@ function SideNavbar() {
       isvisible: true,
     },
   ];
+  const navListInterviewer = [
+    {
+      icon: <NavScheduler isActive={false} />,
+      text: 'Scheduler',
+      SubComponents: null,
+      route: pageRoutes.INTERVIEWER,
+      comingsoon: false,
+      isvisible: true,
+    },
+  ];
 
   const newNaveList = useMemo(() => {
-    let tempList = navList;
-    if (recruiterUser?.role.toLowerCase() !== 'admin')
+    let tempList = [];
+    if (recruiterUser?.role === 'member') {
       tempList = tempList.filter((x) => x.text !== 'Company Settings');
+    } else if (recruiterUser?.role === 'interviewer') {
+      tempList = navListInterviewer;
+    } else {
+      tempList = navList;
+    }
     return tempList;
   }, [recruiter, recruiterUser]);
   return (

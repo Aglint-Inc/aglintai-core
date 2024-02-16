@@ -348,7 +348,7 @@ function CreateDialog() {
               }
               textName={selectedApplication?.candidates.first_name}
               textSlotsBookedText={`${totalSlots} slots`}
-              textInterviewPanelName={`${slelectedPanel.name} (${selectedUsers.length} Members)`}
+              textInterviewPanelName={`${slelectedPanel?.name} (${selectedUsers.length} Members)`}
               slotMeetingIcon={<IconScheduleType type={scheduleType} />}
               slotProfileAvatar={
                 <MuiAvatar

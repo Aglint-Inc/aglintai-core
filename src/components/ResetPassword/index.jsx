@@ -88,52 +88,72 @@ export default function ResetPasswordComponent() {
     return false;
   };
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (newpassword?.current?.value == confirmpassword?.current?.value) {
-      const { error } = await supabase.auth.updateUser({
-        password: confirmpassword?.current?.value,
-        data: { is_invite: 'false' }, // for invite user flow this is needed
-      });
-      if (!error) {
-        toast.success('Password reset successfull');
-        router.push(pageRoutes.JOBS);
-      } else {
-        if (error == 'AuthApiError: Password should be at least 8 characters') {
-          setPasswordError({
-            ...passwordError,
-            password: {
-              ...passwordError.password,
-              userError: true,
-              error: false,
-            },
-          });
-          setConfirmPasswordError({
-            ...confirmPasswordError,
-            password: {
-              ...confirmPasswordError.password,
-              error: true,
-            },
-          });
+    try {
+      event.preventDefault();
+      if (newpassword?.current?.value == confirmpassword?.current?.value) {
+        const { error } = await supabase.auth.updateUser({
+          password: confirmpassword?.current?.value,
+          data: { is_invite: 'false' }, // for invite user flow this is needed
+        });
+        if (!error) {
+          toast.success('Password reset successfull');
+          const { data: user } = await supabase.auth.getSession();
+          const { data, error } = await supabase
+            .from('recruiter_user')
+            .select('*')
+            .eq('user_id', user.session.user.id);
+
+          if (error) {
+            throw error;
+          }
+          if (data[0].role === 'interviewer') {
+            router.push(pageRoutes.INTERVIEWER);
+          } else {
+            router.push(pageRoutes.JOBS);
+          }
+          router.push(pageRoutes.JOBS);
         } else {
-          toast.error(error.message);
+          if (
+            error == 'AuthApiError: Password should be at least 8 characters'
+          ) {
+            setPasswordError({
+              ...passwordError,
+              password: {
+                ...passwordError.password,
+                userError: true,
+                error: false,
+              },
+            });
+            setConfirmPasswordError({
+              ...confirmPasswordError,
+              password: {
+                ...confirmPasswordError.password,
+                error: true,
+              },
+            });
+          } else {
+            toast.error(error.message);
+          }
         }
+      } else {
+        setPasswordError({
+          ...passwordError,
+          password: {
+            ...passwordError.password,
+            error: true,
+            userError: false,
+          },
+        });
+        setConfirmPasswordError({
+          ...confirmPasswordError,
+          password: {
+            ...confirmPasswordError.password,
+            error: true,
+          },
+        });
       }
-    } else {
-      setPasswordError({
-        ...passwordError,
-        password: {
-          ...passwordError.password,
-          error: true,
-          userError: false,
-        },
-      });
-      setConfirmPasswordError({
-        ...confirmPasswordError,
-        password: {
-          ...confirmPasswordError.password,
-          error: true,
-        },
-      });
+    } catch (e) {
+      toast.error('Something went wrong. Please try again later');
     }
   };
 

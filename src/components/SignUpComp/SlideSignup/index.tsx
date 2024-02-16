@@ -26,6 +26,7 @@ const SlideTwoSignUp = () => {
     userDetails,
     recruiter,
     setRecruiterUser,
+    recruiterUser,
   } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
     first_name: '',
@@ -228,20 +229,25 @@ const SlideTwoSignUp = () => {
   useEffect(() => {
     setRouteCheker(true);
     if (router.isReady && router.asPath == `${pageRoutes.SIGNUP}`) {
-      if (userDetails?.user && recruiter?.industry) {
-        router.push(pageRoutes.JOBS);
+      if (recruiterUser.role === 'interviewer') {
+        router.push(pageRoutes.INTERVIEWER);
         return;
-      }
-      if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
-        router.push(`?step=${stepObj.type}`, undefined, {
-          shallow: true,
-        });
-        return;
-      } else if (userDetails?.user && !recruiter?.industry) {
-        router.push(`?step=${stepObj.detailsOne}`, undefined, {
-          shallow: true,
-        });
-        return;
+      } else {
+        if (userDetails?.user && recruiter?.industry) {
+          router.push(pageRoutes.JOBS);
+          return;
+        }
+        if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
+          router.push(`?step=${stepObj.type}`, undefined, {
+            shallow: true,
+          });
+          return;
+        } else if (userDetails?.user && !recruiter?.industry) {
+          router.push(`?step=${stepObj.detailsOne}`, undefined, {
+            shallow: true,
+          });
+          return;
+        }
       }
     }
 

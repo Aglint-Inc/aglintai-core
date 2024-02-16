@@ -145,10 +145,24 @@ export default function Loading() {
               .select()
               .eq('id', data[0].recruiter_id);
             if (!recruiter_error && recruiter[0].industry) {
-              router.push(
-                localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-              );
-              localStorage.removeItem('redirectURL');
+              const { data, error } = await supabase
+                .from('recruiter_user')
+                .select('*')
+                .eq('user_id', userDetails?.user?.id);
+              if (error) {
+                throw error;
+              }
+              if (data[0].role === 'interviewer') {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.INTERVIEWER,
+                );
+                localStorage.removeItem('redirectURL');
+              } else {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+                );
+                localStorage.removeItem('redirectURL');
+              }
             } else {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
             }

@@ -12,8 +12,8 @@ import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabaseClient';
-// import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 const AuthHoc = () => {
@@ -39,6 +39,10 @@ const Google = () => {
       (async () => {
         try {
           const tokens = await getTokens(code as string);
+          const email = await axios.post('/api/email-outreach/get-user-email', {
+            ...tokens,
+          });
+
           supabaseWrap(
             await supabase
               .from('recruiter_user')
@@ -47,6 +51,7 @@ const Google = () => {
                   access_token: tokens.access_token,
                   refresh_token: tokens.refresh_token,
                   expiry_date: tokens.expiry_date,
+                  email: email.data,
                 },
               })
               .eq('user_id', recruiterUser.user_id),
@@ -59,11 +64,10 @@ const Google = () => {
               expiry_date: tokens.expiry_date,
             },
           }));
-          toast.success('Calender authentication sucessfull');
         } catch (err) {
           toast.error(API_FAIL_MSG);
         } finally {
-          router.replace('/jobs');
+          router.replace(pageRoutes.INTERVIEWER);
         }
       })();
     }
@@ -94,6 +98,7 @@ const getTokens = async (code: string) => {
   const { data } = await axios.post('/api/scheduling/get-accesstoken', {
     code,
   });
+
   return data as {
     access_token: string;
     refresh_token: string;

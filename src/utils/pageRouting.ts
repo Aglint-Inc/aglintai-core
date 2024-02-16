@@ -26,4 +26,5 @@ export const pageRoutes = Object.freeze({
   SCHEDULINGPANEL: '/scheduling/panel',
   SCHEDULINGINTERVIEW: '/scheduling/interview',
   CONFIRM_SCHEDULE: '/confirm-availability',
+  INTERVIEWER: '/interviewer',
 });

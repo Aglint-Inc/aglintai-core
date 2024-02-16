@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
@@ -184,4 +185,16 @@ export function getNextOrderNumber(
   }
 
   return maxOrderNumber + 1;
+}
+
+export function getScheduleType(
+  schedule_type: InterviewScheduleTypeDB['schedule_type'],
+) {
+  return schedule_type == 'google_meet'
+    ? 'Google Meet'
+    : schedule_type == 'in_person_meeting'
+      ? 'In Person Meeting'
+      : schedule_type == 'phone_call'
+        ? 'Phone Call'
+        : 'Zoom';
 }

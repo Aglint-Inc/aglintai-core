@@ -93,8 +93,6 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.isReady, loading]);
 
-  useEffect(() => {}, [recruiter?.id]);
-
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
     const { data, error } = await supabase
       .from('recruiter_relation')

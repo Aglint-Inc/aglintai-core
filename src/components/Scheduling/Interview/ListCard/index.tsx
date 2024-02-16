@@ -8,6 +8,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from './Icon';
 import { ApplicationList, setSelectedApplication } from '../store';
+import { getScheduleType } from '../utils';
 import { useSchedulingStore } from '../../Panels/store';
 
 function ListCard({ app }: { app: ApplicationList }) {
@@ -128,15 +129,7 @@ function ListCard({ app }: { app: ApplicationList }) {
                 slotScheduleTypeIcon={
                   <IconScheduleType type={app.schedule.schedule_type} />
                 }
-                textMeetingType={
-                  app.schedule.schedule_type == 'zoom'
-                    ? ' Zoom'
-                    : app.schedule.schedule_type == 'phone_call'
-                      ? 'Phone Call'
-                      : app.schedule.schedule_type == 'in_person_meeting'
-                        ? 'In Person Meeting'
-                        : 'Google Meet'
-                }
+                textMeetingType={getScheduleType(app.schedule.schedule_type)}
               />
             ) : (
               '--'
