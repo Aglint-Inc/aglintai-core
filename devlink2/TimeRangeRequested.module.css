@@ -57,3 +57,9 @@
   border-style: none;
   background-color: #f7f9fb;
 }
+
+.time_range.isskeleton {
+  position: relative;
+  height: 26px;
+  border-style: none;
+}

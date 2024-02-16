@@ -65,3 +65,8 @@
   transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
   transform-style: preserve-3d;
 }
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}

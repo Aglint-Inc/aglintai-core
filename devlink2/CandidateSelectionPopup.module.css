@@ -60,6 +60,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }
@@ -255,6 +257,11 @@
 .embed_flex.with_bg.rotate-180 {
   transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
   transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
 }
 
 .cansel-popup-check {

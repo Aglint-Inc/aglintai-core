@@ -80,6 +80,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }
@@ -227,12 +229,20 @@
   text-transform: capitalize;
 }
 
+.text-sm.text-grey-600.grow {
+  flex: 0 0 auto;
+}
+
 .text-kale-800 {
   color: var(--kale-800);
 }
 
 .text-sm.text-blue-600 {
   display: flex;
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
 }
 
 .cj-copy-icon {

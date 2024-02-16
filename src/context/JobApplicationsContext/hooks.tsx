@@ -184,6 +184,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             return job?.phone_screen_enabled ?? false;
           case JobApplicationSections.ASSESSMENT:
             return job?.assessment ?? false;
+          case JobApplicationSections.INTERVIEW:
+            return true;
           case JobApplicationSections.QUALIFIED:
             return true;
           case JobApplicationSections.DISQUALIFIED:

@@ -167,6 +167,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -284,6 +289,17 @@
   background-color: #f8f9f9;
 
   box-shadow: 0 0 0 2px #f8f9f9;
+}
+
+.isdropping.noboder {
+  border-style: none;
+  border-width: 0px;
+  background-color: hsla(180, 7.69%, 97.45%, 0.50);
+}
+
+.is_reordering {
+  position: absolute;
+  left: -20px;
 }
 
 #w-node-e2985fb3-f246-ffe1-660e-a1bd999d6cda-999d6cda {

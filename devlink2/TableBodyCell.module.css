@@ -42,10 +42,6 @@
   line-height: 16px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .is_selected_cell {
   position: absolute;
   left: 0%;
@@ -140,10 +136,6 @@
   position: relative;
   height: 26px;
   border-style: none;
-}
-
-@media screen and (min-width: 1280px) {
-
 }
 
 .text_md_line {

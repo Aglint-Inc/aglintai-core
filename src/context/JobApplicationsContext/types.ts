@@ -18,6 +18,7 @@ export enum JobApplicationSections {
   NEW = 'new',
   SCREENING = 'screening',
   ASSESSMENT = 'assessment',
+  INTERVIEW = 'interview',
   QUALIFIED = 'qualified',
   DISQUALIFIED = 'disqualified',
 }

@@ -201,6 +201,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .loading_div {
   position: absolute;
   left: 0%;
@@ -293,6 +298,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }

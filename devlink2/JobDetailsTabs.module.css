@@ -346,6 +346,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }
@@ -472,6 +474,11 @@
 
 .cv-tab-candidate-count.purple-400 {
   background-color: hsla(281.25, 71.29%, 60.39%, 1.00);
+}
+
+.cv-tab-candidate-count.grey {
+  background-color: #e9ebed;
+  color: #2f3941;
 }
 
 .cv-tab-link-selected {

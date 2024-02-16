@@ -48,7 +48,10 @@ export function AssessmentQuestionDetailLoader({
         className={_utils.cx(_styles, "slot_question_detail")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "mcq")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "question_block")}
+          tag="div"
+        >
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "text_md_bold_line", "_30")}

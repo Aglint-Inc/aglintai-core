@@ -18,15 +18,14 @@
 
 .question_type {
   display: flex;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding: 10px 20px;
   justify-content: space-between;
   border-bottom: 1px solid #e9ebed;
+  background-color: #f8f9f9;
 }
 
 .slot_question_type_dropdown {
   width: 100%;
-  height: 50px;
 }
 
 .slot_question_type_dropdown.isflex {
@@ -76,7 +75,7 @@
   padding: 20px;
 }
 
-.mcq {
+.question_block {
   display: flex;
   flex-direction: column;
   grid-column-gap: 20px;
@@ -88,6 +87,15 @@
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.ps_row.is_left_fles {
+  align-items: flex-start;
+}
+
+.ps_input_slot {
+  position: relative;
+  z-index: 1;
 }
 
 .ps_input_slot._3-1grid {
@@ -128,6 +136,14 @@
   border-radius: 4px;
 }
 
+.ps_input_slot.option_flex {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .sl-checkbox-block {
   display: flex;
   align-items: center;
@@ -163,6 +179,14 @@
 
 .text_md_line._90 {
   width: 90%;
+}
+
+.text_md_line._30 {
+  width: 30%;
+}
+
+.text_md_line._40 {
+  width: 40%;
 }
 
 .delete_question {

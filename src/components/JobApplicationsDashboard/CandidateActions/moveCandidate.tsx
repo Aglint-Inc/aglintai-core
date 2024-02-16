@@ -44,22 +44,30 @@ const MoveCandidate: React.FC<{
     isChecked &&
     section === JobApplicationSections.NEW &&
     activeSections.includes(JobApplicationSections.SCREENING);
-  const showInterview =
+  const showAssessment =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING) &&
     activeSections.includes(JobApplicationSections.ASSESSMENT);
-  const showQualified =
+  const showInterview =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT) &&
+    activeSections.includes(JobApplicationSections.INTERVIEW);
+  const showQualified =
+    isChecked &&
+    (section === JobApplicationSections.NEW ||
+      section === JobApplicationSections.SCREENING ||
+      section === JobApplicationSections.ASSESSMENT ||
+      section === JobApplicationSections.INTERVIEW) &&
     activeSections.includes(JobApplicationSections.QUALIFIED);
   const showDisqualified =
     isChecked &&
     (section === JobApplicationSections.NEW ||
       section === JobApplicationSections.SCREENING ||
       section === JobApplicationSections.ASSESSMENT ||
+      section === JobApplicationSections.INTERVIEW ||
       section === JobApplicationSections.QUALIFIED) &&
     activeSections.includes(JobApplicationSections.DISQUALIFIED);
 
@@ -106,6 +114,10 @@ const MoveCandidate: React.FC<{
       <SelectActionsDropdown
         isInterview={showInterview}
         onClickInterview={{
+          onClick: () => handleOpen(JobApplicationSections.INTERVIEW),
+        }}
+        isAssessment={showAssessment}
+        onClickAssessment={{
           onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
         }}
         isQualified={showQualified}

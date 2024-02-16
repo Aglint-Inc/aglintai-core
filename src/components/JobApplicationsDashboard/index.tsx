@@ -657,6 +657,12 @@ const NewJobDetailsTabs = () => {
       onClickAssessment={{
         onClick: () => handleSelectSection(JobApplicationSections.ASSESSMENT),
       }}
+      isInterviewVisible={true}
+      countInterview={count.interview}
+      isInterviewSelected={section === JobApplicationSections.INTERVIEW}
+      onClickInterview={{
+        onClick: () => handleSelectSection(JobApplicationSections.INTERVIEW),
+      }}
       isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
       countDisqualified={count.disqualified}
       onClickDisqualified={{

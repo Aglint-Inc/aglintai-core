@@ -21,6 +21,15 @@
   align-items: center;
 }
 
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -65,6 +74,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }

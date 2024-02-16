@@ -120,6 +120,14 @@
   width: 90%;
 }
 
+.text_md_line._30 {
+  width: 30%;
+}
+
+.text_md_line._40 {
+  width: 40%;
+}
+
 .card_bottom_bar {
   display: flex;
   width: 100%;

@@ -9,6 +9,14 @@
   grid-template-rows: auto;
 
   border-bottom: 1px solid #e9ebed;
+
+  transition: all 200ms ease-in-out;
+
+  cursor: pointer;
+}
+
+.allinterview_row_-candidate:hover {
+  background-color: #f8f9f9;
 }
 
 .candidate_cell {
@@ -83,6 +91,8 @@
 }
 
 .fw-semibold.text-gray-500.max_width_custom {
+  position: relative;
+  z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
 }

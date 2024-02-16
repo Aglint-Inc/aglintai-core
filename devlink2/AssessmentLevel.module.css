@@ -37,6 +37,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -68,6 +73,10 @@
 
 .text-sm.fw-semibold.text_camel {
   text-transform: capitalize;
+}
+
+.text-sm.text-grey-600.grow {
+  flex: 0 0 auto;
 }
 
 .text-kale-600 {
@@ -104,4 +113,8 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
 }

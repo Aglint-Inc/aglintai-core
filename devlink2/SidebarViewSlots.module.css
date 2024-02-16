@@ -1,8 +1,13 @@
 .panel_slidebar {
+  position: relative;
   display: flex;
   height: 100vh;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.sidebar_contents {
+  position: relative;
 }
 
 .sidebar_contents.height_100 {
@@ -10,6 +15,9 @@
 }
 
 .sidebar_top {
+  position: sticky;
+  top: 0px;
+
   display: flex;
   padding: 16px 20px;
   justify-content: space-between;
@@ -43,6 +51,11 @@
   transform-style: preserve-3d;
 }
 
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
 .sidebar_body {
   position: relative;
   z-index: 1;
@@ -73,6 +86,7 @@
 
 .icon_text_flex {
   display: flex;
+  align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }
@@ -103,6 +117,11 @@
 
   border: 1px solid #e9ebed;
   border-radius: 10px;
+}
+
+.slot_list.no_padding_border {
+  padding: 10px 0px 0px;
+  border-style: none;
 }
 
 .embed_css {

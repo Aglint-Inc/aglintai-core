@@ -10,15 +10,10 @@
 
 .question_card.is_recommended {
   position: relative;
-
   border: 1px dashed #d8dcde;
   border-radius: 10px;
-
   background-color: white;
-
   transition: all 300ms ease;
-
-  cursor: grab;
 }
 
 @media screen and (min-width: 1440px) {
@@ -220,6 +215,14 @@
 
 .text_md_line._90 {
   width: 90%;
+}
+
+.text_md_line._30 {
+  width: 30%;
+}
+
+.text_md_line._40 {
+  width: 40%;
 }
 
 #w-node-_8cfbc6de-2353-aeaa-91db-587359335355-59335355 {
