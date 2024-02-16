@@ -106,7 +106,7 @@ export function FetchCompanyDetails() {
   async function saveRecruiterDetails() {
     try {
       setLoading(true);
-      if (recruiter?.id) {
+      if ((await formValidation()) && recruiter?.id) {
         const url = details.website.replace(/^https?:\/\//i, '');
         let companyDetails = (await fetchCompanyDetail(url)) as null | any;
         const company_size =

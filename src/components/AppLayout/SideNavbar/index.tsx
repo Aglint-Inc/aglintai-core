@@ -12,16 +12,27 @@ import {
   NavScheduler,
   NavTickets,
 } from '@/devlink';
+import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SideNavbar() {
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
   let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
+  let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
+  let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const navList = [
+    {
+      icon: <AssistantLogo />,
+      text: 'Agent',
+      SubComponents: null,
+      route: pageRoutes.AGENT,
+      comingsoon: false,
+      isvisible: isAgentEnabled || recruiter.email === 'dheeraj@aglinthq.com',
+    },
     {
       icon: <NavJobs isActive={false} />,
       text: 'Jobs',
@@ -69,7 +80,8 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.ASSESSMENT,
       comingsoon: false,
-      isvisible: true,
+      isvisible:
+        isAssessmentEnabled || recruiterUser.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavCompanySetting isActive={false} />,
