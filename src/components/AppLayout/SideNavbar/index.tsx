@@ -54,14 +54,7 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: isAssistantEnabled,
     },
-    {
-      icon: <NavCompanySetting isActive={false} />,
-      text: 'Company Settings',
-      SubComponents: null,
-      route: pageRoutes.COMPANY,
-      comingsoon: false,
-      isvisible: true,
-    },
+
     {
       icon: <NavScheduler isActive={false} />,
       text: 'Scheduler',
@@ -75,6 +68,14 @@ function SideNavbar() {
       text: 'Assessment',
       SubComponents: null,
       route: pageRoutes.ASSESSMENT,
+      comingsoon: false,
+      isvisible: true,
+    },
+    {
+      icon: <NavCompanySetting isActive={false} />,
+      text: 'Company Settings',
+      SubComponents: null,
+      route: pageRoutes.COMPANY,
       comingsoon: false,
       isvisible: true,
     },
