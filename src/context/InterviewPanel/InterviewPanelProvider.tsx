@@ -5,7 +5,7 @@ import {
   resetInterviewState,
   setApplicationList,
   setInitalLoading,
-  setPagination
+  setPagination,
 } from '@/src/components/Scheduling/Interview/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabaseClient';
@@ -41,7 +41,7 @@ const InterviewPanelProvider = ({ children }) => {
 
   const initialFetch = async () => {
     try {
-      const res = await fetchInterviewPanel(recruiter.id);
+      const res: any = await fetchInterviewPanel(recruiter.id);
       if (res) {
         setInterviewPanels(res);
       }

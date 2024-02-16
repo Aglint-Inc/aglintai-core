@@ -37,7 +37,7 @@ function CreateDialog() {
   const createPanelHandler = async () => {
     try {
       setLoading(true);
-      const res = await createPanel({
+      const res: any = await createPanel({
         name: panelName,
         recruiter_id: recruiter.id,
         selectedUsers,
