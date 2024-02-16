@@ -1,10 +1,10 @@
-import React from 'react';
+import { type FC } from 'react';
 
-import { type Assessment } from '@/src/queries/assessment/types';
+import { type Assessment } from '@/src/queries/assessment';
 
 import { Advanced, Basic, Intermediate } from '../svg/levels';
 
-const LevelIcon: React.FC<{ level: Assessment['level'] }> = ({ level }) => {
+const LevelIcon: FC<{ level: Assessment['level'] }> = ({ level }) => {
   switch (level) {
     case 'basic':
       return <Basic />;

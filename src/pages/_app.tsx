@@ -17,6 +17,7 @@ import { NotificationsContextProvider } from '../context/Notifications';
 import JobsProvider from '../context/JobsContext';
 import { SupportProvider } from '../context/SupportContext/SupportContext';
 import { PHProvider } from '../components/PostHog/postHog';
+import { QueryProvider } from '../queries';
 
 const MyApp = ({ Component, pageProps }) => {
   const getProvider = Component.getProvider ?? ((page) => page);
@@ -41,15 +42,17 @@ const MyApp = ({ Component, pageProps }) => {
               <Theme>
                 <ScreenSizeProvider>
                   <AuthProvider>
-                    <NotificationsContextProvider>
-                      <JobsProvider>
-                        <SupportProvider>
-                          <AppLayout>
-                            {getProvider(<Component {...pageProps} />)}
-                          </AppLayout>
-                        </SupportProvider>
-                      </JobsProvider>
-                    </NotificationsContextProvider>
+                    <QueryProvider>
+                      <NotificationsContextProvider>
+                        <JobsProvider>
+                          <SupportProvider>
+                            <AppLayout>
+                              {getProvider(<Component {...pageProps} />)}
+                            </AppLayout>
+                          </SupportProvider>
+                        </JobsProvider>
+                      </NotificationsContextProvider>
+                    </QueryProvider>
                   </AuthProvider>
                 </ScreenSizeProvider>
               </Theme>

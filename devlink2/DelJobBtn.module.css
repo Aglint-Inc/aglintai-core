@@ -72,6 +72,10 @@
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
@@ -181,4 +185,15 @@
 
 .fw-semibold.text_camel_case {
   text-transform: capitalize;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.sticky_2 {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
 }

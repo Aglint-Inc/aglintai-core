@@ -56,7 +56,7 @@ export function AssessmentDetailBody({
               </_Builtin.Block>
               {isQuestionTopBar ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "button_text")}
+                  className={_utils.cx(_styles, "button_text", "relative_2")}
                   tag="div"
                   {...onClickAddQuestion}
                 >
@@ -67,10 +67,14 @@ export function AssessmentDetailBody({
                   <_Builtin.Block tag="div">{"Add Question"}</_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "overlay_gradient")}
+                tag="div"
+              />
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot_question_cards")}
+            className={_utils.cx(_styles, "slot_question_cards", "is_flex")}
             tag="div"
           >
             {slotQuestionCards ?? (
@@ -106,11 +110,15 @@ export function AssessmentDetailBody({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold", "relative_2")}
             tag="div"
           >
             {"Recommended Questions"}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "overlay_gradient", "gray")}
+            tag="div"
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_question_cards")}
@@ -127,6 +135,14 @@ export function AssessmentDetailBody({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "embed_css")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_741c411d-7584-1207-bdc5-4375ba990d8c-dff8edad"
+        )}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22AssessmentDetailBody_slot_question_list__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2060px)%3B%0A%7D%0A%5Bclass*%3D%22AssessmentDetailBody_slot_recommended_questions__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2060px)%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

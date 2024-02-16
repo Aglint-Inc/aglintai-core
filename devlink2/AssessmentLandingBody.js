@@ -44,7 +44,7 @@ export function AssessmentLandingBody({
                 _styles,
                 "w-node-_02762ae1-fc6a-acba-3807-0e6f09e14fe5-f5d3a218"
               )}
-              value="%3Cstyle%3E%0A%40media%20(min-width%3A%201920px)%20%7B%0A%20%20%5Bclass%20*%3D%22AssessmentLandingBody_assessment_landing_cards__%22%5D%7B%0A%20%20%20%20%20grid-template-columns%3A%201fr%201fr%201fr%201fr%201fr%20!important%3B%0A%20%20%7D%0A%7D%0A%3C%2Fstyle%3E"
+              value="%3Cstyle%3E%0A%40media%20(min-width%3A%201920px)%20%7B%0A%20%20%5Bclass%20*%3D%22AssessmentLandingBody_assessment_landing_cards__%22%5D%7B%0A%20%20%20%20%20grid-template-columns%3A%201fr%201fr%201fr%201fr%201fr%20!important%3B%0A%20%20%7D%0A%7D%0A%40media%20(min-width%3A%201920px)%20%7B%0A%20.assessment_landing_cards%20%7B%0A%20%20%20%20%20grid-template-columns%3A%201fr%201fr%201fr%201fr%201fr%20!important%3B%0A%20%20%7D%0A%7D%0A%3C%2Fstyle%3E"
             />
           </>
         )}

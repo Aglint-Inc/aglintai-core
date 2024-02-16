@@ -1,6 +1,6 @@
-import React from 'react';
+import { type FC } from 'react';
 
-import { type Assessment } from '@/src/queries/assessment/types';
+import { type Assessment } from '@/src/queries/assessment';
 
 import {
   Cognitive,
@@ -13,7 +13,7 @@ import {
   Typing,
 } from '../svg/types';
 
-const TypeIcon: React.FC<{ type: Assessment['type'] }> = ({ type }) => {
+const TypeIcon: FC<{ type: Assessment['type'] }> = ({ type }) => {
   switch (type) {
     case 'cognitive':
       return <Cognitive />;

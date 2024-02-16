@@ -87,10 +87,6 @@
   max-width: 292px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .cl-filters-buttons {
   display: flex;
   padding: 16px 32px 24px 24px;

@@ -18,15 +18,14 @@
 
 .question_type {
   display: flex;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding: 10px 20px;
   justify-content: space-between;
   border-bottom: 1px solid #e9ebed;
+  background-color: #f8f9f9;
 }
 
 .slot_question_type_dropdown {
   width: 100%;
-  height: 50px;
 }
 
 .slot_question_type_dropdown.isflex {
@@ -75,10 +74,6 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .slot_question_detail {
@@ -131,6 +126,11 @@
 .embed_flex.with_bg.rotate-180 {
   transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
   transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
 }
 
 #w-node-_2f34ab5e-3b60-bfa9-d8a9-1d5e5a5f16c4-5a5f16c4 {

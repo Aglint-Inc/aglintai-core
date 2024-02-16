@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { AssessmentLandingTopRight } from '@/devlink2';
-import { useCreateAssessment } from '@/src/queries/assessment/dashboard';
+import { useCreateAssessment } from '@/src/queries/assessment';
 
 import CreateEditPopup, {
   type CreateEditPayload,
 } from '../Common/popup/createEditPopup';
-import { useAssessmentCreateEditModal } from '../Stores/modal';
+import useAssessmentStore from '../Stores';
 
 const initialFields: CreateEditPayload = {
   title: '',
@@ -16,12 +16,14 @@ const initialFields: CreateEditPayload = {
 };
 
 const AssessmentDashboardActions = () => {
-  const { setOpen } = useAssessmentCreateEditModal();
-  const { mutate, isPending } = useCreateAssessment();
+  const setOpenModal = useAssessmentStore((state) => state.setOpenModal);
+  const {
+    mutation: { mutate, isPending },
+  } = useCreateAssessment();
   return (
     <>
       <AssessmentLandingTopRight
-        onClickCreateAssessment={{ onClick: () => setOpen(true) }}
+        onClickCreateAssessment={{ onClick: () => setOpenModal(true) }}
       />
       <CreateEditPopup
         type='create'

@@ -132,6 +132,10 @@
   z-index: 5;
 }
 
+.relative {
+  position: relative;
+}
+
 .icon-block.contain {
   object-fit: contain;
 }
@@ -233,8 +237,4 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }

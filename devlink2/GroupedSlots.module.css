@@ -41,10 +41,6 @@
   max-width: 292px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .slots_layout {
   grid-column-gap: 10px;
   grid-row-gap: 10px;

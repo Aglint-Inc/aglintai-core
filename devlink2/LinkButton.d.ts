@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function ButtonDate(props: {
+declare function LinkButton(props: {
   as?: React.ElementType;
-  onClickDate?: Types.Devlink.RuntimeProps;
+  onClcikButton?: Types.Devlink.RuntimeProps;
+  textButton?: React.ReactNode;
 }): React.JSX.Element;

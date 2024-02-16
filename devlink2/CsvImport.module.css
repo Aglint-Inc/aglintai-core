@@ -40,10 +40,6 @@
   max-width: 292px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .csv-imp-body {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -200,6 +196,10 @@
 .icon-block._50x50.contain.relative {
   position: relative;
   z-index: 5;
+}
+
+.relative {
+  position: relative;
 }
 
 .icon-block.contain {

@@ -12,6 +12,7 @@ export function QuestionCard({
   textQuestionType = "Multiple Choice",
   textDuration = "2 minutes",
   textQuestion = "This is some text inside of a div block inside a question card with 3 line clamp. Clip the lines after three lines from breakpoint 1440 and above.",
+  isDropping = false,
 }) {
   return (
     <_Component
@@ -84,6 +85,12 @@ export function QuestionCard({
       {isSelected ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "is_selected_bg")}
+          tag="div"
+        />
+      ) : null}
+      {isDropping ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "isdropping")}
           tag="div"
         />
       ) : null}

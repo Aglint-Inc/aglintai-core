@@ -1,6 +1,6 @@
-import { Dialog, MenuItem, Select, Stack } from '@mui/material';
+import { Dialog, MenuItem, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   AssessmentPopup as AssessmentPopupDev,
@@ -8,14 +8,15 @@ import {
 } from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
-import { useCreateAssessment } from '@/src/queries/assessment/dashboard';
+import { useCreateAssessment } from '@/src/queries/assessment';
 
+import SelectionComp from '../components/selection';
 import LevelTag from '../tags/levels';
 import TypeTags from '../tags/types';
-import { useAssessmentCreateEditModal } from '../../Stores/modal';
+import useAssessmentStore from '../../Stores';
 
 export type CreateEditPayload = Parameters<
-  ReturnType<typeof useCreateAssessment>['mutate']
+  ReturnType<typeof useCreateAssessment>['mutation']['mutate']
 >[0];
 
 const CreateEditPopup: React.FC<{
@@ -26,11 +27,15 @@ const CreateEditPopup: React.FC<{
     // eslint-disable-next-line no-unused-vars
     fields: CreateEditPayload,
   ) => void;
-}> = ({ type, initialFields, mutateFn, disable }) => {
+  success?: boolean;
+}> = ({ type, initialFields, mutateFn, disable, success = false }) => {
   const popupTitle = `${capitalize(type)} Assessment`;
-  const { open, setOpen } = useAssessmentCreateEditModal();
-  const [fields, setFields] = useState<CreateEditPayload>(initialFields);
 
+  const { openModal, setOpenModal } = useAssessmentStore((state) => ({
+    openModal: state.openModal,
+    setOpenModal: state.setOpenModal,
+  }));
+  const [fields, setFields] = useState<CreateEditPayload>(initialFields);
   const handleChange: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
@@ -46,7 +51,7 @@ const CreateEditPopup: React.FC<{
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
     setTimeout(() => setFields(initialFields), 400);
   };
 
@@ -54,6 +59,10 @@ const CreateEditPopup: React.FC<{
     handleClose();
     mutateFn(fields);
   };
+
+  useEffect(() => {
+    if (success) setFields(initialFields);
+  }, [success]);
 
   const title = (
     <UITextField
@@ -91,13 +100,13 @@ const CreateEditPopup: React.FC<{
   const submit = (
     <Stack width={'100%'}>
       <AUIButton onClick={handleSubmit} disabled={disabled}>
-        {popupTitle}
+        {type === 'edit' ? 'Save changes' : popupTitle}
       </AUIButton>
     </Stack>
   );
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={openModal} onClose={handleClose}>
       <AssessmentPopupDev
         textPopupTitle={popupTitle}
         slotInputName={title}
@@ -153,28 +162,12 @@ const TypeSelector: React.FC<{
     </MenuItem>
   ));
   return (
-    <Stack width={'100%'}>
-      <Select
-        value={selectedType}
-        onChange={({ target: { value } }) =>
-          handleSelect(value as CreateEditPayload['type'])
-        }
-        sx={{
-          height: '40px',
-          '&:hover': {
-            '&& fieldset': {
-              border: '1px solid #d0cccc',
-            },
-          },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid #1F73B7 !important',
-            boxShadow: '0 0 0 2.5px #b4cce4',
-          },
-        }}
-      >
-        {cards}
-      </Select>
-    </Stack>
+    <SelectionComp
+      onChange={(e) => handleSelect(e.target.value)}
+      value={selectedType}
+    >
+      {cards}
+    </SelectionComp>
   );
 };
 

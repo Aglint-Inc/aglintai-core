@@ -67,6 +67,10 @@
   margin-left: 6px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -115,10 +119,6 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .cb-cli-bg {

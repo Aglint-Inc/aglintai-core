@@ -1,15 +1,18 @@
 import { Breadcrum, PageLayout } from '@/devlink2';
 
-import AssessmentDashboardActions from './assessmentDashboardActions';
-import AssessmentDashboardBody from './assessmentDashboardBody';
+import AssessmentDashboardActions from './actions';
+import AssessmentDashboardBody from './body';
+import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 
 const AssessmentDashboard = () => {
   return (
-    <PageLayout
-      slotTopbarLeft={<AssessmentDashboardBreadCrumbs />}
-      slotTopbarRight={<AssessmentDashboardActions />}
-      slotBody={<AssessmentDashboardBody />}
-    />
+    <AssessmentResetWrapper>
+      <PageLayout
+        slotTopbarLeft={<AssessmentDashboardBreadCrumbs />}
+        slotTopbarRight={<AssessmentDashboardActions />}
+        slotBody={<AssessmentDashboardBody />}
+      />
+    </AssessmentResetWrapper>
   );
 };
 

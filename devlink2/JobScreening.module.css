@@ -124,6 +124,10 @@
   margin-left: 6px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -280,6 +284,17 @@
 
 .fw-semibold.text_camel_case {
   text-transform: capitalize;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.sticky_2 {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
 }
 
 .text-underline {
@@ -945,10 +960,6 @@
   max-width: 292px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .cdd-content-main {
   position: relative;
 
@@ -980,4 +991,8 @@
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+}
+
+.job-page-nav-bar.bg-color-add {
+  background-color: #f8f9f9;
 }

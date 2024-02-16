@@ -52,10 +52,6 @@
   max-width: 292px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .cl-sort-option-wrapper {
   position: relative;
   overflow: hidden;
@@ -77,6 +73,10 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.text-grey-600 {
+  color: #68737d;
 }
 
 .icon-block {
@@ -192,6 +192,10 @@
 .icon-block._50x50.contain.relative {
   position: relative;
   z-index: 5;
+}
+
+.relative {
+  position: relative;
 }
 
 .icon-block.contain {

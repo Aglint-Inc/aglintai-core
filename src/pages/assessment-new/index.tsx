@@ -1,8 +1,7 @@
 import Seo from '@components/Common/Seo';
 
-import AssessmentDashboard from '@/src/components/NewAssessment';
+import AssessmentDashboard from '@/src/components/NewAssessment/AssessmentDashboard';
 import JobsProvider from '@/src/context/JobsContext';
-import { AssementQueryProvider } from '@/src/queries/assessment';
 
 const AssessmentDashboardPage = () => {
   return (
@@ -17,11 +16,7 @@ const AssessmentDashboardPage = () => {
 };
 
 AssessmentDashboardPage.getProvider = function getProvider(page) {
-  return (
-    <JobsProvider>
-      <AssementQueryProvider>{page}</AssementQueryProvider>
-    </JobsProvider>
-  );
+  return <JobsProvider>{page}</JobsProvider>;
 };
 
 export default AssessmentDashboardPage;

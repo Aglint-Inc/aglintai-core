@@ -8,4 +8,5 @@ declare function RecommendedQuestionCard(props: {
   slotQuestionTypeIcon?: Types.Devlink.Slot;
   textQuestionType?: React.ReactNode;
   textDuration?: React.ReactNode;
+  isDragged?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

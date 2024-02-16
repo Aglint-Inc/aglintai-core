@@ -14,7 +14,6 @@ import {
 
 import { LoaderSvg } from '@/devlink';
 import {
-  RecruiterDB,
   RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
@@ -24,13 +23,13 @@ import { supabase } from '@/src/utils/supabaseClient';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-import { updateRecruiterInDb } from './utils';
 
 interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
+  recruiter_id: string | null;
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   allrecruterRelation: RecruiterRelationsType[];
   setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
@@ -53,6 +52,7 @@ const defaultProvider = {
   handleUpdateEmail: undefined,
   handleUpdatePassword: undefined,
   recruiter: null,
+  recruiter_id: null,
   setRecruiter: () => {},
   allrecruterRelation: null,
   setAllrecruterRelation: () => {},
@@ -74,6 +74,7 @@ const AuthProvider = ({ children }) => {
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
+  const recruiter_id = recruiter?.id ?? null;
   const [allrecruterRelation, setAllrecruterRelation] =
     useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
@@ -244,6 +245,7 @@ const AuthProvider = ({ children }) => {
         userCountry,
         setUserDetails,
         recruiter,
+        recruiter_id,
         handleUpdateProfile,
         handleUpdateEmail,
         setRecruiter,

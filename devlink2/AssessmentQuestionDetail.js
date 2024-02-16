@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { McqQuestion } from "./McqQuestion";
+import { ShortAnswerQuestion } from "./ShortAnswerQuestion";
 import * as _utils from "./utils";
 import _styles from "./AssessmentQuestionDetail.module.css";
 
@@ -45,7 +46,10 @@ export function AssessmentQuestionDetail({
         tag="div"
       >
         {slotQuestionFields ?? (
-          <McqQuestion onClcikAddOption={onClcikAddOption} />
+          <>
+            <McqQuestion />
+            <ShortAnswerQuestion />
+          </>
         )}
       </_Builtin.Block>
       <_Builtin.Block

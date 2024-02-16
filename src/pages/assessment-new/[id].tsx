@@ -2,7 +2,6 @@ import Seo from '@components/Common/Seo';
 
 import AssessmentComponent from '@/src/components/NewAssessment/AssessmentPage';
 import JobsProvider from '@/src/context/JobsContext';
-import { AssementQueryProvider } from '@/src/queries/assessment';
 
 const AssessmentComponentPage = () => {
   return (
@@ -17,11 +16,7 @@ const AssessmentComponentPage = () => {
 };
 
 AssessmentComponentPage.getProvider = function getProvider(page) {
-  return (
-    <JobsProvider>
-      <AssementQueryProvider>{page}</AssementQueryProvider>
-    </JobsProvider>
-  );
+  return <JobsProvider>{page}</JobsProvider>;
 };
 
 export default AssessmentComponentPage;

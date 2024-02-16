@@ -6,14 +6,14 @@ import {
   AssessmentDuration,
   AssessmentLevel as AssementLevelDev,
 } from '@/devlink2';
-import { type useAssessmentDashboard } from '@/src/queries/assessment/dashboard';
-import { type AssessmentCreate as TAssessmentCreate } from '@/src/queries/assessment/types';
+import { type AssessmentCreate as TAssessmentCreate } from '@/src/queries/assessment';
+import { type useAllAssessments } from '@/src/queries/assessment';
 
 import LevelIcon from '../Common/icons/levels';
 import TypeIcon from '../Common/icons/types';
 import StatusTag from '../Common/tags/status';
 
-type Assesment = ReturnType<typeof useAssessmentDashboard>['data'][number];
+type Assesment = ReturnType<typeof useAllAssessments>['data'][number];
 
 const AssessmentCard: React.FC<{
   id: string;

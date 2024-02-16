@@ -1,18 +1,23 @@
 import { useRouter } from 'next/router';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
-import { useAssessment } from '@/src/queries/assessment/pages';
 
-import AssessmentPageActions from './assessmentPageActions';
-import AssessmentPageBody from './assessmentPageBody';
+import AssessmentPageActions from './actions';
+import AssessmentPageBody from './body';
+import { AssessmentPageContextProvider, useAssessment } from './context';
+import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 
 const AssessmentComponent = () => {
   return (
-    <PageLayout
-      slotTopbarLeft={<AssessmentComponentBreadCrumbs />}
-      slotTopbarRight={<AssessmentPageActions />}
-      slotBody={<AssessmentPageBody />}
-    />
+    <AssessmentResetWrapper>
+      <AssessmentPageContextProvider>
+        <PageLayout
+          slotTopbarLeft={<AssessmentComponentBreadCrumbs />}
+          slotTopbarRight={<AssessmentPageActions />}
+          slotBody={<AssessmentPageBody />}
+        />
+      </AssessmentPageContextProvider>
+    </AssessmentResetWrapper>
   );
 };
 

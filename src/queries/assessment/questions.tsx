@@ -1,0 +1,246 @@
+/* eslint-disable security/detect-object-injection */
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import useAssessmentStore from '@/src/components/NewAssessment/Stores';
+import { type Database } from '@/src/types/schema';
+import { supabase } from '@/src/utils/supabaseClient';
+import toast from '@/src/utils/toast';
+
+import { type Assessment } from '.';
+import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
+import { RecommendationQuestion } from './recommendations';
+
+const TABLE = 'assessment_question' as const;
+type AssessmentQuestionTable = Database['public']['Tables'][typeof TABLE];
+
+type AssessmentQuestionDb = AssessmentQuestionTable['Row'];
+type AssessmentQuestionDbInsert = AssessmentQuestionTable['Insert'];
+type AssessmentQuestionDbUpdate = AssessmentQuestionTable['Update'];
+type CustomTypes = {
+  description: {
+    show: boolean;
+    value: string;
+  };
+};
+export type CustomQuestionType = (
+  | {
+      type: 'mcq';
+      question: {
+        label: string;
+        options: string[];
+      };
+      answer: {
+        options: boolean[];
+      };
+    }
+  | {
+      type: 'qna';
+      question: {
+        label: string;
+      };
+      answer: {
+        expected_answer: string;
+      };
+    }
+) &
+  CustomTypes;
+
+export type AssessmentQuestion = AssessmentQuestionDb & CustomQuestionType;
+export type AssessmentQuestionInsert = AssessmentQuestionDbInsert &
+  Partial<CustomQuestionType>;
+export type AssessmentQuestionUpdate = AssessmentQuestionDbUpdate &
+  Partial<CustomQuestionType>;
+
+export const useAssessmentQuestions = () => {
+  const { assessment_id } = useAssessmentId();
+  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const response = useQuery({
+    queryKey,
+    queryFn: () => readAssessmentQuestionsDbAction(assessment_id),
+    staleTime: Infinity,
+  });
+  return { ...response };
+};
+
+export const useAssessmentQuestionCreate = () => {
+  const { assessment_id } = useAssessmentId();
+  const setCurrentQuestion = useAssessmentStore(
+    (state) => state.setCurrentQuestion,
+  );
+  const queryClient = useQueryClient();
+  const question_id = generateUUID();
+  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const { queryKey: recQueryKey } = assessmentQueryKeys.recommendations({
+    assessment_id,
+  });
+  const mutation = useMutation({
+    mutationFn: (recommededQuestion: RecommendationQuestion) =>
+      createAssessmentQuestionDbAction({
+        ...recommededQuestion,
+        id: question_id,
+        parent_question_id: recommededQuestion.id,
+        assessment_id,
+      }),
+    onMutate: async (recommededQuestion) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousRecommedations =
+        queryClient.getQueryData<RecommendationQuestion[]>(recQueryKey);
+      queryClient.setQueryData<RecommendationQuestion[]>(
+        recQueryKey,
+        (prev) => {
+          const newRecommedations = prev.filter(
+            (question) => question.id !== recommededQuestion.id,
+          );
+          return newRecommedations;
+        },
+      );
+      const previousQuestions =
+        queryClient.getQueryData<AssessmentQuestion[]>(queryKey);
+      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
+        // eslint-disable-next-line no-unused-vars
+        const { id, created_at, ...rest } = recommededQuestion;
+        const newQuestions = [
+          ...prev,
+          {
+            ...rest,
+            id: question_id,
+            parent_question_id: recommededQuestion.id,
+          },
+        ] as AssessmentQuestion[];
+        return newQuestions;
+      });
+      setTimeout(() => setCurrentQuestion(previousQuestions.length), 0);
+      return { previousRecommedations, previousQuestions };
+    },
+    onError: (err, variables, context) => {
+      toast.error('Unable to add question');
+      queryClient.setQueryData<AssessmentQuestion[]>(
+        queryKey,
+        context.previousQuestions,
+      );
+      queryClient.setQueryData<RecommendationQuestion[]>(
+        recQueryKey,
+        context.previousRecommedations,
+      );
+    },
+    onSuccess: (question) => {
+      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
+        const newQuestions = prev.reduce((acc, curr) => {
+          if (curr.id === question.id) acc.push(question);
+          else acc.push(curr);
+          return acc;
+        }, [] as AssessmentQuestion[]);
+        return newQuestions;
+      });
+    },
+  });
+  return { mutation };
+};
+
+export const useAssessmentQuestionDelete = () => {
+  const { assessment_id } = useAssessmentId();
+  const resetCurrentQuestion = useAssessmentStore(
+    (state) => state.resetCurrentQuestion,
+  );
+  const queryClient = useQueryClient();
+  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const mutation = useMutation({
+    mutationFn: (question_id: string) =>
+      deleteAssessmentQuestionsDbAction(question_id),
+    onMutate: async (question_id) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousQuestions =
+        queryClient.getQueryData<AssessmentQuestion[]>(queryKey);
+      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
+        const newQuestions = prev.filter(
+          (question) => question.id !== question_id,
+        );
+        return newQuestions;
+      });
+      resetCurrentQuestion();
+      return { previousQuestions };
+    },
+    onError: (err, variables, context) => {
+      toast.warning('Unable to delete question');
+      queryClient.setQueryData<AssessmentQuestion[]>(
+        queryKey,
+        context.previousQuestions,
+      );
+    },
+  });
+  return { mutation };
+};
+
+export const useAssessmentQuestionUpdate = () => {
+  const { assessment_id } = useAssessmentId();
+  const queryClient = useQueryClient();
+  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const handleUpdateQuestion = (
+    currentQuestionIndex: number,
+    newQuestion: AssessmentQuestion,
+  ) => {
+    queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
+      const newQuestions = prev.reduce((acc, curr, i) => {
+        if (currentQuestionIndex === i) acc.push({ ...newQuestion });
+        else acc.push(curr);
+        return acc;
+      }, [] as AssessmentQuestion[]);
+      return newQuestions;
+    });
+  };
+  const mutation = useMutation({
+    mutationFn: ({
+      question_id,
+      question,
+    }: {
+      question_id: AssessmentQuestion['id'];
+      question: AssessmentQuestion;
+    }) => updateAssessmentQuestionsDbAction(question_id, question),
+  });
+  return { handleUpdateQuestion, mutation };
+};
+
+const createAssessmentQuestionDbAction = async (
+  assessment: AssessmentQuestionInsert,
+) => {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .insert({ ...assessment })
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0] as unknown as AssessmentQuestion;
+};
+
+const readAssessmentQuestionsDbAction = async (
+  assessment_id: Assessment['id'],
+) => {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select()
+    .eq('assessment_id', assessment_id)
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as unknown as AssessmentQuestion[];
+};
+
+// eslint-disable-next-line no-unused-vars
+const updateAssessmentQuestionsDbAction = async (
+  question_id: AssessmentQuestion['id'],
+  question: AssessmentQuestionUpdate,
+) => {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .update({ ...question })
+    .eq('id', question_id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0] as unknown as AssessmentQuestion;
+};
+
+const deleteAssessmentQuestionsDbAction = async (
+  question_id: AssessmentQuestion['id'],
+) => {
+  const { error } = await supabase.from(TABLE).delete().eq('id', question_id);
+  if (error) throw new Error(error.message);
+  return;
+};

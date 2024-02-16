@@ -7,13 +7,13 @@ import {
   AssessmentLandingBody,
 } from '@/devlink2';
 import {
-  useAssessmentDashboard,
-  useCreateAssessmentQueue,
-} from '@/src/queries/assessment/dashboard';
+  useAllAssessments,
+  useCreateAssessment,
+} from '@/src/queries/assessment';
 
-import AssessmentCard from './assessmentCard';
+import AssessmentCard from './card';
 import OptimisticWrapper from '../Common/wrapper/loadingWapper';
-import { useAssessmentCreateEditModal } from '../Stores/modal';
+import useAssessmentStore from '../Stores';
 
 const AssessmentDashboardBody = () => {
   return <AssessmentLandingBody slotAssessmentCards={<AssessmentGroups />} />;
@@ -22,9 +22,9 @@ const AssessmentDashboardBody = () => {
 export default AssessmentDashboardBody;
 
 const AssessmentGroups = () => {
-  const { status, data } = useAssessmentDashboard();
-  const queue = useCreateAssessmentQueue();
-  if (queue.length !== 0) return <AssessmentCards />;
+  const { status, data } = useAllAssessments();
+  const { mutationQueue } = useCreateAssessment();
+  if (mutationQueue.length !== 0) return <AssessmentCards />;
   if (status === 'pending') return <LoadingCards />;
   if (status === 'error') return <AssessmentError />;
   if (data.length === 0) return <AssessmentEmpty />;
@@ -32,14 +32,14 @@ const AssessmentGroups = () => {
 };
 
 const AssessmentError = () => {
-  const { refetch } = useAssessmentDashboard();
+  const { refetch } = useAllAssessments();
   return <AssessmentErrorDev onClickRetry={{ onClick: () => refetch() }} />;
 };
 
 const AssessmentEmpty = () => {
-  const { setOpen } = useAssessmentCreateEditModal();
+  const setOpenModal = useAssessmentStore((state) => state.setOpenModal);
   return (
-    <AssessmentEmptyDev onClickCreate={{ onClick: () => setOpen(true) }} />
+    <AssessmentEmptyDev onClickCreate={{ onClick: () => setOpenModal(true) }} />
   );
 };
 
@@ -58,7 +58,7 @@ const AssessmentCards = () => {
 };
 
 const OldAssessmentCards = () => {
-  const { data } = useAssessmentDashboard();
+  const { data } = useAllAssessments();
   const cards = data.map((assessment) => (
     <AssessmentCard
       key={assessment.id}
@@ -70,8 +70,8 @@ const OldAssessmentCards = () => {
 };
 
 const FreshAssessmentCards = () => {
-  const queue = useCreateAssessmentQueue();
-  const cards = queue.map((queuedAssessment, i) => (
+  const { mutationQueue } = useCreateAssessment();
+  const cards = mutationQueue.map((queuedAssessment, i) => (
     <OptimisticWrapper key={i}>
       <AssessmentCard id={`${i}`} assessment={queuedAssessment} />
     </OptimisticWrapper>

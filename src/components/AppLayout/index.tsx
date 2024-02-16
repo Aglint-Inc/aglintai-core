@@ -1,5 +1,6 @@
 //import ResizeWindowContext from '@context/resizeWindow/context';
 import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { pageRoutes } from '@utils/pageRouting';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
@@ -23,6 +24,7 @@ export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
   const { recruiter, recruiterUser, userDetails } = useAuthDetails();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
@@ -31,6 +33,11 @@ export default function AppLayout({ children }) {
   const logo = recruiter?.logo;
   const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
   const profileImage = recruiterUser?.profile_image;
+
+  const handleSignOut = () => {
+    queryClient.removeQueries();
+    handleLogout();
+  };
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
@@ -135,7 +142,7 @@ export default function AppLayout({ children }) {
               }}
               onClickLogout={{
                 onClick: () => {
-                  handleLogout();
+                  handleSignOut();
                 },
               }}
               slotProfile={
@@ -276,7 +283,7 @@ export default function AppLayout({ children }) {
                 }}
                 onclickLogout={{
                   onClick: () => {
-                    handleLogout();
+                    handleSignOut();
                   },
                 }}
                 profileName={profileName}

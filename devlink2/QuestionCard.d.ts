@@ -10,4 +10,5 @@ declare function QuestionCard(props: {
   textQuestionType?: React.ReactNode;
   textDuration?: React.ReactNode;
   textQuestion?: React.ReactNode;
+  isDropping?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

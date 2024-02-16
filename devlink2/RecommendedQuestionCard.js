@@ -10,6 +10,7 @@ export function RecommendedQuestionCard({
   slotQuestionTypeIcon,
   textQuestionType = "Multiple Choice",
   textDuration = "2 minutes",
+  isDragged = false,
 }) {
   return (
     <_Component
@@ -76,8 +77,11 @@ export function RecommendedQuestionCard({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}
-        value="%3Cstyle%3E%0A.four_line_clamp%7B%0Aoverflow%3A%20hidden%3B%0A%20%20display%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%204%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%0A%20%20line-height%3A%201.3%20!important%3B%0A%20%20max-height%3A%20calc(1%20*%204)%3B%0A%7D%0A.three_line_clamp%7B%0Aoverflow%3A%20hidden%3B%0A%20%20display%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%203%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%0A%20%20line-height%3A%201.5%20!important%3B%0A%20%20max-height%3A%20calc(1%20*%203)%3B%0A%7D%0A.is_recommended%3Aactive%20%7B%0A%20%20cursor%3A%20grabbing%20%3B%0A%7D%0A%5Bclass*%3D%22RecommendedQuestionCard_is_recommended__%22%5D%3Aactive%20%7B%0A%20%20cursor%3A%20grabbing%20%3B%0A%7D%0A.prevent-select%20%7B%0A%20%20-webkit-user-select%3A%20none%3B%20%2F*%20Safari%20*%2F%0A%20%20-ms-user-select%3A%20none%3B%20%2F*%20IE%2010%20and%20IE%2011%20*%2F%0A%20%20user-select%3A%20none%3B%20%2F*%20Standard%20syntax%20*%2F%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A.four_line_clamp%7B%0Aoverflow%3A%20hidden%3B%0A%20%20display%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%204%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%0A%20%20line-height%3A%201.3%20!important%3B%0A%20%20max-height%3A%20calc(1%20*%204)%3B%0A%7D%0A.three_line_clamp%7B%0Aoverflow%3A%20hidden%3B%0A%20%20display%3A%20-webkit-box%3B%0A%20%20-webkit-line-clamp%3A%203%3B%0A%20%20-webkit-box-orient%3A%20vertical%3B%0A%20%20line-height%3A%201.5%20!important%3B%0A%20%20max-height%3A%20calc(1%20*%203)%3B%0A%7D%0A%0A.prevent-select%20%7B%0A%20%20-webkit-user-select%3A%20none%3B%20%2F*%20Safari%20*%2F%0A%20%20-ms-user-select%3A%20none%3B%20%2F*%20IE%2010%20and%20IE%2011%20*%2F%0A%20%20user-select%3A%20none%3B%20%2F*%20Standard%20syntax%20*%2F%0A%7D%0A%3C%2Fstyle%3E"
       />
+      {isDragged ? (
+        <_Builtin.Block className={_utils.cx(_styles, "isdragged")} tag="div" />
+      ) : null}
     </_Component>
   );
 }

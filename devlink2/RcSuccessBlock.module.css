@@ -117,6 +117,10 @@
   margin-left: 2px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -127,6 +131,10 @@
 
 .text-gray-400 {
   color: var(--gray-400);
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .text-yellow-800 {
@@ -211,6 +219,17 @@
 
 .fw-semibold.text_camel_case {
   text-transform: capitalize;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.sticky_2 {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
 }
 
 .margin-top-14 {

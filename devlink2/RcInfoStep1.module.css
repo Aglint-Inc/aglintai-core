@@ -65,6 +65,10 @@
   margin-left: 2px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -75,6 +79,10 @@
 
 .text-gray-400 {
   color: var(--gray-400);
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 @media screen and (max-width: 767px) {
@@ -97,10 +105,6 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
-}
-
-@media screen and (min-width: 1440px) {
-
 }
 
 .sl-company-input-wrapper {
@@ -208,6 +212,17 @@
 
 .fw-semibold.text_camel_case {
   text-transform: capitalize;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.sticky_2 {
+  position: sticky;
+  top: 0px;
+  z-index: 2;
 }
 
 .div-block-386 {
