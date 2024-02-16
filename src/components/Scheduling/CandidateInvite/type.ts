@@ -6,6 +6,7 @@ export type ApiResponse = InterviewScheduleTypeDB & {
     recruiter: {
       name: string;
       logo: string;
+      id: string;
     };
   };
   applications: {
