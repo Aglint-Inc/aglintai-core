@@ -152,10 +152,23 @@ export const useSyncInterviewersCalender = () => {
     timeSlot: number,
   ) => {
     const clonedInters = cloneDeep(intervs);
+    let currentMonth = new Date();
     let interviewersPromises = clonedInters.map(async (interW) => {
       let interviewer: InterviewerType = interW;
+      let savedAvailabilities = await getSavedAvailabilities(
+        interW.interviewerId,
+      );
+
       try {
-        interviewer.slots = await getSavedAvailabilities(interW.interviewerId);
+        if (!savedAvailabilities) {
+          interviewer = await createSingleInterviewPromise(
+            interW,
+            timeSlot,
+            currentMonth.toISOString(),
+          );
+        } else {
+          interviewer.slots = savedAvailabilities;
+        }
         interviewer.isMailConnected = true;
       } catch (error) {
         interviewer.isMailConnected = false;
