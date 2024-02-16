@@ -63,14 +63,13 @@ const InterviewerComp = () => {
         );
       });
 
-      const { data: usersData, error: usersError } = await supabase
-        .from('recruiter_user')
-        .select('user_id, first_name, email, profile_image')
-        .in('user_id', user_ids);
+      const res = await axios.post('/api/scheduling/fetchdbusers', {
+        user_ids,
+      });
 
-      if (usersError) throw usersError;
-
-      setMembers(usersData);
+      if (res.status == 200) {
+        setMembers(res.data);
+      }
 
       if (error) throw error;
       setSchedules(data as unknown as ScheduleType[]);

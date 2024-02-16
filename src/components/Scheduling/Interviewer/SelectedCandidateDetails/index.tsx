@@ -62,17 +62,18 @@ function SelectedCandidateDetails() {
       slotCandidateDetails={<CandidateDetailsJob />}
       slotPanelList={selectedSchedule.schedule.panel_users.map(
         (user: { user_id: string; must: string }) => {
-          const member = members.filter(
+          const member = members.find(
             (member) => member.user_id === user.user_id,
-          )[0];
+          );
+
           return (
             <InterviewPanelMember
               key={user.user_id}
-              textMemberName={getFullName(member.first_name, '')}
+              textMemberName={getFullName(member?.first_name, '')}
               slotMemberAvatar={
                 <MuiAvatar
-                  level={getFullName(member.first_name, '')}
-                  src={member.profile_image}
+                  level={getFullName(member?.first_name, '')}
+                  src={member?.profile_image}
                   variant={'circular'}
                   width={'100%'}
                   height={'100%'}

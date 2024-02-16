@@ -10,7 +10,7 @@ import {
   InterviewConfirmed,
   LoadedSlotPill,
   LoadedSlots,
-  OpenedInvitationLink
+  OpenedInvitationLink,
 } from '@/devlink';
 import toast from '@/src/utils/toast';
 
