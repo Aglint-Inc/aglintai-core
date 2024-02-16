@@ -54,6 +54,7 @@ export const getRecruiterAuthTokens = async (userId: string) => {
   }
   const tokenInfo = {
     expiry_date: schedule_auth.expiry_date,
+    email: schedule_auth.email,
     access_token: schedule_auth.access_token,
     refresh_token: schedule_auth.refresh_token,
   };

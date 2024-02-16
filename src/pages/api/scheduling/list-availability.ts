@@ -24,6 +24,7 @@ const supabaseAdmin = createClient<Database>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+//get availability of particular time slot for an interviewer
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { recruiterId, currentMonth, timeDuration } = req.body as BodyParams;
 

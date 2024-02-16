@@ -33,6 +33,7 @@ function CandidateInvite() {
 
   const initialFetch = async () => {
     try {
+      // schedule.users[0].user_id
       const res = await axios.post('/api/scheduling/invite', {
         id: router.query.schedule_id,
       });
@@ -107,13 +108,15 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
+              ? 'In Person Meeting'
+              : schedule?.schedule_type == 'phone_call'
+              ? 'Phone Call'
+              : 'Google Meet'
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
-          textTime={`${dayjs(selectedSlot?.startTime).format('hh:mm A')} - ${dayjs(selectedSlot?.endTime).format('hh:mm A')}`}
+          textTime={`${dayjs(selectedSlot?.startTime).format(
+            'hh:mm A',
+          )} - ${dayjs(selectedSlot?.endTime).format('hh:mm A')}`}
           textTitle={schedule?.schedule_name}
         />
       </Dialog>
@@ -133,10 +136,10 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
+              ? 'In Person Meeting'
+              : schedule?.schedule_type == 'phone_call'
+              ? 'Phone Call'
+              : 'Google Meet'
           }
           textDesc={`Hi ${schedule?.applications?.candidates?.first_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
           textDuration={schedule?.duration / 60 + ' minutes'}
@@ -172,7 +175,11 @@ function CandidateInvite() {
                                     },
                                   }}
                                   key={slot.startTime}
-                                  textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                                  textTime={`${dayjs(slot.startTime).format(
+                                    'hh:mm',
+                                  )} - ${dayjs(slot.endTime).format(
+                                    'hh:mm A',
+                                  )}`}
                                   slotImage={
                                     <AvatarGroup
                                       sx={{
@@ -247,13 +254,15 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
+              ? 'In Person Meeting'
+              : schedule?.schedule_type == 'phone_call'
+              ? 'Phone Call'
+              : 'Google Meet'
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
-          textTime={`${dayjs(schedule?.schedule_time?.startTime).format('hh:mm A')} - ${dayjs(schedule?.schedule_time?.endTime).format('hh:mm A')}`}
+          textTime={`${dayjs(schedule?.schedule_time?.startTime).format(
+            'hh:mm A',
+          )} - ${dayjs(schedule?.schedule_time?.endTime).format('hh:mm A')}`}
           slotCompanyLogo={
             <Avatar
               src={schedule?.interview_panel?.recruiter?.logo}
