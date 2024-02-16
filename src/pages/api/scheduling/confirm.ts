@@ -105,7 +105,7 @@ const mailThankYouHandler = async ({
       .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
         fromEmail: `messenger@aglinthq.com`,
         fromName: 'Aglint',
-        email: mail ? mail : 'chinmai@aglinthq.com',
+        email: mail ? mail : 'admin@aglinthq.com',
         subject: `Confirmation: Interview Scheduled at ${company_name}`,
         text: `<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
           <div style="background-color: #ffffff; max-width: 600px; margin: auto; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">

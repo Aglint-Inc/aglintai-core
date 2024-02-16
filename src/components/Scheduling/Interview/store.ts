@@ -41,6 +41,7 @@ export interface InterviewSlice {
     scheduleType: number;
     status: number;
   };
+  duration: number;
 }
 
 const initialState: InterviewSlice = {
@@ -72,6 +73,7 @@ const initialState: InterviewSlice = {
     scheduleType: 0,
     status: 0,
   },
+  duration: 30,
 };
 
 export const useInterviewStore = create<InterviewSlice>()(() => ({
@@ -101,6 +103,9 @@ export const setFilter = (filter: InterviewSlice['filter']) =>
   useInterviewStore.setState((state) => ({
     filter: { ...state.filter, ...filter },
   }));
+
+export const setDuration = (duration: number) =>
+  useInterviewStore.setState({ duration });
 
 export const setFilterVisible = (
   filterVisible: Partial<InterviewSlice['filterVisible']>,

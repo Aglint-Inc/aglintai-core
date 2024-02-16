@@ -45,7 +45,7 @@ function CreateDialog() {
   const applicationList = useInterviewStore((state) => state.applicationList);
   const selectedUsers = useInterviewStore((state) => state.selectedUsers);
   const slelectedPanel = useInterviewStore((state) => state.selectedPanel);
-
+  const duration = useInterviewStore((state) => state.duration);
   const [scheduleType, setScheduleType] =
     useState<InterviewScheduleTypeDB['schedule_type']>('google_meet');
 
@@ -80,7 +80,9 @@ function CreateDialog() {
         return {
           user_id: user.user_id,
           availibility_json: user?.slot_availability
-            ? user?.slot_availability[0]
+            ? user?.slot_availability.find(
+                (s: any) => s.timeDuration === duration,
+              )
             : null,
         };
       });
@@ -93,12 +95,14 @@ function CreateDialog() {
       }));
 
       setFilteredSlots(intersectionArray);
-    } catch (e) {
-      //
-    } finally {
+
       setTimeout(() => {
         setStep(3);
       }, 2000);
+    } catch (e) {
+      toast.error('Unable to find slots for the selected panel members');
+    } finally {
+      //
     }
   };
 
@@ -112,7 +116,7 @@ function CreateDialog() {
           schedule_type: scheduleType,
           panel_id: slelectedPanel.id,
           status: 'pending',
-          duration: 1800,
+          duration: duration,
           panel_users: selectedUsers,
           selected_slots: filteredSlots as unknown as Json[],
         })
