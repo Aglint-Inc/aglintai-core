@@ -73,7 +73,7 @@ const InterviewerComp = () => {
       setMembers(usersData);
 
       if (error) throw error;
-      setSchedules(data as ScheduleType[]);
+      setSchedules(data as unknown as ScheduleType[]);
     } catch (error) {
       toast.error(API_FAIL_MSG);
     } finally {

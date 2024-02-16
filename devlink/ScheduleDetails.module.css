@@ -13,8 +13,13 @@
   padding-bottom: 16px;
 }
 
+.div-block-920.pl-16 {
+  padding-left: 16px;
+}
+
 .slot-cd-details {
   overflow: auto;
+  border-top: 1px solid #e9ebed;
 }
 
 .interview-details-wrap {
@@ -388,6 +393,10 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.div-block-925.hide {
+  display: none;
 }
 
 .icons {
@@ -791,5 +800,9 @@
 }
 
 .div-block-929 {
+  display: flex;
   padding-top: 10px;
+  flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }

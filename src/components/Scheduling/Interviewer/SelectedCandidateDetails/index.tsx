@@ -4,6 +4,7 @@ import { ScheduleDetails } from '@/devlink';
 import { InterviewPanelMember } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
+import toast from '@/src/utils/toast';
 
 import CandidateDetailsJob from './CandidateDetailsJob';
 import { useInterviewerStore } from '../store';
@@ -32,9 +33,32 @@ function SelectedCandidateDetails() {
       slotPlatformLogo={
         <IconScheduleType type={selectedSchedule.schedule.schedule_type} />
       }
-      textPlatformName={getScheduleType(selectedSchedule.schedule.schedule_type)}
+      isMeetingVisible={
+        (selectedSchedule.schedule.meeting_json as any)?.hangoutLink
+      }
+      onClickCopyMeetingLink={{
+        onClick: () => {
+          navigator.clipboard.writeText(
+            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink,
+          );
+          toast.success('Link copied to clipboard');
+        },
+      }}
+      textMeetingLink={
+        (selectedSchedule.schedule.meeting_json as any)?.hangoutLink
+      }
+      onClickJoinGoogleMeet={{
+        onClick: () => {
+          window.open(
+            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink,
+          );
+        },
+      }}
+      textPlatformName={getScheduleType(
+        selectedSchedule.schedule.schedule_type,
+      )}
       textPanelName={selectedSchedule.panel.name}
-      textDuration={selectedSchedule.schedule.duration / 60 + ' min'}
+      textDuration={selectedSchedule.schedule.duration}
       slotCandidateDetails={<CandidateDetailsJob />}
       slotPanelList={selectedSchedule.schedule.panel_users.map(
         (user: { user_id: string; must: string }) => {

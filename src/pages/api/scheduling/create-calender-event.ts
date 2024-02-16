@@ -54,10 +54,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const [rec] = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_user')
-          .select('email')
+          .select('schedule_auth')
           .eq('user_id', int_id),
       );
-      return rec.email;
+      return rec.schedule_auth.email;
     });
     const interviewers_email = await Promise.all(interviewers_promises);
     const calendar_event: CalenderEvent = {

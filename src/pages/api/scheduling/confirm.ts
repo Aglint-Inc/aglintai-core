@@ -11,22 +11,67 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+type BodyParams = {
+  id: string;
+  selectedSlot: {
+    startTime: string;
+    endTime: string;
+  };
+  company_logo: string;
+  company_name: string;
+  schedule_name: string;
+  interviewers_id: string[];
+  candidate_email: string;
+  organizer_id: String;
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const {
+      // eslint-disable-next-line no-unused-vars
+      candidate_email,
+      company_logo,
+      company_name,
+      id,
+      schedule_name,
+      selectedSlot,
+      interviewers_id,
+      organizer_id,
+    } = req.body as BodyParams;
+
+    const resp = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/create-calender-event`,
+      {
+        start_time: selectedSlot.startTime,
+        end_time: selectedSlot.endTime,
+        interviewers_id: interviewers_id.filter(
+          (int_id) => int_id !== organizer_id,
+        ),
+        organizer_id: organizer_id,
+        schedule_name: schedule_name,
+        candidate_email: 'admin@aglinthq.com',
+      },
+    );
+
+    if (resp.status !== 200) {
+      return res.status(400).send('Error in scheduling');
+    }
+
     const { data, error } = await supabase
       .from('interview_schedule')
       .update({
         schedule_time: req.body.selectedSlot,
         status: 'confirmed',
+        meeting_json: resp.data,
       })
-      .eq('id', req.body.id)
+      .eq('id', id)
       .select();
 
     await mailThankYouHandler({
-      company_logo: req.body.company_logo,
-      company_name: req.body.company_name,
-      schedule_name: req.body?.schedule_name,
-      timings: `${dayjs(req.body.selectedSlot?.startTime).format('hh:mm A')} - ${dayjs(req.body.selectedSlot?.endTime).format('hh:mm A')}`,
+      company_logo: company_logo,
+      company_name: company_name,
+      schedule_name: schedule_name,
+      timings: `${dayjs(selectedSlot.startTime).format('hh:mm A')} - ${dayjs(selectedSlot.endTime).format('hh:mm A')}`,
     });
 
     if (error) {
@@ -35,7 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).send(data);
     }
   } catch (error) {
-    console.log('error', error.message);
+    // console.log('error', error);
     res.status(400).send(error.message);
   }
 };

@@ -152,6 +152,8 @@ function CreateDialog() {
       onClose={() => {
         setIsCreateScheduleOpen(false);
         setSelectedPanel(null);
+        setFilteredSlots([]);
+        setStep(1);
       }}
     >
       <ScheduleInterview
@@ -159,6 +161,7 @@ function CreateDialog() {
           onClick: () => {
             setIsCreateScheduleOpen(false);
             setSelectedPanel(null);
+            setFilteredSlots([]);
             setStep(1);
           },
         }}
@@ -276,7 +279,7 @@ function CreateDialog() {
                   ? filteredSlots.map((f, ind) => {
                       return (
                         <LoadedSlots
-                          key={dayjs(f.date).format('DD dddd')}
+                          key={f.date}
                           slotLoadedSlotPill={f.slots.map((slot) => {
                             return (
                               <LoadedSlotPill
@@ -327,7 +330,7 @@ function CreateDialog() {
                               />
                             );
                           })}
-                          textDay={dayjs(f.date).format('MMM D dddd')}
+                          textDay={dayjs(f.date).format('MMM D dddd YY')}
                         />
                       );
                     })

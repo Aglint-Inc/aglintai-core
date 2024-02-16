@@ -135,6 +135,4 @@ export type ApplicationList = {
       })
     | null;
   public_jobs: { id: string; job_title: string };
-  current_page: number;
-  total_candidates: number;
 };

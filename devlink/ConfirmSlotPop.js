@@ -14,6 +14,7 @@ export function ConfirmSlotPop({
   slotPlatformLogo,
   textPlatformName = "Google Meet",
   onClickConfirm = {},
+  slotConfirmButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "confirm-slot-pop")} tag="div">
@@ -87,18 +88,7 @@ export function ConfirmSlotPop({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-902")}
-        tag="div"
-        {...onClickConfirm}
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
-          tag="div"
-        >
-          {"Confirm"}
-        </_Builtin.Block>
-      </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotConfirmButton}</_Builtin.Block>
     </_Component>
   );
 }

@@ -30,7 +30,9 @@ import {
   ApplicationList,
   setApplicationList,
   setFetching,
+  setIsCreateScheduleOpen,
   setPagination,
+  setSelectedApplication,
   useInterviewStore,
 } from './store';
 import { getPaginationDB } from './utils';
@@ -128,6 +130,18 @@ function InterviewComp() {
       setFetching(false);
     }
   };
+
+  useEffect(() => {
+    if (router.isReady && router.query.application_id) {
+      const application = applicationList.find(
+        (app) => app.applications.id === router.query.application_id,
+      );
+      if (router.query.schedule && !application?.schedule) {
+        setIsCreateScheduleOpen(true);
+      }
+      setSelectedApplication(application);
+    }
+  }, [router.query]);
 
   const getPagination = async () => {
     try {

@@ -12,4 +12,5 @@ declare function ConfirmSlotPop(props: {
   slotPlatformLogo?: Types.Devlink.Slot;
   textPlatformName?: React.ReactNode;
   onClickConfirm?: Types.Devlink.RuntimeProps;
+  slotConfirmButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

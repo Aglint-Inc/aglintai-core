@@ -18,4 +18,7 @@ declare function ScheduleInterviewFill(props: {
   isPanelMembersVisible?: Types.Visibility.VisibilityConditions;
   slotInterviewpanelPills?: Types.Devlink.Slot;
   textSelectedCount?: React.ReactNode;
+  isPersonMeetingVisible?: Types.Visibility.VisibilityConditions;
+  isZoomVisible?: Types.Visibility.VisibilityConditions;
+  isPhoneCallVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -38,7 +38,7 @@ export function findIntersection(
           const status = slot.status;
 
           // Only consider slots with status "available"
-          if (status === 'available') {
+          if (status === 'confirmed') {
             // Initialize user_ids array for this time slot if it doesn't exist
             if (!intersection[date]) {
               intersection[date] = [];

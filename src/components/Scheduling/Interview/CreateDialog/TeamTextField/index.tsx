@@ -26,7 +26,7 @@ function TeamAutoComplete() {
     return () => {
       setPanelId(null);
     };
-  }, []);
+  }, [selectedPanel]);
 
   return (
     <Stack position={'relative'}>
@@ -71,7 +71,11 @@ function TeamAutoComplete() {
                 }}
               >
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                  <Typography variant='subtitle2' className='one-line-clamp'>
+                  <Typography
+                    variant='subtitle2'
+                    className='one-line-clamp'
+                    width={'220px'}
+                  >
                     {option.name}
                   </Typography>
                   <Typography variant='body2' className='one-line-clamp'>
