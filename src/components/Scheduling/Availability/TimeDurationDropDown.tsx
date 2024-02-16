@@ -14,9 +14,13 @@ import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const TimeDurationDropDown = () => {
   const timeSlot = useAvailableStore((state) => state.timeSlot);
+  const isCalenderLoading = useAvailableStore(
+    (state) => state.isCalenderLoading,
+  );
   const { handleSync } = useSyncInterviewersCalender();
   const handleOnchange = async (e: SelectChangeEvent<number>) => {
     try {
+      if (isCalenderLoading) return;
       setIsisCalenderLoading(true);
       const timeSlotReq = Number(e.target.value);
       const currMonth = new Date().toISOString();
