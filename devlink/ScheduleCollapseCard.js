@@ -70,15 +70,15 @@ export function ScheduleCollapseCard({
                 className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
-                {"Feb"}
+                {textMonth}
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-40")}
                 tag="div"
               >
-                {"27"}
+                {textDate}
               </_Builtin.Block>
-              <_Builtin.Block tag="div">{"FRIDAY"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{textDay}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-910", "upcoming")}

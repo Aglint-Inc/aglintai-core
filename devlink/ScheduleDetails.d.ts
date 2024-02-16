@@ -19,4 +19,5 @@ declare function ScheduleDetails(props: {
   onClickCopyMeetingLink?: Types.Devlink.RuntimeProps;
   textPanelName?: React.ReactNode;
   slotPanelList?: Types.Devlink.Slot;
+  isMeetingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

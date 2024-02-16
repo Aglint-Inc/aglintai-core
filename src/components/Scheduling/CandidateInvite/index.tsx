@@ -5,11 +5,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import {
+  ButtonSuccessLarge,
   ConfirmSlotPop,
   InterviewConfirmed,
   LoadedSlotPill,
   LoadedSlots,
-  OpenedInvitationLink,
+  OpenedInvitationLink
 } from '@/devlink';
 import toast from '@/src/utils/toast';
 
@@ -18,6 +19,7 @@ import IconScheduleType from '../Interview/ListCard/Icon';
 import { TimeSlot } from '../Interview/utils';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
+import LoaderGrey from '../../Common/LoaderGrey';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 function CandidateInvite() {
@@ -26,6 +28,7 @@ function CandidateInvite() {
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot>(null);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (router.isReady && router.query.schedule_id) initialFetch();
@@ -54,12 +57,16 @@ function CandidateInvite() {
 
   const handleConfirmSlot = async () => {
     try {
+      setSaving(true);
       const res = await axios.post('/api/scheduling/confirm', {
         id: router.query.schedule_id,
         selectedSlot: selectedSlot,
         company_logo: schedule?.interview_panel?.recruiter?.logo,
         company_name: schedule?.interview_panel?.recruiter?.name,
-        schedule_name: schedule?.schedule_name,
+        schedule_name: schedule.schedule_name,
+        interviewers_id: schedule.panel_users.map((user: any) => user.user_id),
+        candidate_email: schedule.applications.candidates.email,
+        organizer_id: schedule.created_by,
       });
       if (res.status === 200 && res.data) {
         setSchedule({
@@ -71,6 +78,8 @@ function CandidateInvite() {
       }
     } catch (e) {
       toast.error("Couldn't confirm slot, please try again later");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -101,6 +110,29 @@ function CandidateInvite() {
               handleConfirmSlot();
             },
           }}
+          slotConfirmButton={
+            <ButtonSuccessLarge
+              isEndIcon={saving}
+              slotEndIcon={
+                <Stack>
+                  <LoaderGrey />
+                </Stack>
+              }
+              wrapperProps={{
+                style: {
+                  width: '100%',
+                  fontSize: '16px',
+                },
+              }}
+              isDisabled={false}
+              onClickButton={{
+                onClick: () => {
+                  if (!saving) handleConfirmSlot();
+                },
+              }}
+              textLabel='Confirm'
+            />
+          }
           textDate={dayjs(selectedSlot?.endTime).format('DD')}
           textDay={dayjs(selectedSlot?.endTime).format('dddd')}
           textMonth={dayjs(selectedSlot?.endTime).format('MMM')}
@@ -108,10 +140,10 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-              ? 'In Person Meeting'
-              : schedule?.schedule_type == 'phone_call'
-              ? 'Phone Call'
-              : 'Google Meet'
+                ? 'In Person Meeting'
+                : schedule?.schedule_type == 'phone_call'
+                  ? 'Phone Call'
+                  : 'Google Meet'
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
           textTime={`${dayjs(selectedSlot?.startTime).format(
@@ -136,10 +168,10 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-              ? 'In Person Meeting'
-              : schedule?.schedule_type == 'phone_call'
-              ? 'Phone Call'
-              : 'Google Meet'
+                ? 'In Person Meeting'
+                : schedule?.schedule_type == 'phone_call'
+                  ? 'Phone Call'
+                  : 'Google Meet'
           }
           textDesc={`Hi ${schedule?.applications?.candidates?.first_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
           textDuration={schedule?.duration / 60 + ' minutes'}
@@ -254,10 +286,10 @@ function CandidateInvite() {
             schedule?.schedule_type == 'zoom'
               ? 'Zoom'
               : schedule?.schedule_type == 'in_person_meeting'
-              ? 'In Person Meeting'
-              : schedule?.schedule_type == 'phone_call'
-              ? 'Phone Call'
-              : 'Google Meet'
+                ? 'In Person Meeting'
+                : schedule?.schedule_type == 'phone_call'
+                  ? 'Phone Call'
+                  : 'Google Meet'
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
           textTime={`${dayjs(schedule?.schedule_time?.startTime).format(

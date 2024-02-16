@@ -1,5 +1,6 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -7,18 +8,21 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from './Icon';
-import { ApplicationList, setSelectedApplication } from '../store';
+import { ApplicationList } from '../store';
 import { getScheduleType } from '../utils';
 import { useSchedulingStore } from '../../Panels/store';
 
 function ListCard({ app }: { app: ApplicationList }) {
+  const router = useRouter();
   const { members } = useAuthDetails();
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
   return (
     <>
       <Stack
         onClick={() => {
-          setSelectedApplication(app);
+          router.push(`?application_id=${app.applications.id}`, undefined, {
+            shallow: true,
+          });
         }}
       >
         <AllInterviewCard
@@ -67,9 +71,7 @@ function ListCard({ app }: { app: ApplicationList }) {
                 : '#681219',
             },
           }}
-          textDuration={
-            app.schedule ? `${app.schedule.duration / 60} min` : '--'
-          }
+          textDuration={app.schedule ? `${app.schedule.duration}` : '--'}
           textInterviewPanel={
             app.schedule?.panel_id
               ? interviewPanels.filter(

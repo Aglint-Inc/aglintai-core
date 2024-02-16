@@ -220,7 +220,7 @@ const useJobActions = () => {
   };
   useEffect(() => {
     (async () => {
-      if (recruiterUser.role !== 'interviewer') await handleJobRead();
+      if (recruiterUser?.role !== 'interviewer') await handleJobRead();
     })();
   }, [recruiter?.id]);
 
