@@ -9,8 +9,9 @@ import {
   AglintChatCard,
   AssistantHelp,
   AssistantLanding,
+  AssistantTaskEmpty,
   AvailabilitySlot,
-  PageLayout,
+  PageLayout
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
@@ -39,6 +40,8 @@ function Agent() {
   const inputRef = useRef(null);
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [indexes, setIndexes] = useState([]);
+  const [schedulingCan, setSchedulingCan] = useState(false);
 
   async function createThread() {
     const { data } = await axios.get('/api/assistant/createThread');
@@ -100,6 +103,12 @@ function Agent() {
                 ...pre,
                 { ...chatMessages[Number(index) * 2 + 1], date: today },
               ]);
+              setIndexes((pre) => [...pre, Number(index)]);
+              if (index === 4) {
+                setTimeout(() => {
+                  setSchedulingCan(true);
+                }, 3000);
+              }
               setLoading(false);
               clearInterval(timeInterval);
             } else {
@@ -213,6 +222,11 @@ function Agent() {
                     inputRef={inputRef}
                     fullWidth
                     variant='outlined'
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        sendMessage();
+                      }
+                    }}
                   />
                 }
                 onClickSend={{
@@ -223,7 +237,26 @@ function Agent() {
               />
             }
             isFilterVisible={true}
-            slotTask={<AvailabilitySlot />}
+            slotTask={
+              <Stack direction={'row'} flexDirection={'column'} gap={'10px'}>
+                <>
+                  {indexes.includes(4) && (
+                    <AvailabilitySlot
+                      isUserSlotVisible={false}
+                      isMessage1Visible={false}
+                      textHeader={
+                        'Schedule interview with top 5 candidates in software engineering position.'
+                      }
+                      isWaitingResponseVisible={indexes.includes(4) && !schedulingCan}
+                    />
+                  )}
+                  {schedulingCan && (
+                    <AvailabilitySlot isWaitingResponseVisible={false} />
+                  )}
+                  {!indexes.includes(4) && <AssistantTaskEmpty />}
+                </>
+              </Stack>
+            }
           />
 
           {/* <SeparatorChat />
@@ -295,18 +328,6 @@ const chatMessages = [
   {
     sender: 'Aglint',
     message: `Perfect. I'll arrange them and send confirmation emails. Do you want to include any specific interviewers from your team?`,
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'You',
-    message: `Yes, include John and Lisa in all interviews.`,
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: `Noted.  I'll make sure John and Lisa are available and include them. Anything else you need?"`,
     date: null,
     component: null, // React component to explain how the chatbot works
   },
