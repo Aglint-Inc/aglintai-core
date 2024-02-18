@@ -10,8 +10,7 @@ import {
   AssistantHelp,
   AssistantLanding,
   AssistantTaskEmpty,
-  AvailabilitySlot,
-  PageLayout
+  PageLayout,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
@@ -41,8 +40,8 @@ function Agent() {
   const [messages, setMessages] = useState<messageType[]>([]);
   const [loading, setLoading] = useState(false);
   const [indexes, setIndexes] = useState([]);
-  const [schedulingCan, setSchedulingCan] = useState(false);
-
+  // eslint-disable-next-line no-console
+  console.log(indexes);
   async function createThread() {
     const { data } = await axios.get('/api/assistant/createThread');
     localStorage.setItem('agent_thread_id', data.id);
@@ -103,29 +102,47 @@ function Agent() {
                 ...pre,
                 { ...chatMessages[Number(index) * 2 + 1], date: today },
               ]);
-              setIndexes((pre) => [...pre, Number(index)]);
-              if (index === 4) {
+              if (index === 2) {
                 setTimeout(() => {
-                  setSchedulingCan(true);
-                }, 3000);
-              }
-              setLoading(false);
-              clearInterval(timeInterval);
-            } else {
-              if (reRunMessage.status === 'completed') {
-                clearInterval(timeInterval);
-                setLoading(false);
+                  setLoading(true);
+                });
+                setTimeout(() => {
+                  setLoading(false);
 
-                setMessages((pre) => [
-                  ...pre,
-                  {
-                    component: null,
-                    message: 'Request failed!',
-                    sender: 'Aglint',
-                    date: today,
-                  },
-                ]);
+                  setMessages((pre) => [
+                    ...pre,
+                    { ...extraMessage[0], date: today },
+                  ]);
+                }, 5000);
+              } else if (index === 4) {
+                setTimeout(() => {
+                  setLoading(true);
+                });
+                setTimeout(() => {
+                  setLoading(false);
+
+                  setMessages((pre) => [
+                    ...pre,
+                    { ...extraMessage[1], date: today },
+                  ]);
+                }, 5000);
+              } else if (index === 7) {
+                setTimeout(() => {
+                  setLoading(true);
+                });
+                setTimeout(() => {
+                  setLoading(false);
+
+                  setMessages((pre) => [
+                    ...pre,
+                    { ...extraMessage[2], date: today },
+                  ]);
+                }, 5000);
+              } else {
+                setLoading(false);
               }
+              setIndexes((pre) => [...pre, Number(index)]);
+              clearInterval(timeInterval);
             }
           }
         }, 1000);
@@ -137,11 +154,6 @@ function Agent() {
   }
 
   useEffect(() => {
-    // const questions = chatMessages
-    //   .filter((message) => message.sender === 'You')
-    //   .map((question) => question.message);
-
-    // console.log(questions);
     if (!localStorage.getItem('agent_thread_id')) createThread();
   }, []);
 
@@ -239,28 +251,10 @@ function Agent() {
             isFilterVisible={true}
             slotTask={
               <Stack direction={'row'} flexDirection={'column'} gap={'10px'}>
-                <>
-                  {indexes.includes(4) && (
-                    <AvailabilitySlot
-                      isUserSlotVisible={false}
-                      isMessage1Visible={false}
-                      textHeader={
-                        'Schedule interview with top 5 candidates in software engineering position.'
-                      }
-                      isWaitingResponseVisible={indexes.includes(4) && !schedulingCan}
-                    />
-                  )}
-                  {schedulingCan && (
-                    <AvailabilitySlot isWaitingResponseVisible={false} />
-                  )}
-                  {!indexes.includes(4) && <AssistantTaskEmpty />}
-                </>
+                <AssistantTaskEmpty />
               </Stack>
             }
           />
-
-          {/* <SeparatorChat />
-          <AglintChatCard/> */}
         </>
       }
     />
@@ -268,7 +262,7 @@ function Agent() {
 }
 
 export default Agent;
-const chatMessages = [
+export const chatMessages2 = [
   {
     sender: 'You',
     message: 'Hello!',
@@ -340,6 +334,160 @@ const chatMessages = [
   {
     sender: 'Aglint',
     message: `You're welcome! I'll update you shortly on the schedule. Have a great day!`,
+    date: null,
+    component: null,
+  },
+];
+export const questions = [
+  'Hey, Schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
+  'Schedule in the next two weeks.',
+  'Please check with the candidate first and set it up.',
+  'Awesome, thanks. I forgot to ask, can you add Henry and Denise to {shadow} the interview.',
+  'No, optional is fine.',
+  'Yes, confirm it. Did the shadows confirm?',
+  'Did Henry and Denise confirm to {shadow} the interview',
+  'Awesome.',
+  'Yes, please reschedule',
+];
+export const chatMessages = [
+  {
+    sender: 'You',
+    message:
+      'Hey, schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: 'Sounds good, do you have a day or time-frame in mind?',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'You',
+    message: 'Schedule in the next two weeks.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      "Got it, I'll reach out to the John and get the process started. Unless you want me to check with the interviewing team first.",
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'You',
+    message: 'Please check with the candidate first and set it up.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: 'Got it.',
+    date: null,
+    component: null,
+  },
+
+  {
+    sender: 'You',
+    message:
+      'Awesome, thanks. I forgot to ask, can you add Henry and Denise to {shadow} the interview.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      'Got it, no problem. I will add add Henry and Denise to {shadow} the interview once confirmed. I will prioritize the SW Eng Panel and add them as optional. Let me know if they are required to shadow.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'You',
+    message: 'No, optional is fine.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: 'Got it.',
+    date: null,
+    component: null,
+  },
+
+  {
+    sender: 'You',
+    message: 'Yes, confirm it. Did the shadows confirm?',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: `Sorry, I did'nt understand.`,
+    component: null,
+    date: null,
+  },
+  {
+    sender: 'You',
+    message: 'Did Henry and Denise confirm to {shadow} the interview',
+    date: null,
+    component: null,
+  },
+
+  {
+    sender: 'Aglint',
+    message: 'Got it. Yes, they have confirmed.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'You',
+    message: 'Awesome.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: 'Great, sending confirmed schedules now.',
+    date: null,
+    component: null,
+  },
+
+  {
+    sender: 'You',
+    message: 'Yes, please reschedule',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: 'Got it, will do.',
+    date: null,
+    component: null,
+  },
+];
+
+// 3  5 8
+export const extraMessage = [
+  {
+    sender: 'Aglint',
+    message:
+      "Hey RC, Interviewer 1 & 3 have confirmed but it's been 48 hours and Interview 2 has not responded. I have pinged on Slack too. Shall I confirm?",
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      'Hey RC, just a quick update; for the interview with John for the Software Engineer role, I have availability for John. I am checking with the SW Eng Panel now.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      'Hey RC, John is requesting a reschedule for the Software Engineer role with the SW Eng Panel. Shall I reschedule?',
     date: null,
     component: null,
   },
