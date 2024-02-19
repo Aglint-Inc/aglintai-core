@@ -125,7 +125,6 @@ const allowedPaths = new Set([
   '/api/jobpost/indexing',
   '/api/sitemap.xml',
   // remove below 2 after testing done
-
   '/api/scheduling/fetch-panel-user-availability',
   '/api/scheduling/create-calender-event',
   '/api/scheduling/interviewer-confirm-slots',
@@ -136,6 +135,7 @@ const allowedPaths = new Set([
   '/api/scheduling/invite',
   '/api/scheduling/confirm',
   '/api/scheduling/calendar-event',
+  '/api/admin/insert',
 ]);
 
 const isAllowedPaths = (reqUrl = '') => {
