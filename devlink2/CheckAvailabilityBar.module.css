@@ -1,3 +1,11 @@
+.panel_top_input_bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .team_detail_topbar {
   position: relative;
   z-index: 1;
@@ -19,14 +27,134 @@
   grid-row-gap: 20px;
 }
 
-.team_detail_header_wrapper {
-  position: relative;
-  z-index: 1;
-
+.input_block {
   display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.button_primary {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.is_disabled {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #c2c8cc;
+  cursor: auto;
+}
+
+.button_primary.is_enabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.is_loading {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
+
+  cursor: progress;
+}
+
+.button_primary.confirm_availability {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
+}
+
+.button_primary.confirm_availability:hover {
+  background-color: #038153;
+}
+
+.selected_slotbanner {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: 0%;
+  z-index: 4;
+
+  display: flex;
+  width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  background-color: #edf7ff;
+}
+
+.close_icon {
+  cursor: pointer;
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.no_of_slots {
+  display: flex;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 }
 
 .fw-semibold {
@@ -181,188 +309,8 @@
   z-index: 2;
 }
 
-.calender_switch {
-  position: relative;
-  z-index: 3;
-
-  display: flex;
-  align-items: center;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-
-.calender_month {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.embed_flex {
-  display: flex;
-}
-
-.embed_flex.rotate_180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
-.embed_flex.with_bg {
-  position: relative;
-  z-index: 2;
-}
-
-.embed_flex.with_bg.rotate-180 {
-  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-}
-
-.embed_flex.relative_3 {
-  position: relative;
-  z-index: 3;
-}
-
-.calender_arrows {
-  display: flex;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-}
-
-.calender_arrow {
-  position: relative;
-  z-index: 1;
-
-  display: flex;
-  overflow: hidden;
-  width: 24px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-
-  border: 0.5px solid #e9ebed;
-  border-radius: 4px;
-
-  transition: all 200ms ease-in-out;
-
-  cursor: pointer;
-}
-
-.calender_arrow:hover {
-  background-color: #f8f9f9;
-}
-
-.white_banner {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 1;
-
-  background-color: hsla(0, 0.00%, 100.00%, 1.00);
-}
-
-.selected_slotbanner {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: auto;
-  bottom: 0%;
-  z-index: 4;
-
-  display: flex;
-  width: 100%;
-  padding-right: 20px;
-  padding-left: 20px;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  background-color: #edf7ff;
-}
-
-.close_icon {
-  cursor: pointer;
-}
-
-.no_of_slots {
-  display: flex;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-}
-
 .team_avatar {
   margin-right: 20px;
-}
-
-.button_primary {
-  display: flex;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border-radius: 6px;
-
-  background-color: #1f73b7;
-
-  transition: all 200ms ease-in-out;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.button_primary:hover {
-  background-color: #144a75;
-}
-
-.button_primary.is_disabled {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #e9ebed;
-  color: #c2c8cc;
-  cursor: auto;
-}
-
-.button_primary.is_enabled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.button_primary.is_loading {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 2;
-
-  padding-top: 8px;
-  padding-bottom: 8px;
-
-  background-color: #e9ebed;
-
-  color: #c2c8cc;
-
-  cursor: progress;
-}
-
-.button_primary.confirm_availability {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #228f67;
-}
-
-.button_primary.confirm_availability:hover {
-  background-color: #038153;
 }
 
 .selected_slotbanner_bg {
@@ -381,4 +329,18 @@
   grid-row-gap: 10px;
 
   background-color: #edf7ff;
+}
+
+.availability_slots {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.commonslots_panel {
+  display: flex;
+  flex-direction: column;
 }

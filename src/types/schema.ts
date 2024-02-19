@@ -2194,6 +2194,8 @@ export type Database = {
           cand: Json
           candfiles: Json
           assres: Json
+          schedule: Json
+          panel: Json
           fil_res: number
         }[]
       }

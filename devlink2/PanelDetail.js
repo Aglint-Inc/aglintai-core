@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { CheckAvailabilityBar } from "./CheckAvailabilityBar";
 import { PanelDetailTitle } from "./PanelDetailTitle";
 import { PanelDetailTable } from "./PanelDetailTable";
 import * as _utils from "./utils";
@@ -16,10 +17,8 @@ export function PanelDetail({
     >
       {slotPanelDetail ?? (
         <>
-          <PanelDetailTitle
-            textYearMonth="Januarry 2024"
-            isSlotSelected={true}
-          />
+          <CheckAvailabilityBar />
+          <PanelDetailTitle textYearMonth="Januarry 2024" />
           <PanelDetailTable />
         </>
       )}

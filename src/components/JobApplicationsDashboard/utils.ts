@@ -371,7 +371,14 @@ export const getReasonings = (reasoning: ScoreJson['reasoning']) => {
 };
 export const getCandidateDetails = (
   application: JobApplication,
-  type: 'location' | 'job_title' | 'name' | 'linkedin' | 'phone' | 'overview',
+  type:
+    | 'location'
+    | 'job_title'
+    | 'name'
+    | 'linkedin'
+    | 'phone'
+    | 'overview'
+    | 'duration',
 ) => {
   const fallback = '---';
   let value = fallback;
@@ -426,10 +433,16 @@ export const getCandidateDetails = (
             : fallback;
       }
       break;
-    case 'overview': {
-      const overview =
-        (application?.candidate_files.resume_json as any)?.overview ?? null;
-      value = overview && overview.trim() !== '' ? overview : fallback;
+    case 'overview':
+      {
+        const overview =
+          (application?.candidate_files.resume_json as any)?.overview ?? null;
+        value = overview && overview.trim() !== '' ? overview : fallback;
+      }
+      break;
+    case 'duration': {
+      const duration = application?.schedule?.duration ?? null;
+      value = duration ? `${duration}` : fallback;
     }
   }
   return {

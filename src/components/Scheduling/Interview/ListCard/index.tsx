@@ -1,7 +1,7 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { ReactNode } from 'react';
 
-import { Checkbox } from '@/devlink';
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -15,17 +15,15 @@ function ListCardInterviewSchedule({
   app,
   panel_name,
   onClickCard,
-  onClickCheckBox,
-  isCheckboxChecked = false,
+  slotCheckbox = <></>,
   isJobDasboard = false,
 }: {
   app: ApplicationList;
   panel_name: string;
   // eslint-disable-next-line no-unused-vars
   onClickCard: (app: ApplicationList) => void;
-  onClickCheckBox?: () => void;
-  isCheckboxChecked?: boolean;
   isJobDasboard?: boolean;
+  slotCheckbox?: ReactNode;
 }) {
   const { members } = useAuthDetails();
 
@@ -38,17 +36,8 @@ function ListCardInterviewSchedule({
       >
         <AllInterviewCard
           isSchedulerTable={!isJobDasboard}
-          isCheckBoxVisible={!isJobDasboard}
-          slotCheckbox={
-            <Checkbox
-              isChecked={isCheckboxChecked}
-              onClickCheck={{
-                onClick: () => {
-                  onClickCheckBox();
-                },
-              }}
-            />
-          }
+          isCheckBoxVisible={isJobDasboard}
+          slotCheckbox={slotCheckbox}
           textName={`${app.candidates.first_name} ${app.candidates.last_name}`}
           slotCandidateImage={
             <>
@@ -154,7 +143,7 @@ function ListCardInterviewSchedule({
               '--'
             )
           }
-          textRelatedJob={!isJobDasboard ? app.public_jobs.job_title : ''}
+          textRelatedJob={app.public_jobs.job_title}
         />
       </Stack>
     </>

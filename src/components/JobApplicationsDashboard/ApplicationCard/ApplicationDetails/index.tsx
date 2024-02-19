@@ -1,8 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -35,6 +36,7 @@ import {
   ResumeErrorBlock,
   ScrQuestionListItem,
   SidebarAnalysisBlock,
+  SidebarBlockNotScheduled,
   SidebarScreening,
   SummaryBlock,
 } from '@/devlink2';
@@ -355,9 +357,12 @@ const NewJobApplicationSideDrawer = ({
       onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
       slotMoveTo={<></>}
       slotOverview={
-        overview.valid && (
-          <OverviewBlock title={'Overview'} description={overview.value} />
-        )
+        <>
+          {<InterviewStatusBlock application={application} />}
+          {overview.valid && (
+            <OverviewBlock title={'Overview'} description={overview.value} />
+          )}
+        </>
       }
       slotCandidateDetails={
         <>
@@ -666,6 +671,25 @@ const NewInterviewScoreDetails: React.FC<{
       }
     />
   );
+};
+
+const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const router = useRouter();
+  const { section } = useJobApplications();
+  if (section !== JobApplicationSections.INTERVIEW) return <></>;
+  if (!application.schedule)
+    return (
+      <SidebarBlockNotScheduled
+        onClickSchedule={{
+          onClick: () =>
+            router.push(
+              `/scheduling/interview?application_id=${application.id}&schedule=true`,
+            ),
+        }}
+      />
+    );
 };
 
 export const OverviewBlock = ({

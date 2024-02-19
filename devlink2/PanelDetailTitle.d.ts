@@ -3,7 +3,6 @@ import * as Types from "./types";
 
 declare function PanelDetailTitle(props: {
   as?: React.ElementType;
-  slotDurationInput?: Types.Devlink.Slot;
   textYearMonth?: React.ReactNode;
   onClickPrev?: Types.Devlink.RuntimeProps;
   onClickNext?: Types.Devlink.RuntimeProps;

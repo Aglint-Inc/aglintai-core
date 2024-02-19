@@ -19,12 +19,14 @@ import {
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
+  AllInterview,
   ApplicantsListEmpty,
   Breadcrum,
   CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
+  RcCheckbox,
   SelectActionBar,
   // SortArrows,
   TopApplicantsTable,
@@ -341,14 +343,29 @@ const ApplicationTable = ({
   return sectionApplications.length === 0 ? (
     emptyList
   ) : !detailedView ? (
-    <AllApplicantsTable
-      onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
-      isAllChecked={isAllChecked}
-      isInterviewVisible={views.assessment}
-      slotCandidatesList={applicantsList}
-      isDisqualifiedVisible={views.disqualified}
-      isScreeningVisible={views.screening}
-    />
+    section === JobApplicationSections.INTERVIEW ? (
+      <AllInterview
+        slotAllInterviewCard={applicantsList}
+        isSchedulerTable={false}
+        isCheckboxVisible={true}
+        slotCheckbox={
+          <RcCheckbox
+            isChecked={isAllChecked}
+            onclickCheck={{ onClick: () => handleSelectAllMin() }}
+            text={<></>}
+          />
+        }
+      />
+    ) : (
+      <AllApplicantsTable
+        onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
+        isAllChecked={isAllChecked}
+        isInterviewVisible={views.assessment}
+        slotCandidatesList={applicantsList}
+        isDisqualifiedVisible={views.disqualified}
+        isScreeningVisible={views.screening}
+      />
+    )
   ) : (
     <TopApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}

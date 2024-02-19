@@ -5,7 +5,6 @@ import _styles from "./PanelDetailTitle.module.css";
 
 export function PanelDetailTitle({
   as: _Component = _Builtin.Block,
-  slotDurationInput,
   textYearMonth = "Januarry 2024",
   onClickPrev = {},
   onClickNext = {},
@@ -22,11 +21,7 @@ export function PanelDetailTitle({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Panel Members and Available slots in"}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotDurationInput}</_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"duration"}
+          {"Panel Members and Available slots"}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

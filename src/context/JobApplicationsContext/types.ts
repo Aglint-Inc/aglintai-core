@@ -5,12 +5,14 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
+import { PanelType } from '@/src/components/Scheduling/Panels/store';
 import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { Applications } from '@/src/types/applications.types';
 import { AssessmentResults } from '@/src/types/assessment_results.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
+import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import useProviderJobApplicationActions from './hooks';
 
@@ -40,6 +42,8 @@ export type JobApplication = Applications & {
   assessment_results: Partial<AssessmentResults> & {
     id: AssessmentResults['id'];
   };
+  schedule: Partial<InterviewScheduleTypeDB>;
+  panel: Partial<PanelType>;
   emailValidity?: {
     isFetching: boolean;
     isValidEmail: boolean;
