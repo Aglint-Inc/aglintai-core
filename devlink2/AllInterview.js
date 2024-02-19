@@ -16,6 +16,8 @@ export function AllInterview({
   slotPagination,
   slotFilterButton,
   isSchedulerTable = true,
+  slotCheckbox,
+  isCheckboxVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -71,6 +73,14 @@ export function AllInterview({
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
+                {isCheckboxVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-958")}
+                    tag="div"
+                  >
+                    {slotCheckbox}
+                  </_Builtin.Block>
+                ) : null}
                 <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block

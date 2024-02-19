@@ -14,4 +14,6 @@ declare function AllInterviewCard(props: {
   textRelatedJob?: React.ReactNode;
   slotScheduleInfo?: Types.Devlink.Slot;
   isSchedulerTable?: Types.Visibility.VisibilityConditions;
+  slotCheckbox?: Types.Devlink.Slot;
+  isCheckBoxVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -12,4 +12,6 @@ declare function AllInterview(props: {
   slotPagination?: Types.Devlink.Slot;
   slotFilterButton?: Types.Devlink.Slot;
   isSchedulerTable?: Types.Visibility.VisibilityConditions;
+  slotCheckbox?: Types.Devlink.Slot;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,6 +1,7 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { Checkbox } from '@/devlink';
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,12 +15,16 @@ function ListCardInterviewSchedule({
   app,
   panel_name,
   onClickCard,
+  onClickCheckBox,
+  isCheckboxChecked = false,
   isJobDasboard = false,
 }: {
   app: ApplicationList;
   panel_name: string;
   // eslint-disable-next-line no-unused-vars
   onClickCard: (app: ApplicationList) => void;
+  onClickCheckBox?: () => void;
+  isCheckboxChecked?: boolean;
   isJobDasboard?: boolean;
 }) {
   const { members } = useAuthDetails();
@@ -32,7 +37,18 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
-          isSchedulerTable={true}
+          isSchedulerTable={isJobDasboard}
+          isCheckBoxVisible={isJobDasboard}
+          slotCheckbox={
+            <Checkbox
+              isChecked={isCheckboxChecked}
+              onClickCheck={{
+                onClick: () => {
+                  onClickCheckBox();
+                },
+              }}
+            />
+          }
           textName={`${app.candidates.first_name} ${app.candidates.last_name}`}
           slotCandidateImage={
             <>

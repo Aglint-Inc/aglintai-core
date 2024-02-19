@@ -17,6 +17,8 @@ export function AllInterviewCard({
   textRelatedJob = "Product Designer",
   slotScheduleInfo,
   isSchedulerTable = true,
+  slotCheckbox,
+  isCheckBoxVisible = false,
 }) {
   return (
     <_Component
@@ -27,6 +29,14 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
+        {isCheckBoxVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-958")}
+            tag="div"
+          >
+            {slotCheckbox}
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-834")}
           tag="div"
