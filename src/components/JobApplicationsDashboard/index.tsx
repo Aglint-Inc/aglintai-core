@@ -345,6 +345,11 @@ const ApplicationTable = ({
   ) : !detailedView ? (
     section === JobApplicationSections.INTERVIEW ? (
       <AllInterview
+        propsGrid={{
+          style: {
+            gridTemplateColumns: '25% 15% 15% 20% 25%',
+          },
+        }}
         slotAllInterviewCard={applicantsList}
         isSchedulerTable={false}
         isCheckboxVisible={true}

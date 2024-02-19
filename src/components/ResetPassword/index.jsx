@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { errorMessages } from '@utils/errorMessages';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 

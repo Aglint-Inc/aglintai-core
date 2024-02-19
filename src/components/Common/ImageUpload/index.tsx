@@ -1,7 +1,7 @@
 import { palette } from '@context/Theme/Theme';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
-import { supabase } from '@utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';

@@ -6,7 +6,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 import { getResumeMatched } from '@/src/context/JobAssistant/utils';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 // import { supabase } from '@/src/utils/supabaseClient';
 
 function CandidateCard({

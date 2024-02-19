@@ -16,4 +16,6 @@ declare function AllInterviewCard(props: {
   isSchedulerTable?: Types.Visibility.VisibilityConditions;
   slotCheckbox?: Types.Devlink.Slot;
   isCheckBoxVisible?: Types.Visibility.VisibilityConditions;
+  propsGrid?: Types.Devlink.RuntimeProps;
+  isSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

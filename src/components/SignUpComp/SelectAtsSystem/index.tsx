@@ -14,7 +14,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';

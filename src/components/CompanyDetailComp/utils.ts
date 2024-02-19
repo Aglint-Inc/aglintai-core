@@ -4,7 +4,7 @@ import { RecruiterDB } from '@/src/types/data.types';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
 import { MessageType } from '@/src/utils/prompts/types';
 import { requestJson } from '@/src/utils/prompts/utils';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 export const saveToDatabase = async (
   recruit: RecruiterDB,
@@ -24,16 +24,15 @@ const departments = {
   ],
 };
 
-export const tabs = { 
-    'basicinfo':'basic-info',
-    'additionalinfo':'additional-info',
-    'about':'about',
-    'assessment':'assessment',
-    'jobassistant':'job-assistant',
-    'email':'email',
-    'team':'team',
-}
-
+export const tabs = {
+  basicinfo: 'basic-info',
+  additionalinfo: 'additional-info',
+  about: 'about',
+  assessment: 'assessment',
+  jobassistant: 'job-assistant',
+  email: 'email',
+  team: 'team',
+};
 
 export const generateDepartments = async (industry: string) => {
   const prompt = [

@@ -9,7 +9,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { OutreachEmailDbType } from '@/src/types/data.types';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { outReachTemplates, TemplateType } from './seedTemplates';

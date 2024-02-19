@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { InterviewSlice } from './store';

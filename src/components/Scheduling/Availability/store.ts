@@ -4,7 +4,7 @@ import { cloneDeep, get, set } from 'lodash';
 import { useRouter } from 'next/router';
 import { create } from 'zustand';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import {
   AvalabilitySlotType,

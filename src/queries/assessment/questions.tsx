@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import useAssessmentStore from '@/src/components/NewAssessment/Stores';
 import { type Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { type Assessment } from '.';

@@ -17,6 +17,7 @@ function ListCardInterviewSchedule({
   onClickCard,
   slotCheckbox = <></>,
   isJobDasboard = false,
+  isSelected = false,
 }: {
   app: ApplicationList;
   panel_name: string;
@@ -24,6 +25,7 @@ function ListCardInterviewSchedule({
   onClickCard: (app: ApplicationList) => void;
   isJobDasboard?: boolean;
   slotCheckbox?: ReactNode;
+  isSelected?: boolean;
 }) {
   const { members } = useAuthDetails();
 
@@ -35,6 +37,14 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
+          isSelected={isSelected}
+          propsGrid={{
+            style: {
+              gridTemplateColumns: isJobDasboard
+                ? '25% 15% 15% 20% 25%'
+                : '20% 15% 15% 10% 20% 20%',
+            },
+          }}
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
           slotCheckbox={slotCheckbox}

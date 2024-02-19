@@ -12,7 +12,7 @@ import {
   Support_ticketType,
   // SupportGroupType,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 import { getRandomColor } from '@/src/utils/text/textUtils';
 

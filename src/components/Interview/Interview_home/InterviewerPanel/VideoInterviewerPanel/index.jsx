@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { InterviewInterviewerScreen } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 function VideoInterviewerPanel() {
   const {

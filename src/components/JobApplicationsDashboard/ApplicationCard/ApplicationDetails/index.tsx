@@ -685,7 +685,9 @@ const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
         onClickSchedule={{
           onClick: () =>
             router.push(
-              `/scheduling/interview?application_id=${application.id}&schedule=true`,
+              `/scheduling/interview?application_id=${application.id}&job_id=${application.job_id}`,
+              undefined,
+              { shallow: true },
             ),
         }}
       />

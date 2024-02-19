@@ -25,7 +25,7 @@ import { CandidateListTypeDB, SearchHistoryType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Candidate } from './AppoloSearch/types';

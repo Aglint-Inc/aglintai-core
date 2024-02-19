@@ -9,7 +9,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { SocialsType } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';

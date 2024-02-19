@@ -19,11 +19,14 @@ export function AllInterviewCard({
   isSchedulerTable = true,
   slotCheckbox,
   isCheckBoxVisible = false,
+  propsGrid = {},
+  isSelected = false,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "allinterview_row_-candidate")}
       tag="div"
+      {...propsGrid}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate_cell")}
@@ -97,6 +100,16 @@ export function AllInterviewCard({
             <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+      ) : null}
+      {isSelected ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "is_selected_bg-copy")}
+          id={_utils.cx(
+            _styles,
+            "w-node-eb43a66d-c6c0-56a1-cd6b-c24535cb6173-e75dcb06"
+          )}
+          tag="div"
+        />
       ) : null}
     </_Component>
   );

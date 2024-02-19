@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { type Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { assessmentQueryKeys, useAssessmentId } from './keys';
 import { CustomQuestionType } from './questions';

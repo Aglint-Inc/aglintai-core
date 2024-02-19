@@ -90,6 +90,7 @@ const ApplicationCard = ({
   return !detailedView ? (
     section === JobApplicationSections.INTERVIEW ? (
       <ListCardInterviewSchedule
+        isSelected={isSelected}
         app={
           {
             ...application,

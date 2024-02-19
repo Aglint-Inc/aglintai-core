@@ -1,7 +1,7 @@
 import { get, isEmpty } from 'lodash';
 
 import { JobTypeDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { FormErrorParams } from './JobForm/JobForm';
 import {

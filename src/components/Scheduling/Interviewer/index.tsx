@@ -7,7 +7,7 @@ import { MyScheduleLanding } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Dashboard from './Dashboard';

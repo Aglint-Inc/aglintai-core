@@ -14,4 +14,5 @@ declare function AllInterview(props: {
   isSchedulerTable?: Types.Visibility.VisibilityConditions;
   slotCheckbox?: Types.Devlink.Slot;
   isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  propsGrid?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

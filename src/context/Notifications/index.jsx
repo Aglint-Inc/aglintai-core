@@ -1,5 +1,5 @@
 import { dbName } from '@utils/dbname';
-import { supabase } from '@utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { useEffect } from 'react';
 import { createContext, useContext, useState } from 'react';
 

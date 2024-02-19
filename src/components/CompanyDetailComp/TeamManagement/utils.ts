@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { RecruiterUserType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,

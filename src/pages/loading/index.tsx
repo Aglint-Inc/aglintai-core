@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';

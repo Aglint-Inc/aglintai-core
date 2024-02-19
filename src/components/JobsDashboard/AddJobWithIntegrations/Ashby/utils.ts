@@ -5,7 +5,7 @@ import {
   GreenhouseType,
   RecruiterDB,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';

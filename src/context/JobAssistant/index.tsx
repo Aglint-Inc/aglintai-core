@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 import { JobAssistantChats, JobTypeDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { AssistantMessageInterface, ChatInput } from './type';
 import { reasons } from './utils';

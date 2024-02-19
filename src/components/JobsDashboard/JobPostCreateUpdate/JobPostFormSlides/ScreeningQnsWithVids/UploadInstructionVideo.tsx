@@ -9,7 +9,7 @@ import { UploadedVideo, UploadVideo } from '@/devlink';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiPopup from '@/src/components/Common/MuiPopup';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import QuestionVideoPlayer from './QuestionVideoPlayer';

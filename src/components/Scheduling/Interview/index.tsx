@@ -12,7 +12,7 @@ import {
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CreateDialog from './CreateDialog';
@@ -49,6 +49,9 @@ function InterviewComp() {
   const fetching = useInterviewStore((state) => state.fetching);
   const filterVisible = useInterviewStore((state) => state.filterVisible);
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const selectedApplication = useInterviewStore(
+    (state) => state.selectedApplication,
+  );
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -134,16 +137,18 @@ function InterviewComp() {
   };
 
   useEffect(() => {
-    if (router.isReady && router.query.application_id) {
+    if (router.isReady && router.query.application_id && !initialLoading) {
       const application = applicationList.find(
         (app) => app.applications.id === router.query.application_id,
       );
-      if (router.query.schedule && !application?.schedule) {
-        setIsCreateScheduleOpen(true);
-      }
       setSelectedApplication(application);
+      if (router.query.job_id) {
+        if (router.query.schedule && !application?.schedule) {
+          setIsCreateScheduleOpen(true);
+        }
+      }
     }
-  }, [router.query]);
+  }, [router, initialLoading]);
 
   const getPagination = async () => {
     try {
@@ -263,6 +268,10 @@ function InterviewComp() {
                       )[0]?.name;
                       return (
                         <ListCardInterviewSchedule
+                          isSelected={
+                            app.applications.id ===
+                            selectedApplication?.applications.id
+                          }
                           key={app.applications.id}
                           app={app}
                           onClickCard={onClickCard}

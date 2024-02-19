@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { JobContext } from './types';
 import { JobApplicationSections } from '../JobApplicationsContext/types';
