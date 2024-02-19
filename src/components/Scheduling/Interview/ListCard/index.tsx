@@ -1,6 +1,5 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -10,19 +9,25 @@ import { getFullName } from '@/src/utils/jsonResume';
 import IconScheduleType from './Icon';
 import { ApplicationList } from '../store';
 import { getScheduleType } from '../utils';
-import { useSchedulingStore } from '../../Panels/store';
+import { PanelType } from '../../Panels/store';
 
-function ListCard({ app }: { app: ApplicationList }) {
-  const router = useRouter();
+function ListCardInterviewSchedule({
+  app,
+  interviewPanels,
+  onClickCard,
+}: {
+  app: ApplicationList;
+  interviewPanels: PanelType[];
+  // eslint-disable-next-line no-unused-vars
+  onClickCard: (app: ApplicationList) => void;
+}) {
   const { members } = useAuthDetails();
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+
   return (
     <>
       <Stack
         onClick={() => {
-          router.push(`?application_id=${app.applications.id}`, undefined, {
-            shallow: true,
-          });
+          onClickCard(app);
         }}
       >
         <AllInterviewCard
@@ -144,4 +149,4 @@ function ListCard({ app }: { app: ApplicationList }) {
   );
 }
 
-export default ListCard;
+export default ListCardInterviewSchedule;

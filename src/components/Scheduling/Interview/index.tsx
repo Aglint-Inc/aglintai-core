@@ -24,7 +24,7 @@ import FilterJob from './Filters/FilterJob';
 import FilterScheduleType from './Filters/FilterScheduleType';
 import FilterSearchField from './Filters/FilterSearchField';
 import FilterStatus from './Filters/FilterStatus';
-import ListCard from './ListCard';
+import ListCardInterviewSchedule from './ListCard';
 import SidePanel from './SidePanel';
 import {
   ApplicationList,
@@ -36,6 +36,7 @@ import {
   useInterviewStore,
 } from './store';
 import { getPaginationDB } from './utils';
+import { useSchedulingStore } from '../Panels/store';
 
 function InterviewComp() {
   const router = useRouter();
@@ -47,6 +48,7 @@ function InterviewComp() {
   const filter = useInterviewStore((state) => state.filter);
   const fetching = useInterviewStore((state) => state.fetching);
   const filterVisible = useInterviewStore((state) => state.filterVisible);
+  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -167,6 +169,12 @@ function InterviewComp() {
     .filter(([_, order]) => order !== 0) // Filter out filters with order 0 (not visible)
     .sort((a, b) => a[1] - b[1]);
 
+  const onClickCard = (app: ApplicationList) => {
+    router.push(`?application_id=${app.applications.id}`, undefined, {
+      shallow: true,
+    });
+  };
+
   return (
     <>
       <CreateDialog />
@@ -249,7 +257,14 @@ function InterviewComp() {
                   <>
                     {applicationList.length === 0 && <AllInterviewEmpty />}
                     {applicationList.map((app) => {
-                      return <ListCard key={app.applications.id} app={app} />;
+                      return (
+                        <ListCardInterviewSchedule
+                          key={app.applications.id}
+                          app={app}
+                          interviewPanels={interviewPanels}
+                          onClickCard={onClickCard}
+                        />
+                      );
                     })}
                   </>
                 )}
