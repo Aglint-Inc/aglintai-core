@@ -37,8 +37,8 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
-          isSchedulerTable={isJobDasboard}
-          isCheckBoxVisible={isJobDasboard}
+          isSchedulerTable={!isJobDasboard}
+          isCheckBoxVisible={!isJobDasboard}
           slotCheckbox={
             <Checkbox
               isChecked={isCheckboxChecked}
