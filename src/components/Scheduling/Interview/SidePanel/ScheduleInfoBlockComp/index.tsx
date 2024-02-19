@@ -28,7 +28,9 @@ function ScheduleInfoBlockComp() {
             : '--'
         }
         isDuration={Boolean(selectedApplication?.schedule.duration)}
-        textDuration={selectedApplication?.schedule.duration || '--'}
+        textDuration={
+          selectedApplication?.schedule.duration + ' minutes' || '--'
+        }
         slotScheduleTypeIcon={
           <IconScheduleType
             type={selectedApplication?.schedule.schedule_type}

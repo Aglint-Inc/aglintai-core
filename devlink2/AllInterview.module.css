@@ -101,6 +101,12 @@
   width: 217px;
 }
 
+@media screen and (min-width: 1440px) {
+  .allinterview_header_cell.sfesrf {
+    display: none;
+  }
+}
+
 .slot_candidaterow {
   display: flex;
   width: 100%;

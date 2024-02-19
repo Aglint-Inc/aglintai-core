@@ -32,6 +32,7 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
+          isSchedulerTable={true}
           textName={`${app.candidates.first_name} ${app.candidates.last_name}`}
           slotCandidateImage={
             <>

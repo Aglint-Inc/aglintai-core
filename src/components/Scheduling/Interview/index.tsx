@@ -194,6 +194,7 @@ function InterviewComp() {
         }
         slotBody={
           <AllInterview
+            isSchedulerTable={true}
             slotPagination={
               <Stack
                 sx={{

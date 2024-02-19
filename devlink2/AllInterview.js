@@ -15,6 +15,7 @@ export function AllInterview({
   styleSidebarWidth = {},
   slotPagination,
   slotFilterButton,
+  isSchedulerTable = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -96,12 +97,14 @@ export function AllInterview({
               >
                 <_Builtin.Block tag="div">{"Interview Panel"}</_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
-              </_Builtin.Block>
+              {isSchedulerTable ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_candidaterow")}

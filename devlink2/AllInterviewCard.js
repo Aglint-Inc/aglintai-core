@@ -16,6 +16,7 @@ export function AllInterviewCard({
   textInterviewPanel = "This is some text inside of a div block.",
   textRelatedJob = "Product Designer",
   slotScheduleInfo,
+  isSchedulerTable = true,
 }) {
   return (
     <_Component
@@ -74,17 +75,19 @@ export function AllInterviewCard({
           <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
-        tag="div"
-      >
+      {isSchedulerTable ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-840")}
+          className={_utils.cx(_styles, "candidate_cell")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-840")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }
