@@ -10,7 +10,6 @@ import { improveAnswerPrompt } from '@utils/ai-prompts/improve_answer';
 import { prePrompts } from '@utils/ai-prompts/interview_prompts';
 import interviewerList from '@utils/interviewer_list';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@/src/utils/supabase/client';
 import { updateProgressStatusInDb } from '@utils/temp/authUtils';
 //import { toast } from 'react-toastify';
 import toast from '@utils/toast';
@@ -20,6 +19,8 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+
+import { supabase } from '@/src/utils/supabase/client';
 
 import { useInterviewSignUp } from './InterviewSignup';
 import { useLogActivities } from './LogActivities';

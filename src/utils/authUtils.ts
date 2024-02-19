@@ -1,5 +1,6 @@
 // @ts-ignore
 import { ProgressStatusType } from '@types/data.types';
+
 import { supabase } from '@/src/utils/supabase/client';
 
 export const getProgressStatusFromDb = async (id: string) => {

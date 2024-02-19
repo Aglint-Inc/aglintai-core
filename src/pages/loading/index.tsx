@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@/src/utils/supabase/client';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -16,6 +15,7 @@ import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 export default function Loading() {

@@ -39,9 +39,10 @@ export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 export type JobApplication = Applications & {
   candidates: Partial<Candidate> & { id: Candidate['id'] };
   candidate_files: Partial<CandidateFiles> & { id: CandidateFiles['id'] };
-  assessment_results: Partial<AssessmentResults> & {
-    id: AssessmentResults['id'];
-  };
+  // assessment_results: Partial<AssessmentResults> & {
+  //   id: AssessmentResults['id'];
+  // };
+  assessment_results: any;
   schedule: Partial<InterviewScheduleTypeDB>;
   panel: Partial<PanelType>;
   emailValidity?: {
