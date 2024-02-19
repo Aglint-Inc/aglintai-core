@@ -9,17 +9,18 @@ import { getFullName } from '@/src/utils/jsonResume';
 import IconScheduleType from './Icon';
 import { ApplicationList } from '../store';
 import { getScheduleType } from '../utils';
-import { PanelType } from '../../Panels/store';
 
 function ListCardInterviewSchedule({
   app,
-  interviewPanels,
+  panel_name,
   onClickCard,
+  isJobDasboard = false,
 }: {
   app: ApplicationList;
-  interviewPanels: PanelType[];
+  panel_name: string;
   // eslint-disable-next-line no-unused-vars
   onClickCard: (app: ApplicationList) => void;
+  isJobDasboard?: boolean;
 }) {
   const { members } = useAuthDetails();
 
@@ -77,13 +78,7 @@ function ListCardInterviewSchedule({
             },
           }}
           textDuration={app.schedule ? `${app.schedule.duration}` : '--'}
-          textInterviewPanel={
-            app.schedule?.panel_id
-              ? interviewPanels.filter(
-                  (panel) => panel.id === app.schedule?.panel_id,
-                )[0]?.name
-              : '--'
-          }
+          textInterviewPanel={panel_name || '--'}
           slotPanelImage={
             app.schedule?.panel_users ? (
               <AvatarGroup
@@ -142,7 +137,7 @@ function ListCardInterviewSchedule({
               '--'
             )
           }
-          textRelatedJob={app.public_jobs.job_title}
+          textRelatedJob={!isJobDasboard ? app.public_jobs.job_title : ''}
         />
       </Stack>
     </>

@@ -257,12 +257,15 @@ function InterviewComp() {
                   <>
                     {applicationList.length === 0 && <AllInterviewEmpty />}
                     {applicationList.map((app) => {
+                      const panel_name = interviewPanels.filter(
+                        (panel) => panel.id === app.schedule?.panel_id,
+                      )[0]?.name;
                       return (
                         <ListCardInterviewSchedule
                           key={app.applications.id}
                           app={app}
-                          interviewPanels={interviewPanels}
                           onClickCard={onClickCard}
+                          panel_name={panel_name}
                         />
                       );
                     })}
