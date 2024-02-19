@@ -30,7 +30,7 @@ import {
   useAvailableStore,
   useSyncInterviewersCalender,
 } from './store';
-import TimeDurationDropDown from './TimeDurationDropDown';
+// import TimeDurationDropDown from './TimeDurationDropDown';
 import { DAYS_LENGTH, handleDelete } from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
@@ -208,11 +208,11 @@ const Availability = () => {
                   slotPanelDetail={
                     <>
                       <PanelDetailTitle
-                        slotDurationInput={
-                          <>
-                            <TimeDurationDropDown />
-                          </>
-                        }
+                        // slotDurationInput={
+                        //   <>
+                        //     <TimeDurationDropDown />
+                        //   </>
+                        // }
                         textYearMonth={calenderLabel}
                         onClickNext={{
                           onClick: handleClickNext,

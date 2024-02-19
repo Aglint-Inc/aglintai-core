@@ -4,6 +4,10 @@ export const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+export const config = {
+  runtime: 'edge',
+};
+
 export default async function handler(req, res) {
   if (req.body.table && req.body.details) {
     const { data, error } = await supabase
