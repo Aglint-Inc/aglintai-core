@@ -683,12 +683,14 @@ const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
     return (
       <SidebarBlockNotScheduled
         onClickSchedule={{
-          onClick: () =>
+          onClick: () => {
+            localStorage.setItem('sch_job_id', application.job_id.toString());
             router.push(
-              `/scheduling/interview?application_id=${application.id}&job_id=${application.job_id}`,
+              `/scheduling/interview?application_id=${application.id}`,
               undefined,
               { shallow: true },
-            ),
+            );
+          },
         }}
       />
     );

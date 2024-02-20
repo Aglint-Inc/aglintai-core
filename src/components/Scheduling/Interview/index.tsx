@@ -142,13 +142,28 @@ function InterviewComp() {
         (app) => app.applications.id === router.query.application_id,
       );
       setSelectedApplication(application);
-      if (router.query.job_id) {
-        if (router.query.schedule && !application?.schedule) {
-          setIsCreateScheduleOpen(true);
-        }
+      viaJobHandler(application);
+    }
+  }, [router, applicationList]);
+
+  const viaJobHandler = async (application) => {
+    const job_id = localStorage.getItem('sch_job_id');
+    if (job_id) {
+      const { data: pageNumber, error } = await supabase.rpc(
+        'fetch_interview_data_page_number',
+        {
+          rec_id: recruiter.id,
+          application_id: router.query.application_id as string,
+        },
+      );
+      if (!error && pageNumber !== 1) {
+        setPagination({ page: pageNumber });
+      }
+      if (!application?.schedule) {
+        setIsCreateScheduleOpen(true);
       }
     }
-  }, [router, initialLoading]);
+  };
 
   const getPagination = async () => {
     try {
