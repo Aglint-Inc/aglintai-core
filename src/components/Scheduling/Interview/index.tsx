@@ -162,6 +162,7 @@ function InterviewComp() {
       if (!application?.schedule) {
         setIsCreateScheduleOpen(true);
       }
+      localStorage.removeItem('sch_job_id');
     }
   };
 
