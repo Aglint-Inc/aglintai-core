@@ -4,7 +4,6 @@ import tippy from 'tippy.js';
 
 import mentionList from './MentionList';
 
-
 export var setEnterProps = false;
 
 export default {

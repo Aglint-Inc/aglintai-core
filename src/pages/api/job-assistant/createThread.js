@@ -1,4 +1,3 @@
-
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
@@ -22,7 +21,7 @@ const openai = new OpenAI({
 //         {
 //           role: 'user',
 //           content: `
-//           This is Job descriptions 
+//           This is Job descriptions
 //           ${job_descriptions}
 //           don't do any function call or requires_action just give short descriptions of the JD.
 //           `
@@ -34,7 +33,6 @@ const openai = new OpenAI({
 //       assistant_id: 'asst_27h3RtPzVREMYuLNPykmrivi',
 //     });
 
-
 //     runData = await getRunAgain(emptyThread, runData.id);
 
 //     do {
@@ -43,14 +41,11 @@ const openai = new OpenAI({
 //         res.status(200).send(emptyThread);
 //     } while (runData.status !== 'completed' || runData.status !== 'expired')
 
-
-
 //   } catch (error) {
 //     // console.log(error);
 //     return error;
 //   }
 // }
-
 
 export default async function handler(req, res) {
   try {

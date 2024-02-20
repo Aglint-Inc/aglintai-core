@@ -53,8 +53,9 @@ function ChatMessages() {
             transform: !openChat ? 'translateY(50px)' : 'none',
             height: openChat ? '100%' : 0,
             opacity: openChat ? 1 : 0,
-            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${openChat ? '0.4s' : '0.2s'
-              }, opacity ${openChat ? '0.4s' : '0.2s'} `,
+            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${
+              openChat ? '0.4s' : '0.2s'
+            }, opacity ${openChat ? '0.4s' : '0.2s'} `,
           }}
           pr={'30px'}
         >
