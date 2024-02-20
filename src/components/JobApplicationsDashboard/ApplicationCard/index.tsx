@@ -88,7 +88,7 @@ const ApplicationCard = ({
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
   return !detailedView ? (
-    section === JobApplicationSections.INTERVIEW ? (
+    views.interview ? (
       <ListCardInterviewSchedule
         isSelected={isSelected}
         app={

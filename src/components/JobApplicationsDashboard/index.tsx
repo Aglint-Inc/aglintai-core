@@ -315,6 +315,7 @@ const ApplicationTable = ({
   };
   const applicantsList = (
     <ApplicantsList
+      key={section}
       detailedView={detailedView}
       applications={sectionApplications}
       handleSelectCurrentApplication={handleSelectCurrentApplication}
@@ -778,7 +779,7 @@ const ApplicantsList = ({
 
   const scrollToRef = useRef(undefined);
   useEffect(() => {
-    if (currentApplication > -1)
+    if (currentApplication > -1 && scrollToRef.current)
       scrollToRef.current.scrollIntoView({
         behavior: 'instant',
         block: 'center',

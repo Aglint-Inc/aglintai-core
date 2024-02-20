@@ -17,7 +17,7 @@ export type Assessment = Database['public']['Tables']['assessment']['Row'];
 
 export type AssessmentCreate = Pick<
   Assessment,
-  'title' | 'description' | 'level' | 'type'
+  'title' | 'description' | 'level' | 'type' | 'mode'
 >;
 
 export type AssessmentUpdate = Partial<
@@ -30,6 +30,7 @@ export const useAllAssessments = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
+    enabled: !!recruiter_id,
   });
 };
 
@@ -65,21 +66,21 @@ export const useCreateAssessment = () => {
   };
 };
 
-export const useEditAssessment = (assessmentId: Assessment['id']) => {
+export const useEditAssessment = () => {
   const queryClient = useQueryClient();
   const { assessment_id } = useAssessmentId();
   const { queryKey: masterQueryKey } = assessmentQueryKeys.assessments();
   const { queryKey } = assessmentQueryKeys.assessment({ assessment_id });
   const mutation = useMutation({
     mutationFn: (payload: AssessmentUpdate) =>
-      updateAssessmentsDbAction(payload, assessmentId),
+      updateAssessmentsDbAction(payload, assessment_id),
     onMutate: async (data) => {
       await queryClient.cancelQueries({ queryKey });
       const previousAssessments =
         queryClient.getQueryData<Assessment[]>(masterQueryKey);
       queryClient.setQueryData<Assessment[]>(masterQueryKey, (prev) => {
         const newAssessments = prev.reduce((acc, curr) => {
-          if (curr.id === assessmentId) acc.push({ ...curr, ...data });
+          if (curr.id === assessment_id) acc.push({ ...curr, ...data });
           else acc.push(curr);
           return acc;
         }, [] as Assessment[]);

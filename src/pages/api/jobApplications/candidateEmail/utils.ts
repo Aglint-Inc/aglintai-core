@@ -29,7 +29,7 @@ export const readSomeCandidates = async (
   const { data, error } = await supabase
     .from('applications')
     .select(
-      'id, status_emails_sent, phone_screening, candidate_id,  candidates (first_name, last_name, email), assessment_results!assessment_results_application_id_fkey(responses, created_at)',
+      'id, status_emails_sent, phone_screening, candidate_id,  candidates (first_name, last_name, email), assessment_results!assessment_results_application_id_fkey(result, created_at)',
     )
     .in('id', applicationIds);
   if (error) throw new Error(error.message);
@@ -50,8 +50,8 @@ export const readSomeCandidates = async (
       status_emails_sent,
       phone_screening,
       assessment_results: {
-        feedback: (assessment_results[0]?.responses ??
-          null) as JobApplication['assessment_results']['responses'],
+        result: (assessment_results[0]?.result ??
+          null) as JobApplication['assessment_results']['result'],
         created_at: (assessment_results[0]?.created_at ??
           null) as JobApplication['assessment_results']['created_at'],
       },
@@ -94,8 +94,8 @@ export const readCandidates = async (
       phone_screening,
       candidate_id,
       assessment_results: {
-        feedback: (assessment_results?.feedback ??
-          null) as JobApplication['assessment_results']['feedback'],
+        result: (assessment_results?.result ??
+          null) as JobApplication['assessment_results']['result'],
         created_at: (assessment_results?.created_at ??
           null) as JobApplication['assessment_results']['created_at'],
       },

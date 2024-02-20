@@ -285,7 +285,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
               a.status_emails_sent,
               {
                 created_at: a.assessment_results?.created_at ?? null,
-                feedback: a.assessment_results?.feedback ?? null,
+                result: a.assessment_results?.result ?? null,
               },
             );
             return isNotInvited || isPending;
@@ -635,6 +635,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
                 section !== JobApplicationSections.NEW &&
                 section !== JobApplicationSections.SCREENING,
             };
+          case JobApplicationSections.INTERVIEW: {
+            return {
+              [s]: defaults && section === JobApplicationSections.INTERVIEW,
+            };
+          }
           case JobApplicationSections.QUALIFIED:
             return { [s]: defaults };
           case JobApplicationSections.DISQUALIFIED:

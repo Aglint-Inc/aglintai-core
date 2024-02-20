@@ -22,6 +22,7 @@ import {
   useAssessmentQuestionUpdate,
 } from '@/src/queries/assessment/questions';
 
+import { useAssessment } from './context';
 import SelectionComp from '../Common/components/selection';
 import QuestionTags from '../Common/tags/questions';
 import useAssessmentStore from '../Stores';
@@ -249,7 +250,6 @@ const OptionInputs: FC<{
         ...(question.question as any),
         options: newOptions,
       },
-      answer: { options: [...question.answer.options, false] },
     });
   };
 
@@ -272,11 +272,9 @@ const OptionInputs: FC<{
   };
 
   const handleUpdateAnswer = (index: number) => {
-    const newOptions = question.answer.options.reduce((acc, curr, i) => {
-      if (i === index) acc.push(!curr);
-      else acc.push(curr);
-      return acc;
-    }, [] as boolean[]);
+    const newOptions = question.answer.options.includes(index)
+      ? question.answer.options.filter((o) => o !== index)
+      : [...question.answer.options, index];
     handleUpdateQuestion(currentQuestion, {
       ...question,
       answer: { options: newOptions },
@@ -287,9 +285,12 @@ const OptionInputs: FC<{
     const newOptions = question.question.options.filter(
       (option, i) => i !== index,
     );
-    const newAnswers = question.answer.options.filter(
-      (option, i) => i !== index,
-    );
+    const newAnswers = question.answer.options.reduce((acc, curr) => {
+      if (curr !== index)
+        if (curr > index) acc.push(curr - 1);
+        else acc.push(curr);
+      return acc;
+    }, [] as number[]);
     handleUpdateQuestion(currentQuestion, {
       ...question,
       question: {
@@ -320,7 +321,7 @@ const OptionInputs: FC<{
       slotRcCheckbox={
         <RcCheckbox
           // eslint-disable-next-line security/detect-object-injection
-          isChecked={question.answer.options[i]}
+          isChecked={question.answer.options.includes(i)}
           onclickCheck={{ onClick: () => handleUpdateAnswer(i) }}
           text={<></>}
         />
@@ -337,6 +338,33 @@ const OptionInputs: FC<{
 };
 
 const TypeInput: FC<{
+  question: AssessmentQuestion;
+}> = ({ question }) => {
+  const { assessment } = useAssessment();
+  switch (assessment.mode) {
+    case 'classic':
+      return <TypeSwitch question={question} />;
+    default:
+      return (
+        <Stack
+          width={'200px'}
+          height={'40px'}
+          justifyContent={'center'}
+          alignItems={'start'}
+          pl={'12px'}
+          style={{
+            backgroundColor: 'white',
+            border: '1px solid #cbcbcb',
+            borderRadius: '4px',
+          }}
+        >
+          <QuestionTags type={question.type} />
+        </Stack>
+      );
+  }
+};
+
+const TypeSwitch: FC<{
   question: AssessmentQuestion;
 }> = ({ question }) => {
   const selectedType = question.type;
@@ -364,7 +392,10 @@ const TypeInput: FC<{
     </MenuItem>
   ));
   return (
-    <Stack width={'200px'} style={{ backgroundColor: 'white' }}>
+    <Stack
+      width={'200px'}
+      style={{ backgroundColor: 'white', borderRadius: '10px' }}
+    >
       <SelectionComp
         onChange={(e) => handleTypeUpdate(e.target.value)}
         value={selectedType}
