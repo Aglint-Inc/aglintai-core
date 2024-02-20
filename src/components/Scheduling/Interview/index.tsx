@@ -66,6 +66,10 @@ function InterviewComp() {
         filter.sortBy ||
         filter.scheduleType
       ) {
+        setSelectedApplication(null);
+        router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, {
+          shallow: true,
+        });
         fetchInterviewData({ page: 1 });
       }
     }
@@ -87,6 +91,8 @@ function InterviewComp() {
 
   useEffect(() => {
     const debouncedTextSearchFetch = debounce(() => {
+      setSelectedApplication(null);
+      router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, { shallow: true });
       fetchInterviewData({ page: 1 });
     }, 1000);
 
