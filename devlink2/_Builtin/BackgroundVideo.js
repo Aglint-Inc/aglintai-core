@@ -1,16 +1,16 @@
-import React from 'react';
-import { cj, debounce } from '../utils';
+import React from "react";
+import { cj, debounce } from "../utils";
 const BgVideoContext = React.createContext({
   isPlaying: true,
   togglePlay: () => undefined,
 });
 export const BackgroundVideoWrapper = ({
-  tag = 'div',
-  className = '',
+  tag = "div",
+  className = "",
   autoPlay = true,
   loop = true,
   sources = [],
-  posterImage = '',
+  posterImage = "",
   children,
 }) => {
   const [isPlaying, setIsPlaying] = React.useState(autoPlay);
@@ -31,8 +31,8 @@ export const BackgroundVideoWrapper = ({
         {
           className: cj(
             className,
-            'w-background-video',
-            'w-background-video-atom',
+            "w-background-video",
+            "w-background-video-atom"
           ),
         },
         <video
@@ -50,7 +50,7 @@ export const BackgroundVideoWrapper = ({
           {sources.map((url) => (
             <source src={url} key={url} />
           ))}
-        </video>,
+        </video>
       )}
       {children}
     </BgVideoContext.Provider>
@@ -59,13 +59,13 @@ export const BackgroundVideoWrapper = ({
 export const BackgroundVideoPlayPauseButton = ({ children, className }) => {
   const { togglePlay } = React.useContext(BgVideoContext);
   return (
-    <div aria-live='polite'>
+    <div aria-live="polite">
       <button
-        type='button'
+        type="button"
         className={cj(
           className,
-          'w-backgroundvideo-backgroundvideoplaypausebutton',
-          'w-background-video--control',
+          "w-backgroundvideo-backgroundvideoplaypausebutton",
+          "w-background-video--control"
         )}
         onClick={togglePlay}
       >
