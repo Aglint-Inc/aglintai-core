@@ -11,7 +11,6 @@ import { useAvailableStore } from './store';
 const PanelRow = () => {
   const [editedIntId, setEditedIntId] = useState('');
   const interviewers = useAvailableStore((state) => state.interviewers);
-
   return (
     <>
       <PanelDetailTable

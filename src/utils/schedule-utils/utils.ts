@@ -1,12 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
 } from '@/src/components/Scheduling/Availability/availability.types';
-import { getLastDayOfMonth } from '@/src/components/Scheduling/utils';
 import { refreshAccessToken } from '@/src/pages/api/email-outreach/getNewAcessToken';
 import { Database } from '@/src/types/schema';
 
@@ -62,7 +61,7 @@ export const getRecruiterAuthTokens = async (userId: string) => {
   return tokenInfo;
 };
 
-export const getGroupTimeSlots = (availableSlots, currentMonth) => {
+export const getGroupTimeSlots = (availableSlots) => {
   const groupedTimeSlots: InterviewerAvailabliity['availability'] = {};
   let avSlots: AvalabilitySlotType[] = availableSlots.map((slot) => ({
     startTime: new Date(slot.start),
@@ -71,8 +70,7 @@ export const getGroupTimeSlots = (availableSlots, currentMonth) => {
   }));
   avSlots.forEach((slot) => {
     // Get the calendar day as a string in the format 'YYYY-MM-DD'
-    let start = new Date(slot.startTime);
-    const dayKey = start.toISOString().slice(0, 10);
+    const dayKey = dayjs(slot.startTime).format('YYYY-MM-DD');
     // If the dayKey doesn't exist in groupedTimeSlots, initialize it with an empty array
     if (!groupedTimeSlots[String(dayKey)]) {
       groupedTimeSlots[String(dayKey)] = [];
@@ -80,17 +78,6 @@ export const getGroupTimeSlots = (availableSlots, currentMonth) => {
     // Add the timeslot to the array corresponding to its calendar day
     groupedTimeSlots[String(dayKey)].push(slot);
   });
-
-  let date = new Date(currentMonth);
-  for (let day = 1; day <= getLastDayOfMonth(currentMonth); ++day) {
-    let key = `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-    if (!Object.hasOwn(groupedTimeSlots, key)) {
-      groupedTimeSlots[String(key)] = [];
-    }
-  }
 
   return groupedTimeSlots;
 };

@@ -1,7 +1,9 @@
 import React from 'react';
+
+import _styles from './AvailableSlots.module.css';
+
 import * as _Builtin from './_Builtin';
 import * as _utils from './utils';
-import _styles from './AvailableSlots.module.css';
 
 export function AvailableSlots({
   as: _Component = _Builtin.Block,
@@ -29,8 +31,13 @@ export function AvailableSlots({
           {textDay}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, 'div-block-957')} tag='div'>
-        {slotLoadedSlotPill}
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-973")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-957")}
+          tag="div"
+        >
+          {slotLoadedSlotPill}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

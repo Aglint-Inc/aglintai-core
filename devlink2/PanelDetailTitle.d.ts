@@ -11,4 +11,6 @@ declare function PanelDetailTitle(props: {
   slotNumber?: Types.Devlink.Slot;
   slotSelectedAvatarGroup?: Types.Devlink.Slot;
   onClickConfirm?: Types.Devlink.RuntimeProps;
+  slotLoader?: Types.Devlink.Slot;
+  isLoadingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

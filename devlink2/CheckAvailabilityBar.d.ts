@@ -12,4 +12,11 @@ declare function CheckAvailabilityBar(props: {
   textSlotNumber?: React.ReactNode;
   slotAvatarGroup?: Types.Devlink.Slot;
   slotAvailableSlots?: Types.Devlink.Slot;
+  isCommonAvailableSlotVisible?: Types.Visibility.VisibilityConditions;
+  slotStartDateInput?: Types.Devlink.Slot;
+  slotEndDateInput?: Types.Devlink.Slot;
+  slotLoader?: Types.Devlink.Slot;
+  textButtonLabel?: React.ReactNode;
+  isButtonLoaderActive?: Types.Visibility.VisibilityConditions;
+  isCheckAvailabilityDisable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

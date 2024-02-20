@@ -11,11 +11,11 @@ import toast from '@/src/utils/toast';
 
 import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { InterviewerGroup } from '../Scheduling/Availability/Availability';
-import { InterviewerType } from '../Scheduling/Availability/availability.types';
 import {
+  InterviewerType,
   MergedEvents,
-  mergeInterviewerEventsWithTimeSlot,
-} from '../Scheduling/Availability/utils';
+} from '../Scheduling/Availability/availability.types';
+import { mergeInterviewerEventsWithTimeSlot } from '../Scheduling/Availability/utils';
 
 const SchedulingConfirm = () => {
   const [groupedSlots, setgroupedSlots] = useState<MergedEvents | null>();

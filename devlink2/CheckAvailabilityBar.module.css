@@ -34,6 +34,10 @@
   grid-row-gap: 6px;
 }
 
+.div-block-994 {
+  position: relative;
+}
+
 .button_primary {
   display: flex;
   padding: 8px 16px;
@@ -102,6 +106,22 @@
 
 .button_primary.confirm_availability:hover {
   background-color: #038153;
+}
+
+.disable-button-primary-reg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  padding: 8px 16px;
+
+  border-radius: 6px;
+
+  background-color: hsla(199.9999999999999, 8.33%, 85.88%, 1.00);
+
+  color: var(--gray-400);
 }
 
 .selected_slotbanner {
@@ -243,6 +263,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -343,4 +367,6 @@
 .commonslots_panel {
   display: flex;
   flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }

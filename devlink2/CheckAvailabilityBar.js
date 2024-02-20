@@ -1,8 +1,10 @@
 import React from 'react';
+
+import _styles from './CheckAvailabilityBar.module.css';
+
 import * as _Builtin from './_Builtin';
 import { AvailableSlots } from './AvailableSlots';
 import * as _utils from './utils';
-import _styles from './CheckAvailabilityBar.module.css';
 
 export function CheckAvailabilityBar({
   as: _Component = _Builtin.Block,
@@ -15,6 +17,13 @@ export function CheckAvailabilityBar({
   textSlotNumber = '--',
   slotAvatarGroup,
   slotAvailableSlots,
+  isCommonAvailableSlotVisible = true,
+  slotStartDateInput,
+  slotEndDateInput,
+  slotLoader,
+  textButtonLabel = "Check Availability",
+  isButtonLoaderActive = false,
+  isCheckAvailabilityDisable = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, 'panel_top_input_bar')} tag='div'>
@@ -30,20 +39,40 @@ export function CheckAvailabilityBar({
           <_Builtin.Block tag='div'>{'Time Zone'}</_Builtin.Block>
           <_Builtin.Block tag='div'>{slotTimezoneInput}</_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, 'input_block')} tag='div'>
-          <_Builtin.Block tag='div'>{'Date Range'}</_Builtin.Block>
-          <_Builtin.Block tag='div'>{slotDateRangeInput}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "input_block")} tag="div">
+          <_Builtin.Block tag="div">{"Start Date"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{slotStartDateInput}</_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "input_block")} tag="div">
+          <_Builtin.Block tag="div">{"End Date"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{slotEndDateInput}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, 'input_block')} tag='div'>
           <_Builtin.Block tag='div'>{'Duration'}</_Builtin.Block>
           <_Builtin.Block tag='div'>{slotDurationInput}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, 'button_primary')}
-          tag='div'
-          {...onClickCheckAvailabilty}
+          className={_utils.cx(_styles, "div-block-994")}
+          tag="div"
         >
-          <_Builtin.Block tag='div'>{'Check Availability'}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "button_primary")}
+            tag="div"
+            {...onClickCheckAvailabilty}
+          >
+            {isButtonLoaderActive ? (
+              <_Builtin.Block tag="div">{slotLoader}</_Builtin.Block>
+            ) : null}
+            <_Builtin.Block tag="div">{textButtonLabel}</_Builtin.Block>
+          </_Builtin.Block>
+          {isCheckAvailabilityDisable ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "disable-button-primary-reg")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Check Availability"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         {isSelected ? (
           <_Builtin.Block
@@ -104,20 +133,25 @@ export function CheckAvailabilityBar({
           />
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, 'availability_slots')}
-        tag='div'
-      >
-        <_Builtin.Block className={_utils.cx(_styles, 'fw-semibold')} tag='div'>
-          {'Common Available Slots'}
-        </_Builtin.Block>
+      {isCommonAvailableSlotVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, 'commonslots_panel')}
-          tag='div'
+          className={_utils.cx(_styles, "availability_slots")}
+          tag="div"
         >
-          {slotAvailableSlots ?? <AvailableSlots />}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Common Available Slots"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "commonslots_panel")}
+            tag="div"
+          >
+            {slotAvailableSlots ?? <AvailableSlots />}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

@@ -31,9 +31,6 @@ const InterviewerRow = ({
     (state) => state.isCalenderLoading,
   );
   const timeSlot = useAvailableStore((state) => state.timeSlot);
-  const checkedInterlots = useAvailableStore(
-    (state) => state.checkedInterSlots,
-  );
 
   if (!interviewer.isMailConnected)
     return <MaiLConnectInterviewer interviewer={interviewer} />;
@@ -41,9 +38,6 @@ const InterviewerRow = ({
   let timeDurSlots = interviewer.slots.find((t) => t.timeDuration === timeSlot);
   let timeSlotKeys = getTimeSlotKeys(dateRangeView.startDate);
 
-  const checkedInterviewer = checkedInterlots[Number(interviewIdx)];
-  let avail = checkedInterviewer.slots.find((s) => s.timeDuration === timeSlot)
-    ?.availability;
   let timeSlotIdx = interviewers[String(interviewIdx)].slots.findIndex(
     (s) => s.timeDuration === timeSlot,
   );
@@ -102,19 +96,16 @@ const InterviewerRow = ({
                 <TableBodyCell isLoading />
               </>
             ) : (
-              timeSlotKeys
-                .filter((day) => avail[String(day)])
-                .map((day) => {
-                  return (
-                    <AvailabilityCell
-                      key={day}
-                      timeDurSlots={timeDurSlots}
-                      day={day}
-                      cellPath={`checkedInterSlots[${interviewIdx}].slots[${timeSlotIdx}].availability[${day}]`}
-                      checkedTimeDur={avail[String(day)]}
-                    />
-                  );
-                })
+              timeSlotKeys.map((day) => {
+                return (
+                  <AvailabilityCell
+                    key={day}
+                    timeDurSlots={timeDurSlots}
+                    day={day}
+                    cellPath={`checkedInterSlots[${interviewIdx}].slots[${timeSlotIdx}].availability[${day}]`}
+                  />
+                );
+              })
             )}
           </>
         }

@@ -36,7 +36,7 @@ div#__next {
 }
 
 [class*='slot-body-global'] {
-  overflow: hidden !important;
+  overflow: auto;
   height: calc(100vh - 60px) !important;
 }
 

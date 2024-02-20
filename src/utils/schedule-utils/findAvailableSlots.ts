@@ -1,8 +1,13 @@
+import dayjs from 'dayjs';
+
+import { BodyParams } from '@/src/pages/api/scheduling/list-availability';
+
 export function findAvailableTimeSlots(
   events: { start: Date; end: Date }[],
   requiredTimeSlotInMinutes: number,
   startDate: Date,
   endDate: Date,
+  working_hours: BodyParams['working_hours'],
 ) {
   const availableTimeSlots = [];
 
@@ -19,13 +24,14 @@ export function findAvailableTimeSlots(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       currentDate.getDate(),
-      9,
+      dayjs(working_hours.startTime).get('hour'),
+      dayjs(working_hours.startTime).get('minutes'),
     );
     const dayEndTime = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       currentDate.getDate(),
-      17,
+      dayjs(working_hours.endTime).get('hour'),
     );
 
     // Find available time slots within the current day

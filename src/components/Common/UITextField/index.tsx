@@ -199,7 +199,7 @@ const UITextField = React.forwardRef(
         >
           {children}
         </MuiTextField>
-        {(error || contentExceeded) && (
+        {(error || contentExceeded) && helperText && (
           <Stack
             direction={'row'}
             alignItems={'center'}
@@ -210,8 +210,8 @@ const UITextField = React.forwardRef(
               {error
                 ? helperText
                 : contentExceeded
-                  ? errorMessages.maxCharExceeded
-                  : ''}
+                ? errorMessages.maxCharExceeded
+                : ''}
             </UITypography>
           </Stack>
         )}
