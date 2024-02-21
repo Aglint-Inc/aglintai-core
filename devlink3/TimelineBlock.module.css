@@ -1,0 +1,66 @@
+.activity_block {
+  display: flex;
+  overflow: auto;
+  width: 100%;
+  height: 100vh;
+  max-width: 360px;
+  padding: 20px;
+  flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  background-color: white;
+}
+
+.task_list_switch {
+  display: flex;
+  padding: 4px 10px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 10px;
+
+  transition: all 300ms ease;
+
+  color: #337fbd;
+
+  cursor: pointer;
+}
+
+.task_list_switch:hover {
+  border-radius: 6px;
+  background-color: #edf7ff;
+  color: #0f3554;
+}
+
+@media screen and (min-width: 1920px) {
+  .task_list_switch.hide {
+    display: none;
+  }
+}
+
+.task_list_switch.no_hover {
+  color: #87929d;
+  cursor: auto;
+}
+
+.task_list_switch.no_hover:hover {
+  background-color: transparent;
+  color: #337fbd;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.timeline_wrap {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}

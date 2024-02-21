@@ -1,0 +1,124 @@
+.welcome_message {
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 100px;
+  flex-direction: column;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+}
+
+.title_text {
+  display: flex;
+  flex-direction: column;
+  color: #68737d;
+  font-size: 30px;
+  line-height: 40px;
+}
+
+.hello_wrap {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.gemini_hello {
+  font-size: 80px;
+  line-height: 90px;
+  font-weight: 600;
+}
+
+.how_can_i {
+  padding-left: 20px;
+}
+
+@media screen and (min-width: 1280px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+.option_chat_card {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.option_chat_card:hover {
+  background-color: hsla(210, 17.28%, 92.75%, 1.00);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-grey_600.hide {
+  display: none;
+}
+
+#w-node-bbae6c7e-af87-ca24-119f-95e1b37cf99f-b37cf996 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-bbae6c7e-af87-ca24-119f-95e1b37cf9a5-b37cf996 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-bbae6c7e-af87-ca24-119f-95e1b37cf9ab-b37cf996 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-bbae6c7e-af87-ca24-119f-95e1b37cf9b1-b37cf996 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

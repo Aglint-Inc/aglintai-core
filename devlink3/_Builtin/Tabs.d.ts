@@ -37,7 +37,11 @@ type TabsLinkProps = Props<
     "data-w-tab": string;
   }
 >;
-export declare function TabsLink({ className, ...props }: TabsLinkProps): any;
+export declare function TabsLink({
+  className,
+  children,
+  ...props
+}: TabsLinkProps): any;
 type TabsContentProps = {
   tag?: React.ElementType;
   className?: string;

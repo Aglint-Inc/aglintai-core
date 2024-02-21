@@ -1,0 +1,44 @@
+.notification_block {
+  display: flex;
+  height: 32px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 16px;
+  padding-left: 16px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #f7f9fb;
+}
+
+.notification_task_blokx {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.iconblock {
+  width: 12px;
+  height: 12px;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-grey_600.hide {
+  display: none;
+}

@@ -465,6 +465,12 @@ input.w-button {
 html[data-w-dynpage] [data-w-cloak] {
   color: transparent !important;
 }
+.w-code-block {
+  margin: unset;
+}
+pre.w-code-block code {
+  all: inherit;
+}
 .w-webflow-badge,
 .w-webflow-badge * {
   position: static;
@@ -2196,13 +2202,34 @@ textarea.w-select {
   --grey600-440e5aa6: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
   --grey200-750b0c46: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
   --grey400-5470456b: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+  --white: white;
+  --black: black;
+  --grey-prime: #333;
+  --yellow-prime: #ecff58;
+  --blue-600: #1f73b7;
+  --blue-700: #144a75;
+  --red-600: #cc3340;
+  --red-700: #8c232c;
+  --kale-600: #17494d;
+  --kale-700: #03363d;
+  --kale-300: #bdd9d7;
+  --kale-800: #012b30;
+  --kale-400: #90bbbb;
+  --grey-800: #2f3941;
+  --grey-700: #49545c;
+  --grey-600: #68737d;
+  --grey-200: #e9ebed;
+  --grey-400: #c2c8cc;
+  --grey-300: #d8dcde;
+  --grey-100: #f8f9f9;
 }
 
 body {
-  font-family: Montserrat, sans-serif;
-  color: #333;
-  font-size: 16px;
-  line-height: 1.4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #2f3941;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
 }
 
 h1 {
@@ -2211,4 +2238,13 @@ h1 {
 
 h2 {
   line-height: 1.4;
+}
+
+.w-layout-grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
 }
