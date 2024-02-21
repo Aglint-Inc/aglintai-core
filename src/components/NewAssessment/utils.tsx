@@ -35,7 +35,7 @@ export const getQuestionDefaults = (
       };
     case 'qna':
       return {
-        answer: { expected_answer: '' },
+        answer: { label: '' },
         description,
         question: { label: label },
         required: required,
