@@ -43,7 +43,7 @@ export type CustomQuestionType = (
         label: string;
       };
       answer: {
-        expected_answer: string;
+        label: string;
       };
     }
 ) &

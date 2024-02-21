@@ -403,36 +403,30 @@ export type Database = {
       }
       assessment_results: {
         Row: {
-          answers: Json | null
           application_id: string
           assessment_id: string | null
           created_at: string
           duration: number | null
           id: string
-          questions: Json | null
-          responses: Json | null
+          responses: Json[] | null
           result: Json | null
         }
         Insert: {
-          answers?: Json | null
           application_id: string
           assessment_id?: string | null
           created_at?: string
           duration?: number | null
           id?: string
-          questions?: Json | null
-          responses?: Json | null
+          responses?: Json[] | null
           result?: Json | null
         }
         Update: {
-          answers?: Json | null
           application_id?: string
           assessment_id?: string | null
           created_at?: string
           duration?: number | null
           id?: string
-          questions?: Json | null
-          responses?: Json | null
+          responses?: Json[] | null
           result?: Json | null
         }
         Relationships: [

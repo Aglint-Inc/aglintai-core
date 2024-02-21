@@ -125,12 +125,12 @@ const ExpectedAnswerInput: FC<{
   > = (e) => {
     handleUpdateQuestion(currentQuestion, {
       ...question,
-      answer: { expected_answer: e.target.value },
+      answer: { label: e.target.value },
     });
   };
   return (
     <UITextField
-      value={question.answer.expected_answer}
+      value={question.answer.label}
       onChange={handleUpdateExpectedAnswer}
       multiline={true}
       placeholder='Type Expected Answer Here'
