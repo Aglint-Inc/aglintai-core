@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 import {
   MemberSlotInfo,
@@ -11,8 +10,8 @@ import toast from '@/src/utils/toast';
 
 import { InterviewerType } from './availability.types';
 import AvailabilityCell from './AvailabilityCell';
+import { getDateRangeKeys } from './CalenderHeaderRow';
 import { useAvailableStore } from './store';
-import { DAYS_LENGTH } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -25,7 +24,10 @@ const InterviewerRow = ({
   interviewIdx: number;
   setEditedIntId;
 }) => {
-  const dateRangeView = useAvailableStore((state) => state.dateRangeView);
+  const dateRangeTableView = useAvailableStore(
+    (state) => state.dateRangeTableView,
+  );
+
   const interviewers = useAvailableStore((state) => state.interviewers);
   const isCalenderLoading = useAvailableStore(
     (state) => state.isCalenderLoading,
@@ -36,7 +38,7 @@ const InterviewerRow = ({
     return <MaiLConnectInterviewer interviewer={interviewer} />;
 
   let timeDurSlots = interviewer.slots.find((t) => t.timeDuration === timeSlot);
-  let timeSlotKeys = getTimeSlotKeys(dateRangeView.startDate);
+  let timeSlotKeys = getDateRangeKeys(dateRangeTableView);
 
   let timeSlotIdx = interviewers[String(interviewIdx)].slots.findIndex(
     (s) => s.timeDuration === timeSlot,
@@ -173,12 +175,4 @@ const MaiLConnectInterviewer = ({
       }
     />
   );
-};
-
-const getTimeSlotKeys = (startDate: Date) => {
-  let dayKeys: string[] = [];
-  for (let i = 0; i < DAYS_LENGTH; ++i) {
-    dayKeys.push(dayjs(startDate).add(i, 'day').format('YYYY-MM-DD'));
-  }
-  return dayKeys;
 };

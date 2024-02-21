@@ -25,6 +25,7 @@ const SchedulingConfirm = () => {
   const [formStatus, setFormStatus] = useState<
     'submitting' | 'submitted' | '' | 'error'
   >('');
+  const [intrReqSlots, setIntrReqSlots] = useState(-1);
   const [uncheckedSlots, setUncheckedSlots] = useState<string[]>([]);
   const router = useRouter();
 
@@ -42,9 +43,22 @@ const SchedulingConfirm = () => {
           const { interviewers_availabilities, requested_user_name } =
             await fetchAvailability(panelId, req_user_id);
           setReqUserName(requested_user_name);
-          setInterviewerAvail(
-            interviewers_availabilities.find((i) => i.interviewerId === userId),
+          const interv: InterviewerType = interviewers_availabilities.find(
+            (i) => i.interviewerId === userId,
           );
+          let reqSlot = 0;
+          for (const slotAvail of interv.slots) {
+            if (slotAvail.timeDuration !== time_duration) continue;
+            for (const dateKey in slotAvail.availability) {
+              slotAvail.availability[String(dateKey)].forEach((timeSlot) => {
+                if (timeSlot.status === 'requested') {
+                  reqSlot++;
+                }
+              });
+            }
+          }
+          setIntrReqSlots(reqSlot);
+          setInterviewerAvail(interv);
           const merged = mergeInterviewerEventsWithTimeSlot(
             interviewers_availabilities,
             time_duration,
@@ -64,9 +78,7 @@ const SchedulingConfirm = () => {
     if (!groupedSlots) return 0;
     let cnt = 0;
     for (let dateKey in groupedSlots) {
-      for (let dayKey in groupedSlots[String(dateKey)]) {
-        cnt += groupedSlots[String(dateKey)][String(dayKey)].length;
-      }
+      cnt += Object.keys(groupedSlots[String(dateKey)]).length;
     }
     return cnt;
   }, [groupedSlots]);
@@ -116,6 +128,83 @@ const SchedulingConfirm = () => {
       setFormStatus('error');
     }
   };
+
+  let slotBody = <></>;
+
+  if (groupedSlots && intrReqSlots === 0 && <>No Slots Requested</>) {
+    slotBody = (
+      <>{groupedSlots && intrReqSlots === 0 && <>No Slots Requested</>}</>
+    );
+  } else if (!groupedSlots) {
+    slotBody = (
+      <Stack
+        width={'400px'}
+        height={'400px'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <LoaderSvg />
+      </Stack>
+    );
+  } else if (groupedSlots) {
+    slotBody = (
+      <>
+        {filteredDateSlotKeys.map((dateKey) => {
+          let eventsKey = Object.keys(groupedSlots[String(dateKey)]).filter(
+            (timeKey) =>
+              groupedSlots[String(dateKey)][String(timeKey)].length > 0,
+          );
+          return (
+            <LoadedSlots
+              key={dateKey}
+              textDay={dayjs(dateKey).format('MMMM DD YYYY')}
+              slotLoadedSlotPill={eventsKey.map((timeKey, idx) => {
+                let inters = groupedSlots[String(dateKey)][String(timeKey)].map(
+                  (i) => ({
+                    name: i.interviewerName,
+                    url: i.profileImg,
+                    status: i.status,
+                  }),
+                );
+                let timeRange =
+                  groupedSlots[String(dateKey)][String(timeKey)][0];
+                let textTime = `${dayjs(timeRange?.startTime).format(
+                  'hh:mm A',
+                )} - ${dayjs(timeRange?.endTime).format('hh:mm A')}`;
+
+                let slotPath = `${dateKey}_${timeKey}_[${idx}]`;
+                const isUncheckedChecked = Boolean(
+                  uncheckedSlots.find((s) => s === slotPath),
+                );
+
+                return (
+                  <LoadedSlotPill
+                    key={timeKey}
+                    textTime={textTime}
+                    isLineBorderActive={false}
+                    slotImage={<InterviewerGroup profileUrls={inters} />}
+                    isSelectedActive={!isUncheckedChecked}
+                    isNotSelected={isUncheckedChecked}
+                    onClickPill={{
+                      onClick: () => {
+                        if (!isUncheckedChecked) {
+                          setUncheckedSlots((prev) => [...prev, slotPath]);
+                        } else {
+                          setUncheckedSlots((prev) =>
+                            prev.filter((s) => s !== slotPath),
+                          );
+                        }
+                      },
+                    }}
+                  />
+                );
+              })}
+            />
+          );
+        })}
+      </>
+    );
+  }
   return (
     <>
       <ConfirmSlots
@@ -123,84 +212,16 @@ const SchedulingConfirm = () => {
         textButtonLabel={submitBtnCopy
           .replace('{cnt}', (totalCnt - uncheckedSlots.length).toString())
           .replace('{total_cnt}', String(totalCnt))}
-        isAvailabilityConfirmedVisible={formStatus === 'submitted'}
-        isConfirmAvailibiltyVisible={formStatus !== 'submitted'}
+        isAvailabilityConfirmedVisible={
+          formStatus === 'submitted' || (groupedSlots && intrReqSlots === 0)
+        }
+        isConfirmAvailibiltyVisible={
+          formStatus !== 'submitted' && groupedSlots && intrReqSlots !== 0
+        }
         onClickConfirm={{
           onClick: handleSubmit,
         }}
-        slotLoadedSlots={
-          <>
-            {!groupedSlots && (
-              <Stack
-                width={'400px'}
-                height={'400px'}
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                <LoaderSvg />
-              </Stack>
-            )}
-            {groupedSlots &&
-              filteredDateSlotKeys.map((dateKey) => {
-                let eventsKey = Object.keys(
-                  groupedSlots[String(dateKey)],
-                ).filter(
-                  (timeKey) =>
-                    groupedSlots[String(dateKey)][String(timeKey)].length > 0,
-                );
-                return (
-                  <LoadedSlots
-                    key={dateKey}
-                    textDay={dayjs(dateKey).format('MMMM DD YYYY')}
-                    slotLoadedSlotPill={eventsKey.map((timeKey, idx) => {
-                      let inters = groupedSlots[String(dateKey)][
-                        String(timeKey)
-                      ].map((i) => ({
-                        name: i.interviewerName,
-                        url: i.profileImg,
-                        status: i.status,
-                      }));
-                      let timeRange =
-                        groupedSlots[String(dateKey)][String(timeKey)][0];
-                      let textTime = `${dayjs(timeRange?.startTime).format(
-                        'hh:mm A',
-                      )} - ${dayjs(timeRange?.endTime).format('hh:mm A')}`;
-
-                      let slotPath = `${dateKey}_${timeKey}_[${idx}]`;
-                      const isUncheckedChecked = Boolean(
-                        uncheckedSlots.find((s) => s === slotPath),
-                      );
-
-                      return (
-                        <LoadedSlotPill
-                          key={timeKey}
-                          textTime={textTime}
-                          isLineBorderActive={!isUncheckedChecked}
-                          slotImage={<InterviewerGroup profileUrls={inters} />}
-                          isSelectedActive={!isUncheckedChecked}
-                          isNotSelected={isUncheckedChecked}
-                          onClickPill={{
-                            onClick: () => {
-                              if (!isUncheckedChecked) {
-                                setUncheckedSlots((prev) =>
-                                  prev.filter((s) => s !== slotPath),
-                                );
-                              } else {
-                                setUncheckedSlots((prev) => [
-                                  ...prev,
-                                  slotPath,
-                                ]);
-                              }
-                            },
-                          }}
-                        />
-                      );
-                    })}
-                  />
-                );
-              })}
-          </>
-        }
+        slotLoadedSlots={<>{slotBody}</>}
       />
     </>
   );

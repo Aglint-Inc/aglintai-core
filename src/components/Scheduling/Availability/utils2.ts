@@ -117,13 +117,15 @@ export const createSingleInterviewPromise = async (
   dateRange: StateAvailibility['dateRangeView'],
   workingHours: StateAvailibility['timeRange'],
 ) => {
+  let startDateStr = dayjs(dateRange.startDate).format('YYYY-MM-DD');
+  let endDateStr = dayjs(dateRange.endDate).format('YYYY-MM-DD');
   let intAval: InterviewerAvailabliity = {
     timeDuration: timeSlot,
     availability: await getAvailability(
       interviewer.interviewerId,
       timeSlot,
-      dateRange.startDate.toISOString(),
-      dateRange.endDate.toISOString(),
+      dayjs(startDateStr).toISOString(),
+      dayjs(endDateStr).toISOString(),
       {
         startTime: workingHours.start.toISOString(),
         endTime: workingHours.end.toISOString(),
@@ -207,6 +209,7 @@ export function mergeInterviewerStatus(
             interviewerId: interviewer.interviewerId,
             interviewerName: interviewer.interviewerName,
             profileImg: interviewer.profileImg,
+            email: interviewer.email,
             status: timeSlot.status,
           });
         });

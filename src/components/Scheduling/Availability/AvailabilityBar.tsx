@@ -1,18 +1,16 @@
 import { CircularProgress, IconButton, Popover, Stack } from '@mui/material';
 import { TimeIcon } from '@mui/x-date-pickers';
+import axios from 'axios';
 import dayjs, { Dayjs } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 import utc from 'dayjs/plugin/utc';
 import { cloneDeep } from 'lodash';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { LoadedSlotPill } from '@/devlink';
-import {
-  AvailableSlots,
-  CheckAvailabilityBar,
-  DurationPop,
-  PanelDetailTitle,
-} from '@/devlink2';
+import { AvailableSlots, CheckAvailabilityBar, DurationPop } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -20,9 +18,11 @@ import { InterviewerGroup } from './Availability';
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
+  InterviewerType,
   MergedEvents,
 } from './availability.types';
 import {
+  setDateRangeTableView,
   setDateRangeView,
   setInterviewers,
   setIsisCalenderLoading,
@@ -34,6 +34,8 @@ import {
 import TimeZone from './TimeZone';
 import { mergeInterviewerEvents } from './utils';
 import {
+  convertFromJSON,
+  convertToJSON,
   fetchAvailSlots,
   fetchSavedInts,
   mergeSavedAndAvailableSlots,
@@ -70,6 +72,8 @@ const AvailabilityBar = () => {
     '' | 'loading' | 'loaded' | 'error'
   >('');
   const [timeRangeLocal, setTimeRangeLocal] = useState(timeRange);
+  const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
 
   const handleCheckAvailability = async () => {
     try {
@@ -119,6 +123,20 @@ const AvailabilityBar = () => {
         setTimeRange(timeRangeLocal);
       }
       setShowAvail(true);
+      if (
+        dayDiffCnt(dateRangeViewLocal.startDate, dateRangeViewLocal.endDate) >=
+        5
+      ) {
+        setDateRangeTableView({
+          startDate: dateRangeViewLocal.startDate,
+          endDate: dayjs(dateRangeViewLocal.startDate).add(4, 'day').toDate(),
+        });
+      } else {
+        setDateRangeTableView({
+          startDate: dateRangeViewLocal.startDate,
+          endDate: dateRangeViewLocal.endDate,
+        });
+      }
     } catch (error) {
       toast.error(API_FAIL_MSG);
     } finally {
@@ -130,19 +148,8 @@ const AvailabilityBar = () => {
   const handleConfirmSlots = async () => {
     try {
       setConfirmBtnStatus('loading');
-      const savedIntsPromises = interviewers.map(async (int) => {
-        const [saved] = supabaseWrap(
-          await supabase
-            .from('interview_availabilties')
-            .select('slot_availability')
-            .eq('user_id', int.interviewerId),
-        );
-        return {
-          intId: int.interviewerId,
-          slots: saved.slot_availability as InterviewerAvailabliity[],
-        };
-      });
-      let savedInts = await Promise.all(savedIntsPromises);
+      let mapInts = new Map();
+      let savedInts = await await fetchSavedInts(interviewers);
 
       let intSlotAvails = savedInts.map((savedInt) => {
         const avail = (savedInt.slots?.find(
@@ -150,7 +157,7 @@ const AvailabilityBar = () => {
         )?.availability ?? {}) as InterviewerAvailabliity['availability'];
 
         return {
-          intId: savedInt.intId,
+          intId: savedInt.interviewerId,
           availability: avail,
           cntConfirmed: 0,
           cntRequested: 0,
@@ -167,6 +174,7 @@ const AvailabilityBar = () => {
               if (!Object.hasOwn(intslot.availability, dateKey)) {
                 intslot.availability[String(dateKey)] = [];
               }
+              mapInts.set(intslot.intId, int);
               let timeSlot: AvalabilitySlotType = {
                 startTime: new Date(startTime),
                 endTime: new Date(endTime),
@@ -184,7 +192,7 @@ const AvailabilityBar = () => {
         }
         if (!savedInt.slots.find((a) => a.timeDuration === timeSlot)) {
           let avail = intSlotAvails.find(
-            (int) => int.intId === savedInt.intId,
+            (int) => int.intId === savedInt.interviewerId,
           ).availability;
           savedInt.slots.push({
             availability: avail,
@@ -196,7 +204,7 @@ const AvailabilityBar = () => {
           savedInt.slots = savedInt.slots.map((savedAvail) => {
             if (savedAvail.timeDuration === timeSlot) {
               savedAvail.availability = intSlotAvails.find(
-                (int) => int.intId === savedInt.intId,
+                (int) => int.intId === savedInt.interviewerId,
               ).availability;
             }
             return savedAvail;
@@ -210,17 +218,52 @@ const AvailabilityBar = () => {
             .update({
               slot_availability: savedInt.slots as any,
             })
-            .eq('user_id', savedInt.intId),
+            .eq('user_id', savedInt.interviewerId),
         );
       });
       await Promise.all(savePromise);
+
+      // update ui
+      const jsonInts = convertToJSON(interviewers);
+      for (let int of savedInts) {
+        for (let slot of int.slots) {
+          if (slot.timeDuration !== timeSlotLocal) continue;
+          for (let dateKey in slot.availability) {
+            for (let freeEvent of slot.availability[String(dateKey)]) {
+              jsonInts[String(int.interviewerId)][Number(slot.timeDuration)][
+                String(dateKey)
+              ] = jsonInts[String(int.interviewerId)][
+                Number(slot.timeDuration)
+              ][String(dateKey)].map((d) => {
+                if (d.startTime === dayjs(freeEvent.startTime).toISOString()) {
+                  d.status = 'requested';
+                }
+                return d;
+              });
+            }
+          }
+        }
+      }
+      const newInts = convertFromJSON(jsonInts);
+
+      for (let interv of mapInts.keys()) {
+        const mailInt: InterviewerType = mapInts.get(interv);
+        const panel_id = router.query.panel_id as string;
+        const user_id = mailInt.interviewerId;
+        const req_user_id = recruiterUser.user_id;
+        const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${user_id}&req_user_id=${req_user_id}&time_duration=${timeSlot}`;
+        sendMail(mailInt.email, link);
+        toast.success(
+          `Request confirmation mail sent to ${mailInt.interviewerName}`,
+        );
+      }
+      setInterviewers(newInts);
       setCheckedSlots([]);
       setShowAvail(false);
-      toast.success('mail sent for');
+      setConfirmBtnStatus('loaded');
     } catch (error) {
       toast.error(API_FAIL_MSG);
-    } finally {
-      setConfirmBtnStatus('loaded');
+      setConfirmBtnStatus('error');
     }
   };
   const cntChecked = checkedSlots.length;
@@ -369,22 +412,6 @@ const AvailabilityBar = () => {
           </>
         }
       />
-      <PanelDetailTitle
-      // isLoadingVisible={confirmBtnStatus === 'loading'}
-      // slotLoader={
-      //   <>{<CircularProgress size={15} sx={{ color: '#fff' }} />}</>
-      // }
-      // isSlotSelected={cntChecked > 0}
-      // slotNumber={cntChecked}
-      // onClickConfirm={{
-      //   onClick: handleConfirmSlots,
-      // }}
-      // onClickDeselect={{
-      //   onClick: () => {
-      //     setCheckedSlots([]);
-      //   },
-      // }}
-      />
     </>
   );
 };
@@ -520,4 +547,18 @@ const DropDown = ({
       </Popover>
     </>
   );
+};
+
+export const dayDiffCnt = (date1: Date, date2: Date) => {
+  const d1 = dayjs(date1).format('YYYY-MM-DD');
+  const d2 = dayjs(date2).format('YYYY-MM-DD');
+  return dayjs(d2).diff(d1);
+};
+
+const sendMail = async (toEmail, link) => {
+  await axios.post('/api/sendgrid', {
+    email: toEmail,
+    subject: 'Confirm request',
+    text: link,
+  });
 };

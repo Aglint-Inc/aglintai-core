@@ -26,12 +26,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!recruiterId || !endDate || !startDate || !timeDuration || !working_hours)
     return res.status(400).send('Missing required fields');
 
-  if (!working_hours) {
-    working_hours = {
-      startTime: '2024-02-19T05:00:05.548Z',
-      endTime: '2024-02-19T13:00:05.548Z',
-    };
-  }
   try {
     let tokenInfo = await getRecruiterAuthTokens(recruiterId);
 

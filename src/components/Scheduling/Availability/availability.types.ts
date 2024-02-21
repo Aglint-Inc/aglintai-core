@@ -35,10 +35,15 @@ export type StateAvailibility = {
     startDate: Date;
     endDate: Date;
   };
+  dateRangeTableView: {
+    startDate: Date;
+    endDate: Date;
+  };
   timeRange: {
     start: Date;
     end: Date;
   };
+
   excludedDates: string[];
   timeZone: {
     label: string;
@@ -71,6 +76,7 @@ export interface MergedEvents {
       interviewerId: string;
       interviewerName: string;
       profileImg: string;
+      email: string;
       status: AvalabilitySlotType['status'];
     }[];
   };

@@ -23,6 +23,12 @@ export let initialState: StateAvailibility = {
       .add(DAYS_LENGTH - 1, 'day')
       .toDate(),
   },
+  dateRangeTableView: {
+    startDate: new Date(),
+    endDate: dayjs(new Date())
+      .add(DAYS_LENGTH - 1, 'day')
+      .toDate(),
+  },
   excludedDates: [],
   timeZone: getCurrentTimeZone(),
   timeRange: {
@@ -45,6 +51,10 @@ export const setIsisCalenderLoading = (isCalenderLoading: boolean) =>
 
 export const setIntPanelName = (panelName: string) =>
   useAvailableStore.setState({ panelName });
+
+export const setDateRangeTableView = (
+  dateRangeTableView: StateAvailibility['dateRangeTableView'],
+) => useAvailableStore.setState({ dateRangeTableView });
 
 export const setInitInterviewers = (
   interviewers: StateAvailibility['interviewers'],

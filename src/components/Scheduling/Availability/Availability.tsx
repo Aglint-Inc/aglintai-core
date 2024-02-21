@@ -110,40 +110,6 @@ const Availability = () => {
     };
   }, [router.isReady, router.query, isInterviewPanelLoading]);
 
-  // const handleClickNext = async () => {
-  //   if (isCalenderLoading) return;
-  //   try {
-  //     // let newDateRange: StateAvailibility['dateRangeView'] = {
-  //     //   startDate: dayjs(dateRangeView.endDate).add(1, 'day').toDate(),
-  //     //   endDate: dayjs(dateRangeView.endDate).add(DAYS_LENGTH, 'day').toDate(),
-  //     // };
-  //     // setDateRangeView(newDateRange);
-  //     // setIsisCalenderLoading(true);
-  //   } catch (error) {
-  //     toast.error(API_FAIL_MSG);
-  //   } finally {
-  //     setIsisCalenderLoading(false);
-  //   }
-  // };
-
-  // const handleClickPrev = async () => {
-  //   if (isCalenderLoading) return;
-  //   try {
-  //     // let newDateRange: StateAvailibility['dateRangeView'] = {
-  //     //   startDate: dayjs(dateRangeView.startDate)
-  //     //     .subtract(DAYS_LENGTH, 'day')
-  //     //     .toDate(),
-  //     //   endDate: dayjs(dateRangeView.startDate).subtract(1, 'day').toDate(),
-  //     // };
-  //     // setDateRangeView(newDateRange);
-  //     // setIsisCalenderLoading(true);
-  //   } catch (error) {
-  //     toast.error(API_FAIL_MSG);
-  //   } finally {
-  //     setIsisCalenderLoading(false);
-  //   }
-  // };
-
   const deleteHandler = async () => {
     const res = await handleDelete(router.query.panel_id);
     if (res) {

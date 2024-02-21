@@ -3,29 +3,27 @@ import React from 'react';
 
 import { PanelDetailTableHeaderRow, TableHeaderCell } from '@/devlink2';
 
+import { StateAvailibility } from './availability.types';
 import { useAvailableStore } from './store';
-import { DAYS_LENGTH } from './utils';
 
 const CalenderHeaderRow = () => {
-  const dateRangeView = useAvailableStore((state) => state.dateRangeView);
-
+  const dateRangeTableView = useAvailableStore(
+    (state) => state.dateRangeTableView,
+  );
+  const dayKeys = getDateRangeKeys(dateRangeTableView);
   return (
     <>
       <PanelDetailTableHeaderRow
         slotHeaderCells={
           <>
-            {Array(DAYS_LENGTH)
-              .fill(-1)
-              .map((_, idx) => {
-                return (
-                  <TableHeaderCell
-                    key={idx}
-                    textDateMonth={dayjs(dateRangeView.startDate)
-                      .add(idx, 'day')
-                      .format('dddd DD MMM')}
-                  />
-                );
-              })}
+            {dayKeys.map((dayKey, idx) => {
+              return (
+                <TableHeaderCell
+                  key={idx}
+                  textDateMonth={dayjs(dayKey).format('dddd DD MMM')}
+                />
+              );
+            })}
           </>
         }
       />
@@ -34,3 +32,19 @@ const CalenderHeaderRow = () => {
 };
 
 export default CalenderHeaderRow;
+
+export const getDateRangeKeys = (
+  dateRange: StateAvailibility['dateRangeView'],
+) => {
+  let diff = dayjs(dateRange.endDate).diff(dateRange.startDate, 'day') + 1;
+  const dayKeys = [];
+  let itr = 0;
+  while (itr < diff) {
+    dayKeys.push(
+      dayjs(dateRange.startDate).add(itr, 'day').format('YYYY-MM-DD'),
+    );
+    itr += 1;
+  }
+
+  return dayKeys;
+};

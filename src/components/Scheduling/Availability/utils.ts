@@ -102,6 +102,7 @@ export function mergeInterviewerEvents(
             interviewerName: interviewer.interviewerName,
             profileImg: interviewer.profileImg,
             status: timeSlot.status,
+            email: interviewer.email,
           });
         });
       }
@@ -136,6 +137,7 @@ export function mergeInterviewerEventsWithTimeSlot(
           endTime: timeSlot.endTime,
           interviewerId: inter.interviewerId,
           interviewerName: inter.interviewerName,
+          email: inter.email,
           profileImg: inter.profileImg,
           status: timeSlot.status,
         });
@@ -170,6 +172,7 @@ export const groupSlots = (
         interviewerName: interviewer.interviewerName,
         profileImg: interviewer.profileImg,
         status: timeSlot.status,
+        email: interviewer.email,
       });
     });
   }
