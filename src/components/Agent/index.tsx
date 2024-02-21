@@ -405,7 +405,12 @@ function Agent() {
             sendMessage();
           },
         }}
-        isSearch={!(typeof activeChat === 'number' && !messages.length)}
+        isSearch={
+          !(
+            typeof activeChat === 'number' &&
+            !agentChats[activeChat]?.messages.length
+          )
+        }
         // isSearch={true}
       />
       <Drawer
