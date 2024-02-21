@@ -113,17 +113,17 @@ function Login() {
       !validateEmail(emailRef.current.value) ||
       !validatePassword(passwordRef.current.value)
     ) {
-      const authdata = await supabase.auth.signInWithPassword({
+      const authData = await supabase.auth.signInWithPassword({
         email: details.email,
         password: details.password,
       });
-      if (!authdata.error) {
+      if (!authData.error) {
         router.push(pageRoutes.LOADING);
       } else {
         setErrorCheck({
           ...errorCheck,
           password: {
-            message: authdata.error.message,
+            message: authData.error.message,
             error: true,
           },
         });

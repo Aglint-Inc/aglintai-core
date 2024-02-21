@@ -96,7 +96,7 @@ export default function ResetPasswordComponent() {
           data: { is_invite: 'false' }, // for invite user flow this is needed
         });
         if (!error) {
-          toast.success('Password reset successfull');
+          toast.success('Password reset successful');
           const { data: user } = await supabase.auth.getSession();
           const { data, error } = await supabase
             .from('recruiter_user')
@@ -109,9 +109,9 @@ export default function ResetPasswordComponent() {
           if (data[0].role === 'interviewer') {
             router.push(pageRoutes.INTERVIEWER);
           } else {
-            router.push(pageRoutes.JOBS);
+            router.push(pageRoutes.DASHBOARD);
           }
-          router.push(pageRoutes.JOBS);
+          router.push(pageRoutes.DASHBOARD);
         } else {
           if (
             error == 'AuthApiError: Password should be at least 8 characters'

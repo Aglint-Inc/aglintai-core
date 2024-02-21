@@ -159,7 +159,7 @@ export default function Loading() {
                 localStorage.removeItem('redirectURL');
               } else {
                 router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+                  localStorage.getItem('redirectURL') || pageRoutes.DASHBOARD,
                 );
                 localStorage.removeItem('redirectURL');
               }
