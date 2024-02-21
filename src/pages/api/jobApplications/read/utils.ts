@@ -17,7 +17,7 @@ import { Database } from '@/src/types/schema';
 import { ReadJobApplicationApi } from '.';
 
 export const selectJobApplicationQuery =
-  '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type)';
+  '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type, overall_interview_score)';
 
 export const handleRead = async (
   sections: ReadJobApplicationApi['request']['sections'],

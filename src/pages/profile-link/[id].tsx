@@ -60,22 +60,12 @@ function InterviewFeedbackPage() {
 
   async function getApplicationDetails(id) {
     const { data: jobApp, error: errorJob } = await supabase
-      .from('job_applications')
+      .from('applications')
       .select(`${selectJobApplicationQuery}`)
-      .eq('application_id', id);
-
+      .eq('id', id);
     if (!errorJob) {
-      const { data, error } = await supabase
-        .from('candidates')
-        .select()
-        .eq('id', jobApp[0]?.candidate_id);
-      if (!error) {
-        setApplicationDetails({
-          ...jobApp[0],
-          candidates: data[0],
-        } as JobApplication);
-        getJobDetails(jobApp[0]?.job_id);
-      }
+      setApplicationDetails(jobApp[0] as any as JobApplication);
+      getJobDetails(jobApp[0]?.job_id);
     }
   }
 
@@ -98,7 +88,7 @@ function InterviewFeedbackPage() {
   }
 
   let resumeScoreWheel = <></>;
-  const interviewScore = application.overall_interview_score;
+  const interviewScore = application?.overall_interview_score ?? null;
 
   if (application && job) {
     if (application.score_json) {
