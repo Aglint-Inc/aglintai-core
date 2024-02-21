@@ -150,6 +150,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;

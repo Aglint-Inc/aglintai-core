@@ -5,7 +5,7 @@ import { useDrag } from 'react-dnd';
 
 import { RecommendedCardLoader, RecommendedQuestionCard } from '@/devlink2';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
-import { type RecommendationQuestion } from '@/src/queries/assessment/recommendations';
+import { type RecommendationQuestion } from '@/src/queries/assessment/types';
 
 import { useAssessment } from './context';
 import { getSafeQuestionType } from '../utils';

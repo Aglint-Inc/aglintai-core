@@ -215,7 +215,7 @@ const getStatus = (
     case JobApplicationSections.ASSESSMENT:
       return getAssessmentStatus(application.status_emails_sent, {
         created_at: application.assessment_results?.created_at ?? null,
-        feedback: application.assessment_results?.feedback ?? null,
+        result: application.assessment_results?.result ?? null,
       });
     case JobApplicationSections.DISQUALIFIED:
       return getDisqualificationStatus(application.status_emails_sent);

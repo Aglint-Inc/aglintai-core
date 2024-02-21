@@ -15,41 +15,47 @@ export function AllInterview({
   styleSidebarWidth = {},
   slotPagination,
   slotFilterButton,
+  isSchedulerTable = true,
+  slotCheckbox,
+  isCheckboxVisible = false,
+  propsGrid = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "all-interview-sub-head")}
-        tag="div"
-      >
+      {isSchedulerTable ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-828")}
+          className={_utils.cx(_styles, "all-interview-sub-head")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-922")}
+            className={_utils.cx(_styles, "div-block-828")}
             tag="div"
           >
-            {slotFilterButton}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-922")}
+              tag="div"
+            >
+              {slotFilterButton}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {slotAddFilter ?? <AddFilter />}
+            </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotAddFilter ?? <AddFilter />}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-830")}
-          tag="div"
-        >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cursor-pointer")}
+            className={_utils.cx(_styles, "div-block-830")}
             tag="div"
-            {...onClickSort}
           >
-            {"Sort By"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cursor-pointer")}
+              tag="div"
+              {...onClickSort}
+            >
+              {"Sort By"}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "interview_table_layout")}
         tag="div"
@@ -65,11 +71,20 @@ export function AllInterview({
             <_Builtin.Block
               className={_utils.cx(_styles, "allinterview_row")}
               tag="div"
+              {...propsGrid}
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
+                {isCheckboxVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-958")}
+                    tag="div"
+                  >
+                    {slotCheckbox}
+                  </_Builtin.Block>
+                ) : null}
                 <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
@@ -96,12 +111,14 @@ export function AllInterview({
               >
                 <_Builtin.Block tag="div">{"Interview Panel"}</_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
-              </_Builtin.Block>
+              {isSchedulerTable ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_candidaterow")}

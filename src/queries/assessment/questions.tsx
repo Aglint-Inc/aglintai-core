@@ -1,77 +1,52 @@
 /* eslint-disable security/detect-object-injection */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { useAssessment } from '@/src/components/NewAssessment/AssessmentPage/context';
 import useAssessmentStore from '@/src/components/NewAssessment/Stores';
-import { type Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { getQuestionDefaults } from '@/src/components/NewAssessment/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { type Assessment } from '.';
 import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
-import { RecommendationQuestion } from './recommendations';
+import {
+  Assessment,
+  AssessmentQuestion,
+  AssessmentQuestionInsert,
+  AssessmentQuestionUpdate,
+  RecommendationQuestion,
+} from './types';
 
 const TABLE = 'assessment_question' as const;
-type AssessmentQuestionTable = Database['public']['Tables'][typeof TABLE];
-
-type AssessmentQuestionDb = AssessmentQuestionTable['Row'];
-type AssessmentQuestionDbInsert = AssessmentQuestionTable['Insert'];
-type AssessmentQuestionDbUpdate = AssessmentQuestionTable['Update'];
-type CustomTypes = {
-  description: {
-    show: boolean;
-    value: string;
-  };
-};
-export type CustomQuestionType = (
-  | {
-      type: 'mcq';
-      question: {
-        label: string;
-        options: string[];
-      };
-      answer: {
-        options: boolean[];
-      };
-    }
-  | {
-      type: 'qna';
-      question: {
-        label: string;
-      };
-      answer: {
-        expected_answer: string;
-      };
-    }
-) &
-  CustomTypes;
-
-export type AssessmentQuestion = AssessmentQuestionDb & CustomQuestionType;
-export type AssessmentQuestionInsert = AssessmentQuestionDbInsert &
-  Partial<CustomQuestionType>;
-export type AssessmentQuestionUpdate = AssessmentQuestionDbUpdate &
-  Partial<CustomQuestionType>;
 
 export const useAssessmentQuestions = () => {
+  const { recruiter_id } = useAuthDetails();
   const { assessment_id } = useAssessmentId();
   const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
   const response = useQuery({
     queryKey,
     queryFn: () => readAssessmentQuestionsDbAction(assessment_id),
     staleTime: Infinity,
+    enabled: !!recruiter_id,
   });
   return { ...response };
 };
 
 export const useAssessmentQuestionCreate = () => {
-  const { assessment_id } = useAssessmentId();
+  const { assessment } = useAssessment();
+  const assessment_id = assessment?.id ?? null;
+  const mode = assessment?.mode ?? null;
   const setCurrentQuestion = useAssessmentStore(
     (state) => state.setCurrentQuestion,
   );
   const queryClient = useQueryClient();
   const question_id = generateUUID();
-  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const { queryKey } = assessmentQueryKeys.questions({
+    assessment_id,
+  });
   const { queryKey: recQueryKey } = assessmentQueryKeys.recommendations({
     assessment_id,
+    mode,
   });
   const mutation = useMutation({
     mutationFn: (recommededQuestion: RecommendationQuestion) =>
@@ -200,6 +175,55 @@ export const useAssessmentQuestionUpdate = () => {
   return { handleUpdateQuestion, mutation };
 };
 
+export const useAssessmentAllQuestionUpdate = () => {
+  const { assessment_id } = useAssessmentId();
+  const queryClient = useQueryClient();
+  const { queryKey } = assessmentQueryKeys.questions({ assessment_id });
+  const getUpdatedQuestions = (
+    oldQuestions: AssessmentQuestion[],
+  ): AssessmentQuestion[] => {
+    return oldQuestions.reduce((acc, curr) => {
+      if (curr.type !== 'qna') {
+        const defaults = getQuestionDefaults(
+          'qna',
+          curr.question.label,
+          curr.description,
+          curr.required,
+        );
+        const newQuestion: AssessmentQuestion = {
+          ...curr,
+          ...(defaults as any),
+        };
+        acc.push(newQuestion);
+      } else acc.push(curr);
+      return acc as AssessmentQuestion[];
+    }, [] as AssessmentQuestion[]);
+  };
+  const mutation = useMutation({
+    mutationFn: () => {
+      const oldQuestions =
+        queryClient.getQueryData<AssessmentQuestion[]>(queryKey);
+      const newQuestions = getUpdatedQuestions(oldQuestions);
+      return upsertAssessmentQuestionsDbAction(newQuestions);
+    },
+    onMutate: () => {
+      const oldQuestions =
+        queryClient.getQueryData<AssessmentQuestion[]>(queryKey);
+      const newQuestions = getUpdatedQuestions(oldQuestions);
+      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, newQuestions);
+      return { oldQuestions };
+    },
+    onError: (err, variables, context) => {
+      toast.warning('Unable to update questions');
+      queryClient.setQueryData<AssessmentQuestion[]>(
+        queryKey,
+        context.oldQuestions,
+      );
+    },
+  });
+  return { mutation };
+};
+
 const createAssessmentQuestionDbAction = async (
   assessment: AssessmentQuestionInsert,
 ) => {
@@ -223,7 +247,6 @@ const readAssessmentQuestionsDbAction = async (
   return data as unknown as AssessmentQuestion[];
 };
 
-// eslint-disable-next-line no-unused-vars
 const updateAssessmentQuestionsDbAction = async (
   question_id: AssessmentQuestion['id'],
   question: AssessmentQuestionUpdate,
@@ -235,6 +258,14 @@ const updateAssessmentQuestionsDbAction = async (
     .select();
   if (error) throw new Error(error.message);
   return data[0] as unknown as AssessmentQuestion;
+};
+
+const upsertAssessmentQuestionsDbAction = async (
+  questions: AssessmentQuestion[],
+) => {
+  const { data, error } = await supabase.from(TABLE).upsert(questions).select();
+  if (error) throw new Error(error.message);
+  return data as unknown as AssessmentQuestion;
 };
 
 const deleteAssessmentQuestionsDbAction = async (

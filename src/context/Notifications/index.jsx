@@ -1,8 +1,8 @@
 import { dbName } from '@utils/dbname';
-import { supabase } from '@utils/supabaseClient';
 import { useEffect } from 'react';
 import { createContext, useContext, useState } from 'react';
 
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';

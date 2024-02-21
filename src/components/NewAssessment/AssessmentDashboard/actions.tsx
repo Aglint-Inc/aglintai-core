@@ -12,6 +12,7 @@ const initialFields: CreateEditPayload = {
   title: '',
   type: 'programming',
   description: '',
+  mode: 'classic',
   level: 'basic',
 };
 

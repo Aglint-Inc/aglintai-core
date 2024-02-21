@@ -21,6 +21,11 @@ function ShecdulingMainComp() {
                 router.push(pageRoutes.SCHEDULINGPANEL);
               },
             }}
+            onClickMySchedule={{
+              onClick: () => {
+                router.push(pageRoutes.INTERVIEWER);
+              },
+            }}
           />
         }
       />

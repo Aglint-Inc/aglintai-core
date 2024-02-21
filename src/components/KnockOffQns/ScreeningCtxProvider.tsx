@@ -12,7 +12,7 @@ import React, {
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { PublicJobsType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {

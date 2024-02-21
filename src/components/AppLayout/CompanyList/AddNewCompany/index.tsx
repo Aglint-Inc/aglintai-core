@@ -27,7 +27,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 interface Error {

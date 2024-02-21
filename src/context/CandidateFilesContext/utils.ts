@@ -1,5 +1,5 @@
 import { supportedTypes } from '@/src/pages/api/jobApplications/candidateUpload/utils';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { CandidateResumesContext, CandidateResumesCreateAction } from './types';
 

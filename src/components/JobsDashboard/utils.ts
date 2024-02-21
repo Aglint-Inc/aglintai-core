@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
 import { JobApplcationDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { JobType, Status } from './types';
 

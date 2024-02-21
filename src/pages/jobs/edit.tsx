@@ -8,7 +8,7 @@ import JobPostFormProvider, {
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 function Hoc() {
   return (

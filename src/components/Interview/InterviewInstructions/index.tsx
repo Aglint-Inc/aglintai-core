@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { InterviewWelcome } from '@/devlink';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import Loader from '../../SignUpComp/Loader/Index';
 function InterviewInstructions() {

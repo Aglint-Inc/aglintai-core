@@ -9,7 +9,7 @@ import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 import { industries } from '@/src/utils/industries';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';

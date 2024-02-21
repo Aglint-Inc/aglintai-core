@@ -1,27 +1,36 @@
 import axios from 'axios';
-import { cloneDeep, get, set } from 'lodash';
+import countryTimeZone from 'countries-and-timezones';
+import dayjs from 'dayjs';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
   InterviewerType,
+  MergedEvents,
   StateAvailibility,
 } from './availability.types';
 
 export const DAYS_LENGTH = 5;
 
 export const getAvailability = async (
-  currentMonth: string,
   recruiterId: string,
   timeSlot: number,
+  startDate: string,
+  endDate: string,
+  workingHours?: {
+    startTime: string;
+    endTime: string;
+  },
 ) => {
   const { data } = (await axios.post('/api/scheduling/list-availability', {
     recruiterId: recruiterId,
-    currentMonth,
     timeDuration: timeSlot,
+    startDate,
+    endDate,
+    working_hours: workingHours,
   })) as { data: InterviewerAvailabliity['availability'] };
 
   let updatedResp: InterviewerAvailabliity['availability'] = {};
@@ -61,29 +70,39 @@ export const initialiseCheckedInts = (
   }));
 };
 export function mergeInterviewerEvents(
-  interviewers:
-    | StateAvailibility['interviewers']
-    | StateAvailibility['checkedInterSlots'],
+  interviewers: StateAvailibility['interviewers'],
+  timeDuration: number,
+  timeRange: StateAvailibility['timeRange'],
 ) {
   const mergedEvents: MergedEvents = {};
 
   interviewers.forEach((interviewer) => {
     interviewer.slots.forEach((slot) => {
+      if (slot.timeDuration !== timeDuration) return;
       for (const date in slot.availability) {
         if (!mergedEvents[String(date)]) {
           mergedEvents[String(date)] = {};
         }
         slot.availability[String(date)].forEach((timeSlot) => {
-          const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
-          if (!mergedEvents[String(date)][String(timeRange)]) {
-            mergedEvents[String(date)][String(timeRange)] = [];
+          if (
+            dayjs(timeSlot.startTime).hour() < dayjs(timeRange.start).hour() ||
+            dayjs(timeSlot.endTime).hour() > dayjs(timeRange.end).hour()
+          )
+            return;
+
+          if (timeSlot.status !== 'available') return;
+          const timePath = `${timeSlot.startTime}_${timeSlot.endTime}`;
+          if (!mergedEvents[String(date)][String(timePath)]) {
+            mergedEvents[String(date)][String(timePath)] = [];
           }
-          mergedEvents[String(date)][String(timeRange)].push({
+          mergedEvents[String(date)][String(timePath)].push({
             startTime: timeSlot.startTime,
             endTime: timeSlot.endTime,
             interviewerId: interviewer.interviewerId,
             interviewerName: interviewer.interviewerName,
             profileImg: interviewer.profileImg,
+            status: timeSlot.status,
+            email: interviewer.email,
           });
         });
       }
@@ -118,6 +137,7 @@ export function mergeInterviewerEventsWithTimeSlot(
           endTime: timeSlot.endTime,
           interviewerId: inter.interviewerId,
           interviewerName: inter.interviewerName,
+          email: inter.email,
           profileImg: inter.profileImg,
           status: timeSlot.status,
         });
@@ -151,78 +171,13 @@ export const groupSlots = (
         interviewerId: interviewer.interviewerId,
         interviewerName: interviewer.interviewerName,
         profileImg: interviewer.profileImg,
+        status: timeSlot.status,
+        email: interviewer.email,
       });
     });
   }
 
   return mergedEvents;
-};
-export interface MergedEvents {
-  [date: string]: {
-    [timeRange: string]: {
-      startTime: Date;
-      endTime: Date;
-      interviewerId: string;
-      interviewerName: string;
-      profileImg: string;
-      status?: AvalabilitySlotType['status'];
-    }[];
-  };
-}
-export const updateTimeSlotStatusUtil = (
-  interviewers: StateAvailibility['interviewers'],
-  checkedInterSlots: StateAvailibility['checkedInterSlots'],
-  newStatus: AvalabilitySlotType['status'],
-  timeSlot: number,
-) => {
-  let updInterviewers = cloneDeep(interviewers);
-  let updCheckedInterSlots = cloneDeep(checkedInterSlots);
-  updCheckedInterSlots = updCheckedInterSlots.map((u) => ({
-    ...u,
-    countCheckedSlots: 0,
-  }));
-  for (let idx = 0; idx < updCheckedInterSlots.length; ++idx) {
-    for (
-      let idx2 = 0;
-      idx2 < updCheckedInterSlots[Number(idx)].slots.length;
-      ++idx2
-    ) {
-      const daySlots = updCheckedInterSlots[Number(idx)].slots[Number(idx2)];
-      if (daySlots.timeDuration !== timeSlot) continue;
-      const checkedDaysKeys = Object.keys(daySlots.availability).filter(
-        (str) => daySlots.availability[String(str)].length > 0,
-      );
-      for (let checkedDaysKey of checkedDaysKeys) {
-        let dayPath = `[${idx}].slots[${idx2}].availability[${String(
-          String(checkedDaysKey),
-        )}]`;
-
-        for (let checkedSlot of get(
-          updCheckedInterSlots,
-          dayPath,
-        ) as AvalabilitySlotType[]) {
-          let updatedIntSlots = get(updInterviewers, dayPath).map(
-            (intSlot: AvalabilitySlotType) => {
-              if (intSlot.startTime === checkedSlot.startTime) {
-                intSlot.status = newStatus;
-              }
-              return intSlot;
-            },
-          );
-
-          updInterviewers[Number(idx)].slots[Number(idx2)].cntRequested += (
-            get(updCheckedInterSlots, dayPath) as AvalabilitySlotType[]
-          ).length;
-          set(updInterviewers, dayPath, updatedIntSlots);
-        }
-        set(updCheckedInterSlots, dayPath, []);
-        // console.log(get(updInterviewers, dayPath));
-        // console.log(get(updCheckedInterSlots, dayPath));
-      }
-    }
-  }
-
-  return { updInterviewers, updCheckedInterSlots };
 };
 
 export const countSlotStatus = (
@@ -301,4 +256,15 @@ export const handleDelete = async (panel_id: string | string[]) => {
   } catch (error) {
     toast.error("Couldn't delete panel. Please try again later.");
   }
+};
+
+export const getCurrentTimeZone = () => {
+  // Get the current time zone
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const tz = countryTimeZone.getTimezone(timeZone);
+
+  return {
+    label: `(UTC ${tz.utcOffsetStr} ) ` + tz.name,
+    value: tz.name,
+  };
 };

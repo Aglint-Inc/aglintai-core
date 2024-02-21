@@ -7,7 +7,6 @@ import {
   setIsisCalenderLoading,
   setTimeSlot,
   useAvailableStore,
-  useSyncInterviewersCalender,
 } from './store';
 import UISelect from '../../Common/Uiselect';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
@@ -17,15 +16,11 @@ const TimeDurationDropDown = () => {
   const isCalenderLoading = useAvailableStore(
     (state) => state.isCalenderLoading,
   );
-  const { handleSync } = useSyncInterviewersCalender();
   const handleOnchange = async (e: SelectChangeEvent<number>) => {
     try {
       if (isCalenderLoading) return;
       setIsisCalenderLoading(true);
       const timeSlotReq = Number(e.target.value);
-      const currMonth = new Date().toISOString();
-      await handleSync(timeSlotReq, currMonth);
-
       setTimeSlot(timeSlotReq);
     } catch (error) {
       toast.error(API_FAIL_MSG);

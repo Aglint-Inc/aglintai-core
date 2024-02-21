@@ -178,11 +178,13 @@ export type Database = {
           id: string
           is_resume_fetching: boolean
           job_id: string
+          overall_interview_score: number
           overall_score: number
           phone_screening: Json | null
           processing_status: Database["public"]["Enums"]["application_processing_status"]
           retry: number
           score_json: Json | null
+          screening_answers: string | null
           status: Database["public"]["Enums"]["application_status"]
           status_emails_sent: Json
         }
@@ -195,11 +197,13 @@ export type Database = {
           id?: string
           is_resume_fetching?: boolean
           job_id: string
+          overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
+          screening_answers?: string | null
           status?: Database["public"]["Enums"]["application_status"]
           status_emails_sent?: Json
         }
@@ -212,11 +216,13 @@ export type Database = {
           id?: string
           is_resume_fetching?: boolean
           job_id?: string
+          overall_interview_score?: number
           overall_score?: number
           phone_screening?: Json | null
           processing_status?: Database["public"]["Enums"]["application_processing_status"]
           retry?: number
           score_json?: Json | null
+          screening_answers?: string | null
           status?: Database["public"]["Enums"]["application_status"]
           status_emails_sent?: Json
         }
@@ -248,6 +254,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_applications_screening_answers_fkey"
+            columns: ["screening_answers"]
+            isOneToOne: false
+            referencedRelation: "screening_answers"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -258,6 +271,7 @@ export type Database = {
           edited: boolean
           id: string
           level: Database["public"]["Enums"]["question_level"]
+          mode: Database["public"]["Enums"]["assessment_mode"]
           recruiter_id: string
           title: string | null
           type: Database["public"]["Enums"]["template_type"] | null
@@ -268,6 +282,7 @@ export type Database = {
           edited?: boolean
           id?: string
           level?: Database["public"]["Enums"]["question_level"]
+          mode?: Database["public"]["Enums"]["assessment_mode"]
           recruiter_id: string
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
@@ -278,6 +293,7 @@ export type Database = {
           edited?: boolean
           id?: string
           level?: Database["public"]["Enums"]["question_level"]
+          mode?: Database["public"]["Enums"]["assessment_mode"]
           recruiter_id?: string
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
@@ -340,7 +356,7 @@ export type Database = {
           parent_question_id: string | null
           question: Json | null
           required: boolean
-          type: Database["public"]["Enums"]["question_type"] | null
+          type: Database["public"]["Enums"]["question_type"]
         }
         Insert: {
           answer?: Json | null
@@ -353,7 +369,7 @@ export type Database = {
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
-          type?: Database["public"]["Enums"]["question_type"] | null
+          type?: Database["public"]["Enums"]["question_type"]
         }
         Update: {
           answer?: Json | null
@@ -366,7 +382,7 @@ export type Database = {
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
-          type?: Database["public"]["Enums"]["question_type"] | null
+          type?: Database["public"]["Enums"]["question_type"]
         }
         Relationships: [
           {
@@ -387,37 +403,31 @@ export type Database = {
       }
       assessment_results: {
         Row: {
-          ai_interviewer_id: number
           application_id: string
-          conversation: Json[]
+          assessment_id: string | null
           created_at: string
-          feedback: Json
+          duration: number | null
           id: string
-          interview_duration: string
-          interview_score: number
-          interviewing_date: string
+          responses: Json[] | null
+          result: Json | null
         }
         Insert: {
-          ai_interviewer_id: number
           application_id: string
-          conversation: Json[]
+          assessment_id?: string | null
           created_at?: string
-          feedback: Json
+          duration?: number | null
           id?: string
-          interview_duration: string
-          interview_score?: number
-          interviewing_date?: string
+          responses?: Json[] | null
+          result?: Json | null
         }
         Update: {
-          ai_interviewer_id?: number
           application_id?: string
-          conversation?: Json[]
+          assessment_id?: string | null
           created_at?: string
-          feedback?: Json
+          duration?: number | null
           id?: string
-          interview_duration?: string
-          interview_score?: number
-          interviewing_date?: string
+          responses?: Json[] | null
+          result?: Json | null
         }
         Relationships: [
           {
@@ -425,6 +435,13 @@ export type Database = {
             columns: ["application_id"]
             isOneToOne: false
             referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_assessment_results_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessment"
             referencedColumns: ["id"]
           }
         ]
@@ -435,6 +452,7 @@ export type Database = {
           description: string | null
           embeddings: string | null
           id: string
+          mode: Database["public"]["Enums"]["assessment_mode"]
           title: string | null
           type: Database["public"]["Enums"]["template_type"] | null
         }
@@ -443,6 +461,7 @@ export type Database = {
           description?: string | null
           embeddings?: string | null
           id?: string
+          mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
         }
@@ -451,6 +470,7 @@ export type Database = {
           description?: string | null
           embeddings?: string | null
           id?: string
+          mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
         }
@@ -1196,6 +1216,7 @@ export type Database = {
           recruiter_id: string
           screening_questions: Json[] | null
           screening_setting: Json | null
+          screening_template: string | null
           skills: string[] | null
           slug: string
           start_video: Json | null
@@ -1238,6 +1259,7 @@ export type Database = {
           recruiter_id: string
           screening_questions?: Json[] | null
           screening_setting?: Json | null
+          screening_template?: string | null
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
@@ -1280,6 +1302,7 @@ export type Database = {
           recruiter_id?: string
           screening_questions?: Json[] | null
           screening_setting?: Json | null
+          screening_template?: string | null
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
@@ -1295,6 +1318,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_public_jobs_screening_template_fkey"
+            columns: ["screening_template"]
+            isOneToOne: false
+            referencedRelation: "screening_questions"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -1309,7 +1339,7 @@ export type Database = {
           level: Database["public"]["Enums"]["question_level"] | null
           question: Json | null
           required: boolean
-          type: Database["public"]["Enums"]["question_type"] | null
+          type: Database["public"]["Enums"]["question_type"]
         }
         Insert: {
           answer?: Json | null
@@ -1321,7 +1351,7 @@ export type Database = {
           level?: Database["public"]["Enums"]["question_level"] | null
           question?: Json | null
           required?: boolean
-          type?: Database["public"]["Enums"]["question_type"] | null
+          type?: Database["public"]["Enums"]["question_type"]
         }
         Update: {
           answer?: Json | null
@@ -1333,7 +1363,7 @@ export type Database = {
           level?: Database["public"]["Enums"]["question_level"] | null
           question?: Json | null
           required?: boolean
-          type?: Database["public"]["Enums"]["question_type"] | null
+          type?: Database["public"]["Enums"]["question_type"]
         }
         Relationships: []
       }
@@ -1628,6 +1658,56 @@ export type Database = {
           total_token_used?: number | null
         }
         Relationships: []
+      }
+      screening_answers: {
+        Row: {
+          answers: Json
+          created_at: string
+          id: string
+        }
+        Insert: {
+          answers: Json
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      screening_questions: {
+        Row: {
+          created_at: string
+          id: string
+          questions: Json
+          recruiter_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          questions: Json
+          recruiter_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          questions?: Json
+          recruiter_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_screening_questions_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       state_json: {
         Row: {
@@ -2030,6 +2110,20 @@ export type Database = {
           schedule: Json
         }[]
       }
+      fetch_interview_data_page_number: {
+        Args: {
+          rec_id: string
+          application_id: string
+          text_search_filter?: string
+          status_filter?: string[]
+          job_id_filter?: string[]
+          panel_id_filter?: string[]
+          sch_type?: string[]
+          date_range_filter?: unknown
+          sort_by?: string
+        }
+        Returns: number
+      }
       get_combined_resume_score: {
         Args: {
           jd_data: Json
@@ -2194,6 +2288,8 @@ export type Database = {
           cand: Json
           candfiles: Json
           assres: Json
+          schedule: Json
+          panel: Json
           fil_res: number
         }[]
       }
@@ -2306,6 +2402,7 @@ export type Database = {
         | "disqualified"
         | "screening"
         | "interview"
+      assessment_mode: "classic" | "verbal" | "visual"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       file_type: "resume" | "coverletter" | "cv" | "image"
@@ -2316,7 +2413,7 @@ export type Database = {
         | "phone_call"
         | "zoom"
       question_level: "basic" | "intermediate" | "advanced"
-      question_type: "code" | "mcq" | "tfq" | "match" | "qna"
+      question_type: "scq" | "mcq" | "qna" | "code"
       recruiter_roles: "admin" | "member" | "interviewer"
       template_type:
         | "cognitive"

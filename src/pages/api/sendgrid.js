@@ -8,8 +8,8 @@ export default function handler(req, res) {
   const msg = {
     to: details.email, // Change to your recipient
     from: {
-      email: details.fromEmail || 'admin@aglinthq.com',
-      name: details.fromName || 'Aglint Admin',
+      email: details.fromEmail ?? 'admin@aglinthq.com',
+      name: details.fromName ?? 'Aglint Admin',
     }, // Change to your verified sender
     subject: details.subject,
     html: details.text,
@@ -17,6 +17,7 @@ export default function handler(req, res) {
   sgMail
     .send({
       ...msg,
+
       // mailSettings: {
       //   sandboxMode: {
       //     enable: !isEnvProd(),

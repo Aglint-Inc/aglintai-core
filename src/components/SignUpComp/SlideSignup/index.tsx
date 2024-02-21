@@ -10,7 +10,7 @@ import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Details, SignUpError } from './types';

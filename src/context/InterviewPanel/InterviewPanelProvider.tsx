@@ -8,7 +8,7 @@ import {
   setPagination,
 } from '@/src/components/Scheduling/Interview/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { setInterviewPanels } from '../../components/Scheduling/Panels/store';
@@ -35,7 +35,6 @@ const InterviewPanelProvider = ({ children }) => {
     }
     return () => {
       setInterviewPanels([]);
-      resetInterviewState();
     };
   }, [recruiter?.id]);
 

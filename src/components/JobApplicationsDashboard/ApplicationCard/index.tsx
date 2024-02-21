@@ -17,6 +17,7 @@ import {
   InsightTagReliable,
   // InsightTagReliable,
   InsightTagSkilled,
+  RcCheckbox,
   ScreeningStatus,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
@@ -42,6 +43,7 @@ import {
   getScreeningStatus,
   mapScoreToAnalysis,
 } from '../utils';
+import ListCardInterviewSchedule from '../../Scheduling/Interview/ListCard';
 
 const ApplicationCard = ({
   detailedView,
@@ -86,34 +88,61 @@ const ApplicationCard = ({
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
   return !detailedView ? (
-    <AllCandidateListItem
-      key={key1}
-      onclickSelect={{ onClick: handleCheck }}
-      isChecked={isChecked}
-      slotProfileImage={profile}
-      name={name.value}
-      jobTitle={jobTitle.value}
-      location={location.value}
-      slotResumeScore={resumeScore}
-      isInterviewVisible={views.assessment}
-      slotAssessmentScore={interviewScore}
-      appliedDate={creationDate}
-      onclickCandidate={{
-        onClick: () => {
+    views.interview ? (
+      <ListCardInterviewSchedule
+        isSelected={isSelected}
+        app={
+          {
+            ...application,
+            public_jobs: { id: application.job_id, job_title: jobTitle.value },
+          } as any
+        }
+        panel_name={application?.panel?.name}
+        isJobDasboard={true}
+        onClickCard={() => {
           posthog.capture('candidate card clicked');
           handleOpenDetails();
-        },
-      }}
-      isHighlighted={isSelected}
-      experience={getExperienceCount(
-        (application.candidate_files?.resume_json as any)?.basics
-          ?.totalExperience,
-      )}
-      isScreeningVisible={views.screening}
-      slotScreening={<ScreeningStatusComponent application={application} />}
-      isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
-      slotDisqualified={<DisqualificationComponent application={application} />}
-    />
+        }}
+        slotCheckbox={
+          <RcCheckbox
+            onclickCheck={{ onClick: handleCheck }}
+            isChecked={isChecked}
+            text={<></>}
+          />
+        }
+      />
+    ) : (
+      <AllCandidateListItem
+        key={key1}
+        onclickSelect={{ onClick: handleCheck }}
+        isChecked={isChecked}
+        slotProfileImage={profile}
+        name={name.value}
+        jobTitle={jobTitle.value}
+        location={location.value}
+        slotResumeScore={resumeScore}
+        isInterviewVisible={views.assessment}
+        slotAssessmentScore={interviewScore}
+        appliedDate={creationDate}
+        onclickCandidate={{
+          onClick: () => {
+            posthog.capture('candidate card clicked');
+            handleOpenDetails();
+          },
+        }}
+        isHighlighted={isSelected}
+        experience={getExperienceCount(
+          (application.candidate_files?.resume_json as any)?.basics
+            ?.totalExperience,
+        )}
+        isScreeningVisible={views.screening}
+        slotScreening={<ScreeningStatusComponent application={application} />}
+        isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
+        slotDisqualified={
+          <DisqualificationComponent application={application} />
+        }
+      />
+    )
   ) : (
     <TopCandidateListItem
       key={key2}

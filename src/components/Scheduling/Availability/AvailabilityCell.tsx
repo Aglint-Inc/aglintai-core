@@ -15,23 +15,22 @@ import {
   AvalabilitySlotType,
   InterviewerAvailabliity,
 } from './availability.types';
-import { checkSlot, unCheckSlot } from './store';
 import UITypography from '../../Common/UITypography';
 
 const AvailabilityCell = ({
   timeDurSlots,
   day,
   cellPath,
-  checkedTimeDur,
 }: {
   timeDurSlots: InterviewerAvailabliity;
-  checkedTimeDur: AvalabilitySlotType[];
   day: string;
   cellPath: string;
 }) => {
-  const cnt = checkedTimeDur.length;
   const [anchorEl, setAnchorEl] = useState(null);
-  const totalSlots = timeDurSlots.availability[String(day)].length;
+  const totalSlots = timeDurSlots.availability[String(day)]?.length ?? 0;
+  if (!timeDurSlots.availability[String(day)]) {
+    return <TableBodyCell />;
+  }
   return (
     <>
       <TableBodyCell
@@ -40,17 +39,11 @@ const AvailabilityCell = ({
             {timeDurSlots.availability[String(day)]
               .slice(0, 3)
               .map((timeRange) => {
-                const isChecked =
-                  checkedTimeDur.filter(
-                    (c) => c.startTime === timeRange.startTime,
-                  ).length > 0;
-
                 return (
                   <TimeRangePill
                     key={cellPath}
-                    cellPath={cellPath}
-                    isChecked={isChecked}
                     timeRange={timeRange}
+                    isChecked={false}
                   />
                 );
               })}
@@ -68,8 +61,6 @@ const AvailabilityCell = ({
             )}
           </>
         }
-        isSelectedCell={cnt > 0}
-        textSelectedCount={cnt}
       />
       <Popover
         open={Boolean(anchorEl)}
@@ -96,15 +87,10 @@ const AvailabilityCell = ({
               {timeDurSlots.availability[String(day)]
                 .slice(3)
                 .map((timeRange) => {
-                  const isChecked =
-                    checkedTimeDur.filter(
-                      (c) => c.startTime === timeRange.startTime,
-                    ).length > 0;
                   return (
                     <TimeRangePill
                       key={cellPath}
-                      cellPath={cellPath}
-                      isChecked={isChecked}
+                      isChecked={false}
                       timeRange={timeRange}
                     />
                   );
@@ -123,11 +109,9 @@ export default AvailabilityCell;
 const TimeRangePill = ({
   timeRange,
   isChecked,
-  cellPath,
 }: {
   timeRange: AvalabilitySlotType;
   isChecked: boolean;
-  cellPath: string;
 }) => {
   const textTimeRange = `${dayjs(timeRange.startTime).format(
     'hh:mm A',
@@ -138,15 +122,6 @@ const TimeRangePill = ({
       <TimeRangeAvailable
         textTimeRange={textTimeRange}
         isSelected={isChecked}
-        onClickPill={{
-          onClick: () => {
-            if (isChecked) {
-              unCheckSlot(`${cellPath}`, timeRange);
-            } else {
-              checkSlot(`${cellPath}`, timeRange);
-            }
-          },
-        }}
       />
     );
   }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { CloseJobModal } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../JobPostFormProvider';

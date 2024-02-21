@@ -12,7 +12,7 @@ import {
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import AddToListComp from '../AddToList';

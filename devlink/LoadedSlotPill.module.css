@@ -1,6 +1,7 @@
 .div-block-862 {
   position: relative;
   padding: 10px;
+  flex: 0 0 auto;
   cursor: pointer;
 }
 
@@ -80,6 +81,10 @@
   margin-top: 9px;
 }
 
+.mt-9 {
+  margin-top: 9px;
+}
+
 .mt-15 {
   margin-top: 15px;
 }
@@ -121,7 +126,7 @@
   right: 0%;
   bottom: 0%;
 
-  border: 1px dashed #68737d;
+  border: 1px dashed #337fbd;
   border-radius: 10px;
 }
 

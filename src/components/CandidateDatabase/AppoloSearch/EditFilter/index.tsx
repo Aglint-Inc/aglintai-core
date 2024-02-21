@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { palette } from '@/src/context/Theme/Theme';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {

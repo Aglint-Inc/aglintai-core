@@ -8,7 +8,7 @@ import {
   ApplicationsUpdate,
 } from '@/src/types/applications.types';
 import { Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import {
   JobApplicationContext,

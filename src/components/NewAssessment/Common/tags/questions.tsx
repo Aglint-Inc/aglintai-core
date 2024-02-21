@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-import { AssessmentQuestion } from '@/src/queries/assessment/questions';
+import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 
 import AssessmentQuestionIcon from '../icons/questions';
 import { getSafeQuestionType } from '../../utils';

@@ -12,7 +12,7 @@ import {
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CreateDialog from './CreateDialog';
@@ -49,6 +49,9 @@ function InterviewComp() {
   const fetching = useInterviewStore((state) => state.fetching);
   const filterVisible = useInterviewStore((state) => state.filterVisible);
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const selectedApplication = useInterviewStore(
+    (state) => state.selectedApplication,
+  );
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -63,6 +66,10 @@ function InterviewComp() {
         filter.sortBy ||
         filter.scheduleType
       ) {
+        setSelectedApplication(null);
+        router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, {
+          shallow: true,
+        });
         fetchInterviewData({ page: 1 });
       }
     }
@@ -84,6 +91,8 @@ function InterviewComp() {
 
   useEffect(() => {
     const debouncedTextSearchFetch = debounce(() => {
+      setSelectedApplication(null);
+      router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, { shallow: true });
       fetchInterviewData({ page: 1 });
     }, 1000);
 
@@ -134,16 +143,34 @@ function InterviewComp() {
   };
 
   useEffect(() => {
-    if (router.isReady && router.query.application_id) {
+    if (router.isReady && router.query.application_id && !initialLoading) {
       const application = applicationList.find(
         (app) => app.applications.id === router.query.application_id,
       );
-      if (router.query.schedule && !application?.schedule) {
+      setSelectedApplication(application);
+      viaJobHandler(application);
+    }
+  }, [router, applicationList]);
+
+  const viaJobHandler = async (application) => {
+    const job_id = localStorage.getItem('sch_job_id');
+    if (job_id) {
+      const { data: pageNumber, error } = await supabase.rpc(
+        'fetch_interview_data_page_number',
+        {
+          rec_id: recruiter.id,
+          application_id: router.query.application_id as string,
+        },
+      );
+      if (!error && pageNumber !== 1) {
+        setPagination({ page: pageNumber });
+      }
+      if (!application?.schedule) {
         setIsCreateScheduleOpen(true);
       }
-      setSelectedApplication(application);
+      localStorage.removeItem('sch_job_id');
     }
-  }, [router.query]);
+  };
 
   const getPagination = async () => {
     try {
@@ -194,6 +221,7 @@ function InterviewComp() {
         }
         slotBody={
           <AllInterview
+            isSchedulerTable={true}
             slotPagination={
               <Stack
                 sx={{
@@ -262,6 +290,10 @@ function InterviewComp() {
                       )[0]?.name;
                       return (
                         <ListCardInterviewSchedule
+                          isSelected={
+                            app.applications.id ===
+                            selectedApplication?.applications.id
+                          }
                           key={app.applications.id}
                           app={app}
                           onClickCard={onClickCard}

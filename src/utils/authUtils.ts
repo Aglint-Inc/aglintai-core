@@ -1,6 +1,7 @@
 // @ts-ignore
 import { ProgressStatusType } from '@types/data.types';
-import { supabase } from '@utils/supabaseClient';
+
+import { supabase } from '@/src/utils/supabase/client';
 
 export const getProgressStatusFromDb = async (id: string) => {
   const { error, data } = await supabase
@@ -15,7 +16,7 @@ export const getProgressStatusFromDb = async (id: string) => {
 
 export const setDataProgressStatusInDb = async (
   employee_id: string,
-  user_id: string
+  user_id: string,
 ) => {
   const { error, data } = await supabase
     .from('progress_status')
@@ -29,7 +30,7 @@ export const setDataProgressStatusInDb = async (
 
 export const updateProgressStatusInDb = async (
   progressData: Partial<ProgressStatusType>,
-  id: string
+  id: string,
 ) => {
   const { error, data } = await supabase
     .from('progress_status')

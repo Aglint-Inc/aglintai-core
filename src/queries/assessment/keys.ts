@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
 import { pageRoutes } from '@/src/utils/pageRouting';
+
+import { type Assessment } from './types';
 export const assessmentQueryKeys = {
   all: { queryKey: ['aglint_assessment'] as string[] },
   assessments: () => ({
@@ -32,10 +34,17 @@ export const assessmentQueryKeys = {
       { question_id },
     ],
   }),
-  recommendations: ({ assessment_id }: { assessment_id: string }) => ({
+  recommendations: ({
+    assessment_id,
+    mode,
+  }: {
+    assessment_id: Assessment['id'];
+    mode: Assessment['mode'];
+  }) => ({
     queryKey: [
       ...assessmentQueryKeys.assessment({ assessment_id }).queryKey,
       'recommendations',
+      { mode },
     ],
   }),
 } as const;

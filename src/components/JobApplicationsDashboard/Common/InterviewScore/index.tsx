@@ -8,18 +8,18 @@ import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { FetchingEmail, InavlidEmail } from '../../ApplicationCard';
 import { InvitedIcon } from '../../ApplicationCard/Icons/invited';
 import { UninvitedIcon } from '../../ApplicationCard/Icons/uninvited';
-import { getAssessmentStatus, getInterviewScore } from '../../utils';
+import { getAssessmentStatus } from '../../utils';
 
 const InterviewScore = ({ application }: { application: JobApplication }) => {
   const { views } = useJobApplications();
   const {
     emailValidity: { isFetching, isValidEmail },
   } = application;
-  const { feedback, isNotInvited, isPending, timeInfo, assessmentStatus } =
+  const { result, isNotInvited, isPending, timeInfo, assessmentStatus } =
     useMemo(
       () =>
         getAssessmentStatus(application.status_emails_sent, {
-          feedback: application.assessment_results?.feedback ?? null,
+          result: application.assessment_results?.result ?? null,
           created_at: application?.assessment_results?.created_at ?? null,
         }),
       [],
@@ -47,7 +47,7 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
         textDuration={timeInfo}
       />
     );
-  if (!feedback)
+  if (!result)
     return (
       <Tooltip title='Unfinished interview' placement='right' arrow={true}>
         <Stack>
@@ -59,13 +59,10 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
         </Stack>
       </Tooltip>
     );
-  const interviewScore = getInterviewScore(
-    application.assessment_results.feedback,
-  );
-  const color = getColor(interviewScore);
+  const color = getColor(application.overall_interview_score);
   return (
     <AssessmentScore
-      textScore={interviewScore}
+      textScore={application.overall_interview_score}
       props={{ style: { color: color, borderColor: color } }}
       isDurationVisible={true}
       textDuration={timeInfo}

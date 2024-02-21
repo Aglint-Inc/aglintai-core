@@ -1,10 +1,10 @@
-import React from "react";
-import * as _Builtin from "./_Builtin";
-import { PanelMember } from "./PanelMember";
-import { MemberSlotInfo } from "./MemberSlotInfo";
-import { TableBodyCell } from "./TableBodyCell";
-import * as _utils from "./utils";
-import _styles from "./PanelDetailMemberRow.module.css";
+import React from 'react';
+import * as _Builtin from './_Builtin';
+import { PanelMember } from './PanelMember';
+import { MemberSlotInfo } from './MemberSlotInfo';
+import { TableBodyCell } from './TableBodyCell';
+import * as _utils from './utils';
+import _styles from './PanelDetailMemberRow.module.css';
 
 export function PanelDetailMemberRow({
   as: _Component = _Builtin.Block,
@@ -12,14 +12,14 @@ export function PanelDetailMemberRow({
   slotBodyCells,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "table_member_row")} tag="div">
+    <_Component className={_utils.cx(_styles, 'table_member_row')} tag='div'>
       <_Builtin.Block
-        className={_utils.cx(_styles, "table_member_firstcell")}
+        className={_utils.cx(_styles, 'table_member_firstcell')}
         id={_utils.cx(
           _styles,
-          "w-node-_4836445c-82cb-f8d5-7f89-f3e87822942e-7822942d"
+          'w-node-_4836445c-82cb-f8d5-7f89-f3e87822942e-7822942d',
         )}
-        tag="div"
+        tag='div'
       >
         {slotMember ?? (
           <>
@@ -29,7 +29,7 @@ export function PanelDetailMemberRow({
               isConfirmedSlots={true}
               textConfirmedSlotnumber={
                 <>
-                  {"10"}
+                  {'10'}
                   <br />
                 </>
               }
@@ -38,12 +38,12 @@ export function PanelDetailMemberRow({
         )}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "table_cells")}
+        className={_utils.cx(_styles, 'table_cells')}
         id={_utils.cx(
           _styles,
-          "w-node-_702174d5-b379-2b35-e534-e5e9a258ce50-7822942d"
+          'w-node-_702174d5-b379-2b35-e534-e5e9a258ce50-7822942d',
         )}
-        tag="div"
+        tag='div'
       >
         {slotBodyCells ?? <TableBodyCell />}
       </_Builtin.Block>

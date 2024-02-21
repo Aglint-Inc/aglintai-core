@@ -17,7 +17,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import FilterInput from './FilterInput';

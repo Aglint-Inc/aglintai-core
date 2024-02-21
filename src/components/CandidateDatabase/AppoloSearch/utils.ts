@@ -1,5 +1,5 @@
 import { AglintCandidatesTypeDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { EmploymentHistory, FetchCandidatesParams, UsedCredits } from './types';

@@ -22,7 +22,7 @@ import {
   SupportTicketType,
 } from '@/src/types/data.types';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 

@@ -13,6 +13,8 @@ const SpecializedTimePicker = ({
   value,
   onChange,
   minutesStep = 5,
+  maxTime = undefined,
+  minTime = undefined,
 }: {
   label?: string;
   defaultValue?: Dayjs;
@@ -20,6 +22,8 @@ const SpecializedTimePicker = ({
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void;
   minutesStep?: number;
+  maxTime?: Dayjs;
+  minTime?: Dayjs;
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,6 +44,8 @@ const SpecializedTimePicker = ({
         slots={{
           textField: UITextField as any,
         }}
+        maxTime={maxTime}
+        minTime={minTime}
       />
     </LocalizationProvider>
   );

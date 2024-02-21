@@ -1,4 +1,6 @@
 .allinterview_row_-candidate {
+  position: relative;
+
   display: grid;
   width: 100%;
   align-items: center;
@@ -20,6 +22,9 @@
 }
 
 .candidate_cell {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   width: 100%;
   height: 100%;
@@ -39,6 +44,10 @@
 
 .candidate_cell.width-300 {
   width: 300px;
+}
+
+.div-block-958 {
+  margin-right: 4px;
 }
 
 .div-block-834 {
@@ -221,4 +230,22 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.is_selected_bg-copy {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: #edf7ff;
+}
+
+#w-node-eb43a66d-c6c0-56a1-cd6b-c24535cb6173-e75dcb06 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
 }

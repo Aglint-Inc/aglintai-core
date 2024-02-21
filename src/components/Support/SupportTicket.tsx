@@ -41,7 +41,7 @@ import {
 } from '@/src/types/data.types';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import {
   allPriority,
   allStatus,

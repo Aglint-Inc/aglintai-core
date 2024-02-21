@@ -25,7 +25,7 @@ import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import FetchingJobsLever from './Loader';

@@ -1,6 +1,8 @@
 import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { allowedPaths } from './utils/paths/allowed';
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -65,78 +67,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ['/login', '/', '/signup', '/api/:function*'],
-  // matcher: ['/', '/:path*'],
 };
-
-const allowedPaths = new Set([
-  '/login',
-  '/signup',
-  '/api/sendgrid',
-  '/api/lever/saveResume',
-  '/api/interview_feedback',
-  '/api/greenhouse/saveResume',
-  '/api/greenhouse/candidatesync',
-  '/api/greenhouse/batchsave',
-  '/api/greenhouse/getCandidates',
-  '/api/lever/candidateSync',
-  '/api/webhook',
-  '/api/ai/resume-embedding',
-  '/api/interview', // need this publicly access for interview feedback.
-  '/api/assistant/listAssistant',
-  '/api/assistant/listMessages',
-  '/api/assistant/createMessage',
-  '/api/assistant/createThread',
-  '/api/assistant/createRun',
-  '/api/assistant/createAssistant',
-  '/api/google/overview',
-  '/api/google/resume',
-  '/api/google/jdparser',
-  '/api/google/overview-handler',
-  '/api/getLinkedin',
-  '/api/resumecron/batchscore',
-  '/api/resumeScoring',
-  '/api/ashby/createapplication',
-  '/api/ashby/batchsave',
-  '/api/ashby/syncapplications',
-  '/api/ashby/getCandidates',
-  '/api/ashby/cron',
-  '/api/trigger',
-  '/api/jobpost/read',
-  '/api/jobpost/write',
-  '/api/jobpost/company',
-  '/api/phone-screening/submit',
-  '/api/phone-screening/get-application-info',
-  '/api/candidatedb/cron',
-  '/api/candidatedb/save-cron',
-  '/api/candidatedb/cron-email-sender',
-  '/api/email-outreach/send-email',
-  '/api/assessment/access_applications',
-  '/api/assessment/access_public_jobs',
-  '/api/assessment/access_recruiter',
-  '/api/assessment/insert_assessment_results',
-  '/api/assessment/update_applications',
-  '/api/jobApplications/candidateEmail',
-  '/api/jobApplications/candidateUpload/csvUpload',
-  '/api/jobApplications/candidateUpload/manualUpload',
-  '/api/jobApplications/candidateUpload/resumeUpload',
-  '/api/jobApplications/read',
-  '/api/job-assistant/createThread',
-  '/api/job-assistant/cluoud-functions/assistant',
-  '/api/jobpost/indexing',
-  '/api/sitemap.xml',
-  // remove below 2 after testing done
-
-  '/api/scheduling/fetch-panel-user-availability',
-  '/api/scheduling/create-calender-event',
-  '/api/scheduling/interviewer-confirm-slots',
-  '/api/scheduling/google-consent',
-  '/api/scheduling/list-events',
-  '/api/scheduling/list-availability',
-  '/api/supabase/getCandidate-files',
-  '/api/scheduling/invite',
-  '/api/scheduling/confirm',
-  '/api/scheduling/calendar-event',
-]);
 
 const isAllowedPaths = (reqUrl = '') => {
   return allowedPaths.has(reqUrl);

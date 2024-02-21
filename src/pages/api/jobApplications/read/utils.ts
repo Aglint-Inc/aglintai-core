@@ -17,7 +17,7 @@ import { Database } from '@/src/types/schema';
 import { ReadJobApplicationApi } from '.';
 
 export const selectJobApplicationQuery =
-  '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type)';
+  '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type, overall_interview_score)';
 
 export const handleRead = async (
   sections: ReadJobApplicationApi['request']['sections'],
@@ -274,6 +274,10 @@ const rpcDataFormatter = (
   unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
+    (curr.job_app as unknown as JobApplication).panel =
+      curr.panel as unknown as JobApplication['panel'];
+    (curr.job_app as unknown as JobApplication).schedule =
+      curr.schedule as unknown as JobApplication['schedule'];
     (curr.job_app as unknown as JobApplication).candidates =
       curr.cand as JobApplication['candidates'];
     (curr.job_app as unknown as JobApplication).assessment_results =

@@ -15,7 +15,7 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { EmptyStateCandidateSearchAglint } from '../EmptyLottie';

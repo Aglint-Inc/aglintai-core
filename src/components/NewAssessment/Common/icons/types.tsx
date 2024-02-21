@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type Assessment } from '@/src/queries/assessment';
+import { type Assessment } from '@/src/queries/assessment/types';
 
 import {
   Cognitive,

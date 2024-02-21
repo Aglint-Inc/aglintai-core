@@ -35,11 +35,49 @@ export type StateAvailibility = {
     startDate: Date;
     endDate: Date;
   };
-  checkedInterSlots: {
+  dateRangeTableView: {
+    startDate: Date;
+    endDate: Date;
+  };
+  timeRange: {
+    start: Date;
+    end: Date;
+  };
+
+  excludedDates: string[];
+  timeZone: {
+    label: string;
+    value: string;
+  };
+};
+
+export interface InterviewData {
+  [interviewerId: string]: {
     interviewerName: string;
     interviewerId: string;
     profileImg: string;
-    countCheckedSlots: number;
-    slots: InterviewerAvailabliity[];
-  }[];
-};
+    isMailConnected: boolean;
+    email: string;
+    [timeDuration: number]: {
+      [dateKey: string]: {
+        status: string;
+        endTime: string;
+        startTime: string;
+      }[];
+    };
+  };
+}
+
+export interface MergedEvents {
+  [date: string]: {
+    [timeRange: string]: {
+      startTime: Date;
+      endTime: Date;
+      interviewerId: string;
+      interviewerName: string;
+      profileImg: string;
+      email: string;
+      status: AvalabilitySlotType['status'];
+    }[];
+  };
+}

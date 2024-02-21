@@ -177,9 +177,3 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
-
-.embed_css {
-  position: absolute;
-  z-index: -100;
-  pointer-events: none;
-}

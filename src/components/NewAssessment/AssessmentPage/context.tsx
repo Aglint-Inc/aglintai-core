@@ -29,7 +29,7 @@ const useAssessmentActions = () => {
   const assessment =
     assessments?.data?.find(({ id }) => id === assessment_id) ?? undefined;
   const questions = useAssessmentQuestions();
-  const recommendations = useAssessmentRecommendedQuestions();
+  const recommendations = useAssessmentRecommendedQuestions(assessment);
   const value = {
     assessment_id,
     assessment,

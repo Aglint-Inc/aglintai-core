@@ -12,6 +12,7 @@ import { useCreateAssessment } from '@/src/queries/assessment';
 
 import SelectionComp from '../components/selection';
 import LevelTag from '../tags/levels';
+import ModeTags from '../tags/modes';
 import TypeTags from '../tags/types';
 import useAssessmentStore from '../../Stores';
 
@@ -28,7 +29,15 @@ const CreateEditPopup: React.FC<{
     fields: CreateEditPayload,
   ) => void;
   success?: boolean;
-}> = ({ type, initialFields, mutateFn, disable, success = false }) => {
+  editQuestions?: () => void;
+}> = ({
+  type,
+  initialFields,
+  mutateFn,
+  disable,
+  success = false,
+  editQuestions = () => {},
+}) => {
   const popupTitle = `${capitalize(type)} Assessment`;
 
   const { openModal, setOpenModal } = useAssessmentStore((state) => ({
@@ -50,6 +59,10 @@ const CreateEditPopup: React.FC<{
     setFields((prev) => ({ ...prev, type }));
   };
 
+  const handleModeSelect = (mode: CreateEditPayload['mode']) => {
+    setFields((prev) => ({ ...prev, mode }));
+  };
+
   const handleClose = () => {
     setOpenModal(false);
     setTimeout(() => setFields(initialFields), 400);
@@ -58,6 +71,7 @@ const CreateEditPopup: React.FC<{
   const handleSubmit = async () => {
     handleClose();
     mutateFn(fields);
+    if (type === 'edit') editQuestions();
   };
 
   useEffect(() => {
@@ -91,6 +105,10 @@ const CreateEditPopup: React.FC<{
     />
   );
 
+  const modes = (
+    <ModeSelector selectedMode={fields.mode} handleSelect={handleModeSelect} />
+  );
+
   const types = (
     <TypeSelector selectedType={fields.type} handleSelect={handleTypeSelect} />
   );
@@ -111,7 +129,12 @@ const CreateEditPopup: React.FC<{
         textPopupTitle={popupTitle}
         slotInputName={title}
         slotDescriptionTextarea={description}
-        slotSelectionDropdown={types}
+        slotSelectionDropdown={
+          <Stack gap={1}>
+            {modes}
+            {types}
+          </Stack>
+        }
         slotButton={submit}
         slotAssesmentLevel={levels}
         onClickClose={{ onClick: handleClose }}
@@ -165,6 +188,27 @@ const TypeSelector: React.FC<{
     <SelectionComp
       onChange={(e) => handleSelect(e.target.value)}
       value={selectedType}
+    >
+      {cards}
+    </SelectionComp>
+  );
+};
+
+const ModeSelector: React.FC<{
+  selectedMode: CreateEditPayload['mode'];
+  // eslint-disable-next-line no-unused-vars
+  handleSelect: (mode: CreateEditPayload['mode']) => void;
+}> = ({ selectedMode, handleSelect }) => {
+  const types: CreateEditPayload['mode'][] = ['classic', 'verbal', 'visual'];
+  const cards = types.map((type, i) => (
+    <MenuItem key={i} value={type}>
+      <ModeTags type={type} />
+    </MenuItem>
+  ));
+  return (
+    <SelectionComp
+      onChange={(e) => handleSelect(e.target.value)}
+      value={selectedMode}
     >
       {cards}
     </SelectionComp>

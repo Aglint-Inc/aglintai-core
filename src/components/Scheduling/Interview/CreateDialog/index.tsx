@@ -19,7 +19,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 import { Json } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import TeamAutoComplete from './TeamTextField';
@@ -56,11 +56,12 @@ function CreateDialog() {
   >([]);
 
   useEffect(() => {
-    if (selectedApplication)
+    if (selectedApplication?.applications?.id) {
       setName(
         `Interview for ${selectedApplication?.public_jobs?.job_title} - ${selectedApplication?.candidates?.first_name}`,
       );
-  }, [selectedApplication]);
+    }
+  }, [selectedApplication?.applications?.id]);
 
   const clickContinue = async () => {
     try {

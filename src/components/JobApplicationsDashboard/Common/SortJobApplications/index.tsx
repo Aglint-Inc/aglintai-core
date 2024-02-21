@@ -150,14 +150,12 @@ const CandidateSortInput = ({
   handleModify: (newParameter: SortParameter['parameter']) => void;
 }) => {
   const { views } = useJobApplications();
+  const show = !views.assessment && parameter === 'interview_score';
+  const value: SortParameter['parameter'] = show ? 'overall_score' : parameter;
   return (
     <Stack>
       <Select
-        value={
-          !views.assessment && parameter === 'interview_score'
-            ? 'resume_score'
-            : parameter
-        }
+        value={value}
         sx={{
           '.MuiSelect-select': { padding: '4px 0 4px 12px', fontSize: '14px' },
         }}

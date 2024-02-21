@@ -71,7 +71,6 @@ export default function ForgotPasswordComponent() {
         {
           redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
         },
-        
       );
       if (!error) {
         setLoading(false);

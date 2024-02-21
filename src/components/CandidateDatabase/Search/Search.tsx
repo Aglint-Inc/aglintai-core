@@ -16,7 +16,7 @@ import {
 import { useJobs } from '@/src/context/JobsContext';
 import { SearchHistoryType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 // import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import SearchFilter from './SearchFilter';

@@ -8,21 +8,11 @@ import {
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, useAssessmentId } from './keys';
-
-export type Assessment = Database['public']['Tables']['assessment']['Row'];
-
-export type AssessmentCreate = Pick<
-  Assessment,
-  'title' | 'description' | 'level' | 'type'
->;
-
-export type AssessmentUpdate = Partial<
-  Pick<Assessment, 'title' | 'description' | 'level' | 'type'>
->;
+import { Assessment, AssessmentCreate, AssessmentUpdate } from './types';
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
@@ -30,6 +20,7 @@ export const useAllAssessments = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
+    enabled: !!recruiter_id,
   });
 };
 
@@ -65,21 +56,21 @@ export const useCreateAssessment = () => {
   };
 };
 
-export const useEditAssessment = (assessmentId: Assessment['id']) => {
+export const useEditAssessment = () => {
   const queryClient = useQueryClient();
   const { assessment_id } = useAssessmentId();
   const { queryKey: masterQueryKey } = assessmentQueryKeys.assessments();
   const { queryKey } = assessmentQueryKeys.assessment({ assessment_id });
   const mutation = useMutation({
     mutationFn: (payload: AssessmentUpdate) =>
-      updateAssessmentsDbAction(payload, assessmentId),
+      updateAssessmentsDbAction(payload, assessment_id),
     onMutate: async (data) => {
       await queryClient.cancelQueries({ queryKey });
       const previousAssessments =
         queryClient.getQueryData<Assessment[]>(masterQueryKey);
       queryClient.setQueryData<Assessment[]>(masterQueryKey, (prev) => {
         const newAssessments = prev.reduce((acc, curr) => {
-          if (curr.id === assessmentId) acc.push({ ...curr, ...data });
+          if (curr.id === assessment_id) acc.push({ ...curr, ...data });
           else acc.push(curr);
           return acc;
         }, [] as Assessment[]);

@@ -1,4 +1,3 @@
-
 import ChatMessages from '@/src/components/AssistantChat';
 import { JobPostAssistantProvider } from '@/src/context/JobPostAssistant';
 

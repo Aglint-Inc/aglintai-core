@@ -31,7 +31,7 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 
 import interviewerList from '@/src/utils/interviewer_list';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { getRecruiter, updateFeedbackOnJobApplications } from './utils';

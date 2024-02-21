@@ -1,5 +1,6 @@
 import { AssessmentDetailTopRight } from '@/devlink2';
 import { useEditAssessment } from '@/src/queries/assessment';
+import { useAssessmentAllQuestionUpdate } from '@/src/queries/assessment/questions';
 
 import { useAssessment } from './context';
 import CreateEditPopup, {
@@ -27,25 +28,29 @@ const AssessmentPageActions = () => {
 
 const EditPopup = () => {
   const {
-    assessment_id,
-    assessment: { title, description, type, level },
+    assessment: { title, description, type, level, mode },
   } = useAssessment();
   const {
-    mutation: { mutate, isPending, isSuccess },
-  } = useEditAssessment(assessment_id);
+    mutation: { mutate: mutateFn, isPending, isSuccess },
+  } = useEditAssessment();
+  const {
+    mutation: { mutate: editQuestions },
+  } = useAssessmentAllQuestionUpdate();
   const initialFields: CreateEditPayload = {
     title,
     description,
     type,
     level,
+    mode,
   };
   return (
     <CreateEditPopup
       type='edit'
       initialFields={initialFields}
-      mutateFn={mutate}
+      mutateFn={mutateFn}
       disable={isPending}
       success={isSuccess}
+      editQuestions={editQuestions}
     />
   );
 };

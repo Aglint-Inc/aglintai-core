@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type AssessmentQuestion } from '@/src/queries/assessment/questions';
+import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 
 import { MultipleChoice, ShortAnswer } from '../svg/question';
 

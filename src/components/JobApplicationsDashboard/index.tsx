@@ -19,12 +19,14 @@ import {
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
   AllApplicantsTable,
+  AllInterview,
   ApplicantsListEmpty,
   Breadcrum,
   CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
   JobDetailsTabs,
+  RcCheckbox,
   SelectActionBar,
   // SortArrows,
   TopApplicantsTable,
@@ -313,6 +315,7 @@ const ApplicationTable = ({
   };
   const applicantsList = (
     <ApplicantsList
+      key={section}
       detailedView={detailedView}
       applications={sectionApplications}
       handleSelectCurrentApplication={handleSelectCurrentApplication}
@@ -341,14 +344,34 @@ const ApplicationTable = ({
   return sectionApplications.length === 0 ? (
     emptyList
   ) : !detailedView ? (
-    <AllApplicantsTable
-      onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
-      isAllChecked={isAllChecked}
-      isInterviewVisible={views.assessment}
-      slotCandidatesList={applicantsList}
-      isDisqualifiedVisible={views.disqualified}
-      isScreeningVisible={views.screening}
-    />
+    section === JobApplicationSections.INTERVIEW ? (
+      <AllInterview
+        propsGrid={{
+          style: {
+            gridTemplateColumns: '25% 15% 15% 20% 25%',
+          },
+        }}
+        slotAllInterviewCard={applicantsList}
+        isSchedulerTable={false}
+        isCheckboxVisible={true}
+        slotCheckbox={
+          <RcCheckbox
+            isChecked={isAllChecked}
+            onclickCheck={{ onClick: () => handleSelectAllMin() }}
+            text={<></>}
+          />
+        }
+      />
+    ) : (
+      <AllApplicantsTable
+        onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
+        isAllChecked={isAllChecked}
+        isInterviewVisible={views.assessment}
+        slotCandidatesList={applicantsList}
+        isDisqualifiedVisible={views.disqualified}
+        isScreeningVisible={views.screening}
+      />
+    )
   ) : (
     <TopApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
@@ -756,7 +779,7 @@ const ApplicantsList = ({
 
   const scrollToRef = useRef(undefined);
   useEffect(() => {
-    if (currentApplication > -1)
+    if (currentApplication > -1 && scrollToRef.current)
       scrollToRef.current.scrollIntoView({
         behavior: 'instant',
         block: 'center',

@@ -1,7 +1,6 @@
 import { palette } from '@context/Theme/Theme';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Avatar, Stack } from '@mui/material';
-import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -10,6 +9,7 @@ import { LoaderSvg } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
 
 function ImageUpload({
   setImage,

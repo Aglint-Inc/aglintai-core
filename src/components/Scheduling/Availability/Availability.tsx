@@ -1,5 +1,4 @@
 import { AvatarGroup, Drawer, Popover, Stack } from '@mui/material';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +8,6 @@ import {
   ButtonWithShadow,
   PageLayout,
   PanelDetail,
-  PanelDetailTitle,
   PanelDetailTopRight,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -18,20 +16,19 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { StateAvailibility } from './availability.types';
+import AvailabilityBar from './AvailabilityBar';
 import PanelRow from './PanelRow';
 import SideDrawer from './RequestConfirmSideDrawer';
 import {
   resetState,
-  setDateRangeView,
+  setInterviewers,
   setIsisCalenderLoading,
   setIsisInitialising,
   setTimeSlot,
-  uncheckAllSlots,
   useAvailableStore,
   useSyncInterviewersCalender,
 } from './store';
-import TimeDurationDropDown from './TimeDurationDropDown';
-import { DAYS_LENGTH, handleDelete } from './utils';
+import { handleDelete } from './utils';
 import CreateDialog from '../Panels/CreateDialog';
 import {
   setEditPanel,
@@ -47,20 +44,15 @@ import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 const Availability = () => {
   const { loading: isInterviewPanelLoading } = useInterviewPanel();
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
-  const { initCalenderAvails, handleSyncMonthifNeeded } =
-    useSyncInterviewersCalender();
-
+  const { initialiseAvailabilities } = useSyncInterviewersCalender();
   const { members } = useAuthDetails();
   const panelName = useSchedulingStore((state) => state.panelName);
   const isInitialising = useAvailableStore((state) => state.isInitialising);
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
-  const isCalenderLoading = useAvailableStore(
-    (state) => state.isCalenderLoading,
-  );
+  const timeRange = useAvailableStore((state) => state.timeRange);
+
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
-  const checkedInterSlots = useAvailableStore(
-    (state) => state.checkedInterSlots,
-  );
+
   const [popupEl, setPopupEl] = useState(null);
 
   const router = useRouter();
@@ -94,15 +86,22 @@ const Availability = () => {
                 profileImg: member?.profile_image ?? '',
                 slots: [],
                 email: member.email,
-                isMailConnected: false,
+                isMailConnected: true,
               };
             });
-          await initCalenderAvails(newInterviewers, activeDuration);
+          setInterviewers(newInterviewers);
+          await initialiseAvailabilities(
+            newInterviewers,
+            activeDuration,
+            dateRangeView,
+            timeRange,
+          );
         } catch (err) {
           // console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
           setIsisInitialising(false);
+          setIsisCalenderLoading(false);
         }
       })();
     }
@@ -110,58 +109,6 @@ const Availability = () => {
       resetState();
     };
   }, [router.isReady, router.query, isInterviewPanelLoading]);
-
-  const handleClickNext = async () => {
-    if (isCalenderLoading) return;
-    try {
-      let newDateRange: StateAvailibility['dateRangeView'] = {
-        startDate: dayjs(dateRangeView.endDate).add(1, 'day').toDate(),
-        endDate: dayjs(dateRangeView.endDate).add(DAYS_LENGTH, 'day').toDate(),
-      };
-      setDateRangeView(newDateRange);
-      setIsisCalenderLoading(true);
-      await handleSyncMonthifNeeded(newDateRange.endDate.toISOString());
-    } catch (error) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsisCalenderLoading(false);
-    }
-  };
-
-  const handleClickPrev = async () => {
-    if (isCalenderLoading) return;
-    try {
-      let newDateRange: StateAvailibility['dateRangeView'] = {
-        startDate: dayjs(dateRangeView.startDate)
-          .subtract(DAYS_LENGTH, 'day')
-          .toDate(),
-        endDate: dayjs(dateRangeView.startDate).subtract(1, 'day').toDate(),
-      };
-      setDateRangeView(newDateRange);
-      setIsisCalenderLoading(true);
-      await handleSyncMonthifNeeded(newDateRange.startDate.toISOString());
-    } catch (error) {
-      toast.error(API_FAIL_MSG);
-    } finally {
-      setIsisCalenderLoading(false);
-    }
-  };
-
-  const calenderLabel = `${dayjs(dateRangeView.startDate).format(
-    'DD MMMM',
-  )} - ${dayjs(dateRangeView.endDate).format('DD MMMM')}`;
-
-  const handleDeselect = () => {
-    uncheckAllSlots();
-  };
-
-  let countCheckedSlot = checkedInterSlots.reduce((tot, curr) => {
-    return tot + curr.countCheckedSlots;
-  }, 0);
-
-  let profileUrls = checkedInterSlots
-    .filter((i) => i.countCheckedSlots > 0)
-    .map((i) => ({ name: i.interviewerName, url: i.profileImg }));
 
   const deleteHandler = async () => {
     const res = await handleDelete(router.query.panel_id);
@@ -207,37 +154,8 @@ const Availability = () => {
                 <PanelDetail
                   slotPanelDetail={
                     <>
-                      <PanelDetailTitle
-                        slotDurationInput={
-                          <>
-                            <TimeDurationDropDown />
-                          </>
-                        }
-                        textYearMonth={calenderLabel}
-                        onClickNext={{
-                          onClick: handleClickNext,
-                        }}
-                        onClickPrev={{
-                          onClick: handleClickPrev,
-                        }}
-                        isSlotSelected={countCheckedSlot > 0}
-                        slotNumber={countCheckedSlot}
-                        onClickConfirm={{
-                          onClick: () => {
-                            setOpenSideDrawer(true);
-                          },
-                        }}
-                        onClickDeselect={{
-                          onClick: () => {
-                            handleDeselect();
-                          },
-                        }}
-                        slotSelectedAvatarGroup={
-                          <>
-                            <InterviewerGroup profileUrls={profileUrls} />
-                          </>
-                        }
-                      />
+                      <AvailabilityBar />
+
                       <>
                         {isInitialising ? (
                           <Stack

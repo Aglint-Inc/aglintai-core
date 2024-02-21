@@ -11,6 +11,14 @@
   grid-row-gap: 10px;
 }
 
+.team_detail_topbar.panel_availability_info {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
 .team_detail_header_wrapper {
   position: relative;
   z-index: 1;
@@ -105,6 +113,10 @@
   .fw-semibold.text-lg.text-yellow-600.mobile-14 {
     font-size: 14px;
   }
+}
+
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
 }
 
 .hide {
@@ -263,7 +275,7 @@
   z-index: 4;
 
   display: flex;
-  width: 70%;
+  width: 100%;
   padding-right: 20px;
   padding-left: 20px;
   align-items: center;
@@ -289,7 +301,7 @@
 
 .button_primary {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;

@@ -1,8 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { Collapse, Dialog, Stack } from '@mui/material';
+import { AvatarGroup, Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import React from 'react';
 
 import {
@@ -31,22 +33,28 @@ import {
 } from '@/devlink';
 import {
   AnalysisBlock,
+  JobCardSchedule,
   ResAbsentError,
   ResumeErrorBlock,
   ScrQuestionListItem,
   SidebarAnalysisBlock,
+  SidebarBlockNotScheduled,
   SidebarScreening,
   SummaryBlock,
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import CustomProgress from '@/src/components/Common/CustomProgress';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
+import IconScheduleType from '@/src/components/Scheduling/Interview/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/Interview/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -54,11 +62,11 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
-import interviewerList from '@/src/utils/interviewer_list';
+// import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import ConversationCard from './ConversationCard';
+// import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
 import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
@@ -97,7 +105,7 @@ const ApplicationDetails = ({
   hideNextPrev: boolean;
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(open);
-  const [openFeedback, setOpenFeedback] = useState(false);
+  const [openResult, setOpenResult] = useState(false);
 
   const candidateImage = application ? (
     <RedirectWrapper
@@ -124,7 +132,7 @@ const ApplicationDetails = ({
   }, [application === undefined]);
 
   useEffect(() => {
-    setOpenFeedback(false);
+    setOpenResult(false);
   }, [application?.id ?? null]);
 
   const handleClose = () => {
@@ -146,25 +154,25 @@ const ApplicationDetails = ({
       }}
     >
       {application ? (
-        !openFeedback ? (
+        !openResult ? (
           <NewJobApplicationSideDrawer
             application={application}
             onClose={() => handleClose()}
-            setOpenFeedback={setOpenFeedback}
+            setOpenResult={setOpenResult}
             candidateImage={candidateImage}
             handleSelectNextApplication={handleSelectNextApplication}
             handleSelectPrevApplication={handleSelectPrevApplication}
             hideNextPrev={hideNextPrev}
           />
         ) : (
-          application?.assessment_results?.feedback && (
-            <NewDetailedFeedback
+          application?.assessment_results?.result && (
+            <NewDetailedResult
               application={application}
               candidateImage={candidateImage}
               onNext={handleSelectNextApplication}
               onPrev={handleSelectPrevApplication}
               onBack={() => {
-                setOpenFeedback(false);
+                setOpenResult(false);
               }}
               onClose={() => handleClose()}
             />
@@ -179,7 +187,7 @@ const ApplicationDetails = ({
 
 export default ApplicationDetails;
 
-const NewDetailedFeedback = ({
+const NewDetailedResult = ({
   application,
   candidateImage,
   onNext,
@@ -212,13 +220,13 @@ const NewDetailedFeedback = ({
       slotCandidateImage={candidateImage}
       textName={name.value}
       slotDetailedFeedback={
-        <DetailedInterviewFeedbackParams
-          feedbackParamsObj={application.assessment_results.feedback}
+        <DetailedInterviewResultParams
+          resultParamsObj={application.assessment_results.result}
         />
       }
       slotTranscript={
         <TranscriptParams
-          feedbackParams={application.assessment_results.conversation}
+          resultParams={application.assessment_results.result}
           candidateImage={candidateImage}
         />
       }
@@ -227,13 +235,13 @@ const NewDetailedFeedback = ({
 };
 
 const TranscriptParams = ({
-  feedbackParams,
+  resultParams,
   candidateImage,
 }: {
-  feedbackParams: any;
+  resultParams: any;
   candidateImage: React.JSX.Element;
 }) => {
-  return feedbackParams.map((con, i) => {
+  return resultParams.map((con, i) => {
     return (
       <>
         <InterviewAiTranscriptCard
@@ -265,12 +273,12 @@ const TranscriptParams = ({
   });
 };
 
-export const DetailedInterviewFeedbackParams = ({
-  feedbackParamsObj,
+export const DetailedInterviewResultParams = ({
+  resultParamsObj,
 }: {
-  feedbackParamsObj: any;
+  resultParamsObj: any;
 }) => {
-  return feedbackParamsObj.map((f, i) => {
+  return resultParamsObj.map((f, i) => {
     const color =
       f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     const circularScore = (
@@ -282,7 +290,7 @@ export const DetailedInterviewFeedbackParams = ({
       <DetailedFeedbackCardSmall
         key={i}
         textHeader={capitalize(f.topic)}
-        textDescription={f.feedback}
+        textDescription={f.result}
         textColorScore={{ style: { color: color } }}
         slotScore={circularScore}
         textScorePercentage={`${f.rating}%`}
@@ -294,7 +302,7 @@ export const DetailedInterviewFeedbackParams = ({
 const NewJobApplicationSideDrawer = ({
   application,
   onClose,
-  setOpenFeedback,
+  setOpenResult,
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
@@ -302,7 +310,7 @@ const NewJobApplicationSideDrawer = ({
 }: {
   application: JobApplication;
   onClose: () => void;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenResult: React.Dispatch<React.SetStateAction<boolean>>;
   candidateImage: React.JSX.Element;
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
@@ -355,15 +363,18 @@ const NewJobApplicationSideDrawer = ({
       onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
       slotMoveTo={<></>}
       slotOverview={
-        overview.valid && (
-          <OverviewBlock title={'Overview'} description={overview.value} />
-        )
+        <>
+          {<InterviewStatusBlock application={application} />}
+          {overview.valid && (
+            <OverviewBlock title={'Overview'} description={overview.value} />
+          )}
+        </>
       }
       slotCandidateDetails={
         <>
           <NewCandidateDetails
             application={application}
-            setOpenFeedback={setOpenFeedback}
+            setOpenResult={setOpenResult}
             openResume={openResume}
             setOpenResume={setOpenResume}
           />
@@ -405,10 +416,10 @@ const SocialsBlock: React.FC<{ application: JobApplication }> = ({
 
 export const NewCandidateDetails: React.FC<{
   application: JobApplication;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenResult: React.Dispatch<React.SetStateAction<boolean>>;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback, openResume, setOpenResume }) => {
+}> = ({ application, setOpenResult, openResume, setOpenResume }) => {
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
   const validApplication = validity === 'processed';
@@ -423,7 +434,7 @@ export const NewCandidateDetails: React.FC<{
           />
           <AssessmentSection
             application={application}
-            setOpenFeedback={setOpenFeedback}
+            setOpenResult={setOpenResult}
           />
           <PhoneScreening application={application} />
           {validApplication && (
@@ -504,13 +515,13 @@ export const AnalysisBlockSection: React.FC<{
 
 const AssessmentSection: React.FC<{
   application: JobApplication;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback }) => {
+  setOpenResult: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ application, setOpenResult }) => {
   const { section } = useJobApplications();
   const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
     application.status_emails_sent,
     {
-      feedback: application.assessment_results?.feedback ?? null,
+      result: application.assessment_results?.result ?? null,
       created_at: application.assessment_results?.created_at ?? null,
     },
   );
@@ -522,7 +533,7 @@ const AssessmentSection: React.FC<{
     return (
       <NewInterviewScoreDetails
         application={application}
-        setOpenFeedback={setOpenFeedback}
+        setOpenResult={setOpenResult}
       />
     );
 };
@@ -633,8 +644,8 @@ const NewInterviewStatus = ({
 
 const NewInterviewScoreDetails: React.FC<{
   application: JobApplication;
-  setOpenFeedback: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback }) => {
+  setOpenResult: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, setOpenResult }) => {
   const [collapse, setCollapse] = useState(false);
   const interviewScore = <InterviewScore application={application} />;
   return (
@@ -648,21 +659,131 @@ const NewInterviewScoreDetails: React.FC<{
         },
       }}
       slotInterviewFeedbackScore={
-        application.assessment_results.feedback && (
+        application.assessment_results.result && (
           <Collapse in={collapse}>
             <Stack gap={'12px'} marginTop={'12px'}>
-              <InterviewFeedbackParams
-                feedbackParamsObj={application.assessment_results.feedback}
+              <InterviewResultParams
+                resultParamsObj={application.assessment_results.result}
               />
               <DetailedFeedbackButton
                 onClickDetailedFeedback={{
-                  onClick: () => setOpenFeedback(true),
+                  onClick: () => setOpenResult(true),
                   style: { paddingTop: '16px' },
                 }}
               />
             </Stack>
           </Collapse>
         )
+      }
+    />
+  );
+};
+
+const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const router = useRouter();
+  const { section } = useJobApplications();
+  if (section !== JobApplicationSections.INTERVIEW) return <></>;
+  if (!application.schedule)
+    return (
+      <Stack
+        style={{
+          backgroundColor: '#f7f9fb',
+          padding: '16px',
+          borderRadius: '8px',
+        }}
+      >
+        <SidebarBlockNotScheduled
+          onClickSchedule={{
+            onClick: () => {
+              localStorage.setItem('sch_job_id', application.job_id.toString());
+              router.push(
+                `/scheduling/interview?application_id=${application.id}`,
+                undefined,
+                { shallow: true },
+              );
+            },
+          }}
+        />
+      </Stack>
+    );
+  return <InterviewScheduled application={application} />;
+};
+
+const InterviewScheduled: FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const { push } = useRouter();
+  const { members } = useAuthDetails();
+  const schedule = application.schedule;
+  return (
+    <JobCardSchedule
+      textDuration={schedule?.duration && `${schedule.duration} Minutes`}
+      slotPlatformIcon={<IconScheduleType type={schedule.schedule_type} />}
+      textTimeDate={
+        schedule.schedule_time
+          ? dayjs(schedule.schedule_time['startTime']).format('YYYY MMM DD') +
+            ' at ' +
+            dayjs(schedule.schedule_time['startTime']).format('hh:mm A')
+          : '--'
+      }
+      textPlatformName={getScheduleType(schedule.schedule_type)}
+      textPanelMember={`${application.panel.name} ${
+        schedule.panel_users.length !== 0
+          ? `(${schedule.panel_users.length} member${
+              schedule.panel_users.length === 1 ? '' : 's'
+            })`
+          : ``
+      }`}
+      onClickViewScheduler={{
+        onClick: () => {
+          localStorage.setItem('sch_job_id', application.job_id.toString());
+          push(
+            `/scheduling/interview?application_id=${application.id}`,
+            undefined,
+            { shallow: true },
+          );
+        },
+      }}
+      textStatus={capitalize(schedule.status)}
+      propsBgColor={{
+        style: {
+          backgroundColor:
+            schedule.status == 'completed' ? '#D1E8DF80' : '#CEE2F2',
+        },
+      }}
+      textHeader={schedule.schedule_name}
+      slotMemberImage={
+        <AvatarGroup
+          sx={{
+            '& .MuiAvatar-root': {
+              width: '24px',
+              height: '24px',
+              fontSize: '12px',
+            },
+          }}
+          total={schedule.panel_users.length}
+        >
+          {schedule.panel_users
+            .slice(0, 3)
+            .map((rel: { user_id: string; must: 'string' }) => {
+              const member = members.filter(
+                (member) => member.user_id === rel.user_id,
+              )[0];
+              return (
+                <MuiAvatar
+                  key={rel.user_id}
+                  src={member?.profile_image}
+                  level={member?.first_name}
+                  variant='circular'
+                  height='24px'
+                  width='24px'
+                  fontSize='8px'
+                />
+              );
+            })}
+        </AvatarGroup>
       }
     />
   );
@@ -796,8 +917,8 @@ const ResumeBlock: React.FC<{
   }
 };
 
-export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
-  return feedbackParamsObj.map((f, i) => {
+export const InterviewResultParams = ({ resultParamsObj }) => {
+  return resultParamsObj.map((f, i) => {
     const circularScore = (
       <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
         <SmallCircularScore2 score={f.rating} />
@@ -820,12 +941,12 @@ export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
 export const NewResumeScoreDetails = ({
   application,
   job,
-  feedback,
+  result,
   setOpenResume,
 }: {
   application: JobApplication;
   job: JobTypeDashboard;
-  feedback: JobApplication['assessment_results']['feedback'];
+  result: JobApplication['assessment_results']['result'];
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const jdScoreObj = (application.score_json as ScoreJson)?.scores;
@@ -846,17 +967,17 @@ export const NewResumeScoreDetails = ({
       fontSize={7}
     />
   );
-  const feedbackObj = giveRateInWordToResume(score);
+  const resultObj = giveRateInWordToResume(score);
   return (
     <CandidateResumeScore
       textStyleProps={{
         style: {
-          fontSize: feedback ? '18px' : '14px',
+          fontSize: result ? '18px' : '14px',
         },
       }}
       slotScoreGraph={resumeScoreWheel}
-      textScoreState={feedbackObj.text}
-      propsTextColor={{ style: { color: feedbackObj.color } }}
+      textScoreState={resultObj.text}
+      propsTextColor={{ style: { color: resultObj.color } }}
       onClickViewResume={{
         onClick: () => {
           setOpenResume(true);
@@ -867,17 +988,15 @@ export const NewResumeScoreDetails = ({
         onClick: async () => await handleDownload(),
       }}
       propsLink={{ href: application.candidate_files.file_url }}
-      slotFeedbackScore={
-        <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
-      }
+      slotFeedbackScore={<ResumeResultParams resultParamsObj={jdScoreObj} />}
     />
   );
 };
 
-export const ResumeFeedbackParams = ({
-  feedbackParamsObj,
+export const ResumeResultParams = ({
+  resultParamsObj,
 }: {
-  feedbackParamsObj: ScoreWheelParams;
+  resultParamsObj: ScoreWheelParams;
 }) => {
   const getCustomText = (e: number) => {
     return e === 100
@@ -899,7 +1018,7 @@ export const ResumeFeedbackParams = ({
             textFeedback={capitalize(key)}
             textScoreState={
               // eslint-disable-next-line security/detect-object-injection
-              getCustomText(feedbackParamsObj[key]) ?? '--'
+              getCustomText(resultParamsObj[key]) ?? '--'
             }
           />
         );
@@ -1365,22 +1484,24 @@ export const NewSkillDetails = ({
 
 export function Transcript({
   application,
-  setOpenDetailedFeedback,
-  hideFeedback,
+  setOpenDetailedResult,
+  hideResult,
 }: {
   application: JobApplication;
-  setOpenDetailedFeedback: React.Dispatch<React.SetStateAction<boolean>>;
-  hideFeedback: boolean;
+  setOpenDetailedResult: React.Dispatch<React.SetStateAction<boolean>>;
+  hideResult: boolean;
 }) {
-  const feedback = application.assessment_results.feedback as any[];
+  const result = application.assessment_results.result as any[];
   return (
     <DetailedFeedback
       slotTranscript={
         <>
-          {application.assessment_results.conversation?.map((ele: any, i) => {
-            return (
-              <>
-                <ConversationCard
+          {application.assessment_results.responses &&
+            ((/*ele: any, i*/) => {
+              return (
+                <>
+                  <>Conversation cards here</>
+                  {/* <ConversationCard
                   roleImage={interviewerList[Number(0)].image}
                   roleName={interviewerList[Number(0)].name}
                   textForSpeech={ele.content}
@@ -1397,16 +1518,16 @@ export function Transcript({
                     src={ele.userVoice}
                     index={i}
                   />
-                )}
-              </>
-            );
-          })}
+                )} */}
+                </>
+              );
+            })}
         </>
       }
       slotDetailedFeedback={
         <>
-          {!hideFeedback &&
-            feedback.map((ele, i) => {
+          {!hideResult &&
+            result.map((ele, i) => {
               let rating = Number(
                 String(ele.rating).includes('/')
                   ? ele.rating.split('/')[0]
@@ -1427,7 +1548,7 @@ export function Transcript({
                     },
                   }}
                   textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
-                  textDescription={ele.feedback}
+                  textDescription={ele.result}
                   textScorePercentage={rating + '%'}
                   slotScore={
                     <CustomProgress
@@ -1462,7 +1583,7 @@ export function Transcript({
       }
       onClickBack={{
         onClick: () => {
-          setOpenDetailedFeedback(false);
+          setOpenDetailedResult(false);
         },
       }}
     />

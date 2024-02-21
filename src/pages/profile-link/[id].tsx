@@ -1,5 +1,5 @@
 import { Avatar, Dialog, Stack } from '@mui/material';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,8 +7,8 @@ import {
   CandidateEducationCard,
   CandidateExperienceCard,
   CandidateSkillPills,
-  InterviewAiTranscriptCard,
-  InterviewCandidateCard,
+  // InterviewAiTranscriptCard,
+  // InterviewCandidateCard,
   ProfileInterviewScore,
   ProfileShare,
 } from '@/devlink';
@@ -20,16 +20,15 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import {
-  DetailedInterviewFeedbackParams,
+  DetailedInterviewResultParams,
   giveColorForInterviewScore,
   giveRateInWordForInterview,
-  InterviewFeedbackParams,
+  InterviewResultParams,
   NewResumeScoreDetails,
   Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
-import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   ScoreJson,
@@ -37,7 +36,7 @@ import {
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { selectJobApplicationQuery } from '../api/jobApplications/read/utils';
@@ -61,22 +60,12 @@ function InterviewFeedbackPage() {
 
   async function getApplicationDetails(id) {
     const { data: jobApp, error: errorJob } = await supabase
-      .from('job_applications')
+      .from('applications')
       .select(`${selectJobApplicationQuery}`)
-      .eq('application_id', id);
-
+      .eq('id', id);
     if (!errorJob) {
-      const { data, error } = await supabase
-        .from('candidates')
-        .select()
-        .eq('id', jobApp[0]?.candidate_id);
-      if (!error) {
-        setApplicationDetails({
-          ...jobApp[0],
-          candidates: data[0],
-        } as JobApplication);
-        getJobDetails(jobApp[0]?.job_id);
-      }
+      setApplicationDetails(jobApp[0] as any as JobApplication);
+      getJobDetails(jobApp[0]?.job_id);
     }
   }
 
@@ -99,10 +88,9 @@ function InterviewFeedbackPage() {
   }
 
   let resumeScoreWheel = <></>;
-  let interviewScore = 0;
+  const interviewScore = application?.overall_interview_score ?? null;
 
   if (application && job) {
-    interviewScore = getInterviewScore(application.assessment_results.feedback);
     if (application.score_json) {
       resumeScoreWheel = (
         <ScoreWheel
@@ -152,8 +140,8 @@ function InterviewFeedbackPage() {
           <Stack width={500}>
             <Transcript
               application={application}
-              setOpenDetailedFeedback={setOpenTranscript}
-              hideFeedback={true}
+              setOpenDetailedResult={setOpenTranscript}
+              hideResult={true}
             />
           </Stack>
         </SidePanelDrawer>
@@ -163,7 +151,7 @@ function InterviewFeedbackPage() {
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
-            application.assessment_results.feedback && (
+            application.assessment_results.result && (
               <>
                 <ProfileInterviewScore
                   textInterviewScore={
@@ -183,29 +171,28 @@ function InterviewFeedbackPage() {
                     interviewScore,
                   )}
                   slotFeedbackScore={
-                    <InterviewFeedbackParams
-                      feedbackParamsObj={
-                        application.assessment_results.feedback
-                      }
+                    <InterviewResultParams
+                      resultParamsObj={application.assessment_results.result}
                     />
                   }
                   slotDetailedFeedback={
-                    <DetailedInterviewFeedbackParams
-                      feedbackParamsObj={
-                        application.assessment_results.feedback
-                      }
+                    <DetailedInterviewResultParams
+                      resultParamsObj={application.assessment_results.result}
                     />
                   }
                 />
               </>
             )
           }
-          isInterviewVisible={application.assessment_results.feedback !== null}
-          slotInterviewTranscript={application.assessment_results.conversation.map(
-            (con: any, i) => {
-              return (
-                <>
-                  <InterviewAiTranscriptCard
+          isInterviewVisible={application.assessment_results.result !== null}
+          slotInterviewTranscript={
+            application.assessment_results.responses && (
+              // eslint-disable-next-line no-unused-vars
+              //(con: any, i) => {
+              //return
+              <>
+                <>RESPONSES HERE</>
+                {/* <InterviewAiTranscriptCard
                     key={i}
                     textAiScript={con.content}
                     slotAiImage={
@@ -231,11 +218,11 @@ function InterviewFeedbackPage() {
                         fontSize={'28px'}
                       />
                     }
-                  />
-                </>
-              );
-            },
-          )}
+                  /> */}
+              </>
+              // },
+            )
+          }
           isEducationVisible={
             (application?.score_json as any)?.schools.length > 0
           }
@@ -332,7 +319,7 @@ function InterviewFeedbackPage() {
                 <NewResumeScoreDetails
                   application={application}
                   job={job as any}
-                  feedback={true}
+                  result={true}
                   setOpenResume={setOpenResume}
                 />
               )}

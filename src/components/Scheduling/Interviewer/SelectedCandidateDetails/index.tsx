@@ -58,7 +58,7 @@ function SelectedCandidateDetails() {
         selectedSchedule.schedule.schedule_type,
       )}
       textPanelName={selectedSchedule.panel.name}
-      textDuration={selectedSchedule.schedule.duration}
+      textDuration={selectedSchedule.schedule.duration + ' minutes'}
       slotCandidateDetails={<CandidateDetailsJob />}
       slotPanelList={selectedSchedule.schedule.panel_users.map(
         (user: { user_id: string; must: string }) => {

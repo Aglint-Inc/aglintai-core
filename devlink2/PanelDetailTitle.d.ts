@@ -3,7 +3,6 @@ import * as Types from "./types";
 
 declare function PanelDetailTitle(props: {
   as?: React.ElementType;
-  slotDurationInput?: Types.Devlink.Slot;
   textYearMonth?: React.ReactNode;
   onClickPrev?: Types.Devlink.RuntimeProps;
   onClickNext?: Types.Devlink.RuntimeProps;
@@ -12,4 +11,6 @@ declare function PanelDetailTitle(props: {
   slotNumber?: Types.Devlink.Slot;
   slotSelectedAvatarGroup?: Types.Devlink.Slot;
   onClickConfirm?: Types.Devlink.RuntimeProps;
+  slotLoader?: Types.Devlink.Slot;
+  isLoadingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

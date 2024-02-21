@@ -1,4 +1,4 @@
-import { AssessmentQuestion } from '@/src/queries/assessment/questions';
+import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 import { type Database } from '@/src/types/schema';
 
 type Type = Database['public']['Tables']['assessment_question']['Row']['type'];
@@ -9,10 +9,8 @@ export const getSafeQuestionType = (type: Type) => {
       return 'Code';
     case 'mcq':
       return 'Multiple Choice';
-    case 'tfq':
+    case 'scq':
       return 'Single Choice';
-    case 'match':
-      return 'Matching';
     case 'qna':
       return 'Short Answer';
   }
@@ -26,24 +24,18 @@ export const getQuestionDefaults = (
   duration: AssessmentQuestion['duration'] = 2,
 ): Partial<AssessmentQuestion> => {
   switch (type) {
-    // case 'code':
-    //   return {};
     case 'mcq':
       return {
-        answer: { options: [true, false] },
+        answer: { options: [0] },
         description,
         question: { label: label, options: ['', ''] },
         required: required,
         duration: duration,
         type: 'mcq',
       };
-    // case 'tfq':
-    //   return {};
-    // case 'match':
-    //   return {};
     case 'qna':
       return {
-        answer: { expected_answer: '' },
+        answer: { label: '' },
         description,
         question: { label: label },
         required: required,
