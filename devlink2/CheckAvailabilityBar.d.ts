@@ -19,4 +19,7 @@ declare function CheckAvailabilityBar(props: {
   textButtonLabel?: React.ReactNode;
   isButtonLoaderActive?: Types.Visibility.VisibilityConditions;
   isCheckAvailabilityDisable?: Types.Visibility.VisibilityConditions;
+  onClickReqConfirmation?: Types.Devlink.RuntimeProps;
+  slotButtonLoaders?: Types.Devlink.Slot;
+  isButtonLoaderVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
