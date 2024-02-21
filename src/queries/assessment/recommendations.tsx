@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { Assessment } from '.';
 import { assessmentQueryKeys } from './keys';
-import { CustomQuestionType } from './questions';
+import { Assessment, RecommendationQuestion } from './types';
 
 const TABLE = 'question_bank' as const;
-type QuestionBankTable = Database['public']['Tables'][typeof TABLE];
-type QuestionBankDb = Omit<QuestionBankTable['Row'], 'embeddings'>;
-export type RecommendationQuestion = QuestionBankDb & CustomQuestionType;
 
 export const useAssessmentRecommendedQuestions = (assessment: Assessment) => {
   const { recruiter_id } = useAuthDetails();

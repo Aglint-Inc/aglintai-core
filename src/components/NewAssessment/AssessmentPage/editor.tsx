@@ -17,10 +17,10 @@ import {
   ShortAnswerQuestion,
 } from '@/devlink2';
 import {
-  AssessmentQuestion,
   useAssessmentQuestionDelete,
   useAssessmentQuestionUpdate,
 } from '@/src/queries/assessment/questions';
+import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 
 import { useAssessment } from './context';
 import SelectionComp from '../Common/components/selection';

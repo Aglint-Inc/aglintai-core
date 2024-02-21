@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import { Assessment } from '.';
+import { type Assessment } from './types';
 export const assessmentQueryKeys = {
   all: { queryKey: ['aglint_assessment'] as string[] },
   assessments: () => ({

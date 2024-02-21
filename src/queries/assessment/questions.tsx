@@ -5,55 +5,19 @@ import { useAssessment } from '@/src/components/NewAssessment/AssessmentPage/con
 import useAssessmentStore from '@/src/components/NewAssessment/Stores';
 import { getQuestionDefaults } from '@/src/components/NewAssessment/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import * as schema from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { type Assessment } from '.';
 import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
-import { type RecommendationQuestion } from './recommendations';
+import {
+  Assessment,
+  AssessmentQuestion,
+  AssessmentQuestionInsert,
+  AssessmentQuestionUpdate,
+  RecommendationQuestion,
+} from './types';
 
 const TABLE = 'assessment_question' as const;
-type AssessmentQuestionTable =
-  schema.Database['public']['Tables'][typeof TABLE];
-
-type AssessmentQuestionDb = AssessmentQuestionTable['Row'];
-type AssessmentQuestionDbInsert = AssessmentQuestionTable['Insert'];
-type AssessmentQuestionDbUpdate = AssessmentQuestionTable['Update'];
-type CustomTypes = {
-  description: {
-    show: boolean;
-    value: string;
-  };
-};
-export type CustomQuestionType = (
-  | {
-      type: 'mcq';
-      question: {
-        label: string;
-        options: string[];
-      };
-      answer: {
-        options: number[];
-      };
-    }
-  | {
-      type: 'qna';
-      question: {
-        label: string;
-      };
-      answer: {
-        label: string;
-      };
-    }
-) &
-  CustomTypes;
-
-export type AssessmentQuestion = AssessmentQuestionDb & CustomQuestionType;
-export type AssessmentQuestionInsert = AssessmentQuestionDbInsert &
-  Partial<CustomQuestionType>;
-export type AssessmentQuestionUpdate = AssessmentQuestionDbUpdate &
-  Partial<CustomQuestionType>;
 
 export const useAssessmentQuestions = () => {
   const { recruiter_id } = useAuthDetails();

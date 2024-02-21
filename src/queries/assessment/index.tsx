@@ -12,17 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, useAssessmentId } from './keys';
-
-export type Assessment = Database['public']['Tables']['assessment']['Row'];
-
-export type AssessmentCreate = Pick<
-  Assessment,
-  'title' | 'description' | 'level' | 'type' | 'mode'
->;
-
-export type AssessmentUpdate = Partial<
-  Pick<Assessment, 'title' | 'description' | 'level' | 'type'>
->;
+import { Assessment, AssessmentCreate, AssessmentUpdate } from './types';
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
