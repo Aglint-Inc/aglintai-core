@@ -129,6 +129,7 @@
 
 .div-block-973 {
   display: flex;
+  overflow: hidden;
   width: 100%;
   flex-direction: row;
   align-items: stretch;

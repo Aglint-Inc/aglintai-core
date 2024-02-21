@@ -22,7 +22,7 @@ function SideNavbar() {
   let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
   let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
   const router = useRouter();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiterUser, loading } = useAuthDetails();
 
   const navList = [
     {
@@ -116,34 +116,36 @@ function SideNavbar() {
   }, [recruiter, recruiterUser]);
   return (
     <>
-      {newNaveList.map((item, i) => {
-        if (item.isvisible)
-          return (
-            <Stack
-              key={i}
-              onClick={() => {
-                if (router.pathname !== item.route) {
-                  router.push(item.route);
+      {!loading &&
+        newNaveList.map((item, i) => {
+          if (item.isvisible)
+            return (
+              <Stack
+                key={i}
+                onClick={() => {
+                  if (router.pathname !== item.route) {
+                    router.push(item.route);
+                  }
+                }}
+                direction={'row'}
+                alignItems={'center'}
+                color={'white.700'}
+                borderRadius={'10px'}
+                bgcolor={
+                  router.pathname.includes(
+                    item.route?.replace('/history', ''),
+                  ) && 'rgba(233, 235, 237, 0.5)'
                 }
-              }}
-              direction={'row'}
-              alignItems={'center'}
-              color={'white.700'}
-              borderRadius={'10px'}
-              bgcolor={
-                router.pathname.includes(item.route?.replace('/history', '')) &&
-                'rgba(233, 235, 237, 0.5)'
-              }
-              sx={{
-                '&:hover': {
-                  bgcolor: 'rgba(233, 235, 237, 0.5)',
-                },
-              }}
-            >
-              {item.icon}
-            </Stack>
-          );
-      })}
+                sx={{
+                  '&:hover': {
+                    bgcolor: 'rgba(233, 235, 237, 0.5)',
+                  },
+                }}
+              >
+                {item.icon}
+              </Stack>
+            );
+        })}
     </>
   );
 }
