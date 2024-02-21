@@ -22,12 +22,15 @@ export type LinkProps = Props<
     };
     className?: string;
     button?: boolean;
+    block?: string;
   }
 >;
 export declare const Link: ({
   options,
   className,
   button,
+  children,
+  block,
   ...props
 }: LinkProps) => any;
 type ListProps = Props<
@@ -48,7 +51,7 @@ type ImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
 >;
-export declare function Image(props: ImageProps): any;
+export declare function Image({ alt, ...props }: ImageProps): any;
 export declare function Section({
   tag,
   ...props
@@ -121,7 +124,7 @@ export declare function Column({
 type RowProps = Props<
   "div",
   {
-    children: React.ReactElement<typeof Column>[];
+    children: React.ReactElement<ColumnProps>[];
     tag: React.ElementType;
     columns: {
       [key: string]: string;

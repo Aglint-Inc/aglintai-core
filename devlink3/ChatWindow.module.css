@@ -1,0 +1,12 @@
+.chat_contents {
+  display: flex;
+  width: 100%;
+  max-width: 770px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 40px;
+  padding-bottom: 200px;
+  flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
