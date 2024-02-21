@@ -227,26 +227,17 @@ const AvailabilityBar = () => {
   if (isInitialising) return <></>;
   return (
     <>
-      <PanelDetailTitle
-        isLoadingVisible={confirmBtnStatus === 'loading'}
-        slotLoader={
-          <>{<CircularProgress size={15} sx={{ color: '#fff' }} />}</>
-        }
-        isSlotSelected={cntChecked > 0}
-        slotNumber={cntChecked}
-        onClickConfirm={{
+      <CheckAvailabilityBar
+        textSlotNumber={cntChecked}
+        isCommonAvailableSlotVisible={showAvail}
+        isSelected={cntChecked > 0}
+        isButtonLoaderVisible={confirmBtnStatus === 'loading'}
+        onClickReqConfirmation={{
           onClick: handleConfirmSlots,
         }}
-        onClickDeselect={{
-          onClick: () => {
-            setCheckedSlots([]);
-          },
-        }}
-      />
-      <CheckAvailabilityBar
-        textSlotNumber={12}
-        isCommonAvailableSlotVisible={showAvail}
-        // isSelected={showAvail}
+        slotButtonLoaders={
+          <>{<CircularProgress size={15} sx={{ color: '#fff' }} />}</>
+        }
         slotTimezoneInput={
           <>
             <TimeZone timeZone={timeZoneLocal} setTimeZone={setTimeZoneLocal} />
@@ -337,10 +328,13 @@ const AvailabilityBar = () => {
           </>
         }
         onClickCheckAvailabilty={{
-          onClick: handleCheckAvailability,
+          onClick: () => {
+            handleCheckAvailability();
+          },
         }}
         onClickClose={{
           onClick: () => {
+            setCheckedSlots([]);
             setShowAvail(false);
           },
         }}
@@ -375,6 +369,22 @@ const AvailabilityBar = () => {
           </>
         }
       />
+      <PanelDetailTitle
+      // isLoadingVisible={confirmBtnStatus === 'loading'}
+      // slotLoader={
+      //   <>{<CircularProgress size={15} sx={{ color: '#fff' }} />}</>
+      // }
+      // isSlotSelected={cntChecked > 0}
+      // slotNumber={cntChecked}
+      // onClickConfirm={{
+      //   onClick: handleConfirmSlots,
+      // }}
+      // onClickDeselect={{
+      //   onClick: () => {
+      //     setCheckedSlots([]);
+      //   },
+      // }}
+      />
     </>
   );
 };
@@ -398,10 +408,11 @@ const DropDown = ({
         onClick={(e) => {
           setDropDownEl(e.currentTarget);
         }}
+        width={'100%'}
       >
         <UITextField
           value={timeSlotLocal + ' minutes'}
-          fullWidth={false}
+          fullWidth={true}
           InputProps={{
             sx: { width: '80px' },
             endAdornment: (
