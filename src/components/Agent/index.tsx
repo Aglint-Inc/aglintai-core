@@ -139,7 +139,18 @@ function Agent() {
                 run_id: runMessage.id,
               },
             );
-
+            // queued, in_progress, required_action,
+            if (
+              !['queued', 'in_progress', 'requires_action'].includes(
+                reRunMessage.status,
+              )
+            ) {
+              toast.error('network error, please try again.');
+              clearInterval(timeInterval);
+              setLoading(false);
+              tempActiveChat.messages.pop();
+              tempChats[activeChat] = tempActiveChat;
+            }
             if (reRunMessage?.required_action?.type) {
               await axios.post('/api/assistant/submitRun', {
                 thread_id: localStorage.getItem('agent_thread_id'),
@@ -217,7 +228,7 @@ function Agent() {
               clearInterval(timeInterval);
             }
           }
-        }, 1000);
+        }, 1700);
       }
       // inputRef.current.focus();
     } else {
@@ -327,7 +338,7 @@ function Agent() {
                               <div
                                 onClick={() => {
                                   sendMessage(
-                                    'select the Software Engineering Panel',
+                                    'Select the Software Engineering Panel',
                                   );
                                 }}
                               >
