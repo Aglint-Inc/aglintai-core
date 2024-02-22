@@ -51,7 +51,11 @@ function TeamAutoComplete({ loading }) {
         open={open}
         anchorEl={anchorEl}
         transition
-        sx={{ zIndex: 1200, maxWidth: '410px', width: '100%' }}
+        sx={{
+          zIndex: 1200,
+          maxWidth: '410px',
+          width: '100%',
+        }}
       >
         {({ TransitionProps }) => (
           <ClickAwayListener onClickAway={handleClickAway}>
@@ -63,67 +67,67 @@ function TeamAutoComplete({ loading }) {
                   boxShadow: '0px 4px 8px 0px #04444D26',
                   borderRadius: '10px',
                   mt: '10px',
+                  maxHeight: '250px',
+                  overflow: 'auto',
                 }}
               >
-                {members
-                  .filter((user: any) => user.schedule_auth?.access_token)
-                  .map((option, ind) => {
-                    return (
-                      <Stack
-                        key={option.user_id}
-                        direction='row'
-                        alignItems='center'
-                        spacing={2}
-                        sx={{
-                          width: '100%',
-                          p: '8px 16px',
-                          borderTop: ind === 0 ? 'none' : '1px solid #F8F9F9',
-                          backgroundColor: selectedUsers.find(
+                {members.map((option, ind) => {
+                  return (
+                    <Stack
+                      key={option.user_id}
+                      direction='row'
+                      alignItems='center'
+                      spacing={2}
+                      sx={{
+                        width: '100%',
+                        p: '8px 16px',
+                        borderTop: ind === 0 ? 'none' : '1px solid #F8F9F9',
+                        backgroundColor: selectedUsers.find(
+                          (user) => user.user_id === option.user_id,
+                        )
+                          ? '#F8F9F9'
+                          : 'transparent',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        if (
+                          !selectedUsers.find(
                             (user) => user.user_id === option.user_id,
                           )
-                            ? '#F8F9F9'
-                            : 'transparent',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => {
-                          if (
-                            !selectedUsers.find(
-                              (user) => user.user_id === option.user_id,
-                            )
-                          ) {
-                            setSelectedUsers([...selectedUsers, option]);
-                          }
-                        }}
+                        ) {
+                          setSelectedUsers([...selectedUsers, option]);
+                        }
+                      }}
+                    >
+                      <MuiAvatar
+                        src={option.profile_image}
+                        level={option.first_name}
+                        variant='circular'
+                        height='24px'
+                        width='24px'
+                        fontSize='12px'
+                      />
+                      <Stack
+                        direction={'row'}
+                        justifyContent={'space-between'}
+                        width={'100%'}
                       >
-                        <MuiAvatar
-                          src={option.profile_image}
-                          level={option.first_name}
-                          variant='circular'
-                          height='24px'
-                          width='24px'
-                          fontSize='12px'
-                        />
-                        <Stack
-                          direction={'row'}
-                          justifyContent={'space-between'}
-                          width={'100%'}
+                        <Typography
+                          variant='subtitle2'
+                          className='one-line-clamp'
                         >
-                          <Typography
-                            variant='subtitle2'
-                            className='one-line-clamp'
-                          >
-                            {option.first_name}
-                          </Typography>
-                          <Typography
-                            variant='caption'
-                            sx={{ textTransform: 'capitalize' }}
-                          >
-                            {option.role}
-                          </Typography>
-                        </Stack>
+                          {option.first_name}
+                        </Typography>
+                        <Typography
+                          variant='caption'
+                          sx={{ textTransform: 'capitalize' }}
+                        >
+                          {option.role}
+                        </Typography>
                       </Stack>
-                    );
-                  })}
+                    </Stack>
+                  );
+                })}
               </Stack>
             </Fade>
           </ClickAwayListener>
