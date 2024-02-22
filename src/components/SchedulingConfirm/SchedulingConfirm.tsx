@@ -103,15 +103,18 @@ const SchedulingConfirm = () => {
           if (uncheckedSlots.find((s) => s === slotPath)) continue;
           const [startTime] = timeKey.split('_');
 
-          if (!timeAvailabilitySlot[String(dateKey)]) continue;
-          timeAvailabilitySlot[String(dateKey)] = timeAvailabilitySlot[
-            String(dateKey)
-          ].map((timeRange) => {
-            if (dayjs(timeRange.startTime).toISOString() === startTime) {
-              timeRange.status = 'confirmed';
-            }
-            return timeRange;
-          });
+          if (!timeAvailabilitySlot[String(dateKey)]) {
+            // console.log(dateKey, timeAvailabilitySlot[dateKey]);
+          } else {
+            timeAvailabilitySlot[String(dateKey)] = timeAvailabilitySlot[
+              String(dateKey)
+            ].map((timeRange) => {
+              if (dayjs(timeRange.startTime).toISOString() === startTime) {
+                timeRange.status = 'confirmed';
+              }
+              return timeRange;
+            });
+          }
         }
       }
       newInterviewerSlot.slots = newInterviewerSlot.slots.map((slotAvail) => {

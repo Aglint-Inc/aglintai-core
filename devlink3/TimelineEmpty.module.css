@@ -18,6 +18,15 @@
   display: none;
 }
 
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -28,11 +37,6 @@
 }
 
 .fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
   position: relative;
   z-index: 2;
 }

@@ -47,5 +47,10 @@ export const allowedPaths = new Set([
   '/api/scheduling/confirm',
   '/api/scheduling/calendar-event',
   '/api/edge/sample',
+  `/api/candidate-assessment/assessment-details`,
+  `/api/candidate-assessment/assessment-answers`,
+  '/api/candidate-assessment/assessment-result-create',
+  '/api/candidate-assessment/assessment-result-details',
+  '/api/candidate-assessment/assessment-result-update',
   ...cronPaths,
 ]);

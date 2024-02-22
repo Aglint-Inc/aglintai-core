@@ -3,8 +3,9 @@
 
   display: flex;
   min-height: 54px;
-  padding: 16px 16px 0px;
-  flex-direction: column;
+  padding: 16px;
+  flex-direction: row;
+  align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
@@ -15,7 +16,8 @@
 }
 
 .task_card.is_new {
-  padding-bottom: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   flex-direction: row;
   align-items: center;
   transition: all 200ms ease;
@@ -29,6 +31,24 @@
   background-color: #f7f9fb;
 }
 
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -39,11 +59,6 @@
 }
 
 .fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
   position: relative;
   z-index: 2;
 }

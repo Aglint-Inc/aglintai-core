@@ -18,7 +18,17 @@ const TimeZone = ({ timeZone, setTimeZone }) => {
           <UITextField
             rest={{ ...params }}
             placeholder='(UTC +05:30 ) Asia/Calcutta'
-            fullWidth
+            InputProps={{
+              sx: {
+                '& .MuiOutlinedInput-root': {
+                  width: '150px !important',
+                },
+
+                // width: '200px',
+              },
+              fullWidth: true,
+              // classes: { formControl: 'tasfdha' },
+            }}
           />
         )}
         defaultValue={timeZone}

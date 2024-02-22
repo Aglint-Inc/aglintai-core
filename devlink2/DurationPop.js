@@ -96,10 +96,7 @@ export function DurationPop({
         </_Builtin.Block>
       </_Builtin.Block>
       {isCustomDurationVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1003")}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "date_grid")} tag="div">
           <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
             {"Custom Duration"}
           </_Builtin.Block>
@@ -111,23 +108,27 @@ export function DurationPop({
           className={_utils.cx(_styles, "div-block-972")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-971")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "date_grid")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
               {"Start Time"}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotStartTime}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1015")}
+              tag="div"
+            >
+              {slotStartTime}
+            </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-971")}
-            tag="div"
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "date_grid")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
               {"End Time"}
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotEndTime}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1016")}
+              tag="div"
+            >
+              {slotEndTime}
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

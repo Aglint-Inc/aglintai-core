@@ -95,56 +95,8 @@
   display: none;
 }
 
-.widget_flex {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-}
-
-.iv_panel_card {
-  display: flex;
-  width: 100%;
-  max-width: 500px;
-  padding: 10px 16px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-
-  background-color: white;
-
-  transition: all 300ms ease-in-out;
-
-  cursor: pointer;
-}
-
-.iv_panel_card:hover {
-  background-color: #f8f9f9;
-}
-
-.panel_card_text {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-sm.color-grey-600 {
-  color: #68737d;
-}
-
-.avatar_group_30 {
-  height: 30px;
+.embed_flex.custom_top {
+  margin-top: 2px;
 }
 
 .link {

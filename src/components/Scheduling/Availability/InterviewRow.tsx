@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { useMemo } from 'react';
 
 import {
   MemberSlotInfo,
   PanelDetailMemberRow,
   PanelMember,
   TableBodyCell,
+  UserTimezone,
 } from '@/devlink2';
 import toast from '@/src/utils/toast';
 
@@ -12,6 +14,7 @@ import { InterviewerType } from './availability.types';
 import AvailabilityCell from './AvailabilityCell';
 import { getDateRangeKeys } from './CalenderHeaderRow';
 import { useAvailableStore } from './store';
+import { countSlotStatus } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -34,9 +37,6 @@ const InterviewerRow = ({
   );
   const timeSlot = useAvailableStore((state) => state.timeSlot);
 
-  if (!interviewer.isMailConnected)
-    return <MaiLConnectInterviewer interviewer={interviewer} />;
-
   let timeDurSlots = interviewer.slots.find((t) => t.timeDuration === timeSlot);
   let timeSlotKeys = getDateRangeKeys(dateRangeTableView);
 
@@ -44,12 +44,17 @@ const InterviewerRow = ({
     (s) => s.timeDuration === timeSlot,
   );
 
-  const cntConfirmed = interviewer.slots.find(
-    (s) => s.timeDuration === timeSlot,
-  ).cntConfirmed;
-  const cntRequested = interviewer.slots.find(
-    (s) => s.timeDuration === timeSlot,
-  ).cntRequested;
+  const cntConfirmed = useMemo(() => {
+    const cnt = countSlotStatus(interviewer.slots, 'confirmed', timeSlot);
+    return cnt;
+  }, [interviewer]);
+  const cntRequested = useMemo(() => {
+    const cnt = countSlotStatus(interviewer.slots, 'requested', timeSlot);
+    return cnt;
+  }, [interviewer]);
+
+  if (!interviewer.isMailConnected)
+    return <MaiLConnectInterviewer interviewer={interviewer} />;
 
   return (
     <>
@@ -71,6 +76,7 @@ const InterviewerRow = ({
               }
               textMemberName={interviewer.interviewerName}
             />
+            <UserTimezone textTimeZone={interviewer.timeZone} />
             {cntConfirmed + cntRequested > 0 && (
               <MemberSlotInfo
                 onClickViewSlots={{

@@ -38,12 +38,7 @@ export function CheckAvailabilityBar({
       >
         <_Builtin.Block className={_utils.cx(_styles, "input_block")} tag="div">
           <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1005")}
-            tag="div"
-          >
-            {slotTimezoneInput}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotTimezoneInput}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "input_block")} tag="div">
           <_Builtin.Block tag="div">{"Start Date"}</_Builtin.Block>
@@ -55,12 +50,7 @@ export function CheckAvailabilityBar({
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "input_block")} tag="div">
           <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1004")}
-            tag="div"
-          >
-            {slotDurationInput}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotDurationInput}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-994")}

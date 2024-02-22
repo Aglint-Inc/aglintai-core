@@ -104,6 +104,7 @@ export const useSyncInterviewersCalender = () => {
       intSavedSlots,
       dateRange,
     );
+
     setInterviewers(finalINts);
   };
 

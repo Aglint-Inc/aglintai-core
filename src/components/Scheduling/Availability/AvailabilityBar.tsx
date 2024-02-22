@@ -42,7 +42,6 @@ import {
 } from './utils2';
 import SpecializedDatePicker from '../../Common/SpecializedDatePicker';
 import SpecializedTimePicker from '../../Common/SpecializedTimePicker';
-import UISelect from '../../Common/Uiselect';
 import UITextField from '../../Common/UITextField';
 import {
   API_FAIL_MSG,
@@ -259,7 +258,7 @@ const AvailabilityBar = () => {
         const user_id = mailInt.interviewerId;
         const req_user_id = recruiterUser.user_id;
         const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${user_id}&req_user_id=${req_user_id}&time_duration=${timeSlot}`;
-        sendMail(mailInt.email, link);
+        sendReqMail(mailInt.email, link);
         toast.success(
           `Request confirmation mail sent to ${mailInt.interviewerName}`,
         );
@@ -450,7 +449,7 @@ const DropDown = ({
           value={timeSlotLocal + ' minutes'}
           fullWidth={true}
           InputProps={{
-            sx: { width: '80px' },
+            sx: { width: '140px' },
             endAdornment: (
               <IconButton>
                 <TimeIcon fontSize='small' />
@@ -536,17 +535,11 @@ const DropDown = ({
           }
           slotCustomDurationInput={
             <>
-              <UISelect
-                menuOptions={[
-                  { value: 30, name: '30 minutes' },
-                  { value: 45, name: '45 minutes' },
-                  { value: 60, name: '1 Hour' },
-                  { value: 90, name: '1 Hour 30 minutes' },
-                  { value: 120, name: '2 Hour' },
-                ]}
+              <UITextField
                 onChange={(e) => {
                   setTimeSlotLocal(Number(e.target.value));
                 }}
+                type='number'
                 defaultValue={30}
                 value={timeSlotLocal}
               />
@@ -564,7 +557,7 @@ export const dayDiffCnt = (date1: Date, date2: Date) => {
   return dayjs(d2).diff(d1);
 };
 
-const sendMail = async (toEmail, link) => {
+export const sendReqMail = async (toEmail, link) => {
   await axios.post('/api/sendgrid', {
     email: toEmail,
     subject: 'Confirm request',

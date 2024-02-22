@@ -252,3 +252,8 @@ textarea::placeholder {
 .slot-body-global {
   height: calc(100vh - 60px);
 }
+
+[class*="DummyChatOne_link"] {
+  color: #337FBD;
+  cursor: pointer;
+}

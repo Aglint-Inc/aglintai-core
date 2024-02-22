@@ -408,6 +408,7 @@ export type Database = {
           created_at: string
           duration: number | null
           id: string
+          is_submitted: boolean | null
           responses: Json[] | null
           result: Json | null
         }
@@ -417,6 +418,7 @@ export type Database = {
           created_at?: string
           duration?: number | null
           id?: string
+          is_submitted?: boolean | null
           responses?: Json[] | null
           result?: Json | null
         }
@@ -426,6 +428,7 @@ export type Database = {
           created_at?: string
           duration?: number | null
           id?: string
+          is_submitted?: boolean | null
           responses?: Json[] | null
           result?: Json | null
         }

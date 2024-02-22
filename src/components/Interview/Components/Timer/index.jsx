@@ -24,9 +24,10 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
       </style>
       <Chip
         sx={{
-          borderColor: 'grey.600',
-          color: 'white.700',
+          borderColor: 'grey.200',
+          color: 'black.700',
           height: '25px',
+          bgcolor: 'white.700'
         }}
         label={
           <Stack alignItems={'center'} spacing={0.5} direction={'row'}>
@@ -41,7 +42,7 @@ function Timer({ introStep, getminutes, getSecound, timeOut }) {
             )}
             <Typography
               className={timeOut ? 'timmer' : ''}
-              color={timeOut ? 'red.500' : 'grey.600'}
+              color={timeOut ? 'red.500' : 'white.600'}
               variant='body1'
             >
               {getminutes < 10 && '0'}
