@@ -100,6 +100,10 @@
   display: none;
 }
 
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
 .widget_flex {
   display: flex;
   flex-direction: column;
@@ -148,6 +152,12 @@
   color: #68737d;
 }
 
+.slotavatar_group {
+  display: flex;
+  height: 30px;
+  justify-content: space-between;
+}
+
 .avatar_group_30 {
   height: 30px;
 }
@@ -193,4 +203,24 @@
   width: 20px;
   height: 20px;
   border-radius: 100px;
+}
+
+.interview_confirmation_widget {
+  display: flex;
+  max-width: 400px;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.hr-flex-6 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }

@@ -3,6 +3,7 @@ import * as _Builtin from "./_Builtin";
 import { AgentTask } from "./AgentTask";
 import { NewChat } from "./NewChat";
 import { ChatWindow } from "./ChatWindow";
+import { WidgetFlexRow } from "./WidgetFlexRow";
 import { TimelineBlock } from "./TimelineBlock";
 import * as _utils from "./utils";
 import _styles from "./AgentLayout.module.css";
@@ -82,6 +83,7 @@ export function AgentLayout({
             <>
               <NewChat />
               <ChatWindow />
+              <WidgetFlexRow />
             </>
           )}
         </_Builtin.Block>

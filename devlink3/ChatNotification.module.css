@@ -35,6 +35,10 @@
   display: none;
 }
 
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
 .text-grey_600 {
   color: #68737d;
 }

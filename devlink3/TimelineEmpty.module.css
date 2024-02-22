@@ -18,6 +18,10 @@
   display: none;
 }
 
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
