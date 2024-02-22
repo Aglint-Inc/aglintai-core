@@ -36,6 +36,10 @@
   display: none;
 }
 
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
 .relative-1 {
   position: relative;
   z-index: 1;

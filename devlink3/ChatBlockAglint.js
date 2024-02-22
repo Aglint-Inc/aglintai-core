@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { SamplePanel } from "./SamplePanel";
 import * as _utils from "./utils";
 import _styles from "./ChatBlockAglint.module.css";
 
@@ -47,135 +48,7 @@ export function ChatBlockAglint({
         </_Builtin.Block>
         {isWidgetVisible ? (
           <_Builtin.Block tag="div">
-            {slotWidget ?? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "widget_flex")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "iv_panel_card")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "panel_card_text")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"SW Eng Panel"}</_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-sm",
-                        "color-grey-600"
-                      )}
-                      tag="div"
-                    >
-                      {"5 Members"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "avatar_group_30")}
-                    loading="eager"
-                    width="auto"
-                    height="auto"
-                    alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5ad0a5a40e89e5ed867c8_avatar-grup-with-confirm.png"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "iv_panel_card")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "panel_card_text")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {"General panel for freshers"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-sm",
-                        "color-grey-600"
-                      )}
-                      tag="div"
-                    >
-                      {"11 Members"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "avatar_group_30")}
-                    loading="eager"
-                    width="auto"
-                    height="auto"
-                    alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b97945c04b6a6bf31da6_r.png"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "iv_panel_card")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "panel_card_text")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {"Team Sales and Marketing"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-sm",
-                        "color-grey-600"
-                      )}
-                      tag="div"
-                    >
-                      {"4 Members"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "avatar_group_30")}
-                    loading="eager"
-                    width="auto"
-                    height="auto"
-                    alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b9987c71f33757c13b16_4member.png"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "iv_panel_card")}
-                  tag="div"
-                >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "panel_card_text")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {"Final interview panel"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "text-sm",
-                        "color-grey-600"
-                      )}
-                      tag="div"
-                    >
-                      {"3 Members"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Image
-                    className={_utils.cx(_styles, "avatar_group_30")}
-                    loading="eager"
-                    width="auto"
-                    height="auto"
-                    alt=""
-                    src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d5b9be011212b8859e1c13_3member.png"
-                  />
-                </_Builtin.Block>
-              </_Builtin.Block>
-            )}
+            {slotWidget ?? <SamplePanel />}
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

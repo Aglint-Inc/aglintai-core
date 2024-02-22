@@ -1,0 +1,6 @@
+.widget_flex {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
