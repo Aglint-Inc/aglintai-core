@@ -29,6 +29,7 @@ function CandidateInvite() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [interviewers_id, setInterviewers_id] = useState<string[]>([]);
 
   useEffect(() => {
     if (router.isReady && router.query.schedule_id) initialFetch();
@@ -64,7 +65,7 @@ function CandidateInvite() {
         company_logo: schedule?.interview_panel?.recruiter?.logo,
         company_name: schedule?.interview_panel?.recruiter?.name,
         schedule_name: schedule.schedule_name,
-        interviewers_id: schedule.panel_users.map((user: any) => user.user_id),
+        interviewers_id: interviewers_id,
         candidate_email: schedule.applications.candidates.email,
         organizer_id: schedule.created_by,
       });
@@ -200,8 +201,10 @@ function CandidateInvite() {
                                   onClickPill={{
                                     onClick: () => {
                                       if (selectedSlot === slot) {
+                                        setInterviewers_id([]);
                                         setSelectedSlot(null);
                                       } else {
+                                        setInterviewers_id(slot.user_ids);
                                         setSelectedSlot(slot);
                                       }
                                     },
