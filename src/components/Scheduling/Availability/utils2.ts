@@ -19,6 +19,16 @@ export function convertToJSON(data: InterviewerType[]): InterviewData {
 
   data.forEach((interviewer) => {
     const interviewerId = interviewer.interviewerId;
+    if (interviewer.slots.length === 0) {
+      jsonObject[String(interviewer)] = {
+        email: interviewer.email,
+        interviewerId: interviewer.interviewerId,
+        interviewerName: interviewer.interviewerName,
+        isMailConnected: interviewer.isMailConnected,
+        profileImg: interviewer.profileImg,
+        timeZone: interviewer.timeZone,
+      };
+    }
     interviewer.slots.forEach((slot) => {
       const availability = slot.availability;
       const timeDuration = slot.timeDuration;

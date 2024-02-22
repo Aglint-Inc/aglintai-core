@@ -5,6 +5,7 @@ import {
   PanelDetailMemberRow,
   PanelMember,
   TableBodyCell,
+  UserTimezone,
 } from '@/devlink2';
 import toast from '@/src/utils/toast';
 
@@ -71,6 +72,7 @@ const InterviewerRow = ({
               }
               textMemberName={interviewer.interviewerName}
             />
+            <UserTimezone textTimeZone={interviewer.timeZone} />
             {cntConfirmed + cntRequested > 0 && (
               <MemberSlotInfo
                 onClickViewSlots={{

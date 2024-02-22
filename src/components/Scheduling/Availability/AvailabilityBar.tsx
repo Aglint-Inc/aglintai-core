@@ -450,7 +450,7 @@ const DropDown = ({
           value={timeSlotLocal + ' minutes'}
           fullWidth={true}
           InputProps={{
-            sx: { width: '80px' },
+            sx: { width: '140px' },
             endAdornment: (
               <IconButton>
                 <TimeIcon fontSize='small' />
