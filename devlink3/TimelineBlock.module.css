@@ -71,6 +71,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .timeline_wrap {
   display: flex;
   width: 100%;

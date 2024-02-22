@@ -36,6 +36,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .chat_content {
   display: flex;
   width: 100%;
@@ -68,11 +73,6 @@
 }
 
 .fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
   position: relative;
   z-index: 2;
 }

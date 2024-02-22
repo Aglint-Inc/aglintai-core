@@ -39,6 +39,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .text-grey_600 {
   color: #68737d;
 }

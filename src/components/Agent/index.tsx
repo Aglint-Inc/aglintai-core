@@ -99,8 +99,8 @@ function Agent() {
     localStorage.setItem('agent_thread_id', data.id);
   }
 
-  async function sendMessage() {
-    let message = inputRef.current.value;
+  async function sendMessage(message: string) {
+    // let message = inputRef.current.value;
     inputRef.current.value = '';
     const today = dayjs(new Date()).fromNow();
     const tempChats = [...agentChats];
@@ -239,7 +239,7 @@ function Agent() {
         onClickTaskActivity={{ onClick: () => setTimeLineDrawer(true) }}
         textCurrentTaskName={
           activeChat === 'demo_chat_1'
-            ? 'Rescheduled interview'
+            ? 'John Abraham, Staff DevOps Engineer Candidate: Interview Scheduling'
             : activeChat === 'demo_chat_2'
               ? 'Monday interview'
               : agentChats[activeChat]?.name
@@ -248,21 +248,21 @@ function Agent() {
         slotAgentTask={
           <>
             {agentChats.map((chat, i) => {
-              const tempTask =
-                agentChats[i]?.timeline[agentChats[i]?.timeline.length - 1];
+              // const tempTask =
+              //   agentChats[i]?.timeline[agentChats[i]?.timeline.length - 1];
               return (
                 <AgentTask
                   key={i}
                   isActive={i === activeChat}
                   textTaskName={chat.name}
-                  isTimeline={Boolean(tempTask)}
+                  // isTimeline={Boolean(tempTask)}
                   onClickCard={{
                     onClick: () => {
                       setActiveChat(i);
                       // setMessages(chat.messages);
                     },
                   }}
-                  slotTimeline={tempTask}
+                  // slotTimeline={tempTask}
                 />
               );
             })}
@@ -310,9 +310,24 @@ function Agent() {
                         {item.sender === 'Aglint' ? (
                           <ChatBlockAglint
                             textTime={item.date}
-                            textMessage={item.message}
+                            textMessage={item.message.replace(
+                              // eslint-disable-next-line security/detect-unsafe-regex
+                              /[Aa]bhishek(?:\s+[Tt]omar)?/g,
+                              '<span class="link">@hi</span>',
+                            )}
                             isWidgetVisible={item.component}
-                            slotWidget={item.component}
+                            slotWidget={
+                              // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+                              <div
+                                onClick={() => {
+                                  sendMessage(
+                                    'select the Software Engineering Panel',
+                                  );
+                                }}
+                              >
+                                {item.component}
+                              </div>
+                            }
                           />
                         ) : (
                           <ChatBlockUser
@@ -324,7 +339,17 @@ function Agent() {
                                 src={recruiterUser.profile_image}
                               />
                             }
-                            textMessage={item.message}
+                            textMessage={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: item.message.replace(
+                                    // eslint-disable-next-line security/detect-unsafe-regex
+                                    /[Aa]bhishek(?:\s+[Tt]omar)?/g,
+                                    '<span class="DummyChatOne_link">@Abhishek Tomar</span>',
+                                  ),
+                                }}
+                              />
+                            }
                           />
                         )}
                         <>{item.notifications}</>
@@ -450,14 +475,14 @@ function Agent() {
             variant='outlined'
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                sendMessage();
+                sendMessage(inputRef.current.value);
               }
             }}
           />
         }
         onClickSend={{
           onClick: () => {
-            sendMessage();
+            sendMessage(inputRef.current.value);
           },
         }}
         isSearch={
@@ -591,82 +616,82 @@ function Agent() {
 }
 
 export default Agent;
-export const chatMessages2 = [
-  {
-    sender: 'You',
-    message: 'Hello!',
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'Aglint',
-    message:
-      'Hello there!, Ready to assist with scheduling your interviews today?',
-    date: null,
-    component: null, // React component to display the chatbot's name
-  },
-  {
-    sender: 'You',
-    message:
-      'Yes, I need to schedule interviews for the Software Developer role.',
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: 'Understood. How many interviews are we scheduling?',
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'You',
-    message: `Let's go with the top 5 candidates.`,
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: 'Do you have preferred dates and times?',
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'You',
-    message: `Next Monday and Tuesday, anytime in the afternoon.`,
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: `Got it. I'll check the candidates' availability. Any specific duration for each interview?`,
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'You',
-    message: `Allocate 1 hour for each, with a 15-minute break in between.`,
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: `Perfect. I'll arrange them and send confirmation emails. Do you want to include any specific interviewers from your team?`,
-    date: null,
-    component: null, // React component to explain how the chatbot works
-  },
-  {
-    sender: 'You',
-    message: `That's all for now, thank you!`,
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message: `You're welcome! I'll update you shortly on the schedule. Have a great day!`,
-    date: null,
-    component: null,
-  },
-];
+// export const chatMessages2 = [
+//   {
+//     sender: 'You',
+//     message: 'Hello!',
+//     date: null,
+//     component: null, // React component to explain how the chatbot works
+//   },
+//   {
+//     sender: 'Aglint',
+//     message:
+//       'Hello there!, Ready to assist with scheduling your interviews today?',
+//     date: null,
+//     component: null, // React component to display the chatbot's name
+//   },
+//   {
+//     sender: 'You',
+//     message:
+//       'Yes, I need to schedule interviews for the Software Developer role.',
+//     date: null,
+//     component: null,
+//   },
+//   {
+//     sender: 'Aglint',
+//     message: 'Understood. How many interviews are we scheduling?',
+//     date: null,
+//     component: null, // React component to explain how the chatbot works
+//   },
+//   {
+//     sender: 'You',
+//     message: `Let's go with the top 5 candidates.`,
+//     date: null,
+//     component: null,
+//   },
+//   {
+//     sender: 'Aglint',
+//     message: 'Do you have preferred dates and times?',
+//     date: null,
+//     component: null, // React component to explain how the chatbot works
+//   },
+//   {
+//     sender: 'You',
+//     message: `Next Monday and Tuesday, anytime in the afternoon.`,
+//     date: null,
+//     component: null,
+//   },
+//   {
+//     sender: 'Aglint',
+//     message: `Got it. I'll check the candidates' availability. Any specific duration for each interview?`,
+//     date: null,
+//     component: null, // React component to explain how the chatbot works
+//   },
+//   {
+//     sender: 'You',
+//     message: `Allocate 1 hour for each, with a 15-minute break in between.`,
+//     date: null,
+//     component: null,
+//   },
+//   {
+//     sender: 'Aglint',
+//     message: `Perfect. I'll arrange them and send confirmation emails. Do you want to include any specific interviewers from your team?`,
+//     date: null,
+//     component: null, // React component to explain how the chatbot works
+//   },
+//   {
+//     sender: 'You',
+//     message: `That's all for now, thank you!`,
+//     date: null,
+//     component: null,
+//   },
+//   {
+//     sender: 'Aglint',
+//     message: `You're welcome! I'll update you shortly on the schedule. Have a great day!`,
+//     date: null,
+//     component: null,
+//   },
+// ];
 export const questions = [
   'Hey, Schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
   'Schedule in the next two weeks.',
@@ -747,7 +772,7 @@ export const chatMessages = [
         <ChatNotification textMain={'Email sent to candidate.'} />
         <ChatNotification
           textMain={'Awaiting candidate response.'}
-          slotIcon={<LottieAnimations animation='loader_dotted' />}
+          slotIcon={<LottieAnimations animation='loader_dotted' size={1.5} />}
         />
       </>
     ),

@@ -40,6 +40,11 @@
   margin-top: 2px;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .relative-1 {
   position: relative;
   z-index: 1;

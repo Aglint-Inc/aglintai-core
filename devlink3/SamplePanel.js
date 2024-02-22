@@ -3,10 +3,17 @@ import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
 import _styles from "./SamplePanel.module.css";
 
-export function SamplePanel({ as: _Component = _Builtin.Block }) {
+export function SamplePanel({
+  as: _Component = _Builtin.Block,
+  onClickPanelCard = {},
+}) {
   return (
     <_Component className={_utils.cx(_styles, "widget_flex")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "iv_panel_card")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "iv_panel_card")}
+        tag="div"
+        {...onClickPanelCard}
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "panel_card_text")}
           tag="div"
