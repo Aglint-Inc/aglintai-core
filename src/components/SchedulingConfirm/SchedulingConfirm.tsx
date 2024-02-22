@@ -102,6 +102,8 @@ const SchedulingConfirm = () => {
           let slotPath = `${dateKey}_${timeKey}_[${interviewIdx}]`;
           if (uncheckedSlots.find((s) => s === slotPath)) continue;
           const [startTime] = timeKey.split('_');
+
+          if (!timeAvailabilitySlot[String(dateKey)]) continue;
           timeAvailabilitySlot[String(dateKey)] = timeAvailabilitySlot[
             String(dateKey)
           ].map((timeRange) => {
@@ -164,6 +166,7 @@ const SchedulingConfirm = () => {
                     name: i.interviewerName,
                     url: i.profileImg,
                     status: i.status,
+                    isChecked: true,
                   }),
                 );
                 let timeRange =

@@ -115,6 +115,8 @@ export function mergeInterviewerEvents(
   return mergedEvents;
 }
 
+//used in confirm available slots page inside use effect
+
 export function mergeInterviewerEventsWithTimeSlot(
   interviewers: InterviewerType[],
   timeDuration: number,
@@ -130,7 +132,6 @@ export function mergeInterviewerEventsWithTimeSlot(
       }
 
       for (let timeSlot of slotAvail.availability[String(dayKey)]) {
-        if (timeSlot.status !== 'requested') continue;
         const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
         if (!mergedEvents[String(dayKey)][String(timeRange)]) {
           mergedEvents[String(dayKey)][String(timeRange)] = [];
