@@ -699,22 +699,20 @@ export default Agent;
 //   },
 // ];
 export const questions = [
-  'Hey, Schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
-  'Schedule in the next two weeks.',
-  'Please check with the candidate first and set it up.',
-  'Awesome, thanks. I forgot to ask, can you add Henry and Denise to {shadow} the interview.',
-  'No, optional is fine.',
-  'Yes, confirm it. Did the shadows confirm?',
-  'Did Henry and Denise confirm to {shadow} the interview',
-  'Awesome.',
-  'Yes, please reschedule',
+  'Hi, I need to schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
+  "Let's go with the Software Engineering Panel",
+  'Please arrange it within the next two weeks.',
+  'Yes, please check with both the candidate and the interviewers before finalizing.',
+  'Thanks! Can you also add Cindy and Chris to shadow the interview?',
+  'Yes, that works for me.',
+  'Yes, go ahead and schedule the interview. Let me know once Cindy and Chris confirm.',
 ];
 
 export const chatMessages = [
   {
     sender: 'You',
     message:
-      'Hi, I need to schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
+      'Hi, I need to Schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
     date: null,
     component: null,
   },
@@ -783,6 +781,71 @@ export const chatMessages = [
       </>
     ),
     task: 'Email sent to Abhishek Tomar',
+  },
+  {
+    sender: 'you',
+    message:
+      'Thanks! Can you also add Cindy and Chris to shadow the interview?',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      "Sure thing! I'll add Cindy and Chris as optional shadows once the interview is confirmed. Is that okay?",
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'you',
+    message: 'Yes, that works for me.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      "John, David, and Sara have confirmed their availability. However, we haven't heard back from Cindy and Chris yet. Should I proceed with scheduling",
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'you',
+    message:
+      'Yes, go ahead and schedule the interview. Let me know once Cindy and Chris confirm.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      "Will do! I'm sending out the interview invitations now. I'll update you as soon as Cindy and Chris respond.",
+    date: null,
+    component: null,
+    notifications: (
+      <>
+        <ChatNotification
+          isSubtextVisible={true}
+          textMain={'Task Created'}
+          textSub={
+            'Cindy, Senior Machine Learning Engineer Candidate: Interview Scheduling'
+          }
+        />
+        <ChatNotification
+          isSubtextVisible={true}
+          textMain={'Task Created'}
+          textSub={
+            'Chris, Senior Machine Learning Engineer Candidate: Interview Scheduling'
+          }
+        />
+        <ChatNotification textMain={'Email sent to candidates.'} />
+        <ChatNotification
+          textMain={'Awaiting candidate response.'}
+          slotIcon={<LottieAnimations animation='loader_dotted' size={1.5} />}
+        />
+      </>
+    ),
+    task: 'Email sent to Cindy and Chris.',
   },
 ];
 
