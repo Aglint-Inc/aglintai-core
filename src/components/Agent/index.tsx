@@ -704,8 +704,7 @@ export const questions = [
   'Please arrange it within the next two weeks.',
   'Yes, please check with both the candidate and the interviewers before finalizing.',
   'Thanks! Can you also add Cindy and Chris to shadow the interview?',
-  'Yes, that works for me.',
-  'Yes, go ahead and schedule the interview. Let me know once Cindy and Chris confirm.',
+  'Let me know once Cindy and Chris confirm.',
 ];
 
 export const chatMessages = [
@@ -791,28 +790,13 @@ export const chatMessages = [
   },
   {
     sender: 'Aglint',
-    message:
-      "Sure thing! I'll add Cindy and Chris as optional shadows once the interview is confirmed. Is that okay?",
+    message: "Sure thing! I'll add Cindy and Chris as optional shadows.",
     date: null,
     component: null,
   },
   {
     sender: 'you',
-    message: 'Yes, that works for me.',
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'Aglint',
-    message:
-      "John, David, and Sara have confirmed their availability. However, we haven't heard back from Cindy and Chris yet. Should I proceed with scheduling",
-    date: null,
-    component: null,
-  },
-  {
-    sender: 'you',
-    message:
-      'Yes, go ahead and schedule the interview. Let me know once Cindy and Chris confirm.',
+    message: 'Let me know once Cindy and Chris confirm.',
     date: null,
     component: null,
   },
