@@ -87,8 +87,10 @@ const Availability = () => {
                 slots: [],
                 email: member.email,
                 isMailConnected: true,
+                timeZone: '',
               };
             });
+
           setInterviewers(newInterviewers);
           await initialiseAvailabilities(
             newInterviewers,
@@ -97,7 +99,6 @@ const Availability = () => {
             timeRange,
           );
         } catch (err) {
-          // console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
           setIsisInitialising(false);

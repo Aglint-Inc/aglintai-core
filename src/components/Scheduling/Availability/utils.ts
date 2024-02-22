@@ -25,22 +25,25 @@ export const getAvailability = async (
     endTime: string;
   },
 ) => {
-  const { data } = (await axios.post('/api/scheduling/list-availability', {
+  const { data } = await axios.post('/api/scheduling/list-availability', {
     recruiterId: recruiterId,
     timeDuration: timeSlot,
     startDate,
     endDate,
     working_hours: workingHours,
-  })) as { data: InterviewerAvailabliity['availability'] };
+  });
+  const { groupedSlots, timeZone } = data as {
+    timeZone: string;
+    groupedSlots: InterviewerAvailabliity['availability'];
+  };
 
   let updatedResp: InterviewerAvailabliity['availability'] = {};
-
-  for (let key of Object.keys(data)) {
-    updatedResp[String(key)] = data[String(key)].map((s) => ({
+  for (let key of Object.keys(groupedSlots)) {
+    updatedResp[String(key)] = groupedSlots[String(key)].map((s) => ({
       ...s,
     }));
   }
-  return updatedResp;
+  return { timeZone: timeZone, availability: updatedResp };
 };
 
 export const initialiseCheckedInts = (
