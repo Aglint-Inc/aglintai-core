@@ -15,7 +15,6 @@ export async function listEvents(
     orderBy: 'startTime',
   });
 
-  //   console.log(events.data.items[0]);
   return events.data.items
     .map((e) => {
       let { start, end } = e;
