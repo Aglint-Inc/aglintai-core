@@ -306,6 +306,5 @@ export function mergeSavedAndAvailableSlots(
   }
 
   const finalINts = convertFromJSON(availIntsJson);
-
   return finalINts;
 }

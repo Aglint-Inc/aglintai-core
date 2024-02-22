@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import {
   GroupedSlots,
@@ -7,7 +8,10 @@ import {
   TimeRangeConfirmed,
   TimeRangeRequested,
 } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
 
+import { sendReqMail } from './AvailabilityBar';
 import { useAvailableStore } from './store';
 import { countSlotStatus, groupSlots } from './utils';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -18,10 +22,11 @@ const PanelRowDialog = ({ onClose, intId }) => {
   const interviewer = interviewers.find((i) => i.interviewerId === intId);
   const cntReq = countSlotStatus(interviewer.slots, 'requested', timeSlot);
   const cntConf = countSlotStatus(interviewer.slots, 'confirmed', timeSlot);
-
+  const router = useRouter();
   let dateKeys = Object.keys(
     interviewer.slots.find((s) => s.timeDuration === timeSlot).availability,
   );
+  const { recruiterUser } = useAuthDetails();
 
   let reqStatusgroupedSlots = groupSlots(
     interviewer,
@@ -44,8 +49,13 @@ const PanelRowDialog = ({ onClose, intId }) => {
           onClick: onClose,
         }}
         onClickResendRequest={{
-          onClick: () => {
-            //
+          onClick: async () => {
+            const panel_id = router.query.panel_id as string;
+            const user_id = interviewer.interviewerId;
+            const req_user_id = recruiterUser.user_id;
+            const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${user_id}&req_user_id=${req_user_id}&time_duration=${timeSlot}`;
+            await sendReqMail(interviewer.email, link);
+            toast.success('mail sent');
           },
         }}
         textConfirmedSlotsNumber={cntConf}
