@@ -39,8 +39,6 @@ import {
   TimelineDummyOne,
   TimelineDummyTwo,
   TimelineEmpty,
-  WidgetFlexRow,
-  WidgetPanelCard,
 } from '@/devlink3';
 import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
@@ -226,7 +224,6 @@ function Agent() {
       toast.warning('Please enter your message!');
     }
   }
-  console.log('agentChats', agentChats[activeChat]?.messages);
   useEffect(() => {
     if (!localStorage.getItem('agent_thread_id')) createThread();
   }, []);
