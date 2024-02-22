@@ -245,7 +245,7 @@ export default Availability;
 export const InterviewerGroup = ({
   profileUrls,
 }: {
-  profileUrls: { name: string; url: string }[];
+  profileUrls: { name: string; url: string; isChecked?: boolean }[];
 }) => {
   return (
     <AvatarGroup

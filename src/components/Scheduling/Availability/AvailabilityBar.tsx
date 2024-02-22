@@ -230,6 +230,13 @@ const AvailabilityBar = () => {
           if (slot.timeDuration !== timeSlotLocal) continue;
           for (let dateKey in slot.availability) {
             for (let freeEvent of slot.availability[String(dateKey)]) {
+              if (
+                !jsonInts[String(int.interviewerId)][Number(slot.timeDuration)][
+                  String(dateKey)
+                ]
+              )
+                continue;
+
               jsonInts[String(int.interviewerId)][Number(slot.timeDuration)][
                 String(dateKey)
               ] = jsonInts[String(int.interviewerId)][
@@ -385,9 +392,10 @@ const AvailabilityBar = () => {
           <>
             <SpecializedDatePicker
               onChange={(date: Dayjs) => {
+                let d = dayjs(date).format('YYYY-MM-DD');
                 setDateRangeViewLocal({
                   ...dateRangeViewLocal,
-                  startDate: date.toDate(),
+                  startDate: dayjs(d).toDate(),
                 });
               }}
               value={dayjs(dateRangeView.startDate)}
@@ -400,9 +408,10 @@ const AvailabilityBar = () => {
           <>
             <SpecializedDatePicker
               onChange={(date: Dayjs) => {
+                let d = dayjs(date).format('YYYY-MM-DD');
                 setDateRangeViewLocal({
                   ...dateRangeViewLocal,
-                  endDate: date.toDate(),
+                  endDate: dayjs(d).toDate(),
                 });
               }}
               value={dayjs(dateRangeView.endDate)}

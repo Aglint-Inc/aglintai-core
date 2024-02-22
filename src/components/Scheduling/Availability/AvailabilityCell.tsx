@@ -129,7 +129,7 @@ const TimeRangePill = ({
     .tz(timeRange.startTime, timeZone)
     .format('hh:mm A')}-${dayjs
     .tz(timeRange.endTime, timeZone)
-    .format('hh:mm A')} (${timeZone})`;
+    .format('hh:mm A')}`;
 
   if (timeRange.status === 'available') {
     return (
