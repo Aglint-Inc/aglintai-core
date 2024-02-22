@@ -45,7 +45,10 @@ export function AgentLayout({
         >
           {slotAgentTask ?? (
             <>
-              <AgentTask textTaskName="erwjbfkj34bfr wkjefbkweubrfkuegrwbf werkufheruf u4wi34hfr u43hrui3h4 3u4hru3h4g" />
+              <AgentTask
+                textTaskName="erwjbfkj34bfr wkjefbkweubrfkuegrwbf werkufheruf u4wi34hfr u43hrui3h4 3u4hru3h4g"
+                isActive={true}
+              />
               <AgentTask />
               <AgentTask isTimeline={false} />
             </>

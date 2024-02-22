@@ -50,7 +50,7 @@ export function NewChat({
             className={_utils.cx(_styles, "text-grey_600")}
             tag="div"
           >
-            {"Automated, precise talent discovery."}
+            {"Effortless, integrated coordination."}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -100,7 +100,7 @@ export function NewChat({
             className={_utils.cx(_styles, "text-grey_600")}
             tag="div"
           >
-            {"Automated, precise talent discovery."}
+            {"Simplified screening and tracking."}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -125,7 +125,7 @@ export function NewChat({
             className={_utils.cx(_styles, "text-grey_600")}
             tag="div"
           >
-            {"Automated, precise talent discovery."}
+            {"Interactive, guidance-driven conversation."}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Grid>

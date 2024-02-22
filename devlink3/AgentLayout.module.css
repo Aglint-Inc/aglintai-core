@@ -32,6 +32,7 @@
   position: relative;
 
   display: flex;
+  overflow: hidden;
   min-height: 54px;
   padding: 16px;
   flex-direction: row;
