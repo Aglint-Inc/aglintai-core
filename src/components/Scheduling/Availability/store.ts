@@ -99,12 +99,12 @@ export const useSyncInterviewersCalender = () => {
       dateRange,
       timeRange,
     );
+
     const finalINts = mergeSavedAndAvailableSlots(
       intAvalableSlots,
       intSavedSlots,
       dateRange,
     );
-
     setInterviewers(finalINts);
   };
 
