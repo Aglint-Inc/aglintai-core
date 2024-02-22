@@ -310,11 +310,17 @@ function Agent() {
                         {item.sender === 'Aglint' ? (
                           <ChatBlockAglint
                             textTime={item.date}
-                            textMessage={item.message.replace(
-                              // eslint-disable-next-line security/detect-unsafe-regex
-                              /[Aa]bhishek(?:\s+[Tt]omar)?/g,
-                              '<span class="link">@hi</span>',
-                            )}
+                            textMessage={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: item.message.replace(
+                                    // eslint-disable-next-line security/detect-unsafe-regex
+                                    /[Aa]bhishek(?:\s+[Tt]omar)?/g,
+                                    '<span class="DummyChatOne_link">@Abhishek Tomar</span>',
+                                  ),
+                                }}
+                              />
+                            }
                             isWidgetVisible={item.component}
                             slotWidget={
                               // eslint-disable-next-line jsx-a11y/no-static-element-interactions
