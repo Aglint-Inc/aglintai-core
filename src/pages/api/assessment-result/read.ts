@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { createServerClient } from '@supabase/ssr';
-// import { PostgrestError } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
+import { PostgrestError } from '@supabase/supabase-js';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
   AssessmentQuestion,
@@ -9,25 +9,30 @@ import {
 } from '@/src/queries/assessment/types';
 import { Database } from '@/src/types/schema';
 
-import { getAssessmentAnalyses } from './assessment-result-prompt-builder';
+// export const config = {
+//   runtime: 'edge',
+// };
 
-export const config = {
-  runtime: 'edge',
-};
-
-export type AssessmentResultApi = {
+export type AssessmentResultReadApi = {
   request: {
     result_id: AssessmentResult['id'];
   };
-  response: any;
+  response: {
+    data: AssessmentResult;
+    error: PostgrestError;
+  };
 };
 
 type Supabase = ReturnType<typeof createServerClient<Database>>;
 export type AssessmentResponse = AssessmentResult['responses'][number];
 
-export default async function handler(req: NextRequest) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
-    const request: AssessmentResultApi['request'] = await req.json();
+    const request: AssessmentResultReadApi['request'] = req.body as any;
+    //await req.json();
     const { result_id } = request;
     const supabase = createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,31 +46,36 @@ export default async function handler(req: NextRequest) {
       },
     );
 
-    const assessmentResponses = await fetchAssessmentResult(
-      supabase,
-      result_id,
-    );
-    const questionIds = getQuestionIds(assessmentResponses);
+    const assessmentResult = await fetchAssessmentResult(supabase, result_id);
+    const questionIds = getQuestionIds(assessmentResult);
     const questions = await fetchAssessmentQuestions(supabase, questionIds);
-    const safeResponses = buildSafeResponse(assessmentResponses, questions);
-    const result = await getAssessmentAnalyses(safeResponses);
-
-    return new NextResponse<AssessmentResultApi['response']>(
-      JSON.stringify({
-        data: result,
-        error: null,
-      } as AssessmentResultApi['response']),
-      { status: 200 },
-    );
-  } catch (e) {
-    const response: AssessmentResultApi['response'] = {
-      data: null,
-      error: e,
+    const safeResult = buildSafeResponse(assessmentResult, questions);
+    const response: AssessmentResultReadApi['response'] = {
+      data: safeResult,
+      error: null,
     };
-    return new NextResponse<AssessmentResultApi['response']>(
-      JSON.stringify(response),
-      { status: 200 },
-    );
+    // return new NextResponse<AssessmentResultReadApi['response']>(
+    //   JSON.stringify(response),
+    //   { status: 200 },
+    // );
+    res.status(200).json(response);
+    return;
+  } catch (e) {
+    const response: AssessmentResultReadApi['response'] = {
+      data: null,
+      error: {
+        code: '400',
+        message: JSON.stringify(e),
+        details: null,
+        hint: null,
+      },
+    };
+    // return new NextResponse<AssessmentResultReadApi['response']>(
+    //   JSON.stringify(response),
+    //   { status: 400 },
+    // );
+    res.status(200).send(response);
+    return;
   }
 }
 
@@ -75,16 +85,16 @@ const fetchAssessmentResult = async (
 ) => {
   const { data, error } = await supabase
     .from('assessment_results')
-    .select('responses')
+    .select()
     .eq('id', result_id);
   if (error) throw new Error(error.message);
   if (data.length !== 1)
     throw new Error('Unable to find assessment result entry');
-  return data[0].responses as unknown as AssessmentResult['responses'];
+  return data[0] as unknown as AssessmentResult;
 };
 
-const getQuestionIds = (responses: AssessmentResult['responses']) => {
-  return responses.map(({ question_id }) => question_id);
+const getQuestionIds = (results: AssessmentResult) => {
+  return results.responses.map(({ question_id }) => question_id);
 };
 
 const fetchAssessmentQuestions = async (
@@ -93,7 +103,7 @@ const fetchAssessmentQuestions = async (
 ) => {
   const { data, error } = await supabase
     .from('assessment_question')
-    .select('id, question, answer')
+    .select()
     .in('id', questions);
   if (error) throw new Error(error.message);
   if (data.length === 0)
@@ -102,12 +112,13 @@ const fetchAssessmentQuestions = async (
 };
 
 const buildSafeResponse = (
-  responses: AssessmentResult['responses'],
+  result: AssessmentResult,
   questions: AssessmentQuestion[],
 ) => {
-  responses.forEach((response) => {
+  result.responses.forEach((response) => {
     const question = questions.find((q) => q.id === response.question_id);
     response['question'] = question ?? null;
+    response['type'] = question?.type ?? null;
   });
-  return responses;
+  return result;
 };

@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+import { AssessmentResultReadApi } from './read';
 import { AssessmentResultApi } from './result';
 
 type ApiRouteTypes = {
   result: AssessmentResultApi;
+  read: AssessmentResultReadApi;
 };
 
 export const handleAssessmentResultApi = async <T extends keyof ApiRouteTypes>(
