@@ -23,6 +23,7 @@ export type InterviewerType = {
   isMailConnected: boolean;
   email: string;
   slots: InterviewerAvailabliity[];
+  timeZone: string;
 };
 
 export type StateAvailibility = {
@@ -58,6 +59,7 @@ export interface InterviewData {
     profileImg: string;
     isMailConnected: boolean;
     email: string;
+    timeZone: string;
     [timeDuration: number]: {
       [dateKey: string]: {
         status: string;

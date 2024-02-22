@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import dayjs, { Dayjs } from 'dayjs';
+const { google } = require('googleapis');
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
@@ -99,6 +100,21 @@ export async function getBlockedSlots(
   );
 
   return events;
+}
+
+export async function getUserTimeZone(
+  access_token: string,
+  refresh_token: string,
+) {
+  oAuth2Client.setCredentials({
+    access_token: access_token,
+    refresh_token: refresh_token,
+  });
+  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
+  const res = await calendar.calendars.get({
+    calendarId: 'primary',
+  });
+  return res.data.timeZone;
 }
 
 ///check if current month availibity is exists? if so return it else return null

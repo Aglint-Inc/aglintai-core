@@ -17,7 +17,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
-import { Json } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -119,7 +118,7 @@ function CreateDialog() {
           status: 'pending',
           duration: duration,
           panel_users: selectedUsers,
-          selected_slots: filteredSlots as unknown as Json[],
+          selected_slots: filteredSlots as any,
         })
         .select();
       if (error) throw new Error('Error inserting data');

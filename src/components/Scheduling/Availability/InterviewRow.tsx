@@ -105,6 +105,7 @@ const InterviewerRow = ({
                     timeDurSlots={timeDurSlots}
                     day={day}
                     cellPath={`checkedInterSlots[${interviewIdx}].slots[${timeSlotIdx}].availability[${day}]`}
+                    timeZone={interviewer.timeZone}
                   />
                 );
               })

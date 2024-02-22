@@ -32,6 +32,7 @@ export function convertToJSON(data: InterviewerType[]): InterviewData {
               interviewerName: interviewer.interviewerName,
               isMailConnected: interviewer.isMailConnected,
               profileImg: interviewer.profileImg,
+              timeZone: interviewer.timeZone,
             };
           }
           if (!jsonObject[String(interviewerId)][Number(timeDuration)]) {
@@ -104,6 +105,7 @@ export function convertFromJSON(data: InterviewData): InterviewerType[] {
         interviewerName: data[String(interviewerId)].interviewerName,
         isMailConnected: data[String(interviewerId)].isMailConnected,
         profileImg: data[String(interviewerId)].profileImg,
+        timeZone: data[String(interviewerId)].timeZone,
       });
     }
   }
@@ -119,18 +121,21 @@ export const createSingleInterviewPromise = async (
 ) => {
   let startDateStr = dayjs(dateRange.startDate).format('YYYY-MM-DD');
   let endDateStr = dayjs(dateRange.endDate).format('YYYY-MM-DD');
+  const { availability, timeZone } = await getAvailability(
+    interviewer.interviewerId,
+    timeSlot,
+    dayjs(startDateStr).toISOString(),
+    dayjs(endDateStr).toISOString(),
+    {
+      startTime: workingHours.start.toISOString(),
+      endTime: workingHours.end.toISOString(),
+    },
+  );
+
+  interviewer.timeZone = timeZone;
   let intAval: InterviewerAvailabliity = {
     timeDuration: timeSlot,
-    availability: await getAvailability(
-      interviewer.interviewerId,
-      timeSlot,
-      dayjs(startDateStr).toISOString(),
-      dayjs(endDateStr).toISOString(),
-      {
-        startTime: workingHours.start.toISOString(),
-        endTime: workingHours.end.toISOString(),
-      },
-    ),
+    availability: availability,
     cntConfirmed: 0,
     cntRequested: 0,
   };
@@ -175,6 +180,7 @@ export const fetchAvailSlots = async (
         dateRange,
         timeRange,
       );
+
       interviewer.isMailConnected = true;
     } catch (error) {
       interviewer.isMailConnected = false;

@@ -1,5 +1,7 @@
 import { Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import React, { useState } from 'react';
 
 import {
@@ -21,16 +23,19 @@ const AvailabilityCell = ({
   timeDurSlots,
   day,
   cellPath,
+  timeZone,
 }: {
   timeDurSlots: InterviewerAvailabliity;
   day: string;
   cellPath: string;
+  timeZone: string;
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const totalSlots = timeDurSlots.availability[String(day)]?.length ?? 0;
   if (!timeDurSlots.availability[String(day)]) {
     return <TableBodyCell />;
   }
+
   return (
     <>
       <TableBodyCell
@@ -44,6 +49,7 @@ const AvailabilityCell = ({
                     key={cellPath}
                     timeRange={timeRange}
                     isChecked={false}
+                    timeZone={timeZone}
                   />
                 );
               })}
@@ -92,6 +98,7 @@ const AvailabilityCell = ({
                       key={cellPath}
                       isChecked={false}
                       timeRange={timeRange}
+                      timeZone={timeZone}
                     />
                   );
                 })}
@@ -109,13 +116,20 @@ export default AvailabilityCell;
 const TimeRangePill = ({
   timeRange,
   isChecked,
+  timeZone,
 }: {
   timeRange: AvalabilitySlotType;
   isChecked: boolean;
+  timeZone: string;
 }) => {
-  const textTimeRange = `${dayjs(timeRange.startTime).format(
-    'hh:mm A',
-  )}-${dayjs(timeRange.endTime).format('hh:mm A')}`;
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+
+  const textTimeRange = `${dayjs
+    .tz(timeRange.startTime, timeZone)
+    .format('hh:mm A')}-${dayjs
+    .tz(timeRange.endTime, timeZone)
+    .format('hh:mm A')} (${timeZone})`;
 
   if (timeRange.status === 'available') {
     return (

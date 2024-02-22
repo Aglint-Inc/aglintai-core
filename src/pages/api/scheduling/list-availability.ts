@@ -5,6 +5,7 @@ import {
   getBlockedSlots,
   getGroupTimeSlots,
   getRecruiterAuthTokens,
+  getUserTimeZone,
 } from '@/src/utils/schedule-utils/utils';
 
 export type BodyParams = {
@@ -46,8 +47,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       new Date(endDate),
       working_hours,
     );
+    const timeZone = await getUserTimeZone(
+      tokenInfo.access_token,
+      tokenInfo.refresh_token,
+    );
     const groupedSlots = getGroupTimeSlots(availableSlots);
-    return res.status(200).json(groupedSlots);
+    return res.status(200).json({ timeZone, groupedSlots });
   } catch (error) {
     // console.log(error);
     res.status(500).send(error.message);
