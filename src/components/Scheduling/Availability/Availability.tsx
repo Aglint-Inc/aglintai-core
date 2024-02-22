@@ -75,7 +75,6 @@ const Availability = () => {
               panel.relations.map((r) => r.user_id).includes(m.user_id),
             ),
           );
-          console.log('nfekwjnkejn');
           const newInterviewers: StateAvailibility['interviewers'] =
             panel.relations.map((t) => {
               const member = members.find((m) => m.user_id === t.user_id);
@@ -91,7 +90,6 @@ const Availability = () => {
                 timeZone: '',
               };
             });
-          console.log('nfekwjnkejn');
 
           setInterviewers(newInterviewers);
           await initialiseAvailabilities(
@@ -100,9 +98,7 @@ const Availability = () => {
             dateRangeView,
             timeRange,
           );
-          console.log('nfekwjnkejn');
         } catch (err) {
-          console.log(err);
           toast.error(API_FAIL_MSG);
         } finally {
           setIsisInitialising(false);

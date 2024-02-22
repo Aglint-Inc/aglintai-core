@@ -44,7 +44,6 @@ const AvailabilityCell = ({
             {timeDurSlots.availability[String(day)]
               .slice(0, 3)
               .map((timeRange) => {
-                console.log(timeRange);
                 return (
                   <TimeRangePill
                     key={cellPath}
