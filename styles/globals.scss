@@ -214,10 +214,10 @@ textarea::placeholder {
 // assistant chat text field
 
 .mention {
-  color: #ff6224;
-  background-color: #ff910043;
+  color: #337fbd;
+  background-color: #edf7ff;
 
-  padding: 2px;
+  padding: 4px;
   border-radius: 4px;
   // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
   margin: 1px;
@@ -253,7 +253,7 @@ textarea::placeholder {
   height: calc(100vh - 60px);
 }
 
-[class*="DummyChatOne_link"] {
-  color: #337FBD;
+[class*='DummyChatOne_link'] {
+  color: #337fbd;
   cursor: pointer;
 }

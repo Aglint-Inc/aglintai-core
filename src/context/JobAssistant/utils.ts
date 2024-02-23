@@ -53,18 +53,19 @@ export const getResumeMatched = (score: number) => {
     };
 };
 
-export const suggestions = (location: string, skills: any[]) => {
+export const suggestions = (location?: string, skills?: any[]) => {
   const skillsPrompts = [];
-  skills.map((item) => {
-    skillsPrompts.push(`Get top 5 applicants with skill ${item}.`);
-  });
+  skills &&
+    skills.map((item) => {
+      skillsPrompts.push(`Get top 5 applicants with skill ${item}.`);
+    });
   return {
     initialPrompts: [
-      `et top 5 applicants by location ${location}.`,
+      `Get top 5 applicants by location ${location}.`,
       'View applicants by email `email@domain.com`',
-      'Get top 5 applicants.',
       skillsPrompts[0],
       'Get top 2 candidates and compare',
+      'Get top 5 applicants.',
     ],
     topMatchSuggestion: [
       'Compare first two applicants.',

@@ -108,7 +108,7 @@ function JobAssistantProvider({ children }) {
 
   const [messages, setMessages] = useState<any[] | null>([]);
   const [resLoading, setResLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   const inputRef = useRef(null);
   const job_id = router.query?.id as string;
@@ -377,6 +377,7 @@ function JobAssistantProvider({ children }) {
 
   ////////////////////////////Fetch candidates and applications/////////////////////////////////////
   async function getCandidates(applications) {
+    setFetching(true);
     const { data: candidates } = await supabase
       .from('candidates')
       .select()
@@ -396,6 +397,7 @@ function JobAssistantProvider({ children }) {
       });
     }
     setCandidates([...tempCandidates]);
+    setFetching(false);
   }
   async function getApplications(job_id: string) {
     const { data: applications, error } = await supabase
