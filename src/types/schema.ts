@@ -2182,6 +2182,24 @@ export type Database = {
         }
         Returns: Json
       }
+      getassessments: {
+        Args: {
+          recruiterid: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          description: string
+          type: Database["public"]["Enums"]["template_type"]
+          recruiter_id: string
+          level: Database["public"]["Enums"]["question_level"]
+          edited: boolean
+          mode: Database["public"]["Enums"]["assessment_mode"]
+          duration: number
+          jobs: Json
+        }[]
+      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -2284,6 +2302,7 @@ export type Database = {
           sort_column_text?: string
           is_sort_desc?: boolean
           text_search_qry?: string
+          sort_by_schedule?: string
           is_locat_filter_on?: boolean
         }
         Returns: {

@@ -12,7 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, useAssessmentId } from './keys';
-import { Assessment, AssessmentCreate, AssessmentUpdate } from './types';
+import { Assessment, AssessmentUpdate } from './types';
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
@@ -20,6 +20,7 @@ export const useAllAssessments = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
+    staleTime: 0,
     enabled: !!recruiter_id,
   });
 };
@@ -29,13 +30,17 @@ export const useCreateAssessment = () => {
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = assessmentQueryKeys.assessments();
   const mutationKey = ['assessment-create'];
-  const mutationQueue = useMutationState<AssessmentCreate>({
+  const mutationQueue = useMutationState<Assessment>({
     filters: { mutationKey, status: 'pending' },
-    select: (mutation) => mutation.state.variables as AssessmentCreate,
+    select: (mutation) => ({
+      ...(mutation.state.variables as Assessment),
+      duration: 0,
+      jobs: [],
+    }),
   });
   const mutation = useMutation({
     mutationKey,
-    mutationFn: (payload: AssessmentCreate) =>
+    mutationFn: (payload: Partial<Assessment>) =>
       createAssessmentsDbAction(payload, recruiter_id),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
@@ -107,16 +112,15 @@ const updateAssessmentsDbAction = async (
 const readAssessmentsDbAction = async (
   recruiter_id: Database['public']['Tables']['recruiter']['Row']['id'],
 ) => {
-  const { data, error } = await supabase
-    .from('assessment')
-    .select()
-    .eq('recruiter_id', recruiter_id);
+  const { data, error } = await supabase.rpc('getassessments', {
+    recruiterid: recruiter_id,
+  });
   if (error) throw new Error(error.message);
-  return data;
+  return data as unknown as Assessment[];
 };
 
 const createAssessmentsDbAction = async (
-  payload: AssessmentCreate,
+  payload: Partial<Assessment>,
   recruiter_id: Database['public']['Tables']['recruiter']['Row']['id'],
 ) => {
   const { data, error } = await supabase
@@ -124,5 +128,8 @@ const createAssessmentsDbAction = async (
     .insert({ ...payload, recruiter_id })
     .select();
   if (error) throw new Error(error.message);
-  return data[0];
+  const newAssessment = data[0] as unknown as Assessment;
+  newAssessment['jobs'] = [];
+  newAssessment['duration'] = 0;
+  return newAssessment;
 };

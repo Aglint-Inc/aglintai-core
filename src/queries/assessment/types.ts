@@ -1,3 +1,4 @@
+import { JobTypeDB } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 type QuestionBankTable = Database['public']['Tables']['question_bank'];
@@ -26,14 +27,21 @@ export type AssessmentQuestionUpdate = Omit<
   Partial<CustomQuestionType>;
 
 type AssessmentTable = Database['public']['Tables']['assessment'];
-type AssessmentRow = AssessmentTable['Row'];
-type AssessmentRowInsert = AssessmentTable['Insert'];
+type AssessmentRow =
+  Database['public']['Functions']['getassessments']['Returns'][number];
+
+// type AssessmentRowInsert = AssessmentTable['Insert'];
 type AssessmentRowUpdate = AssessmentTable['Update'];
-export type Assessment = AssessmentRow;
-export type AssessmentCreate = Pick<
-  AssessmentRowInsert,
-  'title' | 'description' | 'level' | 'type' | 'mode'
->;
+export type Assessment = Omit<AssessmentRow, keyof CustomAssessmentType> &
+  CustomAssessmentType;
+
+type CustomAssessmentType = {
+  jobs?: {
+    job_id: JobTypeDB['id'];
+    title: JobTypeDB['job_title'];
+  }[];
+  duration?: number;
+};
 export type AssessmentUpdate = Partial<
   Pick<AssessmentRowUpdate, 'title' | 'description' | 'level' | 'type'>
 >;
@@ -75,10 +83,8 @@ type CustomResponse<T extends QuestionEnum> = {
   type: T;
   question_id: AssessmentQuestion['id'];
   question: GenericQuestionType<T>;
-  answer: FirstValue<CustomQuestion<T>['answer']>;
+  answer: CustomQuestion<T>['answer'];
 };
-
-type FirstValue<T> = T[keyof T];
 
 type QuestionTypes = CustomQuestion<'mcq'> | CustomQuestion<'qna'>;
 
