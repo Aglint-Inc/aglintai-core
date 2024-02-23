@@ -139,7 +139,18 @@ function Agent() {
                 run_id: runMessage.id,
               },
             );
-
+            // queued, in_progress, required_action,
+            if (
+              !['queued', 'in_progress', 'requires_action'].includes(
+                reRunMessage.status,
+              )
+            ) {
+              toast.error('network error, please try again.');
+              clearInterval(timeInterval);
+              setLoading(false);
+              tempActiveChat.messages.pop();
+              tempChats[activeChat] = tempActiveChat;
+            }
             if (reRunMessage?.required_action?.type) {
               await axios.post('/api/assistant/submitRun', {
                 thread_id: localStorage.getItem('agent_thread_id'),
@@ -217,7 +228,7 @@ function Agent() {
               clearInterval(timeInterval);
             }
           }
-        }, 1000);
+        }, 1700);
       }
       // inputRef.current.focus();
     } else {
@@ -310,18 +321,24 @@ function Agent() {
                         {item.sender === 'Aglint' ? (
                           <ChatBlockAglint
                             textTime={item.date}
-                            textMessage={item.message.replace(
-                              // eslint-disable-next-line security/detect-unsafe-regex
-                              /[Aa]bhishek(?:\s+[Tt]omar)?/g,
-                              '<span class="link">@hi</span>',
-                            )}
+                            textMessage={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: item.message.replace(
+                                    // eslint-disable-next-line security/detect-unsafe-regex
+                                    /[Aa]bhishek(?:\s+[Tt]omar)?/g,
+                                    '<span class="DummyChatOne_link">@Abhishek Tomar</span>',
+                                  ),
+                                }}
+                              />
+                            }
                             isWidgetVisible={item.component}
                             slotWidget={
                               // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                               <div
                                 onClick={() => {
                                   sendMessage(
-                                    'select the Software Engineering Panel',
+                                    'Select the Software Engineering Panel',
                                   );
                                 }}
                               >
@@ -693,22 +710,19 @@ export default Agent;
 //   },
 // ];
 export const questions = [
-  'Hey, Schedule an interview with John for the Software Engineer role with the SW Eng Panel OR Sarah, Cindy, Joe, Brian.',
-  'Schedule in the next two weeks.',
-  'Please check with the candidate first and set it up.',
-  'Awesome, thanks. I forgot to ask, can you add Henry and Denise to {shadow} the interview.',
-  'No, optional is fine.',
-  'Yes, confirm it. Did the shadows confirm?',
-  'Did Henry and Denise confirm to {shadow} the interview',
-  'Awesome.',
-  'Yes, please reschedule',
+  'Hi, I need to schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
+  "Let's go with the Software Engineering Panel",
+  'Please arrange it within the next two weeks.',
+  'Yes, please check with both the candidate and the interviewers before finalizing.',
+  'Thanks! Can you also add Cindy and Chris to shadow the interview?',
+  'Let me know once Cindy and Chris confirm.',
 ];
 
 export const chatMessages = [
   {
     sender: 'You',
     message:
-      'Hi, I need to schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
+      'Hi, I need to Schedule an interview for the Senior Machine Learning Engineer position. Can you help with that?',
     date: null,
     component: null,
   },
@@ -777,6 +791,56 @@ export const chatMessages = [
       </>
     ),
     task: 'Email sent to Abhishek Tomar',
+  },
+  {
+    sender: 'you',
+    message:
+      'Thanks! Can you also add Cindy and Chris to shadow the interview?',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message: "Sure thing! I'll add Cindy and Chris as optional shadows.",
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'you',
+    message: 'Let me know once Cindy and Chris confirm.',
+    date: null,
+    component: null,
+  },
+  {
+    sender: 'Aglint',
+    message:
+      "Will do! I'm sending out the interview invitations now. I'll update you as soon as Cindy and Chris respond.",
+    date: null,
+    component: null,
+    notifications: (
+      <>
+        <ChatNotification
+          isSubtextVisible={true}
+          textMain={'Task Created'}
+          textSub={
+            'Cindy, Senior Machine Learning Engineer Candidate: Interview Scheduling'
+          }
+        />
+        <ChatNotification
+          isSubtextVisible={true}
+          textMain={'Task Created'}
+          textSub={
+            'Chris, Senior Machine Learning Engineer Candidate: Interview Scheduling'
+          }
+        />
+        <ChatNotification textMain={'Email sent to candidates.'} />
+        <ChatNotification
+          textMain={'Awaiting candidate response.'}
+          slotIcon={<LottieAnimations animation='loader_dotted' size={1.5} />}
+        />
+      </>
+    ),
+    task: 'Email sent to Cindy and Chris.',
   },
 ];
 

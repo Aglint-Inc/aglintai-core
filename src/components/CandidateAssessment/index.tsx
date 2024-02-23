@@ -34,7 +34,7 @@ function CandidateAssessment() {
   const [submittedAssessment, setSubmittedAssessment] = useState([]);
   const router = useRouter();
   const { fetching, assessmentDetails } = useCandidateAssessment();
-  const about_company = assessmentDetails?.public_jobs.description;
+  const about_company = assessmentDetails?.public_jobs.company_details;
   type AssessmentListType =
     AssessmentDetailsType['public_jobs']['assessment_job_relation'];
   const assessmentsList = assessmentDetails?.public_jobs
@@ -127,13 +127,11 @@ function CandidateAssessment() {
             }}
           ></div>
         }
-        onClickAbout={
-          <div
-            dangerouslySetInnerHTML={{
-              __html: marked(assessmentDetails?.public_jobs.description || ''),
-            }}
-          ></div>
-        }
+        onClickAbout={{
+          onClick: () => {
+            window.open(`/job-post/${assessmentDetails?.public_jobs?.id}`);
+          },
+        }}
         textCompanyName={assessmentDetails?.public_jobs.company}
         textTitle={assessmentDetails?.public_jobs.job_title}
         slotCandidateAssesmentCard={

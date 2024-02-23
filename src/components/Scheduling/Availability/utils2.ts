@@ -20,7 +20,7 @@ export function convertToJSON(data: InterviewerType[]): InterviewData {
   data.forEach((interviewer) => {
     const interviewerId = interviewer.interviewerId;
     if (interviewer.slots.length === 0) {
-      jsonObject[String(interviewer)] = {
+      jsonObject[String(interviewer.interviewerId)] = {
         email: interviewer.email,
         interviewerId: interviewer.interviewerId,
         interviewerName: interviewer.interviewerName,

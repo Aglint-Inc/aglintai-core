@@ -190,9 +190,9 @@ export const countSlotStatus = (
   status: AvalabilitySlotType['status'],
   timeSlot: number,
 ) => {
-  const availability = interAvail.find(
-    (intA) => intA.timeDuration === timeSlot,
-  ).availability;
+  const availability =
+    interAvail.find((intA) => intA.timeDuration === timeSlot)?.availability ??
+    {};
 
   let count = 0;
   // Loop through each date

@@ -18,7 +18,7 @@ const AssessmentPageActions = () => {
     <>
       <AssessmentDetailTopRight
         slotAssessmentLevel={<LevelTag level={assessment?.level ?? null} />}
-        slotAssessmentStatus={<StatusTag status='draft' />}
+        slotAssessmentStatus={<StatusTag jobs={assessment.jobs} />}
         onClickEdit={{ onClick: () => setOpenModal(true) }}
       />
       <EditPopup />

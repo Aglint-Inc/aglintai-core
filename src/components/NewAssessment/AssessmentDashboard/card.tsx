@@ -6,42 +6,45 @@ import {
   AssessmentDuration,
   AssessmentLevel as AssementLevelDev,
 } from '@/devlink2';
-import { type useAllAssessments } from '@/src/queries/assessment';
-import { type AssessmentCreate as TAssessmentCreate } from '@/src/queries/assessment/types';
+import { type Assessment } from '@/src/queries/assessment/types';
 
 import LevelIcon from '../Common/icons/levels';
 import TypeIcon from '../Common/icons/types';
 import StatusTag from '../Common/tags/status';
 
-type Assesment = ReturnType<typeof useAllAssessments>['data'][number];
-
 const AssessmentCard: React.FC<{
   id: string;
-  assessment: TAssessmentCreate;
+  assessment: Assessment;
 }> = ({ id, assessment }) => {
   const router = useRouter();
   return (
     <AssementCardDev
       textAssessmentName={assessment.title}
       textDescription={assessment.description}
-      slotDurationAndLevel={<AssessmentDetails level={assessment.level} />}
+      slotDurationAndLevel={
+        <AssessmentDetails
+          level={assessment.level}
+          duration={assessment.duration}
+        />
+      }
       slotAssessmentType={<TypeIcon type={assessment.type} />}
       onClickCard={{ onClick: () => router.push(`/assessment-new/${id}`) }}
-      slotAssessmentStatus={<StatusTag status='draft' />}
+      slotAssessmentStatus={<StatusTag jobs={assessment.jobs} />}
     />
   );
 };
 
-const AssessmentDetails: React.FC<{ level: Assesment['level'] }> = ({
-  level,
-}) => {
+const AssessmentDetails: React.FC<{
+  level: Assessment['level'];
+  duration: Assessment['duration'];
+}> = ({ level, duration }) => {
   return (
     <>
       <AssementLevelDev
         slotLevelIcon={<LevelIcon level={level} />}
         textLevel={level}
       />
-      <AssessmentDuration textDuration={'--'} />
+      <AssessmentDuration textDuration={duration ? `${duration} mins` : '--'} />
     </>
   );
 };

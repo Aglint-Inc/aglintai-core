@@ -21,7 +21,6 @@ import {
 } from '@/src/context/JobAssistant/utils';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
-import AssistantChatMessage from './AssistantChatMessage';
 import CandidateCard from './CandidateCard';
 import ChatEditor, { SendIcon } from './ChatEditor';
 import DynamicSuggestion from './DynanicSuggetions';
@@ -184,16 +183,18 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
                               ) : (
                                 message.html && (
                                   <>
-                                    <AssistantChatMessage
-                                      message={marked(
-                                        message.html
-                                          ?.replaceAll('<p></p>', '')
-                                          ?.replaceAll('```', '')
-                                          .replaceAll(
-                                            /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
-                                            '',
-                                          ),
-                                      )}
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: marked(
+                                          message.html
+                                            ?.replaceAll('<p></p>', '')
+                                            ?.replaceAll('```', '')
+                                            .replaceAll(
+                                              /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
+                                              '',
+                                            ),
+                                        ),
+                                      }}
                                     />
                                   </>
                                 )

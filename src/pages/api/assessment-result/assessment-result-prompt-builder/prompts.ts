@@ -17,7 +17,7 @@ const GET_QNA_PROMPT = (response: AssessmentResponse) => {
 `,
     user: `-----
 
-Candidate's answer: ${JSON.stringify(response.answer)}
+Candidate's answer: ${response.answer.label}
 
 -----
 
