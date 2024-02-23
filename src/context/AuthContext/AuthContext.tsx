@@ -171,10 +171,10 @@ const AuthProvider = ({ children }) => {
           );
         }
       } else {
-        toast.error('Something went wrong! Please contact aglint support.');
+        toast.error('Something went wrong! Please try logging in again.');
       }
     } else {
-      toast.error('Something went wrong! Please contact aglint support.');
+      toast.error('Something went wrong! Please try logging in again.');
     }
   };
 

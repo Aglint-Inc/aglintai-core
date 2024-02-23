@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { PageLayout, SchedulerDashboard } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-function ShecdulingMainComp() {
+function SchedulingMainComp() {
   const router = useRouter();
 
   return (
@@ -33,4 +33,4 @@ function ShecdulingMainComp() {
   );
 }
 
-export default ShecdulingMainComp;
+export default SchedulingMainComp;

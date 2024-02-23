@@ -81,7 +81,7 @@ function SideNavbar() {
       route: pageRoutes.ASSESSMENT,
       comingsoon: false,
       isvisible:
-        isAssessmentEnabled || recruiterUser.email === 'dheeraj@aglinthq.com',
+        isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavCompanySetting isActive={false} />,

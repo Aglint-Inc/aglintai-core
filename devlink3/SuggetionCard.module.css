@@ -1,0 +1,65 @@
+.suggetion_card {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  height: 100%;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.suggetion_card:hover {
+  background-color: #fff7ed;
+  box-shadow: 3px 4px 5px 0 hsla(0, 0.00%, 0.00%, 0.08);
+  transform: translate(0px, -4px);
+  color: #703815;
+}
+
+.send_icon {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  padding-right: 16px;
+  padding-bottom: 16px;
+
+  opacity: 0;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+#w-node-_43adaaae-1a1b-734e-b593-cfcafc2e1daf-fc2e1daf {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

@@ -208,3 +208,5 @@ export type InterviewPanelRelationType =
 
 export type InterviewAvailabilityType =
   Database['public']['Tables']['interview_availabilties']['Row'];
+
+export type AgentChatType = Database['public']['Tables']['agent_chat']['Row'];

@@ -2,7 +2,8 @@
   position: relative;
 
   display: flex;
-  min-height: 54px;
+  overflow: hidden;
+  height: 76px;
   padding: 16px;
   flex-direction: row;
   align-items: center;
@@ -16,10 +17,12 @@
 }
 
 .task_card.is_new {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  height: auto;
+  padding-top: 6px;
+  padding-bottom: 6px;
   flex-direction: row;
   align-items: center;
+
   transition: all 200ms ease;
 }
 
@@ -29,6 +32,39 @@
 
 .task_card.is_active {
   background-color: #f7f9fb;
+}
+
+.task_card.is_new_with_dropdown {
+  z-index: 2;
+
+  overflow: visible;
+  height: auto;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  flex-direction: row;
+  align-items: center;
+
+  transition: all 200ms ease;
+}
+
+.task_card.is_new_with_dropdown:hover {
+  background-color: #f8f9f9;
+}
+
+.task_type_icon {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 6px;
+
+  background-color: white;
 }
 
 .embed_flex {
@@ -61,10 +97,6 @@
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.relative_2.wre {
-  width: 100%;
 }
 
 .active_bg {

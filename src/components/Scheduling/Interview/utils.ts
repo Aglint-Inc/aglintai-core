@@ -110,7 +110,7 @@ export const mailHandler = async ({
         fromEmail: `messenger@aglinthq.com`,
         fromName: 'Aglint',
         email: mail ? mail : 'admin@aglinthq.com',
-        subject: `You have seletcted for the interview at ${company_name}`,
+        subject: `You have selected for the interview at ${company_name}`,
         text: `<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
         <div style="background-color: #ffffff; max-width: 600px; margin: auto; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
             <img src="${company_logo}" alt="Company Logo" style="width: 60px; height:60px;border-radius:4px; margin-bottom: 20px;">

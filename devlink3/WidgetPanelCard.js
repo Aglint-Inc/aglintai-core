@@ -8,9 +8,14 @@ export function WidgetPanelCard({
   textPanelName = "SW Eng Panel",
   textMemberCount = "5 Members",
   slotAvatarGroup,
+  onClickCard = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "iv_panel_card")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "iv_panel_card")}
+      tag="div"
+      {...onClickCard}
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "panel_card_text")}
         tag="div"

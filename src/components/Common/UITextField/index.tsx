@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 
 import UITypography from '../UITypography';
 type Props = {
-  contentLimit?: number;
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -34,15 +33,18 @@ type Props = {
   // eslint-disable-next-line no-unused-vars
   onFocus?: (e: any) => void;
   onBlur?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onKeyDown?: (e: any) => void;
   InputProps?:
     | Partial<FilledInputProps>
     | Partial<OutlinedInputProps>
     | Partial<InputProps>;
   defaultValue?: string | number;
   children?: any;
-  height?: string;
+  height?: number;
   noBorder?: boolean;
   width?: string;
+  borderRadius?: number;
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
@@ -70,11 +72,12 @@ const UITextField = React.forwardRef(
       maxRows = 4.7,
       rest = undefined,
       onFocus = () => {},
+      onKeyDown = () => {},
       onBlur = () => {},
-      contentLimit,
       InputProps,
       children,
       defaultValue,
+      borderRadius = 4,
       noBorder,
       width,
       select,
@@ -99,14 +102,6 @@ const UITextField = React.forwardRef(
     if (disabled) {
       labelColor = palette.grey[600];
     }
-
-    const checkMaxLength = (content) => {
-      if (contentLimit && content.length >= contentLimit && focus) {
-        setContentExceeded(true);
-      } else {
-        setContentExceeded(false);
-      }
-    };
 
     return (
       <Stack
@@ -142,11 +137,8 @@ const UITextField = React.forwardRef(
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
-          inputProps={{ maxLength: contentLimit || undefined }}
           onChange={onChange}
-          onKeyDown={(e: ReturnType<typeof onkeydown>) => {
-            checkMaxLength(e.target.value);
-          }}
+          onKeyDown={onKeyDown}
           onSelect={onSelect}
           error={error || contentExceeded}
           disabled={disabled}
@@ -175,19 +167,22 @@ const UITextField = React.forwardRef(
               margin: 0,
             },
             '& .MuiOutlinedInput-root': {
-              height: multiline ? height : '40px',
+              height: height ? `${height}px !important` : '100%',
               bgcolor: disabled ? 'transparent' : 'white.700',
               fontSize: '14px',
+              borderRadius: `${borderRadius}px`,
               fieldset: {
                 pt: '8px',
                 border: noBorder
                   ? 'transparent'
                   : `1px solid ${outlineColor}!important`,
+                borderRadius: `${borderRadius}px`,
               },
               '&:hover fieldset': {
                 border: noBorder
                   ? 'transparent'
                   : `1px solid ${outlineColor}!important`,
+                borderRadius: `${borderRadius}px`,
               },
               '&': {
                 outline: `3px solid ${focus ? borderColor : 'transparent'}`,
@@ -210,8 +205,8 @@ const UITextField = React.forwardRef(
               {error
                 ? helperText
                 : contentExceeded
-                ? errorMessages.maxCharExceeded
-                : ''}
+                  ? errorMessages.maxCharExceeded
+                  : ''}
             </UITypography>
           </Stack>
         )}
