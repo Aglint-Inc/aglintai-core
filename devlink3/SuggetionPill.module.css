@@ -39,39 +39,7 @@
   transform: none;
 }
 
-.send_icon {
-  position: absolute;
-  left: auto;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
-  z-index: 2;
-
-  padding-right: 16px;
-  padding-bottom: 16px;
-
-  opacity: 0;
-}
-
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-#w-node-_43adaaae-1a1b-734e-b593-cfcafc2e1daf-fc2e1daf {
+#w-node-_0052dafe-d3a4-ba83-2f58-9655afd51276-afd51276 {
   grid-column-start: span 1;
   grid-column-end: span 1;
   grid-row-start: span 1;

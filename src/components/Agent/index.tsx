@@ -255,7 +255,7 @@ function Agent() {
               ? 'Monday interview'
               : agentChats[activeChat]?.name
         }
-        onClickNewTask={{ onClick: handleNewChat }}
+        onClickSchedulerAgent={{ onClick: handleNewChat }}
         slotAgentTask={
           <>
             {agentChats.map((chat, i) => {
@@ -291,13 +291,13 @@ function Agent() {
               textTaskName={
                 'John Abraham, Staff DevOps Engineer Candidate: Interview Scheduling'
               }
-              slotTimeline={
-                <Timeline
-                  slotStatusIcon={<CheckMarkIcon />}
-                  textTitle={'Interview confirmed'}
-                  textTime={'1 day ago'}
-                />
-              }
+              // slotTimeline={
+              //   <Timeline
+              //     slotStatusIcon={<CheckMarkIcon />}
+              //     textTitle={'Interview confirmed'}
+              //     textTime={'1 day ago'}
+              //   />
+              // }
               onClickCard={{
                 onClick: () => {
                   setActiveChat('demo_chat_1');

@@ -1,8 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { ChatBlockUser } from "./ChatBlockUser";
 import { ChatBlock } from "./ChatBlock";
-import { ChatBlockAglint } from "./ChatBlockAglint";
 import { ChatNotification } from "./ChatNotification";
 import * as _utils from "./utils";
 import _styles from "./ChatWindow.module.css";
@@ -15,9 +13,8 @@ export function ChatWindow({
     <_Component className={_utils.cx(_styles, "chat_contents")} tag="div">
       {slotChatBlocks ?? (
         <>
-          <ChatBlockUser />
           <ChatBlock />
-          <ChatBlockAglint />
+          <ChatBlock />
           <ChatNotification isSubtextVisible={true} />
         </>
       )}

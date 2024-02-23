@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { findAvailableTimeSlots } from '@/src/utils/schedule-utils/findAvailableSlots';
+import { findAvailableTimeSlotsFromCalEvents } from '@/src/utils/schedule-utils/findAvailableSlots';
 import {
   getBlockedSlots,
   getGroupTimeSlots,
@@ -40,12 +40,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ),
     };
 
-    const availableSlots = findAvailableTimeSlots(
+    const availableSlots = findAvailableTimeSlotsFromCalEvents(
       userEvents.blockedTimings,
       timeDuration,
       new Date(startDate),
       new Date(endDate),
-      working_hours,
+      {
+        start: working_hours.startTime,
+        end: working_hours.endTime,
+      },
     );
     const timeZone = await getUserTimeZone(
       tokenInfo.access_token,

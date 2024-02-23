@@ -43,8 +43,6 @@ const DashboardComp = () => {
     }
   }, [recruiter, router, jobsData]);
 
-
-
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
       setFilteredJobs(sortJobs(jobsData.jobs));
@@ -98,7 +96,7 @@ const DashboardComp = () => {
                 slotSearchInputJob={
                   <Stack maxWidth={'260px'} width={'312px'}>
                     <UITextField
-                      height='42px'
+                      height={42}
                       fullWidth
                       placeholder='Search'
                       onChange={(e) => {

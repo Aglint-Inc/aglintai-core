@@ -10,7 +10,12 @@ export function WidgetFlexRow({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "widget_flex")} tag="div">
-      {slorWidgetIndividual ?? <WidgetPanelCard />}
+      {slorWidgetIndividual ?? (
+        <>
+          <WidgetPanelCard />
+          <WidgetPanelCard />
+        </>
+      )}
     </_Component>
   );
 }

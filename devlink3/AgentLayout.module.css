@@ -11,9 +11,7 @@
 }
 
 @media screen and (min-width: 1920px) {
-  .aglint_chatbot_wrap {
-    grid-template-columns: 388px auto 360px;
-  }
+
 }
 
 .task_list {
@@ -172,9 +170,14 @@
   grid-row-gap: 10px;
 }
 
+.task_detail_panel {
+  display: flex;
+}
+
 .task_details {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .task_top_bar {
@@ -262,23 +265,33 @@
   z-index: 5;
 
   display: flex;
-  height: 110px;
   padding-right: 40px;
+  padding-bottom: 40px;
   padding-left: 40px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
 .slot_suggetion_pills {
+  position: relative;
+
   display: flex;
   overflow: auto;
   width: 100%;
-  align-items: center;
+  max-width: 768px;
+  align-items: flex-end;
+  grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+@media screen and (min-width: 1440px) {
+
 }
 
 .task_search_box-copy {
@@ -341,6 +354,7 @@
 
 .task_activity {
   display: none;
+  width: 360px;
   height: 100vh;
   flex-direction: column;
   align-items: flex-start;

@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 import { AgentChatType } from '@/src/types/data.types';
-import { use } from 'react';
 
 export type HistoryType = {
   type: 'user' | 'assistant';

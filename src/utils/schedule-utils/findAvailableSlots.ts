@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
-import { BodyParams } from '@/src/pages/api/scheduling/list-availability';
+import { get_available_events_params } from '../list-availabilities-util';
 
-export function findAvailableTimeSlots(
+export function findAvailableTimeSlotsFromCalEvents(
   events: { start: Date; end: Date }[],
   requiredTimeSlotInMinutes: number,
   startDate: Date,
   endDate: Date,
-  working_hours: BodyParams['working_hours'],
+  working_hours: get_available_events_params['time_range'],
 ) {
   const availableTimeSlots = [];
 
@@ -24,14 +24,14 @@ export function findAvailableTimeSlots(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       currentDate.getDate(),
-      dayjs(working_hours.startTime).get('hour'),
-      dayjs(working_hours.startTime).get('minutes'),
+      dayjs(working_hours.start).get('hour'),
+      dayjs(working_hours.start).get('minutes'),
     );
     const dayEndTime = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       currentDate.getDate(),
-      dayjs(working_hours.endTime).get('hour'),
+      dayjs(working_hours.end).get('hour'),
     );
 
     // Find available time slots within the current day

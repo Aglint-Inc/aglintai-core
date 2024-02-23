@@ -50,6 +50,7 @@ export * from "./NewChat";
 export * from "./OutlinedButton";
 export * from "./SamplePanel";
 export * from "./SuggetionCard";
+export * from "./SuggetionPill";
 export * from "./TabMenuButton";
 export * from "./Timeline";
 export * from "./TimelineBlock";

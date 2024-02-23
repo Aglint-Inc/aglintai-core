@@ -8,6 +8,8 @@
   flex-direction: column;
   grid-column-gap: 40px;
   grid-row-gap: 40px;
+
+  background-color: white;
 }
 
 .title_top {

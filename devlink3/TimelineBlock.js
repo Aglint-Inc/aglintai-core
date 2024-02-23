@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Timeline } from "./Timeline";
-import { TimelineEmpty } from "./TimelineEmpty";
 import * as _utils from "./utils";
 import _styles from "./TimelineBlock.module.css";
 
@@ -28,7 +27,6 @@ export function TimelineBlock({
             <Timeline isConnecterVisible={true} />
             <Timeline isConnecterVisible={true} />
             <Timeline isConnecterVisible={false} />
-            <TimelineEmpty />
           </>
         )}
       </_Builtin.Block>
