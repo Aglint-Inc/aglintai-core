@@ -39,10 +39,11 @@ function AgentPage() {
           height={'100%'}
           width={'100%'}
           alignItems={'center'}
+          maxWidth={900}
           gap={2}
         >
-          <Stack width={'100%'} maxWidth={844} justifyContent={'start'}>
-            <Typography>Select a job</Typography>
+          <Stack width={'100%'}>
+            <WidgetGrid3X3 slotWidget={<Typography>Select a job</Typography>} />
           </Stack>
           <WidgetGrid3X3
             slotWidget={jobs.map((item, i) => {
@@ -54,8 +55,8 @@ function AgentPage() {
                     },
                   }}
                   key={i}
-                  textJob={item.company}
-                  textSecondary={item.job_title}
+                  textJob={item.job_title}
+                  textSecondary={''}
                 />
               );
             })}
