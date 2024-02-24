@@ -30,7 +30,9 @@ import {
   ChatBlockUser,
   ChatNotification,
   ChatWindow,
+  DummyChatFour,
   DummyChatOne,
+  DummyChatThree,
   DummyChatTwo,
   NewChat,
   SamplePanel,
@@ -265,7 +267,11 @@ function SchedulerAgent() {
             ? 'John Abraham, Staff DevOps Engineer Candidate: Interview Scheduling'
             : activeChat === 'demo_chat_2'
               ? 'Monday interview'
-              : agentChats[activeChat]?.name
+              : activeChat === 'demo_chat_3'
+                ? 'Project Manager in the construction industry located in Chicago'
+                : activeChat === 'demo_chat_4'
+                  ? 'Data Scientist with expertise in machine learning for our Boston office'
+                  : agentChats[activeChat]?.name
         }
         //   onClickNewTask={{ onClick: handleNewChat }}
         slotAgentTask={
@@ -316,6 +322,42 @@ function SchedulerAgent() {
                 },
               }}
             />
+            <AgentTask
+              isActive={'demo_chat_3' === activeChat}
+              textTaskName={
+                'Project Manager in the construction industry located in Chicago'
+              }
+              // slotTimeline={
+              //   <Timeline
+              //     slotStatusIcon={<CheckMarkIcon />}
+              //     textTitle={'Interview confirmed'}
+              //     textTime={'1 day ago'}
+              //   />
+              // }
+              onClickCard={{
+                onClick: () => {
+                  setActiveChat('demo_chat_3');
+                },
+              }}
+            />
+            <AgentTask
+              isActive={'demo_chat_4' === activeChat}
+              textTaskName={
+                'Data Scientist with expertise in machine learning for our Boston office'
+              }
+              // slotTimeline={
+              //   <Timeline
+              //     slotStatusIcon={<CheckMarkIcon />}
+              //     textTitle={'Interview confirmed'}
+              //     textTime={'1 day ago'}
+              //   />
+              // }
+              onClickCard={{
+                onClick: () => {
+                  setActiveChat('demo_chat_4');
+                },
+              }}
+            />
           </>
         }
         slotChat={
@@ -323,6 +365,10 @@ function SchedulerAgent() {
             <DummyChatOne />
           ) : activeChat === 'demo_chat_2' ? (
             <DummyChatTwo />
+          ) : activeChat === 'demo_chat_3' ? (
+            <DummyChatThree />
+          ) : activeChat === 'demo_chat_4' ? (
+            <DummyChatFour />
           ) : agentChats[activeChat].messages.length ? (
             <ChatWindow
               slotChatBlocks={

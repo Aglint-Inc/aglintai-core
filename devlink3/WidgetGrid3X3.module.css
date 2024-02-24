@@ -7,3 +7,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto;
 }
+
+.widget_flex3-3.dummy {
+  grid-template-rows: auto;
+}
