@@ -31,7 +31,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.AGENT,
       comingsoon: false,
-      isvisible: isAgentEnabled || recruiter.email === 'dheeraj@aglinthq.com',
+      isvisible: isAgentEnabled || recruiter?.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavJobs isActive={false} />,
