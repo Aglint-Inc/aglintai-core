@@ -16,10 +16,10 @@ const context = [];
 let totalNumberOfQuestions = [];
 
 
+import { handleAssessmentResultApi } from '@/src/pages/api/assessment-result/utils';
 import interviewerList from '@/src/utils/interviewer_list';
 import toast from '@/src/utils/toast';
 
-import { updateFeedbackOnJobApplications } from './utils';
 import { useCandidateAssessment } from '../CandidateAssessment';
 const useInterviewContext = () => useContext(InterviewContext);
 
@@ -32,7 +32,7 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
 
-  const { assessmentQuestions, assessmentDetails } = useCandidateAssessment()
+  const { assessmentQuestions } = useCandidateAssessment()
 
 
   useEffect(() => {
@@ -282,7 +282,14 @@ function InterviewContextProvider({ children }) {
     const { data: answers } = await axios.post('/api/candidate-assessment/assessment-answers', {
       assessment_id: router.query?.assessment_id
     })
-
+    const { data: results } = await axios.post(
+      '/api/candidate-assessment/assessment-result-details',
+      {
+        assessment_id: router.query?.assessment_id,
+        application_id: router.query?.application_id,
+      },
+    );
+    const score = await handleAssessmentResultApi('result', { result_id: results.id })
     const responses = assessmentQuestions.map((item, i) => {
       return {
         question_id: item.id,
@@ -292,11 +299,11 @@ function InterviewContextProvider({ children }) {
         response: userResponse[i]
       }
     })
-
     await axios.post('/api/candidate-assessment/assessment-result-update', {
       assessment_id: router.query?.assessment_id,
       objData: {
         responses: responses,
+        result: score,
         is_submitted: true,
       },
     });
@@ -306,21 +313,16 @@ function InterviewContextProvider({ children }) {
   }
 
   async function disconnecting() {
-    stopRecording();
-    audioElement?.pause();
-    const structuredFeedback = [];
-    const res = await updateFeedbackOnJobApplications(
-      router.query?.application_id,
-      assessmentDetails.public_jobs,
-      structuredFeedback,
-      conversations,
-      interviewerIndex,
-      '00:00',
-    );
-    if (res) {
-      router.push(`/thanks-page?id=${router.query?.application_id}`);
-    }
+    getFeedback()
   }
+
+  useEffect(() => {
+    return () => {
+      SpeechRecognition.abortListening()
+      SpeechRecognition.stopListening()
+    };
+  }, [router])
+
   return (
     <InterviewContext.Provider
       value={{

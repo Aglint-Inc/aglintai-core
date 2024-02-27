@@ -19,6 +19,7 @@ import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { responseType } from '@/src/context/CandidateAssessment/types';
+import { handleAssessmentResultApi } from '@/src/pages/api/assessment-result/utils';
 
 import Progress from '../Progress';
 import Timer from '../Timer';
@@ -127,6 +128,16 @@ function ClassicMode() {
         assessment_id: router.query?.assessment_id,
       },
     );
+    const { data: results } = await axios.post(
+      '/api/candidate-assessment/assessment-result-details',
+      {
+        assessment_id: router.query?.assessment_id,
+        application_id: router.query?.application_id,
+      },
+    );
+    const score = await handleAssessmentResultApi('result', {
+      result_id: results.id,
+    });
     const responses = assessmentQuestions.map((item, i) => {
       return {
         question_id: item.id,
@@ -141,6 +152,7 @@ function ClassicMode() {
       assessment_id: selectedAssessment.id,
       objData: {
         responses: responses,
+        result: score,
         is_submitted: true,
       },
     });
