@@ -1,5 +1,5 @@
 import Panels from '@/src/components/Scheduling/Panels';
-import InterviewPanelProvider from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import InterviewPanelProvider from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 function PanelPage() {
   return (

@@ -1,91 +1,159 @@
-import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import Image from 'next/image';
 
 import {
   AgentLayout,
   AgentTask,
   ChatBlock,
+  ChatNotification,
   ChatWindow,
-  Timeline,
-  TimelineBlock,
-  TimelineEmpty,
-  WidgetFlexRow,
-  WidgetPanelCard
+  NewChat,
+  NewChatButton,
 } from '@/devlink3';
-import toast from '@/src/utils/toast';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
+import { AgentActivityType } from '@/src/types/data.types';
 
-import { setUserText, useSchedulingAgentStore } from './store';
+import Activity from './Activity';
+import ActivityDrawer from './ActivityDrawer';
+import ChatBlockAssistant from './ChatBlockAssistant';
+import IconActivity from './IconActivity';
+import ScheduleIcon from './ScheduleIcon';
+import {
+  HistoryType,
+  setActivityOpen,
+  setLoading,
+  setSelectedChat,
+  setUserText,
+  useSchedulingAgentStore,
+} from './store';
+import SuggetionCards from './SuggestionCards';
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
+import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
+dayjs.extend(relativeTime);
+export type AisubmitHandlerParams = {
+  input: string;
+  payload?: any;
+  selectedItem?: {
+    message: string;
+    [key: string]: any;
+  };
+  activity?: AgentActivityType[];
+};
 
 function SchedulingAgent() {
-  const userText = useSchedulingAgentStore((state) => state.userText);
-  const submitHandler = async () => {
-    const res = await axios.post('http://localhost:3001/api/scheduling', {
-      input: userText,
-      history: [],
-    });
+  const { recruiterUser } = useAuthDetails();
+  const { userText, allChat, loading, selectedChat } =
+    useSchedulingAgentStore();
 
-    // eslint-disable-next-line no-console
-    console.log(res.data);
-  };
+  const { submitHandler } = useSchedulingAgent();
+
   return (
     <>
+      {/* <NewTaskDropdown /> */}
       <AgentLayout
-        onClickSchedulerAgent={{
-          onClick: () => {
-            toast.warning('Fuck u raimon');
-          },
-        }}
+        slotNewChatButton={
+          <NewChatButton
+            onClickChat={{
+              onClick: () => {
+                setSelectedChat({ history: [] } as any);
+              },
+            }}
+          />
+        }
         slotAgentTask={
           <>
-            <AgentTask /> <AgentTask /> <AgentTask /> <AgentTask />
+            {allChat.map((chat) => {
+              return (
+                <AgentTask
+                  key={chat.id}
+                  textTaskName={chat.title}
+                  isActive={chat.id == selectedChat.id}
+                  onClickCard={{
+                    onClick: () => {
+                      setSelectedChat(chat);
+                      setLoading(false);
+                    },
+                  }}
+                  slotTaskIcon={<ScheduleIcon />}
+                />
+              );
+            })}
           </>
         }
         onClickSend={{
           onClick: () => {
-            submitHandler();
+            submitHandler({ input: userText });
           },
         }}
         slotChat={
           <>
-            {/* <NewChat
-              slotSuggetionCard={
-                <>
-                  <SuggetionCard />
-                  <SuggetionCard />
-                  <SuggetionCard />
-                </>
-              }
-            /> */}
-            <ChatWindow
-              slotChatBlocks={
-                <>
-                  <ChatBlock slotWidget={'Widget'} isWidget={true} />
-                  <ChatBlock
-                    slotWidget={<ChatMessageLoader />}
-                    isWidget={true}
-                    istext={false}
-                  />
-                  <ChatBlock
-                    slotWidget={
-                      <WidgetFlexRow
-                        slorWidgetIndividual={
-                          <>
-                            <WidgetPanelCard />
-                            <WidgetPanelCard />
-                            <WidgetPanelCard />
-                          </>
+            {selectedChat && selectedChat.history.length == 0 ? (
+              <NewChat
+                slotIcon={<ScheduleIcon />}
+                slotSuggetionCard={<SuggetionCards />}
+              />
+            ) : (
+              <ChatWindow
+                slotChatBlocks={
+                  <>
+                    {selectedChat.history.map((his: HistoryType, ind) => {
+                      return his.type == 'user' ? (
+                        <ChatBlock
+                          key={ind}
+                          testName={'You'}
+                          textMessage={
+                            his?.selectedItem?.message
+                              ? his.selectedItem.message
+                              : his.value
+                          }
+                          textTime={dayjs(his.created_at).fromNow()}
+                          slotAvatar={
+                            <Image
+                              alt=''
+                              src={recruiterUser.profile_image}
+                              width={40}
+                              height={40}
+                            />
+                          }
+                        />
+                      ) : his.type == 'assistant' ? (
+                        <ChatBlockAssistant
+                          index={ind}
+                          textTime={dayjs(his.created_at).fromNow()}
+                          functionResp={his.funcRes}
+                          message={his.value}
+                        />
+                      ) : (
+                        <ChatNotification
+                          textMain={his.value}
+                          slotIcon={<IconActivity his={his} />}
+                        />
+                      );
+                    })}
+                    {loading && (
+                      <ChatBlock
+                        testName={'Aglint'}
+                        slotAvatar={
+                          <Icon
+                            variant='ChatLogo'
+                            color='#FF6224'
+                            height='40'
+                            width='40'
+                          />
                         }
+                        textTime={''}
+                        slotWidget={<ChatMessageLoader />}
+                        isWidget={true}
+                        istext={false}
                       />
-                    }
-                    isWidget
-                  />
-                  <ChatBlock slotWidget={'Widget'} />
-                  <ChatBlock slotWidget={'Widget'} />
-                  <ChatBlock slotWidget={'Widget'} />
-                </>
-              }
-            />
+                    )}
+                  </>
+                }
+              />
+            )}
           </>
         }
         slotSearchInput={
@@ -96,35 +164,25 @@ function SchedulingAgent() {
             onChange={(e) => {
               setUserText(e.target.value);
             }}
+            placeholder='Chat with Aglint'
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                submitHandler();
+                submitHandler({ input: e.target.value });
               }
             }}
           />
         }
         isSearch={true}
-        isActivity={true}
-        textCurrentTaskName={'Task name'}
+        textCurrentTaskName={selectedChat.title}
         onClickTaskActivity={{
           onClick: () => {
-            toast.warning('Raimon is gay');
+            setActivityOpen(true);
           },
         }}
-        slotTimelineBlock={
-          <TimelineBlock
-            slotTimeline={
-              <>
-                <TimelineEmpty />
-                <Timeline isConnecterVisible />
-                <Timeline isConnecterVisible />
-                <Timeline isConnecterVisible />
-                <Timeline />
-              </>
-            }
-          />
-        }
+        isActivity={true}
+        slotTimelineBlock={<Activity />}
       />
+      <ActivityDrawer />
     </>
   );
 }

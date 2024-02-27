@@ -24,6 +24,14 @@
   z-index: 2;
 }
 
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
 .active-tab-menu {
   position: absolute;
   left: 0%;

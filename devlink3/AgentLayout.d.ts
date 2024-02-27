@@ -12,10 +12,7 @@ declare function AgentLayout(props: {
   slotSearchInput?: Types.Devlink.Slot;
   onClickSend?: Types.Devlink.RuntimeProps;
   isActivity?: Types.Visibility.VisibilityConditions;
-  onClickSchedulerAgent?: Types.Devlink.RuntimeProps;
-  onClickJobAssistant?: Types.Devlink.RuntimeProps;
-  onClickSourcingAgent?: Types.Devlink.RuntimeProps;
-  onClickScreeningAgent?: Types.Devlink.RuntimeProps;
   slotSuggetionPills?: Types.Devlink.Slot;
   isSuggetionPills?: Types.Visibility.VisibilityConditions;
+  slotNewChatButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

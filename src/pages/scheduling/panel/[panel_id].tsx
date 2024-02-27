@@ -1,5 +1,5 @@
 import Availability from '@/src/components/Scheduling/Availability/Availability';
-import InterviewPanelProvider from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import InterviewPanelProvider from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 const PanelAvailability = () => {
   return (

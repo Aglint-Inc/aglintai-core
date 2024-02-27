@@ -1,14 +1,17 @@
 .task_card {
   position: relative;
 
-  display: flex;
+  display: grid;
   overflow: hidden;
   height: 76px;
   padding: 16px;
   flex-direction: row;
   align-items: center;
+  grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto;
 
   border: 1px solid #e9ebed;
   border-radius: 10px;
@@ -97,6 +100,14 @@
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
 }
 
 .active_bg {

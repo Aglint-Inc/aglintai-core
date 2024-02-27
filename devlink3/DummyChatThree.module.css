@@ -85,6 +85,14 @@
   z-index: 2;
 }
 
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
 .text-grey_400 {
   color: #c2c8cc;
 }

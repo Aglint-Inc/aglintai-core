@@ -49,6 +49,8 @@ export * from "./DummyNavigation";
 export * from "./IconRegular";
 export * from "./IconSmall";
 export * from "./NewChat";
+export * from "./NewChatButton";
+export * from "./NewTaskDropdown";
 export * from "./OutlinedButton";
 export * from "./SamplePanel";
 export * from "./SuggetionCard";

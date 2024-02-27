@@ -15,7 +15,7 @@ export function ChatWindow({
         <>
           <ChatBlock />
           <ChatBlock />
-          <ChatNotification isSubtextVisible={true} />
+          <ChatNotification />
         </>
       )}
     </_Component>

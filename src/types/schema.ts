@@ -9,6 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agent_activity: {
+        Row: {
+          agent_chat_id: string
+          created_at: string
+          icon_status:
+            | Database["public"]["Enums"]["icon_status_activity"]
+            | null
+          id: string
+          title: string
+          type: Database["public"]["Enums"]["activity_type"]
+        }
+        Insert: {
+          agent_chat_id: string
+          created_at?: string
+          icon_status?:
+            | Database["public"]["Enums"]["icon_status_activity"]
+            | null
+          id?: string
+          title: string
+          type: Database["public"]["Enums"]["activity_type"]
+        }
+        Update: {
+          agent_chat_id?: string
+          created_at?: string
+          icon_status?:
+            | Database["public"]["Enums"]["icon_status_activity"]
+            | null
+          id?: string
+          title?: string
+          type?: Database["public"]["Enums"]["activity_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_agent_activity_agent_chat_id_fkey"
+            columns: ["agent_chat_id"]
+            isOneToOne: false
+            referencedRelation: "agent_chat"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       agent_chat: {
         Row: {
           created_at: string
@@ -486,6 +527,7 @@ export type Database = {
           description: string | null
           embeddings: string | null
           id: string
+          level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
           title: string | null
           type: Database["public"]["Enums"]["template_type"] | null
@@ -495,6 +537,7 @@ export type Database = {
           description?: string | null
           embeddings?: string | null
           id?: string
+          level?: Database["public"]["Enums"]["question_level"]
           mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
@@ -504,6 +547,7 @@ export type Database = {
           description?: string | null
           embeddings?: string | null
           id?: string
+          level?: Database["public"]["Enums"]["question_level"]
           mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
@@ -2283,6 +2327,19 @@ export type Database = {
           jobs: Json
         }[]
       }
+      getassessmenttemplates: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          description: string
+          type: Database["public"]["Enums"]["template_type"]
+          level: Database["public"]["Enums"]["question_level"]
+          mode: Database["public"]["Enums"]["assessment_mode"]
+          duration: number
+        }[]
+      }
       getjobapplicationcountforcandidates: {
         Args: {
           candidate_ids: string[]
@@ -2536,6 +2593,7 @@ export type Database = {
       }
     }
     Enums: {
+      activity_type: "aglint" | "user"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
       application_processing_status:
         | "not started"
@@ -2553,6 +2611,7 @@ export type Database = {
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       file_type: "resume" | "coverletter" | "cv" | "image"
+      icon_status_activity: "success" | "waiting" | "error"
       interview_schedule_status: "pending" | "confirmed" | "completed"
       interview_schedule_type:
         | "in_person_meeting"

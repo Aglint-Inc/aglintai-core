@@ -35,6 +35,7 @@ import {
   DummyChatThree,
   DummyChatTwo,
   NewChat,
+  NewChatButton,
   SamplePanel,
   Timeline,
   TimelineBlock,
@@ -258,9 +259,13 @@ function SchedulerAgent() {
   return (
     <>
       <AgentLayout
-        onClickSchedulerAgent={{
-          onClick: handleNewChat,
-        }}
+        slotNewChatButton={
+          <NewChatButton
+            onClickChat={{
+              onClick: handleNewChat,
+            }}
+          />
+        }
         onClickTaskActivity={{ onClick: () => setTimeLineDrawer(true) }}
         textCurrentTaskName={
           activeChat === 'demo_chat_1'

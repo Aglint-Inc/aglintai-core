@@ -1,23 +1,36 @@
 import { create } from 'zustand';
 
-import { AgentChatType } from '@/src/types/data.types';
+import { AgentActivityType, AgentChatType } from '@/src/types/data.types';
 
 export type HistoryType = {
-  type: 'user' | 'assistant';
+  type: 'user' | 'assistant' | 'activity';
   value: string;
-  functionValue?: any;
+  funcRes?: any;
+  loading?: boolean;
+  created_at: string;
+  status?: 'success' | 'waiting' | 'error';
+  user_id?: string;
+  selectedItem?: any;
 };
 
 export interface SchedulingAgent {
   allChat: AgentChat[];
   selectedChat: AgentChat | null;
   userText: string;
+  loading: boolean;
+  activities: AgentActivityType[];
+  activityLoading: boolean;
+  activityOpen: boolean;
 }
 
 const initialState: SchedulingAgent = {
   allChat: [],
-  selectedChat: null,
+  selectedChat: { history: [] } as any,
   userText: '',
+  loading: false,
+  activities: [],
+  activityLoading: false,
+  activityOpen: false,
 };
 
 export const useSchedulingAgentStore = create<SchedulingAgent>()(() => ({
@@ -28,14 +41,28 @@ export const setAllChat = (allChat: AgentChat[]) =>
   useSchedulingAgentStore.setState({ allChat });
 
 export const setSelectedChat = (selectedChat: AgentChat) =>
-  useSchedulingAgentStore.setState({ selectedChat });
+  useSchedulingAgentStore.setState((state) => ({
+    selectedChat: { ...state.selectedChat, ...selectedChat },
+  }));
 
 export const setUserText = (userText: string) =>
   useSchedulingAgentStore.setState({ userText });
 
+export const setLoading = (loading: boolean) =>
+  useSchedulingAgentStore.setState({ loading });
+
+export const setActivities = (activities: AgentActivityType[]) =>
+  useSchedulingAgentStore.setState({ activities });
+
+export const setActivityLoading = (activityLoading: boolean) =>
+  useSchedulingAgentStore.setState({ activityLoading });
+
+export const setActivityOpen = (activityOpen: boolean) =>
+  useSchedulingAgentStore.setState({ activityOpen });
+
 export const resetInterviewState = () =>
   useSchedulingAgentStore.setState({ ...initialState });
 
-type AgentChat = AgentChatType & {
+export type AgentChat = AgentChatType & {
   history: HistoryType[];
 };

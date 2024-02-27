@@ -11,6 +11,7 @@ import {
   ChatBlock,
   ChatWindow,
   NewChat,
+  NewChatButton,
   SuggetionPill,
   WidgetGrid3X3,
 } from '@/devlink3';
@@ -97,15 +98,19 @@ function JobAgent() {
     <>
       <AgentLayout
         isActivity={false}
-        onClickJobAssistant={{
-          onClick: () => {
-            if (jobAssistantChats[0]?.last_message) {
-              createNewChat();
-            } else {
-              switchChat(jobAssistantChats[0]?.id);
-            }
-          },
-        }}
+        slotNewChatButton={
+          <NewChatButton
+            onClickChat={{
+              onClick: () => {
+                if (jobAssistantChats[0]?.last_message) {
+                  createNewChat();
+                } else {
+                  switchChat(jobAssistantChats[0]?.id);
+                }
+              },
+            }}
+          />
+        }
         slotAgentTask={<LeftPanel />}
         textCurrentTaskName={currentChat?.last_message || 'Untitled'}
         isSearch={true}

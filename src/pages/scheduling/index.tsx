@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SchedulingMainComp from '@/src/components/Scheduling';
-import InterviewPanelProvider from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import InterviewPanelProvider from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 function SchedulingMainPage() {
   return (

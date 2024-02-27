@@ -83,3 +83,20 @@ export interface MergedEvents {
     }[];
   };
 }
+
+type ServerAvalabilitySlotType = Pick<AvalabilitySlotType, 'status'> & {
+  startTime: string;
+  endTime: string;
+};
+
+export type ServerAvailabilitiesParams = Record<
+  string,
+  ServerAvalabilitySlotType[]
+>;
+
+export type ServerInterviewerAvailabliity = {
+  timeDuration: number;
+  availability: ServerAvailabilitiesParams;
+  cntConfirmed: number;
+  cntRequested: number;
+};
