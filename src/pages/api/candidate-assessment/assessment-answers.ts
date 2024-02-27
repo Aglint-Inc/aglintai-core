@@ -6,11 +6,11 @@ export const supabase = createClient<Database>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 export default async function handler(req, res) {
-  const { id } = req.body;
+  const { assessment_id } = req.body;
   const { data, error } = await supabase
     .from('assessment_question')
     .select('answer')
-    .eq('id', id);
+    .eq('assessment_id', assessment_id);
 
   if (!error) {
     res.status(200).send(data);

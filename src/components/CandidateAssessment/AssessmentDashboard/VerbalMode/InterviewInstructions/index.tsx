@@ -5,11 +5,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { InterviewWelcome } from '@/devlink';
+import Loader from '@/src/components/Common/Loader';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import Loader from '../../SignUpComp/Loader/Index';
+
 function InterviewInstructions() {
   const { assessmentDetails, fetching } = useCandidateAssessment();
   const { startInterview, video_Urls, startVideoInterview, videoAssessment } =

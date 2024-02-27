@@ -13,9 +13,9 @@ import InterviewerPanel from './InterviewerPanel';
 import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
 import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
-import MuiAvatar from '../../Common/MuiAvatar';
-import MuiPopup from '../../Common/MuiPopup';
-import SidePanelDrawer from '../../Common/SidePanelDrawer';
+import MuiAvatar from '../../../../Common/MuiAvatar';
+import MuiPopup from '../../../../Common/MuiPopup';
+import SidePanelDrawer from '../../../../Common/SidePanelDrawer';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
