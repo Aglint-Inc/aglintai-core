@@ -15,11 +15,16 @@ export type FunctionResponse =
       name: 'fetch-all-interview-panel';
       response: {
         panels: {
+          relations: {
+            id: string;
+            panel_id: string;
+            user_id: string;
+          }[];
+          created_at: string;
+          duration_available: JSON;
           id: string;
           name: string;
           recruiter_id: string;
-          created_at: string;
-          duration_available: JSON;
         }[];
         message: string;
       };

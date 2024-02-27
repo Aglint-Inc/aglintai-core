@@ -91,11 +91,12 @@ function SelectPanel({
     <WidgetFlexRow
       slorWidgetIndividual={panels?.map((panel) => (
         <WidgetPanelCard
+          textMemberCount={`${panel.relations?.length} members` || 0}
           key={panel.id}
           textPanelName={panel.name}
           slotAvatarGroup={
             <AvatarGroup
-              total={panel.relations.length}
+              total={panel.relations?.length || 0}
               sx={{
                 '& .MuiAvatar-root': {
                   width: '28px',
@@ -104,7 +105,7 @@ function SelectPanel({
                 },
               }}
             >
-              {panel.relations.slice(0, 5).map((rel) => {
+              {panel.relations?.slice(0, 5).map((rel) => {
                 const member = members.find(
                   (member) => member.user_id === rel.user_id,
                 );

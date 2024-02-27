@@ -38,15 +38,7 @@ function WidgetComp({
         const panels = funct.response.panels;
         return (
           <Stack sx={{ pointerEvents: 'none' }}>
-            <WidgetFlexRow
-              slorWidgetIndividual={panels?.map((panel) => (
-                <WidgetPanelCard
-                  key={panel.id}
-                  textPanelName={panel.name}
-                  slotAvatarGroup={''}
-                />
-              ))}
-            />
+            <SelectPanel panels={panels} />
           </Stack>
         );
       }
