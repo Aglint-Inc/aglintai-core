@@ -2,9 +2,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from 'react-speech-recognition';
 
 const InterviewContext = createContext();
 let audioElement = null;
@@ -15,6 +12,7 @@ let animationFrameId;
 const context = [];
 let totalNumberOfQuestions = [];
 
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import { handleAssessmentResultApi } from '@/src/pages/api/assessment-result/utils';
 import interviewerList from '@/src/utils/interviewer_list';
@@ -32,21 +30,19 @@ function InterviewContextProvider({ children }) {
   } = useSpeechRecognition();
   const router = useRouter();
 
-  const { assessmentQuestions } = useCandidateAssessment()
-
+  const { assessmentQuestions } = useCandidateAssessment();
 
   useEffect(() => {
     if (assessmentQuestions)
       totalNumberOfQuestions.push(`Thank you for taking the time to meet with us today.
-     We're excited to have you here for this interview and learn more about your qualifications and experiences. Let's get started.`)
-    assessmentQuestions.map(item => {
-      totalNumberOfQuestions.push(item.question.label)
-    })
+     We're excited to have you here for this interview and learn more about your qualifications and experiences. Let's get started.`);
+    assessmentQuestions.map((item) => {
+      totalNumberOfQuestions.push(item.question.label);
+    });
     totalNumberOfQuestions.push(`Thank you,for your time and sharing your insights with us today.
      If you have any further questions or need more information from us, 
-     please don't hesitate to reach out.Wishing you a great day ahead.`)
-  }, [assessmentQuestions])
-
+     please don't hesitate to reach out.Wishing you a great day ahead.`);
+  }, [assessmentQuestions]);
 
   const [openSidePanelDrawer, setOpenSidePanelDrawer] = useState(false);
   const [conversations, setConversations] = useState([]);
@@ -60,14 +56,12 @@ function InterviewContextProvider({ children }) {
 
   const [showStartCard, setShowStartCard] = useState(false);
 
-
   //questions
   const [questionIndex, setQuestionIndex] = useState(0);
 
   // speaking
   const [speaking, setSpeaking] = useState(false);
   const senderRef = useRef();
-
 
   // print char
 
@@ -87,7 +81,7 @@ function InterviewContextProvider({ children }) {
           });
         }
         handleSpeak('assistant', totalNumberOfQuestions[Number(questionIndex)]);
-      })
+      });
   }
 
   async function handleSpeak(role, content) {
@@ -161,7 +155,7 @@ function InterviewContextProvider({ children }) {
           });
 
         setSpeaking(true);
-        setCharacter(textToSpeech)
+        setCharacter(textToSpeech);
         audioElement = new Audio();
         audioElement.src = audioDataUrl;
         audioElement.addEventListener('ended', () => {
@@ -230,7 +224,9 @@ function InterviewContextProvider({ children }) {
     }
   }
   function stopRecording() {
-    if (document.getElementById('mic-trigger')) { document.getElementById('mic-trigger').click(); }
+    if (document.getElementById('mic-trigger')) {
+      document.getElementById('mic-trigger').click();
+    }
     SpeechRecognition.abortListening();
     SpeechRecognition.stopListening();
     resetTranscript();
@@ -274,14 +270,18 @@ function InterviewContextProvider({ children }) {
     stopRecording();
   }
 
-
   async function getFeedback() {
     stopRecording();
     audioElement?.pause();
-    const userResponse = conversations.map(item => { return { label: item.userContent } })
-    const { data: answers } = await axios.post('/api/candidate-assessment/assessment-answers', {
-      assessment_id: router.query?.assessment_id
-    })
+    const userResponse = conversations.map((item) => {
+      return { label: item.userContent };
+    });
+    const { data: answers } = await axios.post(
+      '/api/candidate-assessment/assessment-answers',
+      {
+        assessment_id: router.query?.assessment_id,
+      },
+    );
     const { data: results } = await axios.post(
       '/api/candidate-assessment/assessment-result-details',
       {
@@ -289,16 +289,18 @@ function InterviewContextProvider({ children }) {
         application_id: router.query?.application_id,
       },
     );
-    const score = await handleAssessmentResultApi('result', { result_id: results.id })
+    const score = await handleAssessmentResultApi('result', {
+      result_id: results.id,
+    });
     const responses = assessmentQuestions.map((item, i) => {
       return {
         question_id: item.id,
         type: item.type,
         question: item.question,
         answer: answers[i].answer,
-        response: userResponse[i]
-      }
-    })
+        response: userResponse[i],
+      };
+    });
     await axios.post('/api/candidate-assessment/assessment-result-update', {
       assessment_id: router.query?.assessment_id,
       objData: {
@@ -309,19 +311,18 @@ function InterviewContextProvider({ children }) {
     });
 
     router.push('/assessment-thanks');
-
   }
 
   async function disconnecting() {
-    getFeedback()
+    getFeedback();
   }
 
   useEffect(() => {
     return () => {
-      SpeechRecognition.abortListening()
-      SpeechRecognition.stopListening()
+      SpeechRecognition.abortListening();
+      SpeechRecognition.stopListening();
     };
-  }, [router])
+  }, [router]);
 
   return (
     <InterviewContext.Provider

@@ -97,6 +97,7 @@
     "react-dropzone": "^14.2.3",
     "react-phone-input-2": "^2.15.1",
     "react-share": "^4.4.1",
+    "react-speech-recognition": "^3.10.0",
     "sass": "1.55.0",
     "supabase": "^1.99.5",
     "tippy.js": "^6.3.7",

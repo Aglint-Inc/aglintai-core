@@ -36,6 +36,7 @@ const SchedulingAgentContext =
 const SchedulingAgentProvider = ({ children }) => {
   const { recruiter, recruiterUser } = useAuthDetails();
   const { allChat, selectedChat, activities } = useSchedulingAgentStore();
+  console.log('asdasd');
 
   useEffect(() => {
     if (recruiter?.id) initialFetch();
