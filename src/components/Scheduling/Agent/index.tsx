@@ -65,6 +65,13 @@ function SchedulingAgent() {
         }
         slotAgentTask={
           <>
+            {/* <button
+              onClick={() => {
+                setSelectedChat({ history: [] });
+              }}
+            >
+              clear 
+            {/* </button> */}
             {allChat.map((chat) => {
               return (
                 <AgentTask

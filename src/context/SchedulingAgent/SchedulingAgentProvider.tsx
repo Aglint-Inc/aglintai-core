@@ -103,6 +103,7 @@ const SchedulingAgentProvider = ({ children }) => {
           selectedItem: selectedItem,
           user_id: recruiterUser.user_id,
           payload: payload,
+          chat_id: selectedChat.id,
           recruiter_id: recruiter.id,
         },
       );
@@ -153,10 +154,10 @@ const SchedulingAgentProvider = ({ children }) => {
       });
       updateAllChat(histAfterAssisResponse as AgentChat['history']);
     } catch (error) {
-      setLoading(false);
-      toast.error('Something went wrong! Please try again later.');
       // eslint-disable-next-line no-console
       console.error('Error:', error);
+      setLoading(false);
+      toast.error('Something went wrong! Please try again later.');
     }
   };
 

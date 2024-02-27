@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -24,13 +25,26 @@ type BodyParams = {
   panel_id: string;
   selected_time_slots: string[];
   time_slot_duration: string;
+  req_user_id: string;
+  chat_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { panel_name, panel_id, selected_time_slots, time_slot_duration } =
-    req.body as BodyParams;
+  let {
+    panel_name,
+    panel_id,
+    selected_time_slots,
+    time_slot_duration,
+    req_user_id,
+    chat_id,
+  } = req.body as BodyParams;
 
-  if (!panel_name || !time_slot_duration || !selected_time_slots)
+  if (
+    !panel_name ||
+    !time_slot_duration ||
+    !selected_time_slots ||
+    !req_user_id
+  )
     return res.status(400).send('missing required fields');
   try {
     if (panel_name) {
@@ -65,9 +79,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
     await save_slots_send_mail(updated_av);
+    await sendMail({
+      panel_id,
+      user_ids: av.map((i) => i.interviewerId),
+      time_slot_duration,
+      req_user_id,
+      chat_id,
+    });
     return res.status(200).send('mail sent');
   } catch (error) {
-    res.status(400).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
@@ -111,6 +132,34 @@ const save_slots_send_mail = async (ints: Fetch_saved_ints_return_params[]) => {
     );
   });
   await Promise.all(promises);
-
   // send mail
+};
+
+const sendMail = async ({
+  panel_id,
+  user_ids,
+  time_slot_duration,
+  req_user_id,
+  chat_id,
+}) => {
+  try {
+    const promises = user_ids.map(async (i) => {
+      const [s] = supabaseWrap(
+        await supabaseAdmin
+          .from('recruiter_user')
+          .select('email')
+          .eq('user_id', i),
+      );
+      const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${i}&req_user_id=${req_user_id}&time_duration=${time_slot_duration}&chat_id=${chat_id}`;
+
+      await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+        email: s.email,
+        subject: 'Confirm request',
+        text: link,
+      });
+    });
+    await Promise.allSettled(promises);
+  } catch (err) {
+    //
+  }
 };

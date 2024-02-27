@@ -3,10 +3,11 @@ import { has } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
 import { LoadedSlotPill } from '@/devlink';
-import { AvailableSlots } from '@/devlink2';
+import { WidgetFlexRow, WidgetTimeGroup } from '@/devlink3';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { InterviewerGroup } from '@/src/components/Scheduling/Availability/Availability';
 import { MergedEvents } from '@/src/components/Scheduling/Availability/availability.types';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 import { useSchedulingAgentStore } from '../../../store';
@@ -14,88 +15,104 @@ import { useSchedulingAgentStore } from '../../../store';
 const AvailabilitySlotSelect = ({
   slots,
   index,
+  time_duration,
 }: {
   slots: any;
   // eslint-disable-next-line no-unused-vars
   index: number;
+  time_duration: number;
 }) => {
   const { submitHandler } = useSchedulingAgent();
   const { selectedChat } = useSchedulingAgentStore();
   const [checkedSlots, setCheckedSlots] = useState<string[]>([]);
-
+  const { recruiterUser } = useAuthDetails();
   const mergedTimeSlots = useMemo(() => {
     const res = convertToMergedData(slots);
     return res;
   }, [slots]);
-
   return (
     <>
-      {Object.keys(mergedTimeSlots || {}).map((dateKey: string) => {
-        let timeKeys = Object.keys(mergedTimeSlots[String(dateKey)]);
-        return (
-          <AvailableSlots
-            key={dateKey}
-            textDate={dayjs(dateKey).format('DD')}
-            textDay={dayjs(dateKey).format('dddd')}
-            textMonth={dayjs(dateKey).format('MMM')}
-            slotLoadedSlotPill={
-              <>
-                {timeKeys.map((timeKey: string) => {
-                  const [start, end] = timeKey.split('_');
-                  let checkedPath = `${dateKey}_${timeKey}`;
+      <WidgetFlexRow
+        slorWidgetIndividual={Object.keys(mergedTimeSlots || {}).map(
+          (dateKey: string) => {
+            let timeKeys = Object.keys(mergedTimeSlots[String(dateKey)]);
+            return (
+              <WidgetTimeGroup
+                key={dateKey}
+                textTime={dayjs(dateKey).format('DD MMM YYYY')}
+                slotTimeRange={
+                  <>
+                    {timeKeys.map((timeKey: string) => {
+                      const [start, end] = timeKey.split('_');
+                      let checkedPath = `${dateKey}_${timeKey}`;
 
-                  const isChecked = Boolean(
-                    checkedSlots.find((s) => s === checkedPath),
-                  );
-                  return (
-                    <>
-                      <LoadedSlotPill
-                        key={checkedPath}
-                        onClickPill={{
-                          onClick: () => {
-                            if (isChecked) {
-                              setCheckedSlots((prev) =>
-                                prev.filter((str) => str !== checkedPath),
-                              );
-                            } else {
-                              setCheckedSlots((prev) => [...prev, checkedPath]);
+                      const isChecked = Boolean(
+                        checkedSlots.find((s) => s === checkedPath),
+                      );
+                      return (
+                        <>
+                          <LoadedSlotPill
+                            key={checkedPath}
+                            onClickPill={{
+                              onClick: () => {
+                                if (isChecked) {
+                                  setCheckedSlots((prev) =>
+                                    prev.filter((str) => str !== checkedPath),
+                                  );
+                                } else {
+                                  setCheckedSlots((prev) => [
+                                    ...prev,
+                                    checkedPath,
+                                  ]);
+                                }
+                              },
+                            }}
+                            isNotSelected={!isChecked}
+                            isSelectedActive={isChecked}
+                            textTime={`${dayjs(start).format('hh:mm A')} - ${dayjs(
+                              end,
+                            ).format('hh:mm A')}`}
+                            slotImage={
+                              <>
+                                <InterviewerGroup
+                                  profileUrls={mergedTimeSlots[String(dateKey)][
+                                    String(timeKey)
+                                  ].map((int) => ({
+                                    name: int.interviewerName,
+                                    url: int.profileImg,
+                                  }))}
+                                />
+                              </>
                             }
-                          },
-                        }}
-                        isNotSelected={!isChecked}
-                        isSelectedActive={isChecked}
-                        textTime={`${dayjs(start).format('hh:mm A')} - ${dayjs(
-                          end,
-                        ).format('hh:mm A')}`}
-                        slotImage={
-                          <>
-                            <InterviewerGroup
-                              profileUrls={mergedTimeSlots[String(dateKey)][
-                                String(timeKey)
-                              ].map((int) => ({
-                                name: int.interviewerName,
-                                url: int.profileImg,
-                              }))}
-                            />
-                          </>
-                        }
-                      />
-                    </>
-                  );
-                })}
-              </>
-            }
-          />
-        );
-      })}
-      {selectedChat.history.length != index + 1 && (
-        <div style={{ display: 'none' }}>
+                          />
+                        </>
+                      );
+                    })}
+                  </>
+                }
+              />
+            );
+          },
+        )}
+      />
+
+      {selectedChat.history.length === index + 1 && (
+        <div>
           <AUIButton
+            disabled={checkedSlots.length === 0}
             onClick={() => {
+              if (checkedSlots.length === 0) return;
               let aicmd = `Send an email to confirm the availability of time slots for the given panel`;
               submitHandler({
                 input: aicmd,
-                payload: checkedSlots,
+                payload: {
+                  checkedSlots: checkedSlots.map((str) => {
+                    let time = str.split('_');
+                    return time[1] + '_' + time[2];
+                  }),
+                  req_user_id: recruiterUser.user_id,
+                  time_duration,
+                },
                 activity: [
                   {
                     agent_chat_id: selectedChat.id,

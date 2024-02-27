@@ -67,4 +67,5 @@ export * from "./WidgetGrid2X2";
 export * from "./WidgetGrid3X3";
 export * from "./WidgetJobCard";
 export * from "./WidgetPanelCard";
+export * from "./WidgetTimeGroup";
 export * from "./WidgetUserCard";

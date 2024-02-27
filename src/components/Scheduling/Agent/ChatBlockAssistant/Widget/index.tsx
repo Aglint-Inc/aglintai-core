@@ -117,7 +117,11 @@ function WidgetComp({
         );
       } else if ('slots' in funct.response) {
         return (
-          <AvailabilitySlotSelect slots={funct.response.slots} index={index} />
+          <AvailabilitySlotSelect
+            slots={funct.response.slots}
+            index={index}
+            time_duration={funct.response.time_duration}
+          />
         );
       }
       break;
