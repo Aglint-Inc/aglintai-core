@@ -75,6 +75,9 @@ function SelectConfirmedSlots({ slots, index }: { slots: any; index: number }) {
           agent_chat_id: selectedChat.id,
         },
       ],
+      payload: {
+        filteredSlots,
+      },
     });
   };
 
