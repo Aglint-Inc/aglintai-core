@@ -3,10 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 // import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-import {
-  AssessmentQuestion,
-  AssessmentResult,
-} from '@/src/queries/assessment/types';
+import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Database } from '@/src/types/schema';
 
 import { getAssessmentAnalyses } from './assessment-result-prompt-builder';
@@ -45,10 +42,8 @@ export default async function handler(req: NextRequest) {
       supabase,
       result_id,
     );
-    const questionIds = getQuestionIds(assessmentResponses);
-    const questions = await fetchAssessmentQuestions(supabase, questionIds);
-    const safeResponses = buildSafeResponse(assessmentResponses, questions);
-    const result = await getAssessmentAnalyses(safeResponses);
+
+    const result = await getAssessmentAnalyses(assessmentResponses);
 
     return new NextResponse<AssessmentResultApi['response']>(
       JSON.stringify({
@@ -81,33 +76,4 @@ const fetchAssessmentResult = async (
   if (data.length !== 1)
     throw new Error('Unable to find assessment result entry');
   return data[0].responses as unknown as AssessmentResult['responses'];
-};
-
-const getQuestionIds = (responses: AssessmentResult['responses']) => {
-  return responses.map(({ question_id }) => question_id);
-};
-
-const fetchAssessmentQuestions = async (
-  supabase: Supabase,
-  questions: AssessmentQuestion['id'][],
-) => {
-  const { data, error } = await supabase
-    .from('assessment_question')
-    .select('id, question, answer')
-    .in('id', questions);
-  if (error) throw new Error(error.message);
-  if (data.length === 0)
-    throw new Error('Unable to find assessment question entry');
-  return data as unknown as AssessmentQuestion[];
-};
-
-const buildSafeResponse = (
-  responses: AssessmentResult['responses'],
-  questions: AssessmentQuestion[],
-) => {
-  responses.forEach((response) => {
-    const question = questions.find((q) => q.id === response.question_id);
-    response['question'] = question ?? null;
-  });
-  return responses;
 };

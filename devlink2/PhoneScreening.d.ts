@@ -7,4 +7,5 @@ declare function PhoneScreening(props: {
   slotQuestions?: Types.Devlink.Slot;
   slotEndText?: Types.Devlink.Slot;
   slotInfo?: Types.Devlink.Slot;
+  isHeaderVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

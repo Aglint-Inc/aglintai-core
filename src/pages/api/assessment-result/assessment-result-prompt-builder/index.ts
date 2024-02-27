@@ -43,8 +43,7 @@ const formatResponse = (
   return responses.reduce(
     (acc, curr, i) => {
       const res = result[i];
-      if (res.status === 'fulfilled')
-        acc.push({ question_id: curr.question_id, rating: res.value });
+      if (res.status === 'fulfilled') acc.push({ rating: res.value });
       return acc;
     },
     [] as AssessmentResult['result'],

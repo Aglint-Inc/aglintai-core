@@ -303,6 +303,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
@@ -352,6 +356,10 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 @media screen and (max-width: 767px) {

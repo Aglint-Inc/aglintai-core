@@ -53,7 +53,6 @@ export type Database = {
       agent_chat: {
         Row: {
           created_at: string
-          dynamic_values: Json | null
           history: Json[] | null
           id: string
           last_updated_at: string | null
@@ -63,7 +62,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          dynamic_values?: Json | null
           history?: Json[] | null
           id?: string
           last_updated_at?: string | null
@@ -73,7 +71,6 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          dynamic_values?: Json | null
           history?: Json[] | null
           id?: string
           last_updated_at?: string | null
@@ -340,7 +337,6 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          edited: boolean
           id: string
           level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
@@ -351,7 +347,6 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
-          edited?: boolean
           id?: string
           level?: Database["public"]["Enums"]["question_level"]
           mode?: Database["public"]["Enums"]["assessment_mode"]
@@ -362,7 +357,6 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
-          edited?: boolean
           id?: string
           level?: Database["public"]["Enums"]["question_level"]
           mode?: Database["public"]["Enums"]["assessment_mode"]
@@ -2144,6 +2138,24 @@ export type Database = {
         }
         Returns: string
       }
+      connectassessmenttemplate: {
+        Args: {
+          assessmentid: string
+          recruiterid: string
+          templateid: string
+          jobid: string
+        }
+        Returns: undefined
+      }
+      connectbulkassessmenttemplate: {
+        Args: {
+          assessments: string[]
+          recruiterid: string
+          templates: Json[]
+          jobid: string
+        }
+        Returns: undefined
+      }
       count_candidates: {
         Args: {
           job_ids: string[]
@@ -2297,6 +2309,7 @@ export type Database = {
           job_title: string
           created_at: string
           response: Json
+          questions: Json
         }[]
       }
       getallresumematches: {
@@ -2321,7 +2334,6 @@ export type Database = {
           type: Database["public"]["Enums"]["template_type"]
           recruiter_id: string
           level: Database["public"]["Enums"]["question_level"]
-          edited: boolean
           mode: Database["public"]["Enums"]["assessment_mode"]
           duration: number
           jobs: Json

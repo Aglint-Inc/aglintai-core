@@ -110,6 +110,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -176,6 +180,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 .panel_member_count {
   display: flex;
   align-items: center;
@@ -205,6 +213,10 @@
 
 .text-green-600 {
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-sm.jenfjker {
+  width: 136px;
 }
 
 #w-node-a1ac702c-8df1-4a11-2202-ee0b9e47daad-9e47daad {

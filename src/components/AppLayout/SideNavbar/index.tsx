@@ -78,7 +78,7 @@ function SideNavbar() {
       icon: <NavAssessment isActive={false} />,
       text: 'Assessment',
       SubComponents: null,
-      route: pageRoutes.ASSESSMENT,
+      route: pageRoutes.ASSESSMENTS,
       comingsoon: false,
       isvisible:
         isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com',

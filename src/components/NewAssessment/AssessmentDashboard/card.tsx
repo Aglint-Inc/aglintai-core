@@ -34,7 +34,7 @@ const AssessmentCard: React.FC<{
   );
 };
 
-const AssessmentDetails: React.FC<{
+export const AssessmentDetails: React.FC<{
   level: Assessment['level'];
   duration: Assessment['duration'];
 }> = ({ level, duration }) => {

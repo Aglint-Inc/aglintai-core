@@ -1,9 +1,7 @@
-import React from 'react';
-
-import _styles from './PageLayout.module.css';
-
-import * as _Builtin from './_Builtin';
-import * as _utils from './utils';
+import React from "react";
+import * as _Builtin from "./_Builtin";
+import * as _utils from "./utils";
+import _styles from "./PageLayout.module.css";
 
 export function PageLayout({
   as: _Component = _Builtin.Block,
@@ -12,31 +10,31 @@ export function PageLayout({
   slotBody,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, 'scheduler_layout')} tag='div'>
+    <_Component className={_utils.cx(_styles, "scheduler_layout")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, 'scheduler_topbar')}
-        tag='div'
+        className={_utils.cx(_styles, "scheduler_topbar")}
+        tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, 'topbar_left')} tag='div'>
+        <_Builtin.Block className={_utils.cx(_styles, "topbar_left")} tag="div">
           {slotTopbarLeft ?? (
             <_Builtin.Block
-              className={_utils.cx(_styles, 'fw-semibold')}
-              tag='div'
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
             >
-              {'Scheduler'}
+              {"Scheduler"}
             </_Builtin.Block>
           )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, 'topbar_right')}
-          tag='div'
+          className={_utils.cx(_styles, "topbar_right")}
+          tag="div"
         >
           {slotTopbarRight}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, 'slot-body-global')}
-        tag='div'
+        className={_utils.cx(_styles, "slot-body-global")}
+        tag="div"
       >
         {slotBody}
       </_Builtin.Block>

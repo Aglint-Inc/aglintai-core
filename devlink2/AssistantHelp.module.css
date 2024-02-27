@@ -39,6 +39,15 @@
   opacity: 0.7;
 }
 
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-60 {
   font-size: 60px;
   line-height: 80px;
@@ -66,6 +75,10 @@
   }
 }
 
+.text-xxl.fw-semibold {
+  color: #49545c;
+}
+
 .text-align-center {
   text-align: center;
 }
@@ -78,12 +91,12 @@
   text-transform: none;
 }
 
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
-}
-
 .text-grey-600 {
   color: #68737d;
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
 }
 
 .div-block-934 {
@@ -186,6 +199,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -252,6 +269,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 .text-gray-400 {
   color: var(--gray-400);
 }
@@ -270,6 +291,10 @@
 
 .text-sm.text-blue-600 {
   display: flex;
+}
+
+.text-sm.jenfjker {
+  width: 136px;
 }
 
 .div-block-936 {

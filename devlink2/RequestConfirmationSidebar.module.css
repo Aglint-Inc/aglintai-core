@@ -113,6 +113,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -177,6 +181,10 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 .sidebar_close {
@@ -345,6 +353,15 @@
 
 .button_primary.confirm_availability:hover {
   background-color: #038153;
+}
+
+.button_primary.is_grey {
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.is_grey:hover {
+  background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
 }
 
 .embed_css {

@@ -102,6 +102,10 @@
   position: relative;
 }
 
+.text-sm.jenfjker {
+  width: 136px;
+}
+
 .text-xl {
   font-size: 22px;
   line-height: 1.27;

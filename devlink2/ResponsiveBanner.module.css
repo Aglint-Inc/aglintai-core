@@ -141,6 +141,14 @@
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
 }
 
+.relative {
+  position: relative;
+}
+
+.text-sm.jenfjker {
+  width: 136px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;

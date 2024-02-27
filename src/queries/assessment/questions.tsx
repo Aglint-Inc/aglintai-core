@@ -108,6 +108,10 @@ export const useAssessmentQuestionCreate = () => {
         return newQuestions;
       });
     },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
   return { mutation };
 };
@@ -141,6 +145,10 @@ export const useAssessmentQuestionDelete = () => {
         queryKey,
         context.previousQuestions,
       );
+    },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
   });
   return { mutation };
@@ -219,6 +227,10 @@ export const useAssessmentAllQuestionUpdate = () => {
         queryKey,
         context.oldQuestions,
       );
+    },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
   });
   return { mutation };

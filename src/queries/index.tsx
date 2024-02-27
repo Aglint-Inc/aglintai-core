@@ -16,7 +16,9 @@ const queryClient = new QueryClient({
 type PageRoutes = typeof pageRoutes;
 
 const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
+  pageRoutes.ASSESSMENTS,
   pageRoutes.ASSESSMENT,
+  pageRoutes.JOBASSESSMENT,
 ];
 
 export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
@@ -26,7 +28,7 @@ export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
   const validEnv =
     process.env.NEXT_PUBLIC_HOST_NAME.startsWith('http://localhost');
   const validPath = reactQueryPageRoute.includes(
-    getBasePath(router?.pathname ?? null) as any,
+    (router?.pathname ?? null) as any,
   );
   const showRQDevTools = validEnv && validPath;
   return (
@@ -39,8 +41,8 @@ export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
   );
 };
 
-const getBasePath = (route: string) => {
-  const secondSlashIndex = route.indexOf('/', 1);
-  if (secondSlashIndex !== -1) return route.slice(0, secondSlashIndex);
-  return route;
-};
+// const getBasePath = (route: string) => {
+//   const secondSlashIndex = route.indexOf('/', 1);
+//   if (secondSlashIndex !== -1) return route.slice(0, secondSlashIndex);
+//   return route;
+// };

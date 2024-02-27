@@ -12,7 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, useAssessmentId } from './keys';
-import { Assessment, AssessmentUpdate } from './types';
+import { Assessment, AssessmentTemplate, AssessmentUpdate } from './types';
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
@@ -20,6 +20,17 @@ export const useAllAssessments = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
+    staleTime: 0,
+    enabled: !!recruiter_id,
+  });
+};
+
+export const useAllAssessmentTemplates = () => {
+  const { recruiter_id } = useAuthDetails();
+  const { queryKey } = assessmentQueryKeys.templates();
+  return useQuery({
+    queryKey: queryKey,
+    queryFn: () => readAssessmentTemplatesDbAction(),
     staleTime: 0,
     enabled: !!recruiter_id,
   });
@@ -53,6 +64,10 @@ export const useCreateAssessment = () => {
         ...prev,
         data,
       ]);
+    },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
   });
   return {
@@ -90,6 +105,10 @@ export const useEditAssessment = () => {
         context.previousAssessments,
       );
     },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
   return {
     mutation,
@@ -107,6 +126,12 @@ const updateAssessmentsDbAction = async (
     .select();
   if (error) throw new Error(error.message);
   return data[0];
+};
+
+const readAssessmentTemplatesDbAction = async () => {
+  const { data, error } = await supabase.rpc('getassessmenttemplates');
+  if (error) throw new Error(error.message);
+  return data as unknown as AssessmentTemplate[];
 };
 
 const readAssessmentsDbAction = async (

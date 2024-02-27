@@ -32,6 +32,9 @@
 }
 
 .card_top_content {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   flex-direction: column;
   grid-column-gap: 16px;
@@ -159,6 +162,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -225,6 +232,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -254,12 +265,28 @@
 }
 
 .card_bottom_bar {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: flex-end;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.is_active_bg_blue {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  border-radius: 10px;
+
+  background-color: #edf7ff;
 }
 
 #w-node-d0a92917-6550-8e4b-545d-b401d8294966-d8294966 {

@@ -1,6 +1,6 @@
 .table_member_row {
   display: grid;
-  height: 160px;
+  height: 174px;
   grid-auto-columns: 1fr;
   grid-column-gap: 1px;
   grid-row-gap: 1px;

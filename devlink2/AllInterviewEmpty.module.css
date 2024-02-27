@@ -30,6 +30,15 @@
   opacity: 0.7;
 }
 
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -116,6 +125,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -180,4 +193,8 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.relative {
+  position: relative;
 }

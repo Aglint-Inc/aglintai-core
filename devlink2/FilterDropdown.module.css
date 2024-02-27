@@ -55,6 +55,25 @@
   align-items: center;
 }
 
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-grey-600 {
   color: #68737d;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
 }

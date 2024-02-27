@@ -90,6 +90,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -156,6 +160,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 .div-block-946 {
   display: flex;
   margin-top: 10px;
@@ -210,6 +218,15 @@
   opacity: 0.7;
 }
 
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .div-block-948 {
   width: 0.5px;
   height: 18px;
@@ -253,6 +270,10 @@
 
 .text-green-600 {
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-sm.jenfjker {
+  width: 136px;
 }
 
 .div-block-954 {

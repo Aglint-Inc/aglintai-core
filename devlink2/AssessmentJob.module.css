@@ -1,0 +1,153 @@
+.assessment-list-wrap {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+.assessment_left {
+  overflow: auto;
+  width: 100%;
+  padding: 20px;
+}
+
+.div-block-1033 {
+  display: flex;
+  max-width: 600px;
+  margin-bottom: 60px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.div-block-1062 {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1063 {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  align-self: flex-start;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.ml-12 {
+  margin-left: 8px;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.div-block-1036 {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.div-block-1044 {
+  display: flex;
+  margin-top: 30px;
+  flex-direction: column;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.div-block-1030 {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  width: 370px;
+  padding: 20px;
+  flex: 0 0 auto;
+
+  border-left: 1px solid #e9ebed;
+
+  background-color: white;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
+}

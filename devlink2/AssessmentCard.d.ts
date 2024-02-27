@@ -9,4 +9,5 @@ declare function AssessmentCard(props: {
   textDescription?: React.ReactNode;
   slotAssessmentStatus?: Types.Devlink.Slot;
   onClickCard?: Types.Devlink.RuntimeProps;
+  isActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

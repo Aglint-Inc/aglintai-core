@@ -1,0 +1,10 @@
+.screening-landing-wrap {
+  display: grid;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}

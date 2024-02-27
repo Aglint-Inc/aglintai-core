@@ -38,6 +38,15 @@
   opacity: 0.7;
 }
 
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -193,6 +202,15 @@
 
 .button_primary.confirm_availability:hover {
   background-color: #038153;
+}
+
+.button_primary.is_grey {
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.is_grey:hover {
+  background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
 }
 
 .div-block-921 {

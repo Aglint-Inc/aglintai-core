@@ -28,3 +28,12 @@
 .cursor-pointer:hover {
   opacity: 0.7;
 }
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}

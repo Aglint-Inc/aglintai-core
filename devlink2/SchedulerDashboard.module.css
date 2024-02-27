@@ -220,6 +220,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;

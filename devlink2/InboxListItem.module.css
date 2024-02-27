@@ -354,6 +354,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -404,6 +408,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 .il-job-info {
   width: 260px;
   margin-left: 32px;
@@ -438,6 +446,10 @@
 
 .text-green-600 {
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-sm.jenfjker {
+  width: 136px;
 }
 
 .ils-dropdown-option {

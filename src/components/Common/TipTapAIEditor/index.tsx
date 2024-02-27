@@ -13,6 +13,8 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './TipTapAIEditor.module.scss';
 
+import { SkeletonParagraph } from '@/devlink2';
+
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
 import MenuBtns from './MenuBtns';
 
@@ -24,6 +26,10 @@ export type TipTapAIEditorParams = {
   handleChange: (s: string) => void;
   showWarnOnEdit?: () => void;
   defaultJson?: any;
+  loader?: {
+    isLoading: boolean;
+    count: number;
+  };
 };
 
 const TipTapAIEditor = ({
@@ -31,6 +37,10 @@ const TipTapAIEditor = ({
   handleChange,
   initialValue,
   enablAI = false,
+  loader = {
+    isLoading: false,
+    count: 1,
+  },
   defaultJson,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
@@ -148,7 +158,15 @@ const TipTapAIEditor = ({
           )} */}
 
           <Stack p={2}>
-            <EditorContent editor={editor} />
+            {loader.isLoading ? (
+              <Stack gap={1}>
+                {[...Array(loader.count)].map((e, i) => (
+                  <SkeletonParagraph key={i} />
+                ))}
+              </Stack>
+            ) : (
+              <EditorContent editor={editor} />
+            )}
           </Stack>
         </Stack>
 

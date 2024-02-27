@@ -6,6 +6,9 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { type Assessment } from './types';
 export const assessmentQueryKeys = {
   all: { queryKey: ['aglint_assessment'] as string[] },
+  templates: () => ({
+    queryKey: [...assessmentQueryKeys.all.queryKey, 'templates'],
+  }),
   assessments: () => ({
     queryKey: [...assessmentQueryKeys.all.queryKey, 'assessments'],
   }),
@@ -92,7 +95,7 @@ export const assessmentQueryKeys = {
 export const useAssessmentId = () => {
   const router = useRouter();
   const assessment_id = (
-    (router?.pathname ?? null).startsWith(pageRoutes.ASSESSMENT)
+    (router?.pathname ?? null).startsWith(pageRoutes.ASSESSMENTS)
       ? router?.query?.id ?? null
       : null
   ) as string;

@@ -1,0 +1,108 @@
+.phonescreeening_top_right {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.button_primary {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.is_disabled {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #c2c8cc;
+  cursor: auto;
+}
+
+.button_primary.is_enabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.is_loading {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
+
+  cursor: progress;
+}
+
+.button_primary.confirm_availability {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
+}
+
+.button_primary.confirm_availability:hover {
+  background-color: #038153;
+}
+
+.button_primary.is_grey {
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.is_grey:hover {
+  background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}

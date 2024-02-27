@@ -131,6 +131,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -197,6 +201,10 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -236,6 +244,15 @@
 
 .clickable:hover {
   opacity: 0.8;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .text-blue-500.ml-12 {

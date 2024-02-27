@@ -26,18 +26,33 @@ export type AssessmentQuestionUpdate = Omit<
 > &
   Partial<CustomQuestionType>;
 
+type AssessmentTemplateTable =
+  Database['public']['Tables']['assessment_template'];
+type AssessmentTemplateRow = AssessmentTemplateTable['Row'];
+
+export type AssessmentTemplate = Omit<
+  AssessmentTemplateRow,
+  'embeddings' | keyof CustomAssessmentTemplateType
+> &
+  CustomAssessmentTemplateType;
+
+type CustomAssessmentTemplateType = {
+  duration?: number;
+};
+
 type AssessmentTable = Database['public']['Tables']['assessment'];
 type AssessmentRow =
   Database['public']['Functions']['getassessments']['Returns'][number];
 
 // type AssessmentRowInsert = AssessmentTable['Insert'];
 type AssessmentRowUpdate = AssessmentTable['Update'];
+
 export type Assessment = Omit<AssessmentRow, keyof CustomAssessmentType> &
   CustomAssessmentType;
 
 type CustomAssessmentType = {
   jobs?: {
-    job_id: JobTypeDB['id'];
+    id: JobTypeDB['id'];
     title: JobTypeDB['job_title'];
   }[];
   duration?: number;
@@ -69,7 +84,7 @@ type QuestionOthers = {
 };
 type CustomResponseType = {
   responses: ResponseTypes[];
-  result: { rating: number; question_id: AssessmentQuestion['id'] }[];
+  result: { rating: number }[];
 };
 
 type QuestionEnum = Exclude<
@@ -77,13 +92,13 @@ type QuestionEnum = Exclude<
   'scq' | 'code'
 >;
 
-type ResponseTypes = CustomResponse<'mcq'> | CustomResponse<'qna'>;
+export type ResponseTypes = CustomResponse<'mcq'> | CustomResponse<'qna'>;
 
 type CustomResponse<T extends QuestionEnum> = {
   type: T;
-  question_id: AssessmentQuestion['id'];
   question: GenericQuestionType<T>;
   answer: CustomQuestion<T>['answer'];
+  response: CustomQuestion<T>['answer'];
 };
 
 type QuestionTypes = CustomQuestion<'mcq'> | CustomQuestion<'qna'>;

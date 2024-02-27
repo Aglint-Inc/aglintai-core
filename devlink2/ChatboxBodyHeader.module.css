@@ -97,6 +97,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -161,6 +165,10 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 .cb-bh-top-right {
@@ -312,10 +320,6 @@
 .icon-block._50x50.contain.relative {
   position: relative;
   z-index: 5;
-}
-
-.relative {
-  position: relative;
 }
 
 .icon-block.contain {

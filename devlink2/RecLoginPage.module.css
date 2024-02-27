@@ -111,6 +111,10 @@
   }
 }
 
+.text-xxl.fw-semibold {
+  color: #49545c;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -123,12 +127,12 @@
   text-transform: none;
 }
 
-.text-green-600 {
-  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
-}
-
 .text-grey-600 {
   color: #68737d;
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
 }
 
 .sl-login-form {

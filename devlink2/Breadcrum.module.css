@@ -122,6 +122,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .hide {
   display: none;
   flex-direction: row;
@@ -186,6 +190,10 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.relative {
+  position: relative;
 }
 
 .is_active_link {

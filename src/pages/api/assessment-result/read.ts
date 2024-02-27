@@ -3,10 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import {
-  AssessmentQuestion,
-  AssessmentResult,
-} from '@/src/queries/assessment/types';
+import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Database } from '@/src/types/schema';
 
 // export const config = {
@@ -47,11 +44,8 @@ export default async function handler(
     );
 
     const assessmentResult = await fetchAssessmentResult(supabase, result_id);
-    const questionIds = getQuestionIds(assessmentResult);
-    const questions = await fetchAssessmentQuestions(supabase, questionIds);
-    const safeResult = buildSafeResponse(assessmentResult, questions);
     const response: AssessmentResultReadApi['response'] = {
-      data: safeResult,
+      data: assessmentResult,
       error: null,
     };
     // return new NextResponse<AssessmentResultReadApi['response']>(
@@ -91,34 +85,4 @@ const fetchAssessmentResult = async (
   if (data.length !== 1)
     throw new Error('Unable to find assessment result entry');
   return data[0] as unknown as AssessmentResult;
-};
-
-const getQuestionIds = (results: AssessmentResult) => {
-  return results.responses.map(({ question_id }) => question_id);
-};
-
-const fetchAssessmentQuestions = async (
-  supabase: Supabase,
-  questions: AssessmentQuestion['id'][],
-) => {
-  const { data, error } = await supabase
-    .from('assessment_question')
-    .select()
-    .in('id', questions);
-  if (error) throw new Error(error.message);
-  if (data.length === 0)
-    throw new Error('Unable to find assessment question entry');
-  return data as unknown as AssessmentQuestion[];
-};
-
-const buildSafeResponse = (
-  result: AssessmentResult,
-  questions: AssessmentQuestion[],
-) => {
-  result.responses.forEach((response) => {
-    const question = questions.find((q) => q.id === response.question_id);
-    response['question'] = question ?? null;
-    response['type'] = question?.type ?? null;
-  });
-  return result;
 };

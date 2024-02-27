@@ -115,6 +115,15 @@
   margin-left: 2px;
 }
 
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .text-blue-500.ml-12 {
   margin-left: 8px;
 }
@@ -223,6 +232,14 @@
 
 .text-green-600 {
   color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.relative {
+  position: relative;
+}
+
+.text-sm.jenfjker {
+  width: 136px;
 }
 
 .jdet-main-action-menu {
@@ -372,10 +389,6 @@
   z-index: 5;
 }
 
-.relative {
-  position: relative;
-}
-
 .icon-block.contain {
   object-fit: contain;
 }
@@ -471,6 +484,10 @@
   }
 }
 
+.fw-semibold.text-grey-400 {
+  color: #c2c8cc;
+}
+
 .fw-semibold.text-blue-600.text-dec-none {
   text-decoration: none;
 }
@@ -510,13 +527,13 @@
   align-items: center;
 }
 
-.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
+.icons.ml-4 {
+  margin-left: 4px;
 }
 
-.cursor-pointer:hover {
-  opacity: 0.7;
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .job-desc-warn-wrap {

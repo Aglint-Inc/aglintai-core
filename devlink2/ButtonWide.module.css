@@ -72,3 +72,12 @@
 .button_primary.confirm_availability:hover {
   background-color: #038153;
 }
+
+.button_primary.is_grey {
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.is_grey:hover {
+  background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
+}
