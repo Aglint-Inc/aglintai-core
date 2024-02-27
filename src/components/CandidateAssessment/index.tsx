@@ -120,6 +120,31 @@ function CandidateAssessment() {
             />
           </>
         }
+        textTime={
+          assessmentsList &&
+          assessmentsList
+            .map((item) => {
+              const init = 0;
+              const duration =
+                item.assessment?.assessment_question.length > 0 &&
+                item.assessment?.assessment_question.reduce(
+                  (a, sum) => a + sum.duration,
+                  init,
+                );
+              return duration;
+            })
+            .reduce((a, b) => a + b) + ' Minutes'
+        }
+        slotInstructions={
+          <>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: assessmentDetails?.public_jobs?.interview_instructions,
+              }}
+            ></div>
+          </>
+        }
+        isAboutCompnay={about_company && about_company.length > 0}
         textAboutCompany={
           <div
             dangerouslySetInnerHTML={{

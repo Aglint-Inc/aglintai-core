@@ -9,4 +9,7 @@ declare function CandidateLanding(props: {
   textCompanyName?: React.ReactNode;
   textAboutCompany?: React.ReactNode;
   onClickAbout?: Types.Devlink.RuntimeProps;
+  slotInstructions?: Types.Devlink.Slot;
+  textTime?: React.ReactNode;
+  isAboutCompnay?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

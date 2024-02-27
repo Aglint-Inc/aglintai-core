@@ -12,6 +12,9 @@ export function CandidateLanding({
   textCompanyName = "About",
   textAboutCompany = "Adidas is a San Francisco-based startup founded by successful founders who are passionate about making a difference in the talent development industry. Our team is in stealth mode, working hard to develop an all-in-one talent development platform that provides solutions to help companies develop, retain, and support their employees.",
   onClickAbout = {},
+  slotInstructions,
+  textTime = "30 minitues",
+  isAboutCompnay = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cand-land-wrap")} tag="div">
@@ -34,13 +37,18 @@ export function CandidateLanding({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "cand-ins-wrap")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "est-wrap")} tag="div">
-          <_Builtin.Block tag="div">
-            <_Builtin.Span
-              className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
-            >
-              {"Estimated Time :"}
-            </_Builtin.Span>
-            {" 30 minitues"}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "timer_flex")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">
+              <_Builtin.Span
+                className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+              >
+                {"Estimated Time :"}
+              </_Builtin.Span>{" "}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600")}
@@ -58,57 +66,61 @@ export function CandidateLanding({
           >
             {"Instructions"}
           </_Builtin.Block>
-          <_Builtin.List
-            className={_utils.cx(_styles, "list")}
-            tag="ul"
-            unstyled={false}
-          >
-            <_Builtin.ListItem>
-              <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                {"Quiet Environment"}
-              </_Builtin.Span>
-              <br />
-              {
-                "Choose a quiet place to take the interview where you will not be interrupted."
-              }
-            </_Builtin.ListItem>
-            <_Builtin.ListItem>
-              <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                {"Interruptions"}
-                <br />
-              </_Builtin.Span>
-              {
-                "If the interview is stopped for any reason, you will need to start over from the beginning."
-              }
-            </_Builtin.ListItem>
-            <_Builtin.ListItem>
-              <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                {"Question Types"}
-                <br />
-              </_Builtin.Span>
-              {
-                "The AI will ask you questions based on your resume and the job requirements. Prepare yourself accordingly."
-              }
-            </_Builtin.ListItem>
-            <_Builtin.ListItem>
-              <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                {"Answer Submission"}
-                <br />
-              </_Builtin.Span>
-              {
-                "You have the option to submit your answers via voice or by typing them out."
-              }
-            </_Builtin.ListItem>
-            <_Builtin.ListItem>
-              <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
-                {"Timing"}
-                <br />
-              </_Builtin.Span>
-              {
-                "You have the option to submit your answers via voice or by typing them out."
-              }
-            </_Builtin.ListItem>
-          </_Builtin.List>
+          <_Builtin.Block tag="div">
+            {slotInstructions ?? (
+              <_Builtin.List
+                className={_utils.cx(_styles, "list")}
+                tag="ul"
+                unstyled={false}
+              >
+                <_Builtin.ListItem>
+                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+                    {"Quiet Environment"}
+                  </_Builtin.Span>
+                  <br />
+                  {
+                    "Choose a quiet place to take the interview where you will not be interrupted."
+                  }
+                </_Builtin.ListItem>
+                <_Builtin.ListItem>
+                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+                    {"Interruptions"}
+                    <br />
+                  </_Builtin.Span>
+                  {
+                    "If the interview is stopped for any reason, you will need to start over from the beginning."
+                  }
+                </_Builtin.ListItem>
+                <_Builtin.ListItem>
+                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+                    {"Question Types"}
+                    <br />
+                  </_Builtin.Span>
+                  {
+                    "The AI will ask you questions based on your resume and the job requirements. Prepare yourself accordingly."
+                  }
+                </_Builtin.ListItem>
+                <_Builtin.ListItem>
+                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+                    {"Answer Submission"}
+                    <br />
+                  </_Builtin.Span>
+                  {
+                    "You have the option to submit your answers via voice or by typing them out."
+                  }
+                </_Builtin.ListItem>
+                <_Builtin.ListItem>
+                  <_Builtin.Span className={_utils.cx(_styles, "fw-semibold")}>
+                    {"Timing"}
+                    <br />
+                  </_Builtin.Span>
+                  {
+                    "You have the option to submit your answers via voice or by typing them out."
+                  }
+                </_Builtin.ListItem>
+              </_Builtin.List>
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "est-wrap")} tag="div">
           <_Builtin.Block
@@ -124,41 +136,43 @@ export function CandidateLanding({
             {slotCandidateAssesmentCard ?? <CandidateAssesmentCard />}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "est-wrap", "gap-18")}
-          tag="div"
-        >
+        {isAboutCompnay ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-965")}
-            tag="div"
-            {...onClickAbout}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
-              tag="div"
-            >
-              {"About"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
-              tag="div"
-            >
-              {textCompanyName}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons", "ml-4")}
-                value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.875%200.5H11.625C11.8594%200.515625%2011.9844%200.640625%2012%200.875V4.625C11.9844%204.85938%2011.8594%204.98438%2011.625%205C11.3906%204.98438%2011.2656%204.85938%2011.25%204.625V1.78906L5.50781%207.50781C5.33594%207.66406%205.16406%207.66406%204.99219%207.50781C4.83594%207.33594%204.83594%207.16406%204.99219%206.99219L10.7109%201.25H7.875C7.64062%201.23437%207.51562%201.10938%207.5%200.875C7.51562%200.640625%207.64062%200.515625%207.875%200.5ZM1.5%201.25H4.875C5.10938%201.26563%205.23438%201.39062%205.25%201.625C5.23438%201.85938%205.10938%201.98437%204.875%202H1.5C1.28125%202%201.10156%202.07031%200.960938%202.21094C0.820312%202.35156%200.75%202.53125%200.75%202.75V11C0.75%2011.2188%200.820312%2011.3984%200.960938%2011.5391C1.10156%2011.6797%201.28125%2011.75%201.5%2011.75H9.75C9.96875%2011.75%2010.1484%2011.6797%2010.2891%2011.5391C10.4297%2011.3984%2010.5%2011.2188%2010.5%2011V7.625C10.5156%207.39062%2010.6406%207.26562%2010.875%207.25C11.1094%207.26562%2011.2344%207.39062%2011.25%207.625V11C11.2344%2011.4219%2011.0859%2011.7734%2010.8047%2012.0547C10.5234%2012.3359%2010.1719%2012.4844%209.75%2012.5H1.5C1.07812%2012.4844%200.726562%2012.3359%200.445312%2012.0547C0.164062%2011.7734%200.015625%2011.4219%200%2011V2.75C0.015625%202.32812%200.164062%201.97656%200.445312%201.69531C0.726562%201.41406%201.07812%201.26563%201.5%201.25Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "est-wrap", "gap-18")}
             tag="div"
           >
-            {textAboutCompany}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-965")}
+              tag="div"
+              {...onClickAbout}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+                tag="div"
+              >
+                {"About"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+                tag="div"
+              >
+                {textCompanyName}
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons", "ml-4")}
+                  value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.875%200.5H11.625C11.8594%200.515625%2011.9844%200.640625%2012%200.875V4.625C11.9844%204.85938%2011.8594%204.98438%2011.625%205C11.3906%204.98438%2011.2656%204.85938%2011.25%204.625V1.78906L5.50781%207.50781C5.33594%207.66406%205.16406%207.66406%204.99219%207.50781C4.83594%207.33594%204.83594%207.16406%204.99219%206.99219L10.7109%201.25H7.875C7.64062%201.23437%207.51562%201.10938%207.5%200.875C7.51562%200.640625%207.64062%200.515625%207.875%200.5ZM1.5%201.25H4.875C5.10938%201.26563%205.23438%201.39062%205.25%201.625C5.23438%201.85938%205.10938%201.98437%204.875%202H1.5C1.28125%202%201.10156%202.07031%200.960938%202.21094C0.820312%202.35156%200.75%202.53125%200.75%202.75V11C0.75%2011.2188%200.820312%2011.3984%200.960938%2011.5391C1.10156%2011.6797%201.28125%2011.75%201.5%2011.75H9.75C9.96875%2011.75%2010.1484%2011.6797%2010.2891%2011.5391C10.4297%2011.3984%2010.5%2011.2188%2010.5%2011V7.625C10.5156%207.39062%2010.6406%207.26562%2010.875%207.25C11.1094%207.26562%2011.2344%207.39062%2011.25%207.625V11C11.2344%2011.4219%2011.0859%2011.7734%2010.8047%2012.0547C10.5234%2012.3359%2010.1719%2012.4844%209.75%2012.5H1.5C1.07812%2012.4844%200.726562%2012.3359%200.445312%2012.0547C0.164062%2011.7734%200.015625%2011.4219%200%2011V2.75C0.015625%202.32812%200.164062%201.97656%200.445312%201.69531C0.726562%201.41406%201.07812%201.26563%201.5%201.25Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {textAboutCompany}
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "powered-footer-wrap")}
