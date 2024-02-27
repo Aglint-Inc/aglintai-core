@@ -112,10 +112,7 @@ const SchedulingAgentProvider = ({ children }) => {
         throw new Error('Error in response');
       }
 
-      if (
-        res?.data?.funcRes[res.data.funcRes.length - 1]?.response?.message !==
-        'success'
-      ) {
+      if (!res?.data?.funcRes[res.data.funcRes.length - 1]?.activity) {
         allActivity = [];
       }
 
