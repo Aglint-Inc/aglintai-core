@@ -10,4 +10,5 @@ declare function AssessmentListCard(props: {
   isRemoveVisible?: Types.Visibility.VisibilityConditions;
   isActive?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
+  textDuration?: React.ReactNode;
 }): React.JSX.Element;

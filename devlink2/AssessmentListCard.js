@@ -12,6 +12,7 @@ export function AssessmentListCard({
   isRemoveVisible = false,
   isActive = false,
   onClickCard = {},
+  textDuration = "30 Mins",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1053")} tag="div">
@@ -57,7 +58,7 @@ export function AssessmentListCard({
                 className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
-                {"30 Mins"}
+                {textDuration}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

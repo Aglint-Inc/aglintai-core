@@ -2335,6 +2335,7 @@ export type Database = {
           recruiter_id: string
           level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
+          question_count: number
           duration: number
           jobs: Json
         }[]
@@ -2350,6 +2351,7 @@ export type Database = {
           level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
           duration: number
+          question_count: number
         }[]
       }
       getjobapplicationcountforcandidates: {
