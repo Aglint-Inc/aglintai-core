@@ -65,10 +65,10 @@ export const useCreateAssessment = () => {
         data,
       ]);
     },
-    onSettled: async () => {
-      await queryClient.cancelQueries({ queryKey });
-      queryClient.invalidateQueries({ queryKey });
-    },
+    // onSettled: async () => {
+    //   await queryClient.cancelQueries({ queryKey });
+    //   queryClient.invalidateQueries({ queryKey });
+    // },
   });
   return {
     mutation,
@@ -105,10 +105,10 @@ export const useEditAssessment = () => {
         context.previousAssessments,
       );
     },
-    onSettled: async () => {
-      await queryClient.cancelQueries({ queryKey });
-      queryClient.invalidateQueries({ queryKey });
-    },
+    // onSettled: async () => {
+    //   await queryClient.cancelQueries({ queryKey });
+    //   queryClient.invalidateQueries({ queryKey });
+    // },
   });
   return {
     mutation,
