@@ -121,7 +121,12 @@ const AssessmentListCard = ({
     >
       <AssessmentListCardDev
         onClickRemove={{ onClick: () => handleDisconnect(assessment.id) }}
-        textQuestionCount={`${10} Questions`}
+        textQuestionCount={`${assessment.question_count} Question${
+          assessment.question_count === 1 ? '' : 's'
+        }`}
+        textDuration={`${assessment.duration} Min${
+          assessment.duration === 1 ? '' : 's'
+        }`}
         slotIcons={<TypeIcon type={assessment.type} />}
         textTitle={assessment.title}
         isRemoveVisible={hover}
