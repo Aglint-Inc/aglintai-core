@@ -23,7 +23,7 @@ function WidgetComp({
 
   const funct = functionResp[functionResp.length - 1];
   if (!funct || !funct?.response) {
-    return '';
+    return <></>;
   }
 
   switch (funct.name) {
@@ -85,7 +85,7 @@ function WidgetComp({
       } else if ('slots' in funct.response) {
         return (
           <AvailabilitySlotSelect
-            slots={funct.response.slots}
+            response={funct.response}
             index={index}
             time_duration={funct.response.time_duration}
           />
@@ -102,7 +102,7 @@ function WidgetComp({
       break;
 
     default:
-      return '';
+      return <></>;
   }
 }
 
