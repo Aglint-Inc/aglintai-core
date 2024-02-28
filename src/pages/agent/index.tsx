@@ -24,6 +24,11 @@ function AgentPage() {
               router.push(`/agent/scheduler`);
             },
           }}
+          onClickSourcing={{
+            onClick: () => {
+              router.push(`/agent/sourcing`);
+            },
+          }}
         />
       </JobAssistantProvider>
     </>

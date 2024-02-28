@@ -69,3 +69,4 @@ export * from "./WidgetJobCard";
 export * from "./WidgetPanelCard";
 export * from "./WidgetTimeGroup";
 export * from "./WidgetUserCard";
+export * from "./WidgetUserCardWithCompany";
