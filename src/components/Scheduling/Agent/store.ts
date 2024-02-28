@@ -21,6 +21,7 @@ export interface SchedulingAgent {
   activities: AgentActivityType[];
   activityLoading: boolean;
   activityOpen: boolean;
+  candidateTipTapOpen: boolean;
 }
 
 const initialState: SchedulingAgent = {
@@ -31,6 +32,7 @@ const initialState: SchedulingAgent = {
   activities: [],
   activityLoading: false,
   activityOpen: false,
+  candidateTipTapOpen: false,
 };
 
 export const useSchedulingAgentStore = create<SchedulingAgent>()(() => ({
@@ -56,6 +58,9 @@ export const setActivities = (activities: AgentActivityType[]) =>
 
 export const setActivityLoading = (activityLoading: boolean) =>
   useSchedulingAgentStore.setState({ activityLoading });
+
+export const setCandidateTipTapOpen = (candidateTipTapOpen: boolean) =>
+  useSchedulingAgentStore.setState({ candidateTipTapOpen });
 
 export const setActivityOpen = (activityOpen: boolean) =>
   useSchedulingAgentStore.setState({ activityOpen });

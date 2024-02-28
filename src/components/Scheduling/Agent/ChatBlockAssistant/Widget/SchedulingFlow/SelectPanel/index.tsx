@@ -30,7 +30,7 @@ function SelectPanel({
 }) {
   const { members } = useAuthDetails();
   const selectedChat = useSchedulingAgentStore((state) => state.selectedChat);
-  const { updateAllChat } = useSchedulingAgent();
+  const { updateAllChat, scrollToBottom } = useSchedulingAgent();
 
   const submitHandler = (message: string, selectedPanel?: PanelType) => {
     setLoading(true);
@@ -85,6 +85,7 @@ function SelectPanel({
     } as any);
 
     updateAllChat(histAfterAssisResponse as any);
+    scrollToBottom();
   };
 
   return (

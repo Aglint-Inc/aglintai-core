@@ -18,6 +18,7 @@ import { AgentActivityType } from '@/src/types/data.types';
 import Activity from './Activity';
 import ActivityDrawer from './ActivityDrawer';
 import ChatBlockAssistant from './ChatBlockAssistant/ChatAssistant';
+import ChatEditorScheduling from './ChatEditor';
 import IconActivity from './IconActivity';
 import ScheduleIcon from './ScheduleIcon';
 import {
@@ -25,12 +26,11 @@ import {
   setActivityOpen,
   setLoading,
   setSelectedChat,
-  setUserText,
   useSchedulingAgentStore,
 } from './store';
 import SuggetionCards from './SuggestionCards';
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
-import UITextField from '../../Common/UITextField';
+
 dayjs.extend(relativeTime);
 export type AisubmitHandlerParams = {
   input: string;
@@ -51,7 +51,6 @@ function SchedulingAgent() {
 
   return (
     <>
-      {/* <NewTaskDropdown /> */}
       <AgentLayout
         slotNewChatButton={
           <NewChatButton
@@ -155,22 +154,7 @@ function SchedulingAgent() {
             )}
           </>
         }
-        slotSearchInput={
-          <UITextField
-            borderRadius={10}
-            height={56}
-            value={userText}
-            onChange={(e) => {
-              setUserText(e.target.value);
-            }}
-            placeholder='Chat with Aglint'
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                submitHandler({ input: e.target.value });
-              }
-            }}
-          />
-        }
+        slotSearchInput={<ChatEditorScheduling />}
         isSearch={true}
         textCurrentTaskName={selectedChat.title}
         onClickTaskActivity={{

@@ -11,27 +11,29 @@ function Activity() {
   return (
     <>
       {activities.length == 0 && !activityLoading && <TimelineEmpty />}
-      <TimelineBlock
-        slotTimeline={
-          activities.length > 0 &&
-          !activityLoading &&
-          activities.map((activity, index) => {
-            return (
-              <Timeline
-                key={activity.id}
-                textTitle={activity.title}
-                isConnecterVisible={activities.length !== index + 1}
-                textTime={dayjs(activity.created_at).fromNow()}
-                slotStatusIcon={
-                  <IconActivity
-                    his={{ status: activity.icon_status, user_id: '' } as any}
-                  />
-                }
-              />
-            );
-          })
-        }
-      />
+      {activities.length > 0 && (
+        <TimelineBlock
+          slotTimeline={
+            activities.length > 0 &&
+            !activityLoading &&
+            activities.map((activity, index) => {
+              return (
+                <Timeline
+                  key={activity.id}
+                  textTitle={activity.title}
+                  isConnecterVisible={activities.length !== index + 1}
+                  textTime={dayjs(activity.created_at).fromNow()}
+                  slotStatusIcon={
+                    <IconActivity
+                      his={{ status: activity.icon_status, user_id: '' } as any}
+                    />
+                  }
+                />
+              );
+            })
+          }
+        />
+      )}
     </>
   );
 }

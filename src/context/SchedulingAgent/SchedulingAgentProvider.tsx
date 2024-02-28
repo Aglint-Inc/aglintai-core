@@ -23,11 +23,13 @@ type SchedulingAgentContextType = {
   submitHandler: (params: AisubmitHandlerParams) => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   updateAllChat: (histAfterAssisResponse: AgentChat['history']) => void;
+  scrollToBottom: () => void;
 };
 
 const initialState = {
   submitHandler: async () => {},
   updateAllChat: () => {},
+  scrollToBottom: () => {},
 };
 
 const SchedulingAgentContext =
@@ -115,7 +117,9 @@ const SchedulingAgentProvider = ({ children }) => {
 
       scrollToBottom();
 
-      if (!res?.data?.funcRes[res.data.funcRes.length - 1]?.activity) {
+      if (
+        !res?.data?.funcRes[res.data.funcRes.length - 1]?.response?.activity
+      ) {
         allActivity = [];
       } else {
         const data = supabaseWrap(
@@ -197,7 +201,9 @@ const SchedulingAgentProvider = ({ children }) => {
   };
 
   return (
-    <SchedulingAgentContext.Provider value={{ submitHandler, updateAllChat }}>
+    <SchedulingAgentContext.Provider
+      value={{ submitHandler, updateAllChat, scrollToBottom }}
+    >
       {children}
     </SchedulingAgentContext.Provider>
   );
