@@ -1,21 +1,57 @@
 import { create, StateCreator } from 'zustand';
 
-type AssessmentCreateModalSlice = {
-  openModal: boolean;
+type AssessmentDeleteModalSlice = {
+  deleteModal: boolean;
   // eslint-disable-next-line no-unused-vars
-  setOpenModal: (openModal: boolean) => void;
-  resetModal: () => void;
+  setDeleteModal: (deleteModal: boolean) => void;
+  resetDeleteModal: () => void;
 };
 
-const createAssessmentModalSlice: StateCreator<
+const createAssessmentDeleteModalSlice: StateCreator<
+  AllSlice,
+  [],
+  [],
+  AssessmentDeleteModalSlice
+> = (set) => ({
+  deleteModal: false,
+  setDeleteModal: (deleteModal) => set(() => ({ deleteModal })),
+  resetDeleteModal: () => set(() => ({ deleteModal: false })),
+});
+
+type AssessmentDuplicateModalSlice = {
+  duplicateModal: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setDuplicateModal: (duplicateModal: boolean) => void;
+  resetDuplicateModal: () => void;
+};
+
+const createAssessmentDuplicateModalSlice: StateCreator<
+  AllSlice,
+  [],
+  [],
+  AssessmentDuplicateModalSlice
+> = (set) => ({
+  duplicateModal: false,
+  setDuplicateModal: (duplicateModal) => set(() => ({ duplicateModal })),
+  resetDuplicateModal: () => set(() => ({ duplicateModal: false })),
+});
+
+type AssessmentCreateModalSlice = {
+  createModal: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setCreateModal: (createModal: boolean) => void;
+  resetCreateModal: () => void;
+};
+
+const createAssessmentCreateModalSlice: StateCreator<
   AllSlice,
   [],
   [],
   AssessmentCreateModalSlice
 > = (set) => ({
-  openModal: false,
-  setOpenModal: (openModal) => set(() => ({ openModal })),
-  resetModal: () => set(() => ({ openModal: false })),
+  createModal: false,
+  setCreateModal: (createModal) => set(() => ({ createModal })),
+  resetCreateModal: () => set(() => ({ createModal: false })),
 });
 
 type UseSelectedQuestionSlice = {
@@ -45,17 +81,25 @@ const createSharedSlice: StateCreator<AllSlice, [], [], SharedSlice> = (
   get,
 ) => ({
   resetAll: () => {
-    get().resetModal(), get().resetCurrentQuestion();
+    get().resetDeleteModal(),
+      get().resetDuplicateModal(),
+      get().resetCreateModal(),
+      get().resetCurrentQuestion();
   },
 });
 
 const useAssessmentStore = create<BoundStore>()((...a) => ({
-  ...createAssessmentModalSlice(...a),
+  ...createAssessmentCreateModalSlice(...a),
+  ...createAssessmentDeleteModalSlice(...a),
+  ...createAssessmentDuplicateModalSlice(...a),
   ...createSelectedQuestionSlice(...a),
   ...createSharedSlice(...a),
 }));
 
-type AllSlice = AssessmentCreateModalSlice & UseSelectedQuestionSlice;
+type AllSlice = AssessmentCreateModalSlice &
+  AssessmentDeleteModalSlice &
+  AssessmentDuplicateModalSlice &
+  UseSelectedQuestionSlice;
 type BoundStore = AllSlice & SharedSlice;
 
 export default useAssessmentStore;

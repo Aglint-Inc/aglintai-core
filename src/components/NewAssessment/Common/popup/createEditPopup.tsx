@@ -40,9 +40,9 @@ const CreateEditPopup: React.FC<{
 }) => {
   const popupTitle = `${capitalize(type)} Assessment`;
 
-  const { openModal, setOpenModal } = useAssessmentStore((state) => ({
-    openModal: state.openModal,
-    setOpenModal: state.setOpenModal,
+  const { createModal, setCreateModal } = useAssessmentStore((state) => ({
+    createModal: state.createModal,
+    setCreateModal: state.setCreateModal,
   }));
   const [fields, setFields] = useState<CreateEditPayload>(initialFields);
   const handleChange: React.ChangeEventHandler<
@@ -64,7 +64,7 @@ const CreateEditPopup: React.FC<{
   };
 
   const handleClose = () => {
-    setOpenModal(false);
+    setCreateModal(false);
     setTimeout(() => setFields(initialFields), 400);
   };
 
@@ -124,7 +124,7 @@ const CreateEditPopup: React.FC<{
   );
 
   return (
-    <Dialog open={openModal} onClose={handleClose}>
+    <Dialog open={createModal} onClose={handleClose}>
       <AssessmentPopupDev
         textPopupTitle={popupTitle}
         slotInputName={title}

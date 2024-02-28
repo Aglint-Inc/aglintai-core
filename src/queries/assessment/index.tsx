@@ -1,26 +1,29 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  useMutation,
-  useMutationState,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { assessmentQueryKeys, useAssessmentId } from './keys';
-import { Assessment, AssessmentTemplate, AssessmentUpdate } from './types';
+import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
+import {
+  Assessment,
+  AssessmentCreate,
+  AssessmentRowInsert,
+  AssessmentTemplate,
+  AssessmentUpdate,
+} from './types';
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
+  const { pathname } = useRouter();
   const { queryKey } = assessmentQueryKeys.assessments();
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
-    staleTime: 0,
+    staleTime: pathname === '/assessment-new' ? 0 : Infinity,
     enabled: !!recruiter_id,
   });
 };
@@ -31,7 +34,7 @@ export const useAllAssessmentTemplates = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentTemplatesDbAction(),
-    staleTime: 0,
+    staleTime: Infinity,
     enabled: !!recruiter_id,
   });
 };
@@ -40,39 +43,49 @@ export const useCreateAssessment = () => {
   const queryClient = useQueryClient();
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = assessmentQueryKeys.assessments();
-  const mutationKey = ['assessment-create'];
-  const mutationQueue = useMutationState<Assessment>({
-    filters: { mutationKey, status: 'pending' },
-    select: (mutation) => ({
-      ...(mutation.state.variables as Assessment),
-      duration: 0,
-      jobs: [],
-    }),
-  });
+  const id = generateUUID();
+  const uiDefaults = { duration: 0, jobs: [], question_count: 0 };
   const mutation = useMutation({
-    mutationKey,
-    mutationFn: (payload: Partial<Assessment>) =>
-      createAssessmentsDbAction(payload, recruiter_id),
-    onMutate: async () => {
+    mutationFn: (payload: AssessmentCreate) =>
+      createAssessmentsDbAction({ ...payload, id, recruiter_id }),
+    onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey });
+      const previousAssessments =
+        queryClient.getQueryData<Assessment[]>(queryKey);
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
+        const newAssessment: Assessment = {
+          ...payload,
+          ...uiDefaults,
+          id,
+          created_at: Date.now().toLocaleString(),
+          recruiter_id,
+          loading: true,
+        };
+        const newAssessments = [newAssessment, ...prev];
+        return newAssessments;
+      });
+      return { previousAssessments };
     },
-    onError: () => {
+    onError: (error, variables, context) => {
       toast.error('Unable to create assessment');
+      queryClient.setQueryData<Assessment[]>(
+        queryKey,
+        context.previousAssessments,
+      );
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => [
-        ...prev,
-        data,
-      ]);
+    onSuccess: (assessment) => {
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
+        prev.reduce((acc, curr) => {
+          if (curr.id === assessment.id)
+            acc.push({ ...assessment, ...uiDefaults });
+          else acc.push(curr);
+          return acc;
+        }, [] as Assessment[]),
+      );
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
   });
   return {
     mutation,
-    mutationQueue,
   };
 };
 
@@ -105,14 +118,92 @@ export const useEditAssessment = () => {
         context.previousAssessments,
       );
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
   });
   return {
     mutation,
   };
+};
+
+export const useDeleteAssessment = () => {
+  const queryClient = useQueryClient();
+  const { assessment_id } = useAssessmentId();
+  const { queryKey } = assessmentQueryKeys.assessments();
+  const mutation = useMutation({
+    mutationFn: () => deleteAssessmentDbAction(assessment_id),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      await queryClient.cancelQueries({ queryKey });
+      const previousAssessments =
+        queryClient.getQueryData<Assessment[]>(queryKey);
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
+        prev.reduce((acc, curr) => {
+          if (curr.id === assessment_id) acc.push({ ...curr, loading: true });
+          else acc.push(curr);
+          return acc;
+        }, [] as Assessment[]),
+      );
+      return { previousAssessments };
+    },
+    onError: (error, variables, context) => {
+      toast.error('Unable to delete assessment');
+      queryClient.setQueryData<Assessment[]>(
+        queryKey,
+        context.previousAssessments,
+      );
+    },
+    onSuccess: () => {
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
+        prev.filter(({ id }) => id !== assessment_id),
+      );
+    },
+  });
+  return { mutation };
+};
+
+export const useDuplicateAssessment = () => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const { assessment_id } = useAssessmentId();
+  const id = generateUUID();
+  const { queryKey } = assessmentQueryKeys.assessments();
+  const mutation = useMutation({
+    mutationFn: (title: string) =>
+      duplicateAssessmentsDbAction(id, assessment_id, recruiter_id, title),
+    onMutate: async (title) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousAssessments =
+        queryClient.getQueryData<Assessment[]>(queryKey);
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => [
+        {
+          ...prev.find(({ id }) => id === assessment_id),
+          jobs: [],
+          id,
+          title,
+          loading: true,
+        },
+        ...prev,
+      ]);
+      return { previousAssessments };
+    },
+    onError: (error, variables, context) => {
+      toast.error('Unable to duplicate assessment');
+      queryClient.setQueryData<Assessment[]>(
+        queryKey,
+        context.previousAssessments,
+      );
+    },
+    onSuccess: (id) => {
+      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
+        const a = prev.reduce((acc, curr) => {
+          if (curr.id === id) acc.push({ ...curr, loading: false });
+          else acc.push(curr);
+          return acc;
+        }, [] as Assessment[]);
+        return a;
+      });
+    },
+  });
+  return { mutation };
 };
 
 const updateAssessmentsDbAction = async (
@@ -126,6 +217,22 @@ const updateAssessmentsDbAction = async (
     .select();
   if (error) throw new Error(error.message);
   return data[0];
+};
+
+const duplicateAssessmentsDbAction = async (
+  new_assessment_id: Assessment['id'],
+  target_assessment_id: Assessment['id'],
+  recruiter_id: string,
+  title: string,
+) => {
+  const { error } = await supabase.rpc('duplicateassessment', {
+    assessmentid: target_assessment_id,
+    newassessmentid: new_assessment_id,
+    recruiterid: recruiter_id,
+    newtitle: title,
+  });
+  if (error) throw new Error(error.message);
+  return new_assessment_id;
 };
 
 const readAssessmentTemplatesDbAction = async () => {
@@ -144,13 +251,20 @@ const readAssessmentsDbAction = async (
   return data as unknown as Assessment[];
 };
 
-const createAssessmentsDbAction = async (
-  payload: Partial<Assessment>,
-  recruiter_id: Database['public']['Tables']['recruiter']['Row']['id'],
+const deleteAssessmentDbAction = async (
+  assessment_id: Database['public']['Tables']['assessment']['Row']['id'],
 ) => {
+  const { error } = await supabase
+    .from('assessment')
+    .delete()
+    .eq('id', assessment_id);
+  if (error) throw new Error(error.message);
+};
+
+const createAssessmentsDbAction = async (payload: AssessmentRowInsert) => {
   const { data, error } = await supabase
     .from('assessment')
-    .insert({ ...payload, recruiter_id })
+    .insert(payload)
     .select();
   if (error) throw new Error(error.message);
   const newAssessment = data[0] as unknown as Assessment;

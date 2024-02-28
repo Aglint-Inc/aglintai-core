@@ -11,4 +11,5 @@ declare function AssessmentJob(props: {
   isBrowseTemplatesVisible?: Types.Visibility.VisibilityConditions;
   slotSuccessMessage?: Types.Devlink.Slot;
   isRecommendedVisible?: Types.Visibility.VisibilityConditions;
+  isSidePanel?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

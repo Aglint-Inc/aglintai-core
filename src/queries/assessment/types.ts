@@ -39,30 +39,40 @@ export type AssessmentTemplate = Omit<
   CustomAssessmentTemplateType;
 
 type CustomAssessmentTemplateType = {
-  question_count?: number;
-  duration?: number;
+  question_count: number;
+  duration: number;
 };
 
 type AssessmentTable = Database['public']['Tables']['assessment'];
 type AssessmentRow =
   Database['public']['Functions']['getassessments']['Returns'][number];
 
-// type AssessmentRowInsert = AssessmentTable['Insert'];
+export type AssessmentRowInsert = AssessmentTable['Insert'];
 type AssessmentRowUpdate = AssessmentTable['Update'];
 
 export type Assessment = Omit<AssessmentRow, keyof CustomAssessmentType> &
   CustomAssessmentType;
 
 type CustomAssessmentType = {
-  jobs?: {
+  jobs: {
     id: JobTypeDB['id'];
     title: JobTypeDB['job_title'];
   }[];
-  question_count?: number;
-  duration?: number;
+  question_count: number;
+  duration: number;
+  loading: boolean;
 };
+
+export type AssessmentCreate = Omit<
+  Required<AssessmentRowInsert>,
+  'created_at' | 'id' | 'recruiter_id'
+>;
+
 export type AssessmentUpdate = Partial<
-  Pick<AssessmentRowUpdate, 'title' | 'description' | 'level' | 'type'>
+  Pick<
+    AssessmentRowUpdate,
+    'title' | 'description' | 'level' | 'type' | 'id' | 'mode'
+  >
 >;
 
 type AssessmentResultTable = Database['public']['Tables']['assessment_results'];
