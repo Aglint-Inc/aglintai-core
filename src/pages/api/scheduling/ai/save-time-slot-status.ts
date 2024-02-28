@@ -27,6 +27,9 @@ type BodyParams = {
   time_slot_duration: string;
   req_user_id: string;
   chat_id: string;
+  logo_url?: string;
+  recruiter_name: string;
+  date_range: any;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,13 +40,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     time_slot_duration,
     req_user_id,
     chat_id,
+    logo_url,
+    recruiter_name,
+    date_range,
   } = req.body as BodyParams;
 
   if (
     !panel_name ||
     !time_slot_duration ||
     !selected_time_slots ||
-    !req_user_id
+    !req_user_id ||
+    !date_range
   )
     return res.status(400).send('missing required fields');
   try {
@@ -85,6 +92,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       time_slot_duration,
       req_user_id,
       chat_id,
+      logo_url,
+      recruiter_name,
+      date_range,
     });
     return res.status(200).send('mail sent');
   } catch (error) {
@@ -141,6 +151,9 @@ const sendMail = async ({
   time_slot_duration,
   req_user_id,
   chat_id,
+  logo_url,
+  recruiter_name,
+  date_range,
 }) => {
   try {
     const promises = user_ids.map(async (i) => {
@@ -152,13 +165,25 @@ const sendMail = async ({
       );
       const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${i}&req_user_id=${req_user_id}&time_duration=${time_slot_duration}&chat_id=${chat_id}`;
 
-      await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-        email: s.email,
-        subject: 'Confirm request',
-        text: link,
-      });
+      await axios.post(
+        `https://us-central1-aglint-cloud-381414.cloudfunctions.net/mails-sender`,
+        {
+          mail_type: 'interviewer-confirm-availability',
+          recipient_email: s.email,
+          payload: {
+            recruiter_name: recruiter_name,
+            logoUrl:
+              logo_url ??
+              'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png?t=2024-01-24T13%3A11%3A17.382Z',
+
+            link: link,
+            fromDate: dayjs(date_range.start).format('DD MMM'),
+            endDate: dayjs(date_range.end).format('DD MMM'),
+          },
+        },
+      );
     });
-    await Promise.allSettled(promises);
+    await Promise.all(promises);
   } catch (err) {
     //
   }

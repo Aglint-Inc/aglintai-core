@@ -289,9 +289,7 @@ function InterviewContextProvider({ children }) {
         application_id: router.query?.application_id,
       },
     );
-    const score = await handleAssessmentResultApi('result', {
-      result_id: results.id,
-    });
+
     const responses = assessmentQuestions.map((item, i) => {
       return {
         question_id: item.id,
@@ -305,11 +303,12 @@ function InterviewContextProvider({ children }) {
       assessment_id: router.query?.assessment_id,
       objData: {
         responses: responses,
-        result: score,
         is_submitted: true,
       },
     });
-
+    await handleAssessmentResultApi('result', {
+      result_id: results.id,
+    });
     router.push('/assessment-thanks');
   }
 

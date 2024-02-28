@@ -32,6 +32,7 @@ const SchedulingConfirm = () => {
   const panelId = router.query.panel_id as string;
   const userId = router.query.user_id as string;
   const req_user_id = router.query.req_user_id as string;
+  const chat_id = router.query.chat_id as string;
   const time_duration = Number(router.query.time_duration);
   useEffect(() => {
     if (!panelId || !time_duration || !userId) {
@@ -86,6 +87,8 @@ const SchedulingConfirm = () => {
   const filteredDateSlotKeys = Object.keys(groupedSlots || {}).filter(
     (key) => !isEmpty(groupedSlots[String(key)]),
   );
+
+  //
   const handleSubmit = async () => {
     try {
       setFormStatus('submitting');
@@ -127,6 +130,7 @@ const SchedulingConfirm = () => {
         interviewer_availability: newInterviewerSlot.slots,
         interviewer_id: userId,
       });
+      await push_activity(chat_id, userId, newInterviewerSlot.interviewerName);
       setFormStatus('submitted');
     } catch (error) {
       toast.error(API_FAIL_MSG);
@@ -211,6 +215,7 @@ const SchedulingConfirm = () => {
       </>
     );
   }
+
   return (
     <>
       <ConfirmSlots
@@ -248,3 +253,11 @@ const fetchAvailability = async (panelId: string, reqUserId: string) => {
 const headingCopy = `{user_name} is verifying your availability within the provided time slots. Kindly review the time slots and unselect any that you might not be available for.`;
 
 const submitBtnCopy = `Confirm Availability ({cnt} / {total_cnt} slots selected)`;
+
+const push_activity = async (chat_id, user_id, user_name) => {
+  await axios.post('/api/scheduling/ai/update-activity-confirmed-slot', {
+    chat_id,
+    user_id,
+    user_name,
+  });
+};

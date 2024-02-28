@@ -946,7 +946,7 @@ export const NewResumeScoreDetails = ({
 }: {
   application: JobApplication;
   job: JobTypeDashboard;
-  result: JobApplication['assessment_results']['result'];
+  result: boolean;
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const jdScoreObj = (application.score_json as ScoreJson)?.scores;

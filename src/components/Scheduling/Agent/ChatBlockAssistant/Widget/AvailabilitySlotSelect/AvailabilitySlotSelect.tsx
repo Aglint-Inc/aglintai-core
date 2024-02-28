@@ -13,11 +13,11 @@ import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgen
 import { useSchedulingAgentStore } from '../../../store';
 
 const AvailabilitySlotSelect = ({
-  slots,
+  response,
   index,
   time_duration,
 }: {
-  slots: any;
+  response: any;
   // eslint-disable-next-line no-unused-vars
   index: number;
   time_duration: number;
@@ -25,11 +25,11 @@ const AvailabilitySlotSelect = ({
   const { submitHandler } = useSchedulingAgent();
   const { selectedChat } = useSchedulingAgentStore();
   const [checkedSlots, setCheckedSlots] = useState<string[]>([]);
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
   const mergedTimeSlots = useMemo(() => {
-    const res = convertToMergedData(slots);
+    const res = convertToMergedData(response.slots);
     return res;
-  }, [slots]);
+  }, [response]);
   return (
     <>
       <WidgetFlexRow
@@ -69,9 +69,9 @@ const AvailabilitySlotSelect = ({
                             }}
                             isNotSelected={!isChecked}
                             isSelectedActive={isChecked}
-                            textTime={`${dayjs(start).format('hh:mm A')} - ${dayjs(
-                              end,
-                            ).format('hh:mm A')}`}
+                            textTime={`${dayjs(start).format(
+                              'hh:mm A',
+                            )} - ${dayjs(end).format('hh:mm A')}`}
                             slotImage={
                               <>
                                 <InterviewerGroup
@@ -112,6 +112,14 @@ const AvailabilitySlotSelect = ({
                   }),
                   req_user_id: recruiterUser.user_id,
                   time_duration,
+                  logo_url: recruiter.logo,
+                  date_range: response.date_range,
+                  recruiter_name: [
+                    recruiterUser.first_name,
+                    recruiterUser.last_name,
+                  ]
+                    .filter(Boolean)
+                    .join(' '),
                 },
                 activity: [
                   {

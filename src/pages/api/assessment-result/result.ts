@@ -42,8 +42,8 @@ export default async function handler(req: NextRequest) {
       supabase,
       result_id,
     );
-
     const result = await getAssessmentAnalyses(assessmentResponses);
+    await putAssessmentResult(supabase, result, result_id);
 
     return new NextResponse<AssessmentResultApi['response']>(
       JSON.stringify({
@@ -55,7 +55,7 @@ export default async function handler(req: NextRequest) {
   } catch (e) {
     const response: AssessmentResultApi['response'] = {
       data: null,
-      error: e,
+      error: e?.message ?? null ? e.message : e,
     };
     return new NextResponse<AssessmentResultApi['response']>(
       JSON.stringify(response),
@@ -76,4 +76,17 @@ const fetchAssessmentResult = async (
   if (data.length !== 1)
     throw new Error('Unable to find assessment result entry');
   return data[0].responses as unknown as AssessmentResult['responses'];
+};
+
+const putAssessmentResult = async (
+  supabase: Supabase,
+  result: Awaited<ReturnType<typeof getAssessmentAnalyses>>,
+  result_id: AssessmentResult['id'],
+) => {
+  const { error } = await supabase
+    .from('assessment_results')
+    .update({ result })
+    .eq('id', result_id);
+  if (error) throw new Error(error.message);
+  throw new Error('Unable to find assessment result entry');
 };

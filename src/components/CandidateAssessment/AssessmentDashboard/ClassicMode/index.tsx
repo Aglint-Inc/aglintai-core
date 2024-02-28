@@ -46,55 +46,54 @@ function ClassicMode() {
   const [openConfirmation, setOpenConfirmation] = useState(false);
   function nextClick() {
     setInputText('');
-    const answer = inputRef.current?.value;
-    if (answer || mcqAnswers.length) {
-      if (currentQuestionIndex !== assessmentQuestions.length - 1) {
-        setCurrentQuestionIndex((pre) => pre + 1);
-        setSelectedQuestion(
-          assessmentQuestions[Number(currentQuestionIndex + 1)],
-        );
-        setTimerTime({
-          duration:
-            assessmentQuestions[Number(currentQuestionIndex + 1)].duration,
-          question_id: assessmentQuestions[Number(currentQuestionIndex + 1)].id,
-        });
-        if (inputRef.current) inputRef.current.value = '';
-      }
+    const userAnswer = inputRef.current?.value;
 
-      if (currentQuestionIndex !== assessmentQuestions.length) {
-        let tempSelectedQuestion =
-          assessmentQuestions[Number(currentQuestionIndex)];
-        setAnswers((pre: any) => {
-          if (
-            pre[Number(currentQuestionIndex)]?.question_id ===
-            tempSelectedQuestion.id
-          ) {
+    if (currentQuestionIndex !== assessmentQuestions.length - 1) {
+      setCurrentQuestionIndex((pre) => pre + 1);
+      setSelectedQuestion(
+        assessmentQuestions[Number(currentQuestionIndex + 1)],
+      );
+      setTimerTime({
+        duration:
+          assessmentQuestions[Number(currentQuestionIndex + 1)].duration,
+        question_id: assessmentQuestions[Number(currentQuestionIndex + 1)].id,
+      });
+      if (inputRef.current) inputRef.current.value = '';
+    }
+
+    if (currentQuestionIndex !== assessmentQuestions.length) {
+      let tempSelectedQuestion =
+        assessmentQuestions[Number(currentQuestionIndex)];
+      setAnswers((pre: any) => {
+        if (
+          pre[Number(currentQuestionIndex)]?.question_id ===
+          tempSelectedQuestion.id
+        ) {
+          tempSelectedQuestion.type === 'mcq'
+            ? pre[Number(currentQuestionIndex)]?.response.options === mcqAnswers
+            : pre[Number(currentQuestionIndex)]?.response.label === userAnswer;
+
+          return [...pre];
+        } else {
+          submitAnswer(
             tempSelectedQuestion.type === 'mcq'
-              ? pre[Number(currentQuestionIndex)]?.answer.options === mcqAnswers
-              : pre[Number(currentQuestionIndex)]?.answer.label === answer;
+              ? { options: mcqAnswers }
+              : { label: userAnswer },
+          );
 
-            return [...pre];
-          } else {
-            submitAnswer(
-              tempSelectedQuestion.type === 'mcq'
-                ? { options: mcqAnswers }
-                : { label: answer },
-            );
-
-            return [
-              ...pre,
-              {
-                question_id: tempSelectedQuestion.id,
-                answer:
-                  tempSelectedQuestion.type === 'mcq'
-                    ? { options: mcqAnswers }
-                    : { label: answer },
-                type: tempSelectedQuestion.type,
-              },
-            ];
-          }
-        });
-      }
+          return [
+            ...pre,
+            {
+              question_id: tempSelectedQuestion.id,
+              response:
+                tempSelectedQuestion.type === 'mcq'
+                  ? { options: mcqAnswers }
+                  : { label: userAnswer },
+              type: tempSelectedQuestion.type,
+            },
+          ];
+        }
+      });
     }
   }
   function submitAnswer(ans: any) {
@@ -104,7 +103,7 @@ function ClassicMode() {
         responses: [
           ...answers,
           {
-            answer: ans,
+            response: ans,
             question_id: selectedQuestion.id,
             type: selectedQuestion.type,
           },
@@ -135,16 +134,14 @@ function ClassicMode() {
         application_id: router.query?.application_id,
       },
     );
-    const score = await handleAssessmentResultApi('result', {
-      result_id: results.id,
-    });
+
     const responses = assessmentQuestions.map((item, i) => {
       return {
         question_id: item.id,
         type: item.type,
         question: item.question,
         answer: originalAnswers[Number(i)].answer,
-        response: answers[Number(i)].answer,
+        response: answers[Number(i)].response,
       };
     });
 
@@ -152,9 +149,12 @@ function ClassicMode() {
       assessment_id: selectedAssessment.id,
       objData: {
         responses: responses,
-        result: score,
         is_submitted: true,
       },
+    });
+
+    await handleAssessmentResultApi('result', {
+      result_id: results.id,
     });
     setOpenConfirmation(false);
     router.push('/assessment-thanks');
@@ -163,15 +163,21 @@ function ClassicMode() {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.value =
-        answers[Number(currentQuestionIndex)]?.answer.label || '';
-      setInputText(answers[Number(currentQuestionIndex)]?.answer.label || '');
+        answers[Number(currentQuestionIndex)]?.response.label || '';
+      setInputText(answers[Number(currentQuestionIndex)]?.response.label || '');
     }
-    setMcqAnswers(answers[Number(currentQuestionIndex)]?.answer.options || []);
-    selectedMcq = answers[Number(currentQuestionIndex)]?.answer.options || [];
+    setMcqAnswers(
+      answers[Number(currentQuestionIndex)]?.response.options || [],
+    );
+    selectedMcq = answers[Number(currentQuestionIndex)]?.response.options || [];
   }, [currentQuestionIndex]);
 
   async function getResponse() {
     const { application_id, assessment_id } = router.query;
+    setTimerTime({
+      duration: assessmentQuestions[0]?.duration,
+      question_id: assessmentQuestions[0]?.id,
+    });
     if (application_id && assessment_id) {
       const { data: results } = await axios.post(
         '/api/candidate-assessment/assessment-result-details',
@@ -192,11 +198,12 @@ function ClassicMode() {
         setSelectedQuestion(assessmentQuestions[Number(resultLastIndex)]);
         if (inputRef.current) {
           inputRef.current.value =
-            results.responses[Number(resultLastIndex)]?.answer.label || '';
+            results.responses[Number(resultLastIndex)]?.response.label || '';
         }
         setAnswers(results.responses);
-        setMcqAnswers(results.responses[Number(0)]?.answer.options || []);
-        selectedMcq = results.responses[Number(0)]?.answer.options || [];
+        // setAnswers(results.responses.map((item) => item.answer));
+        setMcqAnswers(results.responses[Number(0)]?.response.options || []);
+        selectedMcq = results.responses[Number(0)]?.response.options || [];
       }
     }
   }
@@ -319,7 +326,7 @@ function ClassicMode() {
                         autoFocus: true,
                       }}
                       disabled={
-                        answers[Number(currentQuestionIndex)]?.answer?.label
+                        answers[Number(currentQuestionIndex)]?.response?.label
                           ?.length > 0
                       }
                       multiline

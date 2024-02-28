@@ -41,23 +41,28 @@ function CandidateAssessment() {
     ?.assessment_job_relation as AssessmentListType;
 
   async function handleClick(item) {
-    const { application_id } = router.query;
-    const { data: results } = await axios.post(
-      '/api/candidate-assessment/assessment-result-details',
-      {
-        assessment_id: item.assessment.id,
-        application_id: application_id,
-      },
-    );
-    if (!results) {
-      await axios.post('/api/candidate-assessment/assessment-result-create', {
-        assessment_id: item.assessment.id,
-        application_id: application_id,
-      });
+    const { application_id, job_id } = router.query;
+    if (application_id) {
+      const { data: results } = await axios.post(
+        '/api/candidate-assessment/assessment-result-details',
+        {
+          assessment_id: item.assessment.id,
+          application_id: application_id,
+        },
+      );
+      if (!results) {
+        await axios.post('/api/candidate-assessment/assessment-result-create', {
+          assessment_id: item.assessment.id,
+          application_id: application_id,
+        });
+      }
+      router.push(
+        `/candidate-assessment/${assessmentDetails.id}/${item.assessment.id}`,
+      );
     }
-    router.push(
-      `/candidate-assessment/${assessmentDetails.id}/${item.assessment.id}`,
-    );
+    if (job_id) {
+      router.push(`/preview-assessment/${job_id}/${item.assessment.id}`);
+    }
     openFullscreen();
   }
 
@@ -122,6 +127,7 @@ function CandidateAssessment() {
         }
         textTime={
           assessmentsList &&
+          assessmentsList.length &&
           assessmentsList
             .map((item) => {
               const init = 0;

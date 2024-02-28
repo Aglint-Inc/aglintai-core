@@ -26,17 +26,20 @@ export type AssessmentQuestionUpdate = Omit<
 > &
   Partial<CustomQuestionType>;
 
+// eslint-disable-next-line no-unused-vars
 type AssessmentTemplateTable =
   Database['public']['Tables']['assessment_template'];
-type AssessmentTemplateRow = AssessmentTemplateTable['Row'];
 
+type AssessmentTemplateRow =
+  Database['public']['Functions']['getassessmenttemplates']['Returns'][number];
 export type AssessmentTemplate = Omit<
   AssessmentTemplateRow,
-  'embeddings' | keyof CustomAssessmentTemplateType
+  keyof CustomAssessmentTemplateType
 > &
   CustomAssessmentTemplateType;
 
 type CustomAssessmentTemplateType = {
+  question_count?: number;
   duration?: number;
 };
 
@@ -55,6 +58,7 @@ type CustomAssessmentType = {
     id: JobTypeDB['id'];
     title: JobTypeDB['job_title'];
   }[];
+  question_count?: number;
   duration?: number;
 };
 export type AssessmentUpdate = Partial<
@@ -73,9 +77,6 @@ export type AssessmentResult = Omit<
 
 type CustomQuestionType = QuestionTypes & QuestionOthers;
 
-type GenericQuestionType<T extends QuestionEnum> = CustomQuestion<T> &
-  QuestionOthers;
-
 type QuestionOthers = {
   description: {
     show: boolean;
@@ -84,7 +85,7 @@ type QuestionOthers = {
 };
 type CustomResponseType = {
   responses: ResponseTypes[];
-  result: { rating: number }[];
+  result: { question_id: string; rating: number; analysis: string }[];
 };
 
 type QuestionEnum = Exclude<
@@ -94,20 +95,16 @@ type QuestionEnum = Exclude<
 
 export type ResponseTypes = CustomResponse<'mcq'> | CustomResponse<'qna'>;
 
-type CustomResponse<T extends QuestionEnum> = {
-  type: T;
-  question: GenericQuestionType<T>;
-  answer: CustomQuestion<T>['answer'];
+type CustomResponse<T extends QuestionEnum> = CustomQuestion<T> & {
   response: CustomQuestion<T>['answer'];
 };
 
 type QuestionTypes = CustomQuestion<'mcq'> | CustomQuestion<'qna'>;
 
-type CustomQuestion<T extends QuestionEnum> = { type: T } & (T extends 'mcq'
-  ? MCQ
-  : T extends 'qna'
-    ? QNA
-    : never);
+type CustomQuestion<T extends QuestionEnum> = {
+  type: T;
+  question_id: string;
+} & (T extends 'mcq' ? MCQ : T extends 'qna' ? QNA : never);
 
 type MCQ = {
   question: {

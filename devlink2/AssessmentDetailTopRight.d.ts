@@ -7,4 +7,6 @@ declare function AssessmentDetailTopRight(props: {
   slotAssessmentLevel?: Types.Devlink.Slot;
   slotAssessmentStatus?: Types.Devlink.Slot;
   onClickEdit?: Types.Devlink.RuntimeProps;
+  onClickDuplicate?: Types.Devlink.RuntimeProps;
+  onClickDelete?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
