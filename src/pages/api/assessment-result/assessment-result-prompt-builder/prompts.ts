@@ -1,34 +1,55 @@
 import { ChatCompletion, ChatCompletionMessageParam } from 'openai/resources';
 
-import { AssessmentResult } from '@/src/queries/assessment/types';
-
+import { AssessmentAnalysisResult } from '.';
 import { openai } from '../config';
 import { AssessmentResponse } from '../result';
-//enum(low, medium, high) # These are the levels of similarity.
+
+const GET_QNA_SYSTEM_PROMPT_HEADER = (expectedAnswer: string) => {
+  return expectedAnswer
+    ? `You are an assisting AI, tasked  with comparing a candidates's answer and with an expected answer and determine if the candidate's answer is similar to the expected answer. Provide a response as the JSON format provided:`
+    : `You are an assisting AI, tasked  with analyzing a candidates's answer and to a question and determine if the candidate's answer is valid or not. Provide a response as the JSON format provided:`;
+};
+
 const GET_QNA_PROMPT = (response: AssessmentResponse) => {
   if (response.type !== 'qna') return null;
+  const expectedAnswer =
+    (response?.response?.label ?? null) && response.answer.label.trim() !== ''
+      ? response.answer.label
+      : null;
   return {
-    system: `You are an assisting AI, tasked  with comparing a candidates's answer and with an expected answer and determine if the candidate's answer is similar to the expected answer. Provided a response as the JSON format provided:
+    system: `${GET_QNA_SYSTEM_PROMPT_HEADER(expectedAnswer)}
 -----
 {
-    rating: number # A rating number between 0 through 10
+    rating: number, # A rating number between 0 through 10
+    analysis: string # An explanation/analysis for the given rating
 } 
 -----
 `,
     user: `-----
 
-Candidate's answer: ${response.answer.label}
+Question: ${response.question.label}
 
 -----
 
-Expected's answer: ${response.question.answer.label}
+Candidate's answer: ${response.response.label}
 
 -----
+${
+  expectedAnswer
+    ? `
+
+Expected answer: ${expectedAnswer}
+
+-----`
+    : ''
+}
 `,
   };
 };
 
-export const getQnaPrompt = async (response: AssessmentResponse) => {
+export const getQnaPrompt = async (
+  response: AssessmentResponse,
+): Promise<AssessmentAnalysisResult> => {
   const prompt = GET_QNA_PROMPT(response);
   const messages = Object.entries(prompt).reduce((acc, [key, value]) => {
     acc.push({ role: key as 'system' | 'user', content: value });
@@ -45,9 +66,7 @@ export const getQnaPrompt = async (response: AssessmentResponse) => {
 };
 
 const resultFormatter = (result: ChatCompletion) => {
-  return (
-    JSON.parse(
-      result.choices[0].message.content,
-    ) as any as AssessmentResult['result'][number]
-  ).rating;
+  return JSON.parse(
+    result.choices[0].message.content,
+  ) as any as AssessmentAnalysisResult;
 };

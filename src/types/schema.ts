@@ -479,7 +479,7 @@ export type Database = {
           id: string
           is_submitted: boolean | null
           responses: Json[] | null
-          result: Json | null
+          result: Json[] | null
         }
         Insert: {
           application_id: string
@@ -489,7 +489,7 @@ export type Database = {
           id?: string
           is_submitted?: boolean | null
           responses?: Json[] | null
-          result?: Json | null
+          result?: Json[] | null
         }
         Update: {
           application_id?: string
@@ -499,7 +499,7 @@ export type Database = {
           id?: string
           is_submitted?: boolean | null
           responses?: Json[] | null
-          result?: Json | null
+          result?: Json[] | null
         }
         Relationships: [
           {

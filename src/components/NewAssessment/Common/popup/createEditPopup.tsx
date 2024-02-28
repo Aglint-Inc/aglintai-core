@@ -129,12 +129,8 @@ const CreateEditPopup: React.FC<{
         textPopupTitle={popupTitle}
         slotInputName={title}
         slotDescriptionTextarea={description}
-        slotSelectionDropdown={
-          <Stack gap={1}>
-            {modes}
-            {types}
-          </Stack>
-        }
+        slotAssessmentMode={modes}
+        slotSelectionDropdown={types}
         slotButton={submit}
         slotAssesmentLevel={levels}
         onClickClose={{ onClick: handleClose }}

@@ -76,6 +76,7 @@ export const useJobAssessmentsBulkConnect = () => {
             acc.push({
               ...rest,
               recruiter_id,
+              question_count: 0,
               jobs: [{ id: job_id, title }],
             });
             return acc;

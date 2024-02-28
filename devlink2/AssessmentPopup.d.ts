@@ -10,4 +10,5 @@ declare function AssessmentPopup(props: {
   slotButton?: Types.Devlink.Slot;
   slotAssesmentLevel?: Types.Devlink.Slot;
   onClickClose?: Types.Devlink.RuntimeProps;
+  slotAssessmentMode?: Types.Devlink.Slot;
 }): React.JSX.Element;

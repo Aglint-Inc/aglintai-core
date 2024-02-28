@@ -14,6 +14,7 @@ export function AssessmentPopup({
   slotButton,
   slotAssesmentLevel,
   onClickClose = {},
+  slotAssessmentMode,
 }) {
   return (
     <_Component
@@ -53,6 +54,15 @@ export function AssessmentPopup({
               tag="div"
             >
               {slotInputName}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
+            <_Builtin.Block tag="div">{"Assesment Mode"}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ps_input_slot")}
+              tag="div"
+            >
+              {slotAssessmentMode}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block className={_utils.cx(_styles, "ps_row")} tag="div">
