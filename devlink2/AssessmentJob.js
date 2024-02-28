@@ -16,6 +16,7 @@ export function AssessmentJob({
   isBrowseTemplatesVisible = true,
   slotSuccessMessage,
   isRecommendedVisible = false,
+  isSidePanel = true,
 }) {
   return (
     <_Component
@@ -115,12 +116,14 @@ export function AssessmentJob({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1030")}
-        tag="div"
-      >
-        {slotRight}
-      </_Builtin.Block>
+      {isSidePanel ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1030")}
+          tag="div"
+        >
+          {slotRight}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}
         value="%3Cstyle%3E%0A%5Bclass%20*%3D%20%22AssessmentJob_assessment_left__%22%5D%7B%0A%09height%3A%20calc(100vh%20-%2060px)%3B%0A%7D%0A%5Bclass%20*%3D%20%22AssessmentJob_assessment-list-wrap__%22%5D%7B%0A%09height%3A%20calc(100vh%20-%2060px)%3B%0A%7D%0A%3C%2Fstyle%3E"

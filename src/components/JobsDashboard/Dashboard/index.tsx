@@ -20,7 +20,6 @@ import JobsPopOver from './JobPopOver';
 import ProgressChart from './ProgressChart';
 import { countMatches, totalCount } from './utils';
 import JobAssistant from '../JobAssistant';
-import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import { AddCandidates } from '../../JobApplicationsDashboard';
 
@@ -95,12 +94,10 @@ const Dashboard = () => {
                   setOpenImportCandidates((pre) => !pre);
                 },
               }}
+              onClickAssesssment={{
+                onClick: () => router.push(`/jobs/${job.id}/assessment`),
+              }}
             />
-            <AUIButton
-              onClick={() => router.push(`/jobs/${job.id}/assessment`)}
-            >
-              Assessment
-            </AUIButton>
             <DashboardDoughnutChart />
             <DashboardBarChart />
           </>

@@ -3,6 +3,7 @@ import { Dialog, Stack } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { AssessmentSide } from '@/devlink';
 import {
   AssesmentCardLoader,
   AssessmentCard,
@@ -16,6 +17,7 @@ import {
   SelectButton,
 } from '@/devlink2';
 import { useJobs } from '@/src/context/JobsContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
@@ -59,6 +61,8 @@ const JobAssessment = () => {
         slotSuccessMessage={
           <AssessmentEditor payload='interview_success' skeletonCount={1} />
         }
+        isSidePanel={jobAssessments.length !== 0}
+        slotRight={<AssessmentPreview />}
       />
       <AssessmentBrowser open={open} onClose={() => setOpen(false)} />
     </>
@@ -392,5 +396,44 @@ const BrowserCard = ({
       }
       isActive={isSelected}
     />
+  );
+};
+
+const AssessmentPreview = () => {
+  const { job_id } = useCurrentJob();
+  const {
+    assessments: {
+      data: { jobAssessments },
+    },
+  } = useJobAssessments();
+  const disabled = jobAssessments.length === 0;
+  const handlePreview = () => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${job_id}`,
+      '_blank',
+    );
+  };
+  return (
+    <Stack style={{ opacity: disabled ? '0.6' : '1' }}>
+      <AssessmentSide
+        isAssessmentImageVisible={true}
+        isPhoneScreeningImageVisible={false}
+        isDisableAssessmentVisible={false}
+        isPreviewFormVisible={true}
+        textPreview={
+          disabled
+            ? `Add assessments for a preview of the assessments.`
+            : `Take a firsthand look at how candidates navigate the assessments.`
+        }
+        textPreviewButton={'Preview Assessments'}
+        onClickAssessmentPreview={{
+          style: {
+            color: disabled ? 'grey' : palette.blue['400'],
+            pointerEvents: disabled ? 'none' : 'auto',
+          },
+          onClick: () => handlePreview(),
+        }}
+      />
+    </Stack>
   );
 };

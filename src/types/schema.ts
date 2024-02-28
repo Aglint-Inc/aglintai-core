@@ -2183,6 +2183,15 @@ export type Database = {
             }
             Returns: boolean
           }
+      duplicateassessment: {
+        Args: {
+          assessmentid: string
+          newassessmentid: string
+          recruiterid: string
+          newtitle: string
+        }
+        Returns: undefined
+      }
       emailcroncandidatedb: {
         Args: Record<PropertyKey, never>
         Returns: Json

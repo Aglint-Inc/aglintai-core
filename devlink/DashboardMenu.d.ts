@@ -7,4 +7,5 @@ declare function DashboardMenu(props: {
   onClickEditJobDetails?: Types.Devlink.RuntimeProps;
   onClickImportCandidates?: Types.Devlink.RuntimeProps;
   onClickViewJob?: Types.Devlink.RuntimeProps;
+  onClickAssesssment?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -6,10 +6,7 @@ import {
   AssessmentError as AssessmentErrorDev,
   AssessmentLandingBody,
 } from '@/devlink2';
-import {
-  useAllAssessments,
-  useCreateAssessment,
-} from '@/src/queries/assessment';
+import { useAllAssessments } from '@/src/queries/assessment';
 
 import AssessmentCard from './card';
 import OptimisticWrapper from '../Common/wrapper/loadingWapper';
@@ -23,8 +20,6 @@ export default AssessmentDashboardBody;
 
 const AssessmentGroups = () => {
   const { status, data } = useAllAssessments();
-  const { mutationQueue } = useCreateAssessment();
-  if (mutationQueue.length !== 0) return <AssessmentCards />;
   if (status === 'pending') return <LoadingCards />;
   if (status === 'error') return <AssessmentError />;
   if (data.length === 0) return <AssessmentEmpty />;
@@ -37,9 +32,11 @@ const AssessmentError = () => {
 };
 
 const AssessmentEmpty = () => {
-  const setOpenModal = useAssessmentStore((state) => state.setOpenModal);
+  const setCreateModal = useAssessmentStore((state) => state.setCreateModal);
   return (
-    <AssessmentEmptyDev onClickCreate={{ onClick: () => setOpenModal(true) }} />
+    <AssessmentEmptyDev
+      onClickCreate={{ onClick: () => setCreateModal(true) }}
+    />
   );
 };
 
@@ -49,32 +46,14 @@ const LoadingCards = () => {
 };
 
 const AssessmentCards = () => {
-  return (
-    <>
-      <OldAssessmentCards />
-      <FreshAssessmentCards />
-    </>
-  );
-};
-
-const OldAssessmentCards = () => {
   const { data } = useAllAssessments();
-  const cards = data.map((assessment) => (
-    <AssessmentCard
-      key={assessment.id}
-      id={assessment.id}
-      assessment={assessment}
-    />
-  ));
-  return <>{cards}</>;
-};
-
-const FreshAssessmentCards = () => {
-  const { mutationQueue } = useCreateAssessment();
-  const cards = mutationQueue.map((queuedAssessment, i) => (
-    <OptimisticWrapper key={i}>
-      <AssessmentCard id={`${i}`} assessment={queuedAssessment} />
-    </OptimisticWrapper>
-  ));
+  const cards = data.map((assessment) => {
+    const card = <AssessmentCard id={assessment.id} assessment={assessment} />;
+    return assessment.loading ? (
+      <OptimisticWrapper key={assessment.id}>{card}</OptimisticWrapper>
+    ) : (
+      card
+    );
+  });
   return <>{cards}</>;
 };

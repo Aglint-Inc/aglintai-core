@@ -36,10 +36,6 @@ export const useJobAssessmentsConnect = () => {
       toast.error('Unable to connect assessment');
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
   });
 };
 
@@ -70,20 +66,22 @@ export const useJobAssessmentsBulkConnect = () => {
           else acc.push(curr);
           return acc;
         }, [] as Assessment[]);
-        const newTemplates = templates.reduce(
+        const newTemplatestoAssessments = templates.reduce(
           // eslint-disable-next-line no-unused-vars
           (acc, { assessment_id, ...rest }) => {
             acc.push({
               ...rest,
               recruiter_id,
-              question_count: 0,
+              id: assessment_id,
               jobs: [{ id: job_id, title }],
+              created_at: null,
+              loading: true,
             });
             return acc;
           },
           [] as Assessment[],
         );
-        newAssessments.push(...newTemplates);
+        newAssessments.unshift(...newTemplatestoAssessments);
         return newAssessments;
       });
       const prevTemplates =
@@ -108,10 +106,10 @@ export const useJobAssessmentsBulkConnect = () => {
         context.prevTemplates,
       );
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
 };
 
@@ -137,8 +135,13 @@ export const useJobAssessmentTemplateConnect = () => {
       const prevAssessments = queryClient.getQueryData<Assessment[]>(queryKey);
       queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
         const newAssessments: Assessment[] = [
+          {
+            ...template,
+            recruiter_id,
+            jobs: [{ id: job_id, title }],
+            loading: true,
+          },
           ...prev,
-          { ...template, recruiter_id, jobs: [{ id: job_id, title }] },
         ];
         return newAssessments;
       });
@@ -163,10 +166,10 @@ export const useJobAssessmentTemplateConnect = () => {
         context.prevTemplates,
       );
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
+    onSettled: async () => {
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
 };
 
@@ -198,10 +201,6 @@ export const useJobAssessmentsDisconnect = () => {
       toast.error('Unable to disconnect assessment');
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
     },
-    // onSettled: async () => {
-    //   await queryClient.cancelQueries({ queryKey });
-    //   queryClient.invalidateQueries({ queryKey });
-    // },
   });
 };
 

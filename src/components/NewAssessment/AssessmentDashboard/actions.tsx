@@ -17,14 +17,14 @@ const initialFields: CreateEditPayload = {
 };
 
 const AssessmentDashboardActions = () => {
-  const setOpenModal = useAssessmentStore((state) => state.setOpenModal);
+  const setCreateModal = useAssessmentStore((state) => state.setCreateModal);
   const {
     mutation: { mutate, isPending },
   } = useCreateAssessment();
   return (
     <>
       <AssessmentLandingTopRight
-        onClickCreateAssessment={{ onClick: () => setOpenModal(true) }}
+        onClickCreateAssessment={{ onClick: () => setCreateModal(true) }}
       />
       <CreateEditPopup
         type='create'

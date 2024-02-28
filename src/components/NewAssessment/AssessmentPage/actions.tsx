@@ -1,28 +1,145 @@
-import { AssessmentDetailTopRight } from '@/devlink2';
-import { useEditAssessment } from '@/src/queries/assessment';
+import { Dialog, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+
+import {
+  AssessmentDetailTopRight,
+  DeleteAssessmentPopup,
+  DuplicateAssessmentPopup,
+} from '@/devlink2';
+import {
+  useDeleteAssessment,
+  useDuplicateAssessment,
+  useEditAssessment,
+} from '@/src/queries/assessment';
 import { useAssessmentAllQuestionUpdate } from '@/src/queries/assessment/questions';
 
 import { useAssessment } from './context';
+import TypeIcon from '../Common/icons/types';
+import Duplicating from '../Common/lotties/duplicating';
 import CreateEditPopup, {
   type CreateEditPayload,
 } from '../Common/popup/createEditPopup';
 import LevelTag from '../Common/tags/levels';
 import StatusTag from '../Common/tags/status';
 import useAssessmentStore from '../Stores';
+import AUIButton from '../../Common/AUIButton';
+import UITextField from '../../Common/UITextField';
 
 const AssessmentPageActions = () => {
   const { assessment } = useAssessment();
-  const setOpenModal = useAssessmentStore((state) => state.setOpenModal);
+  const { setCreateModal, setDuplicateModal, setDeleteModal } =
+    useAssessmentStore((state) => ({
+      setCreateModal: state.setCreateModal,
+      setDeleteModal: state.setDeleteModal,
+      setDuplicateModal: state.setDuplicateModal,
+    }));
   if (!assessment) return <></>;
   return (
     <>
       <AssessmentDetailTopRight
+        key={assessment.id + 'actions'}
+        slotAssessmentDetail={
+          <Stack height={'100%'} alignItems={'center'}>
+            <TypeIcon type={assessment.type} />
+          </Stack>
+        }
         slotAssessmentLevel={<LevelTag level={assessment?.level ?? null} />}
         slotAssessmentStatus={<StatusTag jobs={assessment.jobs} />}
-        onClickEdit={{ onClick: () => setOpenModal(true) }}
+        onClickDelete={{ onClick: () => setDeleteModal(true) }}
+        onClickDuplicate={{ onClick: () => setDuplicateModal(true) }}
+        onClickEdit={{ onClick: () => setCreateModal(true) }}
       />
-      <EditPopup />
+      <EditPopup key={assessment.id + 'edit'} />
+      <DeletePopup key={assessment.id + 'delete'} />
+      <DuplicatePopup key={assessment.id + 'duplicate'} />
     </>
+  );
+};
+
+const DeletePopup = () => {
+  const { push } = useRouter();
+  const { deleteModal, setDeleteModal } = useAssessmentStore((state) => ({
+    deleteModal: state.deleteModal,
+    setDeleteModal: state.setDeleteModal,
+  }));
+  const {
+    mutation: { mutateAsync: deleteAssessment, isPending },
+  } = useDeleteAssessment();
+  const handleClose = () => setDeleteModal(false);
+  const handleDelete = async () => {
+    try {
+      if (!isPending) {
+        await deleteAssessment();
+        push('/assessment-new');
+      }
+    } catch {
+      //do nothing
+    }
+  };
+  return (
+    <Dialog open={deleteModal} onClose={() => handleClose()}>
+      <DeleteAssessmentPopup
+        onClickCancel={{ onClick: () => handleClose() }}
+        onClickDelete={{ onClick: () => handleDelete() }}
+      />
+    </Dialog>
+  );
+};
+
+const DuplicatePopup = () => {
+  const { push } = useRouter();
+  const { assessment } = useAssessment();
+  const { duplicateModal, setDuplicateModal } = useAssessmentStore((state) => ({
+    duplicateModal: state.duplicateModal,
+    setDuplicateModal: state.setDuplicateModal,
+  }));
+  const {
+    mutation: { mutateAsync: duplicateAssessment, isPending },
+  } = useDuplicateAssessment();
+  const initialTitle = `Copy of ${assessment.title}`;
+  const [title, setTitle] = useState(initialTitle);
+  const [pending, setPending] = useState(isPending);
+  useEffect(() => {
+    const timer = setTimeout(() => setPending(isPending), 400);
+    return () => clearTimeout(timer);
+  }, [isPending]);
+  const handleClose = () => {
+    setDuplicateModal(false);
+    setTimeout(() => setTitle(initialTitle), 400);
+  };
+  const handleDuplicate = async () => {
+    try {
+      if (!isPending) {
+        const newAssessmentId = await duplicateAssessment(title);
+        push(`/assessment-new/${newAssessmentId}`);
+        setDuplicateModal(false);
+      }
+    } catch {
+      //do nothing
+    }
+  };
+  const loading = useMemo(() => <Duplicating />, []);
+  return (
+    <Dialog open={duplicateModal} onClose={() => handleClose()}>
+      <DuplicateAssessmentPopup
+        isLoading={pending || isPending}
+        slotLoaderLottie={loading}
+        onClickClose={{ onClick: () => handleClose() }}
+        slotInput={
+          <UITextField
+            placeholder='Enter assessment name'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        }
+        slotButton={
+          <AUIButton onClick={() => handleDuplicate()}>
+            Duplicate Assessment
+          </AUIButton>
+        }
+      />
+    </Dialog>
   );
 };
 
