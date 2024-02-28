@@ -35,5 +35,5 @@ export type AssessmentDetailsType = ApplicationType & {
 export type responseType = {
   question_id: string;
   type: string;
-  answer: { options: any[]; label: string };
+  response: { options: any[]; label: string };
 };

@@ -76,11 +76,13 @@ function CandidateAssessmentProvider({ children }) {
 
   const [responses, setResponses] = useState<responseType[] | null>([]);
 
-  async function getApplication(application_id: any) {
+  async function getApplication() {
+    const { application_id, job_id } = router.query;
     const { data } = await axios.post(
       `/api/candidate-assessment/assessment-details`,
       {
         application_id: application_id,
+        job_id: job_id,
       },
     );
     setAssessmentDetails(data);
@@ -104,10 +106,13 @@ function CandidateAssessmentProvider({ children }) {
   }
 
   useEffect(() => {
-    const { application_id } = router.query;
+    const { application_id, job_id } = router.query;
 
     if (application_id && !assessmentDetails) {
-      getApplication(application_id);
+      getApplication();
+    }
+    if (job_id && !assessmentDetails) {
+      getApplication();
     }
   }, [router]);
 
