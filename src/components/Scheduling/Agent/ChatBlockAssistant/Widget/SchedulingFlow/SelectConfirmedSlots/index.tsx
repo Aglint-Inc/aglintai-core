@@ -12,7 +12,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
-import { useSchedulingAgentStore } from '../../../store';
+import { useSchedulingAgentStore } from '../../../../store';
 
 function SelectConfirmedSlots({ slots, index }: { slots: any; index: number }) {
   const { members } = useAuthDetails();

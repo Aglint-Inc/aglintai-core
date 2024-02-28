@@ -8,7 +8,7 @@ import { InterviewSlice } from '@/src/components/Scheduling/Interview/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
-import { useSchedulingAgentStore } from '../../../store';
+import { useSchedulingAgentStore } from '../../../../store';
 
 function SelectPanelUsers({
   panel,

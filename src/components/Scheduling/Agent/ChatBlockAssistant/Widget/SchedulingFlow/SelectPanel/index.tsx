@@ -10,7 +10,7 @@ import {
   setLoading,
   setSelectedChat,
   useSchedulingAgentStore,
-} from '../../../store';
+} from '../../../../store';
 
 function SelectPanel({
   panels,

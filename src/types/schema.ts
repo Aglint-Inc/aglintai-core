@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           agent_chat_id: string
           created_at: string
+          event: Json | null
           icon_status:
             | Database["public"]["Enums"]["icon_status_activity"]
             | null
@@ -23,6 +24,7 @@ export type Database = {
         Insert: {
           agent_chat_id: string
           created_at?: string
+          event?: Json | null
           icon_status?:
             | Database["public"]["Enums"]["icon_status_activity"]
             | null
@@ -33,6 +35,7 @@ export type Database = {
         Update: {
           agent_chat_id?: string
           created_at?: string
+          event?: Json | null
           icon_status?:
             | Database["public"]["Enums"]["icon_status_activity"]
             | null
@@ -2335,6 +2338,7 @@ export type Database = {
           recruiter_id: string
           level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
+          question_count: number
           duration: number
           jobs: Json
         }[]
@@ -2350,6 +2354,7 @@ export type Database = {
           level: Database["public"]["Enums"]["question_level"]
           mode: Database["public"]["Enums"]["assessment_mode"]
           duration: number
+          question_count: number
         }[]
       }
       getjobapplicationcountforcandidates: {
@@ -2605,7 +2610,7 @@ export type Database = {
       }
     }
     Enums: {
-      activity_type: "aglint" | "user"
+      activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
       application_processing_status:
         | "not started"

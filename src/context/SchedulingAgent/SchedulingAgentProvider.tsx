@@ -114,6 +114,11 @@ const SchedulingAgentProvider = ({ children }) => {
 
       if (!res?.data?.funcRes[res.data.funcRes.length - 1]?.activity) {
         allActivity = [];
+      } else {
+        const data = supabaseWrap(
+          await supabase.from('agent_activity').insert(activity).select(),
+        );
+        setActivities([...activities, ...data]);
       }
 
       const histAfterAssisResponse = [
@@ -136,13 +141,6 @@ const SchedulingAgentProvider = ({ children }) => {
         history: histAfterAssisResponse,
       } as any);
       setLoading(false);
-
-      if (activity) {
-        const data = supabaseWrap(
-          await supabase.from('agent_activity').insert(activity).select(),
-        );
-        setActivities([...activities, ...data]);
-      }
 
       await supabase.from('agent_chat').upsert({
         ...selectedChat,

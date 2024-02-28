@@ -8,6 +8,7 @@ export const allFunctions = [
   'fetch-user-by-name',
   'select-panel-users-for-scheduling',
   'find_available_time_slots',
+  'get-all-interviewers',
 ];
 
 export type FunctionResponse =
@@ -81,4 +82,18 @@ export type FunctionResponse =
         };
       };
     }
-  | { name: 'find_available_time_slots'; response: any };
+  | { name: 'find_available_time_slots'; response: any }
+  | {
+      name: 'get-all-interviewers';
+      response: {
+        message: string;
+        users: {
+          first_name: string;
+          last_name: string;
+          user_id: string;
+          email: string;
+          role: string;
+          profile_image: string;
+        }[];
+      };
+    };

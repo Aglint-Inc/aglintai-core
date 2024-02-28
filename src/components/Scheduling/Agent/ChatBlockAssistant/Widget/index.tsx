@@ -1,13 +1,14 @@
 import { Stack } from '@mui/material';
 
-import { WidgetFlexRow, WidgetPanelCard, WidgetUserCard } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { WidgetFlexRow, WidgetPanelCard } from '@/devlink3';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 import AvailabilitySlotSelect from './AvailabilitySlotSelect/AvailabilitySlotSelect';
-import SelectConfirmedSlots from './SelectConfirmedSlots';
-import SelectPanel from './SelectPanel';
-import SelectPanelUsers from './SelectPanelUsers';
+import AllUsersNotClickable from './ListAllUsers';
+import SelectConfirmedSlots from './SchedulingFlow/SelectConfirmedSlots';
+import SelectPanel from './SchedulingFlow/SelectPanel';
+import SelectPanelUsers from './SchedulingFlow/SelectPanelUsers';
+import SelectUsers from './SchedulingFlow/SelectUsers';
 import { FunctionResponse } from '../../types';
 
 function WidgetComp({
@@ -53,48 +54,14 @@ function WidgetComp({
 
     case 'fetch-user-by-name':
       if ('panels' in funct.response) {
-        // Handle 'panels' property
         const panels = funct.response.panels;
         return <SelectPanel panels={panels} />;
       } else if ('users' in funct.response) {
         const users = funct.response.users;
-        return (
-          <WidgetFlexRow
-            slorWidgetIndividual={users?.map((user) => {
-              return (
-                <WidgetUserCard
-                  key={user.applications.id}
-                  textName={user.candidate.first_name}
-                  textEmail={user.candidate.email}
-                  slotUserAvatar={
-                    <MuiAvatar
-                      key={user.candidate.id}
-                      src={user.candidate?.avatar}
-                      level={user.candidate?.first_name}
-                      variant='circular'
-                      height='28px'
-                      width='28px'
-                      fontSize='12px'
-                    />
-                  }
-                  onClickUser={{
-                    onClick: () => {
-                      submitHandler({
-                        input: `User is ${JSON.stringify(user)}`,
-                        selectedItem: {
-                          selectedUser: user,
-                          message: `Candidate is ${JSON.stringify(user.candidate.first_name)}`,
-                        },
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-          />
-        );
+        return <SelectUsers users={users} />;
       }
       break;
+
     case 'find_available_time_slots': {
       if ('panels' in funct.response) {
         const panels = funct.response.panels;
@@ -126,6 +93,13 @@ function WidgetComp({
       }
       break;
     }
+
+    case 'get-all-interviewers':
+      if ('users' in funct.response) {
+        const users = funct.response.users;
+        return <AllUsersNotClickable users={users} />;
+      }
+      break;
 
     default:
       return '';

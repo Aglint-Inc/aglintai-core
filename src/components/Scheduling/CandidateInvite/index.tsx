@@ -12,6 +12,7 @@ import {
   LoadedSlots,
   OpenedInvitationLink,
 } from '@/devlink';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { ApiResponse } from './type';
@@ -70,6 +71,7 @@ function CandidateInvite() {
         organizer_id: schedule.created_by,
       });
       if (res.status === 200 && res.data) {
+        await handleChat(selectedSlot);
         setSchedule({
           ...schedule,
           schedule_time: selectedSlot as any,
@@ -81,6 +83,53 @@ function CandidateInvite() {
       toast.error("Couldn't confirm slot, please try again later");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleChat = async (selectedSlot: TimeSlot) => {
+    try {
+      if (router.query.chat_id) {
+        const { data, error } = await supabase
+          .from('agent_chat')
+          .select('*')
+          .eq('id', router.query.chat_id);
+
+        if (error) {
+          throw error;
+        }
+        if (data.length > 0) {
+          await supabase
+            .from('agent_chat')
+            .update({
+              history: [
+                ...data[0].history,
+                {
+                  type: 'activity',
+                  value: `Candidate has confirmed the slot`,
+                  status: 'success',
+                  created_at: new Date().toISOString(),
+                },
+              ],
+            })
+            .eq('id', router.query.chat_id);
+
+          await supabase.from('agent_activity').insert({
+            agent_chat_id: String(router.query.chat_id),
+            type: 'candidate',
+            title: `Candidate has confirmed the slot on ${dayjs(selectedSlot.startTime).format('D MMM h:mm A')} - ${dayjs(selectedSlot.endTime).format('D MMM h:mm A')}`,
+            created_at: new Date().toISOString(),
+            icon_status: 'success',
+            event: {
+              type: 'candidate_confirmation',
+              appication_id: schedule.applications.id,
+              interviewers_id,
+              schedule,
+            },
+          });
+        }
+      }
+    } catch (e) {
+      //
     }
   };
 
