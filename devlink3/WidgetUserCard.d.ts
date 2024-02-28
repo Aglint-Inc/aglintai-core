@@ -7,4 +7,5 @@ declare function WidgetUserCard(props: {
   textName?: React.ReactNode;
   textEmail?: React.ReactNode;
   onClickUser?: Types.Devlink.RuntimeProps;
+  isSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

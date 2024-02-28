@@ -1,18 +1,12 @@
 import { AvatarGroup } from '@mui/material';
+import React from 'react';
 
 import { WidgetFlexRow, WidgetPanelCard } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { PanelType } from '@/src/components/Scheduling/Panels/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
-import {
-  setLoading,
-  setSelectedChat,
-  useSchedulingAgentStore,
-} from '../../../../store';
-
-function SelectPanel({
+function SelectPanelForAvailibility({
   panels,
 }: {
   panels: {
@@ -29,69 +23,11 @@ function SelectPanel({
   }[];
 }) {
   const { members } = useAuthDetails();
-  const selectedChat = useSchedulingAgentStore((state) => state.selectedChat);
-  const { updateAllChat } = useSchedulingAgent();
-
-  const submitHandler = (message: string, selectedPanel?: PanelType) => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      addMessageToChatHistory(message, selectedPanel);
-    }, 1000);
-  };
-
-  const addMessageToChatHistory = (
-    message: string,
-    selectedPanel?: PanelType,
-  ) => {
-    const updatedHistory = [
-      ...selectedChat.history,
-      {
-        type: 'user',
-        value: message,
-        selectedItem:
-          {
-            selectedPanel,
-            message: `Schedule with panel ${selectedPanel.name}`,
-          } || null,
-        created_at: new Date().toISOString(),
-      },
-    ];
-
-    setSelectedChat({
-      history: updatedHistory,
-    } as any);
-
-    const histAfterAssisResponse = [
-      ...updatedHistory,
-      {
-        type: 'assistant',
-        value: `Select users from panel ${selectedPanel.name}`,
-        funcRes: [
-          {
-            name: 'select-panel-users-for-scheduling',
-            response: {
-              panel: selectedPanel,
-            },
-          } as any,
-        ],
-        created_at: new Date().toISOString(),
-      },
-    ];
-
-    setSelectedChat({
-      history: histAfterAssisResponse,
-    } as any);
-
-    updateAllChat(histAfterAssisResponse as any);
-  };
-
+  const { submitHandler } = useSchedulingAgent();
   return (
     <WidgetFlexRow
       slorWidgetIndividual={panels?.map((panel) => (
         <WidgetPanelCard
-          textMemberCount={`${panel.relations?.length} members` || 0}
           key={panel.id}
           textPanelName={panel.name}
           slotAvatarGroup={
@@ -125,10 +61,13 @@ function SelectPanel({
           }
           onClickCard={{
             onClick: () => {
-              submitHandler(
-                `Schedule with panel ${panel.id}`,
-                panel as unknown as PanelType,
-              );
+              submitHandler({
+                input: `Here is the panel name ${JSON.stringify(panel)} for requesting availibility.`,
+                selectedItem: {
+                  panel: panel,
+                  message: `Schedule with panel ${panel.name}`,
+                },
+              });
             },
           }}
         />
@@ -137,4 +76,4 @@ function SelectPanel({
   );
 }
 
-export default SelectPanel;
+export default SelectPanelForAvailibility;

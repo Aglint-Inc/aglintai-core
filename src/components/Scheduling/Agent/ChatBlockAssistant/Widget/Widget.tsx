@@ -1,14 +1,13 @@
 import { Stack } from '@mui/material';
 
-import { WidgetFlexRow, WidgetPanelCard } from '@/devlink3';
-import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
-
 import AvailabilitySlotSelect from './AvailabilitySlotSelect/AvailabilitySlotSelect';
+import SelectPanelForAvailibility from './AvailabilitySlotSelect/SelectPanel';
 import AllUsersNotClickable from './ListAllUsers';
 import SelectConfirmedSlots from './SchedulingFlow/SelectConfirmedSlots';
 import SelectPanel from './SchedulingFlow/SelectPanel';
 import SelectPanelUsers from './SchedulingFlow/SelectPanelUsers';
 import SelectUsers from './SchedulingFlow/SelectUsers';
+import SelectMultipleUsers from './SelectMultipleUsers';
 import { FunctionResponse } from '../../types';
 
 function WidgetComp({
@@ -19,8 +18,6 @@ function WidgetComp({
   functionResp: FunctionResponse[];
   index: number;
 }) {
-  const { submitHandler } = useSchedulingAgent();
-
   const funct = functionResp[functionResp.length - 1];
   if (!funct || !funct?.response) {
     return '';
@@ -52,6 +49,13 @@ function WidgetComp({
       }
       break;
 
+    case 'create-interview-panel':
+      if ('users' in funct.response) {
+        const users = funct.response.users;
+        return <SelectMultipleUsers users={users} index={index} />;
+      }
+      break;
+
     case 'fetch-user-by-name':
       if ('panels' in funct.response) {
         const panels = funct.response.panels;
@@ -65,23 +69,7 @@ function WidgetComp({
     case 'find_available_time_slots': {
       if ('panels' in funct.response) {
         const panels = funct.response.panels;
-        return (
-          <WidgetFlexRow
-            slorWidgetIndividual={panels?.map((panel) => (
-              <WidgetPanelCard
-                key={panel.id}
-                textPanelName={panel.name}
-                onClickCard={{
-                  onClick: () => {
-                    submitHandler({
-                      input: `here is the panel name ${panel.name}`,
-                    });
-                  },
-                }}
-              />
-            ))}
-          />
-        );
+        return <SelectPanelForAvailibility panels={panels} />;
       } else if ('slots' in funct.response) {
         return (
           <AvailabilitySlotSelect

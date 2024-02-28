@@ -25,7 +25,7 @@ export interface SchedulingAgent {
 
 const initialState: SchedulingAgent = {
   allChat: [],
-  selectedChat: { history: [] } as any,
+  selectedChat: { history: [], id: null, title: null } as AgentChat,
   userText: '',
   loading: false,
   activities: [],

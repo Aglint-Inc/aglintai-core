@@ -9,6 +9,7 @@ export function WidgetUserCard({
   textName = "Username",
   textEmail = "email id",
   onClickUser = {},
+  isSelected = false,
 }) {
   return (
     <_Component
@@ -34,6 +35,12 @@ export function WidgetUserCard({
           {textEmail}
         </_Builtin.Block>
       </_Builtin.Block>
+      {isSelected ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "is_active_blue_100")}
+          tag="div"
+        />
+      ) : null}
     </_Component>
   );
 }

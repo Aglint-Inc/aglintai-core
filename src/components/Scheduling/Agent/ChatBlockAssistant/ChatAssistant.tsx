@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 
 import { ChatBlock } from '@/devlink3';
 
-import WidgetComp from './Widget';
+import WidgetComp from './Widget/Widget';
 import ScheduleIcon from '../ScheduleIcon';
 import { useSchedulingAgentStore } from '../store';
 import { allFunctions, FunctionResponse } from '../types';

@@ -18,6 +18,16 @@ function SuggetionCards() {
         }}
       />
       <SuggetionCard
+        textSuggestion={'Request availibitiy for an interview panel'}
+        onClickCard={{
+          onClick: () => {
+            submitHandler({
+              input: 'Request availibitiy for an interview panel',
+            });
+          },
+        }}
+      />
+      <SuggetionCard
         textSuggestion={'Create Interview Panel'}
         onClickCard={{
           onClick: () => {
@@ -33,16 +43,7 @@ function SuggetionCards() {
           },
         }}
       />
-      <SuggetionCard
-        textSuggestion={'Find time slots available for the panel'}
-        onClickCard={{
-          onClick: () => {
-            submitHandler({
-              input: 'Find time slots available for the panel',
-            });
-          },
-        }}
-      />{' '}
+
       <SuggetionCard
         textSuggestion={'What can you do?'}
         onClickCard={{

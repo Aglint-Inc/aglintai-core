@@ -17,7 +17,7 @@ import { AgentActivityType } from '@/src/types/data.types';
 
 import Activity from './Activity';
 import ActivityDrawer from './ActivityDrawer';
-import ChatBlockAssistant from './ChatBlockAssistant';
+import ChatBlockAssistant from './ChatBlockAssistant/ChatAssistant';
 import IconActivity from './IconActivity';
 import ScheduleIcon from './ScheduleIcon';
 import {
@@ -30,7 +30,6 @@ import {
 } from './store';
 import SuggetionCards from './SuggestionCards';
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
-import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
 dayjs.extend(relativeTime);
 export type AisubmitHandlerParams = {
@@ -58,7 +57,7 @@ function SchedulingAgent() {
           <NewChatButton
             onClickChat={{
               onClick: () => {
-                setSelectedChat({ history: [] } as any);
+                setSelectedChat({ history: [], id: null, title: null } as any);
               },
             }}
           />
@@ -143,14 +142,7 @@ function SchedulingAgent() {
                     {loading && (
                       <ChatBlock
                         testName={'Aglint'}
-                        slotAvatar={
-                          <Icon
-                            variant='ChatLogo'
-                            color='#FF6224'
-                            height='40'
-                            width='40'
-                          />
-                        }
+                        slotAvatar={<ScheduleIcon />}
                         textTime={''}
                         slotWidget={<ChatMessageLoader />}
                         isWidget={true}

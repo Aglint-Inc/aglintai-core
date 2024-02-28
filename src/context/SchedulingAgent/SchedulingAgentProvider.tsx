@@ -76,6 +76,7 @@ const SchedulingAgentProvider = ({ children }) => {
       selectedChat.recruiter_id = recruiter?.id;
       allChat.push(selectedChat);
     }
+
     setUserText('');
     // Update the chat history with the user's input immediately
     const updatedHistory = [
@@ -111,6 +112,8 @@ const SchedulingAgentProvider = ({ children }) => {
       if (res.status !== 200) {
         throw new Error('Error in response');
       }
+
+      scrollToBottom();
 
       if (!res?.data?.funcRes[res.data.funcRes.length - 1]?.activity) {
         allActivity = [];
@@ -181,6 +184,15 @@ const SchedulingAgentProvider = ({ children }) => {
       setActivityLoading(false);
     } catch (e) {
       //
+    }
+  };
+
+  const scrollToBottom = () => {
+    const container = document.querySelector(
+      '[class*=AgentLayout_task_chat_body]',
+    );
+    if (container) {
+      container.scrollTop = container.scrollHeight;
     }
   };
 
