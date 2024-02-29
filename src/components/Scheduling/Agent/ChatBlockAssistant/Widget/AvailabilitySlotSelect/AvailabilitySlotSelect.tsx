@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { has } from 'lodash';
-import React, { useMemo, useState } from 'react';
+import { cloneDeep, get, set } from 'lodash';
+import React, { useState } from 'react';
 
 import { LoadedSlotPill } from '@/devlink';
 import { WidgetFlexRow, WidgetTimeGroup } from '@/devlink3';
@@ -10,7 +10,7 @@ import { MergedEvents } from '@/src/components/Scheduling/Availability/availabil
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
-import { useSchedulingAgentStore } from '../../../store';
+import { setSelectedChat, useSchedulingAgentStore } from '../../../store';
 
 const AvailabilitySlotSelect = ({
   response,
@@ -26,10 +26,9 @@ const AvailabilitySlotSelect = ({
   const { selectedChat } = useSchedulingAgentStore();
   const [checkedSlots, setCheckedSlots] = useState<string[]>([]);
   const { recruiterUser, recruiter } = useAuthDetails();
-  const mergedTimeSlots = useMemo(() => {
-    const res = convertToMergedData(response.slots);
-    return res;
-  }, [response]);
+  const path = `history[${index}].funcRes[0].response.slots`;
+  const mergedTimeSlots: MergedEvents = get(selectedChat, path);
+
   return (
     <>
       <WidgetFlexRow
@@ -46,9 +45,9 @@ const AvailabilitySlotSelect = ({
                       const [start, end] = timeKey.split('_');
                       let checkedPath = `${dateKey}_${timeKey}`;
 
-                      const isChecked = Boolean(
-                        checkedSlots.find((s) => s === checkedPath),
-                      );
+                      const isChecked =
+                        mergedTimeSlots[String(dateKey)][String(timeKey)]
+                          .isChecked;
                       return (
                         <>
                           <LoadedSlotPill
@@ -56,10 +55,24 @@ const AvailabilitySlotSelect = ({
                             onClickPill={{
                               onClick: () => {
                                 if (isChecked) {
+                                  setSelectedChat(
+                                    updateMergedAvail(
+                                      selectedChat,
+                                      `${path}[${dateKey}][${timeKey}]`,
+                                      false,
+                                    ),
+                                  );
                                   setCheckedSlots((prev) =>
                                     prev.filter((str) => str !== checkedPath),
                                   );
                                 } else {
+                                  setSelectedChat(
+                                    updateMergedAvail(
+                                      selectedChat,
+                                      `${path}[${dateKey}][${timeKey}]`,
+                                      true,
+                                    ),
+                                  );
                                   setCheckedSlots((prev) => [
                                     ...prev,
                                     checkedPath,
@@ -77,7 +90,7 @@ const AvailabilitySlotSelect = ({
                                 <InterviewerGroup
                                   profileUrls={mergedTimeSlots[String(dateKey)][
                                     String(timeKey)
-                                  ].map((int) => ({
+                                  ].slots.map((int) => ({
                                     name: int.interviewerName,
                                     url: int.profileImg,
                                   }))}
@@ -148,49 +161,9 @@ const AvailabilitySlotSelect = ({
 
 export default AvailabilitySlotSelect;
 
-const convertToMergedData = (data: InterviewSchedule) => {
-  let result = {};
-  for (let date in data) {
-    for (let time in data[String(date)]) {
-      for (let inter of data[String(date)][String(time)]) {
-        if (inter.status !== 'available' && inter.status !== 'requested')
-          continue;
-        if (data[String(date)][String(time)])
-          if (!has(result, date)) {
-            result[String(date)] = {};
-          }
-        if (!has(result[String(date)], time)) {
-          result[String(date)][String(time)] = [];
-        }
-        if (
-          !result[String(date)][String(time)].find(
-            (int) => int.interviewerId === inter.interviewerId,
-          )
-        ) {
-          result[String(date)][String(time)].push({
-            ...inter,
-            startTime: dayjs(inter.startTime).toDate(),
-            endTime: dayjs(inter.endTime).toDate(),
-          });
-        }
-      }
-    }
-  }
-  return result as MergedEvents;
-};
-
-type InterviewSlot = {
-  startTime: string;
-  endTime: string;
-  interviewerId: string;
-  interviewerName: string;
-  profileImg: string;
-  status: string;
-  email: string;
-};
-
-type InterviewSchedule = {
-  [date: string]: {
-    [timeRange: string]: InterviewSlot[];
-  };
+const updateMergedAvail = (selectedChat, path, isChecked) => {
+  const newSelectedChat = cloneDeep(selectedChat);
+  set(newSelectedChat, `${path}.isChecked`, isChecked);
+  set(newSelectedChat, `${path}.isChecked`, isChecked);
+  return newSelectedChat;
 };

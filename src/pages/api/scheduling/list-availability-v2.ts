@@ -40,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         end: working_hours.endTime,
       },
     );
+    // const mergedSlots = convertToMergedData(interviewers);
     return res.status(200).json(interviewers);
   } catch (error) {
     // console.log(error);
@@ -48,3 +49,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+export type InterviewSlot = {
+  startTime: string;
+  endTime: string;
+  interviewerId: string;
+  interviewerName: string;
+  profileImg: string;
+  status: string;
+  email: string;
+};
+
+export type InterviewSchedule = {
+  [date: string]: {
+    [timeRange: string]: InterviewSlot[];
+  };
+};
