@@ -17,6 +17,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 function SideNavbar() {
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
   let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
+  let isSourcingEnabled = posthog.isFeatureEnabled('isSourcingEnabled');
+
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
 
@@ -35,7 +37,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
-      isvisible: true,
+      isvisible: isSourcingEnabled,
     },
     {
       icon: <NavTickets isActive={false} />,
