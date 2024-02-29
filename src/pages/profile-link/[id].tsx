@@ -9,7 +9,7 @@ import {
   CandidateSkillPills,
   // InterviewAiTranscriptCard,
   // InterviewCandidateCard,
-  ProfileInterviewScore,
+  // ProfileInterviewScore,
   ProfileShare,
 } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
@@ -20,12 +20,12 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import {
-  DetailedInterviewResultParams,
+  // DetailedInterviewResultParams,
   giveColorForInterviewScore,
-  giveRateInWordForInterview,
-  InterviewResultParams,
+  // giveRateInWordForInterview,
+  // InterviewResultParams,
   NewResumeScoreDetails,
-  Transcript,
+  // Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
@@ -138,11 +138,11 @@ function InterviewFeedbackPage() {
           setOpenPanelDrawer={setOpenTranscript}
         >
           <Stack width={500}>
-            <Transcript
+            {/* <Transcript
               application={application}
               setOpenDetailedResult={setOpenTranscript}
               hideResult={true}
-            />
+            /> */}
           </Stack>
         </SidePanelDrawer>
 
@@ -151,77 +151,79 @@ function InterviewFeedbackPage() {
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
-            application.assessment_results.result && (
-              <>
-                <ProfileInterviewScore
-                  textInterviewScore={
-                    interviewScore ? `${interviewScore} / 100` : '--'
-                  }
-                  propsTextColor={{
-                    style: {
-                      color: giveColorForInterviewScore(interviewScore),
-                    },
-                  }}
-                  propsTextColorInterviewScore={{
-                    style: {
-                      color: giveColorForInterviewScore(interviewScore),
-                    },
-                  }}
-                  textInterviewScoreState={giveRateInWordForInterview(
-                    interviewScore,
-                  )}
-                  slotFeedbackScore={
-                    <InterviewResultParams
-                      resultParamsObj={application.assessment_results.result}
-                    />
-                  }
-                  slotDetailedFeedback={
-                    <DetailedInterviewResultParams
-                      resultParamsObj={application.assessment_results.result}
-                    />
-                  }
-                />
-              </>
-            )
+            <></>
+            // application.assessment_results.result && (
+            //   <>
+            //     <ProfileInterviewScore
+            //       textInterviewScore={
+            //         interviewScore ? `${interviewScore} / 100` : '--'
+            //       }
+            //       propsTextColor={{
+            //         style: {
+            //           color: giveColorForInterviewScore(interviewScore),
+            //         },
+            //       }}
+            //       propsTextColorInterviewScore={{
+            //         style: {
+            //           color: giveColorForInterviewScore(interviewScore),
+            //         },
+            //       }}
+            //       textInterviewScoreState={giveRateInWordForInterview(
+            //         interviewScore,
+            //       )}
+            //       slotFeedbackScore={
+            //         <InterviewResultParams
+            //           resultParamsObj={application.assessment_results.result}
+            //         />
+            //       }
+            //       slotDetailedFeedback={
+            //         <DetailedInterviewResultParams
+            //           resultParamsObj={application.assessment_results.result}
+            //         />
+            //       }
+            //     />
+            //   </>
+            // )
           }
-          isInterviewVisible={application.assessment_results.result !== null}
+          isInterviewVisible={false} //application.assessment_results.result !== null}
           slotInterviewTranscript={
-            application.assessment_results.responses && (
-              // eslint-disable-next-line no-unused-vars
-              //(con: any, i) => {
-              //return
-              <>
-                <>RESPONSES HERE</>
-                {/* <InterviewAiTranscriptCard
-                    key={i}
-                    textAiScript={con.content}
-                    slotAiImage={
-                      <Image
-                        src={'/images/logo/aglint.svg'}
-                        width={20}
-                        height={20}
-                        alt=''
-                      />
-                    }
-                    textAiName={'Interviewer'}
-                  />
-                  <InterviewCandidateCard
-                    key={i}
-                    textCandidateScript={con.userContent}
-                    slotCandidateImage={
-                      <MuiAvatar
-                        level={application.candidates.first_name}
-                        src={application?.candidates.avatar}
-                        variant={'rounded'}
-                        width={'auto'}
-                        height={'auto'}
-                        fontSize={'28px'}
-                      />
-                    }
-                  /> */}
-              </>
-              // },
-            )
+            <></>
+            // application.assessment_results.responses && (
+            //   // eslint-disable-next-line no-unused-vars
+            //   //(con: any, i) => {
+            //   //return
+            //   <>
+            //     <>RESPONSES HERE</>
+            //     {/* <InterviewAiTranscriptCard
+            //         key={i}
+            //         textAiScript={con.content}
+            //         slotAiImage={
+            //           <Image
+            //             src={'/images/logo/aglint.svg'}
+            //             width={20}
+            //             height={20}
+            //             alt=''
+            //           />
+            //         }
+            //         textAiName={'Interviewer'}
+            //       />
+            //       <InterviewCandidateCard
+            //         key={i}
+            //         textCandidateScript={con.userContent}
+            //         slotCandidateImage={
+            //           <MuiAvatar
+            //             level={application.candidates.first_name}
+            //             src={application?.candidates.avatar}
+            //             variant={'rounded'}
+            //             width={'auto'}
+            //             height={'auto'}
+            //             fontSize={'28px'}
+            //           />
+            //         }
+            //       /> */}
+            //   </>
+            //   // },
+            // )
           }
           isEducationVisible={
             (application?.score_json as any)?.schools.length > 0

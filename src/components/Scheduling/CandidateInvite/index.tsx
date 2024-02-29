@@ -116,7 +116,11 @@ function CandidateInvite() {
           await supabase.from('agent_activity').insert({
             agent_chat_id: String(router.query.chat_id),
             type: 'candidate',
-            title: `Candidate has confirmed the slot on ${dayjs(selectedSlot.startTime).format('D MMM h:mm A')} - ${dayjs(selectedSlot.endTime).format('D MMM h:mm A')}`,
+            title: `Candidate has confirmed the slot on ${dayjs(
+              selectedSlot.startTime,
+            ).format('D MMM h:mm A')} - ${dayjs(selectedSlot.endTime).format(
+              'D MMM h:mm A',
+            )}`,
             created_at: new Date().toISOString(),
             icon_status: 'success',
             event: {

@@ -10,6 +10,7 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candidateEmail/utils';
 
 import {
   getAssessmentStatus,
@@ -213,10 +214,10 @@ const getStatus = (
         application.phone_screening,
       );
     case JobApplicationSections.ASSESSMENT:
-      return getAssessmentStatus(application.status_emails_sent, {
-        created_at: application.assessment_results?.created_at ?? null,
-        result: application.assessment_results?.result ?? null,
-      });
+      return getAssessmentStatus(
+        application.status_emails_sent,
+        getSafeAssessmentResult(application.assessment_results),
+      );
     case JobApplicationSections.DISQUALIFIED:
       return getDisqualificationStatus(application.status_emails_sent);
   }

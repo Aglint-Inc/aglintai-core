@@ -462,6 +462,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
         handleUIJobUpdate({
           ...updatedJobDb,
+          assessment_job_relation: updatedJobDb.assessment_job_relation,
           jd_json: updatedJobDb.jd_json as JobTypeDashboard['jd_json'],
           active_status:
             updatedJobDb.active_status as JobTypeDashboard['active_status'],

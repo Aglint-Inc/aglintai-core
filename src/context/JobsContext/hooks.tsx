@@ -142,7 +142,7 @@ const useJobActions = () => {
 
         const action: Action = {
           type: ActionType.READ,
-          payload: { jobsData: fechedJobs },
+          payload: { jobsData: fechedJobs as unknown as JobTypeDashboard[] },
         };
         dispatch(action);
         return fechedJobs;
