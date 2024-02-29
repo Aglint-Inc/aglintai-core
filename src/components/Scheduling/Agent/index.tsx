@@ -68,8 +68,8 @@ function SchedulingAgent() {
                 setSelectedChat({ history: [] });
               }}
             >
-              clear 
-            {/* </button> */}
+              clear
+            </button> */}
             {allChat.map((chat) => {
               return (
                 <AgentTask
