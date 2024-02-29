@@ -18,6 +18,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 const PanelRowDialog = ({ onClose, intId }) => {
   const interviewers = useAvailableStore((state) => state.interviewers);
+  const dateRangeView = useAvailableStore((state) => state.dateRangeView);
   const timeSlot = useAvailableStore((state) => state.timeSlot);
   const interviewer = interviewers.find((i) => i.interviewerId === intId);
   const cntReq = countSlotStatus(interviewer.slots, 'requested', timeSlot);
@@ -54,7 +55,12 @@ const PanelRowDialog = ({ onClose, intId }) => {
             const user_id = interviewer.interviewerId;
             const req_user_id = recruiterUser.user_id;
             const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${user_id}&req_user_id=${req_user_id}&time_duration=${timeSlot}`;
-            await sendReqMail(interviewer.email, link);
+            await sendReqMail(
+              interviewer.email,
+              recruiterUser.first_name,
+              link,
+              { start: dateRangeView.startDate, end: dateRangeView.endDate },
+            );
             toast.success('mail sent');
           },
         }}

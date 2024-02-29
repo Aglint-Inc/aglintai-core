@@ -791,24 +791,29 @@ export const InterviewResultParams = ({
 }: {
   resultParamsObj: ReturnType<typeof getInterviewScores>;
 }) => {
-  return resultParamsObj.map((f, i) => {
-    const score = f.score.percentage;
-    const circularScore = (
-      <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
-        <SmallCircularScore2 score={score} />
-      </Stack>
-    );
-    const color = score > 33 ? (score > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
-    return (
-      <FeedbackScore
-        key={i}
-        textFeedback={capitalize(f.name)}
-        textScorePercentage={`${score}%`}
-        slotFeedbackScoreGraphs={circularScore}
-        propsTextScore={{ style: { color: color } }}
-      />
-    );
-  });
+  return (
+    <>
+      {resultParamsObj.map((f, i) => {
+        const score = f.score.percentage;
+        const circularScore = (
+          <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
+            <SmallCircularScore2 score={score} />
+          </Stack>
+        );
+        const color =
+          score > 33 ? (score > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
+        return (
+          <FeedbackScore
+            key={i}
+            textFeedback={capitalize(f.name)}
+            textScorePercentage={`${score}%`}
+            slotFeedbackScoreGraphs={circularScore}
+            propsTextScore={{ style: { color: color } }}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export const NewResumeScoreDetails = ({
@@ -875,12 +880,12 @@ export const ResumeResultParams = ({
     return e === 100
       ? 'Perfect'
       : e >= 75
-        ? 'High'
-        : e >= 50
-          ? 'Average'
-          : e >= 25
-            ? 'Low'
-            : 'Poor';
+      ? 'High'
+      : e >= 50
+      ? 'Average'
+      : e >= 25
+      ? 'Low'
+      : 'Poor';
   };
   return (
     <>
@@ -1371,18 +1376,18 @@ export function giveRateInWordForInterview(overAllScore: number) {
   return overAllScore > 90
     ? `Absolutely incredible! 🌟😍`
     : overAllScore > 70
-      ? `Truly outstanding! 🤩`
-      : overAllScore > 50
-        ? `Excellent job! 👏`
-        : `Not up to mark! 😑`;
+    ? `Truly outstanding! 🤩`
+    : overAllScore > 50
+    ? `Excellent job! 👏`
+    : `Not up to mark! 😑`;
 }
 
 export function giveColorForInterviewScore(rating) {
   return rating >= 90
     ? '#228F67'
     : rating >= 70
-      ? '#f79a3e'
-      : rating >= 50
-        ? '#de701d'
-        : '#d93f4c';
+    ? '#f79a3e'
+    : rating >= 50
+    ? '#de701d'
+    : '#d93f4c';
 }
