@@ -19,9 +19,8 @@ const oAuth2Client = new OAuth2Client(
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { organizer_id, event_id, status } = req.body as BodyParams;
-  if (!organizer_id || !event_id || !status)
-    return res.status(400).send('missing Fields');
+  let { organizer_id, event_id } = req.body as BodyParams;
+  if (!organizer_id || !event_id) return res.status(400).send('missing Fields');
   try {
     const authTokens = await getRecruiterAuthTokens(organizer_id);
     oAuth2Client.setCredentials({
