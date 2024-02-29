@@ -5,13 +5,7 @@ import type React from 'react';
 
 import { pageRoutes } from '../utils/pageRouting';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 type PageRoutes = typeof pageRoutes;
 
