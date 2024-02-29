@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
 
 import useJobActions from './hooks';
+import { JobContext } from './types';
 import { initialJobContext } from './utils';
 
 const JobsContext = createContext(initialJobContext);
@@ -12,7 +13,7 @@ const JobsProvider = ({ children }: { children: ReactNode }) => {
 
 export default JobsProvider;
 
-export const useJobs = () => {
+export const useJobs = (): JobContext => {
   const value = useContext(JobsContext);
   return { ...value };
 };

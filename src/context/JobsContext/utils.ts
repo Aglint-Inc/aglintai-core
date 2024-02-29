@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { supabase } from '@/src/utils/supabase/client';
 
-import { JobContext } from './types';
 import { JobApplicationSections } from '../JobApplicationsContext/types';
 
-export const initialJobContext: JobContext = {
+export const initialJobContext = {
   jobsData: { applications: undefined, jobs: undefined },
   handleJobRead: undefined,
   handleJobUpdate: undefined,
@@ -18,7 +17,7 @@ export const initialJobContext: JobContext = {
 export const readJobDbAction = async (recruiter_id: string) => {
   const { data, error } = await supabase
     .from('public_jobs')
-    .select('*')
+    .select('*, assessment_job_relation(assessment(*))')
     .order('created_at', { ascending: false })
     .eq('recruiter_id', recruiter_id);
 

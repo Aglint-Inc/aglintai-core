@@ -241,8 +241,8 @@ const getTimeText = (hours: number) => {
 export const getAssessmentStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
   assessment_results: {
-    result: JobApplication['assessment_results']['result'];
-    created_at: JobApplication['assessment_results']['created_at'];
+    result: JobApplication['assessment_results'][number]['result'];
+    created_at: JobApplication['assessment_results'][number]['created_at'];
   },
 ) => {
   const emails = (status_emails_sent ?? null) as {

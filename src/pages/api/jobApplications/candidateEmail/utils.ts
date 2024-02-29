@@ -12,6 +12,7 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
+import { AssessmentResult } from '@/src/queries/assessment/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -49,12 +50,9 @@ export const readSomeCandidates = async (
       application_id: id,
       status_emails_sent,
       phone_screening,
-      assessment_results: {
-        result: (assessment_results[0]?.result ??
-          null) as JobApplication['assessment_results']['result'],
-        created_at: (assessment_results[0]?.created_at ??
-          null) as JobApplication['assessment_results']['created_at'],
-      },
+      assessment_results: getSafeAssessmentResult(
+        assessment_results as AssessmentResult[],
+      ),
     }),
   );
   return candidates;
@@ -93,12 +91,7 @@ export const readCandidates = async (
       status_emails_sent,
       phone_screening,
       candidate_id,
-      assessment_results: {
-        result: (assessment_results?.result ??
-          null) as JobApplication['assessment_results']['result'],
-        created_at: (assessment_results?.created_at ??
-          null) as JobApplication['assessment_results']['created_at'],
-      },
+      assessment_results: getSafeAssessmentResult(assessment_results),
     }),
   );
   return candidates;
@@ -275,6 +268,21 @@ const getUpdateEmailStatus = (
   ) as {
     // eslint-disable-next-line no-unused-vars
     [key in JobApplicationEmails['request']['purposes'][number]]: string;
+  };
+};
+
+export const getSafeAssessmentResult = (
+  assessment_results: JobApplication['assessment_results'],
+) => {
+  if (
+    !assessment_results ||
+    !Array.isArray(assessment_results) ||
+    assessment_results.length === 0
+  )
+    return { result: null, created_at: null };
+  return {
+    result: assessment_results[0].result,
+    created_at: assessment_results[0].created_at,
   };
 };
 

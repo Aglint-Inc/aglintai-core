@@ -8,8 +8,8 @@ import {
 import { PanelType } from '@/src/components/Scheduling/Panels/store';
 import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
+import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Applications } from '@/src/types/applications.types';
-import { AssessmentResults } from '@/src/types/assessment_results.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
@@ -39,9 +39,9 @@ export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 export type JobApplication = Applications & {
   candidates: Partial<Candidate> & { id: Candidate['id'] };
   candidate_files: Partial<CandidateFiles> & { id: CandidateFiles['id'] };
-  assessment_results: Partial<AssessmentResults> & {
-    id: AssessmentResults['id'];
-  };
+  assessment_results: (Partial<AssessmentResult> & {
+    id: AssessmentResult['id'];
+  })[];
   schedule: Partial<InterviewScheduleTypeDB>;
   panel: Partial<PanelType>;
   emailValidity?: {

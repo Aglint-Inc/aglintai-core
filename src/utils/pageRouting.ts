@@ -18,6 +18,7 @@ export const pageRoutes = Object.freeze({
   ASSESSMENTS: '/assessment-new',
   ASSESSMENT: '/assessment-new/[id]',
   MOCKTEST: '/assessment',
+  CANDIDATE_ASSESSMENT: '/candidate-assessment',
   JOBPOST: '/job-post/',
   COMPANYPOSTINGS: '/company-postings/',
   SUPPORT: '/support',

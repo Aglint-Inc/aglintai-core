@@ -1,5 +1,6 @@
 import { get, isEmpty } from 'lodash';
 
+import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -38,10 +39,12 @@ export async function saveJobPostToDb(jobForm: JobFormState) {
         recruiter_id: updateJobData.recruiter_id,
         draft: updateJobData,
       })
-      .select(),
+      .select('*,assessment_job_relation(assessment(*))'),
   );
 
-  return updatedJob as JobTypeDB;
+  return updatedJob as JobTypeDB & {
+    assessment_job_relation: JobTypeDashboard['assessment_job_relation'];
+  };
 }
 
 export const getjobformToDbcolumns = (jobForm: JobFormState) => {

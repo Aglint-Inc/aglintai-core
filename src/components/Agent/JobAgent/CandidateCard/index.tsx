@@ -6,7 +6,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 import { getResumeMatched } from '@/src/context/JobAssistant/utils';
-import { supabase } from '@/src/utils/supabase/client';
+// import { supabase } from '@/src/utils/supabase/client';
 // import { supabase } from '@/src/utils/supabaseClient';
 
 function CandidateCard({
@@ -33,15 +33,15 @@ function CandidateCard({
         id: application.candidates.id,
       },
     );
-    const { data: assessment_results } = await supabase
-      .from('assessment_results')
-      .select()
-      .eq('application_id', application.id);
+    // const { data: assessment_results } = await supabase
+    //   .from('assessment_results')
+    //   .select()
+    //   .eq('application_id', application.id);
 
     setApplicationDetails({
       ...application,
       candidate_files: candidate_files[0],
-      assessment_results: assessment_results[0],
+      // assessment_results: assessment_results[0],
       emailValidity: {
         isFetching: false,
         isValidEmail: false,
