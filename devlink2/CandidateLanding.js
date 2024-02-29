@@ -15,6 +15,7 @@ export function CandidateLanding({
   slotInstructions,
   textTime = "30 minitues",
   isAboutCompnay = false,
+  textAssessmentCount = "2",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cand-land-wrap")} tag="div">
@@ -124,10 +125,21 @@ export function CandidateLanding({
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "est-wrap")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+            className={_utils.cx(_styles, "assessment_flex")}
             tag="div"
           >
-            {"Assesments (2)"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+              tag="div"
+            >
+              {"Assesments - "}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "text-blue-500")}
+              tag="div"
+            >
+              {textAssessmentCount}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-959")}

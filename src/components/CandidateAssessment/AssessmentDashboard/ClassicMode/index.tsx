@@ -42,6 +42,7 @@ function ClassicMode() {
   const [answers, setAnswers] = useState<responseType[]>([]);
   const [inputText, setInputText] = useState('');
   const [timerTime, setTimerTime] = useState(null);
+  const [resultUpdated, setResultUpdated] = useState(false);
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
   function nextClick() {
@@ -121,6 +122,7 @@ function ClassicMode() {
   }
 
   async function submitAssessment() {
+    setResultUpdated(true);
     const { data: originalAnswers } = await axios.post(
       '/api/candidate-assessment/assessment-answers',
       {
@@ -153,9 +155,13 @@ function ClassicMode() {
       },
     });
 
-    await handleAssessmentResultApi('result', {
-      result_id: results.id,
-    });
+    try {
+      await handleAssessmentResultApi('result', {
+        result_id: results.id,
+      });
+    } catch (error) {
+      return error;
+    }
     setOpenConfirmation(false);
     router.push('/assessment-thanks');
   }
@@ -228,6 +234,7 @@ function ClassicMode() {
           }}
         >
           <AssessmentSubmitPop
+            isLoading={resultUpdated}
             onClickSubmit={{
               onClick: submitAssessment,
             }}

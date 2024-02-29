@@ -106,6 +106,7 @@ function CandidateAssessment() {
   return (
     <div>
       <CandidateLanding
+        textAssessmentCount={`(${assessmentsList?.length})`}
         slotLogo={
           <>
             <Avatar

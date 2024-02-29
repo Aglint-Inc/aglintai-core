@@ -7,6 +7,8 @@ export function AssessmentSubmitPop({
   as: _Component = _Builtin.Block,
   onClickCancel = {},
   onClickSubmit = {},
+  isLoading = false,
+  slotLoader,
 }) {
   return (
     <_Component
@@ -33,23 +35,39 @@ export function AssessmentSubmitPop({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-991")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-992", "cursor-pointer")}
+          className={_utils.cx(_styles, "wide_button")}
           tag="div"
           {...onClickCancel}
         >
-          <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "button_primary", "greay_btn")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "div-block-992",
-            "green",
-            "cursor-pointer"
-          )}
-          tag="div"
-          {...onClickSubmit}
-        >
-          <_Builtin.Block tag="div">{"Submit Assessment"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "button_primary",
+              "is_enabled",
+              "main-green"
+            )}
+            tag="div"
+            {...onClickSubmit}
+          >
+            <_Builtin.Block tag="div">{"Submit Assessment"}</_Builtin.Block>
+          </_Builtin.Block>
+          {isLoading ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button_primary", "is_loading")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{slotLoader}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Loading.."}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
