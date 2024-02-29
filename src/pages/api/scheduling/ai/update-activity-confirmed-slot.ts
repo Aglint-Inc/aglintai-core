@@ -19,13 +19,13 @@ type BodyParams = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { chat_id, user_id, user_name } = req.body as BodyParams;
 
-  if (!chat_id || !user_id || !user_name)
+  if (!user_id || !user_name)
     return res.status(400).send('missing required fields');
 
   try {
     const [chatHistory] = supabaseWrap(
       await supabaseAdmin
-        .from('agent_chat')
+        .from('agent_chatx')
         .select('history')
         .eq('id', chat_id),
     );
@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     supabaseWrap(
       await supabaseAdmin
-        .from('agent_chat')
+        .from('agent_chatx')
         .update({
           history: chatHistory.history,
         })

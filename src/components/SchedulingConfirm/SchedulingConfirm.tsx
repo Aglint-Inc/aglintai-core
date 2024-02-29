@@ -130,7 +130,13 @@ const SchedulingConfirm = () => {
         interviewer_availability: newInterviewerSlot.slots,
         interviewer_id: userId,
       });
-      await push_activity(chat_id, userId, newInterviewerSlot.interviewerName);
+      if (chat_id) {
+        await push_activity(
+          chat_id,
+          userId,
+          newInterviewerSlot.interviewerName,
+        );
+      }
       setFormStatus('submitted');
     } catch (error) {
       toast.error(API_FAIL_MSG);
@@ -177,7 +183,7 @@ const SchedulingConfirm = () => {
                   isChecked: true,
                 }));
                 let timeRange =
-                  groupedSlots[String(dateKey)][String(timeKey)][0];
+                  groupedSlots[String(dateKey)][String(timeKey)].slots[0];
                 let textTime = `${dayjs(timeRange?.startTime).format(
                   'hh:mm A',
                 )} - ${dayjs(timeRange?.endTime).format('hh:mm A')}`;
