@@ -24,6 +24,9 @@
 }
 
 .panel_card_text {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   flex-direction: column;
   grid-column-gap: 2px;

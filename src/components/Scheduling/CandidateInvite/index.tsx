@@ -90,7 +90,7 @@ function CandidateInvite() {
     try {
       if (router.query.chat_id) {
         const { data, error } = await supabase
-          .from('agent_chat')
+          .from('agent_chatx')
           .select('*')
           .eq('id', router.query.chat_id);
 
@@ -99,7 +99,7 @@ function CandidateInvite() {
         }
         if (data.length > 0) {
           await supabase
-            .from('agent_chat')
+            .from('agent_chatx')
             .update({
               history: [
                 ...data[0].history,
@@ -228,7 +228,7 @@ function CandidateInvite() {
                   : 'Google Meet'
           }
           textDesc={`Hi ${schedule?.applications?.candidates?.first_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-          textDuration={schedule?.duration / 60 + ' minutes'}
+          textDuration={schedule?.duration + ' minutes'}
           slotTable={
             <Stack
               justifyContent={'center'}

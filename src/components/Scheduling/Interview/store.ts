@@ -42,6 +42,8 @@ export interface InterviewSlice {
     status: number;
   };
   duration: number;
+  isRescheduleOpen: boolean;
+  isCancelOpen: boolean;
 }
 
 const initialState: InterviewSlice = {
@@ -74,6 +76,8 @@ const initialState: InterviewSlice = {
     status: 0,
   },
   duration: 30,
+  isRescheduleOpen: false,
+  isCancelOpen: false,
 };
 
 export const useInterviewStore = create<InterviewSlice>()(() => ({
@@ -106,6 +110,12 @@ export const setFilter = (filter: InterviewSlice['filter']) =>
 
 export const setDuration = (duration: number) =>
   useInterviewStore.setState({ duration });
+
+export const setIsRescheduleOpen = (isRescheduleOpen: boolean) =>
+  useInterviewStore.setState({ isRescheduleOpen });
+
+export const setIsCancelOpen = (isCancelOpen: boolean) =>
+  useInterviewStore.setState({ isCancelOpen });
 
 export const setFilterVisible = (
   filterVisible: Partial<InterviewSlice['filterVisible']>,

@@ -76,7 +76,7 @@ export type Database = {
           agent_id: string
           created_at: string
           id: string
-          recuriter_id: string
+          recruiter_id: string
           title: string
           updated_at: string
           user_id: string
@@ -85,7 +85,7 @@ export type Database = {
           agent_id: string
           created_at?: string
           id?: string
-          recuriter_id: string
+          recruiter_id: string
           title: string
           updated_at?: string
           user_id?: string
@@ -94,24 +94,24 @@ export type Database = {
           agent_id?: string
           created_at?: string
           id?: string
-          recuriter_id?: string
+          recruiter_id?: string
           title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "agent_chat_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_agent_chat_agent_id_fkey"
             columns: ["agent_id"]
             isOneToOne: false
             referencedRelation: "agent"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_agent_chat_recuriter_id_fkey"
-            columns: ["recuriter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
           {
@@ -125,7 +125,7 @@ export type Database = {
       }
       agent_chat_messages: {
         Row: {
-          agent_chat_id: string | null
+          agent_chat_id: string
           created_at: string
           id: string
           json_content: Json | null
@@ -133,7 +133,7 @@ export type Database = {
           text_content: string | null
         }
         Insert: {
-          agent_chat_id?: string | null
+          agent_chat_id: string
           created_at?: string
           id?: string
           json_content?: Json | null
@@ -141,7 +141,7 @@ export type Database = {
           text_content?: string | null
         }
         Update: {
-          agent_chat_id?: string | null
+          agent_chat_id?: string
           created_at?: string
           id?: string
           json_content?: Json | null
@@ -1021,9 +1021,11 @@ export type Database = {
           created_by: string
           duration: number
           id: string
+          is_active: boolean
           meeting_json: Json | null
           panel_id: string
           panel_users: Json[] | null
+          resend_invite: number
           schedule_name: string
           schedule_time: Json | null
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1036,9 +1038,11 @@ export type Database = {
           created_by?: string
           duration: number
           id?: string
+          is_active?: boolean
           meeting_json?: Json | null
           panel_id: string
           panel_users?: Json[] | null
+          resend_invite?: number
           schedule_name: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1051,9 +1055,11 @@ export type Database = {
           created_by?: string
           duration?: number
           id?: string
+          is_active?: boolean
           meeting_json?: Json | null
           panel_id?: string
           panel_users?: Json[] | null
+          resend_invite?: number
           schedule_name?: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -2429,6 +2435,7 @@ export type Database = {
           email_template: Json
           result_created_at: string
           assessment_result: Json[]
+          phonescreening_templateid: string
         }[]
       }
       getallresumematches: {

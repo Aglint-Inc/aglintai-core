@@ -20,4 +20,6 @@ declare function AgentLayout(props: {
   slotInlineEditField?: Types.Devlink.Slot;
   onClickDeleteChat?: Types.Devlink.RuntimeProps;
   isEditIcon?: Types.Visibility.VisibilityConditions;
+  slotLottieLoader?: Types.Devlink.Slot;
+  isChatLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

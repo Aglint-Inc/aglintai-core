@@ -130,10 +130,11 @@
   bottom: 0%;
   z-index: 1;
 
-  border: 2px solid #5293c7;
-  border-radius: 10px;
+  border-radius: 9px;
 
   background-color: #edf7ff;
+
+  box-shadow: 0 0 0 1px hsla(206.66666666666666, 51.09%, 55.10%, 0.86);
 }
 
 #w-node-a005edcd-8b45-516f-a157-2a07853d5768-853d5768 {

@@ -1,4 +1,5 @@
-import { Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
+import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ import {
   CandidatesListPagination,
   PageLayout,
 } from '@/devlink2';
+import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -30,7 +32,9 @@ import {
   ApplicationList,
   setApplicationList,
   setFetching,
+  setIsCancelOpen,
   setIsCreateScheduleOpen,
+  setIsRescheduleOpen,
   setPagination,
   setSelectedApplication,
   useInterviewStore,
@@ -42,16 +46,18 @@ function InterviewComp() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [pageLoad, setPageLoad] = useState(true);
-  const applicationList = useInterviewStore((state) => state.applicationList);
-  const initialLoading = useInterviewStore((state) => state.initialLoading);
-  const pagination = useInterviewStore((state) => state.pagination);
-  const filter = useInterviewStore((state) => state.filter);
-  const fetching = useInterviewStore((state) => state.fetching);
-  const filterVisible = useInterviewStore((state) => state.filterVisible);
+  const {
+    applicationList,
+    filter,
+    initialLoading,
+    pagination,
+    filterVisible,
+    fetching,
+    selectedApplication,
+    isCancelOpen,
+    isRescheduleOpen,
+  } = useInterviewStore();
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
-  const selectedApplication = useInterviewStore(
-    (state) => state.selectedApplication,
-  );
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -202,8 +208,107 @@ function InterviewComp() {
     });
   };
 
+  const onClickCancel = async () => {
+    try {
+      if (selectedApplication.schedule.id) {
+        await supabase
+          .from('interview_schedule')
+          .update({ is_active: false })
+          .eq('id', selectedApplication.schedule.id);
+        setIsCancelOpen(false);
+        setSelectedApplication({ ...selectedApplication, schedule: null });
+        applicationList.filter(
+          (app) => app.applications.id === selectedApplication.applications.id,
+        )[0].schedule = null;
+        setApplicationList([...applicationList]);
+        if ((selectedApplication.schedule.meeting_json as any)?.id) {
+          const res = await axios.post(
+            '/api/scheduling/update-calender-event-status',
+            {
+              organizer_id: selectedApplication.schedule.created_by,
+              event_id: (selectedApplication.schedule.meeting_json as any).id,
+            },
+          );
+          if (res.status !== 200) {
+            throw new Error('Error in response');
+          }
+        }
+      }
+    } catch {
+      //
+    }
+  };
+
+  const onClickReschedule = async () => {
+    await onClickCancel();
+    setIsRescheduleOpen(false);
+    setIsCreateScheduleOpen(true);
+  };
+
   return (
     <>
+      <Dialog
+        sx={{
+          '& .MuiDialog-paper': {
+            background: 'transparent',
+            border: 'none',
+            borderRadius: '10px',
+          },
+        }}
+        open={isCancelOpen}
+        onClose={() => {
+          setIsCancelOpen(false);
+        }}
+      >
+        <DeletePopup
+          textTitle={'Cancel Schedule'}
+          textDescription={
+            'Are you sure you want to delete this schedule? This action cannot be undone.'
+          }
+          isIcon={false}
+          onClickCancel={{
+            onClick: () => {
+              setIsCancelOpen(false);
+            },
+          }}
+          onClickDelete={{
+            onClick: () => {
+              onClickCancel();
+            },
+          }}
+          buttonText={'Cancel Schedule'}
+        />
+      </Dialog>
+      <Dialog
+        sx={{
+          '& .MuiDialog-paper': {
+            background: 'transparent',
+            border: 'none',
+            borderRadius: '10px',
+          },
+        }}
+        open={isRescheduleOpen}
+        onClose={() => {
+          setIsRescheduleOpen(false);
+        }}
+      >
+        <ConfirmationPopup
+          textPopupTitle={'Confirm Reschedule'}
+          textPopupDescription={
+            'Old schedule will be deleted and new schedule will be created. Are you sure you want to reschedule?'
+          }
+          isIcon={false}
+          onClickCancel={{
+            onClick: () => {
+              setIsRescheduleOpen(false);
+            },
+          }}
+          onClickAction={{
+            onClick: onClickReschedule,
+          }}
+          textPopupButton={'Confirm'}
+        />
+      </Dialog>
       <CreateDialog />
       <PageLayout
         slotTopbarLeft={

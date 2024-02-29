@@ -24,6 +24,11 @@ function EditTask() {
               editValue: e.target.value,
             });
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              editName(edit.editValue);
+            }
+          }}
         />
       }
       onClickCancel={{

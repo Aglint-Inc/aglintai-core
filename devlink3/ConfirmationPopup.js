@@ -1,18 +1,18 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
-import _styles from "./DeletePopup.module.css";
+import _styles from "./ConfirmationPopup.module.css";
 
-export function DeletePopup({
+export function ConfirmationPopup({
   as: _Component = _Builtin.Block,
-  textDescription = "By Deleting this chat all the task will be discarded and the activities will no longer be accessible.",
-  textTitle = "Delete Chat",
-  onClickCancel = {},
-  onClickDelete = {},
-  slotIcon,
-  isIcon = true,
+  textPopupDescription = "By Clicking send reminder an email will be sent to the candidate with the interview details.",
+  textPopupTitle = "Send Reminder",
+  textPopupButton = "Send Reminder ",
+  slotWidget,
   isWidget = false,
-  buttonText = "Delete ",
+  onClickCancel = {},
+  onClickAction = {},
+  isIcon = true,
 }) {
   return (
     <_Component
@@ -23,19 +23,17 @@ export function DeletePopup({
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
           {isIcon ? (
             <_Builtin.Block tag="div">
-              {slotIcon ?? (
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex-2")}
-                  value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.5625%203C8.375%203%208.22917%203.08333%208.125%203.25L7.65625%204H12.3438L11.875%203.25C11.7708%203.08333%2011.625%203%2011.4375%203H8.5625ZM13.5312%204H15H16H16.5C16.8125%204.02083%2016.9792%204.1875%2017%204.5C16.9792%204.8125%2016.8125%204.97917%2016.5%205H15.9375L15.125%2016.1562C15.0833%2016.6771%2014.875%2017.1146%2014.5%2017.4688C14.125%2017.8021%2013.6667%2017.9792%2013.125%2018H6.875C6.33333%2017.9792%205.875%2017.8021%205.5%2017.4688C5.125%2017.1146%204.91667%2016.6771%204.875%2016.1562L4.0625%205H3.5C3.1875%204.97917%203.02083%204.8125%203%204.5C3.02083%204.1875%203.1875%204.02083%203.5%204H4H5H6.46875L7.28125%202.71875C7.59375%202.26042%208.02083%202.02083%208.5625%202H11.4375C11.9792%202.02083%2012.4062%202.26042%2012.7188%202.71875L13.5312%204ZM14.9375%205H5.0625L5.875%2016.0625C5.89583%2016.3333%206%2016.5521%206.1875%2016.7188C6.375%2016.9062%206.60417%2017%206.875%2017H13.125C13.3958%2017%2013.625%2016.9062%2013.8125%2016.7188C14%2016.5521%2014.1042%2016.3333%2014.125%2016.0625L14.9375%205Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              )}
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex-2")}
+                value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%202C8.21875%202%208.39844%202.07031%208.53906%202.21094C8.67969%202.35156%208.75%202.53125%208.75%202.75V3.17188C9.625%203.32813%2010.3359%203.72656%2010.8828%204.36719C11.4453%205.00781%2011.7344%205.78125%2011.75%206.6875V7.46094C11.7656%208.55469%2012.1094%209.53125%2012.7812%2010.3906L13.1328%2010.8359C13.2578%2011.0234%2013.2812%2011.2188%2013.2031%2011.4219C13.0938%2011.625%2012.9219%2011.7344%2012.6875%2011.75H3.3125C3.07812%2011.7344%202.90625%2011.625%202.79688%2011.4219C2.70312%2011.2188%202.72656%2011.0234%202.86719%2010.8359L3.21875%2010.3906C3.89062%209.53125%204.23438%208.55469%204.25%207.46094V6.6875C4.26562%205.78125%204.55469%205.00781%205.11719%204.36719C5.66406%203.72656%206.375%203.32813%207.25%203.17188V2.75C7.25%202.53125%207.32031%202.35156%207.46094%202.21094C7.60156%202.07031%207.78125%202%208%202ZM8%204.25H7.8125C7.125%204.26562%206.54688%204.5%206.07812%204.95312C5.625%205.42188%205.39062%206%205.375%206.6875V7.46094C5.35938%208.61719%205.04688%209.67188%204.4375%2010.625H11.5625C10.9375%209.67188%2010.625%208.61719%2010.625%207.46094V6.6875C10.6094%206%2010.375%205.42188%209.92188%204.95312C9.45312%204.5%208.875%204.26562%208.1875%204.25H8ZM9.5%2012.5C9.5%2012.9062%209.35156%2013.2578%209.05469%2013.5547C8.75781%2013.8516%208.40625%2014%208%2014C7.59375%2014%207.24219%2013.8516%206.94531%2013.5547C6.64844%2013.2578%206.5%2012.9062%206.5%2012.5H8H9.5Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
             </_Builtin.Block>
           ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "fw-semibold", "text-red-600")}
             tag="div"
           >
-            {textTitle}
+            {textPopupTitle}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -54,13 +52,15 @@ export function DeletePopup({
           className={_utils.cx(_styles, "text-gray-600")}
           tag="div"
         >
-          {textDescription}
+          {textPopupDescription}
         </_Builtin.Block>
         {isWidget ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_widget")}
             tag="div"
-          />
+          >
+            {slotWidget}
+          </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">
@@ -75,11 +75,11 @@ export function DeletePopup({
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "danger")}
+            className={_utils.cx(_styles, "button_primary")}
             tag="div"
-            {...onClickDelete}
+            {...onClickAction}
           >
-            <_Builtin.Block tag="div">{buttonText}</_Builtin.Block>
+            <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -7,4 +7,6 @@ declare function SidebarBlockConfirmed(props: {
   slotScheduleInfo?: Types.Devlink.Slot;
   onClickReminder?: Types.Devlink.RuntimeProps;
   slotInterviewPanel?: Types.Devlink.Slot;
+  onClickReschedule?: Types.Devlink.RuntimeProps;
+  onClickCancelSchedule?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

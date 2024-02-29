@@ -285,6 +285,8 @@ function CreateDialog() {
                         <LoadedSlots
                           key={f.date}
                           slotLoadedSlotPill={f.slots.map((slot) => {
+                            const uniqueUserIds = [...new Set(slot.user_ids)];
+
                             return (
                               <LoadedSlotPill
                                 isNotSelected={!slot.isSelected}
@@ -308,9 +310,9 @@ function CreateDialog() {
                                         fontSize: '8px',
                                       },
                                     }}
-                                    total={slot.user_ids.length}
+                                    total={uniqueUserIds.length}
                                   >
-                                    {slot.user_ids
+                                    {uniqueUserIds
                                       .slice(0, 5)
                                       .map((user_id) => {
                                         const member = members.filter(

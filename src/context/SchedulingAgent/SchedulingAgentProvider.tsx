@@ -9,6 +9,7 @@ import {
   setActivities,
   setActivityLoading,
   setAllChat,
+  setEdit,
   setLoading,
   setSelectedChat,
   setUserText,
@@ -71,7 +72,9 @@ const SchedulingAgentProvider = ({ children }) => {
     } catch (e) {
       //
     } finally {
-      setInitialLoading(false);
+      setTimeout(() => {
+        setInitialLoading(false);
+      }, 1500);
     }
   };
 
@@ -206,7 +209,7 @@ const SchedulingAgentProvider = ({ children }) => {
       '[class*=AgentLayout_task_chat_body]',
     );
     if (container) {
-      container.style.scrollBehavior = 'smooth';
+      // container.style.scrollBehavior = 'smooth';
       container.scrollTop = container.scrollHeight;
     }
   };
@@ -217,11 +220,6 @@ const SchedulingAgentProvider = ({ children }) => {
   };
 
   const editName = async (name) => {
-    await supabase
-      .from('agent_chatx')
-      .update({ title: name })
-      .eq('id', selectedChat.id);
-
     setSelectedChat({ ...selectedChat, title: name });
     const updatedChatIndex = allChat.findIndex((c) => c.id === selectedChat.id);
     const updatedChat = {
@@ -230,6 +228,14 @@ const SchedulingAgentProvider = ({ children }) => {
     };
     allChat[Number(updatedChatIndex)] = updatedChat as AgentChat;
     setAllChat([...allChat]);
+    setEdit({
+      isEdit: false,
+      editValue: '',
+    });
+    await supabase
+      .from('agent_chatx')
+      .update({ title: name })
+      .eq('id', selectedChat.id);
   };
 
   return (

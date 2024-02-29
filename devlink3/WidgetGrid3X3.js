@@ -10,7 +10,7 @@ export function WidgetGrid3X3({ as: _Component = _Builtin.Block, slotWidget }) {
     <_Component className={_utils.cx(_styles, "widget_flex3-3")} tag="div">
       {slotWidget ?? (
         <>
-          <WidgetUserCard />
+          <WidgetUserCard isSelected={true} />
           <WidgetUserCard />
           <WidgetUserCard />
           <WidgetUserCard />

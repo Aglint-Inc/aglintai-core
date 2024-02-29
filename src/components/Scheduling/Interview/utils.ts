@@ -23,6 +23,7 @@ export function findIntersection(
   }[],
 ): IntersectionResult {
   let intersection: IntersectionResult = {};
+  const currentDate = new Date();
 
   // Iterate over each availability date
   availabilities.forEach((person) => {
@@ -30,49 +31,48 @@ export function findIntersection(
       const availability = person.availibility_json.availability;
 
       Object.keys(availability).forEach((date) => {
-        const slots = availability[date];
+        // Convert date string to a Date object
+        const availabilityDate = new Date(date);
 
-        slots.forEach((slot) => {
-          const startTime = slot.startTime;
-          const endTime = slot.endTime;
-          const status = slot.status;
+        // Check if the availability date is on or after the current date
+        if (availabilityDate >= currentDate) {
+          const slots = availability[date];
 
-          // Only consider slots with status "available"
-          if (status === 'confirmed') {
-            // Initialize user_ids array for this time slot if it doesn't exist
-            if (!intersection[date]) {
-              intersection[date] = [];
+          slots.forEach((slot) => {
+            const startTime = slot.startTime;
+            const endTime = slot.endTime;
+            const status = slot.status;
+
+            // Only consider slots with status "available"
+            if (status === 'confirmed') {
+              // Initialize user_ids array for this time slot if it doesn't exist
+              if (!intersection[date]) {
+                intersection[date] = [];
+              }
+
+              // Check if this time slot exists in the intersection object
+              const existingSlot = intersection[date].find(
+                (existingSlot) =>
+                  existingSlot.startTime === startTime &&
+                  existingSlot.endTime === endTime,
+              );
+
+              // If it doesn't exist, add it with the user_id
+              if (!existingSlot) {
+                intersection[date].push({
+                  startTime: startTime,
+                  endTime: endTime,
+                  user_ids: [person.user_id],
+                });
+              } else {
+                // If it exists, add the user_id to the existing time slot
+                existingSlot.user_ids.push(person.user_id);
+              }
             }
-
-            // Check if this time slot exists in the intersection object
-            const existingSlot = intersection[date].find(
-              (existingSlot) =>
-                existingSlot.startTime === startTime &&
-                existingSlot.endTime === endTime,
-            );
-
-            // If it doesn't exist, add it with the user_id
-            if (!existingSlot) {
-              intersection[date].push({
-                startTime: startTime,
-                endTime: endTime,
-                user_ids: [person.user_id],
-              });
-            } else {
-              // If it exists, add the user_id to the existing time slot
-              existingSlot.user_ids.push(person.user_id);
-            }
-          }
-        });
+          });
+        }
       });
     }
-  });
-
-  // Filter out time slots with less than 2 user_ids
-  Object.keys(intersection).forEach((date) => {
-    intersection[date] = intersection[date].filter(
-      (slot) => slot.user_ids.length >= 1,
-    );
   });
 
   return intersection;
@@ -110,7 +110,7 @@ export const mailHandler = async ({
         fromEmail: `messenger@aglinthq.com`,
         fromName: 'Aglint',
         email: mail ? mail : 'admin@aglinthq.com',
-        subject: `You have selected for the interview at ${company_name}`,
+        subject: `You have been selected for the interview at ${company_name}`,
         text: `<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
         <div style="background-color: #ffffff; max-width: 600px; margin: auto; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
             <img src="${company_logo}" alt="Company Logo" style="width: 60px; height:60px;border-radius:4px; margin-bottom: 20px;">

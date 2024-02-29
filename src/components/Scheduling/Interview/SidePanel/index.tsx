@@ -12,11 +12,16 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import InterviewPanelCardComp from './InterviewPanelCard';
 import ScheduleInfoBlockComp from './ScheduleInfoBlockComp';
 import {
+  setApplicationList,
+  setIsCancelOpen,
   setIsCreateScheduleOpen,
+  setIsRescheduleOpen,
   setSelectedApplication,
   useInterviewStore,
 } from '../store';
@@ -34,13 +39,40 @@ function SidePanel() {
   );
 
   const resendInvite = async () => {
-    mailHandler({
-      id: selectedApplication?.schedule?.id,
-      candidate_name: selectedApplication?.candidates.first_name,
-      company_logo: recruiter.logo,
-      company_name: recruiter.name,
-      schedule_name: selectedApplication?.schedule?.schedule_name,
-    });
+    if (selectedApplication?.schedule?.id) {
+      if (selectedApplication?.schedule.resend_invite <= 3) {
+        await supabase
+          .from('interview_schedule')
+          .update({
+            resend_invite: selectedApplication?.schedule.resend_invite + 1,
+          })
+          .eq('id', selectedApplication.schedule.id);
+
+        mailHandler({
+          id: selectedApplication.schedule.id,
+          candidate_name: selectedApplication.candidates.first_name,
+          company_logo: recruiter.logo,
+          company_name: recruiter.name,
+          schedule_name: selectedApplication.schedule.schedule_name,
+        });
+        selectedApplication.schedule.resend_invite += 1;
+        setSelectedApplication({
+          ...selectedApplication,
+          schedule: selectedApplication.schedule,
+        });
+        applicationList.filter(
+          (app) => app.applications.id === selectedApplication.applications.id,
+        )[0].schedule = {
+          ...selectedApplication.schedule,
+          resend_invite: selectedApplication.schedule.resend_invite + 1,
+        };
+        setApplicationList([...applicationList]);
+      } else {
+        toast.error(
+          'You have reached the maximum limit of resending the invite',
+        );
+      }
+    }
   };
 
   const schedule = selectedApplication?.schedule?.selected_slots as unknown as {
@@ -95,6 +127,7 @@ function SidePanel() {
                   .map((sch) => {
                     return (
                       <GroupedSlots
+                        textDate={dayjs(sch.date).format('dddd D MMM YYYY')}
                         key={sch.date}
                         slotTimeRange={sch.slots
                           .filter((slot) => slot.isSelected)
@@ -113,6 +146,16 @@ function SidePanel() {
               />
             ) : selectedApplication?.schedule?.status === 'confirmed' ? (
               <SidebarBlockConfirmed
+                onClickCancelSchedule={{
+                  onClick: () => {
+                    setIsCancelOpen(true);
+                  },
+                }}
+                onClickReschedule={{
+                  onClick: () => {
+                    setIsRescheduleOpen(true);
+                  },
+                }}
                 slotInterviewPanel={<InterviewPanelCardComp />}
                 slotScheduleInfo={<ScheduleInfoBlockComp />}
                 textScheduleName={selectedApplication?.schedule?.schedule_name}
