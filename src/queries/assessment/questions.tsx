@@ -26,7 +26,6 @@ export const useAssessmentQuestions = () => {
   const response = useQuery({
     queryKey,
     queryFn: () => readAssessmentQuestionsDbAction(assessment_id),
-    staleTime: Infinity,
     enabled: !!recruiter_id,
   });
   return { ...response };
