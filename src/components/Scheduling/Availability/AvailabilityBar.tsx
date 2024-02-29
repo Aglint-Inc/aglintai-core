@@ -258,7 +258,10 @@ const AvailabilityBar = () => {
         const user_id = mailInt.interviewerId;
         const req_user_id = recruiterUser.user_id;
         const link = `${process.env.NEXT_PUBLIC_HOST_NAME}/confirm-availability/${panel_id}?user_id=${user_id}&req_user_id=${req_user_id}&time_duration=${timeSlot}`;
-        sendReqMail(mailInt.email, link);
+        sendReqMail(mailInt.email, recruiterUser.first_name, link, {
+          start: dateRangeViewLocal.startDate,
+          end: dateRangeViewLocal.endDate,
+        });
         toast.success(
           `Request confirmation mail sent to ${mailInt.interviewerName}`,
         );
@@ -557,10 +560,21 @@ export const dayDiffCnt = (date1: Date, date2: Date) => {
   return dayjs(d2).diff(d1);
 };
 
-export const sendReqMail = async (toEmail, link) => {
-  await axios.post('/api/sendgrid', {
-    email: toEmail,
-    subject: 'Confirm request',
-    text: link,
-  });
+export const sendReqMail = async (email, recruiter_name, link, date_range) => {
+  await axios.post(
+    `https://us-central1-aglint-cloud-381414.cloudfunctions.net/mails-sender`,
+    {
+      mail_type: 'interviewer-confirm-availability',
+      recipient_email: email,
+      payload: {
+        recruiter_name: recruiter_name,
+        logoUrl:
+          'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png?t=2024-01-24T13%3A11%3A17.382Z',
+
+        link: link,
+        fromDate: dayjs(date_range.start).format('DD MMM'),
+        endDate: dayjs(date_range.end).format('DD MMM'),
+      },
+    },
+  );
 };
