@@ -226,10 +226,9 @@ export const useAssessmentAllQuestionUpdate = () => {
 const createAssessmentQuestionDbAction = async (
   assessment: AssessmentQuestionInsert,
 ) => {
-  const { data, error } = await supabase
-    .from(TABLE)
-    .insert({ ...assessment })
-    .select();
+  // eslint-disable-next-line no-unused-vars
+  const { created_at, ...rest } = assessment;
+  const { data, error } = await supabase.from(TABLE).insert(rest).select();
   if (error) throw new Error(error.message);
   return data[0] as unknown as AssessmentQuestion;
 };
@@ -241,7 +240,7 @@ const readAssessmentQuestionsDbAction = async (
     .from(TABLE)
     .select()
     .eq('assessment_id', assessment_id)
-    .order('created_at', { ascending: false });
+    .order('created_at');
   if (error) throw new Error(error.message);
   return data as unknown as AssessmentQuestion[];
 };
@@ -250,9 +249,11 @@ const updateAssessmentQuestionsDbAction = async (
   question_id: AssessmentQuestion['id'],
   question: AssessmentQuestionUpdate,
 ) => {
+  // eslint-disable-next-line no-unused-vars
+  const { created_at, ...rest } = question;
   const { data, error } = await supabase
     .from(TABLE)
-    .update({ ...question })
+    .update(rest)
     .eq('id', question_id)
     .select();
   if (error) throw new Error(error.message);

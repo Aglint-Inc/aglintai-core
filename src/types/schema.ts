@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agent: {
+        Row: {
+          assistant_id: string | null
+          id: string
+          type: Database["public"]["Enums"]["agent_type"]
+        }
+        Insert: {
+          assistant_id?: string | null
+          id?: string
+          type: Database["public"]["Enums"]["agent_type"]
+        }
+        Update: {
+          assistant_id?: string | null
+          id?: string
+          type?: Database["public"]["Enums"]["agent_type"]
+        }
+        Relationships: []
+      }
       agent_activity: {
         Row: {
           agent_chat_id: string
@@ -422,6 +440,7 @@ export type Database = {
           duration: number | null
           id: string
           level: Database["public"]["Enums"]["question_level"] | null
+          order: number
           parent_question_id: string | null
           question: Json | null
           required: boolean
@@ -435,6 +454,7 @@ export type Database = {
           duration?: number | null
           id?: string
           level?: Database["public"]["Enums"]["question_level"] | null
+          order?: number
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
@@ -448,6 +468,7 @@ export type Database = {
           duration?: number | null
           id?: string
           level?: Database["public"]["Enums"]["question_level"] | null
+          order?: number
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
@@ -2322,6 +2343,8 @@ export type Database = {
           created_at: string
           response: Json
           questions: Json
+          public_job_id: string
+          company: string
         }[]
       }
       getallresumematches: {
@@ -2621,6 +2644,7 @@ export type Database = {
     Enums: {
       activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
+      agent_types: "scheduler" | "screening" | "job_assistant" | "sourcing"
       application_processing_status:
         | "not started"
         | "processing"
