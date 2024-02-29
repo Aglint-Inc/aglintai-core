@@ -217,9 +217,12 @@ export function mergeInterviewerStatus(
           if (timeSlot.status !== statusReq) return;
           const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
           if (!mergedEvents[String(date)][String(timeRange)]) {
-            mergedEvents[String(date)][String(timeRange)] = [];
+            mergedEvents[String(date)][String(timeRange)] = {
+              isChecked: false,
+              slots: [],
+            };
           }
-          mergedEvents[String(date)][String(timeRange)].push({
+          mergedEvents[String(date)][String(timeRange)].slots.push({
             startTime: timeSlot.startTime,
             endTime: timeSlot.endTime,
             interviewerId: interviewer.interviewerId,

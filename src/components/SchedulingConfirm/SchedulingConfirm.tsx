@@ -101,7 +101,7 @@ const SchedulingConfirm = () => {
         for (let timeKey in groupedSlots[String(dateKey)]) {
           let interviewIdx = groupedSlots[String(dateKey)][
             String(timeKey)
-          ].findIndex((s) => s.interviewerId === userId);
+          ].slots.findIndex((s) => s.interviewerId === userId);
           let slotPath = `${dateKey}_${timeKey}_[${interviewIdx}]`;
           if (uncheckedSlots.find((s) => s === slotPath)) continue;
           const [startTime] = timeKey.split('_');
@@ -161,21 +161,21 @@ const SchedulingConfirm = () => {
         {filteredDateSlotKeys.map((dateKey) => {
           let eventsKey = Object.keys(groupedSlots[String(dateKey)]).filter(
             (timeKey) =>
-              groupedSlots[String(dateKey)][String(timeKey)].length > 0,
+              groupedSlots[String(dateKey)][String(timeKey)].slots.length > 0,
           );
           return (
             <LoadedSlots
               key={dateKey}
               textDay={dayjs(dateKey).format('MMMM DD YYYY')}
               slotLoadedSlotPill={eventsKey.map((timeKey, idx) => {
-                let inters = groupedSlots[String(dateKey)][String(timeKey)].map(
-                  (i) => ({
-                    name: i.interviewerName,
-                    url: i.profileImg,
-                    status: i.status,
-                    isChecked: true,
-                  }),
-                );
+                let inters = groupedSlots[String(dateKey)][
+                  String(timeKey)
+                ].slots.map((i) => ({
+                  name: i.interviewerName,
+                  url: i.profileImg,
+                  status: i.status,
+                  isChecked: true,
+                }));
                 let timeRange =
                   groupedSlots[String(dateKey)][String(timeKey)][0];
                 let textTime = `${dayjs(timeRange?.startTime).format(
