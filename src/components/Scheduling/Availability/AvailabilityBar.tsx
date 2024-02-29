@@ -167,7 +167,7 @@ const AvailabilityBar = () => {
         const [dateKey, startTime, endTime] = slot.split('_');
         const slotInterviewers =
           mergedEvents[String(dateKey)][`${startTime}_${endTime}`];
-        for (let int of slotInterviewers) {
+        for (let int of slotInterviewers.slots) {
           intSlotAvails = intSlotAvails.map((intslot) => {
             if (int.interviewerId === intslot.intId) {
               if (!Object.hasOwn(intslot.availability, dateKey)) {
@@ -342,7 +342,7 @@ const AvailabilityBar = () => {
                                   <InterviewerGroup
                                     profileUrls={mergedEvents[String(dateKey)][
                                       String(timeKey)
-                                    ].map((int) => ({
+                                    ].slots.map((int) => ({
                                       name: int.interviewerName,
                                       url: int.profileImg,
                                     }))}

@@ -87,7 +87,7 @@ const PanelRowDialog = ({ onClose, intId }) => {
               ).filter(
                 (timeKey) =>
                   confirmStatusgroupedSlots[String(dateKey)][String(timeKey)]
-                    .length > 0,
+                    .slots.length > 0,
               );
               if (eventsKey.length === 0) return <></>;
 
@@ -122,7 +122,7 @@ const PanelRowDialog = ({ onClose, intId }) => {
                 reqStatusgroupedSlots[String(dateKey)],
               ).filter(
                 (timeKey) =>
-                  reqStatusgroupedSlots[String(dateKey)][String(timeKey)]
+                  reqStatusgroupedSlots[String(dateKey)][String(timeKey)].slots
                     .length > 0,
               );
               if (eventsKey.length === 0) return <></>;
