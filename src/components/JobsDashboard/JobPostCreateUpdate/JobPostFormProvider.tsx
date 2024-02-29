@@ -147,11 +147,12 @@ export type FormJobType = {
   assessment: boolean;
   isPhoneScreenEnabled: boolean;
   isjdChanged: boolean;
-  phoneScreening: {
-    startMessage: string;
-    endMessage: string;
-    questions: PhoneScreenQuestion[];
-  };
+  // phoneScreening: {
+  //   startMessage: string;
+  //   endMessage: string;
+  //   questions: PhoneScreenQuestion[];
+  // };
+  phoneScreeningTemplateId: string;
 };
 
 export type AssesMenusType =

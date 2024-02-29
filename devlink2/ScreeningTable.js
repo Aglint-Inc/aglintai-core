@@ -13,6 +13,7 @@ export function ScreeningTable({
   slotScreeningCards,
   styleSidebarWidth = {},
   slotSidebar,
+  isAddFilterVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -30,9 +31,11 @@ export function ScreeningTable({
           >
             {slotFilterButton}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotAddFilter ?? <AddFilter />}
-          </_Builtin.Block>
+          {isAddFilterVisible ? (
+            <_Builtin.Block tag="div">
+              {slotAddFilter ?? <AddFilter />}
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-830")}

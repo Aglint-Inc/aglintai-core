@@ -6,15 +6,11 @@
   grid-row-gap: 20px;
 }
 
-.div-block-1020 {
+.div-block-1025 {
   display: flex;
-  padding: 20px;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
 }
 
 .fw-semibold {
@@ -177,21 +173,6 @@
   position: relative;
 }
 
-.div-block-1021 {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.text-grey-600.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.div-block-1025 {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }

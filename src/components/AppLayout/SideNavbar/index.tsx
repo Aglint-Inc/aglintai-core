@@ -9,6 +9,7 @@ import {
   NavCd,
   NavCompanySetting,
   NavJobs,
+  NavPhoneScreening,
   NavScheduler,
   NavTickets,
 } from '@/devlink';
@@ -21,6 +22,9 @@ function SideNavbar() {
   let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
   let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
   let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
+  let isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+    'isPhoneScreeningEnabled',
+  );
   const router = useRouter();
   const { recruiter, recruiterUser, loading } = useAuthDetails();
 
@@ -65,7 +69,16 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: isAssistantEnabled,
     },
-
+    {
+      icon: <NavPhoneScreening isActive={false} />,
+      text: 'Phone Screening',
+      SubComponents: null,
+      route: pageRoutes.SCREENING,
+      comingsoon: false,
+      isvisible:
+        isPhoneScreeningEnabled ||
+        recruiterUser?.email === 'dheeraj@aglinthq.com',
+    },
     {
       icon: <NavScheduler isActive={false} />,
       text: 'Scheduler',
@@ -83,6 +96,7 @@ function SideNavbar() {
       isvisible:
         isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com',
     },
+
     {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',

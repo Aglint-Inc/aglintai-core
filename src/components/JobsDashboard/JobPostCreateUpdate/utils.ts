@@ -81,9 +81,9 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     interview_instructions: jobForm.formFields.interviewInstrctions,
     assessment: jobForm.formFields.assessment,
     jd_json: jobForm.formFields.jdJson,
-    phone_screening: jobForm.formFields.phoneScreening,
     jd_changed: jobForm.formFields.isjdChanged,
     phone_screen_enabled: jobForm.formFields.isPhoneScreenEnabled,
+    screening_template: jobForm.formFields.phoneScreeningTemplateId,
   };
 
   return updateJobData;
@@ -186,11 +186,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
   }
 
   if (jobForm.isPhoneScreenEnabled) {
-    if (jobForm.phoneScreening.questions.length === 0) {
-      warnings.phoneScreening.err.push(
-        'Please provide atleast 1 screening questions',
-      );
-    }
+    //
   }
   // screening qns
   const totalQns = Object.keys(jobForm.interviewConfig)

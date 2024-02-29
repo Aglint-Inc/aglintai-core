@@ -1,48 +1,64 @@
-import { Collapse, Stack } from '@mui/material';
-import { nanoid } from 'nanoid';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { EnableAssessment, JobEditWarning, JobWarningList } from '@/devlink';
+import { ButtonPrimaryRegular, EnableAssessment } from '@/devlink';
 import {
-  AddCustomQuestion,
+  BrowseScreeningPop,
+  ChooseScreeningCard,
   PhoneScreening,
   ScrCheckmarkIcon,
-  ScreeningWelcome,
-  ScrQuestionOption,
-  ScrQuestionsWrapper,
   ScrRadioIcon,
   ScrShortTextIcon,
 } from '@/devlink2';
-import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
-import { palette } from '@/src/context/Theme/Theme';
+import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
+import MuiPopup from '@/src/components/Common/MuiPopup';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
-import KnowOffQn from './KnowOffQn';
-import { seedQns } from './utils';
 import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
 
 const ScreeningComp = () => {
-  const [messageOpen, setMessageOpen] = useState<{
-    start: boolean;
-    end: boolean;
-  }>({ end: false, start: false });
-  const { jobForm, handleUpdateFormFields, formWarnings } = useJobForm();
+  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const [isTemplateOpen, setIsTemplateOpen] = useState(false);
+  const { recruiter } = useAuthDetails();
+  const [templates, setTemplates] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const filteredTemplates = templates.filter(
+    (template) => template.id === jobForm.formFields.phoneScreeningTemplateId,
+  );
+  const filteredTitles = filteredTemplates.map((template) => template.title);
+  const questionsCount = filteredTemplates.map((count) => {
+    return count.questions.questions === undefined ? '0' : count.questions.questions.length;
+  });
+  const fetchTemplate = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('screening_questions')
+        .select('id,title,questions')
+        .eq('recruiter_id', recruiter.id);
 
-  const phoneScreening = jobForm.formFields.phoneScreening;
-  const [isqnsModeEdit, setIsqnsModeEdit] = useState([]);
-  const isEmpty = phoneScreening.questions.length === 0;
+      if (error) {
+        toast.error(error);
+      } else {
+        setTemplates(data);
+      }
+    } catch {
+      toast.error('Failed to Fetch Screening Templates');
+    }
+  };
 
+  const submitTemplate = async () => {
+    handleUpdateFormFields({
+      path: 'phoneScreeningTemplateId',
+      value: selectedTemplate,
+    });
+    setIsTemplateOpen(false);
+  };
   useEffect(() => {
-    let qnIdOpen = localStorage.getItem('qnIdOpen');
-    setIsqnsModeEdit(
-      phoneScreening.questions.map((q) => {
-        if (q.id === qnIdOpen) {
-          return { id: q.id, isEdit: true };
-        }
-        return { id: q.id, isEdit: false };
-      }),
-    );
-  }, [phoneScreening.questions.length]);
+    if (recruiter.id !== null) {
+      fetchTemplate();
+    }
+  }, [recruiter]);
 
   return (
     <>
@@ -61,236 +77,88 @@ const ScreeningComp = () => {
         />
       )}
       {jobForm.formFields.isPhoneScreenEnabled && (
-        <PhoneScreening
-          slotWelcomeText={
-            <>
-              <ScreeningWelcome
-                isEnd={false}
-                isCloseVisible={messageOpen.start}
-                isEditButtonVisible={!messageOpen.start}
-                editHeading={'Start Message'}
-                tooltipText={
-                  'This message will appear to the candidate as a welcome message before filling the form'
-                }
-                onclickEdit={{
-                  onClick: () => {
-                    setMessageOpen((p) => ({ ...p, start: !p.start }));
-                  },
-                }}
-                onclickClose={{
-                  onClick: () => {
-                    setMessageOpen((p) => ({ ...p, start: !p.start }));
-                  },
-                }}
-                slotInput={
-                  <>
-                    <Collapse
-                      in={!messageOpen.start}
-                      unmountOnExit
-                      translate='yes'
-                    >
-                      <Stack
-                        p={1.5}
-                        bgcolor={palette.grey[100]}
-                        borderRadius={'10px'}
-                      >
-                        <UITypography type='small' fontBold='normal'>
-                          {phoneScreening.startMessage}
-                        </UITypography>
-                      </Stack>
-                    </Collapse>
-                    <Collapse
-                      in={messageOpen.start}
-                      unmountOnExit
-                      translate='yes'
-                    >
-                      <UITextField
-                        multiline
-                        maxRows={5}
-                        minRows={2}
-                        value={phoneScreening.startMessage}
-                        onChange={(e) => {
-                          handleUpdateFormFields({
-                            path: 'phoneScreening.startMessage',
-                            value: e.target.value,
-                          });
-                        }}
-                        InputProps={{
-                          autoFocus: true,
-                        }}
-                      />
-                    </Collapse>
-                  </>
-                }
-              />
-            </>
-          }
-          slotQuestions={
-            <>
-              <ScrQuestionsWrapper
-                slotQuestions={
-                  !isEmpty ? (
-                    <>
-                      {phoneScreening.questions.map((q, idx) => {
-                        return (
-                          <KnowOffQn
-                            key={q.id}
-                            isEditMode={
-                              isqnsModeEdit.find((m) => m.id === q.id)?.isEdit
-                            }
-                            qnPath={`phoneScreening.questions[${idx}]`}
-                            changeMode={(mode: boolean) => {
-                              setIsqnsModeEdit((prev) => {
-                                const newState = [...prev];
-                                return newState.map((nm) => {
-                                  if (nm.id === q.id)
-                                    return { ...nm, isEdit: mode };
-                                  return nm;
-                                });
-                              });
-                            }}
-                          />
-                        );
-                      })}
-                    </>
-                  ) : undefined
-                }
-                slotOptions={
-                  <>
-                    {seedQns.map((qn, idx) => {
-                      let isLabelAdded = Boolean(
-                        phoneScreening.questions.find(
-                          (q) => q.questionLabel === qn.questionLabel,
-                        ),
-                      );
-                      return (
-                        <ScrQuestionOption
-                          key={idx}
-                          text={qn.questionLabel}
-                          isAddIconVisible={!isLabelAdded}
-                          slotIcon={qnTypeToIcon(qn.type)}
-                          isTicked={isLabelAdded}
-                          onclickOption={{
-                            onClick: () => {
-                              if (
-                                isLabelAdded &&
-                                qn.questionLabel !== 'Add custom Question'
-                              )
-                                return;
-                              handleUpdateFormFields({
-                                path: 'phoneScreening.questions',
-                                value: [
-                                  ...jobForm.formFields.phoneScreening
-                                    .questions,
-                                  { ...qn },
-                                ],
-                              });
-                            },
-                          }}
-                        />
-                      );
-                    })}
-                    <AddCustomQuestion
-                      onClickAdd={{
-                        onClick: () => {
-                          let newQn: PhoneScreenQuestion = {
-                            description: '',
-                            id: nanoid(),
-                            isRequired: false,
-                            options: [],
-                            question: '',
-                            questionLabel: 'Add custom Question',
-                            showDescription: false,
-                            type: 'shortAnswer',
-                          };
-                          localStorage.setItem('qnIdOpen', newQn.id);
-                          handleUpdateFormFields({
-                            path: 'phoneScreening.questions',
-                            value: [...phoneScreening.questions, newQn],
-                          });
-                        },
-                      }}
-                    />
-                  </>
-                }
-              />
-            </>
-          }
-          slotEndText={
-            <>
-              <ScreeningWelcome
-                isEnd={true}
-                editHeading={'End Message'}
-                tooltipText='This message will show to the candidate after taking phone screening'
-                onclickEdit={{
-                  onClick: () => {
-                    setMessageOpen((p) => ({ ...p, end: !p.end }));
-                  },
-                }}
-                isCloseVisible={messageOpen.end}
-                isEditButtonVisible={!messageOpen.end}
-                onclickClose={{
-                  onClick: () => {
-                    setMessageOpen((p) => ({ ...p, end: !p.end }));
-                  },
-                }}
-                slotInput={
-                  <>
-                    <Collapse
-                      in={!messageOpen.end}
-                      unmountOnExit
-                      translate='yes'
-                    >
-                      <Stack
-                        p={1.5}
-                        bgcolor={palette.grey[100]}
-                        borderRadius={'10px'}
-                      >
-                        <UITypography type='small' fontBold='normal'>
-                          {phoneScreening.endMessage}
-                        </UITypography>
-                      </Stack>
-                    </Collapse>
-                    <Collapse
-                      in={messageOpen.end}
-                      unmountOnExit
-                      translate='yes'
-                    >
-                      <UITextField
-                        multiline
-                        maxRows={5}
-                        minRows={2}
-                        value={phoneScreening.endMessage}
-                        onChange={(e) => {
-                          handleUpdateFormFields({
-                            path: 'phoneScreening.endMessage',
-                            value: e.target.value,
-                          });
-                        }}
-                        InputProps={{
-                          autoFocus: true,
-                        }}
-                      />
-                    </Collapse>
-                  </>
-                }
-              />
-            </>
-          }
-          slotInfo={
-            formWarnings.phoneScreening.err.length !== 0 && (
-              <JobEditWarning
-                slotWarningList={
-                  <>
-                    {formWarnings.phoneScreening.err.map((er, index) => (
-                      <JobWarningList key={index} textWarning={er} />
-                    ))}
-                  </>
-                }
-              />
-            )
-          }
-        />
+        <>
+          <PhoneScreening
+            isHeaderVisible={true}
+            slotWelcomeText={
+              jobForm.formFields.phoneScreeningTemplateId === '' ? (
+                <ChooseScreeningCard
+                  onClickCard={{
+                    onClick: () => {
+                      setIsTemplateOpen(true);
+                    },
+                  }}
+                />
+              ) : (
+                <ScreeningLandingCard
+                  isChange={true}
+                  onClickCard={{
+                    onClick: () => {
+                      setIsTemplateOpen(true);
+                    },
+                  }}
+                  key={selectedTemplate}
+                  textTitle={filteredTitles}
+                  textQuestionCount={questionsCount[0]}
+                />
+              )
+            }
+          />
+          <MuiPopup
+            props={{
+              // sx: { width: '800px' },
+              maxWidth: 'md',
+              fullWidth: true,
+              open: isTemplateOpen,
+              onClose: () => {
+                setIsTemplateOpen(false);
+                setSelectedTemplate('');
+              },
+            }}
+          >
+            <BrowseScreeningPop
+              isEmpty={!templates.length ? true : false}
+              isNotEmpty={!templates.length ? false : true}
+              onClickClose={{
+                onClick: () => {
+                  setIsTemplateOpen(false);
+                  setSelectedTemplate('');
+                },
+              }}
+              isAddScreeenButtonVisible={selectedTemplate !== ''}
+              slotAddScreeningButton={
+                <ButtonPrimaryRegular
+                  textLabel={'Add Screening'}
+                  onClickButton={{
+                    onClick: () => {
+                      submitTemplate();
+                      setSelectedTemplate('');
+                    },
+                  }}
+                />
+              }
+              slotBrowseScreeningCard={templates.map((data) => {
+                const questionCount = data.questions.questions
+                  ? Object.keys(data.questions.questions).length
+                  : 0;
+                return (
+                  <ScreeningLandingCard
+                    isChange={false}
+                    isActive={selectedTemplate === data.id}
+                    textTitle={data.title}
+                    textQuestionCount={questionCount}
+                    key={data.id}
+                    onClickCard={{
+                      onClick: () => {
+                        setSelectedTemplate(data.id);
+                      },
+                    }}
+                  />
+                );
+              })}
+            />
+          </MuiPopup>
+        </>
       )}
     </>
   );

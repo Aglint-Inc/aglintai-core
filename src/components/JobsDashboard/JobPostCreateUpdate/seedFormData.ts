@@ -158,14 +158,9 @@ export const getSeedJobFormData = (
         rolesResponsibilities: [],
         skills: [],
       },
-      phoneScreening: {
-        startMessage:
-          'Welcome to the candidate application form. Please fill out the following information',
-        endMessage:
-          'Thank you for taking your time. We will get back to you shortly',
-        questions: [],
-      },
+
       isPhoneScreenEnabled: false,
+      phoneScreeningTemplateId: '',
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
@@ -357,13 +352,12 @@ export const dbToClientjobPostForm = (
       jdJson: jdJsonToItems(
         (jobPost.jd_json as any) || seedData.formFields.jdJson,
       ),
-      phoneScreening:
-        (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
       isjdChanged:
         (jobPost.jd_changed as any) || seedData.formFields.isjdChanged,
       isPhoneScreenEnabled:
         (jobPost.phone_screen_enabled as any) ||
         seedData.formFields.isPhoneScreenEnabled,
+      phoneScreeningTemplateId: jobPost.screening_template ?? '',
     },
     jobPostStatus: jobPostStatus as any,
   };

@@ -30,11 +30,6 @@
   margin-left: 4px;
 }
 
-.icons.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold {
   font-weight: 600;
 }
@@ -189,8 +184,4 @@
   position: sticky;
   top: 0px;
   z-index: 2;
-}
-
-.relative {
-  position: relative;
 }

@@ -12,4 +12,5 @@ declare function InvitedCards(props: {
   onClickInviteNow?: Types.Devlink.RuntimeProps;
   isInviteNowVisible?: Types.Visibility.VisibilityConditions;
   isResendInviteVisible?: Types.Visibility.VisibilityConditions;
+  isInviteLink?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

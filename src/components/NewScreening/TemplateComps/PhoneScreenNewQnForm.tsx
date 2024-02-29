@@ -10,10 +10,11 @@ import {
   ToggleButton,
 } from '@/devlink2';
 import UITextField from '@/src/components/Common/UITextField';
+import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { qnTypeToIcon } from './PhoneScreening';
+import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
-import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
+import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const PhoneScreenNewQnForm = ({
   handleDelete,
@@ -21,10 +22,10 @@ const PhoneScreenNewQnForm = ({
   qnPath,
   onClose,
 }) => {
-  const { handleUpdateFormFields, jobForm } = useJobForm();
   const [showDropDown, setShowDropDown] = useState(false);
+  const { handleUpdateFormFields, phoneScreenignForm } = usePhoneScreening();
 
-  const editQn = get(jobForm.formFields, qnPath) as PhoneScreenQuestion;
+  const editQn = get(phoneScreenignForm, qnPath) as PhoneScreenQuestion;
 
   const handleEditQn = (type: PhoneScreenQuestion['type']) => {
     if (type === 'multiSelect' || type === 'singleSelect') {

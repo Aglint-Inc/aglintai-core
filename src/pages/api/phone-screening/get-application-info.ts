@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const [app] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
-        .select('phone_screening,candidate_id')
+        .select('candidate_id')
         .eq('id', application_id),
     ) as Applications[];
     if (!app) throw new Error('invalid application');
@@ -31,7 +31,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('id', app.candidate_id),
     ) as JobApplcationDB[];
 
-    return res.status(200).json({ ...app, ...candidate });
+    const [answer] = supabaseWrap(
+      await supabaseAdmin
+        .from("screening_answers")
+        .select()
+        .eq('screening_id', application_id) 
+    )
+    return res.status(200).json({ ...app, ...candidate, answer});
   } catch (error) {
     res.status(500).send(error.message);
   }

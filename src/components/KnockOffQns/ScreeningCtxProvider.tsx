@@ -11,14 +11,13 @@ import React, {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import {
-  FormJobType,
-  PhoneScreenQuestion,
-} from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { defaultLogo } from './utils';
+import { PhoneScreenQuestion } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import {
   API_FAIL_MSG,
   supabaseWrap,
@@ -124,27 +123,38 @@ export const ScreeningCtxProvider = ({ children }) => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    const { job_post_id, application_id, recruiter_name, recruiter_email } =
-      router.query as any;
+    const {
+      job_post_id,
+      application_id,
+      recruiter_name,
+      recruiter_email,
+      template_id,
+    } = router.query as any;
 
-    if (!job_post_id) {
-      toast.error('invalid Link');
-      router.replace('/login');
-      return;
-    }
-
-    (async () => {
+    const phoneScreeningJob = async () => {
       try {
         setIsLoading(true);
         const [job] = (await supabaseWrap(
           await supabase
             .from('public_jobs')
-            .select('phone_screening,logo,draft,job_title,company')
+            .select('logo,draft,job_title,company,screening_template')
             .eq('id', router.query.job_post_id),
         )) as Pick<
           PublicJobsType,
-          'phone_screening' | 'logo' | 'draft' | 'job_title' | 'company'
+          'logo' | 'draft' | 'job_title' | 'company' | 'screening_template'
         >[];
+        const [templateQuestions] = await supabaseWrap(
+          await supabase
+            .from('screening_questions')
+            .select('questions')
+            .eq('id', job.screening_template),
+        );
+
+        if (!templateQuestions) {
+          toast.error('invalid link');
+          router.push('/login');
+          return;
+        }
 
         if (!job) {
           toast.error('invalid link');
@@ -180,11 +190,11 @@ export const ScreeningCtxProvider = ({ children }) => {
             first_name: data.first_name,
             last_name: data.last_name,
           };
-          if (data.phone_screening !== null) {
-            formFilledDate = data.phone_screening.applied_at;
+          if (data.answer) {
+            formFilledDate = data.created_at;
             isFormFilled = true;
           }
-          jobPhoneScreening = job.phone_screening as any;
+          jobPhoneScreening = templateQuestions.questions as any;
           candPhScreenResp = jobPhoneScreening.questions.map((q) => {
             return {
               candAnswer: '',
@@ -211,7 +221,7 @@ export const ScreeningCtxProvider = ({ children }) => {
           if (draftJobPhoneScreen) {
             jobPhoneScreening = draftJobPhoneScreen;
           } else {
-            jobPhoneScreening = job.phone_screening as any;
+            jobPhoneScreening = templateQuestions.questions as any;
           }
           candPhScreenResp = jobPhoneScreening.questions.map((q) => {
             return {
@@ -259,7 +269,136 @@ export const ScreeningCtxProvider = ({ children }) => {
       } finally {
         setIsLoading(false);
       }
-    })();
+    };
+    const phoneScreeningTemplate = async () => {
+      try {
+        setIsLoading(true);
+        const [template] = await supabaseWrap(
+          await supabase
+            .from('screening_questions')
+            .select('questions')
+            .eq('id', router.query.template_id),
+        );
+
+        if (!template) {
+          toast.error('invalid link');
+          router.push('/login');
+          return;
+        }
+
+        let jobPhoneScreening: FormJobType['phoneScreening'] | null = null;
+
+        let candPhScreenResp: CandPhoneScreeningState['phoneScreen'] | null =
+          null;
+
+        let isFormFilled = false;
+        let formFilledDate = '';
+        let candidate: CandPhoneScreeningState['candidate'] = null;
+        if (application_id) {
+          const { data } = await axios.post(
+            '/api/phone-screening/get-application-info',
+            {
+              application_id: application_id,
+            },
+          );
+          if (!data) {
+            toast.error('invalid link');
+            router.push('/login');
+            return;
+          }
+          candidate = {
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name,
+          };
+          if (data.phone_screening !== null) {
+            formFilledDate = data.phone_screening.applied_at;
+            isFormFilled = true;
+          }
+          jobPhoneScreening = template as any;
+          candPhScreenResp = jobPhoneScreening.questions.map((q) => {
+            return {
+              candAnswer: '',
+              showDescription: q.showDescription,
+              id: q.id,
+              isRequired: q.isRequired,
+              description: q.description,
+              type: q.type,
+              questionLabel: q.questionLabel,
+              question: q.question,
+              options: q.options.map((o) => ({
+                option: o.option,
+                id: o.id,
+                isChecked: false,
+              })),
+            };
+          });
+        } else {
+          candidate = {
+            email: recruiter_email,
+            first_name: recruiter_name,
+            last_name: '',
+          };
+          jobPhoneScreening = template.questions as any;
+
+          candPhScreenResp = jobPhoneScreening.questions.map((q) => {
+            return {
+              candAnswer: '',
+              id: q.id,
+              isRequired: q.isRequired,
+              type: q.type,
+              description: q.description,
+              showDescription: q.showDescription,
+              questionLabel: q.questionLabel,
+              question: q.question,
+              options: q.options.map((o) => ({
+                option: o.option,
+                id: o.id,
+                isChecked: false,
+              })),
+            };
+          });
+        }
+
+        dispatch({
+          type: 'initialise',
+          payload: {
+            newState: {
+              companyLogo: defaultLogo,
+              phoneScreen: candPhScreenResp,
+              currentQn: -1,
+              showStartMessage: !isFormFilled,
+              showEndMessage: isFormFilled,
+              applicationId: application_id ?? '',
+              jobPostId: '',
+              isPreview: !application_id,
+              company: '',
+              jobTitle: '',
+              endMessage: jobPhoneScreening.endMessage as any,
+              startMessage: jobPhoneScreening.startMessage as any,
+              candidate,
+              formFilledDate: formFilledDate,
+            },
+          },
+        });
+      } catch (err) {
+        toast.error(API_FAIL_MSG);
+        router.push('/login');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (job_post_id && application_id) {
+      phoneScreeningJob();
+    } else if (template_id && !job_post_id) {
+      phoneScreeningTemplate();
+    } else if (job_post_id && !template_id) {
+      phoneScreeningJob();
+    } else {
+      toast.error('invalid Link');
+      router.replace('/login');
+    }
   }, [router.isReady, dispatch]);
 
   const updateState = ({ path, value }) => {

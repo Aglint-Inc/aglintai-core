@@ -4,16 +4,17 @@ import React from 'react';
 
 import { ScrQuestion, ScrQuestionDefault } from '@/devlink2';
 import UITypography from '@/src/components/Common/UITypography';
+import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { qnTypeToIcon } from './PhoneScreening';
 import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
+import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
-import { PhoneScreenQuestion, useJobForm } from '../../JobPostFormProvider';
+import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const KnowOffQn = ({ qnPath, isEditMode, changeMode }) => {
-  const { jobForm, handleUpdateFormFields } = useJobForm();
+  const { handleUpdateFormFields, phoneScreenignForm } = usePhoneScreening();
 
-  const q = get(jobForm, `formFields.${qnPath}`, null) as PhoneScreenQuestion;
+  const q = get(phoneScreenignForm, `${qnPath}`, null) as PhoneScreenQuestion;
   if (!q) return;
 
   return (
@@ -61,7 +62,7 @@ const KnowOffQn = ({ qnPath, isEditMode, changeMode }) => {
               isEdit={true}
               handleDelete={() => {
                 const updatedQns =
-                  jobForm.formFields.phoneScreening.questions.filter(
+                  phoneScreenignForm.phoneScreening.questions.filter(
                     (qn) => qn.id !== q.id,
                   );
                 handleUpdateFormFields({

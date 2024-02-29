@@ -45,4 +45,6 @@ declare function CreateNewJob(props: {
   slotWarning?: Types.Devlink.Slot;
   textProceed?: React.ReactNode;
   slotSideSection?: Types.Devlink.Slot;
+  isSideNavVisible?: Types.Visibility.VisibilityConditions;
+  isHeaderVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

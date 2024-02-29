@@ -39,7 +39,7 @@ const KnockOffQns = () => {
 };
 
 const StartSlide = () => {
-  const { updateState, state } = useScreeningCtx();
+  const { updateState, state } = useScreeningCtx();  
   return (
     <CandidateStart
       slotLogo={

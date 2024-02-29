@@ -217,6 +217,10 @@
   margin-top: 9px;
 }
 
+.mt-9 {
+  margin-top: 9px;
+}
+
 .mt-15 {
   margin-top: 15px;
 }
@@ -477,6 +481,10 @@
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .div-block-716 {
@@ -803,6 +811,11 @@
 
 .relative.width-inc {
   width: 162.1171875px;
+}
+
+.relative.padding-20-10 {
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
 .proceed-to-btn {

@@ -727,7 +727,10 @@ const SideSection = () => {
       <AssessmentSide
         isPhoneScreeningImageVisible={true}
         isAssessmentImageVisible={false}
-        isDisableAssessmentVisible
+        isDisableAssessmentVisible={true}
+        isPreviewFormVisible={
+          jobForm.formFields.phoneScreeningTemplateId !== ''
+        }
         textDisableButton={'Disable'}
         textPreviewButton={'Preview'}
         textPreview='See How Candidates Will Experience the Screening Questions'

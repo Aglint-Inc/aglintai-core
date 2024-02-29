@@ -7,4 +7,6 @@ declare function SubmittedCard(props: {
   textQuestionCount?: React.ReactNode;
   slotInviteStatus?: Types.Devlink.Slot;
   slotResponseCard?: Types.Devlink.Slot;
+  isResponseVisible?: Types.Visibility.VisibilityConditions;
+  slotInvitedCard?: Types.Devlink.Slot;
 }): React.JSX.Element;

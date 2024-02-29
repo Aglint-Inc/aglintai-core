@@ -15,4 +15,6 @@ declare function AllInterviewFilter(props: {
   onClickInterviewPanel?: Types.Devlink.RuntimeProps;
   onClickDateRange?: Types.Devlink.RuntimeProps;
   onClickDuration?: Types.Devlink.RuntimeProps;
+  isCustomSlot?: Types.Visibility.VisibilityConditions;
+  slotCustom?: Types.Devlink.Slot;
 }): React.JSX.Element;
