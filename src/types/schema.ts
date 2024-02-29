@@ -2426,6 +2426,9 @@ export type Database = {
           company: string
           email: string
           candidate_id: string
+          email_template: Json
+          result_created_at: string
+          assessment_result: Json[]
         }[]
       }
       getallresumematches: {
