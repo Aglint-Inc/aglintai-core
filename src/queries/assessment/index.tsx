@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Database } from '@/src/types/schema';
@@ -18,12 +17,10 @@ import {
 
 export const useAllAssessments = () => {
   const { recruiter_id } = useAuthDetails();
-  const { pathname } = useRouter();
   const { queryKey } = assessmentQueryKeys.assessments();
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentsDbAction(recruiter_id),
-    staleTime: pathname === '/assessment-new' ? 0 : Infinity,
     enabled: !!recruiter_id,
   });
 };
@@ -34,7 +31,6 @@ export const useAllAssessmentTemplates = () => {
   return useQuery({
     queryKey: queryKey,
     queryFn: () => readAssessmentTemplatesDbAction(),
-    staleTime: Infinity,
     enabled: !!recruiter_id,
   });
 };

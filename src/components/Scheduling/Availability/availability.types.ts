@@ -73,14 +73,17 @@ export interface InterviewData {
 export interface MergedEvents {
   [date: string]: {
     [timeRange: string]: {
-      startTime: Date;
-      endTime: Date;
-      interviewerId: string;
-      interviewerName: string;
-      profileImg: string;
-      email: string;
-      status: AvalabilitySlotType['status'];
-    }[];
+      isChecked: boolean;
+      slots: {
+        startTime: Date;
+        endTime: Date;
+        interviewerId: string;
+        interviewerName: string;
+        profileImg: string;
+        email: string;
+        status: AvalabilitySlotType['status'];
+      }[];
+    };
   };
 }
 

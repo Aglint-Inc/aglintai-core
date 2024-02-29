@@ -79,9 +79,12 @@ function merge_interviewer_events(
           if (timeSlot.status !== 'available') return;
           const timePath = `${timeSlot.startTime}_${timeSlot.endTime}`;
           if (!mergedEvents[String(date)][String(timePath)]) {
-            mergedEvents[String(date)][String(timePath)] = [];
+            mergedEvents[String(date)][String(timePath)] = {
+              isChecked: false,
+              slots: [],
+            };
           }
-          mergedEvents[String(date)][String(timePath)].push({
+          mergedEvents[String(date)][String(timePath)].slots.push({
             startTime: timeSlot.startTime,
             endTime: timeSlot.endTime,
             interviewerId: interviewer.interviewerId,

@@ -96,9 +96,12 @@ export function mergeInterviewerEvents(
           if (timeSlot.status !== 'available') return;
           const timePath = `${timeSlot.startTime}_${timeSlot.endTime}`;
           if (!mergedEvents[String(date)][String(timePath)]) {
-            mergedEvents[String(date)][String(timePath)] = [];
+            mergedEvents[String(date)][String(timePath)] = {
+              isChecked: false,
+              slots: [],
+            };
           }
-          mergedEvents[String(date)][String(timePath)].push({
+          mergedEvents[String(date)][String(timePath)].slots.push({
             startTime: timeSlot.startTime,
             endTime: timeSlot.endTime,
             interviewerId: interviewer.interviewerId,
@@ -135,9 +138,12 @@ export function mergeInterviewerEventsWithTimeSlot(
         if (timeSlot.status !== 'requested') continue;
         const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
         if (!mergedEvents[String(dayKey)][String(timeRange)]) {
-          mergedEvents[String(dayKey)][String(timeRange)] = [];
+          mergedEvents[String(dayKey)][String(timeRange)] = {
+            isChecked: false,
+            slots: [],
+          };
         }
-        mergedEvents[String(dayKey)][String(timeRange)].push({
+        mergedEvents[String(dayKey)][String(timeRange)].slots.push({
           startTime: timeSlot.startTime,
           endTime: timeSlot.endTime,
           interviewerId: inter.interviewerId,
@@ -168,9 +174,12 @@ export const groupSlots = (
       if (timeSlot.status !== slotStatus) return;
       const timeRange = `${timeSlot.startTime}_${timeSlot.endTime}`;
       if (!mergedEvents[String(date)][String(timeRange)]) {
-        mergedEvents[String(date)][String(timeRange)] = [];
+        mergedEvents[String(date)][String(timeRange)] = {
+          isChecked: false,
+          slots: [],
+        };
       }
-      mergedEvents[String(date)][String(timeRange)].push({
+      mergedEvents[String(date)][String(timeRange)].slots.push({
         startTime: timeSlot.startTime,
         endTime: timeSlot.endTime,
         interviewerId: interviewer.interviewerId,

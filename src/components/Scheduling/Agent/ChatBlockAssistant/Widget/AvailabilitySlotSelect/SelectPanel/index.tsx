@@ -62,10 +62,12 @@ function SelectPanelForAvailibility({
           onClickCard={{
             onClick: () => {
               submitHandler({
-                input: `Here is the panel name ${JSON.stringify(panel)} for requesting availibility.`,
+                input: `Here is the panel name ${JSON.stringify(
+                  panel,
+                )} for requesting availibility.`,
                 selectedItem: {
                   panel: panel,
-                  message: `Schedule with panel ${panel.name}`,
+                  message: `Here is the panel name ${panel.name}`,
                 },
               });
             },
