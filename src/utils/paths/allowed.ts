@@ -57,5 +57,6 @@ export const allowedPaths = new Set([
   '/api/scheduling/ai/find_panel_availabilities',
   '/api/scheduling/ai/save-time-slot-status',
   '/api/scheduling/ai/update-activity-confirmed-slot',
+  '/api/scheduling/update-calender-event-status',
   ...cronPaths,
 ]);
