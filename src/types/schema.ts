@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agent: {
+        Row: {
+          assistant_id: string | null
+          id: string
+          type: Database["public"]["Enums"]["agent_type"]
+        }
+        Insert: {
+          assistant_id?: string | null
+          id?: string
+          type: Database["public"]["Enums"]["agent_type"]
+        }
+        Update: {
+          assistant_id?: string | null
+          id?: string
+          type?: Database["public"]["Enums"]["agent_type"]
+        }
+        Relationships: []
+      }
       agent_activity: {
         Row: {
           agent_chat_id: string
@@ -48,12 +66,91 @@ export type Database = {
             foreignKeyName: "public_agent_activity_agent_chat_id_fkey"
             columns: ["agent_chat_id"]
             isOneToOne: false
-            referencedRelation: "agent_chat"
+            referencedRelation: "agent_chatx"
             referencedColumns: ["id"]
           }
         ]
       }
       agent_chat: {
+        Row: {
+          agent_id: string
+          created_at: string
+          id: string
+          recuriter_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          id?: string
+          recuriter_id: string
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          id?: string
+          recuriter_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_agent_chat_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agent"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_agent_chat_recuriter_id_fkey"
+            columns: ["recuriter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_agent_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      agent_chat_messages: {
+        Row: {
+          agent_chat_id: string | null
+          created_at: string
+          id: string
+          json_content: Json | null
+          sender: Database["public"]["Enums"]["sender_type"]
+          text_content: string | null
+        }
+        Insert: {
+          agent_chat_id?: string | null
+          created_at?: string
+          id?: string
+          json_content?: Json | null
+          sender: Database["public"]["Enums"]["sender_type"]
+          text_content?: string | null
+        }
+        Update: {
+          agent_chat_id?: string | null
+          created_at?: string
+          id?: string
+          json_content?: Json | null
+          sender?: Database["public"]["Enums"]["sender_type"]
+          text_content?: string | null
+        }
+        Relationships: []
+      }
+      agent_chatx: {
         Row: {
           created_at: string
           history: Json[] | null
@@ -422,6 +519,7 @@ export type Database = {
           duration: number | null
           id: string
           level: Database["public"]["Enums"]["question_level"] | null
+          order: number
           parent_question_id: string | null
           question: Json | null
           required: boolean
@@ -435,6 +533,7 @@ export type Database = {
           duration?: number | null
           id?: string
           level?: Database["public"]["Enums"]["question_level"] | null
+          order?: number
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
@@ -448,6 +547,7 @@ export type Database = {
           duration?: number | null
           id?: string
           level?: Database["public"]["Enums"]["question_level"] | null
+          order?: number
           parent_question_id?: string | null
           question?: Json | null
           required?: boolean
@@ -2322,6 +2422,10 @@ export type Database = {
           created_at: string
           response: Json
           questions: Json
+          public_job_id: string
+          company: string
+          email: string
+          candidate_id: string
         }[]
       }
       getallresumematches: {
@@ -2617,10 +2721,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      updatequestionorder: {
+        Args: {
+          start_point: number
+          question_ids: string[]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
+      agent_types: "scheduler" | "screening" | "job_assistant" | "sourcing"
       application_processing_status:
         | "not started"
         | "processing"
@@ -2647,6 +2759,7 @@ export type Database = {
       question_level: "basic" | "intermediate" | "advanced"
       question_type: "scq" | "mcq" | "qna" | "code"
       recruiter_roles: "admin" | "member" | "interviewer"
+      sender_type: "aglint" | "you" | "system" | "user"
       template_type:
         | "cognitive"
         | "language"
