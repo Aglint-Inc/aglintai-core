@@ -1,0 +1,36 @@
+.inputfield {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.div-block-741 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.slot_input {
+  height: 100%;
+}
+
+.div-block-742 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  cursor: pointer;
+}

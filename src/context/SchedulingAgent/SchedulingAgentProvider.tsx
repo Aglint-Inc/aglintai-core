@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
@@ -24,12 +24,19 @@ type SchedulingAgentContextType = {
   // eslint-disable-next-line no-unused-vars
   updateAllChat: (histAfterAssisResponse: AgentChat['history']) => void;
   scrollToBottom: () => void;
+  newChat: () => void;
+  // eslint-disable-next-line no-unused-vars
+  editName: (name: string) => void;
+  initialLoading: boolean;
 };
 
 const initialState = {
   submitHandler: async () => {},
   updateAllChat: () => {},
   scrollToBottom: () => {},
+  newChat: () => {},
+  editName: () => {},
+  initialLoading: true,
 };
 
 const SchedulingAgentContext =
@@ -38,6 +45,7 @@ const SchedulingAgentContext =
 const SchedulingAgentProvider = ({ children }) => {
   const { recruiter, recruiterUser } = useAuthDetails();
   const { allChat, selectedChat, activities } = useSchedulingAgentStore();
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
     if (recruiter?.id) initialFetch();
@@ -52,7 +60,7 @@ const SchedulingAgentProvider = ({ children }) => {
   const initialFetch = async () => {
     try {
       const { data, error } = await supabase
-        .from('agent_chat')
+        .from('agent_chatx')
         .select('*')
         .eq('recruiter_id', recruiter?.id);
 
@@ -62,6 +70,8 @@ const SchedulingAgentProvider = ({ children }) => {
       setAllChat(data as AgentChat[]);
     } catch (e) {
       //
+    } finally {
+      setInitialLoading(false);
     }
   };
 
@@ -149,7 +159,7 @@ const SchedulingAgentProvider = ({ children }) => {
       } as any);
       setLoading(false);
 
-      await supabase.from('agent_chat').upsert({
+      await supabase.from('agent_chatx').upsert({
         ...selectedChat,
         history: histAfterAssisResponse,
         last_updated_at: new Date().toISOString(),
@@ -192,17 +202,46 @@ const SchedulingAgentProvider = ({ children }) => {
   };
 
   const scrollToBottom = () => {
-    const container = document.querySelector(
+    const container = document.querySelector<HTMLElement>(
       '[class*=AgentLayout_task_chat_body]',
     );
     if (container) {
+      container.style.scrollBehavior = 'smooth';
       container.scrollTop = container.scrollHeight;
     }
   };
 
+  const newChat = () => {
+    setSelectedChat({ history: [], id: null, title: null } as any);
+    setActivities([]);
+  };
+
+  const editName = async (name) => {
+    await supabase
+      .from('agent_chatx')
+      .update({ title: name })
+      .eq('id', selectedChat.id);
+
+    setSelectedChat({ ...selectedChat, title: name });
+    const updatedChatIndex = allChat.findIndex((c) => c.id === selectedChat.id);
+    const updatedChat = {
+      ...allChat[Number(updatedChatIndex)],
+      title: name,
+    };
+    allChat[Number(updatedChatIndex)] = updatedChat as AgentChat;
+    setAllChat([...allChat]);
+  };
+
   return (
     <SchedulingAgentContext.Provider
-      value={{ submitHandler, updateAllChat, scrollToBottom }}
+      value={{
+        submitHandler,
+        updateAllChat,
+        scrollToBottom,
+        newChat,
+        editName,
+        initialLoading,
+      }}
     >
       {children}
     </SchedulingAgentContext.Provider>

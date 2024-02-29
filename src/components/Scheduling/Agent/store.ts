@@ -22,6 +22,11 @@ export interface SchedulingAgent {
   activityLoading: boolean;
   activityOpen: boolean;
   candidateTipTapOpen: boolean;
+  edit: {
+    isEdit: boolean;
+    editValue: string;
+  };
+  isDeletePopupOpen: boolean;
 }
 
 const initialState: SchedulingAgent = {
@@ -33,6 +38,11 @@ const initialState: SchedulingAgent = {
   activityLoading: false,
   activityOpen: false,
   candidateTipTapOpen: false,
+  edit: {
+    isEdit: false,
+    editValue: '',
+  },
+  isDeletePopupOpen: false,
 };
 
 export const useSchedulingAgentStore = create<SchedulingAgent>()(() => ({
@@ -55,6 +65,14 @@ export const setLoading = (loading: boolean) =>
 
 export const setActivities = (activities: AgentActivityType[]) =>
   useSchedulingAgentStore.setState({ activities });
+
+export const setDeletePopupOpen = (isDeletePopupOpen: boolean) =>
+  useSchedulingAgentStore.setState({ isDeletePopupOpen });
+
+export const setEdit = (edit: { isEdit?: boolean; editValue?: string }) =>
+  useSchedulingAgentStore.setState((state) => ({
+    edit: { ...state.edit, ...edit },
+  }));
 
 export const setActivityLoading = (activityLoading: boolean) =>
   useSchedulingAgentStore.setState({ activityLoading });
