@@ -1,7 +1,11 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
+import { SkeletalUnit } from '@/devlink2';
 import {
   AgentLayout,
   AgentTask,
@@ -10,6 +14,7 @@ import {
   ChatWindow,
   NewChat,
   NewChatButton,
+  SuggetionPill,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
@@ -19,12 +24,13 @@ import Activity from './Activity';
 import ActivityDrawer from './ActivityDrawer';
 import ChatBlockAssistant from './ChatBlockAssistant/ChatAssistant';
 import ChatEditorScheduling from './ChatEditor';
+import EditTask from './EditTask';
 import IconActivity from './IconActivity';
 import ScheduleIcon from './ScheduleIcon';
 import {
   HistoryType,
   setActivityOpen,
-  setLoading,
+  setEdit,
   setSelectedChat,
   useSchedulingAgentStore,
 } from './store';
@@ -43,33 +49,60 @@ export type AisubmitHandlerParams = {
 };
 
 function SchedulingAgent() {
+  const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const { userText, allChat, loading, selectedChat } =
+  const { userText, allChat, loading, selectedChat, activities, edit } =
     useSchedulingAgentStore();
 
-  const { submitHandler } = useSchedulingAgent();
+  const { submitHandler, newChat, initialLoading, scrollToBottom } =
+    useSchedulingAgent();
+
+  useEffect(() => {
+    if (router.isReady && router.query.id && !initialLoading) {
+      const chat = allChat.find((chat) => chat.id == router.query.id);
+      if (chat?.id) {
+        setSelectedChat(chat);
+        setTimeout(() => {
+          scrollToBottom();
+        }, 100);
+      } else router.push('/scheduling/agent');
+    }
+  }, [router, initialLoading]);
 
   return (
     <>
       <AgentLayout
+        onClickDeleteChat={{ onClick: {} }}
+        isEditIcon={Boolean(selectedChat.id)}
+        slotInlineEditField={
+          initialLoading ? (
+            <Stack width={'200px'} height={'16px'}>
+              <SkeletalUnit />
+            </Stack>
+          ) : (
+            <EditTask />
+          )
+        }
+        onClickEdit={{
+          onClick: () => {
+            setEdit({
+              isEdit: true,
+              editValue: selectedChat.title,
+            });
+          },
+        }}
+        isEditTaskName={edit.isEdit}
         slotNewChatButton={
           <NewChatButton
             onClickChat={{
               onClick: () => {
-                setSelectedChat({ history: [], id: null, title: null } as any);
+                newChat();
               },
             }}
           />
         }
         slotAgentTask={
           <>
-            {/* <button
-              onClick={() => {
-                setSelectedChat({ history: [] });
-              }}
-            >
-              clear 
-            {/* </button> */}
             {allChat.map((chat) => {
               return (
                 <AgentTask
@@ -78,8 +111,7 @@ function SchedulingAgent() {
                   isActive={chat.id == selectedChat.id}
                   onClickCard={{
                     onClick: () => {
-                      setSelectedChat(chat);
-                      setLoading(false);
+                      router.push(`/scheduling/agent?id=${chat.id}`);
                     },
                   }}
                   slotTaskIcon={<ScheduleIcon />}
@@ -154,9 +186,26 @@ function SchedulingAgent() {
             )}
           </>
         }
+        isSuggetionPills={activities.length !== 0}
+        slotSuggetionPills={
+          <>
+            <SuggetionPill
+              textSuggetion={`Resend confirmation email to candidate`}
+            />
+            <SuggetionPill textSuggetion={`Cancel interview schedule`} />
+            <SuggetionPill
+              textSuggetion={`Schedule new interview for a candidate`}
+              onClickCard={{
+                onClick: () => {
+                  newChat();
+                },
+              }}
+            />
+          </>
+        }
         slotSearchInput={<ChatEditorScheduling />}
-        isSearch={true}
-        textCurrentTaskName={selectedChat.title}
+        isSearch={activities.length === 0}
+        textCurrentTaskName={selectedChat.title || 'New Task'}
         onClickTaskActivity={{
           onClick: () => {
             setActivityOpen(true);

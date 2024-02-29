@@ -15,4 +15,9 @@ declare function AgentLayout(props: {
   slotSuggetionPills?: Types.Devlink.Slot;
   isSuggetionPills?: Types.Visibility.VisibilityConditions;
   slotNewChatButton?: Types.Devlink.Slot;
+  onClickEdit?: Types.Devlink.RuntimeProps;
+  isEditTaskName?: Types.Visibility.VisibilityConditions;
+  slotInlineEditField?: Types.Devlink.Slot;
+  onClickDeleteChat?: Types.Devlink.RuntimeProps;
+  isEditIcon?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

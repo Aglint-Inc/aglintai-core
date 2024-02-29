@@ -306,9 +306,13 @@ function InterviewContextProvider({ children }) {
         is_submitted: true,
       },
     });
-    await handleAssessmentResultApi('result', {
-      result_id: results.id,
-    });
+    try {
+      await handleAssessmentResultApi('result', {
+        result_id: results.id,
+      });
+    } catch (error) {
+      return null
+    }
     router.push('/assessment-thanks');
   }
 

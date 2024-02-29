@@ -10,7 +10,6 @@ import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-
 function InterviewInstructions() {
   const { assessmentDetails, fetching } = useCandidateAssessment();
   const { startInterview, video_Urls, startVideoInterview, videoAssessment } =
@@ -233,10 +232,10 @@ function InterviewInstructions() {
             textCompanyDescription={intro?.company_details}
             onClickStart={{
               onClick: () => {
-                if (router.query.job_id) {
-                  window.alert('You are in preview mode');
-                  return;
-                }
+                // if (router.query.job_id) {
+                //   window.alert('You are in preview mode');
+                //   return;
+                // }
                 if (videoAssessment) startVideoInterview();
                 else startInterview();
               },

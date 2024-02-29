@@ -1,0 +1,131 @@
+.assessment_duplicate_popup {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  width: 460px;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-radius: 10px;
+
+  background-color: white;
+}
+
+.popup_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup_title {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.embed_flex-2 {
+  display: flex;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.popup_body {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.buttn_flex {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.wide_button {
+  position: relative;
+  z-index: 1;
+}
+
+.button_primary {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button_primary.danger:hover {
+  background-color: #cc3340;
+}
+
+.button_primary.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.greay_btn:hover {
+  background-color: #d8dcde;
+}

@@ -27,6 +27,7 @@
 
 .suggetion_card.isfixed {
   width: 32.5%;
+  height: auto;
   flex: 0 0 auto;
 }
 

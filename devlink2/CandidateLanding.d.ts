@@ -12,4 +12,5 @@ declare function CandidateLanding(props: {
   slotInstructions?: Types.Devlink.Slot;
   textTime?: React.ReactNode;
   isAboutCompnay?: Types.Visibility.VisibilityConditions;
+  textAssessmentCount?: React.ReactNode;
 }): React.JSX.Element;

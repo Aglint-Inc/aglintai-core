@@ -28,14 +28,6 @@ function SuggetionCards() {
         }}
       />
       <SuggetionCard
-        textSuggestion={'Create Interview Panel'}
-        onClickCard={{
-          onClick: () => {
-            submitHandler({ input: 'Create Interview Panel' });
-          },
-        }}
-      />
-      <SuggetionCard
         textSuggestion={'List all interview panels'}
         onClickCard={{
           onClick: () => {

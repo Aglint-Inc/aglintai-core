@@ -52,6 +52,7 @@ export const allowedPaths = new Set([
   '/api/candidate-assessment/assessment-result-create',
   '/api/candidate-assessment/assessment-result-details',
   '/api/candidate-assessment/assessment-result-update',
+  `/api/assessment-result/result`,
   '/api/scheduling/list-availability-v2',
   '/api/scheduling/ai/find_panel_availabilities',
   '/api/scheduling/ai/save-time-slot-status',

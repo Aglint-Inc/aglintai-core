@@ -115,7 +115,8 @@ const AvailabilitySlotSelect = ({
             disabled={checkedSlots.length === 0}
             onClick={() => {
               if (checkedSlots.length === 0) return;
-              let aicmd = `Send an email to confirm the availability of time slots for the given panel`;
+              let aicmd = `Send an email to confirm the availability of time slots for this panel`;
+              const names = findNames(mergedTimeSlots);
               submitHandler({
                 input: aicmd,
                 payload: {
@@ -138,7 +139,9 @@ const AvailabilitySlotSelect = ({
                   {
                     agent_chat_id: selectedChat.id,
                     icon_status: 'success',
-                    title: `Email send for `,
+                    title: `Email sent to  ${names.join(
+                      ', ',
+                    )} for confirming availability`,
                     type: 'aglint',
                   },
                   {
@@ -166,4 +169,18 @@ const updateMergedAvail = (selectedChat, path, isChecked) => {
   set(newSelectedChat, `${path}.isChecked`, isChecked);
   set(newSelectedChat, `${path}.isChecked`, isChecked);
   return newSelectedChat;
+};
+
+const findNames = (mergedSlots: MergedEvents) => {
+  let mp = new Set();
+  for (let dateKey in mergedSlots) {
+    for (let timeKey in mergedSlots[String(dateKey)]) {
+      if (mergedSlots[String(dateKey)][String(timeKey)].isChecked) {
+        for (let int of mergedSlots[String(dateKey)][String(timeKey)].slots) {
+          mp.add(int.interviewerName);
+        }
+      }
+    }
+  }
+  return Array.from(mp);
 };
