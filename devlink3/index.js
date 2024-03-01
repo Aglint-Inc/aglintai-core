@@ -52,6 +52,7 @@ export * from "./DummyNavigation";
 export * from "./IconRegular";
 export * from "./IconSmall";
 export * from "./InlineEditField";
+export * from "./MoreButton";
 export * from "./NewChat";
 export * from "./NewChatButton";
 export * from "./NewTaskDropdown";

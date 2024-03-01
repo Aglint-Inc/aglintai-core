@@ -18,6 +18,7 @@ import {
   NewChatButton,
   SuggetionPill,
 } from '@/devlink3';
+import { MoreButton } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 import { AgentActivityType } from '@/src/types/data.types';
@@ -111,9 +112,9 @@ function SchedulingAgent() {
         }}
       >
         <DeletePopup
-          textTitle={'Cancel Schedule'}
+          textTitle={'Delete Task'}
           textDescription={
-            'Are you sure you want to delete this schedule? This action cannot be undone.'
+            'Are you sure you want to delete this task? This action cannot be undone.'
           }
           isIcon={false}
           onClickCancel={{
@@ -126,11 +127,20 @@ function SchedulingAgent() {
               deleteHandler();
             },
           }}
-          buttonText={'Cancel Schedule'}
+          buttonText={'Delete'}
         />
       </Dialog>
+
       <AgentLayout
-        onClickDeleteChat={{ onClick: {} }}
+        slotMoreButton={
+          <MoreButton
+            onClickDelete={{
+              onClick: () => {
+                setDeletePopupOpen(true);
+              },
+            }}
+          />
+        }
         isEditIcon={Boolean(selectedChat.id)}
         slotInlineEditField={<EditTask />}
         isChatLoading={initialLoading}
@@ -284,7 +294,7 @@ function SchedulingAgent() {
             setActivityOpen(true);
           },
         }}
-        isActivity={true}
+        isActivity={Boolean(selectedChat.id)}
         slotTimelineBlock={<Activity />}
       />
       <ActivityDrawer />

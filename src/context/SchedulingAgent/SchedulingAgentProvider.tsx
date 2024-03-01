@@ -182,6 +182,11 @@ const SchedulingAgentProvider = ({ children }) => {
         last_updated_at: new Date().toISOString(),
       });
       updateAllChat(histAfterAssisResponse as AgentChat['history']);
+      if (!router.query.id) {
+        router.push(`/scheduling/agent?id=${selectedChat.id}`, undefined, {
+          shallow: true,
+        });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error:', error);
@@ -239,9 +244,9 @@ const SchedulingAgentProvider = ({ children }) => {
     const updatedChatIndex = allChat.findIndex((c) => c.id === selectedChat.id);
     const updatedChat = {
       ...allChat[Number(updatedChatIndex)],
-      title: name,
+      title: edit.editValue,
     };
-    allChat[Number(updatedChatIndex)] = updatedChat as any;
+    allChat[Number(updatedChatIndex)] = updatedChat;
     setAllChat([...allChat]);
     setEdit({
       isEdit: false,
@@ -263,6 +268,7 @@ const SchedulingAgentProvider = ({ children }) => {
         toast.error('Error deleting chat');
       } else {
         setAllChat(allChat.filter((c) => c.id !== selectedChat.id));
+        setSelectedChat({ history: [], id: null, title: null } as any);
         router.push('/scheduling/agent', undefined, { shallow: true });
       }
     } catch (e) {
