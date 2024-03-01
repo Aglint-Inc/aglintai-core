@@ -10,6 +10,7 @@ import {
   setActivities,
   setActivityLoading,
   setAllChat,
+  setDeletePopupOpen,
   setEdit,
   setLoading,
   setSelectedChat,
@@ -27,9 +28,9 @@ type SchedulingAgentContextType = {
   updateAllChat: (histAfterAssisResponse: AgentChat['history']) => void;
   scrollToBottom: () => void;
   newChat: () => void;
-  // eslint-disable-next-line no-unused-vars
-  editName: (name: string) => void;
+  editName: () => void;
   initialLoading: boolean;
+  deleteHandler: () => void;
 };
 
 const initialState = {
@@ -39,6 +40,7 @@ const initialState = {
   newChat: () => {},
   editName: () => {},
   initialLoading: true,
+  deleteHandler: () => {},
 };
 
 const SchedulingAgentContext =
@@ -47,7 +49,7 @@ const SchedulingAgentContext =
 const SchedulingAgentProvider = ({ children }) => {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
-  const { allChat, selectedChat, activities } = useSchedulingAgentStore();
+  const { allChat, selectedChat, activities, edit } = useSchedulingAgentStore();
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
@@ -65,7 +67,8 @@ const SchedulingAgentProvider = ({ children }) => {
       const { data, error } = await supabase
         .from('agent_chatx')
         .select('*')
-        .eq('recruiter_id', recruiter?.id);
+        .eq('recruiter_id', recruiter?.id)
+        .order('last_updated_at', { ascending: false });
 
       if (error) {
         throw error;
@@ -228,16 +231,17 @@ const SchedulingAgentProvider = ({ children }) => {
   const newChat = () => {
     setSelectedChat({ history: [], id: null, title: null } as any);
     setActivities([]);
+    router.push('/scheduling/agent', undefined, { shallow: true });
   };
 
-  const editName = async (name) => {
-    setSelectedChat({ ...selectedChat, title: name });
+  const editName = async () => {
+    setSelectedChat({ ...selectedChat, title: edit.editValue });
     const updatedChatIndex = allChat.findIndex((c) => c.id === selectedChat.id);
     const updatedChat = {
       ...allChat[Number(updatedChatIndex)],
       title: name,
     };
-    allChat[Number(updatedChatIndex)] = updatedChat as AgentChat;
+    allChat[Number(updatedChatIndex)] = updatedChat as any;
     setAllChat([...allChat]);
     setEdit({
       isEdit: false,
@@ -245,8 +249,27 @@ const SchedulingAgentProvider = ({ children }) => {
     });
     await supabase
       .from('agent_chatx')
-      .update({ title: name })
+      .update({ title: edit.editValue })
       .eq('id', selectedChat.id);
+  };
+
+  const deleteHandler = async () => {
+    try {
+      const { error } = await supabase
+        .from('agent_chatx')
+        .delete()
+        .eq('id', selectedChat.id);
+      if (error) {
+        toast.error('Error deleting chat');
+      } else {
+        setAllChat(allChat.filter((c) => c.id !== selectedChat.id));
+        router.push('/scheduling/agent', undefined, { shallow: true });
+      }
+    } catch (e) {
+      toast.error('Error deleting task');
+    } finally {
+      setDeletePopupOpen(false);
+    }
   };
 
   return (
@@ -258,6 +281,7 @@ const SchedulingAgentProvider = ({ children }) => {
         newChat,
         editName,
         initialLoading,
+        deleteHandler,
       }}
     >
       {children}

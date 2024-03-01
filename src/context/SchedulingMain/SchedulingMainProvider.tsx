@@ -1,13 +1,8 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import {
-  ApplicationList,
-  resetInterviewState,
-  setApplicationList,
-  setInitalLoading,
-  setPagination,
-} from '@/src/components/Scheduling/Interview/store';
+import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
+import { ApplicationList, setApplicationList, setInitalLoading, setPagination } from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

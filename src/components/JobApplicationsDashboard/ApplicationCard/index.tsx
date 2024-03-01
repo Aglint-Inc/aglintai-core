@@ -43,7 +43,7 @@ import {
   getScreeningStatus,
   mapScoreToAnalysis,
 } from '../utils';
-import ListCardInterviewSchedule from '../../Scheduling/Interview/ListCard';
+import ListCardInterviewSchedule from '../../Scheduling/AllSchedules/ListCard';
 
 const ApplicationCard = ({
   detailedView,

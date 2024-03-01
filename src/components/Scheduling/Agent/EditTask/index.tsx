@@ -26,7 +26,7 @@ function EditTask() {
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              editName(edit.editValue);
+              editName();
             }
           }}
         />
@@ -41,7 +41,7 @@ function EditTask() {
       }}
       onClickDone={{
         onClick: () => {
-          editName(edit.editValue);
+          editName();
           setEdit({
             isEdit: false,
             editValue: '',

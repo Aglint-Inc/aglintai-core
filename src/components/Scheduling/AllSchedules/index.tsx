@@ -1,21 +1,21 @@
-import { Dialog, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   AllInterview,
   AllInterviewEmpty,
   CandidatesListPagination,
 } from '@/devlink2';
-import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CreateDialog from './CreateDialog';
+import DeleteScheduleDialog from './DeleteDialog';
 import AddFilterComp from './Filters/AddFilter';
 import DateFilter from './Filters/DateFilter';
 import DateRangeFilterComp from './Filters/DateRangeFilter';
@@ -25,6 +25,7 @@ import FilterScheduleType from './Filters/FilterScheduleType';
 import FilterSearchField from './Filters/FilterSearchField';
 import FilterStatus from './Filters/FilterStatus';
 import ListCardInterviewSchedule from './ListCard';
+import RescheduleDialog from './RescheduleDialog';
 import SidePanel from './SidePanel';
 import {
   ApplicationList,
@@ -52,8 +53,6 @@ function InterviewComp() {
     filterVisible,
     fetching,
     selectedApplication,
-    isCancelOpen,
-    isRescheduleOpen,
   } = useInterviewStore();
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
 
@@ -117,6 +116,16 @@ function InterviewComp() {
     }
   }, []);
 
+  useEffect(() => {
+    if (router.isReady && router.query.application_id && !initialLoading) {
+      const application = applicationList.find(
+        (app) => app.applications.id === router.query.application_id,
+      );
+      setSelectedApplication(application);
+      viaJobHandler(application);
+    }
+  }, [router, applicationList]);
+
   const fetchInterviewData = async ({ page = 1 }: { page: number }) => {
     try {
       setPagination({ page });
@@ -148,33 +157,27 @@ function InterviewComp() {
     }
   };
 
-  useEffect(() => {
-    if (router.isReady && router.query.application_id && !initialLoading) {
-      const application = applicationList.find(
-        (app) => app.applications.id === router.query.application_id,
-      );
-      setSelectedApplication(application);
-      viaJobHandler(application);
-    }
-  }, [router, applicationList]);
-
-  const viaJobHandler = async (application) => {
-    const job_id = localStorage.getItem('sch_job_id');
-    if (job_id) {
-      const { data: pageNumber, error } = await supabase.rpc(
-        'fetch_interview_data_page_number',
-        {
-          rec_id: recruiter.id,
-          application_id: router.query.application_id as string,
-        },
-      );
-      if (!error && pageNumber !== 1) {
-        setPagination({ page: pageNumber });
+  const viaJobHandler = async (application: ApplicationList) => {
+    try {
+      const job_id = localStorage.getItem('sch_job_id');
+      if (job_id) {
+        const { data: pageNumber, error } = await supabase.rpc(
+          'fetch_interview_data_page_number',
+          {
+            rec_id: recruiter.id,
+            application_id: router.query.application_id as string,
+          },
+        );
+        if (!error && pageNumber !== 1) {
+          setPagination({ page: pageNumber });
+        }
+        if (!application?.schedule) {
+          setIsCreateScheduleOpen(true);
+        }
+        localStorage.removeItem('sch_job_id');
       }
-      if (!application?.schedule) {
-        setIsCreateScheduleOpen(true);
-      }
-      localStorage.removeItem('sch_job_id');
+    } catch {
+      //
     }
   };
 
@@ -197,10 +200,14 @@ function InterviewComp() {
     }
   };
 
-  const visibleFilters = Object.entries(filterVisible)
-    // eslint-disable-next-line no-unused-vars
-    .filter(([_, order]) => order !== 0) // Filter out filters with order 0 (not visible)
-    .sort((a, b) => a[1] - b[1]);
+  const visibleFilters = useMemo(
+    () =>
+      Object.entries(filterVisible)
+        // eslint-disable-next-line no-unused-vars
+        .filter(([_, order]) => order !== 0)
+        .sort((a, b) => a[1] - b[1]),
+    [filterVisible],
+  );
 
   const onClickCard = (app: ApplicationList) => {
     router.push(
@@ -251,68 +258,8 @@ function InterviewComp() {
 
   return (
     <>
-      <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            background: 'transparent',
-            border: 'none',
-            borderRadius: '10px',
-          },
-        }}
-        open={isCancelOpen}
-        onClose={() => {
-          setIsCancelOpen(false);
-        }}
-      >
-        <DeletePopup
-          textTitle={'Cancel Schedule'}
-          textDescription={
-            'Are you sure you want to delete this schedule? This action cannot be undone.'
-          }
-          isIcon={false}
-          onClickCancel={{
-            onClick: () => {
-              setIsCancelOpen(false);
-            },
-          }}
-          onClickDelete={{
-            onClick: () => {
-              onClickCancel();
-            },
-          }}
-          buttonText={'Cancel Schedule'}
-        />
-      </Dialog>
-      <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            background: 'transparent',
-            border: 'none',
-            borderRadius: '10px',
-          },
-        }}
-        open={isRescheduleOpen}
-        onClose={() => {
-          setIsRescheduleOpen(false);
-        }}
-      >
-        <ConfirmationPopup
-          textPopupTitle={'Confirm Reschedule'}
-          textPopupDescription={
-            'Old schedule will be deleted and new schedule will be created. Are you sure you want to reschedule?'
-          }
-          isIcon={false}
-          onClickCancel={{
-            onClick: () => {
-              setIsRescheduleOpen(false);
-            },
-          }}
-          onClickAction={{
-            onClick: onClickReschedule,
-          }}
-          textPopupButton={'Confirm'}
-        />
-      </Dialog>
+      <DeleteScheduleDialog onClickCancel={onClickCancel} />
+      <RescheduleDialog onClickReschedule={onClickReschedule} />
       <CreateDialog />
       <AllInterview
         isSchedulerTable={true}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ButtonPrimaryRegular, InterviewpanelPill } from '@/devlink';
 import { WidgetGrid3X3 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { InterviewSlice } from '@/src/components/Scheduling/Interview/store';
+import { InterviewSlice } from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 

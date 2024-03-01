@@ -8,8 +8,8 @@ import toast from '@/src/utils/toast';
 
 import CandidateDetailsJob from './CandidateDetailsJob';
 import { useInterviewerStore } from '../store';
-import IconScheduleType from '../../Interview/ListCard/Icon';
-import { getScheduleType } from '../../Interview/utils';
+import IconScheduleType from '../../AllSchedules/ListCard/Icon';
+import { getScheduleType } from '../../AllSchedules/utils';
 
 function SelectedCandidateDetails() {
   const selectedSchedule = useInterviewerStore(

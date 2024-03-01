@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import {
   ChatBlock,
   ChatNotification,
   ChatWindow,
+  DeletePopup,
   NewChat,
   NewChatButton,
   SuggetionPill,
@@ -33,6 +34,7 @@ import {
   HistoryType,
   setActivities,
   setActivityOpen,
+  setDeletePopupOpen,
   setEdit,
   setSelectedChat,
   useSchedulingAgentStore,
@@ -54,11 +56,23 @@ export type AisubmitHandlerParams = {
 function SchedulingAgent() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const { userText, allChat, loading, selectedChat, activities, edit } =
-    useSchedulingAgentStore();
+  const {
+    userText,
+    allChat,
+    loading,
+    selectedChat,
+    activities,
+    edit,
+    isDeletePopupOpen,
+  } = useSchedulingAgentStore();
   const [indLoading, setIndLoading] = useState(false);
-  const { submitHandler, newChat, initialLoading, scrollToBottom } =
-    useSchedulingAgent();
+  const {
+    submitHandler,
+    newChat,
+    initialLoading,
+    scrollToBottom,
+    deleteHandler,
+  } = useSchedulingAgent();
 
   useEffect(() => {
     if (router.isReady && router.query.id) {
@@ -83,6 +97,38 @@ function SchedulingAgent() {
 
   return (
     <>
+      <Dialog
+        sx={{
+          '& .MuiDialog-paper': {
+            background: 'transparent',
+            border: 'none',
+            borderRadius: '10px',
+          },
+        }}
+        open={isDeletePopupOpen}
+        onClose={() => {
+          setDeletePopupOpen(false);
+        }}
+      >
+        <DeletePopup
+          textTitle={'Cancel Schedule'}
+          textDescription={
+            'Are you sure you want to delete this schedule? This action cannot be undone.'
+          }
+          isIcon={false}
+          onClickCancel={{
+            onClick: () => {
+              setDeletePopupOpen(false);
+            },
+          }}
+          onClickDelete={{
+            onClick: () => {
+              deleteHandler();
+            },
+          }}
+          buttonText={'Cancel Schedule'}
+        />
+      </Dialog>
       <AgentLayout
         onClickDeleteChat={{ onClick: {} }}
         isEditIcon={Boolean(selectedChat.id)}

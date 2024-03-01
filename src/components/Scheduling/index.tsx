@@ -6,7 +6,7 @@ import {
   PanelDashboardTopRight,
 } from '@/devlink2';
 
-import InterviewComp from './Interview';
+import InterviewComp from './AllSchedules';
 import InterviewerComp from './Interviewer';
 import Panels from './Panels';
 import { setIsCreateDialogOpen } from './Panels/store';

@@ -16,8 +16,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { ApiResponse } from './type';
-import IconScheduleType from '../Interview/ListCard/Icon';
-import { TimeSlot } from '../Interview/utils';
+import IconScheduleType from '../AllSchedules/ListCard/Icon';
+import { TimeSlot } from '../AllSchedules/utils';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import LoaderGrey from '../../Common/LoaderGrey';

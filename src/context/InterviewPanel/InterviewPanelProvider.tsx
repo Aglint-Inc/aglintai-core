@@ -6,7 +6,7 @@ import {
   setApplicationList,
   setInitalLoading,
   setPagination,
-} from '@/src/components/Scheduling/Interview/store';
+} from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

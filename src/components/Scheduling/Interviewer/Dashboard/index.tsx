@@ -6,8 +6,8 @@ import { AllInterviewEmpty } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
 import { setSelectedSchedule, useInterviewerStore } from '../store';
-import IconScheduleType from '../../Interview/ListCard/Icon';
-import { getScheduleType } from '../../Interview/utils';
+import IconScheduleType from '../../AllSchedules/ListCard/Icon';
+import { getScheduleType } from '../../AllSchedules/utils';
 
 function Dashboard() {
   const schedules = useInterviewerStore((state) => state.schedules);

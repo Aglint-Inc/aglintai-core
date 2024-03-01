@@ -45,8 +45,8 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-import IconScheduleType from '@/src/components/Scheduling/Interview/ListCard/Icon';
-import { getScheduleType } from '@/src/components/Scheduling/Interview/utils';
+import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
