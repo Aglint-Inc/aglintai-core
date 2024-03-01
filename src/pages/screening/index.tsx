@@ -1,6 +1,7 @@
 import Seo from '@components/Common/Seo';
 
-import Screening from '@/src/components/NewScreening/Dashboard';
+import Screening from '@/src/components/NewScreening/dashboard';
+
 
 const ScreeningDashboardPage = () => {
   return (
