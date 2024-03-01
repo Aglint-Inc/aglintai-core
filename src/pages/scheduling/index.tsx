@@ -1,7 +1,5 @@
-import React from 'react';
-
 import SchedulingMainComp from '@/src/components/Scheduling';
-import InterviewPanelProvider from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 function SchedulingMainPage() {
   return (
@@ -12,7 +10,7 @@ function SchedulingMainPage() {
 }
 
 SchedulingMainPage.getProvider = function getProvider(page) {
-  return <InterviewPanelProvider>{page}</InterviewPanelProvider>;
+  return <SchedulingProvider>{page}</SchedulingProvider>;
 };
 
 export default SchedulingMainPage;

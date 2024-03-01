@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react';
 import {
   AllInterview,
   AllInterviewEmpty,
-  Breadcrum,
   CandidatesListPagination,
-  PageLayout,
 } from '@/devlink2';
 import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -73,7 +71,7 @@ function InterviewComp() {
         filter.scheduleType
       ) {
         setSelectedApplication(null);
-        router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, {
+        router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
           shallow: true,
         });
         fetchInterviewData({ page: 1 });
@@ -98,7 +96,9 @@ function InterviewComp() {
   useEffect(() => {
     const debouncedTextSearchFetch = debounce(() => {
       setSelectedApplication(null);
-      router.push(pageRoutes.SCHEDULINGINTERVIEW, undefined, { shallow: true });
+      router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
+        shallow: true,
+      });
       fetchInterviewData({ page: 1 });
     }, 1000);
 
@@ -203,9 +203,13 @@ function InterviewComp() {
     .sort((a, b) => a[1] - b[1]);
 
   const onClickCard = (app: ApplicationList) => {
-    router.push(`?application_id=${app.applications.id}`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${app.applications.id}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   const onClickCancel = async () => {
@@ -310,107 +314,90 @@ function InterviewComp() {
         />
       </Dialog>
       <CreateDialog />
-      <PageLayout
-        slotTopbarLeft={
-          <>
-            <Breadcrum
-              isLink
-              onClickLink={{
+      <AllInterview
+        isSchedulerTable={true}
+        slotPagination={
+          <Stack
+            sx={{
+              opacity: fetching ? 0.5 : 1,
+              pointerEvents: fetching ? 'none' : 'auto',
+              zIndex: 3,
+            }}
+          >
+            <CandidatesListPagination
+              totalCandidatesCount={pagination.total}
+              currentCandidatesCount={applicationList.length}
+              totalPageCount={Math.ceil(pagination.total / 10)}
+              onclickNext={{
                 onClick: () => {
-                  router.push(pageRoutes.SCHEDULING);
+                  if (pagination.page < Math.ceil(pagination.total / 10))
+                    setPagination({ page: pagination.page + 1 });
                 },
               }}
+              onclickPrevious={{
+                onClick: () => {
+                  if (pagination.page > 1)
+                    setPagination({ page: pagination.page - 1 });
+                },
+              }}
+              slotPageNumber={pagination.page}
             />
-            <Breadcrum showArrow textName={'All Interviews'} />
+          </Stack>
+        }
+        slotSidebar={<SidePanel />}
+        slotAddFilter={<AddFilterComp />}
+        slotFilterButton={
+          <>
+            <FilterSearchField />
+            {visibleFilters.map(([filterKey]) => {
+              switch (filterKey) {
+                case 'relatedJobs':
+                  return <FilterJob key={filterKey} />;
+                case 'interviewPanels':
+                  return <FilterInterviewPanel key={filterKey} />;
+                case 'dateRange':
+                  return <DateRangeFilterComp key={filterKey} />;
+                case 'scheduleType':
+                  return <FilterScheduleType key={filterKey} />;
+                case 'status':
+                  return <FilterStatus key={filterKey} />;
+                default:
+                  return null;
+              }
+            })}
           </>
         }
-        slotBody={
-          <AllInterview
-            isSchedulerTable={true}
-            slotPagination={
-              <Stack
-                sx={{
-                  opacity: fetching ? 0.5 : 1,
-                  pointerEvents: fetching ? 'none' : 'auto',
-                  zIndex: 3,
-                }}
-              >
-                <CandidatesListPagination
-                  totalCandidatesCount={pagination.total}
-                  currentCandidatesCount={applicationList.length}
-                  totalPageCount={Math.ceil(pagination.total / 10)}
-                  onclickNext={{
-                    onClick: () => {
-                      if (pagination.page < Math.ceil(pagination.total / 10))
-                        setPagination({ page: pagination.page + 1 });
-                    },
-                  }}
-                  onclickPrevious={{
-                    onClick: () => {
-                      if (pagination.page > 1)
-                        setPagination({ page: pagination.page - 1 });
-                    },
-                  }}
-                  slotPageNumber={pagination.page}
-                />
-              </Stack>
-            }
-            slotSidebar={<SidePanel />}
-            slotAddFilter={<AddFilterComp />}
-            slotFilterButton={
+        slotDate={<DateFilter />}
+        slotAllInterviewCard={
+          <Stack
+            style={{
+              opacity: fetching ? 0.5 : 1,
+              pointerEvents: fetching ? 'none' : 'auto',
+            }}
+          >
+            {!initialLoading && (
               <>
-                <FilterSearchField />
-                {visibleFilters.map(([filterKey]) => {
-                  switch (filterKey) {
-                    case 'relatedJobs':
-                      return <FilterJob key={filterKey} />;
-                    case 'interviewPanels':
-                      return <FilterInterviewPanel key={filterKey} />;
-                    case 'dateRange':
-                      return <DateRangeFilterComp key={filterKey} />;
-                    case 'scheduleType':
-                      return <FilterScheduleType key={filterKey} />;
-                    case 'status':
-                      return <FilterStatus key={filterKey} />;
-                    default:
-                      return null;
-                  }
+                {applicationList.length === 0 && <AllInterviewEmpty />}
+                {applicationList.map((app) => {
+                  const panel_name = interviewPanels.filter(
+                    (panel) => panel.id === app.schedule?.panel_id,
+                  )[0]?.name;
+                  return (
+                    <ListCardInterviewSchedule
+                      isSelected={
+                        app.applications.id ===
+                        selectedApplication?.applications.id
+                      }
+                      key={app.applications.id}
+                      app={app}
+                      onClickCard={onClickCard}
+                      panel_name={panel_name}
+                    />
+                  );
                 })}
               </>
-            }
-            slotDate={<DateFilter />}
-            slotAllInterviewCard={
-              <Stack
-                style={{
-                  opacity: fetching ? 0.5 : 1,
-                  pointerEvents: fetching ? 'none' : 'auto',
-                }}
-              >
-                {!initialLoading && (
-                  <>
-                    {applicationList.length === 0 && <AllInterviewEmpty />}
-                    {applicationList.map((app) => {
-                      const panel_name = interviewPanels.filter(
-                        (panel) => panel.id === app.schedule?.panel_id,
-                      )[0]?.name;
-                      return (
-                        <ListCardInterviewSchedule
-                          isSelected={
-                            app.applications.id ===
-                            selectedApplication?.applications.id
-                          }
-                          key={app.applications.id}
-                          app={app}
-                          onClickCard={onClickCard}
-                          panel_name={panel_name}
-                        />
-                      );
-                    })}
-                  </>
-                )}
-              </Stack>
-            }
-          />
+            )}
+          </Stack>
         }
       />
     </>

@@ -1230,7 +1230,7 @@ function LoaderAgent() {
       ],
       markers: [],
     },
-    loop: false,
+    loop: true,
   };
 
   const { View } = useLottie(options);

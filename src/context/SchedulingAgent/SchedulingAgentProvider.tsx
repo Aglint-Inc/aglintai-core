@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
@@ -44,6 +45,7 @@ const SchedulingAgentContext =
   createContext<SchedulingAgentContextType>(initialState);
 
 const SchedulingAgentProvider = ({ children }) => {
+  const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const { allChat, selectedChat, activities } = useSchedulingAgentStore();
   const [initialLoading, setInitialLoading] = useState(true);
@@ -69,6 +71,15 @@ const SchedulingAgentProvider = ({ children }) => {
         throw error;
       }
       setAllChat(data as AgentChat[]);
+      if (router.query.id) {
+        const chat = data.find((chat) => chat.id == router.query.id);
+        if (chat?.id) {
+          setSelectedChat(chat as AgentChat);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        }
+      }
     } catch (e) {
       //
     } finally {

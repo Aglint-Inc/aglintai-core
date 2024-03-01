@@ -6,4 +6,6 @@ declare function PageLayout(props: {
   slotTopbarLeft?: Types.Devlink.Slot;
   slotTopbarRight?: Types.Devlink.Slot;
   slotBody?: Types.Devlink.Slot;
+  isBackButton?: Types.Visibility.VisibilityConditions;
+  onClickBack?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

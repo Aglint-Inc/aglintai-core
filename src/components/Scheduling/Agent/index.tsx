@@ -1,8 +1,9 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Skeleton } from '@/devlink2';
 import {
@@ -30,6 +31,7 @@ import LoaderAgent from './Loader';
 import ScheduleIcon from './ScheduleIcon';
 import {
   HistoryType,
+  setActivities,
   setActivityOpen,
   setEdit,
   setSelectedChat,
@@ -54,23 +56,30 @@ function SchedulingAgent() {
   const { recruiterUser } = useAuthDetails();
   const { userText, allChat, loading, selectedChat, activities, edit } =
     useSchedulingAgentStore();
-
+  const [indLoading, setIndLoading] = useState(false);
   const { submitHandler, newChat, initialLoading, scrollToBottom } =
     useSchedulingAgent();
 
   useEffect(() => {
     if (router.isReady && router.query.id) {
-      const chat = allChat.find((chat) => chat.id == router.query.id);
-      if (chat?.id) {
-        setSelectedChat(chat);
+      try {
+        setActivities([]);
+        const chat = allChat.find((chat) => chat.id == router.query.id);
+        if (chat?.id) {
+          setSelectedChat(chat);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        }
+      } catch (e) {
+        //
+      } finally {
         setTimeout(() => {
-          scrollToBottom();
-        }, 100);
-      } else if (!initialLoading) {
-        router.push('/scheduling/agent');
+          setIndLoading(false);
+        }, 500);
       }
     }
-  }, [router, allChat]);
+  }, [router?.query?.id]);
 
   return (
     <>
@@ -117,6 +126,7 @@ function SchedulingAgent() {
                     isActive={chat.id == selectedChat.id}
                     onClickCard={{
                       onClick: () => {
+                        setIndLoading(true);
                         router.push(`/scheduling/agent?id=${chat.id}`);
                       },
                     }}
@@ -132,65 +142,76 @@ function SchedulingAgent() {
           },
         }}
         slotChat={
-          selectedChat && selectedChat.history.length == 0 ? (
-            <NewChat
-              slotIcon={<ScheduleIcon />}
-              slotSuggetionCard={<SuggetionCards />}
-            />
-          ) : (
-            <ChatWindow
-              slotChatBlocks={
-                <>
-                  {selectedChat.history.map((his: HistoryType, ind) => {
-                    return his.type == 'user' ? (
+          <Stack position={'relative'}>
+            {indLoading && (
+              <Stack
+                position={'absolute'}
+                bgcolor={'#fff'}
+                zIndex={5}
+                height={'100%'}
+                width={'100%'}
+              ></Stack>
+            )}
+            {selectedChat && selectedChat.history.length == 0 ? (
+              <NewChat
+                slotIcon={<ScheduleIcon />}
+                slotSuggetionCard={<SuggetionCards />}
+              />
+            ) : (
+              <ChatWindow
+                slotChatBlocks={
+                  <>
+                    {selectedChat.history.map((his: HistoryType, ind) => {
+                      return his.type == 'user' ? (
+                        <ChatBlock
+                          key={ind}
+                          testName={'You'}
+                          textMessage={
+                            his?.selectedItem?.message
+                              ? his.selectedItem.message
+                              : his.value
+                          }
+                          textTime={dayjs(his.created_at).fromNow()}
+                          slotAvatar={
+                            <Image
+                              alt=''
+                              src={recruiterUser.profile_image}
+                              width={40}
+                              height={40}
+                            />
+                          }
+                        />
+                      ) : his.type == 'assistant' ? (
+                        <ChatBlockAssistant
+                          index={ind}
+                          textTime={dayjs(his.created_at).fromNow()}
+                          functionResp={his.funcRes}
+                          message={his.value}
+                        />
+                      ) : (
+                        <ChatNotification
+                          textMain={his.value}
+                          slotIcon={<IconActivity his={his} />}
+                        />
+                      );
+                    })}
+                    {loading && (
                       <ChatBlock
-                        key={ind}
-                        testName={'You'}
-                        textMessage={
-                          his?.selectedItem?.message
-                            ? his.selectedItem.message
-                            : his.value
-                        }
-                        textTime={dayjs(his.created_at).fromNow()}
-                        slotAvatar={
-                          <Image
-                            alt=''
-                            src={recruiterUser.profile_image}
-                            width={40}
-                            height={40}
-                          />
-                        }
+                        testName={'Aglint'}
+                        slotAvatar={<ScheduleIcon />}
+                        textTime={''}
+                        slotWidget={<ChatMessageLoader />}
+                        isWidget={true}
+                        istext={false}
                       />
-                    ) : his.type == 'assistant' ? (
-                      <ChatBlockAssistant
-                        index={ind}
-                        textTime={dayjs(his.created_at).fromNow()}
-                        functionResp={his.funcRes}
-                        message={his.value}
-                      />
-                    ) : (
-                      <ChatNotification
-                        textMain={his.value}
-                        slotIcon={<IconActivity his={his} />}
-                      />
-                    );
-                  })}
-                  {loading && (
-                    <ChatBlock
-                      testName={'Aglint'}
-                      slotAvatar={<ScheduleIcon />}
-                      textTime={''}
-                      slotWidget={<ChatMessageLoader />}
-                      isWidget={true}
-                      istext={false}
-                    />
-                  )}
-                </>
-              }
-            />
-          )
+                    )}
+                  </>
+                }
+              />
+            )}
+          </Stack>
         }
-        isSuggetionPills={activities.length !== 0}
+        isSuggetionPills={activities.length !== 0 && !indLoading}
         slotSuggetionPills={
           !initialLoading && (
             <>
@@ -209,8 +230,8 @@ function SchedulingAgent() {
             </>
           )
         }
-        slotSearchInput={!initialLoading && <ChatEditorScheduling />}
-        isSearch={activities.length === 0}
+        slotSearchInput={<ChatEditorScheduling />}
+        isSearch={!indLoading && activities.length === 0}
         textCurrentTaskName={selectedChat.title || 'New Task'}
         onClickTaskActivity={{
           onClick: () => {

@@ -4,10 +4,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { MyScheduleLanding } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
 import { API_FAIL_MSG } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -18,8 +16,7 @@ import {
   setLoading,
   setMembers,
   setSchedules,
-  setSelectedSchedule,
-  useInterviewerStore,
+  useInterviewerStore
 } from './store';
 import Loader from '../../Common/Loader';
 
@@ -83,70 +80,30 @@ const InterviewerComp = () => {
 
   return (
     <>
-      <PageLayout
-        slotTopbarLeft={
-          <>
-            {recruiterUser.role == 'admin' && (
-              <Breadcrum
-                isLink={true}
-                onClickLink={{
-                  onClick: () => {
-                    router.push(pageRoutes.SCHEDULING);
-                  },
-                }}
-              />
-            )}
-
-            <Breadcrum
-              showArrow={recruiterUser.role == 'admin'}
-              textName={'My Schedules'}
-              isLink={selectedSchedule ? true : false}
-              onClickLink={{
-                onClick: () => {
-                  setSelectedSchedule(null);
-                },
-              }}
-            />
-
-            {selectedSchedule && (
-              <Breadcrum
-                showArrow
-                textName={selectedSchedule?.schedule.schedule_name}
-              />
-            )}
-          </>
-        }
-        slotBody={
-          !(recruiterUser.schedule_auth as any)?.access_token ? (
-            <MyScheduleLanding
-              onClickConnectCalender={{
-                onClick: getConsent,
-              }}
-              textConnectedTo={`Connected to ${(recruiterUser.schedule_auth as any)?.email}`}
-              isConnectedVisible={Boolean(
-                (recruiterUser.schedule_auth as any)?.access_token,
-              )}
-              isConnectCalenderVisible={
-                !(recruiterUser.schedule_auth as any)?.access_token
-              }
-            />
+      {!(recruiterUser.schedule_auth as any)?.access_token ? (
+        <MyScheduleLanding
+          onClickConnectCalender={{
+            onClick: getConsent,
+          }}
+          textConnectedTo={`Connected to ${(recruiterUser.schedule_auth as any)?.email}`}
+          isConnectedVisible={Boolean(
+            (recruiterUser.schedule_auth as any)?.access_token,
+          )}
+          isConnectCalenderVisible={
+            !(recruiterUser.schedule_auth as any)?.access_token
+          }
+        />
+      ) : (
+        <Stack height={'100vh'}>
+          {loading ? (
+            <Loader />
           ) : (
-            <Stack height={'100vh'}>
-              {loading ? (
-                <Loader />
-              ) : (
-                <>
-                  {!selectedSchedule ? (
-                    <Dashboard />
-                  ) : (
-                    <SelectedCandidateDetails />
-                  )}
-                </>
-              )}
-            </Stack>
-          )
-        }
-      />
+            <>
+              {!selectedSchedule ? <Dashboard /> : <SelectedCandidateDetails />}
+            </>
+          )}
+        </Stack>
+      )}
     </>
   );
 };

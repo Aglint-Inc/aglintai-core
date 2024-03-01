@@ -95,6 +95,7 @@ export default forwardRef((props, ref) => {
             sx={{
               bgcolor: index === selectedIndex ? '#d8dcde' : '',
               p: '8px 16px',
+              cursor: 'pointer',
             }}
             onClick={() => selectItem(index)}
           >

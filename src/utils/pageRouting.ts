@@ -28,9 +28,8 @@ export const pageRoutes = Object.freeze({
   LOADING: '/loading',
   SCHEDULING: '/scheduling',
   SCHEDULINGPANEL: '/scheduling/panel',
-  SCHEDULINGINTERVIEW: '/scheduling/interview',
   CONFIRM_SCHEDULE: '/confirm-availability',
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',
-  SCREENING: '/screening'
+  SCREENING: '/screening',
 });

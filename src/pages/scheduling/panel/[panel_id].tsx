@@ -1,5 +1,5 @@
 import Availability from '@/src/components/Scheduling/Availability/Availability';
-import InterviewPanelProvider from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 const PanelAvailability = () => {
   return (
@@ -9,6 +9,6 @@ const PanelAvailability = () => {
   );
 };
 PanelAvailability.getProvider = function getProvider(page) {
-  return <InterviewPanelProvider>{page}</InterviewPanelProvider>;
+  return <SchedulingProvider>{page}</SchedulingProvider>;
 };
 export default PanelAvailability;

@@ -1,5 +1,6 @@
 import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import {
   CandidateDetailSidebar,
@@ -12,6 +13,7 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -28,6 +30,7 @@ import {
 import { mailHandler, TimeSlot } from '../utils';
 
 function SidePanel() {
+  const router = useRouter();
   const { recruiter } = useAuthDetails();
   const selectedApplication = useInterviewStore(
     (state) => state.selectedApplication,
@@ -175,14 +178,18 @@ function SidePanel() {
           onClickLeft={{
             onClick: () => {
               if (currentIndex > 0) {
-                setSelectedApplication(applicationList[currentIndex - 1]);
+                router.push(
+                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex - 1].applications.id}`,
+                );
               }
             },
           }}
           onClickRight={{
             onClick: () => {
               if (currentIndex < applicationList.length - 1) {
-                setSelectedApplication(applicationList[currentIndex + 1]);
+                router.push(
+                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex + 1].applications.id}`,
+                );
               }
             },
           }}

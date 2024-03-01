@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { cloneDeep, get, set } from 'lodash';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { LoadedSlotPill } from '@/devlink';
 import { WidgetFlexRow, WidgetTimeGroup } from '@/devlink3';

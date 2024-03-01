@@ -11,7 +11,7 @@ import {
   PanelDetailTopRight,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useInterviewPanel } from '@/src/context/InterviewPanel/InterviewPanelProvider';
+import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -42,7 +42,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const Availability = () => {
-  const { loading: isInterviewPanelLoading } = useInterviewPanel();
+  const { loading: isInterviewPanelLoading } = useScheduling();
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initialiseAvailabilities } = useSyncInterviewersCalender();
   const { members } = useAuthDetails();
@@ -123,119 +123,102 @@ const Availability = () => {
 
   return (
     <>
-      {
-        <>
-          <PageLayout
-            slotTopbarLeft={
-              <>
-                <Breadcrum
-                  isLink
-                  textName='Scheduler'
-                  onClickLink={{
-                    onClick: () => {
-                      router.push(pageRoutes.SCHEDULING);
-                    },
-                  }}
-                />
-                <Breadcrum
-                  isLink
-                  showArrow
-                  textName='Interview Panel'
-                  onClickLink={{
-                    onClick: () => {
-                      router.push(pageRoutes.SCHEDULINGPANEL);
-                    },
-                  }}
-                />
-                <Breadcrum showArrow textName={panelName} />
-              </>
-            }
-            slotBody={
-              <>
-                <PanelDetail
-                  slotPanelDetail={
-                    <>
-                      <AvailabilityBar />
+      <PageLayout
+        onClickBack={{
+          onClick: () => {
+            router.push(`${pageRoutes.SCHEDULING}?tab=panels`);
+          },
+        }}
+        isBackButton={true}
+        slotTopbarLeft={
+          <>
+            <Breadcrum textName={panelName} />
+          </>
+        }
+        slotBody={
+          <>
+            <PanelDetail
+              slotPanelDetail={
+                <>
+                  <AvailabilityBar />
 
-                      <>
-                        {isInitialising ? (
-                          <Stack
-                            direction={'row'}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                            width={'100vw'}
-                            height={'75vh'}
-                          >
-                            <LoaderSvg />
-                          </Stack>
-                        ) : (
-                          <PanelRow />
-                        )}
-                      </>
-                    </>
-                  }
-                />
-              </>
-            }
-            slotTopbarRight={
-              <>
-                <PanelDetailTopRight
-                  onClickEditPanel={{
-                    onClick: () => {
-                      setIsCreateDialogOpen('edit');
-                    },
-                  }}
-                  slotThreeDots={
-                    <>
-                      <CloseJobButton
-                        onClickClose={{
-                          onClick: (e) => {
-                            setPopupEl(e.currentTarget);
-                          },
-                        }}
-                      />
-                    </>
-                  }
-                />
-              </>
-            }
-          />
-          <CreateDialog />
-          <Drawer
-            open={openSideDrawer}
-            anchor='right'
-            onClose={() => setOpenSideDrawer(false)}
-          >
-            <SideDrawer onClose={() => setOpenSideDrawer(false)} />
-          </Drawer>
-          <Popover
-            open={Boolean(popupEl)}
-            anchorEl={popupEl}
-            onClose={() => {
-              setPopupEl(null);
-            }}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            sx={{
-              // mt: 2,
-              '& .MuiPaper-root': {
-                border: 'none !important',
-                overflow: 'visible !important',
-              },
-            }}
-          >
-            <ButtonWithShadow
-              onClickButton={{
+                  <>
+                    {isInitialising ? (
+                      <Stack
+                        direction={'row'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        width={'100vw'}
+                        height={'75vh'}
+                      >
+                        <LoaderSvg />
+                      </Stack>
+                    ) : (
+                      <PanelRow />
+                    )}
+                  </>
+                </>
+              }
+            />
+          </>
+        }
+        slotTopbarRight={
+          <>
+            <PanelDetailTopRight
+              onClickEditPanel={{
                 onClick: () => {
-                  deleteHandler();
+                  setIsCreateDialogOpen('edit');
                 },
               }}
+              slotThreeDots={
+                <>
+                  <CloseJobButton
+                    onClickClose={{
+                      onClick: (e) => {
+                        setPopupEl(e.currentTarget);
+                      },
+                    }}
+                  />
+                </>
+              }
             />
-          </Popover>
-        </>
-      }
+          </>
+        }
+      />
+      <CreateDialog />
+      <Drawer
+        open={openSideDrawer}
+        anchor='right'
+        onClose={() => setOpenSideDrawer(false)}
+      >
+        <SideDrawer onClose={() => setOpenSideDrawer(false)} />
+      </Drawer>
+      <Popover
+        open={Boolean(popupEl)}
+        anchorEl={popupEl}
+        onClose={() => {
+          setPopupEl(null);
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        sx={{
+          // mt: 2,
+          '& .MuiPaper-root': {
+            border: 'none !important',
+            overflow: 'visible !important',
+          },
+        }}
+      >
+        <ButtonWithShadow
+          onClickButton={{
+            onClick: () => {
+              deleteHandler();
+            },
+          }}
+        />
+      </Popover>
     </>
   );
 };
