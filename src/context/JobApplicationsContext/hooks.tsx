@@ -128,7 +128,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
-  const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
+  const {
+    jobsData,
+    initialLoad: jobLoad,
+    handleUIJobUpdate,
+    handleJobRefresh,
+  } = useJobs();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
@@ -239,28 +244,30 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
-      const { data, error, filteredCount } = await handleJobApplicationApi(
-        'read',
-        request,
-        signal,
-      );
-      if (data) {
-        const action: Action = {
-          type: ActionType.READ,
-          payload: {
-            applicationData: data,
-            activeSections: request.sections,
-          },
-        };
-        if (job?.posted_by == POSTED_BY.ASHBY) {
-          const is_sync = await checkSyncCand(job);
-          setAtsSync(is_sync);
+      const responses = await Promise.allSettled([
+        handleJobRefresh(jobId),
+        handleJobApplicationApi('read', request, signal),
+      ]);
+      if (responses[1].status === 'fulfilled') {
+        const { data, error, filteredCount } = responses[1].value;
+        if (data) {
+          const action: Action = {
+            type: ActionType.READ,
+            payload: {
+              applicationData: data,
+              activeSections: request.sections,
+            },
+          };
+          if (job?.posted_by == POSTED_BY.ASHBY) {
+            const is_sync = await checkSyncCand(job);
+            setAtsSync(is_sync);
+          }
+          // handleUIJobUpdate({ ...job, count: unFilteredCount });
+          dispatch(action);
+          return { confirmation: true, filteredCount };
         }
-        // handleUIJobUpdate({ ...job, count: unFilteredCount });
-        dispatch(action);
-        return { confirmation: true, filteredCount };
-      }
-      if (initialLoad) handleJobApplicationError(error);
+        if (initialLoad) handleJobApplicationError(error);
+      } else handleJobApplicationError('Something went wrong');
       return {
         confirmation: false,
         filteredCount: null as CountJobs,

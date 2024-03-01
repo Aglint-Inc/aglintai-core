@@ -57,34 +57,35 @@ export const useAssessmentQuestionCreate = () => {
       }),
     onMutate: async (recommededQuestion) => {
       await queryClient.cancelQueries({ queryKey });
-      const previousRecommedations =
+      const previousRecommendations =
         queryClient.getQueryData<RecommendationQuestion[]>(recQueryKey);
+      const newRecommendations = previousRecommendations.filter(
+        (question) => question.id !== recommededQuestion.id,
+      );
       queryClient.setQueryData<RecommendationQuestion[]>(
         recQueryKey,
-        (prev) => {
-          const newRecommedations = prev.filter(
-            (question) => question.id !== recommededQuestion.id,
-          );
-          return newRecommedations;
-        },
+        newRecommendations,
       );
       const previousQuestions =
         queryClient.getQueryData<AssessmentQuestion[]>(queryKey);
-      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
-        // eslint-disable-next-line no-unused-vars
-        const { id, created_at, ...rest } = recommededQuestion;
-        const newQuestions = [
-          ...prev,
-          {
-            ...rest,
-            id: question_id,
-            parent_question_id: recommededQuestion.id,
-          },
-        ] as AssessmentQuestion[];
-        return newQuestions;
-      });
+      // eslint-disable-next-line no-unused-vars
+      const { id, created_at, ...rest } = recommededQuestion;
+      const newQuestions = [
+        ...previousQuestions,
+        {
+          ...rest,
+          id: question_id,
+          parent_question_id: id,
+        } as AssessmentQuestion,
+      ];
+      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, newQuestions);
       setTimeout(() => setCurrentQuestion(previousQuestions.length), 0);
-      return { previousRecommedations, previousQuestions };
+      return {
+        previousRecommendations,
+        previousQuestions,
+        newRecommendations,
+        newQuestions,
+      };
     },
     onError: (err, variables, context) => {
       toast.error('Unable to add question');
@@ -94,18 +95,19 @@ export const useAssessmentQuestionCreate = () => {
       );
       queryClient.setQueryData<RecommendationQuestion[]>(
         recQueryKey,
-        context.previousRecommedations,
+        context.previousRecommendations,
       );
     },
-    onSuccess: (question) => {
-      queryClient.setQueryData<AssessmentQuestion[]>(queryKey, (prev) => {
-        const newQuestions = prev.reduce((acc, curr) => {
-          if (curr.id === question.id) acc.push(question);
-          else acc.push(curr);
-          return acc;
-        }, [] as AssessmentQuestion[]);
-        return newQuestions;
-      });
+    onSuccess: (question, _, context) => {
+      const updatedQuestions = context.newQuestions.reduce((acc, curr) => {
+        if (curr.id === question.id) acc.push(question);
+        else acc.push(curr);
+        return acc;
+      }, [] as AssessmentQuestion[]);
+      queryClient.setQueryData<AssessmentQuestion[]>(
+        queryKey,
+        updatedQuestions,
+      );
     },
   });
   return { mutation };

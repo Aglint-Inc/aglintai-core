@@ -48,7 +48,13 @@ const LoadingCards = () => {
 const AssessmentCards = () => {
   const { data } = useAllAssessments();
   const cards = data.map((assessment) => {
-    const card = <AssessmentCard id={assessment.id} assessment={assessment} />;
+    const card = (
+      <AssessmentCard
+        key={assessment.id}
+        id={assessment.id}
+        assessment={assessment}
+      />
+    );
     return assessment.loading ? (
       <OptimisticWrapper key={assessment.id}>{card}</OptimisticWrapper>
     ) : (

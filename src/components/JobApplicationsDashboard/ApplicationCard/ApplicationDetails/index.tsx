@@ -795,6 +795,15 @@ export const InterviewResultParams = ({
     <>
       {resultParamsObj.map((f, i) => {
         const score = f.score.percentage;
+        if (score === null) {
+          return (
+            <FeedbackScore
+              key={i}
+              textFeedback={capitalize(f.name)}
+              textScorePercentage={`Yet to take`}
+            />
+          );
+        }
         const circularScore = (
           <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
             <SmallCircularScore2 score={score} />

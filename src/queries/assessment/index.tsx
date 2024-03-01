@@ -48,19 +48,17 @@ export const useCreateAssessment = () => {
       await queryClient.cancelQueries({ queryKey });
       const previousAssessments =
         queryClient.getQueryData<Assessment[]>(queryKey);
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
-        const newAssessment: Assessment = {
-          ...payload,
-          ...uiDefaults,
-          id,
-          created_at: Date.now().toLocaleString(),
-          recruiter_id,
-          loading: true,
-        };
-        const newAssessments = [newAssessment, ...prev];
-        return newAssessments;
-      });
-      return { previousAssessments };
+      const newAssessment: Assessment = {
+        ...payload,
+        ...uiDefaults,
+        id,
+        created_at: new Date().toISOString(),
+        recruiter_id,
+        loading: true,
+      };
+      const newAssessments = [newAssessment, ...previousAssessments];
+      queryClient.setQueryData<Assessment[]>(queryKey, newAssessments);
+      return { previousAssessments, newAssessments };
     },
     onError: (error, variables, context) => {
       toast.error('Unable to create assessment');
@@ -69,15 +67,14 @@ export const useCreateAssessment = () => {
         context.previousAssessments,
       );
     },
-    onSuccess: (assessment) => {
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
-        prev.reduce((acc, curr) => {
-          if (curr.id === assessment.id)
-            acc.push({ ...assessment, ...uiDefaults });
-          else acc.push(curr);
-          return acc;
-        }, [] as Assessment[]),
-      );
+    onSuccess: (assessment, _, context) => {
+      const updatedAssessments = context.newAssessments.reduce((acc, curr) => {
+        if (curr.id === assessment.id)
+          acc.push({ ...assessment, ...uiDefaults });
+        else acc.push(curr);
+        return acc;
+      }, [] as Assessment[]);
+      queryClient.setQueryData<Assessment[]>(queryKey, updatedAssessments);
     },
   });
   return {
@@ -131,14 +128,13 @@ export const useDeleteAssessment = () => {
       await queryClient.cancelQueries({ queryKey });
       const previousAssessments =
         queryClient.getQueryData<Assessment[]>(queryKey);
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
-        prev.reduce((acc, curr) => {
-          if (curr.id === assessment_id) acc.push({ ...curr, loading: true });
-          else acc.push(curr);
-          return acc;
-        }, [] as Assessment[]),
-      );
-      return { previousAssessments };
+      const newAssessments = previousAssessments.reduce((acc, curr) => {
+        if (curr.id === assessment_id) acc.push({ ...curr, loading: true });
+        else acc.push(curr);
+        return acc;
+      }, [] as Assessment[]);
+      queryClient.setQueryData<Assessment[]>(queryKey, newAssessments);
+      return { previousAssessments, newAssessments };
     },
     onError: (error, variables, context) => {
       toast.error('Unable to delete assessment');
@@ -147,10 +143,11 @@ export const useDeleteAssessment = () => {
         context.previousAssessments,
       );
     },
-    onSuccess: () => {
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) =>
-        prev.filter(({ id }) => id !== assessment_id),
+    onSuccess: (_, variables, context) => {
+      const updatedAssessments = context.newAssessments.filter(
+        ({ id }) => id !== assessment_id,
       );
+      queryClient.setQueryData<Assessment[]>(queryKey, updatedAssessments);
     },
   });
   return { mutation };
@@ -169,17 +166,18 @@ export const useDuplicateAssessment = () => {
       await queryClient.cancelQueries({ queryKey });
       const previousAssessments =
         queryClient.getQueryData<Assessment[]>(queryKey);
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => [
+      const newAssessments = [
         {
-          ...prev.find(({ id }) => id === assessment_id),
+          ...previousAssessments.find(({ id }) => id === assessment_id),
           jobs: [],
           id,
           title,
           loading: true,
         },
-        ...prev,
-      ]);
-      return { previousAssessments };
+        ...previousAssessments,
+      ];
+      queryClient.setQueryData<Assessment[]>(queryKey, newAssessments);
+      return { previousAssessments, newAssessments };
     },
     onError: (error, variables, context) => {
       toast.error('Unable to duplicate assessment');
@@ -188,15 +186,13 @@ export const useDuplicateAssessment = () => {
         context.previousAssessments,
       );
     },
-    onSuccess: (id) => {
-      queryClient.setQueryData<Assessment[]>(queryKey, (prev) => {
-        const a = prev.reduce((acc, curr) => {
-          if (curr.id === id) acc.push({ ...curr, loading: false });
-          else acc.push(curr);
-          return acc;
-        }, [] as Assessment[]);
-        return a;
-      });
+    onSuccess: (id, _, context) => {
+      const updatedAssessments = context.newAssessments.reduce((acc, curr) => {
+        if (curr.id === id) acc.push({ ...curr, loading: false });
+        else acc.push(curr);
+        return acc;
+      }, [] as Assessment[]);
+      queryClient.setQueryData<Assessment[]>(queryKey, updatedAssessments);
     },
   });
   return { mutation };

@@ -4,7 +4,9 @@ import {
   type ChangeEvent,
   type ChangeEventHandler,
   type FC,
+  useEffect,
   useRef,
+  useState,
 } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
@@ -90,7 +92,12 @@ const MCQFields: FC<{
       isHint={question.question.options.length !== 0}
       slotQuestionInput={<LabelInput question={question} />}
       slotOptions={<OptionInputs question={question} />}
-      slotTextarea={<DescriptionInput question={question} />}
+      slotTextarea={
+        <DescriptionInput
+          key={question.id + 'Description'}
+          question={question}
+        />
+      }
       slotDurationInput={<DurationInput question={question} />}
       slotToggle={<ToggleInput question={question} />}
       slotRcCheckbox={<CheckboxInput question={question} />}
@@ -129,7 +136,7 @@ const ExpectedAnswerInput: FC<{
     });
   };
   return (
-    <UITextField
+    <TextField
       value={question.answer.label}
       onChange={handleUpdateExpectedAnswer}
       multiline={true}
@@ -155,7 +162,7 @@ const LabelInput: FC<{
     });
   };
   return (
-    <UITextField
+    <TextField
       value={question.question.label}
       onChange={handleUpdateLabel}
       placeholder='Type Question Here'
@@ -225,7 +232,7 @@ const DescriptionInput: FC<{
   };
   return (
     <Collapse in={question.description.show}>
-      <UITextField
+      <TextField
         value={question.description.value}
         onChange={handleUpdateDescription}
         multiline={true}
@@ -312,7 +319,7 @@ const OptionInputs: FC<{
       key={i}
       testOptionNumber={`${i + 1}.`}
       slotOptionInput={
-        <UITextField
+        <TextField
           value={option}
           onChange={(e) => handleUpdateOption(e, i)}
           placeholder={`Option ${i + 1}`}
@@ -429,6 +436,35 @@ const DurationInput: FC<{
 };
 
 export default AssessmentQuestionEditor;
+
+const TextField: FC<{
+  value: string | number;
+  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  multiline?: boolean;
+  placeholder?: string;
+}> = ({ placeholder = '', multiline = false, value, onChange }) => {
+  const [cursor, setCursor] = useState(null);
+  const ref = useRef(null);
+  useEffect(() => {
+    const input = ref.current;
+    if (input) input.setSelectionRange(cursor, cursor);
+  }, [ref, cursor, value]);
+  const handleChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
+    setCursor(e.target.selectionStart);
+    onChange(e);
+  };
+  return (
+    <UITextField
+      ref={ref}
+      multiline={multiline}
+      placeholder={placeholder}
+      value={value}
+      onChange={handleChange}
+    />
+  );
+};
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,

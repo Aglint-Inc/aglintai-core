@@ -73,8 +73,8 @@ export const getOverallInterviewScore = (
   result: ReturnType<typeof getInterviewScores>,
 ) => {
   return Math.trunc(
-    result.reduce((acc, curr) => {
-      acc += curr.score.percentage;
+    result.reduce((acc, { score: { percentage } }) => {
+      acc += percentage ?? 0;
       return acc;
     }, 0) / result.length,
   );
@@ -109,7 +109,7 @@ export const getInterviewScores = (
       } else
         acc.push({
           name: assessment.title,
-          score: { candidateTotal: 0, percentage: 0, total: 0 },
+          score: { candidateTotal: null, percentage: null, total: null },
         });
       return acc;
     },

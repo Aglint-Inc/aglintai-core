@@ -12,9 +12,10 @@ export const initialJobContext = {
   handleGetJob: undefined,
   initialLoad: false,
   handleUIJobUpdate: undefined,
+  handleJobRefresh: undefined,
 };
 
-export const readJobDbAction = async (recruiter_id: string) => {
+export const readJobsDbAction = async (recruiter_id: string) => {
   const { data, error } = await supabase
     .from('public_jobs')
     .select('*, assessment_job_relation(assessment(*))')
@@ -43,6 +44,42 @@ export const readJobDbAction = async (recruiter_id: string) => {
   });
 
   return { data: jobsWithCount, error };
+};
+
+export const readJobDbAction = async (jobId: string) => {
+  const responses = await Promise.allSettled([
+    supabase
+      .from('public_jobs')
+      .select('*, assessment_job_relation(assessment(*))')
+      .order('created_at', { ascending: false })
+      .eq('id', jobId),
+    jobApplicationCountDbAction([jobId]),
+  ]);
+  if (
+    responses[0].status === 'fulfilled' &&
+    responses[1].status === 'fulfilled'
+  ) {
+    const { data, error } = responses[0].value;
+
+    const { data: d1, error: e1 } = responses[1].value;
+
+    if (e1) {
+      return { data: undefined, error: e1 };
+    }
+
+    const jobWithCount = {
+      ...data[0],
+      count: Object.entries(d1[data[0].id]).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: value,
+        }),
+        {},
+      ),
+    };
+
+    return { data: jobWithCount, error };
+  }
 };
 
 const jobApplicationCountDbAction = async (ids: string[]) => {

@@ -11,6 +11,7 @@ import {
   deleteJobDbAction,
   initialJobContext,
   readJobDbAction,
+  readJobsDbAction,
   updateJobDbAction,
 } from './utils';
 
@@ -127,7 +128,7 @@ const useJobActions = () => {
 
   const handleJobRead = async () => {
     if (recruiter) {
-      const { data, error } = await readJobDbAction(recruiter.id);
+      const { data, error } = await readJobsDbAction(recruiter.id);
 
       if (data) {
         const fechedJobs = data.map((job) => {
@@ -211,6 +212,24 @@ const useJobActions = () => {
     }
   };
 
+  const handleJobRefresh = async (jobId: string) => {
+    if (recruiter) {
+      const { data, error } = await readJobDbAction(jobId);
+      if (data) {
+        const action: Action = {
+          type: ActionType.UPDATE,
+          payload: {
+            jobData: data,
+          },
+        };
+        dispatch(action);
+        return true;
+      }
+      handleJobError(error);
+      return false;
+    }
+  };
+
   const handleGetJob = (jobId: string) => {
     return jobsData.jobs.find((job) => job.id === jobId);
   };
@@ -232,6 +251,7 @@ const useJobActions = () => {
     handleJobDelete,
     handleJobError,
     handleGetJob,
+    handleJobRefresh,
     initialLoad,
   };
 
