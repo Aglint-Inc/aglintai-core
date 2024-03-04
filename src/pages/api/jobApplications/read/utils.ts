@@ -238,7 +238,7 @@ export const readNewJobApplicationDbAction = async (
   );
   // console.log(searchFormatter(search));
   const { data, error } = await supabase
-    .rpc('kkkjob_application_filter_sort2', {
+    .rpc('job_application_filter_sort', {
       jb_id: job_id,
       j_status: status,
       sort_column_text: sort.parameter,

@@ -2625,6 +2625,36 @@ export type Database = {
           fil_res: number
         }[]
       }
+      kkkjob_application_filter_sort: {
+        Args: {
+          jb_id: string
+          min_lat?: number
+          min_long?: number
+          max_lat?: number
+          max_long?: number
+          j_status?: string
+          from_rec_num?: number
+          end_rec_num?: number
+          min_resume_score?: number
+          max_resume_score?: number
+          min_interview_score?: number
+          max_interview_score?: number
+          sort_column_text?: string
+          is_sort_desc?: boolean
+          text_search_qry?: string
+          sort_by_schedule?: string
+          is_locat_filter_on?: boolean
+        }
+        Returns: {
+          job_app: Json
+          cand: Json
+          candfiles: Json
+          assres: Json
+          schedule: Json
+          panel: Json
+          fil_res: number
+        }[]
+      }
       kkkjob_application_filter_sort2: {
         Args: {
           jb_id: string
