@@ -17,7 +17,6 @@ import {
   SelectButton,
 } from '@/devlink2';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
@@ -61,7 +60,7 @@ const JobAssessment = () => {
         slotSuccessMessage={
           <AssessmentEditor payload='interview_success' skeletonCount={1} />
         }
-        isSidePanel={jobAssessments.length !== 0}
+        isSidePanel={true}
         slotRight={<AssessmentPreview />}
       />
       <AssessmentBrowser open={open} onClose={() => setOpen(false)} />
@@ -400,37 +399,49 @@ const BrowserCard = ({
 };
 
 const AssessmentPreview = () => {
-  const { job_id } = useCurrentJob();
   const {
     assessments: {
       data: { jobAssessments },
     },
   } = useJobAssessments();
-  const disabled = jobAssessments.length === 0;
+  const { handleJobUpdate } = useJobs();
+  const { job_id } = useCurrentJob();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${job_id}`,
       '_blank',
     );
   };
+
+  const [disable, setDisable] = useState(false);
+  const handleDisable = async () => {
+    if (!disable) {
+      setDisable(true);
+      await handleJobUpdate(job_id, { assessment: false });
+      setDisable(false);
+    }
+  };
   return (
-    <Stack style={{ opacity: disabled ? '0.6' : '1' }}>
+    <Stack
+      style={{
+        opacity: disable ? 0.4 : 1,
+        pointerEvents: disable ? 'none' : 'auto',
+        transition: '0.5s',
+      }}
+    >
       <AssessmentSide
         isAssessmentImageVisible={true}
         isPhoneScreeningImageVisible={false}
-        isDisableAssessmentVisible={false}
-        isPreviewFormVisible={true}
-        textPreview={
-          disabled
-            ? `Add assessments for a preview of the assessments.`
-            : `Take a firsthand look at how candidates navigate the assessments.`
-        }
+        isDisableAssessmentVisible={true}
+        isPreviewFormVisible={jobAssessments.length !== 0}
+        textDescDisable={'Disable assessments for this job.'}
+        textPreview={`Take a firsthand look at how candidates navigate the assessments.`}
+        textDisableButton={'Disable Assessments'}
         textPreviewButton={'Preview Assessments'}
+        onClickDisableAssessment={{
+          onClick: () => handleDisable(),
+        }}
         onClickAssessmentPreview={{
-          style: {
-            color: disabled ? 'grey' : palette.blue['400'],
-            pointerEvents: disabled ? 'none' : 'auto',
-          },
           onClick: () => handlePreview(),
         }}
       />
