@@ -1,8 +1,11 @@
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import { EnableAssessment as EnableAssessmentDev } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
@@ -12,6 +15,7 @@ import AssessmentResetWrapper from '../NewAssessment/Common/wrapper/resetWrapper
 
 const JobAssessmentDashboard = () => {
   const { initialLoad } = useJobs();
+  const { job } = useJobApplications();
   return (
     <Stack height={'100%'} width={'100%'}>
       {!initialLoad ? (
@@ -21,7 +25,9 @@ const JobAssessmentDashboard = () => {
           <PageLayout
             slotTopbarLeft={<JobAssessmentDashboardBreadCrumbs />}
             slotTopbarRight={<></>}
-            slotBody={<JobAssessment />}
+            slotBody={
+              job?.assessment ? <JobAssessment /> : <EnableAssessment />
+            }
           />
         </AssessmentResetWrapper>
       )}
@@ -59,5 +65,32 @@ const JobAssessmentDashboardBreadCrumbs = () => {
       />
       <Breadcrum textName={`Assessments`} showArrow />
     </>
+  );
+};
+
+const EnableAssessment = () => {
+  const { handleJobUpdate } = useJobs();
+  const { job_id } = useCurrentJob();
+  const [disable, setDisable] = useState(false);
+  const handelEnable = async () => {
+    if (!disable) {
+      setDisable(true);
+      await handleJobUpdate(job_id, { assessment: true });
+      setDisable(false);
+    }
+  };
+  return (
+    <Stack
+      p={2}
+      style={{
+        opacity: disable ? 0.4 : 1,
+        pointerEvents: disable ? 'none' : 'auto',
+        transition: '0.5s',
+      }}
+    >
+      <EnableAssessmentDev
+        onClickEnableAssessment={{ onClick: () => handelEnable() }}
+      />
+    </Stack>
   );
 };
