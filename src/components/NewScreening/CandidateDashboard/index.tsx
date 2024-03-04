@@ -1,4 +1,4 @@
-import { Popover, Stack, Typography } from '@mui/material';
+import { InputAdornment, Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -20,22 +20,27 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import ScreeningSearchField from '../Filters/SearchField';
 import SideBar from '../SideBar/SideBar';
 import { CandidateScreeningType } from '../types';
+import Icon from '../../Common/Icons/Icon';
 import MuiAvatar from '../../Common/MuiAvatar';
+import UITextField from '../../Common/UITextField';
 
 const CandidateDashboard = () => {
   const { recruiter_id } = useAuthDetails();
   const [details, setDetails] = useState<CandidateScreeningType[]>([]);
+  const [filterDetails, setFilterDetails] = useState<CandidateScreeningType[]>(
+    [],
+  );
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [id, setId] = useState<string>('');
-  const [filterId, setFilterId] = useState<string[]>([]);
-  const [selectFilter, setFilter] = useState<string>('');
+  const [filterId, setFilterId] = useState<string[]>([]); // to show filters on dashboard
+  const [selectFilter, setFilter] = useState<string>(''); // to check which filter is clicked to show dropdown;
+  const [selectedScreeningTypes, setSelectedScreeningTypes] = useState<any>([]);
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const [selectedScreeningTypes, setSelectedScreeningTypes] = useState<any>([]);
   const [anchor2El, set2AnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -55,6 +60,36 @@ const CandidateDashboard = () => {
     set2AnchorEl(event.currentTarget);
   };
 
+  const SearchBar = () => {
+    return (
+      <>
+        <UITextField
+          rest={{
+            style: {
+              borderRadius: '41px',
+            },
+          }}
+          InputProps={{
+            sx: {
+              borderRadius: '10px',
+              minWidth: '250px',
+            },
+            endAdornment: (
+              <InputAdornment position='end'>
+                <Icon variant='JobSearch' height='14' />
+              </InputAdornment>
+            ),
+          }}
+          placeholder='Search by name'
+          onChange={() => {
+            // let input = e.target.value;
+            // setSearch(input);
+          }}
+        />
+      </>
+    );
+  };
+
   const fetchApplicantsId = async () => {
     const { data, error } = await supabase.rpc('get_screening_candidates', {
       p_recruiter_id: recruiter_id,
@@ -64,6 +99,7 @@ const CandidateDashboard = () => {
       toast.error('Failed to Fetch Details');
     } else {
       setDetails(data as any);
+      setFilterDetails(data as any);
     }
 
     return data;
@@ -72,7 +108,7 @@ const CandidateDashboard = () => {
   const FilterStatus = (scheduleType: string, label: string) => {
     const handleCheckClick = (scheduleType: any) => {
       const isScheduled = selectedScreeningTypes.includes(scheduleType);
-      let updatedStatus;
+      let updatedStatus = [];
       if (isScheduled) {
         updatedStatus = selectedScreeningTypes.filter(
           (item) => item !== scheduleType,
@@ -81,35 +117,43 @@ const CandidateDashboard = () => {
         updatedStatus = [...selectedScreeningTypes, scheduleType];
       }
       setSelectedScreeningTypes(updatedStatus);
-
-      // Filter the original data instead of the already filtered data
-      let filteredData = [...details];
+      let filteredData = [];
       if (updatedStatus.length > 0) {
-        filteredData = details.filter((data) => {
-          if (updatedStatus.includes('submitted')) {
-            if (data.created_at !== null) return true;
-          }
-          if (updatedStatus.includes('invited')) {
-            if (
-              data.status_emails_sent.phone_screening !== undefined &&
-              data.created_at === null
-            )
+        updatedStatus.forEach((filter) => {
+          filteredData = details.filter((data) => {
+            if (filter.includes('submitted')) {
+              if (data.created_at !== null) {
+                return true;
+              }
+            }
+            if (filter.includes('invited')) {
+              if (
+                data.status_emails_sent.phone_screening !== undefined &&
+                data.created_at === null
+              )
+                return true;
+            }
+            if (filter.includes('not')) {
+              if (
+                data.created_at === null &&
+                data.status_emails_sent.phone_screening === undefined
+              )
+                return true;
+            }
+            if (filter.includes(data.screening_title)) {
               return true;
-          }
-          if (updatedStatus.includes('not')) {
-            if (
-              data.created_at === null &&
-              data.status_emails_sent.phone_screening === undefined
-            )
+            }
+            if (filter.includes(data.job_title)) {
               return true;
-          }
-          return false;
+            }
+            return false;
+          });
+          setFilterDetails(filteredData);
         });
+      } else {
+        fetchApplicantsId();
       }
-
-      setDetails(filteredData);
     };
-
     return (
       <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
         <Checkbox
@@ -139,120 +183,18 @@ const CandidateDashboard = () => {
   };
 
   const uniqueScreeningTitles = Array.from(
-    new Set(details.map((data) => data.screening_title)),
+    new Set(filterDetails.map((data) => data.screening_title)),
   );
-  const FilterScreeningName = (screeningType: string, label: string) => {
-    const handleCheckClick = (screeningType) => {
-      const isSelected = selectedScreeningTypes.includes(screeningType);
-      let updatedTypes;
-      if (isSelected) {
-        updatedTypes = selectedScreeningTypes.filter(
-          (item) => item !== screeningType,
-        );
-      } else {
-        updatedTypes = [...selectedScreeningTypes, screeningType];
-      }
-
-      setSelectedScreeningTypes(updatedTypes);
-
-      // Filter the original data based on selected screening types
-      let filteredData = [...details];
-      if (updatedTypes.length > 0) {
-        filteredData = details.filter((data) => {
-          return updatedTypes.includes(data.screening_title);
-        });
-      }
-
-      setDetails(filteredData);
-    };
-
-    return (
-      <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
-        <Checkbox
-          key={`${screeningType}-checkbox`}
-          isChecked={selectedScreeningTypes.includes(screeningType)}
-          onClickCheck={{
-            onClick: () => {
-              handleCheckClick(screeningType);
-            },
-          }}
-        />
-        <Typography
-          key={`${screeningType}-labels`}
-          sx={{
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            handleCheckClick(screeningType);
-          }}
-        >
-          {label}
-        </Typography>
-      </Stack>
-    );
-  };
 
   const filteredScreeningNames = uniqueScreeningTitles.map((title) => {
-    return FilterScreeningName(title, title);
+    return FilterStatus(title, title);
   });
 
   const uniqueJobTitles = Array.from(
-    new Set(details.map((data) => data.job_title)),
+    new Set(filterDetails.map((data) => data.job_title)),
   );
-  const FilterJobs = (screeningType: string, label: string) => {
-    const handleCheckClick = (screeningType) => {
-      const isSelected = selectedScreeningTypes.includes(screeningType);
-      let updatedTypes;
-      if (isSelected) {
-        updatedTypes = selectedScreeningTypes.filter(
-          (item) => item !== screeningType,
-        );
-      } else {
-        updatedTypes = [...selectedScreeningTypes, screeningType];
-      }
-
-      setSelectedScreeningTypes(updatedTypes);
-      let filteredData = [...details];
-      if (updatedTypes.length > 0) {
-        filteredData = details.filter((data) => {
-          return updatedTypes.includes(data.job_title);
-        });
-      }
-
-      setDetails(filteredData);
-    };
-
-    return (
-      <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
-        <Checkbox
-          key={`${screeningType}-checkbox`}
-          isChecked={selectedScreeningTypes.includes(screeningType)}
-          onClickCheck={{
-            onClick: () => {
-              handleCheckClick(screeningType);
-            },
-          }}
-        />
-        <Typography
-          key={`${screeningType}-labels`}
-          sx={{
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            handleCheckClick(screeningType);
-          }}
-        >
-          {label}
-        </Typography>
-      </Stack>
-    );
-  };
   const filteredJobs = uniqueJobTitles.map((title) => {
-    return FilterJobs(title, title);
+    return FilterStatus(title, title);
   });
 
   useEffect(() => {
@@ -267,7 +209,7 @@ const CandidateDashboard = () => {
           <ScreeningTable
             slotFilterButton={
               <>
-                <ScreeningSearchField />
+                <SearchBar />
                 {filterId.map((data) => {
                   return (
                     <>
@@ -437,69 +379,137 @@ const CandidateDashboard = () => {
               </>
             }
             slotSidebar={<SideBar appId={id} openDrawer={drawerOpen} />}
-            slotScreeningCards={details.map((data) => {
-              const isSubmitted = data.created_at === null ? false : true;
-              const isInvited =
-                data.status_emails_sent?.phone_screening === undefined
-                  ? false
-                  : true;
-              const isNotInvited =
-                data.status_emails_sent?.phone_screening === undefined
-                  ? true
-                  : false;
-              const textStatus = isSubmitted
-                ? 'Submitted'
-                : isNotInvited
-                  ? 'Not Invited'
-                  : 'Invited';
-              return (
-                <ScreeningCards
-                  onClickCard={{
-                    onClick: () => {
-                      setId(data.id);
-                      setDrawerOpen(true);
-                    },
-                  }}
-                  textName={
-                    data.first_name +
-                    ' ' +
-                    (data.last_name === null ? '' : data.last_name)
-                  }
-                  key={data.id}
-                  textScreeningName={data.screening_title}
-                  textRelatedJob={data.job_title}
-                  slotImage={
-                    <MuiAvatar
-                      src={data.avatar}
-                      height='16.26px'
-                      width='16px'
-                      level='avatar'
-                      variant='circular'
-                    />
-                  }
-                  isCheckboxVisible={true}
-                  slotInviteStatus={
-                    <InviteStatus
-                      textStatus={textStatus}
-                      isNotInvited={isSubmitted ? false : isNotInvited}
-                      isInvited={isSubmitted ? false : isInvited}
-                      isSubmitted={isSubmitted ? true : false}
-                      isStatusTimeVisible={
-                        isSubmitted || isInvited ? true : false
-                      }
-                      textStatusTime={
-                        isSubmitted
-                          ? dayjs(data.created_at).fromNow()
-                          : dayjs(
-                              data.status_emails_sent.phone_screening_resend ||
-                                data.status_emails_sent.phone_screening,
-                            ).fromNow()
-                      }
-                    />
-                  }
-                />
-              );
-            })}
+            slotScreeningCards={
+              filterId.length > 0
+                ? filterDetails.map((data) => {
+                    const isSubmitted = data.created_at === null ? false : true;
+                    const isInvited =
+                      data.status_emails_sent?.phone_screening === undefined
+                        ? false
+                        : true;
+                    const isNotInvited =
+                      data.status_emails_sent?.phone_screening === undefined
+                        ? true
+                        : false;
+                    const textStatus = isSubmitted
+                      ? 'Submitted'
+                      : isNotInvited
+                        ? 'Not Invited'
+                        : 'Invited';
+                    return (
+                      <ScreeningCards
+                        onClickCard={{
+                          onClick: () => {
+                            setId(data.id);
+                            setDrawerOpen(true);
+                          },
+                        }}
+                        textName={
+                          data.first_name +
+                          ' ' +
+                          (data.last_name === null ? '' : data.last_name)
+                        }
+                        key={data.id}
+                        textScreeningName={data.screening_title}
+                        textRelatedJob={data.job_title}
+                        slotImage={
+                          <MuiAvatar
+                            src={data.avatar}
+                            height='16.26px'
+                            width='16px'
+                            level='avatar'
+                            variant='circular'
+                          />
+                        }
+                        isCheckboxVisible={true}
+                        slotInviteStatus={
+                          <InviteStatus
+                            textStatus={textStatus}
+                            isNotInvited={isSubmitted ? false : isNotInvited}
+                            isInvited={isSubmitted ? false : isInvited}
+                            isSubmitted={isSubmitted ? true : false}
+                            isStatusTimeVisible={
+                              isSubmitted || isInvited ? true : false
+                            }
+                            textStatusTime={
+                              isSubmitted
+                                ? dayjs(data.created_at).fromNow()
+                                : dayjs(
+                                    data.status_emails_sent
+                                      .phone_screening_resend ||
+                                      data.status_emails_sent.phone_screening,
+                                  ).fromNow()
+                            }
+                          />
+                        }
+                      />
+                    );
+                  })
+                : details.map((data) => {
+                    const isSubmitted = data.created_at === null ? false : true;
+                    const isInvited =
+                      data.status_emails_sent?.phone_screening === undefined
+                        ? false
+                        : true;
+                    const isNotInvited =
+                      data.status_emails_sent?.phone_screening === undefined
+                        ? true
+                        : false;
+                    const textStatus = isSubmitted
+                      ? 'Submitted'
+                      : isNotInvited
+                        ? 'Not Invited'
+                        : 'Invited';
+                    return (
+                      <ScreeningCards
+                        onClickCard={{
+                          onClick: () => {
+                            setId(data.id);
+                            setDrawerOpen(true);
+                          },
+                        }}
+                        textName={
+                          data.first_name +
+                          ' ' +
+                          (data.last_name === null ? '' : data.last_name)
+                        }
+                        key={data.id}
+                        textScreeningName={data.screening_title}
+                        textRelatedJob={data.job_title}
+                        slotImage={
+                          <MuiAvatar
+                            src={data.avatar}
+                            height='16.26px'
+                            width='16px'
+                            level='avatar'
+                            variant='circular'
+                          />
+                        }
+                        isCheckboxVisible={true}
+                        slotInviteStatus={
+                          <InviteStatus
+                            textStatus={textStatus}
+                            isNotInvited={isSubmitted ? false : isNotInvited}
+                            isInvited={isSubmitted ? false : isInvited}
+                            isSubmitted={isSubmitted ? true : false}
+                            isStatusTimeVisible={
+                              isSubmitted || isInvited ? true : false
+                            }
+                            textStatusTime={
+                              isSubmitted
+                                ? dayjs(data.created_at).fromNow()
+                                : dayjs(
+                                    data.status_emails_sent
+                                      .phone_screening_resend ||
+                                      data.status_emails_sent.phone_screening,
+                                  ).fromNow()
+                            }
+                          />
+                        }
+                      />
+                    );
+                  })
+            }
           />
         }
       />
