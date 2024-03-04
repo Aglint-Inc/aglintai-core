@@ -38,9 +38,9 @@ function DateFilter() {
         }
         onClickStatus={{
           style: {
-            borderColor: palette.blue[600],
+            borderColor: palette.blue[600]
           },
-          onClick: handleClick,
+          onClick: handleClick
         }}
         textLabel={'Date'}
         slotRightIcon={

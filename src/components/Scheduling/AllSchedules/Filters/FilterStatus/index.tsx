@@ -6,13 +6,14 @@ import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
-import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
+import { FilterType, setFilter, setFilterVisible, useInterviewStore } from '../../store';
 
 function FilterStatus() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
   const filter = useInterviewStore((state) => state.filter);
+  const filterVisible = useInterviewStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,7 +27,7 @@ function FilterStatus() {
   const id = open ? 'filter-status' : undefined;
 
   const handleFilterClick = (
-    status: InterviewScheduleTypeDB['status'] | 'not scheduled',
+    status: InterviewScheduleTypeDB['status'] | 'not scheduled'
   ) => {
     if (filter.status.includes(status)) {
       setFilter({ status: filter.status.filter((s) => s !== status) });
@@ -37,7 +38,7 @@ function FilterStatus() {
 
   const renderStatus = (
     status: InterviewScheduleTypeDB['status'] | 'not scheduled',
-    label: string,
+    label: string
   ) => {
     return (
       <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
@@ -46,7 +47,7 @@ function FilterStatus() {
           onClickCheck={{
             onClick: () => {
               handleFilterClick(status);
-            },
+            }
           }}
         />
         <Typography
@@ -54,7 +55,7 @@ function FilterStatus() {
           sx={{
             fontSize: '14px',
             fontWeight: 600,
-            cursor: 'pointer',
+            cursor: 'pointer'
           }}
           onClick={() => handleFilterClick(status)}
         >
@@ -86,9 +87,9 @@ function FilterStatus() {
         onClickStatus={{
           style: {
             borderColor:
-              filter.status.length > 0 ? palette.blue[600] : palette.blue[300],
+              filter.status.length > 0 ? palette.blue[600] : palette.blue[300]
           },
-          onClick: handleClick,
+          onClick: handleClick
         }}
         textLabel={'Status'}
         slotRightIcon={
@@ -116,15 +117,15 @@ function FilterStatus() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
-            minWidth: '176px',
-          },
+            minWidth: '176px'
+          }
         }}
       >
         <FilterDropdown
@@ -139,13 +140,14 @@ function FilterStatus() {
           onClickDelete={{
             onClick: () => {
               setFilter({ status: [] });
-              setFilterVisible({ status: 0 });
-            },
+              setFilterVisible(filterVisible.filter((f) => f !== FilterType.
+              status));
+            }
           }}
           onClickReset={{
             onClick: () => {
               setFilter({ status: [] });
-            },
+            }
           }}
         />
       </Popover>

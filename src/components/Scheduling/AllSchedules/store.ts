@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import {
   CandidateType,
   InterviewScheduleTypeDB,
-  JobApplcationDB,
+  JobApplcationDB
 } from '@/src/types/data.types';
 
 import { PanelType } from '../Panels/store';
@@ -33,17 +33,23 @@ export interface InterviewSlice {
     total: number;
   };
   fetching: boolean;
-  filterVisible: {
-    relatedJobs: number;
-    interviewPanels: number;
-    dateRange: number;
-    duration: number;
-    scheduleType: number;
-    status: number;
-  };
+  filterVisible: FilterType[];
   duration: number;
   isRescheduleOpen: boolean;
   isCancelOpen: boolean;
+}
+
+export enum FilterType {
+  // eslint-disable-next-line no-unused-vars
+  relatedJobs = 'relatedJobs',
+  // eslint-disable-next-line no-unused-vars
+  interviewPanels = 'interviewPanels',
+  // eslint-disable-next-line no-unused-vars
+  dateRange = 'dateRange',
+  // eslint-disable-next-line no-unused-vars
+  scheduleType = 'scheduleType',
+  // eslint-disable-next-line no-unused-vars
+  status = 'status'
 }
 
 const initialState: InterviewSlice = {
@@ -60,28 +66,21 @@ const initialState: InterviewSlice = {
     job_ids: [],
     panel_ids: [],
     scheduleType: [],
-    dateRange: null,
+    dateRange: null
   },
   pagination: {
     page: 1,
-    total: 0,
+    total: 0
   },
   fetching: false,
-  filterVisible: {
-    relatedJobs: 0,
-    interviewPanels: 0,
-    dateRange: 0,
-    duration: 0,
-    scheduleType: 0,
-    status: 0,
-  },
+  filterVisible: [],
   duration: 30,
   isRescheduleOpen: false,
-  isCancelOpen: false,
+  isCancelOpen: false
 };
 
 export const useInterviewStore = create<InterviewSlice>()(() => ({
-  ...initialState,
+  ...initialState
 }));
 
 export const setApplicationList = (applicationList: ApplicationList[]) =>
@@ -100,12 +99,12 @@ export const setSelectedPanel = (selectedPanel: PanelType) =>
   useInterviewStore.setState({ selectedPanel });
 
 export const setSelectedUsers = (
-  selectedUsers: InterviewSlice['selectedUsers'],
+  selectedUsers: InterviewSlice['selectedUsers']
 ) => useInterviewStore.setState({ selectedUsers });
 
 export const setFilter = (filter: InterviewSlice['filter']) =>
   useInterviewStore.setState((state) => ({
-    filter: { ...state.filter, ...filter },
+    filter: { ...state.filter, ...filter }
   }));
 
 export const setDuration = (duration: number) =>
@@ -118,17 +117,14 @@ export const setIsCancelOpen = (isCancelOpen: boolean) =>
   useInterviewStore.setState({ isCancelOpen });
 
 export const setFilterVisible = (
-  filterVisible: Partial<InterviewSlice['filterVisible']>,
-) =>
-  useInterviewStore.setState((state) => ({
-    filterVisible: { ...state.filterVisible, ...filterVisible },
-  }));
+  filterVisible: InterviewSlice['filterVisible']
+) => useInterviewStore.setState({ filterVisible });
 
 export const setPagination = (
-  pagination: Partial<InterviewSlice['pagination']>,
+  pagination: Partial<InterviewSlice['pagination']>
 ) =>
   useInterviewStore.setState((state) => ({
-    pagination: { ...state.pagination, ...pagination },
+    pagination: { ...state.pagination, ...pagination }
   }));
 
 export const setFetching = (fetching: boolean) =>

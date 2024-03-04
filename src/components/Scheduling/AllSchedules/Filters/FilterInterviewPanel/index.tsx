@@ -5,15 +5,21 @@ import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
+import {
+  FilterType,
+  setFilter,
+  setFilterVisible,
+  useInterviewStore
+} from '../../store';
 import { useSchedulingStore } from '../../../Panels/store';
 
 function FilterInterviewPanel() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
   const filter = useInterviewStore((state) => state.filter);
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const filterVisible = useInterviewStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -64,9 +70,9 @@ function FilterInterviewPanel() {
             borderColor:
               filter.panel_ids.length > 0
                 ? palette.blue[600]
-                : palette.blue[300],
+                : palette.blue[300]
           },
-          onClick: handleClick,
+          onClick: handleClick
         }}
         textLabel={'Interview Panels'}
         slotRightIcon={
@@ -94,15 +100,15 @@ function FilterInterviewPanel() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
-            minWidth: '176px',
-          },
+            minWidth: '176px'
+          }
         }}
       >
         <FilterDropdown
@@ -119,14 +125,14 @@ function FilterInterviewPanel() {
                   onClickCheck={{
                     onClick: () => {
                       handleFilterClick(panel.id);
-                    },
+                    }
                   }}
                 />
                 <Typography
                   sx={{
                     fontSize: '14px',
                     fontWeight: 600,
-                    cursor: 'pointer',
+                    cursor: 'pointer'
                   }}
                   onClick={() => handleFilterClick(panel.id)}
                 >
@@ -138,13 +144,15 @@ function FilterInterviewPanel() {
           onClickDelete={{
             onClick: () => {
               setFilter({ panel_ids: [] });
-              setFilterVisible({ interviewPanels: 0 });
-            },
+              setFilterVisible(
+                filterVisible.filter((f) => f !== FilterType.interviewPanels)
+              );
+            }
           }}
           onClickReset={{
             onClick: () => {
               setFilter({ panel_ids: [] });
-            },
+            }
           }}
         />
       </Popover>

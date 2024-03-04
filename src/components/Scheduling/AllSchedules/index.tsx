@@ -2,12 +2,12 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   AllInterview,
   AllInterviewEmpty,
-  CandidatesListPagination,
+  CandidatesListPagination
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -16,11 +16,11 @@ import toast from '@/src/utils/toast';
 
 import CreateDialog from './CreateDialog';
 import DeleteScheduleDialog from './DeleteDialog';
-import AddFilterComp from './Filters/AddFilter';
 import DateFilter from './Filters/DateFilter';
 import DateRangeFilterComp from './Filters/DateRangeFilter';
 import FilterInterviewPanel from './Filters/FilterInterviewPanel';
 import FilterJob from './Filters/FilterJob';
+import AddFilterComp from './Filters/FilterMenu';
 import FilterScheduleType from './Filters/FilterScheduleType';
 import FilterSearchField from './Filters/FilterSearchField';
 import FilterStatus from './Filters/FilterStatus';
@@ -29,6 +29,7 @@ import RescheduleDialog from './RescheduleDialog';
 import SidePanel from './SidePanel';
 import {
   ApplicationList,
+  FilterType,
   setApplicationList,
   setFetching,
   setIsCancelOpen,
@@ -36,7 +37,7 @@ import {
   setIsRescheduleOpen,
   setPagination,
   setSelectedApplication,
-  useInterviewStore,
+  useInterviewStore
 } from './store';
 import { getPaginationDB } from './utils';
 import { useSchedulingStore } from '../Panels/store';
@@ -52,8 +53,9 @@ function InterviewComp() {
     pagination,
     filterVisible,
     fetching,
-    selectedApplication,
+    selectedApplication
   } = useInterviewStore();
+
   const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
 
   // separate useeffect for filter except text search because no need to debounce
@@ -71,7 +73,7 @@ function InterviewComp() {
       ) {
         setSelectedApplication(null);
         router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
-          shallow: true,
+          shallow: true
         });
         fetchInterviewData({ page: 1 });
       }
@@ -82,7 +84,7 @@ function InterviewComp() {
     filter.panel_ids,
     filter.dateRange,
     filter.sortBy,
-    filter.scheduleType,
+    filter.scheduleType
   ]);
   // separate useeffect for filter except text search because no need to debounce
 
@@ -96,7 +98,7 @@ function InterviewComp() {
     const debouncedTextSearchFetch = debounce(() => {
       setSelectedApplication(null);
       router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
-        shallow: true,
+        shallow: true
       });
       fetchInterviewData({ page: 1 });
     }, 1000);
@@ -119,7 +121,7 @@ function InterviewComp() {
   useEffect(() => {
     if (router.isReady && router.query.application_id && !initialLoading) {
       const application = applicationList.find(
-        (app) => app.applications.id === router.query.application_id,
+        (app) => app.applications.id === router.query.application_id
       );
       setSelectedApplication(application);
       viaJobHandler(application);
@@ -143,8 +145,8 @@ function InterviewComp() {
           panel_id_filter:
             filter.panel_ids.length > 0 ? filter.panel_ids : null,
           page_number: page,
-          date_range_filter: filter.dateRange ? filter.dateRange : null,
-        },
+          date_range_filter: filter.dateRange ? filter.dateRange : null
+        }
       );
       if (error) {
         throw new Error(error.message);
@@ -165,8 +167,8 @@ function InterviewComp() {
           'fetch_interview_data_page_number',
           {
             rec_id: recruiter.id,
-            application_id: router.query.application_id as string,
-          },
+            application_id: router.query.application_id as string
+          }
         );
         if (!error && pageNumber !== 1) {
           setPagination({ page: pageNumber });
@@ -191,8 +193,8 @@ function InterviewComp() {
           scheduleType: filter.scheduleType,
           sortBy: filter.sortBy,
           job_ids: filter.job_ids,
-          panel_ids: filter.panel_ids,
-        },
+          panel_ids: filter.panel_ids
+        }
       });
       setPagination({ total: totalCount });
     } catch (error) {
@@ -200,22 +202,13 @@ function InterviewComp() {
     }
   };
 
-  const visibleFilters = useMemo(
-    () =>
-      Object.entries(filterVisible)
-        // eslint-disable-next-line no-unused-vars
-        .filter(([_, order]) => order !== 0)
-        .sort((a, b) => a[1] - b[1]),
-    [filterVisible],
-  );
-
   const onClickCard = (app: ApplicationList) => {
     router.push(
       `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${app.applications.id}`,
       undefined,
       {
-        shallow: true,
-      },
+        shallow: true
+      }
     );
   };
 
@@ -229,7 +222,7 @@ function InterviewComp() {
         setIsCancelOpen(false);
         setSelectedApplication({ ...selectedApplication, schedule: null });
         applicationList.filter(
-          (app) => app.applications.id === selectedApplication.applications.id,
+          (app) => app.applications.id === selectedApplication.applications.id
         )[0].schedule = null;
         setApplicationList([...applicationList]);
         if ((selectedApplication.schedule.meeting_json as any)?.id) {
@@ -237,8 +230,8 @@ function InterviewComp() {
             '/api/scheduling/update-calender-event-status',
             {
               organizer_id: selectedApplication.schedule.created_by,
-              event_id: (selectedApplication.schedule.meeting_json as any).id,
-            },
+              event_id: (selectedApplication.schedule.meeting_json as any).id
+            }
           );
           if (res.status !== 200) {
             throw new Error('Error in response');
@@ -268,7 +261,7 @@ function InterviewComp() {
             sx={{
               opacity: fetching ? 0.5 : 1,
               pointerEvents: fetching ? 'none' : 'auto',
-              zIndex: 3,
+              zIndex: 3
             }}
           >
             <CandidatesListPagination
@@ -279,13 +272,13 @@ function InterviewComp() {
                 onClick: () => {
                   if (pagination.page < Math.ceil(pagination.total / 10))
                     setPagination({ page: pagination.page + 1 });
-                },
+                }
               }}
               onclickPrevious={{
                 onClick: () => {
                   if (pagination.page > 1)
                     setPagination({ page: pagination.page - 1 });
-                },
+                }
               }}
               slotPageNumber={pagination.page}
             />
@@ -296,18 +289,18 @@ function InterviewComp() {
         slotFilterButton={
           <>
             <FilterSearchField />
-            {visibleFilters.map(([filterKey]) => {
-              switch (filterKey) {
-                case 'relatedJobs':
-                  return <FilterJob key={filterKey} />;
-                case 'interviewPanels':
-                  return <FilterInterviewPanel key={filterKey} />;
-                case 'dateRange':
-                  return <DateRangeFilterComp key={filterKey} />;
-                case 'scheduleType':
-                  return <FilterScheduleType key={filterKey} />;
-                case 'status':
-                  return <FilterStatus key={filterKey} />;
+            {filterVisible.map((filterType) => {
+              switch (filterType) {
+                case FilterType.relatedJobs:
+                  return <FilterJob key={filterType} />;
+                case FilterType.interviewPanels:
+                  return <FilterInterviewPanel key={filterType} />;
+                case FilterType.dateRange:
+                  return <DateRangeFilterComp key={filterType} />;
+                case FilterType.scheduleType:
+                  return <FilterScheduleType key={filterType} />;
+                case FilterType.status:
+                  return <FilterStatus key={filterType} />;
                 default:
                   return null;
               }
@@ -319,7 +312,7 @@ function InterviewComp() {
           <Stack
             style={{
               opacity: fetching ? 0.5 : 1,
-              pointerEvents: fetching ? 'none' : 'auto',
+              pointerEvents: fetching ? 'none' : 'auto'
             }}
           >
             {!initialLoading && (
@@ -327,7 +320,7 @@ function InterviewComp() {
                 {applicationList.length === 0 && <AllInterviewEmpty />}
                 {applicationList.map((app) => {
                   const panel_name = interviewPanels.filter(
-                    (panel) => panel.id === app.schedule?.panel_id,
+                    (panel) => panel.id === app.schedule?.panel_id
                   )[0]?.name;
                   return (
                     <ListCardInterviewSchedule

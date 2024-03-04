@@ -6,20 +6,23 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css';
 
-import {
-  ButtonPrimarySmall,
-  ButtonTextSmall
-} from '@/devlink';
+import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, setFilterVisible, useInterviewStore } from '../../store';
+import {
+  FilterType,
+  setFilter,
+  setFilterVisible,
+  useInterviewStore
+} from '../../store';
 
 function DateRangeFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
   const filter = useInterviewStore((state) => state.filter);
+  const filterVisible = useInterviewStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,8 +45,8 @@ function DateRangeFilterComp() {
     {
       startDate: new Date(),
       endDate: addDays(new Date(), 7),
-      key: 'selection',
-    },
+      key: 'selection'
+    }
   ]);
 
   useEffect(() => {
@@ -75,9 +78,9 @@ function DateRangeFilterComp() {
           style: {
             borderColor: filter.dateRange
               ? palette.blue[600]
-              : palette.blue[300],
+              : palette.blue[300]
           },
-          onClick: handleClick,
+          onClick: handleClick
         }}
         textLabel={'Date Range'}
         slotRightIcon={
@@ -105,14 +108,14 @@ function DateRangeFilterComp() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
-            borderColor: '#E9EBED',
-          },
+            borderColor: '#E9EBED'
+          }
         }}
       >
         <Stack position={'relative'}>
@@ -137,8 +140,8 @@ function DateRangeFilterComp() {
             <ButtonPrimarySmall
               wrapperProps={{
                 style: {
-                  width: '100%',
-                },
+                  width: '100%'
+                }
               }}
               textLabel='Apply'
               onClickButton={{
@@ -148,22 +151,24 @@ function DateRangeFilterComp() {
                   const dateRangeFilter = `[${startDate},${endDate})`;
                   setFilter({ dateRange: dateRangeFilter });
                   handleClose();
-                },
+                }
               }}
             />
             <ButtonTextSmall
               wrapperProps={{
                 style: {
-                  width: '100%',
-                },
+                  width: '100%'
+                }
               }}
               textLabel='Delete'
               onClickButton={{
                 onClick: () => {
                   setFilter({ dateRange: null });
-                  setFilterVisible({ dateRange: 0 });
+                  setFilterVisible(
+                    filterVisible.filter((f) => f !== FilterType.dateRange)
+                  );
                   handleClose();
-                },
+                }
               }}
             />
           </Stack>

@@ -2,7 +2,12 @@ import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
-import { ApplicationList, setApplicationList, setInitalLoading, setPagination } from '@/src/components/Scheduling/AllSchedules/store';
+import {
+  ApplicationList,
+  setApplicationList,
+  setInitalLoading,
+  setPagination,
+} from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -50,7 +55,11 @@ const SchedulingProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (router.isReady && !router.query.tab) {
+    if (
+      router.isReady &&
+      !router.query.tab &&
+      !router.pathname.includes('/panel/[panel_id]')
+    ) {
       router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
         shallow: true,
       });

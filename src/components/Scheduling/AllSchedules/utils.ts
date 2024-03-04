@@ -4,11 +4,9 @@ import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { InterviewSlice } from './store';
-
 /* eslint-disable security/detect-object-injection */
 export function findIntersection(
-  availabilities: {
+  userAvailability: {
     user_id: string;
     availibility_json: {
       availability: {
@@ -20,13 +18,13 @@ export function findIntersection(
       };
       timeDuration: number;
     } | null;
-  }[],
+  }[]
 ): IntersectionResult {
   let intersection: IntersectionResult = {};
   const currentDate = new Date();
 
   // Iterate over each availability date
-  availabilities.forEach((person) => {
+  userAvailability.forEach((person) => {
     if (person.availibility_json && person.availibility_json.availability) {
       const availability = person.availibility_json.availability;
 
@@ -54,7 +52,7 @@ export function findIntersection(
               const existingSlot = intersection[date].find(
                 (existingSlot) =>
                   existingSlot.startTime === startTime &&
-                  existingSlot.endTime === endTime,
+                  existingSlot.endTime === endTime
               );
 
               // If it doesn't exist, add it with the user_id
@@ -62,7 +60,7 @@ export function findIntersection(
                 intersection[date].push({
                   startTime: startTime,
                   endTime: endTime,
-                  user_ids: [person.user_id],
+                  user_ids: [person.user_id]
                 });
               } else {
                 // If it exists, add the user_id to the existing time slot
@@ -85,9 +83,17 @@ export interface TimeSlot {
   isSelected?: boolean;
 }
 
-export interface IntersectionResult {
-  [date: string]: TimeSlot[];
-}
+export type IntersectionResult = JsonMap<TimeSlot[]>;
+export type JsonMap<T> = { [k: string]: T };
+
+export type MailHandlerparam = {
+  id: string;
+  company_name: string;
+  company_logo: string;
+  candidate_name: string;
+  schedule_name: string;
+  mail?: string;
+};
 
 export const mailHandler = async ({
   id,
@@ -95,15 +101,8 @@ export const mailHandler = async ({
   company_logo,
   candidate_name,
   schedule_name,
-  mail,
-}: {
-  id: string;
-  company_name: string;
-  company_logo: string;
-  candidate_name: string;
-  schedule_name: string;
-  mail?: string;
-}) => {
+  mail
+}: MailHandlerparam) => {
   try {
     await axios
       .post('/api/sendgrid', {
@@ -123,25 +122,29 @@ export const mailHandler = async ({
             <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">Pick Your Slot</a>
             <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
         </div>
-    </body>`,
+    </body>`
       })
-      .then((res) => {
-        if (res.status === 200 && res.data.data === 'Email sent') {
-          toast.success('Mail sent successfully');
-          return true;
-        } else {
-          toast.error('Unable to send mail. Please try again later.');
-          return false;
-        }
-      });
+      .then((res) =>
+        toastMsg(
+          res.status === 200 && res.data.data === 'Email sent',
+          'Mail sent successfully',
+          'Unable to send mail. Please try again later.'
+        )
+      );
   } catch (e) {
     toast.error('Unable to send mail. Please try again later.');
   }
 };
 
+const toastMsg = (
+  isSuccess: boolean,
+  msgSuccess: string,
+  msgFailure: string
+) => (isSuccess ? toast.success(msgSuccess) : toast.error(msgFailure));
+
 export const getPaginationDB = async ({
   recruiter,
-  filter,
+  filter
 }: {
   recruiter: { id: string };
   filter: {
@@ -160,7 +163,7 @@ export const getPaginationDB = async ({
       text_search_filter: filter.textSearch,
       sch_type: filter.scheduleType?.length > 0 ? filter.scheduleType : null,
       job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null,
-      panel_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null,
+      panel_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null
     });
 
     if (error) {
@@ -173,28 +176,12 @@ export const getPaginationDB = async ({
   }
 };
 
-export function getNextOrderNumber(
-  filterVisible: InterviewSlice['filterVisible'],
-) {
-  let maxOrderNumber = -Infinity;
+const TYPE_LABELS = {
+  google_meet: 'Google Meet',
+  in_person_meeting: 'In Person Meeting',
+  phone_call: 'Phone Call'
+};
 
-  for (const order of Object.values(filterVisible)) {
-    if (order > maxOrderNumber) {
-      maxOrderNumber = order;
-    }
-  }
-
-  return maxOrderNumber + 1;
-}
-
-export function getScheduleType(
-  schedule_type: InterviewScheduleTypeDB['schedule_type'],
-) {
-  return schedule_type == 'google_meet'
-    ? 'Google Meet'
-    : schedule_type == 'in_person_meeting'
-      ? 'In Person Meeting'
-      : schedule_type == 'phone_call'
-        ? 'Phone Call'
-        : 'Zoom';
-}
+export const getScheduleType = (
+  schedule_type: InterviewScheduleTypeDB['schedule_type']
+) => TYPE_LABELS[schedule_type] || 'Zoom';
