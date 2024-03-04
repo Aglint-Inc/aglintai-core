@@ -3,6 +3,8 @@
 }
 
 .scheduler_topbar {
+  position: relative;
+
   display: flex;
   height: 60px;
   padding-right: 20px;
@@ -18,6 +20,11 @@
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+}
+
+.top_left.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .back_button {
@@ -96,6 +103,15 @@
   z-index: 2;
 }
 
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
 .topbar_left {
   display: flex;
   align-items: center;
@@ -107,4 +123,22 @@
   display: flex;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.topbar_right.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.div-block-1112 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
